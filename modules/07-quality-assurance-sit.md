@@ -156,8 +156,46 @@ Modul ini menghasilkan 2 artefak utama:
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
 Setelah server Staging aktif dan dokumen `SIT_REPORT.md` terbit:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/qa/SIT_WORKBOOK.md"` → harus return `True`
+   - Read tool: `read_file('docs/qa/SIT_WORKBOOK.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 08
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File SIT_WORKBOOK.md tidak tercipta.
+     Module 07 FAILED - tidak bisa lanjut ke Module 08 (Data Migration).
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/qa/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI KONTEN & TESTS**
+
 1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 08/09 dalam giliran (turn) yang sama!**
-2. Tampilkan ringkasan hasil pengujian integrasi Staging kepada pengguna:
+2. **Verifikasi test results**:
+   - [ ] `read_file('docs/qa/SIT_WORKBOOK.md')` → Confirm all tests PASS
+   - [ ] Confirm staging URL accessible
+   - [ ] Confirm `pnpm audit` clean (zero critical vulnerabilities)
+   - [ ] Confirm sandbox integrations verified (Payment/Storage/Email)
+3. Tampilkan ringkasan hasil pengujian integrasi Staging kepada pengguna:
    - URL Staging yang aktif
    - Status kelulusan pengujian sandbox pihak ketiga
    - Hasil audit keamanan dependensi & uji beban k6

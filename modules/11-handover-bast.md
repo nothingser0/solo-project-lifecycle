@@ -132,8 +132,46 @@ Modul ini menghasilkan dokumen penutupan resmi:
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
 Setelah penandatanganan BAST dan serah terima aset:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/BAST.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/BAST.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 12
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File BAST.md tidak tercipta.
+     Module 11 FAILED - tidak bisa lanjut ke Module 12 (Warranty & SLA).
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/pm/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI KONTEN & PAYMENT**
+
 1. **DILARANG KERAS langsung menutup sesi atau memanggil tool untuk Modul 12 dalam giliran (turn) yang sama!**
-2. Tampilkan rangkuman penutupan proyek:
+2. **Verifikasi konten BAST & payment**:
+   - [ ] `read_file('docs/pm/BAST.md')` → Confirm signature + meterai + warranty period
+   - [ ] Confirm payment 100% received (mutasi bank atau screenshot)
+   - [ ] Confirm repo transferred to client organization
+   - [ ] Confirm credentials handed over securely
+3. Tampilkan rangkuman penutupan proyek:
    - Konfirmasi penandatanganan BAST bermeterai
    - Tanggal mulai dan tanggal berakhir masa garansi resmi
    - Penawaran paket pemeliharaan (Monthly Retainer SLA)

@@ -129,9 +129,44 @@ Klien korporasi sering memiliki banyak kepala yang saling bertolak belakang arah
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
 Setelah berkas `docs/pm/PROJECT_CHARTER.md` (dan `docs/pm/SOW_CONTRACT.md`) selesai ditulis:
-1. **DILARAR KERAS langsung melanjutkan atau memanggil tool untuk Modul 04 dalam giliran (turn) yang sama!**
-2. **VERIFIKASI DIRI (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/PROJECT_CHARTER.md')` → Confirm file exists, baseline dates set
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/PROJECT_CHARTER.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/PROJECT_CHARTER.md')` → harus sukses tanpa error
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/SOW_CONTRACT.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/SOW_CONTRACT.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN ajukan konfirmasi DP**
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File PROJECT_CHARTER.md atau SOW_CONTRACT.md tidak tercipta.
+     Module 03 FAILED - tidak bisa lanjut ke Module 04 (UI/UX Design).
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/pm/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILES EXIST**: Lanjut ke validasi konten di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI KONTEN & DP CONFIRMATION**
+
+1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 04 dalam giliran (turn) yang sama!**
+2. **VERIFIKASI KONTEN (Self-Verification Checklist)**:
+   - [ ] `read_file('docs/pm/PROJECT_CHARTER.md')` → Confirm baseline dates set
    - [ ] `read_file('docs/pm/SOW_CONTRACT.md')` → Confirm termin structure documented (or BYPASS flag for internal)
    - [ ] Single PIC identified with contact info
    - [ ] Liability cap clause present

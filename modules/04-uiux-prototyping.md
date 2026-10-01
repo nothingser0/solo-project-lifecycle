@@ -54,15 +54,17 @@ Modul ini menerjemahkan `SCOPE_STATEMENT.md` menjadi tiga dokumen yang menjadi s
 
 ---
 
-## 2. Empat Artefak Keluaran (Deliverables) Modul 04
+## 2. Deliverables Modul 04
 
-Modul ini menghasilkan 4 deliverable konkret:
+Modul ini menghasilkan deliverable konkret:
 
 | No | Nama Artefak | Format / Lokasi | Deskripsi & Fungsi |
 | :---: | :--- | :--- | :--- |
-| **1** | **`docs/specs/DESIGN_SYSTEM.md`** | Folder `docs/specs/` | Dokumen gabungan token desain sistem dan spesifikasi antarmuka lengkap (arsitektur informasi, sitemap, Screen ID Stitch, matriks 5 state layar). |
-| **2** | **Interactive Prototype** | Tautan Live Staging Web / Stitch Viewer | Aplikasi antarmuka nyata yang bisa diklik tombolnya, diketik form-nya, dan diuji alur kerjanya oleh klien. |
-| **3** | **Design Freeze Sign-Off** | Lembar bertandatangan di `docs/specs/DESIGN_SYSTEM.md` | Berita acara persetujuan tertulis dari Single PIC Klien yang mengunci struktur visual sebelum koding backend dimulai. |
+| **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: struktur navigasi, hierarki halaman, route paths (18-50 screens tergantung skala). Prerequisite untuk DESIGN_SYSTEM.md. |
+| **2** | **`docs/specs/DESIGN_SYSTEM.md`** | Folder `docs/specs/` | Dokumen gabungan token desain sistem dan spesifikasi antarmuka lengkap (color palette, typography, component specs, matriks 5 state layar per screen). |
+| **3** | **`DESIGN.md`** (root) | Root project | Design tokens untuk AI agent consumption saat coding (Modul 06): warna, font, spacing, anti-slop guardrails. |
+| **4** | **Interactive Prototype** (Optional) | Live Staging / Stitch Viewer / Figma | Aplikasi antarmuka yang bisa diklik (hanya jika workflow AI/Manual Figma dipilih). Untuk workflow markdown: skip prototype, langsung coding di Modul 06. |
+| **5** | **Design Freeze Sign-Off** | Lembar bertandatangan | Berita acara persetujuan tertulis dari Single PIC Klien yang mengunci struktur visual sebelum koding dimulai. |
 
 > 📁 **ATURAN LOKASI BERKAS MUTLAK**:
 > - `DESIGN.md` ditaruh di root (`./DESIGN.md`) karena berfungsi sebagai berkas kendali AI saat koding (Modul 06).
@@ -75,9 +77,272 @@ Modul ini menghasilkan 4 deliverable konkret:
 
 ---
 
+## 2A. SITEMAP.md - Information Architecture
+
+**File**: `docs/specs/SITEMAP.md`
+
+Sitemap mendefinisikan **hierarki halaman, route paths, dan navigation structure** sebelum membuat mockup. Prerequisite wajib untuk DESIGN_SYSTEM.md.
+
+### Template Structure
+
+```markdown
+# SITEMAP - Information Architecture
+[Nama Proyek]
+
+## Total Screens: [X] screens
+
+---
+
+## PUBLIC PAGES (Unauthenticated)
+
+**Root**: `/`
+├── `/login` - User login form
+├── `/signup` - Registration form (email + password)
+├── `/forgot-password` - Request password reset email
+└── `/reset-password?token=xxx` - Reset password with token verification
+
+---
+
+## AUTHENTICATED PAGES
+
+**Dashboard**: `/dashboard` (Landing page after login)
+
+### Documents Module
+├── `/documents` - List view (table with filters, search, pagination)
+├── `/documents/upload` - Upload new document form
+├── `/documents/:id` - Single document detail view
+└── `/documents/:id/edit` - Edit document metadata
+
+### Signatures Module (E-signature workflow)
+├── `/signatures/pending` - Documents awaiting signature
+├── `/signatures/completed` - Signed documents archive
+└── `/signatures/:id` - Signature detail & status tracking
+
+### Users Module (Admin only)
+├── `/users` - User management list (roles: admin, editor, viewer)
+├── `/users/invite` - Invite new user form (email + role selection)
+└── `/users/:id` - User profile & permission management
+
+### Settings
+├── `/settings/profile` - User profile (name, email, avatar)
+├── `/settings/security` - Change password, 2FA setup
+└── `/settings/preferences` - UI theme (light/dark), language, notifications
+
+---
+
+## Screen Count by Module
+
+| Module | Screens | Notes |
+|--------|---------|-------|
+| Public | 4 | Login, signup, forgot/reset password |
+| Dashboard | 1 | Main landing after auth |
+| Documents | 4 | List, upload, detail, edit |
+| Signatures | 3 | Pending, completed, detail |
+| Users (Admin) | 3 | List, invite, profile |
+| Settings | 3 | Profile, security, preferences |
+| **TOTAL** | **18** | MVP scope |
+
+---
+
+## Navigation Structure
+
+**Top Navigation** (Authenticated):
+- Logo (left) → `/dashboard`
+- Main Nav (center): Documents | Signatures | Users (if admin)
+- User Menu (right): Profile | Settings | Logout
+
+**Sidebar Navigation** (Optional - for dashboard-heavy apps):
+- Dashboard
+- Documents
+- Signatures
+- Users (admin only)
+- Settings
+- Help & Support
+
+**Breadcrumbs** (Context awareness):
+- Example: Home > Documents > Document #123 > Edit
+```
+
+### Contoh Aplikasi Berbeda Skala
+
+**Small (10-15 screens)**: Landing page SaaS
+```
+Public: /, /login, /signup, /pricing
+Authenticated: /dashboard, /settings, /billing
+Admin: /admin/users, /admin/reports
+```
+
+**Medium (20-30 screens)**: E-commerce
+```
+Public: /, /products, /product/:id, /cart, /checkout, /login
+User: /account, /orders, /orders/:id, /wishlist, /settings
+Admin: /admin/products, /admin/orders, /admin/customers, /admin/analytics
+```
+
+**Large (50-100+ screens)**: Enterprise SaaS
+```
+- 10+ modules (CRM, Inventory, Finance, HR, Reports)
+- Role-based screens (admin, manager, staff)
+- Multi-step workflows (onboarding, approval chains)
+```
+
+---
+
+## 2B. Workflow Options: Manual vs AI-Assisted Design
+
+Setelah sitemap selesai, pilih workflow untuk membuat mockup screens:
+
+### Option A: Manual Design (Figma/Adobe XD/Sketch)
+
+**Tools**: Figma, Adobe XD, Sketch
+
+**Workflow**:
+1. Buat design system di Figma (components library: buttons, inputs, cards, modals)
+2. Design 18 screens satu per satu manually (wireframe → high-fidelity)
+3. Export specs (measurements, colors, typography) untuk developer
+4. Generate assets (icons, images, logos)
+5. Handoff via Figma Dev Mode / Zeplin
+
+**Pros**:
+- ✅ Full pixel-perfect control
+- ✅ Industry-standard workflow (mudah hire designer nanti)
+- ✅ Reusable component library untuk future updates
+- ✅ Client familiar dengan Figma (easier feedback loop)
+
+**Cons**:
+- ❌ Slow (1-2 minggu untuk 18 screens dengan polishing)
+- ❌ Perlu design skills (color theory, typography, spacing)
+- ❌ Effort: High (8-10 jam per screen untuk detailed mockup)
+
+**Best For**:
+- Client projects dengan high design expectations
+- Produk consumer-facing (B2C) yang butuh strong branding
+- Budget cukup untuk hire freelance UI designer (Rp 5-10 juta)
+
+**Time Estimate**: 2-3 minggu (solo developer with basic design skills)
+
+---
+
+### Option B: AI-Assisted Design (Google Stitch / v0.dev / Uizard)
+
+**Tools**: Google Stitch (built-in MCP), v0.dev by Vercel, Uizard, Galileo AI
+
+**Workflow**:
+1. Write design system tokens di DESIGN.md (colors, typography, spacing)
+2. Prompt AI per screen: "Generate dashboard with sidebar nav, document list table, upload button"
+3. AI generates mockup + React/HTML code in seconds
+4. Iterate: "Make sidebar wider, change primary color to cyan-600, add dark mode"
+5. Export React components / Tailwind HTML
+
+**Pros**:
+- ✅ Fast (beberapa jam untuk 18 screens dengan iterations)
+- ✅ Generate code langsung (skip manual HTML/CSS translation)
+- ✅ Easy iteration (re-prompt untuk variants berbeda)
+- ✅ Low cost (Google Stitch free tier, v0.dev $20/month)
+
+**Cons**:
+- ❌ Generic look jika tidak di-customize (common AI patterns)
+- ❌ Less pixel-perfect (spacing/alignment kadang off)
+- ❌ Perlu prompt engineering skills (GIGO: garbage in, garbage out)
+- ❌ Code quality varies (kadang inline styles, not following conventions)
+
+**Best For**:
+- MVP / Internal tools (speed > polish)
+- Solo developer tanpa design skills
+- Budget tight (tidak hire designer)
+- Fast iteration cycle (prototype → test → iterate dalam hours)
+
+**Time Estimate**: 1-3 hari (termasuk prompt iteration & code cleanup)
+
+**Contoh Prompt (Google Stitch)**:
+```
+Generate Dashboard screen (Screen ID: SCR-02) untuk Legal Document Management:
+
+CONTENT:
+- Sidebar navigation (left): Logo, Dashboard, Documents, Signatures, Settings
+- Main content area: 
+  * Header: "Documents" title, Search bar (placeholder: "Search by title or ID"), "Upload" button (primary)
+  * Table: 5 columns (Title, Uploaded By, Date, Status, Actions), 10 rows with pagination
+  * Status badges: Draft (gray), Pending (yellow), Signed (green)
+  * Actions: View icon, Edit icon, Delete icon
+
+DATA CONTEXT: Indonesian law firm, document titles in Bahasa Indonesia
+
+DESIGN CONSTRAINTS (ANTI-SLOP):
+- NO gradients, glassmorphism, colored shadows
+- Flat colors: Primary #0891B2 (Cyan-600), Neutrals Zinc-50 to Zinc-950
+- Borders: 1px solid #E4E4E7, radius 8px (cards), 6px (buttons)
+- Typography: Inter font, weights 400 (body) / 600 (headings), line-height 1.6
+- Shadows: 0 1px 3px rgba(0,0,0,0.1) only (no heavy shadows)
+- Layout: Sidebar 240px fixed, main content max-w-7xl, padding 24px
+- Spacing: Tailwind scale (4/8/16/24/32px)
+- Table: Zebra striping (even rows bg-zinc-50), sticky header
+```
+
+---
+
+### Option C: Hybrid (Recommended untuk Solo Developer)
+
+**Best of Both Worlds**
+
+**Workflow**:
+1. **AI wireframes** (Google Stitch / v0.dev): Generate 18 screens cepat (1 hari)
+   - Focus: Layout structure, component placement, navigation flow
+   - Accept: 80% quality (not pixel-perfect yet)
+
+2. **Manual polish** di Figma (if needed) (1-2 hari):
+   - Export Stitch designs to Figma (via HTML → Figma plugin)
+   - Polish: Typography hierarchy, spacing consistency, color refinement
+   - Add brand-specific elements (custom icons, illustrations, photography)
+   - Create reusable component library dari AI output
+
+3. **Code implementation** (Modul 06):
+   - Use Stitch-generated code as starting point (HTML structure, Tailwind classes)
+   - Refactor to match codebase patterns (component composition, naming conventions)
+   - Replace placeholder data dengan real data from database
+
+**Pros**:
+- ✅ 70% faster than full manual (AI handles boilerplate structure)
+- ✅ Better quality than pure AI (manual polish untuk brand consistency)
+- ✅ Reusable design system (Figma library untuk future updates)
+- ✅ Balanced cost (AI free tier + 1-2 hari design time vs 2-3 minggu full manual)
+
+**Cons**:
+- ⚠️ Still perlu basic Figma skills untuk polishing
+- ⚠️ Two tools overhead (learn both Stitch + Figma)
+
+**Best For**:
+- Solo developer dengan limited design skills tapi willing to learn
+- Client projects dengan medium design expectations (B2B SaaS)
+- Budget tight tapi ada waktu 1-2 hari untuk polish
+- Want reusable design system untuk long-term maintenance
+
+**Time Estimate**: 3-5 hari (1 hari AI generation + 1-2 hari manual polish + 1 hari code integration testing)
+
+---
+
+## 2C. Decision Matrix: Pilih Workflow yang Tepat
+
+| Kriteria | Manual Figma | AI-Assisted | Hybrid |
+|----------|--------------|-------------|--------|
+| **Budget** | Rp 5-10 juta (hire designer) atau 2-3 minggu solo time | Free - Rp 500k/month tools | Rp 0-2 juta (AI tools + freelance polish) |
+| **Timeline** | 2-3 minggu | 1-3 hari | 3-5 hari |
+| **Design Skill Required** | High (color theory, typography, composition) | Low (prompt engineering) | Medium (basic Figma + AI prompts) |
+| **Output Quality** | Highest (pixel-perfect, brand-aligned) | Medium (generic, needs refinement) | High (80-90% of manual quality) |
+| **Client Type** | B2C, consumer apps, high design expectations | Internal tools, MVP, technical users | B2B SaaS, medium expectations |
+| **Long-term Maintenance** | Best (component library di Figma) | Hardest (re-prompt setiap perubahan) | Good (Figma library + AI iteration) |
+| **Code Quality** | N/A (manual translation by dev) | Medium (AI-generated, needs cleanup) | Good (AI base + manual refactoring) |
+
+**Rekomendasi Default untuk Solo Developer**:
+- **MVP / Internal tools / Tight deadline**: → **Option B (AI-Assisted)**
+- **Client project / Medium budget / 1-2 minggu available**: → **Option C (Hybrid)**
+- **High-end product / Strong brand / Budget untuk designer**: → **Option A (Manual Figma)** atau hire freelance designer
+
+---
+
 ## 3. Langkah demi Langkah Eksekusi
 
-### Langkah 0: Generate Logo Design Brief (MANDATORY - Pre-Design Phase)
+### Langkah 0A: Generate Logo Design Brief (MANDATORY - Pre-Design Phase)
 **WAJIB DIJALANKAN SEBELUM LANGKAH 1** untuk semua proyek (klien atau solo product):
 
 1. **Buat dokumen `LOGO_DESIGN_BRIEF.md`** di `docs/specs/` dengan struktur:
@@ -95,11 +360,11 @@ Modul ini menghasilkan 4 deliverable konkret:
    - Style References (SaaS logos: Stripe, Notion, Linear, Vercel)
 
 2. **Inform User Explicitly**:
-   > "Logo design brief telah dibuat di `docs/specs/LOGO_DESIGN_BRIEF.md` (Xkb). Silakan generate logo menggunakan salah satu dari 4 prompt yang tersedia (copy-paste ke ChatGPT/Claude/Midjourney/LogoAI). Setelah logo selesai, simpan SVG files ke `/assets/logo/` dan lanjut ke Langkah 1 (DESIGN.md). **Atau, jika ingin skip logo placeholder dulu, kita bisa lanjut dengan placeholder dan Anda generate logo nanti sebelum launch.**"
+   > "Logo design brief telah dibuat di `docs/specs/LOGO_DESIGN_BRIEF.md` (Xkb). Silakan generate logo menggunakan salah satu dari 4 prompt yang tersedia (copy-paste ke ChatGPT/Claude/Midjourney/LogoAI). Setelah logo selesai, simpan SVG files ke `/assets/logo/` dan lanjut ke Langkah 0B (SITEMAP.md). **Atau, jika ingin skip logo placeholder dulu, kita bisa lanjut dengan placeholder dan Anda generate logo nanti sebelum launch.**"
 
 3. **Wait for User Decision** (Do NOT proceed automatically):
-   - User generates logo now → Wait for logo files, then proceed to Step 1
-   - User wants placeholder → Proceed to Step 1 with placeholder logo note
+   - User generates logo now → Wait for logo files, then proceed to Step 0B
+   - User wants placeholder → Proceed to Step 0B with placeholder logo note
 
 **Why This is Mandatory**:
 - Logo colors inform the primary/accent color palette in `DESIGN.md`
@@ -108,6 +373,79 @@ Modul ini menghasilkan 4 deliverable konkret:
 - User can generate logo asynchronously without blocking Modul 04 progress
 
 **Template**: Use `templates/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md` (if not exists, create inline using the structure above).
+
+---
+
+### Langkah 0B: Generate SITEMAP.md (MANDATORY - Information Architecture)
+**PREREQUISITE untuk semua workflow (Manual, AI, atau Hybrid)**
+
+1. **Read SCOPE_STATEMENT.md** dari Modul 02:
+   - Extract semua user stories (As a [role], I want to [action], so that [benefit])
+   - Group by module/feature area (Documents, Users, Settings, etc.)
+   - Identify public vs authenticated pages
+   - Map role-based access (admin-only screens, user screens)
+
+2. **Create `docs/specs/SITEMAP.md`** dengan struktur:
+   - **Public Pages**: Root `/`, login, signup, password reset
+   - **Authenticated Pages**: Dashboard, main modules, settings
+   - **Screen Count by Module**: Table dengan breakdown jumlah screens per module
+   - **Navigation Structure**: Top nav, sidebar (if applicable), breadcrumbs
+
+3. **Verify Completeness**:
+   ```bash
+   # Check file exists
+   Test-Path "docs/specs/SITEMAP.md"
+   
+   # If FALSE: STOP and report error
+   # If TRUE: Read file and verify screen count matches scope
+   ```
+
+4. **Screen Count Validation**:
+   - Count total screens di SITEMAP.md
+   - Compare dengan scope dari SCOPE_STATEMENT.md
+   - **GATE**: Jika mismatch >10% (missing screens atau out-of-scope screens):
+     - Report discrepancy kepada user
+     - Ask: "Scope di SITEMAP ada X screens, tapi SCOPE_STATEMENT hanya mention Y user stories. Apakah ada screen yang missing atau out-of-scope?"
+     - WAIT for user confirmation sebelum lanjut
+
+5. **Inform User**:
+   > "SITEMAP.md telah dibuat di `docs/specs/SITEMAP.md` (Xkb) dengan total [X] screens. Breakdown per module: Public (4), Dashboard (1), Documents (4), Settings (3), Admin (3). Silakan review structure navigasi sebelum lanjut ke workflow selection (Manual Figma / AI-Assisted / Hybrid)."
+
+6. **WAIT for User Approval**:
+   > "Apakah struktur sitemap ini sudah benar? Jika ya, pilih workflow:
+   > - **A) Manual Figma** (2-3 minggu, pixel-perfect)
+   > - **B) AI-Assisted** (1-3 hari, code langsung)
+   > - **C) Hybrid** (3-5 hari, AI + manual polish)
+   > 
+   > Ketik A/B/C untuk melanjutkan, atau request perubahan sitemap."
+
+**Why This is Mandatory**:
+- Sitemap = blueprint untuk semua screens (cegah missing pages di design)
+- Screen count validation = early detection scope creep
+- Navigation structure locked early = consistent UX flow
+- Prerequisite untuk estimasi effort (18 screens vs 50 screens = different timeline)
+
+**Template**: Use structure dari Section 2A (SITEMAP.md - Information Architecture)
+
+**Example Terminal Command** (if SITEMAP.md missing):
+```powershell
+# GATE CHECK - Langkah 0B
+if (-not (Test-Path "docs/specs/SITEMAP.md")) {
+    Write-Error "LANGKAH 0B FAILED: File docs/specs/SITEMAP.md tidak ditemukan."
+    Write-Error "Modul 04 TIDAK BOLEH lanjut ke Langkah 1 tanpa SITEMAP.md."
+    Write-Error "Generate SITEMAP.md terlebih dahulu berdasarkan SCOPE_STATEMENT.md."
+    exit 1
+}
+
+# Verify file not empty
+$sitemapContent = Get-Content "docs/specs/SITEMAP.md" -Raw
+if ($sitemapContent.Length -lt 500) {
+    Write-Error "SITEMAP.md terlalu pendek (<500 chars). Ensure complete screen inventory."
+    exit 1
+}
+
+Write-Host "✅ LANGKAH 0B PASS: SITEMAP.md verified ($(($sitemapContent.Length)) bytes)"
+```
 
 ---
 
@@ -469,32 +807,171 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 ## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
 
 [GATE] Modul 04 dinyatakan **LOLOS (PASS)** jika:
-- [x] Dokumen `DESIGN.md` telah diunggah dan aktif sebagai Design System di Stitch.
-- [x] Seluruh layar utama telah di-generate dengan data riil dan 5 state lengkap.
-- [x] Tautan demo interaktif (Clickable Prototype) dapat diklik tanpa dead-end.
-- [x] **Minimum 2 iterasi user testing telah dilakukan dengan 5+ pengguna per iterasi.**
-- [x] **SUS Score ≥70 (Acceptable) tercapai pada iterasi terakhir.** ← MANDATORY GATE
-- [x] **Accessibility audit (WCAG AA) menunjukkan zero critical issues.**
-- [x] **Single PIC Klien (atau solo developer) telah menandatangani persetujuan Design Freeze.**
+
+### Mandatory Files Verification (BLOCKING):
+- [x] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, contains 4 prompts)
+- [x] **`docs/specs/SITEMAP.md` exists** (≥500 bytes, contains screen count table)
+- [x] **`DESIGN.md` exists** (root, ≥1000 bytes, contains color palette + typography)
+- [x] **`docs/specs/DESIGN_SYSTEM.md` exists** (≥2000 bytes, contains screen specs)
+- [x] **Screen count match**: SITEMAP.md total = DESIGN_SYSTEM.md screen inventory (±10% tolerance)
+
+### Design Quality (BLOCKING):
+- [x] **Anti-slop compliance**: Zero gradients, zero glassmorphism, shadows ≤4px blur
+- [x] **Contrast ratio ≥4.5:1** for all text (WCAG AA)
+- [x] **Accessibility audit**: Zero critical issues (Lighthouse ≥90 or manual WCAG checklist)
+
+### User Testing (OPTIONAL for MVP, MANDATORY for Client Projects):
+- [x] **Minimum 2 iterasi user testing** dengan 5+ pengguna per iterasi (if client project)
+- [x] **SUS Score ≥70** (Acceptable) pada iterasi terakhir (if user testing conducted)
+
+### Design Freeze Sign-Off (BLOCKING):
+- [x] **Design Freeze approval** embedded in DESIGN_SYSTEM.md dengan:
+  - Approver name (Client PIC atau solo developer self-approval)
+  - Approval date (YYYY-MM-DD)
+  - Signature placeholder (digital signature atau statement: "Approved via [email/chat]")
+
+### Optional (Workflow-Dependent):
+- [ ] Interactive prototype URL accessible (if AI-Assisted/Hybrid workflow with live demo)
+- [ ] Figma project link (if Manual Figma workflow)
+- [ ] Exported assets di `/assets/design/` (if manual mockups)
 
 ---
 
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
-Setelah berkas `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, dan seluruh layar Stitch selesai di-generate:
-1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 05 dalam giliran (turn) yang sama!**
-2. **VERIFIKASI DIRI (Self-Verification Checklist)**:
-   - [ ] `read_file('DESIGN.md')` → Confirm color tokens, typography exists
-   - [ ] `read_file('docs/specs/DESIGN_SPEC.md')` → Confirm Screen ID table populated
-   - [ ] Count generated screens = total screens in scope (100% coverage)
-   - [ ] Demo URL accessible (if applicable)
-3. Tampilkan ringkasan hasil desain kepada pengguna:
-   - Token desain utama di `DESIGN.md` (Warna aksen, font, border)
-   - Tabel inventaris Screen ID Stitch yang berhasil di-generate
-   - Tautan demo interaktif Stitch / live staging preview
-4. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Seluruh layar telah di-generate di Google Stitch dan didokumentasikan di `docs/specs/DESIGN_SPEC.md`. Silakan tinjau prototipenya. Apakah tata letak visual ini disetujui (Design Freeze) sebelum kita melangkah ke Modul 05 (Arsitektur & FSD)?"*
-5. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 05.
+**LANGKAH 0: Tentukan Workflow** (Manual/AI/Hybrid) → User pilih A/B/C sebelum file generation
+
+**LANGKAH 1: File Existence Verification (MANDATORY - Run BEFORE declaring complete)**
+
+```powershell
+# GATE CHECK - Module 04 File Verification
+# Run this PowerShell script to verify all mandatory files exist
+
+$requiredFiles = @(
+    @{Path="docs/specs/LOGO_DESIGN_BRIEF.md"; MinSize=500},
+    @{Path="docs/specs/SITEMAP.md"; MinSize=500},
+    @{Path="DESIGN.md"; MinSize=1000},
+    @{Path="docs/specs/DESIGN_SYSTEM.md"; MinSize=2000}
+)
+
+$allPassed = $true
+
+foreach ($file in $requiredFiles) {
+    if (-not (Test-Path $file.Path)) {
+        Write-Error "❌ GATE FAILED: File $($file.Path) tidak ditemukan."
+        $allPassed = $false
+    } else {
+        $size = (Get-Item $file.Path).Length
+        if ($size -lt $file.MinSize) {
+            Write-Error "❌ GATE FAILED: File $($file.Path) terlalu kecil ($size bytes < $($file.MinSize) bytes minimum)."
+            $allPassed = $false
+        } else {
+            Write-Host "✅ $($file.Path) verified ($size bytes)"
+        }
+    }
+}
+
+if (-not $allPassed) {
+    Write-Error "`n🛑 MODULE 04 GATE FAILED: Missing atau incomplete files. TIDAK BOLEH lanjut ke Module 05."
+    exit 1
+}
+
+Write-Host "`n✅ MODULE 04 FILE VERIFICATION PASSED - All mandatory files exist."
+```
+
+**LANGKAH 2: Content Verification (MANDATORY)**
+
+Agent wajib execute checks berikut SEBELUM declare Module 04 complete:
+
+```python
+# Pseudo-code untuk agent verification
+def verify_module_04():
+    # 1. Read SITEMAP.md and count screens
+    sitemap = read_file("docs/specs/SITEMAP.md")
+    sitemap_screen_count = extract_screen_count(sitemap)  # Parse "Total Screens: X"
+    
+    # 2. Read DESIGN_SYSTEM.md and count screen specs
+    design_spec = read_file("docs/specs/DESIGN_SYSTEM.md")
+    spec_screen_count = count_screen_sections(design_spec)  # Count "## Screen: ..." sections
+    
+    # 3. Verify match (±10% tolerance)
+    if abs(sitemap_screen_count - spec_screen_count) > (sitemap_screen_count * 0.1):
+        raise GateError(f"Screen count mismatch: SITEMAP ({sitemap_screen_count}) vs DESIGN_SYSTEM ({spec_screen_count})")
+    
+    # 4. Verify DESIGN.md contains required sections
+    design_md = read_file("DESIGN.md")
+    required_sections = ["Color Palette", "Typography", "Spacing", "Components"]
+    for section in required_sections:
+        if section not in design_md:
+            raise GateError(f"DESIGN.md missing section: {section}")
+    
+    # 5. Verify Design Freeze Sign-Off exists
+    if "Approved by:" not in design_spec or "Date:" not in design_spec:
+        raise GateError("Design Freeze Sign-Off missing in DESIGN_SYSTEM.md")
+    
+    # 6. Anti-slop check (search for violations)
+    violations = []
+    if "gradient" in design_md.lower() or "linear-gradient" in design_md.lower():
+        violations.append("Gradient detected in DESIGN.md")
+    if "backdrop-blur" in design_md.lower() or "glassmorphism" in design_md.lower():
+        violations.append("Glassmorphism detected")
+    if "shadow-2xl" in design_md or "shadow-xl" in design_md:
+        violations.append("Excessive shadow detected (>shadow-md)")
+    
+    if violations:
+        raise GateError(f"Anti-slop violations: {', '.join(violations)}")
+    
+    return True
+```
+
+**LANGKAH 3: Report Summary kepada User**
+
+Setelah semua checks passed, tampilkan ringkasan:
+
+```
+✅ MODULE 04 COMPLETE - Design Deliverables Ready
+
+Files Generated:
+- ✅ LOGO_DESIGN_BRIEF.md (11.2KB) - 4 AI prompts ready
+- ✅ SITEMAP.md (6.8KB) - 18 screens mapped
+- ✅ DESIGN.md (12.4KB) - Design tokens defined
+- ✅ DESIGN_SYSTEM.md (34.7KB) - Screen specs complete
+
+Quality Checks:
+- ✅ Screen count match: SITEMAP (18) = DESIGN_SYSTEM (18)
+- ✅ Anti-slop compliance: 0 violations
+- ✅ Accessibility: Contrast ratio ≥4.5:1 verified
+- ✅ Design Freeze: Approved by [Name] on [Date]
+
+[Optional - If prototype exists]
+- ✅ Interactive Prototype: [URL or Figma link]
+
+---
+
+Next Steps:
+1. User review all 4 files (spot-check content accuracy)
+2. If corrections needed: Request changes now (before Module 05)
+3. If approved: Confirm "Design Freeze approved, lanjut Module 05"
+
+⚠️ WAITING FOR USER CONFIRMATION - Do NOT proceed to Module 05 automatically.
+```
+
+**LANGKAH 4: STOP & Wait for User Approval**
+
+**DILARANG KERAS** melanjutkan ke Module 05 dalam turn yang sama. Agent harus:
+1. **END TURN** setelah display summary
+2. **WAIT** for explicit user approval: "Design approved" atau "Lanjut Module 05"
+3. Only proceed after user confirmation received
+
+**Jika user request changes**:
+- Re-generate affected file(s)
+- Re-run GATE verification
+- Display updated summary
+- Wait for approval again
+
+**Jika user approve**:
+- Proceed to Module 05 (Architecture & FSD)
+- Carry forward DESIGN.md + DESIGN_SYSTEM.md sebagai reference untuk tech specs
 
 ---
 

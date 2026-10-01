@@ -672,8 +672,47 @@ Modul 13 adalah **titik konvergensi** dari seluruh siklus hidup produk:
 ## 🔄 PROTOKOL CONTINUOUS ITERATION (LIFECYCLE CONTINUES)
 
 Setelah seluruh tahapan Modul 13 setup:
-1. **Ini adalah modul yang tidak pernah "selesai"**. Continuous iteration berjalan selama produk masih aktif.
-2. Review dan update artefak M13 setiap kuartal untuk merefleksikan learnings baru.
-3. **Jika Anda memutuskan untuk pivot atau sunset produk**, dokumentasikan keputusan di `docs/pm/PRODUCT_LIFECYCLE_DECISION.md` dengan data pendukung dari M13 metrics.
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM DECLARE SETUP COMPLETE**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/analytics/METRICS_BASELINE_REPORT.md"` → harus return `True`
+   - Read tool: `read_file('docs/analytics/METRICS_BASELINE_REPORT.md')` → harus sukses tanpa error
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan declare setup complete
+   - ❌ **JANGAN tampilkan continuous iteration success** ke user
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File METRICS_BASELINE_REPORT.md atau GROWTH_EXPERIMENTS_BACKLOG.md tidak tercipta.
+     Module 13 INCOMPLETE - continuous iteration setup FAILED.
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/analytics/ atau docs/pm/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum declare setup complete.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILES EXIST**: Lanjut ke continuous iteration protocol di bawah
+
+---
+
+### **LANGKAH 1: CONTINUOUS ITERATION PROTOCOL**
+
+1. **Verifikasi setup complete**:
+   - [ ] `read_file('docs/analytics/METRICS_BASELINE_REPORT.md')` → Confirm baseline metrics documented
+   - [ ] `read_file('docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md')` → Confirm RICE-scored backlog exists
+   - [ ] Confirm feedback loop active (NPS, widget, tickets)
+   - [ ] Confirm weekly metrics review ritual established
+2. **Ini adalah modul yang tidak pernah "selesai"**. Continuous iteration berjalan selama produk masih aktif.
+3. Review dan update artefak M13 setiap kuartal untuk merefleksikan learnings baru.
+4. **Jika Anda memutuskan untuk pivot atau sunset produk**, dokumentasikan keputusan di `docs/pm/PRODUCT_LIFECYCLE_DECISION.md` dengan data pendukung dari M13 metrics.
 
 **SIKLUS HIDUP PRODUK LENGKAP**: M00 → M01 → ... → M12 → **M13 (Continuous Loop)** → (Pivot/Scale/Sunset Decision).

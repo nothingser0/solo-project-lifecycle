@@ -143,8 +143,45 @@ Modul ini menghasilkan 3 artefak utama:
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
 Setelah data berhasil dimigrasi dan laporan rekonsiliasi terbit:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/MIGRATION_RECONCILIATION_REPORT.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 09
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File MIGRATION_RECONCILIATION_REPORT.md tidak tercipta.
+     Module 08 FAILED - tidak bisa lanjut ke Module 09 (UAT).
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/pm/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI KONTEN & DATA SIGN-OFF**
+
 1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 09 dalam giliran (turn) yang sama!**
-2. Tampilkan ringkasan rekonsiliasi data (jumlah baris sukses vs ditolak) kepada pengguna.
-3. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
+2. **Verifikasi migration results**:
+   - [ ] `read_file('docs/pm/MIGRATION_RECONCILIATION_REPORT.md')` → Confirm row counts match
+   - [ ] Confirm PII sanitized on staging
+   - [ ] Confirm client Data Sign-Off received
+3. Tampilkan ringkasan rekonsiliasi data (jumlah baris sukses vs ditolak) kepada pengguna.
+4. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
    > *"Data telah berhasil dimigrasi ke database Staging dengan akurasi rekonsiliasi terverifikasi. Apakah data ini disetujui (Data Sign-Off) sebelum kita membuka sesi pengujian pengguna di Modul 09 (UAT & Sign-Off)?"*
 4. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 09.

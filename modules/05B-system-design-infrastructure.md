@@ -1880,3 +1880,46 @@ vercel env add STRIPE_SECRET_KEY production
 - [ ] Automated failover (Multi-AZ)
 - [ ] Chaos engineering quarterly drills
 - [ ] On-call rotation + runbooks
+
+---
+
+## 🛑 PROTOKOL [GATE] KELUAR (OPTIONAL - REFERENCE MODULE)
+
+**⚠️ CATATAN**: Module 05B adalah **reference guide**, bukan mandatory pipeline step. Gate ini hanya berlaku jika user memutuskan untuk mendokumentasikan infrastructure design formal.
+
+**JIKA user membuat infrastructure documentation**:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**HANYA JIKA user create docs/infrastructure/ files**:
+
+1. **Cek keberadaan file output** (jika dibuat):
+   - PowerShell: `Test-Path -LiteralPath "docs/infrastructure/SYSTEM_DESIGN.md"` → harus return `True`
+   - PowerShell: `Test-Path -LiteralPath "docs/infrastructure/DISASTER_RECOVERY_PLAN.md"` → harus return `True`
+
+2. **JIKA FILE DIRENCANAKAN TAPI TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan declare documentation complete
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     ERROR: Infrastructure documentation files tidak tercipta.
+     
+     Tolong investigasi issue ini sebelum declare complete.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **JIKA user SKIP documentation** (common for MVP):
+   - ✅ OK to proceed - this is optional module
+   - No gate enforcement needed
+
+---
+
+**KAPAN MODULE INI WAJIB**:
+- Skala Besar/Enterprise projects (>100K MAU)
+- Compliance requirements (SOC2, ISO 27001)
+- Multi-region deployments
+- Financial/Healthcare applications
+
+**KAPAN MODULE INI OPTIONAL/SKIP**:
+- MVP/Small projects (<10K MAU)
+- Simple single-region deployments
+- PaaS-managed infrastructure (Vercel, Railway)

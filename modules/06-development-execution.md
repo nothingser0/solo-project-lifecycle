@@ -14,63 +14,300 @@ Modul ini adalah tahap keenam dalam siklus hidup proyek perangkat lunak untuk so
 
 ---
 
-## 1. Siklus Eksekusi Modul 06 (The Agentic Vibe Coding Loop)
+## 1. Siklus Eksekusi Modul 06 (Universal Tech Stack Development Loop)
 
 ```text
-[ INPUT: FSD.md, PRD.md, & Komponen UI Google Stitch dari Modul 04-05 ]
+[ INPUT: FSD.md (with LOCKED stack decision), PRD.md, & Stitch Prototype dari Modul 04-05 ]
                                     │
                                     ▼
-[ LANGKAH 1: Inisiasi Repositori & Pemasangan 7 Berkas Harness AI ]
-  • Scaffold Clean Project (pnpm create next-app)
-  • Pasang: AGENTS.md, CONTEXT.md, ARCHITECTURE.md, DESIGN.md, CONVENTIONS.md, .env.example, TODO.md
+[ LANGKAH 0: Extract Tech Stack Decision dari FSD.md (MANDATORY FIRST) ]
+  • Read FSD.md header → Extract locked stack (Next.js/Laravel/Django/Go/etc)
+  • Read "Module 04 Handoff Strategy" section → Extract compatibility level (1-4)
+  • Load stack-specific templates & scaffold commands
+  • Verify stack decision matches Module 05 approval (GATE check)
+                                    │
+                                    ▼
+[ LANGKAH 1: Inisiasi Repositori & Scaffold (Stack-Adapted) ]
+  • Execute scaffold command untuk chosen stack:
+    - Next.js: pnpm create next-app
+    - Laravel: composer create-project laravel/laravel
+    - Django: django-admin startproject
+    - Go: mkdir + go mod init
+  • Pasang 7 Berkas Harness AI (stack-specific templates)
   • Git Init & Strategi Percabangan (main ──► staging ──► feat/*)
                                     │
                                     ▼
-[ LANGKAH 2: Penerapan Komponen UI Google Stitch via MCP ]
-  • OpenCode Panggil stitch_get_screen ──► Ekstrak ke src/components/
-  • Pasang Rute Halaman (Dashboard, Forms, Detail, Sign Page)
+[ LANGKAH 2: Module 04 Prototype Conversion (4 Compatibility Levels) ]
+  • Level 1 (React → Next.js/Remix): Direct copy (1 hari, 95% reuse)
+  • Level 2 (React → Vue/Svelte): Syntax conversion (3-4 hari, 70% reuse)
+  • Level 3 (React → Laravel Blade): Template rewrite (5-7 hari, 0% code reuse)
+  • Level 4 (React → Inertia.js): Hybrid glue layer (5-6 hari, 70% reuse)
+  • Execute strategy documented di FSD.md "Module 04 Handoff Strategy"
   • Pastikan UI Visual 100% Identik dengan Prototipe Terkunci
                                     │
                                     ▼
-[ LANGKAH 3: Pembangunan Basis Data & Migrasi (Dituntun AI) ]
-  • AI Membaca ARCHITECTURE.md ──► Skema Prisma/Drizzle & Migrasi DDL
+[ LANGKAH 3: Database Schema & Migrations (Framework-Adapted) ]
+  • AI Membaca ARCHITECTURE.md → Generate migrations sesuai chosen stack:
+    - Next.js: Prisma/Drizzle schema + migrate
+    - Laravel: Eloquent migrations + artisan migrate
+    - Django: Django ORM models + makemigrations
+    - Go: SQL migration files + golang-migrate
   • Pasang Database Pooling & Indexing pada Kolom Foreign Key
-  • Eksekusi Migrasi Lokal & Penyuntikan Seed Data Riil
+  • Eksekusi Migrasi Lokal & Seed Data (faker data untuk testing)
                                     │
                                     ▼
-[ LANGKAH 4: Backend API, Layanan Vault, & 3 Pilar Rekayasa ]
-  • AI Membaca TODO.md Sekuensial ──► Buat Handler API Ber-Zod
-  • Pilar Security: Enkripsi Stream AES-256-GCM, HttpOnly Cookies, Parameterized Queries
-  • Pilar Performance: N+1 Prevention, In-Memory Caching (Redis), Query Indexing
-  • Pilar Resource: Zero Memory Leak, Stream Processing, Connection Pool Capping
-  • Sambungkan Tombol UI Stitch ke Endpoint API (5 State Wajib Aktif)
+[ LANGKAH 4: Backend API & 6 Engineering Pillars (Framework-Agnostic) ]
+  • AI Membaca TODO.md Sekuensial → Build API endpoints sesuai FSD.md
+  • Implement validation library (Zod/Laravel Validation/Django Forms)
+  • Pilar Security: Encryption, HttpOnly Cookies, Parameterized Queries
+  • Pilar Performance: N+1 Prevention, Caching, Query Indexing
+  • Pilar Resource: Connection Pooling, Stream Processing, Memory Management
+  • Wire frontend components → backend endpoints (5 UI states: idle, loading, success, error, empty)
                                     │
                                     ▼
-[ LANGKAH 5: Uji Asersi Mandiri, Git Commit, & Pencapaian Termin ]
-  • Jalankan Skrip Asersi `npm run test:smoke` (100% PASS)
-  • Audit Kemanan Dependensi (`pnpm audit`) & TypeScript Check (`tsc --noEmit`)
-  • Merge Fitur ke Branch `staging` & Tagih Milestone Termin 2 (Alpha)
+[ LANGKAH 5: Testing & Git Workflow (Stack-Adapted) ]
+  • Run stack-specific tests:
+    - Next.js: npm run test:smoke (Jest/Vitest)
+    - Laravel: php artisan test (PHPUnit)
+    - Django: python manage.py test (pytest)
+    - Go: go test ./...
+  • Audit: pnpm audit / composer audit / pip-audit
+  • TypeScript check (if applicable): tsc --noEmit
+  • Merge ke branch `staging` → Tag milestone (Alpha ready)
                                     │
                                     ▼
-[ OUTPUT: Repositori Kode Siap Pakai & RUNBOOK_LOCAL.md ] ──► Siap Masuk ke Modul 07: QA & SIT
+[ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ] ──► Siap Masuk ke Modul 07: QA & SIT
 ```
 
 ---
 
-## 2. Tujuh Berkas Kendali AI di Root Repo (The 7 Root Harness Files)
+## 2. LANGKAH 0: Extract Tech Stack Decision (MANDATORY FIRST)
 
-⚠️ **CRITICAL PRE-FLIGHT WARNING: Next.js AGENTS.md Conflict**
+**Agent WAJIB read FSD.md dari Module 05 SEBELUM scaffold project.**
 
-Next.js `create-next-app` auto-generates conflicting `AGENTS.md` (9 lines boilerplate).
+### Verification Gate:
 
-**WAJIB overwrite IMMEDIATELY** after scaffold:
-```bash
-cp templates/04-dev-execution/AGENTS_TEMPLATE.md AGENTS.md
+```powershell
+# GATE CHECK - Module 06 Phase 0
+# Verify FSD.md exists dan contains locked stack decision
+
+if (-not (Test-Path "docs/specs/FSD.md")) {
+    Write-Error "❌ GATE FAILED: FSD.md tidak ditemukan."
+    Write-Error "Module 06 requires FSD.md dari Module 05. Run Module 05 first."
+    exit 1
+}
+
+$fsdContent = Get-Content "docs/specs/FSD.md" -Raw
+
+# Check for locked stack decision
+if ($fsdContent -notmatch "Stack Decision LOCKED:") {
+    Write-Error "❌ GATE FAILED: FSD.md tidak ada locked stack decision."
+    Write-Error "Module 05 incomplete. Re-run Module 05 questionnaire & lock stack."
+    exit 1
+}
+
+# Extract stack name
+if ($fsdContent -match "Stack Decision LOCKED:\s*(.+)") {
+    $lockedStack = $matches[1].Trim()
+    Write-Host "✅ PHASE 0 PASSED: Locked stack detected: $lockedStack"
+} else {
+    Write-Error "❌ Cannot parse stack decision from FSD.md"
+    exit 1
+}
+
+# Extract Module 04 handoff strategy
+if ($fsdContent -notmatch "Module 04 Handoff Strategy") {
+    Write-Error "❌ GATE FAILED: FSD.md missing 'Module 04 Handoff Strategy' section."
+    Write-Error "Cannot determine prototype conversion approach. Update FSD.md."
+    exit 1
+}
+
+Write-Host "✅ FSD.md verification complete. Proceeding to scaffold..."
 ```
 
-**NEVER skip this step!** Next.js boilerplate lacks 6 Engineering Pillars enforcement.
+---
 
-**(Repeated at scaffold protocol section for visibility)**
+### Extract Stack-Specific Configuration
+
+Agent must parse FSD.md untuk extract:
+
+**1. Tech Stack Components**:
+```markdown
+## Example FSD.md Header
+
+Stack Decision LOCKED: Laravel Monolith (Option A)
+
+**Chosen Stack**:
+- Frontend: Laravel Blade + Inertia.js (Vue 3)
+- Backend: Laravel 11
+- Database: MySQL 8
+- Deployment: DigitalOcean Droplet 4GB
+- Monitoring: Laravel Telescope
+```
+
+**Agent extracts**:
+- `frontend_framework`: "Laravel Blade + Inertia.js"
+- `backend_framework`: "Laravel 11"
+- `database`: "MySQL 8"
+- `orm_tool`: "Eloquent" (inferred dari Laravel)
+
+**2. Module 04 Conversion Strategy**:
+```markdown
+## Module 04 Handoff Strategy
+
+**Compatibility Level**: Level 4 (Hybrid - Inertia.js)
+
+**Conversion Plan**:
+1. Extract 18 Vue components dari Stitch export
+2. Setup Inertia.js di Laravel (ziggy routes, Vite config)
+3. Create Laravel routes untuk setiap page
+...
+**Estimated Conversion Time**: 5-7 hari
+```
+
+**Agent extracts**:
+- `compatibility_level`: 4
+- `conversion_approach`: "Hybrid - Inertia.js"
+- `estimated_days`: 5-7
+
+**3. Database Schema Syntax**:
+```sql
+-- FSD.md contains MySQL syntax
+CREATE TABLE users (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+**Agent recognizes**: MySQL syntax (not PostgreSQL) → use appropriate migration tool.
+
+---
+
+### Stack-Specific Scaffold Commands
+
+Berdasarkan extracted stack, agent execute scaffold command yang sesuai:
+
+| Detected Stack | Scaffold Command | ORM/Migration Tool |
+|----------------|------------------|-------------------|
+| **Next.js** | `pnpm create next-app@latest --typescript --tailwind --app` | Prisma / Drizzle |
+| **Remix** | `npx create-remix@latest` | Prisma / Drizzle |
+| **SvelteKit** | `npm create svelte@latest` | Prisma / Drizzle |
+| **Astro** | `npm create astro@latest` | Prisma (API routes) |
+| **Laravel** | `composer create-project laravel/laravel` | Eloquent (built-in) |
+| **Laravel + Inertia** | `composer create-project laravel/laravel && php artisan inertia:install vue` | Eloquent + Inertia |
+| **Django** | `django-admin startproject myproject && python manage.py startapp core` | Django ORM (built-in) |
+| **FastAPI** | `mkdir myproject && cd myproject && poetry init` | SQLAlchemy / Tortoise ORM |
+| **Go (Fiber)** | `mkdir myproject && go mod init github.com/user/myproject` | GORM / sqlx |
+| **Rails** | `rails new myproject --database=postgresql --css=tailwind` | ActiveRecord (built-in) |
+| **Spring Boot** | `curl https://start.spring.io/starter.zip -o myproject.zip` | JPA / Hibernate |
+
+**Agent must NOT assume Next.js** - scaffold command determined by FSD.md locked stack.
+
+---
+
+### Template Selection Matrix
+
+Agent selects template files based on stack:
+
+| Template File | Next.js Path | Laravel Path | Django Path | Go Path |
+|---------------|--------------|--------------|-------------|---------|
+| **AGENTS.md** | `templates/04-dev-execution/nextjs/AGENTS.md` | `templates/04-dev-execution/laravel/AGENTS.md` | `templates/04-dev-execution/django/AGENTS.md` | `templates/04-dev-execution/go/AGENTS.md` |
+| **ARCHITECTURE.md** | `templates/04-dev-execution/nextjs/ARCHITECTURE.md` | `templates/04-dev-execution/laravel/ARCHITECTURE.md` | `templates/04-dev-execution/django/ARCHITECTURE.md` | `templates/04-dev-execution/go/ARCHITECTURE.md` |
+| **CONVENTIONS.md** | `templates/04-dev-execution/nextjs/CONVENTIONS.md` | `templates/04-dev-execution/laravel/CONVENTIONS.md` | `templates/04-dev-execution/django/CONVENTIONS.md` | `templates/04-dev-execution/go/CONVENTIONS.md` |
+
+**Stack-specific differences**:
+
+**Next.js AGENTS.md** (example):
+```markdown
+## Code Style Rules
+- Use Server Components by default
+- No `any` types - strict TypeScript
+- Zod validation for all API inputs
+- File naming: kebab-case
+```
+
+**Laravel AGENTS.md** (example):
+```markdown
+## Code Style Rules
+- Use Form Requests for validation
+- No raw SQL queries - use Eloquent
+- Follow PSR-12 coding standard
+- File naming: PascalCase for classes, kebab-case for views
+```
+
+**Django AGENTS.md** (example):
+```markdown
+## Code Style Rules
+- Use Django Forms / DRF Serializers for validation
+- No raw SQL queries - use Django ORM
+- Follow PEP 8 style guide
+- File naming: snake_case
+```
+
+---
+
+### Anti-Pattern Detection (AI SLOP Prevention)
+
+Agent must verify scaffold matches FSD.md:
+
+```python
+# Pseudo-code verification
+def verify_scaffold_matches_fsd():
+    fsd_stack = parse_fsd_stack("docs/specs/FSD.md")  # "Laravel 11"
+    
+    # Check package.json or composer.json exists
+    if fsd_stack.startswith("Laravel"):
+        if not exists("composer.json"):
+            raise Error("FSD says Laravel, but no composer.json found. Wrong scaffold.")
+        if exists("package.json") and "next" in read("package.json"):
+            raise Error("FSD says Laravel, but scaffolded Next.js. Re-scaffold.")
+    
+    elif fsd_stack.startswith("Next.js"):
+        if not exists("package.json"):
+            raise Error("FSD says Next.js, but no package.json found.")
+        pkg = json.load("package.json")
+        if "next" not in pkg.get("dependencies", {}):
+            raise Error("FSD says Next.js, but package.json missing 'next' dependency.")
+    
+    elif fsd_stack.startswith("Django"):
+        if not exists("manage.py"):
+            raise Error("FSD says Django, but no manage.py found. Wrong scaffold.")
+    
+    return True
+```
+
+**If mismatch detected**: Agent MUST stop and re-scaffold correct framework.
+
+---
+
+## 3. Tujuh Berkas Kendali AI di Root Repo (Universal Stack - The 7 Root Harness Files)
+
+⚠️ **CRITICAL PRE-FLIGHT WARNING: Framework-Specific AGENTS.md Conflicts**
+
+Multiple frameworks auto-generate conflicting `AGENTS.md` or similar files:
+- **Next.js**: `create-next-app` generates 9-line boilerplate `AGENTS.md`
+- **Laravel**: No conflict (Laravel doesn't generate AGENTS.md)
+- **Rails**: Generates `README.md` (rename to `README_FRAMEWORK.md`)
+- **Django**: No conflict
+
+**WAJIB overwrite/check IMMEDIATELY** after scaffold:
+```bash
+# Next.js (MANDATORY)
+cp templates/04-dev-execution/nextjs/AGENTS.md AGENTS.md
+
+# Laravel
+cp templates/04-dev-execution/laravel/AGENTS.md AGENTS.md
+
+# Django
+cp templates/04-dev-execution/django/AGENTS.md AGENTS.md
+
+# Go
+cp templates/04-dev-execution/go/AGENTS.md AGENTS.md
+```
+
+**NEVER skip this step!** Framework boilerplate lacks 6 Engineering Pillars enforcement.
 
 ---
 
@@ -78,19 +315,542 @@ cp templates/04-dev-execution/AGENTS_TEMPLATE.md AGENTS.md
 
 Sebelum memicu agen AI untuk menulis kode, letakkan 7 berkas kendali ini di root folder proyek:
 
-| No | Nama Berkas | Sumber Rujukan | Fungsi untuk AI Coding Agent |
+| No | Nama Berkas | Sumber Rujukan (Stack-Specific) | Fungsi untuk AI Coding Agent |
 | :---: | :--- | :--- | :--- |
-| **1** | **`AGENTS.md`** | `templates/04-dev-execution/AGENTS_TEMPLATE.md` | Aturan main mutlak: larangan tipe `any`, perintah build/test, dan format commit. |
-| **2** | **`CONTEXT.md`** | `templates/04-dev-execution/CONTEXT_TEMPLATE.md` | Konteks bisnis, peran user (RBAC), dan daftar batas tegas *Out-of-Scope* agar AI tidak halusinasi. |
-| **3** | **`ARCHITECTURE.md`** | `templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md` | Rangkuman FSD: struktur folder, skema tabel, dan kontrak rute API JSON. |
-| **4** | **`DESIGN.md`** | `templates/02-design/DESIGN_MD_TEMPLATE.md` | Token visual dari Modul 04: palet Zinc, 1 aksen brand, font Inter, border 1px flat. |
-| **5** | **`CONVENTIONS.md`** | `templates/04-dev-execution/CONVENTIONS_TEMPLATE.md` | Aturan gaya koding: penamaan `kebab-case`, Server Components default, larangan barrel files. |
-| **6** | **`.env.example`** | `templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md` | Kamus variabel lingkungan baku agar AI tidak mengarang nama key database/rahasia. |
-| **7** | **`TODO.md`** | `templates/04-dev-execution/TODO_TEMPLATE.md` | Daftar tugas atomik sekuensial yang dicentang `[x]` satu per satu oleh AI. |
+| **1** | **`AGENTS.md`** | `templates/04-dev-execution/{stack}/AGENTS_TEMPLATE.md` | Aturan main mutlak: larangan tipe `any` (TS) atau raw SQL, perintah build/test, dan format commit. **Stack-specific**: Next.js (Server Components), Laravel (Eloquent), Django (ORM). |
+| **2** | **`CONTEXT.md`** | `templates/04-dev-execution/CONTEXT_TEMPLATE.md` | Konteks bisnis, peran user (RBAC), dan daftar batas tegas *Out-of-Scope* agar AI tidak halusinasi. **Universal** (same for all stacks). |
+| **3** | **`ARCHITECTURE.md`** | `templates/04-dev-execution/{stack}/ARCHITECTURE_TEMPLATE.md` | Rangkuman FSD: struktur folder, skema tabel, dan kontrak rute API JSON. **Stack-specific**: Next.js (`app/` dir), Laravel (`app/Http`), Django (`myapp/views.py`). |
+| **4** | **`DESIGN.md`** | `templates/02-design/DESIGN_MD_TEMPLATE.md` | Token visual dari Modul 04: palet Zinc, 1 aksen brand, font Inter, border 1px flat. **Universal** (design tokens framework-agnostic). |
+| **5** | **`CONVENTIONS.md`** | `templates/04-dev-execution/{stack}/CONVENTIONS_TEMPLATE.md` | Aturan gaya koding: penamaan `kebab-case` (Next.js), `PascalCase` (Laravel), `snake_case` (Django/Python). **Stack-specific**. |
+| **6** | **`.env.example`** | `templates/04-dev-execution/{stack}/ENV_EXAMPLE_TEMPLATE.md` | Kamus variabel lingkungan baku agar AI tidak mengarang nama key database/rahasia. **Stack-specific**: Next.js (`DATABASE_URL`), Laravel (`DB_CONNECTION`), Django (`DATABASES`). |
+| **7** | **`TODO.md`** | `templates/04-dev-execution/TODO_TEMPLATE.md` | Daftar tugas atomik sekuensial yang dicentang `[x]` satu per satu oleh AI. **Universal** (task structure same across stacks). |
 
 ---
 
-## 3. Strategi Percabangan Git Solo Developer (Git Branching & Clean Production)
+### Stack-Specific Template Examples
+
+#### Next.js AGENTS.md (TypeScript Strict Mode)
+```markdown
+# AI Agent Guidelines - Next.js Project
+
+## Code Style Rules
+1. **TypeScript Strict Mode**: No `any` types. Use proper interfaces.
+2. **Server Components**: Default to Server Components, use 'use client' only when needed.
+3. **File Naming**: kebab-case for files (`user-profile.tsx`), PascalCase for components.
+4. **API Routes**: app/api/[route]/route.ts with Zod validation.
+5. **No Barrel Files**: Direct imports only (`import { Button } from '@/components/button'`).
+
+## Database
+- ORM: Prisma (preferred) or Drizzle
+- Migrations: `prisma migrate dev`
+- Seeding: `prisma db seed`
+
+## Testing
+- Run: `npm run test:smoke` (Vitest/Jest)
+- Must pass before commit
+
+## Build Commands
+- Dev: `npm run dev`
+- Build: `npm run build`
+- Type Check: `tsc --noEmit`
+```
+
+#### Laravel AGENTS.md (PSR-12 Standards)
+```markdown
+# AI Agent Guidelines - Laravel Project
+
+## Code Style Rules
+1. **PSR-12 Standard**: Follow PHP-FIG coding standards.
+2. **Eloquent Only**: No raw SQL queries. Use Eloquent ORM.
+3. **File Naming**: PascalCase for classes (`UserController.php`), kebab-case for views (`user-profile.blade.php`).
+4. **Validation**: Use Form Requests (`php artisan make:request StoreUserRequest`).
+5. **No Magic Numbers**: Use config files (`config/app.php`) or constants.
+
+## Database
+- ORM: Eloquent (built-in)
+- Migrations: `php artisan migrate`
+- Seeding: `php artisan db:seed`
+
+## Testing
+- Run: `php artisan test` (PHPUnit)
+- Must pass before commit
+
+## Build Commands
+- Dev: `php artisan serve`
+- Build Assets: `npm run build` (Vite)
+- Queue: `php artisan queue:work`
+```
+
+#### Django AGENTS.md (PEP 8 Standards)
+```markdown
+# AI Agent Guidelines - Django Project
+
+## Code Style Rules
+1. **PEP 8**: Follow Python style guide (snake_case for functions/variables).
+2. **Django ORM Only**: No raw SQL queries. Use QuerySet API.
+3. **File Naming**: snake_case for all Python files (`user_profile.py`).
+4. **Validation**: Use Django Forms or DRF Serializers.
+5. **Settings**: Use environment-specific settings (`settings/production.py`).
+
+## Database
+- ORM: Django ORM (built-in)
+- Migrations: `python manage.py makemigrations && python manage.py migrate`
+- Seeding: Custom management commands or fixtures
+
+## Testing
+- Run: `python manage.py test` or `pytest`
+- Must pass before commit
+
+## Build Commands
+- Dev: `python manage.py runserver`
+- Collect Static: `python manage.py collectstatic`
+- Celery: `celery -A myproject worker`
+```
+
+---
+
+### ARCHITECTURE.md Stack-Specific Sections
+
+**Next.js ARCHITECTURE.md** (example structure):
+```markdown
+## Folder Structure
+```
+app/
+├── (auth)/
+│   ├── login/page.tsx
+│   └── register/page.tsx
+├── dashboard/
+│   └── page.tsx
+├── api/
+│   ├── auth/route.ts
+│   └── documents/route.ts
+└── layout.tsx
+
+src/
+├── components/
+│   └── ui/
+├── lib/
+│   ├── db.ts (Prisma client)
+│   └── auth.ts
+└── types/
+```
+
+## Database Schema (Prisma)
+```prisma
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  documents Document[]
+}
+```
+```
+
+**Laravel ARCHITECTURE.md** (example structure):
+```markdown
+## Folder Structure
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── AuthController.php
+│   │   └── DocumentController.php
+│   ├── Requests/
+│   │   └── StoreDocumentRequest.php
+│   └── Middleware/
+├── Models/
+│   ├── User.php
+│   └── Document.php
+└── Services/
+    └── DocumentService.php
+
+resources/
+├── views/
+│   └── dashboard.blade.php
+└── js/
+    └── Pages/ (Inertia.js components)
+```
+
+## Database Schema (Eloquent Migration)
+```php
+Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->string('email')->unique();
+    $table->timestamp('email_verified_at')->nullable();
+    $table->timestamps();
+});
+```
+```
+
+**Django ARCHITECTURE.md** (example structure):
+```markdown
+## Folder Structure
+```
+myproject/
+├── myapp/
+│   ├── models.py
+│   ├── views.py
+│   ├── serializers.py (DRF)
+│   ├── urls.py
+│   └── templates/
+│       └── myapp/
+│           └── dashboard.html
+├── manage.py
+└── myproject/
+    ├── settings.py
+    └── urls.py
+```
+
+## Database Schema (Django ORM)
+```python
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'users'
+```
+```
+
+---
+
+### Stack Detection & Template Selection Algorithm
+
+```python
+# Agent logic for selecting correct templates
+def select_templates(fsd_content: str) -> dict:
+    """Extract locked stack dari FSD.md dan return template paths."""
+    
+    # Parse locked stack decision
+    match = re.search(r"Stack Decision LOCKED:\s*(.+)", fsd_content)
+    if not match:
+        raise Error("Cannot find locked stack decision in FSD.md")
+    
+    stack_name = match.group(1).lower()
+    
+    # Determine stack category
+    if "next.js" in stack_name or "nextjs" in stack_name:
+        return {
+            "category": "nextjs",
+            "agents": "templates/04-dev-execution/nextjs/AGENTS.md",
+            "architecture": "templates/04-dev-execution/nextjs/ARCHITECTURE.md",
+            "conventions": "templates/04-dev-execution/nextjs/CONVENTIONS.md",
+            "env_example": "templates/04-dev-execution/nextjs/.env.example",
+        }
+    
+    elif "laravel" in stack_name:
+        return {
+            "category": "laravel",
+            "agents": "templates/04-dev-execution/laravel/AGENTS.md",
+            "architecture": "templates/04-dev-execution/laravel/ARCHITECTURE.md",
+            "conventions": "templates/04-dev-execution/laravel/CONVENTIONS.md",
+            "env_example": "templates/04-dev-execution/laravel/.env.example",
+        }
+    
+    elif "django" in stack_name:
+        return {
+            "category": "django",
+            "agents": "templates/04-dev-execution/django/AGENTS.md",
+            "architecture": "templates/04-dev-execution/django/ARCHITECTURE.md",
+            "conventions": "templates/04-dev-execution/django/CONVENTIONS.md",
+            "env_example": "templates/04-dev-execution/django/.env.example",
+        }
+    
+    elif "go" in stack_name or "fiber" in stack_name or "gin" in stack_name:
+        return {
+            "category": "go",
+            "agents": "templates/04-dev-execution/go/AGENTS.md",
+            "architecture": "templates/04-dev-execution/go/ARCHITECTURE.md",
+            "conventions": "templates/04-dev-execution/go/CONVENTIONS.md",
+            "env_example": "templates/04-dev-execution/go/.env.example",
+        }
+    
+    elif "rails" in stack_name or "ruby" in stack_name:
+        return {
+            "category": "rails",
+            "agents": "templates/04-dev-execution/rails/AGENTS.md",
+            "architecture": "templates/04-dev-execution/rails/ARCHITECTURE.md",
+            "conventions": "templates/04-dev-execution/rails/CONVENTIONS.md",
+            "env_example": "templates/04-dev-execution/rails/.env.example",
+        }
+    
+    else:
+        # Fallback: Generic templates (least specific)
+        warn(f"Unknown stack: {stack_name}. Using generic templates.")
+        return {
+            "category": "generic",
+            "agents": "templates/04-dev-execution/generic/AGENTS.md",
+            "architecture": "templates/04-dev-execution/generic/ARCHITECTURE.md",
+            "conventions": "templates/04-dev-execution/generic/CONVENTIONS.md",
+            "env_example": "templates/04-dev-execution/generic/.env.example",
+        }
+```
+
+---
+
+## 3A. LANGKAH 2: Module 04 Prototype Conversion (4 Compatibility Levels)
+
+**Execute conversion strategy documented di FSD.md "Module 04 Handoff Strategy" section.**
+
+Agent reads FSD.md extract:
+- **Compatibility Level**: 1-4
+- **Conversion Approach**: Direct copy / Syntax conversion / Template rewrite / Hybrid
+- **Estimated Time**: X days
+- **Component Count**: Y screens/components
+
+---
+
+### Level 1: Direct Copy (React → React-Based Stacks)
+
+**Applicable Stacks**: Next.js, Remix, Gatsby, Create React App
+
+**Conversion Steps**:
+
+```bash
+# 1. Export Stitch components (via MCP or manual download)
+stitch_get_screen(projectId="...", screenId="...")
+
+# 2. Copy components ke target directory
+# Next.js: src/components/
+# Remix: app/components/
+
+# 3. Minimal refactoring
+# - Add TypeScript types (if Stitch exported vanilla JS)
+# - Adjust import paths
+# - Split into one component per file
+```
+
+**Example Conversion**:
+
+```tsx
+// ✅ Stitch Export (dashboard-card.tsx)
+function DashboardCard({ title, value }) {
+  return (
+    <div className="bg-white rounded-lg shadow-sm p-6">
+      <h3 className="text-zinc-700 font-semibold">{title}</h3>
+      <p className="text-3xl font-bold text-zinc-900">{value}</p>
+    </div>
+  )
+}
+
+// ✅ Next.js Target (components/dashboard-card.tsx)
+interface DashboardCardProps {
+  title: string
+  value: string | number
+}
+
+export function DashboardCard({ title, value }: DashboardCardProps) {
+  return (
+    <div className="bg-white rounded-lg shadow-sm p-6">
+      <h3 className="text-zinc-700 font-semibold">{title}</h3>
+      <p className="text-3xl font-bold text-zinc-900">{value}</p>
+    </div>
+  )
+}
+```
+
+**Time Investment**: 1 hari (18 screens)  
+**Code Reuse**: 95%  
+**Risk**: Low (syntax identical)
+
+---
+
+### Level 2: Syntax Conversion (React → Similar Framework)
+
+**Applicable Stacks**: Vue, Svelte, Solid, Preact
+
+**Conversion Steps**:
+
+```bash
+# 1. Export Stitch components
+stitch_get_screen(...)
+
+# 2. Convert JSX → framework syntax
+# Tool: react-to-vue CLI (optional, 80% accuracy)
+npx react-to-vue src/components/*.tsx --output resources/js/components/
+
+# 3. Manual review & fixes
+# - State management (React hooks → Vue Composition API)
+# - Event handlers (@click vs onClick)
+# - Conditional rendering (v-if vs {condition && ...})
+```
+
+**Example Conversion**:
+
+```vue
+<!-- ✅ Stitch Export (React JSX) -->
+<div className="bg-white rounded-lg shadow-sm p-6">
+  <h3 className="text-zinc-700 font-semibold">{title}</h3>
+  <p className="text-3xl font-bold text-zinc-900">{value}</p>
+</div>
+
+<!-- ✅ Vue Target (DashboardCard.vue) -->
+<template>
+  <div class="bg-white rounded-lg shadow-sm p-6">
+    <h3 class="text-zinc-700 font-semibold">{{ title }}</h3>
+    <p class="text-3xl font-bold text-zinc-900">{{ value }}</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  title: string
+  value: string | number
+}>()
+</script>
+```
+
+**Time Investment**: 3-4 hari (18 screens)  
+**Code Reuse**: 70% (structure preserved, syntax adapted)  
+**Risk**: Medium (manual review required, tool 80% accurate)
+
+---
+
+### Level 3: Template Rewrite (React → Server-Side Templates)
+
+**Applicable Stacks**: Laravel Blade, Django Templates, Rails ERB, PHP
+
+**Conversion Strategy**: Stitch prototype = **visual reference only**
+
+**Conversion Steps**:
+
+```bash
+# 1. Open Stitch prototype di browser sebagai reference
+# 2. Identify layout patterns:
+#    - Header (logo, nav, user menu)
+#    - Sidebar (if exists)
+#    - Main content area
+#    - Footer
+
+# 3. Manual rewrite as server templates
+# Laravel: resources/views/*.blade.php
+# Django: templates/myapp/*.html
+
+# 4. Extract Tailwind classes dari Stitch → copy ke templates
+# Keep design tokens (DESIGN.md) consistent
+```
+
+**Example Conversion**:
+
+```blade
+{{-- ✅ Stitch React JSX (reference only) --}}
+{{-- <div className="bg-white rounded-lg shadow-sm p-6">
+       <h3 className="text-zinc-700 font-semibold">{title}</h3>
+       <p className="text-3xl font-bold text-zinc-900">{value}</p>
+     </div> --}}
+
+{{-- ✅ Laravel Blade (manual rewrite) --}}
+<div class="bg-white rounded-lg shadow-sm p-6">
+  <h3 class="text-zinc-700 font-semibold">{{ $title }}</h3>
+  <p class="text-3xl font-bold text-zinc-900">{{ $value }}</p>
+</div>
+```
+
+**Time Investment**: 5-7 hari (18 screens)  
+**Code Reuse**: 0% (code rewrite), 100% (design preserved)  
+**Risk**: High (manual effort, error-prone)
+
+**Tailwind Integration** (Laravel example):
+```bash
+# Install Tailwind di Laravel
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init
+
+# tailwind.config.js (copy theme dari DESIGN.md)
+module.exports = {
+  content: ['./resources/**/*.blade.php'],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#0891B2',  // Dari DESIGN.md
+      }
+    }
+  }
+}
+```
+
+---
+
+### Level 4: Hybrid (Inertia.js / Hotwire)
+
+**Applicable Stacks**: Laravel + Inertia.js, Rails + Hotwire Turbo
+
+**Conversion Strategy**: Keep frontend components (Vue/React), glue to backend
+
+**Conversion Steps**:
+
+```bash
+# 1. Export Stitch components (Vue/React)
+stitch_get_screen(...)
+
+# 2. Setup glue layer
+# Laravel: php artisan inertia:install vue
+# Rails: gem install hotwire-rails
+
+# 3. Wire backend routes → frontend components
+# Laravel: Inertia::render('Dashboard', ['stats' => $stats])
+# Rails: render inertia: 'Dashboard', props: { stats: stats }
+
+# 4. Copy Stitch components ke framework structure
+# Laravel Inertia: resources/js/Pages/*.vue
+# Rails Hotwire: app/frontend/pages/*.jsx
+```
+
+**Example Conversion**:
+
+```php
+// ✅ Laravel Route (Inertia.js)
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard', [
+        'stats' => [
+            ['title' => 'Total Documents', 'value' => 127],
+            ['title' => 'Pending Signatures', 'value' => 8],
+        ]
+    ]);
+});
+```
+
+```vue
+<!-- ✅ Vue Component (resources/js/Pages/Dashboard.vue) -->
+<!-- Copied dari Stitch export dengan minimal changes -->
+<script setup>
+defineProps(['stats'])
+</script>
+
+<template>
+  <div class="grid grid-cols-2 gap-6">
+    <DashboardCard 
+      v-for="stat in stats" 
+      :key="stat.title"
+      :title="stat.title"
+      :value="stat.value"
+    />
+  </div>
+</template>
+```
+
+**Time Investment**: 5-6 hari (setup 2 hari + conversion 3-4 hari)  
+**Code Reuse**: 70% (Vue/React components preserved)  
+**Risk**: Medium (glue layer complexity)
+
+---
+
+### Conversion Verification Checklist
+
+After conversion complete, verify:
+
+- [ ] **Visual Parity**: UI matches Stitch prototype 100% (compare screenshots)
+- [ ] **Design Tokens Applied**: Colors, fonts, spacing dari DESIGN.md consistent
+- [ ] **Responsive**: Mobile/tablet/desktop layouts work (test breakpoints)
+- [ ] **All Screens Converted**: X/Y screens complete (track di TODO.md)
+- [ ] **Components Functional**: No broken imports, props correctly typed
+- [ ] **5 UI States Implemented**: idle, loading, success, error, empty (for interactive components)
+
+**Gate**: Cannot proceed to backend API (LANGKAH 4) sampai frontend conversion complete & verified.
+
+---
+
+## 3B. Strategi Percabangan Git Solo Developer (Git Branching & Clean Production)
 
 Percabangan disesuaikan dengan skala proyek:
 
@@ -131,12 +891,123 @@ Percabangan disesuaikan dengan skala proyek:
 
 ---
 
-## 4. Enam Pilar Kualitas Rekayasa (The 6 Engineering Pillars)
+## 4. Enam Pilar Kualitas Rekayasa (The 6 Engineering Pillars - Universal)
+
+**Framework-agnostic principles** - applicable to semua tech stacks dari Module 05.
 
 Pengkodean bukan hanya tentang "fitur berjalan", melainkan wajib memenuhi 6 standar rekayasa:
 
 ### Pilar 1: Keamanan Defensif (Security by Design)
-- **Zero Raw Queries**: 100% query SQL wajib melalui ORM/parameterized query untuk mencegah SQL Injection.
+
+**Principle**: Zero raw queries, strict validation, encryption at rest, secure sessions.
+
+**Stack-Specific Implementation**:
+
+| Stack | Raw Query Prevention | Validation | Password Hashing | Session Management |
+|-------|---------------------|------------|------------------|-------------------|
+| **Next.js** | Prisma/Drizzle ORM (no raw SQL) | Zod schemas | bcrypt/argon2 via crypto | JWT in HttpOnly cookies |
+| **Laravel** | Eloquent ORM (no DB::raw) | Form Requests | Hash::make (bcrypt) | Session driver (database/redis) |
+| **Django** | Django ORM QuerySet (no raw SQL) | Django Forms / DRF Serializers | make_password (PBKDF2) | Django session framework |
+| **Go** | GORM / sqlx prepared statements | validator library | bcrypt package | JWT + secure cookies |
+
+**Example: Parameterized Queries**
+
+```typescript
+// ✅ Next.js (Prisma) - CORRECT
+const user = await prisma.user.findUnique({
+  where: { email: validatedEmail }
+})
+
+// ❌ WRONG (SQL injection vulnerable)
+const user = await prisma.$queryRaw`SELECT * FROM users WHERE email = '${email}'`
+```
+
+```php
+// ✅ Laravel (Eloquent) - CORRECT
+$user = User::where('email', $validatedEmail)->first();
+
+// ❌ WRONG (SQL injection vulnerable)
+$user = DB::select("SELECT * FROM users WHERE email = '$email'");
+```
+
+```python
+# ✅ Django (ORM) - CORRECT
+user = User.objects.filter(email=validated_email).first()
+
+# ❌ WRONG (SQL injection vulnerable)
+user = User.objects.raw(f"SELECT * FROM users WHERE email = '{email}'")
+```
+
+**Encryption Requirements** (UU PDP No. 27/2022):
+- File dokumen: AES-256-GCM sebelum storage
+- Password: Argon2id (preferred) atau bcrypt (min cost 12)
+- Token sesi: HttpOnly, Secure, SameSite=Strict cookies
+
+**Audit Dependensi** (Stack-specific):
+- Next.js: `pnpm audit` atau `npm audit`
+- Laravel: `composer audit`
+- Django: `pip-audit` atau `safety check`
+- Go: `govulncheck`
+
+---
+
+### Pilar 2: Performa & Kecepatan (Performance Engineering)
+
+**Principle**: Prevent N+1 queries, index foreign keys, cache static data, optimize assets.
+
+**Stack-Specific Implementation**:
+
+| Stack | N+1 Prevention | Indexing | Caching | Asset Optimization |
+|-------|----------------|----------|---------|-------------------|
+| **Next.js** | Prisma `include`/`select` | DB migrations add index | Redis / Next.js cache | `next/image` auto WebP |
+| **Laravel** | Eloquent `with()` eager load | Migration `$table->index()` | Redis Cache facade | Laravel Mix / Vite |
+| **Django** | `select_related()` / `prefetch_related()` | `db_index=True` in models | Django cache framework | WhiteNoise / CDN |
+| **Go** | Preload associations (GORM) | CREATE INDEX in migrations | Go-cache / Redis | Manual optimization |
+
+**Example: N+1 Query Prevention**
+
+```typescript
+// ❌ N+1 Query (Next.js Prisma)
+const users = await prisma.user.findMany()
+for (const user of users) {
+  const posts = await prisma.post.findMany({ where: { userId: user.id } }) // N queries!
+}
+
+// ✅ CORRECT (1 query with join)
+const users = await prisma.user.findMany({
+  include: { posts: true }
+})
+```
+
+```php
+// ❌ N+1 Query (Laravel)
+$users = User::all();
+foreach ($users as $user) {
+    $posts = $user->posts; // N queries!
+}
+
+// ✅ CORRECT (eager loading)
+$users = User::with('posts')->get();
+```
+
+**Database Indexing** (Universal principle):
+```sql
+-- Index pada foreign keys (MANDATORY)
+CREATE INDEX idx_documents_user_id ON documents(user_id);
+CREATE INDEX idx_documents_status ON documents(status);
+
+-- Composite index untuk filter queries
+CREATE INDEX idx_documents_user_status ON documents(user_id, status);
+```
+
+**Caching Strategy**:
+- Data master (jarang berubah): Cache 1-24 jam
+- User sessions: Redis dengan TTL
+- API responses: Cache-Control headers
+
+---
+
+### Pilar 3: Efisiensi Sumber Daya & Biaya (Resource & Cost Efficiency)
 - **Validasi Ketat di Pintu Masuk**: Semua data request wajib melalui skema Zod.
 - **Enkripsi Data Sensitif (UU PDP No. 27/2022)**: File dokumen dienkripsi AES-256-GCM sebelum masuk storage; password di-hash menggunakan Argon2id; token sesi disimpan di cookie `HttpOnly, Secure, SameSite=Strict`.
 - **Audit Dependensi**: Jalankan `pnpm audit` secara berkala untuk memastikan tidak ada pustaka open-source yang memiliki celah keamanan (*vulnerability*).

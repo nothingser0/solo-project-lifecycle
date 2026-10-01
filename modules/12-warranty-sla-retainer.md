@@ -146,6 +146,43 @@ Modul ini menghasilkan 3 dokumen tata kelola pemeliharaan:
 ---
 
 ## 🛑 PROTOKOL PENUTUPAN SIKLUS HIDUP (LIFECYCLE COMPLETION)
+
 Setelah seluruh tahapan Modul 12 selesai:
-1. Tampilkan ucapan selamat dan rangkuman purna karya kepada pengguna.
-2. **AKHIRI RESPON ANDA (END TURN)**. Seluruh 12 siklus rekayasa perangkat lunak solo developer telah selesai 100%.
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM PENUTUPAN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/WARRANTY_POLICY.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/WARRANTY_POLICY.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut ke closure
+   - ❌ **JANGAN tampilkan ucapan selamat** ke user
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File WARRANTY_POLICY.md tidak tercipta.
+     Module 12 INCOMPLETE - lifecycle tidak bisa ditutup.
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/pm/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum closure.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke closure di bawah
+
+---
+
+### **LANGKAH 1: LIFECYCLE CLOSURE**
+
+1. **Verifikasi warranty policy**:
+   - [ ] `read_file('docs/pm/WARRANTY_POLICY.md')` → Confirm warranty period, coverage, exclusions documented
+   - [ ] Confirm no pending Severity 1/2 tickets
+   - [ ] Confirm monitoring active and stable
+2. Tampilkan ucapan selamat dan rangkuman purna karya kepada pengguna.
+3. **AKHIRI RESPON ANDA (END TURN)**. Seluruh 12 siklus rekayasa perangkat lunak solo developer telah selesai 100%.

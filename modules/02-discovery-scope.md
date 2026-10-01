@@ -253,9 +253,42 @@ Panduan lengkap lihat `references/pm/PM_COMMUNICATION_GUIDE.md`.
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
 Setelah berkas `docs/pm/SCOPE_STATEMENT.md` selesai ditulis:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/SCOPE_STATEMENT.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/SCOPE_STATEMENT.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN ajukan konfirmasi scope**
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File SCOPE_STATEMENT.md tidak tercipta.
+     Module 02 FAILED - tidak bisa lanjut ke Module 03 (Legal SOW & Charter).
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/pm/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI KONTEN & SCOPE CONFIRMATION**
+
 1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 03 dalam giliran (turn) yang sama!**
-2. **VERIFIKASI DIRI (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/SCOPE_STATEMENT.md')` → Confirm file exists, 60+ lines
+2. **VERIFIKASI KONTEN (Self-Verification Checklist)**:
+   - [ ] `read_file('docs/pm/SCOPE_STATEMENT.md')` → Confirm 60+ lines
    - [ ] Must-Have count within scale limits (3-7 Kecil, 8-15 Menengah, etc.)
    - [ ] Out-of-Scope section documented with ≥3 explicit exclusions
    - [ ] Client dependencies listed with SLA timeline

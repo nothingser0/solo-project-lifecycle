@@ -352,8 +352,46 @@ Modul ini menghasilkan 2 dokumen eksekusi:
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
 Setelah sistem resmi Live di Produksi dan laporan PVT terbit:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/deploy/GO_LIVE_VERIFICATION_REPORT.md"` → harus return `True`
+   - Read tool: `read_file('docs/deploy/GO_LIVE_VERIFICATION_REPORT.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 11
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File GO_LIVE_VERIFICATION_REPORT.md tidak tercipta.
+     Module 10 FAILED - tidak bisa lanjut ke Module 11 (Handover & BAST).
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/deploy/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI KONTEN & PRODUCTION VERIFICATION**
+
 1. **DILARANG KERAS langsung menyerahkan repositori, password root, atau memanggil tool untuk Modul 11 dalam giliran (turn) yang sama!**
-2. Tampilkan status keberhasilan go-live produksi kepada pengguna:
+2. **Verifikasi production deployment**:
+   - [ ] `read_file('docs/deploy/GO_LIVE_VERIFICATION_REPORT.md')` → Confirm PVT tests PASS
+   - [ ] Confirm domain live with valid SSL (https://app.klien.com accessible)
+   - [ ] Confirm monitoring active (Sentry DSN, uptime checker)
+   - [ ] Confirm production transaction tested successfully
+3. Tampilkan status keberhasilan go-live produksi kepada pengguna:
    - Domain produksi resmi yang aktif
    - Hasil uji verifikasi transaksi nyata (PVT)
    - Status pemantauan uptime & error tracker Sentry

@@ -112,8 +112,45 @@ Modul ini menghasilkan 2 berkas pengesahan:
 ## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
 
 Setelah Berita Acara UAT ditandatangani oleh klien:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/UAT_SIGNOFF_REPORT.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/UAT_SIGNOFF_REPORT.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 10
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File UAT_SIGNOFF_REPORT.md tidak tercipta.
+     Module 09 FAILED - tidak bisa lanjut ke Module 10 (Production Deployment).
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/pm/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI KONTEN & SIGNATURE**
+
 1. **DILARANG KERAS langsung melakukan merge git ke `main`, deployment, atau memanggil tool untuk Modul 10 dalam giliran (turn) yang sama!**
-2. Tampilkan status penutupan UAT (seluruh defect Severity 1 & 2 telah selesai) dan konfirmasi penandatanganan Berita Acara UAT.
-3. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
+2. **Verifikasi konten UAT Sign-Off**:
+   - [ ] `read_file('docs/pm/UAT_SIGNOFF_REPORT.md')` → Confirm client signature + date exists
+   - [ ] Confirm all Severity 1 & 2 defects RESOLVED
+   - [ ] Confirm scope creep requests rejected or moved to Change Request
+3. Tampilkan status penutupan UAT (seluruh defect Severity 1 & 2 telah selesai) dan konfirmasi penandatanganan Berita Acara UAT.
+4. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
    > *"Berita Acara UAT (`docs/pm/UAT_SIGNOFF_REPORT.md`) telah resmi ditandatangani. Sistem telah diizinkan untuk merge ke branch `main`. Apakah Anda siap mengeksekusi peluncuran resmi ke server Produksi di Modul 10 (Deployment & Production Go-Live)?"*
 4. Tunggu respon persetujuan eksplisit dari pengguna sebelum memulai proses deployment produksi.

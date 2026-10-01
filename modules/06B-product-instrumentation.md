@@ -357,4 +357,51 @@ export const analytics = {
 
 ---
 
+## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+
+Setelah analytics instrumentation setup selesai:
+
+### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+
+**WAJIB DILAKUKAN SEBELUM DECLARE SETUP COMPLETE**:
+
+1. **Cek keberadaan file output** menggunakan salah satu metode:
+   - PowerShell: `Test-Path -LiteralPath "docs/analytics/EVENT_TAXONOMY.md"` → harus return `True`
+   - Read tool: `read_file('docs/analytics/EVENT_TAXONOMY.md')` → harus sukses tanpa error
+
+2. **JIKA FILE TIDAK ADA**:
+   - ❌ **STOP IMMEDIATELY** - jangan declare setup complete
+   - ❌ **JANGAN tampilkan summary** ke user
+   - ❌ **JANGAN lanjut ke Module 07**
+   - ✅ **REPORT ERROR** ke user:
+     ```
+     CRITICAL ERROR: File EVENT_TAXONOMY.md tidak tercipta.
+     Module 06B INCOMPLETE - analytics setup FAILED.
+     
+     Kemungkinan penyebab:
+     - Write permission denied pada folder docs/analytics/
+     - Path typo di tool call
+     - Disk full
+     
+     Tolong investigasi issue ini sebelum lanjut.
+     ```
+   - ✅ **END TURN** dan tunggu user fix issue
+
+3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi di bawah
+
+---
+
+### **LANGKAH 1: VALIDASI SETUP & CONFIRMATION**
+
+1. **Verifikasi analytics setup**:
+   - [ ] `read_file('docs/analytics/EVENT_TAXONOMY.md')` → Confirm 5-10 core events documented
+   - [ ] Confirm SDK installed (Mixpanel/Amplitude/GA4)
+   - [ ] Confirm tracking wrapper created (`lib/analytics.ts`)
+   - [ ] Confirm event naming convention enforced (`verb_noun`)
+2. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi:
+   > *"Analytics instrumentation telah selesai dengan [X] core events terdefinisi. SDK terpasang dan event taxonomy terdokumentasi di `docs/analytics/EVENT_TAXONOMY.md`. Siap lanjut ke Modul 07 (QA & SIT) untuk verify tracking di staging?"*
+3. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 07.
+
+---
+
 **Next Step After M06B**: Lanjut ke **Modul 07 (Quality Assurance & SIT)** untuk memastikan tracking code bekerja di staging sebelum UAT.
