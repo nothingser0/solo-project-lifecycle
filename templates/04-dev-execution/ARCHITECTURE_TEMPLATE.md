@@ -36,7 +36,7 @@ src/
 │   └── sign/[token]/         # Halaman publik tanda tangan tamu
 ├── components/               # Komponen UI hasil adaptasi Google Stitch
 │   ├── ui/                   # Komponen primitif (Button, Dialog, Input, Table)
-│   └── modules/              # Komponen bisnis (DocumentForm, PDFPreview, SignCanvas)
+│   └── docs/modules/              # Komponen bisnis (DocumentForm, PDFPreview, SignCanvas)
 ├── lib/                      # Utilitas bersama
 │   ├── db.ts                 # Instansiasi koneksi Prisma/PostgreSQL
 │   ├── crypto.ts             # Enkripsi streaming AES-256-GCM & hashing

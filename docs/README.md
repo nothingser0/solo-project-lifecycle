@@ -17,16 +17,16 @@ Framework operasional perangkat lunak untuk solo developer dan konsultan teknis 
 
 ```text
 FASE INISIASI & DISCOVERY:
-  00. Product Discovery & Strategy (Riset Pasar, Kompetitor, & Pengguna) ──► modules/00-product-discovery-strategy.md
-  01. Idea & Feasibility (Saringan 3 Lapis & Skor Kelayakan) ──► modules/01-idea-feasibility.md
+  00. Product Discovery & Strategy (Riset Pasar, Kompetitor, & Pengguna) ──► docs/modules/00-product-discovery-strategy.md
+  01. Idea & Feasibility (Saringan 3 Lapis & Skor Kelayakan) ──► docs/modules/01-idea-feasibility.md
   02. Discovery & Scope Definition (Elisitasi Kebutuhan Bisnis)
   03. [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement
 
 FASE PERANCANGAN & SPESIFIKASI:
-  04B. Design System Foundation & Implementation (Token System, Component Library, Governance) ──► modules/04B-design-system-foundation.md
+  04B. Design System Foundation & Implementation (Token System, Component Library, Governance) ──► docs/modules/04B-design-system-foundation.md
   04. UI/UX Design & Prototyping (Design System & User Flow)
   05. Arsitektur & Spesifikasi Teknis (PRD, FSD, & Skema DB)
-    05B. System Design & Infrastructure Scalability (High Availability, Capacity Planning, Caching) ──► modules/05B-system-design-infrastructure.md
+    05B. System Design & Infrastructure Scalability (High Availability, Capacity Planning, Caching) ──► docs/modules/05B-system-design-infrastructure.md
 
 FASE EKSEKUSI & VALIDASI:
   06. Development (Backend, Frontend, Integrasi API)
@@ -39,13 +39,13 @@ FASE RILIS & PENUTUPAN:
   10. Deployment & Production Go-Live (CI/CD, DNS, SSL)
   11. [GATE PENYERAHAN] Pelunasan 100%, Training, BAST, & Handover Repositori
   12. Masa Garansi (Bug Fix) ──► Transisi ke Monthly Retainer / SLA
-  13. Product Operations & Continuous Iteration (Baseline Metrik, RICE, Feedback Loop) ──► modules/13-product-operations-iteration.md
+  13. Product Operations & Continuous Iteration (Baseline Metrik, RICE, Feedback Loop) ──► docs/modules/13-product-operations-iteration.md
 ```
 
 **CRITICAL: Progressive Loading Protocol**
 - **DO NOT load all 17 modules at once** (total ~100K tokens)
 - Load specific module ONLY when entering that phase
-- Example: "Load modules/03-legal-sow-charter.md" when at Module 03
+- Example: "Load docs/modules/03-legal-sow-charter.md" when at Module 03
 - Reduces context pollution and improves response quality
 
 ---
@@ -86,23 +86,23 @@ FASE RILIS & PENUTUPAN:
 
 ## 4. Status Modul Eksekusi
 
-- [x] **Modul 00: Product Discovery & Strategy**: `modules/00-product-discovery-strategy.md` — Riset pasar (TAM/SAM/SOM), analisis kompetitor, riset wawancara pengguna (JTBD), penentuan North Star Metric, dan Value Proposition Canvas. **SKIP jika**: Fast-Track MVP dengan deadline ketat.
-- [x] **Modul 01: Idea & Feasibility**: `modules/01-idea-feasibility.md` — Saringan ide 3 lapis, uji kelayakan 4 dimensi, pemotongan fitur ekstrem, penentuan skala awal.
-- [x] **Modul 02: Discovery & Scope Definition**: `modules/02-discovery-scope.md` — Elisitasi kebutuhan stakeholder, pemetaan peran pengguna, breakdown MoSCoW, penguncian In-Scope vs Out-of-Scope, dan pendaftaran dependensi klien.
-- [x] **Modul 03: [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement**: `modules/03-legal-sow-charter.md` — Penentuan model kontrak, termin pembayaran milestone, pengikatan mutlak Single PIC, protokol Change Request, dan pengamanan Down Payment.
-- [x] **Modul 04B: Design System Foundation & Implementation**: `modules/04B-design-system-foundation.md` — Terminologi DS (Design System vs Design Language vs Component Library), audit inkonsistensi visual, design tokens (primitive + semantic layers), core components (20 essentials), Figma setup & plugins, tooling workflow (Style Dictionary, Storybook, Chromatic), governance model (centralized vs federated), adoption metrics, dan product management untuk DS. **SKIP jika**: MVP solo dev <4 minggu, API-...
-- **Modul 04: UI/UX Design & Specification**: `modules/04-uiux-prototyping.md` — Menghasilkan `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, dan `docs/design/DESIGN_REFERENCES.md`; mencakup arsitektur informasi, sitemap & page inventory berbasis scope, shared component standards, states, responsive behavior, accessibility, asset needs, dan Design Freeze. Google Stitch/prototype hanya opsional jika dipilih user dan lolos review.
-- [x] **Modul 05: Arsitektur & Spesifikasi Teknis (PRD & FSD)**: `modules/05-architecture-specs.md` — Pemilihan tech stack (Boring Tech ladder), skema basis data SQL DDL, kontrak API & matriks error, arsitektur keamanan (UU PDP/AES-256), dan pengesahan FSD.
-- [x] **Modul 05B: System Design & Infrastructure Scalability**: `modules/05B-system-design-infrastructure.md` — Skalabilitas infrastruktur, load balancing, caching layer (Redis), database replication/sharding, asynchronous worker/queues, high availability (Multi-AZ), dan capacity planning. **SKIP jika**: Proyek Kecil (MVP).
-- [x] **Modul 06: Development (Backend, Frontend, Integrasi API)**: `modules/06-development-execution.md` — Setup repo & tooling, migrasi DB & seeding lokal, implementasi API Zod-gated, perakitan UI Stitch, enkripsi streaming AES-256, dan self-smoke test.
-- [x] **Modul 06B: Product Instrumentation & Analytics Setup**: `modules/06B-product-instrumentation.md` — Integrasi Mixpanel/Amplitude/GA4, event taxonomy `verb_noun`, funnel tracking AARRR, A/B testing infrastructure, dashboard North Star Metric, error monitoring Sentry, dan privacy compliance GDPR/UU PDP.
-- [x] **Modul 07: Quality Assurance (Unit Test, SIT, & Security Audit)**: `modules/07-quality-assurance-sit.md` — Piramida pengujian solo dev, SIT sandbox pihak ketiga (Payment/Storage/Email), audit keamanan OWASP/UU PDP, uji beban k6, dan rilis staging.
-- [x] **Modul 08: Data Migration & Seeding**: `modules/08-data-migration-seeding.md` — Protokol data hygiene (Clean-In/Clean-Out), pemetaan kolom sumber-ke-target, sanitasi masking PII Staging, skrip batch ETL atomik, dan rekonsiliasi data sign-off.
-- [x] **Modul 09: [GATE VALIDASI] UAT & Sign-Off Klien di Staging**: `modules/09-uat-client-signoff.md` — Pengujian pengguna di Staging, matriks triase cacat (Severity 1/2/3/CR), penangkisan scope creep, klausul deemed acceptance, dan Berita Acara UAT bertandatangan.
-- [x] **Modul 10: Deployment & Production Go-Live**: `modules/10-deployment-production.md` — Checklist pra-rilis (No Friday Deploy), git merge tagging SemVer, konfigurasi DNS/SSL TLS 1.3, rilis mobile Android Keystore & iOS TestFlight, migrasi DB zero-downtime, dan PVT.
-- [x] **Modul 11: [GATE PENYERAHAN] Pelunasan, Training, BAST, & Handover Repositori**: `modules/11-handover-bast.md` — Penagihan invoice final, jatah kuota training (1–2 sesi), transfer repo Git & kredensial terenkripsi (Bitwarden Send), dan penandatanganan BAST sah bermeterai.
-- [x] **Modul 12: Masa Garansi & Transisi ke Monthly Retainer / SLA**: `modules/12-warranty-sla-retainer.md` — Penegakan batas masa garansi bug-fix murni, matriks SLA respon/resolusi, penanganan darurat insiden post-mortem, dan konversi ke kontrak retainer bulanan berulang.
-- [x] **Modul 13: Product Operations & Continuous Iteration**: `modules/13-product-operations-iteration.md` — Pengumpulan baseline metrik 30 hari pasca-rilis, otomasi feedback loop & NPS, cohort retention analysis, prioritas eksperimen pertumbuhan (RICE), dan pemantauan scaling signals.
+- [x] **Modul 00: Product Discovery & Strategy**: `docs/modules/00-product-discovery-strategy.md` — Riset pasar (TAM/SAM/SOM), analisis kompetitor, riset wawancara pengguna (JTBD), penentuan North Star Metric, dan Value Proposition Canvas. **SKIP jika**: Fast-Track MVP dengan deadline ketat.
+- [x] **Modul 01: Idea & Feasibility**: `docs/modules/01-idea-feasibility.md` — Saringan ide 3 lapis, uji kelayakan 4 dimensi, pemotongan fitur ekstrem, penentuan skala awal.
+- [x] **Modul 02: Discovery & Scope Definition**: `docs/modules/02-discovery-scope.md` — Elisitasi kebutuhan stakeholder, pemetaan peran pengguna, breakdown MoSCoW, penguncian In-Scope vs Out-of-Scope, dan pendaftaran dependensi klien.
+- [x] **Modul 03: [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement**: `docs/modules/03-legal-sow-charter.md` — Penentuan model kontrak, termin pembayaran milestone, pengikatan mutlak Single PIC, protokol Change Request, dan pengamanan Down Payment.
+- [x] **Modul 04B: Design System Foundation & Implementation**: `docs/modules/04B-design-system-foundation.md` — Terminologi DS (Design System vs Design Language vs Component Library), audit inkonsistensi visual, design tokens (primitive + semantic layers), core components (20 essentials), Figma setup & plugins, tooling workflow (Style Dictionary, Storybook, Chromatic), governance model (centralized vs federated), adoption metrics, dan product management untuk DS. **SKIP jika**: MVP solo dev <4 minggu, API-...
+- **Modul 04: UI/UX Design & Specification**: `docs/modules/04-uiux-prototyping.md` — Menghasilkan `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, dan `docs/design/DESIGN_REFERENCES.md`; mencakup arsitektur informasi, sitemap & page inventory berbasis scope, shared component standards, states, responsive behavior, accessibility, asset needs, dan Design Freeze. Google Stitch/prototype hanya opsional jika dipilih user dan lolos review.
+- [x] **Modul 05: Arsitektur & Spesifikasi Teknis (PRD & FSD)**: `docs/modules/05-architecture-specs.md` — Pemilihan tech stack (Boring Tech ladder), skema basis data SQL DDL, kontrak API & matriks error, arsitektur keamanan (UU PDP/AES-256), dan pengesahan FSD.
+- [x] **Modul 05B: System Design & Infrastructure Scalability**: `docs/modules/05B-system-design-infrastructure.md` — Skalabilitas infrastruktur, load balancing, caching layer (Redis), database replication/sharding, asynchronous worker/queues, high availability (Multi-AZ), dan capacity planning. **SKIP jika**: Proyek Kecil (MVP).
+- [x] **Modul 06: Development (Backend, Frontend, Integrasi API)**: `docs/modules/06-development-execution.md` — Setup repo & tooling, migrasi DB & seeding lokal, implementasi API Zod-gated, perakitan UI Stitch, enkripsi streaming AES-256, dan self-smoke test.
+- [x] **Modul 06B: Product Instrumentation & Analytics Setup**: `docs/modules/06B-product-instrumentation.md` — Integrasi Mixpanel/Amplitude/GA4, event taxonomy `verb_noun`, funnel tracking AARRR, A/B testing infrastructure, dashboard North Star Metric, error monitoring Sentry, dan privacy compliance GDPR/UU PDP.
+- [x] **Modul 07: Quality Assurance (Unit Test, SIT, & Security Audit)**: `docs/modules/07-quality-assurance-sit.md` — Piramida pengujian solo dev, SIT sandbox pihak ketiga (Payment/Storage/Email), audit keamanan OWASP/UU PDP, uji beban k6, dan rilis staging.
+- [x] **Modul 08: Data Migration & Seeding**: `docs/modules/08-data-migration-seeding.md` — Protokol data hygiene (Clean-In/Clean-Out), pemetaan kolom sumber-ke-target, sanitasi masking PII Staging, skrip batch ETL atomik, dan rekonsiliasi data sign-off.
+- [x] **Modul 09: [GATE VALIDASI] UAT & Sign-Off Klien di Staging**: `docs/modules/09-uat-client-signoff.md` — Pengujian pengguna di Staging, matriks triase cacat (Severity 1/2/3/CR), penangkisan scope creep, klausul deemed acceptance, dan Berita Acara UAT bertandatangan.
+- [x] **Modul 10: Deployment & Production Go-Live**: `docs/modules/10-deployment-production.md` — Checklist pra-rilis (No Friday Deploy), git merge tagging SemVer, konfigurasi DNS/SSL TLS 1.3, rilis mobile Android Keystore & iOS TestFlight, migrasi DB zero-downtime, dan PVT.
+- [x] **Modul 11: [GATE PENYERAHAN] Pelunasan, Training, BAST, & Handover Repositori**: `docs/modules/11-handover-bast.md` — Penagihan invoice final, jatah kuota training (1–2 sesi), transfer repo Git & kredensial terenkripsi (Bitwarden Send), dan penandatanganan BAST sah bermeterai.
+- [x] **Modul 12: Masa Garansi & Transisi ke Monthly Retainer / SLA**: `docs/modules/12-warranty-sla-retainer.md` — Penegakan batas masa garansi bug-fix murni, matriks SLA respon/resolusi, penanganan darurat insiden post-mortem, dan konversi ke kontrak retainer bulanan berulang.
+- [x] **Modul 13: Product Operations & Continuous Iteration**: `docs/modules/13-product-operations-iteration.md` — Pengumpulan baseline metrik 30 hari pasca-rilis, otomasi feedback loop & NPS, cohort retention analysis, prioritas eksperimen pertumbuhan (RICE), dan pemantauan scaling signals.
 
 ---
 

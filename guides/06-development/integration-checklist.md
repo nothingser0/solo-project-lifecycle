@@ -159,8 +159,8 @@ Before merging to staging:
 ---
 
 **See Also**:
-- `appendices/06-development/backend-checklist.md` - Backend development
-- `appendices/06-development/frontend-checklist.md` - Frontend development
+- `guides/06-development/backend-checklist.md` - Backend development
+- `guides/06-development/frontend-checklist.md` - Frontend development
 - `patterns/security/authentication.md` - Auth patterns
 - `patterns/performance/caching-strategies.md` - Performance optimization
 - M06 Development Execution - Core module documentation

@@ -166,8 +166,8 @@ Before merging to staging:
 ---
 
 **See Also**:
-- `appendices/06-development/backend-checklist.md` - Backend API tasks
-- `appendices/06-development/integration-checklist.md` - Third-party integrations
+- `guides/06-development/backend-checklist.md` - Backend API tasks
+- `guides/06-development/integration-checklist.md` - Third-party integrations
 - `patterns/validation/zod-patterns.md` - Form validation schemas
 - `references/stacks/nextjs-15-quickstart.md` - Next.js specific setup
 - M06 Development Execution - Core module documentation

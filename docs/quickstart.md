@@ -337,10 +337,10 @@ Upgrade when:
 - ✅ Budget increases >Rp 50 juta
 
 Then read:
-- `modules/02-discovery-scope.md` (scope protection)
-- `modules/03-legal-sow-charter.md` (contracts)
-- `modules/05B-system-design-infrastructure.md` (scaling)
-- `modules/07-quality-assurance-sit.md` (testing)
+- `docs/modules/02-discovery-scope.md` (scope protection)
+- `docs/modules/03-legal-sow-charter.md` (contracts)
+- `docs/modules/05B-system-design-infrastructure.md` (scaling)
+- `docs/modules/07-quality-assurance-sit.md` (testing)
 
 ---
 

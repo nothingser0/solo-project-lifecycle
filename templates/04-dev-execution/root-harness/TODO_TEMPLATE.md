@@ -31,9 +31,9 @@
 - [ ] `src/app/api/v1/sign/[token]/route.ts`: Buat handler transaksi tanda tangan dengan pessimistic lock - expect 200 OK
 
 ## Fase 5: Integrasi Antarmuka UI ke Backend API (Wiring)
-- [ ] `src/components/modules/LoginForm.tsx`: Hubungkan submit form login ke /api/v1/auth/login - expect redirect ke dashboard
-- [ ] `src/components/modules/DocumentForm.tsx`: Hubungkan submit form dokumen ke POST /api/v1/documents - expect draf tersimpan
-- [ ] `src/components/modules/SignCanvas.tsx`: Hubungkan canvas e-sign ke POST /api/v1/sign/[token] - expect status SIGNED
+- [ ] `src/components/docs/modules/LoginForm.tsx`: Hubungkan submit form login ke /api/v1/auth/login - expect redirect ke dashboard
+- [ ] `src/components/docs/modules/DocumentForm.tsx`: Hubungkan submit form dokumen ke POST /api/v1/documents - expect draf tersimpan
+- [ ] `src/components/docs/modules/SignCanvas.tsx`: Hubungkan canvas e-sign ke POST /api/v1/sign/[token] - expect status SIGNED
 - [ ] `5-State Review`: Verifikasi tampilan loading skeleton, empty state, dan inline error di semua halaman - expect UI defensif
 
 ## Fase 6: Uji Asersi Mandiri (Local Smoke Test)

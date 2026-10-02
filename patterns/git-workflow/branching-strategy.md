@@ -525,7 +525,7 @@ git branch -d hotfix/db-connection-leak
 ```bash
 # .gitignore
 # Dependencies
-node_modules/
+node_docs/modules/
 .pnp.*
 
 # Environment

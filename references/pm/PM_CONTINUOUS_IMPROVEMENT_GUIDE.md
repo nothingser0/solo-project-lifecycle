@@ -697,4 +697,4 @@ ORDER BY month;
 4. Create growth experiment backlog (start with ICE scoring)
 5. Schedule first 3 user interviews
 
-**Questions?** Reference the [Product Operations module (M13)](../../modules/13-product-operations-iteration.md) for more context.
+**Questions?** Reference the [Product Operations module (M13)](../../docs/modules/13-product-operations-iteration.md) for more context.

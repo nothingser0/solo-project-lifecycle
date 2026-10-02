@@ -1207,7 +1207,7 @@ Pastikan kompilasi bersih (`pnpm run type-check`) dan audit dependensi aman (`pn
 
 ## 5A. Backend Development TODO Checklist (Detailed Breakdown)
 
-**Detailed checklist**: Lihat [`appendices/06-development/backend-checklist.md`](../appendices/06-development/backend-checklist.md)
+**Detailed checklist**: Lihat [`guides/06-development/backend-checklist.md`](../guides/06-development/backend-checklist.md)
 
 Checklist komprehensif mencakup:
 1. **Database Setup & Migrations**: Connection pooling, schema definition, indexing strategy, soft-delete, seeders
@@ -1219,7 +1219,7 @@ Checklist komprehensif mencakup:
 
 **Quick reference** untuk AI coding agents:
 ```
-> "Load backend checklist: appendices/06-development/backend-checklist.md"
+> "Load backend checklist: guides/06-development/backend-checklist.md"
 > "Verify database migrations reversible and seeders functional"
 > "Audit API endpoints for tenant isolation and IDOR prevention"
 ```
@@ -1228,7 +1228,7 @@ Checklist komprehensif mencakup:
 
 ## 5B. Frontend Development TODO Checklist (Detailed Breakdown)
 
-**Detailed checklist**: Lihat [`appendices/06-development/frontend-checklist.md`](../appendices/06-development/frontend-checklist.md)
+**Detailed checklist**: Lihat [`guides/06-development/frontend-checklist.md`](../guides/06-development/frontend-checklist.md)
 
 Checklist komprehensif mencakup:
 1. **Component Library & Design System**: Token sync, UI atoms (Button, Input), molecules (Toast, Modal), navigation, WCAG AA compliance
@@ -1240,7 +1240,7 @@ Checklist komprehensif mencakup:
 
 **Quick reference** untuk AI coding agents:
 ```
-> "Load frontend checklist: appendices/06-development/frontend-checklist.md"
+> "Load frontend checklist: guides/06-development/frontend-checklist.md"
 > "Verify WCAG AA contrast ratios and keyboard navigation"
 > "Audit forms for Zod validation and optimistic UI rollback"
 ```
@@ -1249,7 +1249,7 @@ Checklist komprehensif mencakup:
 
 ## 5C. Integration TODO Checklist (Third-Party & Infrastructure)
 
-**Detailed checklist**: Lihat [`appendices/06-development/integration-checklist.md`](../appendices/06-development/integration-checklist.md)
+**Detailed checklist**: Lihat [`guides/06-development/integration-checklist.md`](../guides/06-development/integration-checklist.md)
 
 Checklist komprehensif mencakup:
 1. **Payment Gateway (Stripe/Midtrans)**: Sandbox setup, transaction initiation, webhook cryptographic validation, idempotency, atomic status transitions
@@ -1260,7 +1260,7 @@ Checklist komprehensif mencakup:
 
 **Quick reference** untuk AI coding agents:
 ```
-> "Load integration checklist: appendices/06-development/integration-checklist.md"
+> "Load integration checklist: guides/06-development/integration-checklist.md"
 > "Verify webhook signature validation and idempotency handling"
 > "Audit Sentry beforeSend filter for credential leaks"
 ```

@@ -11,7 +11,7 @@ Sebagai solo developer, Anda adalah satu-satunya orang yang bertanggung jawab sa
 ### Tangga Prioritas Pemilihan Teknologi:
 1. **Rung 1: Monolith Modern Lebih Unggul dari Microservices**:
    - DILARANG memecah aplikasi menjadi microservices terdistribusi jika hanya dikerjakan oleh 1 orang, kecuali ada kewajiban arsitektur dari divisi Enterprise klien.
-   - Gunakan **Modular Monolith**: Satu basis kode terstruktur rapi dengan pemisahan domain yang bersih di folder (`modules/auth`, `modules/documents`, `modules/billing`).
+   - Gunakan **Modular Monolith**: Satu basis kode terstruktur rapi dengan pemisahan domain yang bersih di folder (`docs/modules/auth`, `docs/modules/documents`, `docs/modules/billing`).
 2. **Rung 2: PostgreSQL Sebagai "Swiss Army Knife"**:
    - Jangan menambah database NoSQL terpisah (misal MongoDB atau CouchDB) hanya untuk data semi-terstruktur.
    - Kolom `JSONB` di PostgreSQL sudah mendukung query indeks (`GIN Index`), validasi skema, dan performa tinggi tanpa perlu memelihara dua kluster database berbeda.

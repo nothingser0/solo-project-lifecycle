@@ -207,8 +207,8 @@ Before merging to staging:
 ---
 
 **See Also**:
-- `appendices/06-development/frontend-checklist.md` - Frontend development tasks
-- `appendices/06-development/integration-checklist.md` - Third-party integrations
+- `guides/06-development/frontend-checklist.md` - Frontend development tasks
+- `guides/06-development/integration-checklist.md` - Third-party integrations
 - `patterns/security/authentication.md` - Auth implementation patterns
 - `patterns/validation/zod-patterns.md` - Validation schemas
 - M06 Development Execution - Core module documentation
