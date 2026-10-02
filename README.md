@@ -203,4 +203,4 @@ Use for commercial projects, consulting, products, internal tools.
 
 Built by solo developers, for solo developers.
 
-Last updated: October 2026
+Last updated: 2026-10-02

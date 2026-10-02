@@ -1,6 +1,8 @@
 ---
 name: solo-project-lifecycle
 description: Use when starting projects, scoping client work, writing PRD/FSD/SOW, planning architecture, or managing software project lifecycle from discovery to production.
+version: 1.0.0
+updated: 2026-10-02
 ---
 
 # Solo Project Lifecycle
