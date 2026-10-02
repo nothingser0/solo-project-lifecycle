@@ -545,10 +545,10 @@ Example axes:
 │   │   ├── ANALISIS_KOMPETITOR_[PROJECT]_[YEAR].md
 │   │   ├── DOMAIN_CHEAT_SHEET.md
 │   │   └── GLOSSARY.md
-│   ├── pm/                                # PM deliverables (from Modul 01-02)
+│   ├── pm/                                # PM deliverables (from Module 01-02)
 │   │   ├── IDEA_BRIEF.md
 │   │   └── SCOPE_STATEMENT.md
-│   └── specs/                             # Design/tech specs (from Modul 04-05)
+│   └── specs/                             # Design/tech specs (from Module 04-05)
 │       ├── DESIGN.md
 │       └── DESIGN_SPEC.md
 └── data/                                  # Structured regulation data (JSON)
@@ -684,7 +684,7 @@ Non-employee PPh 21 is calculated using 50% Norma[^1], then progressive rates wi
 - If research > 30% of total project timeline → scope down (too complex for solo dev)
 - If research < 10% for regulated domain → risk of rework (not enough depth)
 
-**Proceed to Modul 02 (Scope Definition)** only after research is VALIDATED.
+**Proceed to Module 02 (Scope Definition)** only after research is VALIDATED.
 
 ---
 
@@ -770,7 +770,7 @@ Non-employee PPh 21 is calculated using 50% Norma[^1], then progressive rates wi
 
 ### What Could Improve:
 - ⚠️ No expert interview (relied on blog posts only) → Risk: missed edge cases
-- ⚠️ No user validation (didn't interview 5 freelancers to confirm pain) → Mitigated by Modul 02 user stories
+- ⚠️ No user validation (didn't interview 5 freelancers to confirm pain) → Mitigated by Module 02 user stories
 
 ---
 

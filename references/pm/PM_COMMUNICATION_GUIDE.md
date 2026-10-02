@@ -19,7 +19,7 @@
 
 ## 2. Executive Summary Writing (Top-Down Communication)
 
-### Struktur 1-Page Executive Summary
+### 1-Page Executive Summary Structure
 
 ```markdown
 ## [Project Name] - Status Update [Date]
@@ -74,7 +74,7 @@
 
 ## 3. RAG Status (Red-Amber-Green) System
 
-### Definisi Status
+### Status Definitions
 
 | Status | Meaning | Trigger | Action Required |
 | :--- | :--- | :--- | :--- |
@@ -167,7 +167,7 @@
 
 ## 5. Risk Communication (Early Warning System)
 
-### Formula Komunikasi Risk
+### Risk Communication Formula
 
 ```
 [Risk Name] - Impact: [H/M/L], Probability: [H/M/L]
@@ -510,7 +510,7 @@
 - Written agreements paramount
 - Conflict addressed head-on
 
-**High-Context** (Asia: Indonesia, Jepang, Thailand):
+**High-Context** (Asia: Indonesia, Japan, Thailand):
 - Indirect communication, save face
 - "Yes" might mean "maybe" or "I heard you"
 - Relationship > contract

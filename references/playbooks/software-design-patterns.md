@@ -1,7 +1,7 @@
 > **⚠️ DEPRECATED:** This module has moved to `references/playbooks/software-design-patterns.md` as of 2026-10.  
 > This file remains for reference but is no longer maintained. Update your links to the new location.
 
-# Modul 05C: Software Design Patterns & Clean Code Principles
+# Module 05C: Software Design Patterns & Clean Code Principles
 
 **Trigger**: Use when evaluating the quality of AI-generated code, performing code reviews, refactoring, or designing component architecture. Required for medium-to-large projects requiring long-term maintainability.
 

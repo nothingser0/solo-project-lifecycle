@@ -1,7 +1,7 @@
 > **⚠️ DEPRECATED:** This module has moved to `references/playbooks/ai-assisted-development.md` as of 2026-10.  
 > This file remains for reference but is no longer maintained. Update your links to the new location.
 
-# Modul 06C: AI-Assisted Development & Vibe Coding Workflow
+# Module 06C: AI-Assisted Development & Vibe Coding Workflow
 
 This module is a practical guide for solo developers using **AI coding agents** (Cursor, Windsurf, Claude Code, GitHub Copilot, v0.dev) as their primary coding partner. Its goal is to maximize iteration speed without sacrificing code quality, providing clear review protocols for critical areas (auth, payment, data privacy), prompt engineering strategies, and anti-patterns in AI code generation.
 
@@ -1502,4 +1502,4 @@ GOAL: Stay sharp if AI unavailable or hallucinates
 
 ---
 
-**Next Step After M06C**: Return to **Modul 06 (Development Execution)** main workflow, using AI tools to accelerate code generation while following the review protocols defined here.
+**Next Step After M06C**: Return to **Module 06 (Development Execution)** main workflow, using AI tools to accelerate code generation while following the review protocols defined here.
