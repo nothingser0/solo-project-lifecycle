@@ -1,13 +1,9 @@
 # Modul 05: Arsitektur & Spesifikasi Teknis (PRD & FSD)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/solo/SOLO_ARCHITECTURE_GUIDE.md` (Boring Tech guide, SQL DDL integrity, OWASP Top 10, AES-256 encryption, UU PDP compliance)
 > - `references/technical/DATA_ASSETS_MANAGEMENT.md` (Regulations data (tax rates, PTKP), Business rules/formulas, Reference data (city/bank list), Seed data, Localization)
-> - `references/improvements/MODUL_05_IMPROVEMENTS.md` (Timeline estimation, PRD vs FSD content matrix, API error standardization, database migration strategy, NFR template)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, Repository/Service Layer patterns for FSD authoring)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_05_IMPROVEMENTS.md`
 
 Modul ini adalah tahap kelima dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah merancang seluruh "mesin, kabel data, basis data, dan sistem keamanan" di balik antarmuka yang telah dibekukan pada Modul 04, menghasilkan dua cetak biru utama: **`PRD.md`** (*Product Requirement Document*) dan **`FSD.md`** (*Functional Specification Document*).
 

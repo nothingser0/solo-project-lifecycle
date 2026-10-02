@@ -1,11 +1,7 @@
 # Modul 08: Data Migration & Seeding (Migrasi Data Warisan & Penyemaian Data)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
-> - `references/improvements/MODUL_08_IMPROVEMENTS.md` (Spreadsheet Hell avoidance, ETL automation with Zod, Batching, PII masking UU PDP, Data Sign-Off, timeline estimation 11-164 jam, data quality pre-flight checklist 6-step, error handling strategy matrix 3-tier, incremental migration strategy, production migration 3 strategies)
 > - `references/technical/DATA_ASSETS_MANAGEMENT.md` (Seed data structure, Reference data (city/bank list), Versioning regulations data, Content data management)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_08_IMPROVEMENTS.md`
 
 Modul ini adalah tahap kedelapan dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah memindahkan data warisan (*legacy data*) milik klien (dari Excel, CSV, sistem lama, atau database usang) ke dalam skema database baru secara otomatis, terenkripsi, dan tervalidasi sebelum sesi pengujian pengguna (UAT) di Modul 09 dimulai.
 

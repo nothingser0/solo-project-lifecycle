@@ -1,12 +1,8 @@
 # Modul 02: Discovery & Scope Definition (Elisitasi Kebutuhan & Penguncian Lingkup)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/checklists/MODUL_02_EVALUATION_CHECKLIST.md` (MoSCoW quality check, User Stories INVEST validation, Database Schema validation, Tech Stack validation, NFR realism check, Timeline buffer, Risk completeness, Scope boundaries)
 > - `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md` (Bank pertanyaan elisitasi 5 pilar, Red-flags detection)
-> - `references/improvements/MODUL_02_IMPROVEMENTS.md` (Timeline estimation, User story splitting rules, Sprint velocity tracking, Scope freeze protocol)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_02_IMPROVEMENTS.md`
 
 Modul ini adalah tahap kedua dalam siklus pengembangan perangkat lunak untuk solo developer. Tujuannya adalah mengekstrak kebutuhan bisnis riil dari pemangku kepentingan (stakeholder/klien), mendefinisikan batasan teknis, dan mengunci batasan **In-Scope vs Out-of-Scope** ke dalam dokumen **`SCOPE_STATEMENT.md`** sebelum masuk ke komitmen kontrak atau perancangan detail.
 

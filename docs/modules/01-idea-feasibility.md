@@ -1,13 +1,9 @@
 # Modul 01: Idea & Feasibility (Penyaringan Ide & Uji Kelayakan)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
-> - `references/improvements/MODUL_01_IMPROVEMENTS.md` (Timeline estimation, Scoring rubric 5/4/3/2/1, Gate FAIL protocol, Pre-checklist, Risk appetite)
 > - `references/checklists/MODUL_01_ACTION_ITEMS_CHECKLIST.md` (Post-feasibility action items: Market validation, Formula verification, Security baseline)
 > - `references/checklists/FEASIBILITY_CRITERIA.md` (Detailed 4-dimension feasibility rubric)
 > - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_01_IMPROVEMENTS.md`
 
 Modul ini adalah gerbang pertama dalam siklus pengembangan perangkat lunak untuk solo developer. Tujuannya adalah mengubah ide mentah yang abstrak menjadi **Ringkasan Ide Teruji (Validated Idea Brief)** dengan batasan skala yang jelas sebelum waktu terbuang untuk menulis dokumen panjang atau koding.
 

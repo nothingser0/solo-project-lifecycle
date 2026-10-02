@@ -1,10 +1,6 @@
 # Modul 10: Deployment & Production Go-Live (Peluncuran Resmi ke Lingkungan Produksi)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
-> - `references/improvements/MODUL_10_IMPROVEMENTS.md` (No Friday Deploy, Expand and Contract migration, TTL DNS lowering, Encrypted S3/R2 backup, timeline estimation 8-112 jam, blue-green deployment strategy, DNS cutover protocol, rollback execution playbook <15min, production monitoring setup checklist)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_10_IMPROVEMENTS.md`
 
 Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah memindahkan kode yang telah lolos UAT dari branch `staging` ke branch `main`, mengonfigurasi infrastruktur produksi resmi (Domain DNS, SSL TLS 1.3, Cloudflare, Basis Data Produksi), mengeksekusi migrasi basis data tanpa henti (*zero-downtime*), mengaktifkan pemantauan observabilitas, dan melakukan pengujian pasca-rilis (*Post-Deployment Smoke Test*) hingga sistem resmi **LIVE ON PRODUCTION**.
 

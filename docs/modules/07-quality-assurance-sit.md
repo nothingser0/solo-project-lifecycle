@@ -1,11 +1,7 @@
 # Modul 07: Quality Assurance (Unit Test, SIT, & Security Audit)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
-> - `references/improvements/MODUL_07_IMPROVEMENTS.md` (Pragmatic Test Pyramid, Sandbox verification Payment/Storage/Email, OWASP audit, k6 load testing, timeline estimation 11-176 jam, test coverage priority matrix 3-tier, flaky test debugging protocol, SIT report template, staging environment checklist)
 > - `references/playbooks/ai-assisted-development.md` (Pre-merge AI review protocol, prompt engineering patterns, multi-file orchestration)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_07_IMPROVEMENTS.md`
 
 Modul ini adalah tahap ketujuh dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah memvalidasi keandalan, integritas integrasi sistem pihak ketiga (*System Integration Testing* / SIT), ketahanan performa, dan keamanan sistem secara otomatis di lingkungan **Staging** sebelum diserahkan kepada klien untuk proses UAT (Modul 09).
 

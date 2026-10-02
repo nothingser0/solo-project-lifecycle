@@ -1,15 +1,12 @@
 # Modul 06: Development (Backend, Frontend, Integrasi API, & 3 Pilar Rekayasa)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/solo/SOLO_DEVELOPMENT_PATTERNS.md` (Zod validation, AES-256-GCM encryption, Pessimistic locking, Presigned URLs, Self-test scripts)
 > - `references/solo/SOLO_ENGINEERING_STANDARDS.md` (Git branching, OWASP/UU PDP audit, N+1 query prevention, Asset optimization, Connection pooling)
-> - `references/improvements/MODUL_06_IMPROVEMENTS.md` (Timeline estimation 29-478 jam, AI agent delegation strategy, smoke test 3-tier, env var management, VERIFY_LOCAL template, Modul 04 dependency workflow)
 > - `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md` (AI coding tool selection, Cursor vs Claude Code vs Windsurf benchmark)
 > - `references/playbooks/ai-assisted-development.md` (Prompt engineering patterns, multi-file orchestration, pre-merge AI review protocol)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, design patterns, and anti-pattern detection for AI-generated code)
 > - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Lembar pelacak kemajuan eksekusi koding, checklist backend, frontend, integrasi, & pos pemeriksaan review)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
 > - Read: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`
 
 Modul ini adalah tahap keenam dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah mengeksekusi penulisan kode nyata (*coding*) secara terarah menggunakan bantuan **AI Coding Agents (OpenChamber + OpenCode + OhMyOpenCode / Cursor / Claude Code)** melalui penyediaan **Agent Harness (berkas pemandu AI)**, mengintegrasikan antarmuka dari **Google Stitch**, mengelola percabangan **Git**, serta menegakkan 3 pilar rekayasa non-negosiasi: **Keamanan (Security)**, **Performa (Performance)**, dan **Efisiensi Sumber Daya (Resource Efficiency)**.
@@ -1359,7 +1356,6 @@ Dalam pengembangan mandiri (solo developer) dengan akselerasi AI Coding Agents, 
 > - API-only backend without user-facing analytics needs
 > - Still pre-launch validation phase (wait until real users)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this section**:
 > - `references/pm/PM_ANALYTICS_SETUP_GUIDE.md` (Platform selection, Event taxonomy quickstart, AARRR dashboard, A/B testing, Privacy compliance)
 
 Tahap pasca-development untuk solo developer dan PM yang butuh mengukur product-market fit, engagement funnel, dan business metrics secara kuantitatif. Tujuannya adalah memasang **event tracking taxonomy** terstruktur, **analytics platform SDK** (Mixpanel/Amplitude/GA4), dan **dashboard real-time** untuk monitoring North Star Metric.

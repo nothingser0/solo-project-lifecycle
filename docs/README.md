@@ -207,10 +207,8 @@ FASE RILIS & PENUTUPAN:
 > **BEFORE executing ANY modul, agent WAJIB load reference files relevant untuk modul tersebut.**
 > 
 > **Modul 00 → LOAD:**
-> - `references/improvements/MODUL_00_IMPROVEMENTS.md` (Timeline 3-4 minggu, Budget Rp1.5-11 juta, Respondent Recruitment, Competitive Moat, Skip Decision Tree)
 > 
 > **Modul 01 → LOAD:**
-> - `references/improvements/MODUL_01_IMPROVEMENTS.md` (Timeline 1-5 hari, Scoring Rubric 5/4/3/2/1, Gate FAIL Protocol, Pre-Checklist, Risk Appetite)
 > - `references/checklists/MODUL_01_ACTION_ITEMS_CHECKLIST.md` (Post-feasibility: Market validation, Formula verification, Security baseline)
 > - `references/checklists/FEASIBILITY_CRITERIA.md` (Rubrik uji 4 dimensi detail)
 > 
@@ -220,25 +218,20 @@ FASE RILIS & PENUTUPAN:
 > 
 > **Format load:**
 > ```python
-> skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_XX_IMPROVEMENTS.md')
 > ```
 > 
 > **Jika reference TIDAK di-load, execution INCOMPLETE (missing practical guidance: timeline, budget, scoring rubric, checklist).**
 
 ### Modul 00 (Aktif)
-- `references/improvements/MODUL_00_IMPROVEMENTS.md`: **[MANDATORY LOAD]** Timeline estimation (3-4 minggu), Budget calculation (Rp1.5-11 juta), taktik rekrutmen responden, competitive moat assessment, dan skip decision tree.
 - `references/technical/DEEP_RESEARCH_METHODOLOGY.md`: Metodologi riset mendalam regulasi/kepatuhan, competitor deep-dive analysis, dan akuisisi domain knowledge fintech/healthtech/legaltech.
 
 ### Modul 01 (Aktif)
 - `references/checklists/FEASIBILITY_CRITERIA.md`: Rubrik uji 4 dimensi (teknis, bandwidth solo, kepatuhan UU PDP/ITE, ekonomi) dan daftar red-flag pemicu pembatalan proyek (*Kill Switch*).
-- `references/improvements/MODUL_01_IMPROVEMENTS.md`: **[MANDATORY LOAD]** Timeline estimation (1-5 hari), Scoring rubric detail (5/4/3/2/1 per dimensi), Gate FAIL protocol (PIVOT/DEFER/PARTNER/KILL), Pre-Modul 01 checklist, Risk appetite threshold.
-- `references/checklists/MODUL_01_ACTION_ITEMS_CHECKLIST.md`: **[MANDATORY LOAD]** Post-feasibility action items (Market validation, Formula verification, Security baseline).
 
 ### Modul 02 (Aktif)
 - `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md`: Bank pertanyaan 5 pilar elisitasi, taktik membongkar kebutuhan tersembunyi, dan deteksi red-flags klien saat wawancara.
 
 ### Modul 03 (Aktif)
-- `references/improvements/MODUL_03_IMPROVEMENTS.md`: Panduan taktis menolak scope creep, formula hitungan biaya Change Request, penegakan Single PIC, dan protokol penghentian kerja sementara (*Work Pause*).
 
 ### Modul 04B (Aktif)
 - `references/technical/DESIGN_SYSTEM_GUIDE.md`: Panduan komprehensif design system untuk solo dev dan tim kecil — terminologi, decision trees (build vs adopt vs extend), token architecture, component patterns (composition over configuration, controlled vs uncontrolled), tooling ecosystem (Style Dictionary, Storybook, Chromatic, Figma plugins), adoption strategies (pilot team, codemods, feature flags), governance models (centralized vs federated, RFC process), measuring success (adoption metrics, ROI calculation), common pitfalls & rescue strategies, dan case studies (Shopify Polaris, Airbnb DLS, Solo Dev SaaS).
@@ -261,23 +254,16 @@ FASE RILIS & PENUTUPAN:
 - `references/pm/PM_ANALYTICS_SETUP_GUIDE.md`: Panduan taktis analytics untuk solo dev dan PM — minimal viable analytics, platform selection decision tree (Mixpanel/Amplitude/PostHog/GA4), event taxonomy quickstart, 5 core metrics, AARRR dashboard design, A/B testing statistical significance, error monitoring Sentry, privacy compliance GDPR/UU PDP, cost optimization, dan monthly maintenance routine.
 
 ### Modul 07 (Aktif)
-- `references/improvements/MODUL_07_IMPROVEMENTS.md`: Pedoman efisiensi pengujian solo dev (The Pragmatic Test Pyramid), verifikasi sandbox pihak ketiga (Payment/Storage/Email), audit keamanan OWASP, dan pengujian beban k6.
 
 ### Modul 08 (Aktif)
-- `references/improvements/MODUL_08_IMPROVEMENTS.md`: Pedoman pemindahan data warisan (Spreadsheet Hell avoidance), skrip otomasi ETL dengan Zod dan batching, masking data sensitif UU PDP di Staging, dan pengesahan Data Sign-Off.
 
 ### Modul 09 (Aktif)
-- `references/improvements/MODUL_09_IMPROVEMENTS.md`: Panduan fasilitasi UAT bersama klien, naskah menangkis penambahan fitur berkedok bug, matriks triase tingkat keparahan cacat, dan penegakan surat klausul penerimaan otomatis (*Deemed Acceptance*).
 
 ### Modul 10 (Aktif)
-- `references/improvements/MODUL_10_IMPROVEMENTS.md`: Pedoman deployment produksi (aturan No Friday Deploy), migrasi database tanpa henti (Expand and Contract), penurunan TTL DNS, dan skrip backup database harian terenkripsi ke S3/R2.
 
 ### Modul 11 (Aktif)
-- `references/improvements/MODUL_11_IMPROVEMENTS.md`: Pedoman penutupan proyek dan serah terima (aturan No Pay No Root), jatah batas sesi pelatihan (1–2 sesi), transmisi kredensial terenkripsi sekali pakai (Bitwarden Send), dan kekuatan hukum BAST di Indonesia.
 
 ### Modul 12 (Aktif)
-- `references/improvements/MODUL_12_IMPROVEMENTS.md`: Pedoman pemeliharaan retainer bulanan (konversi proyek lepas ke MRR stabil), formula paket Bronze/Silver/Gold, penanganan kepanikan klien di WhatsApp, dan batas on-call anti-burnout.
 
 ### Modul 13 (Aktif)
-- `references/improvements/MODUL_13_IMPROVEMENTS.md`: **[MANDATORY LOAD]** Timeline estimation, rekomendasi tool metrics dashboard (PostHog/Mixpanel/Metabase), dan template dokumentasi eksperimen.
 - `references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md`: Panduan komprehensif continuous product improvement, Build-Measure-Learn loop, cohort retention analysis, churn prevention, dan quarterly roadmap refresh.

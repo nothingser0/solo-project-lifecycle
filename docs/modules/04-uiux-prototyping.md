@@ -3,16 +3,12 @@
 > ⚠️ **GOOGLE STITCH DEPRECATED (2024)**: References to Google Stitch below are LEGACY ONLY.  
 > **Default workflow (2026)**: Create `DESIGN.md` + `DESIGN_SPEC.md` only (no Stitch prototype).  
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/solo/SOLO_UIUX_GUIDE.md` (Solo dev UI/UX efficiency guide, Component library selection, WCAG contrast, Prototype walkthrough)
 > - `references/pm/PM_USER_TESTING_GUIDE.md` (User testing facilitation, Usability test plan)
 > - `references/technical/UI_COMPONENT_ANIMATION_LIBRARY.md` (Animation patterns library)
 > - `references/technical/ASSET_MANAGEMENT_GUIDE.md` (Images/SVG/WebP/fonts optimization, Favicon package, Accessibility alt text, Performance budgets)
-> - `references/improvements/MODUL_04_IMPROVEMENTS.md` (Output contract: DESIGN.md, DESIGN_SPEC.md, DESIGN_REFERENCES.md; manual workflow; scope-based page inventory)
 > - `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md` (AI UI prototyping & coding tools benchmark)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_04_IMPROVEMENTS.md`
 
 Modul ini menerjemahkan `SCOPE_STATEMENT.md` menjadi tiga dokumen yang menjadi source of truth UI: `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, dan `docs/design/DESIGN_REFERENCES.md`. Fokusnya standardisasi visual, shared components, semua page/sub-page yang memang in-scope, responsive behavior, accessibility, dan acceptance criteria.
 
@@ -981,7 +977,6 @@ Next Steps:
 
 > **AUTHORITATIVE WORKFLOW OVERRIDE**
 >
-> Sections below that describe mandatory Google Stitch, Stitch Screen IDs, Stitch prompts, Stitch export, or Stitch MCP are legacy optional guidance. They do not apply to the default Modul 04 workflow. Follow `references/improvements/MODUL_04_IMPROVEMENTS.md`: produce only `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`. Do not create Stitch prompts, Screen IDs, exports, or live prototypes unless the user explicitly requests Stitch.
 
 ## 7. Workflow Split: Planning (Hermes) vs Development (PC with MCP Stitch)
 

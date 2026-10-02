@@ -1,10 +1,6 @@
 # Modul 09: [GATE VALIDASI] UAT & Sign-Off Klien di Staging
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
-> - `references/improvements/MODUL_09_IMPROVEMENTS.md` (UAT facilitation, Scope creep defense scripts, Defect severity triage matrix, Deemed Acceptance clause enforcement, timeline estimation 3-21 hari, UAT scenario template structure, defect triage workflow 3 options, remote UAT facilitation protocol, sign-off rejection handling 3-step)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_09_IMPROVEMENTS.md`
 
 Modul ini adalah **GERBANG VALIDASI PEMBLOKIR (BLOCKING VALIDATION GATE)** dalam siklus hidup proyek solo developer. Aturan mutlak: **DILARANG MELAKUKAN DEPLOYMENT KE SERVER PRODUKSI ATAU POINTING DOMAIN UTAMA SEBELUM GERBANG INI LOLOS.**
 

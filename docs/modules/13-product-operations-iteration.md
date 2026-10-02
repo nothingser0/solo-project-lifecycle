@@ -1,11 +1,7 @@
 # Modul 13: Product Operations & Continuous Iteration (Operasi Produk & Iterasi Berkelanjutan)
 
-> ⚠️ **MANDATORY: Load references BEFORE executing this module**:
-> - `references/improvements/MODUL_13_IMPROVEMENTS.md` (Timeline estimation, Metrics dashboard tool recommendations, Experiment documentation template)
 > - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
 >
-> **MANDATORY: Load references BEFORE executing this module**:
-> - Read: `references/improvements/MODUL_13_IMPROVEMENTS.md`
 
 Modul ini adalah tahap **pasca-peluncuran** dalam siklus hidup produk perangkat lunak untuk solo developer. Dijalankan setelah Modul 12 (Warranty & SLA) ketika sistem telah stabil di produksi dan fokus beralih dari "membangun" menjadi "mengoptimalkan & mengembangkan" berdasarkan data riil pengguna. Tujuannya adalah membangun **kerangka operasional berbasis metrik** untuk meningkatkan produk secara berkelanjutan menggunakan data, bukan asumsi.
 
