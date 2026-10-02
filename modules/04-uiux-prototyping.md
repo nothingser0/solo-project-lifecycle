@@ -1423,3 +1423,213 @@ EOF
 - ❌ No design freeze sign-off → Scope creep during development ("can we change the layout?")
 
 ---
+
+## 8. Design System Foundation & Implementation [OPTIONAL SECTION]
+
+> 🎯 **WHEN TO USE THIS SECTION?**
+> - Proyek **Besar/Enterprise** dengan multiple products atau platform (Web, iOS, Android, Flutter)
+> - Produk dengan **3+ engineer** yang butuh konsistensi visual tanpa review manual
+> - Startup yang berencana **scale tim design/engineering** dalam 6-12 bulan
+> - Refactoring codebase lama dengan **inconsistent UI components** (design debt)
+> - Client request **white-label solution** atau **multi-tenant branding**
+>
+> **SKIP THIS SECTION IF:**
+> - MVP solo dev <4 minggu dengan 1-3 layar (cukup Section 1-7 Google Stitch)
+> - Prototyping proof-of-concept yang akan dibuang
+> - Backend API-only atau CLI tool tanpa GUI
+
+Panduan komprehensif untuk solo developer dan tim kecil yang ingin membangun, mengadopsi, atau mengaudit Design System. Berbeda dengan **Section 1-7** yang fokus pada prototyping layar individual dengan Google Stitch, **Section 8** adalah fondasi strategis untuk membangun sistem desain yang scalable, maintainable, dan dapat diadopsi di seluruh produk atau organisasi.
+
+---
+
+### 8.1 Terminologi Kritis (Disambiguation)
+
+Istilah-istilah ini sering dipakai campur aduk. Definisi di bawah adalah standar industri 2026:
+
+| Istilah | Definisi | Contoh Konkret | Deliverable Utama |
+|---------|----------|----------------|-------------------|
+| **Design System** | Ekosistem lengkap: design tokens + component library + documentation + governance | Material Design (Google), Polaris (Shopify), Carbon (IBM) | Figma library + React components + docs site |
+| **Design Language** | Prinsip filosofis visual & tone of voice tanpa implementasi kode | Fluent Design (Microsoft), Human Interface Guidelines (Apple) | PDF guideline, brand book |
+| **Pattern Library** | Katalog solusi UI untuk kasus umum (navigation, forms, data display) | Navigation patterns (drawer, tabs, breadcrumb) | Storybook / Zeroheight |
+| **Component Library** | Kumpulan komponen UI yang sudah di-code (buttons, inputs, cards) | Chakra UI, Shadcn, MUI, Ant Design | NPM package / Git submodule |
+| **Design Tokens** | Variabel atomic untuk visual properties (color, spacing, typography) | `--color-primary-500: #3B82F6;` | JSON / CSS variables / Swift enums |
+
+**Decision Tree: Build vs Adopt**:
+```text
+Start → Do you need custom branding? 
+        ├─ No → Adopt Shadcn (headless) or Chakra (opinionated)
+        └─ Yes → Do you have 3+ designers?
+                 ├─ No → Adopt + override tokens (Tailwind custom theme)
+                 └─ Yes → Build custom DS (this section)
+```
+
+---
+
+### 8.2 Strategic Process (Making a Design System)
+
+**Phase 1: Design Audit** - Expose inconsistency debt (47 shades of gray → consolidate to 10).
+**Phase 2: Stakeholder Alignment** - Engineering + Product + Design agreement on MVP component set (20 core, not 50).
+**Phase 3: Governance Model** - Centralized (small team <10) vs Federated (scale >20) ownership.
+**Phase 4: Adoption Roadmap** - Pilot 1 squad first, avoid "big bang" rollout.
+
+**Audit Checklist** (Template: `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`):
+1. **Color Inventory**: Screenshot all unique colors → cluster similar (Delta E < 3)
+2. **Typography Audit**: Count font families (max 2-3), map sizes to scale (H1-H6, Body, Caption)
+3. **Spacing**: Measure gaps (should be 8pt grid: 8, 16, 24, 32)
+4. **Component Duplication**: Find duplicate implementations (3 different "Card" components)
+
+---
+
+### 8.3 Design Tokens (Single Source of Truth)
+
+**Format**: `[category]-[property]-[variant]-[state]`
+
+```css
+/* Primitive tokens (raw values) */
+--color-blue-500: #3B82F6;
+--space-3: 0.5rem;  /* 8px base unit */
+
+/* Semantic tokens (purpose-driven) */
+--color-action-primary: var(--color-blue-500);
+--font-size-heading-3: var(--font-size-lg);
+```
+
+**8pt Spacing Scale**:
+```css
+--space-3: 0.5rem;    /* 8px - base */
+--space-5: 1rem;      /* 16px - comfortable */
+--space-8: 2rem;      /* 32px - section gaps */
+```
+
+**Platform-Specific Output** (Style Dictionary):
+```bash
+pnpm add -D style-dictionary
+# Config: style-dictionary.config.js
+# Outputs: dist/css/variables.css, dist/ios/Tokens.swift, dist/android/tokens.xml
+```
+
+---
+
+### 8.4 Core Components (The 20 Essential)
+
+| Priority | Component | Complexity |
+|----------|-----------|------------|
+| **P0** (Week 1) | Button, Input, Label, Spinner | Low |
+| **P1** (Week 2-3) | Select, Checkbox, Radio, Toggle, Card, Modal, Alert, Toast | Medium |
+| **P2** (Week 4-5) | Tooltip, Dropdown, Badge, Avatar, Table, Tabs, Accordion, Breadcrumb | Medium-High |
+
+**Stop at P1 untuk MVP** (12 components). P2 optional.
+
+**Component API Principles**:
+1. **Composition over Configuration**: `<Button><Spinner /></Button>` not `<Button loading />`
+2. **Controlled vs Uncontrolled**: Provide both, default controlled for forms
+3. **Compound Components**: `<Card><Card.Header /><Card.Body /></Card>`
+
+**Accessibility Checklist** (per component):
+- Button: Keyboard (`Enter`/`Space`), visible focus, `aria-label` if icon-only
+- Modal: Focus trap, Escape key closes, `role="dialog"`, `aria-modal="true"`
+- Table: Semantic HTML (`<thead>`, `<tbody>`), `aria-sort` on sortable columns
+
+---
+
+### 8.5 Tooling & Workflow
+
+**Figma Setup**:
+```
+📂 Design System (Master Library)
+  ├─ 🎨 Foundations (Colors, Typography, Spacing)
+  ├─ 🧩 Components (Button, Input, Card...)
+  └─ 📐 Templates (Auth Flow, Dashboard Layout)
+```
+
+**Essential Plugins**:
+- **Tokens Studio**: Sync design tokens JSON ↔ Figma
+- **A11y Checker**: Flag text <4.5:1 contrast ratio
+- **Figma to Code (Anima)**: Export Figma → React scaffolding (70% production-ready)
+
+**CI/CD Pipeline**:
+```yaml
+# .github/workflows/design-system.yml
+jobs:
+  build:
+    - run: pnpm run build:tokens  # Style Dictionary
+    - run: pnpm test:visual        # Chromatic visual regression
+    - run: pnpm run deploy:storybook
+```
+
+---
+
+### 8.6 Product Management
+
+**Adoption Metrics**:
+- **Coverage**: % screens using DS components (target: 80% in 6 months)
+- **Consistency Score**: Visual regression pass rate
+- **Velocity**: Design-to-code handoff time (baseline vs DS-enabled)
+
+**ROI Calculation**:
+```
+Time saved: 24h/sprint/engineer
+Team size: 5 engineers
+Hourly rate: $50
+Annual saving: 24 × 50 × 5 × 26 = $156,000
+DS maintenance: $80,000
+Net ROI: $76,000/year (95% gain)
+```
+
+**RFC Process** (for new components):
+1. Draft RFC → Post in #design-system Slack
+2. 48h comment period
+3. Design System Council vote
+4. Approved → Assign to sprint
+
+**Breaking Changes Protocol** (3 releases):
+```
+v1.9.0: Add new API, deprecate old (console.warn)
+v1.10.0: Update docs with migration guide
+v2.0.0: Remove deprecated API (breaking)
+```
+
+---
+
+### 8.7 Output Artifacts
+
+| Artifact | Location | Purpose |
+|----------|----------|---------|
+| **Design System Audit** | `docs/design/DESIGN_SYSTEM_AUDIT.md` | Baseline inconsistency assessment |
+| **Design Tokens Spec** | `tokens/design-tokens.json` + `dist/css/variables.css` | Single source of truth |
+| **Component API Spec** | `docs/design/COMPONENT_API_SPEC.md` | Props, states, accessibility |
+| **Storybook Docs** | `https://storybook.myapp.com` | Living documentation |
+
+**Template Sources**:
+- `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`
+- `templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md`
+- `templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md`
+
+---
+
+### 8.8 Anti-Patterns
+
+| ❌ Anti-Pattern | ✅ Correct Approach |
+|----------------|---------------------|
+| Build 50 components on Day 1 | Start with 12 P0/P1, iterate |
+| No semantic tokens | Two-layer: primitive → semantic |
+| Figma without code | Tight sync: Figma = React component |
+| Zero governance | RFC process, DS council approval |
+| "Design team project" | Cross-functional: designers + engineers co-own |
+
+---
+
+### 8.9 Gate Exit Criteria
+
+Section 8 dinyatakan **LOLOS** jika:
+- [x] Design audit selesai dengan inconsistency quantified
+- [x] Design tokens JSON created (primitive + semantic layers)
+- [x] Minimum 12 P0/P1 components implemented in Storybook
+- [x] WCAG 2.1 AA compliance for all components
+- [x] CI/CD setup: Visual regression + NPM publish
+- [x] Adoption plan documented (80% coverage target)
+
+**AKHIRI RESPON** dan konfirmasi:
+> *"Design System foundation telah selesai: [X] tokens defined, [Y] components implemented. Silakan review Storybook di [URL]. Apakah siap melanjutkan ke M05 (Architecture & Specs)?"*
+
+---
