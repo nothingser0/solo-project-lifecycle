@@ -249,19 +249,25 @@ Agent selects template files based on stack:
 
 ### Anti-Pattern Detection (AI SLOP Prevention)
 
-Agent must verify scaffold matches FSD.md:
+Agent must verify scaffold matches FSD.md with expanded checks:
 
 ```python
 # Pseudo-code verification
 def verify_scaffold_matches_fsd():
     fsd_stack = parse_fsd_stack("docs/specs/FSD.md")  # "Laravel 11"
     
-    # Check package.json or composer.json exists
+    # 1. Framework type check
     if fsd_stack.startswith("Laravel"):
         if not exists("composer.json"):
             raise Error("FSD says Laravel, but no composer.json found. Wrong scaffold.")
         if exists("package.json") and "next" in read("package.json"):
             raise Error("FSD says Laravel, but scaffolded Next.js. Re-scaffold.")
+        
+        # Version check
+        composer = json.load("composer.json")
+        laravel_version = composer["require"]["laravel/framework"]
+        if "11." not in laravel_version and fsd_stack == "Laravel 11":
+            warn("FSD specifies Laravel 11, but scaffolded version mismatch. Consider downgrade.")
     
     elif fsd_stack.startswith("Next.js"):
         if not exists("package.json"):
@@ -269,15 +275,69 @@ def verify_scaffold_matches_fsd():
         pkg = json.load("package.json")
         if "next" not in pkg.get("dependencies", {}):
             raise Error("FSD says Next.js, but package.json missing 'next' dependency.")
+        
+        # 2. Major version match (CRITICAL)
+        next_version = pkg["dependencies"]["next"]
+        fsd_version = parse_version(fsd_stack)  # "Next.js 15" → 15
+        actual_version = parse_major(next_version)  # "^16.0.0" → 16
+        
+        if actual_version != fsd_version:
+            raise Error(f"BLOCKING: FSD specifies Next.js {fsd_version}, scaffolded {actual_version}. "
+                       f"Version mismatch causes API incompatibilities. "
+                       f"Fix: npx create-next-app@{fsd_version} or update FSD.md")
+        
+        # 3. Tailwind version detection (affects AGENTS.md syntax)
+        if "tailwindcss" in pkg.get("dependencies", {}):
+            tw_version = parse_major(pkg["dependencies"]["tailwindcss"])
+            if tw_version >= 4:
+                warn("Tailwind v4 detected. Uses CSS-first config (not tailwind.config.js). "
+                     "AGENTS.md/CONVENTIONS.md must reference v4 syntax.")
+                return {"framework": "nextjs", "tailwind_version": 4}
+            else:
+                return {"framework": "nextjs", "tailwind_version": 3}
     
     elif fsd_stack.startswith("Django"):
         if not exists("manage.py"):
             raise Error("FSD says Django, but no manage.py found. Wrong scaffold.")
     
-    return True
+    return {"framework": fsd_stack.split()[0].lower()}
+
+# 4. Package manager fallback strategy
+def install_dependencies_with_fallback():
+    """
+    Attempt npm install with timeout fallback to pnpm.
+    User feedback: npm timeout loop (3x) wasted 6 minutes.
+    """
+    try:
+        run("npm install", timeout=120)  # 2 min timeout
+    except TimeoutError:
+        warn("npm install timeout (1st attempt). Retrying once...")
+        try:
+            run("npm install", timeout=120)
+        except TimeoutError:
+            warn("npm install timeout (2nd attempt). Switching to pnpm...")
+            if not command_exists("pnpm"):
+                run("npm install -g pnpm")
+            run("pnpm install")  # pnpm usually faster for large node_modules
 ```
 
-**If mismatch detected**: Agent MUST stop and re-scaffold the correct framework.
+**Verification gates**:
+1. **Framework type mismatch** → STOP, re-scaffold correct framework
+2. **Major version mismatch** → BLOCKING, fix before proceeding (causes API breaks)
+3. **Tailwind v4 detected** → Adjust harness files to use v4 syntax (CSS-first config)
+4. **npm timeout (2x)** → Auto-switch to pnpm (avoid 3rd retry loop)
+
+**Post-scaffold checklist**:
+```bash
+# Verify scaffold output structure
+- [ ] Framework files exist (package.json / composer.json / manage.py)
+- [ ] Major version matches FSD.md (Next.js 15 = 15.x, not 16.x)
+- [ ] Tailwind version checked (v3 vs v4 affects config syntax)
+- [ ] Dependencies installed (with fallback strategy if timeout)
+- [ ] No blocking advisories (eslint-config-next version mismatch, etc.)
+```
+
+**If blocking issues found**: Fix IMMEDIATELY before generating harness files. Harness files (AGENTS.md, CONVENTIONS.md) embed framework/library syntax that must match actual versions.
 
 ---
 
