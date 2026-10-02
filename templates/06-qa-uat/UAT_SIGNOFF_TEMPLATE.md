@@ -1,52 +1,52 @@
-# Berita Acara Uji Terima Pengguna (UAT Sign-Off Report)
+# User Acceptance Testing (UAT) Sign-Off Report
 
-> Dokumen pengesahan hukum hasil pengujian penerimaan pengguna (*User Acceptance Test*) yang menyatakan bahwa perangkat lunak telah memenuhi seluruh kriteria spesifikasi PRD/FSD dan disetujui untuk rilis ke lingkungan Produksi.
-
----
-
-## 1. Metadata Pengesahan
-- **Nama Sistem**: [Nama Aplikasi]
-- **Pihak Klien**: [Nama Perusahaan Klien]
-- **Single PIC Klien**: [Nama Lengkap PIC Klien]
-- **Lead Developer**: [Nama Anda]
-- **Lingkungan Pengujian**: Server Staging (`https://staging.domainklien.com`)
-- **Versi Build Teruji**: `v0.9.5-rc` (Commit: `[git-hash]`)
-- **Tanggal Penandatanganan**: [YYYY-MM-DD]
+> Legal sign-off document for User Acceptance Testing (UAT) results certifying that the software meets all PRD/FSD specification criteria and is approved for release to the Production environment.
 
 ---
 
-## 2. Hasil Rekapitulasi Pengujian UAT
+## 1. Sign-Off Metadata
+- **System Name**: [Application Name]
+- **Client**: [Client Company Name]
+- **Client Single PIC**: [Client PIC Full Name]
+- **Lead Developer**: [Your Name]
+- **Test Environment**: Staging Server (`https://staging.domainklien.com`)
+- **Tested Build Version**: `v0.9.5-rc` (Commit: `[git-hash]`)
+- **Signing Date**: [YYYY-MM-DD]
 
-Berdasarkan lembar kerja **`UAT_SCENARIOS.md`** dan **`UAT_DEFECT_LOG.md`**, para pihak mencatat hasil pengujian sebagai berikut:
+---
 
-| Kategori Modul | Total Skenario Diuji | Lolos (Pass) | Catatan / Resolusi |
+## 2. UAT Testing Summary Results
+
+Based on workbooks **`UAT_SCENARIOS.md`** and **`UAT_DEFECT_LOG.md`**, the parties record the test results as follows:
+
+| Module Category | Total Scenarios Tested | Passed | Notes / Resolution |
 | :--- | :---: | :---: | :--- |
-| **Modul Otentikasi & Akun** | [ ] Skenario | [ ] Pass | Seluruh alur login & hak akses RBAC tervalidasi |
-| **Modul Pembuatan Dokumen** | [ ] Skenario | [ ] Pass | Seluruh template form & render PDF tervalidasi |
-| **Modul Document Vault & S3** | [ ] Skenario | [ ] Pass | Enkripsi file dan presigned URL tervalidasi |
-| **Modul Tanda Tangan Digital**| [ ] Skenario | [ ] Pass | Alur penandatanganan dan cap hash tervalidasi |
-| **STATUS SEVERITY 1 & 2** | **0 Terbuka** | **LULUS** | Seluruh cacat kritis dan mayor telah diperbaiki |
+| **Authentication & Account Module** | [ ] Scenarios | [ ] Pass | All login flows & RBAC permissions validated |
+| **Document Creation Module** | [ ] Scenarios | [ ] Pass | All form templates & PDF rendering validated |
+| **Document Vault & S3 Module** | [ ] Scenarios | [ ] Pass | File encryption and presigned URLs validated |
+| **Digital Signature Module** | [ ] Scenarios | [ ] Pass | Signing workflow and hash stamp validated |
+| **SEVERITY 1 & 2 STATUS** | **0 Open** | **PASSED** | All critical and major defects resolved |
 
 ---
 
-## 3. Pernyataan Persetujuan & Otorisasi Rilis (Acceptance Declaration)
+## 3. Acceptance & Release Authorization Declaration
 
-Dengan menandatangani Berita Acara ini, **PIHAK KLIEN** menyatakan dan menyepakati bahwa:
+By signing this Sign-Off Report, the **CLIENT** certifies and agrees that:
 
-1. **Penerimaan Spesifikasi**: Sistem perangkat lunak yang diuji di server Staging telah berfungsi secara memuaskan dan memenuhi seluruh kriteria kebutuhan yang tercantum dalam dokumen **PRD.md** dan **FSD.md**.
-2. **Izin Rilis Produksi**: Pihak Klien secara resmi mengizinkan Developer untuk melakukan penggabungan kode (*merge*) ke branch `main` dan melakukan proses peluncuran ke lingkungan **Produksi (Modul 10: Production Go-Live)**.
-3. **Kunci Lingkup**: Seluruh permintaan perubahan alur, tata letak, atau penambahan fitur baru setelah tanggal penandatanganan ini tidak dapat menunda proses peluncuran dan akan diproses melalui skema **Change Request (CR)** berbayar atau perjanjian kerja lanjutan.
+1. **Specification Acceptance**: The software system tested on the Staging server functions satisfactorily and meets all requirement criteria stated in the **PRD.md** and **FSD.md** documents.
+2. **Production Release Authorization**: The Client officially authorizes the Developer to merge code into the `main` branch and proceed with deployment to the **Production environment (Module 10: Production Go-Live)**.
+3. **Scope Lock**: All requests for changes to workflows, layouts, or additions of new features following this signing date cannot delay the deployment process and will be processed via paid **Change Request (CR)** procedures or follow-on service agreements.
 
 ---
 
-## 4. Pengesahan Para Pihak
+## 4. Signatures of the Parties
 
-Berita Acara ini dibuat dalam rangkap 2 (dua) yang masing-masing memiliki kekuatan hukum yang sama bagi Klien dan Developer.
+This document is executed in 2 (two) counterparts, each having equal legal validity for Client and Developer.
 
-| Disetujui oleh Single PIC Klien | Divalidasi oleh Lead Software Engineer |
+| Approved by Client Single PIC | Validated by Lead Software Engineer |
 | :--- | :--- |
-| **Nama**: _________________________ | **Nama**: _________________________ |
-| **Jabatan**: [Product Owner / Manajer IT] | **Jabatan**: Independent Lead Software Engineer |
-| **Perusahaan**: [Nama Perusahaan Klien] | **Tanggal**: ______________________ |
-| **Tanggal**: ______________________ | **Tanda Tangan**: |
-| **Tanda Tangan**: | |
+| **Name**: _________________________ | **Name**: _________________________ |
+| **Title / Role**: [Product Owner / IT Manager] | **Title / Role**: Independent Lead Software Engineer |
+| **Company**: [Client Company Name] | **Date**: _________________________ |
+| **Date**: _________________________ | **Signature**: |
+| **Signature**: | |

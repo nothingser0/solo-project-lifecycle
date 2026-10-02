@@ -1,81 +1,81 @@
-# Perjanjian Pemeliharaan Sistem & Tingkat Layanan (Monthly SLA Retainer)
+# System Maintenance & Service Level Agreement (Monthly SLA Retainer)
 
-**Nomor**: SLA/[KODE_PROYEK]/[BULAN_ROMAWI]/[TAHUN]
-
----
-
-Perjanjian Pemeliharaan Sistem dan Tingkat Layanan (*Service Level Agreement*) ini dibuat dan ditandatangani pada hari ini, [Hari], tanggal [Tanggal] bulan [Bulan] tahun [Tahun], oleh dan antara:
-
-1. **PIHAK PERTAMA (Klien)**:
-   - Nama Perusahaan: [Nama PT / CV Klien]
-   - Diwakili oleh: [Nama PIC / Direktur Klien]
-   - Jabatan: [Jabatan Klien]
-   - Selanjutnya disebut sebagai **"Klien"**.
-
-2. **PIHAK KEDUA (Penyedia Layanan / Developer)**:
-   - Nama Lengkap: [Nama Anda]
-   - Profesi: Konsultan Rekayasa Perangkat Lunak Independen
-   - NIK / NPWP: [Nomor Identitas / NPWP]
-   - Selanjutnya disebut sebagai **"Developer"**.
+**Number**: SLA/[PROJECT_CODE]/[ROMAN_MONTH]/[YEAR]
 
 ---
 
-### PASAL 1: RUANG LINGKUP LAYANAN PEMELIHARAAN (SCOPE OF SERVICES)
+This System Maintenance and Service Level Agreement (*Service Level Agreement*) is entered into on this day, [Day of week], [Date] [Month] [Year], by and between:
 
-Developer berkewajiban memberikan layanan pemeliharaan perangkat lunak berkelanjutan untuk sistem `https://app.klien.com` yang mencakup:
+1. **FIRST PARTY (Client)**:
+   - Company Name: [Client Company Name]
+   - Represented by: [Client PIC / Director Name]
+   - Title: [Client Title]
+   - Hereinafter referred to as the **"Client"**.
 
-1. **Pemeliharaan Preventif Rutin (Preventive Maintenance)**:
-   - Pemantauan stabilitas server, status CPU/RAM, dan database connection pooling.
-   - Pemasangan patch keamanan dependensi dan audit kerentanan bulanan (`pnpm audit`).
-   - Verifikasi berkala terhadap keberhasilan pencadangan basis data harian (*Daily Backup Restore Test*).
-2. **Alokasi Jam Kerja Bulanan (Dedicated Development Hours)**:
-   - Klien mendapatkan jatah kuota pengembangan dan perbaikan sebesar **[10 / 15 / 30] Jam Kerja per Bulan**.
-   - Kuota jam dapat digunakan secara fleksibel untuk: penambahan fitur minor, perbaikan bug sekunder, pembuatan variasi template baru, atau konsultasi arsitektur.
-3. **Kebijakan Sisa Jam (Unused Hours Policy)**:
-   - Jam kerja yang tidak terpakai dalam satu periode bulan akan kedaluwarsa dan tidak dapat diakumulasikan ke bulan berikutnya (*use it or lose it*), kecuali disepakati rollover maksimal 20% untuk satu bulan berikutnya.
-4. **Tarif Kelebihan Jam (Overage Hours)**:
-   - Pekerjaan yang membutuhkan waktu melebihi kuota bulanan akan ditagihkan dengan tarif tambahan sebesar **Rp [Tarif_Per_Jam] per jam kerja** setelah mendapat persetujuan tertulis dari Klien.
+2. **SECOND PARTY (Service Provider / Developer)**:
+   - Full Name: [Your Name]
+   - Profession: Independent Software Engineering Consultant
+   - Tax / Identity Number (NIK / NPWP): [Identity / Tax Number]
+   - Hereinafter referred to as the **"Developer"**.
 
 ---
 
-### PASAL 2: TINGKAT LAYANAN & WAKTU TANGGAP (SLA MATRIX)
+### ARTICLE 1: SCOPE OF SERVICES
 
-Developer memberikan komitmen waktu tanggap (*response time*) dan penyelesaian pada jam kerja resmi (Senin–Jumat, 09.00–17.00 WIB):
+The Developer is obligated to provide ongoing software maintenance services for `https://app.client.com` covering:
 
-| Severity Level | Kriteria Gangguan | Waktu Tanggap Respon Awal | Target Resolusi Masalah |
+1. **Routine Preventive Maintenance**:
+   - Monitoring server stability, CPU/RAM utilization, and database connection pooling.
+   - Applying dependency security patches and monthly vulnerability audits (`pnpm audit`).
+   - Periodic verification of daily database backups (*Daily Backup Restore Test*).
+2. **Dedicated Development Hours**:
+   - The Client receives an allocation of **[10 / 15 / 30] Working Hours per Month** for development and bug fixes.
+   - Hours may be utilized flexibly for: minor feature additions, secondary bug fixes, new template variants, or architectural consulting.
+3. **Unused Hours Policy**:
+   - Unused hours in any given monthly period expire and do not accumulate into the following month (*use it or lose it*), unless an agreed maximum 20% rollover to the immediately following month is specified.
+4. **Overage Hours**:
+   - Work exceeding the monthly quota will be billed at an additional rate of **[Currency / Rp] [Hourly_Rate] per hour** upon prior written approval from the Client.
+
+---
+
+### ARTICLE 2: SERVICE LEVELS & RESPONSE TIME (SLA MATRIX)
+
+The Developer commits to the following response and resolution times during official business hours (Monday–Friday, 09:00–17:00 UTC/Local):
+
+| Severity Level | Disruption Criteria | Initial Response Time | Target Resolution Time |
 | :---: | :--- | :---: | :---: |
-| **Severity 1 (Kritis)** | Seluruh aplikasi mati (*down*) atau database tidak dapat diakses | **$< 1$ Jam** (Siaga 24/7 untuk Paket Gold) | **$< 12$ Jam** |
-| **Severity 2 (Mayor)** | Fitur penting terganggu namun sistem masih dapat beroperasi | **$< 4$ Jam Kerja** | **$< 24$ Jam Kerja** |
-| **Severity 3 (Minor)** | Permintaan penyesuaian teks, tampilan, atau pertanyaan konsultasi | **$< 8$ Jam Kerja** | Dijadwalkan sesuai antrean |
+| **Severity 1 (Critical)** | Entire application down or database inaccessible | **$< 1$ Hour** (24/7 on-call for Gold tier) | **$< 12$ Hours** |
+| **Severity 2 (Major)** | Core features impaired but system remains partially operational | **$< 4$ Business Hours** | **$< 24$ Business Hours** |
+| **Severity 3 (Minor)** | Cosmetic defects, minor copy adjustments, or consultation inquiries | **$< 8$ Business Hours** | Scheduled in standard backlog |
 
 ---
 
-### PASAL 3: BIAYA LAYANAN & KETENTUAN PEMBAYARAN
+### ARTICLE 3: SERVICE FEES & PAYMENT TERMS
 
-1. **Biaya Retainer Bulanan**: Sebesar **Rp [Nominal Angka]** (*[Terbilang dalam Rupiah]*) per bulan, di luar biaya langganan server cloud pihak ketiga (S3/VPS/Domain).
-2. **Ketentuan Penagihan**:
-   - Biaya retainer dibayarkan **di muka (Pre-paid)** selambat-lambatnya pada tanggal **1 (satu)** setiap bulannya.
-   - Developer berhak menghentikan sementara layanan dukungan (*support suspension*) apabila pembayaran bulanan belum diterima hingga tanggal 7 pada bulan berjalan.
-3. **Rekening Pembayaran Resmi**:
-   - Bank: [Nama Bank]
-   - Nomor Rekening: [Nomor Rekening]
-   - Atas Nama: [Nama Anda]
-
----
-
-### PASAL 4: JANGKA WAKTU & PENGAKHIRAN PERJANJIAN
-
-1. Perjanjian ini berlaku selama **[6 / 12] bulan** terhitung sejak tanggal [Tanggal Mulai] sampai dengan [Tanggal Berakhir], dan dapat diperpanjang secara otomatis atas kesepakatan kedua belah pihak.
-2. Masing-masing pihak berhak mengakhiri perjanjian ini dengan memberikan pemberitahuan tertulis selambat-lambatnya **30 (tiga puluh) hari kalender** sebelum tanggal pemutusan efektif.
+1. **Monthly Retainer Fee**: **[Currency / Rp] [Amount]** (*[Amount in Words]*) per month, excluding third-party cloud infrastructure costs (S3/VPS/Domain).
+2. **Billing Terms**:
+   - Retainer fees are payable **in advance (Pre-paid)** no later than the **1st (first)** of each calendar month.
+   - The Developer reserves the right to temporarily suspend support services (*support suspension*) if monthly payment is not received by the 7th of the current month.
+3. **Official Payment Account**:
+   - Bank: [Bank Name]
+   - Account Number: [Account Number]
+   - Account Holder: [Your Name]
 
 ---
 
-Perjanjian ini dibuat dalam rangkap 2 (dua), bermeterai cukup (Rp 10.000,-), dan mengikat kedua belah pihak sejak tanggal ditandatangani.
+### ARTICLE 4: TERM & TERMINATION
 
-| PIHAK PERTAMA (Klien) | PIHAK KEDUA (Developer) |
+1. This Agreement is effective for a period of **[6 / 12] months** commencing from [Start Date] until [End Date], and may be automatically renewed upon mutual written agreement of both parties.
+2. Either party may terminate this Agreement by providing written notice no later than **30 (thirty) calendar days** prior to the effective termination date.
+
+---
+
+This Agreement is executed in 2 (two) counterparts with sufficient stamp duty (Rp 10,000 / applicable duty stamp) and binds both parties from the date of execution.
+
+| FIRST PARTY (Client) | SECOND PARTY (Developer) |
 | :---: | :---: |
-| [Nama Perusahaan Klien] | Independent Software Consultant |
-| *(Meterai Rp 10.000,-)* | *(Meterai Rp 10.000,-)* |
+| [Client Company Name] | Independent Software Consultant |
+| *(Duty Stamp / Meterai)* | *(Duty Stamp / Meterai)* |
 | _____________________________ | _____________________________ |
-| **[Nama PIC Klien]** | **[Nama Anda]** |
-| [Jabatan Resmi Klien] | Independent Lead Software Engineer |
+| **[Client PIC Name]** | **[Your Name]** |
+| [Client Official Title] | Independent Lead Software Engineer |

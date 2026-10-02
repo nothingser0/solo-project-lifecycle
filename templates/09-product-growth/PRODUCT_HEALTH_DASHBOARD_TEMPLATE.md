@@ -1,7 +1,7 @@
-# Product Health Dashboard: [Nama Produk]
+# Product Health Dashboard: [Product Name]
 
 **Last Updated**: [YYYY-MM-DD HH:MM WIB]  
-**Owner**: [Nama Solo Developer]  
+**Owner**: [Solo Developer Name]  
 **Review Cadence**: Weekly (Monday 09:00) / Monthly / Quarterly
 
 ---
@@ -11,7 +11,7 @@
 **Overall Product Health**: 🟢 Healthy / 🟡 Needs Attention / 🔴 Critical
 
 **Week/Month**: [Week X, Month Y, 2026]  
-**Key Highlight**: [1-2 kalimat summary, misal "Retention rate naik 5% setelah onboarding redesign, MRR growth 8% MoM"]
+**Key Highlight**: [1-2 sentence summary, e.g., "Retention rate increased by 5% following onboarding redesign, MRR growth 8% MoM"]
 
 **Top 3 Wins** 🎉:
 1. [Win 1, e.g., "Day 7 retention hit 45%, highest ever"]
@@ -41,7 +41,7 @@
 - Referral: [X]% ([X] signups)
 - Direct: [X]% ([X] signups)
 
-**Quick Insight**: [1 kalimat, e.g., "Organic search traffic naik 20% setelah blog post viral di HackerNews"]
+**Quick Insight**: [1 sentence, e.g., "Organic search traffic increased 20% after viral blog post on HackerNews"]
 
 ---
 
@@ -98,7 +98,7 @@ First Core Action ([X]%) ← Activation
 2. [Feature 2]: [X] users ([X]% of MAU)
 3. [Feature 3]: [X] users ([X]% of MAU)
 
-**Quick Insight**: [e.g., "DAU/MAU ratio 28%, menunjukkan sticky product (users kembali sering)"]
+**Quick Insight**: [e.g., "DAU/MAU ratio 28%, indicating a sticky product (users return frequently)"]
 
 ---
 
@@ -119,7 +119,7 @@ First Core Action ([X]%) ← Activation
 - Trial Started: [X] ([X]% of free)
 - Trial → Paid: [X] ([X]% conversion rate)
 
-**Quick Insight**: [e.g., "MRR growth 8% driven by upsell to Pro plan (+Rp 5 jt)"]
+**Quick Insight**: [e.g., "MRR growth 8% driven by upsell to Pro plan (+Rp 5M)"]
 
 ---
 
@@ -155,7 +155,7 @@ First Core Action ([X]%) ← Activation
 | [Month - 1] | [X] | [X] | [X]% | 📈/📉/➡️ |
 | **[Current Month]** | **[X]** | **[X]** | **[X]%** | 📈/📉/➡️ |
 
-**Why This Metric Matters**: [1-2 kalimat justifikasi, e.g., "WAC measures real value delivered, correlates with revenue growth and retention"]
+**Why This Metric Matters**: [1-2 sentence justification, e.g., "WAC measures real value delivered, correlates with revenue growth and retention"]
 
 **Contributing Factors** (This Month):
 - ✅ [Positive factor, e.g., "Launched feature X, increased activation by 10%"]
@@ -168,7 +168,7 @@ First Core Action ([X]%) ← Activation
 **Current Quarter**: Q[X] 2026 ([Month] – [Month])  
 **Weeks Into Quarter**: [X] / 13 weeks
 
-#### Objective 1: [Objective dari M01 OKR]
+#### Objective 1: [Objective from M01 OKR]
 
 | Key Result | Target | Current | Achievement | On Track? |
 | :--- | :--- | ---: | ---: | :--- |
@@ -190,7 +190,7 @@ First Core Action ([X]%) ← Activation
 
 #### Objective 2: [Second Objective]
 
-[Ulangi struktur yang sama]
+[Repeat the same structure]
 
 ---
 
@@ -295,7 +295,7 @@ First Core Action ([X]%) ← Activation
 
 | Initiative | Status | Impact on North Star | Key Learning |
 | :--- | :--- | :--- | :--- |
-| [Initiative 1] | ✅ Shipped | +[X]% | [1 kalimat learning] |
+| [Initiative 1] | ✅ Shipped | +[X]% | [1-sentence learning] |
 | [Initiative 2] | ✅ Shipped | No measurable impact | [Learning: why no impact] |
 | [Initiative 3] | ⚠️ Partially shipped | TBD | [Blocker that delayed] |
 | [Initiative 4] | ❌ Killed | N/A | [Why killed] |
@@ -319,7 +319,7 @@ First Core Action ([X]%) ← Activation
 ### 3.3 Next Quarter Priorities (Strategic Planning)
 
 **Focus Areas** (Q[X+1] 2026):
-1. **[Focus 1]**: [1 kalimat description]
+1. **[Focus 1]**: [1-sentence description]
    - **Why**: [Data-driven justification from this quarter's learnings]
    - **Success Metric**: [Metric + target]
    
@@ -435,5 +435,5 @@ First Core Action ([X]%) ← Activation
 
 **Next Review Date**: [YYYY-MM-DD] (Weekly: every Monday 09:00 WIB)
 
-**Owner**: [Nama Solo Developer]  
+**Owner**: [Solo Developer Name]  
 **Last Updated**: [YYYY-MM-DD HH:MM WIB]

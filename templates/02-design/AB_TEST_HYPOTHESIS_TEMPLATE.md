@@ -31,13 +31,13 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 ## 2. Context & Rationale
 
 **Current Problem**:  
-[Contoh: "Only 11.5% of users who view reports actually export them, despite export being a core workflow. User interviews revealed 4/5 users didn't notice the dropdown menu."]
+[Example: "Only 11.5% of users who view reports actually export them, despite export being a core workflow. User interviews revealed 4/5 users didn't notice the dropdown menu."]
 
 **Why This Change**:  
-[Contoh: "Primary toolbar placement increases discoverability. Industry benchmark for similar tools: 18-25% CTR on export features."]
+[Example: "Primary toolbar placement increases discoverability. Industry benchmark for similar tools: 18-25% CTR on export features."]
 
 **Alternative Considered** (Why Not Chosen):  
-[Contoh: "Alternative: Add a tooltip on hover → Rejected because mobile users won't see hover states."]
+[Example: "Alternative: Add a tooltip on hover → Rejected because mobile users won't see hover states."]
 
 ---
 
@@ -47,15 +47,15 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 
 **Control (A)**: [Describe current state]  
 - Screenshot/Prototype URL: [...]
-- Key characteristic: [Contoh: "Export button inside '⋮' overflow menu"]
+- Key characteristic: [Example: "Export button inside '⋮' overflow menu"]
 
 **Treatment (B)**: [Describe proposed change]  
 - Screenshot/Prototype URL: [...]
-- Key characteristic: [Contoh: "Export button as primary action in toolbar, icon + label"]
+- Key characteristic: [Example: "Export button as primary action in toolbar, icon + label"]
 
 ### Success Metric (Primary)
 
-**Metric**: [Contoh: "Click-through rate (CTR) on Export button"]  
+**Metric**: [Example: "Click-through rate (CTR) on Export button"]  
 **Formula**: `(Export Button Clicks / Report Views) × 100%`  
 **Baseline (Control)**: 11.5%  
 **Target (Treatment)**: ≥15% (+30% relative lift)  
@@ -63,10 +63,10 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 
 ### Secondary Metrics (Guardrails)
 
-Track untuk memastikan tidak ada regresi:
-- **Bounce Rate**: Tidak boleh meningkat >5%
-- **Time to Export**: Tidak boleh meningkat >10%
-- **Error Rate**: Tidak boleh meningkat
+Track to ensure no regressions:
+- **Bounce Rate**: Must not increase >5%
+- **Time to Export**: Must not increase >10%
+- **Error Rate**: Must not increase
 
 ---
 
@@ -155,15 +155,15 @@ Do NOT stop early unless:
 **Decision**: [ ] Ship Treatment [ ] Revert to Control [ ] Run Follow-Up Test
 
 **Rationale**:  
-[Contoh: "Treatment achieved 16.2% CTR (p=0.003), exceeding target 15%. No guardrail violations. Shipping to 100% users."]
+[Example: "Treatment achieved 16.2% CTR (p=0.003), exceeding target 15%. No guardrail violations. Shipping to 100% users."]
 
 **Follow-Up Actions**:
-- [ ] [Action 1, contoh: "Update onboarding tooltip to mention new Export button location"]
+- [ ] [Action 1, example: "Update onboarding tooltip to mention new Export button location"]
 - [ ] [Action 2]
 - [ ] [Action 3]
 
 **Lessons Learned**:  
-[Contoh: "Icon + label outperformed icon-only in toolbar. Apply same pattern to other secondary actions."]
+[Example: "Icon + label outperformed icon-only in toolbar. Apply same pattern to other secondary actions."]
 
 ---
 

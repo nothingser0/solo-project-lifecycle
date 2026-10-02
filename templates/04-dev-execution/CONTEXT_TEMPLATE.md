@@ -1,49 +1,49 @@
 # CONTEXT.md
 
-> Konteks bisnis, batasan lingkup, dan domain model proyek untuk memandu pemahaman AI coding agents.
+> Business context, scope boundaries, and project domain model to guide AI coding agent understanding.
 
 ---
 
-## 1. Ringkasan Produk & Masalah Bisnis
-- **Nama Produk**: [Nama Aplikasi]
-- **Masalah Utama**: [Penjelasan singkat masalah yang dihadapi pengguna]
-- **Solusi Inti**: [Bagaimana aplikasi ini menyelesaikan masalah tersebut]
+## 1. Product Summary & Business Problem
+- **Product Name**: [Application Name]
+- **Core Problem**: [Brief explanation of the problem faced by users]
+- **Core Solution**: [How this application solves that problem]
 
 ---
 
-## 2. Alur Pengguna Inti (Core User Loop)
-1. **Langkah 1 (Input)**: [Contoh: Staf login, memilih template, dan mengisi variabel form]
-2. **Langkah 2 (Proses)**: [Contoh: Sistem merender PDF, mengenkripsi ke vault, dan menerbitkan link tanda tangan]
-3. **Langkah 3 (Output)**: [Contoh: Pihak penandatangan membubuhkan tanda tangan digital, dokumen berstatus LOCKED]
+## 2. Core User Loop
+1. **Step 1 (Input)**: [Example: Staff logs in, selects template, and fills form variables]
+2. **Step 2 (Process)**: [Example: System renders PDF, encrypts to vault, and issues signature link]
+3. **Step 3 (Output)**: [Example: Signer places digital signature, document status becomes LOCKED]
 
 ---
 
-## 3. Matriks Peran Pengguna (User Roles & RBAC)
+## 3. User Roles & RBAC Matrix
 
-| Peran (Role) | Hak Akses | Batasan Tindakan |
+| Role | Access Rights | Action Restrictions |
 | :--- | :--- | :--- |
-| **Super Admin** | Akses penuh seluruh data, audit trail, user management | Dilarang mengubah dokumen yang sudah berstatus `SIGNED` |
-| **Manager** | Menyetujui draf dokumen, mengirim permintaan e-sign | Hanya melihat data dalam divisinya |
-| **Staf** | Mengisi form input draf dokumen baru | Tidak bisa menyetujui atau menerbitkan dokumen final |
-| **Signer (Tamu)** | Akses satu kali via token rahasia untuk tanda tangan | Tidak memiliki akun login sistem |
+| **Super Admin** | Full access to all data, audit trail, user management | Prohibited from modifying documents with `SIGNED` status |
+| **Manager** | Approve document drafts, send e-sign requests | View data within assigned division only |
+| **Staff** | Fill input forms for new document drafts | Cannot approve or issue final documents |
+| **Signer (Guest)** | One-time access via secret token for signing | Has no system login account |
 
 ---
 
-## 4. Batasan Lingkup Mutlak (Scope Boundaries)
+## 4. Absolute Scope Boundaries
 
-### Wajib Dibuat (In-Scope)
-- [Daftar fitur sesuai SCOPE_STATEMENT.md]
+### In-Scope (Mandatory)
+- [Feature list per SCOPE_STATEMENT.md]
 
-### DILARANG Dibuat (Out-of-Scope - Jangan Halusinasi)
-- AI agen DILARANG menambahkan fitur di luar daftar berikut tanpa perintah eksplisit:
-  1. Dilarang membuat sistem e-commerce/keranjang belanja jika tidak diminta.
-  2. Dilarang membuat AI chatbot rekomendasi atau fitur analitik kompleks.
-  3. Dilarang menambah multi-bahasa selain Bahasa Indonesia.
-  4. Dilarang membuat sistem pembayaran manual di luar payment gateway yang disepakati.
+### Out-of-Scope (PROHIBITED - Do Not Hallucinate)
+- AI agents are PROHIBITED from adding features outside the following list without explicit instructions:
+  1. Do not build an e-commerce/shopping cart system unless requested.
+  2. Do not build an AI recommendation chatbot or complex analytics features.
+  3. Do not add multi-language support beyond the primary language specified.
+  4. Do not build manual payment systems outside the agreed payment gateway.
 
 ---
 
-## 5. Istilah Domain (Glossary)
-- **Document Vault**: Penyimpanan cloud terisolasi di mana file PDF dienkripsi menggunakan AES-256-GCM.
-- **Audit Trail**: Catatan rekaman permanen berisi timestamp UTC, alamat IP, dan nilai SHA-256 dokumen.
-- **Signer Token**: Token hash unik sekali pakai dengan masa kedaluwarsa 7 hari untuk penandatangan.
+## 5. Domain Glossary
+- **Document Vault**: Isolated cloud storage where PDF files are encrypted using AES-256-GCM.
+- **Audit Trail**: Permanent immutable record containing UTC timestamp, IP address, and document SHA-256 hash.
+- **Signer Token**: Unique one-time hashed token with a 7-day expiration for signers.

@@ -1,133 +1,133 @@
-# Protokol Deployment Produksi & Laporan Go-Live
+# Production Deployment Protocol & Go-Live Report
 
-> Dokumen gabungan panduan eksekusi peluncuran sistem ke Produksi dan laporan verifikasi pasca-rilis.
-
----
-
-## BAGIAN I: DEPLOYMENT RUNBOOK
-
-### 1. Metadata Rilis
-- **Nama Sistem**: [Nama Aplikasi]
-- **Target Versi Rilis**: `v1.0.0`
-- **Domain Resmi**: `https://app.klien.com`
-- **Tanggal & Jam Rilis**: [YYYY-MM-DD] Pukul [09.00 - 11.00 WIB]
-- **Release Engineer**: [Nama Anda]
+> Combined document for production system deployment execution guide and post-release verification report.
 
 ---
 
-### 2. Checklist Pra-Peluncuran (Pre-Flight Sanity)
+## PART I: DEPLOYMENT RUNBOOK
 
-- [ ] **Berita Acara UAT**: Dokumen `UAT_SIGNOFF_REPORT.md` telah ditandatangani Single PIC Klien.
-- [ ] **Jadwal Aman**: Rilis dilakukan pada hari kerja (Selasa–Kamis pagi), bukan Jumat sore atau akhir pekan.
-- [ ] **Snapshot Backup**: Basis data produksi telah di-backup secara manual sebelum migrasi dijalankan.
-- [ ] **Kunci Lingkungan**: Variabel `.env` produksi menggunakan kredensial LIVE (Bukan sandbox).
+### 1. Release Metadata
+- **System Name**: [Application Name]
+- **Target Release Version**: `v1.0.0`
+- **Official Domain**: `https://app.client.com`
+- **Release Date & Time**: [YYYY-MM-DD] at [09:00 - 11:00 UTC/WIB]
+- **Release Engineer**: [Your Name]
 
 ---
 
-### 3. Urutan Eksekusi Deployment (Step-by-Step Commands)
+### 2. Pre-Launch Checklist (Pre-Flight Sanity)
 
-#### Langkah 1: Penggabungan Branch & Tagging Git
+- [ ] **UAT Sign-Off**: `UAT_SIGNOFF_REPORT.md` document has been signed by Client Single PIC.
+- [ ] **Safe Window**: Release scheduled during working days (Tuesday–Thursday morning), not Friday afternoon or weekend.
+- [ ] **Snapshot Backup**: Production database manually backed up before executing migrations.
+- [ ] **Environment Keys**: Production `.env` variables use LIVE credentials (not sandbox).
+
+---
+
+### 3. Deployment Execution Steps (Step-by-Step Commands)
+
+#### Step 1: Branch Merge & Git Tagging
 ```bash
-# Pindah ke branch main dan gabungkan dari staging
+# Switch to main branch and merge from staging
 git checkout main
 git pull origin main
 git merge --no-ff staging -m "chore: merge staging for production release v1.0.0"
 
-# Beri label versi resmi
+# Tag official release version
 git tag -a v1.0.0 -m "Release Production v1.0.0"
 git push origin main --tags
 ```
 
-#### Langkah 2: Migrasi Basis Data Produksi
+#### Step 2: Production Database Migration
 ```bash
-# Jalankan migrasi skema SQL DDL
+# Run SQL DDL schema migration
 DATABASE_URL="postgresql://user:***@prod-host:5432/db_prod?sslmode=require" pnpm db:migrate
 ```
 
-#### Langkah 3: Eksekusi Build & Deploy Kontainer
+#### Step 3: Container Build & Deploy Execution
 ```bash
-# Jika menggunakan Docker / Serverless:
-# Pipeline CI/CD otomatis berjalan saat git push tag v1.0.0
-# Verifikasi status pipeline di GitHub Actions / Dashboard Cloud Hosting
+# If using Docker / Serverless:
+# CI/CD pipeline runs automatically on git push tag v1.0.0
+# Verify pipeline status in GitHub Actions / Cloud Hosting Dashboard
 ```
 
-#### Langkah 4: Verifikasi DNS & Sertifikat SSL (Web Deployment)
+#### Step 4: DNS & SSL Certificate Verification (Web Deployment)
 ```bash
-# Periksa propagasi DNS
-dig +short app.klien.com
-# Uji status sertifikat SSL
-curl -Iv https://app.klien.com
+# Check DNS propagation
+dig +short app.client.com
+# Test SSL certificate status
+curl -Iv https://app.client.com
 ```
 
-#### Langkah 5: Peluncuran Aplikasi Mobile (Khusus Mobile Apps)
-- [ ] **Android Keystore**: Berkas release keystore `.jks` tersimpan aman di vault terenkripsi.
-- [ ] **Build Android App Bundle**: `flutter build appbundle --release` atau `cd android && ./gradlew bundleRelease` (menghasilkan berkas `.aab`).
-- [ ] **Google Play Console**: Upload `.aab` ke track *Production* (atau jalankan *Staged Rollout 20%*).
-- [ ] **iOS Archive**: `flutter build ipa --release` atau arsip via Xcode dengan *Distribution Certificate* & *Provisioning Profile*.
-- [ ] **Apple App Store Connect**: Upload `.ipa` via Transporter/Xcode $\to$ Kirim untuk peninjauan (*Submit for Review*).
-- [ ] **Force-Update Check**: Endpoint `/api/v1/app/version-check` mengembalikan versi minimum `1.0.0`.
+#### Step 5: Mobile App Launch (Mobile Apps Only)
+- [ ] **Android Keystore**: Release keystore `.jks` file securely stored in encrypted vault.
+- [ ] **Build Android App Bundle**: `flutter build appbundle --release` or `cd android && ./gradlew bundleRelease` (produces `.aab` file).
+- [ ] **Google Play Console**: Upload `.aab` to *Production* track (or run *Staged Rollout 20%*).
+- [ ] **iOS Archive**: `flutter build ipa --release` or archive via Xcode with *Distribution Certificate* & *Provisioning Profile*.
+- [ ] **Apple App Store Connect**: Upload `.ipa` via Transporter/Xcode $\to$ Submit for Review.
+- [ ] **Force-Update Check**: Endpoint `/api/v1/app/version-check` returns minimum version `1.0.0`.
 
 ---
 
-### 4. Pengaktifan Pemantauan & Bot Alert (Observability)
+### 4. Monitoring & Alert Bot Activation (Observability)
 
-- [ ] **Error Tracking**: DSN Sentry lingkungan produksi terkonfirmasi menerima event error pengujian.
-- [ ] **Uptime Ping**: Layanan Uptime Kuma / BetterStack aktif memantau endpoint `https://app.klien.com/api/health` setiap 60 detik.
-- [ ] **Telegram/WA Alert**: Bot notifikasi down terhubung ke perangkat solo developer.
-- [ ] **Auto-Backup**: Cron job backup harian pukul 02.00 WIB terverifikasi aktif.
-
----
-
-## BAGIAN II: GO-LIVE VERIFICATION REPORT
-
-### 1. Metadata Peluncuran
-- **Nama Sistem**: [Nama Aplikasi]
-- **Versi Rilis Resmi**: `v1.0.0`
-- **Domain Resmi Publik**: `https://app.klien.com`
-- **Waktu Resmi Go-Live**: [YYYY-MM-DD] Pukul [HH:MM WIB]
-- **Lead Release Engineer**: [Nama Anda]
-- **Status Operasional**: **LIVE ON PRODUCTION (STABIL)**
+- [ ] **Error Tracking**: Production Sentry DSN confirmed receiving test error events.
+- [ ] **Uptime Ping**: Uptime Kuma / BetterStack actively monitoring `https://app.client.com/api/health` endpoint every 60 seconds.
+- [ ] **Telegram/Slack/WA Alert**: Downtime notification bot connected to solo developer device.
+- [ ] **Auto-Backup**: Daily backup cron job at 02:00 confirmed active.
 
 ---
 
-### 2. Status Infrastruktur Produksi
+## PART II: GO-LIVE VERIFICATION REPORT
 
-| Komponen Infrastruktur | Penyedia Layanan | Status Konfigurasi | Hasil Verifikasi |
+### 1. Launch Metadata
+- **System Name**: [Application Name]
+- **Official Release Version**: `v1.0.0`
+- **Official Public Domain**: `https://app.client.com`
+- **Official Go-Live Time**: [YYYY-MM-DD] at [HH:MM UTC/WIB]
+- **Lead Release Engineer**: [Your Name]
+- **Operational Status**: **LIVE ON PRODUCTION (STABLE)**
+
+---
+
+### 2. Production Infrastructure Status
+
+| Infrastructure Component | Service Provider | Configuration Status | Verification Result |
 | :--- | :--- | :--- | :---: |
-| **Domain & DNS** | Cloudflare / Niagahoster | Record A & CNAME Aktif | Lolos Resolusi DNS |
-| **Sertifikat Keamanan** | Let's Encrypt / Cloudflare | TLS 1.3 Aktif (Masa berlaku 90 hari) | SSL Labs Grade A |
-| **Basis Data Produksi**| Managed PostgreSQL v16 | Multi-AZ / Daily Backup Aktif | Koneksi Pool Stabil |
-| **Storage Vault** | Cloudflare R2 / AWS S3 | Bucket Private (Enkripsi AES-256-GCM) | Upload/Download Lolos |
-| **Gateway Pembayaran** | Midtrans / Xendit | **Mode Produksi (LIVE)** | Webhook Lolos Verifikasi |
-| **Email Transaksional**| Resend / SendGrid | Domain Pengirim Terverifikasi (DKIM/SPF) | Delivery Rate 100% |
+| **Domain & DNS** | Cloudflare / Provider | A & CNAME Records Active | DNS Resolution Passed |
+| **Security Certificate** | Let's Encrypt / Cloudflare | TLS 1.3 Active (90-day validity) | SSL Labs Grade A |
+| **Production Database** | Managed PostgreSQL v16 | Multi-AZ / Daily Backup Active | Connection Pool Stable |
+| **Storage Vault** | Cloudflare R2 / AWS S3 | Private Bucket (AES-256-GCM Encryption) | Upload/Download Passed |
+| **Payment Gateway** | Midtrans / Stripe / Xendit | **Production Mode (LIVE)** | Webhook Verified |
+| **Transactional Email** | Resend / SendGrid | Sender Domain Verified (DKIM/SPF) | Delivery Rate 100% |
 
 ---
 
-### 3. Hasil Pengujian Verifikasi Pasca-Rilis (Production Verification Testing)
+### 3. Post-Release Verification Test Results (Production Verification Testing)
 
-Pengujian transaksi nyata dilakukan langsung di domain publik:
+Real transaction tests executed directly on public domain:
 
-- [x] **PVT-01 (Autentikasi)**: Akun Super Admin dan Staf resmi berhasil login ke sistem produksi.
-- [x] **PVT-02 (Pembuatan Dokumen)**: Draf dokumen baru berhasil diinput, dirender menjadi PDF resmi, dan tersimpan terenkripsi di vault.
-- [x] **PVT-03 (Tanda Tangan Digital)**: Tautan tanda tangan digital berhasil dibuka di perangkat ponsel dan dibubuhi tanda tangan.
-- [x] **PVT-04 (Transaksi Riil)**: Uji coba transaksi pembayaran nyata berhasil memotong saldo dan mengubah status order secara instan.
-- [x] **PVT-05 (Observabilitas)**: Uptime monitoring aktif dengan latensi rata-rata **125 ms** (target $< 200\text{ ms}$).
-
----
-
-### 4. Deklarasi Sistem Siap Operasional
-
-Dengan ini dinyatakan bahwa sistem perangkat lunak telah resmi beroperasi secara mandiri di lingkungan Produksi. 
-
-Proyek secara resmi melangkah ke tahap penutupan komersial dan serah terima: **Modul 11: [GATE PENYERAHAN] Pelunasan 100%, Training, BAST, & Handover Repositori**.
+- [x] **PVT-01 (Authentication)**: Official Super Admin and Staff accounts successfully logged in to production system.
+- [x] **PVT-02 (Document Creation)**: New draft document successfully inputted, rendered to official PDF, and securely stored in encrypted vault.
+- [x] **PVT-03 (Digital Signature)**: Digital signature link opened on mobile device and signed successfully.
+- [x] **PVT-04 (Real Transaction)**: Real payment transaction test successfully debited and updated order status instantly.
+- [x] **PVT-05 (Observability)**: Uptime monitoring active with average latency of **125 ms** (target $< 200\text{ ms}$).
 
 ---
 
-### 5. Lembar Pengesahan Go-Live
+### 4. Operational Readiness Declaration
 
-| Single PIC Klien | Release Engineer |
+It is hereby declared that the software system is officially operating autonomously in the Production environment.
+
+The project officially advances to the commercial closing and handover phase: **Module 11: [HANDOVER GATE] 100% Final Payment, Training, BAST, & Repository Handover**.
+
+---
+
+### 5. Go-Live Sign-Off Sheet
+
+| Client Single PIC | Release Engineer |
 | :--- | :--- |
-| **Nama**: _________________________ | **Nama**: _________________________ |
-| **Jabatan**: ______________________ | **Jabatan**: Independent Lead Engineer |
-| **Tanggal**: ______________________ | **Tanggal**: ______________________ |
-| **Tanda Tangan**: | **Tanda Tangan**: |
+| **Name**: _________________________ | **Name**: _________________________ |
+| **Title**: ________________________ | **Title**: Independent Lead Engineer |
+| **Date**: _________________________ | **Date**: _________________________ |
+| **Signature**: | **Signature**: |

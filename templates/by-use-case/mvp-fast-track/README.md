@@ -1,8 +1,8 @@
 # MVP Fast-Track Templates
 
-**Use case**: Ship MVP dalam 2-4 minggu tanpa full ceremony
+**Use case**: Ship MVP in 2-4 weeks without full ceremony
 
-**Time to complete**: 2-3 hours total (vs 20+ hours untuk full framework)
+**Time to complete**: 2-3 hours total (vs 20+ hours for full framework)
 
 ---
 

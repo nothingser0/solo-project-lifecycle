@@ -31,9 +31,9 @@
 **Example:**
 ```
 Who: Freelance designers & developers (solo/1-5 team)
-Pain: Pajak kompleks, takut salah hitung, rugi bayar lebih
+Pain: Complex taxes, fear of miscalculation, loss from overpaying
 Where: Twitter tech ID, Telegram groups, Reddit r/finansial
-Trigger: Tax deadline approaching, first time kena PPh 21 non-pegawai
+Trigger: Tax deadline approaching, first time subjected to non-employee PPh 21
 ```
 
 ### Secondary Persona (Optional)
@@ -58,14 +58,14 @@ Trigger: Tax deadline approaching, first time kena PPh 21 non-pegawai
 
 **Example:**
 ```
-Core: Kalkulator pajak pertama yang bisa compare 3 skema sekaligus
+Core: First tax calculator capable of comparing 3 schemes simultaneously
 Benefits:
-1. Hemat waktu 80% (15 menit vs 2 jam manual)
-2. Legal compliance 100% (data dari Ortax + DJP)
-3. Gratis untuk freelancer <Rp100jt/tahun
+1. Save 80% time (15 minutes vs 2 hours manually)
+2. 100% legal compliance (data from Ortax + DJP)
+3. Free for freelancers <Rp100M/year
 
-vs. KlikPajak: Mereka B2B enterprise, kita B2C freelancer
-vs. Excel: Kita auto-update regulasi, Excel butuh manual tracking
+vs. KlikPajak: They are B2B enterprise, we are B2C freelancer
+vs. Excel: We auto-update regulations, Excel requires manual tracking
 ```
 
 ---
@@ -80,7 +80,7 @@ vs. Excel: Kita auto-update regulasi, Excel butuh manual tracking
 | **Social Media (Twitter/X)** | Launch thread, daily tips, engage in #buildinpublic | $0 (organic) | 1,000-5,000 impressions | HIGH |
 | **Content Marketing (Blog/SEO)** | 5 pillar articles (how-to, guides) | $0 (DIY) | 500-2,000 organic visits/month | MEDIUM |
 | **Community Marketing** | Post in Telegram/Reddit groups, answer questions | $0 | 200-1,000 targeted users | HIGH |
-| **Paid Ads (Google/Meta)** | Search ads for high-intent keywords | Rp1-3 juta/month | 50-200 signups | LOW (test later) |
+| **Paid Ads (Google/Meta)** | Search ads for high-intent keywords | Rp1-3 million/month | 50-200 signups | LOW (test later) |
 | **Email Outreach** | Cold email to niche newsletters, podcast sponsors | $0 | 10-50 partnerships | MEDIUM |
 | **Influencer/Affiliate** | Micro-influencers (500-10k followers) in niche | $0-500 (barter/commission) | 500-3,000 impressions | MEDIUM |
 

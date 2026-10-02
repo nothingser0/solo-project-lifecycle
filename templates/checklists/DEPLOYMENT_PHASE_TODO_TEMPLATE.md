@@ -1,141 +1,141 @@
-# Deployment & Handover Phase TODO Template (Modul 10 - Modul 11)
+# Deployment & Handover Phase TODO Template (Module 10 - Module 11)
 
-> Template daftar tugas atomik untuk fase Rilis Produksi (Go-Live), Verifikasi Pasca-Deployment, Serah Terima Sistem (Handover), dan Penandatanganan BAST Final bersama Klien.
-> Aturan: Eksekusi deployment dengan disiplin tinggi sesuai runbook. Dilarang melakukan perubahan manual mendadak (*cowboy deployments*) di server produksi. Setiap langkah harus memiliki bukti asersi dan prosedur rollback yang siap dieksekusi sewaktu-waktu.
-
----
-
-## Metadata Deployment & Serah Terima
-- **Nama Sistem**: [Nama Sistem / Aplikasi]
-- **Target URL Produksi**: `https://app.domainklien.com`
-- **Lead Release Engineer / Solo Dev**: [Nama Anda]
-- **PIC Teknis & Bisnis Klien**: [Nama PIC Klien]
-- **Jendela Waktu Deployment (Maintenance Window)**: [YYYY-MM-DD HH:mm - HH:mm WIB]
-- **Metode Deployment**: Blue/Green | Canary | Rolling Update | Container Service
-- **Status Gerbang Rilis**: [ ] PRE-FLIGHT | [ ] DEPLOYING | [ ] VERIFIED LIVE | [ ] HANDOVER COMPLETED
+> Atomic task checklist template for Production Release (Go-Live), Post-Deployment Verification, System Handover, and Final BAST Sign-Off with the Client.
+> Rules: Execute deployment with strict discipline following the runbook. Ad-hoc manual changes (*cowboy deployments*) on production servers are strictly prohibited. Every step must have assertion evidence and a rollback procedure ready to execute at any time.
 
 ---
 
-## 1. Modul 10: Pemeriksaan Pra-Penerbangan (Pre-Flight Checks)
+## Deployment & Handover Metadata
+- **System Name**: [System / Application Name]
+- **Production Target URL**: `https://app.clientdomain.com`
+- **Lead Release Engineer / Solo Dev**: [Your Name]
+- **Client Technical & Business PIC**: [Client PIC Name]
+- **Deployment Window (Maintenance Window)**: [YYYY-MM-DD HH:mm - HH:mm UTC/Local]
+- **Deployment Method**: Blue/Green | Canary | Rolling Update | Container Service
+- **Release Gate Status**: [ ] PRE-FLIGHT | [ ] DEPLOYING | [ ] VERIFIED LIVE | [ ] HANDOVER COMPLETED
 
-### 1.1 Persiapan Tim & Jendela Pemeliharaan
-- [ ] `deploy/pre-flight-checklist.md`: Tetapkan jendela waktu rilis (*maintenance window*) di jam lalu lintas terendah (misal: Sabtu/Minggu pukul 23:00 - 03:00 WIB) - expect kesepakatan jadwal tertulis dengan klien
-- [ ] `deploy/pre-flight-checklist.md`: Kirimkan pemberitahuan resmi pemeliharaan terjadwal (*maintenance notification banner/email*) kepada pengguna 48 jam dan 2 jam sebelum rilis - expect pengguna teredukasi
-- [ ] `deploy/pre-flight-checklist.md`: Berlakukan *Code Freeze*: kunci branch `main` atau `release` di Git, dilarang melakukan commit fitur baru di luar patch rilis yang telah lolos UAT - expect status branch stabil
+---
 
-### 1.2 Kesiapan Infrastruktur & Jaringan Produksi
-- [ ] `deploy/infrastructure-readiness.md`: Verifikasi kapasitas komputasi (CPU, RAM, Disk I/O) server produksi siap menampung beban - expect alokasi resource sesuai dokumen Capacity Planning
-- [ ] `deploy/infrastructure-readiness.md`: Konfigurasikan catatan DNS publik (A Record, CNAME, TXT record untuk SPF/DKIM) dengan TTL rendah (300 detik) untuk memfasilitasi propagasi cepat - expect propagasi DNS terpantau aktif
-- [ ] `deploy/infrastructure-readiness.md`: Pasang dan verifikasi sertifikat SSL/TLS (Let's Encrypt / Cloudflare Edge Certificate) pada domain utama dan seluruh subdomain - expect validitas sertifikat aktif dan HTTPS dipaksa (*forced HTTPS redirect*)
-- [ ] `deploy/infrastructure-readiness.md`: Konfigurasikan Web Application Firewall (WAF) dan proteksi DDoS di Cloudflare / AWS Shield (rate limit rule, bot fight mode) - expect proteksi layer 7 aktif
+## 1. Module 10: Pre-Flight Checks (Pre-Flight Checks)
 
-### 1.3 Audit Variabel Lingkungan & Secret Produksi
-- [ ] `deploy/env-audit.md`: Siapkan file konfigurasi lingkungan produksi (`.env.production` atau di dalam Cloud Secret Manager / Doppler / Infisical / AWS Parameter Store) - expect tidak ada nilai placeholder dummy staging yang tersisa
-- [ ] `deploy/env-audit.md`: Jalankan validator Zod / schema parser variabel lingkungan: `pnpm run check:env` - expect seluruh variabel wajib terdefinisi lengkap tanpa error
-- [ ] `deploy/env-audit.md`: Verifikasi kredensial produksi pihak ketiga aktif:
-  - Database URL produksi dengan connection pooling (PgBouncer / Supabase pooler)
+### 1.1 Team Preparation & Maintenance Window
+- [ ] `deploy/pre-flight-checklist.md`: Establish release maintenance window during lowest traffic hours (e.g., Saturday/Sunday 23:00 - 03:00) - expect written schedule agreement with client
+- [ ] `deploy/pre-flight-checklist.md`: Send official scheduled maintenance notification (banner/email) to users 48 hours and 2 hours prior to release - expect users informed
+- [ ] `deploy/pre-flight-checklist.md`: Enforce Code Freeze: lock `main` or `release` branch in Git, prohibit new feature commits outside release patches that passed UAT - expect branch status stabilized
+
+### 1.2 Production Infrastructure & Network Readiness
+- [ ] `deploy/infrastructure-readiness.md`: Verify production server compute capacity (CPU, RAM, Disk I/O) ready for workload - expect resource allocations align with Capacity Planning document
+- [ ] `deploy/infrastructure-readiness.md`: Configure public DNS records (A Record, CNAME, TXT records for SPF/DKIM) with low TTL (300 seconds) for fast propagation - expect DNS propagation monitored active
+- [ ] `deploy/infrastructure-readiness.md`: Install and verify SSL/TLS certificates (Let's Encrypt / Cloudflare Edge Certificate) on primary domain and all subdomains - expect valid certificates and forced HTTPS redirection
+- [ ] `deploy/infrastructure-readiness.md`: Configure Web Application Firewall (WAF) and DDoS protection on Cloudflare / AWS Shield (rate limiting rules, bot fight mode) - expect layer 7 protection active
+
+### 1.3 Production Environment Variables & Secrets Audit
+- [ ] `deploy/env-audit.md`: Prepare production configuration (`.env.production` or in Cloud Secret Manager / Doppler / Infisical / AWS Parameter Store) - expect zero staging dummy placeholders remaining
+- [ ] `deploy/env-audit.md`: Run Zod / schema environment validator: `pnpm run check:env` - expect all mandatory variables fully defined without error
+- [ ] `deploy/env-audit.md`: Verify active third-party production credentials:
+  - Production Database URL with connection pooling (PgBouncer / Supabase pooler)
   - Production Payment Gateway API Keys & Webhook Secret
-  - Production Email Service (Resend / AWS SES / SendGrid) domain terverifikasi
-  - Production Object Storage (Cloudflare R2 / AWS S3) bucket permission terkunci privat
-  - expect seluruh koneksi pihak ketiga merespons status otentikasi valid
+  - Production Email Service (Resend / AWS SES / SendGrid) domain verified
+  - Production Object Storage (Cloudflare R2 / AWS S3) bucket permissions locked private
+  - expect all third-party integrations respond with valid authentication status
 
-### 1.4 Pencadangan Basis Data & Rencana Rollback (Contingency Baseline)
-- [ ] `deploy/backup-verification.md`: Jalankan pencadangan basis data penuh (*Full Database Snapshot / pg_dump*) sesaat sebelum eksekusi rilis: `pg_dump -Fc -v -h <host> -U <user> <dbname> > backup_pre_deploy.dump` - expect file dump terverifikasi integritasnya dan tersimpan di penyimpanan aman off-site
-- [ ] `deploy/rollback-plan.md`: Dokumentasikan Rencana Rollback eksplisit langkah-demi-langkah jika proses deployment gagal - expect perintah shell pemulihan teruji
-- [ ] `deploy/rollback-plan.md`: Tetapkan kriteria pemicu rollback (*Rollback Triggers*):
-  - Terjadi error migrasi database yang merusak integritas skema
-  - Healthcheck `/healthz` gagal merespons dalam 5 menit pasca rilis
-  - Error rate pada APM melampaui > 1% dalam 15 menit pertama
-  - Terjadi kegagalan transaksi inti pengguna yang tidak dapat ditambal dalam 30 menit
-  - expect komitmen eksekusi rollback tanpa keraguan jika salah satu kriteria terpicu
-
----
-
-## 2. Modul 10: Langkah Eksekusi Deployment (Deployment Steps)
-
-### 2.1 Eksekusi Migrasi Basis Data Produksi
-- [ ] Pasang halaman pemeliharaan sementara (*Maintenance Page / Banner 503 Service Unavailable*) jika deployment memerlukan downtime skema basis data - expect lalu lintas pengguna tertahan aman
-- [ ] Jalankan skrip migrasi skema database produksi: `pnpm prisma migrate deploy` (atau alat migrasi terkait) - expect proses migrasi selesai dengan status exit code 0 tanpa kegagalan constraint
-- [ ] Verifikasi keberadaan tabel, indeks baru, dan data seeding wajib (data master wilayah, akun superadmin awal, role permissions) - expect skema database produksi sinkron 100% dengan rancangan FSD
-
-### 2.2 Kompilasi Build & Distribusi Aplikasi
-- [ ] Eksekusi build artefak produksi teroptimasi: `pnpm build` (atau trigger pipeline CI/CD GitHub Actions) - expect proses bundling aset JS/CSS lolos tanpa error TypeScript atau circular dependency
-- [ ] Distribusikan container image baru / deploy serverless bundle ke cluster komputasi produksi - expect proses container pull dan spawn instance baru berjalan lancar
-- [ ] Bersihkan cache lama di CDN (*Cloudflare Cache Purge / AWS CloudFront Invalidation*) untuk memastikan pengguna mendapatkan aset JavaScript dan CSS paling mutakhir - expect pengguna tidak mengalami kegagalan chunk loader
-
-### 2.3 Evaluasi Pemeriksaan Kesehatan (Health Checks)
-- [ ] Uji endpoint internal kesiapan server: `curl -I https://app.domainklien.com/healthz` - expect HTTP 200 OK
-- [ ] Uji keterhubungan layanan dependensi via endpoint diagnostik internal: koneksi database, koneksi Redis cache, koneksi worker queue, dan akses disk - expect seluruh status berstatus `HEALTHY`
-- [ ] Nonaktifkan halaman pemeliharaan dan buka kembali rute lalu lintas pengguna penuh (*Switch traffic to live*) - expect lalu lintas publik mengalir masuk secara normal
+### 1.4 Database Backup & Rollback Contingency Baseline
+- [ ] `deploy/backup-verification.md`: Execute full database backup snapshot (*pg_dump*) immediately prior to release execution: `pg_dump -Fc -v -h <host> -U <user> <dbname> > backup_pre_deploy.dump` - expect dump file integrity verified and stored in secure off-site storage
+- [ ] `deploy/rollback-plan.md`: Document step-by-step explicit Rollback Plan in case deployment fails - expect tested recovery shell commands
+- [ ] `deploy/rollback-plan.md`: Define Rollback Triggers:
+  - Database migration error that compromises schema integrity
+  - Healthcheck endpoint `/healthz` fails to respond within 5 minutes post-release
+  - Error rate on APM exceeds > 1% within first 15 minutes
+  - Core user transaction failure cannot be patched within 30 minutes
+  - expect uncompromising commitment to execute rollback if any trigger is met
 
 ---
 
-## 3. Modul 10: Verifikasi Pasca-Deployment (Post-Deployment Verification)
+## 2. Module 10: Deployment Execution Steps (Deployment Steps)
 
-### 3.1 Uji Asap Produksi (Production Smoke Testing)
-- [ ] Lakukan pengujian alur kritis langsung di lingkungan produksi (*Live Smoke Test*) menggunakan akun uji khusus operator:
-  - Uji alur masuk pengguna (*Login Admin & Normal User*)
-  - Uji pembuatan dan penyimpanan entitas data utama
-  - Uji upload file ke penyimpanan cloud dan pemuatan thumbnail gambar
-  - Uji transaksi simulasi pembayaran / pemrosesan data riil
-  - Uji pengiriman email notifikasi transaksional ke inbox riil
-  - expect seluruh alur inti berjalan mulus tanpa hambatan
-- [ ] Hapus data pengujian (*cleanup test artifacts*) atau tandai dengan flag testing agar tidak mengotori laporan analitik keuangan riil klien - expect integritas data produksi bersih
+### 2.1 Production Database Migration Execution
+- [ ] Enable temporary maintenance page (*Maintenance Page / 503 Service Unavailable Banner*) if deployment requires database schema downtime - expect incoming user traffic safely queued/held
+- [ ] Run production database schema migration scripts: `pnpm prisma migrate deploy` (or equivalent migration tool) - expect migration completes with exit code 0 and zero constraint failures
+- [ ] Verify new tables, indexes, and mandatory seed data (master reference data, initial superadmin account, role permissions) - expect production schema 100% synchronized with FSD design
 
-### 3.2 Pemantauan Log & Telemetri Real-Time
-- [ ] Pantau streaming log server secara langsung (*tail live logs*) selama minimal 30 menit pasca rilis - expect tidak ada unhandled exception, fatal crash, atau connection leak yang berulang
-- [ ] Buka dashboard APM & pelacak error (Sentry / Datadog / Logflare) - expect nol laporan error berkategori unhandled issue baru
-- [ ] Periksa metrik performa server produksi (CPU load, Memory usage, Network traffic, DB Active Connections) - expect utilisasi resource berada di rentang normal (< 40%)
-- [ ] Ukur Core Web Vitals dan respon Time to First Byte (TTFB) halaman produksi riil - expect TTFB < 300 ms dan First Contentful Paint (FCP) < 1.5 detik
+### 2.2 Application Build Compilation & Distribution
+- [ ] Execute optimized production build artifact: `pnpm build` (or trigger GitHub Actions CI/CD pipeline) - expect JS/CSS asset bundling succeeds without TypeScript errors or circular dependencies
+- [ ] Deploy new container image / deploy serverless bundle to production compute cluster - expect container pull and new instance spawn proceed smoothly
+- [ ] Invalidate CDN cache (*Cloudflare Cache Purge / AWS CloudFront Invalidation*) to ensure clients receive latest JavaScript and CSS assets - expect users avoid chunk load errors
 
----
-
-## 4. Modul 11: Serah Terima Sistem & Dokumentasi (Handover Tasks)
-
-### 4.1 Penyusunan Panduan Operasional & Pengguna
-- [ ] `docs/03-handover/USER_MANUAL.pdf`: Susun buku panduan penggunaan aplikasi untuk pengguna akhir (*User Manual*) dilengkapi tangkapan layar antarmuka dan petunjuk alur kerja - expect panduan mudah dipahami staf operasional klien
-- [ ] `docs/03-handover/ADMIN_GUIDE.pdf`: Susun panduan administrator sistem (*Admin Manual*): manajemen pengguna, hak akses role, prosedur reset akun, dan navigasi menu pengaturan - expect panduan admin lengkap
-- [ ] `docs/03-handover/OPERATIONAL_RUNBOOK.md`: Susun runbook operasional teknis untuk tim IT klien:
-  - Panduan start/stop/restart layanan server
-  - Prosedur backup dan restore basis data harian
-  - Prosedur rotasi kredensial dan API keys
-  - Panduan penanganan kegagalan darurat (*Emergency troubleshooting*)
-  - expect dokumentasi teknis mandiri yang memungkinkan tim IT klien mengoperasikan sistem
-
-### 4.2 Pelatihan & Alih Pengetahuan (Knowledge Transfer)
-- [ ] Jadwalkan dan selenggarakan sesi pelatihan tatap muka / daring (*Knowledge Transfer Session*) untuk staf operasional dan tim IT klien - expect kehadiran seluruh PIC terkait
-- [ ] Dokumentasikan rekaman video sesi pelatihan dan tautkan ke repositori dokumentasi proyek - expect materi pelatihan tersimpan rapi untuk onboarding staf klien di masa depan
-- [ ] Fasilitasi sesi tanya-jawab interaktif dan latihan mandiri oleh staf klien - expect tim klien mampu melakukan seluruh alur kerja operasional tanpa bantuan
-
-### 4.3 Alih Kepemilikan Kode Sumber & Infrastruktur
-- [ ] Transfer kepemilikan repositori Git (GitHub / GitLab) ke organisasi akun resmi klien atau undang akun teknis klien sebagai Owner - expect klien memiliki kendali penuh atas kode sumber
-- [ ] Delegasikan hak akses akun cloud infrastructure (Vercel, AWS, Cloudflare, Supabase, Neon) ke email master klien - expect kepemilikan billing dan akun berpindah ke akun perusahaan klien
-- [ ] `docs/03-handover/CREDENTIAL_VAULT.md`: Serahkan seluruh master credentials, database root password, API secrets, dan encryption keys melalui kanal aman (1Password / Bitwarden secure share link terenkripsi) - expect dilarang mengirim kredensial lewat chat WhatsApp atau email terbuka
-- [ ] Cabut atau turunkan akses akun pribadi/konsultan Anda dari hak Administrator menjadi hak Maintenance terbatas (jika berlanjut ke SLA) atau hapus total jika proyek putus kontrak - expect kepatuhan tata kelola akses
-
-### 4.4 Berita Acara Serah Terima (BAST Final) & Invoice Pelunasan
-- [ ] `docs/03-handover/BAST_FINAL.pdf`: Terbitkan dokumen resmi Berita Acara Serah Terima (BAST) Final yang memuat:
-  - Pernyataan bahwa seluruh deliverable sesuai SOW telah selesai diserahkan dan berfungsi dengan baik
-  - Tanggal resmi dimulainya Masa Garansi (*Warranty Period*)
-  - Tanda tangan basah / digital certificate (e-Meterai) dari Lead Consultant dan Direktur / Project Sponsor Klien
-  - expect dokumen BAST ditandatangani secara sah oleh kedua belah pihak
-- [ ] `invoices/INVOICE_FINAL_PAYMENT.pdf`: Terbitkan invoice pembayaran tahap akhir / pelunasan (Milestone 3: 10%-20%) - expect invoice terkirim ke divisi finance klien dengan jatuh tempo pembayaran jelas
-- [ ] Verifikasi penerimaan pelunasan pembayaran akhir ke rekening bank - expect seluruh kewajiban komersial proyek lunas 100%
+### 2.3 Health Check Evaluation
+- [ ] Test server readiness endpoint: `curl -I https://app.clientdomain.com/healthz` - expect HTTP 200 OK
+- [ ] Test dependency service connections via internal diagnostic endpoint: database connection, Redis cache connection, worker queue connection, and disk access - expect all report `HEALTHY` status
+- [ ] Disable maintenance page and route full live user traffic (*Switch traffic to live*) - expect public traffic flows normally
 
 ---
 
-## 5. Gerbang Verifikasi Kelolosan Fase Deployment & Handover
+## 3. Module 10: Post-Deployment Verification (Post-Deployment Verification)
 
-| Parameter Evaluasi | Standar Minimum Kelolosan | Status Verifikasi | Catatan Bukti |
+### 3.1 Production Smoke Testing (Live Smoke Testing)
+- [ ] Execute critical flow tests directly in the production environment using dedicated operator test accounts:
+  - User authentication flows (*Admin & Regular User Login*)
+  - Core entity data creation and persistence
+  - Cloud file upload and thumbnail image rendering
+  - Payment simulation transaction / real processing flow
+  - Transactional notification email delivery to real inbox
+  - expect all core flows operate smoothly without disruption
+- [ ] Clean up test data artifacts (*cleanup test artifacts*) or flag as testing data to avoid polluting client actual financial/analytics reports - expect clean production data integrity
+
+### 3.2 Real-Time Log & Telemetry Monitoring
+- [ ] Monitor live server streaming logs (*tail live logs*) for at least 30 minutes post-release - expect zero recurring unhandled exceptions, fatal crashes, or connection leaks
+- [ ] Open APM & error tracking dashboard (Sentry / Datadog / Logflare) - expect zero new unhandled issue reports
+- [ ] Inspect production server performance metrics (CPU load, Memory usage, Network traffic, Active DB Connections) - expect resource utilization within normal range (< 40%)
+- [ ] Measure Core Web Vitals and Time to First Byte (TTFB) on live production pages - expect TTFB < 300 ms and First Contentful Paint (FCP) < 1.5 seconds
+
+---
+
+## 4. Module 11: System Handover & Documentation (Handover Tasks)
+
+### 4.1 Operational & User Documentation Preparation
+- [ ] `docs/03-handover/USER_MANUAL.pdf`: Compile end-user application manual (*User Manual*) with UI screenshots and workflow guides - expect manual easily understood by client operations staff
+- [ ] `docs/03-handover/ADMIN_GUIDE.pdf`: Compile system administrator manual (*Admin Manual*): user management, role access controls, account reset procedures, and configuration settings navigation - expect comprehensive admin guide
+- [ ] `docs/03-handover/OPERATIONAL_RUNBOOK.md`: Compile technical operational runbook for client IT team:
+  - Service start/stop/restart operational guides
+  - Daily database backup and restoration procedures
+  - Credential and API key rotation procedures
+  - Emergency troubleshooting playbooks
+  - expect self-sufficient technical documentation enabling client IT team to operate the system
+
+### 4.2 Training & Knowledge Transfer
+- [ ] Schedule and conduct in-person / virtual Knowledge Transfer Session for client operations staff and IT team - expect attendance of all relevant PICs
+- [ ] Document video recordings of training sessions and link them to project documentation repository - expect training materials neatly archived for future client staff onboarding
+- [ ] Facilitate interactive Q&A session and self-guided practice for client staff - expect client team capable of executing all operational workflows unassisted
+
+### 4.3 Source Code & Infrastructure Ownership Transfer
+- [ ] Transfer Git repository ownership (GitHub / GitLab) to client official organization or invite client technical account as Owner - expect client has full control over source code
+- [ ] Transfer cloud infrastructure access (Vercel, AWS, Cloudflare, Supabase, Neon) to client primary enterprise email - expect billing and account ownership transferred to client company
+- [ ] `docs/03-handover/CREDENTIAL_VAULT.md`: Hand over all master credentials, database root passwords, API secrets, and encryption keys via secure encrypted channels (1Password / Bitwarden encrypted share link) - expect credentials never transmitted via unsecured chat or plain email
+- [ ] Revoke or downgrade consultant/personal account privileges from Administrator to limited Maintenance role (if continuing on SLA) or remove completely if project engagement closes - expect access governance compliance
+
+### 4.4 Final Handover Acceptance (Final BAST) & Final Payment Invoice
+- [ ] `docs/03-handover/BAST_FINAL.pdf`: Issue official Final Handover Acceptance Certificate (*BAST Final*) containing:
+  - Statement that all deliverables per SOW have been successfully delivered and function as specified
+  - Official commencement date of the Warranty Period (*Warranty Period*)
+  - Wet signature / digital certificate (e-Meterai / DocuSign) by Lead Consultant and Client Director / Project Sponsor
+  - expect BAST document legally executed by both parties
+- [ ] `invoices/INVOICE_FINAL_PAYMENT.pdf`: Issue final milestone payment invoice (Milestone 3: 10%-20%) - expect invoice delivered to client finance department with clear payment due date
+- [ ] Verify receipt of final payment into bank account - expect all commercial project obligations 100% cleared
+
+---
+
+## 5. Deployment & Handover Phase Verification Gate
+
+| Evaluation Parameter | Minimum Pass Standard | Verification Status | Evidence Notes |
 | :--- | :--- | :---: | :--- |
-| **Kesiapan Pre-Flight** | DNS propagasi tuntas, SSL aktif, env secret valid, DB backup pre-deploy sukses | [ ] PASS | Dilampirkan di `deploy/` |
-| **Eksekusi Rilis** | Migrasi DB produksi sukses, build bersih, container up, `/healthz` HTTP 200 | [ ] PASS | Dilampirkan log rilis produksi |
-| **Uji Asap Produksi** | Alur transaksi inti live lolos 100%, data uji dibersihkan, Sentry 0 fatal error | [ ] PASS | Dilampirkan bukti smoke test |
-| **Dokumentasi & Training** | User Manual, Admin Guide, dan Runbook diserahkan; sesi training terlaksana | [ ] PASS | Dilampirkan di `docs/03-handover/` |
-| **Alih Akses & Kredensial** | Repo & cloud ownership ditransfer, kredensial diserahkan via secure vault | [ ] PASS | Dilampirkan konfirmasi transfer akses |
-| **Legal BAST & Pelunasan** | BAST Final bermeterai ditandatangani, invoice pelunasan terbayar 100% | [ ] PASS | Dilampirkan `BAST_FINAL.pdf` & bukti transfer |
+| **Pre-Flight Readiness** | DNS propagated, SSL active, env secrets valid, pre-deploy DB backup successful | [ ] PASS | Attached in `deploy/` |
+| **Release Execution** | Production DB migration succeeded, clean build, container up, `/healthz` HTTP 200 | [ ] PASS | Attached production release logs |
+| **Production Smoke Test** | Core live transaction flows 100% passed, test data purged, Sentry 0 fatal errors | [ ] PASS | Attached smoke test evidence |
+| **Documentation & Training** | User Manual, Admin Guide, and Runbook delivered; training sessions completed | [ ] PASS | Attached in `docs/03-handover/` |
+| **Access & Credential Transfer** | Repo & cloud ownership transferred, credentials handed over via secure vault | [ ] PASS | Attached access transfer confirmation |
+| **Final BAST & Final Payment** | Executed Final BAST with stamp/signature signed, final invoice paid 100% | [ ] PASS | Attached `BAST_FINAL.pdf` & wire transfer proof |
 
-### Keputusan Gerbang Deployment:
-- [ ] **SELESAI PENUH (GO TO MAINTENANCE & WARRANTY - M12)**: Sistem telah live, BAST final ditandatangani, dan kepemilikan beralih penuh ke klien. Transisi proyek ke masa garansi pemeliharaan di Modul 12.
-- [ ] **ROLLBACK DARURAT (EMERGENCY ROLLBACK)**: Terjadi anomali fatal pada lingkungan produksi pasca rilis. Segera eksekusi runbook rollback ke versi stabil sebelumnya!
-- [ ] **PENDING BAST / HANDOVER (HOLD MILESTONE)**: Sistem aktif di produksi namun dokumen BAST atau pelunasan administrasi belum tuntas. Selesaikan serah terima administratif.
+### Deployment Gate Decision:
+- [ ] **FULLY COMPLETED (GO TO MAINTENANCE & WARRANTY - M12)**: System is live, Final BAST executed, and full ownership transferred to client. Transition project to warranty & maintenance in Module 12.
+- [ ] **EMERGENCY ROLLBACK (EMERGENCY ROLLBACK)**: Fatal anomalies occurred in production post-release. Immediately execute rollback runbook to previous stable release!
+- [ ] **PENDING BAST / HANDOVER (HOLD MILESTONE)**: System active in production but BAST document or administrative payments pending. Complete administrative handover.

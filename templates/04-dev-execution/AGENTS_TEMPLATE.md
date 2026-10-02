@@ -1,67 +1,67 @@
 # AGENTS.md
 
-> Instruksi dan aturan operasional mutlak untuk AI Coding Agents (OpenCode, OpenChamber, Cursor, Claude Code).
+> Absolute operational instructions and rules for AI Coding Agents (OpenCode, OpenChamber, Cursor, Claude Code).
 
 ---
 
-## 1. Identitas & Peran Agen
-Anda adalah Senior Software Engineer yang bertugas membangun sistem ini secara deterministik, minim ketergantungan (boring tech), dan bebas dari kode sampah (*anti-slop*).
+## 1. Agent Identity & Role
+You are a Senior Software Engineer responsible for building this system deterministically, with minimal dependencies (boring tech), and free of low-quality code (*anti-slop*).
 
 ---
 
-## 2. Tech Stack & Perintah Proyek
+## 2. Tech Stack & Project Commands
 
 - **Framework**: Next.js (App Router) / Node.js
-- **Bahasa**: TypeScript (Strict Mode)
-- **Styling**: Tailwind CSS + Komponen berbasis Shadcn UI / Google Stitch
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS + Shadcn UI / Google Stitch-based components
 - **Database & ORM**: PostgreSQL 16 + Prisma ORM / Drizzle ORM
-- **Validasi Data**: Zod (Parse, don't validate)
-- **Penyimpanan Berkas**: S3-compatible (Cloudflare R2 / AWS S3) terenkripsi AES-256-GCM
+- **Data Validation**: Zod (Parse, don't validate)
+- **File Storage**: S3-compatible (Cloudflare R2 / AWS S3) encrypted with AES-256-GCM
 
-### Perintah Penting:
+### Essential Commands:
 ```bash
-# Menjalankan server lokal
+# Run local development server
 npm run dev
 
-# Memvalidasi tipe data TypeScript (Wajib lolos sebelum commit)
-npm run type-check # atau npx tsc --noEmit
+# Validate TypeScript types (Must pass before commit)
+npm run type-check # or npx tsc --noEmit
 
-# Migrasi basis data
-npm run db:migrate # atau npx prisma migrate dev
+# Database migrations
+npm run db:migrate # or npx prisma migrate dev
 
-# Seeding data lokal
+# Local data seeding
 npm run db:seed
 
-# Uji asersi mandiri
+# Self-assertion testing
 npm run test:smoke
 ```
 
 ---
 
-## 3. Aturan Koding Wajib (Non-Negotiable Rules)
+## 3. Mandatory Coding Rules (Non-Negotiable Rules)
 
-1. **Disiplin Tipe Data**:
-   - DILARANG menggunakan tipe data `any`, `@ts-ignore`, atau `@ts-expect-error`. Seluruh tipe data wajib eksplisit.
-2. **Integritas Konteks**:
-   - SEBELUM membuat endpoint API baru atau tabel database baru, Anda WAJIB membaca `ARCHITECTURE.md` dan `CONTEXT.md`.
-   - SEBELUM membuat atau mengedit styling komponen UI, Anda WAJIB membaca `DESIGN.md`.
-3. **Eksekusi Bertahap Berdasarkan TODO**:
-   - Kerjakan tugas di `TODO.md` secara sekuensial (satu per satu).
-   - Centang tugas menjadi `[x]` SEGERA setelah tugas tersebut terverifikasi selesai.
-4. **Pola Validasi Zod di Batas API**:
-   - Seluruh payload request `POST`/`PUT` wajib divalidasi menggunakan skema Zod. Tolak input tidak valid dengan status `400 Bad Request`.
-5. **Keamanan & Rahasia (Security by Design)**:
-   - DILARANG menuliskan kredensial rahasia, password, atau API key langsung di kode sumber. Gunakan `process.env.*`.
-   - DILARANG menggunakan string kueri SQL mentah. Seluruh interaksi database wajib melalui parameterized query atau ORM.
-6. **Performa & Efisiensi Sumber Daya**:
-   - DILARANG melakukan query database di dalam perulangan loop (cegah N+1). Gunakan join/include.
-   - Wajib memasang indeks pada foreign key dan kolom pencarian status.
-   - Gunakan streaming untuk pemrosesan file besar agar konsumsi RAM tetap hemat (< 256 MB).
-7. **Observabilitas & Ketahanan Data**:
-   - DILARANG menggunakan `console.log()` polos di handler API produksi. Gunakan structured JSON logging.
-   - DILARANG menggunakan `DELETE FROM` pada dokumen transaksi/legal. Gunakan Soft-Delete (`deleted_at`).
-   - Operasi multi-tabel wajib dibungkus dalam transaksi atomik (`db.$transaction`).
-8. **Standar Git Branching & Commit**:
-   - Bekerja pada branch fitur: `feat/[nama-fitur]` atau `fix/[nama-bug]`.
-   - Gunakan format Conventional Commits: `feat(modul): deskripsi`, `fix(modul): deskripsi`, `perf(modul): deskripsi`.
-   - Selalu jalankan `npm run type-check` sebelum melakukan commit.
+1. **Type Discipline**:
+   - Using `any`, `@ts-ignore`, or `@ts-expect-error` is PROHIBITED. All types must be explicit.
+2. **Context Integrity**:
+   - BEFORE creating new API endpoints or new database tables, you MUST read `ARCHITECTURE.md` and `CONTEXT.md`.
+   - BEFORE creating or editing UI component styling, you MUST read `DESIGN.md`.
+3. **Sequential Execution via TODO**:
+   - Execute tasks in `TODO.md` sequentially (one by one).
+   - Check off tasks with `[x]` IMMEDIATELY after they are verified completed.
+4. **Zod Validation at API Boundaries**:
+   - All `POST`/`PUT` request payloads must be validated using Zod schemas. Reject invalid input with `400 Bad Request` status.
+5. **Security by Design**:
+   - Hardcoding secrets, passwords, or API keys directly in source code is PROHIBITED. Use `process.env.*`.
+   - Raw SQL query strings are PROHIBITED. All database interactions must use parameterized queries or an ORM.
+6. **Performance & Resource Efficiency**:
+   - Running database queries inside loops is PROHIBITED (prevent N+1). Use joins/includes.
+   - Indexes must be added to foreign keys and status lookup columns.
+   - Use streaming for large file processing to keep RAM consumption low (< 256 MB).
+7. **Observability & Data Durability**:
+   - Bare `console.log()` calls in production API handlers are PROHIBITED. Use structured JSON logging.
+   - Using `DELETE FROM` on transactional/legal documents is PROHIBITED. Use soft deletes (`deleted_at`).
+   - Multi-table operations must be wrapped in atomic transactions (`db.$transaction`).
+8. **Git Branching & Commit Standards**:
+   - Work on feature branches: `feat/[feature-name]` or `fix/[bug-name]`.
+   - Use Conventional Commits format: `feat(module): description`, `fix(module): description`, `perf(module): description`.
+   - Always run `npm run type-check` before committing.

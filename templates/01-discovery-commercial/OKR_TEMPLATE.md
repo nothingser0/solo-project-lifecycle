@@ -1,8 +1,8 @@
 # OKR (Objectives & Key Results): Q[X] 2026
 
-**Project**: [Nama Produk]  
-**Period**: Q[X] 2026 ([Bulan] – [Bulan])  
-**Owner**: [Nama PIC / Solo Dev]  
+**Project**: [Product Name]  
+**Period**: Q[X] 2026 ([Month] – [Month])  
+**Owner**: [PIC / Solo Dev Name]  
 **Date Created**: YYYY-MM-DD  
 **Status**: Draft / Active / Completed
 

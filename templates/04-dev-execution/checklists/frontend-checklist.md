@@ -1,7 +1,7 @@
 # Frontend Development Checklist
 
 **Module**: M06 Development Execution  
-**Purpose**: Detailed sequential checklist untuk frontend UI, forms, state management
+**Purpose**: Detailed sequential checklist for frontend UI, forms, state management
 
 **Use with**: React, Next.js, Vue, Svelte development
 
@@ -10,63 +10,63 @@
 ## 1. Component Library & Design System Setup
 
 ### Design Tokens Sync
-- [ ] **Sinkronisasi Token Desain**:
-  - [ ] Petakan token warna dari `DESIGN_SYSTEM.md` ke Tailwind config / CSS variables (Zinc palette, accent primary).
-  - [ ] Konfigurasikan font family Inter, skala tipografi (text-xs hingga text-4xl), dan default border radius (rounded-md).
+- [ ] **Design Tokens Sync**:
+  - [ ] Map color tokens from `DESIGN_SYSTEM.md` to Tailwind config / CSS variables (Zinc palette, accent primary).
+  - [ ] Configure Inter font family, typography scale (text-xs to text-4xl), and default border radius (rounded-md).
 
 ### Primitive Components (UI Atoms)
-- [ ] **Komponen Primitif (UI Atoms)**:
-  - [ ] `Button`: Varian primary, secondary, outline, ghost, destructive, with loading spinner state.
-  - [ ] `Input` & `Textarea`: Varian normal, focused, error, disabled, helper text.
-  - [ ] `Select`, `Checkbox`, `RadioGroup`, `Switch`: Form controls dengan status keyboard navigable.
-  - [ ] `Badge`, `Avatar`, `Separator`, `Skeleton`: Elemen dekoratif dan identitas visual.
+- [ ] **Primitive Components (UI Atoms)**:
+  - [ ] `Button`: Variants primary, secondary, outline, ghost, destructive, with loading spinner state.
+  - [ ] `Input` & `Textarea`: Variants normal, focused, error, disabled, helper text.
+  - [ ] `Select`, `Checkbox`, `RadioGroup`, `Switch`: Form controls with keyboard-navigable status.
+  - [ ] `Badge`, `Avatar`, `Separator`, `Skeleton`: Decorative elements and visual identity.
 
 ### Feedback Components (UI Molecules)
-- [ ] **Komponen Feedback & Overlay (UI Molecules)**:
-  - [ ] `Toast`: Notifikasi pop-up (Sonner / Toast) dengan varian success, error, info, warning.
-  - [ ] `Modal / Dialog`: Overlay konfirmasi dengan trap focus dan tombol escape close.
-  - [ ] `Drawer / Sheet`: Panel samping geser untuk navigasi mobile atau form sekunder.
-  - [ ] `DropdownMenu` & `Popover`: Menu kontekstual dengan positioning dinamis.
+- [ ] **Feedback & Overlay Components (UI Molecules)**:
+  - [ ] `Toast`: Pop-up notifications (Sonner / Toast) with success, error, info, warning variants.
+  - [ ] `Modal / Dialog`: Confirmation overlay with focus trap and escape key close.
+  - [ ] `Drawer / Sheet`: Sliding side panel for mobile navigation or secondary forms.
+  - [ ] `DropdownMenu` & `Popover`: Contextual menus with dynamic positioning.
 
 ### Navigation Components
-- [ ] **Komponen Navigasi & Struktur**:
-  - [ ] `Navbar`: Bar atas dengan logo proyek, breadcrumb dinamis, dan user profile dropdown.
-  - [ ] `Sidebar`: Navigasi samping collapsible dengan indikator rute aktif.
-  - [ ] `PageHeader`: Judul halaman, deskripsi, dan tombol aksi utama (*action bar*).
+- [ ] **Navigation & Structural Components**:
+  - [ ] `Navbar`: Top bar with project logo, dynamic breadcrumb, and user profile dropdown.
+  - [ ] `Sidebar`: Collapsible side navigation with active route indicator.
+  - [ ] `PageHeader`: Page title, description, and primary action bar.
 
 ### Accessibility (WCAG AA)
-- [ ] **Aksesibilitas (WCAG AA Compliance)**:
-  - [ ] Uji rasio kontras teks minimal 4.5:1 terhadap latar belakang.
-  - [ ] Pastikan seluruh elemen interaktif memiliki `focus-visible:ring-2` yang tampak jelas saat ditab.
-  - [ ] Pasang atribut `aria-label` dan `aria-expanded` pada tombol ikon dan modal trigger.
+- [ ] **Accessibility (WCAG AA Compliance)**:
+  - [ ] Test text contrast ratio minimum 4.5:1 against background.
+  - [ ] Ensure all interactive elements have visible `focus-visible:ring-2` when tabbed.
+  - [ ] Set `aria-label` and `aria-expanded` attributes on icon buttons and modal triggers.
 
 ---
 
 ## 2. Pages & Routing Architecture
 
 ### Layout Hierarchy
-- [ ] **Hierarki Layout Aplikasi**:
-  - [ ] `RootLayout`: Pasang penyedia tema, font Inter, dan toaster global.
-  - [ ] `(auth)/layout.tsx`: Layout terpusat bersih untuk alur autentikasi tanpa sidebar.
-  - [ ] `(dashboard)/layout.tsx`: Layout terproteksi dengan sidebar tetap, navbar, dan auth guard.
+- [ ] **Application Layout Hierarchy**:
+  - [ ] `RootLayout`: Set up theme provider, Inter font, and global toaster.
+  - [ ] `(auth)/layout.tsx`: Clean centered layout for authentication flow without sidebar.
+  - [ ] `(dashboard)/layout.tsx`: Protected layout with persistent sidebar, navbar, and auth guard.
 
 ### Authentication Pages
-- [ ] **Halaman Autentikasi**:
-  - [ ] Halaman Login (`/login`), Register (`/register`), Forgot Password (`/forgot-password`), Reset Password (`/reset-password`).
-  - [ ] Alur redirect cerdas: Simpan parameter `?callbackUrl=` untuk mengembalikan user ke halaman target setelah login.
+- [ ] **Authentication Pages**:
+  - [ ] Login (`/login`), Register (`/register`), Forgot Password (`/forgot-password`), Reset Password (`/reset-password`) pages.
+  - [ ] Smart redirect flow: Preserve `?callbackUrl=` parameter to return user to target page after login.
 
 ### Application Pages
-- [ ] **Halaman Aplikasi Utama**:
-  - [ ] Halaman Index Dashboard (`/dashboard`): Menampilkan ringkasan metrik statistik dan tabel aktivitas terkini.
-  - [ ] Halaman Daftar Entitas (`/documents`): Tabel data dengan pencarian, filter status, dan pagination.
-  - [ ] Halaman Detail Entitas (`/documents/[id]`): Tampilan detail lengkap, riwayat audit, dan status approval.
-  - [ ] Halaman Buat/Edit Entitas (`/documents/new` & `/documents/[id]/edit`): Formulir terstruktur.
-  - [ ] Halaman Pengaturan (`/settings/profile`, `/settings/billing`, `/settings/team`).
+- [ ] **Core Application Pages**:
+  - [ ] Dashboard Index Page (`/dashboard`): Display statistical metric summaries and recent activity table.
+  - [ ] Entity List Page (`/documents`): Data table with search, status filters, and pagination.
+  - [ ] Entity Detail Page (`/documents/[id]`): Full detail view, audit history, and approval status.
+  - [ ] Create/Edit Entity Page (`/documents/new` & `/documents/[id]/edit`): Structured forms.
+  - [ ] Settings Pages (`/settings/profile`, `/settings/billing`, `/settings/team`).
 
 ### Error Pages
-- [ ] **Halaman Error Defensif**:
-  - [ ] `not-found.tsx`: Halaman 404 ramah pengguna dengan tombol kembali ke dashboard.
-  - [ ] `error.tsx`: Global Error Boundary dengan tombol reset / coba lagi.
+- [ ] **Defensive Error Pages**:
+  - [ ] `not-found.tsx`: User-friendly 404 page with return to dashboard button.
+  - [ ] `error.tsx`: Global Error Boundary with reset / retry button.
 
 ---
 
@@ -75,76 +75,76 @@
 ### Server State
 - [ ] **Server-State Management**:
   - [ ] Setup TanStack Query / SWR / Server Action cache revalidation.
-  - [ ] Tetapkan kebijakan caching: `staleTime: 60_000` (1 menit) untuk data standar, 0 untuk data real-time.
-  - [ ] Pasang mutasi dengan otomatis invalidasi query kunci terkait (`queryClient.invalidateQueries`).
+  - [ ] Set caching policy: `staleTime: 60_000` (1 minute) for standard data, 0 for real-time data.
+  - [ ] Configure mutations with automatic invalidation of related query keys (`queryClient.invalidateQueries`).
 
 ### Client UI State
 - [ ] **Client UI State Store**:
-  - [ ] Setup Zustand / Context ringan untuk state UI ephemera: sidebar open/closed, active modal, tema gelap/terang.
-  - [ ] Hindari menyimpan data entitas server di dalam client store untuk mencegah *stale state mismatch*.
+  - [ ] Setup lightweight Zustand / Context for ephemeral UI state: sidebar open/closed, active modal, dark/light theme.
+  - [ ] Avoid storing server entity data in client store to prevent stale state mismatch.
 
 ### URL Sync
-- [ ] **Sinkronisasi URL Search Params**:
-  - [ ] Sinkronkan parameter tabel (search query, halaman aktif, filter status) ke URL browser (`?page=2&status=active`).
-  - [ ] Pengguna dapat membagikan (*share*) URL atau me-refresh halaman tanpa kehilangan posisi filter.
+- [ ] **URL Search Params Synchronization**:
+  - [ ] Sync table parameters (search query, active page, status filters) to browser URL (`?page=2&status=active`).
+  - [ ] Users can share URLs or refresh the page without losing filter state.
 
 ---
 
 ## 4. Form Handling & Validation
 
 ### Form Library Integration
-- [ ] **Integrasi Form Library**:
-  - [ ] Pasang React Hook Form / Formik pada seluruh form input.
-  - [ ] Hubungkan validasi resolver Zod (`@hookform/resolvers/zod`) menggunakan skema yang sama dengan backend.
+- [ ] **Form Library Integration**:
+  - [ ] Set up React Hook Form / Formik on all input forms.
+  - [ ] Connect Zod validation resolver (`@hookform/resolvers/zod`) using the same schema as the backend.
 
 ### Inline Validation
-- [ ] **Umpan Balik Validasi Inline**:
-  - [ ] Tampilkan pesan error spesifik langsung di bawah input field yang bermasalah.
-  - [ ] Highlight border merah (`border-destructive`) pada input yang invalid saat disubmit.
+- [ ] **Inline Validation Feedback**:
+  - [ ] Display specific error messages directly below problematic input fields.
+  - [ ] Highlight red border (`border-destructive`) on invalid inputs upon submit.
 
 ### Submit Protection
-- [ ] **Perlindungan Double Submit & Navigation Guard**:
-  - [ ] Nonaktifkan (`disabled`) tombol submit dan tampilkan spinner saat request sedang diproses.
-  - [ ] Beri konfirmasi peringatan (*unsaved changes alert*) jika pengguna mencoba meninggalkan form yang belum disimpan.
+- [ ] **Double Submit Protection & Navigation Guard**:
+  - [ ] Disable submit button and display spinner while request is processing.
+  - [ ] Provide unsaved changes confirmation alert if user attempts to leave an unsaved form.
 
 ---
 
 ## 5. API Integration & Client Wiring
 
 ### HTTP Client
-- [ ] **Abstraksi HTTP Client**:
-  - [ ] Buat wrapper API terpusat (`src/lib/api-client.ts`) berbasis `fetch` atau `axios`.
-  - [ ] Interceptor otomatis menyuntikkan header Authorization atau mengelola credentials cookie.
-  - [ ] Tangani otomatis respons `401 Unauthorized`: redirect ke `/login` atau jalankan silent refresh token.
+- [ ] **HTTP Client Abstraction**:
+  - [ ] Create centralized API wrapper (`src/lib/api-client.ts`) based on `fetch` or `axios`.
+  - [ ] Interceptors automatically inject Authorization header or manage cookie credentials.
+  - [ ] Automatically handle `401 Unauthorized` responses: redirect to `/login` or execute silent token refresh.
 
 ### File Upload
-- [ ] **Upload File Direct-to-Cloud**:
-  - [ ] Minta presigned URL dari backend → Upload file langsung ke S3/R2 menggunakan `fetch(putUrl, { body: file })`.
-  - [ ] Tampilkan bar progres persentase upload (0% s/d 100%) ke pengguna.
+- [ ] **Direct-to-Cloud File Upload**:
+  - [ ] Request presigned URL from backend → Upload file directly to S3/R2 using `fetch(putUrl, { body: file })`.
+  - [ ] Display upload percentage progress bar (0% to 100%) to the user.
 
 ### Optimistic Updates
 - [ ] **Optimistic UI Updates**:
-  - [ ] Terapkan optimistic update pada aksi instan (misal: toggle bookmark, update status checkbox).
-  - [ ] Sediakan mekanisme *rollback* otomatis ke state sebelumnya jika request API backend gagal.
+  - [ ] Apply optimistic updates on instant actions (e.g., toggle bookmark, checkbox status update).
+  - [ ] Provide automatic rollback mechanism to previous state if backend API request fails.
 
 ---
 
 ## 6. The 5 UI States Implementation (Defensive UI)
 
 ### State 1: Idle
-- [ ] **Idle State**: Tampilan awal komponen dalam kondisi bersih dan siap menerima aksi.
+- [ ] **Idle State**: Initial component view in clean condition and ready to accept action.
 
 ### State 2: Loading
-- [ ] **Loading State**: Gunakan skeleton loader yang memiliki dimensi dan layout persis dengan konten asli (DILARANG spinner layar penuh tanpa konteks).
+- [ ] **Loading State**: Use skeleton loader matching the exact dimensions and layout of the real content (PROHIBITED full-screen spinner without context).
 
 ### State 3: Success
-- [ ] **Success State**: Tampilkan toast konfirmasi aksi berhasil, animasikan perubahan visual, dan reset form.
+- [ ] **Success State**: Display action success confirmation toast, animate visual changes, and reset form.
 
 ### State 4: Error
-- [ ] **Error State**: Tampilkan inline error banner, keterangan kesalahan bahasa manusiawi, dan tombol "Coba Lagi" (Retry).
+- [ ] **Error State**: Display inline error banner, human-readable error explanation, and "Retry" button.
 
 ### State 5: Empty
-- [ ] **Empty State**: Tampilkan ikon tematik, judul deskriptif (misal: "Belum Ada Dokumen"), teks motivasi singkat, dan tombol Call-to-Action utama ("Buat Dokumen Sekarang").
+- [ ] **Empty State**: Display thematic icon, descriptive title (e.g., "No Documents Yet"), brief motivational copy, and primary Call-to-Action button ("Create Document Now").
 
 ---
 

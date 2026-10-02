@@ -1,64 +1,64 @@
-# Buku Panduan Pengguna Sistem (User Manual)
+# System User Manual
 
-> Panduan operasional praktis bagi staf dan administrator dalam menggunakan fitur-fitur aplikasi perangkat lunak sehari-hari.
-
----
-
-## 1. Informasi Sistem & Akses Masuk
-- **Nama Aplikasi**: [Nama Aplikasi]
-- **Alamat URL Resmi**: `https://app.klien.com`
-- **Peramban yang Didukung**: Google Chrome, Safari, Microsoft Edge, Mozilla Firefox (Versi 2 tahun terakhir).
+> Practical operational guide for staff and administrators in utilizing software application features daily.
 
 ---
 
-## 2. Panduan Masuk & Keamanan Akun
-1. Buka tautan `https://app.klien.com/login`.
-2. Masukkan alamat email kantor dan kata sandi yang telah didaftarkan oleh Administrator.
-3. Klik tombol **"Masuk ke Akun"**.
-4. *Tips Keamanan*: Jangan pernah membagikan kata sandi Anda kepada orang lain. Selalu klik menu **"Keluar (Logout)"** setelah selesai menggunakan komputer bersama.
+## 1. System Information & Access
+- **Application Name**: [Application Name]
+- **Official URL**: `https://app.client.com`
+- **Supported Browsers**: Google Chrome, Safari, Microsoft Edge, Mozilla Firefox (Latest 2 major versions).
 
 ---
 
-## 3. Panduan Operasional Staf (Fitur Utama)
-
-### 3.1 Membuat Dokumen Legal Baru
-1. Masuk ke menu **"Manajemen Dokumen"** di bilah navigasi sebelah kiri.
-2. Klik tombol **"Buat Dokumen Baru"** di pojok kanan atas.
-3. Pilih jenis template yang diinginkan (contoh: *Perjanjian Kerja Lepas*).
-4. Lengkapi formulir isian data:
-   - Nama lengkap para pihak.
-   - Nilai kompensasi (hanya ketik angka tanpa titik/koma, sistem otomatis memformat menjadi Rupiah).
-   - Tanggal mulai dan tanggal berakhir kontrak.
-5. Klik tombol **"Pratinjau Dokumen"** untuk memastikan isi pasal telah sesuai.
-6. Klik **"Simpan Draf"** atau **"Kirim Permintaan Tanda Tangan"**.
-
-### 3.2 Mengirim Tautan Tanda Tangan Digital
-1. Buka detail dokumen yang berstatus `DRAFT`.
-2. Masukkan nama dan alamat email penerima tanda tangan.
-3. Klik **"Kirim Email Penandatanganan"**.
-4. Status dokumen akan otomatis berubah menjadi `MENUNGGU TANDA TANGAN (PENDING)`.
+## 2. Login & Account Security Guide
+1. Open `https://app.client.com/login`.
+2. Enter work email address and password registered by the Administrator.
+3. Click the **"Sign In"** button.
+4. *Security Tip*: Never share your password with anyone. Always click **"Log Out"** after finishing work on a shared computer.
 
 ---
 
-## 4. Panduan Administrator (Fitur Manajemen)
+## 3. Staff Operational Guide (Core Features)
 
-### 4.1 Menambahkan Akun Pengguna Baru
-1. Masuk ke menu **"Pengaturan"** $\to$ **"Manajemen Pengguna"**.
-2. Klik tombol **"Tambah Pengguna"**.
-3. Masukkan nama, email, dan pilih peran (*Role*):
-   - **Staf**: Hanya bisa membuat dan melihat draf dokumen miliknya sendiri.
-   - **Manager**: Bisa menyetujui draf dan mengirimkan tautan tanda tangan resmi.
-   - **Super Admin**: Akses penuh ke seluruh data dan laporan audit sistem.
-4. Klik **"Kirim Undangan Akun"**. Kata sandi sementara akan otomatis terkirim ke email pengguna baru.
+### 3.1 Creating a New Legal Document
+1. Navigate to the **"Document Management"** menu in the left navigation sidebar.
+2. Click the **"Create New Document"** button in the top right corner.
+3. Select the desired template (e.g., *Freelance Agreement*).
+4. Complete the input form:
+   - Full names of all parties.
+   - Compensation value (enter numbers only without dots/commas, system automatically formats currency).
+   - Contract start and end dates.
+5. Click **"Preview Document"** to verify that clause contents are accurate.
+6. Click **"Save Draft"** or **"Send Signature Request"**.
 
-### 4.2 Melihat Jejak Audit (Audit Trail Log)
-1. Masuk ke menu **"Audit Trail"**.
-2. Seluruh aktivitas pembuatan dokumen, waktu tanda tangan, alamat IP, dan nilai hash SHA-256 tersimpan secara permanen dan dapat diunduh dalam format Excel melalui tombol **"Ekspor Laporan"**.
+### 3.2 Sending Digital Signature Links
+1. Open the details of a document with status `DRAFT`.
+2. Enter the name and email address of the signer.
+3. Click **"Send Signing Email"**.
+4. The document status will automatically update to `PENDING SIGNATURE`.
 
 ---
 
-## 5. Pertanyaan Umum & Bantuan (FAQ)
-- **Bagaimana jika lupa kata sandi?**
-  Klik tautan *"Lupa Kata Sandi"* pada halaman login, masukkan email Anda, dan ikuti instruksi reset yang dikirim ke inbox email.
-- **Mengapa tautan tanda tangan tidak bisa dibuka?**
-  Tautan tanda tangan digital memiliki batas kedaluwarsa keamanan selama 7 hari. Jika telah kedaluwarsa, staf dapat menerbitkan tautan baru melalui tombol *"Kirim Ulang Tautan"* pada detail dokumen.
+## 4. Administrator Guide (Management Features)
+
+### 4.1 Adding New User Accounts
+1. Navigate to **"Settings"** $\to$ **"User Management"**.
+2. Click the **"Add User"** button.
+3. Enter name, email, and select role (*Role*):
+   - **Staff**: Can only create and view own document drafts.
+   - **Manager**: Can approve drafts and send official signature links.
+   - **Super Admin**: Full access to all data and system audit logs.
+4. Click **"Send Account Invitation"**. A temporary password will be automatically emailed to the new user.
+
+### 4.2 Viewing Audit Trail Logs
+1. Navigate to the **"Audit Trail"** menu.
+2. All document creation activities, signature timestamps, IP addresses, and SHA-256 hash values are permanently recorded and can be downloaded in Excel format via the **"Export Report"** button.
+
+---
+
+## 5. Frequently Asked Questions & Support (FAQ)
+- **What if I forget my password?**
+  Click the *"Forgot Password"* link on the login page, enter your email address, and follow the reset instructions sent to your inbox.
+- **Why can't the signature link be opened?**
+  Digital signature links have a 7-day security expiration window. If expired, staff can issue a fresh link via the *"Resend Link"* button in the document details.

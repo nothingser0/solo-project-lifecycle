@@ -1,7 +1,7 @@
-# Risk Register: [Nama Produk]
+# Risk Register: [Product Name]
 
-**Project**: [Nama Proyek]  
-**Owner**: [Nama PIC]  
+**Project**: [Project Name]  
+**Owner**: [PIC Name]  
 **Last Updated**: YYYY-MM-DD  
 **Review Cadence**: Weekly (top risks), Monthly (full register)
 

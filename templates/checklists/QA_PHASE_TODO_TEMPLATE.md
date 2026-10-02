@@ -1,163 +1,163 @@
-# QA & Testing Phase TODO Template (Modul 07 - Modul 09)
+# QA & Testing Phase TODO Template (Module 07 - Module 09)
 
-> Template daftar tugas atomik untuk fase Quality Assurance, System Integration Testing (SIT), Audit Keamanan Siber, Verifikasi Migrasi Data, dan User Acceptance Testing (UAT) bersama Klien.
-> Aturan: Kerjakan pengujian secara defensif. Setiap skenario uji harus didukung asersi otomatis atau bukti log/tangkapan layar sebelum centang `[x]`. Fase ini wajib mencapai kriteria 0 cacat kritis/tinggi (Zero P1/P2 Defects) sebelum diizinkan melangkah ke Deployment Produksi.
-
----
-
-## Metadata Pengujian
-- **Nama Sistem**: [Nama Sistem / Aplikasi]
-- **Target URL Lingkungan Staging**: `https://staging.domain.com`
-- **Lead QA Engineer / Solo Dev**: [Nama Anda]
-- **Klien UAT Representative**: [Nama PIC Klien]
-- **Tanggal Mulai QA**: [YYYY-MM-DD]
-- **Target Selesai UAT**: [YYYY-MM-DD]
-- **Status Gerbang QA/UAT**: [ ] TESTING IN PROGRESS | [ ] UAT UNDER REVIEW | [ ] PASSED & SIGNED-OFF
+> Atomic task checklist template for Quality Assurance, System Integration Testing (SIT), Cybersecurity Audit, Data Migration Verification, and User Acceptance Testing (UAT) with the Client.
+> Rules: Execute testing defensively. Every test scenario must be backed by automated assertions or log/screenshot evidence before checking `[x]`. This phase must achieve Zero P1/P2 Defects (critical/high severity) before being authorized to proceed to Production Deployment.
 
 ---
 
-## 1. Modul 07: Penulisan Uji Otomatis & Strategi QA (Test Writing)
-
-### 1.1 Perencanaan Strategi Pengujian (Test Plan)
-- [ ] `qa/test-plan.md`: Dokumentasikan Rencana Pengujian Komprehensif (Scope of Testing, In-Scope vs Out-of-Scope, Lingkungan Uji Staging, Matriks Browser/Perangkat: Chrome, Safari, Firefox, iOS, Android) - expect cakupan pengujian terdokumentasi jelas
-- [ ] `qa/test-plan.md`: Definisikan Kriteria Masuk (*Entry Criteria*: build staging hijau, migrasi DB tuntas) dan Kriteria Keluar (*Exit Criteria*: 100% test case dieksekusi, 0 P1/P2 defect, test coverage target tercapai) - expect ambang batas kualitas terdefinisi
-- [ ] `qa/test-matrix.md`: Susun Matriks Keterlacakan Kebutuhan (*Traceability Matrix*) yang memetakan setiap User Story dari Modul 02 ke nomor Test Case spesifik - expect setiap fitur terikat minimal 1 skenario uji positif dan 1 skenario uji negatif
-
-### 1.2 Penulisan Uji Unit (Unit Testing)
-- [ ] `tests/unit/utils/*.test.ts`: Tulis pengujian unit untuk fungsi murni, kalkulasi matematis, utilitas tanggal/waktu, dan format mata uang - expect 100% branch coverage pada utilitas kritis
-- [ ] `tests/unit/validation/*.test.ts`: Tulis pengujian unit untuk skema parser Zod / Yup / Joi (uji string kosong, karakter ilegal, panjang batas minimum/maksimum, format email/telepon abnormal) - expect seluruh validasi input menolak data invalid dengan pesan error terstruktur
-- [ ] `tests/unit/domain/*.test.ts`: Tulis pengujian unit untuk logika aturan bisnis murni terisolasi (diskon, perhitungan pajak, permission role checker, transisi state machine) - expect logika bisnis lolos pengujian tanpa dependensi basis data eksternal
-- [ ] Jalankan runner uji unit: `pnpm test:unit --coverage` - expect target coverage kode domain mencapai minimal >= 80%
-
-### 1.3 Penulisan Uji Integrasi (Integration Testing)
-- [ ] `tests/integration/auth/*.test.ts`: Tulis uji integrasi alur login, logout, refresh token, session expiry, dan proteksi middleware cookie HttpOnly - expect kode status HTTP 200, 401, 403 terverifikasi akurat
-- [ ] `tests/integration/api/*.test.ts`: Tulis uji integrasi CRUD endpoint REST API dengan basis data test terisolasi (Testcontainers / Postgres SQLite in-memory) - expect transaksi database ACID terverifikasi (commit & rollback)
-- [ ] `tests/integration/webhooks/*.test.ts`: Tulis pengujian penerimaan webhook pihak ketiga dengan mocking payload bertanda tangan HMAC-SHA256 valid dan invalid - expect respon 200 OK untuk payload valid dan 401 Unauthorized untuk signature palsu
-- [ ] `tests/integration/storage/*.test.ts`: Tulis pengujian upload file, verifikasi MIME type, batasan ukuran maksimum file, dan presigned URL generator - expect file berhasil tersimpan di object storage staging
-
-### 1.4 Penulisan Uji End-to-End (E2E Automated Testing)
-- [ ] `tests/e2e/auth.spec.ts`: Buat skrip uji E2E (Playwright / Cypress) untuk alur registrasi, verifikasi email, login, dan reset password - expect alur selesai hingga mendarat di dashboard pengguna
-- [ ] `tests/e2e/core-workflow.spec.ts`: Buat skrip uji E2E untuk alur inti bisnis (*Core Transaction Loop*) dari awal hingga akhir tanpa intervensi manual - expect simulasi alur end-to-end 100% hijau di lingkungan headless CI
-- [ ] `tests/e2e/edge-cases.spec.ts`: Buat pengujian untuk skenario ekstrim: submit ganda (*double-click submission*), back-button browser saat form kotor, sesi habis di tengah transaksi, dan form berukuran sangat besar - expect aplikasi menangani kondisi tanpa crash atau duplikasi rekaman data
-- [ ] Jalankan runner uji E2E: `pnpm test:e2e` - expect seluruh skenario E2E kritis berhasil tanpa flakiness
+## Testing Metadata
+- **System Name**: [System / Application Name]
+- **Staging Environment Target URL**: `https://staging.domain.com`
+- **Lead QA Engineer / Solo Dev**: [Your Name]
+- **Client UAT Representative**: [Client PIC Name]
+- **QA Start Date**: [YYYY-MM-DD]
+- **Target UAT Completion**: [YYYY-MM-DD]
+- **QA/UAT Gate Status**: [ ] TESTING IN PROGRESS | [ ] UAT UNDER REVIEW | [ ] PASSED & SIGNED-OFF
 
 ---
 
-## 2. Modul 07: Eksekusi SIT, Beban, & Manajemen Cacat (SIT Execution)
+## 1. Module 07: Automated Test Writing & QA Strategy (Test Writing)
 
-### 2.1 Eksekusi System Integration Testing (SIT)
-- [ ] `qa/sit-execution-log.md`: Jalankan seluruh skenario SIT di lingkungan Staging yang identik dengan arsitektur Produksi - expect 100% skenario tereksekusi dan tercatat
-- [ ] `qa/sit-execution-log.md`: Uji integrasi multi-layanan (Sinkronisasi Database <-> Redis Cache <-> Background Worker Queue <-> Eksternal Gateway) - expect antrean job BullMQ terproses tanpa orphan jobs
-- [ ] `qa/sit-cross-browser.md`: Lakukan pengujian lintas browser (Chrome, Edge, Safari, Firefox) dan responsivitas layar (Desktop 1920x1080, Laptop 1366x768, Tablet iPad, Mobile 375px) - expect konsistensi visual dan fungsional di seluruh viewport
+### 1.1 Test Planning (Test Plan)
+- [ ] `qa/test-plan.md`: Document Comprehensive Test Plan (Scope of Testing, In-Scope vs Out-of-Scope, Staging Test Environment, Browser/Device Matrix: Chrome, Safari, Firefox, iOS, Android) - expect test scope clearly documented
+- [ ] `qa/test-plan.md`: Define Entry Criteria (*Entry Criteria*: staging build green, DB migration complete) and Exit Criteria (*Exit Criteria*: 100% test cases executed, 0 P1/P2 defects, test coverage target met) - expect quality thresholds defined
+- [ ] `qa/test-matrix.md`: Build Requirements Traceability Matrix mapping every User Story from Module 02 to specific Test Case numbers - expect each feature bound to at least 1 positive test scenario and 1 negative test scenario
 
-### 2.2 Uji Kinerja & Beban Sistem (Performance & Load Testing)
-- [ ] `tests/load/k6-script.js`: Buat skrip uji beban k6 / Artillery untuk menguji endpoint terpadat dengan target 50-100 Concurrent Virtual Users (VUs) - expect skrip mencakup tahapan ramp-up, steady state, dan ramp-down
-- [ ] `qa/performance-report.md`: Eksekusi uji beban dan ukur metrik performa sistem:
-  - Nilai latency p95: target < 500 ms untuk query standar, < 1500 ms untuk transaksi berat
-  - Nilai latency p99: target < 2000 ms
-  - Error rate: target < 0.1% pada beban puncak
-  - Utilisasi CPU & RAM server basis data: tidak melampaui 80%
-  - expect sistem tidak mengalami deadlock, connection pool starvation, atau restart mendadak
-- [ ] `qa/lighthouse-report.html`: Jalankan Google Lighthouse audit pada halaman publik dan dashboard utama - expect skor Performance >= 85, Accessibility >= 90, Best Practices >= 90, SEO >= 90
+### 1.2 Unit Testing
+- [ ] `tests/unit/utils/*.test.ts`: Write unit tests for pure functions, mathematical calculations, date/time utilities, and currency formatting - expect 100% branch coverage on critical utilities
+- [ ] `tests/unit/validation/*.test.ts`: Write unit tests for Zod / Yup / Joi schema parsers (test empty strings, illegal characters, min/max boundary lengths, malformed email/phone formats) - expect all input validations reject invalid data with structured error messages
+- [ ] `tests/unit/domain/*.test.ts`: Write unit tests for isolated pure business logic (discounts, tax calculations, role permission checkers, state machine transitions) - expect business logic passes tests without external database dependencies
+- [ ] Run unit test runner: `pnpm test:unit --coverage` - expect domain code target coverage achieves at least >= 80%
 
-### 2.3 Pelaporan & Triase Cacat (Defect Triage & Severity)
-- [ ] `qa/defect-tracker.md`: Catat setiap bug yang ditemukan dengan struktur baku: ID Cacat, Judul, Langkah Reproduksi, Hasil Aktual, Hasil yang Diharapkan, Tangkapan Layar / Log, Severity, Priority, Status - expect deskripsi reproduktifitas jelas
-- [ ] Terapkan klasifikasi tingkat keparahan cacat:
-  - **P1 - Blocker**: Sistem crash, data rusak/hilang, kebocoran data, alur transaksi utama terputus total tanpa workaround
-  - **P2 - Critical**: Fitur bisnis utama gagal, namun ada workaround sementara yang rumit
-  - **P3 - Major**: Fitur sekunder tidak berfungsi sesuai spesifikasi, fungsionalitas utama tetap aman
-  - **P4 - Minor / Trivial**: Ketidaksesuaian visual minor, typo teks, misalignment padding < 4px
-  - expect seluruh cacat terklasifikasi secara objektif
-- [ ] `qa/defect-tracker.md`: Lakukan perbaikan bug dan re-test verifikasi - expect seluruh cacat P1 dan P2 terselesaikan (Zero P1/P2 Defects) sebelum gerbang UAT dibuka
+### 1.3 Integration Testing
+- [ ] `tests/integration/auth/*.test.ts`: Write integration tests for login, logout, refresh token, session expiry flows, and HttpOnly cookie middleware protection - expect HTTP status codes 200, 401, 403 verified accurately
+- [ ] `tests/integration/api/*.test.ts`: Write integration tests for REST API CRUD endpoints with isolated test database (Testcontainers / Postgres SQLite in-memory) - expect ACID database transactions verified (commit & rollback)
+- [ ] `tests/integration/webhooks/*.test.ts`: Write third-party webhook ingestion tests mocking HMAC-SHA256 signed payloads (valid and invalid) - expect 200 OK response for valid payloads and 401 Unauthorized for invalid signatures
+- [ ] `tests/integration/storage/*.test.ts`: Write file upload tests, MIME type verification, maximum file size limits, and presigned URL generator - expect files successfully stored in staging object storage
+
+### 1.4 End-to-End Automated Testing (E2E Automated Testing)
+- [ ] `tests/e2e/auth.spec.ts`: Create E2E test scripts (Playwright / Cypress) for registration, email verification, login, and password reset flows - expect flow completes landing on user dashboard
+- [ ] `tests/e2e/core-workflow.spec.ts`: Create E2E test scripts for core business flow (*Core Transaction Loop*) from start to finish without manual intervention - expect end-to-end flow simulation 100% green in headless CI environment
+- [ ] `tests/e2e/edge-cases.spec.ts`: Create tests for extreme scenarios: double-click submission, browser back-button on dirty forms, session expiry mid-transaction, and very large form payloads - expect application handles conditions without crashing or duplicate data records
+- [ ] Run E2E test runner: `pnpm test:e2e` - expect all critical E2E scenarios succeed without flakiness
 
 ---
 
-## 3. Modul 07 & 05B: Audit Keamanan Siber & Kepatuhan Data (Security Audit)
+## 2. Module 07: SIT Execution, Load Testing, & Defect Management (SIT Execution)
 
-### 3.1 Audit Dependensi & Pemindaian Kode Statis (Supply-Chain & SAST)
-- [ ] `qa/security/dependency-scan.txt`: Jalankan pemindai dependensi package: `pnpm audit --audit-level=high` atau Snyk - expect 0 kerentanan tingkat Critical atau High pada dependensi pihak ketiga
-- [ ] `qa/security/secret-scan.txt`: Jalankan pemindaian kredensial dan secret bocor di riwayat git menggunakan TruffleHog atau Gitleaks: `gitleaks detect --verbose` - expect nol private key, token API, atau password yang ter-commit ke dalam repositori
-- [ ] `qa/security/sast-report.txt`: Jalankan analisis statis keamanan kode menggunakan Semgrep atau SonarQube - expect nol temuan injeksi atau pola koding berbahaya
+### 2.1 System Integration Testing (SIT) Execution
+- [ ] `qa/sit-execution-log.md`: Execute all SIT scenarios in Staging environment identical to Production architecture - expect 100% scenarios executed and logged
+- [ ] `qa/sit-execution-log.md`: Test multi-service integration (Database <-> Redis Cache <-> Background Worker Queue <-> External Gateway synchronization) - expect BullMQ job queue processes without orphan jobs
+- [ ] `qa/sit-cross-browser.md`: Perform cross-browser testing (Chrome, Edge, Safari, Firefox) and screen responsiveness (Desktop 1920x1080, Laptop 1366x768, iPad Tablet, Mobile 375px) - expect visual and functional consistency across all viewports
 
-### 3.2 Checklist Pengujian OWASP Top 10
-- [ ] `qa/security/owasp-checklist.md`: **A01: Broken Access Control (BOLA/IDOR)** - Uji akses manipulasi ID pada parameter URL/body menggunakan token akun lain - expect akses ditolak dengan respon 403 Forbidden
-- [ ] `qa/security/owasp-checklist.md`: **A02: Cryptographic Failures** - Verifikasi enkripsi kata sandi menggunakan Argon2id atau bcrypt (cost factor >= 12), enkripsi file rahasia dengan AES-256-GCM, dan seluruh lalu lintas data wajib TLS 1.3 - expect hash aman dan SSL grade A di SSL Labs
-- [ ] `qa/security/owasp-checklist.md`: **A03: Injection (SQLi, NoSQLi, XSS)** - Uji coba injeksi SQL payload (`' OR '1'='1`) dan payload XSS (`<script>alert(1)</script>`) pada seluruh form input - expect input otomatis disanitasi dan kueri ORM sepenuhnya parameterized
-- [ ] `qa/security/owasp-checklist.md`: **A04: Insecure Design & Rate Limiting** - Uji pembatasan laju (*rate limiting*) pada endpoint login, forgot password, dan checkout (uji tembak 20 request/detik) - expect respon HTTP 429 Too Many Requests aktif
-- [ ] `qa/security/owasp-checklist.md`: **A05: Security Misconfiguration** - Pastikan mode `NODE_ENV=production`, stack trace dinonaktifkan dari respon publik, dan default credentials server diubah - expect pesan error generik terstruktur
-- [ ] `qa/security/owasp-checklist.md`: **A07: Identification & Auth Failures** - Uji proteksi brute-force (akun terkunci sementara setelah 5x gagal), session fixation direset saat login, dan cookie flag `HttpOnly, Secure, SameSite=Strict` terpasang - expect token tidak dapat diakses via JavaScript console
-- [ ] `qa/security/owasp-checklist.md`: **A08: Software & Data Integrity** - Verifikasi integritas dokumen/file sensitif menggunakan hash kriptografis SHA-256 - expect checksum tervalidasi sebelum parsing file
-- [ ] `qa/security/owasp-checklist.md`: **A09: Security Logging & Monitoring** - Pastikan setiap event kritis (login gagal, perubahan role admin, penghapusan data masal) tercatat di audit log server dengan timestamp UTC dan IP - expect jejak audit lengkap
-- [ ] `qa/security/owasp-checklist.md`: **A10: Server-Side Request Forgery (SSRF)** - Uji endpoint yang menerima URL eksternal dengan memasukkan alamat internal (`http://127.0.0.1`, `http://169.254.169.254`) - expect permintaan ke subnet internal diblokir
+### 2.2 System Performance & Load Testing
+- [ ] `tests/load/k6-script.js`: Build k6 / Artillery load testing script to test highest-traffic endpoints targeting 50-100 Concurrent Virtual Users (VUs) - expect script includes ramp-up, steady-state, and ramp-down phases
+- [ ] `qa/performance-report.md`: Execute load tests and measure system performance metrics:
+  - p95 latency value: target < 500 ms for standard queries, < 1500 ms for heavy transactions
+  - p99 latency value: target < 2000 ms
+  - Error rate: target < 0.1% at peak load
+  - Database server CPU & RAM utilization: does not exceed 80%
+  - expect system experiences no deadlocks, connection pool starvation, or unexpected restarts
+- [ ] `qa/lighthouse-report.html`: Run Google Lighthouse audit on public pages and main dashboard - expect scores Performance >= 85, Accessibility >= 90, Best Practices >= 90, SEO >= 90
 
-### 3.3 Verifikasi HTTP Security Headers
-- [ ] `qa/security/http-headers.md`: Uji respon header keamanan di staging via `curl -I https://staging.domain.com`:
+### 2.3 Defect Reporting & Triage (Defect Triage & Severity)
+- [ ] `qa/defect-tracker.md`: Log every bug found with standardized structure: Defect ID, Title, Steps to Reproduce, Actual Result, Expected Result, Screenshot / Log, Severity, Priority, Status - expect reproducible descriptions clear
+- [ ] Apply defect severity classifications:
+  - **P1 - Blocker**: System crash, data corrupted/lost, data breach, primary transaction flow blocked with no workaround
+  - **P2 - Critical**: Core business feature fails, but complex temporary workaround exists
+  - **P3 - Major**: Secondary feature does not function per specification, primary functionality remains operational
+  - **P4 - Minor / Trivial**: Minor visual cosmetic defect, text typo, padding misalignment < 4px
+  - expect all defects classified objectively
+- [ ] `qa/defect-tracker.md`: Perform bug fixes and re-test verification - expect all P1 and P2 defects resolved (Zero P1/P2 Defects) before opening UAT gate
+
+---
+
+## 3. Module 07 & 05B: Cybersecurity & Data Compliance Audit (Security Audit)
+
+### 3.1 Dependency Audit & Static Code Analysis (Supply-Chain & SAST)
+- [ ] `qa/security/dependency-scan.txt`: Run package dependency scanner: `pnpm audit --audit-level=high` or Snyk - expect 0 Critical or High severity vulnerabilities in third-party dependencies
+- [ ] `qa/security/secret-scan.txt`: Run secret and credential leak scan across git history using TruffleHog or Gitleaks: `gitleaks detect --verbose` - expect zero private keys, API tokens, or passwords committed to repository
+- [ ] `qa/security/sast-report.txt`: Run static application security testing using Semgrep or SonarQube - expect zero injection findings or dangerous coding patterns
+
+### 3.2 OWASP Top 10 Testing Checklist
+- [ ] `qa/security/owasp-checklist.md`: **A01: Broken Access Control (BOLA/IDOR)** - Test ID manipulation in URL/body parameters using another user's token - expect access denied with 403 Forbidden response
+- [ ] `qa/security/owasp-checklist.md`: **A02: Cryptographic Failures** - Verify password hashing using Argon2id or bcrypt (cost factor >= 12), secret file encryption with AES-256-GCM, and all traffic enforced via TLS 1.3 - expect secure hashes and SSL grade A on SSL Labs
+- [ ] `qa/security/owasp-checklist.md`: **A03: Injection (SQLi, NoSQLi, XSS)** - Test SQL injection payloads (`' OR '1'='1`) and XSS payloads (`<script>alert(1)</script>`) across all form inputs - expect inputs automatically sanitized and ORM queries fully parameterized
+- [ ] `qa/security/owasp-checklist.md`: **A04: Insecure Design & Rate Limiting** - Test rate limiting on login, forgot password, and checkout endpoints (burst test 20 requests/sec) - expect HTTP 429 Too Many Requests response triggered
+- [ ] `qa/security/owasp-checklist.md`: **A05: Security Misconfiguration** - Ensure `NODE_ENV=production` mode, stack traces disabled from public responses, and default server credentials changed - expect generic structured error messages
+- [ ] `qa/security/owasp-checklist.md`: **A07: Identification & Auth Failures** - Test brute-force protection (account temporarily locked after 5 failed attempts), session fixation reset on login, and cookie flags `HttpOnly, Secure, SameSite=Strict` applied - expect tokens inaccessible via JavaScript console
+- [ ] `qa/security/owasp-checklist.md`: **A08: Software & Data Integrity** - Verify integrity of sensitive documents/files using SHA-256 cryptographic hashes - expect checksum validated before parsing files
+- [ ] `qa/security/owasp-checklist.md`: **A09: Security Logging & Monitoring** - Ensure all critical events (failed logins, admin role changes, bulk data deletions) logged in server audit log with UTC timestamp and IP - expect complete audit trail
+- [ ] `qa/security/owasp-checklist.md`: **A10: Server-Side Request Forgery (SSRF)** - Test endpoints accepting external URLs with internal addresses (`http://127.0.0.1`, `http://169.254.169.254`) - expect requests to internal subnets blocked
+
+### 3.3 HTTP Security Headers Verification
+- [ ] `qa/security/http-headers.md`: Test staging response security headers via `curl -I https://staging.domain.com`:
   - `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`
   - `X-Content-Type-Options: nosniff`
   - `X-Frame-Options: DENY` (anti-clickjacking)
   - `Referrer-Policy: strict-origin-when-cross-origin`
   - `Content-Security-Policy: default-src 'self' ...`
-  - expect seluruh header keamanan standar terdeteksi aktif
+  - expect all standard security headers detected active
 
 ---
 
-## 4. Modul 08: Verifikasi Migrasi & Seeding Data (Data Migration Verification)
+## 4. Module 08: Data Migration & Seeding Verification (Data Migration Verification)
 
-### 4.1 Dry-Run Migrasi Data di Staging
-- [ ] `data-migration/migration-dry-run-plan.md`: Susun runbook urutan eksekusi skrip ETL (Extract, Transform, Load) dari sistem lama ke skema baru - expect tahapan eksekusi urut per tabel referensi
-- [ ] `data-migration/scripts/`: Jalankan skrip sanitasi dan transformasi data sampel riil dari sistem lama - expect karakter aneh, format tanggal inkonsisten, dan duplikasi data ternormalisasi
-- [ ] Eksekusi migrasi di staging: `pnpm run migrate:staging` - expect proses migrasi tuntas tanpa error constraint foreign key
+### 4.1 Data Migration Dry-Run in Staging
+- [ ] `data-migration/migration-dry-run-plan.md`: Prepare runbook for execution order of ETL (Extract, Transform, Load) scripts from legacy system to new schema - expect execution sequence ordered by reference table
+- [ ] `data-migration/scripts/`: Run sanitization and transformation scripts on real sample data from legacy system - expect malformed characters, inconsistent date formats, and duplicate records normalized
+- [ ] Execute staging migration: `pnpm run migrate:staging` - expect migration completes without foreign key constraint errors
 
-### 4.2 Laporan Rekonsiliasi Data (Reconciliation Report)
-- [ ] `data-migration/reconciliation-report.md`: Cocokkan jumlah total rekaman data per tabel sumber vs tabel target (`COUNT(*) source == COUNT(*) target`) - expect varians perbedaan 0%
-- [ ] `data-migration/reconciliation-report.md`: Lakukan verifikasi integritas data finansial/angka akumulasi (`SUM(amount) source == SUM(amount) target`) - expect tidak ada selisih satu sen pun
-- [ ] `data-migration/reconciliation-report.md`: Uji coba skenario rollback migrasi data ke titik sebelum migrasi - expect prosedur rollback berhasil mengembalikan database ke kondisi awal secara bersih
-
----
-
-## 5. Modul 09: Fasilitasi UAT Bersama Klien (UAT Facilitation)
-
-### 5.1 Persiapan Lingkungan & Lembar Kerja UAT
-- [ ] `uat/uat-workbook.xlsx` (atau `uat/UAT_SCENARIOS.md`): Buat lembar kerja skenario UAT berbasis bahasa bisnis pengguna (bukan bahasa koding):
-  - ID Skenario UAT
-  - Peran Pengguna (Role: Admin, Kasir, Pengguna Biasa)
-  - Prasyarat Skenario
-  - Panduan Langkah Aksi Langkah demi Langkah
-  - Kriteria Hasil yang Diharapkan
-  - Kolom Hasil Klien: [LULUS / GAGAL / CATATAN]
-  - expect seluruh use-case bisnis di SOW Modul 03 terwakili
-- [ ] `uat/environment-setup.md`: Siapkan akun uji terisolasi untuk masing-masing perwakilan tim klien (kredensial kredensial role lengkap) dan muat data dummy yang realistis - expect sistem siap digunakan tanpa konfigurasi manual oleh klien
-
-### 5.2 Kickoff & Pendampingan UAT
-- [ ] Gelar sesi pertemuan Kickoff UAT daring/tatap muka: demonstrasikan alur navigasi aplikasi dan jelaskan cara mengisi formulir UAT Workbook - expect tim penguji klien memahami prosedur pengujian
-- [ ] Tetapkan jendela waktu UAT resmi (standar: 3-5 hari kerja kalender) sesuai kontrak SOW - expect batas waktu pengumpulan feedback disepakati kedua belah pihak
-- [ ] Buka kanal komunikasi siaga (Grup WhatsApp/Slack terdedikasi) untuk merespons pertanyaan pengguna secara cepat selama periode pengujian - expect response time < 30 menit pada jam kerja
-
-### 5.3 Triase Temuan UAT & Negosiasi Scope (Defect vs Change Request)
-- [ ] `uat/uat-defect-log.md`: Kumpulkan seluruh catatan temuan dari tim klien setiap sore hari - expect seluruh masukan terdokumentasi rapi
-- [ ] Jalankan sesi triase harian bersama PIC Klien:
-  - Klasifikasikan temuan: Apakah ini **Bug / Penyimpangan dari SOW** (wajib diperbaiki segera tanpa biaya tambahan) atau **Permintaan Baru / Change Request** (dicatat untuk roadmap fase berikutnya atau dikenakan biaya CR)
-  - expect kesepakatan tegas agar terhindar dari pemekaran fitur (*scope creep*) di penghujung proyek
-- [ ] Perbaiki seluruh bug UAT yang telah disepakati dan deploy hotfix ke staging - expect verifikasi ulang disaksikan oleh penguji klien
-
-### 5.4 Penandatanganan Berita Acara UAT (UAT Sign-off)
-- [ ] Pastikan 100% skenario UAT berstatus LULUS (PASS) dan tidak ada cacat berkategori P1/P2 yang masih berstatus OPEN - expect lembar kerja UAT bersih
-- [ ] `uat/BAST_UAT_SIGNOFF.pdf`: Terbitkan dokumen formal Berita Acara UAT Sign-off - expect dokumen ditandatangani basah / digital certificate oleh Project Sponsor atau Product Owner Klien
+### 4.2 Data Reconciliation Report
+- [ ] `data-migration/reconciliation-report.md`: Reconcile total record counts per source table vs target table (`COUNT(*) source == COUNT(*) target`) - expect 0% variance
+- [ ] `data-migration/reconciliation-report.md`: Verify integrity of financial data and accumulated balances (`SUM(amount) source == SUM(amount) target`) - expect zero discrepancy to the cent
+- [ ] `data-migration/reconciliation-report.md`: Test rollback scenario to restore data to pre-migration state - expect rollback procedure cleanly restores database to initial state
 
 ---
 
-## 6. Gerbang Verifikasi Kelolosan Fase QA/UAT (Gate Pass QA to Deployment)
+## 5. Module 09: Client-Facing UAT Facilitation (UAT Facilitation)
 
-| Parameter Evaluasi | Standar Minimum Kelolosan | Status Verifikasi | Catatan Bukti |
+### 5.1 Environment Setup & UAT Workbook Preparation
+- [ ] `uat/uat-workbook.xlsx` (or `uat/UAT_SCENARIOS.md`): Create UAT scenario workbook in user business language (not code terms):
+  - UAT Scenario ID
+  - User Role (Role: Admin, Cashier, Regular User)
+  - Scenario Preconditions
+  - Step-by-Step Action Guide
+  - Expected Result Criteria
+  - Client Result Column: [PASS / FAIL / NOTES]
+  - expect all business use cases from Module 03 SOW represented
+- [ ] `uat/environment-setup.md`: Prepare isolated test accounts for each client team representative (complete role credentials) and seed realistic dummy data - expect system ready for use without manual client configuration
+
+### 5.2 UAT Kickoff & Support
+- [ ] Host online/in-person UAT Kickoff meeting: demonstrate application navigation flow and explain how to fill out the UAT Workbook - expect client test team understands testing procedures
+- [ ] Establish official UAT testing window (standard: 3-5 calendar business days) per SOW contract - expect feedback submission deadline agreed upon by both parties
+- [ ] Open dedicated standby communication channel (dedicated WhatsApp Group / Slack) to respond promptly to user questions throughout testing window - expect response time < 30 minutes during business hours
+
+### 5.3 UAT Defect Triage & Scope Negotiation (Defect vs Change Request)
+- [ ] `uat/uat-defect-log.md`: Consolidate all feedback notes from client team every afternoon - expect all feedback neatly documented
+- [ ] Conduct daily triage sessions with Client PIC:
+  - Classify findings: Is this a **Bug / SOW Deviation** (must be fixed immediately at no additional cost) or a **New Request / Change Request** (logged for next phase roadmap or billed as CR)
+  - expect firm agreement to prevent scope creep at project conclusion
+- [ ] Fix all agreed UAT bugs and deploy hotfix to staging - expect re-verification witnessed by client tester
+
+### 5.4 UAT Sign-Off Execution (UAT Sign-off)
+- [ ] Ensure 100% of UAT scenarios status is PASS and zero P1/P2 defects remain OPEN - expect clean UAT workbook
+- [ ] `uat/BAST_UAT_SIGNOFF.pdf`: Issue formal UAT Sign-off document - expect document signed via wet signature / digital certificate by Client Project Sponsor or Product Owner
+
+---
+
+## 6. QA/UAT Phase Verification Gate (Gate Pass QA to Deployment)
+
+| Evaluation Parameter | Minimum Pass Standard | Verification Status | Evidence Notes |
 | :--- | :--- | :---: | :--- |
-| **Cakupan Uji Otomatis** | Unit & Integration test lolos 100%, coverage >= 80%, E2E alur inti hijau | [ ] PASS | Dilampirkan laporan `pnpm test` |
-| **Bebas Cacat Kritis** | Zero P1 (Blocker) & Zero P2 (Critical) defects di staging | [ ] PASS | Dilampirkan `qa/defect-tracker.md` |
-| **Kinerja & Beban** | Latency p95 < 500ms, Error rate < 0.1% pada uji beban VUs | [ ] PASS | Dilampirkan `qa/performance-report.md` |
-| **Audit Keamanan** | OWASP Top 10 lolos, pnpm audit 0 Critical/High, 0 secret leak | [ ] PASS | Dilampirkan `qa/security/` |
-| **Rekonsiliasi Data** | Migrasi dry-run sukses, selisih rekaman data 0% | [ ] PASS | Dilampirkan `data-migration/reconciliation-report.md` |
-| **UAT Sign-off Formal** | Dokumen persetujuan UAT ditandatangani oleh pemangku kepentingan klien | [ ] PASS | Dilampirkan `uat/BAST_UAT_SIGNOFF.pdf` |
+| **Automated Test Coverage** | Unit & Integration tests pass 100%, coverage >= 80%, core E2E flow green | [ ] PASS | Attach `pnpm test` report |
+| **Zero Critical Defects** | Zero P1 (Blocker) & Zero P2 (Critical) defects in staging | [ ] PASS | Attach `qa/defect-tracker.md` |
+| **Performance & Load** | p95 latency < 500ms, Error rate < 0.1% under VU load test | [ ] PASS | Attach `qa/performance-report.md` |
+| **Security Audit** | OWASP Top 10 pass, pnpm audit 0 Critical/High, 0 secret leaks | [ ] PASS | Attach `qa/security/` |
+| **Data Reconciliation** | Dry-run migration successful, 0% record variance | [ ] PASS | Attach `data-migration/reconciliation-report.md` |
+| **Formal UAT Sign-off** | UAT approval document signed by client stakeholders | [ ] PASS | Attach `uat/BAST_UAT_SIGNOFF.pdf` |
 
-### Keputusan Gerbang QA:
-- [ ] **LULUS (GO TO PRODUCTION DEPLOYMENT - M10)**: Seluruh pengujian lolos, audit keamanan bersih, dan klien telah menandatangani UAT Sign-off. Sistem siap rilis ke Lingkungan Produksi.
-- [ ] **TAHAN (HOLD / BLOCKING DEFECT)**: Masih ditemukan cacat P1/P2 atau celah keamanan tingkat tinggi. Dilarang keras melakukan rilis ke produksi!
-- [ ] **REVISI UAT (HOLD / CLIENT RE-TEST)**: Klien belum menyelesaikan seluruh skenario uji atau meminta perbaikan fungsionalitas inti. Jadwalkan pengujian ulang.
+### QA Gate Decision:
+- [ ] **PASSED (GO TO PRODUCTION DEPLOYMENT - M10)**: All tests pass, security audit clean, and client signed UAT Sign-off. System ready for Production Environment release.
+- [ ] **HOLD (HOLD / BLOCKING DEFECT)**: P1/P2 defects or high-severity security vulnerabilities remain. Strictly prohibited from releasing to production!
+- [ ] **UAT REVISION (HOLD / CLIENT RE-TEST)**: Client has not completed all test scenarios or requested core functionality fixes. Reschedule testing round.

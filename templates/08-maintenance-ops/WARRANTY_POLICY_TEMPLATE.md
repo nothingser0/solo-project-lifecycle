@@ -1,53 +1,53 @@
-# Kebijakan Masa Garansi Pemeliharaan (Warranty Policy)
+# Maintenance Warranty Policy
 
-> Ketentuan resmi mengenai cakupan, batasan, jam layanan, dan prosedur pelaporan perbaikan galat (*bug fix*) selama masa garansi pascapenandatanganan BAST.
-
----
-
-## 1. Parameter Garansi
-- **Nama Sistem**: [Nama Aplikasi]
-- **Pihak Klien**: [Nama Perusahaan Klien]
-- **Lead Developer**: [Nama Anda]
-- **Nomor Referensi BAST**: BAST/[ID_PROYEK]/[TAHUN]
-- **Tanggal Mulai Garansi**: [YYYY-MM-DD] (Sesuai tanggal BAST)
-- **Tanggal Berakhir Garansi**: [YYYY-MM-DD] (30 / 60 / 90 Hari Kalender)
+> Official terms governing coverage, boundaries, service hours, and reporting procedures for bug fixes during the post-BAST warranty period.
 
 ---
 
-## 2. Cakupan Garansi (Apa yang Termasuk & Dilindungi)
-
-Garansi berlaku **HANYA untuk perbaikan galat murni (Bug Fixes)**:
-1. Kesalahan logika pemrograman di mana fungsi sistem tidak berjalan sesuai dengan dokumen spesifikasi teknis **FSD.md** atau **PRD.md**.
-2. Gangguan keamanan kritis (*security vulnerability*) pada kode aplikasi yang ditulis oleh Developer.
-3. Terjadinya galat internal server (*HTTP 500 Server Error*) yang dipicu oleh alur kerja normal yang telah disetujui pada sesi UAT.
-
----
-
-## 3. Pengecualian Garansi (Apa yang TIDAK Termasuk)
-
-Garansi secara hukum **TIDAK BERLAKU** untuk kondisi berikut:
-1. **Permintaan Fitur Baru (New Features)**: Penambahan modul baru, pembuatan template dokumen baru, atau perubahan format laporan yang belum tercantum di PRD.
-2. **Perubahan Desain Visual (UI Layout)**: Pemindahan posisi tombol, perubahan warna brand, atau perombakan sitemap navigasi setelah dokumen *Design Freeze* disahkan.
-3. **Kesalahan Pengoperasian Pengguna (User Error)**: Penghapusan data master oleh staf klien yang tidak sengaja, lupa kata sandi masal, atau perangkat keras kantor klien yang terkena virus.
-4. **Perubahan Pihak Ketiga Eksternal**: Perubahan endpoint API, pembaruan kebijakan mendadak, atau gangguan server pada penyedia pihak ketiga (Payment Gateway, Cloudflare, AWS/GCP, SMTP).
-5. **Modifikasi Kode Tanpa Izin**: Kode sumber telah diubah atau dimodifikasi oleh tim internal klien atau pihak ketiga lainnya tanpa persetujuan tertulis dari Developer.
+## 1. Warranty Parameters
+- **System Name**: [Application Name]
+- **Client Party**: [Client Company Name]
+- **Lead Developer**: [Your Name]
+- **BAST Reference Number**: BAST/[PROJECT_ID]/[YEAR]
+- **Warranty Start Date**: [YYYY-MM-DD] (Per BAST sign-off date)
+- **Warranty End Date**: [YYYY-MM-DD] (30 / 60 / 90 Calendar Days)
 
 ---
 
-## 4. Jam Layanan & Matriks Perjanjian Tingkat Layanan (SLA)
+## 2. Warranty Coverage (What Is Included & Protected)
 
-- **Jam Layanan Resmi**: **Senin s/d Jumat, pukul 09.00 – 17.00 WIB** (Hari libur nasional tidak dihitung).
-- **Saluran Pelaporan Resmi**: Email ke `[email-support@domain.com]` atau grup koordinasi teknis resmi.
+Warranty applies **EXCLUSIVELY to genuine bug fixes (Bug Fixes)**:
+1. Programming logic defects where system behavior deviates from agreed technical specification documents (**FSD.md** or **PRD.md**).
+2. Critical security vulnerabilities (*security vulnerability*) in application code written by the Developer.
+3. Internal server errors (*HTTP 500 Server Error*) triggered during normal workflow paths approved during UAT sessions.
 
-| Klasifikasi Kendala | Definisi Kendala | Batas Waktu Respon Awal | Target Resolusi Perbaikan |
+---
+
+## 3. Warranty Exclusions (What Is NOT Included)
+
+The warranty is legally **INAPPLICABLE** under the following conditions:
+1. **New Feature Requests (New Features)**: Adding new modules, creating new document templates, or modifying report layouts not specified in the PRD.
+2. **Visual Design Changes (UI Layout)**: Moving button placements, altering brand colors, or restructuring navigation sitemaps after *Design Freeze* sign-off.
+3. **User Operational Errors (User Error)**: Accidental master data deletion by client staff, mass forgotten passwords, or client office hardware malware infections.
+4. **External Third-Party Changes**: API endpoint breaking changes, abrupt policy updates, or server outages from external providers (Payment Gateways, Cloudflare, AWS/GCP, SMTP).
+5. **Unauthorized Code Modification**: Source code modified or altered by client internal teams or third parties without written authorization from the Developer.
+
+---
+
+## 4. Service Hours & Service Level Agreement (SLA) Matrix
+
+- **Official Service Hours**: **Monday to Friday, 09:00 – 17:00 UTC/Local** (Excluding national public holidays).
+- **Official Reporting Channel**: Email to `[email-support@domain.com]` or designated official technical communication channel.
+
+| Issue Classification | Issue Definition | Initial Response Time | Resolution Target |
 | :--- | :--- | :---: | :---: |
-| **Severity 1 (Kritis)** | Seluruh sistem mati total (*down*), transaksi pembayaran gagal total, data korup | **$< 2$ Jam Kerja** | **$< 24$ Jam Kerja** |
-| **Severity 2 (Mayor)** | Fitur penting tidak berjalan namun masih ada cara alternatif (*workaround*) | **$< 8$ Jam Kerja** | **$< 48$ Jam Kerja** |
-| **Severity 3 (Minor)** | Kesalahan penulisan teks (*typo*), format tampilan agak bergeser sedikit | **$< 24$ Jam Kerja** | Dijadwalkan pada rilis pembaruan mingguan |
+| **Severity 1 (Critical)** | Entire system down (*down*), payment transactions failing completely, data corruption | **$< 2$ Business Hours** | **$< 24$ Business Hours** |
+| **Severity 2 (Major)** | Core feature impaired but a workaround exists | **$< 8$ Business Hours** | **$< 48$ Business Hours** |
+| **Severity 3 (Minor)** | Minor typo (*typo*), slight cosmetic visual misalignment | **$< 24$ Business Hours** | Scheduled in weekly maintenance release |
 
 ---
 
-## 5. Prosedur Setelah Masa Garansi Berakhir
+## 5. Post-Warranty Procedures
 
-Setelah tanggal berakhirnya masa garansi terlewati:
-- Segala bentuk perbaikan galat, pembaruan keamanan, dan bantuan teknis akan dikenakan tarif per jam (*Time & Materials*) standar industri atau diatur melalui **Kontrak Pemeliharaan Bulanan (Monthly Retainer SLA)**.
+Upon expiration of the warranty period:
+- All forms of bug fixes, security updates, and technical support will be billed at standard industry hourly rates (*Time & Materials*) or governed under a **Monthly Retainer SLA (Maintenance Agreement)**.

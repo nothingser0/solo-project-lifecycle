@@ -1,58 +1,58 @@
-# BERITA ACARA SERAH TERIMA PEKERJAAN (BAST)
+# PROJECT HANDOVER & ACCEPTANCE CERTIFICATE (BAST)
 
-**Nomor**: BAST/[KODE_PROYEK]/[BULAN_ROMAWI]/[TAHUN]  
-**Tanggal**: [Tanggal] [Bulan] [Tahun]
-
----
-
-Pada hari ini, [Hari], tanggal [Tanggal] bulan [Bulan] tahun [Tahun], bertempat di [Kota Domisili], kami yang bertanda tangan di bawah ini:
-
-1. **NAMA PIC KLIEN**: [Nama Lengkap PIC Klien]  
-   **Jabatan**: [Product Owner / Manajer IT / Direktur]  
-   **Perusahaan**: [Nama Perusahaan Klien]  
-   **Alamat Kantor**: [Alamat Lengkap Perusahaan]  
-   Bertindak untuk dan atas nama **[Nama Perusahaan Klien]**, selanjutnya disebut sebagai **"PIHAK PERTAMA"**.
-
-2. **NAMA DEVELOPER**: [Nama Lengkap Anda]  
-   **Profesi**: Konsultan Rekayasa Perangkat Lunak Independen  
-   **NIK / NPWP**: [Nomor Identitas / NPWP]  
-   **Alamat Domisili**: [Alamat Domisili Anda]  
-   Bertindak untuk dan atas nama diri sendiri, selanjutnya disebut sebagai **"PIHAK KEDUA"**.
+**Number**: BAST/[PROJECT_CODE]/[ROMAN_MONTH]/[YEAR]  
+**Date**: [Day] [Month] [Year]
 
 ---
 
-### MENGINGAT:
-1. Perjanjian Kerja Sama & Statement of Work (SOW) Nomor: `[NOMOR_KONTRAK]` tertanggal `[TANGGAL_KONTRAK]`.
-2. Berita Acara Uji Terima Pengguna (*UAT Sign-Off Report*) tertanggal `[TANGGAL_UAT]`.
-3. Laporan Peluncuran Sistem Resmi (*Go-Live Report*) tertanggal `[TANGGAL_GOLIVE]`.
+On this day, [Day of week], [Date] [Month] [Year], located in [City of Domicile], the undersigned below:
+
+1. **CLIENT PIC NAME**: [Client PIC Full Name]  
+   **Title**: [Product Owner / IT Manager / Director]  
+   **Company**: [Client Company Name]  
+   **Office Address**: [Company Full Address]  
+   Acting for and on behalf of **[Client Company Name]**, hereinafter referred to as the **"FIRST PARTY"**.
+
+2. **DEVELOPER NAME**: [Your Full Name]  
+   **Profession**: Independent Software Engineering Consultant  
+   **ID / Tax Number (NIK / NPWP)**: [Identity Number / Tax Number]  
+   **Domicile Address**: [Your Domicile Address]  
+   Acting for and on behalf of himself/herself, hereinafter referred to as the **"SECOND PARTY"**.
 
 ---
 
-### DENGAN INI MENYATAKAN SEBAGAI BERIKUT:
-
-#### Pasal 1: Penyerahan Hasil Pekerjaan
-PIHAK KEDUA telah menyelesaikan dan menyerahkan seluruh hasil pekerjaan pembangunan sistem perangkat lunak kepada PIHAK PERTAMA dengan rincian sebagai berikut:
-1. **Sistem Aplikasi Berjalan**: Perangkat lunak beroperasi stabil di domain resmi produksi: `https://app.klien.com`.
-2. **Kode Sumber (Source Code)**: Kepemilikan repositori Git resmi telah dialihkan secara penuh kepada organisasi PIHAK PERTAMA.
-3. **Dokumentasi Teknis & Panduan**: Penyerahan dokumen PRD, FSD, Arsitektur, dan Buku Panduan Pengguna (*User Manual*).
-4. **Pelatihan Pengguna (Training)**: Penyelenggaraan sesi pelatihan operasional untuk staf dan administrator PIHAK PERTAMA telah selesai dilaksanakan.
-
-#### Pasal 2: Pelunasan Kewajiban Keuangan
-PIHAK PERTAMA menyatakan telah melunasi seluruh kewajiban pembayaran (100%) atas total nilai kontrak pekerjaan kepada PIHAK KEDUA sebagaimana tercantum dalam Perjanjian Kerja Sama, tanpa ada sisa tunggakan dalam bentuk apapun.
-
-#### Pasal 3: Masa Garansi Pemeliharaan (Warranty Period)
-1. Terhitung sejak tanggal penandatanganan Berita Acara ini, PIHAK KEDUA memberikan **Masa Garansi Pemeliharaan selama [30 / 60 / 90] Hari Kalender**, terhitung mulai tanggal **[Tanggal Mulai]** sampai dengan tanggal **[Tanggal Berakhir]**.
-2. Garansi berlaku khusus untuk perbaikan galat murni (*bug fix*) di mana sistem tidak berjalan sesuai dengan dokumen spesifikasi FSD/PRD.
-3. Permintaan penambahan fitur baru, perubahan tata letak desain, atau gangguan akibat kelalaian pihak ketiga di luar kendali Developer tidak termasuk dalam cakupan garansi dan akan diatur dalam perjanjian pemeliharaan terpisah (*Monthly Retainer / SLA*).
+### WHEREAS:
+1. Master Services Agreement & Statement of Work (SOW) Number: `[CONTRACT_NUMBER]` dated `[CONTRACT_DATE]`.
+2. User Acceptance Testing Sign-Off Report (*UAT Sign-Off Report*) dated `[UAT_DATE]`.
+3. Official System Launch Report (*Go-Live Report*) dated `[GOLIVE_DATE]`.
 
 ---
 
-Demikian Berita Acara Serah Terima ini dibuat dalam rangkap 2 (dua) bermeterai cukup (Rp 10.000,-) dan ditandatangani oleh kedua belah pihak dengan penuh kesadaran dan tanggung jawab tanpa paksaan dari pihak manapun.
+### HEREBY AGREE AND DECLARE AS FOLLOWS:
 
-| PIHAK PERTAMA (Klien) | PIHAK KEDUA (Developer) |
+#### Article 1: Handover of Deliverables
+The SECOND PARTY has completed and handed over all software system development deliverables to the FIRST PARTY with the following details:
+1. **Running Application System**: Software operates stably on the official production domain: `https://app.client.com`.
+2. **Source Code**: Ownership of the official Git repository has been fully transferred to the FIRST PARTY organization.
+3. **Technical Documentation & Guides**: Handover of PRD, FSD, Architecture documents, and User Manual.
+4. **User Training**: Operational training sessions for the FIRST PARTY's staff and administrators have been completed.
+
+#### Article 2: Settlement of Financial Obligations
+The FIRST PARTY declares that it has settled all payment obligations (100%) of the total contract value to the SECOND PARTY as stipulated in the Agreement, with no outstanding arrears of any kind.
+
+#### Article 3: Maintenance Warranty Period
+1. Starting from the signing date of this Certificate, the SECOND PARTY provides a **Maintenance Warranty Period of [30 / 60 / 90] Calendar Days**, commencing from **[Start Date]** until **[End Date]**.
+2. The warranty applies exclusively to genuine bug fixes (*bug fix*) where the system fails to operate in accordance with the FSD/PRD specification documents.
+3. Requests for new features, design layout alterations, or disruptions caused by third-party negligence beyond the Developer's control are excluded from warranty coverage and shall be governed under a separate maintenance agreement (*Monthly Retainer / SLA*).
+
+---
+
+Thus this Project Handover & Acceptance Certificate (BAST) is executed in 2 (two) counterparts with sufficient stamp duty (Rp 10,000 / applicable duty stamp) and signed by both parties with full awareness and responsibility without coercion from any party.
+
+| FIRST PARTY (Client) | SECOND PARTY (Developer) |
 | :---: | :---: |
-| [Nama Perusahaan Klien] | Independent Software Consultant |
-| *(Meterai Rp 10.000,-)* | *(Meterai Rp 10.000,-)* |
+| [Client Company Name] | Independent Software Consultant |
+| *(Duty Stamp / Meterai)* | *(Duty Stamp / Meterai)* |
 | _____________________________ | _____________________________ |
-| **[Nama PIC Klien]** | **[Nama Anda]** |
-| [Jabatan Resmi Klien] | Independent Lead Software Engineer |
+| **[Client PIC Name]** | **[Your Name]** |
+| [Client Official Title] | Independent Lead Software Engineer |

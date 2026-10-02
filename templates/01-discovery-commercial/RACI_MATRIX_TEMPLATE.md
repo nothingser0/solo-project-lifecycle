@@ -151,7 +151,7 @@
 | **User Manual** | R | C | I | I | I | A | I | I | C |
 | **Admin Manual** | R | I | I | I | C | A | I | I | C |
 | **Handover Documentation** | R | C | I | I | C | A | I | I | C |
-| **BAST (Berita Acara Serah Terima)** | C | R | I | I | I | I | C | I | A |
+| **BAST (Official Handover Report)** | C | R | I | I | I | I | C | I | A |
 | **Final Invoice** | I | C | I | I | I | I | R | A | I |
 | **Knowledge Transfer Session** | R | C | I | I | I | A | I | I | C |
 | **Source Code Transfer** | R | I | I | I | I | A | I | I | C |

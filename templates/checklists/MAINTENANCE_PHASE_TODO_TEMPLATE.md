@@ -1,156 +1,156 @@
-# Maintenance, Warranty, & Operations Phase TODO Template (Modul 12 - Modul 13)
+# Maintenance, Warranty, & Operations Phase TODO Template (Module 12 - Module 13)
 
-> Template daftar tugas atomik untuk fase Pasca-Rilis: Masa Garansi Cacat (Warranty Period), Penyiapan Pemantauan & Observabilitas (Monitoring & APM), Penetapan Baseline Metrik Kinerja/Produk, dan Perencanaan Iterasi Berkelanjutan (SLA Retainer / Product Growth).
-> Aturan: Kawal stabilitas sistem produksi secara proaktif. Terapkan batasan tegas antara perbaikan bug garansi dan penambahan fitur baru (*scope creep control*). Pantau kesehatan sistem menggunakan telemetri otomatis, bukan menunggu komplain dari pengguna akhir.
-
----
-
-## Metadata Pemeliharaan & Operasi
-- **Nama Sistem**: [Nama Sistem / Aplikasi]
-- **Target URL Produksi**: `https://app.domainklien.com`
-- **Lead Operations / On-Call Engineer**: [Nama Anda]
-- **PIC Manajerial Klien**: [Nama PIC Klien]
-- **Masa Garansi**: [30 / 60 / 90 Hari Kalender] (Mulai: [YYYY-MM-DD] s/d [YYYY-MM-DD])
-- **Model Kontrak Lanjutan**: [ ] Warranty Gratis (Standar) | [ ] SLA Retainer Bulanan | [ ] Handover Putus Kontrak
-- **Status Operasional**: [ ] WARRANTY ACTIVE | [ ] SLA RETAINER ACTIVE | [ ] ARCHIVED / CLOSED
+> Atomic task checklist template for the Post-Release phase: Defect Warranty Period, Monitoring & Observability Setup (APM), Technical/Product Metrics Baseline Establishment, and Continuous Iteration Planning (SLA Retainer / Product Growth).
+> Rules: Guard production system stability proactively. Enforce clear boundaries between warranty bug fixes and new feature requests (*scope creep control*). Monitor system health using automated telemetry rather than waiting for end-user complaints.
 
 ---
 
-## 1. Modul 12: Manajemen Masa Garansi & Layanan Cacat (Warranty Period Tasks)
-
-### 1.1 Inisiasi Masa Garansi & Batasan Ruang Lingkup
-- [ ] `maintenance/warranty-kickoff.md`: Kirimkan surat konfirmasi resmi dimulainya masa garansi terhitung sejak tanggal penandatanganan BAST Final - expect tanggal mulai dan tanggal kadaluarsa garansi tercatat hitam di atas putih
-- [ ] `maintenance/warranty-scope-policy.md`: Tegaskan dan komunikasikan Batasan Lingkup Garansi kepada seluruh pemangku kepentingan klien:
-  - **DITANGGUNG (Covered)**: Bug/cacat kode yang menyimpang dari dokumen spesifikasi FSD/SOW yang telah disepakati, ketidakstabilan crash server internal, kegagalan query database
-  - **TIDAK DITANGGUNG (Not Covered)**: Permintaan penambahan alur/fitur baru (*Change Request*), perubahan desain antarmuka atas selera baru, kerusakan akibat modifikasi kode mandiri oleh tim klien, perubahan drastis API pihak ketiga di luar kendali
-  - expect batasan tanggung jawab dipahami dan diakui secara tertulis oleh klien
-- [ ] `maintenance/support-channels.md`: Buka kanal komunikasi resmi dukungan (*Support Ticket Channel*: Portal Helpdesk / Email Support / Slack Channel terdedikasi) - expect kanal komunikasi terpusat dan tercatat, bukan via chat personal acak
-
-### 1.2 Triase Insiden & Service Level Agreement (SLA Tiers)
-- [ ] Terapkan matriks klasifikasi tiket insiden dan komitmen waktu respons (*Response Time*) serta penyelesaian (*Resolution Target*):
-  - **Tingkat 1 - Critical Outage (P1)**: Seluruh sistem mati total atau data rusak. Waktu respons: < 1 jam. Target resolusi/workaround: < 4 jam.
-  - **Tingkat 2 - Major Degradation (P2)**: Fitur bisnis inti terganggu untuk mayoritas pengguna. Waktu respons: < 2 jam. Target resolusi: < 12 jam.
-  - **Tingkat 3 - Moderate Defect (P3)**: Bug fungsional non-kritis dengan solusi alternatif. Waktu respons: < 8 jam. Target resolusi: < 48 jam.
-  - **Tingkat 4 - Minor / Cosmetic (P4)**: Typo teks atau pergeseran visual kecil. Waktu respons: < 24 jam. Target resolusi: Dimasukkan ke siklus rilis patch berkala.
-  - expect alur penanganan tiket mengikuti komitmen SLA
-- [ ] `maintenance/incident-log.md`: Catat setiap tiket insiden yang dilaporkan selama masa garansi: ID Tiket, Pelapor, Timestamp Masuk, Severity, Analisis Akar Masalah (RCA), Waktu Penanganan, Waktu Penyelesaian - expect seluruh tiket terdata secara akuntabel
-
-### 1.3 Analisis Pasca-Insiden (Post-Mortem & Root Cause Analysis)
-- [ ] `maintenance/post-mortems/YYYY-MM-DD-incident-rca.md`: Untuk setiap insiden berkategori P1 atau P2, susun dokumen Root Cause Analysis (RCA) menggunakan metode 5-Whys:
-  - Kronologi peristiwa (*Incident Timeline*)
-  - Dampak terhadap bisnis dan jumlah pengguna terdampak
-  - Akar masalah teknis (*Root Cause*)
-  - Tindakan perbaikan darurat (*Corrective Action*)
-  - Tindakan pencegahan agar insiden tidak terulang (*Preventative Action*)
-  - expect transparansi profesional yang membangun kepercayaan klien
-- [ ] Deploy patch koreksi ke produksi dan lakukan verifikasi ulang bersama pelapor tiket - expect tiket insiden ditutup dengan status RESOLVED
-
-### 1.4 Transisi Menuju Kontrak Pemeliharaan (SLA Retainer Proposal)
-- [ ] `maintenance/sla-retainer-proposal.md`: Pada 14 hari sebelum masa garansi berakhir, susun dan kirimkan proposal Perjanjian Layanan Pemeliharaan Berkelanjutan (*SLA Retainer Contract*):
-  - Paket jam kerja dukungan bulanan (misal: 10 jam, 20 jam, atau 40 jam per bulan)
-  - Biaya retainer tetap bulanan (*Monthly Retainer Fee*)
-  - Tarif per jam untuk pengerjaan Change Request tambahan di luar kuota (*Blended Hourly Rate*)
-  - Pemeliharaan preventif rutin (update security patch OS/framework bulanan, audit database)
-  - expect penawaran retainment terkirim tepat waktu sebelum ketergantungan klien terputus
-- [ ] Lakukan negosiasi dan penandatanganan kontrak retainer baru atau laksanakan prosedur penutupan garansi final (*Warranty Sign-off / Closure Certificate*) jika klien memilih pemeliharaan mandiri - expect status operasional terkunci jelas
+## Maintenance & Operations Metadata
+- **System Name**: [System / Application Name]
+- **Production Target URL**: `https://app.clientdomain.com`
+- **Lead Operations / On-Call Engineer**: [Your Name]
+- **Client Management PIC**: [Client PIC Name]
+- **Warranty Period**: [30 / 60 / 90 Calendar Days] (From: [YYYY-MM-DD] to [YYYY-MM-DD])
+- **Follow-On Contract Model**: [ ] Complimentary Warranty (Standard) | [ ] Monthly SLA Retainer | [ ] Clean-Break Handover
+- **Operational Status**: [ ] WARRANTY ACTIVE | [ ] SLA RETAINER ACTIVE | [ ] ARCHIVED / CLOSED
 
 ---
 
-## 2. Modul 13: Penyiapan Sistem Pemantauan & Observabilitas (Monitoring Setup)
+## 1. Module 12: Warranty Period Management & Defect Servicing (Warranty Period Tasks)
 
-### 2.1 Konfigurasi Pemantauan Kinerja Aplikasi (APM & Error Tracking)
-- [ ] Pasang dan inisiasi SDK pemantau crash/error di backend dan frontend (Sentry / Datadog / Highlight.io / Bugsnag):
-  - Konfigurasikan pelacakan unhandled promise rejection dan fatal exceptions
-  - Pasang context data pengguna (User ID tersamarkan, environment tag: `production`)
-  - Konfigurasikan sanitasi data rahasia (*Data Scrubbing*): sembunyikan password, nomor kartu kredit, token JWT dari rekaman log error
-  - expect error di browser pengguna dan server backend otomatis tertangkap di dashboard pemantau
-- [ ] Pasang pemantauan transaksi performa (*Performance Tracing / OpenTelemetry*): lacak durasi query database lambat (*slow queries > 500ms*) dan waktu eksekusi panggilan API eksternal - expect visualisasi bottleneck terpetakan
+### 1.1 Warranty Initiation & Scope Boundary
+- [ ] `maintenance/warranty-kickoff.md`: Issue formal confirmation letter of warranty commencement calculated from the Final BAST signing date - expect warranty start and expiration dates documented in black and white
+- [ ] `maintenance/warranty-scope-policy.md`: Enforce and communicate Warranty Scope Boundaries to all client stakeholders:
+  - **COVERED**: Code bugs/defects deviating from agreed FSD/SOW specification documents, internal server crashes, database query failures
+  - **NOT COVERED**: New workflow/feature requests (*Change Requests*), UI redesigns based on new aesthetic preferences, damage caused by client team manual code modifications, drastic third-party API changes outside developer control
+  - expect liability boundaries understood and acknowledged in writing by client
+- [ ] `maintenance/support-channels.md`: Establish official support channels (*Support Ticket Channel*: Helpdesk Portal / Support Email / Dedicated Slack Channel) - expect centralized, auditable communications rather than ad-hoc direct messages
 
-### 2.2 Pemantauan Ketersediaan Layanan (Synthetic Uptime Monitoring)
-- [ ] Daftarkan probe pemantau uptime eksternal (BetterStack / UptimeRobot / Pingdom / Cloudflare Healthchecks):
-  - Pantau endpoint `/healthz` publik setiap interval 1 menit dari berbagai lokasi geografis dunia
-  - Pasang asersi status HTTP 200 OK dan respon waktu respon < 1000 ms
-  - Pantau validitas masa aktif sertifikat SSL/TLS (beri peringatan otomatis jika sisa masa berlaku < 30 hari)
-  - expect pemberitahuan otomatis aktif saat situs mengalami downtime
-- [ ] Konfigurasikan saluran darurat (*Escalation Alert Routing*): hubungkan notifikasi down ke Telegram Bot, Discord Webhook, SMS, atau PagerDuty engineer on-call - expect engineer siaga menerima alert darurat dalam waktu < 2 menit setelah server mati
+### 1.2 Incident Triage & Service Level Agreement (SLA Tiers)
+- [ ] Apply incident ticket classification matrix and response/resolution time commitments:
+  - **Tier 1 - Critical Outage (P1)**: Total system downtime or data corruption. Response time: < 1 hour. Resolution/workaround target: < 4 hours.
+  - **Tier 2 - Major Degradation (P2)**: Core business features disrupted for majority of users. Response time: < 2 hours. Resolution target: < 12 hours.
+  - **Tier 3 - Moderate Defect (P3)**: Non-critical functional bug with available workaround. Response time: < 8 hours. Resolution target: < 48 hours.
+  - **Tier 4 - Minor / Cosmetic (P4)**: Text typo or minor cosmetic defect. Response time: < 24 hours. Resolution target: Scheduled in periodic patch releases.
+  - expect ticket handling workflow adheres to SLA commitments
+- [ ] `maintenance/incident-log.md`: Log every incident ticket reported during the warranty period: Ticket ID, Reporter, Ingest Timestamp, Severity, Root Cause Analysis (RCA), Handling Time, Resolution Timestamp - expect all tickets tracked accountably
 
-### 2.3 Sentralisasi Log & Kebijakan Retensi (Log Management)
-- [ ] Konfigurasikan agregasi log terpusat (BetterStack Logs / Datadog Logs / Grafana Loki / AWS CloudWatch) - expect seluruh log terindeks dengan metadata konteks (Level: INFO/WARN/ERROR, Timestamp UTC, Request ID, Path)
-- [ ] Terapkan kebijakan retensi log (*Log Retention Policy*): simpan log operasional standar selama 30 hari dan log audit keamanan (*Security Audit Trail*) selama minimal 365 hari sesuai kepatuhan UU PDP - expect ruang penyimpanan log efisien dan patuh regulasi
+### 1.3 Post-Incident Analysis (Post-Mortem & Root Cause Analysis)
+- [ ] `maintenance/post-mortems/YYYY-MM-DD-incident-rca.md`: For every P1 or P2 incident, compile Root Cause Analysis (RCA) document using the 5-Whys methodology:
+  - Incident timeline (*Incident Timeline*)
+  - Business impact and number of affected users
+  - Technical root cause (*Root Cause*)
+  - Emergency corrective action (*Corrective Action*)
+  - Preventative action to prevent recurrence (*Preventative Action*)
+  - expect professional transparency that builds client trust
+- [ ] Deploy corrective patch to production and re-verify with ticket reporter - expect incident ticket closed with RESOLVED status
 
-### 2.4 Otomasi Pencadangan Basis Data & Uji Pemulihan (Backup & Restore Drills)
-- [ ] Jadwalkan skrip pencadangan otomatis harian (*Automated Daily Database Backup / Snapshots*) dengan retensi 30 hari snapshot harian dan 12 snapshot bulanan - expect snapshot otomatis terarsip di cloud storage terisolasi
-- [ ] `maintenance/drills/backup-restore-drill.md`: Lakukan simulasi uji coba pemulihan data (*Backup Restoration Drill*) ke lingkungan staging terisolasi minimal 1 kali per kuartal:
-  - Unduh file backup terbaru
-  - Restore ke database kosong
-  - Verifikasi integritas data dan kecocokan relasi
-  - Catat durasi waktu pemulihan aktual vs target RTO
-  - expect bukti empiris bahwa file cadangan benar-benar dapat dipulihkan (*valid & non-corrupted backups*)
+### 1.4 Transition to Maintenance Contract (SLA Retainer Proposal)
+- [ ] `maintenance/sla-retainer-proposal.md`: At 14 days before warranty expiration, draft and deliver Continuous Maintenance Service Agreement (*SLA Retainer Contract*) proposal:
+  - Monthly support hour packages (e.g., 10 hours, 20 hours, or 40 hours per month)
+  - Fixed monthly retainer fee (*Monthly Retainer Fee*)
+  - Blended hourly rate for additional Change Request work beyond allotment (*Blended Hourly Rate*)
+  - Routine preventative maintenance (monthly OS/framework security patches, database audits)
+  - expect retainer proposal delivered on time before client support continuity lapses
+- [ ] Negotiate and sign new retainer contract or execute final warranty closure procedures (*Warranty Sign-off / Closure Certificate*) if client opts for self-maintenance - expect operational status clearly finalized
 
 ---
 
-## 3. Modul 13: Penetapan Metrik Baseline & Dashboard Kesehatan (Metrics Baseline)
+## 2. Module 13: Monitoring & Observability Systems Setup (Monitoring Setup)
 
-### 3.1 Pengukuran Metrik Kinerja Teknis (Technical Baseline)
-- [ ] `ops/metrics/technical-baseline.md`: Ukur dan tetapkan angka garis dasar (*baseline numbers*) pada minggu ke-2 produksi beroperasi normal:
-  - **Uptime / Ketersediaan**: Catat persentase uptime aktual (target minimum: 99.9% = maksimal downtime 43 menit/bulan)
-  - **Latency Transaksi**: Rata-rata response time API (p50 target < 100 ms, p95 target < 500 ms, p99 target < 1500 ms)
-  - **Tingkat Error (Error Rate)**: Rasio error HTTP 5xx terhadap total request (target < 0.05%)
-  - **Beban Server Rata-rata**: Persentase utilisasi CPU, RAM, Disk space, dan DB connection pool peak
-  - expect angka dasar terdokumentasi sebagai tolok ukur perbandingan anomali di masa depan
-- [ ] `ops/metrics/core-web-vitals.md`: Catat nilai riil metrik pengalaman pengguna frontend (Real User Monitoring - RUM):
-  - Largest Contentful Paint (LCP): target < 2.5 detik
+### 2.1 Application Performance Monitoring & Error Tracking (APM & Error Tracking)
+- [ ] Install and initialize crash/error monitoring SDK in backend and frontend (Sentry / Datadog / Highlight.io / Bugsnag):
+  - Configure unhandled promise rejection and fatal exception tracking
+  - Attach user context data (pseudonymized User ID, environment tag: `production`)
+  - Configure sensitive data sanitization (*Data Scrubbing*): scrub passwords, credit card numbers, and JWT tokens from error logs
+  - expect browser client and backend server errors automatically captured in monitoring dashboard
+- [ ] Implement performance transaction tracing (*Performance Tracing / OpenTelemetry*): track slow database queries (*slow queries > 500ms*) and external API execution latency - expect bottleneck visualizations mapped
+
+### 2.2 Synthetic Uptime Monitoring
+- [ ] Register external uptime monitoring probes (BetterStack / UptimeRobot / Pingdom / Cloudflare Healthchecks):
+  - Monitor public `/healthz` endpoint every 1-minute interval from multiple global geographic regions
+  - Assert HTTP 200 OK status and response latency < 1000 ms
+  - Monitor SSL/TLS certificate validity (automated warning if expiration < 30 days)
+  - expect automated alerts triggered when site experiences downtime
+- [ ] Configure escalation alert routing (*Escalation Alert Routing*): connect downtime notifications to Telegram Bot, Discord Webhook, SMS, or PagerDuty on-call engineer - expect on-call engineer receives emergency alert in < 2 minutes of server failure
+
+### 2.3 Centralized Logging & Retention Policies (Log Management)
+- [ ] Configure centralized log aggregation (BetterStack Logs / Datadog Logs / Grafana Loki / AWS CloudWatch) - expect all logs indexed with contextual metadata (Level: INFO/WARN/ERROR, UTC Timestamp, Request ID, Path)
+- [ ] Implement log retention policy (*Log Retention Policy*): retain standard operational logs for 30 days and security audit logs (*Security Audit Trail*) for minimum 365 days per data privacy compliance - expect log storage remains cost-effective and compliant
+
+### 2.4 Automated Database Backups & Restoration Drills (Backup & Restore Drills)
+- [ ] Schedule automated daily database backups (*Automated Daily Database Backup / Snapshots*) with retention of 30 daily snapshots and 12 monthly snapshots - expect snapshots automatically archived in isolated cloud storage
+- [ ] `maintenance/drills/backup-restore-drill.md`: Perform backup restoration drill to isolated staging environment at least once per quarter:
+  - Download latest backup snapshot
+  - Restore into clean database
+  - Verify data integrity and relational constraints
+  - Record actual recovery duration vs target RTO
+  - expect empirical evidence that backups are fully recoverable (*valid & non-corrupted backups*)
+
+---
+
+## 3. Module 13: Baseline Metrics Establishment & Health Dashboard (Metrics Baseline)
+
+### 3.1 Technical Performance Metrics Measurement (Technical Baseline)
+- [ ] `ops/metrics/technical-baseline.md`: Measure and establish baseline numbers during week 2 of normal production operation:
+  - **Uptime / Availability**: Record actual uptime percentage (minimum target: 99.9% = max downtime 43 minutes/month)
+  - **Transaction Latency**: Average API response time (p50 target < 100 ms, p95 target < 500 ms, p99 target < 1500 ms)
+  - **Error Rate**: Ratio of HTTP 5xx errors to total requests (target < 0.05%)
+  - **Average Server Load**: CPU, RAM, Disk space utilization percentages, and DB connection pool peak
+  - expect baseline metrics documented as benchmark for future anomaly detection
+- [ ] `ops/metrics/core-web-vitals.md`: Record real frontend user experience metrics (Real User Monitoring - RUM):
+  - Largest Contentful Paint (LCP): target < 2.5 seconds
   - Interaction to Next Paint (INP): target < 200 ms
   - Cumulative Layout Shift (CLS): target < 0.1
-  - expect seluruh metrik berada dalam kategori "Good" (Hijau) pada Google PageSpeed Insights
+  - expect all metrics categorized as "Good" (Green) on Google PageSpeed Insights
 
-### 3.2 Pengukuran Metrik Bisnis & Penggunaan Produk (Business Baseline)
-- [ ] `ops/metrics/product-baseline.md`: Ukur dan catat baseline performa bisnis produk pasca peluncuran:
-  - Jumlah Pengguna Aktif: Daily Active Users (DAU) & Monthly Active Users (MAU)
-  - Volume Transaksi Inti: Jumlah transaksi sukses per hari/minggu
-  - Rasio Konversi Alur Utama: Persentase pengguna yang menyelesaikan Core User Loop dari registrasi hingga konversi
-  - Rasio Pengabaian / Churn Awal: Persentase pengguna yang drop-off di langkah onboarding
-  - expect data baseline produk bersumber dari instrumen analitik (PostHog / Mixpanel / Plausible) tanpa tebak-tebakan
+### 3.2 Business & Product Usage Metrics Measurement (Business Baseline)
+- [ ] `ops/metrics/product-baseline.md`: Measure and record post-launch product business performance baseline:
+  - Active User Count: Daily Active Users (DAU) & Monthly Active Users (MAU)
+  - Core Transaction Volume: Number of successful transactions per day/week
+  - Primary Flow Conversion Rate: Percentage of users completing Core User Loop from registration to conversion
+  - Early Drop-off / Churn Rate: Percentage of users dropping off during onboarding steps
+  - expect product baseline data sourced from analytics instrumentation (PostHog / Mixpanel / Plausible) without guesswork
 
-### 3.3 Pembuatan Dashboard Kesehatan Produk (Product Health Dashboard)
-- [ ] `ops/dashboards/product-health-dashboard.md`: Bangun atau konfigurasikan dashboard visual terpadu yang menampilkan indikator kunci kesehatan teknis dan bisnis dalam satu layar - expect dashboard dapat diakses oleh tim teknis dan manajemen klien
-- [ ] Susun template laporan ringkasan kesehatan bulanan (*Monthly Executive Health Digest*) untuk dikirimkan kepada Project Sponsor klien - expect pemangku kepentingan memahami performa dan ROI investasi perangkat lunak
-
----
-
-## 4. Modul 13: Perencanaan Iterasi & Pertumbuhan Berkelanjutan (Iteration Planning)
-
-### 4.1 Pengumpulan Umpan Balik Pengguna (User Feedback Loop)
-- [ ] `growth/user-feedback.md`: Pasang widget pengumpul feedback kontekstual di dalam aplikasi (NPS in-app survey, tombol "Laporkan Kendala / Beri Saran", micro-rating bintang pada transaksi tuntas) - expect data kualitatif mengalir langsung dari pengguna aktif
-- [ ] `growth/user-feedback.md`: Lakukan kategorisasi dan klastering umpan balik pengguna setiap 2 pekan: Friction Points, Feature Requests, Bug Reports, UX Enhancements - expect pola kebutuhan pengguna yang berulang teridentifikasi
-
-### 4.2 Manajemen Eksperimen Pertumbuhan & Backlog Ide (Growth Backlog)
-- [ ] `growth/experiment-backlog.md`: Susun daftar hipotesis peningkatan produk dan eksperimen A/B testing:
-  - Pernyataan Hipotesis: "Jika kita [melakukan perubahan X], maka [metrik Y akan meningkat sebesar Z%], karena [alasan riset W]"
-  - Skoring Prioritas Eksperimen menggunakan framework ICE (*Impact 1-10, Confidence 1-10, Ease 1-10*)
-  - expect backlog eksperimen terurut berdasarkan nilai ROI implementasi tertinggi
-- [ ] Rancang eksperimen A/B test sederhana untuk elemen dengan friksi konversi tertinggi (misal: formulir registrasi yang disederhanakan, copywriting tombol CTA) - expect rencana pengujian memiliki kelompok kontrol dan varian yang terukur
-
-### 4.3 Perencanaan Sprint Iterasi & Pembayaran Utang Teknis (Sprint Planning)
-- [ ] `growth/sprint-backlog.md`: Susun rencana sprint pemeliharaan dan pengembangan lanjutan (Siklus 2 Mingguan / 1 Bulanan):
-  - **50% Kapasitas**: Fitur baru prioritas tinggi hasil evaluasi roadmap dan feedback pengguna
-  - **30% Kapasitas**: Pembayaran Utang Teknis (*Technical Debt*), optimasi performa query database, pembaruan versi dependensi framework/library
-  - **20% Kapasitas**: Patch keamanan, penanganan bug berkategori rendah, dan perbaikan minor dokumen
-  - expect alokasi kapasitas berimbang antara inovasi bisnis dan stabilitas jangka panjang sistem
-- [ ] Jadwalkan sesi Quarterly Business Review (QBR) bersama stakeholder klien untuk mengevaluasi pencapaian target metrik bisnis dan merencanakan roadmap jangka panjang - expect hubungan kemitraan strategis jangka panjang terjalin erat
+### 3.3 Product Health Dashboard Setup (Product Health Dashboard)
+- [ ] `ops/dashboards/product-health-dashboard.md`: Build or configure unified visual dashboard displaying key technical and business health indicators in a single view - expect dashboard accessible by technical team and client management
+- [ ] Create Monthly Executive Health Digest report template to deliver to client Project Sponsor - expect stakeholders understand software performance and ROI
 
 ---
 
-## 5. Gerbang Verifikasi Kelolosan Siklus Pemeliharaan & Operasi
+## 4. Module 13: Iteration Planning & Sustainable Growth (Iteration Planning)
 
-| Parameter Evaluasi | Standar Minimum Kelolosan | Status Verifikasi | Catatan Bukti |
+### 4.1 User Feedback Loop
+- [ ] `growth/user-feedback.md`: Install contextual in-app feedback widgets (NPS in-app survey, "Report Issue / Submit Feedback" button, star micro-ratings on completed transactions) - expect qualitative data flowing directly from active users
+- [ ] `growth/user-feedback.md`: Categorize and cluster user feedback bi-weekly: Friction Points, Feature Requests, Bug Reports, UX Enhancements - expect recurring user needs patterns identified
+
+### 4.2 Growth Experiment Management & Idea Backlog (Growth Backlog)
+- [ ] `growth/experiment-backlog.md`: Build list of product enhancement hypotheses and A/B testing experiments:
+  - Hypothesis Statement: "If we [make change X], then [metric Y will increase by Z%], because [research rationale W]"
+  - Experiment priority scoring using ICE framework (*Impact 1-10, Confidence 1-10, Ease 1-10*)
+  - expect experiment backlog ranked by highest implementation ROI
+- [ ] Design simple A/B test experiment for highest-friction conversion elements (e.g., simplified registration form, CTA button copywriting) - expect test plan includes measurable control and variant groups
+
+### 4.3 Iteration Sprint Planning & Technical Debt Paydown (Sprint Planning)
+- [ ] `growth/sprint-backlog.md`: Formulate sprint plan for ongoing maintenance and development (2-Week / 1-Month Cycles):
+  - **50% Capacity**: High-priority new features from roadmap evaluation and user feedback
+  - **30% Capacity**: Technical debt paydown (*Technical Debt*), database query optimization, framework/library dependency upgrades
+  - **20% Capacity**: Security patches, low-severity bug triage, and minor documentation fixes
+  - expect balanced capacity allocation between business innovation and long-term system stability
+- [ ] Schedule Quarterly Business Review (QBR) sessions with client stakeholders to evaluate business metric targets and plan long-term roadmap - expect strategic long-term partnership maintained
+
+---
+
+## 5. Maintenance & Operations Cycle Verification Gate
+
+| Evaluation Parameter | Minimum Pass Standard | Verification Status | Evidence Notes |
 | :--- | :--- | :---: | :--- |
-| **Penyelesaian Garansi** | 100% tiket bug garansi tertangani, nol tiket P1/P2 open, masa garansi berakhir sah | [ ] PASS | Dilampirkan `maintenance/incident-log.md` |
-| **Sistem Observabilitas** | APM aktif, Uptime probe 1 menit aktif, notifikasi alert darurat terhubung ke Telegram/Slack | [ ] PASS | Dilampirkan bukti alert test |
-| **Keamanan Cadangan Data** | Backup harian otomatis aktif, simulasi restore data ke staging terbukti berhasil | [ ] PASS | Dilampirkan log restore drill |
-| **Baseline Kinerja & Bisnis** | Laporan baseline teknis (Uptime >= 99.9%, p95 < 500ms) & metrik produk terdokumentasi | [ ] PASS | Dilampirkan di `ops/metrics/` |
-| **Kontrak Layanan Lanjutan** | Transisi ke SLA Retainer disepakati ATAU Berita Acara Penutupan Garansi ditandatangani | [ ] PASS | Dilampirkan kontrak SLA / Akta Penutupan |
+| **Warranty Resolution** | 100% warranty bug tickets resolved, zero P1/P2 tickets open, warranty period formally concluded | [ ] PASS | Attach `maintenance/incident-log.md` |
+| **Observability System** | APM active, 1-minute uptime probe active, emergency alerts connected to Telegram/Slack | [ ] PASS | Attach alert test evidence |
+| **Backup Data Security** | Automated daily backup active, staging restore simulation verified successful | [ ] PASS | Attach restore drill log |
+| **Performance & Business Baseline** | Technical baseline report (Uptime >= 99.9%, p95 < 500ms) & product metrics documented | [ ] PASS | Attach in `ops/metrics/` |
+| **Follow-on Service Contract** | SLA Retainer transition agreed OR Warranty Closure Certificate signed | [ ] PASS | Attach SLA contract / Closure Certificate |
 
-### Status Akhir Siklus Proyek:
-- [ ] **TRANSISI KE SLA RETAINER BERKELANJUTAN**: Klien berlangganan layanan maintenance dan iterasi produk bulanan secara aktif.
-- [ ] **PENUTUPAN RESMI PROYEK (LIFECYCLE COMPLETED & ARCHIVED)**: Masa garansi tuntas, seluruh kewajiban selesai, sistem berjalan stabil di tangan tim mandiri klien. Repositori diarsipkan.
+### Final Project Lifecycle Status:
+- [ ] **TRANSITION TO ONGOING SLA RETAINER**: Client actively subscribes to monthly maintenance and product iteration service.
+- [ ] **OFFICIAL PROJECT CLOSURE (LIFECYCLE COMPLETED & ARCHIVED)**: Warranty period completed, all obligations fulfilled, system operating stably under client team ownership. Repository archived.

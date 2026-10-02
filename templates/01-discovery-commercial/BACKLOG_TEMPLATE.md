@@ -1,8 +1,8 @@
-# Product Backlog: [Nama Produk]
+# Product Backlog: [Product Name]
 
-**Project**: [Nama Proyek]  
-**Owner**: [Nama PIC]  
-**Sprint/Cycle**: [Nomor Sprint] ([Tanggal Mulai] – [Tanggal Selesai])  
+**Project**: [Project Name]  
+**Owner**: [PIC Name]  
+**Sprint/Cycle**: [Sprint Number] ([Start Date] – [End Date])  
 **Last Updated**: YYYY-MM-DD
 
 ---
@@ -18,7 +18,7 @@
 | **TOTAL** | **68** | **227** | **100%** |
 
 **Velocity**: Avg 15 SP/week (based on last 3 sprints)  
-**Projected Completion**: [Tanggal] (jika velocity konstan)
+**Projected Completion**: [Date] (if velocity is constant)
 
 ---
 

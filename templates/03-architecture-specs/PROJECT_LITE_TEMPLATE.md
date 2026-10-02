@@ -1,77 +1,77 @@
 # PROJECT_LITE.md (Fast-Track Unified Specification)
 
-> Dokumen spesifikasi ramping terpadu untuk proyek **Skala Kecil (MVP / Freelance 1–4 Minggu)**.
-> Menggabungkan Modul 01 (Ide), Modul 02 (Scope), Modul 03 (Komersial), dan Modul 05 (Teknis) menjadi satu berkas acuan tunggal.
-> **ATURAN MUTLAK**: Untuk seluruh proyek Web dan Mobile, **Modul 04 (Google Stitch UI/UX) TETAP WAJIB DIJALANKAN** agar tampilan tidak menjadi "AI Slop" dan klien memiliki prototipe interaktif nyata. Modul 04 hanya boleh dilewati jika proyek bersifat murni backend/CLI/otomasi tanpa antarmuka.
+> Lean unified specification document for **Small-Scale (MVP / 1–4 Week Freelance)** projects.
+> Combines Module 01 (Idea), Module 02 (Scope), Module 03 (Commercial), and Module 05 (Technical) into a single reference document.
+> **ABSOLUTE RULE**: For all Web and Mobile projects, **Module 04 (Google Stitch UI/UX) REMAINS STRICTLY MANDATORY** to prevent UI from becoming "AI Slop" and to provide clients with a real interactive prototype. Module 04 may only be skipped if the project is purely backend/CLI/automation with no user interface.
 
 ---
 
-## Fast-Track Execution Checklist (MVP 1-4 Minggu)
+## Fast-Track Execution Checklist (1-4 Week MVP)
 
-**Urutan Eksekusi Wajib:**
+**Mandatory Execution Order:**
 
-- [ ] **Step 1**: Fill `PROJECT_LITE.md` (Idea + Scope + Komersial + Schema DB) — 1 file unified
-- [ ] **Step 2**: **MANDATORY — Execute Modul 04 Google Stitch (TIDAK BOLEH DI-SKIP untuk Web/Mobile/Desktop GUI!)**
-  - [ ] `DESIGN.md` generated dan uploaded ke Stitch
-  - [ ] All screens generated (bahkan MVP 3-screen tetap wajib di-generate semua)
-  - [ ] Design Freeze self-approved (atau klien approval jika ada klien)
-- [ ] **Step 3**: Jump langsung ke Modul 06 Development (skip PRD/FSD formal karena sudah ada di PROJECT_LITE.md)
+- [ ] **Step 1**: Fill `PROJECT_LITE.md` (Idea + Scope + Commercial + DB Schema) — 1 unified file
+- [ ] **Step 2**: **MANDATORY — Execute Module 04 Google Stitch (MUST NOT BE SKIPPED for Web/Mobile/Desktop GUI!)**
+  - [ ] `DESIGN.md` generated and uploaded to Stitch
+  - [ ] All screens generated (even 3-screen MVPs must have all screens generated)
+  - [ ] Design Freeze self-approved (or client approval if working with a client)
+- [ ] **Step 3**: Jump directly to Module 06 Development (skip formal PRD/FSD since they are already covered in PROJECT_LITE.md)
 
-**Anti-Lupa Protocol:**
-> Jika agen AI mencoba skip Modul 04 dengan alasan "fast-track" atau "MVP kecil", **WAJIB DITOLAK**. Fast-track hanya merge dokumentasi, bukan skip UI/UX phase.
-
----
-
-## 1. Metadata Proyek & Elevator Pitch
-- **Nama Proyek**: [Nama Aplikasi / Sistem]
-- **Klien**: [Nama Klien / Inisiator]
-- **Single PIC Klien**: [Nama PIC Klien & Kontak]
-- **Solo Developer**: [Nama Anda]
-- **Target Rilis**: [YYYY-MM-DD] (Maksimal 2–4 Minggu)
-- **Elevator Pitch**: *Untuk [Target Pengguna] yang mengalami [Masalah], sistem ini menyediakan [Solusi Inti] yang memproses data melalui [Core Loop 3 Langkah].*
+**Anti-Forget Protocol:**
+> If an AI agent attempts to skip Module 04 citing "fast-track" or "small MVP", **MUST REJECT**. Fast-track only merges documentation, it does not skip the UI/UX phase.
 
 ---
 
-## 2. Batasan Lingkup Ramping (In-Scope vs Out-of-Scope)
-
-### Fitur yang Dibuat (In-Scope MVP - Maksimal 3–5 Fitur Inti)
-1. **[Fitur 1]**: [Deskripsi fungsionalitas inti]
-2. **[Fitur 2]**: [Deskripsi fungsionalitas inti]
-3. **[Fitur 3]**: [Penyimpanan dokumen terenkripsi / integrasi payment dasar]
-
-### Fitur yang Resmi DIBUANG / Ditunda (Out-of-Scope)
-1. Tidak ada dashboard analitik grafik kompleks (cukup ekspor CSV jika butuh data).
-2. Tidak ada integrasi multi-bahasa atau multi-perusahaan (single-tenant).
-3. Segala permintaan fitur baru di luar daftar di atas wajib melalui penawaran Fase 2 atau Change Request berbayar.
+## 1. Project Metadata & Elevator Pitch
+- **Project Name**: [Application / System Name]
+- **Client**: [Client Name / Initiator]
+- **Client Single PIC**: [Client PIC Name & Contact]
+- **Solo Developer**: [Your Name]
+- **Target Release**: [YYYY-MM-DD] (Maximum 2–4 Weeks)
+- **Elevator Pitch**: *For [Target Users] who experience [Problem], this system provides [Core Solution] that processes data through [3-Step Core Loop].*
 
 ---
 
-## 3. Komitmen Komersial & Pembayaran Berjenjang (Payment Gate)
+## 2. Lean Scope Boundaries (In-Scope vs Out-of-Scope)
 
-- **Total Nilai Pekerjaan**: Rp [Nominal Angka]
-- **Skema Pembayaran (2 Tahap)**:
-  - **Termin 1 (DP 50%)**: Dibayarkan di muka sebagai prasyarat mulai koding.
-  - **Termin 2 (Pelunasan 50%)**: Dibayarkan setelah UAT lolos dan sistem live, sebelum penyerahan kredensial root/repo.
-- **SLA Respon Klien**: Klien wajib memberikan feedback pengujian maksimal **3 hari kerja**.
+### Features to Build (In-Scope MVP - Maximum 3–5 Core Features)
+1. **[Feature 1]**: [Core functionality description]
+2. **[Feature 2]**: [Core functionality description]
+3. **[Feature 3]**: [Encrypted document storage / basic payment integration]
+
+### Officially EXCLUDED / Deferred Features (Out-of-Scope)
+1. No complex graphic analytics dashboards (CSV export is sufficient if data is needed).
+2. No multi-language or multi-organization/tenant integration (single-tenant).
+3. Any new feature requests outside the list above must go through a Phase 2 proposal or paid Change Request.
 
 ---
 
-## 4. Rujukan Prototipe Antarmuka (Google Stitch UI/UX Mandat)
-*Bagian ini wajib diisi untuk aplikasi Web dan Mobile:*
+## 3. Commercial Commitments & Milestone Payments (Payment Gate)
+
+- **Total Project Value**: [Currency/Amount]
+- **Payment Milestones (2 Stages)**:
+  - **Milestone 1 (50% Down Payment)**: Paid upfront as a prerequisite to start coding.
+  - **Milestone 2 (50% Final Settlement)**: Paid after UAT passes and system is live, prior to handing over root credentials/repo.
+- **Client Response SLA**: Client must provide testing feedback within **3 business days** maximum.
+
+---
+
+## 4. UI Prototype Reference (Google Stitch UI/UX Mandate)
+*This section must be completed for Web and Mobile applications:*
 
 - **Stitch Project ID**: `projects/[PROJECT_ID]`
-- **Design System Asset ID**: `assets/[ASSET_ID]` (menggunakan guardrail `DESIGN.md` anti-slop)
-- **Tautan Live Interactive Prototype**: `[https://staging-preview-url]`
-- **Status Desain**: **FROZEN (DIBEKUKAN)** — Tata letak visual dan alur navigasi telah disetujui klien dan tidak boleh dirombak saat koding.
+- **Design System Asset ID**: `assets/[ASSET_ID]` (using `DESIGN.md` anti-slop guardrails)
+- **Live Interactive Prototype Link**: `[https://staging-preview-url]`
+- **Design Status**: **FROZEN** — Visual layout and navigation flows have been approved by the client and must not be reworked during coding.
 
 ---
 
-## 5. Cetak Biru Teknis Ramping (Lean Technical Blueprint)
+## 5. Lean Technical Blueprint
 
-- **Tech Stack Terpilih**: [Contoh: Next.js + PostgreSQL / Flutter + Supabase / FastAPI + SQLite]
-- **Skema Basis Data (Tabel Inti)**:
+- **Selected Tech Stack**: [Example: Next.js + PostgreSQL / Flutter + Supabase / FastAPI + SQLite]
+- **Database Schema (Core Tables)**:
 ```sql
--- Tabel Pengguna & Sesi
+-- Users & Sessions Table
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE users (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabel Transaksi / Dokumen Inti
+-- Core Transactions / Documents Table
 CREATE TABLE core_entities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
@@ -91,16 +91,16 @@ CREATE TABLE core_entities (
 );
 ```
 
-- **Rute API Inti**:
+- **Core API Routes**:
   - `POST /api/v1/auth/login` (Login & Set HttpOnly Cookie)
-  - `GET /api/v1/entities` (Ambil daftar data terotentikasi)
-  - `POST /api/v1/entities` (Buat data baru tervalidasi Zod)
+  - `GET /api/v1/entities` (Fetch authenticated data list)
+  - `POST /api/v1/entities` (Create new Zod-validated data)
 
 ---
 
-## 6. Persetujuan Ringkas Para Pihak
+## 6. Summary Agreement of the Parties
 
-Dengan menyetujui dokumen ini (melalui tanda tangan atau konfirmasi email tertulis), pekerjaan resmi dimulai setelah pembayaran Down Payment (DP 50%) diterima oleh Developer.
+By approving this document (via signature or written email confirmation), work officially commences once the 50% Down Payment (DP) is received by the Developer.
 
-- Disetujui oleh Single PIC Klien: **[Nama PIC Klien]** (Tanggal: [YYYY-MM-DD])
-- Divalidasi oleh Solo Developer: **[Nama Anda]** (Tanggal: [YYYY-MM-DD])
+- Approved by Client Single PIC: **[Client PIC Name]** (Date: [YYYY-MM-DD])
+- Validated by Solo Developer: **[Your Name]** (Date: [YYYY-MM-DD])

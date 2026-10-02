@@ -7,7 +7,7 @@
 **Completion Date**: [YYYY-MM-DD]  
 **Retrospective Date**: [YYYY-MM-DD]  
 **Duration**: [X weeks/months]  
-**Scale**: [Kecil / Menengah / Besar / Enterprise]
+**Scale**: [Small / Medium / Large / Enterprise]
 
 ---
 
@@ -333,7 +333,7 @@ Based on this retrospective, I commit to:
 1. [Example: "Use client intake checklist - no exceptions"]
 2. [Example: "Add 20% buffer to all timeline estimates"]
 3. [Example: "Enforce design freeze - no UI changes after M04"]
-4. [Example: "Decline projects with budget <Rp 30 juta for Menengah scale"]
+4. [Example: "Decline projects with budget <Rp 30 million for Medium scale"]
 5. [Example: "Learn Tailwind CSS advanced patterns before next frontend project"]
 
 **Review Date**: [Schedule quarterly review of all retrospectives to identify patterns]
@@ -349,7 +349,7 @@ Based on this retrospective, I commit to:
 ## Appendix: Retrospective Schedule
 
 **When to Conduct**:
-- **Timing**: 1-2 minggu after M11 BAST sign-off (while details fresh, but emotions settled)
+- **Timing**: 1-2 weeks after M11 BAST sign-off (while details fresh, but emotions settled)
 - **Duration**: 60-90 minutes (block calendar, no interruptions)
 - **Format**: Solo written reflection (this template) + optional voice recording for context
 

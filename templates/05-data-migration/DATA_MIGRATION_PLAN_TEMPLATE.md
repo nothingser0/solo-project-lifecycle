@@ -1,68 +1,68 @@
-# Rencana Migrasi Data (Data Migration Plan)
+# Data Migration Plan
 
-> Dokumen spesifikasi teknis pemetaan kolom, aturan transformasi data warisan (*legacy data*), dan batasan tanggung jawab pembersihan data antara Klien dan Developer.
-
----
-
-## 1. Metadata Rencana Migrasi
-- **Nama Sistem**: [Nama Aplikasi]
-- **Klien**: [Perusahaan / Organisasi Klien]
-- **Lead Data Engineer / Developer**: [Nama Anda]
-- **Tanggal Rencana**: [YYYY-MM-DD]
-- **Target Eksekusi**: Lingkungan Staging & Produksi
+> Technical specification document for column mapping, legacy data transformation rules, and data hygiene boundaries between Client and Developer.
 
 ---
 
-## 2. Batasan Tanggung Jawab (Data Hygiene Boundary)
-
-1. **Tanggung Jawab Klien**:
-   - Menyerahkan berkas data sumber dalam format digital terstruktur (CSV, Excel `.xlsx`, atau SQL Dump).
-   - Bertanggung jawab penuh atas kebersihan isi data (*Data Hygiene*): menghapus duplikasi yang tidak sah, memperbaiki nama/nomor yang salah ketik, dan melengkapi kolom wajib yang kosong.
-2. **Tanggung Jawab Developer**:
-   - Menulis skrip ekstraksi, transformasi, dan pemuatan otomatis (*ETL Script*).
-   - Memastikan data yang valid terimpor dengan integritas relasi tabel terjaga.
-   - Menyediakan laporan baris yang ditolak (`rejected-rows.csv`) beserta alasan kegagalan validasi.
-3. **Klausul Jasa Pembersihan Manual**:
-   - Permintaan pembersihan manual atau perbaikan format data yang korup oleh developer di luar skrip otomatis akan dikenakan biaya tambahan melalui prosedur *Change Request (CR)*.
+## 1. Migration Plan Metadata
+- **System Name**: [Application Name]
+- **Client**: [Client Company / Organization]
+- **Lead Data Engineer / Developer**: [Your Name]
+- **Plan Date**: [YYYY-MM-DD]
+- **Execution Target**: Staging & Production Environments
 
 ---
 
-## 3. Matriks Pemetaan Kolom (Data Mapping Matrix)
+## 2. Data Hygiene Boundary
 
-### Entitas: Pengguna / Karyawan (Tabel `users`)
-- **Berkas Sumber**: `Data_Karyawan_2026.xlsx` (Sheet 1)
+1. **Client Responsibilities**:
+   - Provide source data files in structured digital formats (CSV, Excel `.xlsx`, or SQL Dump).
+   - Assume full responsibility for data content cleanliness (*Data Hygiene*): removing invalid duplicates, correcting misspelled names/numbers, and populating mandatory empty fields.
+2. **Developer Responsibilities**:
+   - Write automated extraction, transformation, and loading scripts (*ETL Scripts*).
+   - Ensure valid data is imported while maintaining table relational integrity.
+   - Provide a rejected rows report (`rejected-rows.csv`) along with validation failure reasons.
+3. **Manual Cleaning Service Clause**:
+   - Requests for manual data cleaning or repairing corrupted data formatting by the developer beyond automated scripts will incur additional charges via the *Change Request (CR)* procedure.
 
-| No | Kolom Sumber (Excel) | Tipe Data Asal | Kolom Target (Database SQL) | Tipe Target SQL | Aturan Transformasi / Default |
+---
+
+## 3. Data Mapping Matrix
+
+### Entity: Users / Employees (`users` Table)
+- **Source File**: `Data_Karyawan_2026.xlsx` (Sheet 1)
+
+| No | Source Column (Excel) | Source Data Type | Target Column (SQL Database) | Target SQL Type | Transformation Rule / Default |
 | :-: | :--- | :--- | :--- | :--- | :--- |
-| 1 | `No_Induk` | Teks | `legacy_id` | `VARCHAR(50)` | Simpan sebagai referensi audit |
-| 2 | `Nama Lengkap` | Teks | `full_name` | `VARCHAR(150)` | Trim spasi kiri/kanan, Title Case |
-| 3 | `Alamat Email` | Teks | `email` | `VARCHAR(255)` | Lowercase, validasi regex RFC 5322 |
-| 4 | `Jabatan / Peran` | Teks | `role` | `VARCHAR(30)` | Map: "Staff" $\to$ `staff`, "Head" $\to$ `manager` |
+| 1 | `No_Induk` | Text | `legacy_id` | `VARCHAR(50)` | Keep as audit reference |
+| 2 | `Nama Lengkap` | Text | `full_name` | `VARCHAR(150)` | Trim leading/trailing whitespace, Title Case |
+| 3 | `Alamat Email` | Text | `email` | `VARCHAR(255)` | Lowercase, RFC 5322 regex validation |
+| 4 | `Jabatan / Peran` | Text | `role` | `VARCHAR(30)` | Map: "Staff" $\to$ `staff`, "Head" $\to$ `manager` |
 | 5 | - | - | `id` | `UUID` | Auto-generate UUIDv7 |
-| 6 | - | - | `password_hash` | `VARCHAR(255)` | Hash password default sementara (Argon2id) |
+| 6 | - | - | `password_hash` | `VARCHAR(255)` | Temporary default password hash (Argon2id) |
 
 ---
 
-## 4. Protokol Masking Data Sensitif di Staging (UU PDP Compliance)
+## 4. Sensitive Data Masking Protocol in Staging (UU PDP Compliance)
 
-Untuk menjaga kerahasiaan data pribadi sesuai UU PDP No. 27/2022 di lingkungan non-produksi:
+To preserve personal data confidentiality in accordance with UU PDP No. 27/2022 in non-production environments:
 
-| Kolom Sensitif | Nilai Asli (Produksi) | Nilai Masking di Server Staging |
+| Sensitive Column | Original Value (Production) | Masked Value on Staging Server |
 | :--- | :--- | :--- |
-| **NIK KTP** | `3578012304900001` | `357801********01` |
-| **Nomor Telepon**| `081234567890` | `0812****7890` |
-| **Alamat Email** | `budi.santoso@perusahaan.com` | `user_001@staging.local` |
-| **Nomor Rekening**| `140001829104` | `******9104` |
+| **National ID (NIK)** | `3578012304900001` | `357801********01` |
+| **Phone Number** | `081234567890` | `0812****7890` |
+| **Email Address** | `budi.santoso@perusahaan.com` | `user_001@staging.local` |
+| **Bank Account Number** | `140001829104` | `******9104` |
 
 ---
 
-## 5. Lembar Persetujuan Rencana Pemetaan Data
+## 5. Data Mapping Plan Approval Sheet
 
-Dokumen ini menjadi acuan mutlak bagi penulisan skrip otomasi migrasi data.
+This document serves as the authoritative reference for writing automated data migration scripts.
 
-| Disetujui oleh Single PIC Klien | Divalidasi oleh Solo Developer |
+| Approved by Client Single PIC | Validated by Solo Developer |
 | :--- | :--- |
-| **Nama**: _________________________ | **Nama**: _________________________ |
-| **Jabatan**: ______________________ | **Jabatan**: Independent Lead Engineer |
-| **Tanggal**: ______________________ | **Tanggal**: ______________________ |
-| **Tanda Tangan**: | **Tanda Tangan**: |
+| **Name**: _________________________ | **Name**: _________________________ |
+| **Title / Role**: _________________ | **Title / Role**: Independent Lead Engineer |
+| **Date**: _________________________ | **Date**: _________________________ |
+| **Signature**: | **Signature**: |

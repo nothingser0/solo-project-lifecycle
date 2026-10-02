@@ -1,123 +1,123 @@
-# Buku Kerja Pengujian Integrasi Sistem (SIT Workbook)
+# System Integration Testing (SIT) Workbook
 
-> Dokumen gabungan rencana pengujian integrasi sistem dan laporan bukti kelulusan untuk lingkungan Staging sebelum UAT Klien.
-
----
-
-## BAGIAN I: RENCANA PENGUJIAN SIT (TEST PLAN)
-
-### 1. Metadata Pengujian
-- **Nama Sistem**: [Nama Aplikasi]
-- **Lingkungan Pengujian**: Server Staging (`https://staging.domainklien.com`)
-- **Penanggung Jawab / Solo QA & Dev**: [Nama Anda]
-- **Target Tanggal Eksekusi**: [YYYY-MM-DD]
-- **Referensi Dokumen**: FSD-[ID] v1.0 & PRD-[ID] v1.0
+> Combined system integration test plan and completion evidence report for the Staging environment prior to Client UAT.
 
 ---
 
-### 2. Cakupan Pengujian Integrasi (Testing Scope)
+## PART I: SIT TEST PLAN
+
+### 1. Test Metadata
+- **System Name**: [Application Name]
+- **Test Environment**: Staging Server (`https://staging.domainklien.com`)
+- **Person in Charge / Solo QA & Dev**: [Your Name]
+- **Target Execution Date**: [YYYY-MM-DD]
+- **Document References**: FSD-[ID] v1.0 & PRD-[ID] v1.0
+
+---
+
+### 2. Testing Scope
 
 #### In-Scope
-1. Integrasi API internal antara frontend dan backend database.
-2. Integrasi payment gateway sandbox (penerbitan tagihan & penanganan webhook).
-3. Integrasi penyimpanan berkas Cloudflare R2 / S3 (enkripsi & presigned URL).
-4. Integrasi pengiriman email transaksional (SMTP / Resend).
+1. Internal API integration between frontend and backend database.
+2. Sandbox payment gateway integration (invoice generation & webhook handling).
+3. Cloudflare R2 / S3 file storage integration (encryption & presigned URLs).
+4. Transactional email delivery integration (SMTP / Resend).
 
 #### Out-of-Scope
-- Pengujian beban ekstrim $> 10.000$ concurrent users (di luar kapasitas yang disepakati).
-- Pengujian fisik perangkat keras jaringan kantor klien.
+- Extreme load testing $> 10,000$ concurrent users (exceeding agreed capacity).
+- Physical hardware testing of client office network.
 
 ---
 
-### 3. Matriks Skenario Pengujian (SIT Test Matrix)
+### 3. SIT Test Matrix
 
-| ID Tes | Modul / Layanan | Skenario Pengujian | Hasil yang Diharapkan | Kriteria Lolos |
+| Test ID | Module / Service | Test Scenario | Expected Result | Pass Criteria |
 | :---: | :--- | :--- | :--- | :---: |
-| **SIT-01** | Auth API | Login dengan akun staff yang valid | Mendapat token sesi HttpOnly, redirect ke dashboard | PASS / FAIL |
-| **SIT-02** | Document API | Buat dokumen dengan data valid | Dokumen tersimpan di DB, status `DRAFT`, ID terbit | PASS / FAIL |
-| **SIT-03** | Vault Storage | Render PDF dan simpan ke Cloud Storage | File PDF tersimpan terenkripsi biner AES-256 | PASS / FAIL |
-| **SIT-04** | Presigned URL | Ambil tautan unduh dokumen | URL dapat diakses dan kedaluwarsa setelah 15 menit | PASS / FAIL |
-| **SIT-05** | E-Sign API | Eksekusi tanda tangan digital via token | Tanda tangan tersimpan, status dokumen `SIGNED` | PASS / FAIL |
-| **SIT-06** | Email Sandbox | Kirim notifikasi link penandatangan | Email terkirim ke alamat tujuan dengan format rapi | PASS / FAIL |
-| **SIT-07** | Payment Webhook | Kirim payload webhook transaksi sukses | Status pesanan otomatis berubah dari `PENDING` $\to$ `PAID` | PASS / FAIL |
-| **SIT-08** | Idempotency | Kirim request checkout ganda (double-click) | Request kedua ditolak `409 Conflict`, tidak ada data dobel | PASS / FAIL |
+| **SIT-01** | Auth API | Login with valid staff account | Receives HttpOnly session token, redirects to dashboard | PASS / FAIL |
+| **SIT-02** | Document API | Create document with valid data | Document saved in DB, `DRAFT` status, ID generated | PASS / FAIL |
+| **SIT-03** | Vault Storage | Render PDF and save to Cloud Storage | PDF file saved with binary AES-256 encryption | PASS / FAIL |
+| **SIT-04** | Presigned URL | Retrieve document download link | URL accessible and expires after 15 minutes | PASS / FAIL |
+| **SIT-05** | E-Sign API | Execute digital signature via token | Signature recorded, document status `SIGNED` | PASS / FAIL |
+| **SIT-06** | Email Sandbox | Send signer link notification | Email delivered to recipient inbox with proper formatting | PASS / FAIL |
+| **SIT-07** | Payment Webhook | Send successful transaction webhook payload | Order status automatically transitions from `PENDING` $\to$ `PAID` | PASS / FAIL |
+| **SIT-08** | Idempotency | Send duplicate checkout request (double-click) | Second request rejected with `409 Conflict`, no duplicate records created | PASS / FAIL |
 
 ---
 
-### 4. Kriteria Kelulusan Pengujian (Entry & Exit Criteria)
-- **Kriteria Mulai (Entry)**: Seluruh kode di branch `staging` lulus kompilasi TypeScript dan unit test lokal 100%.
-- **Kriteria Selesai (Exit)**:
-  - 100% skenario pengujian di atas berstatus **PASS**.
-  - Bebas dari bug tingkat keparahan Kritis (*Critical/Blocker*).
-  - Laporan Bagian II (SIT Report) diterbitkan dan siap ditinjau untuk membuka sesi UAT Klien.
+### 4. Entry & Exit Criteria
+- **Entry Criteria**: All code on `staging` branch passes TypeScript compilation and 100% of local unit tests.
+- **Exit Criteria**:
+  - 100% of test scenarios above marked **PASS**.
+  - Free of Critical/Blocker severity bugs.
+  - Part II (SIT Report) published and ready for review to unlock Client UAT.
 
 ---
 
-## BAGIAN II: LAPORAN HASIL SIT (SIT REPORT)
+## PART II: SIT REPORT
 
-### 1. Metadata Laporan
-- **Nama Sistem**: [Nama Aplikasi]
-- **Versi Build di Staging**: `v0.9.0-rc1` (Commit: `[git-hash]`)
-- **URL Server Staging**: `https://staging.domainklien.com`
-- **Tanggal Selesai Pengujian**: [YYYY-MM-DD]
-- **Penguji / Lead Engineer**: [Nama Anda]
-- **Status Akhir Pengujian**: **LULUS (SIT PASS - READY FOR UAT)**
+### 1. Report Metadata
+- **System Name**: [Application Name]
+- **Staging Build Version**: `v0.9.0-rc1` (Commit: `[git-hash]`)
+- **Staging Server URL**: `https://staging.domainklien.com`
+- **Testing Completion Date**: [YYYY-MM-DD]
+- **Tester / Lead Engineer**: [Your Name]
+- **Final Testing Status**: **PASSED (SIT PASS - READY FOR UAT)**
 
 ---
 
-### 2. Ringkasan Eksekusi Pengujian (Execution Summary)
+### 2. Execution Summary
 
-| Kategori Pengujian | Total Skenario | Lolos (Pass) | Gagal (Fail) | Persentase Kelulusan |
+| Test Category | Total Scenarios | Passed | Failed | Pass Rate |
 | :--- | :---: | :---: | :---: | :---: |
-| **Unit & Logic Tests** | [contoh: 24] | 24 | 0 | **100%** |
-| **API Contract Tests** | [contoh: 12] | 12 | 0 | **100%** |
-| **Third-Party Integrations** | [contoh: 8] | 8 | 0 | **100%** |
+| **Unit & Logic Tests** | [e.g.: 24] | 24 | 0 | **100%** |
+| **API Contract Tests** | [e.g.: 12] | 12 | 0 | **100%** |
+| **Third-Party Integrations** | [e.g.: 8] | 8 | 0 | **100%** |
 | **Security & OWASP Sanity** | 10 | 10 | 0 | **100%** |
 | **TOTAL** | **[Total]** | **[Total]** | **0** | **100%** |
 
 ---
 
-### 3. Rincian Hasil Pengujian Integrasi Pihak Ketiga
+### 3. Third-Party Integration Testing Details
 
-1. **Penyimpanan Dokumen (Cloudflare R2 / AWS S3)**:
+1. **Document Storage (Cloudflare R2 / AWS S3)**:
    - *Status*: **PASS**
-   - *Bukti*: File PDF dokumen berhasil diunggah dalam kondisi terenkripsi AES-256-GCM. Tautan unduh presigned URL berhasil diterbitkan dan otomatis kedaluwarsa setelah 15 menit.
-2. **Payment Gateway Sandbox (Midtrans / Xendit)**:
+   - *Evidence*: Document PDF files successfully uploaded under AES-256-GCM encryption. Presigned download URLs successfully generated and automatically expire after 15 minutes.
+2. **Sandbox Payment Gateway (Midtrans / Xendit)**:
    - *Status*: **PASS**
-   - *Bukti*: Simulasi pembayaran transfer bank dan QRIS berhasil memicu webhook ke server staging, status pesanan otomatis berganti menjadi `PAID` tanpa intervensi manual.
-3. **Email Transaksional (Resend / SMTP)**:
+   - *Evidence*: Bank transfer and QRIS payment simulations successfully triggered webhooks to the staging server; order status transitioned automatically to `PAID` without manual intervention.
+3. **Transactional Email (Resend / SMTP)**:
    - *Status*: **PASS**
-   - *Bukti*: Pengiriman email tautan penandatanganan dokumen tiba di inbox dalam waktu $< 5\text{ detik}$ dengan tombol tanda tangan aktif.
+   - *Evidence*: Document signing link emails arrived in recipient inboxes in $< 5\text{ seconds}$ with active signature action button.
 
 ---
 
-### 4. Hasil Uji Beban & Konkurensi (Load Test Metrics)
+### 4. Load & Concurrency Test Results (Load Test Metrics)
 
-Alat Uji: `k6` / `autocannon`
-- **Jumlah Pengguna Bersamaan (Concurrent Users)**: 50 Virtual Users
-- **Durasi Pengujian**: 30 Detik
-- **Total Request Diproses**: [contoh: 4.850 requests]
-- **Rata-rata Waktu Respon (Latency p95)**: **142 ms** (Batas target: $\le 200\text{ ms}$)
-- **Tingkat Kegagalan (Error Rate)**: **0.00%** (Nol request gagal)
-- **Status Basis Data**: Beban koneksi pool stabil, tidak terjadi *connection timeout*.
-
----
-
-### 5. Rekomendasi Gerbang (Gate Recommendation)
-
-Berdasarkan seluruh hasil pengujian teknis, integrasi sistem pihak ketiga, audit keamanan, dan uji beban di atas:
-
-Sistem dinyatakan **STABIL, AMAN, DAN LOLOS PENGUJIAN INTEGRASI (SIT PASS)**.
-
-Sistem secara resmi direkomendasikan untuk membuka sesi **User Acceptance Testing (UAT)** bersama **Single PIC Klien** di lingkungan Staging.
+Testing Tool: `k6` / `autocannon`
+- **Concurrent Users**: 50 Virtual Users
+- **Test Duration**: 30 Seconds
+- **Total Requests Processed**: [e.g.: 4,850 requests]
+- **Average Response Time (Latency p95)**: **142 ms** (Target threshold: $\le 200\text{ ms}$)
+- **Error Rate**: **0.00%** (Zero failed requests)
+- **Database Status**: Connection pool load stable, zero connection timeouts occurred.
 
 ---
 
-### 6. Lembar Pengesahan SIT
+### 5. Gate Recommendation
 
-| Solo Lead Engineer | Single PIC Klien (Review) |
+Based on all technical test results, third-party system integrations, security audits, and load testing above:
+
+The system is declared **STABLE, SECURE, AND PASSED SYSTEM INTEGRATION TESTING (SIT PASS)**.
+
+The system is officially recommended to initiate **User Acceptance Testing (UAT)** with the **Client Single PIC** in the Staging environment.
+
+---
+
+### 6. SIT Sign-Off Sheet
+
+| Solo Lead Engineer | Client Single PIC (Review) |
 | :--- | :--- |
-| **Nama**: _________________________ | **Nama**: _________________________ |
-| **Jabatan**: Independent Lead Engineer | **Jabatan**: ______________________ |
-| **Tanggal**: ______________________ | **Tanggal**: ______________________ |
-| **Tanda Tangan**: | **Tanda Tangan**: |
+| **Name**: _________________________ | **Name**: _________________________ |
+| **Title / Role**: Independent Lead Engineer | **Title / Role**: _________________ |
+| **Date**: _________________________ | **Date**: _________________________ |
+| **Signature**: | **Signature**: |

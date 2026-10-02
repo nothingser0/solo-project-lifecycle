@@ -1,6 +1,6 @@
 # Client Commercial Templates
 
-**Use case**: Fixed-price client projects dengan legal protection
+**Use case**: Fixed-price client projects with legal protection
 
 **Critical for**: Freelancers, agencies, contract developers
 
@@ -22,7 +22,7 @@ cp templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md docs/pm/SCOPE_S
 # List all Must-Have features + explicit Out-of-Scope items
 ```
 
-**Why critical**: Prevents scope creep ("tapi kan cuma tambah button doang")
+**Why critical**: Prevents scope creep ("but it's just adding a button")
 
 ---
 
@@ -148,7 +148,7 @@ graph TD
 ## Risk Mitigation
 
 **Without these templates**:
-- ❌ Scope creep: "Tambah social login dong" (unpaid 8 hours work)
+- ❌ Scope creep: "Can you add social login?" (unpaid 8 hours work)
 - ❌ Payment delay: Client stalls final payment 3+ months
 - ❌ Ownership dispute: "I paid, give source code now" (before bug fixes)
 - ❌ Infinite warranty: Client reports "bugs" 6 months later

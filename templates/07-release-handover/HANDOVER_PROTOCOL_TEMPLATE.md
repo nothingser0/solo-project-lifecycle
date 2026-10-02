@@ -1,48 +1,48 @@
-# Protokol Serah Terima Teknis & Kredensial (Technical Handover Protocol)
+# Technical & Credential Handover Protocol
 
-> Berita acara serah terima aset digital, pemindahan kepemilikan repositori kode sumber (*Git Repository*), dan pengalihan akun infrastruktur produksi kepada Pihak Klien.
-
----
-
-## 1. Metadata Serah Terima
-- **Nama Sistem**: [Nama Aplikasi]
-- **Pihak Klien**: [Nama Perusahaan Klien]
-- **Penerima Kredensial (PIC Klien)**: [Nama PIC Klien & Email Resmi]
-- **Penyerah Aset (Lead Developer)**: [Nama Anda]
-- **Tanggal Eksekusi**: [YYYY-MM-DD]
+> Handover certificate for digital assets, source code repository (*Git Repository*) ownership transfer, and production infrastructure account transfer to the Client.
 
 ---
 
-## 2. Inventaris Aset Digital yang Dialihkan
+## 1. Handover Metadata
+- **System Name**: [Application Name]
+- **Client Party**: [Client Company Name]
+- **Credential Recipient (Client PIC)**: [Client PIC Name & Official Email]
+- **Asset Handover Lead (Lead Developer)**: [Your Name]
+- **Execution Date**: [YYYY-MM-DD]
 
-| Kategori Aset | Nama Layanan / Akun | Identifier / URL | Metode Pengalihan | Status Pengalihan |
+---
+
+## 2. Transferred Digital Asset Inventory
+
+| Asset Category | Service / Account Name | Identifier / URL | Transfer Method | Transfer Status |
 | :--- | :--- | :--- | :--- | :---: |
-| **Repositori Kode** | GitHub / GitLab | `github.com/[client-org]/[repo-name]` | Transfer Ownership Organisasi | [x] SELESAI |
-| **Server Hosting** | Cloudflare / Vercel / VPS | `app.klien.com` | Undangan Pemilik Akun Utama (Owner) | [x] SELESAI |
-| **Basis Data** | Managed PostgreSQL | Host: `prod-db.klien.com` | Penyerahan Master Kredensial Terenkripsi | [x] SELESAI |
-| **Storage Vault** | Cloudflare R2 / AWS S3 | Bucket: `legal-vault-prod` | Pemindahan Hak Akses IAM Bucket | [x] SELESAI |
-| **Payment Gateway** | Midtrans / Xendit | Merchant ID: `[MID_12345]` | Mode LIVE Dialihkan ke Rekening Klien | [x] SELESAI |
-| **Email SMTP** | Resend / SendGrid | Domain: `domainklien.com` | Pengalihan Pemilik Dashboard Email | [x] SELESAI |
+| **Code Repository** | GitHub / GitLab | `github.com/[client-org]/[repo-name]` | Organization Ownership Transfer | [x] COMPLETED |
+| **Hosting Server** | Cloudflare / Vercel / VPS | `app.client.com` | Primary Account Owner Invitation | [x] COMPLETED |
+| **Database** | Managed PostgreSQL | Host: `prod-db.client.com` | Encrypted Master Credentials Handover | [x] COMPLETED |
+| **Storage Vault** | Cloudflare R2 / AWS S3 | Bucket: `legal-vault-prod` | Bucket IAM Access Rights Transfer | [x] COMPLETED |
+| **Payment Gateway** | Midtrans / Stripe / Xendit | Merchant ID: `[MID_12345]` | LIVE Mode Transferred to Client Account | [x] COMPLETED |
+| **Email SMTP** | Resend / SendGrid | Domain: `clientdomain.com` | Email Dashboard Ownership Transfer | [x] COMPLETED |
 
 ---
 
-## 3. Protokol Keamanan Pengiriman Kredensial (Zero Plaintext)
+## 3. Credential Transmission Security Protocol (Zero Plaintext)
 
-1. Seluruh kata sandi master, API secret keys, dan connection string database **TIDAK DIKIRIMKAN MELALUI CHAT ATAU EMAIL TEKS BIASA**.
-2. Kredensial dikirimkan menggunakan tautan enkripsi sekali pakai (*End-to-End Encrypted One-Time Link*) melalui layanan **[Bitwarden Send / 1Password / Yopass]**.
-3. Pihak Klien telah membuka tautan tersebut dan mengonfirmasi bahwa seluruh kata sandi berhasil disalin dan diganti (*password rotated*) oleh tim internal Klien.
+1. All master passwords, API secret keys, and database connection strings **MUST NOT BE TRANSMITTED VIA CHAT OR PLAINTEXT EMAIL**.
+2. Credentials are transmitted using end-to-end encrypted one-time links (*End-to-End Encrypted One-Time Link*) via **[Bitwarden Send / 1Password / Yopass]**.
+3. The Client has accessed the link and confirmed that all credentials were successfully copied and rotated (*password rotated*) by the Client's internal team.
 
 ---
 
-## 4. Pelepasan Tanggung Jawab Akses Developer (Access Revocation)
+## 4. Developer Access Revocation & Release of Responsibility
 
-Dengan selesainya proses serah terima akun root di atas:
-- Developer telah mencabut seluruh token akses pribadi (*Personal Access Tokens*) dan kunci SSH milik developer dari repositori dan server produksi.
-- Klien bertanggung jawab penuh atas kerahasiaan kata sandi dan manajemen hak akses karyawan internal Klien sejak tanggal penandatanganan ini.
+Upon completion of the root account handover process above:
+- The Developer has revoked all personal access tokens (*Personal Access Tokens*) and developer SSH keys from the repository and production servers.
+- The Client assumes full responsibility for password confidentiality and internal staff access management starting from the date of this signing.
 
-| Diterima oleh Single PIC Klien | Diserahkan oleh Solo Developer |
+| Received by Client Single PIC | Handed over by Solo Developer |
 | :--- | :--- |
-| **Nama**: _________________________ | **Nama**: _________________________ |
-| **Jabatan**: ______________________ | **Jabatan**: Independent Lead Software Engineer |
-| **Tanggal**: ______________________ | **Tanggal**: ______________________ |
-| **Tanda Tangan**: | **Tanda Tangan**: |
+| **Name**: _________________________ | **Name**: _________________________ |
+| **Title**: ________________________ | **Title**: Independent Lead Software Engineer |
+| **Date**: _________________________ | **Date**: _________________________ |
+| **Signature**: | **Signature**: |

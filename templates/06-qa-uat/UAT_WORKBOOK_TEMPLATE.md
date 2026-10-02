@@ -1,117 +1,117 @@
-# Buku Kerja Pengujian Penerimaan Pengguna (UAT Workbook)
+# User Acceptance Testing (UAT) Workbook
 
-> Dokumen gabungan skenario pengujian UAT dan log pelacakan kendala untuk periode pengujian penerimaan sistem oleh Single PIC Klien.
+> Combined UAT test scenario workbook and defect tracking log for the client acceptance testing period by Client Single PIC.
 
 ---
 
-## BAGIAN I: SKENARIO PENGUJIAN UAT
+## PART I: UAT TEST SCENARIOS
 
-### 1. Informasi Lingkungan & Kredensial Pengujian
-- **URL Server Staging**: `https://staging.domainklien.com`
-- **Periode Pengujian (Testing Window)**: [Tanggal Mulai] s/d [Tanggal Selesai] (Maksimal 7 Hari Kerja)
-- **Akun Penguji (Tester Credentials)**:
+### 1. Environment Information & Test Credentials
+- **Staging Server URL**: `https://staging.domainklien.com`
+- **Testing Window**: [Start Date] to [End Date] (Maximum 7 Business Days)
+- **Tester Credentials**:
   - Super Admin: `tester-admin@staging.local` / `UatTest2026!`
-  - Staf Operasional: `tester-staff@staging.local` / `UatTest2026!`
+  - Operations Staff: `tester-staff@staging.local` / `UatTest2026!`
 
 ---
 
-### 2. Lembar Kerja Skenario Pengujian UAT
+### 2. UAT Test Scenario Worksheets
 
-#### Skenario 1: Alur Masuk & Autentikasi Pengguna
-- **ID Skenario**: `UAT-SCN-01`
-- **Tujuan Uji**: Memastikan pengguna dapat login dengan aman dan diarahkan ke dashboard kerja yang tepat.
-- **Langkah Pengujian**:
-  1. Buka URL `https://staging.domainklien.com/login`.
-  2. Masukkan email dan kata sandi penguji staf.
-  3. Klik tombol **"Masuk ke Akun"**.
-- **Hasil yang Diharapkan**:
-  - Halaman berpindah ke Dashboard Staf (`/dashboard`).
-  - Nama pengguna penguji tampil di pojok kanan atas.
-  - Sesi login tetap aktif saat tab browser ditutup dan dibuka kembali.
-- **Hasil Pengujian Klien**: [ ] **LOLOS (PASS)**  /  [ ] **GAGAL (FAIL)**
-- **Catatan Penguji**: __________________________________________________
-
----
-
-#### Skenario 2: Pembuatan Draf Dokumen Baru
-- **ID Skenario**: `UAT-SCN-02`
-- **Tujuan Uji**: Memastikan staf dapat mengisi formulir template dokumen dan sistem menghasilkan pratinjau PDF resmi.
-- **Langkah Pengujian**:
-  1. Dari dashboard, klik tombol **"Buat Dokumen Baru"**.
-  2. Pilih jenis template **"Perjanjian Kerja Lepas (Freelance)"**.
-  3. Isi kolom nama pihak, nominal kompensasi, dan tanggal berlaku.
-  4. Klik tombol **"Generate Pratinjau Dokumen"**.
-- **Hasil yang Diharapkan**:
-  - Tampil pratinjau dokumen PDF di layar browser dalam waktu $< 5\text{ detik}$.
-  - Data yang diketik di form tampil akurat pada isi pasal-pasal dokumen.
-  - Status dokumen tercatat sebagai `DRAFT`.
-- **Hasil Pengujian Klien**: [ ] **LOLOS (PASS)**  /  [ ] **GAGAL (FAIL)**
-- **Catatan Penguji**: __________________________________________________
+#### Scenario 1: User Login & Authentication Flow
+- **Scenario ID**: `UAT-SCN-01`
+- **Test Objective**: Verify users can log in securely and are redirected to the appropriate dashboard.
+- **Test Steps**:
+  1. Open URL `https://staging.domainklien.com/login`.
+  2. Enter staff tester email and password.
+  3. Click **"Log In to Account"** button.
+- **Expected Result**:
+  - Page redirects to Staff Dashboard (`/dashboard`).
+  - Tester username is displayed in top-right corner.
+  - Login session persists when browser tab is closed and reopened.
+- **Client Test Result**: [ ] **PASS** / [ ] **FAIL**
+- **Tester Notes**: __________________________________________________
 
 ---
 
-#### Skenario 3: Penandatanganan Digital & Penguncian Dokumen
-- **ID Skenario**: `UAT-SCN-03`
-- **Tujuan Uji**: Memastikan penandatangan dapat menandatangani dokumen via tautan publik dan dokumen terkunci dari perubahan.
-- **Langkah Pengujian**:
-  1. Klik tombol **"Kirim Tautan Tanda Tangan"** ke email penandatangan.
-  2. Buka tautan rahasia yang diterima di email.
-  3. Bubuhkan tanda tangan pada kotak kanvas digital, lalu klik **"Simpan & Sahkan"**.
-- **Hasil yang Diharapkan**:
-  - Muncul layar konfirmasi tanda tangan berhasil.
-  - Status dokumen di dashboard otomatis berubah menjadi `SIGNED (TERKUNCI)`.
-  - Dokumen PDF final menampilkan gambar tanda tangan dan cap hash SHA-256 di bagian footer.
-- **Hasil Pengujian Klien**: [ ] **LOLOS (PASS)**  /  [ ] **GAGAL (FAIL)**
-- **Catatan Penguji**: __________________________________________________
+#### Scenario 2: New Document Draft Creation
+- **Scenario ID**: `UAT-SCN-02`
+- **Test Objective**: Verify staff can fill in document template forms and the system generates an official PDF preview.
+- **Test Steps**:
+  1. From dashboard, click **"Create New Document"** button.
+  2. Select template type **"Freelance Service Agreement"**.
+  3. Fill in party names, compensation amount, and effective date fields.
+  4. Click **"Generate Document Preview"** button.
+- **Expected Result**:
+  - Document PDF preview is displayed on browser screen within $< 5\text{ seconds}$.
+  - Form data entered is accurately rendered within document clauses.
+  - Document status is recorded as `DRAFT`.
+- **Client Test Result**: [ ] **PASS** / [ ] **FAIL**
+- **Tester Notes**: __________________________________________________
 
 ---
 
-## BAGIAN II: LOG PELACAKAN KENDALA UAT
-
-### 1. Metadata Pengujian
-- **Nama Sistem**: [Nama Aplikasi]
-- **Periode Pelaporan**: [Tanggal Mulai] s/d [Tanggal Selesai]
-- **Single PIC Penguji**: [Nama PIC Klien]
-- **Lead Developer**: [Nama Anda]
+#### Scenario 3: Digital Signature & Document Locking
+- **Scenario ID**: `UAT-SCN-03`
+- **Test Objective**: Verify signers can sign documents via public links and documents are locked against modifications.
+- **Test Steps**:
+  1. Click **"Send Signature Link"** button to signer's email.
+  2. Open confidential link received via email.
+  3. Draw signature on digital canvas box, then click **"Save & Sign"**.
+- **Expected Result**:
+  - Successful signature confirmation screen appears.
+  - Document status on dashboard automatically transitions to `SIGNED (LOCKED)`.
+  - Final PDF document displays signature image and SHA-256 hash stamp in footer.
+- **Client Test Result**: [ ] **PASS** / [ ] **FAIL**
+- **Tester Notes**: __________________________________________________
 
 ---
 
-### 2. Tabel Pelacakan Cacat / Bug (Defect Tracking Table)
+## PART II: UAT DEFECT TRACKING LOG
 
-| ID Bug | Tanggal Lapor | Modul / Halaman | Deskripsi Masalah & Langkah Reproduksi | Severity (1/2/3/CR) | Status Penanganan | Tanggal Resolusi | Verifikasi Ulang Klien |
+### 1. Test Metadata
+- **System Name**: [Application Name]
+- **Reporting Period**: [Start Date] to [End Date]
+- **Tester Single PIC**: [Client PIC Name]
+- **Lead Developer**: [Your Name]
+
+---
+
+### 2. Defect Tracking Table
+
+| Bug ID | Date Reported | Module / Page | Issue Description & Steps to Reproduce | Severity (1/2/3/CR) | Remediation Status | Resolution Date | Client Retest Verification |
 | :---: | :---: | :--- | :--- | :---: | :---: | :---: | :---: |
-| **BUG-01** | [YYYY-MM-DD] | Form Dokumen | Tanggal lahir tidak bisa dipilih jika sebelum tahun 1980 | **Severity 2** | `CLOSED` | [YYYY-MM-DD] | [x] Terverifikasi Lolos |
-| **BUG-02** | [YYYY-MM-DD] | E-Sign Canvas | Tombol clear canvas tidak mereset goresan tanda tangan | **Severity 3** | `CLOSED` | [YYYY-MM-DD] | [x] Terverifikasi Lolos |
-| **CR-01**  | [YYYY-MM-DD] | Notifikasi | Klien meminta integrasi notifikasi SMS selain email | **Out-of-Scope** | `DIALIHKAN KE CR` | - | Masuk Lembar CR #02 |
+| **BUG-01** | [YYYY-MM-DD] | Document Form | Date of birth cannot be selected prior to year 1980 | **Severity 2** | `CLOSED` | [YYYY-MM-DD] | [x] Verified Pass |
+| **BUG-02** | [YYYY-MM-DD] | E-Sign Canvas | Clear canvas button does not reset signature strokes | **Severity 3** | `CLOSED` | [YYYY-MM-DD] | [x] Verified Pass |
+| **CR-01**  | [YYYY-MM-DD] | Notifications | Client requests SMS notification integration in addition to email | **Out-of-Scope** | `TRANSFERRED TO CR` | - | Moved to CR Sheet #02 |
 
 ---
 
-### 3. Definisi Status Penanganan
-- **`OPEN`**: Masalah baru dilaporkan oleh tester klien dan sedang dalam antrean triase.
-- **`IN_PROGRESS`**: Masalah valid sedang diperbaiki oleh developer di branch `fix/*`.
-- **`RESOLVED`**: Perbaikan telah di-deploy ke server Staging dan siap diuji ulang oleh klien.
-- **`CLOSED`**: PIC Klien telah menguji ulang di Staging dan mengonfirmasi bug telah tuntas.
-- **`DIALIHKAN KE CR`**: Permintaan di luar lingkup PRD/FSD yang dialihkan ke penawaran *Change Request* berbayar.
+### 3. Remediation Status Definitions
+- **`OPEN`**: New issue reported by client tester and currently queued for triage.
+- **`IN_PROGRESS`**: Valid issue currently being fixed by developer in `fix/*` branch.
+- **`RESOLVED`**: Fix deployed to Staging server and ready for client retest.
+- **`CLOSED`**: Client PIC retested on Staging and confirmed bug is fully resolved.
+- **`TRANSFERRED TO CR`**: Request outside PRD/FSD scope transferred to paid *Change Request* proposal.
 
 ---
 
-### 4. Rekapitulasi Status Akhir Triase
+### 4. Final Triage Status Summary
 
-- **Total Temuan Dilaporkan**: [ ] Temuan
-- **Severity 1 (Blocker)**: [0] Open  *(Wajib 0 untuk UAT Sign-Off)*
-- **Severity 2 (Major)**: [0] Open  *(Wajib 0 untuk UAT Sign-Off)*
-- **Severity 3 (Minor)**: [ ] Resolved / Dijadwalkan saat garansi
-- **Permintaan Fitur Baru (CR)**: [ ] Dialihkan ke Fase Lanjutan / Dokumen CR
+- **Total Findings Reported**: [ ] Findings
+- **Severity 1 (Blocker)**: [0] Open  *(Must be 0 for UAT Sign-Off)*
+- **Severity 2 (Major)**: [0] Open  *(Must be 0 for UAT Sign-Off)*
+- **Severity 3 (Minor)**: [ ] Resolved / Scheduled during warranty
+- **New Feature Requests (CR)**: [ ] Transferred to Next Phase / CR Document
 
 ---
 
-### 5. Lembar Persetujuan UAT
+### 5. UAT Approval Sheet
 
-Setelah seluruh skenario pengujian lolos dan bug Severity 1 & 2 tuntas, Single PIC Klien menandatangani lembar persetujuan UAT:
+After all test scenarios pass and Severity 1 & 2 bugs are resolved, Client Single PIC signs the UAT approval sheet:
 
-| Single PIC Klien | Lead Developer |
+| Client Single PIC | Lead Developer |
 | :--- | :--- |
-| **Nama**: _________________________ | **Nama**: _________________________ |
-| **Jabatan**: ______________________ | **Jabatan**: Independent Lead Engineer |
-| **Tanggal**: ______________________ | **Tanggal**: ______________________ |
-| **Tanda Tangan**: | **Tanda Tangan**: |
+| **Name**: _________________________ | **Name**: _________________________ |
+| **Title / Role**: _________________ | **Title / Role**: Independent Lead Engineer |
+| **Date**: _________________________ | **Date**: _________________________ |
+| **Signature**: | **Signature**: |

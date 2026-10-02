@@ -1,7 +1,7 @@
-# Growth Experiments Backlog: [Nama Produk]
+# Growth Experiments Backlog: [Product Name]
 
-**Product**: [Nama Produk]  
-**Owner**: [Nama Solo Developer]  
+**Product**: [Product Name]  
+**Owner**: [Solo Developer Name]  
 **Last Updated**: [YYYY-MM-DD]  
 **Experiment Velocity Target**: 2-4 experiments per month
 
@@ -9,7 +9,7 @@
 
 ## 1. Experiment Queue Overview
 
-**Current Status** (as of [Tanggal]):
+**Current Status** (as of [Date]):
 - **Running**: [X] experiments
 - **Queued**: [X] experiments
 - **Completed**: [X] experiments (lifetime)
@@ -21,12 +21,12 @@
 
 ## 2. Active Experiments (Running Now)
 
-### Experiment #001: [Nama Eksperimen]
+### Experiment #001: [Experiment Name]
 
 **Status**: 🟢 Running  
 **Start Date**: [YYYY-MM-DD]  
 **Expected End Date**: [YYYY-MM-DD] (minimum 2 weeks or 100 conversions per variant)  
-**Owner**: [Nama]
+**Owner**: [Name]
 
 #### Hypothesis
 ```
@@ -89,20 +89,20 @@ target: control 30% → treatment 35%+ (relative lift ≥15%).
 
 ---
 
-### Experiment #002: [Nama Eksperimen Kedua]
+### Experiment #002: [Second Experiment Name]
 
-[Ulangi struktur yang sama untuk eksperimen aktif lainnya]
+[Repeat the same structure for other active experiments]
 
 ---
 
 ## 3. Queued Experiments (Prioritized Backlog)
 
-Eksperimen diurutkan berdasarkan **Priority Score** (RICE atau Expected Lift × Ease).
+Experiments are ordered by **Priority Score** (RICE or Expected Lift × Ease).
 
-### Experiment #003: [Nama Eksperimen]
+### Experiment #003: [Experiment Name]
 
-**Status**: 📋 Queued (Target Launch: [Tanggal])  
-**Priority Score**: [Angka] (Rank: #1 in backlog)
+**Status**: 📋 Queued (Target Launch: [Date])  
+**Priority Score**: [Score] (Rank: #1 in backlog)
 
 #### Hypothesis (Draft)
 ```
@@ -125,8 +125,8 @@ Success metric: [METRIC + threshold].
 | **RICE Score** | **(Reach × Impact × Confidence) / Effort** | **= [Final Score]** |
 
 #### Why This Matters (Strategic Alignment)
-- **North Star Metric Impact**: [Jelaskan bagaimana eksperimen ini berkontribusi ke North Star Metric dari M00]
-- **Strategic Pillar**: [Link ke strategic pillar dari M00, misal "Increase Activation"]
+- **North Star Metric Impact**: [Explain how this experiment contributes to the North Star Metric from M00]
+- **Strategic Pillar**: [Link to strategic pillar from M00, e.g., "Increase Activation"]
 
 #### Pre-requisites (Blockers)
 - [ ] [Blocker 1, e.g., "Need event tracking for feature_X_clicked"]
@@ -134,27 +134,27 @@ Success metric: [METRIC + threshold].
 
 ---
 
-### Experiment #004: [Nama Eksperimen]
+### Experiment #004: [Experiment Name]
 
 **Status**: 📋 Queued  
-**Priority Score**: [Angka] (Rank: #2)
+**Priority Score**: [Score] (Rank: #2)
 
-[Ulangi struktur yang sama]
+[Repeat the same structure]
 
 ---
 
-### Experiment #005: [Nama Eksperimen]
+### Experiment #005: [Experiment Name]
 
 **Status**: 📋 Queued  
-**Priority Score**: [Angka] (Rank: #3)
+**Priority Score**: [Score] (Rank: #3)
 
-[Ulangi struktur yang sama]
+[Repeat the same structure]
 
 ---
 
 ## 4. Completed Experiments (Learning Repository)
 
-### Experiment #XXX: [Nama Eksperimen] ✅ Win
+### Experiment #XXX: [Experiment Name] ✅ Win
 
 **Run Date**: [Start] – [End] ([X] days)  
 **Result**: 🎉 **Treatment Won** (shipped to 100%)
@@ -180,7 +180,7 @@ Success metric: [METRIC + threshold].
 
 ---
 
-### Experiment #XXX: [Nama Eksperimen] ❌ Loss
+### Experiment #XXX: [Experiment Name] ❌ Loss
 
 **Run Date**: [Start] – [End] ([X] days)  
 **Result**: 💡 **Control Won** (treatment killed)
@@ -204,7 +204,7 @@ Success metric: [METRIC + threshold].
 
 ---
 
-### Experiment #XXX: [Nama Eksperimen] 🤷 Neutral
+### Experiment #XXX: [Experiment Name] 🤷 Neutral
 
 **Run Date**: [Start] – [End]  
 **Result**: 🤷 **No Significant Difference** (killed due to no impact)
@@ -223,15 +223,15 @@ No statistically significant difference detected after [X] days. Possible reason
 
 Low-priority ideas or experiments that need more refinement before queuing.
 
-### Idea: [Nama Idea]
-- **Description**: [1-2 kalimat]
+### Idea: [Idea Name]
+- **Description**: [1-2 sentences]
 - **Expected Impact**: [Vague estimate]
 - **Why Icebox**: [e.g., "Need more user research", "Too complex for current bandwidth", "Not aligned with Q4 OKR"]
 
 ---
 
-### Idea: [Nama Idea]
-[Ulangi struktur]
+### Idea: [Idea Name]
+[Repeat structure]
 
 ---
 
@@ -315,7 +315,7 @@ if (showSocialProof) {
 
 ---
 
-**Next Review**: [Tanggal review backlog berikutnya, biasanya setiap 2 minggu]
+**Next Review**: [Next backlog review date, typically every 2 weeks]
 
-**Approved by**: [Nama Solo Developer]  
+**Approved by**: [Solo Developer Name]  
 **Date**: [YYYY-MM-DD]

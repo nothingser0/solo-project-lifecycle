@@ -1,7 +1,7 @@
 # Integration Checklist (Third-Party Services)
 
 **Module**: M06 Development Execution  
-**Purpose**: Sequential checklist untuk integrating payment gateways, email services, storage, analytics
+**Purpose**: Sequential checklist for integrating payment gateways, email services, storage, analytics
 
 **Use with**: Stripe, Midtrans, SendGrid, Resend, AWS S3, Sentry, Mixpanel
 
@@ -10,111 +10,111 @@
 ## 1. Payment Gateway (Stripe / Midtrans)
 
 ### Sandbox Setup
-- [ ] **Setup Lingkungan Sandbox**:
-  - [ ] Daftarkan akun developer sandbox Stripe / Midtrans.
-  - [ ] Pasang API keys test mode di `.env` (`STRIPE_SECRET_KEY=sk_test_...`, `STRIPE_WEBHOOK_SECRET=whsec_...`).
-  - [ ] Verifikasi tidak ada kunci production (`sk_live_...`) yang bocor di branch `staging`.
+- [ ] **Sandbox Environment Setup**:
+  - [ ] Register Stripe / Midtrans sandbox developer account.
+  - [ ] Set test mode API keys in `.env` (`STRIPE_SECRET_KEY=sk_test_...`, `STRIPE_WEBHOOK_SECRET=whsec_...`).
+  - [ ] Verify no production keys (`sk_live_...`) are leaked in the `staging` branch.
 
 ### Transaction Initiation
-- [ ] **Inisiasi Transaksi Pembayaran**:
-  - [ ] Buat endpoint API pembuat Checkout Session (Stripe) atau Snap Token (Midtrans).
-  - [ ] Simpan nomor referensi order di tabel transaksi lokal dengan status awal `pending`.
+- [ ] **Payment Transaction Initiation**:
+  - [ ] Create API endpoint for Checkout Session (Stripe) or Snap Token (Midtrans) generation.
+  - [ ] Save order reference number in local transaction table with initial `pending` status.
 
 ### Webhook Endpoint
-- [ ] **Webhook Endpoint Kriptografis**:
-  - [ ] Endpoint `POST /api/v1/webhooks/payment` dengan raw body parser.
-  - [ ] Validasi tanda tangan kriptografis webhook (`stripe.webhooks.constructEvent` atau Midtrans SHA512 signature check).
-  - [ ] Tolak langsung request dengan HTTP 400 jika tanda tangan tidak cocok.
+- [ ] **Cryptographic Webhook Endpoint**:
+  - [ ] `POST /api/v1/webhooks/payment` endpoint with raw body parser.
+  - [ ] Validate cryptographic webhook signature (`stripe.webhooks.constructEvent` or Midtrans SHA512 signature check).
+  - [ ] Immediately reject request with HTTP 400 if signature does not match.
 
 ### Idempotency
-- [ ] **Penanganan Idempotensi Webhook**:
-  - [ ] Catat setiap event ID yang masuk di tabel `webhook_events`.
-  - [ ] Jika event ID sudah pernah diproses sebelumnya, return HTTP 200 instan tanpa mengeksekusi ulang mutasi bisnis.
+- [ ] **Webhook Idempotency Handling**:
+  - [ ] Record every incoming event ID in `webhook_events` table.
+  - [ ] If event ID has been processed previously, return HTTP 200 immediately without re-executing business mutations.
 
 ### Status Transition
-- [ ] **Transisi Status Transaksi Atomik**:
-  - [ ] Bungkus pembaruan status order (`paid`, `failed`, `expired`) dan aktivasi fitur pengguna dalam transaksi basis data (`db.$transaction`).
-  - [ ] Kirim email konfirmasi tanda terima pembayaran ke user secara asinkron.
+- [ ] **Atomic Transaction Status Transition**:
+  - [ ] Wrap order status updates (`paid`, `failed`, `expired`) and user feature activation in a database transaction (`db.$transaction`).
+  - [ ] Send payment receipt confirmation email to user asynchronously.
 
 ---
 
 ## 2. Transactional Email Service (SendGrid / Resend)
 
 ### DNS Verification
-- [ ] **Verifikasi DNS Domain**:
-  - [ ] Konfigurasi record DNS pengirim: SPF (`v=spf1`), DKIM, dan DMARC (`p=reject` atau `p=quarantine`).
-  - [ ] Verifikasi domain terkonfirmasi aktif pada dashboard Resend / SendGrid.
+- [ ] **Domain DNS Verification**:
+  - [ ] Configure sender DNS records: SPF (`v=spf1`), DKIM, and DMARC (`p=reject` or `p=quarantine`).
+  - [ ] Verify domain is confirmed active on the Resend / SendGrid dashboard.
 
 ### Email Client
-- [ ] **Klien Email Terisolasi**:
-  - [ ] Buat modul layanan `email.service.ts` yang mengenkapsulasi pengiriman email.
-  - [ ] Pada environment `development`, cetak isi email ke terminal log atau gunakan layanan uji (Mailpit / Inbucket) daripada mengirim email sungguhan.
+- [ ] **Isolated Email Client**:
+  - [ ] Create service module `email.service.ts` encapsulating email dispatch.
+  - [ ] In `development` environment, log email content to the terminal or use a test service (Mailpit / Inbucket) instead of sending real emails.
 
 ### Automated Alerts
 - [ ] **Automated Alerts & Receipts**:
-  - [ ] Kirim email transaksi penting dengan menyertakan attachment PDF bukti bayar / dokumen legal.
-  - [ ] Pasang header `List-Unsubscribe` dan tautan berhenti berlangganan pada email pemberitahuan reguler.
+  - [ ] Send critical transaction emails with attached PDF proof of payment / legal documents.
+  - [ ] Configure `List-Unsubscribe` headers and unsubscribe links in regular notification emails.
 
 ---
 
 ## 3. File Storage (AWS S3 / Cloudflare R2)
 
 ### Bucket Configuration
-- [ ] **Konfigurasi Bucket & CORS**:
-  - [ ] Buat bucket storage dengan nama unik per environment (`myproject-staging-vault`, `myproject-prod-vault`).
-  - [ ] Matikan opsi akses publik langsung (*Block Public Access: ON*). Seluruh akses wajib melalui presigned URL atau backend proxy.
-  - [ ] Konfigurasi CORS bucket hanya mengizinkan origin aplikasi web resmi dengan method `GET`, `PUT`, `HEAD`.
+- [ ] **Bucket & CORS Configuration**:
+  - [ ] Create storage buckets with unique names per environment (`myproject-staging-vault`, `myproject-prod-vault`).
+  - [ ] Disable direct public access (*Block Public Access: ON*). All access must go through presigned URLs or backend proxy.
+  - [ ] Configure bucket CORS to only allow official web app origins with `GET`, `PUT`, `HEAD` methods.
 
 ### IAM Credentials
-- [ ] **Kredensial Hak Akses Minimum (Least-Privilege)**:
-  - [ ] Buat IAM user / API token R2 khusus aplikasi dengan permission hanya `s3:PutObject` dan `s3:GetObject` pada prefix bucket terkait.
-  - [ ] Jangan gunakan kredensial Root AWS / Cloudflare Admin.
+- [ ] **Least-Privilege IAM Credentials**:
+  - [ ] Create application-specific IAM user / R2 API token with only `s3:PutObject` and `s3:GetObject` permissions on the relevant bucket prefix.
+  - [ ] Do not use AWS Root / Cloudflare Admin credentials.
 
 ### Lifecycle Policies
 - [ ] **Lifecycle Policies**:
-  - [ ] Pasang aturan lifecycle bucket untuk otomatis menghapus upload parsial yang terputus (*abort incomplete multipart uploads* setelah 7 hari).
+  - [ ] Configure bucket lifecycle rules to automatically remove aborted partial uploads (*abort incomplete multipart uploads* after 7 days).
 
 ---
 
 ## 4. Product Analytics (Mixpanel / GA4 / PostHog)
 
 ### Privacy Compliance
-- [ ] **Inisialisasi Patuh Privasi (UU PDP & GDPR)**:
-  - [ ] Inisialisasi SDK analitik hanya setelah pengguna memberikan izin (*consent banner*).
-  - [ ] Pasang flag DNT (*Do Not Track*) support.
+- [ ] **Privacy-Compliant Initialization (UU PDP & GDPR)**:
+  - [ ] Initialize analytics SDK only after user grants consent (*consent banner*).
+  - [ ] Add DNT (*Do Not Track*) support flag.
 
 ### Core Telemetry
-- [ ] **Pelacakan Event Inti (Core Telemetry Mapping)**:
-  - [ ] Track alur akuisisi: `auth_signup_completed`, `auth_login_succeeded`.
-  - [ ] Track nilai inti aplikasi (*North Star action*): `document_created`, `document_exported`, `payment_completed`.
-  - [ ] Resolusi identitas: tautkan anonymous ID ke ID pengguna resmi setelah login (`posthog.identify(userId)`).
+- [ ] **Core Telemetry Mapping**:
+  - [ ] Track acquisition flow: `auth_signup_completed`, `auth_login_succeeded`.
+  - [ ] Track core application value (*North Star action*): `document_created`, `document_exported`, `payment_completed`.
+  - [ ] Identity resolution: link anonymous ID to authenticated user ID after login (`posthog.identify(userId)`).
 
 ### Data Scrubbing
-- [ ] **Scrubbing Data Sensitif**:
-  - [ ] Pastikan payload analitik TIDAK memuat PII sensitif (nama lengkap, NIK, alamat lengkap, kata sandi, detail kartu kredit).
+- [ ] **Sensitive Data Scrubbing**:
+  - [ ] Ensure analytics payloads do NOT contain sensitive PII (full name, national ID, full address, password, credit card details).
 
 ---
 
 ## 5. Application Monitoring & Error Tracking (Sentry)
 
 ### SDK Installation
-- [ ] **Pemasangan Sentry SDK**:
-  - [ ] Pasang Sentry SDK di sisi client (Next.js client / Vite) dan server runtime (Node.js / Python / Laravel).
-  - [ ] Atur environment tag (`staging`, `production`) dan release tag sesuai commit SHA git (`git rev-parse HEAD`).
+- [ ] **Sentry SDK Installation**:
+  - [ ] Install Sentry SDK on client side (Next.js client / Vite) and server runtime (Node.js / Python / Laravel).
+  - [ ] Set environment tag (`staging`, `production`) and release tag based on git commit SHA (`git rev-parse HEAD`).
 
 ### Data Scrubbing
-- [ ] **Scrubbing Data Sensitif (beforeSend Filter)**:
-  - [ ] Pasang hook `beforeSend` untuk membersihkan header `Authorization`, cookie sesi, nilai password, dan query parameter sensitif dari stack trace.
+- [ ] **Sensitive Data Scrubbing (beforeSend Filter)**:
+  - [ ] Configure `beforeSend` hook to scrub `Authorization` headers, session cookies, password values, and sensitive query parameters from stack traces.
 
 ### Performance Tracing
 - [ ] **Performance Tracing & Slow Query Alerts**:
-  - [ ] Atur trace sample rate (100% pada staging untuk evaluasi, 10% pada production).
-  - [ ] Konfigurasikan threshold peringatan jika kueri database memakan waktu > 500ms atau respon API > 2.000ms.
+  - [ ] Configure trace sample rate (100% on staging for evaluation, 10% on production).
+  - [ ] Configure alert threshold if database queries exceed > 500ms or API responses exceed > 2,000ms.
 
 ### Health Checks
 - [ ] **Health Check Endpoints**:
-  - [ ] Buat endpoint `GET /api/healthz` (liveness check) yang merespons status `OK`.
-  - [ ] Buat endpoint `GET /api/readyz` (readiness check) yang memverifikasi koneksi aktif ke PostgreSQL dan Redis.
+  - [ ] Create `GET /api/healthz` endpoint (liveness check) responding with `OK` status.
+  - [ ] Create `GET /api/readyz` endpoint (readiness check) verifying active connections to PostgreSQL and Redis.
 
 ---
 

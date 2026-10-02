@@ -1,61 +1,61 @@
-# Laporan Audit Keamanan Perangkat Lunak (Security Audit Report)
+# Software Security Audit Report
 
-> Dokumen hasil audit keamanan teknis, sanitasi dependensi, perlindungan celah OWASP Top 10, dan verifikasi kepatuhan regulasi data (UU PDP No. 27/2022).
-
----
-
-## 1. Metadata Audit
-- **Nama Sistem**: [Nama Aplikasi]
-- **Target URL Lingkungan**: `https://staging.domainklien.com`
-- **Auditor Teknis / Solo Security Engineer**: [Nama Anda]
-- **Tanggal Audit**: [YYYY-MM-DD]
-- **Tingkat Kepatuhan**: Standard Web Application / Regulated Data
+> Technical security audit documentation, dependency sanitation, OWASP Top 10 vulnerability protection, and data regulatory compliance verification (UU PDP No. 27/2022).
 
 ---
 
-## 2. Hasil Audit Dependensi Pihak Ketiga (Supply-Chain Security)
+## 1. Audit Metadata
+- **System Name**: [Application Name]
+- **Target Environment URL**: `https://staging.domainklien.com`
+- **Technical Auditor / Solo Security Engineer**: [Your Name]
+- **Audit Date**: [YYYY-MM-DD]
+- **Compliance Level**: Standard Web Application / Regulated Data
 
-Perintah yang Dijalankan: `pnpm audit --audit-level=high`
+---
 
-| Tingkat Kerentanan | Jumlah Ditemukan | Status Penanganan |
+## 2. Third-Party Dependency Audit Results (Supply-Chain Security)
+
+Command Executed: `pnpm audit --audit-level=high`
+
+| Vulnerability Level | Findings Count | Remediation Status |
 | :--- | :---: | :--- |
-| **Critical** | 0 | Bebas Celah Kritis |
-| **High** | 0 | Bebas Celah Tinggi |
-| **Moderate** | [ ] | [Telah ditambal / Diawasi] |
-| **Low** | [ ] | Diabaikan jika hanya dependensi build dev |
+| **Critical** | 0 | Free of Critical Vulnerabilities |
+| **High** | 0 | Free of High Vulnerabilities |
+| **Moderate** | [ ] | [Patched / Monitored] |
+| **Low** | [ ] | Ignored if development build dependency only |
 
 ---
 
-## 3. Checklist Verifikasi OWASP Top 10
+## 3. OWASP Top 10 Verification Checklist
 
-| Kategori Kerentanan | Mekanisme Pertahanan yang Diuji | Status Uji | Bukti Teknis |
+| Vulnerability Category | Defense Mechanism Tested | Test Status | Technical Evidence |
 | :--- | :--- | :---: | :--- |
-| **A01: Broken Access Control** | Verifikasi IDOR: Pengguna A dilarang mengakses dokumen milik Pengguna B | [x] PASS | Query terisolasi dengan filter `WHERE creator_id = user.id` |
-| **A02: Cryptographic Failures** | File vault terenkripsi AES-256; password ter-hash Argon2id; TLS 1.3 aktif | [x] PASS | Verifikasi inspeksi biner file S3 dan kolom hash database |
-| **A03: Injection (SQLi/Command)** | Kueri database wajib parameterized (Prisma/Drizzle); validasi input Zod | [x] PASS | Uji injeksi `' OR '1'='1` ditolak sebagai input string biasa |
-| **A04: Insecure Design** | Pembatasan laju (*Rate Limiting*) pada login dan endpoint dokumen | [x] PASS | Uji tembak 10 request/detik menghasilkan `429 Too Many Requests` |
-| **A05: Security Misconfiguration** | Mode debug dinonaktifkan di staging/produksi; pesan error tidak bocor stack trace | [x] PASS | Respon error server mengembalikan pesan generik terstruktur |
-| **A06: Vulnerable Components** | Audit dependensi bersih dari CVE publik | [x] PASS | Lulus `pnpm audit` |
-| **A07: Identification & Auth** | Proteksi brute force; sesi disimpan pada cookie `HttpOnly, Secure, SameSite=Strict` | [x] PASS | Sesi tidak dapat dicuri via JavaScript `document.cookie` |
-| **A08: Software & Data Integrity** | Integritas dokumen tervalidasi menggunakan hash kriptografis SHA-256 | [x] PASS | Nilai SHA-256 tersimpan di database dan footer PDF |
-| **A09: Logging & Monitoring** | Pencatatan audit trail untuk setiap aksi pembuatan & penandatanganan dokumen | [x] PASS | Log tersimpan dengan timestamp UTC, IP address, dan User-Agent |
-| **A10: Server-Side Request Forgery** | Endpoint webhook hanya memanggil URL yang terdaftar di whitelist resmi | [x] PASS | Panggilan ke alamat IP lokal internal (127.0.0.1) diblokir |
+| **A01: Broken Access Control** | IDOR verification: User A restricted from accessing User B's documents | [x] PASS | Isolated query with filter `WHERE creator_id = user.id` |
+| **A02: Cryptographic Failures** | File vault AES-256 encrypted; password Argon2id hashed; TLS 1.3 active | [x] PASS | Verified via binary inspection of S3 files and database hash columns |
+| **A03: Injection (SQLi/Command)** | Database queries must be parameterized (Prisma/Drizzle); Zod input validation | [x] PASS | Injection payload `' OR '1'='1` rejected as plain string input |
+| **A04: Insecure Design** | Rate Limiting on login and document endpoints | [x] PASS | Load burst of 10 requests/second returned `429 Too Many Requests` |
+| **A05: Security Misconfiguration** | Debug mode disabled in staging/production; error messages do not leak stack traces | [x] PASS | Server error responses return structured generic messages |
+| **A06: Vulnerable Components** | Dependency audit clean of public CVEs | [x] PASS | Passed `pnpm audit` |
+| **A07: Identification & Auth** | Brute force protection; session stored in `HttpOnly, Secure, SameSite=Strict` cookies | [x] PASS | Session cannot be stolen via JavaScript `document.cookie` |
+| **A08: Software & Data Integrity** | Document integrity validated using SHA-256 cryptographic hashes | [x] PASS | SHA-256 value stored in database and PDF footer |
+| **A09: Logging & Monitoring** | Audit trail logging for every document creation & signing action | [x] PASS | Logs stored with UTC timestamp, IP address, and User-Agent |
+| **A10: Server-Side Request Forgery** | Webhook endpoints only invoke URLs registered on the official whitelist | [x] PASS | Calls to internal local IP addresses (127.0.0.1) are blocked |
 
 ---
 
-## 4. Verifikasi Header Keamanan HTTP (HTTP Security Headers)
+## 4. HTTP Security Headers Verification
 
-| Header Keamanan | Nilai Konfigurasi Wajib | Status |
+| Security Header | Mandatory Configuration Value | Status |
 | :--- | :--- | :---: |
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` | Terpasang |
-| `X-Content-Type-Options` | `nosniff` | Terpasang |
-| `X-Frame-Options` | `DENY` (Mencegah serangan Clickjacking) | Terpasang |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` | Terpasang |
-| `Content-Security-Policy` | `default-src 'self'; script-src 'self' ...` | Terpasang |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` | Enabled |
+| `X-Content-Type-Options` | `nosniff` | Enabled |
+| `X-Frame-Options` | `DENY` (Prevents Clickjacking attacks) | Enabled |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Enabled |
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self' ...` | Enabled |
 
 ---
 
-## 5. Kesimpulan & Status Kelulusan Keamanan
+## 5. Security Conclusion & Pass Status
 
-- [x] **MEMENUHI STANDAR KEAMANAN (SECURITY PASS)**: Seluruh parameter pengujian kritis di atas terpenuhi. Sistem aman dari celah eksploitasi umum dan memenuhi kepatuhan dasar UU PDP No. 27/2022.
-- [ ] **DITOLAK (FAIL)**: Ditemukan celah keamanan kategori Critical/High yang wajib diperbaiki sebelum go-live.
+- [x] **MEETS SECURITY STANDARDS (SECURITY PASS)**: All critical test parameters above are satisfied. The system is secure against common exploitation vectors and meets basic UU PDP No. 27/2022 compliance.
+- [ ] **REJECTED (FAIL)**: Critical/High category security vulnerabilities identified that must be resolved prior to go-live.

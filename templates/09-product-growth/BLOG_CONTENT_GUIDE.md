@@ -1,6 +1,6 @@
 # Blog Content Strategy Guide
 
-Framework untuk membuat blog content yang drive traffic, engagement, dan conversion.
+Framework for creating blog content that drives traffic, engagement, and conversion.
 
 ---
 
@@ -28,27 +28,27 @@ Framework untuk membuat blog content yang drive traffic, engagement, dan convers
 
 **Example for FreePajak (Tax SaaS):**
 
-**Pillar 1: Pajak Freelancer Indonesia**
+**Pillar 1: Indonesian Freelancer Taxes**
 - Cluster posts:
-  1. Cara Hitung PPh 21 Freelancer 2026 (Panduan Lengkap)
-  2. PPh 21 vs PPh 23: Apa Bedanya untuk Freelancer?
-  3. Skema Pajak Mana yang Paling Hemat untuk Freelancer?
-  4. NPWP untuk Freelancer: Wajib atau Tidak?
-  5. Cara Lapor SPT Tahunan Freelancer Online
+  1. How to Calculate Freelancer PPh 21 in 2026 (Complete Guide)
+  2. PPh 21 vs PPh 23: What's the Difference for Freelancers?
+  3. Which Tax Scheme Saves the Most for Freelancers?
+  4. NPWP for Freelancers: Mandatory or Not?
+  5. How to File Freelancer Annual SPT Online
   6. ... (6-7 more posts)
 
 **Pillar 2: Tax Planning & Optimization**
 - Cluster posts:
-  1. 7 Strategi Legal Menghemat Pajak Freelancer
-  2. Biaya yang Bisa Dikurangkan dari Penghasilan Kena Pajak
-  3. Tax Treaty: Cara Hindari Pajak Ganda untuk Remote Worker
+  1. 7 Legal Strategies to Save on Freelancer Taxes
+  2. Deductible Expenses from Taxable Income
+  3. Tax Treaty: How to Avoid Double Taxation for Remote Workers
   4. ... (8-10 more posts)
 
-**Pillar 3: Regulasi & Compliance**
+**Pillar 3: Regulation & Compliance**
 - Cluster posts:
-  1. Perubahan Aturan Pajak Influencer di PP 20/2026
-  2. Sanksi Telat Lapor SPT (Denda & Cara Menghindarinya)
-  3. Coretax vs NPWP Lama: Apa yang Berubah?
+  1. Influencer Tax Rule Changes in PP 20/2026
+  2. Penalties for Late SPT Filing (Fines & How to Avoid Them)
+  3. Coretax vs Old NPWP: What Has Changed?
   4. ... (8-10 more posts)
 
 **Total:** 3 pillars × 10 posts = 30 blog posts (6-12 months of content)
@@ -60,7 +60,7 @@ Framework untuk membuat blog content yang drive traffic, engagement, dan convers
 ### How-to Guides (Evergreen SEO)
 **Format:** Step-by-step tutorial with screenshots/examples
 **Length:** 1,500-3,000 words
-**Example:** "Cara Hitung PPh 21 Freelancer dalam 5 Langkah"
+**Example:** "How to Calculate Freelancer PPh 21 in 5 Steps"
 
 **Structure:**
 ```markdown
@@ -98,14 +98,14 @@ Framework untuk membuat blog content yang drive traffic, engagement, dan convers
 A: [Answer]
 ```
 
-**SEO Tip:** Target long-tail keywords (3-5 words), e.g., "cara hitung pph 21 freelancer" not just "pajak"
+**SEO Tip:** Target long-tail keywords (3-5 words), e.g., "how to calculate freelancer pph 21" not just "tax"
 
 ---
 
 ### Comparison Posts (High Conversion Intent)
 **Format:** X vs Y breakdown with decision framework
 **Length:** 1,200-2,000 words
-**Example:** "PPh 21 vs PPh 23: Mana yang Cocok untuk Anda?"
+**Example:** "PPh 21 vs PPh 23: Which One Is Right for You?"
 
 **Structure:**
 ```markdown
@@ -146,7 +146,7 @@ Not sure which to pick? Use our [Calculator Tool] to find out.
 ### Listicles (High Shareability)
 **Format:** Numbered list with actionable tips
 **Length:** 800-1,500 words
-**Example:** "7 Strategi Legal Menghemat Pajak Freelancer"
+**Example:** "7 Legal Strategies to Save on Freelancer Taxes"
 
 **Structure:**
 ```markdown
@@ -179,7 +179,7 @@ Not sure which to pick? Use our [Calculator Tool] to find out.
 ### Case Studies (Trust Building)
 **Format:** Real user story with data
 **Length:** 1,000-1,500 words
-**Example:** "Bagaimana Freelancer Ini Hemat Rp5 Juta Pajak dengan FreePajak"
+**Example:** "How This Freelancer Saved Rp5 Million in Taxes with FreePajak"
 
 **Structure:**
 ```markdown
@@ -218,7 +218,7 @@ Not sure which to pick? Use our [Calculator Tool] to find out.
 ### Opinion / Thought Leadership (Brand Differentiation)
 **Format:** Hot take or contrarian viewpoint
 **Length:** 800-1,200 words
-**Example:** "Kenapa Saya Tidak Percaya Kalkulator Pajak Gratis"
+**Example:** "Why I Don't Trust Free Tax Calculators"
 
 **Structure:**
 ```markdown
@@ -252,10 +252,10 @@ Not sure which to pick? Use our [Calculator Tool] to find out.
 **Target Keywords:**
 - **Primary:** 1 main keyword (search volume 500-5,000/month, difficulty <40)
 - **Secondary:** 2-3 related keywords (LSI/semantic variations)
-- **Long-tail:** 5-10 question keywords (e.g., "bagaimana cara X", "apa bedanya Y")
+- **Long-tail:** 5-10 question keywords (e.g., "how to do X", "what is the difference between Y")
 
 **Keyword Intent:**
-- **Informational:** "apa itu X" → Top-of-funnel (ToFu)
+- **Informational:** "what is X" → Top-of-funnel (ToFu)
 - **Commercial:** "X vs Y", "best X" → Middle-of-funnel (MoFu)
 - **Transactional:** "X pricing", "buy X" → Bottom-of-funnel (BoFu)
 
@@ -268,19 +268,19 @@ Not sure which to pick? Use our [Calculator Tool] to find out.
 **Title Tag (60 chars max):**
 ```
 [Keyword] - [Benefit] | [Brand Name]
-Example: Cara Hitung PPh 21 Freelancer - Panduan 2026 | FreePajak
+Example: How to Calculate Freelancer PPh 21 - 2026 Guide | FreePajak
 ```
 
 **Meta Description (155 chars max):**
 ```
 [Hook] [Keyword] [Benefit] [Call to action] [Year]
-Example: Bingung hitung PPh 21 freelancer? Ikuti panduan lengkap ini (updated 2026) dan hemat pajak legal. Gratis!
+Example: Confused about calculating freelancer PPh 21? Follow this complete guide (updated 2026) and legally save on taxes. Free!
 ```
 
 **URL Slug:**
 ```
 /blog/[keyword-slug]/
-Example: /blog/cara-hitung-pph-21-freelancer/
+Example: /blog/how-to-calculate-freelancer-pph-21/
 ```
 
 **Heading Structure:**
@@ -322,10 +322,10 @@ Example: /blog/cara-hitung-pph-21-freelancer/
 
 | Week | Post Type | Topic | Primary Keyword | Status |
 |------|-----------|-------|-----------------|--------|
-| Week 1 | How-to Guide | Cara Hitung PPh 21 Freelancer | cara hitung pph 21 freelancer | Published |
-| Week 2 | Comparison | PPh 21 vs PPh 23 | perbedaan pph 21 dan 23 | Draft |
-| Week 3 | Listicle | 7 Cara Hemat Pajak Freelancer | cara hemat pajak freelancer | Research |
-| Week 4 | Case Study | User Story: Hemat Rp5 Juta | [Brand keyword] | Planned |
+| Week 1 | How-to Guide | How to Calculate Freelancer PPh 21 | how to calculate freelancer pph 21 | Published |
+| Week 2 | Comparison | PPh 21 vs PPh 23 | difference between pph 21 and 23 | Draft |
+| Week 3 | Listicle | 7 Ways to Save on Freelancer Taxes | freelancer tax saving tips | Research |
+| Week 4 | Case Study | User Story: Saving Rp5 Million | [Brand keyword] | Planned |
 
 **Distribution Schedule (Per Post):**
 - **Day 0:** Publish on blog
@@ -361,14 +361,14 @@ Example: /blog/cara-hitung-pph-21-freelancer/
 
 ### Engagement Hooks
 **Opening Hook (First 100 words):**
-- Start with surprising stat: "73% freelancer bayar pajak lebih dari seharusnya"
-- Ask question: "Pernah merasa bingung hitung PPh 21?"
-- Tell story: "Tahun lalu, saya kena denda Rp2 juta karena..."
+- Start with surprising stat: "73% of freelancers pay more tax than they should"
+- Ask question: "Ever felt confused calculating PPh 21?"
+- Tell story: "Last year, I was fined Rp2 million because..."
 
 **CTA (Call to Action):**
-- **Soft CTA (educational posts):** "Download cheat sheet gratis"
-- **Medium CTA (comparison posts):** "Coba kalkulator kami gratis"
-- **Hard CTA (bottom-funnel posts):** "Mulai trial 14 hari tanpa kartu kredit"
+- **Soft CTA (educational posts):** "Download free cheat sheet"
+- **Medium CTA (comparison posts):** "Try our free calculator"
+- **Hard CTA (bottom-funnel posts):** "Start 14-day trial without credit card"
 
 ---
 
@@ -423,9 +423,9 @@ Example: /blog/cara-hitung-pph-21-freelancer/
 ## 10. Legal & Compliance (Indonesia Specific)
 
 ### Disclosure Requirements
-- **Sponsored Content:** Label "Konten Disponsori" or "Sponsored" at top
-- **Affiliate Links:** Disclose "Link afiliasi — kami dapat komisi jika Anda beli"
-- **Medical/Legal/Financial Advice Disclaimer:** "Artikel ini hanya untuk informasi umum, bukan nasihat [medis/hukum/keuangan]. Konsultasi dengan profesional sebelum mengambil keputusan."
+- **Sponsored Content:** Label "Sponsored Content" or "Sponsored" at top
+- **Affiliate Links:** Disclose "Affiliate link — we may earn a commission if you purchase"
+- **Medical/Legal/Financial Advice Disclaimer:** "This article is for general informational purposes only, not [medical/legal/financial] advice. Consult with a professional before making decisions."
 
 ### Copyright
 - **Images:** Use only licensed/royalty-free (Unsplash, Pexels, custom)

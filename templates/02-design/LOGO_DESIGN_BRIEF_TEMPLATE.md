@@ -11,7 +11,7 @@
 
 ### Company/Product Name
 **Full Name**: [e.g., FreePajak]  
-**Tagline** (if any): [e.g., "Pajak Freelancer, Simpel & Aman"]  
+**Tagline** (if any): [e.g., "Freelance Tax, Simple & Secure"]  
 **Industry**: [e.g., Tax Compliance SaaS / E-Commerce / Education]
 
 ### Brand Personality (Select 2-3)

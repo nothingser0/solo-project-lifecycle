@@ -1,13 +1,13 @@
 # ARCHITECTURE.md
 
-> Cetak biru teknis arsitektur, struktur direktori, skema basis data, dan kontrak API untuk memandu implementasi kode oleh AI coding agents.
+> Technical architecture blueprint, directory layout, database schema, and API contracts to guide code implementation by AI coding agents.
 
 ---
 
-## 1. Topologi Sistem & Alur Data
+## 1. System Topology & Data Flow
 
 ```text
-[ Browser Client (HTML/Tailwind dari Google Stitch) ]
+[ Browser Client (HTML/Tailwind from Google Stitch) ]
                       │
                       ▼ (HTTPS / JSON API)
         [ Next.js App Router / API Handlers ]
@@ -15,59 +15,59 @@
          ┌────────────┼────────────┐
          ▼            ▼            ▼
    [ PostgreSQL ]  [ Redis ]   [ Cloudflare R2 / S3 ]
-    Data Transaksi  Rate Limit  File PDF Terenkripsi
+  Transaction Data Rate Limiting Encrypted PDF Files
 ```
 
 ---
 
-## 2. Struktur Direktori Standar (Directory Layout)
+## 2. Standard Directory Layout
 
 ```text
 src/
-├── app/                      # Rute halaman Next.js App Router & API Route Handlers
-│   ├── (auth)/login/         # Halaman login
-│   ├── (dashboard)/          # Halaman dashboard terotentikasi
-│   │   ├── documents/        # Manajemen dokumen
-│   │   └── settings/         # Pengaturan akun
-│   ├── api/v1/               # Endpoint REST API
-│   │   ├── auth/             # Handler login/logout
-│   │   ├── documents/        # Handler CRUD & render dokumen
-│   │   └── sign/             # Handler verifikasi tanda tangan
-│   └── sign/[token]/         # Halaman publik tanda tangan tamu
-├── components/               # Komponen UI hasil adaptasi Google Stitch
-│   ├── ui/                   # Komponen primitif (Button, Dialog, Input, Table)
-│   └── docs/modules/              # Komponen bisnis (DocumentForm, PDFPreview, SignCanvas)
-├── lib/                      # Utilitas bersama
-│   ├── db.ts                 # Instansiasi koneksi Prisma/PostgreSQL
-│   ├── crypto.ts             # Enkripsi streaming AES-256-GCM & hashing
-│   ├── storage.ts            # Klien Cloudflare R2 / S3 & presigned URL
-│   └── env.ts                # Validasi variabel lingkungan dengan Zod
-└── schemas/                  # Skema Zod validasi request & response API
+├── app/                      # Next.js App Router page routes & API Route Handlers
+│   ├── (auth)/login/         # Login page
+│   ├── (dashboard)/          # Authenticated dashboard pages
+│   │   ├── documents/        # Document management
+│   │   └── settings/         # Account settings
+│   ├── api/v1/               # REST API endpoints
+│   │   ├── auth/             # Login/logout handlers
+│   │   ├── documents/        # Document CRUD & render handlers
+│   │   └── sign/             # Signature verification handler
+│   └── sign/[token]/         # Guest signature public page
+├── components/               # UI components adapted from Google Stitch
+│   ├── ui/                   # Primitive components (Button, Dialog, Input, Table)
+│   └── docs/modules/         # Business domain components (DocumentForm, PDFPreview, SignCanvas)
+├── lib/                      # Shared utilities
+│   ├── db.ts                 # Prisma/PostgreSQL connection instance
+│   ├── crypto.ts             # AES-256-GCM streaming encryption & hashing
+│   ├── storage.ts            # Cloudflare R2 / S3 client & presigned URLs
+│   └── env.ts                # Environment variable validation with Zod
+└── schemas/                  # Zod schemas for API request & response validation
 ```
 
 ---
 
-## 3. Skema Basis Data Inti (Database Models)
+## 3. Core Database Models
 
-Mengacu pada skema SQL DDL di `FSD.md`:
-- **Tabel `users`**: Menyimpan akun pengguna, email unik, hash kata sandi Argon2id, dan peran (`super_admin`, `manager`, `staff`).
-- **Tabel `documents`**: Menyimpan draf dokumen, data form JSONB, status (`draft`, `pending_sign`, `signed`, `archived`), path S3 file terenkripsi, dan hash SHA-256 dokumen.
-- **Tabel `document_signatures`**: Menyimpan rekaman audit tanda tangan, nama penandatangan, IP address, user-agent, dan timestamp UTC.
+Referencing SQL DDL schema in `FSD.md`:
+- **`users` Table**: Stores user accounts, unique email, Argon2id password hash, and roles (`super_admin`, `manager`, `staff`).
+- **`documents` Table**: Stores document drafts, JSONB form data, status (`draft`, `pending_sign`, `signed`, `archived`), encrypted file S3 path, and document SHA-256 hash.
+- **`document_signatures` Table**: Stores signature audit records, signer name, IP address, user-agent, and UTC timestamp.
 
 ---
 
-## 4. Matriks Kontrak API Wajib
+## 4. Mandatory API Contract Matrix
 
-| Rute Endpoint | Metode | Header Khusus | Payload Wajib | Respon Sukses |
+| Endpoint Route | Method | Custom Header | Required Payload | Success Response |
 | :--- | :---: | :--- | :--- | :---: |
 | `/api/v1/auth/login` | `POST` | - | `email`, `password` | `200 OK` + HttpOnly Cookie |
 | `/api/v1/documents` | `POST` | `Authorization`, `X-Idempotency-Key` | `title`, `template_type`, `form_data` | `201 Created` (`document_id`) |
 | `/api/v1/documents/:id` | `GET` | `Authorization` | - | `200 OK` + `preview_url` (15m) |
-| `/api/v1/sign/:token` | `POST` | - | `signature_svg`, `token` | `200 OK` (Status `SIGNED`) |
+| `/api/v1/sign/:token` | `POST` | - | `signature_svg`, `token` | `200 OK` (`SIGNED` Status) |
 
 ---
 
-## 5. Aturan Keamanan & Kriptografi Wajib
-1. **Enkripsi File**: Dokumen PDF wajib dienkripsi sebelum upload ke S3/R2 menggunakan `crypto.createCipheriv('aes-256-gcm', key, iv)`.
-2. **Presigned URL**: Tautan unduhan berkas wajib kedaluwarsa maksimal dalam 15 menit (900 detik).
-3. **Pessimistic Lock**: Alur penandatanganan dokumen wajib menggunakan transaksi atomik dengan `SELECT ... FOR UPDATE` agar terhindar dari race condition.
+## 5. Mandatory Security & Cryptographic Rules
+1. **File Encryption**: PDF documents must be encrypted before uploading to S3/R2 using `crypto.createCipheriv('aes-256-gcm', key, iv)`.
+2. **Presigned URL**: File download links must expire within a maximum of 15 minutes (900 seconds).
+3. **Pessimistic Locking**: Document signing flows must use atomic transactions with `SELECT ... FOR UPDATE` to prevent race conditions.

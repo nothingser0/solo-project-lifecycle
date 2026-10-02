@@ -91,7 +91,7 @@ cp templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
 
 ### 3. BAST.md
 **Path**: `../07-release-handover/BAST_TEMPLATE.md`  
-**Purpose**: Berita Acara Serah Terima (legal handover)  
+**Purpose**: Official Handover Report / BAST (legal handover)  
 **Time**: 30 minutes  
 **Must-use**: Client projects (trigger final payment)  
 **Output**: `contracts/BAST.md`

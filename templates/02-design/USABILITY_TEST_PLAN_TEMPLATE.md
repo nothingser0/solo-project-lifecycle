@@ -9,11 +9,11 @@
 
 ## 1. Test Objectives
 
-Validasi 3-5 user journey kritis:
+Validate 3-5 critical user journeys:
 
-1. **[Objective 1]**: [Contoh: "User baru dapat menyelesaikan onboarding dalam <5 menit tanpa bantuan"]
-2. **[Objective 2]**: [Contoh: "User dapat menemukan dan mengekspor laporan bulanan tanpa tutorial"]
-3. **[Objective 3]**: [Contoh: "User memahami status approval dokumen pada dashboard"]
+1. **[Objective 1]**: [Example: "New user can complete onboarding in <5 minutes without assistance"]
+2. **[Objective 2]**: [Example: "User can find and export monthly report without a tutorial"]
+3. **[Objective 3]**: [Example: "User understands document approval status on the dashboard"]
 4. **[Objective 4]**: [...]
 5. **[Objective 5]**: [...]
 
@@ -21,46 +21,46 @@ Validasi 3-5 user journey kritis:
 
 ## 2. Participant Profile
 
-**Target Demografi**:
-- Role/Job Title: [Contoh: "HR Manager di perusahaan 50-500 karyawan"]
+**Target Demographics**:
+- Role/Job Title: [Example: "HR Manager at a 50-500 employee company"]
 - Tech Proficiency: [Beginner / Intermediate / Advanced]
-- Domain Experience: [Contoh: "Familiar dengan Excel, pernah pakai HRIS sebelumnya"]
-- Geographic: [Jika relevan: "Indonesia, terbiasa Bahasa Indonesia formal"]
+- Domain Experience: [Example: "Familiar with Excel, previously used HRIS"]
+- Geographic: [If relevant: "US/Global, fluent in English"]
 
-**Screening Questions** (Kirim via Google Forms/Typeform):
-1. Berapa jumlah karyawan yang Anda kelola? [ ] <50 [ ] 50-200 [ ] 200-500 [ ] >500
-2. Tools apa yang saat ini Anda gunakan untuk [use case]? [Open text]
-3. Seberapa sering Anda [relevant task]? [ ] Daily [ ] Weekly [ ] Monthly [ ] Rarely
+**Screening Questions** (Send via Google Forms/Typeform):
+1. How many employees do you manage? [ ] <50 [ ] 50-200 [ ] 200-500 [ ] >500
+2. What tools do you currently use for [use case]? [Open text]
+3. How often do you perform [relevant task]? [ ] Daily [ ] Weekly [ ] Monthly [ ] Rarely
 
 **Recruitment Target**: Minimum **5 participants** per iteration
 
-**Incentive**: [Contoh: "Voucher Tokopedia/Shopee Rp 150.000 per sesi (45 menit)"]
+**Incentive**: [Example: "$15 gift card per session (45 minutes)"]
 
 ---
 
 ## 3. Test Tasks (Scenarios)
 
-> **Aturan Penulisan**: Gunakan intent user, BUKAN petunjuk navigasi UI ("klik tombol X").
+> **Writing Rules**: Use user intent, NOT UI navigation instructions ("click button X").
 
-### Task 1: [Task Name — contoh: "Onboarding Pertama Kali"]
+### Task 1: [Task Name — example: "First-Time Onboarding"]
 **Scenario**:  
-> "Bayangkan hari pertama Anda menggunakan sistem ini. Perusahaan Anda baru saja berlangganan. Buatlah akun Anda dan tambahkan 3 karyawan baru (gunakan data fiktif)."
+> "Imagine your first day using this system. Your company has just subscribed. Create your account and add 3 new employees (use dummy data)."
 
-**Success Criteria**: User menyelesaikan task tanpa stuck >2 menit, tanpa minta bantuan moderator.
+**Success Criteria**: User completes task without getting stuck >2 minutes, without asking moderator for help.
 
 ---
 
-### Task 2: [Task Name — contoh: "Generate Monthly Report"]
+### Task 2: [Task Name — example: "Generate Monthly Report"]
 **Scenario**:  
-> "Akhir bulan ini. Atasan Anda meminta laporan absensi seluruh karyawan untuk bulan September dalam format Excel. Cobalah dapatkan laporan tersebut."
+> "It's the end of the month. Your manager asks for the attendance report of all employees for September in Excel format. Try to obtain that report."
 
-**Success Criteria**: User menemukan fitur export dalam <3 klik, berhasil download file.
+**Success Criteria**: User finds export feature in <3 clicks, successfully downloads file.
 
 ---
 
 ### Task 3: [Task Name]
 **Scenario**:  
-> [Tulis skenario realistis...]
+> [Write realistic scenario...]
 
 **Success Criteria**: [...]
 
@@ -84,47 +84,47 @@ Validasi 3-5 user journey kritis:
 
 ## 4. Testing Protocol
 
-### Pre-Test (5 menit)
-1. Perkenalan moderator dan tujuan sesi
-2. Jelaskan think-aloud protocol:  
-   > "Silakan katakan apapun yang Anda pikirkan saat menggunakan aplikasi ini, seolah-olah Anda sedang berpikir keras. Tidak ada jawaban benar/salah."
-3. Konfirmasi consent recording (audio/screen)
-4. Background questions (opsional): Pengalaman dengan tools serupa
+### Pre-Test (5 minutes)
+1. Moderator introduction and session objectives
+2. Explain think-aloud protocol:  
+   > "Please speak your thoughts aloud while using this application, as if you are thinking out loud. There are no right or wrong answers."
+3. Confirm recording consent (audio/screen)
+4. Background questions (optional): Experience with similar tools
 
-### During Test (30 menit)
-- **Observer's Role**: Catat verbatim quotes, time on task, error, dan emotional cues (frustrasi, bingung, senang)
-- **Moderator Prompts** (hanya jika user stuck >2 menit):
-  - "Apa yang Anda cari saat ini?"
-  - "Apa yang Anda harapkan terjadi setelah klik ini?"
-  - **JANGAN** beri petunjuk navigasi ("coba klik menu sebelah kiri")
+### During Test (30 minutes)
+- **Observer's Role**: Record verbatim quotes, time on task, errors, and emotional cues (frustration, confusion, delight)
+- **Moderator Prompts** (only if user is stuck >2 minutes):
+  - "What are you looking for right now?"
+  - "What do you expect to happen after clicking this?"
+  - **DO NOT** give navigation clues ("try clicking the left menu")
 
-### Post-Test (10 menit)
-1. Debrief: "Bagian mana yang paling mudah? Paling membingungkan?"
-2. SUS Questionnaire (10 pertanyaan — lihat Section 5)
-3. Open feedback: "Ada saran perbaikan?"
+### Post-Test (10 minutes)
+1. Debrief: "Which part was easiest? Most confusing?"
+2. SUS Questionnaire (10 questions — see Section 5)
+3. Open feedback: "Any suggestions for improvement?"
 
 ---
 
 ## 5. System Usability Scale (SUS) Questionnaire
 
-**Instruksi**: Skala 1 (Sangat Tidak Setuju) sampai 5 (Sangat Setuju)
+**Instructions**: Scale 1 (Strongly Disagree) to 5 (Strongly Agree)
 
-1. Saya pikir saya akan sering menggunakan sistem ini.
-2. Saya merasa sistem ini terlalu rumit untuk digunakan.
-3. Saya pikir sistem ini mudah digunakan.
-4. Saya memerlukan bantuan orang teknis untuk dapat menggunakan sistem ini.
-5. Saya merasa berbagai fungsi dalam sistem ini terintegrasi dengan baik.
-6. Saya pikir terlalu banyak inkonsistensi dalam sistem ini.
-7. Saya membayangkan kebanyakan orang akan belajar menggunakan sistem ini dengan sangat cepat.
-8. Saya merasa sistem ini sangat merepotkan untuk digunakan.
-9. Saya merasa sangat percaya diri menggunakan sistem ini.
-10. Saya perlu belajar banyak hal sebelum dapat menggunakan sistem ini.
+1. I think that I would like to use this system frequently.
+2. I found the system unnecessarily complex.
+3. I thought the system was easy to use.
+4. I think that I would need the support of a technical person to be able to use this system.
+5. I found the various functions in this system were well integrated.
+6. I thought there was too much inconsistency in this system.
+7. I would imagine that most people would learn to use this system very quickly.
+8. I found the system very cumbersome to use.
+9. I felt very confident using the system.
+10. I needed to learn a lot of things before I could get going with this system.
 
-**Kalkulasi SUS Score**:
-- Pertanyaan ganjil (1,3,5,7,9): Skor = (Rating - 1)
-- Pertanyaan genap (2,4,6,8,10): Skor = (5 - Rating)
+**SUS Score Calculation**:
+- Odd questions (1, 3, 5, 7, 9): Score = (Rating - 1)
+- Even questions (2, 4, 6, 8, 10): Score = (5 - Rating)
 - Total = (Sum of all scores) × 2.5
-- **Range**: 0-100 (bukan persentase!)
+- **Range**: 0-100 (not a percentage!)
 
 **Interpretation**:
 - <60: Poor (F)
@@ -139,9 +139,9 @@ Validasi 3-5 user journey kritis:
 
 | Participant | Task | Completion (Y/N) | Time (min:sec) | Errors | Verbatim Quote | Notes |
 | :---: | :---: | :---: | :---: | :---: | :--- | :--- |
-| P1 | Task 1 | Y | 4:32 | 1 (clicked wrong menu) | "Di mana tombol submit?" | Confused by icon-only button |
-| P1 | Task 2 | N | 8:15 | 3 | "Kenapa gak ada Export?" | Missed dropdown in table header |
-| P2 | Task 1 | Y | 3:05 | 0 | "Wah gampang ya" | — |
+| P1 | Task 1 | Y | 4:32 | 1 (clicked wrong menu) | "Where is the submit button?" | Confused by icon-only button |
+| P1 | Task 2 | N | 8:15 | 3 | "Why is there no Export?" | Missed dropdown in table header |
+| P2 | Task 1 | Y | 3:05 | 0 | "Wow, that was easy" | — |
 | ... | ... | ... | ... | ... | ... | ... |
 
 ---
@@ -154,4 +154,4 @@ Validasi 3-5 user journey kritis:
 - [ ] Prioritize fixes: P0 (blockers), P1 (major friction), P2 (polish)
 - [ ] Document iteration plan for next design revision
 
-**Output**: Summary report untuk design iteration review (share dengan designer/PM).
+**Output**: Summary report for design iteration review (share with designer/PM).

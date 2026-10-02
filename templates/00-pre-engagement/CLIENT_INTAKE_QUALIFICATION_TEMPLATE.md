@@ -1,13 +1,13 @@
 # Client Intake & Qualification Checklist
 
-> **Purpose**: Filter high-risk clients and unqualified projects BEFORE investing time in Modul 00/01 discovery. Protect solo developer bandwidth from tire-kickers, budget mismatches, and red-flag clients.
+> **Purpose**: Filter high-risk clients and unqualified projects BEFORE investing time in Module 00/01 discovery. Protect solo developer bandwidth from tire-kickers, budget mismatches, and red-flag clients.
 
 ---
 
 ## 1. Initial Contact Screening (5 Minutes)
 
 ### Contact Information
-- [ ] Client name and role (decision maker atau intermediary?)
+- [ ] Client name and role (decision maker or intermediary?)
 - [ ] Company/organization name and industry
 - [ ] Contact method (email, WhatsApp, LinkedIn)
 - [ ] Referral source (existing client, cold outreach, marketplace)
@@ -15,8 +15,8 @@
 ### Project Quick Snapshot
 ```
 Project type: [ ] Web App [ ] Mobile App [ ] Desktop [ ] API [ ] Other: _______
-Timeline expectation: [ ] <1 bulan [ ] 1-3 bulan [ ] 3-6 bulan [ ] >6 bulan
-Budget indication: [ ] <Rp 10 juta [ ] Rp 10-50 juta [ ] Rp 50-100 juta [ ] >Rp 100 juta
+Timeline expectation: [ ] <1 month [ ] 1-3 months [ ] 3-6 months [ ] >6 months
+Budget indication: [ ] <Rp 10 million [ ] Rp 10-50 million [ ] Rp 50-100 million [ ] >Rp 100 million
 Current status: [ ] Idea [ ] Requirements doc [ ] Design mockup [ ] Existing codebase
 ```
 
@@ -26,14 +26,14 @@ Current status: [ ] Idea [ ] Requirements doc [ ] Design mockup [ ] Existing cod
 
 | Red Flag | Indicator | Risk Level | Action |
 |----------|-----------|------------|--------|
-| **No budget transparency** | "Berapa biayanya?" tanpa scope info | 🔴 Critical | STOP: Require budget range before discovery |
-| **Unrealistic timeline** | "Bisa selesai minggu depan?" untuk complex app | 🔴 Critical | STOP: Educate realistic timeline or decline |
-| **Multiple decision makers** | "Harus tanya bos/tim dulu" at every step | 🟡 High | PROCEED with caution: Enforce Single PIC at M03 |
-| **Scope ambiguity** | "Saya belum tahu mau apa, tapi segera butuh" | 🟡 High | STOP: Require basic requirements doc before M00 |
-| **Comparison shopping** | "Developer lain kasih harga Rp X, bisa lebih murah?" | 🟡 High | PROCEED: Clarify value-based pricing vs hourly |
-| **Payment hesitancy** | "Bisa dibayar setelah launch?" | 🔴 Critical | STOP: Enforce DP requirement (M03) |
-| **Unrealistic feature density** | "Clone Gojek tapi budget Rp 20 juta" | 🟡 High | PROCEED: Educate MVP scope or decline |
-| **Hostile tone** | Aggressive, rude, atau demanding at first contact | 🔴 Critical | STOP: Decline politely |
+| **No budget transparency** | "How much does it cost?" with no scope info | 🔴 Critical | STOP: Require budget range before discovery |
+| **Unrealistic timeline** | "Can it be done next week?" for a complex app | 🔴 Critical | STOP: Educate realistic timeline or decline |
+| **Multiple decision makers** | "Need to ask boss/team first" at every step | 🟡 High | PROCEED with caution: Enforce Single PIC at M03 |
+| **Scope ambiguity** | "I don't know what I want yet, but I need it soon" | 🟡 High | STOP: Require basic requirements doc before M00 |
+| **Comparison shopping** | "Another developer quoted Rp X, can you do cheaper?" | 🟡 High | PROCEED: Clarify value-based pricing vs hourly |
+| **Payment hesitancy** | "Can we pay after launch?" | 🔴 Critical | STOP: Enforce DP requirement (M03) |
+| **Unrealistic feature density** | "Clone Gojek with a Rp 20 million budget" | 🟡 High | PROCEED: Educate MVP scope or decline |
+| **Hostile tone** | Aggressive, rude, or demanding at first contact | 🔴 Critical | STOP: Decline politely |
 | **Industry compliance unknown** | Fintech/healthtech with zero regulatory awareness | 🟡 High | PROCEED: Flag legal/compliance audit in M01 |
 
 **Decision Rule**:
@@ -50,42 +50,42 @@ Current status: [ ] Idea [ ] Requirements doc [ ] Design mockup [ ] Existing cod
 Estimated Effort (Person-Days) = [Feature Count × 2] + [Integration Count × 3] + [Compliance × 5]
 
 Solo Dev Rate Benchmark (2026):
-- Junior (1-2 tahun): Rp 500K - 800K/hari
-- Mid (3-5 tahun): Rp 800K - 1.5 juta/hari  
-- Senior (5+ tahun): Rp 1.5 juta - 3 juta/hari
+- Junior (1-2 years): Rp 500K - 800K/day
+- Mid (3-5 years): Rp 800K - 1.5 million/day  
+- Senior (5+ years): Rp 1.5 million - 3 million/day
 
 Minimum Project Value = Effort × Rate × 1.3 (risk buffer)
 ```
 
 **Example**:
-- Client budget: Rp 30 juta
+- Client budget: Rp 30 million
 - Estimated effort: 25 person-days
-- Minimum viable: 25 × Rp 1 juta × 1.3 = Rp 32.5 juta
+- Minimum viable: 25 × Rp 1 million × 1.3 = Rp 32.5 million
 - **Assessment**: Budget too low → NEGOTIATE scope reduction OR DECLINE
 
 ### Timeline Reality Check
 | Project Scale | Realistic Timeline | Client Expectation | Action |
 |---------------|-------------------|-------------------|--------|
-| Kecil (MVP) | 3-6 minggu | <2 minggu | Educate or decline |
-| Menengah | 2-4 bulan | <1 bulan | Decline |
-| Besar | 4-8 bulan | <3 bulan | Decline |
-| Enterprise | 6-12 bulan | <6 bulan | Decline or bring partner |
+| Small (MVP) | 3-6 weeks | <2 weeks | Educate or decline |
+| Medium | 2-4 months | <1 month | Decline |
+| Large | 4-8 months | <3 months | Decline |
+| Enterprise | 6-12 months | <6 months | Decline or bring partner |
 
 ---
 
 ## 4. Client Capability Assessment
 
 ### Technical Readiness
-- [ ] **Domain & Hosting**: Client memiliki domain? Akses hosting/cloud account?
-- [ ] **API Keys**: Third-party API (payment, email, storage) sudah terdaftar?
-- [ ] **Content/Data**: Data warisan atau konten siap? (M08 dependency)
-- [ ] **Decision Authority**: Single PIC dapat membuat keputusan teknis tanpa eskalasi?
+- [ ] **Domain & Hosting**: Client has domain? Access to hosting/cloud account?
+- [ ] **API Keys**: Third-party APIs (payment, email, storage) already registered?
+- [ ] **Content/Data**: Legacy data or content ready? (M08 dependency)
+- [ ] **Decision Authority**: Single PIC can make technical decisions without escalation?
 
 ### Collaboration Readiness
-- [ ] **Communication**: Client responsif (reply <24 jam)?
-- [ ] **Availability**: Client dapat attend weekly sync (30 menit)?
-- [ ] **Feedback Cycle**: Client dapat review deliverable dalam 3-5 hari?
-- [ ] **Payment Process**: Client memiliki invoicing/payment system (<7 hari transfer)?
+- [ ] **Communication**: Client responsive (reply <24 hours)?
+- [ ] **Availability**: Client can attend weekly sync (30 minutes)?
+- [ ] **Feedback Cycle**: Client can review deliverables within 3-5 days?
+- [ ] **Payment Process**: Client has invoicing/payment system (<7 days transfer)?
 
 **Gate**: Minimum 6/8 checkboxes must be YES. If <6, flag as HIGH-DEPENDENCY CLIENT → increase project buffer 30%.
 
@@ -94,20 +94,20 @@ Minimum Project Value = Effort × Rate × 1.3 (risk buffer)
 ## 5. Intake Conversation Script
 
 ### Opening (Qualification)
-> *"Terima kasih sudah menghubungi. Sebelum kita masuk ke detail, boleh saya tahu:*
-> 1. *Apa masalah bisnis yang ingin diselesaikan dengan software ini?*
-> 2. *Berapa budget range yang sudah dialokasikan? (Rp 10-20 juta / Rp 50-100 juta / belum ada budget)*
-> 3. *Kapan target launch-nya? Apakah ada deadline bisnis yang keras (event, tender, kontrak)?*
-> 4. *Siapa yang akan menjadi decision maker utama di project ini (PIC)?*"
+> *"Thank you for reaching out. Before we dive into details, could you share:*
+> 1. *What business problem are you looking to solve with this software?*
+> 2. *What budget range has been allocated? (Rp 10-20 million / Rp 50-100 million / no budget yet)*
+> 3. *When is the target launch date? Are there any hard business deadlines (event, tender, contract)?*
+> 4. *Who will be the primary decision-maker for this project (PIC)?*"
 
 ### Budget Mismatch Response
-> *"Terima kasih atas informasinya. Berdasarkan scope yang Anda ceritakan, estimasi effort sekitar [X] person-days dengan budget minimum Rp [Y]. Jika budget saat ini Rp [Z], saya bisa bantu reduce scope dengan prioritas fitur MVP. Apakah tertarik diskusi lebih lanjut tentang MVP scope, atau ingin cari developer dengan rate lebih rendah?"*
+> *"Thank you for the information. Based on the scope you described, estimated effort is around [X] person-days with a minimum budget of Rp [Y]. If the current budget is Rp [Z], I can help reduce scope by prioritizing MVP features. Would you be interested in discussing the MVP scope further, or would you prefer finding a developer with a lower rate?"*
 
 ### Unrealistic Timeline Response
-> *"Timeline [X minggu] untuk project scale ini cukup ketat. Berdasarkan pengalaman, aplikasi dengan [Y fitur] + [Z integrasi] biasanya butuh minimal [N bulan]. Saya bisa bantu dengan Fast-Track MVP (core features only) jika deadline tidak bisa digeser. Alternatifnya, kita extend timeline menjadi [realistic timeline]. Mana yang lebih sesuai dengan prioritas bisnis Anda?"*
+> *"A timeline of [X weeks] for a project of this scale is quite tight. Based on experience, an application with [Y features] + [Z integrations] typically requires at least [N months]. I can help with a Fast-Track MVP (core features only) if the deadline cannot move. Alternatively, we can extend the timeline to [realistic timeline]. Which better aligns with your business priorities?"*
 
 ### Decline Script (Polite)
-> *"Terima kasih sudah sharing project-nya. Setelah saya review, saya rasa project ini tidak sesuai dengan kapasitas dan spesialisasi saya saat ini [or: timeline/budget expectation tidak aligned]. Saya bisa rekomendasikan [referral ke developer/agency lain] jika berkenan. Semoga sukses dengan project-nya!"*
+> *"Thank you for sharing your project. After reviewing it, I feel this project does not align with my current capacity and specialization [or: timeline/budget expectations are not aligned]. I would be happy to recommend [referral to another developer/agency] if you'd like. Wishing you the best of success with your project!"*
 
 ---
 
@@ -116,8 +116,8 @@ Minimum Project Value = Effort × Rate × 1.3 (risk buffer)
 | Score | Criteria | Decision |
 |-------|----------|----------|
 | **PASS (Proceed to M00/M01)** | 0-1 red flags, budget-timeline aligned, client responsive | Schedule M01 Feasibility meeting |
-| **CONDITIONAL PASS** | 2-3 yellow flags, budget slightly low | Require pre-paid discovery retainer (Rp 2-5 juta) to proceed to M00 |
-| **DEFER** | Budget TBD, timeline flexible | Put on waitlist, revisit in 1-2 bulan |
+| **CONDITIONAL PASS** | 2-3 yellow flags, budget slightly low | Require pre-paid discovery retainer (Rp 2-5 million) to proceed to M00 |
+| **DEFER** | Budget TBD, timeline flexible | Put on waitlist, revisit in 1-2 months |
 | **DECLINE** | 2+ red flags, misaligned expectations | Politely decline with referral |
 
 ---
@@ -130,9 +130,9 @@ After qualification PASS:
 ```markdown
 ## Client Intake Summary
 
-**Client**: [Nama Perusahaan]  
-**PIC**: [Nama + Role + Contact]  
-**Project**: [Nama Project]  
+**Client**: [Company Name]  
+**PIC**: [Name + Role + Contact]  
+**Project**: [Project Name]  
 **Intake Date**: [YYYY-MM-DD]
 
 ### Qualification Score
@@ -148,8 +148,8 @@ After qualification PASS:
 - [ ] NDA signing (if needed)
 
 ### Risk Notes
-- Client belum punya domain (medium risk - add 3 hari to timeline)
-- PIC masih perlu approval CFO untuk DP (track closely at M03)
+- Client does not have domain yet (medium risk - add 3 days to timeline)
+- PIC still needs CFO approval for DP (track closely at M03)
 ```
 
 2. **Decision**: PROCEED → M00 (optional) or M01 (mandatory)
@@ -158,12 +158,12 @@ After qualification PASS:
 
 ## 8. Integration with Module 01
 
-**Before Modul 01 starts**:
+**Before Module 01 starts**:
 - [ ] Client intake checklist completed
 - [ ] Budget range confirmed (minimum threshold met)
 - [ ] Single PIC identified
-- [ ] Basic requirements document received (1-2 halaman cukup)
-- [ ] Client aware of termin payment structure (DP required)
+- [ ] Basic requirements document received (1-2 pages sufficient)
+- [ ] Client aware of milestone payment structure (DP required)
 
 **If intake NOT completed**: STOP - do not proceed to M01 Feasibility without qualifying the client first.
 
@@ -176,9 +176,9 @@ After qualification PASS:
 | **Budget Transparency** | No budget info | Range provided | Exact budget + approved PO |
 | **Timeline Realism** | Unrealistic (<50% actual) | Tight but negotiable | Realistic + buffer |
 | **Decision Authority** | Multiple approvers | Single PIC + escalation | Single PIC full authority |
-| **Communication** | Slow (>3 hari) | Normal (1-2 hari) | Fast (<24 jam) |
+| **Communication** | Slow (>3 days) | Normal (1-2 days) | Fast (<24 hours) |
 | **Technical Readiness** | No infrastructure | Partial (domain only) | Full (domain, API, data ready) |
-| **Scope Clarity** | "Belum tahu" | Basic feature list | Detailed requirements doc |
+| **Scope Clarity** | "Don't know yet" | Basic feature list | Detailed requirements doc |
 
 **Total Score**: ___/30
 

@@ -1,128 +1,128 @@
-# PM Phase TODO Template (Modul 00 - Modul 03)
+# PM Phase TODO Template (Module 00 - Module 03)
 
-> Template daftar tugas atomik untuk fase Product Management, Discovery, Feasibility, Scope Definition, dan Legal/Commercial Negotiation.
-> Aturan: Kerjakan secara terstruktur per modul. Setiap tugas harus memiliki bukti artefak (*artifact proof*) sebelum centang `[x]`. Modul ini wajib dituntaskan dan disetujui klien/stakeholder sebelum melangkah ke fase Desain & Arsitektur.
-
----
-
-## Metadata Proyek
-- **Nama Proyek**: [Nama Proyek / Sistem]
-- **Klien / Inisiator Bisnis**: [Nama Perusahaan / Organisasi]
-- **Product Manager / Solo Consultant**: [Nama Anda]
-- **Tanggal Mulai**: [YYYY-MM-DD]
-- **Target Selesai Fase PM**: [YYYY-MM-DD]
-- **Versi Dokumen**: 1.0.0
-- **Status Gerbang PM**: [ ] DRAFT | [ ] UNDER REVIEW | [ ] APPROVED / LOCKED
+> Atomic task checklist template for Product Management, Discovery, Feasibility, Scope Definition, and Legal/Commercial Negotiation phases.
+> Rules: Execute systematically module by module. Every task must provide artifact proof before checking `[x]`. These modules must be finalized and approved by the client/stakeholder before proceeding to the Design & Architecture phase.
 
 ---
 
-## 1. Modul 00: Riset Pasar, Kompetitor, & Strategi Produk (M00)
-
-### 1.1 Riset Pasar & Peluang Bisnis
-- [ ] `docs/01-discovery/market-research.md`: Hitung estimasi TAM, SAM, dan SOM dengan rumus kuantitatif - expect estimasi nilai pasar realistis terverifikasi data publik (BPS, Statista, laporan industri)
-- [ ] `docs/01-discovery/market-research.md`: Analisis tren makro dan siklus adopsi pasar 3-5 tahun ke depan - expect kesimpulan arah tren pasar terdeskripsi jelas
-- [ ] `docs/01-discovery/market-research.md`: Petakan lanskap regulasi dan kepatuhan hukum sektor terkait (UU PDP No. 27/2022, PSE Kominfo, izin OJK/BI/Kemenkes jika fintech/healthtech) - expect daftar regulasi dan prasyarat lisensi tercatat tanpa celah kepatuhan fatal
-
-### 1.2 Analisis Kompetitor Mendalam
-- [ ] `docs/01-discovery/competitive-analysis.md`: Identifikasi minimal 3 kompetitor langsung (*direct*) dan 2 kompetitor tidak langsung (*indirect*) - expect profil profil kompetitor lengkap
-- [ ] `docs/01-discovery/competitive-analysis.md`: Susun tabel perbandingan fitur (*Feature Comparison Matrix*) berbasis kapabilitas inti sistem - expect diferensiasi fitur tampak jelas
-- [ ] `docs/01-discovery/competitive-analysis.md`: Lakukan benchmarking struktur harga (*Pricing Model Benchmarking*) per kompetitor - expect gambaran batas atas dan bawah willingness to pay pasar
-- [ ] `docs/01-discovery/competitive-analysis.md`: Buat diagram Positioning Map 2x2 (misal: Harga vs. Kustomisasi, atau Kemudahan vs. Kedalaman Fitur) - expect *white space* atau keunggulan komparatif produk teridentifikasi
-
-### 1.3 Riset Pengguna & Kebutuhan Riil (User Research)
-- [ ] `docs/01-discovery/user-research.md`: Rancang panduan wawancara pengguna (*User Interview Script*) dengan 8-10 pertanyaan mendalam berbasis perilaku riil - expect naskah wawancara tidak mengarahkan (*unbiased*)
-- [ ] `docs/01-discovery/user-research.md`: Eksekusi wawancara terhadap 5-10 representasi target pengguna atau validasi survei minimal 30 responden - expect rekaman sintesis transkrip dan data empiris terkumpul
-- [ ] `docs/01-discovery/personas.md`: Buat 2 persona pengguna utama menggunakan format Jobs-to-be-Done (JTBD), pains, gains, dan trigger emosional - expect persona berorientasi masalah konkret, bukan fiksi demografis semata
-- [ ] `docs/01-discovery/user-journey-map.md`: Petakan User Journey Map alur saat ini (*as-is*) beserta titik friksi/frustrasi utama (*pain points*) - expect titik peluang optimasi terpapar transparan
-
-### 1.4 Strategi Produk & Metrik Keberhasilan
-- [ ] `docs/01-discovery/product-strategy.md`: Formulasikan Value Proposition Canvas dan positioning statement produk - expect kalimat proposisi nilai unik 1 paragraf padat
-- [ ] `docs/01-discovery/product-strategy.md`: Tentukan 1 North Star Metric (NSM) dan 3-5 metrik pendukung (Input Metrics) - expect metrik terukur tanpa vanity metrics
-- [ ] `docs/01-discovery/okrs.md`: Rumuskan Objective and Key Results (OKRs) untuk kuartal pertama pasca peluncuran - expect target angka realistis terdefinisi
+## Project Metadata
+- **Project Name**: [Project / System Name]
+- **Client / Business Initiator**: [Company / Organization Name]
+- **Product Manager / Solo Consultant**: [Your Name]
+- **Start Date**: [YYYY-MM-DD]
+- **Target PM Phase Completion**: [YYYY-MM-DD]
+- **Document Version**: 1.0.0
+- **PM Gate Status**: [ ] DRAFT | [ ] UNDER REVIEW | [ ] APPROVED / LOCKED
 
 ---
 
-## 2. Modul 01: Penyaringan Ide & Uji Kelayakan (M01)
+## 1. Module 00: Market Research, Competitors, & Product Strategy (M00)
 
-### 2.1 Saringan 3 Lapis (The 3-Filter Triage)
-- [ ] `docs/01-discovery/idea-brief.md`: Tuliskan Masalah Riil 1 kalimat & Solusi Unik 1 kalimat - expect masalah tidak dapat diselesaikan hanya dengan Google Spreadsheet gratis
-- [ ] `docs/01-discovery/idea-brief.md`: Definisikan Core User Loop (Trigger -> Action -> Variable Reward -> Investment) - expect siklus interaksi inti jelas dalam < 3 langkah
-- [ ] `docs/01-discovery/idea-brief.md`: Jalankan MVP Razor: coret semua fitur di luar Core User Loop - expect hanya tersisa 1-3 fitur esensial yang langsung memberikan nilai
+### 1.1 Market Research & Business Opportunity
+- [ ] `docs/01-discovery/market-research.md`: Calculate TAM, SAM, and SOM estimates using quantitative formulas - expect realistic market size estimates verified against public data (BPS/Census, Statista, industry reports)
+- [ ] `docs/01-discovery/market-research.md`: Analyze macro trends and market adoption cycles 3-5 years forward - expect market trend directions clearly described
+- [ ] `docs/01-discovery/market-research.md`: Map regulatory landscape and legal compliance for relevant sectors (PDP Law / GDPR, licensing permits for fintech/healthtech) - expect regulatory requirements and licensing checklists recorded without compliance gaps
 
-### 2.2 Uji 4 Dimensi Kelayakan (Feasibility Assessment)
-- [ ] `docs/01-discovery/feasibility-report.md`: Kelayakan Teknis (Technical) - Evaluasi kesiapan stack, ketersediaan API pihak ketiga, dan kompleksitas arsitektur untuk solo developer - expect skor teknis >= 4/5
-- [ ] `docs/01-discovery/feasibility-report.md`: Kelayakan Bandwidth Solo Dev (Schedule/Capacity) - Hitung rasio kompleksitas vs batas waktu delivery - expect komitmen jam kerja masuk akal tanpa burnout
-- [ ] `docs/01-discovery/feasibility-report.md`: Kelayakan Legal & Regulasi (Legal/Compliance) - Audit potensi liabilitas data pribadi, hak cipta, dan izin operasional - expect nol blocker hukum kategori fatal
-- [ ] `docs/01-discovery/feasibility-report.md`: Kelayakan Ekonomi & Bisnis (Economic/ROI) - Uji Willingness to Pay, unit economics sederhana, dan margin solo dev - expect ROI positif dan kesiapan anggaran sponsor/klien
+### 1.2 In-Depth Competitor Analysis
+- [ ] `docs/01-discovery/competitive-analysis.md`: Identify at least 3 direct competitors and 2 indirect competitors - expect complete competitor profiles
+- [ ] `docs/01-discovery/competitive-analysis.md`: Build Feature Comparison Matrix based on core system capabilities - expect feature differentiation clearly highlighted
+- [ ] `docs/01-discovery/competitive-analysis.md`: Benchmark competitor pricing models - expect upper and lower bounds of market willingness to pay
+- [ ] `docs/01-discovery/competitive-analysis.md`: Create 2x2 Positioning Map (e.g., Price vs. Customization, or Ease of Use vs. Feature Depth) - expect market white space or comparative advantage identified
 
-### 2.3 Klasifikasi Skala & Gerbang Keputusan
-- [ ] `docs/01-discovery/scale-classification.md`: Tentukan klasifikasi skala proyek (Small MVP / Mid B2B SaaS / Large Multi-System / Enterprise) - expect rute eksekusi dan durasi terpetakan akurat
-- [ ] `Gate Review Modul 01`: Tentukan status GO / PIVOT / KILL berdasarkan ambang skor kelayakan - expect keputusan formal disetujui pemangku kepentingan
+### 1.3 User Research & Real Customer Needs (User Research)
+- [ ] `docs/01-discovery/user-research.md`: Draft User Interview Script with 8-10 in-depth behavioral questions - expect unbiased interview guide
+- [ ] `docs/01-discovery/user-research.md`: Conduct interviews with 5-10 target user representatives or survey validation with at least 30 respondents - expect transcript synthesis notes and empirical data collected
+- [ ] `docs/01-discovery/personas.md`: Create 2 primary user personas using Jobs-to-be-Done (JTBD), pains, gains, and emotional triggers - expect concrete problem-oriented personas rather than mere demographic fiction
+- [ ] `docs/01-discovery/user-journey-map.md`: Map as-is User Journey Map along with key friction points and frustrations - expect optimization opportunities transparently identified
 
----
-
-## 3. Modul 02: Penentuan Ruang Lingkup & Backlog (M02)
-
-### 3.1 Identifikasi Pemangku Kepentingan & Matriks RACI
-- [ ] `docs/01-discovery/stakeholders.md`: Petakan seluruh stakeholder utama (Project Sponsor, Product Owner, End User, Compliance Lead) - expect kontak dan wewenang terdaftar
-- [ ] `docs/01-discovery/raci-matrix.md`: Susun Matriks RACI (Responsible, Accountable, Consulted, Informed) untuk setiap fase deliverable proyek - expect single accountable party per deliverable tanpa ambiguitas
-
-### 3.2 Pernyataan Ruang Lingkup (Scope Statement)
-- [ ] `docs/01-discovery/scope-statement.md`: Rinci daftar eksplisit **In-Scope** (fitur, platform, integrasi yang wajib dibuat) - expect batasan fungsional tegas
-- [ ] `docs/01-discovery/scope-statement.md`: Rinci daftar eksplisit **Out-of-Scope** (fitur yang dilarang dikerjakan dalam fase ini) - expect proteksi terhadap scope creep
-- [ ] `docs/01-discovery/scope-statement.md`: Dokumentasikan **Asumsi Proyek** (ketersediaan data, response time review klien, API eksternal stabil) - expect asumsi terdokumentasi tertulis
-- [ ] `docs/01-discovery/scope-statement.md`: Dokumentasikan **Batasan Proyek / Constraints** (deadline mati, pagu anggaran, batasan hardware/hosting) - expect batasan diakui kedua belah pihak
-
-### 3.3 Dekomposisi Backlog & Prioritisasi Fitur
-- [ ] `docs/01-discovery/backlog.md`: Uraikan kebutuhan menjadi Epics dan User Stories berstandar INVEST (*Independent, Negotiable, Valuable, Estimable, Small, Testable*) - expect user stories disertai Acceptance Criteria berformat Given-When-Then
-- [ ] `docs/01-discovery/prioritization.md`: Terapkan metode MoSCoW (Must-have, Should-have, Could-have, Won't-have untuk rilis ini) - expect alokasi Must-Have <= 60% total kapasitas
-- [ ] `docs/01-discovery/prioritization.md`: Lakukan scoring prioritas alternatif menggunakan framework RICE (*Reach, Impact, Confidence, Effort*) untuk backlog tier-2 - expect peringkat prioritas terurut objektif
-
-### 3.4 Manajemen Risiko & Kontrol Perubahan
-- [ ] `docs/01-discovery/risk-register.md`: Susun Risk Register (Deskripsi risiko, Kategori: Teknis/Bisnis/Operasional, Probabilitas 1-5, Dampak 1-5, Rencana Mitigasi, Contingency Plan) - expect mitigasi untuk semua risiko berkategori High/Critical
-- [ ] `docs/01-discovery/change-management-protocol.md`: Tetapkan protokol Change Request (CR) resmi (formulir pengajuan CR, perhitungan dampak biaya/waktu, syarat approval tertulis) - expect kesepakatan tertulis bahwa perubahan scope di luar SOW akan menambah invoice dan waktu pengerjaan
+### 1.4 Product Strategy & Success Metrics
+- [ ] `docs/01-discovery/product-strategy.md`: Formulate Value Proposition Canvas and product positioning statement - expect concise 1-paragraph unique value proposition
+- [ ] `docs/01-discovery/product-strategy.md`: Define 1 North Star Metric (NSM) and 3-5 supporting Input Metrics - expect measurable metrics without vanity metrics
+- [ ] `docs/01-discovery/okrs.md`: Formulate Objectives and Key Results (OKRs) for the first quarter post-launch - expect realistic numerical targets defined
 
 ---
 
-## 4. Modul 03: Kontrak Hukum, SOW, & Project Charter (M03)
+## 2. Module 01: Idea Triage & Feasibility Assessment (M01)
 
-### 4.1 Penyusunan Scope of Work (SOW)
-- [ ] `contracts/SOW_CONTRACT.md`: Tuliskan deskripsi objektif proyek, deliverables utama, dan spesifikasi deliverable per milestone - expect deskripsi deliverable konkret dan dapat diuji secara objektif
-- [ ] `contracts/SOW_CONTRACT.md`: Pasang tabel Milestone Jadwal & Distribusi Pembayaran bertahap:
-  - Milestone 1: Inisiasi, SOW & Desain Disetujui (DP 30% - 50%)
-  - Milestone 2: Pengembangan Inti & SIT Selesai (30% - 40%)
-  - Milestone 3: UAT Lolos & BAST Final Go-Live (10% - 20%)
-  - expect tidak ada klausul pembayaran 100% di akhir proyek (*pay-at-the-end anti-pattern dicegah*)
-- [ ] `contracts/SOW_CONTRACT.md`: Definisikan tata cara pengujian dan jendela waktu review klien (maksimal 5-7 hari kerja untuk memberikan feedback/approval per milestone) - expect klausul *deemed accepted* jika klien tidak merespons dalam batas waktu
+### 2.1 The 3-Filter Triage
+- [ ] `docs/01-discovery/idea-brief.md`: Write Real Problem in 1 sentence & Unique Solution in 1 sentence - expect problem cannot be solved simply with a free Google Spreadsheet
+- [ ] `docs/01-discovery/idea-brief.md`: Define Core User Loop (Trigger -> Action -> Variable Reward -> Investment) - expect clear core interaction loop in < 3 steps
+- [ ] `docs/01-discovery/idea-brief.md`: Apply the MVP Razor: eliminate all features outside the Core User Loop - expect only 1-3 essential features delivering immediate value remaining
 
-### 4.2 Klausul Hak Cipta, Kerahasiaan, & Kewajiban
-- [ ] `contracts/SOW_CONTRACT.md`: Tegaskan klausul Hak Kekayaan Intelektual (HAKI): Kepemilikan kode sumber baru beralih ke klien HANYA setelah seluruh pembayaran 100% lunas - expect perlindungan hak cipta solo dev terjaga
-- [ ] `contracts/SOW_CONTRACT.md`: Cantumkan klausul Open Source Software (OSS) dan reusable boilerplate milik solo dev yang dikecualikan dari hak eksklusif klien - expect library generik terlindungi
-- [ ] `contracts/SOW_CONTRACT.md`: Tetapkan Non-Disclosure Agreement (NDA) dua arah terkait perlindungan data rahasia bisnis dan kredensial sistem - expect kepatuhan UU PDP dan perlindungan rahasia dagang
-- [ ] `contracts/SOW_CONTRACT.md`: Definisikan garansi cacat sistem (*Warranty Period*) selama 30-60 hari kalender HANYA untuk bug yang menyimpang dari SOW/FSD (bukan penambahan fitur baru) - expect batasan lingkup garansi tegas
+### 2.2 4-Dimension Feasibility Assessment
+- [ ] `docs/01-discovery/feasibility-report.md`: Technical Feasibility - Evaluate stack readiness, third-party API availability, and architecture complexity for solo developer - expect technical score >= 4/5
+- [ ] `docs/01-discovery/feasibility-report.md`: Solo Dev Bandwidth Feasibility (Schedule/Capacity) - Calculate complexity-to-delivery deadline ratio - expect reasonable working hour commitment without burnout
+- [ ] `docs/01-discovery/feasibility-report.md`: Legal & Regulatory Feasibility (Legal/Compliance) - Audit potential personal data liabilities, intellectual property, and operating licenses - expect zero fatal legal blockers
+- [ ] `docs/01-discovery/feasibility-report.md`: Economic & Business Feasibility (Economic/ROI) - Test Willingness to Pay, basic unit economics, and developer margin - expect positive ROI and budget readiness from sponsor/client
 
-### 4.3 Klausul Pemutusan, Keterlambatan, & Kill Fee
-- [ ] `contracts/SOW_CONTRACT.md`: Cantumkan denda keterlambatan pembayaran invoice oleh klien (misal 0.1%/hari) dan hak solo dev untuk menghentikan sementara pekerjaan jika pembayaran macet - expect perlindungan arus kas solo dev
-- [ ] `contracts/SOW_CONTRACT.md`: Pasang klausul *Kill Fee / Termination for Convenience*: jika proyek dibatalkan sepihak oleh klien, DP hangus dan seluruh pekerjaan yang telah selesai wajib dibayar prorata - expect mitigasi kerugian waktu sepihak
-- [ ] `contracts/SOW_CONTRACT.md`: Tetapkan mekanisme eskalasi dan klausul penyelesaian sengketa (Musyawarah mufakat -> BANI / Pengadilan Negeri domisili penyedia) - expect yurisdiksi hukum jelas
-
-### 4.4 Finalisasi Project Charter & Invoice Uang Muka (DP)
-- [ ] `contracts/PROJECT_CHARTER.md`: Susun ringkasan Project Charter 1-2 halaman yang ditandatangani oleh Project Sponsor dan Lead Consultant - expect mandat otorisasi proyek resmi terbit
-- [ ] `invoices/INVOICE_DOWN_PAYMENT.pdf`: Terbitkan invoice Uang Muka (Down Payment 30%-50%) sesuai nomor rekening resmi - expect invoice diterima dan tervalidasi finance klien
-- [ ] `Proof of Payment`: Verifikasi penerimaan transfer dana DP masuk ke rekening bank sebelum pengerjaan desain/teknis dimulai - expect saldo efektif terkonfirmasi di rekening (Zero work without DP)
+### 2.3 Scale Classification & Decision Gate
+- [ ] `docs/01-discovery/scale-classification.md`: Determine project scale classification (Small MVP / Mid B2B SaaS / Large Multi-System / Enterprise) - expect execution route and timeline mapped accurately
+- [ ] `Module 01 Gate Review`: Determine GO / PIVOT / KILL status based on feasibility score threshold - expect formal decision approved by stakeholders
 
 ---
 
-## 5. Gerbang Verifikasi Kelolosan Fase PM (Gate Pass PM to Design)
+## 3. Module 02: Scope Definition & Backlog Decomposition (M02)
 
-| Parameter Evaluasi | Standar Minimum Kelolosan | Status Verifikasi | Catatan Bukti |
+### 3.1 Stakeholder Identification & RACI Matrix
+- [ ] `docs/01-discovery/stakeholders.md`: Map all primary stakeholders (Project Sponsor, Product Owner, End User, Compliance Lead) - expect contacts and authority levels registered
+- [ ] `docs/01-discovery/raci-matrix.md`: Build RACI Matrix (Responsible, Accountable, Consulted, Informed) for each project deliverable phase - expect single accountable party per deliverable without ambiguity
+
+### 3.2 Scope Statement
+- [ ] `docs/01-discovery/scope-statement.md`: Detail explicit **In-Scope** list (features, platforms, integrations required to be built) - expect clear functional boundaries
+- [ ] `docs/01-discovery/scope-statement.md`: Detail explicit **Out-of-Scope** list (features strictly excluded in this phase) - expect protection against scope creep
+- [ ] `docs/01-discovery/scope-statement.md`: Document **Project Assumptions** (data availability, client review turnaround time, third-party API stability) - expect assumptions documented in writing
+- [ ] `docs/01-discovery/scope-statement.md`: Document **Project Constraints** (hard deadlines, budget ceiling, hardware/hosting limitations) - expect constraints acknowledged by both parties
+
+### 3.3 Backlog Decomposition & Feature Prioritization
+- [ ] `docs/01-discovery/backlog.md`: Break down requirements into Epics and User Stories following INVEST standards (*Independent, Negotiable, Valuable, Estimable, Small, Testable*) - expect user stories accompanied by Acceptance Criteria in Given-When-Then format
+- [ ] `docs/01-discovery/prioritization.md`: Apply MoSCoW method (Must-have, Should-have, Could-have, Won't-have for this release) - expect Must-Have allocation <= 60% of total capacity
+- [ ] `docs/01-discovery/prioritization.md`: Score alternative priorities using the RICE framework (*Reach, Impact, Confidence, Effort*) for tier-2 backlog - expect priority ranking ordered objectively
+
+### 3.4 Risk Management & Change Control
+- [ ] `docs/01-discovery/risk-register.md`: Build Risk Register (Risk description, Category: Technical/Business/Operational, Probability 1-5, Impact 1-5, Mitigation Plan, Contingency Plan) - expect mitigation plans for all High/Critical risks
+- [ ] `docs/01-discovery/change-management-protocol.md`: Establish formal Change Request (CR) protocol (CR submission form, cost/timeline impact assessment, written approval requirements) - expect written agreement that scope changes outside SOW incur additional invoices and delivery time
+
+---
+
+## 4. Module 03: Legal Contracts, SOW, & Project Charter (M03)
+
+### 4.1 Scope of Work (SOW) Formulation
+- [ ] `contracts/SOW_CONTRACT.md`: Write project objective description, key deliverables, and deliverable specifications per milestone - expect concrete deliverables verifiable objectively
+- [ ] `contracts/SOW_CONTRACT.md`: Insert Milestone Schedule & Phased Payment Distribution table:
+  - Milestone 1: Initiation, SOW & Design Approved (Down Payment 30% - 50%)
+  - Milestone 2: Core Development & SIT Completed (30% - 40%)
+  - Milestone 3: UAT Passed & Final BAST Go-Live (10% - 20%)
+  - expect no 100% pay-at-the-end clauses (*pay-at-the-end anti-pattern prevented*)
+- [ ] `contracts/SOW_CONTRACT.md`: Define testing procedures and client review turnaround window (maximum 5-7 business days to provide feedback/approval per milestone) - expect deemed-accepted clause if client fails to respond within timeline
+
+### 4.2 Intellectual Property, Confidentiality, & Liability Clauses
+- [ ] `contracts/SOW_CONTRACT.md`: Enforce Intellectual Property (IP) clause: Ownership of newly developed source code transfers to client ONLY after 100% full payment is completed - expect solo dev copyright protection maintained
+- [ ] `contracts/SOW_CONTRACT.md`: Include Open Source Software (OSS) and developer reusable boilerplate clauses excluded from client exclusive assignment - expect generic libraries protected
+- [ ] `contracts/SOW_CONTRACT.md`: Establish mutual Non-Disclosure Agreement (NDA) covering proprietary business data and system credentials - expect data protection compliance and trade secret protection
+- [ ] `contracts/SOW_CONTRACT.md`: Define warranty period (*Warranty Period*) for 30-60 calendar days ONLY for bugs deviating from agreed SOW/FSD specifications (not new feature additions) - expect clear warranty boundaries
+
+### 4.3 Termination, Late Payment, & Kill Fee Clauses
+- [ ] `contracts/SOW_CONTRACT.md`: Include late payment penalties for client invoices (e.g., 0.1%/day) and developer right to suspend work if invoices are overdue - expect solo dev cash flow protection
+- [ ] `contracts/SOW_CONTRACT.md`: Establish Kill Fee / Termination for Convenience clause: if project is unilaterally terminated by client, down payment is forfeited and all completed work must be paid pro-rata - expect mitigation against unilateral time loss
+- [ ] `contracts/SOW_CONTRACT.md`: Define dispute resolution and escalation mechanism (Amicable negotiation -> Arbitration / District Court of provider jurisdiction) - expect legal jurisdiction clearly stated
+
+### 4.4 Project Charter Finalization & Down Payment (DP) Invoice
+- [ ] `contracts/PROJECT_CHARTER.md`: Compile 1-2 page Project Charter summary signed by Project Sponsor and Lead Consultant - expect official project authorization mandate issued
+- [ ] `invoices/INVOICE_DOWN_PAYMENT.pdf`: Issue Down Payment (DP 30%-50%) invoice with official bank details - expect invoice received and validated by client finance department
+- [ ] `Proof of Payment`: Verify down payment wire transfer received in bank account before technical/design execution begins - expect effective balance confirmed in account (Zero work without DP)
+
+---
+
+## 5. PM Phase Verification Gate (Gate Pass PM to Design)
+
+| Evaluation Parameter | Minimum Pass Standard | Verification Status | Evidence Notes |
 | :--- | :--- | :---: | :--- |
-| **Validasi Masalah & Pasar** | TAM/SAM terhitung, 5+ interview pengguna tuntas, diferensiasi kompetitor jelas | [ ] PASS | Dilampirkan di `docs/01-discovery/` |
-| **Kelayakan & Skala** | Skor uji kelayakan 4 dimensi >= 4/5, skala proyek terdefinisi | [ ] PASS | Dilampirkan di `docs/01-discovery/feasibility-report.md` |
-| **Ruang Lingkup Terkunci** | Scope statement In/Out terpasang, backlog MoSCoW tuntas | [ ] PASS | Dilampirkan di `docs/01-discovery/scope-statement.md` |
-| **Legalitas & Finansial** | SOW & Kontrak ditandatangani kedua pihak (e-meterai), DP 30-50% masuk rekening | [ ] PASS | Dilampirkan di `contracts/` & bukti transfer bank |
+| **Problem & Market Validation** | TAM/SAM calculated, 5+ user interviews completed, competitor differentiation clear | [ ] PASS | Attached in `docs/01-discovery/` |
+| **Feasibility & Scale** | 4-dimension feasibility score >= 4/5, project scale classified | [ ] PASS | Attached in `docs/01-discovery/feasibility-report.md` |
+| **Scope Lock** | Scope statement In/Out locked, MoSCoW backlog finalized | [ ] PASS | Attached in `docs/01-discovery/scope-statement.md` |
+| **Legality & Financials** | SOW & Contract executed by both parties (digital stamp/signature), DP 30-50% cleared | [ ] PASS | Attached in `contracts/` & bank transfer proof |
 
-### Keputusan Gerbang PM:
-- [ ] **LULUS (GO TO DESIGN)**: Seluruh artefak M00-M03 lengkap, kontrak sah, DP cair. Lanjut ke Modul 04 (Design System & Prototyping).
-- [ ] **TAHAN (HOLD / PENDING DP)**: Dokumen siap namun pembayaran DP belum masuk. Dilarang keras menulis kode atau membuat desain final!
-- [ ] **TOLAK / PIVOT (REJECT / REDESIGN SCOPE)**: Ruang lingkup tidak realistis atau kesepakatan komersial tidak tercapai. Lakukan revisi scope atau batalkan proyek.
+### PM Gate Decision:
+- [ ] **PASSED (GO TO DESIGN)**: All M00-M03 artifacts complete, contract valid, DP cleared. Proceed to Module 04 (Design System & Prototyping).
+- [ ] **HOLD (HOLD / PENDING DP)**: Documents finalized but DP payment not yet cleared. Strictly prohibited from writing code or creating final designs!
+- [ ] **REJECT / PIVOT (REJECT / REDESIGN SCOPE)**: Scope is unrealistic or commercial agreement cannot be reached. Revise scope or cancel project.

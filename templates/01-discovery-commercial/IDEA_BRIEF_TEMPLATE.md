@@ -1,76 +1,76 @@
 # Idea Brief & Feasibility Scorecard
 
-> Dokumen penyaring ide awal untuk memvalidasi kelayakan teknis, operasional, dan komersial sebelum masuk ke perancangan spesifikasi formal.
+> Initial idea screening document to validate technical, operational, and commercial feasibility prior to formal specification design.
 
 ---
 
-## 1. Metadata Proyek
-- **Nama Ide / Sandi Proyek**: [Contoh: AutoLegalDoc / VaultSign]
-- **Inisiator / Solo Dev**: [Nama Anda]
-- **Tanggal Evaluasi**: [YYYY-MM-DD]
-- **Target Skala Awal**: [Kecil (MVP) / Menengah (SaaS) / Besar / Enterprise]
+## 1. Project Metadata
+- **Idea Name / Project Codename**: [Example: AutoLegalDoc / VaultSign]
+- **Initiator / Solo Dev**: [Your Name]
+- **Evaluation Date**: [YYYY-MM-DD]
+- **Initial Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
 
 ---
 
-## 2. Ringkasan Ide (Elevator Pitch)
-> **Format Formula**: Untuk **[Target Pengguna]** yang mengalami **[Masalah Spesifik]**, **[Nama Produk]** adalah solusi **[Kategori Perangkat Lunak]** yang mampu **[Manfaat Inti / Nilai Unik]**, berbeda dari alternatif manual/eksisting karena **[Keunggulan Pembeda]**.
+## 2. Idea Summary (Elevator Pitch)
+> **Formula Format**: For **[Target User]** who experience **[Specific Problem]**, **[Product Name]** is a **[Software Category]** solution that delivers **[Core Benefit / Unique Value]**, unlike manual/existing alternatives because **[Differentiating Advantage]**.
 
 - **Elevator Pitch**: 
-  *[Tuliskan 1–2 kalimat rangkuman berdasarkan formula di atas]*
+  *[Write a 1–2 sentence summary following the formula above]*
 
 ---
 
-## 3. Hasil Saringan 3 Lapis (The 3-Filter Triage)
+## 3. The 3-Filter Triage
 
-### 3.1 Problem Statement (Masalah Riil)
-- **Masalah Utama**: [Jelaskan pain point terbesar pengguna saat ini]
-- **Solusi Alternatif Saat Ini**: [Bagaimana cara mereka menyelesaikan masalah ini sekarang? Contoh: Excel manual, jasa notaris mahal, template Google Drive]
-- **Dampak Buruk Jika Tidak Diselesaikan**: [Risiko waktu hilang, kebocoran data rahasia, kesalahan klausul hukum]
+### 3.1 Problem Statement (Real Problem)
+- **Primary Problem**: [Explain the user's biggest pain point today]
+- **Current Workarounds / Alternatives**: [How do they solve this problem now? Example: Manual Excel, expensive notary services, Google Drive templates]
+- **Impact of Non-Resolution**: [Risk of wasted time, sensitive data leaks, legal clause errors]
 
-### 3.2 Core User Loop (Alur Utama 3 Langkah)
-1. **Langkah 1 (Input)**: [Contoh: Pengguna memilih template NDA dan mengisi form data para pihak]
-2. **Langkah 2 (Proses)**: [Contoh: Sistem merender dokumen PDF resmi dan membubuhkan link verifikasi tanda tangan]
-3. **Langkah 3 (Output / Value)**: [Contoh: Para pihak menandatangani digital, dokumen terenkripsi otomatis tersimpan di vault aman]
+### 3.2 Core User Loop (3-Step Primary Flow)
+1. **Step 1 (Input)**: [Example: User selects NDA template and fills in party details form]
+2. **Step 2 (Process)**: [Example: System renders standardized PDF document and generates signature verification link]
+3. **Step 3 (Output / Value)**: [Example: Parties execute digital signature, encrypted document automatically stored in secure vault]
 
-### 3.3 Pemotongan Fitur Ekstrem (The MVP Razor)
+### 3.3 Extreme Scope Pruning (The MVP Razor)
 
-| Fitur Masuk Rilis Pertama (In-Scope MVP) | Fitur Dibuang / Ditunda ke Fase Lanjutan (Out-of-Scope) |
+| Features in First Release (In-Scope MVP) | Dropped / Deferred Features (Out-of-Scope) |
 | :--- | :--- |
-| • [Fitur Inti 1: Misal Template NDA & Kontrak Freelance] | • [Fitur Ditunda: Pembuat Invoice otomatis] |
-| • [Fitur Inti 2: Tanda tangan canvas + hash audit trail] | • [Fitur Ditunda: Integrasi e-Meterai Peruri / PSrE Berbayar] |
-| • [Fitur Inti 3: Penyimpanan terenkripsi dasar S3 AES-256] | • [Fitur Ditunda: Multi-team workspace & custom branding] |
+| • [Core Feature 1: E.g., NDA & Freelance Contract Templates] | • [Deferred Feature: Automated Invoice Generator] |
+| • [Core Feature 2: Canvas signature + audit trail hash] | • [Deferred Feature: Paid e-Meterai / PSrE certified integration] |
+| • [Core Feature 3: Basic encrypted S3 storage (AES-256)] | • [Deferred Feature: Multi-team workspace & custom branding] |
 
 ---
 
-## 4. Kartu Skor Kelayakan Solo Developer (Feasibility Scorecard)
+## 4. Solo Developer Feasibility Scorecard
 
-*Beri nilai 1 (Sangat Buruk / Tidak Layak) sampai 5 (Sangat Bagus / Sangat Layak)*
+*Rate each dimension from 1 (Very Poor / Unfeasible) to 5 (Excellent / Highly Feasible)*
 
-| Dimensi Kelayakan | Skor (1–5) | Analisis & Justifikasi Solo Developer |
+| Feasibility Dimension | Score (1–5) | Solo Developer Analysis & Justification |
 | :--- | :---: | :--- |
-| **1. Kelayakan Teknis (Technical)** | [ ] / 5 | [Apakah teknologi & pustaka sudah matang? Ada kendala komputasi berat?] |
-| **2. Kelayakan Bandwidth (Solo Effort)** | [ ] / 5 | [Bisakah diselesaikan solo dalam 2–8 minggu? Beban maintenance harian?] |
-| **3. Kelayakan Regulasi & Legal (Compliance)** | [ ] / 5 | [Apakah melanggar izin hukum/OJK/Kominfo? Kepatuhan data sensitif/UU PDP?] |
-| **4. Kelayakan Komersial / Nilai Proyek (Economic)**| [ ] / 5 | [Apakah ada willingness to pay? Berapa potensi margin atau nilai kontrak?] |
-| **TOTAL SKOR RATA-RATA** | **[ ] / 5** | *(Total nilai dibagi 4)* |
+| **1. Technical Feasibility** | [ ] / 5 | [Are tech stacks & libraries mature? Heavy compute bottlenecks?] |
+| **2. Bandwidth Feasibility (Solo Effort)** | [ ] / 5 | [Can it be completed solo in 2–8 weeks? Daily maintenance overhead?] |
+| **3. Regulatory & Legal Feasibility (Compliance)** | [ ] / 5 | [Violates legal/regulatory requirements? Sensitive data / privacy law compliance?] |
+| **4. Commercial Feasibility / Project Value (Economic)**| [ ] / 5 | [Is there willingness to pay? What is the contract value or margin potential?] |
+| **AVERAGE TOTAL SCORE** | **[ ] / 5** | *(Total score divided by 4)* |
 
-### Keputusan Gerbang (Gate Decision)
-- [ ] **GO (Lolos)**: Skor rata-rata $\ge 3.5$ dan tidak ada dimensi yang bernilai $< 3$. Lanjut ke Modul 02.
-- [ ] **PIVOT (Sesuaikan)**: Ada dimensi bernilai $< 3$ (misal: regulasi terlalu rumit). Pangkas fitur agar kembali layak.
-- [ ] **KILL (Gugurkan)**: Masalah tidak nyata, biaya teknis terlalu tinggi untuk solo dev, atau risiko hukum berat.
-
----
-
-## 5. Parameter Klasifikasi Skala yang Ditetapkan
-
-- **Skala Terpilih**: `[Kecil / Menengah / Besar / Enterprise]`
-- **Alasan Pemilihan**: [Sebutkan alasan penentuan tier berdasarkan kompleksitas dan kepatuhan hukum]
-- **Target Waktu Pengembangan**: [Contoh: 3 Minggu untuk MVP]
+### Gate Decision
+- [ ] **GO (Pass)**: Average score $\ge 3.5$ and no dimension scored $< 3$. Proceed to Module 02.
+- [ ] **PIVOT (Adjust)**: Any dimension scored $< 3$ (e.g., regulation too complex). Prune features to restore viability.
+- [ ] **KILL (Drop)**: Problem not real, technical barrier too high for solo dev, or severe legal risks.
 
 ---
 
-## 6. Tindak Lanjut ke Modul 02: Discovery & Scope
-Daftar pertanyaan yang harus dijawab pada sesi discovery berikutnya:
-1. [Pertanyaan 1: Misal: Pustaka PDF generator mana yang paling stabil untuk Node.js?]
-2. [Pertanyaan 2: Misal: Bagaimana arsitektur penyimpanan kunci enkripsi per-user?]
-3. [Pertanyaan 3: Misal: Apakah format audit trail tanda tangan sudah memenuhi KUHPerdata Pasal 1865?]
+## 5. Assigned Scale Classification Parameters
+
+- **Selected Scale**: `[Small / Medium / Large / Enterprise]`
+- **Selection Rationale**: [State rationale for tier selection based on complexity and legal compliance]
+- **Target Development Timeline**: [Example: 3 Weeks for MVP]
+
+---
+
+## 6. Next Steps for Module 02: Discovery & Scope
+Questions to answer during the upcoming discovery session:
+1. [Question 1: Example: Which PDF generation library is most reliable for Node.js?]
+2. [Question 2: Example: What is the per-user encryption key management architecture?]
+3. [Question 3: Example: Does the signature audit trail format satisfy legal evidentiary requirements?]
