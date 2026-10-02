@@ -101,7 +101,7 @@ Start → Do you need custom branding?
 **[SKIP IF SOLO DEV OR TEAM <3]** - Governance models below assume team structure. Solo dev: you are owner + champion + executor (100%).
 
 **Option A: Centralized (Small Team <10 people)**:
-- 1 "Design System Owner" (50% bandwidth allocation)
+- **[ENTERPRISE ONLY]** 1 "Design System Owner" (50% bandwidth allocation). Solo dev: you are owner (100%).
 - All changes go through central review
 - Fast decision, consistent quality, bottleneck risk
 

@@ -291,7 +291,7 @@ Q: Jika software ini tersedia hari ini dengan harga Rp [X]/bulan,
    [ ] Tidak tertarik
 ```
 
-**Gate Pass Criteria**: Minimum 30% dari 50+ responden (15 orang) pilih "Pasti beli" atau "Mungkin beli".
+**Gate Pass Criteria**: Minimum 30% responden pilih "Pasti beli" atau "Mungkin beli" (dari minimum 50 responden = 15 orang).
 
 #### 3.3 Persona Creation (Jobs-to-be-Done Framework)
 
