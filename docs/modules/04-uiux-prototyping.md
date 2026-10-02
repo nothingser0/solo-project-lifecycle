@@ -2,7 +2,6 @@
 
 > ⚠️ **GOOGLE STITCH DEPRECATED (2024)**: References to Google Stitch below are LEGACY ONLY.  
 > **Default workflow (2026)**: Create `DESIGN.md` + `DESIGN_SPEC.md` only (no Stitch prototype).  
-> **Modern alternatives**: v0.dev, shadcn/ui, Bolt.new (see `TOOL_ALTERNATIVES.md`).
 
 > ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/solo/SOLO_UIUX_GUIDE.md` (Solo dev UI/UX efficiency guide, Component library selection, WCAG contrast, Prototype walkthrough)

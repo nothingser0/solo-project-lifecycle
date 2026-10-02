@@ -500,4 +500,3 @@ Check `middleware.ts` `matcher` config
 - [shadcn/ui](https://ui.shadcn.com)
 - `patterns/validation/zod-patterns.md` - Validation schemas
 - `patterns/security/authentication.md` - JWT auth
-- `TOOL_ALTERNATIVES.md` - Framework comparison

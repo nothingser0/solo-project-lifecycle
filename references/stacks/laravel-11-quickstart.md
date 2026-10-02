@@ -798,4 +798,3 @@ DB::select('SELECT * FROM documents WHERE user_id = ?', [$userId]);
 - [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum)
 - `patterns/validation/` - Validation patterns (adapt to Laravel)
 - `patterns/security/authentication.md` - Auth concepts
-- `TOOL_ALTERNATIVES.md` - Framework comparison

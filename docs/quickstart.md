@@ -280,7 +280,7 @@ vercel --prod
 ## Post-Launch (Week 5+)
 
 **When MVP proves traction** (>10 active users, >50% retention):
-1. Read full framework `SKILL.md`
+1. Read full framework `docs/README.md`
 2. Add proper monitoring (M06B)
 3. Write tests for critical paths (M07)
 4. Refactor code (remove copy-paste)

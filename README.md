@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Framework Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/nothingser0/solo-project-lifecycle/releases)
-[![Modules](https://img.shields.io/badge/modules-14-green.svg)](./docs/docs/modules/)
+[![Modules](https://img.shields.io/badge/modules-14-green.svg)](./docs/modules/)
 
 ---
 

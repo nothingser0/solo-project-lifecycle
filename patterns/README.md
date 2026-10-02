@@ -267,7 +267,6 @@ Test examples
 
 1. Edit pattern file (`patterns/<category>/<name>.md`)
 2. Verify references in modules still accurate
-3. Update pattern version in CHANGELOG.md
 4. Commit: `docs(patterns): update <pattern> with <change>`
 
 ### Adding New Patterns
@@ -283,5 +282,4 @@ Test examples
 ## See Also
 
 - `templates/by-use-case/` - Task-oriented template navigation
-- `IMPROVEMENT_ROADMAP.md` - v1.1-v2.0 improvement plan
 - `TEMPLATE_INDEX.md` - Complete template catalog
