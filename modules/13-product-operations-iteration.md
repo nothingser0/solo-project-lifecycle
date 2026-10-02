@@ -2,7 +2,7 @@
 
 > ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/improvements/MODUL_13_IMPROVEMENTS.md` (Timeline estimation, Metrics dashboard tool recommendations, Experiment documentation template)
-> - `references/pm/RICE_SCORING_GUIDE.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
+> - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
 >
 > **MANDATORY: Load references BEFORE executing this module**:
 > - Read: `references/improvements/MODUL_13_IMPROVEMENTS.md`
@@ -326,7 +326,7 @@ WHERE total_sessions >= (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY tota
 
 RICE adalah framework scoring untuk memprioritaskan backlog fitur secara objektif.
 
-*Panduan lengkap: `references/pm/RICE_SCORING_GUIDE.md`*
+*Panduan lengkap: `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`*
 
 #### 4.1 RICE Framework
 
@@ -637,7 +637,7 @@ Modul ini menghasilkan 4 dokumen operasi + 1 panduan referensi:
 3. **`docs/pm/PRODUCT_HEALTH_DASHBOARD.md`**: Dashboard kesehatan produk untuk weekly/monthly/quarterly review (menggunakan `templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md`).
 4. **`docs/pm/SCALING_SIGNALS.md`**: Dokumentasi threshold dan trigger untuk scale infrastruktur/team.
 5. **`references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md`**: Panduan referensi lengkap untuk continuous iteration best practices.
-6. **`references/pm/RICE_SCORING_GUIDE.md`**: Panduan RICE scoring dan prioritisasi backlog.
+6. **`references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`**: Panduan RICE scoring dan prioritisasi backlog.
 
 ---
 
