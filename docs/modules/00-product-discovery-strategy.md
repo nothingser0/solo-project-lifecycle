@@ -1,29 +1,29 @@
-# Modul 00: Product Discovery & Strategy (Riset Pasar, Kompetitor, Pengguna, & Strategi Produk)
+# Module 00: Product Discovery & Strategy (Market Research, Competitor, User, & Product Strategy)
 
 > - `references/technical/DEEP_RESEARCH_METHODOLOGY.md` (Regulatory/compliance research, Competitor deep-dive analysis, Domain knowledge acquisition for fintech/healthtech/legaltech)
->
 
-Modul ini adalah **gerbang paling awal** dalam siklus pengembangan perangkat lunak untuk solo developer dan konsultan teknis yang mengerjakan proyek dengan anggaran waktu tak terbatas (*unlimited time budget*) dan kasus penggunaan perusahaan (*company use-case*). Modul ini wajib dieksekusi **SEBELUM Modul 01 (Idea & Feasibility)** ketika:
-- Proyek membutuhkan standar Product Management (*PM*) tingkat industri.
-- Ada kebutuhan validasi pasar, analisis kompetitor, dan penelitian pengguna mendalam sebelum menentukan fitur.
 
-**Untuk proyek Fast-Track atau MVP dengan deadline ketat: SKIP modul ini dan langsung ke Modul 01 (Idea & Feasibility).**
+This module is the **earliest gate** in the software development lifecycle for solo developers and technical consultants working on projects with an unlimited time budget and company use cases. This module is mandatory to execute **BEFORE Module 01 (Idea & Feasibility)** when:
+- The project requires industry-grade Product Management (PM) standards.
+- There is a need for market validation, competitor analysis, and in-depth user research before defining features.
+
+**For Fast-Track projects or MVPs with tight deadlines: SKIP this module and proceed directly to Module 01 (Idea & Feasibility).**
 
 ---
 
-## 1. Siklus Eksekusi Modul 00
+## 1. Execution Cycle of Module 00
 
 ```text
-[ PERTANYAAN BISNIS / PELUANG PASAR ]
+[ BUSINESS QUESTION / MARKET OPPORTUNITY ]
           │
           ▼
-[ LANGKAH 1: Market Research (Riset Pasar) ]
+[ STEP 1: Market Research ]
   • TAM/SAM/SOM Calculation
   • Industry Trend Analysis
   • Regulatory Landscape Check
           │
           ▼
-[ LANGKAH 2: Competitive Analysis (Analisis Kompetitor) ]
+[ STEP 2: Competitive Analysis ]
   • Competitor Identification (Direct & Indirect)
   • Feature Matrix Comparison
   • Pricing Benchmarking
@@ -31,7 +31,7 @@ Modul ini adalah **gerbang paling awal** dalam siklus pengembangan perangkat lun
   • Positioning Map (2x2 Matrix)
           │
           ▼
-[ LANGKAH 3: User Research (Penelitian Pengguna) ]
+[ STEP 3: User Research ]
   • Interview Guide (10+ users, 30-45 min each)
   • Survey Design (50+ respondents, quantitative validation)
   • Persona Creation (Jobs-to-be-Done Framework)
@@ -39,7 +39,7 @@ Modul ini adalah **gerbang paling awal** dalam siklus pengembangan perangkat lun
   • Pain Point Prioritization
           │
           ▼
-[ LANGKAH 4: Product Strategy (Strategi Produk) ]
+[ STEP 4: Product Strategy ]
   • Vision Statement (Aspirational, 3-5 years)
   • Mission Statement (Tactical, current state)
   • North Star Metric Definition + Rationale
@@ -53,545 +53,542 @@ Modul ini adalah **gerbang paling awal** dalam siklus pengembangan perangkat lun
   • North Star Metric measurable
           │
           ▼
-[ OUTPUT: 4 Dokumen PM ] ──► Siap Lanjut ke Modul 01: Idea & Feasibility
+[ OUTPUT: 4 PM Documents ] ──► Ready to Proceed to Module 01: Idea & Feasibility
 ```
 
 ---
 
-## 2. Langkah demi Langkah Eksekusi
+## 2. Step-by-Step Execution
 
-### Langkah 1: Market Research (Riset Pasar)
+### Step 1: Market Research
 
-Tujuan: Memahami ukuran pasar, pertumbuhan industri, dan batasan regulasi sebelum menghabiskan waktu untuk ide spesifik.
+Goal: Understand market size, industry growth, and regulatory constraints before investing time into a specific idea.
 
 #### 1.1 TAM/SAM/SOM Calculation
 
-**TAM (Total Addressable Market)**: Seluruh pasar jika tidak ada batasan (geografis, regulasi, kompetitor).
-**SAM (Serviceable Addressable Market)**: Bagian dari TAM yang realistis dilayani oleh produk Anda.
-**SOM (Serviceable Obtainable Market)**: Porsi SAM yang bisa Anda raih di tahun pertama dengan sumber daya terbatas.
+**TAM (Total Addressable Market)**: The entire market if there are no limitations (geographical, regulatory, competitor).
+**SAM (Serviceable Addressable Market)**: The segment of TAM realistically serviceable by your product.
+**SOM (Serviceable Obtainable Market)**: The portion of SAM you can capture in the first year with limited resources.
 
-**Formula Estimasi**:
+**Estimation Formula**:
 ```python
-# Contoh: SaaS Akuntansi untuk UKM Indonesia
+# Example: Accounting SaaS for Indonesian MSMEs
 TAM = (jumlah_ukm_indonesia * arpu_tahunan)
-    # 64 juta UKM (data Kemenkop 2022) * Rp 1.200.000/tahun
+    # 64 million MSMEs (Kemenkop 2022 data) * Rp 1,200,000/year
     # [UPDATE 2026: Verify latest BPS/Kemenkop UKM count]
-    # TAM = Rp 76.8 triliun
+    # TAM = Rp 76.8 trillion
 
 SAM = TAM * (persentase_digitalisasi_aktif)
-    # 64 jt UKM * 8% sudah pakai software * Rp 1.200.000
-    # SAM = Rp 6.1 triliun
+    # 64M MSMEs * 8% already using software * Rp 1,200,000
+    # SAM = Rp 6.1 trillion
 
 SOM_tahun_1 = SAM * (target_market_share_realistis)
-    # Rp 6.1 triliun * 0.01% (1 dari 10.000 UKM digital)
-    # 0.01% = 0.0001 dalam rumus Python (bukan 0.01)
-    # SOM = Rp 610 juta/tahun (≈ 500 paying customers)
+    # Rp 6.1 trillion * 0.01% (1 out of 10,000 digital MSMEs)
+    # 0.01% = 0.0001 in Python formula (not 0.01)
+    # SOM = Rp 610 million/year (≈ 500 paying customers)
 ```
 
-**Metode Validasi**:
-- **Top-Down**: Ambil data laporan industri (Gartner, Statista, Kemenkop, BPS) → filter ke segmen target.
-- **Bottom-Up**: Hitung dari unit ekonomi terkecil (jumlah restoran Jakarta * rata-rata pengeluaran software POS).
+**Validation Methods**:
+- **Top-Down**: Take industry report data (Gartner, Statista, Kemenkop, BPS) → filter down to target segment.
+- **Bottom-Up**: Calculate from smallest unit economics (number of Jakarta restaurants * average POS software expenditure).
 
 #### 1.2 Market Sizing Frameworks
 
-| Framework | Kapan Digunakan | Contoh Aplikasi |
+| Framework | When to Use | Application Example |
 | :--- | :--- | :--- |
-| **Substitution Analysis** | Produk menggantikan solusi lama | "Berapa orang yang saat ini bayar jasa notaris manual untuk legalisasi dokumen?" |
-| **Proxy Metrics** | Pasar baru tanpa data langsung | "Jumlah pengguna aktif e-commerce (120 jt) * 15% pernah beli barang custom → 18 jt calon pengguna platform design-to-print" |
-| **Value-Based Sizing** | B2B SaaS dengan ROI jelas | "Jika software menghemat 10 jam/minggu staf admin (Rp 5 jt/bulan gaji), WTP adalah Rp 1-2 jt/bulan" |
+| **Substitution Analysis** | Product replaces an existing solution | "How many people currently pay for manual notary services to legalize documents?" |
+| **Proxy Metrics** | New market without direct data | "Number of active e-commerce users (120M) * 15% have bought custom goods → 18M prospective design-to-print platform users" |
+| **Value-Based Sizing** | B2B SaaS with clear ROI | "If software saves 10 hours/week for admin staff (Rp 5M/month salary), WTP is Rp 1-2M/month" |
 
 #### 1.3 Industry Trend Analysis
 
-Gunakan Google Trends, laporan McKinsey/BCG Indonesia, dan riset startup (DailySocial.id, Katadata) untuk menemukan:
-1. **Growth Trends**: Apakah industri tumbuh >10% YoY atau stagnan?
-2. **Tech Adoption Curve**: Di mana posisi target pengguna (Early Adopter vs Late Majority)?
-3. **Macro Tailwinds**: Regulasi baru (UU PDP), perubahan perilaku pasca-pandemi, subsidi pemerintah.
+Use Google Trends, McKinsey/BCG Indonesia reports, and startup research (DailySocial.id, Katadata) to discover:
+1. **Growth Trends**: Is the industry growing >10% YoY or stagnant?
+2. **Tech Adoption Curve**: Where is target user adoption positioned (Early Adopter vs Late Majority)?
+3. **Macro Tailwinds**: New regulations (UU PDP), post-pandemic behavioral shifts, government subsidies.
 
 #### 1.4 Regulatory Landscape Check
 
-| Sektor Industri | Regulasi Kritis Solo Dev Wajib Tahu |
+| Industry Sector | Critical Regulations Solo Devs Must Know |
 | :--- | :--- |
-| **Fintech / Payment** | OJK (PUJK, P2P Lending License), Bank Indonesia (GPN, QRIS wajib lisensi) |
-| **Healthtech / Telemedicine** | Kemenkes (SIP dokter, rekam medis elektronik), Izin Edar Alkes |
-| **Edtech / Online Course** | Kemendikbud (NPSN untuk pendidikan formal), Hak Cipta konten |
-| **Data-Heavy Apps** | UU PDP No. 27/2022 (wajib consent management, data breach notification) |
-| **E-Signature Apps** | Kominfo PSrE (wajib pakai vendor berizin jika tanda tangan legal binding) |
+| **Fintech / Payment** | OJK (PUJK, P2P Lending License), Bank Indonesia (GPN, QRIS license mandatory) |
+| **Healthtech / Telemedicine** | Ministry of Health (SIP doctor license, electronic medical records), Medical Device Distribution License (Izin Edar Alkes) |
+| **Edtech / Online Course** | Ministry of Education (NPSN for formal education), Content copyright |
+| **Data-Heavy Apps** | PDP Law No. 27/2022 (mandatory consent management, data breach notification) |
+| **E-Signature Apps** | Kominfo PSrE (licensed provider mandatory if legally binding signature) |
 
-**Output Langkah 1**: Berkas **`docs/pm/MARKET_RESEARCH.md`** berisi:
-- Hasil kalkulasi TAM/SAM/SOM dengan sumber data.
-- Grafik tren industri (screenshot Google Trends atau tabel pertumbuhan YoY).
-- Daftar regulasi yang mempengaruhi go-to-market.
+**Step 1 Output**: File **`docs/pm/MARKET_RESEARCH.md`** containing:
+- TAM/SAM/SOM calculation results with data sources.
+- Industry trend charts (Google Trends screenshot or YoY growth table).
+- List of regulations affecting go-to-market.
 
 ---
 
-### Langkah 2: Competitive Analysis (Analisis Kompetitor)
+### Step 2: Competitive Analysis
 
-Tujuan: Memahami lanskap kompetitor untuk menemukan positioning gap dan *defensible moat*.
+Goal: Understand competitor landscape to identify positioning gaps and defensible moats.
 
 #### 2.1 Competitor Identification
 
-**Direct Competitors**: Produk yang menyelesaikan masalah yang sama dengan cara yang sama.
-**Indirect Competitors**: Produk yang menyelesaikan masalah yang sama dengan cara berbeda.
-**Substitute Competitors**: Non-software yang pengguna pakai saat ini (Excel, WhatsApp group, jasa manual).
+**Direct Competitors**: Products solving the same problem in the same way.
+**Indirect Competitors**: Products solving the same problem in a different way.
+**Substitute Competitors**: Non-software solutions users currently rely on (Excel, WhatsApp groups, manual services).
 
-**Taktik Discovery**:
+**Discovery Tactics**:
 ```bash
-# Gunakan Google search operators
+# Use Google search operators
 "<problem keyword> software site:id"
 "<problem keyword> Indonesia pricing"
 intitle:"<competitor name> review"
 
-# Cek app store
+# Check app stores
 https://play.google.com/store/search?q=<keyword>&c=apps&gl=ID
 https://apps.apple.com/id/search?term=<keyword>
 
-# Monitor ProductHunt/Indie Hackers untuk startup global
+# Monitor ProductHunt/Indie Hackers for global startups
 ```
 
 #### 2.2 Feature Matrix Comparison
 
-Buat tabel perbandingan fitur kompetitor:
+Create a competitor feature comparison table:
 
-| Fitur | Kompetitor A | Kompetitor B | Kompetitor C | [Produk Anda] |
+| Feature | Competitor A | Competitor B | Competitor C | [Your Product] |
 | :--- | :---: | :---: | :---: | :---: |
-| Dashboard Analitik Real-Time | ✅ | ❌ | ✅ | ✅ |
-| Export Laporan ke Excel | ✅ | ✅ | ❌ | ✅ |
-| Integrasi WhatsApp Notifikasi | ❌ | ❌ | ✅ | ✅ |
+| Real-Time Analytics Dashboard | ✅ | ❌ | ✅ | ✅ |
+| Export Reports to Excel | ✅ | ✅ | ❌ | ✅ |
+| WhatsApp Notification Integration | ❌ | ❌ | ✅ | ✅ |
 | Mobile App (Android/iOS) | ✅ | ❌ | ✅ | ⏳ (Phase 2) |
 | Multi-User RBAC | ❌ | ✅ | ✅ | ✅ |
 
-**Analisis Gap**: Tandai fitur yang **TIDAK ADA DI SEMUA KOMPETITOR** tapi pengguna butuh (dari riset user interview).
+**Gap Analysis**: Highlight features that **DO NOT EXIST IN ANY COMPETITORS** but users need (from user interview research).
 
 #### 2.3 Pricing Benchmarking
 
-Catat model harga kompetitor:
-- **Freemium**: Fitur dasar gratis, fitur pro berbayar (Notion, Canva).
-- **Tiered Subscription**: Bronze/Silver/Gold (Rp 99k, Rp 299k, Rp 999k/bulan).
-- **Per-Seat Pricing**: Rp 50k/user/bulan (Slack, Mekari).
-- **Usage-Based**: Rp 5/transaksi atau Rp 0.01/API call (Stripe, Midtrans).
+Record competitor pricing models:
+- **Freemium**: Core features free, pro features paid (Notion, Canva).
+- **Tiered Subscription**: Bronze/Silver/Gold (Rp 99k, Rp 299k, Rp 999k/month).
+- **Per-Seat Pricing**: Rp 50k/user/month (Slack, Mekari).
+- **Usage-Based**: Rp 5/transaction or Rp 0.01/API call (Stripe, Midtrans).
 
 **Positioning Price Anchor**:
-- **Low-End Disruption**: 30-50% lebih murah dari incumbent (risiko: persepsi murah = fitur kurang).
-- **Premium Positioning**: 20-30% lebih mahal dengan value prop jelas (contoh: "satu-satunya dengan enkripsi end-to-end").
+- **Low-End Disruption**: 30-50% cheaper than incumbents (risk: cheap perception = fewer features).
+- **Premium Positioning**: 20-30% more expensive with a clear value proposition (e.g., "only solution with end-to-end encryption").
 
 #### 2.4 SWOT Analysis per Competitor
 
-Untuk 3 kompetitor utama, buat SWOT:
+For 3 primary competitors, build a SWOT analysis:
 
-**Contoh: Kompetitor A (Incumbent Besar)**
-- **Strengths**: Brand awareness tinggi, integrasi banyak, support 24/7.
-- **Weaknesses**: UI lawas, pricing mahal, tidak ada mobile app.
-- **Opportunities**: Ekspansi ke segment UKM (mereka fokus enterprise).
-- **Threats**: Bisa pivot cepat dengan modal besar jika lihat produk kita laku.
+**Example: Competitor A (Large Incumbent)**
+- **Strengths**: High brand awareness, extensive integrations, 24/7 support.
+- **Weaknesses**: Legacy UI, expensive pricing, no mobile app.
+- **Opportunities**: Expansion into MSME segment (they focus on enterprise).
+- **Threats**: Can pivot quickly with substantial capital if our product gains traction.
 
 #### 2.5 Positioning Map (2x2 Matrix)
 
-Buat visualisasi positioning dengan sumbu X dan Y yang relevan:
+Create a positioning visualization with relevant X and Y axes:
 
 ```
-Harga Tinggi
+High Price
       │
    [A]│     [C]
       │
 ──────┼──────────► Complexity (Simple → Advanced)
       │
-   [B]│  [Produk Anda]
+   [B]│  [Your Product]
       │
-Harga Rendah
+Low Price
 ```
 
-**Output Langkah 2**: Berkas **`docs/pm/COMPETITIVE_LANDSCAPE.md`** berisi:
-- Daftar 5-10 kompetitor dengan kategori (direct/indirect/substitute).
-- Feature matrix tabel.
+**Step 2 Output**: File **`docs/pm/COMPETITIVE_LANDSCAPE.md`** containing:
+- List of 5-10 competitors categorized by type (direct/indirect/substitute).
+- Feature matrix table.
 - Pricing benchmarking table.
-- SWOT 3 kompetitor utama.
-- Positioning map diagram (ASCII art atau link Excalidraw/Figma).
+- SWOT analysis for 3 primary competitors.
+- Positioning map diagram (ASCII art or link to Excalidraw/Figma).
 
 ---
 
-### Langkah 3: User Research (Penelitian Pengguna)
+### Step 3: User Research
 
-Tujuan: Validasi asumsi pasar dengan data kualitatif (interview) dan kuantitatif (survey).
+Goal: Validate market assumptions using qualitative data (interviews) and quantitative data (surveys).
 
 #### 3.1 Interview Guide (10+ Users, 30-45 Min Each)
 
-**Target Responden**:
-- **Untuk B2B**: Decision maker (Direktur, Manajer Keuangan, IT Manager).
-- **Untuk B2C**: Pengguna aktif solusi existing atau manual workaround.
+**Target Respondents**:
+- **For B2B**: Decision makers (Director, Finance Manager, IT Manager).
+- **For B2C**: Active users of existing solutions or manual workarounds.
 
-**Struktur Interview (5-Act Framework)**:
-1. **Warm-Up (5 min)**: Kenalkan diri, jelaskan tujuan riset, minta izin rekam.
-2. **Current State (10 min)**: "Ceritakan cara Anda menangani [problem] saat ini. Apa toolsnya? Berapa lama waktunya?"
-3. **Pain Points (10 min)**: "Apa bagian paling menyebalkan dari proses ini? Pernah gagal/error? Dampaknya apa?"
-4. **Desired Future (10 min)**: "Jika ada tongkat ajaib, seperti apa solusi ideal Anda? Fitur apa yang wajib ada?"
-5. **Willingness to Pay (5 min)**: "Jika ada software yang menyelesaikan masalah ini, berapa budget bulanan yang wajar menurut Anda?"
+**Interview Structure (5-Act Framework)**:
+1. **Warm-Up (5 min)**: Introduce self, explain research objective, request recording permission.
+2. **Current State (10 min)**: "Describe how you currently handle [problem]. What tools do you use? How much time does it take?"
+3. **Pain Points (10 min)**: "What is the most frustrating part of this process? Have you experienced failures/errors? What was the impact?"
+4. **Desired Future (10 min)**: "If you had a magic wand, what would your ideal solution look like? What features are must-haves?"
+5. **Willingness to Pay (5 min)**: "If software existed to solve this problem, what monthly budget would seem reasonable to you?"
 
-**Pertanyaan Wajib (Jobs-to-be-Done Framework)**:
+**Mandatory Questions (Jobs-to-be-Done Framework)**:
 ```
-Q: "Ketika Anda menggunakan [existing solution], 
-   pekerjaan apa yang sebenarnya Anda coba selesaikan?"
+Q: "When using [existing solution], what job are you actually trying to get done?"
 
-Q: "Apa yang membuat Anda beralih dari cara manual ke software 
-   (atau sebaliknya)?"
+Q: "What prompted you to switch from manual methods to software (or vice versa)?"
 
-Q: "Jika besok software Anda pakai hilang, apa yang akan Anda lakukan?"
+Q: "If the software you use disappeared tomorrow, what would you do?"
 ```
 
-**Red Flags dalam Interview**:
-- Responden tidak punya masalah riil (hanya senang diajak ngobrol).
-- Responden ngasih ide fitur banyak tapi tidak mau bayar ("maunya gratis aja").
-- Responden bilang "semua fitur penting" tanpa prioritas jelas.
+**Red Flags in Interviews**:
+- Respondent does not have a real problem (just enjoys chatting).
+- Respondent provides many feature ideas but refuses to pay ("wants it free only").
+- Respondent claims "all features are important" without clear priorities.
 
 #### 3.2 Survey Design (50+ Respondents, Quantitative Validation)
 
-Gunakan Google Forms / Typeform / Tally untuk survey terstruktur:
+Use Google Forms / Typeform / Tally for structured surveys:
 
-**Bagian 1: Screener (Filter Responden)**
+**Part 1: Screener (Filter Respondents)**
 ```
-Q1: Apakah Anda saat ini mengelola [specific task]? (Ya/Tidak)
-    → Jika "Tidak", stop survey.
+Q1: Do you currently manage [specific task]? (Yes/No)
+    → If "No", stop survey.
 
-Q2: Seberapa sering Anda melakukan [task] ini?
-    [ ] Setiap hari
-    [ ] Beberapa kali seminggu
-    [ ] Sebulan sekali
-    [ ] Jarang (<1x/bulan) → diskualifikasi
-```
-
-**Bagian 2: Pain Point Severity (Likert Scale 1-5)**
-```
-Q: Seberapa besar masalah berikut mengganggu pekerjaan Anda?
-   (1 = Tidak masalah, 5 = Sangat mengganggu)
-
-- Proses manual memakan waktu > 2 jam/hari: [1][2][3][4][5]
-- Sering terjadi kesalahan input data: [1][2][3][4][5]
-- Sulit melacak riwayat perubahan: [1][2][3][4][5]
+Q2: How often do you perform this [task]?
+    [ ] Daily
+    [ ] Several times a week
+    [ ] Once a month
+    [ ] Rarely (<1x/month) → disqualify
 ```
 
-**Bagian 3: Willingness to Pay (Van Westendorp Price Sensitivity)**
+**Part 2: Pain Point Severity (Likert Scale 1-5)**
 ```
-Q: Harga berapa yang menurut Anda:
-   - Terlalu murah (mencurigakan): Rp _______
-   - Murah (good deal): Rp _______
-   - Mahal (mulai ragu): Rp _______
-   - Terlalu mahal (tidak akan beli): Rp _______
+Q: How significantly do the following issues disrupt your work?
+   (1 = Not an issue, 5 = Highly disruptive)
+
+- Manual process takes > 2 hours/day: [1][2][3][4][5]
+- Frequent data entry errors: [1][2][3][4][5]
+- Difficult to track change history: [1][2][3][4][5]
 ```
 
-**Bagian 4: Intent to Buy**
+**Part 3: Willingness to Pay (Van Westendorp Price Sensitivity)**
 ```
-Q: Jika software ini tersedia hari ini dengan harga Rp [X]/bulan, 
-   apakah Anda akan:
-   [ ] Pasti beli (Strong Intent)
-   [ ] Mungkin beli (Moderate Intent)
-   [ ] Perlu diskusi dengan tim dulu
-   [ ] Tidak tertarik
+Q: At what price would you consider the product to be:
+   - Too cheap (suspicious quality): Rp _______
+   - Cheap (good deal): Rp _______
+   - Expensive (starting to hesitate): Rp _______
+   - Too expensive (would not buy): Rp _______
 ```
 
-**Gate Pass Criteria**: Minimum 30% responden pilih "Pasti beli" atau "Mungkin beli" (dari minimum 50 responden = 15 orang).
+**Part 4: Intent to Buy**
+```
+Q: If this software were available today at Rp [X]/month, would you:
+   [ ] Definitely buy (Strong Intent)
+   [ ] Probably buy (Moderate Intent)
+   [ ] Need to discuss with team first
+   [ ] Not interested
+```
+
+**Gate Pass Criteria**: Minimum 30% of respondents choose "Definitely buy" or "Probably buy" (from minimum 50 respondents = 15 people).
 
 #### 3.3 Persona Creation (Jobs-to-be-Done Framework)
 
-Buat 2-3 persona utama berdasarkan hasil interview:
+Create 2-3 primary personas based on interview results:
 
-**Template Persona**:
+**Persona Template**:
 ```markdown
-## Persona 1: Budi — Manajer Operasional UKM Retail
+## Persona 1: Budi — Retail MSME Operations Manager
 
-**Demografi**:
-- Usia: 32 tahun
-- Lokasi: Jakarta
-- Peran: Manajer toko retail chain (5 cabang)
-- Tech Savviness: Moderate (pakai Instagram, WhatsApp Business, Excel)
+**Demographics**:
+- Age: 32 years old
+- Location: Jakarta
+- Role: Retail chain store manager (5 branches)
+- Tech Savviness: Moderate (uses Instagram, WhatsApp Business, Excel)
 
 **Jobs to Be Done**:
-- Memantau stok barang real-time tanpa harus telepon ke setiap cabang.
-- Membuat laporan penjualan mingguan untuk owner tanpa manual entry.
-- Mendeteksi produk yang slow-moving untuk diskon.
+- Monitor inventory in real-time without having to call each branch.
+- Generate weekly sales reports for the owner without manual entry.
+- Identify slow-moving products for discounting.
 
-**Pain Points** (diurutkan by severity):
-1. **Critical**: Sering terjadi selisih stok fisik vs catatan (kerugian Rp 5-10 jt/bulan).
-2. **High**: Spend 4 jam/minggu untuk compile Excel dari 5 cabang.
-3. **Medium**: Owner sering tanya laporan mendadak, harus kerja lembur.
+**Pain Points** (ranked by severity):
+1. **Critical**: Frequent discrepancies between physical stock and records (losses of Rp 5-10M/month).
+2. **High**: Spends 4 hours/week compiling Excel sheets from 5 branches.
+3. **Medium**: Owner frequently asks for impromptu reports, requiring overtime.
 
 **Current Workaround**:
-- Pakai Excel + WhatsApp group untuk laporan harian staf.
-- Manual cek stok fisik setiap weekend.
+- Uses Excel + WhatsApp group for daily staff reports.
+- Manual physical stock counts every weekend.
 
-**Willingness to Pay**: Rp 200k-500k/bulan (karena bisa hemat waktu lembur + kurangi selisih stok).
+**Willingness to Pay**: Rp 200k-500k/month (saves overtime hours + reduces stock discrepancies).
 
 **Objections/Barriers**:
-- "Apakah staf cabang (pendidikan SMA) bisa pakai?"
-- "Apakah tetap bisa jalan jika internet putus?"
+- "Can branch staff (high school education) operate this?"
+- "Will it still work if internet drops?"
 ```
 
 #### 3.4 User Journey Mapping
 
-Petakan langkah pengguna dari awareness hingga retention:
+Map user stages from awareness through retention:
 
 **5-Stage Journey**:
-1. **Awareness**: Bagaimana pengguna pertama kali tahu produk ada? (Google search "software kasir", rekomendasi teman, iklan FB).
-2. **Consideration**: Apa yang mereka evaluasi? (Harga, ease of use, ada trial gratis?).
-3. **Purchase/Signup**: Apa friction saat daftar? (Butuh kartu kredit? Setup rumit?).
-4. **Onboarding/First Use**: Kapan mereka merasakan "aha moment"? (Berhasil input data pertama? Laporan pertama generate?).
-5. **Retention/Advocacy**: Kenapa mereka stay atau churn? (Value konsisten vs "ribet, balik ke Excel").
+1. **Awareness**: How do users first discover the product? (Google search "cashier software", friend recommendation, Facebook ads).
+2. **Consideration**: What do they evaluate? (Price, ease of use, free trial availability).
+3. **Purchase/Signup**: What is the signup friction? (Requires credit card? Complex setup?).
+4. **Onboarding/First Use**: When do they experience the "aha moment"? (First data entry completed? First report generated?).
+5. **Retention/Advocacy**: Why do they stay or churn? (Consistent value vs "too complex, returning to Excel").
 
 **Mapping Pain & Opportunity**:
 ```
 Stage: Onboarding
-Current Experience: "Setup butuh 2 jam, bingung import data master."
+Current Experience: "Setup takes 2 hours, confused about importing master data."
 Pain Level: ⭐⭐⭐⭐ (High)
-Opportunity: "Buat import wizard 1-klik dari Excel template."
+Opportunity: "Build a 1-click import wizard from Excel template."
 ```
 
 #### 3.5 Pain Point Prioritization (Impact-Effort Matrix)
 
-Urutkan pain points berdasarkan **Impact to User** vs **Effort to Solve**:
+Prioritize pain points based on **Impact to User** vs **Effort to Solve**:
 
 ```
 High Impact
     │
- [1]│ [2]          [1] Selisih stok = kerugian uang
-    │               → High priority (solve di MVP)
-────┼────────►    [2] Laporan manual 4 jam/minggu
-    │               → High priority (solve di MVP)
+ [1]│ [2]          [1] Stock discrepancy = monetary loss
+    │               → High priority (solve in MVP)
+────┼────────►    [2] Manual reporting 4 hours/week
+    │               → High priority (solve in MVP)
  [3]│ [4]          [3] Dark mode
     │               → Low priority (nice-to-have)
-Low Impact        [4] Integrasi akuntansi Accurate
-                    → Medium-High effort, delay ke Phase 2
+Low Impact        [4] Accurate accounting integration
+                    → Medium-High effort, postpone to Phase 2
 ```
 
-**Output Langkah 3**: Berkas **`docs/pm/USER_RESEARCH_REPORT.md`** berisi:
-- Transkrip rangkuman 10+ interview (anonymized).
+**Step 3 Output**: File **`docs/pm/USER_RESEARCH_REPORT.md`** containing:
+- Summary transcripts of 10+ interviews (anonymized).
 - Survey result summary (charts: pain severity distribution, WTP histogram, intent-to-buy %).
-- 2-3 persona lengkap dengan JTBD.
-- User journey map dengan pain/opportunity annotations.
-- Pain point prioritization matrix (screenshot atau ASCII table).
+- 2-3 complete personas with JTBD.
+- User journey map with pain/opportunity annotations.
+- Pain point prioritization matrix (screenshot or ASCII table).
 
 ---
 
-### Langkah 4: Product Strategy (Strategi Produk)
+### Step 4: Product Strategy
 
-Tujuan: Mentransformasi insight riset menjadi strategi produk jangka panjang dengan metrik sukses yang measurable.
+Goal: Transform research insights into a long-term product strategy with measurable success metrics.
 
 #### 4.1 Vision Statement (Aspirational, 3-5 Years)
 
 **Formula**: `[Target User] + [Transformed Future State] + [Societal Impact]`
 
-**Contoh**:
+**Example**:
 ```
-Vision: "Menjadi platform manajemen stok terpercaya bagi 100.000 UKM retail 
-         Indonesia, menghilangkan kerugian akibat selisih stok, dan 
-         memberdayakan owner usaha kecil untuk fokus ke pertumbuhan bisnis 
-         daripada pusing administrasi."
+Vision: "To become the trusted inventory management platform for 100,000 Indonesian 
+         retail MSMEs, eliminating losses caused by stock discrepancies, and 
+         empowering small business owners to focus on growth rather than 
+         administrative headaches."
 ```
 
-**Test Kualitas Vision**:
-- ✅ Inspiratif (bikin orang excited kerja ke arah itu).
-- ✅ Aspirational (belum tercapai hari ini, tapi realistis dalam 3-5 tahun).
-- ❌ Terlalu generik ("menjadi platform terbaik di Indonesia").
+**Vision Quality Test**:
+- ✅ Inspiring (gets team excited to work toward it).
+- ✅ Aspirational (not achieved today, but realistic in 3-5 years).
+- ❌ Too generic ("become the best platform in Indonesia").
 
 #### 4.2 Mission Statement (Tactical, Current State)
 
 **Formula**: `[What We Do] + [For Whom] + [How We Do It Differently]`
 
-**Contoh**:
+**Example**:
 ```
-Mission: "Membantu pemilik toko retail dengan 2-10 cabang melacak stok 
-          real-time melalui aplikasi mobile yang bisa digunakan staf 
-          dengan training <30 menit, tanpa butuh internet 24/7."
+Mission: "Help retail store owners with 2-10 branches track real-time inventory 
+          through a mobile app operable by staff with <30 minutes of training, 
+          without requiring 24/7 internet connectivity."
 ```
 
-**Test Kualitas Mission**:
-- ✅ Actionable (jelas apa yang dikerjakan hari ini).
-- ✅ Specific (bukan "membantu semua orang").
-- ✅ Differentiated (ada unique "how").
+**Mission Quality Test**:
+- ✅ Actionable (clear what is being worked on today).
+- ✅ Specific (not "helping everyone").
+- ✅ Differentiated (has a unique "how").
 
 #### 4.3 North Star Metric Definition + Rationale
 
-**North Star Metric (NSM)**: Satu metrik utama yang paling merepresentasikan value yang user terima.
+**North Star Metric (NSM)**: The single key metric that best captures the core value delivered to users.
 
-**Template Definisi**:
+**Definition Template**:
 ```markdown
-## North Star Metric: [Nama Metrik]
+## North Star Metric: [Metric Name]
 
-**Formula**: [Rumus kalkulasi]
+**Formula**: [Calculation formula]
 
-**Rationale (Kenapa Metrik Ini?)**:
-- Leading indicator untuk revenue (korelasi kuat dengan retention/MRR).
-- Langsung mencerminkan user value (bukan vanity metric).
-- Bisa dipengaruhi oleh tim product/engineering (actionable).
+**Rationale (Why This Metric?)**:
+- Leading indicator for revenue (strong correlation with retention/MRR).
+- Directly reflects user value (not a vanity metric).
+- Actionable and influenceable by the product/engineering team.
 
-**Target Awal (3-6 Bulan Pertama)**: [Angka baseline → target]
+**Initial Target (First 3-6 Months)**: [Baseline number → target]
 
 **Breakdown Metrics (Tree)**:
 ```
 
-**Contoh: SaaS Inventory Management**
+**Example: Inventory Management SaaS**
 ```
-North Star Metric: "Jumlah Transaksi Stok yang Di-track per Minggu"
-  (Alasan: Semakin banyak transaksi di-track, semakin besar value untuk 
-   user karena data akurat. Korelasi kuat dengan retention.)
+North Star Metric: "Number of Tracked Stock Transactions per Week"
+  (Rationale: The more transactions tracked, the higher the value delivered 
+   to users through accurate data. Strong correlation with retention.)
 
-Target: 500 transaksi/minggu/user → 2000 transaksi/minggu/user (bulan ke-6)
+Target: 500 transactions/week/user → 2,000 transactions/week/user (Month 6)
 
 Breakdown:
 ├─ Acquisition: New users sign up per week
-├─ Activation: % users yang input ≥10 transaksi di minggu pertama
-├─ Engagement: % users yang aktif minimal 3x/minggu
-└─ Retention: % users yang masih aktif di bulan ke-3
+├─ Activation: % users entering ≥10 transactions in week 1
+├─ Engagement: % users active at least 3x/week
+└─ Retention: % users still active in month 3
 ```
 
-**Anti-Pattern NSM yang Salah**:
-- ❌ "Total registered users" → vanity metric (banyak daftar tapi tidak pakai).
-- ❌ "Time spent in app" → bukan selalu baik (user mungkin bingung).
+**Flawed NSM Anti-Patterns**:
+- ❌ "Total registered users" → vanity metric (many register but never use it).
+- ❌ "Time spent in app" → not necessarily good (users might be confused).
 
 #### 4.4 Value Proposition Canvas (Strategyzer Framework)
 
-Gunakan template Gains/Pains/Jobs dari Strategyzer.com:
+Use the Gains/Pains/Jobs template from Strategyzer.com:
 
 **Customer Profile (Right Side)**:
-1. **Customer Jobs**: Apa yang user coba selesaikan? (functional, social, emotional).
-2. **Pains**: Apa yang menghalangi mereka selesaikan job? (frustrasi, hambatan, risiko).
-3. **Gains**: Apa outcome yang mereka inginkan? (saving time, saving money, status).
+1. **Customer Jobs**: What is the user trying to get done? (functional, social, emotional).
+2. **Pains**: What obstructs them from completing the job? (frustrations, obstacles, risks).
+3. **Gains**: What outcomes do they desire? (saving time, saving money, status).
 
 **Value Map (Left Side)**:
-1. **Products & Services**: Apa yang produk tawarkan?
-2. **Pain Relievers**: Bagaimana produk menghilangkan pains?
-3. **Gain Creators**: Bagaimana produk menciptakan gains?
+1. **Products & Services**: What does the product offer?
+2. **Pain Relievers**: How does the product eliminate pains?
+3. **Gain Creators**: How does the product produce gains?
 
-**Contoh Mapping**:
+**Mapping Example**:
 ```
-Customer Job: "Melacak stok real-time tanpa harus telepon cabang."
+Customer Job: "Track real-time stock without calling branches."
 
-Pain: "Staf cabang sering lupa update, data tidak reliable."
-Pain Reliever: "Auto-sync setiap transaksi ke cloud tanpa manual entry."
+Pain: "Branch staff frequently forget to update; data is unreliable."
+Pain Reliever: "Auto-sync every transaction to cloud without manual entry."
 
-Gain: "Bisa bikin keputusan restock cepat, tidak kehabisan barang best-seller."
-Gain Creator: "Alert otomatis jika stok di bawah threshold."
+Gain: "Make rapid restocking decisions; avoid stockouts of best-sellers."
+Gain Creator: "Automated alert when stock drops below threshold."
 ```
 
 #### 4.5 Strategic Pillars (3-5 Core Focus Areas)
 
-Tentukan 3-5 pilar strategis untuk guide product roadmap:
+Define 3-5 strategic pillars to guide the product roadmap:
 
-**Template Pilar**:
+**Pillar Template**:
 ```markdown
-## Pilar 1: [Nama Pilar]
+## Pillar 1: [Pillar Name]
 
-**Definisi**: [1 kalimat positioning pilar ini]
+**Definition**: [1-sentence positioning of this pillar]
 
-**Key Initiatives (6-12 Bulan)**:
-- [ ] Inisiatif A
-- [ ] Inisiatif B
+**Key Initiatives (6-12 Months)**:
+- [ ] Initiative A
+- [ ] Initiative B
 
-**Success Criteria**: [Metrik untuk ukur keberhasilan pilar]
+**Success Criteria**: [Metric to evaluate pillar success]
 ```
 
-**Contoh: SaaS Inventory**
+**Example: Inventory SaaS**
 ```
-Pilar 1: Reliability & Offline-First
-  → Sistem harus tetap bisa dipakai saat internet mati.
+Pillar 1: Reliability & Offline-First
+  → System must remain fully functional during internet outages.
   Key Initiatives: Implement IndexedDB sync, background queue, conflict resolution.
-  Success: ≥95% transaksi berhasil di-sync tanpa data loss.
+  Success: ≥95% transactions successfully synced without data loss.
 
-Pilar 2: Ease of Use for Non-Tech Staff
-  → Onboarding <30 menit, tidak butuh training formal.
-  Key Initiatives: Wizard setup, video tutorial in-app, Indonesian UI/UX.
-  Success: ≥80% new users selesaikan first transaction dalam 10 menit.
+Pillar 2: Ease of Use for Non-Tech Staff
+  → Onboarding in <30 minutes, requiring no formal training.
+  Key Initiatives: Setup wizard, in-app video tutorials, localized UI/UX.
+  Success: ≥80% new users complete their first transaction within 10 minutes.
 
-Pilar 3: Actionable Insights (bukan hanya data dump)
-  → User dapat keputusan bisnis langsung dari dashboard.
+Pillar 3: Actionable Insights (not just data dumps)
+  → Users gain actionable business decisions directly from the dashboard.
   Key Initiatives: Predictive restock alerts, slow-moving product detection.
-  Success: ≥50% users pakai insights untuk bikin keputusan per minggu.
+  Success: ≥50% users use insights to make decisions weekly.
 ```
 
-**Output Langkah 4**: Berkas **`docs/pm/PRODUCT_STRATEGY.md`** berisi:
+**Step 4 Output**: File **`docs/pm/PRODUCT_STRATEGY.md`** containing:
 - Vision & Mission Statement.
-- North Star Metric dengan formula, rationale, target, dan breakdown tree.
+- North Star Metric with formula, rationale, target, and breakdown tree.
 - Value Proposition Canvas (Gains/Pains/Jobs mapping).
-- 3-5 Strategic Pillars dengan initiatives dan success criteria.
+- 3-5 Strategic Pillars with initiatives and success criteria.
 
 ---
 
-## 3. Adaptasi Berdasarkan Skala Proyek
+## 3. Adaptation Based on Project Scale
 
-| Aspek | Solo Dev Product (Mandiri) | B2B SaaS Client | Enterprise Client |
+| Aspect | Solo Dev Product (Self-Initiated) | B2B SaaS Client | Enterprise Client |
 | :--- | :--- | :--- | :--- |
-| **Market Research Depth** | TAM/SAM/SOM estimasi cepat (1-2 hari), pakai data sekunder | Riset industri formal, lakukan primary research (survey 50+ responden) | Commissioned report (partnership dengan konsultan riset market), compliance check mendalam |
-| **Competitive Analysis** | 3-5 kompetitor utama, feature matrix dasar | 5-10 kompetitor, SWOT lengkap, pricing benchmarking detail | 10+ kompetitor, Porter's Five Forces, IP/patent landscape analysis |
-| **User Research** | 5-10 interview, survey 30+ responden | 10-20 interview stakeholder, survey 50-100 responden, persona validation workshop | Multi-phase research (discovery → validation → usability testing), 30+ interview, 200+ survey, ethnographic study |
-| **Product Strategy** | Vision/Mission 1-page, NSM sederhana | Vision/Mission formal, NSM dengan breakdown metrics, Value Prop Canvas | Business case formal, 3-year roadmap, strategic alignment dengan corporate OKRs |
+| **Market Research Depth** | Quick TAM/SAM/SOM estimate (1-2 days) using secondary data | Formal industry research, conduct primary research (50+ survey respondents) | Commissioned report (partnership with market research consultancy), in-depth compliance audit |
+| **Competitive Analysis** | 3-5 primary competitors, baseline feature matrix | 5-10 competitors, full SWOT, detailed pricing benchmarking | 10+ competitors, Porter's Five Forces, IP/patent landscape analysis |
+| **User Research** | 5-10 interviews, 30+ survey respondents | 10-20 stakeholder interviews, 50-100 survey respondents, persona validation workshop | Multi-phase research (discovery → validation → usability testing), 30+ interviews, 200+ surveys, ethnographic study |
+| **Product Strategy** | 1-page Vision/Mission, simplified NSM | Formal Vision/Mission, NSM with metric breakdown, Value Prop Canvas | Formal business case, 3-year roadmap, strategic alignment with corporate OKRs |
 
 ---
 
-## 4. Artefak Keluaran (Deliverable)
+## 4. Output Artifacts (Deliverables)
 
-Hasil akhir dari Modul 00 adalah **4 dokumen PM** yang dibuat menggunakan template di folder `templates/01-discovery-commercial/`:
+The final deliverables of Module 00 are **4 PM documents** created using the templates in the `templates/01-discovery-commercial/` directory:
 
-1. **`docs/pm/MARKET_RESEARCH.md`**: Hasil TAM/SAM/SOM, industry trends, regulatory landscape.
+1. **`docs/pm/MARKET_RESEARCH.md`**: TAM/SAM/SOM findings, industry trends, regulatory landscape.
    - Template: `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`
-2. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: Analisis 5-10 kompetitor, feature matrix, SWOT, positioning map.
+2. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: 5-10 competitor analysis, feature matrix, SWOT, positioning map.
    - Template: `templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md`
-3. **`docs/pm/USER_RESEARCH_REPORT.md`**: Rangkuman interview/survey, persona JTBD, user journey, pain matrix.
+3. **`docs/pm/USER_RESEARCH_REPORT.md`**: Interview/survey summaries, JTBD personas, user journey, pain matrix.
    - Template: `templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md`
 4. **`docs/pm/PRODUCT_STRATEGY.md`**: Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars.
    - Template: `templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md`
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Semua dokumen WAJIB disimpan di dalam folder **`docs/pm/`** (bukan di root direktori).
-> Root direktori `./` dicadangkan secara eksklusif hanya untuk 7 berkas kendali AI (Agent Harness) saat Modul 06 dimulai.
+> 📁 **ABSOLUTE FILE LOCATION RULE**:
+> All documents MUST be stored inside the **`docs/pm/`** directory (never in the root directory).
+> The root directory `./` is reserved exclusively for the 7 AI control files (Agent Harness) once Module 06 begins.
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 🛑 [GATE] EXIT & MANDATORY STOP PROTOCOL
 
-Setelah keempat berkas PM selesai ditulis:
+After all four PM documents have been written:
 
-1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 01 dalam giliran (turn) yang sama!**
+1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 01 within the same turn!**
 
-2. **VERIFIKASI DIRI (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/MARKET_RESEARCH.md')` → Confirm TAM/SAM/SOM ada, sumber data dicantumkan
-   - [ ] `read_file('docs/pm/COMPETITIVE_LANDSCAPE.md')` → Min 5 kompetitor, feature matrix ada, positioning map ada
-   - [ ] `read_file('docs/pm/USER_RESEARCH_REPORT.md')` → Min 10 interview insights, survey result (sample size ≥30), 2-3 persona lengkap
-   - [ ] `read_file('docs/pm/PRODUCT_STRATEGY.md')` → Vision/Mission tertulis, North Star Metric defined dengan formula + rationale, 3-5 Strategic Pillars ada
+2. **SELF-VERIFICATION CHECKLIST**:
+   - [ ] `read_file('docs/pm/MARKET_RESEARCH.md')` → Confirm TAM/SAM/SOM exists, data sources cited
+   - [ ] `read_file('docs/pm/COMPETITIVE_LANDSCAPE.md')` → Min 5 competitors, feature matrix present, positioning map present
+   - [ ] `read_file('docs/pm/USER_RESEARCH_REPORT.md')` → Min 10 interview insights, survey results (sample size ≥30), 2-3 complete personas
+   - [ ] `read_file('docs/pm/PRODUCT_STRATEGY.md')` → Vision/Mission written, North Star Metric defined with formula + rationale, 3-5 Strategic Pillars present
 
 3. **GATE PASS CRITERIA** (Market Validation):
-   - [ ] **Intent-to-Buy ≥30%**: Dari survey minimal 50 responden, minimal 30% (15 orang) pilih "Pasti beli" atau "Mungkin beli".
-   - [ ] **Competitive Moat Identified**: Ada minimal 1 diferensiasi jelas yang kompetitor tidak punya atau sulit tiru (contoh: offline-first architecture, specific niche focus).
-   - [ ] **North Star Metric Measurable**: NSM bisa di-track dengan instrumentasi teknis (event logging, DB query).
+   - [ ] **Intent-to-Buy ≥30%**: From a survey of at least 50 respondents, at least 30% (15 people) select "Definitely buy" or "Probably buy".
+   - [ ] **Competitive Moat Identified**: At least 1 clear differentiator that competitors lack or cannot easily replicate (e.g., offline-first architecture, specific niche focus).
+   - [ ] **North Star Metric Measurable**: NSM can be tracked with technical instrumentation (event logging, DB queries).
 
-   **Jika Gate Pass GAGAL**:
-   - Intent-to-buy <30% → **PIVOT atau STOP**: Ide tidak validated, jangan lanjut ke development.
-   - Tidak ada competitive moat → **PIVOT positioning** atau temukan unique value prop lain.
-   - NSM tidak measurable → Revisi NSM hingga bisa di-instrument.
+   **If Gate Pass FAILS**:
+   - Intent-to-buy <30% → **PIVOT or STOP**: Idea is unvalidated; do not proceed to development.
+   - No competitive moat → **PIVOT positioning** or identify alternative unique value propositions.
+   - NSM not measurable → Revise NSM until it can be instrumented.
 
-4. Tampilkan ringkasan hasil Modul 00 kepada pengguna:
+4. Present a summary of Module 00 results to the user:
    ```
-   ## Ringkasan Product Discovery & Strategy
+   ## Product Discovery & Strategy Summary
 
    **Market Opportunity**:
-   - TAM: [angka], SAM: [angka], SOM Tahun 1: [angka]
-   - Tren industri: [insight 1-2 kalimat]
-   - Regulatory blocker: [ada/tidak]
+   - TAM: [number], SAM: [number], SOM Year 1: [number]
+   - Industry trend: [1-2 sentence insight]
+   - Regulatory blocker: [yes/no]
 
    **Competitive Landscape**:
-   - [X] kompetitor direct, [Y] kompetitor indirect
-   - Positioning gap: [diferensiasi unik kita]
-   - Pricing anchor: [strategi harga]
+   - [X] direct competitors, [Y] indirect competitors
+   - Positioning gap: [our unique differentiator]
+   - Pricing anchor: [pricing strategy]
 
    **User Validation**:
-   - [X] interview, [Y] survey responden
+   - [X] interviews, [Y] survey respondents
    - Top 3 Pain Points: [1], [2], [3]
    - Intent-to-Buy: [Z]% (Gate Pass: ✅/❌)
 
    **Product Strategy**:
-   - North Star Metric: [nama metrik + target]
-   - Strategic Pillars: [pilar 1], [pilar 2], [pilar 3]
+   - North Star Metric: [metric name + target]
+   - Strategic Pillars: [pillar 1], [pillar 2], [pillar 3]
    ```
 
-5. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Modul 00 (Product Discovery & Strategy) telah selesai dengan [X]% intent-to-buy dan North Star Metric '[NSM]' telah defined. Gate validation: [PASS/FAIL]. Apakah strategi produk ini sudah sesuai, atau ada insight yang perlu disesuaikan sebelum kita lanjut ke Modul 01 (Idea & Feasibility)?*
+5. **END YOUR RESPONSE (END TURN)** and ask for confirmation from the user:
+   > *"Module 00 (Product Discovery & Strategy) is complete with [X]% intent-to-buy and North Star Metric '[NSM]' defined. Gate validation: [PASS/FAIL]. Does this product strategy align with expectations, or are there insights to adjust before proceeding to Module 01 (Idea & Feasibility)?*
    > 
-   > *Jika Gate FAIL, saya rekomendasikan PIVOT atau STOP project. Jika Gate PASS, kita bisa lanjut ke Modul 01 untuk breakdown teknis dan feasibility check."*
+   > *If the Gate FAILS, I recommend PIVOTING or STOPPING the project. If the Gate PASSES, we can proceed to Module 01 for technical breakdown and feasibility checks."*
 
-6. Agen HANYA boleh melangkah ke Modul 01 SETELAH pengguna memberikan respon persetujuan (misal: *"ok"*, *"lanjut"*, *"setuju"*) DAN Gate Pass criteria terpenuhi.
+6. The agent may ONLY proceed to Module 01 AFTER the user provides an affirmative response (e.g., *"ok"*, *"proceed"*, *"approved"*) AND Gate Pass criteria are met.

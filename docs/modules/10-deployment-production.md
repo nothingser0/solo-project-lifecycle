@@ -1,85 +1,83 @@
-# Modul 10: Deployment & Production Go-Live (Peluncuran Resmi ke Lingkungan Produksi)
+# Module 10: Deployment & Production Go-Live (Official Launch to Production Environment)
 
->
-
-Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah memindahkan kode yang telah lolos UAT dari branch `staging` ke branch `main`, mengonfigurasi infrastruktur produksi resmi (Domain DNS, SSL TLS 1.3, Cloudflare, Basis Data Produksi), mengeksekusi migrasi basis data tanpa henti (*zero-downtime*), mengaktifkan pemantauan observabilitas, dan melakukan pengujian pasca-rilis (*Post-Deployment Smoke Test*) hingga sistem resmi **LIVE ON PRODUCTION**.
+This module is the tenth phase in the software project lifecycle for solo developers. Its purpose is to promote UAT-passed code from the `staging` branch to the `main` branch, configure official production infrastructure (Domain DNS, SSL TLS 1.3, Cloudflare, Production Database), execute zero-downtime database migrations, enable observability monitoring, and conduct post-deployment smoke testing until the system is officially **LIVE ON PRODUCTION**.
 
 ---
 
-## 1. Siklus Eksekusi Modul 10
+## 1. Execution Cycle of Module 10
 
 ```text
-[ INPUT: Berita Acara UAT Sah (Modul 09) & Kode Stabil di Branch staging ]
+[ INPUT: Valid UAT Sign-Off Report (Module 09) & Stable Code on staging Branch ]
                                     │
                                     ▼
-[ LANGKAH 1: [GATE] Pemeriksaan Pra-Rilis (Go / No-Go Gate) ]
-  • Verifikasi Berita Acara UAT Bertandatangan (Prasyarat Mutlak)
-  • Waktu Rilis Aman: Dilarang rilis Jumat sore atau menjelang hari libur
-  • Snapshot Backup Basis Data Sebelum Eksekusi Migrasi
+[ STEP 1: [GATE] Pre-Release Verification (Go / No-Go Gate) ]
+  • Verify Signed UAT Sign-Off Report (Mandatory Prerequisite)
+  • Safe Release Window: Prohibited to release Friday afternoon or before holidays
+  • Database Snapshot Backup Prior to Migration Execution
                                     │
                                     ▼
-[ LANGKAH 2: Penggabungan Branch Git & Pelabelan Versi Resmi (SemVer Tag) ]
+[ STEP 2: Git Branch Merge & Official Version Tagging (SemVer Tag) ]
   • Merge staging ──► main (Clean Production Codebase)
-  • Beri Label Rilis: git tag -a v1.0.0 -m "Release Production v1.0.0"
-  • Push ke Remote Repository untuk Memicu Pipeline CI/CD Produksi
+  • Tag Release: git tag -a v1.0.0 -m "Release Production v1.0.0"
+  • Push to Remote Repository to Trigger Production CI/CD Pipeline
                                     │
                                     ▼
-[ LANGKAH 3: Penyediaan Infrastruktur & Kunci Rahasia Produksi ]
-  • Konfigurasi DNS Domain Resmi (A / CNAME Record) & Sertifikat SSL TLS 1.3
-  • Konfigurasi Variabel Lingkungan Produksi (.env.production - Kunci Asli)
-  • Pengalihan Kredensial Payment Gateway dari Sandbox ──► Production Mode
+[ STEP 3: Infrastructure Provisioning & Production Secrets ]
+  • Configure Official Domain DNS (A / CNAME Record) & SSL TLS 1.3 Certificate
+  • Configure Production Environment Variables (.env.production - Live Keys)
+  • Switch Payment Gateway Credentials from Sandbox ──► Production Mode
                                     │
                                     ▼
-[ LANGKAH 4: Eksekusi Migrasi Basis Data Produksi (Zero-Downtime) ]
-  • Eksekusi Migrasi Skema SQL DDL pada Database Produksi
-  • Impor Data Riil Klien Terverifikasi (Hasil Modul 08)
+[ STEP 4: Production Database Migration Execution (Zero-Downtime) ]
+  • Execute SQL DDL Schema Migration on Production Database
+  • Import Verified Client Real Data (Result from Module 08)
                                     │
                                     ▼
-[ LANGKAH 5: Pengaktifan Pemantauan & Bot Alert (Observability Live) ]
-  • Hubungkan Sentry / Error Tracker Otomatis
-  • Setup Uptime Healthcheck Monitor (Ping setiap 60 detik ke /api/health)
-  • Verifikasi Jadwal Otomatisasi Daily Backup Database
+[ STEP 5: Monitoring Activation & Alert Bots (Live Observability) ]
+  • Connect Sentry / Automated Error Tracker
+  • Setup Uptime Healthcheck Monitor (Ping every 60 seconds to /api/health)
+  • Verify Automated Daily Database Backup Schedule
                                     │
                                     ▼
-[ LANGKAH 6: Uji Verifikasi Pasca-Deployment (Production Smoke Test) ]
-  • Uji Coba Transaksi Nyata di Domain Publik (https://app.klien.com)
-  • Penyusunan Dokumen GO_LIVE_VERIFICATION_REPORT.md
+[ STEP 6: Post-Deployment Verification Testing (Production Smoke Test) ]
+  • Test Real Transactions on Public Domain (https://app.client.com)
+  • Prepare GO_LIVE_VERIFICATION_REPORT.md Document
                                     │
                                     ▼
-[ OUTPUT: Sistem LIVE di Produksi & GO_LIVE_REPORT.md ] ──► Siap Masuk ke Modul 11: Handover & BAST
+[ OUTPUT: System LIVE on Production & GO_LIVE_REPORT.md ] ──► Ready to Proceed to Module 11: Handover & BAST
 ```
 
 ---
 
-## 2. Tiga Aturan Emas Deployment Solo Developer
+## 2. Three Golden Rules of Solo Developer Deployment
 
-1. **Aturan "No Friday Deployment"**:
-   - DILARANG melakukan peluncuran sistem baru ke lingkungan produksi pada hari **Jumat sore, akhir pekan, atau malam sebelum hari libur nasional**.
-   - **Agent Check**: Before deploying, check current day. If Friday >14:00, Saturday, or Sunday → prompt user: "⚠️ Deploy ditunda. Reschedule to Tuesday-Thursday 09:00-14:00 for optimal support window."
-   - Jika terjadi kendala tak terduga, solo developer akan terjebak lembur darurat di akhir pekan tanpa dukungan tim teknis klien atau customer support vendor cloud.
-   - Waktu rilis ideal: **Selasa atau Rabu pukul 09.00–11.00 pagi** (seluruh pihak siaga penuh).
-2. **Kunci Kredensial Asli (Zero Sandbox Keys in Prod)**:
-   - Pastikan variabel lingkungan di server produksi telah diganti dengan akun asli (Live API Key Payment Gateway, Live SMTP, Live Cloudflare R2), bukan akun pengujian sandbox staging.
-3. **Wajib Memiliki Rencana Mundur Darurat (Rollback Plan)**:
-   - Sebelum menyentuh tombol deploy, solo dev harus tahu persis cara mengembalikan sistem ke kondisi semula dalam waktu < 15 menit jika terjadi kegagalan fatal.
+1. **The "No Friday Deployment" Rule**:
+   - PROHIBITED from launching a new system into production on **Friday afternoon, weekends, or the eve of a national public holiday**.
+   - **Agent Check**: Before deploying, check current day. If Friday >14:00, Saturday, or Sunday → prompt user: "⚠️ Deployment postponed. Reschedule to Tuesday-Thursday 09:00-14:00 for optimal support window."
+   - If unexpected issues arise, the solo developer will be trapped in emergency weekend overtime without support from the client's technical team or cloud vendor customer support.
+   - Ideal release window: **Tuesday or Wednesday at 09:00–11:00 AM** (all parties on full alert).
+2. **Real Production Credentials (Zero Sandbox Keys in Prod)**:
+   - Ensure environment variables on the production server have been replaced with real accounts (Live Payment Gateway API Key, Live SMTP, Live Cloudflare R2), not staging sandbox test accounts.
+3. **Mandatory Emergency Rollback Plan**:
+   - Before hitting the deploy button, the solo dev must know exactly how to restore the system to its previous state within < 15 minutes in the event of a fatal failure.
 
 ---
 
-## 3. Langkah demi Langkah Eksekusi
+## 3. Step-by-Step Execution
 
-### Langkah 1: Pemeriksaan Pra-Rilis (Pre-Flight Checklist)
+### Step 1: Pre-Release Verification (Pre-Flight Checklist)
 
-1. Periksa berkas `UAT_SIGNOFF_REPORT.md`: Pastikan tanda tangan Single PIC Klien sah.
+1. Verify `UAT_SIGNOFF_REPORT.md` file: Ensure the Client Single PIC signature is valid.
 
-2. **CRITICAL: Verifikasi Production Environment Variables**
+2. **CRITICAL: Verify Production Environment Variables**
 
-   Sebelum menyentuh DNS atau deployment, verifikasi ENV production:
+   Before touching DNS or deployment, verify production ENV:
 
    ```bash
    # Verify payment gateway mode
    echo $PAYMENT_GATEWAY_MODE
-   # Expected: "production" atau "live"
-   # NEVER: "sandbox" atau "test"
+   # Expected: "production" or "live"
+   # NEVER: "sandbox" or "test"
 
    # Verify database URL
    echo $DATABASE_URL | grep -o 'prod\|production\|live'
@@ -115,7 +113,7 @@ Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk
    - [ ] `SENTRY_DSN` with `environment: "production"`
    - [ ] `SESSION_SECRET` unique to production
 
-   **STOP deployment jika masih ada sandbox keys!**
+   **STOP deployment if sandbox keys are still present!**
 
 3. **Rollback Plan Dry-Run Verification**:
 
@@ -125,56 +123,56 @@ Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk
 
    **WARNING**: DDL migrations (ADD COLUMN, DROP TABLE) may not be reversible without data loss. Test rollback procedure in staging first.
 
-4. Ambil snapshot backup manual database produksi (jika memperbarui sistem yang sudah ada):
+4. Take a manual snapshot backup of the production database (if updating an existing system):
    ```bash
    pg_dump -U postgres -d legal_vault_prod -F c -b -v -f "backup-pre-deploy-$(date +%Y%m%d).dump"
    ```
 
-### Langkah 2: Merge Git & Pelabelan Versi Resmi
-1. Pindah ke branch `main` dan gabungkan kode dari `staging`:
+### Step 2: Git Merge & Official Version Tagging
+1. Switch to branch `main` and merge code from `staging`:
    ```bash
    git checkout main
    git merge --no-ff staging
    ```
-2. Berikan label tag versi resmi:
+2. Tag the official version release:
    ```bash
    git tag -a v1.0.0 -m "Release Production v1.0.0 - Go-Live"
    git push origin main --tags
    ```
 
-### Langkah 3: Konfigurasi DNS & SSL
+### Step 3: DNS & SSL Configuration
 
-1. Masuk ke dashboard DNS penyedia domain klien (Cloudflare, Niagahoster, Route53).
-2. Arahkan DNS Record:
-   - `Type A`: `@` → IP Server Produksi / Load Balancer.
-   - `CNAME`: `app` atau `www` → domain hosting (Vercel / Cloud Run).
-3. Verifikasi propagasi DNS menggunakan `dig` atau `nslookup`.
-4. Pastikan sertifikat SSL terbit dan mendapatkan peringkat minimal **Grade A** di SSL Labs (TLS 1.3 aktif).
+1. Log into the client domain provider's DNS dashboard (Cloudflare, Niagahoster, Route53).
+2. Point DNS Records:
+   - `Type A`: `@` → Production Server IP / Load Balancer.
+   - `CNAME`: `app` or `www` → hosting domain (Vercel / Cloud Run).
+3. Verify DNS propagation using `dig` or `nslookup`.
+4. Ensure SSL certificate is issued and achieves at least a **Grade A** rating on SSL Labs (TLS 1.3 enabled).
 
-### Langkah 4: Impor Data Riil Klien Terverifikasi (Hasil Modul 08)
+### Step 4: Import Verified Client Real Data (Result from Module 08)
 
-**PENTING**: Data ini berasal dari hasil Modul 08 yang telah lolos UAT. Pilih salah satu dari 3 metode berikut untuk memindahkan data ke production:
+**IMPORTANT**: This data originates from Module 08 results that passed UAT. Choose one of the following 3 methods to migrate data to production:
 
-**PILIHAN A: Re-run ETL Script ke Production** (Recommended - Fresh Import)
+**OPTION A: Re-run ETL Script to Production** (Recommended - Fresh Import)
 
-Jika data source (Excel/CSV) masih tersedia dan tidak berubah sejak UAT:
+If source data (Excel/CSV) is still available and unchanged since UAT:
 
 ```bash
-# Jalankan ETL script langsung ke production DB
-DATABASE_URL="postgresql://user:***@prod-db:5432/db" node scripts/etl-import.js --source data/klien-final.xlsx
+# Run ETL script directly against production DB
+DATABASE_URL="postgresql://user:***@prod-db:5432/db" node scripts/etl-import.js --source data/client-final.xlsx
 
 # Verify row count
 psql $DATABASE_URL -c "SELECT COUNT(*) FROM documents;"
 psql $DATABASE_URL -c "SELECT COUNT(*) FROM users;"
 ```
 
-**Benefit**: Data fresh, tidak ada staging artifacts, reconciliation sama seperti UAT.
+**Benefit**: Fresh data, no staging artifacts, reconciliation identical to UAT.
 
 ---
 
-**PILIHAN B: Copy Staging Database ke Production** (Faster - Staging Dump)
+**OPTION B: Copy Staging Database to Production** (Faster - Staging Dump)
 
-Jika data di staging DB sudah lolos UAT dan tidak ada perubahan:
+If staging DB data has already passed UAT without alterations:
 
 **Pre-Migration Test Data Verification** (MANDATORY before dump):
 
@@ -196,26 +194,26 @@ psql $STAGING_DB_URL -c "SELECT COUNT(*) FROM users WHERE email LIKE '%@example.
 # Dump staging DB
 pg_dump -U postgres -h staging-db -d legal_vault_staging -F c -b -v -f staging-uat-approved.dump
 
-# Restore ke production DB
+# Restore to production DB
 pg_restore -U postgres -h prod-db -d legal_vault_prod -v staging-uat-approved.dump
 
 # Verify row count match
 psql postgresql://prod-db/legal_vault_prod -c "SELECT COUNT(*) FROM documents;"
 ```
 
-**Risk**: Pastikan staging DB bersih, tidak ada test data yang tercampur.
+**Risk**: Ensure staging DB is clean and no test data is mixed in.
 
 ---
 
-**PILIHAN C: Manual Migration (Last Resort)**
+**OPTION C: Manual Migration (Last Resort)**
 
-Jika volume data kecil (<100 rows) dan ETL script tidak tersedia:
+If data volume is small (<100 rows) and ETL script is unavailable:
 
 ```bash
 # Export staging data to CSV
 psql postgresql://staging-db/legal_vault_staging -c "COPY documents TO STDOUT WITH CSV HEADER" > documents.csv
 
-# Import ke production
+# Import to production
 psql postgresql://prod-db/legal_vault_prod -c "COPY documents FROM STDIN WITH CSV HEADER" < documents.csv
 ```
 
@@ -237,46 +235,46 @@ psql $PROD_DB_URL -c "SELECT COUNT(*) FROM documents d LEFT JOIN users u ON d.cr
 # Expected: 0 (no orphaned documents)
 
 # Verify application-level data access
-curl -X POST https://app.klien.com/api/auth/login \
-  -d '{"email":"admin@klien.com","password":"***"}' \
+curl -X POST https://app.client.com/api/auth/login \
+  -d '{"email":"admin@client.com","password":"***"}' \
   | jq '.token' # Should return valid JWT
 
 # Verify document retrieval
-curl https://app.klien.com/api/documents?limit=5 \
+curl https://app.client.com/api/documents?limit=5 \
   -H "Authorization: Bearer ***" # Should return real documents
 ```
 
-**WAJIB cocokkan row count dengan UAT_SIGNOFF_REPORT.md Section "Data Migration Reconciliation"**.
+**MANDATORY: Match row count with UAT_SIGNOFF_REPORT.md Section "Data Migration Reconciliation"**.
 
 ---
 
-### Langkah 5: Eksekusi Migrasi Skema Database Produksi
+### Step 5: Production Database Schema Migration Execution
 
-Jalankan migrasi schema SQL DDL pada database produksi:
+Execute SQL DDL schema migration on the production database:
 
 ```bash
 DATABASE_URL="postgresql://user:***@prod-db:5432/db" pnpm db:migrate
 ```
 
-*Catatan Solo Dev: Pastikan skrip migrasi bersifat aditif (hanya menambah kolom/tabel baru), dilarang menggunakan perintah destruktif (`DROP COLUMN` / `TRUNCATE`).*
+*Solo Dev Note: Ensure migration scripts are additive (only adding new columns/tables); destructive commands (`DROP COLUMN` / `TRUNCATE`) are strictly prohibited.*
 
-### Langkah 5: Pengaktifan Observabilitas & Alerting
-1. Pastikan DSN Sentry lingkungan produksi aktif (`environment: "production"`).
-2. Daftarkan URL `https://app.klien.com/api/health` ke layanan uptime monitoring (Uptime Kuma, BetterStack, atau Cronitor).
-3. Sambungkan bot alert ke grup Telegram atau nomor WhatsApp solo dev untuk notifikasi instan jika server down.
+### Step 6: Observability & Alerting Activation
+1. Ensure production environment Sentry DSN is active (`environment: "production"`).
+2. Register the URL `https://app.client.com/api/health` with an uptime monitoring service (Uptime Kuma, BetterStack, or Cronitor).
+3. Connect alert bots to a Telegram group or the solo dev's WhatsApp number for instant notifications if the server goes down.
 
-### Langkah 6: Production Verification Test (PVT)
-Buka browser pada domain publik resmi:
-1. Uji alur otentikasi login akun produksi.
-2. Uji coba pembuatan 1 dokumen sampel dan pastikan PDF ter-generate serta tersimpan di bucket storage produksi.
-3. Lakukan 1 transaksi pembayaran nominal kecil asli (misal Rp 10.000 via QRIS) untuk memvalidasi webhook payment gateway produksi.
-4. Rangkum bukti hasil pengujian ke dalam dokumen **`GO_LIVE_VERIFICATION_REPORT.md`**.
+### Step 7: Production Verification Test (PVT)
+Open a browser on the official public domain:
+1. Test authentication login flow with production accounts.
+2. Test creating 1 sample document and ensure the PDF generates and stores in the production storage bucket.
+3. Perform 1 real low-nominal payment transaction (e.g. Rp 10.000 via QRIS) to validate the production payment gateway webhook.
+4. Compile test evidence into the **`GO_LIVE_VERIFICATION_REPORT.md`** document.
 
 ---
 
-## 4. Alur Khusus Deployment Aplikasi Mobile (Android & iOS)
+## 4. Mobile App Deployment Specific Workflow (Android & iOS)
 
-Jika proyek mencakup aplikasi mobile (Flutter / React Native / Native), proses deployment memiliki karakteristik toko aplikasi (*App Store Ecosystem*) yang berbeda dari web:
+If the project includes a mobile application (Flutter / React Native / Native), the deployment process involves App Store Ecosystem characteristics distinct from web:
 
 ```text
 [ SOURCE CODE STAGING ]
@@ -290,112 +288,112 @@ Jika proyek mencakup aplikasi mobile (Flutter / React Native / Native), proses d
            │                                      │
            ▼                                      ▼
 [ GOOGLE PLAY CONSOLE ]                    [ APPLE APP STORE CONNECT ]
-• Review: 24–72 Jam (Automated & Manual)  • Review: 24–48 Jam (Strict Apple Guidelines)
-• Phased Rollout: 10% ──► 50% ──► 100%    • Phased Release: 7 Hari Bertahap
+• Review: 24–72 Hours (Automated & Manual) • Review: 24–48 Hours (Strict Apple Guidelines)
+• Phased Rollout: 10% ──► 50% ──► 100%    • Phased Release: 7-Day Phased
 ```
 
-### 4.1 Manajemen Kunci & Signing (Keystore & Certificates)
-- **Android**: Buat keystore produksi dan simpan berkas `.jks` serta password alias di brankas terenkripsi (Bitwarden). *Jika keystore hilang, aplikasi tidak akan pernah bisa di-update lagi di Google Play Store selamanya.*
-- **iOS**: Daftarkan akun Apple Developer Program Klien ($99/tahun). Buat sertifikat distribusi dan App Store Provisioning Profile.
+### 4.1 Key Management & Signing (Keystore & Certificates)
+- **Android**: Generate production keystore and store the `.jks` file along with alias passwords in an encrypted vault (Bitwarden). *If the keystore is lost, the application can never be updated on the Google Play Store again.*
+- **iOS**: Enroll in the Client's Apple Developer Program ($99/year). Create distribution certificates and App Store Provisioning Profiles.
 
-### 4.2 Strategi Beta Testing Sebelum Publik (TestFlight & Internal Sharing)
-- Dilarang langsung melempar build pertama ke produksi publik.
-- **Android**: Upload ke track **Internal Testing** di Google Play Console $\to$ bagikan link ke Single PIC Klien untuk verifikasi di ponsel Android asli.
-- **iOS**: Upload ke **TestFlight** $\to$ invite akun email Apple ID milik Single PIC Klien untuk uji coba di perangkat iPhone nyata.
+### 4.2 Pre-Public Beta Testing Strategy (TestFlight & Internal Sharing)
+- Directly releasing the first build to public production is prohibited.
+- **Android**: Upload to the **Internal Testing** track in Google Play Console $\to$ share link with Client Single PIC for verification on real Android devices.
+- **iOS**: Upload to **TestFlight** $\to$ invite Client Single PIC Apple ID email address to test on real iPhone devices.
 
-### 4.3 Mengantisipasi Waktu Review Toko Aplikasi (The Review Buffer)
-- Tidak seperti web yang bisa rilis instan dalam 2 menit, rilis mobile terikat jadwal review manusia:
-  - Apple App Store: Membutuhkan waktu **24–48 jam kerja**.
-  - Google Play Console: Membutuhkan waktu **24–72 jam kerja** (terutama untuk akun pengembang baru).
-- **Strategi Tangkal Komplain Klien**: Cantumkan di jadwal bahwa tanggal go-live mobile terhitung sejak status aplikasi berubah menjadi *Ready for Sale / Published* oleh toko aplikasi.
+### 4.3 Factoring in App Store Review Buffer
+- Unlike web which can be released instantly in 2 minutes, mobile releases depend on human review schedules:
+  - Apple App Store: Requires **24–48 business hours**.
+  - Google Play Console: Requires **24–72 business hours** (especially for new developer accounts).
+- **Client Complaint Mitigation Strategy**: State in the schedule that mobile go-live dates are calculated from when the app status changes to *Ready for Sale / Published* by app stores.
 
-### 4.4 Penanganan Rollback & Pembaruan Darurat Mobile (OTA & Force Update)
-- Aplikasi mobile tidak bisa di-rollback secara instan jika ada bug kritis di tangan pengguna.
-- **Mekanisme Wajib Force-Update**: Aplikasi mobile wajib memiliki pengecekan versi minimum di splash screen (`GET /api/v1/app/version-check`). Jika ada bug kritis, backend dapat memaksa pengguna meng-update aplikasi ke versi terbaru sebelum bisa membuka dashboard.
-- **Over-The-Air (OTA) Updates**: Untuk React Native (Expo Updates) atau Flutter (Shorebird), pasang mekanisme OTA patch agar perbaikan kode JavaScript/Dart minor bisa terdistribusi seketika tanpa harus melewati proses review toko aplikasi ulang.
+### 4.4 Rollback & Mobile Emergency Updates (OTA & Force Update)
+- Mobile apps cannot be rolled back instantly if critical bugs reach users.
+- **Mandatory Force-Update Mechanism**: Mobile apps must include a minimum version check on the splash screen (`GET /api/v1/app/version-check`). In the event of a critical bug, the backend can force users to update to the latest version before accessing the dashboard.
+- **Over-The-Air (OTA) Updates**: For React Native (Expo Updates) or Flutter (Shorebird), implement an OTA patch mechanism so minor JavaScript/Dart bug fixes can be deployed immediately without going through app store review again.
 
 ---
 
-## 5. Adaptasi Berdasarkan Skala Proyek
+## 5. Adaptation by Project Scale
 
-| Aspek Deployment | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+| Deployment Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
 | :--- | :--- | :--- | :--- |
-| **Infrastruktur** | PaaS (Vercel / Railway / Render) | Managed Cloud Run / Docker VPS + Managed DB | Multi-region AWS/GCP, Kubernetes, Private VPC |
-| **Strategi Rilis** | Rolling restart instan (< 1 menit) | Blue-Green Deployment / Container Swap | Canary Deployment bertahap (10% $\to$ 50% $\to$ 100%) |
-| **Jadwal Rilis** | Jam kerja santai (Selasa pagi) | Scheduled maintenance (Selasa 10.00 WIB) | Scheduled Window malam hari dengan persetujuan CAB |
-| **Monitoring** | Sentry gratis + Uptime Kuma bot | Sentry + BetterStack log aggregation | APM penuh (Datadog/New Relic) + PagerDuty SLA |
+| **Infrastructure** | PaaS (Vercel / Railway / Render) | Managed Cloud Run / Docker VPS + Managed DB | Multi-region AWS/GCP, Kubernetes, Private VPC |
+| **Release Strategy** | Instant rolling restart (< 1 min) | Blue-Green Deployment / Container Swap | Phased Canary Deployment (10% $\to$ 50% $\to$ 100%) |
+| **Release Schedule** | Regular business hours (Tuesday morning) | Scheduled maintenance (Tuesday 10:00 WIB) | Scheduled night window with CAB approval |
+| **Monitoring** | Free Sentry + Uptime Kuma bot | Sentry + BetterStack log aggregation | Full APM (Datadog/New Relic) + PagerDuty SLA |
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 6. Deliverables
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Dokumen runbook dan laporan go-live WAJIB disimpan di folder **`docs/deploy/`** atau **`docs/pm/`**.
+> 📁 **MANDATORY FILE LOCATION RULE**:
+> Runbooks and go-live reports MUST be stored in the **`docs/deploy/`** or **`docs/pm/`** folder.
 
-Modul ini menghasilkan 2 dokumen eksekusi:
-1. **`docs/deploy/DEPLOYMENT_PROTOCOL.md`**: Protokol gabungan panduan deployment dan laporan go-live yang membuktikan sistem aktif di Produksi (menggunakan `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`).
-2. **`docs/deploy/ROLLBACK_PLAN.md`**: Prosedur darurat pemulihan jika terjadi kegagalan fatal saat go-live (menggunakan `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`).
-
----
-
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
-
-[GATE] Modul 10 dinyatakan **LOLOS (PASS)** jika:
-- [x] Branch `main` telah diberi tag versi SemVer resmi (`v1.0.0`).
-- [x] Domain resmi (`https://app.klien.com`) aktif dengan enkripsi SSL/TLS 1.3 valid.
-- [x] Migrasi database produksi sukses dijalankan tanpa kehilangan data.
-- [x] Seluruh variabel lingkungan menggunakan akun live produksi (bukan sandbox).
-- [x] Uji transaksi nyata pasca-rilis (*PVT*) berhasil 100%.
-- [x] Sistem monitoring uptime dan pelacak error Sentry aktif.
+This module produces 2 execution documents:
+1. **`docs/deploy/DEPLOYMENT_PROTOCOL.md`**: Combined deployment protocol guide and go-live report proving the system is active in Production (using `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`).
+2. **`docs/deploy/ROLLBACK_PLAN.md`**: Emergency recovery procedures in case of fatal failure during go-live (using `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`).
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 7. Gate Exit Criteria [GATE]
 
-Setelah sistem resmi Live di Produksi dan laporan PVT terbit:
+[GATE] Module 10 is declared **PASSED (PASS)** if:
+- [x] Branch `main` has been tagged with official SemVer version (`v1.0.0`).
+- [x] Official domain (`https://app.client.com`) is active with valid SSL/TLS 1.3 encryption.
+- [x] Production database migration successfully executed without data loss.
+- [x] All environment variables use live production accounts (not sandbox).
+- [x] Post-release real transaction test (*PVT*) succeeded 100%.
+- [x] Uptime monitoring system and Sentry error tracker are active.
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+---
 
-**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+## 🛑 EXIT [GATE] PROTOCOL & MANDATORY STOP
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/deploy/GO_LIVE_VERIFICATION_REPORT.md"` → harus return `True`
-   - Read tool: `read_file('docs/deploy/GO_LIVE_VERIFICATION_REPORT.md')` → harus sukses tanpa error
+After the system is officially Live in Production and the PVT report is published:
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
-   - ❌ **JANGAN tampilkan summary** ke user
-   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 11
-   - ✅ **REPORT ERROR** ke user:
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
+
+**MANDATORY BEFORE CONTENT VALIDATION**:
+
+1. **Check output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/deploy/GO_LIVE_VERIFICATION_REPORT.md"` → must return `True`
+   - Read tool: `read_file('docs/deploy/GO_LIVE_VERIFICATION_REPORT.md')` → must succeed without error
+
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
+   - ❌ **DO NOT display summary** to user
+   - ❌ **DO NOT request confirmation** to proceed to Module 11
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File GO_LIVE_VERIFICATION_REPORT.md tidak tercipta.
-     Module 10 FAILED - tidak bisa lanjut ke Module 11 (Handover & BAST).
+     CRITICAL ERROR: File GO_LIVE_VERIFICATION_REPORT.md was not created.
+     Module 10 FAILED - cannot proceed to Module 11 (Handover & BAST).
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/deploy/
-     - Path typo di tool call
+     Possible causes:
+     - Write permission denied on docs/deploy/ folder
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum lanjut.
+     Please investigate this issue before proceeding.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+3. **ONLY IF FILE EXISTS**: Proceed to content validation below
 
 ---
 
-### **LANGKAH 1: VALIDASI KONTEN & PRODUCTION VERIFICATION**
+### **STEP 1: CONTENT VALIDATION & PRODUCTION VERIFICATION**
 
-1. **DILARANG KERAS langsung menyerahkan repositori, password root, atau memanggil tool untuk Modul 11 dalam giliran (turn) yang sama!**
-2. **Verifikasi production deployment**:
+1. **STRICTLY PROHIBITED from directly handing over repositories, root passwords, or calling tools for Module 11 within the same turn!**
+2. **Verify production deployment**:
    - [ ] `read_file('docs/deploy/GO_LIVE_VERIFICATION_REPORT.md')` → Confirm PVT tests PASS
-   - [ ] Confirm domain live with valid SSL (https://app.klien.com accessible)
+   - [ ] Confirm domain live with valid SSL (https://app.client.com accessible)
    - [ ] Confirm monitoring active (Sentry DSN, uptime checker)
    - [ ] Confirm production transaction tested successfully
-3. Tampilkan status keberhasilan go-live produksi kepada pengguna:
-   - Domain produksi resmi yang aktif
-   - Hasil uji verifikasi transaksi nyata (PVT)
-   - Status pemantauan uptime & error tracker Sentry
-3. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Sistem telah resmi beroperasi di server Produksi (Live). Bukti verifikasi terdokumentasi di `docs/pm/GO_LIVE_VERIFICATION_REPORT.md`. Apakah Anda siap menerbitkan invoice pelunasan dan memulai proses serah terima (Modul 11: Handover & BAST)?"*
-4. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 11.
+3. Present production go-live success status to user:
+   - Official active production domain
+   - Real transaction verification test (PVT) results
+   - Uptime monitoring status & Sentry error tracker
+4. **END YOUR RESPONSE (END TURN)** and ask user for confirmation:
+   > *"The system is officially running on the Production server (Live). Verification evidence is documented in `docs/pm/GO_LIVE_VERIFICATION_REPORT.md`. Are you ready to issue the final invoice and initiate the handover process (Module 11: Handover & BAST)?"*
+5. Wait for explicit approval response from user before advancing to Module 11.

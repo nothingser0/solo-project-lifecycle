@@ -1,11 +1,11 @@
-# Modul 01: Idea & Feasibility (Penyaringan Ide & Uji Kelayakan)
+# Module 01: Idea & Feasibility (Idea Screening & Feasibility Testing)
 
 > - `references/checklists/MODUL_01_ACTION_ITEMS_CHECKLIST.md` (Post-feasibility action items: Market validation, Formula verification, Security baseline)
 > - `references/checklists/FEASIBILITY_CRITERIA.md` (Detailed 4-dimension feasibility rubric)
 > - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
->
 
-Modul ini adalah gerbang pertama dalam siklus pengembangan perangkat lunak untuk solo developer. Tujuannya adalah mengubah ide mentah yang abstrak menjadi **Ringkasan Ide Teruji (Validated Idea Brief)** dengan batasan skala yang jelas sebelum waktu terbuang untuk menulis dokumen panjang atau koding.
+
+This module is the first gate in the software development lifecycle for solo developers. Its purpose is to transform abstract raw ideas into a **Validated Idea Brief** with clear scale boundaries before wasting time on lengthy documents or coding.
 
 **Solo Dev Tooling Prerequisites**:
 - [ ] Password manager installed (Bitwarden/1Password) for secure credential sharing with clients
@@ -14,117 +14,117 @@ Modul ini adalah gerbang pertama dalam siklus pengembangan perangkat lunak untuk
 
 ---
 
-## 1. Siklus Eksekusi Modul 01
+## 1. Execution Cycle of Module 01
 
 ```text
-[ IDE KASAR / MENTAH ]
+[ RAW / ROUGH IDEA ]
           │
           ▼
-[ LANGKAH 1: Saringan 3 Lapis (The 3-Filter Triage) ]
-  • Masalah Riil & Nilai Unik
-  • Core User Loop (Alur Utama Inti)
-  • MVP Razor (Pemotongan Fitur Ekstrem)
+[ STEP 1: The 3-Filter Triage ]
+  • Real Problem & Unique Value
+  • Core User Loop
+  • MVP Razor (Extreme Feature Cutting)
           │
           ▼
-[ LANGKAH 2: Uji 4 Dimensi Kelayakan (Feasibility Check) ]
-  • Teknis (Tech Stack & Kesiapan API)
-  • Bandwidth Solo Dev (Batas Waktu & Maintenance)
-  • Regulasi & Legal (Izin Usaha, UU PDP, Liabilitas)
-  • Ekonomi & Nilai Bisnis (Willingness to Pay / ROI)
+[ STEP 2: 4-Dimension Feasibility Check ]
+  • Technical (Tech Stack & API Readiness)
+  • Solo Dev Bandwidth (Time Constraints & Maintenance)
+  • Regulatory & Legal (Business Permits, PDP Law, Liability)
+  • Economic & Business Value (Willingness to Pay / ROI)
           │
           ▼
-[ LANGKAH 3: Determinasi Skala Proyek (Scale Classification) ]
-  • Kecil (MVP / Freelance)
-  • Menengah (B2B SaaS / Agensi)
-  • Besar (Scale-Up / Multi-System)
-  • Enterprise (Korporasi / Regulasi Ketat)
+[ STEP 3: Scale Classification ]
+  • Small (MVP / Freelance)
+  • Medium (B2B SaaS / Agency)
+  • Large (Scale-Up / Multi-System)
+  • Enterprise (Corporate / Strict Regulation)
           │
           ▼
-[ OUTPUT: Dokumen IDEA_BRIEF.md ] ──► Siap Lanjut ke Modul 02: Discovery & Scope
+[ OUTPUT: IDEA_BRIEF.md Document ] ──► Ready to Proceed to Module 02: Discovery & Scope
 ```
 
 ---
 
-## 2. Langkah demi Langkah Eksekusi
+## 2. Step-by-Step Execution
 
-### Langkah 1: Saringan 3 Lapis (The 3-Filter Triage)
+### Step 1: The 3-Filter Triage
 
-Lakukan interogasi terarah terhadap ide mentah:
+Perform targeted interrogation on the raw idea:
 
-1. **Saringan Masalah (Problem Statement)**:
-   - *Pertanyaan*: Siapa yang punya masalah ini, seberapa sering masalah ini terjadi, dan bagaimana mereka mengatasinya sekarang (manual, spreadsheet, jasa orang lain)?
-   - *Prinsip*: Jangan membangun software untuk masalah yang cukup diselesaikan dengan Google Sheet atau form sederhana, kecuali ada kebutuhan otomasi/keamanan data khusus.
-2. **Saringan Alur Utama (Core User Loop)**:
-   - *Pertanyaan*: Apa alur 3 langkah dari interaksi pengguna?
-   - *Format Baku*: `[User Input Data] ──► [Sistem Melakukan Proses/Transformasi] ──► [User Menerima Hasil/Value]`.
-3. **Saringan Pemotongan Ekstrem (MVP Razor)**:
-   - *Pertanyaan*: Jika aplikasi ini hanya boleh memiliki SATU fitur utama saat peluncuran pertama, fitur apa yang membuat pengguna tetap mau memakai aplikasi ini?
-   - *Tindakan*: Singkirkan fitur sekunder (social login, dark mode, grafik analitik rumit, integrasi multi-gateway) ke daftar *Backlog Masa Depan*.
+1. **Problem Filter (Problem Statement)**:
+   - *Question*: Who has this problem, how frequently does it occur, and how do they solve it today (manually, spreadsheets, hiring others)?
+   - *Principle*: Do not build software for problems adequately solved by a Google Sheet or simple form, unless there is a specific need for automation or data security.
+2. **Core Loop Filter (Core User Loop)**:
+   - *Question*: What is the 3-step loop of user interaction?
+   - *Standard Format*: `[User Input Data] ──► [System Processes/Transforms] ──► [User Receives Result/Value]`.
+3. **Extreme Cutting Filter (MVP Razor)**:
+   - *Question*: If this application could have only ONE primary feature at initial launch, which feature would still compel users to use it?
+   - *Action*: Cut secondary features (social login, dark mode, complex analytics charts, multi-gateway integrations) to the *Future Backlog*.
 
 ---
 
-### Langkah 2: Uji 4 Dimensi Kelayakan (Feasibility Rubric)
+### Step 2: Feasibility Rubric (4-Dimension Feasibility Check)
 
-Evaluasi kelayakan ide menggunakan skor 1–5 pada 4 dimensi:
+Evaluate idea feasibility using a 1–5 score across 4 dimensions:
 
-| Dimensi Kelayakan | Pertanyaan Uji Kritis Solo Dev | Batas Minimum Lolos |
+| Feasibility Dimension | Critical Solo Dev Test Question | Minimum Passing Threshold |
 | :--- | :--- | :--- |
-| **1. Kelayakan Teknis** | Apakah pustaka, SDK, dan API yang dibutuhkan sudah matang dan terdokumentasi? Apakah membutuhkan riset R&D komputasi berat? | Skor ≥3 (Jika butuh R&D berat sendirian, simplifikasi ide) |
-| **2. Kelayakan Bandwidth** | Apakah aplikasi bisa diselesaikan dalam rentang waktu solo dev (maks. 1–3 bulan untuk rilis pertama)? Apakah biaya operasional hariannya rendah? | Skor ≥4 (Hindari arsitektur multi-service yang butuh on-call 24/7) |
-| **3. Kelayakan Regulasi & Legal** | Apakah pengoperasian sistem melanggar hukum, membutuhkan izin khusus (OJK, Kominfo, Kemenkes), atau memegang data pribadi sensitif (UU PDP)? | Skor ≥4 (Jika ada risiko pidana/denda tanpa modal hukum, pivot/scope down) |
-| **4. Kelayakan Komersial** | Apakah ada pihak yang bersedia membayar untuk sistem ini (B2B/B2C)? Jika pesanan klien, apakah budget realistis terhadap effort? | Skor ≥3 (Harus ada kejelasan sumber pendapatan atau margin yang layak) |
+| **1. Technical Feasibility** | Are the required libraries, SDKs, and APIs mature and documented? Does it require heavy compute R&D? | Score ≥3 (If heavy R&D alone is required, simplify the idea) |
+| **2. Bandwidth Feasibility** | Can the application be completed within solo dev timeframes (max. 1–3 months for v1)? Are daily operational costs low? | Score ≥4 (Avoid multi-service architectures requiring 24/7 on-call) |
+| **3. Regulatory & Legal Feasibility** | Does system operation violate laws, require special licenses (OJK, Kominfo, Health Ministry), or handle sensitive personal data (PDP Law)? | Score ≥4 (If criminal/fine risk exists without legal capital, pivot/scope down) |
+| **4. Commercial Feasibility** | Is anyone willing to pay for this system (B2B/B2C)? If a client order, is the budget realistic relative to effort? | Score ≥3 (Must have clear revenue sources or reasonable margins) |
 
-**Aggregate Threshold**: Total skor ≥14/20 (rata-rata 3.5 per dimensi). Proyek dengan total < 14 wajib disederhanakan atau ditolak.
+**Aggregate Threshold**: Total score ≥14/20 (average 3.5 per dimension). Projects with a total score < 14 must be simplified or rejected.
 
-*Lihat panduan lengkap di: `references/checklists/FEASIBILITY_CRITERIA.md`.*
-
----
-
-### Langkah 3: Klasifikasi Skala Proyek (Scale Triage)
-
-Tentukan kategori proyek sejak awal untuk menentukan seberapa berat formalitas dokumen berikutnya:
-
-1. **Skala Kecil (MVP / Freelance Tool)**:
-   - *Indikator*: Pengguna tunggal/tim kecil, 1–2 entitas data, waktu kerja < 1 bulan, tanpa integrasi sistem perbankan/regulasi.
-   - *Arah Lanjutan*: Langsung susun 1-page Brief & Scope Statement sederhana, lewati charter formal.
-   - **Fast-Track**: Jika feasibility ≥ 17/20 dan risk rendah, boleh skip M03 charter (langsung M04 design).
-2. **Skala Menengah (B2B SaaS / Agensi)**:
-   - *Indikator*: Multi-tenant, ada pembayaran berlangganan, autentikasi berbasis peran (RBAC), integrasi 1–3 API pihak ketiga, waktu kerja 1–3 bulan (exclusive range: ≥1 bulan dan <3 bulan).
-   - *Arah Lanjutan*: Wajib menyusun PRD ringan, kontrak SOW resmi, dan arsitektur database modular.
-3. **Skala Besar (Scale-Up / Platform Terdistribusi)**:
-   - *Indikator*: Volume transaksi tinggi, concurrency tinggi, integrasi multi-sistem perusahaan, waktu kerja ≥3 bulan dan <6 bulan (exclusive range).
-   - *Arah Lanjutan*: Wajib menyusun Project Charter, PRD formal, FSD mendalam, dan WBS terperinci.
-4. **Skala Enterprise / Industri (Korporasi, Perbankan, BUMN)**:
-   - *Indikator*: Kepatuhan regulasi ketat (UU PDP, ISO 27001, SOC2), multi-stakeholder internal klien, audit trail permanen, SLA uptime 99.9%, waktu kerja ≥6 bulan.
-   - *Arah Lanjutan*: Wajib ada persetujuan formal legal, Project Charter bertandatangan, Single PIC terikat, FSD lengkap, dan RTM.
+*See full guide at: `references/checklists/FEASIBILITY_CRITERIA.md`.*
 
 ---
 
-## 3. Artefak Keluaran (Deliverable)
+### Step 3: Scale Triage (Project Scale Classification)
 
-Hasil akhir dari Modul 01 adalah berkas **`docs/pm/IDEA_BRIEF.md`** yang dibuat menggunakan template di `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`.
+Determine project category upfront to establish the required weight of subsequent document formalities:
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Berkas ini WAJIB disimpan di dalam folder **`docs/pm/`** (bukan di root direktori).
-> Root direktori `./` dicadangkan secara eksklusif hanya untuk 7 berkas kendali AI (Agent Harness) saat Modul 06 dimulai.
+1. **Small Scale (MVP / Freelance Tool)**:
+   - *Indicators*: Single user/small team, 1–2 data entities, work duration < 1 month, no banking/regulatory integrations.
+   - *Next Steps*: Draft a simple 1-page Brief & Scope Statement directly; skip formal charter.
+   - **Fast-Track**: If feasibility ≥ 17/20 and risk is low, Module 03 charter may be skipped (proceed directly to Module 04 design).
+2. **Medium Scale (B2B SaaS / Agency)**:
+   - *Indicators*: Multi-tenant, subscription payments, role-based access control (RBAC), 1–3 third-party API integrations, work duration 1–3 months (exclusive range: ≥1 month and <3 months).
+   - *Next Steps*: Mandatory light PRD, formal SOW contract, and modular database architecture.
+3. **Large Scale (Scale-Up / Distributed Platform)**:
+   - *Indicators*: High transaction volume, high concurrency, enterprise multi-system integrations, work duration ≥3 months and <6 months (exclusive range).
+   - *Next Steps*: Mandatory Project Charter, formal PRD, in-depth FSD, and detailed WBS.
+4. **Enterprise / Industrial Scale (Corporate, Banking, State-Owned Enterprises)**:
+   - *Indicators*: Strict regulatory compliance (PDP Law, ISO 27001, SOC2), multiple client internal stakeholders, permanent audit trails, 99.9% uptime SLA, work duration ≥6 months.
+   - *Next Steps*: Mandatory formal legal sign-off, signed Project Charter, bound Single PIC, comprehensive FSD, and RTM.
 
 ---
 
-## 4. Product Roadmap (Peta Jalan Produk)
+## 3. Output Artifacts (Deliverables)
 
-Setelah ide lolos uji kelayakan, susun peta jalan yang memberikan visibilitas timeline dan prioritas eksekusi:
+The final deliverable of Module 01 is the file **`docs/pm/IDEA_BRIEF.md`** created using the template at `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`.
 
-### 4.1 Framework Now/Next/Later
+> 📁 **ABSOLUTE FILE LOCATION RULE**:
+> This file MUST be stored inside the **`docs/pm/`** directory (never in the root directory).
+> The root directory `./` is reserved exclusively for the 7 AI control files (Agent Harness) once Module 06 begins.
 
-- **Now (0–1 bulan)**: Fitur inti MVP yang HARUS ada untuk peluncuran pertama (Core User Loop)
-- **Next (1–3 bulan)**: Fitur pendukung yang meningkatkan retention/revenue (contoh: notifikasi, integrasi pembayaran)
-- **Later (3–6 bulan+)**: Nice-to-have features & eksperimen (contoh: dark mode, advanced analytics, AI features)
+---
+
+## 4. Product Roadmap
+
+After the idea passes feasibility checks, build a roadmap providing timeline visibility and execution priority:
+
+### 4.1 Now/Next/Later Framework
+
+- **Now (0–1 month)**: Core MVP features that MUST exist for initial launch (Core User Loop)
+- **Next (1–3 months)**: Supporting features improving retention/revenue (e.g., notifications, payment integrations)
+- **Later (3–6 months+)**: Nice-to-have features & experiments (e.g., dark mode, advanced analytics, AI features)
 
 ### 4.2 Timeline Estimation & Dependency Mapping
 
-- Gunakan T-shirt sizing (XS/S/M/L/XL) atau story points untuk estimasi relatif
-- Identifikasi dependensi kritis: Feature B tidak bisa dimulai sebelum Feature A selesai
-- Tandai external dependencies (API vendor, third-party approval) dengan flag risiko tinggi
+- Use T-shirt sizing (XS/S/M/L/XL) or story points for relative estimation
+- Identify critical dependencies: Feature B cannot start before Feature A is finished
+- Flag external dependencies (API vendors, third-party approvals) with high risk tags
 
 ### 4.3 Release Milestones
 
@@ -137,25 +137,25 @@ Setelah ide lolos uji kelayakan, susun peta jalan yang memberikan visibilitas ti
 
 ### 4.4 Roadmap Tools Setup
 
-- **Notion**: Template database dengan status (Now/Next/Later/Done), owner, dependencies, effort
-- **Linear**: Roadmap view dengan cycles (sprint), project milestones, dan automated triage
+- **Notion**: Database template with status (Now/Next/Later/Done), owner, dependencies, effort
+- **Linear**: Roadmap view with cycles (sprints), project milestones, and automated triage
 - **Productboard**: Feature scoring (RICE), user feedback aggregation, roadmap visualization
 
-*Panduan setup lengkap: `references/pm/PM_TOOLS_SETUP_GUIDE.md`*
+*Full setup guide: `references/pm/PM_TOOLS_SETUP_GUIDE.md`*
 
 ---
 
-## 5. Backlog Management (Pengelolaan Daftar Kerja)
+## 5. Backlog Management
 
-Breakdown dari roadmap ke unit eksekusi yang actionable:
+Break down the roadmap into actionable execution units:
 
 ### 5.1 Hierarchy: Epic → Story → Task
 
-- **Epic**: Fitur besar yang butuh 2–4 minggu (contoh: "User Authentication System")
-- **Story**: Unit kerja 1–3 hari yang memberikan value (contoh: "As a user, I want to login with email so I can access my account")
-- **Task**: Implementasi teknis sub-bagian story (contoh: "Create POST /api/auth/login endpoint", "Hash password with bcrypt")
+- **Epic**: Large feature requiring 2–4 weeks (e.g., "User Authentication System")
+- **Story**: Work unit taking 1–3 days that delivers value (e.g., "As a user, I want to login with email so I can access my account")
+- **Task**: Technical sub-task implementation of a story (e.g., "Create POST /api/auth/login endpoint", "Hash password with bcrypt")
 
-### 5.2 User Story Format (Standar Industri)
+### 5.2 User Story Format (Industry Standard)
 
 ```
 As a [persona/role],
@@ -172,42 +172,42 @@ Acceptance Criteria:
 
 - **1 point**: Trivial change (rename variable, update copy text) — 15 min
 - **2 points**: Simple CRUD API or UI component — 1–2 hours
-- **3 points**: Standard feature dengan business logic sederhana — half day
-- **5 points**: Complex feature dengan integration — 1 day
+- **3 points**: Standard feature with simple business logic — half day
+- **5 points**: Complex feature with integration — 1 day
 - **8 points**: Very complex, needs design discussion — 2–3 days
-- **13 points**: Epic-level, harus dipecah lebih kecil
+- **13 points**: Epic-level, must be broken down smaller
 
-*Jika story > 8 points, WAJIB breakdown menjadi sub-stories.*
+*If story > 8 points, breakdown into sub-stories is MANDATORY.*
 
 ### 5.4 Backlog Prioritization (RICE Score)
 
 Formula: **RICE Score = (Reach × Impact × Confidence) / Effort**
 
-- **Reach**: Jumlah user yang terpengaruh per periode (contoh: 100 users/month)
-- **Impact**: Skala dampak (Massive=3, High=2, Medium=1, Low=0.5, Minimal=0.25)
-- **Confidence**: Tingkat keyakinan data (High=100%, Medium=80%, Low=50%)
-- **Effort**: Person-months untuk complete (contoh: 0.5 = 2 minggu solo dev)
+- **Reach**: Number of users affected per period (e.g., 100 users/month)
+- **Impact**: Scale of impact (Massive=3, High=2, Medium=1, Low=0.5, Minimal=0.25)
+- **Confidence**: Data confidence level (High=100%, Medium=80%, Low=50%)
+- **Effort**: Person-months to complete (e.g., 0.5 = 2 weeks solo dev)
 
-Contoh:
-- Story A: (500 × 3 × 1.0) / 0.5 = **3000** (prioritas tertinggi)
-- Story B: (50 × 2 × 0.8) / 2.0 = **40** (prioritas rendah)
+Example:
+- Story A: (500 × 3 × 1.0) / 0.5 = **3000** (highest priority)
+- Story B: (50 × 2 × 0.8) / 2.0 = **40** (low priority)
 
-*Worksheet lengkap: `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`*
+*Full worksheet: `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`*
 
 ### 5.5 Jira/Linear Project Setup
 
 - **Jira**: Epic → Story → Subtask hierarchy, Custom fields (RICE score), Automation rules (auto-assign, status sync)
 - **Linear**: Project → Issue → Sub-issue, Labels (#now #next #later), Cycles (sprint), Triage view
 
-*Setup guide step-by-step: `references/pm/PM_TOOLS_SETUP_GUIDE.md`*
+*Step-by-step setup guide: `references/pm/PM_TOOLS_SETUP_GUIDE.md`*
 
-*Template backlog: `templates/01-discovery-commercial/BACKLOG_TEMPLATE.md`*
+*Backlog template: `templates/01-discovery-commercial/BACKLOG_TEMPLATE.md`*
 
 ---
 
-## 6. OKR/KPI Framework (Kerangka Metrik & Target)
+## 6. OKR/KPI Framework
 
-Tetapkan target terukur untuk align eksekusi dengan goals bisnis:
+Establish measurable targets to align execution with business goals:
 
 ### 6.1 Quarterly OKR Template
 
@@ -220,47 +220,47 @@ Tetapkan target terukur untuk align eksekusi dengan goals bisnis:
 
 ### 6.2 Key Results Measurable Criteria
 
-Setiap KR HARUS memiliki:
-- **Baseline**: Nilai awal (contoh: 0 users saat ini)
-- **Target**: Nilai yang ingin dicapai (contoh: 50 users)
-- **Metric Definition**: Cara mengukur (contoh: "Unique users yang complete signup flow")
-- **Data Source**: Dari mana data diambil (contoh: "PostgreSQL users table, status='active'")
+Every KR MUST have:
+- **Baseline**: Initial value (e.g., 0 users currently)
+- **Target**: Desired value to achieve (e.g., 50 users)
+- **Metric Definition**: How it is measured (e.g., "Unique users completing signup flow")
+- **Data Source**: Where data is fetched (e.g., "PostgreSQL users table, status='active'")
 
 ### 6.3 KPI Dashboard Design
 
-**Kategori Metrik**:
+**Metric Categories**:
 - **Acquisition**: Signups/week, conversion rate landing → signup
-- **Activation**: % users yang complete onboarding dalam 24 jam
+- **Activation**: % users completing onboarding within 24 hours
 - **Retention**: D1/D7/D30 retention rate, weekly active users (WAU)
-- **Revenue** (jika applicable): MRR (Monthly Recurring Revenue), ARPU (Average Revenue Per User)
+- **Revenue** (if applicable): MRR (Monthly Recurring Revenue), ARPU (Average Revenue Per User)
 - **Technical Health**: API p95 latency, error rate, uptime %
 
-**Tools**: Metabase/Superset (self-hosted), Mixpanel/Amplitude (SaaS), atau custom dashboard dengan Grafana + PostgreSQL
+**Tools**: Metabase/Superset (self-hosted), Mixpanel/Amplitude (SaaS), or custom dashboard with Grafana + PostgreSQL
 
 ### 6.4 Metric Ownership (RACI Matrix)
 
-| Metrik | Responsible | Accountable | Consulted | Informed |
+| Metric | Responsible | Accountable | Consulted | Informed |
 | :--- | :--- | :--- | :--- | :--- |
 | Weekly signups | Developer (track code) | PM/Founder (target) | Marketing | Investors |
 | API uptime | Developer (monitor) | Developer (fix) | — | Users (status page) |
 | User retention | PM/Founder (analyze) | PM/Founder (decide) | Developer (impl) | Team |
 
-*Template OKR lengkap: `templates/01-discovery-commercial/OKR_TEMPLATE.md`*
+*Full OKR template: `templates/01-discovery-commercial/OKR_TEMPLATE.md`*
 
 ---
 
-## 7. Risk Register (Daftar Risiko Komprehensif)
+## 7. Risk Register
 
-Antisipasi risiko sejak awal untuk mengurangi firefighting:
+Anticipate risks early to minimize firefighting:
 
 ### 7.1 Risk Identification Workshop
 
-**5 Kategori Risiko**:
+**5 Risk Categories**:
 1. **Technical**: API vendor deprecated, scaling bottleneck, tech debt
-2. **Resource**: Solo dev sakit/burnout, skill gap (contoh: tidak bisa infrastruktur)
-3. **Market**: Competitor launch similar product, user adoption rendah
-4. **Legal/Compliance**: Pelanggaran UU PDP, vendor ToS berubah
-5. **Financial**: Budget overrun, revenue tidak sesuai proyeksi
+2. **Resource**: Solo dev illness/burnout, skill gap (e.g., infrastructure unfamiliarity)
+3. **Market**: Competitor launches similar product, low user adoption
+4. **Legal/Compliance**: PDP Law violations, vendor ToS changes
+5. **Financial**: Budget overrun, revenue below projections
 
 ### 7.2 Risk Assessment Matrix (Likelihood × Impact)
 
@@ -271,48 +271,48 @@ Antisipasi risiko sejak awal untuk mengurangi firefighting:
 | **Low (1)** | 1 (Accept) | 2 (Accept) | 3 (Monitor) |
 
 **Action Threshold**:
-- Score 7–9: Wajib mitigation plan SEBELUM mulai development
-- Score 4–6: Monitor aktif, siapkan contingency plan
+- Score 7–9: Mandatory mitigation plan BEFORE starting development
+- Score 4–6: Active monitoring, prepare contingency plan
 - Score 1–3: Accept risk, review quarterly
 
 ### 7.3 Mitigation Strategies Per Risk
 
-Contoh:
+Example:
 - **Risk**: "Main payment gateway (Midtrans) API down during launch" (Likelihood=2, Impact=3, Score=6)
-  - **Mitigation**: Integrate backup gateway (Xendit) di week 6, test failover logic
-  - **Contingency**: Manual payment confirmation via bank transfer jika kedua gateway down
+  - **Mitigation**: Integrate backup gateway (Xendit) in week 6, test failover logic
+  - **Contingency**: Manual payment confirmation via bank transfer if both gateways are down
   - **Owner**: Developer
   - **Review Date**: 2 weeks before launch
 
 ### 7.4 Monitoring Cadence & Escalation Protocol
 
-- **Weekly**: Review top 3 risks (score ≥6) dalam standup/weekly review
-- **Monthly**: Re-assess likelihood & impact semua risks, update mitigation status
-- **Escalation**: Jika risk score naik dari 4 → 7+, trigger emergency planning session
+- **Weekly**: Review top 3 risks (score ≥6) in standup/weekly review
+- **Monthly**: Re-assess likelihood & impact of all risks, update mitigation status
+- **Escalation**: If risk score increases from 4 → 7+, trigger emergency planning session
 
-*Template risk register: `templates/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md`*
+*Risk register template: `templates/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md`*
 
 ---
 
-## 8. Resource Allocation (Alokasi Sumber Daya)
+## 8. Resource Allocation
 
-Mapping effort realistis untuk solo dev atau small team:
+Map realistic effort for solo devs or small teams:
 
 ### 8.1 Time Budget Per Epic
 
-Gunakan rule **70-20-10**:
+Use the **70-20-10** rule:
 - **70%**: Development (coding, testing, deployment)
 - **20%**: Planning & design (architecture, mockups, PRD)
-- **10%**: Buffer untuk unexpected issues (bug fixes, vendor downtime)
+- **10%**: Buffer for unexpected issues (bug fixes, vendor downtime)
 
-Contoh: Epic "User Auth System" = 2 minggu total
+Example: Epic "User Auth System" = 2 weeks total
 - Development: 7 days (coding auth flow, testing, deploy)
 - Planning: 2 days (design DB schema, security review, API contract)
 - Buffer: 1 day (handle edge cases, fix integration bugs)
 
 ### 8.2 Skill Gap Analysis
 
-Identifikasi keahlian yang BELUM dimiliki tapi DIBUTUHKAN proyek:
+Identify skills NOT YET acquired but REQUIRED by the project:
 
 | Skill Required | Current Level | Target Level | Learning Path | Time Investment |
 | :--- | :--- | :--- | :--- | :--- |
@@ -320,10 +320,10 @@ Identifikasi keahlian yang BELUM dimiliki tapi DIBUTUHKAN proyek:
 | Stripe webhook security | None | Proficient | Stripe docs + test with CLI | 1 day |
 | AWS CDK infra-as-code | None | Basic | CDK workshop + deploy 1 stack | 3 days |
 
-**Decision Point**: Jika total learning time > 20% project timeline, pertimbangkan:
-- Simplify tech stack (gunakan yang sudah dikuasai)
-- Hire freelancer untuk specific task
-- Extend timeline untuk accommodate learning
+**Decision Point**: If total learning time > 20% of project timeline, consider:
+- Simplify tech stack (use existing proficiencies)
+- Hire freelancer for specific task
+- Extend timeline to accommodate learning
 
 ### 8.3 External Dependency Tracking
 
@@ -333,23 +333,23 @@ Identifikasi keahlian yang BELUM dimiliki tapi DIBUTUHKAN proyek:
 | SSL cert for custom domain | Infrastructure | Not started | Low | Let's Encrypt docs | Auto-renew with Certbot |
 | Client design assets (logo, color) | Stakeholder | Waiting | Medium | client@email.com | Use placeholder, finalize week 2 |
 
-**Tracking Cadence**: Update status setiap 2–3 hari untuk dependencies dengan risk High/Medium.
+**Tracking Cadence**: Update status every 2–3 days for High/Medium risk dependencies.
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 🛑 [GATE] EXIT & MANDATORY STOP PROTOCOL
 
-Setelah berkas `docs/pm/IDEA_BRIEF.md` selesai ditulis:
-1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 02 dalam giliran (turn) yang sama!**
-2. **VERIFIKASI DIRI (Self-Verification Checklist)**:
+After the file `docs/pm/IDEA_BRIEF.md` has been written:
+1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 02 within the same turn!**
+2. **SELF-VERIFICATION CHECKLIST**:
    - [ ] `read_file('docs/pm/IDEA_BRIEF.md')` → Confirm file exists, 80+ lines
-   - [ ] Feasibility score calculated (X/5) ada di file
-   - [ ] Skala proyek (Kecil/Menengah/Besar/Enterprise) tertulis
-   - [ ] Core loop 3 langkah terdokumentasi
-3. Tampilkan ringkasan singkat hasil Modul 01 kepada pengguna:
-   - Elevator pitch ide produk
-   - Core loop 3 langkah
-   - Hasil skor kelayakan (Feasibility Scorecard) & skala yang ditetapkan
-4. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Dokumen `docs/pm/IDEA_BRIEF.md` telah selesai disusun dengan skor kelayakan [X/5] dan skala [Tier]. Apakah ringkasan ini sudah sesuai, atau ada poin yang ingin disesuaikan sebelum kita lanjut ke Modul 02 (Discovery & Scope Definition)?"*
-5. Agen HANYA boleh melangkah ke Modul 02 SETELAH pengguna memberikan respon persetujuan (misal: *"ok"*, *"lanjut"*, *"setuju"*). Izin seperti *"isi dulu nanti saya review"* HANYA berlaku untuk Modul 01 ini saja, bukan izin memborong modul berikutnya!
+   - [ ] Feasibility score calculated (X/5) present in file
+   - [ ] Project scale (Small/Medium/Large/Enterprise) documented
+   - [ ] 3-step core loop documented
+3. Present a brief summary of Module 01 results to the user:
+   - Elevator pitch of product idea
+   - 3-step core loop
+   - Feasibility Scorecard result & designated scale
+4. **END YOUR RESPONSE (END TURN)** and ask for confirmation from the user:
+   > *"Document `docs/pm/IDEA_BRIEF.md` has been completed with a feasibility score of [X/5] and scale [Tier]. Does this summary align with expectations, or are there points to adjust before proceeding to Module 02 (Discovery & Scope Definition)?"*
+5. The agent may ONLY proceed to Module 02 AFTER the user provides an affirmative response (e.g., *"ok"*, *"proceed"*, *"approved"*). Permissions such as *"fill it in first and I will review later"* apply ONLY to this Module 01, not as permission to batch subsequent modules!

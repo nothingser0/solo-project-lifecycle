@@ -1,179 +1,179 @@
-# Modul 11: [GATE PENYERAHAN] Pelunasan, Training, BAST, & Handover Repositori
+# Module 11: [HANDOVER GATE] Final Settlement, Training, BAST, & Repository Handover
 
 >
 
-Modul ini adalah **GERBANG PENYERAHAN & PENUTUPAN KOMERSIAL (CLOSURE & HANDOVER GATE)** dalam siklus hidup proyek solo developer. Aturan mutlak: **DILARANG MENYERAHKAN KEPEMILIKAN REPOSITORI GIT (TRANSFER OWNERSHIP), KREDENSIAL ROOT SERVER, DAN MENANDATANGANI BAST SEBELUM SISA PEMBAYARAN PELUNASAN (100%) MASUK DAN TERKONFIRMASI DI REKENING BANK DEVELOPER.**
+This module is the **CLOSURE & HANDOVER GATE** in the solo developer project lifecycle. Absolute rule: **TRANSFERRING GIT REPOSITORY OWNERSHIP, SERVER ROOT CREDENTIALS, AND SIGNING THE BAST ARE STRICTLY PROHIBITED BEFORE THE FINAL SETTLEMENT PAYMENT (100%) HAS CLEARED AND IS CONFIRMED IN THE DEVELOPER'S BANK ACCOUNT.**
 
-Tujuannya adalah menyelenggarakan pelatihan operasional (*training*) bagi staf klien dengan jatah terukur, menyerahkan dokumentasi panduan pengguna (*User Manual*), memindahkan kepemilikan repositori secara aman, mengamankan pelunasan pembayaran akhir, dan menandatangani **Berita Acara Serah Terima (BAST)** berkekuatan hukum yang menjadi penanda dimulainya Masa Garansi (Modul 12).
+The objective is to conduct operational training for client staff within a metered quota, hand over user manual documentation (`USER_MANUAL.md`), securely transfer repository ownership, secure final settlement payment, and execute a legally binding **Berita Acara Serah Terima (BAST - Official Handover Certificate)** that marks the commencement of the Warranty Period (Module 12).
 
 ---
 
-## 1. Siklus Eksekusi Modul 11
+## 1. Module 11 Execution Cycle
 
 ```text
-[ INPUT: Sistem Live di Produksi & GO_LIVE_REPORT.md dari Modul 10 ]
+[ INPUT: System Live in Production & GO_LIVE_REPORT.md from Module 10 ]
                                     │
                                     ▼
-[ LANGKAH 1: Penerbitan Invoice Pelunasan (Termin 4: 10% – 20%) ]
-  • Terbitkan Invoice Final Berdasarkan Bukti Go-Live Report
-  • Berikan Tenggat Pembayaran Sesuai SOW (Maksimal 7 Hari Kerja)
+[ STEP 1: Final Settlement Invoice Issuance (Milestone 4: 10% – 20%) ]
+  • Issue Final Invoice Based on Go-Live Report Proof
+  • Provide Payment Due Date According to SOW (Maximum 7 Business Days)
   • **CRITICAL SEQUENCE**: 100% payment RECEIVED → THEN proceed to training
                                     │
                                     ▼
-[ LANGKAH 2: Pelatihan Pengguna (Training & Onboarding Klien) ]
-  • **PREREQUISITE**: Konfirmasi 100% payment diterima sebelum memulai training
-  • Jatah Sesi Terbatas: 1x Sesi Staf Operasional & 1x Sesi Super Admin
-  • Rekam Video Tutorial Ringkas & Serahkan Dokumen USER_MANUAL.md
-  • Sesi Tambahan di Luar Jatah Wajib Dikenakan Biaya Training Tambahan
+[ STEP 2: User Training (Client Training & Onboarding) ]
+  • **PREREQUISITE**: Confirmation of 100% payment received before starting training
+  • Limited Session Quota: 1x Operational Staff Session & 1x Super Admin Session
+  • Record Concise Video Tutorials & Hand Over USER_MANUAL.md Document
+  • Additional Sessions Beyond Quota Must Incur Extra Training Fees
                                     │
                                     ▼
-[ LANGKAH 3: [GATE] Penguncian Arus Kas (Payment-Gated Verification) ]
-  • Cek Mutasi Rekening Bank Developer
-  • DANA PELUNASAN SUDAH DITERIMA PENUH ──► Lanjut ke Langkah 4
-  • DANA BELUM DITERIMA ──► TAHAN TRANSFER REPO & AKUN ROOT SERVER
+[ STEP 3: [GATE] Cash Flow Gate (Payment-Gated Verification) ]
+  • Check Developer Bank Account Statement
+  • FINAL SETTLEMENT RECEIVED IN FULL ──► Proceed to Step 4
+  • FUNDS NOT YET RECEIVED ──► HOLD REPO TRANSFER & ROOT SERVER ACCOUNTS
                                     │
                                     ▼
-[ LANGKAH 4: Transfer Kepemilikan Repositori & Kredensial Terenkripsi ]
-  • Transfer Kepemilikan Repositori GitHub/GitLab ke Organisasi Klien
-  • Serahkan Kredensial Produksi Melalui Jalur Terenkripsi (Bitwarden/1Password)
+[ STEP 4: Repository Ownership Transfer & Encrypted Credentials ]
+  • Transfer GitHub/GitLab Repository Ownership to Client Organization
+  • Hand Over Production Credentials via Encrypted Channels (Bitwarden/1Password)
                                     │
                                     ▼
-[ LANGKAH 5: Penandatanganan Berita Acara Serah Terima (BAST Sah) ]
-  • Cetak Dokumen BAST Bermeterai Cukup (Rp 10.000,-) atau e-Meterai Peruri
-  • Ditandatangani Bersama oleh Single PIC Klien & Developer
-  • Pemicu Resmi: Masa Garansi Perbaikan Bug (Modul 12) Mulai Berjalan
+[ STEP 5: Signing Official Handover Certificate (Valid BAST) ]
+  • Print BAST Document with Sufficient Duty Stamp (Meterai Rp 10,000) or Peruri e-Meterai
+  • Co-signed by Client Single PIC & Developer
+  • Official Trigger: Bug Fix Warranty Period (Module 12) Begins
                                     │
                                     ▼
-[ OUTPUT: BAST Bertandatangan, Repositori Terpindah, & Pembayaran Lunas 100% ]
+[ OUTPUT: Signed BAST, Transferred Repository, & 100% Paid in Full ]
 ```
 
 ---
 
-## 2. Aturan Emas Penyerahan Solo Developer: "No Pay, No Root"
+## 2. Solo Developer Handover Golden Rule: "No Pay, No Root"
 
-### Mengapa Disiplin Ini Mutlak?
-Di banyak perusahaan klien (terutama skala Menengah dan Korporat), divisi keuangan (*finance*) sering menunda pembayaran termin terakhir selama berminggu-minggu jika tim teknis mereka sudah memegang kendali penuh atas repositori kode dan server. 
+### Why Is This Discipline Absolute?
+In many client companies (especially Mid-scale and Corporate), the finance department often delays final milestone payments for weeks if their technical team already holds full control over the code repository and servers.
 
-Satu-satunya posisi tawar (*leverage*) solo developer untuk memastikan tagihan terbayar lunas adalah **kendali atas akun root infrastruktur dan kepemilikan repositori**.
+The solo developer's only bargaining leverage to ensure invoices are paid in full is **control over infrastructure root accounts and repository ownership**.
 
-### Protokol Penyerahan Bertahap yang Aman:
-1. **Saat Go-Live (Modul 10)**: Berikan akses ke klien hanya sebagai **User Biasa / Admin Operasional** di aplikasi web (`app.klien.com`), bukan akun root cloud provider atau admin GitHub.
-2. **Saat Menunggu Pembayaran**: Sistem sudah bisa dipakai oleh staf klien untuk bekerja, namun Developer masih memegang hak akses infrastruktur.
-3. **Setelah Pembayaran 100% Cair**: Baru lakukan transfer kepemilikan repositori Git dan serahkan password database/cloud root.
-
----
-
-## 3. Langkah demi Langkah Eksekusi
-
-### Langkah 1: Sesi Pelatihan Pengguna (Training Quota Management)
-Untuk mencegah solo dev dijadikan staf bantuan operasional (*helpdesk*) cuma-cuma selamanya:
-- **Jatah Standar**: Maksimal **2 kali sesi pertemuan daring** (@ 60 menit via Zoom/Google Meet):
-  - *Sesi 1*: Penggunaan alur harian staf (Input data, pembuatan dokumen, alur tanda tangan).
-  - *Sesi 2*: Manajemen sistem Super Admin (Manajemen user, hak akses, audit trail, export data).
-- **Aset Pelatihan**: Rekam sesi pelatihan tersebut dan serahkan rekamannya bersama berkas **`USER_MANUAL.md`** agar staf baru klien di masa depan bisa belajar mandiri tanpa menghubungi developer lagi.
-
-### Langkah 2: Protokol Penyerahan Kredensial (Zero Plaintext Sharing)
-Dilarang keras mengirimkan password server, master key database, atau API secret via chat WhatsApp atau email teks terbuka.
-- Gunakan jalur aman sekali pakai seperti **Bitwarden Send**, **1Password**, atau **Yopass** (tautan terenkripsi yang otomatis hancur setelah dibuka sekali).
-- Rangkum daftar akun yang diserahterimakan pada berkas **`HANDOVER_PROTOCOL.md`**.
-
-### Langkah 3: Transfer Kepemilikan Repositori Git
-1. Masuk ke GitHub / GitLab project settings:
-   - Pilih menu **"Transfer Ownership"** $\to$ Masukkan nama akun organisasi Klien.
-2. Pastikan Klien mengangkat Single PIC teknis mereka menjadi Owner baru.
-3. Hapus akses token pribadi (*Personal Access Token*) Anda dari pengaturan CI/CD klien dan gantikan dengan token milik organisasi klien.
-
-### Langkah 4: Penandatanganan BAST Resmi
-1. Siapkan dokumen **`BAST_TEMPLATE.md`** yang memuat:
-   - Rincian deliverable yang diserahkan (Source code Git, URL live, User manual).
-   - Pengesahan bahwa sistem telah diterima dengan baik.
-   - Pernyataan tanggal mulai dan tanggal berakhirnya **Masa Garansi (Modul 12)**.
-2. Bubuhkan meterai fisik Rp 10.000,- (atau e-Meterai resmi) dan tanda tangani bersama Single PIC Klien.
+### Safe Staged Handover Protocol:
+1. **At Go-Live (Module 10)**: Grant client access only as **Standard User / Operational Admin** within the web application (`app.client.com`), not the cloud provider root account or GitHub admin.
+2. **While Awaiting Payment**: The system can already be used by client staff for daily operations, but the Developer retains infrastructure access rights.
+3. **After 100% Payment Has Cleared**: Only then perform Git repository ownership transfer and hand over database/cloud root passwords.
 
 ---
 
-## 4. Adaptasi Berdasarkan Skala Proyek
+## 3. Step-by-Step Execution
 
-| Parameter Handover | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+### Step 1: User Training Session (Training Quota Management)
+To prevent the solo developer from being turned into an indefinite free operational helpdesk:
+- **Standard Quota**: Maximum **2 online meeting sessions** (@ 60 minutes via Zoom/Google Meet):
+  - *Session 1*: Staff daily operational workflow (Data entry, document creation, approval flow).
+  - *Session 2*: Super Admin system management (User management, access permissions, audit trail, data export).
+- **Training Assets**: Record the training sessions and deliver the recordings alongside the **`USER_MANUAL.md`** file so future new client staff can onboard independently without contacting the developer again.
+
+### Step 2: Credential Handover Protocol (Zero Plaintext Sharing)
+Sending server passwords, database master keys, or API secrets via WhatsApp chat or unencrypted plaintext email is strictly prohibited.
+- Use secure one-time channels such as **Bitwarden Send**, **1Password**, or **Yopass** (encrypted links that automatically self-destruct after being opened once).
+- Summarize the inventory of handed-over accounts in the **`HANDOVER_PROTOCOL.md`** file.
+
+### Step 3: Git Repository Ownership Transfer
+1. Go to GitHub / GitLab project settings:
+   - Select **"Transfer Ownership"** $\to$ Enter the Client organization account name.
+2. Ensure the Client promotes their designated technical Single PIC as the new Owner.
+3. Remove your Personal Access Tokens (PAT) from the client's CI/CD settings and replace them with tokens owned by the client organization.
+
+### Step 4: Formal BAST Signing
+1. Prepare the **`BAST_TEMPLATE.md`** document containing:
+   - Breakdown of handed-over deliverables (Git source code, live URL, User manual).
+   - Sign-off confirming the system has been properly accepted.
+   - Formal statement of the start and end dates of the **Warranty Period (Module 12)**.
+2. Affix a physical Rp 10,000 duty stamp (meterai) (or official e-Meterai) and co-sign with the Client Single PIC.
+
+---
+
+## 4. Adaptation by Project Scale
+
+| Handover Parameter | Small Scale (MVP / Freelance) | Mid-Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
 | :--- | :--- | :--- | :--- |
-| **Sesi Training** | 1 sesi singkat via Google Meet | 2 sesi terstruktur (Staf & Admin) | Multi-sesi per divisi + Rekaman LMS |
-| **Panduan Pengguna** | 1-page Quickstart Guide Markdown | Dokumen formal `USER_MANUAL.md` | User Manual PDF lengkap + API Docs OpenAPI |
-| **Transfer Akun** | Invite admin via dashboard Vercel/DB | Transfer repo Git + Kredensial Vault | Transfer Cloud Tenant (AWS Org) + BAA/DPA |
-| **Dokumen BAST** | BAST format sederhana via email | BAST resmi bermeterai Rp 10.000 | BAST formal legal korporasi + Berita Acara UAT |
+| **Training Session** | 1 brief session via Google Meet | 2 structured sessions (Staff & Admin) | Multi-session per department + LMS Recording |
+| **User Guide** | 1-page Quickstart Guide Markdown | Formal `USER_MANUAL.md` document | Complete User Manual PDF + OpenAPI API Docs |
+| **Account Transfer** | Invite admin via Vercel/DB dashboard | Git repo transfer + Vault Credentials | Cloud Tenant Transfer (AWS Org) + BAA/DPA |
+| **BAST Document** | Simple format BAST via email | Official BAST with Rp 10,000 duty stamp | Formal corporate legal BAST + UAT Sign-off Report |
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 5. Output Deliverables
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> - Panduan pengguna disimpan di **`docs/USER_MANUAL.md`** (atau di root proyek untuk kemudahan akses staf).
-> - Berita acara transfer dan dokumen BAST WAJIB disimpan di folder **`docs/pm/`**.
+> 📁 **ABSOLUTE FILE LOCATION RULES**:
+> - User manual must be stored in **`docs/USER_MANUAL.md`** (or at the project root for easy staff access).
+> - Handover transfer reports and BAST documents MUST be stored in the **`docs/pm/`** folder.
 
-Modul ini menghasilkan dokumen penutupan resmi:
-1. **`docs/USER_MANUAL.md`**: Buku panduan operasional bagi admin dan staf pengguna sistem (menggunakan `templates/07-release-handover/USER_MANUAL_TEMPLATE.md`).
-2. **`docs/pm/HANDOVER_PROTOCOL.md`**: Berita acara teknis transfer kepemilikan repositori Git, daftar akun yang diserahterimakan, dan checklist pelepasan wewenang (menggunakan `templates/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md`).
-3. **`docs/pm/BAST.md`**: Berita Acara Serah Terima sah bermeterai Rp 10.000,- yang mengalihkan hak lisensi/kepemilikan perangkat lunak dan mengaktifkan masa garansi (menggunakan `templates/07-release-handover/BAST_TEMPLATE.md`).
-4. **Bukti Pembayaran Lunas 100%**: Konfirmasi mutasi bank penerimaan termin final.
-
----
-
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
-
-[GATE] Modul 11 dinyatakan **LOLOS (PASS)** jika:
-- [x] **Dana sisa pelunasan (100%) telah masuk dan terkonfirmasi di rekening bank Developer.**
-- [x] Sesi pelatihan staf dan admin telah dilaksanakan sesuai jatah yang disepakati.
-- [x] Repositori Git dan kredensial produksi telah dialihkan ke organisasi Klien.
-- [x] Dokumen `docs/USER_MANUAL.md` telah diserahkan ke klien.
-- [x] **Dokumen BAST resmi bermeterai (`docs/pm/BAST.md`) telah ditandatangani oleh kedua belah pihak.**
+This module produces official closing documents:
+1. **`docs/USER_MANUAL.md`**: Operational guide for administrators and system users (using `templates/07-release-handover/USER_MANUAL_TEMPLATE.md`).
+2. **`docs/pm/HANDOVER_PROTOCOL.md`**: Technical handover report for Git repository ownership transfer, inventory of handed-over accounts, and authority delegation checklist (using `templates/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md`).
+3. **`docs/pm/BAST.md`**: Official Handover Certificate (BAST) with Rp 10,000 duty stamp transferring software license/ownership rights and activating the warranty period (using `templates/07-release-handover/BAST_TEMPLATE.md`).
+4. **Proof of 100% Payment Clearance**: Bank statement confirmation verifying receipt of the final milestone payment.
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 6. [GATE] Exit Criteria
 
-Setelah penandatanganan BAST dan serah terima aset:
+[GATE] Module 11 is declared **PASSED** if:
+- [x] **Final settlement funds (100%) have cleared and are confirmed in the Developer's bank account.**
+- [x] Staff and admin training sessions have been conducted according to the agreed quota.
+- [x] Git repository and production credentials have been transferred to the Client organization.
+- [x] Document `docs/USER_MANUAL.md` has been delivered to the client.
+- [x] **Official stamped BAST document (`docs/pm/BAST.md`) has been signed by both parties.**
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+---
 
-**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+## 🛑 [GATE] EXIT & MANDATORY STOP PROTOCOL
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/BAST.md"` → harus return `True`
-   - Read tool: `read_file('docs/pm/BAST.md')` → harus sukses tanpa error
+After BAST signing and asset handover:
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
-   - ❌ **JANGAN tampilkan summary** ke user
-   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 12
-   - ✅ **REPORT ERROR** ke user:
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
+
+**MANDATORY BEFORE CONTENT VALIDATION**:
+
+1. **Check output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/BAST.md"` → must return `True`
+   - Read tool: `read_file('docs/pm/BAST.md')` → must succeed without error
+
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
+   - ❌ **DO NOT display summary** to user
+   - ❌ **DO NOT prompt confirmation** to proceed to Module 12
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File BAST.md tidak tercipta.
-     Module 11 FAILED - tidak bisa lanjut ke Module 12 (Warranty & SLA).
+     CRITICAL ERROR: File BAST.md was not created.
+     Module 11 FAILED - cannot proceed to Module 12 (Warranty & SLA).
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/pm/
-     - Path typo di tool call
+     Probable causes:
+     - Write permission denied on docs/pm/ folder
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum lanjut.
+     Please investigate this issue before proceeding.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+3. **ONLY IF FILE EXISTS**: Proceed to content validation below
 
 ---
 
-### **LANGKAH 1: VALIDASI KONTEN & PAYMENT**
+### **STEP 1: CONTENT & PAYMENT VALIDATION**
 
-1. **DILARANG KERAS langsung menutup sesi atau memanggil tool untuk Modul 12 dalam giliran (turn) yang sama!**
-2. **Verifikasi konten BAST & payment**:
-   - [ ] `read_file('docs/pm/BAST.md')` → Confirm signature + meterai + warranty period
-   - [ ] Confirm payment 100% received (mutasi bank atau screenshot)
+1. **STRICTLY FORBIDDEN to close the session or call tools for Module 12 within the same turn!**
+2. **Verify BAST content & payment**:
+   - [ ] `read_file('docs/pm/BAST.md')` → Confirm signature + duty stamp + warranty period
+   - [ ] Confirm payment 100% received (bank statement or screenshot)
    - [ ] Confirm repo transferred to client organization
    - [ ] Confirm credentials handed over securely
-3. Tampilkan rangkuman penutupan proyek:
-   - Konfirmasi penandatanganan BAST bermeterai
-   - Tanggal mulai dan tanggal berakhir masa garansi resmi
-   - Penawaran paket pemeliharaan (Monthly Retainer SLA)
-3. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Proyek telah resmi diserahterimakan dan ditutup (BAST ditandatangani). Masa garansi resmi berjalan mulai hari ini hingga [Tanggal Berakhir] (Durasi: 30 hari untuk skala kecil / 60 hari untuk skala menengah / 90 hari untuk skala besar). Apakah Anda ingin menyusun draf kebijakan garansi dan proposal Monthly Retainer SLA (Modul 12)?"*
-4. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 12.
+3. Display project closure summary:
+   - Confirmation of signed stamped BAST
+   - Official warranty start and end dates
+   - Maintenance package offering (Monthly Retainer SLA)
+4. **END YOUR RESPONSE (END TURN)** and prompt the user for confirmation:
+   > *"The project has been officially handed over and closed (BAST signed). The official warranty period runs from today until [End Date] (Duration: 30 days for small scale / 60 days for mid-scale / 90 days for large scale). Would you like to draft the warranty policy and Monthly Retainer SLA proposal (Module 12)?"*
+5. Wait for explicit user confirmation before proceeding to Module 12.

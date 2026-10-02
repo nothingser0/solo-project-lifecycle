@@ -1,114 +1,113 @@
-# Modul 13: Product Operations & Continuous Iteration (Operasi Produk & Iterasi Berkelanjutan)
+# Module 13: Product Operations & Continuous Iteration
 
 > - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
->
 
-Modul ini adalah tahap **pasca-peluncuran** dalam siklus hidup produk perangkat lunak untuk solo developer. Dijalankan setelah Modul 12 (Warranty & SLA) ketika sistem telah stabil di produksi dan fokus beralih dari "membangun" menjadi "mengoptimalkan & mengembangkan" berdasarkan data riil pengguna. Tujuannya adalah membangun **kerangka operasional berbasis metrik** untuk meningkatkan produk secara berkelanjutan menggunakan data, bukan asumsi.
+This module is the **post-launch stage** in the software product lifecycle for solo developers. It is executed after Module 12 (Warranty & SLA) once the system has stabilized in production and focus shifts from "building" to "optimizing & growing" based on real user data. The objective is to establish a **metrics-driven operational framework** to continuously improve the product using data, not assumptions.
 
 ---
 
-## 1. Siklus Eksekusi Modul 13
+## 1. Module 13 Execution Cycle
 
 ```text
-[ INPUT: Sistem Produksi Stabil + Data Pengguna 30 Hari Pertama ]
+[ INPUT: Stable Production System + First 30 Days User Data ]
                                     │
                                     ▼
-[ LANGKAH 1: Metrics Baseline Collection (Pengumpulan Baseline Metrik) ]
-  • Kumpulkan data metrik 30 hari pertama pasca-peluncuran
-  • Hitung Mean, Median, P50/P90/P95 untuk semua metrik kunci
-  • Bandingkan dengan benchmark industri (jika tersedia)
-  • Setup sistem deteksi anomali (Sentry, Datadog, custom alerts)
+[ STEP 1: Metrics Baseline Collection ]
+  • Collect first 30 days post-launch metrics data
+  • Calculate Mean, Median, P50/P90/P95 for all key metrics
+  • Compare against industry benchmarks (if available)
+  • Setup anomaly detection system (Sentry, Datadog, custom alerts)
                                     │
                                     ▼
-[ LANGKAH 2: Feedback Loop Automation (Otomasi Umpan Balik Pengguna) ]
-  • NPS Survey otomatis: Hari ke-7, Hari ke-30, Kuartalan
+[ STEP 2: Feedback Loop Automation ]
+  • Automated NPS Survey: Day 7, Day 30, Quarterly
   • In-App Feedback Widget (Canny, UserVoice, Typeform embed)
-  • Agregasi tiket support ke knowledge base (GitHub Issues → FAQ)
+  • Aggregate support tickets into knowledge base (GitHub Issues → FAQ)
   • Feature Request Vote & Prioritization Board
                                     │
                                     ▼
-[ LANGKAH 3: Cohort Analysis (Analisis Kelompok Pengguna) ]
+[ STEP 3: Cohort Analysis ]
   • Retention Cohorts: Day 1 / 7 / 30 / 90 retention rate
   • Behavioral Segmentation: Power Users vs Churners vs Casuals
   • Churn Prediction Signals (last_active > 14 days, low engagement)
-  • Power User Identification (top 10% aktivitas)
+  • Power User Identification (top 10% activity)
                                     │
                                     ▼
-[ LANGKAH 4: Feature Prioritization (Prioritas Fitur dengan RICE) ]
-  • Terapkan RICE Framework: Reach × Impact × Confidence / Effort
+[ STEP 4: Feature Prioritization with RICE ]
+  • Apply RICE Framework: Reach × Impact × Confidence / Effort
   • Feature ROI Calculation: Expected Revenue - Development Cost
-  • Opportunity Cost Analysis: Apa yang tidak dikerjakan jika pilih fitur X?
+  • Opportunity Cost Analysis: What is skipped if feature X is chosen?
   • Quarterly Feature Review Workshop
                                     │
                                     ▼
-[ LANGKAH 5: Growth Experiments Backlog (Daftar Eksperimen Pertumbuhan) ]
-  • Setup Hypothesis Format (dari Modul 04 A/B Testing)
-  • Prioritized Experiment Queue (sortir berdasarkan expected lift × ease)
-  • Velocity Tracking: Target 2–4 eksperimen per bulan
-  • Learning Repository: Dokumentasi hasil eksperimen (win/lose/neutral)
+[ STEP 5: Growth Experiments Backlog ]
+  • Setup Hypothesis Format (from Module 04 A/B Testing)
+  • Prioritized Experiment Queue (sort by expected lift × ease)
+  • Velocity Tracking: Target 2–4 experiments per month
+  • Learning Repository: Document experiment results (win/lose/neutral)
                                     │
                                     ▼
-[ LANGKAH 6: Product Health Monitoring (Pemantauan Kesehatan Produk) ]
-  • Weekly Metrics Review (15 menit standup metrics)
-  • Monthly OKR Check-In (progres terhadap North Star Metric dari M00)
-  • Quarterly Roadmap Review (prioritas ulang berdasarkan learnings)
-  • Annual Strategy Refresh (pivot atau double-down decision)
+[ STEP 6: Product Health Monitoring ]
+  • Weekly Metrics Review (15-minute metrics standup)
+  • Monthly OKR Check-In (progress against North Star Metric from M00)
+  • Quarterly Roadmap Review (reprioritization based on learnings)
+  • Annual Strategy Refresh (pivot or double-down decision)
                                     │
                                     ▼
-[ LANGKAH 7: Scaling Considerations (Pertimbangan Skala) ]
+[ STEP 7: Scaling Considerations ]
   • Performance Degradation Signals (response time > 500ms P95)
   • Database Optimization Triggers (query time > 100ms, N+1 queries)
   • Infrastructure Cost Monitoring (cost per active user)
-  • Team Expansion Indicators (solo dev overload > 60 jam/minggu)
+  • Team Expansion Indicators (solo dev overload > 60 hours/week)
                                     │
                                     ▼
-[ OUTPUT: 4 Dokumen Operasi Produk + 1 Panduan Referensi ]
+[ OUTPUT: 4 Product Operations Documents + 1 Reference Guide ]
 ```
 
 ---
 
-## 2. Prinsip Product Operations untuk Solo Developer
+## 2. Product Operations Principles for Solo Developers
 
-Product Operations berbeda dari Development Operations (DevOps). Fokusnya bukan pada server uptime atau deployment speed, melainkan pada **kualitas keputusan produk yang diambil berdasarkan data riil**.
+Product Operations differs from Development Operations (DevOps). Its focus is not on server uptime or deployment speed, but rather on the **quality of product decisions made based on real data**.
 
 | Parameter | Development Phase (M06) | Operations Phase (M13) |
 | :--- | :--- | :--- |
-| **Metrik Utama** | Code coverage, build time, deployment frequency | Retention rate, feature adoption, NPS, revenue per user |
-| **Siklus Kerja** | Sprint 1-2 minggu dengan deadline tetap | Continuous iteration tanpa deadline kaku, prioritas dinamis |
-| **Decision Maker** | Solo dev (teknis) | Data + Solo dev (product thinking) |
-| **Success Criteria** | Fitur selesai sesuai spesifikasi | Fitur meningkatkan metrik bisnis yang ditargetkan |
+| **Primary Metrics** | Code coverage, build time, deployment frequency | Retention rate, feature adoption, NPS, revenue per user |
+| **Work Cycle** | 1–2 week sprints with fixed deadlines | Continuous iteration without rigid deadlines, dynamic priorities |
+| **Decision Maker** | Solo dev (technical) | Data + Solo dev (product thinking) |
+| **Success Criteria** | Feature completed according to specifications | Feature moves targeted business metrics |
 | **Tooling** | GitHub, IDE, CI/CD pipeline | Analytics dashboard, cohort analysis, A/B testing platform |
 
-**Prinsip Emas**: Setiap keputusan penambahan fitur wajib menjawab: *"Metrik mana yang akan bergerak jika fitur ini berhasil?"*
+**Golden Principle**: Every feature addition decision must answer: *"Which metric will move if this feature succeeds?"*
 
 ---
 
-## 3. Langkah demi Langkah Eksekusi
+## 3. Step-by-Step Execution
 
-### Langkah 1: Metrics Baseline Collection (Baseline Metrik 30 Hari Pertama)
+### Step 1: Metrics Baseline Collection (First 30 Days Baseline Metrics)
 
-Setelah sistem live di produksi selama minimal 30 hari kalender, kumpulkan data baseline untuk semua metrik kunci.
+After the system has been live in production for at least 30 calendar days, collect baseline data for all key metrics.
 
-#### 1.1 Kategori Metrik Wajib Diukur
+#### 1.1 Mandatory Metric Categories to Measure
 
-| Kategori Metrik | Metrik Spesifik | Query/Tool |
+| Metric Category | Specific Metrics | Query/Tool |
 | :--- | :--- | :--- |
-| **Akuisisi (Acquisition)** | Sign-up rate, traffic source breakdown | Google Analytics, Plausible, Posthog |
-| **Aktivasi (Activation)** | % users yang complete onboarding / first core action dalam 24 jam | Custom event tracking (Posthog, Mixpanel) |
-| **Retensi (Retention)** | Day 1 / 7 / 30 / 90 retention rate | Cohort analysis SQL query |
-| **Referral** | Viral coefficient (berapa user baru per existing user) | Referral tracking (jika ada program referral) |
+| **Acquisition** | Sign-up rate, traffic source breakdown | Google Analytics, Plausible, PostHog |
+| **Activation** | % users completing onboarding / first core action within 24 hours | Custom event tracking (PostHog, Mixpanel) |
+| **Retention** | Day 1 / 7 / 30 / 90 retention rate | Cohort analysis SQL query |
+| **Referral** | Viral coefficient (new users per existing user) | Referral tracking (if referral program exists) |
 | **Revenue** | MRR (Monthly Recurring Revenue), ARPU (Average Revenue Per User), LTV (Lifetime Value) | Stripe Dashboard / payment provider analytics |
-| **Engagement** | DAU/MAU ratio, session duration, feature usage frequency | Posthog feature flags + event tracking |
+| **Engagement** | DAU/MAU ratio, session duration, feature usage frequency | PostHog feature flags + event tracking |
 | **Performance** | Response time P50/P95, error rate, uptime % | Sentry, Datadog, Vercel Analytics |
 
-#### 1.2 Hitung Statistik Deskriptif
+#### 1.2 Calculate Descriptive Statistics
 
-Untuk setiap metrik, hitung:
-- **Mean (Rata-rata)**: Nilai rerata, sensitif terhadap outlier.
-- **Median (Nilai Tengah)**: Lebih robust terhadap outlier, cocok untuk distribution skewed.
-- **Percentiles (P50/P90/P95)**: Untuk metrik performa (response time), gunakan P95 sebagai SLA threshold.
+For each metric, calculate:
+- **Mean**: Average value, sensitive to outliers.
+- **Median**: More robust against outliers, suitable for skewed distributions.
+- **Percentiles (P50/P90/P95)**: For performance metrics (response time), use P95 as the SLA threshold.
 
-**Contoh SQL Query untuk Retention Cohort**:
+**Example SQL Query for Retention Cohort**:
 ```sql
 -- Day 7 Retention Rate
 WITH cohorts AS (
@@ -131,24 +130,24 @@ ORDER BY cohort_date DESC;
 
 #### 1.3 Benchmark Comparison
 
-Bandingkan baseline Anda dengan standar industri:
+Compare your baseline against industry standards:
 
-| Jenis Produk | Day 1 Retention | Day 7 Retention | Day 30 Retention | NPS Score |
+| Product Type | Day 1 Retention | Day 7 Retention | Day 30 Retention | NPS Score |
 | :--- | :--- | :--- | :--- | :--- |
-| **SaaS B2B** | 60–80% | 40–60% | 25–40% | 30–50 |
+| **B2B SaaS** | 60–80% | 40–60% | 25–40% | 30–50 |
 | **Consumer Mobile App** | 25–40% | 10–20% | 5–10% | 10–30 |
 | **E-Commerce** | 20–35% | 10–15% | 5–10% | 20–40 |
 | **Marketplace** | 30–50% | 15–25% | 10–15% | 25–45 |
 
-**Sumber Benchmark**: Mixpanel Benchmark Report, Lenny's Newsletter SaaS Metrics, OpenView SaaS Benchmarks.
+**Benchmark Sources**: Mixpanel Benchmark Report, Lenny's Newsletter SaaS Metrics, OpenView SaaS Benchmarks.
 
-**Jika metrik Anda di bawah benchmark**: Prioritaskan perbaikan onboarding dan aktivasi (LANGKAH 2 feedback loop).
+**If your metrics fall below benchmarks**: Prioritize onboarding and activation improvements (STEP 2 feedback loop).
 
 #### 1.4 Anomaly Detection Setup
 
-Setup alert otomatis untuk mendeteksi pola abnormal:
+Configure automated alerts to detect abnormal patterns:
 ```javascript
-// Contoh: Cloudflare Workers script untuk alert anomali
+// Example: Cloudflare Workers script for anomaly alerts
 async function checkDailyActiveUsers() {
   const today = await fetchDAU('2026-09-27');
   const baseline = await fetchAvgDAU(last30Days);
@@ -159,26 +158,26 @@ async function checkDailyActiveUsers() {
 }
 ```
 
-**Output Langkah 1**: Dokumen **`docs/pm/METRICS_BASELINE_REPORT.md`** (gunakan template `templates/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md`).
+**Step 1 Output**: Document **`docs/analytics/METRICS_BASELINE_REPORT.md`** (use template `templates/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md`).
 
 ---
 
-### Langkah 2: Feedback Loop Automation (Otomasi Umpan Balik)
+### Step 2: Feedback Loop Automation
 
-Feedback pengguna adalah sumber ide fitur terbaik. Otomasi pengumpulannya agar tidak bergantung pada ingatan manual.
+User feedback is the best source of feature ideas. Automate collection so it does not rely on manual memory.
 
 #### 2.1 NPS Survey Automation (Net Promoter Score)
 
-NPS mengukur loyalitas pengguna dengan satu pertanyaan: *"Seberapa besar kemungkinan Anda merekomendasikan produk ini ke rekan? (0–10)"*
+NPS measures user loyalty with a single question: *"How likely are you to recommend this product to a colleague? (0–10)"*
 
-**Klasifikasi**:
-- **Promoters (9–10)**: Pengguna loyal, akan promosikan produk.
-- **Passives (7–8)**: Puas tapi tidak antusias.
-- **Detractors (0–6)**: Tidak puas, berpotensi churn.
+**Classification**:
+- **Promoters (9–10)**: Loyal users, will promote the product.
+- **Passives (7–8)**: Satisfied but unenthusiastic.
+- **Detractors (0–6)**: Dissatisfied, potential churn risks.
 
-**Formula NPS**: `NPS = % Promoters - % Detractors` (range: -100 hingga +100).
+**NPS Formula**: `NPS = % Promoters - % Detractors` (range: -100 to +100).
 
-**Otomasi Trigger**:
+**Automation Triggers**:
 ```javascript
 // Trigger NPS survey via email/in-app
 const triggers = [
@@ -189,57 +188,57 @@ const triggers = [
 ```
 
 **Tool Recommendations**:
-- **Gratis**: Typeform (50 responses/month), Google Forms + Zapier.
-- **Berbayar**: Delighted ($99/month), SatisMeter, Refiner.
+- **Free**: Typeform (50 responses/month), Google Forms + Zapier.
+- **Paid**: Delighted ($99/month), SatisMeter, Refiner.
 
 #### 2.2 In-App Feedback Widget
 
-Pasang widget feedback di sudut aplikasi untuk menangkap feedback spontan.
+Embed a feedback widget in the corner of the application to capture spontaneous feedback.
 
-**Implementasi Minimalis dengan Canny (Gratis untuk < 100 MAU)**:
+**Minimalist Implementation with Canny (Free for < 100 MAU)**:
 ```html
-<!-- Embed Canny widget di dashboard app -->
+<!-- Embed Canny widget in app dashboard -->
 <script>
   !function(w,d,i,s){function l(){if(!d.getElementById(i)){var f=d.getElementsByTagName(s)[0],e=d.createElement(s);e.type="text/javascript",e.async=!0,e.src="https://canny.io/sdk.js",f.parentNode.insertBefore(e,f)}}if("function"!=typeof w.Canny){var c=function(){c.q.push(arguments)};c.q=[],w.Canny=c,"complete"===d.readyState?l():w.attachEvent?w.attachEvent("onload",l):w.addEventListener("load",l,!1)}}(window,document,"canny-jssdk","script");
   
   Canny('render', {
     boardToken: 'YOUR_BOARD_TOKEN',
     basePath: '/feedback',
-    ssoToken: user.cannyToken // Optional: SSO untuk link ke user account
+    ssoToken: user.cannyToken // Optional: SSO to link to user account
   });
 </script>
 ```
 
-**Alternatif Lain**: UserVoice, Fider (open-source), custom form ke Notion database.
+**Other Alternatives**: UserVoice, Fider (open-source), custom form to Notion database.
 
 #### 2.3 Support Ticket Analysis
 
-Agregasi tiket support ke dalam knowledge base:
-1. **Tag Kategorisasi**: Bug, Feature Request, How-To, Payment Issue.
-2. **Ekstraksi Pattern**: Jika > 5 tiket menanyakan hal yang sama → buat FAQ entry atau perbaiki UX.
-3. **Automated Response Template**: Setup canned response untuk pertanyaan repetitif.
+Aggregate support tickets into a knowledge base:
+1. **Categorization Tags**: Bug, Feature Request, How-To, Payment Issue.
+2. **Pattern Extraction**: If > 5 tickets ask the same question → create FAQ entry or fix UX.
+3. **Automated Response Template**: Set up canned responses for repetitive questions.
 
-**Contoh Workflow dengan GitHub Issues**:
+**Example Workflow with GitHub Issues**:
 ```bash
-# Label otomatis berdasarkan keyword
+# Automated labeling based on keyword
 gh api repos/{username}/{repo}/issues/123 -X PATCH \
   -f state='open' \
   -f labels='["bug", "high-priority"]'
 ```
 
-**Output Langkah 2**: Setup sistem feedback aktif (NPS scheduled, widget live, tiket teraggregasi).
+**Step 2 Output**: Active feedback system setup (NPS scheduled, widget live, tickets aggregated).
 
 ---
 
-### Langkah 3: Cohort Analysis (Analisis Kelompok Pengguna)
+### Step 3: Cohort Analysis
 
-Cohort analysis memecah pengguna berdasarkan waktu pendaftaran atau perilaku untuk menemukan pola retensi dan churn.
+Cohort analysis breaks down users by registration time or behavior to uncover retention and churn patterns.
 
-#### 3.1 Retention Cohorts (Kohor Retensi)
+#### 3.1 Retention Cohorts
 
-**Definisi**: Kelompok pengguna yang mendaftar di minggu/bulan yang sama, diikuti aktivitasnya dari waktu ke waktu.
+**Definition**: A group of users who registered in the same week/month, tracked for activity over time.
 
-**Contoh Tabel Cohort**:
+**Cohort Table Example**:
 
 | Signup Week | Cohort Size | Week 0 | Week 1 | Week 2 | Week 4 |
 | :--- | ---: | ---: | ---: | ---: | ---: |
@@ -247,40 +246,40 @@ Cohort analysis memecah pengguna berdasarkan waktu pendaftaran atau perilaku unt
 | 2026-09-08 | 150 | 100% | 52% | 38% | 22% |
 | 2026-09-15 | 180 | 100% | 48% | 35% | - |
 
-**Insight**: Week 2 retention naik dari 32% → 38% setelah perbaikan onboarding. Teruskan improvement.
+**Insight**: Week 2 retention rose from 32% → 38% after onboarding improvements. Continue improvement.
 
-**Tool**: Mixpanel (paid), Posthog (open-source self-hosted), custom SQL query.
+**Tools**: Mixpanel (paid), PostHog (open-source self-hosted), custom SQL query.
 
 #### 3.2 Behavioral Segmentation
 
-Kelompokkan pengguna berdasarkan perilaku aktual, bukan demografi:
-- **Power Users**: Top 10% aktivitas (login harian, pakai advanced features).
-- **Casual Users**: Login mingguan, pakai basic features only.
-- **At-Risk Users**: Tidak login > 14 hari, tapi belum unsubscribe.
-- **Churned Users**: Tidak aktif > 60 hari atau canceled subscription.
+Segment users based on actual behavior, not demographics:
+- **Power Users**: Top 10% activity (daily login, uses advanced features).
+- **Casual Users**: Weekly login, uses basic features only.
+- **At-Risk Users**: Inactive > 14 days, but has not unsubscribed.
+- **Churned Users**: Inactive > 60 days or canceled subscription.
 
-**Aksi Berbeda per Segmen**:
+**Differentiated Actions per Segment**:
 ```javascript
-// Contoh: Email retention campaign
+// Example: Email retention campaign
 if (segment === 'power_users') {
-  sendEmail('invite_beta_feature'); // Engage dengan akses early
+  sendEmail('invite_beta_feature'); // Engage with early access
 } else if (segment === 'at_risk') {
-  sendEmail('win_back_offer'); // Diskon atau reminder value prop
+  sendEmail('win_back_offer'); // Discount or value prop reminder
 }
 ```
 
 #### 3.3 Churn Prediction Signals
 
-Setup early warning system untuk users yang berpotensi churn:
+Set up an early warning system for users at risk of churning:
 
 **Churn Indicators**:
-- `last_active_at > 14 days` untuk consumer app, `> 7 days` untuk daily-use tools.
-- Login frequency menurun > 50% dari baseline.
-- Tidak pernah pakai fitur kunci (activation milestone belum tercapai).
+- `last_active_at > 14 days` for consumer apps, `> 7 days` for daily-use tools.
+- Login frequency drops > 50% from baseline.
+- Never used key features (activation milestone not reached).
 
 **Proactive Intervention**:
 ```sql
--- Identifikasi users at-risk
+-- Identify at-risk users
 SELECT user_id, email, last_active_at, 
        DATE_PART('day', NOW() - last_active_at) AS days_inactive
 FROM users
@@ -289,13 +288,13 @@ WHERE last_active_at < NOW() - INTERVAL '14 days'
 ORDER BY days_inactive DESC;
 ```
 
-Kirim targeted email: *"Kami melihat Anda belum login sejak [X] hari. Ada yang bisa kami bantu?"*
+Send targeted email: *"We noticed you haven't logged in for [X] days. Is there anything we can help with?"*
 
 #### 3.4 Power User Identification
 
-Power users adalah sumber feedback terbaik dan kandidat testimonial:
+Power users are the best source of feedback and candidate testimonials:
 ```sql
--- Identifikasi power users (top 10% aktivitas)
+-- Identify power users (top 10% activity)
 WITH activity_scores AS (
   SELECT user_id, 
          COUNT(*) AS total_sessions,
@@ -309,20 +308,20 @@ FROM activity_scores
 WHERE total_sessions >= (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY total_sessions) FROM activity_scores);
 ```
 
-**Aksi untuk Power Users**:
-- Undang ke user advisory board (monthly call).
-- Tawarkan akses beta feature early.
-- Minta testimonial atau case study.
+**Actions for Power Users**:
+- Invite to user advisory board (monthly call).
+- Offer early beta feature access.
+- Request testimonials or case studies.
 
-**Output Langkah 3**: Dashboard cohort analysis + list segmen pengguna terupdate mingguan.
+**Step 3 Output**: Cohort analysis dashboard + weekly updated user segment lists.
 
 ---
 
-### Langkah 4: Feature Prioritization (Prioritas Fitur dengan RICE)
+### Step 4: Feature Prioritization with RICE
 
-RICE adalah framework scoring untuk memprioritaskan backlog fitur secara objektif.
+RICE is a scoring framework for prioritizing feature backlogs objectively.
 
-*Panduan lengkap: `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`*
+*Full guide: `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`*
 
 #### 4.1 RICE Framework
 
@@ -331,67 +330,67 @@ RICE adalah framework scoring untuk memprioritaskan backlog fitur secara objekti
 RICE Score = (Reach × Impact × Confidence) / Effort
 ```
 
-**Definisi Variabel**:
-- **Reach**: Berapa banyak pengguna yang terpengaruh per kuartal? (angka absolut: 100, 500, 1000 users).
-- **Impact**: Seberapa besar dampaknya per user? (skala: 0.25 = Minimal, 0.5 = Low, 1 = Medium, 2 = High, 3 = Massive).
-- **Confidence**: Seberapa yakin estimasi ini? (persentase: 50% = Low, 80% = Medium, 100% = High).
-- **Effort**: Berapa person-months (PM) untuk develop? (0.5 PM, 1 PM, 2 PM, dst).
+**Variable Definitions**:
+- **Reach**: How many users are affected per quarter? (absolute numbers: 100, 500, 1000 users).
+- **Impact**: How significant is the impact per user? (scale: 0.25 = Minimal, 0.5 = Low, 1 = Medium, 2 = High, 3 = Massive).
+- **Confidence**: How confident is this estimate? (percentage: 50% = Low, 80% = Medium, 100% = High).
+- **Effort**: How many person-months (PM) to develop? (0.5 PM, 1 PM, 2 PM, etc.).
 
-**Contoh Perhitungan**:
+**Calculation Example**:
 
-| Fitur | Reach | Impact | Confidence | Effort (PM) | RICE Score |
+| Feature | Reach | Impact | Confidence | Effort (PM) | RICE Score |
 | :--- | ---: | ---: | ---: | ---: | ---: |
 | Dark Mode | 800 | 0.5 | 80% | 0.5 | 640 |
-| Ekspor ke PDF | 500 | 1 | 100% | 1 | 500 |
+| Export to PDF | 500 | 1 | 100% | 1 | 500 |
 | Multi-language | 1200 | 2 | 50% | 3 | 400 |
 | Social Login (Google) | 600 | 0.5 | 80% | 0.5 | 480 |
 | Advanced Analytics | 150 | 3 | 80% | 2 | 180 |
 
-**Prioritas**: Kerjakan Dark Mode (score 640) terlebih dahulu.
+**Priority**: Build Dark Mode (score 640) first.
 
 #### 4.2 Feature ROI Calculation
 
-Hitung return on investment untuk fitur berbayar:
+Calculate return on investment for paid features:
 ```
 Feature ROI = (Expected Incremental Revenue - Development Cost) / Development Cost × 100%
 ```
 
-**Contoh**:
-- **Fitur Premium Export**: Development cost Rp 10 juta (40 jam × Rp 250k/jam).
-- **Expected Revenue**: 50 users upgrade ke tier berbayar (+Rp 50k/bulan) = Rp 2.5 juta/bulan.
-- **Payback Period**: 10 juta / 2.5 juta = 4 bulan.
-- **ROI per tahun**: (2.5 juta × 12 - 10 juta) / 10 juta = 200%.
+**Example**:
+- **Premium Export Feature**: Development cost Rp 10 million (40 hours × Rp 250k/hour).
+- **Expected Revenue**: 50 users upgrade to paid tier (+Rp 50k/month) = Rp 2.5 million/month.
+- **Payback Period**: 10 million / 2.5 million = 4 months.
+- **Annual ROI**: (2.5 million × 12 - 10 million) / 10 million = 200%.
 
-Prioritaskan fitur dengan payback period < 6 bulan.
+Prioritize features with a payback period < 6 months.
 
 #### 4.3 Opportunity Cost Analysis
 
-Setiap fitur yang dipilih = fitur lain yang tidak dikerjakan.
+Every chosen feature = another feature left unbuilt.
 
-**Pertanyaan Wajib Dijawab**:
-- Jika saya kerjakan Fitur A selama 2 bulan, fitur mana yang tertunda?
-- Apakah Fitur A lebih urgent daripada memperbaiki retention rate yang sedang turun?
+**Mandatory Questions to Answer**:
+- If I work on Feature A for 2 months, which features are delayed?
+- Is Feature A more urgent than fixing a declining retention rate?
 
-**Framework Decision Matrix**:
+**Decision Matrix Framework**:
 
-| Kuadran | Impact (Y-Axis) | Urgency (X-Axis) | Keputusan |
+| Quadrant | Impact (Y-Axis) | Urgency (X-Axis) | Decision |
 | :--- | :--- | :--- | :--- |
-| **Q1: Do First** | High | High | Kerjakan segera (bug kritis, churn blocker) |
-| **Q2: Schedule** | High | Low | Masuk roadmap kuartal depan (strategic features) |
-| **Q3: Delegate/Automate** | Low | High | Cari solusi low-code atau outsource |
-| **Q4: Drop** | Low | Low | Buang dari backlog |
+| **Q1: Do First** | High | High | Execute immediately (critical bugs, churn blockers) |
+| **Q2: Schedule** | High | Low | Add to next quarter's roadmap (strategic features) |
+| **Q3: Delegate/Automate** | Low | High | Seek low-code solutions or outsource |
+| **Q4: Drop** | Low | Low | Drop from backlog |
 
-**Output Langkah 4**: Backlog fitur dengan RICE score terurut, diupdate setiap bulan (gunakan `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`).
+**Step 4 Output**: Feature backlog sorted by RICE score, updated monthly (use `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`).
 
 ---
 
-### Langkah 5: Growth Experiments Backlog (Daftar Eksperimen)
+### Step 5: Growth Experiments Backlog
 
-Setiap fitur atau perubahan UX adalah eksperimen. Dokumentasikan hipotesis dan hasil untuk building institutional knowledge.
+Every feature or UX change is an experiment. Document hypotheses and results to build institutional knowledge.
 
-#### 5.1 Hypothesis Format (dari Modul 04 A/B Testing)
+#### 5.1 Hypothesis Format (from Module 04 A/B Testing)
 
-**Template Hipotesis Eksperimen**:
+**Experiment Hypothesis Template**:
 ```
 We believe that [CHANGE]
 will result in [IMPACT]
@@ -401,7 +400,7 @@ because [RATIONALE].
 We will measure success by [METRIC DEFINITION & THRESHOLD].
 ```
 
-**Contoh**:
+**Example**:
 ```
 We believe that adding social proof badges ("1,234 users love this feature")
 will result in 15% increase in feature adoption rate
@@ -413,28 +412,28 @@ We will measure success by tracking "feature_used" event Day 1-7 cohort comparis
 
 #### 5.2 Experiment Queue Prioritization
 
-Sortir eksperimen berdasarkan:
-1. **Expected Lift × Ease**: (Impact 1-10) × (Kemudahan implementasi 1-10).
-2. **Strategic Alignment**: Apakah eksperimen ini align dengan North Star Metric (M00)?
+Sort experiments based on:
+1. **Expected Lift × Ease**: (Impact 1–10) × (Implementation ease 1–10).
+2. **Strategic Alignment**: Does this experiment align with the North Star Metric (M00)?
 
-**Contoh Queue**:
+**Queue Example**:
 
-| Eksperimen | Expected Lift | Ease | Priority Score | Status |
+| Experiment | Expected Lift | Ease | Priority Score | Status |
 | :--- | ---: | ---: | ---: | :--- |
-| Email reminder untuk incomplete signups | 8 | 9 | 72 | Running |
+| Email reminder for incomplete signups | 8 | 9 | 72 | Running |
 | Personalized onboarding flow | 9 | 5 | 45 | Backlog |
-| Gamifikasi poin loyalty | 6 | 3 | 18 | Backlog |
+| Loyalty points gamification | 6 | 3 | 18 | Backlog |
 
 #### 5.3 Velocity Tracking
 
-Target eksperimen untuk solo developer: **2–4 eksperimen per bulan** (1 eksperimen per 1-2 minggu).
+Target experiment velocity for solo developers: **2–4 experiments per month** (1 experiment every 1–2 weeks).
 
 **Tracking Metrics**:
-- Jumlah eksperimen launched.
-- Win rate (% eksperimen yang beat control).
-- Average setup time (dari ide → launch).
+- Number of experiments launched.
+- Win rate (% of experiments beating control).
+- Average setup time (from idea → launch).
 
-**Learning Repository**: Dokumentasikan semua eksperimen (win, lose, neutral) di folder `docs/experiments/`:
+**Learning Repository**: Document all experiments (win, lose, neutral) in the `docs/experiments/` folder:
 ```
 docs/experiments/
 ├── 2026-09-experiment-001-social-proof-badges.md
@@ -442,49 +441,49 @@ docs/experiments/
 └── 2026-10-experiment-003-pricing-page-redesign.md
 ```
 
-**Output Langkah 5**: Growth Experiments Backlog diupdate setiap sprint (gunakan `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`).
+**Step 5 Output**: Growth Experiments Backlog updated every sprint (use `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`).
 
 ---
 
-### Langkah 6: Product Health Monitoring (Pemantauan Kesehatan Produk)
+### Step 6: Product Health Monitoring
 
-Monitoring berkelanjutan dengan ritme tetap mencegah drifting tanpa arah.
+Continuous monitoring with a consistent rhythm prevents drifting aimlessly.
 
-#### 6.1 Weekly Metrics Review (15 Menit Standup)
+#### 6.1 Weekly Metrics Review (15-Minute Standup)
 
-Setiap Senin pagi, review snapshot metrik:
-- **Akuisisi**: Berapa signup baru minggu lalu vs target?
-- **Aktivasi**: % signup yang complete onboarding?
-- **Retensi**: Day 7 retention rate cohort minggu lalu?
-- **Revenue**: MRR pertumbuhan vs churn?
-- **Bug/Performance**: Ada spike error rate atau response time degradation?
+Every Monday morning, review the metrics snapshot:
+- **Acquisition**: How many new signups last week vs target?
+- **Activation**: % signups completing onboarding?
+- **Retention**: Day 7 retention rate for last week's cohort?
+- **Revenue**: MRR growth vs churn?
+- **Bug/Performance**: Any error rate spikes or response time degradation?
 
-**Format Dashboard Minimalis**:
+**Minimalist Dashboard Format**:
 ```yaml
 # Product Health Dashboard (Week 39, 2026)
 Signups: 45 (target: 50) ❌
 Activation Rate: 68% (baseline: 65%) ✅
 Day 7 Retention: 42% (baseline: 40%) ✅
-MRR: Rp 12.5 jt (growth: +8% MoM) ✅
+MRR: Rp 12.5M (growth: +8% MoM) ✅
 P95 Response Time: 520ms (SLA: 500ms) ⚠️
 Critical Bugs: 0 ✅
 ```
 
-Tool: Notion database, Google Sheets auto-update via API, atau Grafana dashboard.
+Tools: Notion database, Google Sheets auto-updating via API, or Grafana dashboard.
 
-#### 6.2 Monthly OKR Check-In (Alignment ke M00 North Star)
+#### 6.2 Monthly OKR Check-In (Alignment to M00 North Star)
 
-Setiap akhir bulan, evaluasi progres terhadap **North Star Metric** (dari Modul 00):
-- Apakah North Star Metric bergerak naik?
-- Key Result mana yang on-track vs at-risk?
-- Apakah ada blocker yang perlu di-escalate?
+At the end of each month, evaluate progress against the **North Star Metric** (from Module 00):
+- Is the North Star Metric moving upward?
+- Which Key Results are on-track vs at-risk?
+- Are there blockers that need escalation?
 
-**Contoh North Star Metric**:
-- **SaaS B2B**: Weekly Active Companies (WAC).
+**North Star Metric Examples**:
+- **B2B SaaS**: Weekly Active Companies (WAC).
 - **E-Commerce**: Gross Merchandise Value (GMV) per month.
 - **Marketplace**: Successful Transactions per week.
 
-**Template Monthly Review**:
+**Monthly Review Template**:
 ```markdown
 # Monthly OKR Review (September 2026)
 
@@ -498,84 +497,84 @@ Key Results:
 - KR3: Launch 2 enterprise features → Launched 1/2 ⚠️
 
 Blockers:
-- High churn dari segment "small teams" → need better onboarding.
+- High churn from "small teams" segment → need better onboarding.
 
 Actions Next Month:
 - Prioritize churn reduction experiments.
-- Interview churned users untuk qualitative insight.
+- Interview churned users for qualitative insight.
 ```
 
 #### 6.3 Quarterly Roadmap Review
 
-Setiap kuartal, review roadmap:
-- Fitur mana yang deliver impact vs yang tidak?
-- Ada learnings baru dari eksperimen yang perlu pivot strategy?
-- Apakah prioritas kuartal depan masih relevan?
+Review the roadmap every quarter:
+- Which features delivered impact vs which did not?
+- Are there new learnings from experiments that warrant a strategy pivot?
+- Are next quarter's priorities still relevant?
 
 **Decision Framework**:
-- **Double Down**: Jika fitur/channel berhasil, alokasikan lebih banyak resource.
-- **Pivot**: Jika hipotesis terbukti salah, ubah approach.
-- **Kill**: Jika fitur tidak dipakai (< 5% adoption setelah 3 bulan), deprecate.
+- **Double Down**: If a feature/channel succeeds, allocate more resources.
+- **Pivot**: If hypotheses prove false, alter the approach.
+- **Kill**: If a feature is unused (< 5% adoption after 3 months), deprecate it.
 
 #### 6.4 Annual Strategy Refresh
 
-Setiap tahun, revisit Modul 00 (Product Discovery & Strategy):
-- Apakah Vision Statement masih relevan?
-- Apakah kompetitor landscape berubah?
-- Apakah ada peluang pasar baru atau ancaman baru (regulasi, teknologi)?
+Every year, revisit Module 00 (Product Discovery & Strategy):
+- Is the Vision Statement still relevant?
+- Has the competitive landscape shifted?
+- Are there new market opportunities or emerging threats (regulations, technology)?
 
-**Output Langkah 6**: Weekly dashboard + Monthly OKR doc + Quarterly roadmap update (gunakan `templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md`).
+**Step 6 Output**: Weekly dashboard + Monthly OKR doc + Quarterly roadmap update (use `templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md`).
 
 ---
 
-### Langkah 7: Scaling Considerations (Pertimbangan Skala)
+### Step 7: Scaling Considerations
 
-Monitoring signals untuk mengetahui kapan sistem atau tim perlu di-scale.
+Monitoring signals to know when the system or team needs scaling.
 
 #### 7.1 Performance Degradation Signals
 
-**Trigger Scale-Up Infrastruktur**:
-- Response time P95 > 500ms secara konsisten.
-- Database query time > 100ms untuk query kritis.
-- N+1 query problem muncul di Sentry (banyak query untuk satu page load).
-- CPU/Memory usage > 80% di jam peak.
+**Infrastructure Scale-Up Triggers**:
+- P95 response time consistently > 500ms.
+- Database query time > 100ms for critical queries.
+- N+1 query problems appearing in Sentry (multiple queries for a single page load).
+- CPU/Memory usage > 80% during peak hours.
 
-**Aksi**:
-- Database indexing audit (run `EXPLAIN ANALYZE` untuk slow queries).
-- Caching layer (Redis untuk session/query results).
-- CDN untuk static assets (Cloudflare, Vercel Edge).
-- Vertical scaling server (upgrade tier) atau horizontal scaling (load balancer + multiple instances).
+**Actions**:
+- Database indexing audit (run `EXPLAIN ANALYZE` for slow queries).
+- Caching layer (Redis for session/query results).
+- CDN for static assets (Cloudflare, Vercel Edge).
+- Vertical server scaling (upgrade tier) or horizontal scaling (load balancer + multiple instances).
 
 #### 7.2 Database Optimization Triggers
 
-**Tanda Perlu Optimasi DB**:
-- Tabel utama > 1 juta rows tanpa partitioning.
-- Full table scan di query log.
-- Backup time > 30 menit.
+**Signs DB Optimization Is Needed**:
+- Primary tables > 1 million rows without partitioning.
+- Full table scans in query logs.
+- Backup time > 30 minutes.
 
-**Strategi Optimasi**:
+**Optimization Strategies**:
 ```sql
--- Index untuk kolom yang sering di-filter/join
+-- Indexes for frequently filtered/joined columns
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_orders_created_at ON orders(created_at DESC);
 
--- Partitioning untuk tabel besar (time-series data)
+-- Partitioning for large tables (time-series data)
 CREATE TABLE events_2026_09 PARTITION OF events
 FOR VALUES FROM ('2026-09-01') TO ('2026-10-01');
 ```
 
 #### 7.3 Infrastructure Cost Monitoring
 
-**Metrik Cost Efficiency**:
+**Cost Efficiency Metric**:
 ```
 Cost per Active User (CAU) = Total Infrastructure Cost / Monthly Active Users
 ```
 
-**Benchmark**:
-- **Good**: CAU < $1 untuk consumer app, < $10 untuk B2B SaaS.
-- **At Risk**: CAU meningkat tanpa pertumbuhan fitur/pengguna yang signifikan.
+**Benchmarks**:
+- **Good**: CAU < $1 for consumer apps, < $10 for B2B SaaS.
+- **At Risk**: CAU increasing without significant feature or user growth.
 
-**Contoh Tracking**:
+**Tracking Example**:
 ```markdown
 # Infrastructure Cost (September 2026)
 - Vercel: $120/month
@@ -587,129 +586,129 @@ MAU: 350 users
 CAU: $0.50/user ✅ (target: < $1)
 ```
 
-**Aksi jika CAU meningkat tajam**:
-- Audit unused resources (staging environment yang lupa dimatikan).
+**Actions if CAU increases sharply**:
+- Audit unused resources (staging environments left running).
 - Optimize asset delivery (compress images, lazy load).
-- Negotiate pricing tier dengan vendor.
+- Negotiate pricing tiers with vendors.
 
 #### 7.4 Team Expansion Indicators
 
 **Solo dev overload signals**:
-- Work hours > 60 jam/minggu secara konsisten.
-- Support tickets tidak terbalas > 48 jam.
-- Roadmap velocity turun > 50% (karena kebanyakan fire-fighting).
-- Critical bug fix tertunda karena tidak ada bandwidth.
+- Work hours consistently > 60 hours/week.
+- Support tickets unanswered > 48 hours.
+- Roadmap velocity drops > 50% (due to excessive fire-fighting).
+- Critical bug fixes delayed due to lack of bandwidth.
 
-**Opsi Scale Team**:
-1. **Part-time VA/Support**: Outsource support tickets ke VA (Rp 2-3 jt/bulan).
-2. **Freelance Developer**: Hire untuk fitur spesifik (project-based).
-3. **Co-founder/Partner**: Jika revenue > Rp 50 jt/bulan dan sustainable.
+**Team Scaling Options**:
+1. **Part-time VA/Support**: Outsource support tickets to a VA (Rp 2-3M/month).
+2. **Freelance Developer**: Hire for specific features (project-based).
+3. **Co-founder/Partner**: If revenue > Rp 50M/month and sustainable.
 
-**Output Langkah 7**: Monitoring dashboard scaling metrics (performance, cost, workload).
+**Step 7 Output**: Scaling metrics monitoring dashboard (performance, cost, workload).
 
 ---
 
-## 4. Adaptasi Berdasarkan Skala Proyek
+## 4. Adaptation by Project Scale
 
-| Parameter Operasi | Skala Kecil (MVP) | Skala Menengah (B2B SaaS) | Skala Besar (Enterprise) |
+| Operations Parameter | Small Scale (MVP) | Mid-Scale (B2B SaaS) | Large Scale (Enterprise) |
 | :--- | :--- | :--- | :--- |
-| **Frekuensi Review Metrik** | Mingguan (manual check) | Harian (automated dashboard) | Real-time (alerting system) |
-| **Cohort Analysis** | Manual SQL query bulanan | Mixpanel/Posthog mingguan | Data warehouse + BI tool (Looker, Metabase) |
-| **NPS Survey** | 1x per kuartal (manual email) | Otomatis trigger via Delighted | Enterprise NPS tool + CSAT tracking |
-| **Experiment Velocity** | 1-2 per bulan | 2-4 per bulan | 1-2 per minggu (dedicated growth team) |
-| **Scaling Threshold** | > 1000 MAU atau $5k MRR | > 10k MAU atau $50k MRR | > 100k MAU atau $500k MRR |
+| **Metrics Review Frequency** | Weekly (manual check) | Daily (automated dashboard) | Real-time (alerting system) |
+| **Cohort Analysis** | Monthly manual SQL query | Weekly Mixpanel/PostHog | Data warehouse + BI tool (Looker, Metabase) |
+| **NPS Survey** | 1x per quarter (manual email) | Automated trigger via Delighted | Enterprise NPS tool + CSAT tracking |
+| **Experiment Velocity** | 1–2 per month | 2–4 per month | 1–2 per week (dedicated growth team) |
+| **Scaling Threshold** | > 1,000 MAU or $5k MRR | > 10k MAU or $50k MRR | > 100k MAU or $500k MRR |
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 5. Output Deliverables
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Seluruh dokumen metrik, eksperimen, dan product health WAJIB disimpan di dalam folder **`docs/pm/`** (untuk PM docs) dan **`docs/analytics/`** (untuk laporan metrik).
+> 📁 **ABSOLUTE FILE LOCATION RULES**:
+> All metrics, experiments, and product health documents MUST be stored inside the **`docs/pm/`** folder (for PM docs) and **`docs/analytics/`** (for metrics reports).
 
-Modul ini menghasilkan 4 dokumen operasi + 1 panduan referensi:
+This module produces 4 operations documents + 1 reference guide:
 
-1. **`docs/analytics/METRICS_BASELINE_REPORT.md`**: Laporan baseline metrik 30 hari pertama pasca-peluncuran (menggunakan `templates/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md`).
-2. **`docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md`**: Daftar eksperimen pertumbuhan dengan RICE score dan tracking hasil (menggunakan `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`).
-3. **`docs/pm/PRODUCT_HEALTH_DASHBOARD.md`**: Dashboard kesehatan produk untuk weekly/monthly/quarterly review (menggunakan `templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md`).
-4. **`docs/pm/SCALING_SIGNALS.md`**: Dokumentasi threshold dan trigger untuk scale infrastruktur/team.
-5. **`references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md`**: Panduan referensi lengkap untuk continuous iteration best practices.
-6. **`references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`**: Panduan RICE scoring dan prioritisasi backlog.
-
----
-
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
-
-[GATE] Modul 13 dinyatakan **BERHASIL & CONTINUOUS ITERATION BERJALAN** jika:
-
-- [x] Baseline metrik 30 hari pertama telah dikumpulkan dan terdokumentasi (`METRICS_BASELINE_REPORT.md`).
-- [x] Sistem feedback loop otomatis telah aktif (NPS survey scheduled, in-app widget live, tiket teraggregasi).
-- [x] Cohort analysis dashboard atau SQL query tersedia dan dijalankan minimal 1x per bulan.
-- [x] Backlog fitur telah diprioritaskan menggunakan RICE framework (`GROWTH_EXPERIMENTS_BACKLOG.md`).
-- [x] Minimal 1 growth experiment telah launched dan hasilnya didokumentasikan.
-- [x] Weekly metrics review ritual telah berjalan minimal 4 minggu berturut-turut.
-- [x] Scaling signals monitoring system telah setup (performance, cost, workload alerts).
+1. **`docs/analytics/METRICS_BASELINE_REPORT.md`**: Baseline metrics report for the first 30 days post-launch (using `templates/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md`).
+2. **`docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md`**: Growth experiments backlog with RICE scoring and results tracking (using `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`).
+3. **`docs/pm/PRODUCT_HEALTH_DASHBOARD.md`**: Product health dashboard for weekly/monthly/quarterly reviews (using `templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md`).
+4. **`docs/pm/SCALING_SIGNALS.md`**: Threshold and trigger documentation for scaling infrastructure/team.
+5. **`references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md`**: Comprehensive reference guide for continuous iteration best practices.
+6. **`references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`**: RICE scoring and backlog prioritization guide.
 
 ---
 
-## 7. Integrasi dengan Modul Lain
+## 6. [GATE] Exit Criteria
 
-Modul 13 adalah **titik konvergensi** dari seluruh siklus hidup produk:
+[GATE] Module 13 is declared **SUCCESSFUL & CONTINUOUS ITERATION ACTIVE** if:
 
-| Modul Terkait | Integrasi ke M13 |
+- [x] Baseline metrics for the first 30 days have been collected and documented (`METRICS_BASELINE_REPORT.md`).
+- [x] Automated feedback loop system is active (NPS survey scheduled, in-app widget live, tickets aggregated).
+- [x] Cohort analysis dashboard or SQL query is available and executed at least 1x per month.
+- [x] Feature backlog has been prioritized using the RICE framework (`GROWTH_EXPERIMENTS_BACKLOG.md`).
+- [x] At least 1 growth experiment has been launched and its results documented.
+- [x] Weekly metrics review ritual has run for at least 4 consecutive weeks.
+- [x] Scaling signals monitoring system is set up (performance, cost, workload alerts).
+
+---
+
+## 7. Integration with Other Modules
+
+Module 13 is the **convergence point** of the entire product lifecycle:
+
+| Related Module | Integration into M13 |
 | :--- | :--- |
-| **M00: Product Discovery & Strategy** | North Star Metric dari M00 menjadi anchor untuk OKR tracking dan prioritas fitur. |
-| **M01: Idea & Feasibility** | OKR di M01 di-check progressnya setiap bulan di M13 monthly review. |
-| **M04: UI/UX Prototyping** | Hypothesis format dari M04 A/B testing digunakan untuk growth experiments di M13. |
-| **M06 Section 6A: Analytics** | Event tracking dan dashboard di M06 Section 6A menjadi data source untuk cohort analysis M13. |
-| **M10: Deployment & Production** | Performance metrics dari M10 monitoring di-review di M13 scaling considerations. |
-| **M12: Warranty & SLA** | Insiden dan support tickets dari M12 dianalisis di M13 untuk perbaikan produk. |
+| **M00: Product Discovery & Strategy** | North Star Metric from M00 serves as the anchor for OKR tracking and feature prioritization. |
+| **M01: Idea & Feasibility** | OKRs in M01 are checked for progress monthly in M13 monthly reviews. |
+| **M04: UI/UX Prototyping** | Hypothesis format from M04 A/B testing is used for growth experiments in M13. |
+| **M06 Section 6A: Analytics** | Event tracking and dashboards in M06 Section 6A serve as data sources for M13 cohort analysis. |
+| **M10: Deployment & Production** | Performance metrics from M10 monitoring are reviewed in M13 scaling considerations. |
+| **M12: Warranty & SLA** | Incidents and support tickets from M12 are analyzed in M13 for product improvements. |
 
 ---
 
-## 🔄 PROTOKOL CONTINUOUS ITERATION (LIFECYCLE CONTINUES)
+## 🔄 CONTINUOUS ITERATION PROTOCOL (LIFECYCLE CONTINUES)
 
-Setelah seluruh tahapan Modul 13 setup:
+After all stages of Module 13 are set up:
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
 
-**WAJIB DILAKUKAN SEBELUM DECLARE SETUP COMPLETE**:
+**MANDATORY BEFORE DECLARING SETUP COMPLETE**:
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/analytics/METRICS_BASELINE_REPORT.md"` → harus return `True`
-   - Read tool: `read_file('docs/analytics/METRICS_BASELINE_REPORT.md')` → harus sukses tanpa error
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"` → harus return `True`
-   - Read tool: `read_file('docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md')` → harus sukses tanpa error
+1. **Check output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/analytics/METRICS_BASELINE_REPORT.md"` → must return `True`
+   - Read tool: `read_file('docs/analytics/METRICS_BASELINE_REPORT.md')` → must succeed without error
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"` → must return `True`
+   - Read tool: `read_file('docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md')` → must succeed without error
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan declare setup complete
-   - ❌ **JANGAN tampilkan continuous iteration success** ke user
-   - ✅ **REPORT ERROR** ke user:
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not declare setup complete
+   - ❌ **DO NOT display continuous iteration success** to user
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File METRICS_BASELINE_REPORT.md atau GROWTH_EXPERIMENTS_BACKLOG.md tidak tercipta.
+     CRITICAL ERROR: File METRICS_BASELINE_REPORT.md or GROWTH_EXPERIMENTS_BACKLOG.md was not created.
      Module 13 INCOMPLETE - continuous iteration setup FAILED.
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/analytics/ atau docs/pm/
-     - Path typo di tool call
+     Probable causes:
+     - Write permission denied on docs/analytics/ or docs/pm/ folder
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum declare setup complete.
+     Please investigate this issue before declaring setup complete.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILES EXIST**: Lanjut ke continuous iteration protocol di bawah
+3. **ONLY IF FILES EXIST**: Proceed to continuous iteration protocol below
 
 ---
 
-### **LANGKAH 1: CONTINUOUS ITERATION PROTOCOL**
+### **STEP 1: CONTINUOUS ITERATION PROTOCOL**
 
-1. **Verifikasi setup complete**:
+1. **Verify setup complete**:
    - [ ] `read_file('docs/analytics/METRICS_BASELINE_REPORT.md')` → Confirm baseline metrics documented
    - [ ] `read_file('docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md')` → Confirm RICE-scored backlog exists
    - [ ] Confirm feedback loop active (NPS, widget, tickets)
    - [ ] Confirm weekly metrics review ritual established
-2. **Ini adalah modul yang tidak pernah "selesai"**. Continuous iteration berjalan selama produk masih aktif.
-3. Review dan update artefak M13 setiap kuartal untuk merefleksikan learnings baru.
-4. **Jika Anda memutuskan untuk pivot atau sunset produk**, dokumentasikan keputusan di `docs/pm/PRODUCT_LIFECYCLE_DECISION.md` dengan data pendukung dari M13 metrics.
+2. **This is a module that is never "finished"**. Continuous iteration runs as long as the product remains active.
+3. Review and update M13 artifacts every quarter to reflect new learnings.
+4. **If you decide to pivot or sunset the product**, document the decision in `docs/pm/PRODUCT_LIFECYCLE_DECISION.md` with supporting data from M13 metrics.
 
-**SIKLUS HIDUP PRODUK LENGKAP**: M00 → M01 → ... → M12 → **M13 (Continuous Loop)** → (Pivot/Scale/Sunset Decision).
+**COMPLETE PRODUCT LIFECYCLE**: M00 → M01 → ... → M12 → **M13 (Continuous Loop)** → (Pivot/Scale/Sunset Decision).

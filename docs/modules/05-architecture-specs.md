@@ -1,75 +1,75 @@
-# Modul 05: Arsitektur & Spesifikasi Teknis (PRD & FSD)
+# Module 05: Architecture & Technical Specifications (PRD & FSD)
 
 > - `references/solo/SOLO_ARCHITECTURE_GUIDE.md` (Boring Tech guide, SQL DDL integrity, OWASP Top 10, AES-256 encryption, UU PDP compliance)
 > - `references/technical/DATA_ASSETS_MANAGEMENT.md` (Regulations data (tax rates, PTKP), Business rules/formulas, Reference data (city/bank list), Seed data, Localization)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, Repository/Service Layer patterns for FSD authoring)
 >
 
-Modul ini adalah tahap kelima dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah merancang seluruh "mesin, kabel data, basis data, dan sistem keamanan" di balik antarmuka yang telah dibekukan pada Modul 04, menghasilkan dua cetak biru utama: **`PRD.md`** (*Product Requirement Document*) dan **`FSD.md`** (*Functional Specification Document*).
+This module is the fifth phase in the software project lifecycle for solo developers. Its purpose is to architect the entire "engine, data cabling, database, and security systems" behind the interface frozen in Module 04, producing two primary blueprints: **`PRD.md`** (*Product Requirement Document*) and **`FSD.md`** (*Functional Specification Document*).
 
 ---
 
-## 1. Siklus Eksekusi Modul 05
+## 1. Module 05 Execution Cycle
 
 ```text
-[ INPUT: SCOPE_STATEMENT.md dari Modul 02 & DESIGN_SYSTEM.md dari Modul 04 ]
+[ INPUT: SCOPE_STATEMENT.md from Module 02 & DESIGN_SYSTEM.md from Module 04 ]
                                     │
                                     ▼
-[ LANGKAH 0: Tech Stack Discovery Questionnaire (NEW - MANDATORY) ]
-  • 8 pertanyaan context discovery (team expertise, budget, scale, etc)
-  • Generate 2-3 stack options dengan cost/pros/cons comparison
-  • User pilih preferred stack (LOCK DECISION sebelum FSD)
+[ STEP 0: Tech Stack Discovery Questionnaire (NEW - MANDATORY) ]
+  • 8 context discovery questions (team expertise, budget, scale, etc.)
+  • Generate 2-3 stack options with cost/pros/cons comparison
+  • User selects preferred stack (LOCK DECISION before FSD)
                                     │
                                     ▼
-[ LANGKAH 1: Generate Tech Stack Justification (Based on User Choice) ]
-  • Context-specific reasoning untuk chosen stack
-  • Tradeoffs analysis (alternatives rejected dengan alasan)
-  • Deployment topology sesuai budget & scale
+[ STEP 1: Generate Tech Stack Justification (Based on User Choice) ]
+  • Context-specific reasoning for chosen stack
+  • Tradeoffs analysis (alternatives rejected with reasons)
+  • Deployment topology aligned with budget & scale
                                     │
                                     ▼
-[ LANGKAH 2: Perancangan Skema Basis Data (Database Schema & DDL) ]
-  • Desain Tabel, Primary/Foreign Keys, Constraint CHECK, dan Indeks
-  • Strategi Audit Trail (created_at, updated_at, actor_id, soft-delete)
+[ STEP 2: Database Schema Design (Database Schema & DDL) ]
+  • Table Design, Primary/Foreign Keys, CHECK Constraints, and Indexes
+  • Audit Trail Strategy (created_at, updated_at, actor_id, soft-delete)
   • Syntax adapted to chosen DB (PostgreSQL vs MySQL vs MongoDB)
                                     │
                                     ▼
-[ LANGKAH 3: Pemetaan Kontrak API & Matriks Endpoint ]
-  • HTTP Verbs, Path, Header Otentikasi & Idempotency
-  • Skema Payload JSON Request & Respon (Sukses vs Error Matrix)
+[ STEP 3: API Contract Mapping & Endpoint Matrix ]
+  • HTTP Verbs, Path, Authentication & Idempotency Headers
+  • JSON Request & Response Payload Schema (Success vs Error Matrix)
   • API style adapted to stack (REST vs GraphQL vs tRPC)
                                     │
                                     ▼
-[ LANGKAH 4: Pondasi Keamanan & Kepatuhan Regulasi (Security Blueprint) ]
-  • Enkripsi Data Vault (AES-256-GCM / Envelope Encryption)
-  • Manajemen Sesi (HttpOnly Cookies, JWT Rotation) & Hashing Argon2id
-  • Proteksi OWASP Top 10, Rate Limiting, & Kepatuhan UU PDP
+[ STEP 4: Security Foundations & Regulatory Compliance (Security Blueprint) ]
+  • Data Vault Encryption (AES-256-GCM / Envelope Encryption)
+  • Session Management (HttpOnly Cookies, JWT Rotation) & Argon2id Hashing
+  • OWASP Top 10 Protection, Rate Limiting, & UU PDP Compliance
   • Framework-specific security patterns
                                     │
                                     ▼
-[ LANGKAH 5: Module 04 Prototype → Module 06 Handoff Strategy ]
+[ STEP 5: Module 04 Prototype → Module 06 Handoff Strategy ]
   • Define conversion strategy (Stitch → chosen framework)
   • Document component mapping (React → Vue/Svelte/Blade)
-  • Extract design tokens untuk reuse di stack terpilih
+  • Extract design tokens for reuse in chosen stack
                                     │
                                     ▼
-[ LANGKAH 6: Finalisasi & Penandatanganan PRD & FSD ]
-  • Review Teknis Bersama Single PIC Klien
-  • Tanda Tangan Technical Sign-Off
+[ STEP 6: Finalization & Signing of PRD & FSD ]
+  • Technical Review with Client Single PIC
+  • Sign Technical Sign-Off
                                     │
                                     ▼
-[ OUTPUT: Dokumen PRD.md & FSD.md ] ──► Siap Masuk ke Modul 06: Development
+[ OUTPUT: PRD.md & FSD.md Documents ] ──► Ready to Enter Module 06: Development
 ```
 
 ---
 
-## 2. Tech Stack Discovery Questionnaire (LANGKAH 0 - MANDATORY)
+## 2. Tech Stack Discovery Questionnaire (STEP 0 - MANDATORY)
 
-**WAJIB DIJALANKAN SEBELUM generate FSD.** Tidak ada "default stack" - semua keputusan context-driven.
+**MANDATORY BEFORE generating FSD.** There is no "default stack" — all decisions are context-driven.
 
-Agent wajib tanya user 8 pertanyaan ini dan tunggu jawaban sebelum recommend stack options:
+The agent must ask the user these 8 questions and wait for answers before recommending stack options:
 
 ### Question 1: Team Expertise
-**"Apa tech stack yang tim/Anda sudah familiar dan produktif?"**
+**"What tech stack is the team/you already familiar with and productive in?"**
 
 Options:
 - [ ] JavaScript/TypeScript (React, Node.js, Next.js)
@@ -81,12 +81,12 @@ Options:
 - [ ] .NET (ASP.NET Core)
 - [ ] Other: ___________
 
-**Why this matters**: Learning curve 2 bulan vs 2 minggu. Gunakan existing expertise = faster delivery.
+**Why this matters**: 2-month learning curve vs 2 weeks. Leveraging existing expertise = faster delivery.
 
 ---
 
 ### Question 2: Database Experience
-**"Database yang tim pernah pakai dan comfortable maintain?"**
+**"Which database has the team used and feels comfortable maintaining?"**
 
 Options:
 - [ ] PostgreSQL
@@ -96,12 +96,12 @@ Options:
 - [ ] Firebase / Supabase
 - [ ] None (first project - prefer managed service)
 
-**Why this matters**: Wrong DB choice = schema migration nightmare di production.
+**Why this matters**: Wrong DB choice = schema migration nightmare in production.
 
 ---
 
 ### Question 3: Deployment Budget (Monthly)
-**"Budget hosting per bulan yang available?"**
+**"What is the available monthly hosting budget?"**
 
 Options:
 - [ ] $0 (free tier only - MVP/personal project)
@@ -118,7 +118,7 @@ Options:
 ---
 
 ### Question 4: Expected Scale (Year 1 Target)
-**"Berapa concurrent users target dalam 12 bulan pertama?"**
+**"What is the target concurrent user count within the first 12 months?"**
 
 Options:
 - [ ] <100 (MVP, internal tool, niche B2B)
@@ -128,14 +128,14 @@ Options:
 - [ ] >100,000 (viral app, nationwide scale)
 
 **Why this matters**:
-- <100 users: Monolith cukup (PostgreSQL single instance)
-- 10K users: Need caching (Redis), read replicas
+- <100 users: Monolith is sufficient (PostgreSQL single instance)
+- 10K users: Needs caching (Redis), read replicas
 - 100K users: Microservices, load balancer, CDN mandatory
 
 ---
 
 ### Question 5: Data Model Characteristics
-**"Karakteristik data model aplikasi ini?"**
+**"What are the data model characteristics of this application?"**
 
 Options:
 - [ ] Fixed schema (relational, predictable fields - e.g., invoice, user profile)
@@ -153,7 +153,7 @@ Options:
 ---
 
 ### Question 6: DevOps Complexity Tolerance
-**"Seberapa nyaman handle deployment complexity?"**
+**"How comfortable are you handling deployment complexity?"**
 
 Options:
 - [ ] Zero-config (git push auto-deploy, no terminal commands)
@@ -162,7 +162,7 @@ Options:
 - [ ] High (full control, custom infra, multi-region)
 
 **Why this matters**:
-- Zero-config: Vercel, Railway (easy tapi vendor lock-in)
+- Zero-config: Vercel, Railway (easy but vendor lock-in)
 - Low-config: DigitalOcean App Platform (Docker deploy via UI)
 - Medium: AWS ECS, GCP Cloud Run (container orchestration)
 - High: Kubernetes self-managed (full control, high maintenance)
@@ -170,7 +170,7 @@ Options:
 ---
 
 ### Question 7: Critical Feature Priority
-**"Feature paling critical untuk aplikasi ini?"**
+**"What is the most critical feature for this application?"**
 
 Options:
 - [ ] SEO (public content, need server-side rendering)
@@ -189,7 +189,7 @@ Options:
 ---
 
 ### Question 8: Compliance Requirements
-**"Regulatory compliance yang harus dipenuhi?"**
+**"What regulatory compliance must be satisfied?"**
 
 Options:
 - [ ] None (personal project, MVP)
@@ -200,7 +200,7 @@ Options:
 - [ ] PCI-DSS (Payment processing - credit card data)
 
 **Why this matters**:
-- HIPAA/PCI-DSS: Managed cloud dengan compliance cert (AWS, Azure)
+- HIPAA/PCI-DSS: Managed cloud with compliance certifications (AWS, Azure)
 - ISO27001: Need audit logs (database triggers, Sentry logging)
 - None: Simpler stack choices, faster iteration
 
@@ -208,12 +208,12 @@ Options:
 
 ## Tech Stack Options Generation (Agent Execution)
 
-Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** dengan format:
+After the user answers all 8 questions, the agent **MUST generate 2-3 stack options** in the following format:
 
 ### Option Template:
 
 ```markdown
-## Stack Option A: [Name] (Recommended jika [condition])
+## Stack Option A: [Name] (Recommended if [condition])
 
 **Frontend**: [Framework] ([reasoning])
 **Backend**: [Framework] ([reasoning])
@@ -223,7 +223,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Monitoring**: [Service] ([reasoning])
 
 **Total Monthly Cost**: $X-Y
-**Setup Time**: X hari/minggu
+**Setup Time**: X days/weeks
 **Maintenance Effort**: Low/Medium/High
 
 **Pros**:
@@ -235,8 +235,8 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 - ❌ [Tradeoff 1]
 - ❌ [Tradeoff 2]
 
-**Best For**: [User profile yang cocok]
-**Avoid If**: [User profile yang tidak cocok]
+**Best For**: [Suitable user profile]
+**Avoid If**: [Unsuitable user profile]
 
 **Stack Compatibility with Module 04 Prototype**:
 - Stitch/Figma prototype → [Framework]: [Conversion strategy]
@@ -262,11 +262,11 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Monitoring**: Sentry (5K errors/month free)
 
 **Total Monthly Cost**: $0
-**Setup Time**: 2-3 hari
+**Setup Time**: 2-3 days
 **Maintenance**: Low (managed services, auto-updates)
 
 **Pros**:
-- ✅ Zero upfront cost (ideal untuk MVP validation)
+- ✅ Zero upfront cost (ideal for MVP validation)
 - ✅ Auto-scaling (serverless functions 0→100 requests)
 - ✅ SEO optimized (server-side rendering built-in)
 - ✅ Fast iteration (git push auto-deploy)
@@ -282,7 +282,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Stitch Prototype Conversion**: 
 - ✅ **Direct copy** - Stitch generates React/Tailwind code
 - Minimal refactoring: Import paths, component structure
-- Estimated conversion time: 1 hari
+- Estimated conversion time: 1 day
 
 
 ---
@@ -297,7 +297,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Monitoring**: Self-hosted Grafana + Prometheus (free)
 
 **Total Monthly Cost**: $23/month
-**Setup Time**: 5-7 hari (manual server setup)
+**Setup Time**: 5-7 days (manual server setup)
 **Maintenance**: Medium (OS updates, security patches, backups)
 
 **Pros**:
@@ -317,7 +317,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Stitch Prototype Conversion**:
 - ✅ **Direct copy** - Next.js static export compatible
 - Add Express API layer (Stitch only generates frontend)
-- Estimated conversion time: 2 hari
+- Estimated conversion time: 2 days
 
 
 ---
@@ -332,7 +332,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Monitoring**: Cloudflare Analytics (free)
 
 **Total Monthly Cost**: $5-15/month (depends on DB size)
-**Setup Time**: 3-4 hari
+**Setup Time**: 3-4 days
 **Maintenance**: Low (edge platform, managed)
 
 **Pros**:
@@ -342,8 +342,8 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 - ✅ Unlimited bandwidth (no egress fees)
 
 **Cons**:
-- ❌ Learning curve (Workers API berbeda dari Node.js)
-- ❌ Limited Node.js compatibility (some npm packages tidak support)
+- ❌ Learning curve (Workers API differs from Node.js)
+- ❌ Limited Node.js compatibility (some npm packages unsupported)
 - ❌ Turso learning curve (SQLite syntax, edge replication concepts)
 
 **Best For**: Global user base, low-latency priority, modern edge-first stack
@@ -352,7 +352,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Stitch Prototype Conversion**:
 - ⚠️ **Moderate conversion** - Stitch React → Remix requires route refactoring
 - Components reusable, routes need restructuring (file-based → Remix conventions)
-- Estimated conversion time: 3-4 hari
+- Estimated conversion time: 3-4 days
 ```
 
 ---
@@ -372,27 +372,27 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Monitoring**: Laravel Telescope (free) + Sentry
 
 **Total Monthly Cost**: $44/month
-**Setup Time**: 3-5 hari
+**Setup Time**: 3-5 days
 **Maintenance**: Low (familiar stack, Laravel artisan commands)
 
 **Pros**:
 - ✅ Team expertise (no learning curve, productive day 1)
-- ✅ Laravel Eloquent ORM (powerful query builder untuk complex queries)
+- ✅ Laravel Eloquent ORM (powerful query builder for complex queries)
 - ✅ Built-in admin panel (Laravel Nova optional)
 - ✅ Mature ecosystem (100K+ packages, active community)
 
 **Cons**:
 - ❌ PHP stigma (harder to hire modern devs vs JS)
-- ❌ Not serverless (need traditional server management)
+- ❌ Not serverless (requires traditional server management)
 
 **Best For**: PHP teams, CRUD-heavy apps, traditional web apps
-**Avoid If**: Team prefers JS/TS, need serverless architecture
+**Avoid If**: Team prefers JS/TS, requires serverless architecture
 
 **Stitch Prototype Conversion**:
 - ⚠️ **Full rewrite** - Stitch React → Laravel Blade templates
 - Strategy: Extract layout patterns from Stitch, rewrite as Blade components
 - Inertia.js option: Keep Vue components, wire to Laravel backend
-- Estimated conversion time: 5-7 hari (Blade) or 3-4 hari (Inertia)
+- Estimated conversion time: 5-7 days (Blade) or 3-4 days (Inertia)
 
 
 ---
@@ -405,7 +405,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 **Deployment**: Frontend on Vercel ($0), API on Railway ($10/month)
 
 **Total Monthly Cost**: $25/month
-**Setup Time**: 5-7 hari
+**Setup Time**: 5-7 days
 **Maintenance**: Medium (two deployment targets)
 
 **Pros**:
@@ -419,12 +419,12 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 - ❌ Two deployments (more moving parts)
 
 **Best For**: Transitioning to modern JS stack, team split (PHP backend, JS frontend)
-**Avoid If**: Solo dev (overhead tidak worth it), tight timeline
+**Avoid If**: Solo dev (overhead not worth it), tight timeline
 
 **Stitch Prototype Conversion**:
 - ✅ **Direct copy** - Stitch React → Next.js components
 - Backend API: Laravel routes + Eloquent (familiar)
-- Estimated conversion time: 2-3 hari (frontend) + 3-4 hari (API)
+- Estimated conversion time: 2-3 days (frontend) + 3-4 days (API)
 ```
 
 ---
@@ -432,7 +432,7 @@ Setelah user jawab 8 pertanyaan, agent **WAJIB generate 2-3 stack options** deng
 ## Agent Decision Logic (After User Answers):
 
 ```python
-# Pseudo-code untuk agent
+# Pseudo-code for agent
 def generate_stack_options(answers):
     options = []
     
@@ -471,22 +471,22 @@ def generate_stack_options(answers):
 
 ## User Selection & Lock Decision
 
-Setelah agent present 2-3 options:
+After the agent presents 2-3 options:
 
 **Agent prompt**:
 ```
-Saya telah generate 3 stack options berdasarkan jawaban Anda:
-- Option A: Vercel Zero-Cost Stack ($0/month, recommended untuk MVP)
+I have generated 3 stack options based on your answers:
+- Option A: Vercel Zero-Cost Stack ($0/month, recommended for MVP)
 - Option B: DigitalOcean Self-Hosted ($23/month, no cold starts)
 - Option C: Cloudflare Workers Edge ($5-15/month, global low-latency)
 
-Silakan pilih salah satu:
-- Ketik "A" untuk Option A
-- Ketik "B" untuk Option B
-- Ketik "C" untuk Option C
-- Atau request custom stack jika tidak ada yang cocok
+Please select one:
+- Type "A" for Option A
+- Type "B" for Option B
+- Type "C" for Option C
+- Or request a custom stack if none of these fit
 
-⚠️ CRITICAL: Stack decision LOCKED setelah dipilih. Perubahan stack di tengah development = +2 minggu timeline.
+⚠️ CRITICAL: Stack decision is LOCKED once selected. Mid-development stack changes = +2 weeks timeline impact.
 ```
 
 **User types**: "A"
@@ -501,45 +501,43 @@ Tech Stack Summary:
 - Database: Supabase PostgreSQL
 - Deployment: Vercel Hobby (free tier)
 
-Stack ini akan digunakan untuk generate FSD.md (Langkah 1-4).
+This stack will be used to generate FSD.md (Steps 1-4).
 
-Lanjut ke Langkah 1 (Database Schema Design)?
+Proceed to Step 1 (Database Schema Design)?
 ```
 
 **GATE**: User MUST confirm stack choice before FSD generation proceeds.
 
 ---
 
-## 3. Prinsip Arsitektur Solo Developer: "Context-Aware Tech Ladder"
+## 3. Solo Developer Architecture Principles: "Universal Stack Evaluation"
 
-## 3. Prinsip Arsitektur Solo Developer: "Universal Stack Evaluation"
-
-**Core Principle**: Tidak ada "default stack" atau "preferred list". Semua tech stack di dunia adalah kandidat - yang terbaik adalah yang paling cocok dengan context user.
+**Core Principle**: There is no "default stack" or "preferred list". Every tech stack in the world is a candidate — the best one is the one that best fits the user's context.
 
 ### Stack Evaluation Criteria (Weighted Scoring System)
 
-Agent evaluate SEMUA kemungkinan stack berdasarkan 8 kriteria dengan bobot:
+The agent evaluates ALL potential stacks across 8 criteria with weights:
 
 | Criteria | Weight | Measurement | Example |
 |----------|--------|-------------|---------|
-| **Team Expertise Match** | 40% | Apakah stack familiar ke tim? | PHP team + Laravel = 10/10, PHP team + Go = 2/10 |
+| **Team Expertise Match** | 40% | Is the stack familiar to the team? | PHP team + Laravel = 10/10, PHP team + Go = 2/10 |
 | **Budget Fit** | 20% | Total monthly cost vs budget | $0 budget + Vercel free = 10/10, $0 budget + AWS ECS = 0/10 |
-| **Scale Appropriateness** | 15% | Stack handle target load? | 100 users + monolith = 10/10, 100 users + K8s = 2/10 (overkill) |
-| **Feature Compatibility** | 10% | Stack native support critical feature? | SEO need + Next.js SSR = 10/10, SEO need + CRA = 3/10 |
-| **Data Model Match** | 5% | DB paradigm cocok dengan data? | Fixed schema + PostgreSQL = 10/10, Flexible + MongoDB = 10/10 |
+| **Scale Appropriateness** | 15% | Can stack handle target load? | 100 users + monolith = 10/10, 100 users + K8s = 2/10 (overkill) |
+| **Feature Compatibility** | 10% | Native support for critical feature? | SEO need + Next.js SSR = 10/10, SEO need + CRA = 3/10 |
+| **Data Model Match** | 5% | DB paradigm fits data structure? | Fixed schema + PostgreSQL = 10/10, Flexible + MongoDB = 10/10 |
 | **DevOps Simplicity** | 5% | Deployment complexity vs tolerance? | Zero-config need + Vercel = 10/10, Zero-config + K8s = 0/10 |
 | **Compliance Support** | 3% | Built-in compliance features? | HIPAA + AWS compliant = 10/10, HIPAA + hobby VPS = 2/10 |
 | **Ecosystem Maturity** | 2% | Community size, package availability | React (200K npm) = 10/10, new framework = 5/10 |
 
 **Total Score**: 0-100 (weighted sum)
 
-**Agent selects top 3 highest-scoring stacks** untuk present ke user.
+**Agent selects top 3 highest-scoring stacks** to present to the user.
 
 ---
 
 ### Stack Universe (Non-Exhaustive, Agent Can Recommend ANY Stack)
 
-Agent tidak restricted ke list ini, tapi ini common candidates untuk berbagai scenarios:
+The agent is not restricted to this list, but these are common candidates across various scenarios:
 
 #### Frontend Frameworks:
 - **SSR-Capable**: Next.js, Nuxt.js, SvelteKit, Remix, SolidStart, Qwik City, Astro (hybrid), Fresh (Deno)
@@ -575,10 +573,10 @@ Agent tidak restricted ke list ini, tapi ini common candidates untuk berbagai sc
 - **Edge**: Cloudflare Workers, Deno Deploy, Netlify Edge Functions
 
 #### Hybrid/Full-Stack:
-- **Monolith Modern**: Laravel (Blade/Inertia), Rails (Hotwire), Django (HTMX), Phoenix (LiveView)
+- **Modern Monolith**: Laravel (Blade/Inertia), Rails (Hotwire), Django (HTMX), Phoenix (LiveView)
 - **Meta-Frameworks**: Redwood.js, Blitz.js, T3 Stack, Create JD App
 
-**Agent freedom**: Jika questionnaire answers point ke obscure tapi perfect-fit stack (e.g., Elixir Phoenix LiveView untuk real-time dashboard tanpa complexity WebSocket manual), agent **BOLEH recommend**.
+**Agent freedom**: If questionnaire answers point to an obscure but perfect-fit stack (e.g., Elixir Phoenix LiveView for a real-time dashboard without manual WebSocket complexity), the agent **MAY recommend it**.
 
 ---
 
@@ -606,11 +604,11 @@ Agent tidak restricted ke list ini, tapi ini common candidates untuk berbagai sc
 | **Go Fiber + Fly.io + PG** | 4 (1/10 no Go) | 18 (9/10 $5/mo) | 15 (10/10) | 5 (5/10 no SSR) | 5 (10/10 PG) | 3 (6/10 Docker) | 3 (10/10) | 1.2 (6/10) | **54.2** ❌ |
 
 **Top 3 Recommendations** (score ≥95):
-1. **Next.js Full-Stack** (100 points) - Perfect match semua criteria
-2. **Astro Hybrid** (98.4 points) - Excellent untuk content-heavy dengan islands
-3. **Remix Edge** (96.6 points) - Modern alternative dengan edge deployment
+1. **Next.js Full-Stack** (100 points) - Perfect match across all criteria
+2. **Astro Hybrid** (98.4 points) - Excellent for content-heavy setups with islands
+3. **Remix Edge** (96.6 points) - Modern alternative with edge deployment
 
-**Agent presents 3 options** dengan full breakdown (cost, pros/cons, conversion strategy).
+**Agent presents 3 options** with full breakdown (cost, pros/cons, conversion strategy).
 
 ---
 
@@ -641,7 +639,7 @@ Top 3 recommendations (score ≥95/100):
 - ✅ DevOps: 10/10 (git push auto-deploy)
 
 **Monthly Cost**: $0 (until 100GB bandwidth exceeded)
-**Setup Time**: 2-3 hari
+**Setup Time**: 2-3 days
 **Maintenance**: Low (managed services)
 
 **Pros**:
@@ -653,7 +651,7 @@ Top 3 recommendations (score ≥95/100):
 - ❌ Cold starts (300-500ms first request after 5min idle)
 - ❌ Vendor lock-in (Vercel-specific features: Edge Middleware, ISR)
 
-**Module 04 Handoff**: Direct copy (Stitch React → Next.js, 1 hari, 95% reuse)
+**Module 04 Handoff**: Direct copy (Stitch React → Next.js, 1 day, 95% reuse)
 
 ---
 
@@ -672,19 +670,19 @@ Top 3 recommendations (score ≥95/100):
 - ✅ Performance: Ships 90% less JS than Next.js (faster page load)
 
 **Monthly Cost**: $0
-**Setup Time**: 3-4 hari
+**Setup Time**: 3-4 days
 **Maintenance**: Low
 
 **Pros**:
 - ✅ Best performance (static HTML, minimal JS)
 - ✅ Framework agnostic (use React, Vue, Svelte together)
-- ✅ Content-focused (best untuk blog, landing page)
+- ✅ Content-focused (best for blogs, landing pages)
 
 **Cons**:
 - ❌ Smaller ecosystem vs Next.js (fewer examples)
-- ❌ Learning curve (islands architecture concept baru)
+- ❌ Learning curve (islands architecture is a new concept)
 
-**Module 04 Handoff**: Component extraction (Stitch React → Astro islands, 2 hari, 80% reuse)
+**Module 04 Handoff**: Component extraction (Stitch React → Astro islands, 2 days, 80% reuse)
 
 ---
 
@@ -702,7 +700,7 @@ Top 3 recommendations (score ≥95/100):
 - ✅ Modern DX (nested routes, error boundaries)
 
 **Monthly Cost**: $5
-**Setup Time**: 3-4 hari
+**Setup Time**: 3-4 days
 **Maintenance**: Low
 
 **Pros**:
@@ -714,19 +712,19 @@ Top 3 recommendations (score ≥95/100):
 - ❌ Smaller ecosystem vs Next.js (newer framework, 2021)
 - ❌ Not free ($5/month minimum)
 
-**Module 04 Handoff**: Route restructuring (Stitch React → Remix routes, 3 hari, 70% reuse)
+**Module 04 Handoff**: Route restructuring (Stitch React → Remix routes, 3 days, 70% reuse)
 
 ---
 
 ## Selection
 
-Pilih salah satu:
-- Ketik **"A"** untuk Next.js (recommended, free, familiar)
-- Ketik **"B"** untuk Astro (best performance, content-focused)
-- Ketik **"C"** untuk Remix (edge-first, no cold starts)
-- Ketik **"Other"** untuk lihat 3 options lain (ranks 4-6)
+Please select one:
+- Type **"A"** for Next.js (recommended, free, familiar)
+- Type **"B"** for Astro (best performance, content-focused)
+- Type **"C"** for Remix (edge-first, no cold starts)
+- Type **"Other"** to view 3 other options (ranks 4-6)
 
-Stack decision LOCKS after selection. Changes later = +2 minggu timeline.
+Stack decision LOCKS after selection. Changes later = +2 weeks timeline impact.
 
 ⚠️ WAITING FOR SELECTION...
 ```
@@ -735,13 +733,13 @@ Stack decision LOCKS after selection. Changes later = +2 minggu timeline.
 
 ### Handling "Other" Request (Ranks 4-6)
 
-Jika user type "Other":
+If user types "Other":
 
 ```markdown
 ## Alternative Options (Ranks 4-6):
 
 ### Option D: SvelteKit + Vercel (Score: 95.4/100)
-- Similar to Next.js tapi pakai Svelte (compile-time framework)
+- Similar to Next.js but uses Svelte (compile-time framework)
 - Pros: Smaller bundle, faster runtime
 - Cons: Smaller ecosystem vs React
 
@@ -755,20 +753,20 @@ Jika user type "Other":
 - Pros: End-to-end type safety, no API contracts
 - Cons: Opinionated, tRPC learning curve
 
-Pilih D/E/F atau "Back" untuk kembali ke top 3.
+Choose D/E/F or "Back" to return to top 3.
 ```
 
-User bisa loop sampai satisfied, atau request custom stack:
+The user can iterate until satisfied, or request a custom stack:
 
 ```
-User: "Bagaimana dengan Go + HTMX?"
-Agent: [Re-score dengan Go Fiber + HTMX]
+User: "How about Go + HTMX?"
+Agent: [Re-score with Go Fiber + HTMX]
   Score: 67.2/100
   - Expertise: 4/40 (no Go experience) ❌
   - Budget: 18/20 ($5/month Fly.io)
   - Feature: 7/10 (HTMX partial SSR)
   
-  Recommendation: NOT recommended untuk tim JS-only. Go learning curve 4-8 minggu.
+  Recommendation: NOT recommended for a JS-only team. Go learning curve 4-8 weeks.
   
   Proceed anyway? (Y/N)
 ```
@@ -777,25 +775,25 @@ Agent: [Re-score dengan Go Fiber + HTMX]
 
 ## 4. Module 04 Prototype → Module 06 Handoff Strategy
 
-**Problem**: Stitch/Figma prototype (Module 04) generated dalam format tertentu (React/HTML), tapi user pilih stack berbeda (Laravel/Vue/Django).
+**Problem**: The Stitch/Figma prototype (Module 04) is generated in a specific format (React/HTML), but the user selects a different stack (Laravel/Vue/Django).
 
-**Solution**: Define conversion strategy di FSD based on stack compatibility level.
+**Solution**: Define the conversion strategy in FSD based on the stack compatibility level.
 
 ### Compatibility Levels:
 
 #### **Level 1: Direct Copy (React-Based Stacks)**
 
-**Applicable When**: User pilih Next.js, Remix, Gatsby, Create React App
+**Applicable When**: User selects Next.js, Remix, Gatsby, Create React App
 
 **Strategy**:
 1. Export Stitch code (React + Tailwind)
-2. Copy components langsung ke `components/` folder
+2. Copy components directly into `components/` folder
 3. Minimal refactoring:
    - Import paths adjustment
    - Component file structure (one component per file)
-   - Add TypeScript types (jika Stitch generate vanilla JS)
+   - Add TypeScript types (if Stitch generated vanilla JS)
 
-**Conversion Effort**: 1 hari
+**Conversion Effort**: 1 day
 **Conversion Rate**: 95% code reuse
 
 **Example**:
@@ -831,15 +829,15 @@ export function DashboardCard({ title, value }: DashboardCardProps) {
 
 #### **Level 2: Syntax Conversion (Similar Framework)**
 
-**Applicable When**: User pilih Vue, Svelte, Solid, Preact
+**Applicable When**: User selects Vue, Svelte, Solid, Preact
 
 **Strategy**:
-1. Extract component structure dari Stitch
+1. Extract component structure from Stitch
 2. Convert JSX → framework syntax
 3. Keep Tailwind classes identical (design system preserved)
 4. Rewrite state management (React hooks → Vue Composition API / Svelte stores)
 
-**Conversion Effort**: 3-4 hari (18 screens)
+**Conversion Effort**: 3-4 days (18 screens)
 **Conversion Rate**: 70% structure reuse, 100% design reuse
 
 **Example**:
@@ -867,27 +865,27 @@ defineProps<{
 ```
 
 **Conversion Tools** (Optional automation):
-- `react-to-vue`: CLI tool convert JSX → Vue SFC
-- Manual review required (80% accuracy, need fixes)
+- `react-to-vue`: CLI tool to convert JSX → Vue SFC
+- Manual review required (80% accuracy, requires fixes)
 
 ---
 
 #### **Level 3: Template Rewrite (Server-Side Rendering)**
 
-**Applicable When**: User pilih Laravel Blade, Django Templates, Rails ERB, PHP
+**Applicable When**: User selects Laravel Blade, Django Templates, Rails ERB, PHP
 
 **Strategy**:
-1. Stitch prototype = **visual reference only** (tidak extract code)
+1. Stitch prototype = **visual reference only** (do not extract code)
 2. Identify layout patterns:
    - Header (logo, nav, user menu)
    - Sidebar (if applicable)
    - Main content area (cards, tables, forms)
    - Footer
-3. Rewrite as server-side templates dengan framework syntax
-4. Extract Tailwind classes dari Stitch → copy ke templates
-5. Design tokens (DESIGN.md) → apply manual
+3. Rewrite as server-side templates using framework syntax
+4. Extract Tailwind classes from Stitch → copy to templates
+5. Design tokens (DESIGN.md) → apply manually
 
-**Conversion Effort**: 5-7 hari (18 screens)
+**Conversion Effort**: 5-7 days (18 screens)
 **Conversion Rate**: 0% code reuse, 100% design reuse (visual parity)
 
 **Example**:
@@ -928,15 +926,15 @@ module.exports = {
 
 #### **Level 4: Hybrid (Inertia.js / Hotwire)**
 
-**Applicable When**: User pilih Laravel + Inertia.js, Rails + Hotwire Turbo
+**Applicable When**: User selects Laravel + Inertia.js, Rails + Hotwire Turbo
 
 **Strategy**:
 1. Backend: Laravel/Rails (API routes, Eloquent/ActiveRecord)
-2. Frontend: Keep Vue/React components dari Stitch
+2. Frontend: Keep Vue/React components from Stitch
 3. Glue layer: Inertia.js wires Vue components to Laravel routes
-4. Conversion effort sama dengan Level 2 (syntax conversion)
+4. Conversion effort same as Level 2 (syntax conversion)
 
-**Conversion Effort**: 3-4 hari (frontend) + 2-3 hari (backend wiring)
+**Conversion Effort**: 3-4 days (frontend) + 2-3 days (backend wiring)
 **Conversion Rate**: 70% code reuse (Vue components), 100% design reuse
 
 **Example**:
@@ -972,9 +970,9 @@ defineProps(['stats'])
 
 ---
 
-### FSD Documentation Requirement (Langkah 5):
+### FSD Documentation Requirement (Step 5):
 
-**Section: "Module 04 Handoff Strategy"** di FSD.md wajib include:
+**Section: "Module 04 Handoff Strategy"** in FSD.md must include:
 
 ```markdown
 ## Module 04 Prototype Conversion Strategy
@@ -983,14 +981,14 @@ defineProps(['stats'])
 **Compatibility Level**: Level 4 (Hybrid)
 
 **Conversion Plan**:
-1. Extract 18 Vue components dari Stitch export
-2. Setup Inertia.js di Laravel project (ziggy routes, Vite config)
-3. Create Laravel routes untuk setiap page (map SITEMAP.md → web.php)
+1. Extract 18 Vue components from Stitch export
+2. Setup Inertia.js in Laravel project (ziggy routes, Vite config)
+3. Create Laravel routes for every page (map SITEMAP.md → web.php)
 4. Wire Vue components to Inertia::render() calls
-5. Copy Tailwind config dari DESIGN.md → tailwind.config.js
+5. Copy Tailwind config from DESIGN.md → tailwind.config.js
 6. Test component rendering (ensure props match backend data structure)
 
-**Estimated Conversion Time**: 5-7 hari
+**Estimated Conversion Time**: 5-7 days
 - Day 1-2: Inertia.js setup + first 5 pages
 - Day 3-4: Remaining 13 pages + component library
 - Day 5: Polish (responsive, dark mode if applicable)
@@ -998,7 +996,7 @@ defineProps(['stats'])
 
 **Design System Preservation**:
 - ✅ Tailwind classes preserved (bg-white, rounded-lg, shadow-sm, etc)
-- ✅ Color palette dari DESIGN.md applied (primary: #0891B2)
+- ✅ Color palette from DESIGN.md applied (primary: #0891B2)
 - ✅ Typography (Inter font, weights 400/600)
 - ✅ Spacing scale (4/8/16/24/32px)
 
@@ -1009,28 +1007,28 @@ defineProps(['stats'])
 
 ---
 
-## 5. Langkah demi Langkah Eksekusi
+## 5. Step-by-Step Execution
 
-### Langkah 1: Perancangan Skema Basis Data
-1. Identifikasi seluruh entitas data dari formulir di `DESIGN_SPEC.md`.
-2. Tuliskan skema relasional lengkap dalam format SQL DDL baku.
-3. Kunci integritas data di level basis data:
-   - Gunakan `UUIDv7` atau `BIGINT` untuk Primary Key.
-   - Pasang relasi `FOREIGN KEY` dengan `ON DELETE RESTRICT` (jangan biarkan data transaksi terhapus otomatis secara liar).
-   - Pasang constraint `CHECK` (misal: `CHECK (nominal >= 0)`).
-   - Pasang indeks pada kolom yang sering dicari (`WHERE user_id = ... AND status = ...`).
+### Step 1: Database Schema Design
+1. Identify all data entities from forms in `DESIGN_SPEC.md`.
+2. Write the complete relational schema in standard SQL DDL format.
+3. Lock data integrity at the database level:
+   - Use `UUIDv7` or `BIGINT` for Primary Keys.
+   - Set up `FOREIGN KEY` constraints with `ON DELETE RESTRICT` (never allow wild, untracked cascading deletions on transaction records).
+   - Set up `CHECK` constraints (e.g., `CHECK (nominal >= 0)`).
+   - Create indexes on frequently queried columns (`WHERE user_id = ... AND status = ...`).
 
-### Langkah 2: Pemetaan Kontrak API (API Contract)
-Setiap tombol aksi di antarmuka harus memiliki pasangan endpoint API yang terdefinisi dengan format baku:
-- **Metode & Rute**: `POST /api/v1/documents`
+### Step 2: API Contract Mapping
+Every action button on the interface must have a corresponding API endpoint defined in standard format:
+- **Method & Route**: `POST /api/v1/documents`
 - **Headers**:
   ```http
   Authorization: Bearer <TOKEN>
   Content-Type: application/json
   X-Idempotency-Key: <UUID>
   ```
-- **Payload Request JSON**: Skema field input beserta tipe data dan aturan validasi.
-- **Respon Sukses & Respon Error**: Format seragam (`status`, `data`, `error: { code, message }`).
+- **JSON Request Payload**: Schema of input fields with data types and validation rules.
+- **Success & Error Response**: Uniform format (`status`, `data`, `error: { code, message }`).
 
 #### OpenAPI/Swagger Documentation Generation
 
@@ -1165,7 +1163,6 @@ export async function POST(request: Request) {
 ```
 
 ---
-
 **FastAPI Example (Python)** - Zero configuration needed:
 ```python
 from fastapi import FastAPI, HTTPException
@@ -1237,19 +1234,19 @@ php artisan l5-swagger:generate
 ---
 
 **OpenAPI Integration Checklist**:
-- [ ] Install OpenAPI generation library sesuai stack
+- [ ] Install OpenAPI generation library matching chosen stack
 - [ ] Configure base info (title, version, servers, auth schemes)
-- [ ] Annotate 100% public-facing endpoints (prioritas: auth, core CRUD, webhooks)
+- [ ] Annotate 100% public-facing endpoints (priorities: auth, core CRUD, webhooks)
 - [ ] Generate spec: `pnpm swagger` / `php artisan l5-swagger:generate` / automatic
-- [ ] Verify Swagger UI accessible (`/api/docs` atau `/api/documentation`)
+- [ ] Verify Swagger UI accessible (`/api/docs` or `/api/documentation`)
 - [ ] Export `openapi.json` to `docs/specs/openapi.json` for version control
 - [ ] Add to M06 development checklist: "Update OpenAPI annotations when adding endpoints"
 
 **When to Skip OpenAPI**:
-- ❌ Internal-only API dengan <5 endpoints
+- ❌ Internal-only API with <5 endpoints
 - ❌ GraphQL API (use GraphQL introspection instead)
 - ❌ tRPC (TypeScript end-to-end type safety, no need for OpenAPI)
-- ❌ MVP <4 minggu dengan zero external API consumers
+- ❌ MVP <4 weeks with zero external API consumers
 
 **Benefits**:
 - ✅ Auto-generated client SDKs (TypeScript, Python, Go) via `openapi-generator`
@@ -1259,90 +1256,90 @@ php artisan l5-swagger:generate
 
 ---
 
-### Langkah 3: Arsitektur Keamanan Terpasang (Built-in Security)
-Kunci protokol keamanan sebelum menulis kode:
-1. **Penyimpanan Dokumen Sensitif (Vault)**:
-   - File PDF dokumen wajib dienkripsi sebelum masuk cloud storage menggunakan AES-256-GCM. Kunci enkripsi dikelola terpisah (*Key Management Service*).
+### Step 3: Built-in Security Architecture
+Lock security protocols before writing code:
+1. **Sensitive Document Storage (Vault)**:
+   - PDF document files must be encrypted before entering cloud storage using AES-256-GCM. Encryption keys are managed separately (*Key Management Service*).
    - **KMS Implementation Ladder by Scale**:
-     - **Kecil**: Environment variables (`process.env.ENCRYPTION_KEY`) + AWS Secrets Manager basic
-     - **Menengah**: HashiCorp Vault (self-hosted or HCP) with key rotation
-     - **Besar**: AWS KMS / GCP Cloud KMS with envelope encryption
+     - **Small**: Environment variables (`process.env.ENCRYPTION_KEY`) + AWS Secrets Manager basic
+     - **Medium**: HashiCorp Vault (self-hosted or HCP) with key rotation
+     - **Large**: AWS KMS / GCP Cloud KMS with envelope encryption
      - **Enterprise**: Hardware Security Module (HSM) + FIPS 140-2 compliance
-   - Tautan unduhan dokumen wajib menggunakan *Presigned URL* dengan masa kedaluwarsa maksimal 15 menit.
-2. **Otentikasi & Password**:
-   - Password wajib di-hash menggunakan **Argon2id** (atau bcrypt dengan cost factor ≥12).
-   - Token sesi disimpan di `HttpOnly, Secure, SameSite=Strict` cookie untuk mencegah pencurian token melalui serangan Cross-Site Scripting (XSS).
-3. **Pembatasan Laju Request (Rate Limiting)**:
-   - Endpoint sensitif (Login, Kirim OTP, Checkout) diproteksi pembatasan laju (contoh: maksimal 5 percobaan per IP dalam 15 menit).
+   - Document download links must use *Presigned URLs* with a maximum expiration of 15 minutes.
+2. **Authentication & Passwords**:
+   - Passwords must be hashed using **Argon2id** (or bcrypt with cost factor ≥12).
+   - Session tokens are stored in `HttpOnly, Secure, SameSite=Strict` cookies to prevent token theft via Cross-Site Scripting (XSS) attacks.
+3. **Request Rate Limiting**:
+   - Sensitive endpoints (Login, Send OTP, Checkout) are protected by rate limiting (example: max 5 attempts per IP in 15 minutes).
 
-### Langkah 4: Penyusunan Dokumen PRD & FSD
-- **`PRD.md`**: Memuat ringkasan kebutuhan fungsional bisnis, matriks hak akses pengguna (RBAC), metrik keberhasilan (KPI), dan batasan non-fungsional (NFR: latency < 200 ms, uptime 99.9%).
-- **`FSD.md`**: Memuat detail teknis mutlak (diagram ERD, script SQL DDL, tabel API contract, state machine transaksi, dan audit logging).
+### Step 4: PRD & FSD Document Preparation
+- **`PRD.md`**: Contains a summary of business functional requirements, user access rights matrix (RBAC), success metrics (KPIs), and non-functional requirements (NFRs: latency < 200 ms, uptime 99.9%).
+- **`FSD.md`**: Contains absolute technical details (ERD diagram, SQL DDL script, API contract table, transaction state machines, and audit logging).
 
-### Langkah 5: Technical Sign-Off Bersama Klien
-- Solo dev memaparkan dokumen PRD & FSD ke **Single PIC Klien**.
-- Klien menandatangani lembar persetujuan spesifikasi teknis (*Technical Sign-off*).
-- Dengan ditandatanganinya FSD, lingkup dan logika teknis resmi terkunci.
+### Step 5: Technical Sign-Off with Client
+- Solo developer presents PRD & FSD documents to the **Client Single PIC**.
+- Client signs the technical specification approval sheet (*Technical Sign-off*).
+- Once the FSD is signed, the scope and technical logic are officially locked.
 
 ---
 
-## 4. Adaptasi Berdasarkan Skala Proyek
+## 4. Adaptation Based on Project Scale
 
-| Aspek | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+| Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large Scale & Enterprise |
 | :--- | :--- | :--- | :--- |
-| **Dokumen PRD** | Ringkas (3–5 halaman) | Modular terstruktur (10–20 halaman) | Formal Enterprise PRD lengkap |
-| **Dokumen FSD** | Skema tabel & rute API inti | FSD lengkap: ERD, SQL DDL, API contracts | FSD mendalam, RTM, Disaster Recovery SOP |
-| **Skema Database** | 3–6 tabel relasional | 10–20 tabel dengan migrasi terversi | 30+ tabel, partisi data, sharding plan |
-| **Keamanan** | HTTPS, password hashing, RLS | S3 AES-256, JWT rotation, rate limiter | Zero-knowledge vault, HSM, ISO 27001 audit |
-| **Approval** | Persetujuan via email/chat tertulis | Tanda tangan lembar Technical Sign-off | Formal Sign-off CAB (Change Advisory Board) |
+| **PRD Document** | Concise (3–5 pages) | Modular structured (10–20 pages) | Full Formal Enterprise PRD |
+| **FSD Document** | Core table schemas & API routes | Complete FSD: ERD, SQL DDL, API contracts | In-depth FSD, RTM, Disaster Recovery SOP |
+| **Database Schema** | 3–6 relational tables | 10–20 tables with versioned migrations | 30+ tables, data partitioning, sharding plan |
+| **Security** | HTTPS, password hashing, RLS | S3 AES-256, JWT rotation, rate limiter | Zero-knowledge vault, HSM, ISO 27001 audit |
+| **Approval** | Written confirmation via email/chat | Signed Technical Sign-off sheet | Formal Sign-off CAB (Change Advisory Board) |
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 5. Output Artifacts (Deliverables)
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Seluruh dokumen spesifikasi Modul 05 WAJIB disimpan di dalam folder **`docs/specs/`** (bukan di root direktori).
-> DILARANG menaruh `PRD.md` atau `FSD.md` di root proyek.
+> 📁 **MANDATORY FILE LOCATION RULES**:
+> All Module 05 specification documents MUST be stored inside the folder **`docs/specs/`** (not in the root directory).
+> Placing `PRD.md` or `FSD.md` in the project root is STRICTLY FORBIDDEN.
 
-Modul ini menghasilkan 2 dokumen teknis utama:
-1. **`docs/specs/PRD.md`**: Dokumen kebutuhan produk fungsional dan non-fungsional (menggunakan `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`).
-2. **`docs/specs/FSD.md`**: Dokumen spesifikasi teknis fungsional, skema database DDL, API contracts, dan arsitektur keamanan (menggunakan `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`).
+This module produces 2 primary technical documents:
+1. **`docs/specs/PRD.md`**: Functional and non-functional product requirement document (using `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`).
+2. **`docs/specs/FSD.md`**: Functional technical specification document, database DDL schema, API contracts, and security architecture (using `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`).
 
-> 💡 *Rujukan pola arsitektur & clean code FSD*: `references/playbooks/software-design-patterns.md`.
+> 💡 *Reference for architectural patterns & clean code FSD*: `references/playbooks/software-design-patterns.md`.
 
 ---
 
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
+## 6. Gate Exit Criteria [GATE]
 
-[GATE] Modul 05 dinyatakan **LOLOS (PASS)** jika:
+[GATE] Module 05 is declared **PASSED** if:
 
 ### Phase 0: Tech Stack Discovery (BLOCKING)
 - [x] **8-question questionnaire completed** (user answered all questions)
-- [x] **2-3 stack options generated** dengan cost/pros/cons comparison
-- [x] **User selected preferred stack** (LOCKED decision, cannot change without +2 minggu timeline impact)
-- [x] **Stack selection documented** di FSD.md header section
+- [x] **2-3 stack options generated** with cost/pros/cons comparison
+- [x] **User selected preferred stack** (LOCKED decision, cannot change without +2 weeks timeline impact)
+- [x] **Stack selection documented** in FSD.md header section
 
 ### Phase 1-4: FSD Content (BLOCKING)
-- [x] **Tech stack justification documented** (context-specific reasoning, alternatives rejected dengan alasan)
-- [x] **Database schema written** dalam SQL DDL syntax sesuai chosen DB (PostgreSQL/MySQL/MongoDB)
-- [x] **API endpoints documented** (minimum 10 endpoints dengan request/response examples)
+- [x] **Tech stack justification documented** (context-specific reasoning, alternatives rejected with reasons)
+- [x] **Database schema written** in SQL DDL syntax matching chosen DB (PostgreSQL/MySQL/MongoDB)
+- [x] **API endpoints documented** (minimum 10 endpoints with request/response examples)
 - [x] **Security blueprint complete** (encryption, hashing, rate limiting, framework-specific patterns)
-- [x] **Module 04 handoff strategy documented** (conversion plan dari Stitch → chosen stack)
+- [x] **Module 04 handoff strategy documented** (conversion plan from Stitch → chosen stack)
 
 ### Phase 5: File Verification (BLOCKING)
 - [x] **`docs/specs/PRD.md` exists** (≥3000 bytes, contains RBAC matrix, NFR thresholds)
 - [x] **`docs/specs/FSD.md` exists** (≥8000 bytes, contains all technical sections)
 
 ### Phase 6: User Approval (BLOCKING)
-- [x] **Technical Sign-Off obtained** dari Single PIC Klien atau solo developer self-approval
+- [x] **Technical Sign-Off obtained** from Client Single PIC or solo developer self-approval
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 🛑 PROTOCOL [GATE] EXIT & MANDATORY STOP
 
-### LANGKAH 0: Tech Stack Discovery (MANDATORY FIRST)
+### STEP 0: Tech Stack Discovery (MANDATORY FIRST)
 
-**Agent WAJIB execute questionnaire SEBELUM generate FSD**:
+**Agent MUST execute questionnaire BEFORE generating FSD**:
 
 ```powershell
 # GATE CHECK - Module 05 Phase 0
@@ -1351,7 +1348,7 @@ Modul ini menghasilkan 2 dokumen teknis utama:
 $questionnaireComplete = $false
 $stackLocked = $false
 
-# Agent must track user answers dalam memory atau temp file
+# Agent must track user answers in memory or temp file
 # Check if all 8 questions answered
 if ($answeredQuestions -lt 8) {
     Write-Error "❌ PHASE 0 GATE FAILED: Only $answeredQuestions/8 questions answered."
@@ -1361,7 +1358,7 @@ if ($answeredQuestions -lt 8) {
 
 # Check if stack selected
 if (-not $selectedStack) {
-    Write-Error "❌ PHASE 0 GATE FAILED: User belum pilih stack dari options."
+    Write-Error "❌ PHASE 0 GATE FAILED: User has not selected a stack from options."
     Write-Error "Present 2-3 options → user MUST select → then proceed to FSD."
     exit 1
 }
@@ -1396,9 +1393,9 @@ Please select stack (A/B/C) to proceed. Decision LOCKS tech stack for this proje
 
 ---
 
-### LANGKAH 1-4: Generate FSD Content
+### STEP 1-4: Generate FSD Content
 
-After stack locked, agent proceeds to generate FSD sections based on chosen stack.
+After stack is locked, agent proceeds to generate FSD sections based on the chosen stack.
 
 **Content must adapt to stack**:
 - PostgreSQL chosen → SQL DDL syntax with FOREIGN KEY, CHECK constraints
@@ -1407,13 +1404,13 @@ After stack locked, agent proceeds to generate FSD sections based on chosen stac
 - Django chosen → Django ORM models syntax
 
 **Anti-Pattern** (AI SLOP):
-- ❌ Always generate PostgreSQL schema tanpa check chosen DB
-- ❌ Always recommend Next.js API routes tanpa check chosen backend
-- ❌ Generic "best practices" tidak sesuai framework
+- ❌ Always generate PostgreSQL schema without checking chosen DB
+- ❌ Always recommend Next.js API routes without checking chosen backend
+- ❌ Generic "best practices" not aligned with the framework
 
 ---
 
-### LANGKAH 5: File Existence Verification
+### STEP 5: File Existence Verification
 
 ```powershell
 # GATE CHECK - Module 05 File Verification
@@ -1426,12 +1423,12 @@ $allPassed = $true
 
 foreach ($file in $requiredFiles) {
     if (-not (Test-Path $file.Path)) {
-        Write-Error "❌ GATE FAILED: File $($file.Path) tidak ditemukan."
+        Write-Error "❌ GATE FAILED: File $($file.Path) not found."
         $allPassed = $false
     } else {
         $size = (Get-Item $file.Path).Length
         if ($size -lt $file.MinSize) {
-            Write-Error "❌ GATE FAILED: File $($file.Path) terlalu kecil ($size bytes < $($file.MinSize) minimum)."
+            Write-Error "❌ GATE FAILED: File $($file.Path) is too small ($size bytes < $($file.MinSize) minimum)."
             $allPassed = $false
         } else {
             Write-Host "✅ $($file.Path) verified ($size bytes)"
@@ -1440,17 +1437,17 @@ foreach ($file in $requiredFiles) {
 }
 
 if (-not $allPassed) {
-    Write-Error "`n🛑 MODULE 05 GATE FAILED: Missing atau incomplete files."
+    Write-Error "`n🛑 MODULE 05 GATE FAILED: Missing or incomplete files."
     exit 1
 }
 ```
 
 ---
 
-### LANGKAH 6: Content Validation
+### STEP 6: Content Validation
 
 ```python
-# Pseudo-code untuk agent verification
+# Pseudo-code for agent verification
 def verify_fsd_content():
     fsd = read_file("docs/specs/FSD.md")
     
@@ -1474,7 +1471,7 @@ def verify_fsd_content():
     # Verify API endpoint count
     endpoint_count = fsd.count("#### POST") + fsd.count("#### GET") + fsd.count("#### PUT") + fsd.count("#### DELETE")
     if endpoint_count < 10:
-        raise GateError(f"FSD.md hanya ada {endpoint_count} endpoints (minimum 10)")
+        raise GateError(f"FSD.md only contains {endpoint_count} endpoints (minimum 10)")
     
     # Verify database schema (SQL or NoSQL syntax)
     if ("CREATE TABLE" not in fsd) and ("mongoose.Schema" not in fsd) and ("models.Model" not in fsd):
@@ -1489,9 +1486,9 @@ def verify_fsd_content():
 
 ---
 
-### LANGKAH 7: Display Summary & User Approval
+### STEP 7: Display Summary & User Approval
 
-Setelah semua checks passed:
+After all checks pass:
 
 ```
 ✅ MODULE 05 COMPLETE - Architecture & FSD Ready
@@ -1510,9 +1507,9 @@ Tech Stack Summary (LOCKED):
 FSD Content Summary:
 - ✅ Tech Stack Justification: Context-specific reasoning (team JS expertise, $0 budget, SEO priority)
 - ✅ Database Schema: 5 tables (users, documents, signatures, audit_logs, sessions), 12 relationships, 18 indexes
-- ✅ API Endpoints: 24 endpoints (auth, documents, signatures, users) dengan request/response examples
+- ✅ API Endpoints: 24 endpoints (auth, documents, signatures, users) with request/response examples
 - ✅ Security: JWT auth (HttpOnly cookies), Argon2id password hashing, rate limiting (5 attempts/15min), AES-256 file encryption
-- ✅ Module 04 Handoff: Direct copy strategy (Stitch React → Next.js, 95% code reuse, 1 hari conversion)
+- ✅ Module 04 Handoff: Direct copy strategy (Stitch React → Next.js, 95% code reuse, 1 day conversion)
 
 Performance Requirements:
 - Page load: <2s (P95)
@@ -1520,33 +1517,33 @@ Performance Requirements:
 - Concurrent users: 100 (auto-scaling serverless)
 
 Next Steps:
-1. Review FSD.md (verify tech decisions align dengan expectations)
+1. Review FSD.md (verify tech decisions align with expectations)
 2. If revisions needed: Request changes now (before Module 06 coding)
 3. If approved: Confirm "FSD approved, start Module 06 development"
 
-⚠️ CRITICAL: Stack cannot change after approval without +2 minggu timeline impact (database migration, API rewrite, component conversion).
+⚠️ CRITICAL: Stack cannot change after approval without +2 weeks timeline impact (database migration, API rewrite, component conversion).
 
 ⚠️ WAITING FOR USER CONFIRMATION - Do NOT proceed to Module 06 automatically.
 ```
 
 ---
 
-### LANGKAH 8: STOP & Wait for Approval
+### STEP 8: STOP & Wait for Approval
 
-**DILARANG KERAS** melanjutkan ke Module 06 dalam turn yang sama.
+**STRICTLY FORBIDDEN** to proceed to Module 06 within the same turn.
 
-Agent harus:
-1. **END TURN** setelah display summary
-2. **WAIT** for explicit user approval: "FSD approved" atau "Lanjut Module 06"
+The agent must:
+1. **END TURN** after displaying summary
+2. **WAIT** for explicit user approval: "FSD approved" or "Proceed to Module 06"
 3. Only proceed after confirmation received
 
-**Jika user request changes**:
+**If user requests changes**:
 - Re-generate affected sections
 - Re-run GATE verification
 - Display updated summary
 - Wait for approval again
 
-**Jika user approve**:
+**If user approves**:
 - Mark Module 05 complete
 - Proceed to Module 06 (Development Implementation)
 
@@ -1575,7 +1572,7 @@ Agent harus:
 ```
 MAU < 10K?     → Single VPS vertical ($24→$48/mo upgrade)
 MAU 10K-100K?  → Horizontal app layer (2-3 instances) + DB read replica
-MAU > 100K?    → Auto-scaling + CDN + caching wajib
+MAU > 100K?    → Auto-scaling + CDN + caching mandatory
 ```
 
 **CAP Theorem Trade-offs** (pick 2):
@@ -1820,7 +1817,7 @@ Run: `k6 run scripts/load-test.js`
 
 ### 6.12 Gate Exit Criteria
 
-Section 6 dinyatakan **LOLOS** jika:
+Section 6 is declared **PASSED** if:
 - [x] Performance budgets documented (LCP, API latency targets)
 - [x] Caching strategy defined (HTTP headers, Redis patterns, CDN)
 - [x] Database optimization plan (indexes, read replicas, connection pooling)
@@ -1828,8 +1825,8 @@ Section 6 dinyatakan **LOLOS** jika:
 - [x] Load test results validate capacity planning (k6 report)
 - [x] DR runbook created (backup restoration, failover procedures)
 
-**AKHIRI RESPON** dan konfirmasi:
-> *"System design selesai: Performance budgets set, caching strategy defined, monitoring configured. Load test report: p95 latency [X]ms, error rate [Y]%. Siap lanjut ke M06 (Development)?"*
+**END RESPONSE** and confirm:
+> *"System design complete: Performance budgets set, caching strategy defined, monitoring configured. Load test report: p95 latency [X]ms, error rate [Y]%. Ready to proceed to M06 (Development)?"*
 
 ---
-- Carry forward FSD.md + chosen stack sebagai blueprint untuk coding
+- Carry forward FSD.md + chosen stack as blueprint for coding

@@ -1,70 +1,70 @@
-# Modul 06: Development (Backend, Frontend, Integrasi API, & 3 Pilar Rekayasa)
+# Module 06: Development (Backend, Frontend, API Integration, & 3 Engineering Pillars)
 
 > - `references/solo/SOLO_DEVELOPMENT_PATTERNS.md` (Zod validation, AES-256-GCM encryption, Pessimistic locking, Presigned URLs, Self-test scripts)
 > - `references/solo/SOLO_ENGINEERING_STANDARDS.md` (Git branching, OWASP/UU PDP audit, N+1 query prevention, Asset optimization, Connection pooling)
 > - `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md` (AI coding tool selection, Cursor vs Claude Code vs Windsurf benchmark)
 > - `references/playbooks/ai-assisted-development.md` (Prompt engineering patterns, multi-file orchestration, pre-merge AI review protocol)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, design patterns, and anti-pattern detection for AI-generated code)
-> - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Lembar pelacak kemajuan eksekusi koding, checklist backend, frontend, integrasi, & pos pemeriksaan review)
+> - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Coding execution progress tracker sheet, backend, frontend, integration checklists, & review checkpoints)
 >
 > - Read: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`
 
-Modul ini adalah tahap keenam dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah mengeksekusi penulisan kode nyata (*coding*) secara terarah menggunakan bantuan **AI Coding Agents (OpenChamber + OpenCode + OhMyOpenCode / Cursor / Claude Code)** melalui penyediaan **Agent Harness (berkas pemandu AI)**, mengintegrasikan antarmuka dari **Google Stitch**, mengelola percabangan **Git**, serta menegakkan 3 pilar rekayasa non-negosiasi: **Keamanan (Security)**, **Performa (Performance)**, dan **Efisiensi Sumber Daya (Resource Efficiency)**.
+This module is the sixth phase in the software project lifecycle for solo developers. Its purpose is to execute real code writing (*coding*) in a directed manner using **AI Coding Agents (OpenChamber + OpenCode + OhMyOpenCode / Cursor / Claude Code)** through the provision of an **Agent Harness (AI guide files)**, integrating interfaces from **Google Stitch**, managing **Git** branching, and enforcing 3 non-negotiable engineering pillars: **Security**, **Performance**, and **Resource Efficiency**.
 
 ---
 
-## 1. Siklus Eksekusi Modul 06 (Universal Tech Stack Development Loop)
+## 1. Module 06 Execution Cycle (Universal Tech Stack Development Loop)
 
 ```text
-[ INPUT: FSD.md (with LOCKED stack decision), PRD.md, & Stitch Prototype dari Modul 04-05 ]
+[ INPUT: FSD.md (with LOCKED stack decision), PRD.md, & Stitch Prototype from Modules 04-05 ]
                                     │
                                     ▼
-[ LANGKAH 0: Extract Tech Stack Decision dari FSD.md (MANDATORY FIRST) ]
+[ STEP 0: Extract Tech Stack Decision from FSD.md (MANDATORY FIRST) ]
   • Read FSD.md header → Extract locked stack (Next.js/Laravel/Django/Go/etc)
   • Read "Module 04 Handoff Strategy" section → Extract compatibility level (1-4)
   • Load stack-specific templates & scaffold commands
   • Verify stack decision matches Module 05 approval (GATE check)
                                     │
                                     ▼
-[ LANGKAH 1: Inisiasi Repositori & Scaffold (Stack-Adapted) ]
-  • Execute scaffold command untuk chosen stack:
+[ STEP 1: Repository Initiation & Scaffold (Stack-Adapted) ]
+  • Execute scaffold command for chosen stack:
     - Next.js: pnpm create next-app@latest
     - Laravel: composer create-project laravel/laravel --prefer-dist
     - Django: django-admin startproject (verify Django version: pip install django>=4.2)
     - Go: mkdir + go mod init
-  • Pasang 7 Berkas Harness AI (stack-specific templates)
-  • Git Init & Strategi Percabangan (main ──► staging ──► feat/*)
+  • Install 7 AI Harness Files (stack-specific templates)
+  • Git Init & Branching Strategy (main ──► staging ──► feat/*)
                                     │
                                     ▼
-[ LANGKAH 2: Module 04 Prototype Conversion (4 Compatibility Levels) ]
-  • Level 1 (React → Next.js/Remix): Direct copy (1 hari, 95% reuse)
-  • Level 2 (React → Vue/Svelte): Syntax conversion (3-4 hari, 70% reuse)
-  • Level 3 (React → Laravel Blade): Template rewrite (5-7 hari, 0% code reuse)
-  • Level 4 (React → Inertia.js): Hybrid glue layer (5-6 hari, 70% reuse)
-  • Execute strategy documented di FSD.md "Module 04 Handoff Strategy"
-  • Pastikan UI Visual 100% Identik dengan Prototipe Terkunci
+[ STEP 2: Module 04 Prototype Conversion (4 Compatibility Levels) ]
+  • Level 1 (React → Next.js/Remix): Direct copy (1 day, 95% reuse)
+  • Level 2 (React → Vue/Svelte): Syntax conversion (3-4 days, 70% reuse)
+  • Level 3 (React → Laravel Blade): Template rewrite (5-7 days, 0% code reuse)
+  • Level 4 (React → Inertia.js): Hybrid glue layer (5-6 days, 70% reuse)
+  • Execute strategy documented in FSD.md "Module 04 Handoff Strategy"
+  • Ensure UI Visuals are 100% Identical to Frozen Prototype
                                     │
                                     ▼
-[ LANGKAH 3: Database Schema & Migrations (Framework-Adapted) ]
-  • AI Membaca ARCHITECTURE.md → Generate migrations sesuai chosen stack:
+[ STEP 3: Database Schema & Migrations (Framework-Adapted) ]
+  • AI Reads ARCHITECTURE.md → Generate migrations matching chosen stack:
     - Next.js: Prisma/Drizzle schema + migrate
     - Laravel: Eloquent migrations + artisan migrate
     - Django: Django ORM models + makemigrations
     - Go: SQL migration files + golang-migrate
-  • Pasang Database Pooling & Indexing pada Kolom Foreign Key
-  • Eksekusi Migrasi Lokal & Seed Data (faker data untuk testing)
+  • Set up Database Pooling & Indexing on Foreign Key Columns
+  • Execute Local Migrations & Seed Data (faker data for testing)
                                     │
                                     ▼
-[ LANGKAH 4: Backend API & 6 Engineering Pillars (Framework-Agnostic) ]
-  • AI Membaca TODO.md Sekuensial → Build API endpoints sesuai FSD.md
+[ STEP 4: Backend API & 6 Engineering Pillars (Framework-Agnostic) ]
+  • AI Reads TODO.md Sequentially → Build API endpoints according to FSD.md
   • Implement validation library (Zod/Laravel Validation/Django Forms)
-  • Pilar Security: Encryption, HttpOnly Cookies, Parameterized Queries
-  • Pilar Performance: N+1 Prevention, Caching, Query Indexing
-  • Pilar Resource: Connection Pooling, Stream Processing, Memory Management
+  • Security Pillar: Encryption, HttpOnly Cookies, Parameterized Queries
+  • Performance Pillar: N+1 Prevention, Caching, Query Indexing
+  • Resource Pillar: Connection Pooling, Stream Processing, Memory Management
   • Wire frontend components → backend endpoints (5 UI states: idle, loading, success, error, empty)
                                     │
                                     ▼
-[ LANGKAH 5: Testing & Git Workflow (Stack-Adapted) ]
+[ STEP 5: Testing & Git Workflow (Stack-Adapted) ]
   • Run stack-specific tests:
     - Next.js: npm run test:smoke (Jest/Vitest)
     - Laravel: php artisan test (PHPUnit)
@@ -72,27 +72,27 @@ Modul ini adalah tahap keenam dalam siklus hidup proyek perangkat lunak untuk so
     - Go: go test ./...
   • Audit: pnpm audit / composer audit / pip-audit
   • TypeScript check (if applicable): tsc --noEmit
-  • Merge ke branch `staging` → Tag milestone (Alpha ready)
+  • Merge to branch staging → Tag milestone (Alpha ready)
                                     │
                                     ▼
-[ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ] ──► Siap Masuk ke Modul 07: QA & SIT
+[ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ] ──► Ready to Enter Module 07: QA & SIT
 ```
 
 ---
 
-## 2. LANGKAH 0: Extract Tech Stack Decision (MANDATORY FIRST)
+## 2. STEP 0: Extract Tech Stack Decision (MANDATORY FIRST)
 
-**Agent WAJIB read FSD.md dari Module 05 SEBELUM scaffold project.**
+**Agent MUST read FSD.md from Module 05 BEFORE scaffolding the project.**
 
 ### Verification Gate:
 
 ```powershell
 # GATE CHECK - Module 06 Phase 0
-# Verify FSD.md exists dan contains locked stack decision
+# Verify FSD.md exists and contains locked stack decision
 
 if (-not (Test-Path "docs/specs/FSD.md")) {
-    Write-Error "❌ GATE FAILED: FSD.md tidak ditemukan."
-    Write-Error "Module 06 requires FSD.md dari Module 05. Run Module 05 first."
+    Write-Error "❌ GATE FAILED: FSD.md not found."
+    Write-Error "Module 06 requires FSD.md from Module 05. Run Module 05 first."
     exit 1
 }
 
@@ -100,7 +100,7 @@ $fsdContent = Get-Content "docs/specs/FSD.md" -Raw
 
 # Check for locked stack decision
 if ($fsdContent -notmatch "Stack Decision LOCKED:") {
-    Write-Error "❌ GATE FAILED: FSD.md tidak ada locked stack decision."
+    Write-Error "❌ GATE FAILED: FSD.md missing locked stack decision."
     Write-Error "Module 05 incomplete. Re-run Module 05 questionnaire & lock stack."
     exit 1
 }
@@ -128,7 +128,7 @@ Write-Host "✅ FSD.md verification complete. Proceeding to scaffold..."
 
 ### Extract Stack-Specific Configuration
 
-Agent must parse FSD.md untuk extract:
+Agent must parse FSD.md to extract:
 
 **1. Tech Stack Components**:
 ```markdown
@@ -148,7 +148,7 @@ Stack Decision LOCKED: Laravel Monolith (Option A)
 - `frontend_framework`: "Laravel Blade + Inertia.js"
 - `backend_framework`: "Laravel 11"
 - `database`: "MySQL 8"
-- `orm_tool`: "Eloquent" (inferred dari Laravel)
+- `orm_tool`: "Eloquent" (inferred from Laravel)
 
 **2. Module 04 Conversion Strategy**:
 ```markdown
@@ -157,11 +157,11 @@ Stack Decision LOCKED: Laravel Monolith (Option A)
 **Compatibility Level**: Level 4 (Hybrid - Inertia.js)
 
 **Conversion Plan**:
-1. Extract 18 Vue components dari Stitch export
-2. Setup Inertia.js di Laravel (ziggy routes, Vite config)
-3. Create Laravel routes untuk setiap page
+1. Extract 18 Vue components from Stitch export
+2. Setup Inertia.js in Laravel (ziggy routes, Vite config)
+3. Create Laravel routes for every page
 ...
-**Estimated Conversion Time**: 5-7 hari
+**Estimated Conversion Time**: 5-7 days
 ```
 
 **Agent extracts**:
@@ -186,7 +186,7 @@ CREATE TABLE users (
 
 ### Stack-Specific Scaffold Commands
 
-Berdasarkan extracted stack, agent execute scaffold command yang sesuai:
+Based on the extracted stack, the agent executes the matching scaffold command:
 
 | Detected Stack | Scaffold Command | ORM/Migration Tool |
 |----------------|------------------|-------------------|
@@ -202,7 +202,7 @@ Berdasarkan extracted stack, agent execute scaffold command yang sesuai:
 | **Rails** | `rails new myproject --database=postgresql --css=tailwind` | ActiveRecord (built-in) |
 | **Spring Boot** | `curl https://start.spring.io/starter.zip -o myproject.zip` | JPA / Hibernate |
 
-**Agent must NOT assume Next.js** - scaffold command determined by FSD.md locked stack.
+**Agent must NOT assume Next.js** — scaffold command is strictly determined by the FSD.md locked stack.
 
 ---
 
@@ -277,21 +277,21 @@ def verify_scaffold_matches_fsd():
     return True
 ```
 
-**If mismatch detected**: Agent MUST stop and re-scaffold correct framework.
+**If mismatch detected**: Agent MUST stop and re-scaffold the correct framework.
 
 ---
 
-## 3. Tujuh Berkas Kendali AI di Root Repo (Universal Stack - The 7 Root Harness Files)
+## 3. The 7 Root Harness Files in Root Repo (Universal Stack - The 7 Root Harness Files)
 
 ⚠️ **CRITICAL PRE-FLIGHT WARNING: Framework-Specific AGENTS.md Conflicts**
 
 Multiple frameworks auto-generate conflicting `AGENTS.md` or similar files:
 - **Next.js**: `create-next-app` generates 9-line boilerplate `AGENTS.md`
-- **Laravel**: No conflict (Laravel doesn't generate AGENTS.md)
+- **Laravel**: No conflict (Laravel does not generate AGENTS.md)
 - **Rails**: Generates `README.md` (rename to `README_FRAMEWORK.md`)
 - **Django**: No conflict
 
-**WAJIB overwrite/check IMMEDIATELY** after scaffold:
+**MANDATORY to overwrite/check IMMEDIATELY** after scaffold:
 ```bash
 # Next.js (MANDATORY)
 cp templates/04-dev-execution/nextjs/AGENTS.md AGENTS.md
@@ -310,19 +310,19 @@ cp templates/04-dev-execution/go/AGENTS.md AGENTS.md
 
 ---
 
-*Panduan evaluasi & pemilihan AI coding tool: `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md`*
+*AI coding tool evaluation & selection guide: `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md`*
 
-Sebelum memicu agen AI untuk menulis kode, letakkan 7 berkas kendali ini di root folder proyek:
+Before triggering AI agents to write code, place these 7 control files in the project root folder:
 
-| No | Nama Berkas | Sumber Rujukan (Stack-Specific) | Fungsi untuk AI Coding Agent |
+| No | File Name | Reference Source (Stack-Specific) | Function for AI Coding Agent |
 | :---: | :--- | :--- | :--- |
-| **1** | **`AGENTS.md`** | `templates/04-dev-execution/{stack}/AGENTS_TEMPLATE.md` | Aturan main mutlak: larangan tipe `any` (TS) atau raw SQL, perintah build/test, dan format commit. **Stack-specific**: Next.js (Server Components), Laravel (Eloquent), Django (ORM). |
-| **2** | **`CONTEXT.md`** | `templates/04-dev-execution/CONTEXT_TEMPLATE.md` | Konteks bisnis, peran user (RBAC), dan daftar batas tegas *Out-of-Scope* agar AI tidak halusinasi. **Universal** (same for all stacks). |
-| **3** | **`ARCHITECTURE.md`** | `templates/04-dev-execution/{stack}/ARCHITECTURE_TEMPLATE.md` | Rangkuman FSD: struktur folder, skema tabel, dan kontrak rute API JSON. **Stack-specific**: Next.js (`app/` dir), Laravel (`app/Http`), Django (`myapp/views.py`). |
-| **4** | **`DESIGN.md`** | `templates/02-design/DESIGN_MD_TEMPLATE.md` | Token visual dari Modul 04: palet Zinc, 1 aksen brand, font Inter, border 1px flat. **Universal** (design tokens framework-agnostic). |
-| **5** | **`CONVENTIONS.md`** | `templates/04-dev-execution/{stack}/CONVENTIONS_TEMPLATE.md` | Aturan gaya koding: penamaan `kebab-case` (Next.js), `PascalCase` (Laravel), `snake_case` (Django/Python). **Stack-specific**. |
-| **6** | **`.env.example`** | `templates/04-dev-execution/{stack}/ENV_EXAMPLE_TEMPLATE.md` | Kamus variabel lingkungan baku agar AI tidak mengarang nama key database/rahasia. **Stack-specific**: Next.js (`DATABASE_URL`), Laravel (`DB_CONNECTION`), Django (`DATABASES`). |
-| **7** | **`TODO.md`** | `templates/04-dev-execution/TODO_TEMPLATE.md` | Daftar tugas atomik sekuensial yang dicentang `[x]` satu per satu oleh AI. **Universal** (task structure same across stacks). |
+| **1** | **`AGENTS.md`** | `templates/04-dev-execution/{stack}/AGENTS_TEMPLATE.md` | Absolute ground rules: prohibition of `any` types (TS) or raw SQL, build/test commands, and commit format. **Stack-specific**: Next.js (Server Components), Laravel (Eloquent), Django (ORM). |
+| **2** | **`CONTEXT.md`** | `templates/04-dev-execution/CONTEXT_TEMPLATE.md` | Business context, user roles (RBAC), and strict *Out-of-Scope* boundaries to prevent AI hallucination. **Universal** (same for all stacks). |
+| **3** | **`ARCHITECTURE.md`** | `templates/04-dev-execution/{stack}/ARCHITECTURE_TEMPLATE.md` | FSD summary: folder structure, table schemas, and JSON API route contracts. **Stack-specific**: Next.js (`app/` dir), Laravel (`app/Http`), Django (`myapp/views.py`). |
+| **4** | **`DESIGN.md`** | `templates/02-design/DESIGN_MD_TEMPLATE.md` | Visual tokens from Module 04: Zinc palette, 1 brand accent, Inter font, flat 1px border. **Universal** (design tokens are framework-agnostic). |
+| **5** | **`CONVENTIONS.md`** | `templates/04-dev-execution/{stack}/CONVENTIONS_TEMPLATE.md` | Code style rules: naming conventions like `kebab-case` (Next.js), `PascalCase` (Laravel), `snake_case` (Django/Python). **Stack-specific**. |
+| **6** | **`.env.example`** | `templates/04-dev-execution/{stack}/ENV_EXAMPLE_TEMPLATE.md` | Standard environment variable dictionary so AI does not invent database/secret key names. **Stack-specific**: Next.js (`DATABASE_URL`), Laravel (`DB_CONNECTION`), Django (`DATABASES`). |
+| **7** | **`TODO.md`** | `templates/04-dev-execution/TODO_TEMPLATE.md` | Sequential atomic task list checked off `[x]` one by one by AI. **Universal** (task structure identical across stacks). |
 
 ---
 
@@ -512,13 +512,12 @@ class User(AbstractUser):
 ```
 
 ---
-
 ### Stack Detection & Template Selection Algorithm
 
 ```python
 # Agent logic for selecting correct templates
 def select_templates(fsd_content: str) -> dict:
-    """Extract locked stack dari FSD.md dan return template paths."""
+    """Extract locked stack from FSD.md and return template paths."""
     
     # Parse locked stack decision
     match = re.search(r"Stack Decision LOCKED:\s*(.+)", fsd_content)
@@ -587,11 +586,11 @@ def select_templates(fsd_content: str) -> dict:
 
 ---
 
-## 3A. LANGKAH 2: Module 04 Prototype Conversion (4 Compatibility Levels)
+## 3A. STEP 2: Module 04 Prototype Conversion (4 Compatibility Levels)
 
-**Execute conversion strategy documented di FSD.md "Module 04 Handoff Strategy" section.**
+**Execute conversion strategy documented in FSD.md "Module 04 Handoff Strategy" section.**
 
-Agent reads FSD.md extract:
+Agent reads FSD.md to extract:
 - **Compatibility Level**: 1-4
 - **Conversion Approach**: Direct copy / Syntax conversion / Template rewrite / Hybrid
 - **Estimated Time**: X days
@@ -609,7 +608,7 @@ Agent reads FSD.md extract:
 # 1. Export Stitch components (via MCP or manual download)
 stitch_get_screen(projectId="...", screenId="...")
 
-# 2. Copy components ke target directory
+# 2. Copy components to target directory
 # Next.js: src/components/
 # Remix: app/components/
 
@@ -648,7 +647,7 @@ export function DashboardCard({ title, value }: DashboardCardProps) {
 }
 ```
 
-**Time Investment**: 1 hari (18 screens)  
+**Time Investment**: 1 day (18 screens)  
 **Code Reuse**: 95%  
 **Risk**: Low (syntax identical)
 
@@ -699,7 +698,7 @@ defineProps<{
 </script>
 ```
 
-**Time Investment**: 3-4 hari (18 screens)  
+**Time Investment**: 3-4 days (18 screens)  
 **Code Reuse**: 70% (structure preserved, syntax adapted)  
 **Risk**: Medium (manual review required, tool 80% accurate)
 
@@ -714,7 +713,7 @@ defineProps<{
 **Conversion Steps**:
 
 ```bash
-# 1. Open Stitch prototype di browser sebagai reference
+# 1. Open Stitch prototype in browser as reference
 # 2. Identify layout patterns:
 #    - Header (logo, nav, user menu)
 #    - Sidebar (if exists)
@@ -725,7 +724,7 @@ defineProps<{
 # Laravel: resources/views/*.blade.php
 # Django: templates/myapp/*.html
 
-# 4. Extract Tailwind classes dari Stitch → copy ke templates
+# 4. Extract Tailwind classes from Stitch → copy to templates
 # Keep design tokens (DESIGN.md) consistent
 ```
 
@@ -745,23 +744,23 @@ defineProps<{
 </div>
 ```
 
-**Time Investment**: 5-7 hari (18 screens)  
+**Time Investment**: 5-7 days (18 screens)  
 **Code Reuse**: 0% (code rewrite), 100% (design preserved)  
 **Risk**: High (manual effort, error-prone)
 
 **Tailwind Integration** (Laravel example):
 ```bash
-# Install Tailwind di Laravel
+# Install Tailwind in Laravel
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init
 
-# tailwind.config.js (copy theme dari DESIGN.md)
+# tailwind.config.js (copy theme from DESIGN.md)
 module.exports = {
   content: ['./resources/**/*.blade.php'],
   theme: {
     extend: {
       colors: {
-        primary: '#0891B2',  // Dari DESIGN.md
+        primary: '#0891B2',  // From DESIGN.md
       }
     }
   }
@@ -790,7 +789,7 @@ stitch_get_screen(...)
 # Laravel: Inertia::render('Dashboard', ['stats' => $stats])
 # Rails: render inertia: 'Dashboard', props: { stats: stats }
 
-# 4. Copy Stitch components ke framework structure
+# 4. Copy Stitch components to framework structure
 # Laravel Inertia: resources/js/Pages/*.vue
 # Rails Hotwire: app/frontend/pages/*.jsx
 ```
@@ -811,7 +810,7 @@ Route::get('/dashboard', function () {
 
 ```vue
 <!-- ✅ Vue Component (resources/js/Pages/Dashboard.vue) -->
-<!-- Copied dari Stitch export dengan minimal changes -->
+<!-- Copied from Stitch export with minimal changes -->
 <script setup>
 defineProps(['stats'])
 </script>
@@ -828,7 +827,7 @@ defineProps(['stats'])
 </template>
 ```
 
-**Time Investment**: 5-6 hari (setup 2 hari + conversion 3-4 hari)  
+**Time Investment**: 5-6 days (setup 2 days + conversion 3-4 days)  
 **Code Reuse**: 70% (Vue/React components preserved)  
 **Risk**: Medium (glue layer complexity)
 
@@ -836,67 +835,67 @@ defineProps(['stats'])
 
 ### Conversion Verification Checklist
 
-After conversion complete, verify:
+After conversion is complete, verify:
 
 - [ ] **Visual Parity**: UI matches Stitch prototype 100% (compare screenshots)
-- [ ] **Design Tokens Applied**: Colors, fonts, spacing dari DESIGN.md consistent
+- [ ] **Design Tokens Applied**: Colors, fonts, spacing from DESIGN.md consistent
 - [ ] **Responsive**: Mobile/tablet/desktop layouts work (test breakpoints)
-- [ ] **All Screens Converted**: X/Y screens complete (track di TODO.md)
+- [ ] **All Screens Converted**: X/Y screens complete (track in TODO.md)
 - [ ] **Components Functional**: No broken imports, props correctly typed
 - [ ] **5 UI States Implemented**: idle, loading, success, error, empty (for interactive components)
 
-**Gate**: Cannot proceed to backend API (LANGKAH 4) sampai frontend conversion complete & verified.
+**Gate**: Cannot proceed to backend API (STEP 4) until frontend conversion is complete & verified.
 
 ---
 
-## 3B. Strategi Percabangan Git Solo Developer (Git Branching & Clean Production)
+## 3B. Solo Developer Git Branching Strategy (Git Branching & Clean Production)
 
-Percabangan disesuaikan dengan skala proyek:
+Branching is tailored to the project scale:
 
 | Scale | Branch Structure | Rationale |
 |-------|------------------|-----------|
-| **Kecil** | `main` only (direct commits or single dev branch) | Overhead rendah, solo dev MVP/freelance |
-| **Menengah** | `main` + `staging` (optional feat/* for large features) | Integration testing sebelum production |
-| **Besar/Enterprise** | `main` + `staging` + `feat/*` (strict feature branches) | Formal review gates, client demos |
+| **Small** | `main` only (direct commits or single dev branch) | Low overhead, solo dev MVP/freelance |
+| **Medium** | `main` + `staging` (optional feat/* for large features) | Integration testing before production |
+| **Large/Enterprise** | `main` + `staging` + `feat/*` (strict feature branches) | Formal review gates, client demos |
 
-**Besar/Enterprise Branching Flow**:
+**Large/Enterprise Branching Flow**:
 
 ```text
 [ main ] ──────────────(Release Tag v1.0.0 - Production Clean)─────────────────►
    ▲
-   │ (Merge setelah UAT Pass)
+   │ (Merge after UAT Pass)
 [ staging ] ───────────(Integration & Client Demo)─────────────────────────────►
    ▲
-   │ (Merge setelah lolos tes lokal)
-   ├── [ feat/auth-login ] ───────► (Selesai ──► Merge ke staging)
-   ├── [ feat/document-vault ] ───► (Selesai ──► Merge ke staging)
-   └── [ fix/pdf-render-bug ] ────► (Selesai ──► Merge ke staging)
+   │ (Merge after local test passes)
+   ├── [ feat/auth-login ] ───────► (Complete ──► Merge to staging)
+   ├── [ feat/document-vault ] ───► (Complete ──► Merge to staging)
+   └── [ fix/pdf-render-bug ] ────► (Complete ──► Merge to staging)
 ```
 
-### Aturan Baku Branching (Besar/Enterprise):
+### Standard Branching Rules (Large/Enterprise):
 1. **Branch `main` (Production)**:
-   - Kode produksi 100% stabil yang sudah lolos UAT klien.
-   - Bersih dari berkas internal dev: berkas seperti `TODO.md` dan catatan draf internal tidak boleh mengotori branch produksi (diatur via `.gitignore` produksi atau build docker ignore).
-   - Selalu diberi label SemVer: `git tag -a v1.0.0 -m "Release v1.0.0"`.
+   - 100% stable production code that has passed client UAT.
+   - Clean of internal dev files: files such as `TODO.md` and internal draft notes must not pollute production branches (configured via production `.gitignore` or build docker ignore).
+   - Always labeled with SemVer: `git tag -a v1.0.0 -m "Release v1.0.0"`.
 2. **Branch `staging` (Integration)**:
-   - Wadah integrasi seluruh fitur yang siap diuji di server Staging. Klien menguji fitur di environment ini.
-3. **Branch `feat/[nama-fitur]`**:
-   - Cabang kerja solo dev untuk setiap item besar di `TODO.md`.
-   - Setelah tugas selesai dan lulus `smoke-test` lokal, branch di-merge ke `staging`.
-4. **Format Pesan Commit (Conventional Commits)**:
+   - Integration hub for all features ready for testing on the Staging server. Clients test features in this environment.
+3. **Branch `feat/[feature-name]`**:
+   - Solo dev working branch for each major task in `TODO.md`.
+   - Once the task is complete and passes local `smoke-test`, the branch is merged into `staging`.
+4. **Commit Message Format (Conventional Commits)**:
    - `feat(vault): implement streaming AES-256 encryption for PDF upload`
    - `fix(auth): correct Argon2id memory cost parameter`
    - `perf(db): add index on documents(creator_id, status)`
 
 ---
 
-## 4. Enam Pilar Kualitas Rekayasa (The 6 Engineering Pillars - Universal)
+## 4. The 6 Engineering Quality Pillars (The 6 Engineering Pillars - Universal)
 
-**Framework-agnostic principles** - applicable to semua tech stacks dari Module 05.
+**Framework-agnostic principles** — applicable to all tech stacks from Module 05.
 
-Pengkodean bukan hanya tentang "fitur berjalan", melainkan wajib memenuhi 6 standar rekayasa:
+Coding is not merely about making "features work"; it must satisfy 6 engineering quality standards:
 
-### Pilar 1: Keamanan Defensif (Security by Design)
+### Pillar 1: Defensive Security (Security by Design)
 
 **Principle**: Zero raw queries, strict validation, encryption at rest, secure sessions.
 
@@ -938,19 +937,19 @@ user = User.objects.raw(f"SELECT * FROM users WHERE email = '{email}'")
 ```
 
 **Encryption Requirements** (UU PDP No. 27/2022):
-- File dokumen: AES-256-GCM sebelum storage
-- Password: Argon2id (preferred) atau bcrypt (min cost 12)
-- Token sesi: HttpOnly, Secure, SameSite=Strict cookies
+- Document files: AES-256-GCM before storage
+- Passwords: Argon2id (preferred) or bcrypt (min cost 12)
+- Session tokens: HttpOnly, Secure, SameSite=Strict cookies
 
-**Audit Dependensi** (Stack-specific):
-- Next.js: `pnpm audit` atau `npm audit`
+**Dependency Audit** (Stack-specific):
+- Next.js: `pnpm audit` or `npm audit`
 - Laravel: `composer audit`
-- Django: `pip-audit` atau `safety check`
+- Django: `pip-audit` or `safety check`
 - Go: `govulncheck`
 
 ---
 
-### Pilar 2: Performa & Kecepatan (Performance Engineering)
+### Pillar 2: Performance & Speed (Performance Engineering)
 
 **Principle**: Prevent N+1 queries, index foreign keys, cache static data, optimize assets.
 
@@ -981,7 +980,7 @@ const users = await prisma.user.findMany({
 ```php
 // ❌ N+1 Query (Laravel)
 $users = User::all();
-foreach ($users as $user) {
+foreach ($users) {
     $posts = $user->posts; // N queries!
 }
 
@@ -991,89 +990,89 @@ $users = User::with('posts')->get();
 
 **Database Indexing** (Universal principle):
 ```sql
--- Index pada foreign keys (MANDATORY)
+-- Indexes on foreign keys (MANDATORY)
 CREATE INDEX idx_documents_user_id ON documents(user_id);
 CREATE INDEX idx_documents_status ON documents(status);
 
--- Composite index untuk filter queries
+-- Composite index for filter queries
 CREATE INDEX idx_documents_user_status ON documents(user_id, status);
 ```
 
 **Caching Strategy**:
-- Data master (jarang berubah): Cache 1-24 jam
-- User sessions: Redis dengan TTL
+- Master data (rarely changed): Cache 1-24 hours
+- User sessions: Redis with TTL
 - API responses: Cache-Control headers
 
 ---
 
-### Pilar 3: Efisiensi Sumber Daya & Biaya (Resource & Cost Efficiency)
-- **Validasi Ketat di Pintu Masuk**: Semua data request wajib melalui skema Zod.
-- **Enkripsi Data Sensitif (UU PDP No. 27/2022)**: File dokumen dienkripsi AES-256-GCM sebelum masuk storage; password di-hash menggunakan Argon2id; token sesi disimpan di cookie `HttpOnly, Secure, SameSite=Strict`.
-- **Audit Dependensi**: Jalankan `pnpm audit` secara berkala untuk memastikan tidak ada pustaka open-source yang memiliki celah keamanan (*vulnerability*).
+### Pillar 3: Resource & Cost Efficiency (Resource & Cost Efficiency)
+- **Strict Gateway Validation**: All incoming request data must pass through Zod schemas.
+- **Sensitive Data Encryption (UU PDP No. 27/2022)**: Document files are AES-256-GCM encrypted before entering storage; passwords hashed using Argon2id; session tokens stored in `HttpOnly, Secure, SameSite=Strict` cookies.
+- **Dependency Audit**: Run `pnpm audit` periodically to verify zero open-source libraries have known security vulnerabilities.
 
-### Pilar 2: Performa & Kecepatan (Performance Engineering)
-- **Pencegahan N+1 Query**: Dilarang menjalankan query database di dalam perulangan loop. Gunakan `include`/`select` relasi atau batched query.
-- **Database Indexing**: Pasang indeks pada setiap kolom Foreign Key dan kolom filter pencarian (`WHERE status = ...`).
-- **Zero Layout Shift & Optimasi Aset**: Gunakan Next.js `<Image>` untuk kompresi WebP otomatis dan skeleton loader untuk mencegah pergeseran tampilan saat memuat data.
-- **Caching**: Terapkan in-memory caching (Redis) untuk data master yang jarang berubah.
+### Pillar 2: Performance & Speed (Performance Engineering)
+- **N+1 Query Prevention**: Running database queries inside loops is FORBIDDEN. Use relationship `include`/`select` or batched queries.
+- **Database Indexing**: Apply indexes to every Foreign Key column and search filter column (`WHERE status = ...`).
+- **Zero Layout Shift & Asset Optimization**: Use Next.js `<Image>` for automatic WebP compression and skeleton loaders to prevent layout shifts during data loading.
+- **Caching**: Implement in-memory caching (Redis) for rarely changing master data.
 
-### Pilar 3: Efisiensi Sumber Daya & Biaya (Resource & Cost Efficiency)
-- **Database Connection Pooling**: PostgreSQL memiliki batas koneksi terbatas. Selalu gunakan connection pooling (Prisma Accelerate, Supabase Pooler, atau PgBouncer) agar serverless functions tidak menenggelamkan database (*connection exhaustion*).
-- **Streaming Files**: File PDF atau dokumen besar diproses menggunakan **Node.js Stream** (bukan `fs.readFileSync` ke dalam RAM) agar konsumsi memori server tetap rendah di bawah 256 MB.
-- **Minimal Docker Footprint**: Jika menggunakan Docker, gunakan teknik *multi-stage build* berbasis Alpine Linux agar ukuran image kontainer kecil (< 150 MB) dan hemat biaya hosting.
+### Pillar 3: Resource & Cost Efficiency (Resource & Cost Efficiency)
+- **Database Connection Pooling**: PostgreSQL has limited connection boundaries. Always use connection pooling (Prisma Accelerate, Supabase Pooler, or PgBouncer) so serverless functions do not cause database connection exhaustion.
+- **Streaming Files**: PDF files or large documents must be processed using **Node.js Streams** (not `fs.readFileSync` into RAM) to keep server memory consumption low under 256 MB.
+- **Minimal Docker Footprint**: When using Docker, employ Alpine Linux-based *multi-stage builds* to keep container image sizes minimal (< 150 MB) and reduce hosting costs.
 
-### Pilar 4: Observabilitas & Ketahanan (Observability & Reliability)
-- **Structured JSON Logging**: Log menggunakan format JSON (Pino) dengan trace ID, actor ID, dan error stack untuk kemudahan filter log di cloud.
-- **Healthcheck & Graceful Shutdown**: Sediakan rute `GET /api/health` dan tangani sinyal `SIGTERM` untuk menutup koneksi database secara tertib.
+### Pillar 4: Observability & Resilience (Observability & Reliability)
+- **Structured JSON Logging**: Log using JSON format (Pino) with trace IDs, actor IDs, and error stacks for easy cloud filtering.
+- **Healthcheck & Graceful Shutdown**: Provide a `GET /api/health` route and handle `SIGTERM` signals to close database connections cleanly.
 
-### Pilar 5: Kemudahan Perawatan & Kebersihan Tipe (Maintainability & Type Hygiene)
-- **Single Source of Truth Tipe Data**: Seluruh tipe TypeScript diturunkan dari Zod (`z.infer<typeof Schema>`), dilarang duplikasi manual.
-- **Haram Barrel Files (`index.ts`)**: Impor langsung dari file spesifik untuk mencegah circular dependencies dan mempercepat tree-shaking.
-- **Early Returns (Guard Clauses)**: Tangani error di baris awal fungsi, hindari struktur if-else bersarang.
-- **Clean Code & Design Patterns**: Terapkan prinsip SOLID dan pola arsitektur sesuai `references/playbooks/software-design-patterns.md`.
+### Pillar 5: Maintainability & Type Hygiene (Maintainability & Type Hygiene)
+- **Single Source of Truth for Data Types**: All TypeScript types are inferred from Zod (`z.infer<typeof Schema>`); manual duplication is FORBIDDEN.
+- **Strictly No Barrel Files (`index.ts`)**: Import directly from specific files to prevent circular dependencies and accelerate tree-shaking.
+- **Early Returns (Guard Clauses)**: Handle errors on the opening lines of functions, avoiding deeply nested if-else structures.
+- **Clean Code & Design Patterns**: Apply SOLID principles and architectural patterns according to `references/playbooks/software-design-patterns.md`.
 
-### Pilar 6: Ketahanan Data & Pemulihan (Data Durability & Disaster Recovery)
-- **Soft-Delete Mutlak**: Dokumen transaksi legal DILARANG dihapus permanen (`DELETE FROM`). Gunakan kolom `deleted_at`.
-- **Integritas Transaksi Atomik**: Mutasi multi-tabel wajib dibungkus dalam blok `db.$transaction` untuk mencegah korupsi data sebagian.
+### Pillar 6: Data Durability & Disaster Recovery (Data Durability & Disaster Recovery)
+- **Strict Soft-Delete**: Legal transaction documents MUST NEVER be permanently deleted (`DELETE FROM`). Use a `deleted_at` column.
+- **Atomic Transaction Integrity**: Multi-table mutations must be wrapped within a `db.$transaction` block to prevent partial data corruption.
 
 ---
 
-## 5. Langkah demi Langkah Eksekusi
+## 5. Step-by-Step Execution
 
-### Langkah 1: Persiapan Repositori & Tooling
+### Step 1: Repository Preparation & Tooling
 
-**Input**: Kebutuhan dari `FSD.md` dan `PRD.md`.
+**Input**: Requirements from `FSD.md` and `PRD.md`.
 
-**Aktivitas**:
+**Activities**:
 
-1. **Buat repositori Git lokal** (jika belum ada):
+1. **Create local Git repository** (if not already existing):
 
    ```bash
    git init
    git branch -M main
    ```
 
-2. **Scaffold framework bahasa pilihan**:
+2. **Scaffold framework of choice**:
 
-   **PENTING: Protokol Anti-Konflik Framework-Agnostic**
+   **IMPORTANT: Framework-Agnostic Anti-Conflict Protocol**
 
-   Banyak CLI framework modern **menolak eksekusi jika direktori target tidak kosong**. Karena Modul 01-05 sudah menghasilkan folder `docs/pm/` dan `docs/specs/`, strategi scaffold berbeda per framework:
+   Many modern framework CLIs **refuse to execute if the target directory is not empty**. Because Modules 01-05 have already produced `docs/pm/` and `docs/specs/` directories, scaffolding strategies differ per framework:
 
-   | Framework | Empty Dir? | AGENTS.md Conflict? | Scaffold Protocol |
-   |-----------|------------|---------------------|-------------------|
-   | **Next.js 15+** | Yes (strict) | **YES** (auto-gen 9 lines) | Temp folder → copy → **WAJIB overwrite AGENTS.md** (see warning above) |
+   | Framework | Empty Dir Required? | AGENTS.md Conflict? | Scaffold Protocol |
+   |-----------|---------------------|---------------------|-------------------|
+   | **Next.js 15+** | Yes (strict) | **YES** (auto-gen 9 lines) | Temp folder → copy → **MANDATORY overwrite AGENTS.md** (see warning above) |
    | **Laravel** | No (tolerates files) | No | Direct scaffold: `composer create-project laravel/laravel .` |
    | **Django/FastAPI** | No | No | Direct init: `poetry init` / `django-admin startproject . .` |
    | **Flutter** | Yes (strict) | No | Temp folder → copy (no AGENTS.md conflict) |
 
    **Next.js Protocol** (ONLY if using Next.js):
    ```bash
-   # Scaffold di folder KOSONG baru
+   # Scaffold in new EMPTY temp folder
    mkdir ../temp_scaffold
    cd ../temp_scaffold
    pnpm create next-app@latest . --typescript --tailwind --app --no-src-dir=false --import-alias "@/*"
    
-   # Copy framework files ke project folder
+   # Copy framework files to project folder
    cd ../project_folder
    cp -r ../temp_scaffold/* .
    cp -r ../temp_scaffold/.* . 2>/dev/null || true
@@ -1083,7 +1082,7 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    
    # CRITICAL: Overwrite Next.js AGENTS.md boilerplate (3rd reminder)
    # Get template from ROOT_HARNESS_BUNDLE (portable path)
-    cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
+   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
    ```
 
    **Laravel Protocol**:
@@ -1092,13 +1091,13 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    composer create-project laravel/laravel .
    
    # Copy 7 harness files from ROOT_HARNESS_BUNDLE (portable)
-    cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
-    cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
-    cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
-    cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
-    cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
-    cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
-    cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
+   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
+   cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
+   cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
+   cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
+   cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
+   cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
+   cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
    ```
 
    **Django/FastAPI Protocol**:
@@ -1107,39 +1106,38 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    poetry init  # or: django-admin startproject myproject .
    
    # Copy 7 harness files from ROOT_HARNESS_BUNDLE (portable)
-    cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
-    cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
-    cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
-    cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
-    cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
-    cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
-    cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
+   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
+   cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
+   cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
+   cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
+   cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
+   cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
+   cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
    ```
 
    **Flutter Protocol**:
    ```bash
-   # Scaffold di folder KOSONG
+   # Scaffold in EMPTY folder
    mkdir ../temp_scaffold
    cd ../temp_scaffold
-   flutter create --org com.klien --project-name legal_vault .
+   flutter create --org com.client --project-name legal_vault .
    
-   # Copy ke project folder
+   # Copy to project folder
    cd ../project_folder
    cp -r ../temp_scaffold/* .
    
    # Cleanup + copy harness from ROOT_HARNESS_BUNDLE (portable, no AGENTS.md conflict)
    rm -rf ../temp_scaffold
-    cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
-    cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
-    cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
-    cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
-    cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
-    cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
-    cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
-   # ... (copy 6 other files)
+   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
+   cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
+   cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
+   cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
+   cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
+   cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
+   cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
    ```
 
-3. **Verifikasi 7 Root Harness Files terpasang**:
+3. **Verify 7 Root Harness Files installed**:
 
    ```bash
    # Fixed verification: .env.example has no .md extension
@@ -1148,65 +1146,64 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
 
    Expected output: 6 .md files + .env.example (7 total).
 
-4. **Buat branch staging**: `git checkout -b staging`
+4. **Create staging branch**: `git checkout -b staging`
 
-5. **Commit awal** untuk mengunci harness dan scaffolding:
+5. **Initial commit** to lock harness and scaffolding:
    ```bash
    git add .
    git commit -m "chore: initial project scaffolding with 7 AI harness files"
    ```
 
-### Langkah 2: Implementasi Komponen UI (Stitch atau Manual Scaffold)
+### Step 2: UI Component Implementation (Stitch or Manual Scaffold)
 
-**Opsi A: Import dari Google Stitch (Jika Screen ID Tersedia)**
-1. Baca Screen ID dari `DESIGN_SYSTEM.md` (Bagian II: Inventaris Layar).
-2. Instruksikan OpenCode (jika Stitch MCP tersedia):
-   > *"Gunakan tool `stitch_get_screen` untuk Screen ID yang terdaftar. Ekstrak kode HTML/Tailwind menjadi komponen React di `src/components/ui/` dan pasang halamannya di `src/app/`."*
-3. Jalankan `pnpm dev` untuk verifikasi UI identik dengan desain.
+**Option A: Import from Google Stitch (If Screen IDs Available)**
+1. Read Screen IDs from `DESIGN_SYSTEM.md` (Part II: Screen Inventory).
+2. Instruct OpenCode (if Stitch MCP is available):
+   > *"Use the `stitch_get_screen` tool for registered Screen IDs. Extract HTML/Tailwind code into React components in `src/components/ui/` and wire the pages in `src/app/`."*
+3. Run `pnpm dev` to verify the UI is identical to the design.
 
-**Opsi B: Scaffold Manual (Tanpa Stitch)**
-1. Baca deskripsi layar dari `DESIGN_SYSTEM.md` (sitemap + token warna/tipografi).
-2. Buat komponen UI shell kosong dengan struktur folder yang benar:
+**Option B: Manual Scaffold (Without Stitch)**
+1. Read screen descriptions from `DESIGN_SYSTEM.md` (sitemap + color/typography tokens).
+2. Create empty shell UI components with proper folder structure:
    ```bash
    mkdir -p src/components/ui src/app/{dashboard,documents,login}
    ```
-3. Instruksikan AI untuk generate komponen berdasarkan DESIGN_SYSTEM.md tanpa Stitch:
-   > *"Baca `DESIGN_SYSTEM.md`. Buat komponen React/Vue/Flutter sesuai palet Zinc, font Inter, border flat 1px. Scaffold halaman login, dashboard, document list."*
+3. Instruct AI to generate components based on DESIGN_SYSTEM.md without Stitch:
+   > *"Read `DESIGN_SYSTEM.md`. Create React/Vue/Flutter components matching Zinc palette, Inter font, flat 1px border. Scaffold login, dashboard, document list pages."*
 
-### Langkah 3: Eksekusi Migrasi Basis Data & Seeding
-1. **Verifikasi Staging ENV**: Before migrations, verify `.env` (staging):
+### Step 3: Database Migration Execution & Seeding
+1. **Verify Staging ENV**: Before migrations, verify `.env` (staging):
    ```bash
    # Check no production keys leaked to staging
    grep -E '(DATABASE_URL|STRIPE_SECRET_KEY|AWS_SECRET)' .env
    # Confirm staging endpoints (e.g., Stripe test mode key prefix sk_test_)
    ```
-2. Instruksikan agen AI (OpenCode):
-   > *"Baca ARCHITECTURE.md bagian Database Models. Buat skema Prisma/Drizzle lengkap dengan konstrain CHECK, relasi foreign key, dan indeks performa. Jalankan migrasinya."*
-3. Jalankan migrasi: `pnpm db:migrate`
-4. Jalankan seeding data awal: `pnpm db:seed`
+2. Instruct the AI agent (OpenCode):
+   > *"Read ARCHITECTURE.md Database Models section. Create complete Prisma/Drizzle schema with CHECK constraints, foreign key relations, and performance indexes. Run the migration."*
+3. Run migrations: `pnpm db:migrate`
+4. Run initial seed data: `pnpm db:seed`
 
-### Langkah 4: Koding Backend API, Layanan Vault, & Wiring UI
-1. Instruksikan agen AI mengeksekusi item pada `TODO.md` satu per satu:
-   - Terapkan validasi Zod pada handler API.
-   - Buat layanan enkripsi stream AES-256-GCM ke S3/R2 dan presigned URL 15 menit.
-   - Sambungkan form UI Stitch ke endpoint API via `fetch` atau Server Actions.
-   - Pastikan kelima kondisi layar berfungsi: *Skeleton Loader*, *Empty State*, *Inline Error Message*, dan *Toast Notifikasi*.
-   - Terapkan pola prompt engineering & multi-file orchestration dari `references/playbooks/ai-assisted-development.md`.
+### Step 4: Coding Backend API, Vault Service, & UI Wiring
+1. Instruct the AI agent to execute items on `TODO.md` one by one:
+   - Apply Zod validation on API handlers.
+   - Build AES-256-GCM stream encryption service to S3/R2 with 15-minute presigned URLs.
+   - Connect Stitch UI forms to API endpoints via `fetch` or Server Actions.
+   - Ensure all five screen states work: *Skeleton Loader*, *Empty State*, *Inline Error Message*, and *Notification Toast*.
+   - Apply prompt engineering & multi-file orchestration patterns from `references/playbooks/ai-assisted-development.md`.
 
-### Langkah 5: Uji Asersi Mandiri (Smoke Test Lokal)
-Jalankan skrip uji cepat:
+### Step 5: Self-Assertion Testing (Local Smoke Test)
+Run rapid test script:
 ```bash
 pnpm run test:smoke
 ```
-Pastikan kompilasi bersih (`pnpm run type-check`) dan audit dependensi aman (`pnpm audit`).
+Ensure clean compilation (`pnpm run type-check`) and clean dependency audit (`pnpm audit`).
 
 ---
-
 ## 5A. Backend Development TODO Checklist (Detailed Breakdown)
 
-**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/backend-checklist.md`](../../templates/04-dev-execution/checklists/backend-checklist.md)
+**Detailed checklist**: See [`templates/04-dev-execution/checklists/backend-checklist.md`](../../templates/04-dev-execution/checklists/backend-checklist.md)
 
-Checklist komprehensif mencakup:
+Comprehensive checklist covers:
 1. **Database Setup & Migrations**: Connection pooling, schema definition, indexing strategy, soft-delete, seeders
 2. **API Endpoints Development**: Authentication endpoints, CRUD, search/filtering, pagination
 3. **Middleware Implementation**: Auth middleware, RBAC, validation, rate limiting, security headers
@@ -1214,7 +1211,7 @@ Checklist komprehensif mencakup:
 5. **File Upload & Storage**: Presigned URLs, validation, encryption at-rest
 6. **Email & Notifications**: Transactional email, templates, in-app notifications, webhook handlers
 
-**Quick reference** untuk AI coding agents:
+**Quick reference** for AI coding agents:
 ```
 > "Load backend checklist: templates/04-dev-execution/checklists/backend-checklist.md"
 > "Verify database migrations reversible and seeders functional"
@@ -1225,9 +1222,9 @@ Checklist komprehensif mencakup:
 
 ## 5B. Frontend Development TODO Checklist (Detailed Breakdown)
 
-**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/frontend-checklist.md`](../../templates/04-dev-execution/checklists/frontend-checklist.md)
+**Detailed checklist**: See [`templates/04-dev-execution/checklists/frontend-checklist.md`](../../templates/04-dev-execution/checklists/frontend-checklist.md)
 
-Checklist komprehensif mencakup:
+Comprehensive checklist covers:
 1. **Component Library & Design System**: Token sync, UI atoms (Button, Input), molecules (Toast, Modal), navigation, WCAG AA compliance
 2. **Pages & Routing**: Layout hierarchy, auth pages, dashboard pages, error boundaries
 3. **State Management**: Server-state (TanStack Query/SWR), client UI state (Zustand), URL sync
@@ -1235,7 +1232,7 @@ Checklist komprehensif mencakup:
 5. **API Integration**: HTTP client abstraction, file upload progress, optimistic updates
 6. **The 5 UI States**: Idle, Loading (skeleton), Success (toast), Error (retry), Empty (CTA)
 
-**Quick reference** untuk AI coding agents:
+**Quick reference** for AI coding agents:
 ```
 > "Load frontend checklist: templates/04-dev-execution/checklists/frontend-checklist.md"
 > "Verify WCAG AA contrast ratios and keyboard navigation"
@@ -1246,16 +1243,16 @@ Checklist komprehensif mencakup:
 
 ## 5C. Integration TODO Checklist (Third-Party & Infrastructure)
 
-**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/integration-checklist.md`](../../templates/04-dev-execution/checklists/integration-checklist.md)
+**Detailed checklist**: See [`templates/04-dev-execution/checklists/integration-checklist.md`](../../templates/04-dev-execution/checklists/integration-checklist.md)
 
-Checklist komprehensif mencakup:
+Comprehensive checklist covers:
 1. **Payment Gateway (Stripe/Midtrans)**: Sandbox setup, transaction initiation, webhook cryptographic validation, idempotency, atomic status transitions
 2. **Transactional Email (SendGrid/Resend)**: DNS verification (SPF/DKIM/DMARC), email client isolation, automated receipts
 3. **File Storage (S3/R2)**: Bucket CORS config, least-privilege IAM, lifecycle policies
 4. **Product Analytics (Mixpanel/GA4/PostHog)**: Privacy-compliant init, core telemetry mapping, PII scrubbing
 5. **Application Monitoring (Sentry)**: SDK installation, sensitive data scrubbing, performance tracing, health checks
 
-**Quick reference** untuk AI coding agents:
+**Quick reference** for AI coding agents:
 ```
 > "Load integration checklist: templates/04-dev-execution/checklists/integration-checklist.md"
 > "Verify webhook signature validation and idempotency handling"
@@ -1266,80 +1263,80 @@ Checklist komprehensif mencakup:
 
 ## 5D. Code Review Milestone Checkpoints (Solo Developer & AI Code Gates)
 
-Dalam pengembangan mandiri (solo developer) dengan akselerasi AI Coding Agents, *code review* dilakukan secara berlapis pada 4 pos pemeriksaan kunci (*milestone gates*) sebelum branch di-merge ke `staging` atau dinaikkan ke pengujian Modul 07:
+In solo development accelerated by AI Coding Agents, *code review* is conducted across 4 layered checkpoint gates (*milestone gates*) before branches are merged into `staging` or advanced to Module 07 testing:
 
 ```text
 [Feat Branches] ──► [Checkpoint 1: Foundation Gate] ──► staging
                                   │
-[Auth & Core]   ──► [Checkpoint 2: Alpha Release Gate] ──► Termin 2 (25-30%)
+[Auth & Core]   ──► [Checkpoint 2: Alpha Release Gate] ──► Term 2 (25-30%)
                                   │
 [Integrations]  ──► [Checkpoint 3: Third-Party & Security] ──► staging
                                   │
-[Full Hardening]──► [Checkpoint 4: Beta & Staging Freeze] ──► Termin 3 (20-25%) ──► Modul 07 (QA & SIT)
+[Full Hardening]──► [Checkpoint 4: Beta & Staging Freeze] ──► Term 3 (20-25%) ──► Module 07 (QA & SIT)
 ```
 
 ### Checkpoint 1: Scaffolding & Foundation Gate
-- **Pemicu**: Scaffolding selesai, 7 AI harness files terpasang, skema database awal terbentuk.
+- **Trigger**: Scaffolding complete, 7 AI harness files installed, initial database schema created.
 - **Target Branch**: `feat/scaffold` ──► `staging`
-- **Daftar Periksa Wajib**:
-  - [ ] Seluruh 7 berkas harness AI berada di root proyek dan disesuaikan dengan FSD.md.
-  - [ ] TypeScript strict mode aktif (`tsc --noEmit` exit 0 tanpa pesan error).
-  - [ ] Tidak ada tipe `any` yang terdeteksi di seluruh berkas kode baru.
-  - [ ] Skema database dan migrasi pertama berhasil dieksekusi di database lokal.
-  - [ ] File `.env.example` mencantumkan seluruh variabel environment yang digunakan dalam kode tanpa membocorkan nilai rahasia asli.
-- **Protokol Review AI**:
-  > *"Jalankan audit pada branch `feat/scaffold`. Pastikan arsitektur folder konsisten, tidak ada circular dependencies, dan skema database memiliki konstrain integritas data yang kokoh."*
+- **Mandatory Checklist**:
+  - [ ] All 7 AI harness files located in project root and customized per FSD.md.
+  - [ ] TypeScript strict mode active (`tsc --noEmit` exits 0 with zero errors).
+  - [ ] No `any` types detected across all new code files.
+  - [ ] Database schema and initial migration successfully executed in local database.
+  - [ ] File `.env.example` lists all environment variables used in code without leaking real secrets.
+- **AI Review Protocol**:
+  > *"Run audit on branch `feat/scaffold`. Verify folder architecture is consistent, no circular dependencies exist, and database schema enforces robust data integrity constraints."*
 
-### Checkpoint 2: Core Data & Domain Gate (Termin 2 Alpha Release Gate)
-- **Pemicu**: Modul autentikasi selesai, API CRUD entitas inti berfungsi, dan UI form awal tersambung.
-- **Target Milestone**: Termin 2 Alpha Release (25% s/d 30% Pembayaran Proyek).
-- **Daftar Periksa Wajib**:
-  - [ ] Autentikasi end-to-end berfungsi dengan penyimpanan JWT/sesi di HttpOnly cookie (`SameSite=Lax`, `Secure`).
-  - [ ] Validasi skema Zod aktif pada setiap handler API dan form UI.
-  - [ ] Isolasi tenant diverifikasi: Pengguna dari Tenant A tidak dapat mengakses entitas milik Tenant B via IDOR.
-  - [ ] Enkripsi AES-256-GCM aktif melindungi dokumen/data sensitif.
-  - [ ] Smoke test lokal tahap 1 lulus 100%.
-- **Keputusan Gate**:
-  - **LULUS**: Terbitkan Invoice Termin 2 ke Klien beserta video demo / laporan verifikasi lokal.
-  - **GAGAL**: Perbaiki celah keamanan atau bug logika sebelum menagih termin.
+### Checkpoint 2: Core Data & Domain Gate (Term 2 Alpha Release Gate)
+- **Trigger**: Authentication module complete, core entity CRUD API functioning, and initial form UI wired.
+- **Target Milestone**: Term 2 Alpha Release (25% to 30% Project Payment).
+- **Mandatory Checklist**:
+  - [ ] End-to-end authentication functional with JWT/session stored in HttpOnly cookies (`SameSite=Lax`, `Secure`).
+  - [ ] Zod schema validation active on every API handler and UI form.
+  - [ ] Tenant isolation verified: User from Tenant A cannot access Tenant B entities via IDOR.
+  - [ ] AES-256-GCM encryption actively protects documents/sensitive data.
+  - [ ] Local smoke test phase 1 passes 100%.
+- **Gate Decision**:
+  - **PASS**: Issue Term 2 Invoice to Client accompanied by demo video / local verification report.
+  - **FAIL**: Fix security vulnerabilities or logic bugs before invoicing the term.
 
 ### Checkpoint 3: Third-Party & Infrastructure Integration Gate
-- **Pemicu**: Integrasi payment gateway, transactional email, cloud storage, analitik, dan monitoring selesai.
+- **Trigger**: Payment gateway, transactional email, cloud storage, analytics, and monitoring integrations complete.
 - **Target Branch**: `feat/integrations` ──► `staging`
-- **Daftar Periksa Wajib**:
-  - [ ] Webhook payment gateway memvalidasi tanda tangan kriptografis dan menerapkan penanganan idempotensi mutlak.
-  - [ ] Upload file langsung ke cloud storage via presigned URL teruji, dengan validasi MIME-type berbasis magic bytes.
-  - [ ] Email transaksional terkirim dengan template HTML bersih dan memiliki fallback text.
-  - [ ] Rate limiting aktif melindungi endpoint login dan endpoint publik dari serangan brute-force.
-  - [ ] Audit dependensi (`pnpm audit` / `composer audit`) bersih dari kerentanan kategori High atau Critical.
-- **Protokol Review AI**:
-  > *"Periksa seluruh implementasi webhook dan file upload. Pastikan penanganan replay attack aman, token signing tervalidasi, dan berkas tidak dapat dieksekusi secara sembarangan di server."*
+- **Mandatory Checklist**:
+  - [ ] Payment gateway webhook validates cryptographic signatures and enforces absolute idempotency handling.
+  - [ ] Direct file upload to cloud storage via presigned URL verified, with magic-byte-based MIME-type validation.
+  - [ ] Transactional emails delivered with clean HTML templates and plain text fallbacks.
+  - [ ] Rate limiting actively protects login and public endpoints from brute-force attacks.
+  - [ ] Dependency audit (`pnpm audit` / `composer audit`) clean of High or Critical vulnerabilities.
+- **AI Review Protocol**:
+  > *"Examine all webhook and file upload implementations. Verify replay attack defenses are solid, signing tokens validated, and files cannot be arbitrarily executed on the server."*
 
-### Checkpoint 4: Release Candidate & Staging Freeze Gate (Termin 3 Beta Release Gate)
-- **Pemicu**: Seluruh fitur backend dan frontend tersambung, 5 UI states terpasang, siap masuk ke Modul 07 QA & SIT.
-- **Target Milestone**: Termin 3 Beta Release (20% s/d 25% Pembayaran Proyek).
-- **Daftar Periksa Wajib**:
-  - [ ] Defensive UI: Seluruh halaman dan komponen telah menerapkan 5 UI States (Idle, Loading skeleton, Success feedback, Error alert, Empty state).
-  - [ ] Bebas N+1 query: Seluruh relasi data dalam daftar/tabel telah dioptimasi dengan query `include`/`with` dan foreign key terindeks.
-  - [ ] Sentry / APM aktif menangkap unhandled errors dengan filter scrubbing data sensitif.
-  - [ ] Smoke test lengkap (`test:smoke`) berhasil 100%.
-  - [ ] Lembar `VERIFY_LOCAL.md` dan `DEVELOPMENT_PROGRESS_TRACKER.md` terisi lengkap dan ditandatangani.
-  - [ ] Branch `staging` bersih, ter-freeze, dan diberi tag rilis (contoh: `git tag -a v0.9.0-beta -m "Beta release ready for QA"`).
-- **Keputusan Gate**:
-  - **LULUS**: Lanjut ke **Modul 07: Quality Assurance & SIT di Staging**. Terbitkan Invoice Termin 3 jika disepakati pada kontrak.
-  - **GAGAL**: Tunda rilis, tuntaskan hutang teknis di `DEVELOPMENT_PROGRESS_TRACKER.md`.
+### Checkpoint 4: Release Candidate & Staging Freeze Gate (Term 3 Beta Release Gate)
+- **Trigger**: All backend and frontend features wired, 5 UI states in place, ready to enter Module 07 QA & SIT.
+- **Target Milestone**: Term 3 Beta Release (20% to 25% Project Payment).
+- **Mandatory Checklist**:
+  - [ ] Defensive UI: All pages and components have implemented 5 UI States (Idle, Loading skeleton, Success feedback, Error alert, Empty state).
+  - [ ] Free of N+1 queries: All data relationships in lists/tables optimized with `include`/`with` queries and indexed foreign keys.
+  - [ ] Sentry / APM actively captures unhandled errors with sensitive data scrubbing filters.
+  - [ ] Complete smoke test (`test:smoke`) passes 100%.
+  - [ ] `VERIFY_LOCAL.md` and `DEVELOPMENT_PROGRESS_TRACKER.md` fully completed and signed off.
+  - [ ] Branch `staging` clean, frozen, and tagged with release tag (example: `git tag -a v0.9.0-beta -m "Beta release ready for QA"`).
+- **Gate Decision**:
+  - **PASS**: Advance to **Module 07: Quality Assurance & SIT on Staging**. Issue Term 3 Invoice if agreed in contract.
+  - **FAIL**: Postpone release, resolve technical debt in `DEVELOPMENT_PROGRESS_TRACKER.md`.
 
 ---
 
-## 6. Pencapaian Milestone Pembayaran (Termin Gates)
+## 6. Payment Milestone Achievements (Term Gates)
 
-1. **Milestone Alpha (Termin 2 - 25% s/d 30%)**:
-   - *Kriteria Lolos*: Basis data termigrasi, otentikasi login aktif, alur pembuatan draf dokumen berjalan lokal, dan pilar keamanan/performa dasar terverifikasi di branch `staging`.
-   - *Tindakan*: Terbitkan Invoice Termin 2 ke Klien.
-   - *Template*: Use accounting software (Wave/Invoicely) or simple format: Project name, Termin 2 (Alpha 25-30%), Amount, Due date, Payment method.
-2. **Milestone Beta (Termin 3 - 20% s/d 25%)**:
-   - *Kriteria Lolos*: Seluruh modul backend, frontend, vault terenkripsi terhubung lengkap serta siap diuji coba di server Staging.
-   - *Tindakan*: Lanjut ke Modul 07 (QA & SIT) sebelum UAT klien.
+1. **Alpha Milestone (Term 2 - 25% to 30%)**:
+   - *Pass Criteria*: Database migrated, login authentication active, document draft creation workflow running locally, and baseline security/performance pillars verified on branch `staging`.
+   - *Action*: Issue Term 2 Invoice to Client.
+   - *Template*: Use accounting software (Wave/Invoicely) or simple format: Project name, Term 2 (Alpha 25-30%), Amount, Due date, Payment method.
+2. **Beta Milestone (Term 3 - 20% to 25%)**:
+   - *Pass Criteria*: All backend modules, frontend, and encrypted vault completely connected and ready for testing on Staging server.
+   - *Action*: Advance to Module 07 (QA & SIT) before client UAT.
 
 ---
 
@@ -1358,7 +1355,7 @@ Dalam pengembangan mandiri (solo developer) dengan akselerasi AI Coding Agents, 
 
 > - `references/pm/PM_ANALYTICS_SETUP_GUIDE.md` (Platform selection, Event taxonomy quickstart, AARRR dashboard, A/B testing, Privacy compliance)
 
-Tahap pasca-development untuk solo developer dan PM yang butuh mengukur product-market fit, engagement funnel, dan business metrics secara kuantitatif. Tujuannya adalah memasang **event tracking taxonomy** terstruktur, **analytics platform SDK** (Mixpanel/Amplitude/GA4), dan **dashboard real-time** untuk monitoring North Star Metric.
+Post-development phase for solo developers and PMs who need to quantitatively measure product-market fit, engagement funnels, and business metrics. The objective is to set up a structured **event tracking taxonomy**, **analytics platform SDK** (Mixpanel/Amplitude/GA4), and **real-time dashboard** for monitoring the North Star Metric.
 
 ---
 
@@ -1372,7 +1369,7 @@ Tahap pasca-development untuk solo developer dan PM yang butuh mengukur product-
 | **Google Analytics 4 (GA4)** | Web traffic, SEO attribution | Free: unlimited | ✅ Yes | Acquisition tracking, basic funnels |
 | **Segment.io** | CDP layer (multi-tool routing) | $120/mo minimum | ❌ Overkill for solo | Event routing to multiple destinations |
 
-**Default Stack for Solo Dev Menengah**:
+**Default Stack for Solo Dev (Medium Scale)**:
 ```text
 Mixpanel (funnel + retention) + GA4 (acquisition) + Sentry (errors)
 Total cost: $0/mo until scale
@@ -1382,7 +1379,7 @@ Total cost: $0/mo until scale
 
 ### 2. Event Tracking Taxonomy (The Naming Convention)
 
-**Format Baku**: `verb_noun` (lowercase, underscore separator)
+**Standard Format**: `verb_noun` (lowercase, underscore separator)
 
 ```typescript
 // ✅ CORRECT
@@ -1395,12 +1392,12 @@ track('Page Viewed', { pageName: 'Dashboard' })  // space, PascalCase
 track('buttonClick', { id: 'export' })             // camelCase verb
 ```
 
-**Kategori Event Utama**:
+**Main Event Categories**:
 
 | Category | Event Examples | Tracking Goal |
 |----------|----------------|---------------|
-| **Page Views** | `view_page`, `view_dashboard`, `view_settings` | Navigasi user, screen time |
-| **User Actions** | `click_button`, `submit_form`, `upload_file` | Interaksi fitur kunci |
+| **Page Views** | `view_page`, `view_dashboard`, `view_settings` | User navigation, screen time |
+| **User Actions** | `click_button`, `submit_form`, `upload_file` | Key feature interaction |
 | **Conversion** | `complete_signup`, `complete_payment`, `activate_account` | Funnel drop-off analysis |
 | **Engagement** | `share_document`, `invite_user`, `enable_notification` | Viral coefficient, retention |
 | **Errors** | `error_payment_failed`, `error_upload_timeout` | Friction points |
@@ -1486,11 +1483,11 @@ Revenue:        MRR, ARPU, LTV/CAC ratio
 ### 5. Privacy Compliance (GDPR & UU PDP No. 27/2022)
 
 **Consent Management Checklist**:
-- [ ] Cookie banner dengan opt-in eksplisit (bukan pre-checked)
-- [ ] Disable tracking sebelum user klik "Accept Analytics"
-- [ ] Sediakan opt-out URL: `/privacy/opt-out`
+- [ ] Cookie banner with explicit opt-in (not pre-checked)
+- [ ] Disable tracking before user clicks "Accept Analytics"
+- [ ] Provide opt-out URL: `/privacy/opt-out`
 - [ ] Anonymize IP addresses: `mixpanel.set_config({ ip: false })`
-- [ ] Data retention policy: Auto-delete events > 2 tahun
+- [ ] Data retention policy: Auto-delete events > 2 years
 
 **Code Example**: Consent Wrapper
 ```typescript
@@ -1515,9 +1512,9 @@ export const analytics = {
 
 | Artifact | Location | Purpose |
 |----------|----------|---------|
-| **Event Taxonomy Doc** | `docs/analytics/EVENT_TAXONOMY.md` | Single source of truth untuk nama event |
-| **Implementation Plan** | `docs/analytics/ANALYTICS_IMPLEMENTATION_PLAN.md` | Langkah instalasi SDK, tracking code locations |
-| **Dashboard Spec** | `docs/analytics/DASHBOARD_SPEC.md` | Definisi metrics, chart types, alert thresholds |
+| **Event Taxonomy Doc** | `docs/analytics/EVENT_TAXONOMY.md` | Single source of truth for event names |
+| **Implementation Plan** | `docs/analytics/ANALYTICS_IMPLEMENTATION_PLAN.md` | SDK installation steps, tracking code locations |
+| **Dashboard Spec** | `docs/analytics/DASHBOARD_SPEC.md` | Metrics definitions, chart types, alert thresholds |
 
 **Template Sources**:
 - `templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md`
@@ -1526,53 +1523,53 @@ export const analytics = {
 
 ---
 
-### 7. Prinsip Solo Developer Analytics
+### 7. Solo Developer Analytics Principles
 
-1. **Prioritize Signal over Noise**: Track maksimal 10 core events, bukan 100 random clicks
-2. **No Vendor Lock-In**: Gunakan wrapper abstraction (`lib/analytics.ts`) agar mudah swap platform
-3. **Privacy-First by Default**: Opt-in analytics untuk compliance UU PDP
-4. **Dashboard as Product Compass**: North Star Metric harus terlihat dalam 3 detik
-5. **Free Tier Sufficiency**: Proyek solo dev jarang melewati 100K events/bulan sebelum PMF
-
----
-
-## 7. Artefak Keluaran (Deliverables)
-
-1. **Source Code Repositori Git**: Basis kode bersih dengan branch `staging` aktif dan riwayat commit terstruktur.
-2. **`RUNBOOK_LOCAL.md`**: Panduan lengkap setup environment, migrasi DB, dan menjalankan aplikasi di lokal (menggunakan `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`).
-3. **`VERIFY_LOCAL.md`**: Lembar hasil verifikasi mandiri bahwa seluruh endpoint FSD, 3 pilar rekayasa, dan alur Stitch berfungsi 100% (menggunakan `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`).
-4. **`AI_REVIEW_LOG.md`**: Log protokol review kode AI pre-merge sesuai panduan `references/playbooks/ai-assisted-development.md`.
-5. **`DEVELOPMENT_PROGRESS_TRACKER.md`**: Lembar pelacak kemajuan eksekusi koding, checklist backend, frontend, integrasi, dan pos pemeriksaan code review (menggunakan `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md`).
+1. **Prioritize Signal over Noise**: Track maximum 10 core events, not 100 random clicks
+2. **No Vendor Lock-In**: Use wrapper abstraction (`lib/analytics.ts`) for easy platform swapping
+3. **Privacy-First by Default**: Opt-in analytics for UU PDP compliance
+4. **Dashboard as Product Compass**: North Star Metric must be visible within 3 seconds
+5. **Free Tier Sufficiency**: Solo developer projects rarely exceed 100K events/month before PMF
 
 ---
 
-## 8. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
+## 7. Output Artifacts (Deliverables)
 
-[GATE] Modul 06 dinyatakan **LOLOS (PASS)** jika:
-- [x] Percabangan Git terstruktur (`main`, `staging`, `feat/*`) dengan commit rapi.
-- [x] 7 berkas kendali AI (Agent Harness) terpasang di root proyek.
-- [x] Komponen Google Stitch telah diekstrak via MCP dan terhubung ke backend API.
-- [x] Kode sumber berhasil di-build tanpa error kompilasi TypeScript (`tsc --noEmit` exit 0).
-- [x] Migrasi basis data berjalan mulus dengan indeks pencarian terpasang.
-- [x] Enkripsi file vault AES-256-GCM berbasis stream berhasil menyimpan dan membaca dokumen via presigned URL.
-- [x] Skrip uji mandiri (`smoke-test`) lulus 100% dan audit dependensi (`pnpm audit`) bebas celah kritis.
+1. **Git Repository Source Code**: Clean codebase with active `staging` branch and structured commit history.
+2. **`RUNBOOK_LOCAL.md`**: Complete guide for environment setup, DB migrations, and running the application locally (using `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`).
+3. **`VERIFY_LOCAL.md`**: Self-verification results sheet proving that all FSD endpoints, 3 engineering pillars, and Stitch flows are 100% functional (using `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`).
+4. **`AI_REVIEW_LOG.md`**: Pre-merge AI code review protocol log following `references/playbooks/ai-assisted-development.md`.
+5. **`DEVELOPMENT_PROGRESS_TRACKER.md`**: Coding execution progress tracker sheet, backend, frontend, integration checklists, and code review checkpoints (using `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md`).
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 8. Gate Exit Criteria [GATE]
 
-Setelah koding selesai dan skrip `smoke-test` lulus 100%:
-1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 07 dalam giliran (turn) yang sama!**
-2. **VERIFIKASI DIRI (Self-Verification Checklist)**:
+[GATE] Module 06 is declared **PASSED** if:
+- [x] Git branching is structured (`main`, `staging`, `feat/*`) with clean commits.
+- [x] 7 AI control files (Agent Harness) installed in project root.
+- [x] Google Stitch components extracted via MCP and connected to backend API.
+- [x] Source code builds successfully without TypeScript compilation errors (`tsc --noEmit` exits 0).
+- [x] Database migrations execute smoothly with search indexes in place.
+- [x] Stream-based AES-256-GCM vault file encryption successfully stores and retrieves documents via presigned URLs.
+- [x] Self-test script (`smoke-test`) passes 100% and dependency audit (`pnpm audit`) is free of critical vulnerabilities.
+
+---
+
+## 🛑 PROTOCOL [GATE] EXIT & MANDATORY STOP
+
+After coding is complete and the `smoke-test` script passes 100%:
+1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 07 within the same turn!**
+2. **SELF-VERIFICATION (Self-Verification Checklist)**:
    - [ ] `terminal('pnpm run type-check')` → Exit code 0 (no TypeScript errors)
    - [ ] `terminal('pnpm run test:smoke')` → All assertions passed
    - [ ] `terminal('pnpm audit')` → No critical vulnerabilities
    - [ ] `read_file('VERIFY_LOCAL.md')` → Documented test results exist
    - [ ] `terminal('git log -1')` → Latest commit exists on staging branch
-3. Tampilkan ringkasan hasil development lokal kepada pengguna:
-   - Hasil uji kompilasi dan smoke test lokal
-   - Bukti fungsionalitas di `VERIFY_LOCAL.md`
-   - Kesiapan pengujian integrasi Staging (Termin 2 Alpha Release)
-4. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Seluruh fitur inti telah selesai dikoding dan diverifikasi lokal (Smoke Test PASS). Apakah hasil development ini disetujui sebelum kita membuka Modul 07 (Quality Assurance & SIT di Staging)?"*
-5. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 07.
+3. Display summary of local development results to the user:
+   - Compilation and local smoke test results
+   - Proof of functionality in `VERIFY_LOCAL.md`
+   - Readiness for Staging integration testing (Term 2 Alpha Release)
+4. **END YOUR TURN** and request confirmation from the user:
+   > *"All core features have been developed and verified locally (Smoke Test PASS). Is this development output approved before we initiate Module 07 (Quality Assurance & SIT on Staging)?"*
+5. Wait for explicit approval response from the user before proceeding to Module 07.

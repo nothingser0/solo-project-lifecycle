@@ -1,99 +1,98 @@
-# Modul 07: Quality Assurance (Unit Test, SIT, & Security Audit)
+# Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)
 
 > - `references/playbooks/ai-assisted-development.md` (Pre-merge AI review protocol, prompt engineering patterns, multi-file orchestration)
->
 
-Modul ini adalah tahap ketujuh dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah memvalidasi keandalan, integritas integrasi sistem pihak ketiga (*System Integration Testing* / SIT), ketahanan performa, dan keamanan sistem secara otomatis di lingkungan **Staging** sebelum diserahkan kepada klien untuk proses UAT (Modul 09).
+This module is the seventh phase in the software project lifecycle for solo developers. Its purpose is to validate reliability, third-party system integration integrity (*System Integration Testing* / SIT), performance resilience, and system security automatically in the **Staging** environment before handing over to the client for the UAT process (Module 09).
 
 ---
 
-## 1. Siklus Eksekusi Modul 07
+## 1. Execution Cycle of Module 07
 
 ```text
-[ INPUT: Repositori Kode di Branch staging dari Modul 06 & FSD.md ]
+[ INPUT: Code Repository on staging Branch from Module 06 & FSD.md ]
                                     │
                                     ▼
-[ LANGKAH 1: Pengujian Otomatis Unit & Kontrak API (Test Pyramid) ]
-  • Unit Test: Logika bisnis murni, kalkulasi, dan utilitas kriptografi
-  • Integration Test: Endpoint API ber-Zod, status response, & isolasi DB
-  • Pre-Merge AI Review: Protokol `references/playbooks/ai-assisted-development.md`
+[ STEP 1: Automated Unit & API Contract Testing (Test Pyramid) ]
+  • Unit Test: Pure business logic, calculations, and cryptographic utilities
+  • Integration Test: Zod-validated API endpoints, response statuses, & DB isolation
+  • Pre-Merge AI Review: `references/playbooks/ai-assisted-development.md` protocol
                                     │
                                     ▼
-[ LANGKAH 2: Pengujian Integrasi Sistem Pihak Ketiga (SIT) ]
-  • SIT dilakukan dengan data dummy/seed data (BUKAN data riil klien)
-  • Validasi Sandbox Payment Gateway (Simulasi Webhook Sukses/Gagal)
-  • Validasi Cloud Storage (Upload terenkripsi AES-256 & Presigned URL)
-  • Validasi Transaksional Email (SMTP / Resend delivery log)
-  • Data riil klien diimpor M08 setelah SIT lolos
+[ STEP 2: Third-Party System Integration Testing (SIT) ]
+  • SIT is conducted with dummy/seed data (NOT client real data)
+  • Payment Gateway Sandbox Validation (Success/Failure Webhook Simulation)
+  • Cloud Storage Validation (AES-256 Encrypted Upload & Presigned URL)
+  • Transactional Email Validation (SMTP / Resend delivery log)
+  • Client real data is imported in M08 after SIT passes
                                     │
                                     ▼
-[ LANGKAH 3: Audit Keamanan & Hardening (Security Gate) ]
+[ STEP 3: Security Audit & Hardening (Security Gate) ]
   • Dependency Vulnerability Audit (`pnpm audit --audit-level=high`)
-  • Secret Leak Scanning (Deteksi API key / token yang tidak sengaja ter-commit)
-  • Checklist Verifikasi OWASP Top 10 (SQL Injection, XSS, CSRF, Broken Auth)
+  • Secret Leak Scanning (Detection of accidentally committed API keys / tokens)
+  • OWASP Top 10 Verification Checklist (SQL Injection, XSS, CSRF, Broken Auth)
                                     │
                                     ▼
-[ LANGKAH 4: Uji Beban & Performa Concurrency (Load Testing) ]
-  • Uji Beban Menggunakan k6 / Autocannon (Misal: 50–100 Concurrent Virtual Users)
-  • Verifikasi Latency API ≤200 ms & Error Rate 0%
+[ STEP 4: Load & Concurrency Performance Testing (Load Testing) ]
+  • Load Testing Using k6 / Autocannon (e.g., 50–100 Concurrent Virtual Users)
+  • Verify API Latency ≤200 ms & Error Rate 0%
                                     │
                                     ▼
-[ LANGKAH 5: Deployment ke Lingkungan Staging & Pengesahan SIT ]
-  • Deploy Branch staging ke Server Staging Klien (Vercel / VPS / Cloud Run)
-  • Penyusunan Dokumen Laporan Hasil Uji (SIT_REPORT.md)
+[ STEP 5: Deployment to Staging Environment & SIT Sign-Off ]
+  • Deploy staging Branch to Client Staging Server (Vercel / VPS / Cloud Run)
+  • Prepare Test Results Report Document (SIT_REPORT.md)
                                     │
                                     ▼
-[ OUTPUT: SIT_REPORT.md & Server Staging Siap UAT ] ──► Siap Masuk ke Modul 08: Data Migration
+[ OUTPUT: SIT_REPORT.md & Staging Server Ready for UAT ] ──► Ready to Proceed to Module 08: Data Migration
 ```
 
 ---
 
-## 2. Prinsip QA Solo Developer: "The Pragmatic Test Pyramid"
+## 2. Solo Developer QA Principles: "The Pragmatic Test Pyramid"
 
-Solo developer tidak memiliki tim QA beranggotakan 5 orang. Dilarang menulis ratusan pengujian antarmuka (UI tests) yang rapuh (*brittle*) dan sering gagal hanya karena perubahan class CSS.
+Solo developers do not have a 5-person QA team. Writing hundreds of brittle UI tests that frequently fail simply due to CSS class changes is prohibited.
 
-### Piramida Pengujian Efisien Solo Dev:
-1. **Lapisan Bawah (70% - Unit & Contract Tests)**:
-   - Menguji fungsi murni (*pure functions*): rumus kalkulasi, pemrosesan teks template, enkripsi/dekripsi AES-256, dan validasi skema Zod. Cepat dijalankan (< 5 detik) dan stabil.
-2. **Lapisan Tengah (25% - API Integration & SIT Tests)**:
-   - Menguji interaksi controller dengan database lokal dan sandbox pihak ketiga (Payment, Email, S3).
-3. **Lapisan Atas (5% - Critical Path E2E Smoke Test)**:
-   - Hanya menguji 1 alur terpenting (*Core Happy Path*): Login → Buat dokumen → Generate PDF → Tanda tangan → Status `SIGNED`.
+### Efficient Test Pyramid for Solo Devs:
+1. **Bottom Layer (70% - Unit & Contract Tests)**:
+   - Test pure functions: calculation formulas, template text processing, AES-256 encryption/decryption, and Zod schema validations. Fast to run (< 5 seconds) and stable.
+2. **Middle Layer (25% - API Integration & SIT Tests)**:
+   - Test controller interactions with local database and third-party sandboxes (Payment, Email, S3).
+3. **Top Layer (5% - Critical Path E2E Smoke Test)**:
+   - Only test the single most critical flow (*Core Happy Path*): Login → Create document → Generate PDF → Sign → Status `SIGNED`.
 
 ---
 
-## 3. Langkah demi Langkah Eksekusi
+## 3. Step-by-Step Execution
 
-### Langkah 1: Pengujian Otomatis Unit & Integrasi
-Jalankan pengujian menggunakan test runner cepat (Vitest / Jest / Pytest / Go test):
+### Step 1: Automated Unit & Integration Testing
+Run tests using a fast test runner (Vitest / Jest / Pytest / Go test):
 ```bash
-# Menjalankan seluruh unit & integration test
-pnpm run test # atau vitest run
+# Run all unit & integration tests
+pnpm run test # or vitest run
 ```
-Kriteria Lolos: 100% tes lulus tanpa kegagalan (`exit code 0`).
+Pass Criteria: 100% tests pass without failure (`exit code 0`).
 
-### Langkah 2: System Integration Testing (SIT)
-**PENTING**: SIT dilakukan dengan **data dummy/seed data** di lingkungan Staging. Data riil klien **TIDAK** diimpor hingga SIT lolos (Modul 08).
+### Step 2: System Integration Testing (SIT)
+**IMPORTANT**: SIT is conducted with **dummy/seed data** in the Staging environment. Real client data is **NOT** imported until SIT passes (Module 08).
 
-Uji seluruh titik sambungan ke layanan pihak ketiga di lingkungan sandbox:
+Test all integration points to third-party services in sandbox environments:
 1. **Payment Gateway Sandbox**:
-   - Tembakkan payload webhook pembayaran sukses → Pastikan status pesanan berubah menjadi `PAID` dan stok terkunci.
-   - Tembakkan webhook pembayaran kedaluwarsa/gagal → Pastikan status berubah menjadi `CANCELLED`.
+   - Fire a successful payment webhook payload → Ensure order status updates to `PAID` and inventory is locked.
+   - Fire an expired/failed payment webhook → Ensure status updates to `CANCELLED`.
 2. **Document Vault Storage**:
-   - Upload file dokumen → Pastikan file tersimpan di bucket storage dalam kondisi biner terenkripsi.
-   - Ambil presigned URL → Pastikan file dapat diunduh dan didekripsi dengan sempurna dalam batas waktu 15 menit.
-3. **Email Transaksional**:
-   - Uji pengiriman email OTP → Pastikan masuk ke inbox email penguji dengan format template rapi.
+   - Upload a document file → Ensure file is stored in the storage bucket in encrypted binary format.
+   - Retrieve presigned URL → Ensure file can be downloaded and decrypted completely within the 15-minute expiry limit.
+3. **Transactional Email**:
+   - Test OTP email delivery → Ensure it arrives in the tester's inbox with properly formatted template.
 
-### Langkah 3: Audit Keamanan & Hardening
-1. **Audit Dependensi**:
+### Step 3: Security Audit & Hardening
+1. **Dependency Audit**:
    ```bash
    pnpm audit --audit-level=high
    ```
-   Wajib menghasilkan: `found 0 vulnerabilities`.
-2. **Pemeriksaan Celah OWASP**:
-   - Pastikan seluruh rute terproteksi otentikasi menolak request tanpa token (`401 Unauthorized`).
-   - Pastikan header keamanan HTTP terpasang:
+   Must yield: `found 0 vulnerabilities`.
+2. **OWASP Vulnerability Checks**:
+   - Ensure all authenticated protected routes reject unauthenticated requests (`401 Unauthorized`).
+   - Ensure HTTP security headers are configured:
      ```http
      X-Content-Type-Options: nosniff
      X-Frame-Options: DENY
@@ -101,101 +100,101 @@ Uji seluruh titik sambungan ke layanan pihak ketiga di lingkungan sandbox:
      Content-Security-Policy: default-src 'self' ...
      ```
 
-### Langkah 4: Uji Beban & Konkurensi (Load Testing)
-Gunakan skrip uji beban sederhana (k6 atau autocannon):
+### Step 4: Load & Concurrency Testing
+Use a simple load testing script (k6 or autocannon):
 ```bash
-# Contoh simulasi 50 concurrent users selama 30 detik
+# Example simulation of 50 concurrent users for 30 seconds
 npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 ```
-- **Ambang Batas Minimum**:
-  - Rata-rata latency ≤200 ms.
-  - Tidak ada kegagalan koneksi database (*zero 500 server errors*).
+- **Minimum Thresholds**:
+  - Average latency ≤200 ms.
+  - No database connection failures (*zero 500 server errors*).
 
-### Langkah 5: Deployment ke Staging Server & SIT Report
-1. Push branch `staging` ke remote: `git push origin staging`.
-2. CI/CD otomatis melakukan build dan deploy ke domain staging: `https://staging.domainklien.com`.
-3. Jalankan pengujian cepat langsung di domain staging tersebut.
-4. Rangkum seluruh bukti pengujian ke dalam berkas **`SIT_REPORT.md`**.
+### Step 5: Deployment to Staging Server & SIT Report
+1. Push branch `staging` to remote: `git push origin staging`.
+2. CI/CD automatically builds and deploys to the staging domain: `https://staging.clientdomain.com`.
+3. Run a quick smoke test directly on the staging domain.
+4. Compile all test evidence into the **`SIT_REPORT.md`** file.
 
 ---
 
-## 4. Adaptasi Berdasarkan Skala Proyek
+## 4. Adaptation by Project Scale
 
-| Aspek QA & SIT | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+| QA & SIT Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
 | :--- | :--- | :--- | :--- |
-| **Cakupan Pengujian** | Unit test logika inti + Smoke test lokal | Unit test + SIT API Sandbox + k6 load test | Test Pyramid penuh, Pact contract test, Chaos test |
-| **Audit Keamanan** | `pnpm audit` + OWASP checklist dasar | SAST scan (Semgrep) + SSL Labs grade A | Third-party Penetration Test (Pentest) berijazah |
-| **Uji Beban** | Cukup verifikasi 20 concurrent users | Uji beban 100 concurrent users via k6 | Stress test peak load 1.000+ users & failover DB |
-| **Lingkungan Staging**| Preview URL otomatis (Vercel/Railway) | Server Staging terisolasi dengan data dummy | Mirror Production Staging dengan sanitasi data |
-| **Laporan SIT** | Checklist ringkas di VERIFY.md | Dokumen formal `SIT_REPORT.md` | Formal SIT Sign-off + Audit Security Attestation |
+| **Testing Scope** | Core logic unit tests + local smoke test | Unit tests + Sandbox API SIT + k6 load test | Full Test Pyramid, Pact contract test, Chaos test |
+| **Security Audit** | `pnpm audit` + basic OWASP checklist | SAST scan (Semgrep) + SSL Labs grade A | Certified third-party Penetration Test (Pentest) |
+| **Load Testing** | Verify 20 concurrent users is sufficient | 100 concurrent users load test via k6 | Stress test peak load 1,000+ users & DB failover |
+| **Staging Environment** | Automated preview URL (Vercel/Railway) | Isolated Staging server with dummy data | Mirror Production Staging with data sanitization |
+| **SIT Report** | Concise checklist in VERIFY.md | Formal `SIT_REPORT.md` document | Formal SIT Sign-off + Security Audit Attestation |
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 5. Deliverables
 
-Modul ini menghasilkan 2 artefak utama:
-1. **`docs/qa/SIT_WORKBOOK.md`**: Buku kerja gabungan rencana pengujian dan laporan bukti kelulusan SIT di Staging yang menjadi prasyarat pembukaan sesi UAT Klien (menggunakan `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`).
-2. **`docs/qa/SECURITY_AUDIT_REPORT.md`**: Hasil audit kerentanan pustaka, status header keamanan OWASP, dan verifikasi enkripsi (menggunakan `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`).
-
----
-
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
-
-[GATE] Modul 07 dinyatakan **LOLOS (PASS)** jika:
-- [x] Seluruh unit test dan integration test lulus 100% (`pnpm test` exit code 0).
-- [x] SIT dengan seluruh sandbox pihak ketiga (Payment, Vault S3/R2, Email) terbukti berhasil.
-- [x] Audit dependensi `pnpm audit` bebas dari kerentanan kategori High/Critical.
-- [x] Aplikasi telah berhasil di-deploy dan berjalan stabil di server **Staging**.
-- [x] Dokumen **`docs/qa/SIT_REPORT.md`** telah terbit dengan kesimpulan: **READY FOR CLIENT UAT**.
+This module produces 2 primary artifacts:
+1. **`docs/qa/SIT_WORKBOOK.md`**: Combined test plan and Staging SIT pass verification workbook serving as a prerequisite for opening the Client UAT session (using `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`).
+2. **`docs/qa/SECURITY_AUDIT_REPORT.md`**: Library vulnerability audit results, OWASP security header status, and encryption verification (using `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`).
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 6. Gate Exit Criteria [GATE]
 
-Setelah server Staging aktif dan dokumen `SIT_REPORT.md` terbit:
+[GATE] Module 07 is declared **PASSED (PASS)** if:
+- [x] All unit tests and integration tests pass 100% (`pnpm test` exit code 0).
+- [x] SIT with all third-party sandboxes (Payment, Vault S3/R2, Email) is proven successful.
+- [x] Dependency audit `pnpm audit` is free of High/Critical category vulnerabilities.
+- [x] Application has been successfully deployed and runs stably on the **Staging** server.
+- [x] Document **`docs/qa/SIT_REPORT.md`** has been published with the conclusion: **READY FOR CLIENT UAT**.
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+---
 
-**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+## 🛑 EXIT [GATE] PROTOCOL & MANDATORY STOP
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/qa/SIT_WORKBOOK.md"` → harus return `True`
-   - Read tool: `read_file('docs/qa/SIT_WORKBOOK.md')` → harus sukses tanpa error
+After the Staging server is active and the `SIT_REPORT.md` document is published:
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
-   - ❌ **JANGAN tampilkan summary** ke user
-   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 08
-   - ✅ **REPORT ERROR** ke user:
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
+
+**MANDATORY BEFORE CONTENT VALIDATION**:
+
+1. **Check output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/qa/SIT_WORKBOOK.md"` → must return `True`
+   - Read tool: `read_file('docs/qa/SIT_WORKBOOK.md')` → must succeed without error
+
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
+   - ❌ **DO NOT display summary** to user
+   - ❌ **DO NOT request confirmation** to proceed to Module 08
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File SIT_WORKBOOK.md tidak tercipta.
-     Module 07 FAILED - tidak bisa lanjut ke Module 08 (Data Migration).
+     CRITICAL ERROR: File SIT_WORKBOOK.md was not created.
+     Module 07 FAILED - cannot proceed to Module 08 (Data Migration).
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/qa/
-     - Path typo di tool call
+     Possible causes:
+     - Write permission denied on docs/qa/ folder
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum lanjut.
+     Please investigate this issue before proceeding.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+3. **ONLY IF FILE EXISTS**: Proceed to content validation below
 
 ---
 
-### **LANGKAH 1: VALIDASI KONTEN & TESTS**
+### **STEP 1: CONTENT VALIDATION & TESTS**
 
-1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 08/09 dalam giliran (turn) yang sama!**
-2. **Verifikasi test results**:
+1. **STRICTLY PROHIBITED from proceeding directly or calling tools for Module 08/09 within the same turn!**
+2. **Verify test results**:
    - [ ] `read_file('docs/qa/SIT_WORKBOOK.md')` → Confirm all tests PASS
    - [ ] Confirm staging URL accessible
    - [ ] Confirm `pnpm audit` clean (zero critical vulnerabilities)
    - [ ] Confirm sandbox integrations verified (Payment/Storage/Email)
-3. Tampilkan ringkasan hasil pengujian integrasi Staging kepada pengguna:
-   - URL Staging yang aktif
-   - Status kelulusan pengujian sandbox pihak ketiga
-   - Hasil audit keamanan dependensi & uji beban k6
-3. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Sistem telah berhasil lolos pengujian integrasi (SIT Pass) dan aktif di server Staging. Apakah hasil pengujian ini disetujui sebelum kita melanjutkan ke Modul 08 (Data Migration)?"*
-4. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke modul berikutnya.
+3. Present summary of Staging integration test results to user:
+   - Active Staging URL
+   - Pass status of third-party sandbox testing
+   - Dependency security audit & k6 load test results
+4. **END YOUR RESPONSE (END TURN)** and ask user for confirmation:
+   > *"The system has successfully passed integration testing (SIT Pass) and is active on the Staging server. Are these test results approved before we proceed to Module 08 (Data Migration)?"*
+5. Wait for explicit approval response from user before advancing to the next module.

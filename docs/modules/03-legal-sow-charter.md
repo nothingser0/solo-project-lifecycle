@@ -1,203 +1,202 @@
-# Modul 03: [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement
+# Module 03: [COMMERCIAL GATE] Legal SOW, DP, & Single PIC Agreement
 
-> ⚠️ **LEGAL DISCLAIMER**: Content ini adalah panduan umum SDLC, BUKAN nasihat hukum. Referensi ke UU PDP, KUHPerdata, UU ITE bersifat edukatif dan BELUM diverifikasi oleh advokat berlisensi Indonesia. Selalu konsultasi dengan pengacara qualified untuk drafting kontrak, compliance regulasi, dan masalah hukum. Framework authors tidak bertanggung jawab atas keputusan legal berdasarkan konten ini.
+> ⚠️ **LEGAL DISCLAIMER**: This content provides general SDLC guidelines, NOT legal advice. References to PDP Law, Civil Code (KUHPerdata), and ITE Law are educational and HAVE NOT been verified by licensed Indonesian attorneys. Always consult a qualified lawyer for contract drafting, regulatory compliance, and legal matters. Framework authors assume no liability for legal decisions made based on this content.
 
->
 
-Modul ini adalah **GERBANG KOMERSIAL PEMBLOKIR (BLOCKING GATE)** dalam siklus hidup proyek solo developer. Aturan fundamental: **TIDAK ADA SATU BARIS KODE ATAU DESAIN DETAIL YANG DIKERJAKAN SEBELUM GERBANG INI LOLOS.**
+This module is a **BLOCKING COMMERCIAL GATE** in the solo developer project lifecycle. Fundamental rule: **NOT A SINGLE LINE OF CODE OR DETAILED DESIGN IS UNDERTAKEN BEFORE PASSING THIS GATE.**
 
-Tujuannya adalah mengikat dokumen `SCOPE_STATEMENT.md` ke dalam perjanjian legal berkekuatan hukum, mengamankan uang muka (Down Payment), mengunci Single PIC dari pihak klien, dan menetapkan protokol Change Request.
+The purpose is to bind the `SCOPE_STATEMENT.md` document into a legally enforceable agreement, secure the Down Payment (DP), lock in a Single PIC from the client side, and establish the Change Request protocol.
 
 ---
 
-## 1. Siklus Eksekusi Modul 03
+## 1. Execution Cycle of Module 03
 
 ```text
-[ INPUT: Dokumen SCOPE_STATEMENT.md dari Modul 02 ]
+[ INPUT: SCOPE_STATEMENT.md Document from Module 02 ]
                          │
                          ▼
-[ LANGKAH 1: Penentuan Model Kontrak & Estimasi Komersial ]
-  • Fixed-Price Milestone (Skala Kecil & Menengah)
-  • Time & Materials / Retainer Bulanan (Skala Besar & Fleksibel)
+[ STEP 1: Contract Model Determination & Commercial Estimation ]
+  • Fixed-Price Milestone (Small & Medium Scale)
+  • Time & Materials / Monthly Retainer (Large & Flexible Scale)
                          │
                          ▼
-[ LANGKAH 2: Penguncian Struktur Termin Pembayaran (Payment Milestones) ]
-  • Termin 1 (DP 30–50%): Prasyarat memulai riset teknis & UI/UX
-  • Termin Antara (Alpha/Beta): Terikat pada verifikasi deliverable
-  • Termin Akhir (Pelunasan 100%): Prasyarat penyerahan repo & BAST
+[ STEP 2: Payment Milestone Structure Locking ]
+  • Milestone 1 (DP 30–50%): Prerequisite to start technical research & UI/UX
+  • Intermediate Milestones (Alpha/Beta): Tied to deliverable verification
+  • Final Milestone (100% Settlement): Prerequisite for repo handover & BAST
                          │
                          ▼
-[ LANGKAH 3: Pengikatan Klausul Single PIC & SLA Respon ]
-  • 1 Pengambil Keputusan Mutlak dari Pihak Klien
-  • SLA Review Klien Maksimal 3 Hari Kerja (Keterlambatan = Geser Jadwal)
+[ STEP 3: Binding Single PIC Clause & Response SLA ]
+  • 1 Absolute Decision Maker on Client Side
+  • Client Review SLA of Maximum 3 Business Days (Delays = Schedule Extension)
                          │
                          ▼
-[ LANGKAH 4: Penetapan Klausul Proteksi Hukum Solo Developer ]
-  • Batasan Tanggung Jawab (Liability Cap = Maksimal Nilai Kontrak)
-  • Kepemilikan Source Code (IP ditahan sampai lunas 100%)
-  • Protokol Perubahan Fitur (Change Request / CR Resmi)
+[ STEP 4: Establishing Solo Developer Legal Protection Clauses ]
+  • Limitation of Liability (Liability Cap = Maximum Contract Value)
+  • Source Code Ownership (IP retained until 100% paid)
+  • Feature Modification Protocol (Formal Change Request / CR)
                          │
                          ▼
-[ OUTPUT: Dokumen SOW_CONTRACT.md & PROJECT_CHARTER.md ]
+[ OUTPUT: SOW_CONTRACT.md & PROJECT_CHARTER.md Documents ]
                          │
           ┌──────────────┴──────────────┐
           ▼                             ▼
-    [ DP BELUM DITERIMA ]         [ DP SUDAH DITERIMA & KONTRAK SAH ]
-    • JANGAN MULAI KODING         • Lolos Gate Komersial
-    • Status: On-Hold             • Lanjut ke Modul 04: UI/UX Design
+    [ DP NOT YET RECEIVED ]       [ DP RECEIVED & VALID CONTRACT ]
+    • DO NOT START CODING         • Commercial Gate Passed
+    • Status: On-Hold             • Proceed to Module 04: UI/UX Design
 ```
 
 ---
 
-## 2. Langkah demi Langkah Eksekusi
+## 2. Step-by-Step Execution
 
-### Langkah 1: Memilih Model Kontrak yang Tepat
-1. **Fixed-Price (Harga Tetap Berbasis Milestone)**:
-   - *Kapan Digunakan*: Lingkup di `SCOPE_STATEMENT.md` sudah sangat jelas dan klien tidak fleksibel terhadap anggaran.
-   - *Kunci Solo Dev*: Wajib tambahkan buffer biaya 20–30% untuk mitigasi revisi wajar.
+### Step 1: Choosing the Right Contract Model
+1. **Fixed-Price (Milestone-Based Fixed Price)**:
+   - *When to Use*: Scope in `SCOPE_STATEMENT.md` is crystal clear and client budget is inflexible.
+   - *Solo Dev Key*: Must add 20–30% contingency buffer to mitigate reasonable revisions.
 2. **Time & Materials / Monthly Retainer**:
-   - *Kapan Digunakan*: Klien memiliki roadmap dinamis (*"fitur dipikirkan sambil jalan"*) atau proyek berskala Besar/Enterprise yang membutuhkan riset berkelanjutan.
-   - *Kunci Solo Dev*: Tagihan per bulan atau per blok 40 jam kerja dengan pembayaran di muka setiap awal periode.
+   - *When to Use*: Client has a dynamic roadmap (*"features figured out as we go"*) or Large/Enterprise scale projects requiring ongoing research.
+   - *Solo Dev Key*: Bill monthly or per 40-hour block with upfront payment at start of each period.
 
 ---
 
-### Langkah 2: Menetapkan Struktur Termin Pembayaran Bertahap
-Sebagai solo developer, jangan pernah menerima pembayaran di akhir proyek (100% saat selesai). Skema termin baku:
+### Step 2: Establishing a Phased Payment Milestone Structure
+As a solo developer, never accept payment solely at project completion (100% on delivery). Standard milestone schedule:
 
-| Termin | Milestone / Kondisi Pembayaran | Persentase | Prasyarat Deliverable |
+| Milestone | Milestone / Payment Condition | Percentage | Deliverable Prerequisite |
 | :---: | :--- | :---: | :--- |
-| **Termin 1 (DP)** | Tanda Tangan Kontrak & Inisiasi Proyek | **30% – 50%** | Penyerahan SOW & Project Charter yang disepakati |
-| **Termin 2 (Alpha)**| Core Engine & Integrasi Database Selesai | **25% – 30%** | Demo fungsionalitas backend & UI dasar di lokal/staging |
-| **Termin 3 (Beta)** | Integrasi Lengkap & Lolos UAT Internal | **20% – 25%** | Aplikasi siap diuji klien di Staging (SIT Pass) |
-| **Termin 4 (Final)**| Go-Live Production & Serah Terima Resmi | **10% – 20%** | UAT Sign-off Klien disetujui, siap penyerahan BAST |
+| **Milestone 1 (DP)** | Contract Signing & Project Initiation | **30% – 50%** | Handover of agreed SOW & Project Charter |
+| **Milestone 2 (Alpha)** | Core Engine & Database Integration Complete | **25% – 30%** | Demo of backend functionality & basic UI on local/staging |
+| **Milestone 3 (Beta)** | Complete Integration & Internal UAT Passed | **20% – 25%** | App ready for client testing on Staging (SIT Pass) |
+| **Milestone 4 (Final)** | Production Go-Live & Formal Handover | **10% – 20%** | Client UAT Sign-off approved, ready for BAST handover |
 
 ---
 
-### Langkah 3: Menegakkan Aturan Single PIC
-Klien korporasi sering memiliki banyak kepala yang saling bertolak belakang arahannya.
-- Wajib cantumkan nama, jabatan, email, dan nomor telepon **1 orang Single PIC Klien**.
-- Seluruh instruksi, persetujuan desain, hasil uji UAT, dan penandatanganan dokumen hanya sah jika ditandatangani oleh Single PIC tersebut.
-- Masukkan klausul: *"Instruksi lisan atau permintaan tertulis dari staf klien di luar Single PIC yang ditunjuk tidak memiliki kekuatan mengikat developer."*
+### Step 3: Enforcing the Single PIC Rule
+Corporate clients often have multiple heads with conflicting directions.
+- Mandatory to document name, title, email, and phone number of **1 Client Single PIC**.
+- All instructions, design approvals, UAT results, and document signings are valid only if signed off by that Single PIC.
+- Include the clause: *"Verbal instructions or written requests from client staff outside the designated Single PIC hold no binding authority over the developer."*
 
 ---
 
-### Langkah 4: Mengunci Klausul Proteksi Hukum Vital Solo Dev
-1. **Hak Kekayaan Intelektual (Intellectual Property / IP)**:
-   - Source code, kredensial server, dan lisensi software sepenuhnya tetap menjadi hak milik intelektual Developer sampai seluruh pembayaran termin (100%) lunas.
-2. **Batasan Ganti Rugi (Liability Cap)**:
-   - Developer tidak bertanggung jawab atas kerugian tidak langsung, hilangnya keuntungan bisnis, atau kebocoran data akibat kelalaian penyimpanan password oleh karyawan klien.
-   - Total liabilitas finansial maksimum developer dalam kondisi apapun dibatasi maksimal sebesar total nilai kontrak yang telah dibayarkan oleh klien.
-3. **Mekanisme Change Request (CR)**:
-   - Setiap fitur tambahan di luar `SCOPE_STATEMENT.md` wajib dituangkan ke lembar CR dengan formula: `Biaya Tambahan = Jam Estimasi x Tarif Per Jam` dan `Jadwal Rilis Bertambah X Hari`.
+### Step 4: Locking Vital Legal Protection Clauses for Solo Devs
+1. **Intellectual Property (IP) Rights**:
+   - Source code, server credentials, and software licenses remain the exclusive intellectual property of the Developer until all milestone payments (100%) are fully settled.
+2. **Limitation of Liability (Liability Cap)**:
+   - The developer is not liable for indirect damages, loss of business profit, or data breaches caused by client employee negligence in storing passwords.
+   - The developer's maximum financial liability under any circumstance is capped at the total contract value actually paid by the client.
+3. **Change Request (CR) Mechanism**:
+   - Any additional feature outside `SCOPE_STATEMENT.md` must be recorded on a CR sheet with the formula: `Additional Fee = Estimated Hours x Hourly Rate` and `Release Schedule Extended by X Days`.
 
 ---
 
-## 3. Adaptasi Berdasarkan Skala Proyek
+## 3. Adaptation Based on Project Scale
 
-| Aspek | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+| Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large Scale & Enterprise |
 | :--- | :--- | :--- | :--- |
-| **Format Kontrak** | Invoice DP 50% + Scope Statement via Email | Dokumen SOW & Perjanjian Kerja Sama (PKS) | Master Service Agreement (MSA) + SOW formal |
-| **Legalitas** | Tanda tangan elektronik (PDF signature) | Tanda tangan basah bermeterai / e-Meterai | Legal review dari tim hukum korporasi klien |
-| **Termin DP** | Wajib 50% di muka | Minimal 30–40% di muka | Minimal 20–30% di muka (sesuai SOP korporat) |
-| **Klausul NDA** | Cukup klausul kerahasiaan di dalam SOW | Non-Disclosure Agreement (NDA) standar | Mutual NDA formal + klausul UU PDP ketat |
+| **Contract Format** | 50% DP Invoice + Scope Statement via Email | SOW Document & Cooperation Agreement (PKS) | Master Service Agreement (MSA) + Formal SOW |
+| **Legality** | Electronic signature (PDF signature) | Wet-ink signature with stamp duty / e-Meterai | Corporate legal review by client legal team |
+| **DP Terms** | Mandatory 50% upfront | Minimum 30–40% upfront | Minimum 20–30% upfront (aligned with corporate SOP) |
+| **NDA Clause** | Confidentiality clause within SOW suffices | Standard Non-Disclosure Agreement (NDA) | Formal Mutual NDA + strict PDP Law clauses |
 
 ---
 
-## 4. Artefak Keluaran (Deliverables)
+## 4. Output Artifacts (Deliverables)
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Seluruh berkas Modul 03 WAJIB disimpan di dalam folder **`docs/pm/`** (bukan di root direktori).
+> 📁 **ABSOLUTE FILE LOCATION RULE**:
+> All Module 03 documents MUST be stored inside the **`docs/pm/`** directory (never in the root directory).
 
-1. **`docs/pm/SOW_CONTRACT.md`**: Dokumen kontrak kerja komersial gabungan (Project Charter + SOW) yang mengikat objektif, Single PIC, lingkup, biaya, termin pembayaran, dan klausul hukum (menggunakan template `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`).
+1. **`docs/pm/SOW_CONTRACT.md`**: Consolidated commercial agreement document (Project Charter + SOW) binding objectives, Single PIC, scope, fees, payment milestones, and legal clauses (using template `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`).
 
-> 💡 **ADAPTASI UNTUK SOLO DEV PRODUCT (PRODUK MANDIRI/INTERNAL)**:
-> Jika proyek adalah produk mandiri tanpa klien eksternal, kontrak komersial dan penagihan DP dapat disesuaikan untuk internal, **NAMUN `docs/pm/PROJECT_CHARTER.md` TETAP WAJIB DIBUAT** untuk mengunci baseline jadwal, anggaran infrastruktur, dan batasan risiko. DILARANG melewatkan (skip) Modul 03 secara total!
-
----
-
-## 5. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
-
-[GATE] ini dinyatakan **LOLOS (PASS)** jika dan hanya jika:
-- [x] Dokumen `docs/pm/PROJECT_CHARTER.md` telah disahkan.
-- [x] Kontrak SOW telah ditandatangani oleh Klien dan Developer (atau disahkan internal untuk solo product).
-- [x] Single PIC Klien telah ditunjuk secara resmi.
-- [x] **Dana Pembayaran DP (Termin 1) telah masuk dan terkonfirmasi di rekening bank Developer** (atau anggaran mandiri telah dialokasikan).
+> 💡 **ADAPTATION FOR SOLO DEV PRODUCT (SELF-INITIATED/INTERNAL)**:
+> If the project is a self-initiated product without an external client, commercial contracts and DP invoicing may be adapted for internal use, **HOWEVER `docs/pm/PROJECT_CHARTER.md` REMAINS MANDATORY** to lock timeline baselines, infrastructure budgets, and risk boundaries. Skipping Module 03 entirely is STRICTLY PROHIBITED!
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 5. Gate Exit Criteria
 
-Setelah berkas `docs/pm/PROJECT_CHARTER.md` (dan `docs/pm/SOW_CONTRACT.md`) selesai ditulis:
+This [GATE] is declared **PASSED** if and only if:
+- [x] The `docs/pm/PROJECT_CHARTER.md` document has been approved.
+- [x] The SOW contract has been signed by both Client and Developer (or approved internally for solo products).
+- [x] The Client Single PIC has been officially designated.
+- [x] **Down Payment funds (Milestone 1) have been received and confirmed in Developer's bank account** (or self-budget has been allocated).
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+---
 
-**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+## 🛑 [GATE] EXIT & MANDATORY STOP PROTOCOL
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/PROJECT_CHARTER.md"` → harus return `True`
+After `docs/pm/PROJECT_CHARTER.md` (and `docs/pm/SOW_CONTRACT.md`) has been written:
+
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
+
+**MANDATORY BEFORE CONTENT VALIDATION**:
+
+1. **Verify output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/PROJECT_CHARTER.md"` → must return `True`
    - Bash/Zsh: `test -f "docs/pm/PROJECT_CHARTER.md" && echo "True" || echo "False"`
-   - Read tool: `read_file('docs/pm/PROJECT_CHARTER.md')` → harus sukses tanpa error
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/SOW_CONTRACT.md"` → harus return `True`
+   - Read tool: `read_file('docs/pm/PROJECT_CHARTER.md')` → must succeed without error
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/SOW_CONTRACT.md"` → must return `True`
    - Bash/Zsh: `test -f "docs/pm/SOW_CONTRACT.md" && echo "True" || echo "False"`
-   - Read tool: `read_file('docs/pm/SOW_CONTRACT.md')` → harus sukses tanpa error
+   - Read tool: `read_file('docs/pm/SOW_CONTRACT.md')` → must succeed without error
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
-   - ❌ **JANGAN tampilkan summary** ke user
-   - ❌ **JANGAN ajukan konfirmasi DP**
-   - ✅ **REPORT ERROR** ke user:
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
+   - ❌ **DO NOT present summary** to user
+   - ❌ **DO NOT prompt for DP confirmation**
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File PROJECT_CHARTER.md atau SOW_CONTRACT.md tidak tercipta.
-     Module 03 FAILED - tidak bisa lanjut ke Module 04 (UI/UX Design).
+     CRITICAL ERROR: PROJECT_CHARTER.md or SOW_CONTRACT.md file was not created.
+     Module 03 FAILED - cannot proceed to Module 04 (UI/UX Design).
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/pm/
-     - Path typo di tool call
+     Possible causes:
+     - Write permission denied on docs/pm/ directory
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum lanjut.
+     Please investigate this issue before proceeding.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILES EXIST**: Lanjut ke validasi konten di bawah
+3. **ONLY IF FILES EXIST**: Proceed to content validation below
 
 ---
 
-### **LANGKAH 1: VALIDASI KONTEN & DP CONFIRMATION**
+### **STEP 1: CONTENT VALIDATION & DP CONFIRMATION**
 
-1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 04 dalam giliran (turn) yang sama!**
-2. **VERIFIKASI KONTEN (Self-Verification Checklist)**:
+1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 04 within the same turn!**
+2. **CONTENT VERIFICATION (Self-Verification Checklist)**:
    - [ ] `read_file('docs/pm/PROJECT_CHARTER.md')` → Confirm baseline dates set
-   - [ ] `read_file('docs/pm/SOW_CONTRACT.md')` → Confirm termin structure documented (or BYPASS flag for internal)
+   - [ ] `read_file('docs/pm/SOW_CONTRACT.md')` → Confirm milestone structure documented (or BYPASS flag for internal)
    - [ ] Single PIC identified with contact info
    - [ ] Liability cap clause present
-3. Tampilkan ringkasan komitmen kepada pengguna:
-   - Target tanggal rilis go-live
-   - Skema termin pembayaran & nominal DP (atau flag internal project)
-   - Batasan risiko utama
-4. **AKHIRI RESPON ANDA (END TURN)** dan tampilkan prompt konfirmasi Down Payment:
+3. Present a commitment summary to the user:
+   - Target go-live release date
+   - Payment milestone schedule & DP amount (or internal project flag)
+   - Core risk boundaries
+4. **END YOUR RESPONSE (END TURN)** and present the Down Payment confirmation prompt:
 
    ```
-   📋 Gate Komersial: Konfirmasi Down Payment
+   📋 Commercial Gate: Down Payment Confirmation
    
-   Dokumen SOW dan PROJECT_CHARTER telah selesai.
+   The SOW and PROJECT_CHARTER documents are complete.
    
-   ❓ Apakah Down Payment sebesar [Rp X] sudah diterima di rekening?
+   ❓ Has the Down Payment of [Rp X] been received in your bank account?
    
-   Reply: SUDAH / YES / YA / OK untuk lanjut ke Modul 04 (UI/UX Design)
-   Reply: BELUM / NO / NOT YET jika masih menunggu transfer
+   Reply: SUDAH / YES / YA / OK to proceed to Module 04 (UI/UX Design)
+   Reply: BELUM / NO / NOT YET if still awaiting transfer
    
-   (Solo dev internal product: reply BYPASS untuk skip DP gate)
+   (Solo dev internal product: reply BYPASS to skip DP gate)
    ```
 
-4. **Fuzzy Match Logic**: Accept variations (sudah/SUDAH/yes/YES/ya/ok as CONFIRMED; belum/no/not yet as WAITING; bypass/BYPASS/skip for internal projects)
-5. **JANGAN lanjut ke Modul 04** sampai user confirms DP received or bypass for internal
-5. Setelah user confirm, log konfirmasi di PROJECT_CHARTER.md footer:
+5. **Fuzzy Match Logic**: Accept variations (sudah/SUDAH/yes/YES/ya/ok as CONFIRMED; belum/no/not yet as WAITING; bypass/BYPASS/skip for internal projects)
+6. **DO NOT proceed to Module 04** until user confirms DP received or bypass for internal
+7. After user confirms, log confirmation in `PROJECT_CHARTER.md` footer:
    ```markdown
    ---
-   ## Log Konfirmasi Gate
+   ## Gate Confirmation Log
    - **DP Confirmed**: [YYYY-MM-DD HH:MM WIB]
    - **Confirmed By**: [User Name]
    - **Next Module**: 04 (UI/UX Design & Prototyping)
    ```
-6. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 04.
+8. Wait for explicit approval from user before proceeding to Module 04.

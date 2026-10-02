@@ -1,184 +1,183 @@
-# Modul 08: Data Migration & Seeding (Migrasi Data Warisan & Penyemaian Data)
+# Module 08: Data Migration & Seeding (Legacy Data Migration & Data Seeding)
 
 > - `references/technical/DATA_ASSETS_MANAGEMENT.md` (Seed data structure, Reference data (city/bank list), Versioning regulations data, Content data management)
->
 
-Modul ini adalah tahap kedelapan dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah memindahkan data warisan (*legacy data*) milik klien (dari Excel, CSV, sistem lama, atau database usang) ke dalam skema database baru secara otomatis, terenkripsi, dan tervalidasi sebelum sesi pengujian pengguna (UAT) di Modul 09 dimulai.
+This module is the eighth phase in the software project lifecycle for solo developers. Its purpose is to transfer client legacy data (from Excel, CSV, legacy systems, or outdated databases) into the new database schema automatically, encrypted, and validated before the user acceptance testing (UAT) session in Module 09 begins.
 
 ---
 
-## 1. Siklus Eksekusi Modul 08
+## 1. Execution Cycle of Module 08
 
 ```text
-[ INPUT: Data Mentah Klien (CSV/Excel/SQL) & Skema Database FSD.md ]
+[ INPUT: Client Raw Data (CSV/Excel/SQL) & FSD.md Database Schema ]
                                     │
                                     ▼
-[ LANGKAH 1: Audit Data Sumber & Penetapan Batas Tanggung Jawab ]
-  • Aturan Clean-In / Clean-Out: Klien bertanggung jawab membersihkan data (Data Hygiene)
-  • Developer HANYA menulis skrip transformasi otomatis (ETL)
+[ STEP 1: Source Data Audit & Demarcation of Responsibility ]
+  • Clean-In / Clean-Out Rule: Client is responsible for data hygiene
+  • Developer ONLY writes automated transformation scripts (ETL)
                                     │
                                     ▼
-[ LANGKAH 2: Penyusunan Matriks Pemetaan Kolom (Data Mapping) ]
-  • Pemetaan Kolom Sumber ──► Kolom Database Baru (Tipe Data, Default Values)
-  • Normalisasi Relasi Entitas & Transformasi Format (Tanggal, Rupiah, Enum)
+[ STEP 2: Column Mapping Matrix Formulation (Data Mapping) ]
+  • Source Column Mapping ──► New Database Column (Data Types, Default Values)
+  • Entity Relation Normalization & Format Transformation (Date, Rupiah, Enum)
                                     │
                                     ▼
-[ LANGKAH 3: Masking & Sanitasi Data Sensitif Staging (UU PDP) ]
-  • Masking Data PII (NIK, Nomor Rekening, Password Lama) di Server Staging
-  • Pencegahan Kebocoran Data Pribadi Nyata ke Lingkungan Non-Produksi
+[ STEP 3: Masking & Sanitization of Staging Sensitive Data (PDP Law) ]
+  • PII Data Masking (NIK/National ID, Bank Account Number, Legacy Passwords) on Staging Server
+  • Prevention of Real Personal Data Leakage to Non-Production Environments
                                     │
                                     ▼
-[ LANGKAH 4: Eksekusi Skrip ETL Berbasis Transaksi Atomik (Batch Load) ]
-  • Ekstraksi (Parse file) ──► Transformasi (Zod Validation) ──► Load (Batch Insert)
-  • Pembungkusan dalam Blok Transaksi Database (Rollback Otomatis jika Error)
+[ STEP 4: Execution of Atomic Transaction-Based ETL Script (Batch Load) ]
+  • Extract (Parse file) ──► Transform (Zod Validation) ──► Load (Batch Insert)
+  • Wrapped in Database Transaction Blocks (Automatic Rollback on Error)
                                     │
                                     ▼
-[ LANGKAH 5: Rekonsiliasi Data & Pengesahan Klien (Data Sign-Off) ]
-  • Perhitungan Baris Sumber vs Baris Terimpor (100% Match)
-  • Penyusunan Dokumen MIGRATION_RECONCILIATION_REPORT.md
-  • Single PIC Klien Menandatangani Persetujuan Data
+[ STEP 5: Data Reconciliation & Client Sign-Off ]
+  • Source Rows vs Imported Rows Calculation (100% Match)
+  • Preparation of MIGRATION_RECONCILIATION_REPORT.md Document
+  • Client Single PIC Signs Data Sign-Off Approval
                                     │
                                     ▼
-[ OUTPUT: Database Staging Terisi Data Riil (PII Masked) & RECONCILIATION_REPORT.md ]
+[ OUTPUT: Staging Database Populated with Real Data (PII Masked) & RECONCILIATION_REPORT.md ]
 
-⚠️ PENTING: Modul ini hanya mengimpor data ke Staging. 
-Migrasi data ke Production dilakukan terpisah di Modul 10 (3 opsi: ETL re-run, staging dump, atau manual CSV).
+⚠️ IMPORTANT: This module only imports data into Staging. 
+Data migration to Production is performed separately in Module 10 (3 options: ETL re-run, staging dump, or manual CSV).
                                     │
                                     ▼
-──► Siap Masuk ke Modul 09: UAT & Client Sign-Off
+──► Ready to Proceed to Module 09: UAT & Client Sign-Off
 ```
 
 ---
 
-## 2. Prinsip Migrasi Solo Developer: "Clean-In, Clean-Out"
+## 2. Solo Developer Migration Principles: "Clean-In, Clean-Out"
 
-Salah satu jebakan terbesar yang menghabiskan waktu solo developer tanpa dibayar adalah **"Membersihkan Data Rusak Klien Secara Manual"**.
+One of the biggest time-sink traps for solo developers without getting paid is **"Manually Cleaning Broken Client Data"**.
 
-### Aturan Baku Perlindungan Solo Dev:
-1. **Klien Pemilik Kebersihan Data (Client Owns Data Hygiene)**:
-   - Klien wajib menyerahkan data yang sudah bersih dari baris ganda yang tidak valid, format sel yang rusak, atau data tanpa identitas.
-   - Jika klien meminta developer merapikan ribuan baris spreadsheet manual, pekerjaan tersebut **WAJIB dimasukkan ke dalam Change Request (CR) jasa konsultasi data terpisah**.
-2. **Validasi Skema Tanpa Pengecualian**:
-   - Skrip migrasi wajib memvalidasi setiap baris menggunakan skema Zod/Pydantic.
-   - Jika ada baris yang korup, skrip otomatis membuangnya ke file penampung `rejected-rows.csv` dengan keterangan alasan galat (*error reason*), tanpa mematikan seluruh proses.
-3. **Kepatuhan Privasi Data (UU PDP No. 27/2022)**:
-   - Di lingkungan **Staging**, data pribadi sensitif (NIK, nomor telepon pribadi, kata sandi lama) wajib disamarkan (*masked* / *faked*). 
-   - **Production**: Data asli tanpa masking hanya dimasukkan saat migrasi final Modul 10 (3 opsi: ETL re-run, staging dump, atau manual CSV).
-
----
-
-## 3. Langkah demi Langkah Eksekusi
-
-### Langkah 1: Audit Data Sumber
-1. Minta klien menyerahkan data dalam format digital terstruktur (CSV, Excel `.xlsx`, atau SQL Dump).
-2. Periksa konsistensi tipe data:
-   - Format tanggal (apakah `YYYY-MM-DD`, `DD/MM/YYYY`, atau teks acak).
-   - Format angka finansial (apakah mengandung karakter `Rp`, titik, atau koma).
-   - Integritas ID relasional (apakah foreign key mengarah ke data yang benar-benar ada).
-
-### Langkah 2: Penyusunan Dokumen Rencana Migrasi (Mapping Matrix)
-Susun tabel pemetaan dari format lama ke skema FSD baru:
-- Contoh: Kolom Excel `"Nama Lengkap"` → Kolom SQL `users.full_name` (`VARCHAR(150)`).
-- Contoh: Kolom Excel `"Tgl Lahir"` → Transformasi `new Date(row.tgl)` → `users.birth_date` (`DATE`).
-
-### Langkah 3: Penulisan Skrip Otomasi ETL (Batch Loading)
-Tuliskan skrip eksekusi mandiri (misal: `scripts/migrate-data.ts` atau script Python):
-1. **Extract**: Baca berkas sumber menggunakan stream parser (`csv-parse` atau `exceljs`).
-2. **Transform**: Validasi tiap baris dengan Zod. Generate UUIDv7 untuk primary key baru. Hash kata sandi sementara menggunakan Argon2id.
-3. **Load**: Masukkan data ke database menggunakan operasi *Batch Insert* (`createMany` atau SQL `COPY`) per blok 500–1.000 baris di dalam transaksi atomik (`db.$transaction`).
-
-### Langkah 4: Rekonsiliasi & Penanganan Baris Ditolak
-1. Skrip menghitung:
-   - Total baris di berkas sumber: N_source
-   - Total baris berhasil diimpor: N_imported
-   - Total baris gagal/korup: N_rejected
-2. Seluruh baris yang gagal otomatis diekspor ke `rejected-rows.csv` lengkap dengan nomor baris dan pesan error validasinya.
-3. Berikan berkas `rejected-rows.csv` kepada Klien untuk diperbaiki oleh tim operasional mereka.
-
-### Langkah 5: Pengesahan Data Bersama Klien
-1. Tampilkan dashboard Staging yang kini sudah menampilkan data riil milik klien (bukan data dummy "Lorem Ipsum").
-2. Kirim berkas **`MIGRATION_RECONCILIATION_REPORT.md`** kepada Single PIC Klien.
-3. Klien menandatangani lembar persetujuan data (*Data Sign-Off*).
+### Standard Rules for Solo Dev Protection:
+1. **Client Owns Data Hygiene**:
+   - The client is required to submit data that is already clean from invalid duplicates, corrupted cell formats, or unidentified orphan records.
+   - If the client requests the developer to clean thousands of spreadsheet rows manually, that work **MUST be scoped under a separate data consulting Change Request (CR)**.
+2. **Schema Validation Without Exception**:
+   - The migration script must validate every row using Zod/Pydantic schemas.
+   - If a row is corrupted, the script automatically rejects it into a `rejected-rows.csv` dump file with an error reason description, without aborting the entire process.
+3. **Data Privacy Compliance (UU PDP No. 27/2022 / Personal Data Protection Law)**:
+   - In the **Staging** environment, sensitive personal data (NIK / national ID, personal phone numbers, legacy passwords) must be masked / faked.
+   - **Production**: Real unmasked data is only imported during the final migration in Module 10 (3 options: ETL re-run, staging dump, or manual CSV).
 
 ---
 
-## 4. Adaptasi Berdasarkan Skala Proyek
+## 3. Step-by-Step Execution
 
-| Aspek Migrasi Data | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+### Step 1: Source Data Audit
+1. Request the client to provide data in a structured digital format (CSV, Excel `.xlsx`, or SQL Dump).
+2. Check data type consistency:
+   - Date formats (whether `YYYY-MM-DD`, `DD/MM/YYYY`, or arbitrary text).
+   - Financial number formats (whether containing `Rp` currency symbols, dots, or commas).
+   - Relational ID integrity (whether foreign keys point to records that actually exist).
+
+### Step 2: Migration Plan Document Preparation (Mapping Matrix)
+Draft a mapping table from the legacy format to the new FSD schema:
+- Example: Excel column `"Nama Lengkap"` → SQL column `users.full_name` (`VARCHAR(150)`).
+- Example: Excel column `"Tgl Lahir"` → Transformation `new Date(row.tgl)` → `users.birth_date` (`DATE`).
+
+### Step 3: Writing the Automated ETL Script (Batch Loading)
+Write a standalone execution script (e.g., `scripts/migrate-data.ts` or a Python script):
+1. **Extract**: Read source files using a stream parser (`csv-parse` or `exceljs`).
+2. **Transform**: Validate each row with Zod. Generate UUIDv7 for new primary keys. Hash temporary passwords using Argon2id.
+3. **Load**: Insert data into the database using *Batch Insert* operations (`createMany` or SQL `COPY`) in blocks of 500–1,000 rows within an atomic transaction (`db.$transaction`).
+
+### Step 4: Reconciliation & Rejected Row Handling
+1. The script calculates:
+   - Total rows in source file: N_source
+   - Total rows successfully imported: N_imported
+   - Total failed/corrupt rows: N_rejected
+2. All failed rows are automatically exported to `rejected-rows.csv` complete with row numbers and validation error messages.
+3. Deliver the `rejected-rows.csv` file to the Client for their operations team to correct.
+
+### Step 5: Data Sign-Off with Client
+1. Demonstrate the Staging dashboard which now displays the client's real data (not "Lorem Ipsum" dummy data).
+2. Send the **`MIGRATION_RECONCILIATION_REPORT.md`** document to the Client's Single PIC.
+3. Client signs the data approval sheet (*Data Sign-Off*).
+
+---
+
+## 4. Adaptation by Project Scale
+
+| Data Migration Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
 | :--- | :--- | :--- | :--- |
-| **Volume Data** | < 1.000 baris data | 1.000 – 100.000 baris data | > 100.000 baris data / Multi-database |
-| **Format Sumber** | File Excel tunggal / CSV | Beberapa file Excel + Database MySQL lama | Database Oracle/SAP, legacy API, data terdistribusi |
-| **Metode Eksekusi** | Skrip TypeScript sederhana satu kali jalan | Skrip ETL terstruktur dengan batching & logging | ETL Pipeline modular, rollback plan bertingkat |
-| **Sanitasi PII Staging** | Ganti nama & email generik | Skrip masking otomatis NIK & telepon | Data Anonymization Engine sesuai audit ISO/PDP |
-| **Formalitas Sign-Off** | Konfirmasi via chat/email tertulis | Lembar `RECONCILIATION_REPORT.md` signed | Berita Acara Migrasi Data Resmi bermeterai |
+| **Data Volume** | < 1,000 rows of data | 1,000 – 100,000 rows of data | > 100,000 rows of data / Multi-database |
+| **Source Format** | Single Excel file / CSV | Multiple Excel files + legacy MySQL database | Oracle/SAP database, legacy API, distributed data |
+| **Execution Method** | Simple one-off TypeScript script | Structured ETL script with batching & logging | Modular ETL pipeline, tiered rollback plan |
+| **Staging PII Sanitization** | Replace with generic names & emails | Automated masking script for NIK & phone | Data Anonymization Engine per ISO/PDP audit |
+| **Sign-Off Formality** | Written confirmation via chat/email | Signed `RECONCILIATION_REPORT.md` sheet | Official notarized/stamped Data Migration Minutes (BAST) |
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 5. Deliverables
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Dokumen rencana migrasi dan laporan rekonsiliasi data WAJIB disimpan di folder **`docs/pm/`**.
+> 📁 **MANDATORY FILE LOCATION RULE**:
+> Migration plan documents and data reconciliation reports MUST be stored in the **`docs/pm/`** folder.
 
-Modul ini menghasilkan 3 artefak utama:
-1. **`docs/pm/DATA_MIGRATION_PLAN.md`**: Dokumen pemetaan kolom sumber ke target, aturan transformasi, dan batas kepemilikan data (menggunakan `templates/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md`).
-2. **`docs/pm/MIGRATION_RECONCILIATION_REPORT.md`**: Laporan bukti perbandingan jumlah data sumber vs target, daftar baris ditolak, dan lembar persetujuan PIC Klien (menggunakan `templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md`).
-3. **Database Staging Terisi Data Riil**: Basis data di server Staging yang telah siap digunakan untuk sesi pengujian UAT.
-
----
-
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
-
-[GATE] Modul 08 dinyatakan **LOLOS (PASS)** jika:
-- [x] Dokumen pemetaan kolom (`docs/pm/DATA_MIGRATION_PLAN.md`) telah disepakati.
-- [x] Skrip ETL berhasil mengimpor seluruh data valid tanpa memicu integritas foreign key error.
-- [x] Data sensitif di server Staging telah disanitasi/disamarkan sesuai UU PDP.
-- [x] Seluruh baris gagal telah diekspor ke `rejected-rows.csv` dan diserahkan ke klien.
-- [x] **Single PIC Klien telah menandatangani lembar pengesahan rekonsiliasi data.**
+This module produces 3 primary artifacts:
+1. **`docs/pm/DATA_MIGRATION_PLAN.md`**: Document mapping source columns to target columns, transformation rules, and data ownership boundaries (using `templates/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md`).
+2. **`docs/pm/MIGRATION_RECONCILIATION_REPORT.md`**: Report providing proof of source vs target data count comparison, rejected rows list, and Client PIC approval sheet (using `templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md`).
+3. **Staging Database Populated with Real Data**: Database on the Staging server ready for UAT testing sessions.
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 6. Gate Exit Criteria [GATE]
 
-Setelah data berhasil dimigrasi dan laporan rekonsiliasi terbit:
+[GATE] Module 08 is declared **PASSED (PASS)** if:
+- [x] Column mapping document (`docs/pm/DATA_MIGRATION_PLAN.md`) is agreed upon.
+- [x] ETL script successfully imports all valid data without triggering foreign key integrity errors.
+- [x] Sensitive data on the Staging server has been sanitized/masked in compliance with PDP Law.
+- [x] All failed rows have been exported to `rejected-rows.csv` and handed over to the client.
+- [x] **Client Single PIC has signed the data reconciliation sign-off sheet.**
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+---
 
-**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+## 🛑 EXIT [GATE] PROTOCOL & MANDATORY STOP
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"` → harus return `True`
-   - Read tool: `read_file('docs/pm/MIGRATION_RECONCILIATION_REPORT.md')` → harus sukses tanpa error
+After data is successfully migrated and the reconciliation report is published:
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
-   - ❌ **JANGAN tampilkan summary** ke user
-   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 09
-   - ✅ **REPORT ERROR** ke user:
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
+
+**MANDATORY BEFORE CONTENT VALIDATION**:
+
+1. **Check output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"` → must return `True`
+   - Read tool: `read_file('docs/pm/MIGRATION_RECONCILIATION_REPORT.md')` → must succeed without error
+
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
+   - ❌ **DO NOT display summary** to user
+   - ❌ **DO NOT request confirmation** to proceed to Module 09
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File MIGRATION_RECONCILIATION_REPORT.md tidak tercipta.
-     Module 08 FAILED - tidak bisa lanjut ke Module 09 (UAT).
+     CRITICAL ERROR: File MIGRATION_RECONCILIATION_REPORT.md was not created.
+     Module 08 FAILED - cannot proceed to Module 09 (UAT).
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/pm/
-     - Path typo di tool call
+     Possible causes:
+     - Write permission denied on docs/pm/ folder
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum lanjut.
+     Please investigate this issue before proceeding.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+3. **ONLY IF FILE EXISTS**: Proceed to content validation below
 
 ---
 
-### **LANGKAH 1: VALIDASI KONTEN & DATA SIGN-OFF**
+### **STEP 1: CONTENT VALIDATION & DATA SIGN-OFF**
 
-1. **DILARANG KERAS langsung melanjutkan atau memanggil tool untuk Modul 09 dalam giliran (turn) yang sama!**
-2. **Verifikasi migration results**:
+1. **STRICTLY PROHIBITED from proceeding directly or calling tools for Module 09 within the same turn!**
+2. **Verify migration results**:
    - [ ] `read_file('docs/pm/MIGRATION_RECONCILIATION_REPORT.md')` → Confirm row counts match
    - [ ] Confirm PII sanitized on staging
    - [ ] Confirm client Data Sign-Off received
-3. Tampilkan ringkasan rekonsiliasi data (jumlah baris sukses vs ditolak) kepada pengguna.
-4. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Data telah berhasil dimigrasi ke database Staging dengan akurasi rekonsiliasi terverifikasi. Apakah data ini disetujui (Data Sign-Off) sebelum kita membuka sesi pengujian pengguna di Modul 09 (UAT & Sign-Off)?"*
-4. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 09.
+3. Present data reconciliation summary (successful vs rejected row counts) to user.
+4. **END YOUR RESPONSE (END TURN)** and ask user for confirmation:
+   > *"Data has been successfully migrated to the Staging database with verified reconciliation accuracy. Is this data approved (Data Sign-Off) before we open the user testing session in Module 09 (UAT & Sign-Off)?"*
+5. Wait for explicit approval response from user before advancing to Module 09.

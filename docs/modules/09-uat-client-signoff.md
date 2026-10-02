@@ -1,88 +1,86 @@
-# Modul 09: [GATE VALIDASI] UAT & Sign-Off Klien di Staging
+# Module 09: [VALIDATION GATE] UAT & Client Sign-Off on Staging
 
->
+This module is a **BLOCKING VALIDATION GATE** in the solo developer project lifecycle. Absolute rule: **DEPLOYMENT TO PRODUCTION SERVERS OR POINTING PRIMARY DOMAINS IS STRICTLY PROHIBITED BEFORE THIS GATE PASSES.**
 
-Modul ini adalah **GERBANG VALIDASI PEMBLOKIR (BLOCKING VALIDATION GATE)** dalam siklus hidup proyek solo developer. Aturan mutlak: **DILARANG MELAKUKAN DEPLOYMENT KE SERVER PRODUKSI ATAU POINTING DOMAIN UTAMA SEBELUM GERBANG INI LOLOS.**
-
-Tujuannya adalah memfasilitasi pengujian langsung oleh **Single PIC Klien** dan pengguna akhir (*key users*) di server Staging berdasarkan skenario di **`PRD.md`**, mengelola pelaporan perbaikan galat (*defect triage*), menangkis penambahan fitur berkedok bug, dan mengamankan penandatanganan **Berita Acara UAT (UAT Sign-Off Report)**.
+Its purpose is to facilitate direct testing by the **Client Single PIC** and end users (*key users*) on the Staging server based on scenarios in **`PRD.md`**, manage defect triage, deflect scope creep disguised as bugs, and secure the signing of the **UAT Sign-Off Report (Berita Acara UAT)**.
 
 ---
 
-## 1. Siklus Eksekusi Modul 09
+## 1. Execution Cycle of Module 09
 
 ```text
-[ INPUT: Server Staging Lolos SIT (Modul 07) & Data Riil Terimpor (Modul 08) ]
+[ INPUT: Staging Server Passed SIT (Module 07) & Real Data Imported (Module 08) ]
                                     │
                                     ▼
-[ LANGKAH 1: Penyiapan Skenario UAT & Kredensial Penguji Klien ]
-  • Konversi Acceptance Criteria PRD.md menjadi Langkah Uji Bahasa Awam
-  • Penerbitan Akun Penguji Klien di Staging (Super Admin, Manager, Staf)
+[ STEP 1: UAT Scenario Preparation & Client Tester Credentials ]
+  • Convert PRD.md Acceptance Criteria into Layman Test Steps
+  • Provision Client Tester Accounts on Staging (Super Admin, Manager, Staff)
                                     │
                                     ▼
-[ LANGKAH 2: Pembukaan Sesi UAT & Penguncian Jendela Waktu (Testing Window) ]
-  • Sesi Orientasi Singkat (30 Menit Demo Alur Skenario ke PIC Klien)
-  • Penguncian Batas Waktu UAT (Maksimal 5–7 Hari Kerja)
-  • Penerapan Klausul Deemed Acceptance (Penerimaan Otomatis jika Mangkir)
+[ STEP 2: UAT Session Kickoff & Testing Window Locking ]
+  • Brief Orientation Session (30-Minute Scenario Walkthrough Demo to Client PIC)
+  • Lock UAT Deadline (Maximum 5–7 Business Days)
+  • Apply Deemed Acceptance Clause (Automatic Acceptance on Default)
                                     │
                                     ▼
-[ LANGKAH 3: Triase Temuan: Bug Nyata vs Penambahan Fitur (Scope Creep) ]
-  • Severity 1 (Blocker): Wajib diperbaiki segera
-  • Severity 2 (Major): Diperbaiki sebelum rilis produksi
-  • Severity 3 (Minor/Cosmetic): Perbaikan wajar atau masuk masa garansi
-  • Fitur Baru (Di luar PRD): Ditolak & dialihkan ke Change Request (CR)
+[ STEP 3: Finding Triage: Real Bugs vs Scope Creep ]
+  • Severity 1 (Blocker): Must be fixed immediately
+  • Severity 2 (Major): Fixed before production release
+  • Severity 3 (Minor/Cosmetic): Reasonable fix or deferred to warranty period
+  • New Features (Out of PRD scope): Rejected & redirected to Change Request (CR)
                                     │
                                     ▼
-[ LANGKAH 4: Perbaikan Bug di Branch fix/* & Verifikasi Ulang Staging ]
-  • Solo Dev Memperbaiki Bug Valid di Branch Terisolasi ──► Merge ke staging
-  • PIC Klien Melakukan Retest & Menandai Status RESOLVED di UAT_DEFECT_LOG.md
+[ STEP 4: Bug Fixing on fix/* Branch & Staging Re-verification ]
+  • Solo Dev Fixes Valid Bugs on Isolated Branch ──► Merge to staging
+  • Client PIC Retests & Marks RESOLVED Status in UAT_DEFECT_LOG.md
                                     │
                                     ▼
-[ LANGKAH 5: Penandatanganan Berita Acara UAT (UAT Sign-Off) ]
-  • Penyusunan Dokumen UAT_SIGNOFF_REPORT.md
-  • Single PIC Klien Menandatangani Persetujuan Penerimaan Sistem
+[ STEP 5: Signing of UAT Sign-Off Report ]
+  • Prepare UAT_SIGNOFF_REPORT.md Document
+  • Client Single PIC Signs System Acceptance Approval
                                     │
                                     ▼
-[ OUTPUT: Berita Acara UAT Bertandatangan ] ──► Buka [GATE] Modul 10: Production Deploy
+[ OUTPUT: Signed UAT Sign-Off Report ] ──► Open [GATE] Module 10: Production Deploy
 ```
 
 ---
 
-## 2. Prinsip Perlindungan Solo Developer Saat UAT
+## 2. Solo Developer Protection Principles During UAT
 
-### 1. Menangkis "Fitur Baru Berkedok Bug"
-Klien sering kali mengatakan: *"Mas, ini kok tombolnya belum bisa kirim notifikasi ke Telegram ya? Ini error tolong diperbaiki."*
+### 1. Deflecting "New Features Disguised as Bugs"
+Clients often say: *"Hey, why doesn't this button send notifications to Telegram yet? This is a bug, please fix it."*
 
-**Respon Baku Solo Dev**:
-> *"Mari kita periksa bersama dokumen PRD dan FSD v1.0 yang telah kita sepakati, Pak/Bu. Pada Modul 4 rincian fitur notifikasi, sistem disepakati menggunakan pengiriman Email Transaksional, sedangkan integrasi Telegram tercatat sebagai Out-of-Scope (Fase 2). Karena sistem email di staging sudah berjalan sempurna, fungsionalitas ini berstatus Lolos UAT. Jika Bapak/Ibu ingin menambahkan modul Telegram sekarang, kami siap buatkan lembar Change Request (CR) terpisah."*
+**Solo Dev Standard Response**:
+> *"Let's review our agreed PRD and FSD v1.0 documents together. In Module 4 notification feature details, we agreed that the system uses Transactional Email delivery, while Telegram integration is documented as Out-of-Scope (Phase 2). Because the email system on staging is working properly, this functionality has Passed UAT status. If you would like to add the Telegram module now, we are happy to prepare a separate Change Request (CR) form."*
 
-### 2. Klausul Penerimaan Otomatis (The Deemed Acceptance Clause)
-Untuk mencegah klien menunda-nunda sesi testing selama berminggu-minggu yang menyebabkan proyek mangkrak:
-- Jendela waktu pengujian ditetapkan maksimal **5–7 hari kerja**.
-- Berlaku klausul baku di kontrak SOW: *"Apabila Klien tidak melakukan pengujian atau tidak memberikan catatan perbaikan tertulis dalam kurun waktu 10 (sepuluh) hari kerja sejak tautan Staging diserahkan, maka perangkat lunak secara hukum dianggap telah diterima secara penuh (Deemed Accepted) dan developer berhak melanjutkan ke tahap deployment produksi serta penagihan pelunasan."*
+### 2. The Deemed Acceptance Clause
+To prevent clients from delaying testing sessions for weeks and causing project stalls:
+- The testing window is capped at a maximum of **5–7 business days**.
+- A standard clause in the SOW contract applies: *"If the Client does not perform testing or provide written defect notes within 10 (ten) business days from the delivery of the Staging link, the software shall be legally considered fully accepted (Deemed Accepted), and the developer is entitled to proceed to production deployment and final invoice settlement."*
 
 ---
 
-## 3. Matriks Triase Cacat (Defect Severity Matrix)
+## 3. Defect Severity Matrix
 
-Setiap laporan kendala dari klien wajib diklasifikasikan ke dalam 4 tingkatan:
+Every issue reported by the client must be classified into 4 levels:
 
-| Tingkat Keparahan | Definisi & Dampak | Batas Waktu Respon Dev | Dampak Terhadap UAT Sign-Off |
+| Severity Level | Definition & Impact | Dev Response SLA | Impact on UAT Sign-Off |
 | :--- | :--- | :---: | :--- |
-| **Severity 1 (Blocker)** | Sistem crash, data korup, pembayaran gagal, alur inti terputus total. | < 24 Jam | **MEMBLOKIR** sign-off (Wajib beres). |
-| **Severity 2 (Major)** | Fitur penting tidak berjalan sesuai FSD, namun ada cara alternatif sementara (*workaround*). | < 48 Jam | Wajib diperbaiki sebelum deploy produksi. |
-| **Severity 3 (Minor)** | Salah ketik (*typo*), pergeseran margin teks 2px, warna badge kurang kontras. | < 72 Jam | **TIDAK MEMBLOKIR** sign-off (Bisa dibereskan saat jeda rilis / garansi). |
-| **Out-of-Scope (CR)** | Permintaan alur baru atau penambahan kolom database di luar PRD. | Dijawab hari itu | **DITOLAK DARI UAT** → Masuk lembar Change Request. |
+| **Severity 1 (Blocker)** | System crash, data corruption, payment failure, core workflow completely broken. | < 24 Hours | **BLOCKS** sign-off (Must be resolved). |
+| **Severity 2 (Major)** | Important feature not functioning per FSD, but a temporary workaround exists. | < 48 Hours | Must be fixed before production deployment. |
+| **Severity 3 (Minor)** | Typo, 2px text margin shift, badge color low contrast. | < 72 Hours | **DOES NOT BLOCK** sign-off (Can be addressed during release window / warranty). |
+| **Out-of-Scope (CR)** | Request for new workflow or additional database column outside PRD. | Answered same day | **REJECTED FROM UAT** → Moved to Change Request form. |
 
 ---
 
-## 4. Adaptasi Berdasarkan Skala Proyek
+## 4. Adaptation by Project Scale
 
-| Aspek UAT | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+| UAT Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
 | :--- | :--- | :--- | :--- |
-| **Durasi Testing** | 2–3 hari kerja | 5–7 hari kerja | 10–14 hari kerja multi-divisi |
-| **Peserta UAT** | Pemilik bisnis langsung (1 orang) | Single PIC + 2 staf operasional | Tim QA Klien, Business Analyst, & End Users |
-| **Media Pencatatan** | Spreadsheet / UAT Checklist Markdown | Dokumen `UAT_DEFECT_LOG.md` formal | Issue tracker resmi (Jira / Linear / Redmine) |
-| **Pengesahan** | Konfirmasi email persetujuan resmi | Berita Acara UAT bertandatangan digital | Dokumen Berita Acara UAT fisik bermeterai |
+| **Testing Duration** | 2–3 business days | 5–7 business days | 10–14 business days multi-division |
+| **UAT Participants** | Direct business owner (1 person) | Single PIC + 2 operational staff | Client QA team, Business Analyst, & End Users |
+| **Tracking Media** | Spreadsheet / Markdown UAT Checklist | Formal `UAT_DEFECT_LOG.md` document | Official issue tracker (Jira / Linear / Redmine) |
+| **Sign-Off** | Official email confirmation | Digitally signed UAT Sign-Off Report | Physical stamped/notarized UAT Minutes (BAST) |
 
 **UAT Iteration Limit**: Maximum 3 UAT cycles. If UAT fails 3 consecutive times:
 - Stop UAT process
@@ -92,73 +90,73 @@ Setiap laporan kendala dari klien wajib diklasifikasikan ke dalam 4 tingkatan:
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 5. Deliverables
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Seluruh berkas skenario, log cacat, dan Berita Acara UAT WAJIB disimpan di folder **`docs/pm/`**.
+> 📁 **MANDATORY FILE LOCATION RULE**:
+> All scenario files, defect logs, and UAT Sign-Off reports MUST be stored in the **`docs/pm/`** folder.
 
-Modul ini menghasilkan 2 berkas pengesahan:
-1. **`docs/pm/UAT_WORKBOOK.md`**: Buku kerja gabungan panduan skenario pengujian dan log pelacakan bug untuk Single PIC Klien (menggunakan `templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md`).
-2. **`docs/pm/UAT_SIGNOFF_REPORT.md`**: Berita Acara Hasil UAT resmi bertandatangan Single PIC Klien yang mengesahkan bahwa seluruh fungsi sistem telah diterima (menggunakan `templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`).
+This module produces 2 sign-off documents:
+1. **`docs/pm/UAT_WORKBOOK.md`**: Combined test scenario workbook and defect tracking log for Client Single PIC (using `templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md`).
+2. **`docs/pm/UAT_SIGNOFF_REPORT.md`**: Official UAT Sign-Off Report signed by Client Single PIC certifying that all system functionality has been accepted (using `templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`).
 
 ---
 
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
+## 6. Gate Exit Criteria [GATE]
 
-[GATE] Modul 09 dinyatakan **LOLOS (PASS)** jika dan hanya jika:
-- [x] Seluruh skenario pengujian berstatus **PASS** atau seluruh temuan Severity 1 & 2 telah **RESOLVED**.
+[GATE] Module 09 is declared **PASSED (PASS)** if and only if:
+- [x] All test scenarios have **PASS** status or all Severity 1 & 2 findings are **RESOLVED**.
 - [x] **Quantitative Stability Criteria**:
   - 0 critical bugs (Severity 1) unresolved
   - Error rate < 1% (99%+ request success rate in staging logs)
   - System uptime ≥99% over last 48 hours
   - All core user flows (login, create, submit, approve) complete without blocking issues
-- [x] Permintaan penambahan fitur baru telah dipisahkan secara tertulis ke lembar Change Request.
-- [x] **Single PIC Klien telah menandatangani dokumen `docs/pm/UAT_SIGNOFF_REPORT.md`.**
+- [x] New feature requests have been separated in writing into Change Request forms.
+- [x] **Client Single PIC has signed the `docs/pm/UAT_SIGNOFF_REPORT.md` document.**
 
 ---
 
-## 🛑 PROTOKOL [GATE] KELUAR & WAJIB BERHENTI
+## 🛑 EXIT [GATE] PROTOCOL & MANDATORY STOP
 
-Setelah Berita Acara UAT ditandatangani oleh klien:
+After the UAT Sign-Off Report is signed by the client:
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
 
-**WAJIB DILAKUKAN SEBELUM VALIDASI KONTEN**:
+**MANDATORY BEFORE CONTENT VALIDATION**:
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/UAT_SIGNOFF_REPORT.md"` → harus return `True`
-   - Read tool: `read_file('docs/pm/UAT_SIGNOFF_REPORT.md')` → harus sukses tanpa error
+1. **Check output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/UAT_SIGNOFF_REPORT.md"` → must return `True`
+   - Read tool: `read_file('docs/pm/UAT_SIGNOFF_REPORT.md')` → must succeed without error
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan lanjut validasi konten
-   - ❌ **JANGAN tampilkan summary** ke user
-   - ❌ **JANGAN ajukan konfirmasi** untuk lanjut Module 10
-   - ✅ **REPORT ERROR** ke user:
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
+   - ❌ **DO NOT display summary** to user
+   - ❌ **DO NOT request confirmation** to proceed to Module 10
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File UAT_SIGNOFF_REPORT.md tidak tercipta.
-     Module 09 FAILED - tidak bisa lanjut ke Module 10 (Production Deployment).
+     CRITICAL ERROR: File UAT_SIGNOFF_REPORT.md was not created.
+     Module 09 FAILED - cannot proceed to Module 10 (Production Deployment).
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/pm/
-     - Path typo di tool call
+     Possible causes:
+     - Write permission denied on docs/pm/ folder
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum lanjut.
+     Please investigate this issue before proceeding.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILE EXISTS**: Lanjut ke validasi konten di bawah
+3. **ONLY IF FILE EXISTS**: Proceed to content validation below
 
 ---
 
-### **LANGKAH 1: VALIDASI KONTEN & SIGNATURE**
+### **STEP 1: CONTENT VALIDATION & SIGNATURE**
 
-1. **DILARANG KERAS langsung melakukan merge git ke `main`, deployment, atau memanggil tool untuk Modul 10 dalam giliran (turn) yang sama!**
-2. **Verifikasi konten UAT Sign-Off**:
+1. **STRICTLY PROHIBITED from directly performing git merge to `main`, deploying, or calling tools for Module 10 within the same turn!**
+2. **Verify UAT Sign-Off content**:
    - [ ] `read_file('docs/pm/UAT_SIGNOFF_REPORT.md')` → Confirm client signature + date exists
    - [ ] Confirm all Severity 1 & 2 defects RESOLVED
    - [ ] Confirm scope creep requests rejected or moved to Change Request
-3. Tampilkan status penutupan UAT (seluruh defect Severity 1 & 2 telah selesai) dan konfirmasi penandatanganan Berita Acara UAT.
-4. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Berita Acara UAT (`docs/pm/UAT_SIGNOFF_REPORT.md`) telah resmi ditandatangani. Sistem telah diizinkan untuk merge ke branch `main`. Apakah Anda siap mengeksekusi peluncuran resmi ke server Produksi di Modul 10 (Deployment & Production Go-Live)?"*
-4. Tunggu respon persetujuan eksplisit dari pengguna sebelum memulai proses deployment produksi.
+3. Present UAT closure status (all Severity 1 & 2 defects completed) and confirmation of signed UAT Report.
+4. **END YOUR RESPONSE (END TURN)** and ask user for confirmation:
+   > *"The UAT Sign-Off Report (`docs/pm/UAT_SIGNOFF_REPORT.md`) has been officially signed. The system is authorized to merge into the `main` branch. Are you ready to execute the official launch to the Production server in Module 10 (Deployment & Production Go-Live)?"*
+5. Wait for explicit approval response from user before initiating the production deployment process.

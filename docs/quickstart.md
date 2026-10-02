@@ -1,6 +1,6 @@
 # Quick Start MVP Guide (2-4 Weeks)
 
-> **Target**: Solo developers building simple MVPs (1-3 fitur, < Rp 20 juta, < 4 minggu)  
+> **Target**: Solo developers building simple MVPs (1-3 features, < Rp 20 million, < 4 weeks)  
 > **Philosophy**: Ship working software fast, skip documentation overhead
 
 ---
@@ -8,18 +8,18 @@
 ## When to Use This Guide
 
 ✅ **Use this if**:
-- MVP / proof-of-concept (< 4 minggu timeline)
+- MVP / proof-of-concept (< 4 weeks timeline)
 - 1-3 core features only
-- Solo founder (kamu owner & developer)
-- Budget < Rp 20 juta
+- Solo founder (you are owner & developer)
+- Budget < Rp 20 million
 - Tech stack familiar (no learning curve)
 
 ❌ **Don't use this if**:
-- Client project (butuh kontrak formal → use full framework)
+- Client project (requires formal contract → use full framework)
 - Team > 1 developer
-- Budget > Rp 50 juta
+- Budget > Rp 50 million
 - Compliance required (banking, healthcare, government)
-- >3 bulan timeline
+- >3 months timeline
 
 ---
 
@@ -213,7 +213,7 @@ Testing (1 day):
 ```
 
 **MVP Engineering Rules**:
-1. **No abstractions**: Copy-paste code, DRY nanti saat refactor
+1. **No abstractions**: Copy-paste code, DRY later during refactoring
 2. **No tests**: Manual testing only (automated tests post-launch)
 3. **No optimization**: Premature optimization = wasted time
 4. **Hardcode OK**: Magic numbers, inline styles → fine for MVP
@@ -248,9 +248,9 @@ vercel --prod
 - [ ] Error tracking (Sentry free tier)
 
 # Launch:
-- [ ] Share link dengan 5 beta users
+- [ ] Share link with 5 beta users
 - [ ] Monitor errors via Sentry
-- [ ] Fix critical bugs dalam 24 jam
+- [ ] Fix critical bugs within 24 hours
 ```
 
 ---
@@ -334,7 +334,7 @@ Upgrade when:
 - ✅ Raising funding or signing first client
 - ✅ Hiring second developer (need proper docs)
 - ✅ Compliance required (banking, healthcare)
-- ✅ Budget increases >Rp 50 juta
+- ✅ Budget increases >Rp 50 million
 
 Then read:
 - `docs/modules/02-discovery-scope.md` (scope protection)

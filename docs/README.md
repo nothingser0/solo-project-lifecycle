@@ -5,41 +5,41 @@ description: End-to-end software development lifecycle (SDLC) orchestrator for s
 
 # Solo Software Lifecycle Orchestrator
 
-Framework operasional perangkat lunak untuk solo developer dan konsultan teknis dalam mengeksekusi proyek dari skala Kecil (MVP) hingga Enterprise dengan proteksi batas kerja, otomasi AI, dan gerbang kualitas berjenjang.
+Software operational framework for solo developers and technical consultants executing projects from Small (MVP) to Enterprise scale with scope protection, AI automation, and tiered quality gates.
 
-> 🚀 **PANDUAN INISIASI CEPAT (ANTI-CONFLICT PROTOCOL)**:
-> Sebelum memulai koding atau membuat folder proyek, baca panduan Quickstart di **`README.md`**.
-> Jangan pernah menyalin berkas harness (`AGENTS.md`, `TODO.md`, dll.) ke folder kosong **sebelum** menjalankan scaffolding framework bahasa Anda (`create-next-app`, `poetry init`, `composer`, `dotnet new`, `flutter create`, dll.) agar tidak terkena penolakan CLI (*directory conflict*).
+> 🚀 **QUICK INITIATION GUIDE (ANTI-CONFLICT PROTOCOL)**:
+> Before starting to code or creating a project folder, read the Quickstart guide in **`README.md`**.
+> Never copy harness files (`AGENTS.md`, `TODO.md`, etc.) to an empty folder **before** running your language framework scaffolding (`create-next-app`, `poetry init`, `composer`, `dotnet new`, `flutter create`, etc.) to avoid CLI rejection (*directory conflict*).
 
 ---
 
-## 1. Peta 12 Rantai Alur Kerja (The 12-Stage Pipeline)
+## 1. The 12-Stage Pipeline
 
 ```text
-FASE INISIASI & DISCOVERY:
-  00. Product Discovery & Strategy (Riset Pasar, Kompetitor, & Pengguna) ──► docs/modules/00-product-discovery-strategy.md
-  01. Idea & Feasibility (Saringan 3 Lapis & Skor Kelayakan) ──► docs/modules/01-idea-feasibility.md
-  02. Discovery & Scope Definition (Elisitasi Kebutuhan Bisnis)
-  03. [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement
+INITIATION & DISCOVERY PHASE:
+  00. Product Discovery & Strategy (Market, Competitor, & User Research) ──► docs/modules/00-product-discovery-strategy.md
+  01. Idea & Feasibility (3-Filter Triage & Feasibility Score) ──► docs/modules/01-idea-feasibility.md
+  02. Discovery & Scope Definition (Business Requirements Elicitation)
+  03. [COMMERCIAL GATE] Legal SOW, Down Payment, & Single PIC Agreement
 
-FASE PERANCANGAN & SPESIFIKASI:
+DESIGN & SPECIFICATION PHASE:
   04B. Design System Foundation & Implementation (Token System, Component Library, Governance) ──► docs/modules/04B-design-system-foundation.md
   04. UI/UX Design & Prototyping (Design System & User Flow)
-  05. Arsitektur & Spesifikasi Teknis (PRD, FSD, & Skema DB)
+  05. Architecture & Technical Specifications (PRD, FSD, & DB Schema)
     05B. System Design & Infrastructure Scalability (High Availability, Capacity Planning, Caching) ──► docs/modules/05B-system-design-infrastructure.md
 
-FASE EKSEKUSI & VALIDASI:
-  06. Development (Backend, Frontend, Integrasi API)
+EXECUTION & VALIDATION PHASE:
+  06. Development (Backend, Frontend, API Integration)
   06B. Product Instrumentation & Analytics Setup (Mixpanel, Event Taxonomy, Dashboards)
   07. Quality Assurance (Unit Test, SIT, & Security Audit)
-  08. Data Migration & Seeding (Pembersihan & Transformasi Data)
-  09. [GATE VALIDASI] UAT & Sign-Off Klien di Staging
+  08. Data Migration & Seeding (Data Cleaning & Transformation)
+  09. [VALIDATION GATE] Client UAT & Sign-Off in Staging
 
-FASE RILIS & PENUTUPAN:
+RELEASE & CLOSURE PHASE:
   10. Deployment & Production Go-Live (CI/CD, DNS, SSL)
-  11. [GATE PENYERAHAN] Pelunasan 100%, Training, BAST, & Handover Repositori
-  12. Masa Garansi (Bug Fix) ──► Transisi ke Monthly Retainer / SLA
-  13. Product Operations & Continuous Iteration (Baseline Metrik, RICE, Feedback Loop) ──► docs/modules/13-product-operations-iteration.md
+  11. [HANDOVER GATE] 100% Final Settlement, Training, BAST, & Repository Handover
+  12. Warranty Period (Bug Fixes) ──► Transition to Monthly Retainer / SLA
+  13. Product Operations & Continuous Iteration (Metrics Baseline, RICE, Feedback Loop) ──► docs/modules/13-product-operations-iteration.md
 ```
 
 **CRITICAL: Progressive Loading Protocol**
@@ -50,220 +50,154 @@ FASE RILIS & PENUTUPAN:
 
 ---
 
-## 2. Prinsip Pertahanan Solo Developer (Core Solo Rules)
+## 2. Core Solo Rules
 
-1. **Defensif terhadap Lingkup (Scope Protection)**: Solo dev tidak memiliki tim pengganti. Setiap penambahan fitur tanpa dokumen resmi adalah beban cuma-cuma (*unpaid work*).
-2. **Aturan Single PIC**: Pada proyek Menengah ke atas, Klien wajib menetapkan satu penanggung jawab mutlak untuk mencegah konflik internal klien membebani developer.
-3. **Ketergantungan Klien Terkunci (Client Dependency SLA)**: Jadwal rilis terikat pada kecepatan klien menyediakan data, akses, dan approval. Keterlambatan klien otomatis menggeser timeline.
-4. **Gerbang Tanpa Kompromi (Gated Delivery)**:
-   - Tidak ada koding tanpa DP & kesepakatan tertulis.
-   - Tidak ada pointing domain produksi tanpa UAT Pass.
-   - Tidak ada serah terima source code/kredensial root tanpa pelunasan 100% dan penandatanganan BAST.
-5. **Wajib Berhenti di Setiap Gerbang (Mandatory Turn-Stopping at Gates)**:
-   - **SETIAP KALI SATU MODUL SELESAI, AGEN WAJIB BERHENTI (END TURN)**.
-   - DILARANG KERAS memborong banyak modul secara otomatis dalam satu giliran interaksi.
-   - Izin pengguna seperti *"isi dulu nanti saya review"* HANYA berlaku untuk satu modul yang sedang aktif, BUKAN tiket kosong untuk mengeksekusi modul-modul berikutnya tanpa henti.
-   - Agen WAJIB menampilkan ringkasan artefak modul yang baru selesai dan meminta persetujuan eksplisit pengguna sebelum melangkah ke modul berikutnya.
+1. **Defensive Scope Management (Scope Protection)**: Solo developers do not have a replacement team. Any feature addition without formal documentation is unpaid work.
+2. **Single PIC Rule**: On Medium to Enterprise projects, the Client must designate one absolute Person in Charge (PIC) to prevent client internal conflicts from burdening the developer.
+3. **Locked Client Dependencies (Client Dependency SLA)**: Release schedules are tied to the client's speed in providing data, access, and approvals. Client delays automatically shift the timeline.
+4. **Uncompromising Gates (Gated Delivery)**:
+   - No coding without a Down Payment (DP) & written agreement.
+   - No pointing production domains without UAT Pass.
+   - No handover of source code or root credentials without 100% final settlement and signed BAST.
+5. **Mandatory Turn-Stopping at Gates**:
+   - **EVERY TIME A MODULE IS COMPLETED, THE AGENT MUST STOP (END TURN)**.
+   - STRICTLY FORBIDDEN to batch-execute multiple modules automatically in a single interaction turn.
+   - User permissions such as *"fill it in first, I'll review later"* ONLY apply to the currently active module, NOT a blank check to execute subsequent modules without stopping.
+   - The agent MUST display a summary of the completed module artifacts and request explicit user approval before proceeding to the next module.
 
 ---
 
-## 3. Matriks Skala Proyek & Fast-Track Mode
+## 3. Project Scale Matrix & Fast-Track Mode
 
-| Skala | Batasan Karakteristik | Modul 01: Ideation & Feasibility | Modul 02–05: Specs & Design | Modul 06–09: QA & UAT | Modul 10–12: Rilis & BAST |
+| Scale | Characteristic Boundaries | Module 01: Ideation & Feasibility | Modules 02–05: Specs & Design | Modules 06–09: QA & UAT | Modules 10–12: Release & BAST |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Kecil (MVP / Fast-Track)** | 1–4 minggu, 1–3 fitur, solo user | **Fast-Track Protocol**: Gunakan 1 berkas `PROJECT_LITE.md` (Gabungan Modul 01, 02, 03, 05). **Modul 04 WAJIB untuk**: Web app, Mobile app, Desktop GUI. **Modul 04 SKIP untuk**: CLI tool, API-only backend, cron job, automation script. | Unit test logika inti + Smoke test lokal, UAT langsung ke pemilik bisnis | Deploy PaaS/Store langsung, BAST format ringkas via email |
-| **Menengah** | 1–3 bulan, Auth, DB, Payment/API | Feasibility 4 Dimensi, Validasi Pasar | PRD modular, Google Stitch Design System, FSD, API Contract | Automated test API, SIT, UAT PIC bertanda tangan | CI/CD pipeline, BAST bermeterai, garansi 60 hari |
-| **Besar** | 3–6 bulan, integrasi multi-sistem | Audit Arsitektur Awal, Risk Analysis | PRD formal, FSD mendalam, Context Map, WBS level 3 | Full test pyramid, Pentest dasar, UAT formal bertahap | Zero-downtime deploy, BAST fisik/digital, garansi 90 hari |
-| **Enterprise** | ≥ 6 bulan, kepatuhan hukum, bank/BUMN | Audit UU PDP, Compliance, Security Gate | Business Case, Formal Charter, PRD, FSD, RTM, DPA | Third-party Pentest, Disaster recovery drill, Formal UAT | CAB Approval, scheduled maintenance window, BAST hukum, SLA |
+| **Small (MVP / Fast-Track)** | 1–4 weeks, 1–3 features, solo user | **Fast-Track Protocol**: Use 1 file `PROJECT_LITE.md` (Combined Modules 01, 02, 03, 05). **Module 04 MANDATORY for**: Web app, Mobile app, Desktop GUI. **Module 04 SKIP for**: CLI tool, API-only backend, cron job, automation script. | Core logic unit tests + local smoke test, UAT directly with business owner | Direct PaaS/Store deploy, simplified BAST format via email |
+| **Medium** | 1–3 months, Auth, DB, Payment/API | 4-Dimensional Feasibility, Market Validation | Modular PRD, Google Stitch Design System, FSD, API Contract | Automated API tests, SIT, signed PIC UAT | CI/CD pipeline, stamped BAST, 60-day warranty |
+| **Large** | 3–6 months, multi-system integration | Initial Architecture Audit, Risk Analysis | Formal PRD, In-depth FSD, Context Map, WBS level 3 | Full test pyramid, Basic Pentest, staged formal UAT | Zero-downtime deploy, physical/digital BAST, 90-day warranty |
+| **Enterprise** | ≥ 6 months, legal compliance, banking/SOE | PDP Law Audit, Compliance, Security Gate | Business Case, Formal Charter, PRD, FSD, RTM, DPA | Third-party Pentest, Disaster recovery drill, Formal UAT | CAB Approval, scheduled maintenance window, legal BAST, SLA |
 
 **Warranty Period by Scale**:
-- Kecil: 30 hari
-- Menengah: 60 hari
-- Besar: 90 hari
-- Enterprise: 90 hari + optional SLA contract
+- Small: 30 days
+- Medium: 60 days
+- Large: 90 days
+- Enterprise: 90 days + optional SLA contract
 
 ---
 
-## 4. Status Modul Eksekusi
+## 4. Execution Module Status
 
-- [x] **Modul 00: Product Discovery & Strategy**: `docs/modules/00-product-discovery-strategy.md` — Riset pasar (TAM/SAM/SOM), analisis kompetitor, riset wawancara pengguna (JTBD), penentuan North Star Metric, dan Value Proposition Canvas. **SKIP jika**: Fast-Track MVP dengan deadline ketat.
-- [x] **Modul 01: Idea & Feasibility**: `docs/modules/01-idea-feasibility.md` — Saringan ide 3 lapis, uji kelayakan 4 dimensi, pemotongan fitur ekstrem, penentuan skala awal.
-- [x] **Modul 02: Discovery & Scope Definition**: `docs/modules/02-discovery-scope.md` — Elisitasi kebutuhan stakeholder, pemetaan peran pengguna, breakdown MoSCoW, penguncian In-Scope vs Out-of-Scope, dan pendaftaran dependensi klien.
-- [x] **Modul 03: [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement**: `docs/modules/03-legal-sow-charter.md` — Penentuan model kontrak, termin pembayaran milestone, pengikatan mutlak Single PIC, protokol Change Request, dan pengamanan Down Payment.
-- [x] **Modul 04B: Design System Foundation & Implementation**: `docs/modules/04B-design-system-foundation.md` — Terminologi DS (Design System vs Design Language vs Component Library), audit inkonsistensi visual, design tokens (primitive + semantic layers), core components (20 essentials), Figma setup & plugins, tooling workflow (Style Dictionary, Storybook, Chromatic), governance model (centralized vs federated), adoption metrics, dan product management untuk DS. **SKIP jika**: MVP solo dev <4 minggu, API-...
-- **Modul 04: UI/UX Design & Specification**: `docs/modules/04-uiux-prototyping.md` — Menghasilkan `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, dan `docs/design/DESIGN_REFERENCES.md`; mencakup arsitektur informasi, sitemap & page inventory berbasis scope, shared component standards, states, responsive behavior, accessibility, asset needs, dan Design Freeze. Google Stitch/prototype hanya opsional jika dipilih user dan lolos review.
-- [x] **Modul 05: Arsitektur & Spesifikasi Teknis (PRD & FSD)**: `docs/modules/05-architecture-specs.md` — Pemilihan tech stack (Boring Tech ladder), skema basis data SQL DDL, kontrak API & matriks error, arsitektur keamanan (UU PDP/AES-256), dan pengesahan FSD.
-- [x] **Modul 05B: System Design & Infrastructure Scalability**: `docs/modules/05B-system-design-infrastructure.md` — Skalabilitas infrastruktur, load balancing, caching layer (Redis), database replication/sharding, asynchronous worker/queues, high availability (Multi-AZ), dan capacity planning. **SKIP jika**: Proyek Kecil (MVP).
-- [x] **Modul 06: Development (Backend, Frontend, Integrasi API)**: `docs/modules/06-development-execution.md` — Setup repo & tooling, migrasi DB & seeding lokal, implementasi API Zod-gated, perakitan UI Stitch, enkripsi streaming AES-256, dan self-smoke test.
-- [x] **Modul 06B: Product Instrumentation & Analytics Setup**: `docs/modules/06B-product-instrumentation.md` — Integrasi Mixpanel/Amplitude/GA4, event taxonomy `verb_noun`, funnel tracking AARRR, A/B testing infrastructure, dashboard North Star Metric, error monitoring Sentry, dan privacy compliance GDPR/UU PDP.
-- [x] **Modul 07: Quality Assurance (Unit Test, SIT, & Security Audit)**: `docs/modules/07-quality-assurance-sit.md` — Piramida pengujian solo dev, SIT sandbox pihak ketiga (Payment/Storage/Email), audit keamanan OWASP/UU PDP, uji beban k6, dan rilis staging.
-- [x] **Modul 08: Data Migration & Seeding**: `docs/modules/08-data-migration-seeding.md` — Protokol data hygiene (Clean-In/Clean-Out), pemetaan kolom sumber-ke-target, sanitasi masking PII Staging, skrip batch ETL atomik, dan rekonsiliasi data sign-off.
-- [x] **Modul 09: [GATE VALIDASI] UAT & Sign-Off Klien di Staging**: `docs/modules/09-uat-client-signoff.md` — Pengujian pengguna di Staging, matriks triase cacat (Severity 1/2/3/CR), penangkisan scope creep, klausul deemed acceptance, dan Berita Acara UAT bertandatangan.
-- [x] **Modul 10: Deployment & Production Go-Live**: `docs/modules/10-deployment-production.md` — Checklist pra-rilis (No Friday Deploy), git merge tagging SemVer, konfigurasi DNS/SSL TLS 1.3, rilis mobile Android Keystore & iOS TestFlight, migrasi DB zero-downtime, dan PVT.
-- [x] **Modul 11: [GATE PENYERAHAN] Pelunasan, Training, BAST, & Handover Repositori**: `docs/modules/11-handover-bast.md` — Penagihan invoice final, jatah kuota training (1–2 sesi), transfer repo Git & kredensial terenkripsi (Bitwarden Send), dan penandatanganan BAST sah bermeterai.
-- [x] **Modul 12: Masa Garansi & Transisi ke Monthly Retainer / SLA**: `docs/modules/12-warranty-sla-retainer.md` — Penegakan batas masa garansi bug-fix murni, matriks SLA respon/resolusi, penanganan darurat insiden post-mortem, dan konversi ke kontrak retainer bulanan berulang.
-- [x] **Modul 13: Product Operations & Continuous Iteration**: `docs/modules/13-product-operations-iteration.md` — Pengumpulan baseline metrik 30 hari pasca-rilis, otomasi feedback loop & NPS, cohort retention analysis, prioritas eksperimen pertumbuhan (RICE), dan pemantauan scaling signals.
-
----
-
-## 5. Direktori Template & Struktur Penempatan Berkas
-
-> 📁 **ATURAN DISTRIBUSI BERKAS MUTLAK (FOLDER HYGIENE)**:
-> - **Folder `docs/pm/`**: Khusus dokumen inisiasi, lingkup, hukum, dan tata kelola (`IDEA_BRIEF.md`, `SCOPE_STATEMENT.md`, `PROJECT_CHARTER.md`, `SOW_CONTRACT.md`, `BAST.md`, dll.).
-> - **Folder `docs/specs/`**: Khusus dokumen spesifikasi teknis dan antarmuka (`PRD.md`, `FSD.md`, `DESIGN_SPEC.md`).
-> - **Root Direktori (`./`)**: DICADANGKAN SECARA EKSKLUSIF HANYA UNTUK 7 BERKAS HARNESS AI (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`), `README.md`, dan konfigurasi framework. **Dilarang menaruh dokumen perencanaan di root!**
-
-### Jalur Cepat (Fast-Track Mode)
-- `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`: Template spesifikasi ramping terpadu (Ide + Scope + Komersial + Skema DB) untuk proyek MVP 1–4 minggu. Disimpan di root (`./PROJECT_LITE.md`). *(Catatan: Modul 04 Google Stitch tetap wajib untuk Web/Mobile).*
-
-### Modul 00 (Aktif)
-- `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`: Disimpan ke **`docs/pm/MARKET_RESEARCH.md`** (Hasil TAM/SAM/SOM, industry trends, regulatory landscape).
-- `templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md`: Disimpan ke **`docs/pm/COMPETITIVE_LANDSCAPE.md`** (Analisis 5-10 kompetitor, feature matrix, SWOT, positioning map).
-- `templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md`: Disimpan ke **`docs/pm/USER_RESEARCH_REPORT.md`** (Rangkuman interview/survey, persona JTBD, user journey, pain matrix).
-- `templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md`: Disimpan ke **`docs/pm/PRODUCT_STRATEGY.md`** (Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars).
-
-### Modul 01 (Aktif)
-- `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`: Disimpan ke **`docs/pm/IDEA_BRIEF.md`** (Ringkasan ide, elevator pitch, 3-filter triage, skor kelayakan).
-
-### Modul 02 (Aktif)
-- `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md`: Disimpan ke **`docs/pm/SCOPE_STATEMENT.md`** (Kesepakatan lingkup MoSCoW, RBAC, batas Out-of-Scope, dependensi SLA).
-
-### Modul 03 (Aktif)
-- `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`: Disimpan ke **`docs/pm/SOW_CONTRACT.md`** (Perjanjian komersial legal, termin pembayaran, liability cap, project charter).
-
-### Modul 04B (Aktif)
-- `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`: Template audit inkonsistensi visual (color inventory, typography, spacing, component duplication). Disimpan ke **`docs/design/DESIGN_SYSTEM_AUDIT.md`**.
-- `templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md`: Template spesifikasi design tokens (primitive + semantic, color/typography/spacing/shadow/motion, platform outputs CSS/iOS/Android/Flutter). Disimpan ke **`tokens/design-tokens.json`** + generated **`dist/css/variables.css`**.
-- `templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md`: Template dokumentasi komponen (props, variants, states, accessibility checklist, usage examples, migration guide). Disimpan ke **`docs/design/COMPONENT_API_SPEC.md`** per komponen.
-
-**Modul 04 (Aktif)**
-- `templates/02-design/DESIGN_MD_TEMPLATE.md`: Disimpan ke root (**`./DESIGN.md`**) sebagai source of truth design tokens dan component standards.
-- `templates/02-design/DESIGN_SPEC_TEMPLATE.md`: Disimpan ke **`docs/specs/DESIGN_SPEC.md`** (Arsitektur informasi, rute URL, page/sub-page inventory berbasis scope, states, responsive behavior, dan lembar Design Freeze).
-- `docs/design/DESIGN_REFERENCES.md`: Dibuat dari keyword pencarian visual untuk Pinterest, Behance, dan Dribbble. Jangan menyalin karya referensi.
-
-### Modul 05 (Aktif)
-- `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`: Disimpan ke **`docs/specs/PRD.md`** (Spesifikasi produk resmi, matriks RBAC, metrik KPI, batasan NFR).
-- `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`: Disimpan ke **`docs/specs/FSD.md`** (Spesifikasi teknis arsitektur, ERD, SQL DDL baku, kontrak API JSON, security blueprint).
-
-### Modul 05B (Aktif)
-- `templates/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md`: Disimpan ke **`docs/specs/SYSTEM_DESIGN_DOC.md`** (Spesifikasi arsitektur sistem skala besar, load balancing, caching, DB partitioning/sharding).
-- `templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md`: Disimpan ke **`docs/specs/CAPACITY_PLANNING.md`** (Proyeksi traffic MAU/RPS, utilisasi CPU/Memory, dan kebutuhan resource server/DB/Redis).
-- `templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md`: Disimpan ke **`docs/specs/DISASTER_RECOVERY_PLAN.md`** (SOP mitigasi bencana RPO/RTO, skenario failover Multi-AZ, dan prosedur recovery).
-- `templates/03-architecture-specs/DESIGN_PATTERN_DECISION_TREE_TEMPLATE.md`: Disimpan ke **`docs/specs/DESIGN_PATTERN_DECISION_TREE.md`** (Pohon keputusan pemilihan software design patterns).
-- `templates/03-architecture-specs/CODE_REVIEW_PATTERN_CHECKLIST_TEMPLATE.md`: Disimpan ke **`docs/specs/CODE_REVIEW_PATTERN_CHECKLIST.md`** (Checklist evaluasi pattern dan anti-pattern review).
-
-### Modul 06 (Aktif - 7 Root Harness Files)
-- `templates/04-dev-execution/AGENTS_TEMPLATE.md`: Disimpan ke root (**`./AGENTS.md`**) — *WAJIB MENIMPA AGENTS.md bawaan framework (seperti Next.js 15), dilarang di-skip!*
-- `templates/04-dev-execution/CONTEXT_TEMPLATE.md`: Disimpan ke root (**`./CONTEXT.md`**) — Ringkasan bisnis & batasan Out-of-Scope.
-- `templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md`: Disimpan ke root (**`./ARCHITECTURE.md`**) — Ringkasan FSD teknis untuk konsumsi AI.
-- `templates/04-dev-execution/CONVENTIONS_TEMPLATE.md`: Disimpan ke root (**`./CONVENTIONS.md`**) — Konvensi gaya kode (kebab-case, Server Components, no barrel).
-- `templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md`: Disimpan ke root (**`./.env.example`**) — Kamus variabel lingkungan baku.
-- `templates/04-dev-execution/TODO_TEMPLATE.md`: Disimpan ke root (**`./TODO.md`**) — Antrean tugas koding atomik AI berurutan.
-- `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`: Disimpan ke **`docs/RUNBOOK_LOCAL.md`** atau root.
-- `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`: Disimpan ke **`docs/VERIFY_LOCAL.md`** atau root.
-
-### Modul 06B (Aktif)
-- `templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md`: Template taksonomi event tracking dengan konvensi `verb_noun`, user properties, dan super properties. Disimpan ke **`docs/analytics/EVENT_TAXONOMY.md`**.
-- `templates/09-product-growth/ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md`: Template rencana implementasi SDK Mixpanel/Amplitude, tracking code locations, GDPR consent management, dan QA checklist. Disimpan ke **`docs/analytics/ANALYTICS_IMPLEMENTATION_PLAN.md`**.
-- `templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md`: Template spesifikasi dashboard North Star Metric, AARRR funnel, cohort analysis, error monitoring, dan alert thresholds. Disimpan ke **`docs/analytics/DASHBOARD_SPEC.md`**.
-
-### Modul 07 (Aktif)
-- `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`: Template workbook SIT (System Integration Testing) terhadap layanan pihak ketiga di Staging.
-- `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`: Template laporan audit celah keamanan OWASP Top 10 dan kepatuhan data pribadi UU PDP.
-
-### Modul 08 (Aktif)
-- `templates/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md`: Template pemetaan kolom sumber ke database SQL, batas tanggung jawab data hygiene, dan aturan transformasi.
-- `templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md`: Template laporan kuantitatif rekonsiliasi baris data terimpor vs ditolak dan lembar Data Sign-Off Klien.
-
-### Modul 09 (Aktif)
-- `templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md`: Template workbook UAT gabungan (panduan pengujian + defect log) bagi pengguna awam di server Staging.
-- `templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`: Dokumen resmi Berita Acara Hasil Uji Terima Pengguna (UAT Sign-Off Report) bertandatangan Single PIC Klien.
-
-### Modul 10 (Aktif)
-- `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`: Template panduan teknis langkah rilis produksi, DNS/SSL check, dan kunci rahasia live.
-- `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`: Template prosedur darurat 15 menit pemulihan rollback jika terjadi kegagalan fatal go-live.
-
-### Modul 11 (Aktif)
-- `templates/07-release-handover/USER_MANUAL_TEMPLATE.md`: Template panduan operasional pengguna bagi staf dan admin sistem.
-- `templates/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md`: Template berita acara pengalihan kepemilikan repositori Git dan penyerahan kredensial terenkripsi.
-- `templates/07-release-handover/BAST_TEMPLATE.md`: Dokumen resmi Berita Acara Serah Terima Pekerjaan (BAST) bermeterai Rp 10.000,- pemicu resmi berjalannya masa garansi.
-
-### Modul 12 (Aktif)
-- `templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md`: Template kebijakan resmi batas garansi, jam kerja layanan, dan definisi galat yang dilindungi.
-- `templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`: Perjanjian kerja sama pemeliharaan bulanan berulang (Monthly Retainer SLA) pemicu pendapatan rutin.
-- `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md`: Prosedur standar operasional (SOP) penanganan insiden darurat produksi dan analisis akar masalah (RCA).
-
-### Modul 13 (Aktif)
-- `templates/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md`: Disimpan ke **`docs/analytics/METRICS_BASELINE_REPORT.md`** (Laporan baseline metrik 30 hari pertama pasca-peluncuran).
-- `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`: Disimpan ke **`docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md`** (Daftar eksperimen pertumbuhan dengan RICE score dan tracking hasil).
-- `templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md`: Disimpan ke **`docs/pm/PRODUCT_HEALTH_DASHBOARD.md`** (Dashboard kesehatan produk untuk review berkala).
+- [x] **Module 00: Product Discovery & Strategy**: `docs/modules/00-product-discovery-strategy.md` — Market research (TAM/SAM/SOM), competitor analysis, user interview research (JTBD), North Star Metric determination, and Value Proposition Canvas. **SKIP if**: Fast-Track MVP with tight deadlines.
+- [x] **Module 01: Idea & Feasibility**: `docs/modules/01-idea-feasibility.md` — 3-filter idea triage, 4-dimensional feasibility testing, extreme feature pruning, initial scale classification.
+- [x] **Module 02: Discovery & Scope Definition**: `docs/modules/02-discovery-scope.md` — Stakeholder requirements elicitation, user role mapping, MoSCoW breakdown, In-Scope vs Out-of-Scope locking, and client dependency register.
+- [x] **Module 03: [COMMERCIAL GATE] Legal SOW, DP, & Single PIC Agreement**: `docs/modules/03-legal-sow-charter.md` — Contract model selection, milestone payment terms, binding Single PIC agreement, Change Request protocol, and Down Payment security.
+- [x] **Module 04B: Design System Foundation & Implementation**: `docs/modules/04B-design-system-foundation.md` — DS terminology (Design System vs Design Language vs Component Library), visual inconsistency audit, design tokens (primitive + semantic layers), core components (20 essentials), Figma setup & plugins, tooling workflow (Style Dictionary, Storybook, Chromatic), governance model (centralized vs federated), adoption metrics, and product management for DS. **SKIP if**: Solo dev MVP <4 weeks, API-only backend.
+- **Module 04: UI/UX Design & Specification**: `docs/modules/04-uiux-prototyping.md` — Produces `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`; covers information architecture, scope-based sitemap & page inventory, shared component standards, states, responsive behavior, accessibility, asset needs, and Design Freeze. Google Stitch/prototype is optional only if chosen by user and passes review.
+- [x] **Module 05: Architecture & Technical Specifications (PRD & FSD)**: `docs/modules/05-architecture-specs.md` — Tech stack selection (Boring Tech ladder), SQL DDL database schema, API contracts & error matrix, security architecture (PDP Law/AES-256), and FSD sign-off.
+- [x] **Module 05B: System Design & Infrastructure Scalability**: `docs/modules/05B-system-design-infrastructure.md` — Infrastructure scalability, load balancing, caching layer (Redis), database replication/sharding, asynchronous workers/queues, high availability (Multi-AZ), and capacity planning. **SKIP if**: Small Project (MVP).
+- [x] **Module 06: Development (Backend, Frontend, API Integration)**: `docs/modules/06-development-execution.md` — Repo & tooling setup, DB migration & local seeding, Zod-gated API implementation, Stitch UI assembly, AES-256 streaming encryption, and self-smoke test.
+- [x] **Module 06B: Product Instrumentation & Analytics Setup**: `docs/modules/06B-product-instrumentation.md` — Mixpanel/Amplitude/GA4 integration, `verb_noun` event taxonomy, AARRR funnel tracking, A/B testing infrastructure, North Star Metric dashboard, Sentry error monitoring, and GDPR/PDP Law privacy compliance.
+- [x] **Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)**: `docs/modules/07-quality-assurance-sit.md` — Solo dev testing pyramid, third-party SIT sandbox (Payment/Storage/Email), OWASP/PDP Law security audit, k6 load testing, and staging release.
+- [x] **Module 08: Data Migration & Seeding**: `docs/modules/08-data-migration-seeding.md` — Data hygiene protocol (Clean-In/Clean-Out), source-to-target column mapping, Staging PII masking sanitation, atomic ETL batch scripts, and data sign-off reconciliation.
+- [x] **Module 09: [VALIDATION GATE] Client UAT & Sign-Off in Staging**: `docs/modules/09-uat-client-signoff.md` — User testing in Staging, defect triage matrix (Severity 1/2/3/CR), scope creep repulsion, deemed acceptance clause, and signed UAT Report.
+- [x] **Module 10: Deployment & Production Go-Live**: `docs/modules/10-deployment-production.md` — Pre-release checklist (No Friday Deploy), git merge SemVer tagging, DNS/SSL TLS 1.3 configuration, mobile release Android Keystore & iOS TestFlight, zero-downtime DB migration, and PVT.
+- [x] **Module 11: [HANDOVER GATE] Settlement, Training, BAST, & Repository Handover**: `docs/modules/11-handover-bast.md` — Final invoice billing, training quota allotment (1–2 sessions), Git repo & encrypted credentials transfer (Bitwarden Send), and legally binding stamped BAST signing.
+- [x] **Module 12: Warranty Period & Transition to Monthly Retainer / SLA**: `docs/modules/12-warranty-sla-retainer.md` — Pure bug-fix warranty boundary enforcement, response/resolution SLA matrix, post-mortem emergency incident handling, and conversion to recurring monthly retainer contract.
+- [x] **Module 13: Product Operations & Continuous Iteration**: `docs/modules/13-product-operations-iteration.md` — 30-day post-launch baseline metrics collection, feedback loop & NPS automation, cohort retention analysis, growth experiment prioritization (RICE), and scaling signal monitoring.
 
 ---
 
-## 6. Referensi & Pengetahuan Taktis
+## 5. Template Directory & File Placement Structure
 
-> ⚠️ **MANDATORY REFERENCE LOADING PROTOCOL**:
-> 
-> **BEFORE executing ANY modul, agent WAJIB load reference files relevant untuk modul tersebut.**
-> 
-> **Modul 00 → LOAD:**
-> 
-> **Modul 01 → LOAD:**
-> - `references/checklists/MODUL_01_ACTION_ITEMS_CHECKLIST.md` (Post-feasibility: Market validation, Formula verification, Security baseline)
-> - `references/checklists/FEASIBILITY_CRITERIA.md` (Rubrik uji 4 dimensi detail)
-> 
-> **Modul 02 → LOAD:**
-> - `references/checklists/MODUL_02_EVALUATION_CHECKLIST.md` (MoSCoW quality check, User Stories INVEST, Database Schema validation, Tech Stack validation, NFR realism, Timeline buffer, Risk completeness, Scope boundaries)
-> - `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md` (Bank pertanyaan elisitasi)
-> 
-> **Format load:**
-> ```python
-> ```
-> 
-> **Jika reference TIDAK di-load, execution INCOMPLETE (missing practical guidance: timeline, budget, scoring rubric, checklist).**
+> 📁 **ABSOLUTE FILE DISTRIBUTION RULES (FOLDER HYGIENE)**:
+> - **Folder `docs/pm/`**: Exclusively for initiation, scoping, legal, and governance documents (`IDEA_BRIEF.md`, `SCOPE_STATEMENT.md`, `PROJECT_CHARTER.md`, `SOW_CONTRACT.md`, `BAST.md`, etc.).
+> - **Folder `docs/specs/`**: Exclusively for technical specification and interface documents (`PRD.md`, `FSD.md`, `DESIGN_SPEC.md`).
+> - **Root Directory (`./`)**: EXCLUSIVELY RESERVED ONLY FOR 7 AI HARNESS FILES (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`), `README.md`, and framework configuration. **Never place planning documents in root!**
 
-### Modul 00 (Aktif)
-- `references/technical/DEEP_RESEARCH_METHODOLOGY.md`: Metodologi riset mendalam regulasi/kepatuhan, competitor deep-dive analysis, dan akuisisi domain knowledge fintech/healthtech/legaltech.
+### Fast-Track Mode
+- `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`: Unified streamlined specification template (Idea + Scope + Commercial + DB Schema) for 1–4 week MVP projects. Saved to root (`./PROJECT_LITE.md`). *(Note: Module 04 Google Stitch remains mandatory for Web/Mobile).*
 
-### Modul 01 (Aktif)
-- `references/checklists/FEASIBILITY_CRITERIA.md`: Rubrik uji 4 dimensi (teknis, bandwidth solo, kepatuhan UU PDP/ITE, ekonomi) dan daftar red-flag pemicu pembatalan proyek (*Kill Switch*).
+### Module 00 (Active)
+- `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`: Saved to **`docs/pm/MARKET_RESEARCH.md`** (TAM/SAM/SOM results, industry trends, regulatory landscape).
+- `templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md`: Saved to **`docs/pm/COMPETITIVE_LANDSCAPE.md`** (5-10 competitor analysis, feature matrix, SWOT, positioning map).
+- `templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md`: Saved to **`docs/pm/USER_RESEARCH_REPORT.md`** (Interview/survey summaries, JTBD personas, user journey, pain matrix).
+- `templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md`: Saved to **`docs/pm/PRODUCT_STRATEGY.md`** (Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars).
 
-### Modul 02 (Aktif)
-- `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md`: Bank pertanyaan 5 pilar elisitasi, taktik membongkar kebutuhan tersembunyi, dan deteksi red-flags klien saat wawancara.
+### Module 01 (Active)
+- `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`: Saved to **`docs/pm/IDEA_BRIEF.md`** (Idea summary, elevator pitch, 3-filter triage, feasibility score).
 
-### Modul 03 (Aktif)
+### Module 02 (Active)
+- `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md`: Saved to **`docs/pm/SCOPE_STATEMENT.md`** (MoSCoW scope agreement, RBAC, Out-of-Scope boundaries, SLA dependencies).
 
-### Modul 04B (Aktif)
-- `references/technical/DESIGN_SYSTEM_GUIDE.md`: Panduan komprehensif design system untuk solo dev dan tim kecil — terminologi, decision trees (build vs adopt vs extend), token architecture, component patterns (composition over configuration, controlled vs uncontrolled), tooling ecosystem (Style Dictionary, Storybook, Chromatic, Figma plugins), adoption strategies (pilot team, codemods, feature flags), governance models (centralized vs federated, RFC process), measuring success (adoption metrics, ROI calculation), common pitfalls & rescue strategies, dan case studies (Shopify Polaris, Airbnb DLS, Solo Dev SaaS).
+### Module 03 (Active)
+- `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`: Saved to **`docs/pm/SOW_CONTRACT.md`** (Legal commercial agreement, payment terms, liability cap, project charter).
 
-### Modul 04 (Aktif)
-- `references/solo/SOLO_UIUX_GUIDE.md`: Pedoman efisiensi desain solo dev, pemilihan pustaka komponen (Shadcn/Tailwind), rasio kontras WCAG 2.1 AA, dan taktik walk-through prototipe bersama klien.
+### Module 04B (Active)
+- `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`: Visual inconsistency audit template (color inventory, typography, spacing, component duplication). Saved to **`docs/design/DESIGN_SYSTEM_AUDIT.md`**.
+- `templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md`: Design tokens specification template (primitive + semantic, color/typography/spacing/shadow/motion, platform outputs CSS/iOS/Android/Flutter). Saved to **`tokens/design-tokens.json`** + generated **`dist/css/variables.css`**.
+- `templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md`: Component documentation template (props, variants, states, accessibility checklist, usage examples, migration guide). Saved to **`docs/design/COMPONENT_API_SPEC.md`** per component.
 
-### Modul 05 (Aktif)
-- `references/solo/SOLO_ARCHITECTURE_GUIDE.md`: Pedoman arsitektur Boring Tech, aturan integritas basis data SQL DDL, standar keamanan OWASP Top 10, enkripsi AES-256, dan kepatuhan UU PDP No. 27/2022.
+### Module 04 (Active)
+- `templates/02-design/DESIGN_MD_TEMPLATE.md`: Saved to root (**`./DESIGN.md`**) as source of truth for design tokens and component standards.
+- `templates/02-design/DESIGN_SPEC_TEMPLATE.md`: Saved to **`docs/specs/DESIGN_SPEC.md`** (Information architecture, URL routes, scope-based page/sub-page inventory, states, responsive behavior, and Design Freeze sheet).
+- `docs/design/DESIGN_REFERENCES.md`: Generated from visual search keywords for Pinterest, Behance, and Dribbble. Do not copy reference works directly.
 
-### Modul 05B (Aktif)
-- `references/solo/SOLO_ARCHITECTURE_GUIDE.md`: Pedoman arsitektur sistem, strategi caching Redis, replikasi database, dan capacity planning solo developer.
-- `references/playbooks/software-design-patterns.md`: Panduan implementasi software design patterns dan prinsip clean code untuk arsitektur terukur.
+### Module 05 (Active)
+- `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`: Saved to **`docs/specs/PRD.md`** (Official product specifications, RBAC matrix, KPI metrics, NFR constraints).
+- `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`: Saved to **`docs/specs/FSD.md`** (Technical architectural specifications, ERD, standard SQL DDL, JSON API contracts, security blueprint).
 
-### Modul 06 (Aktif)
-- `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`: Pola koding produksi solo dev (validasi batas Zod, streaming enkripsi file AES-256-GCM, transaksi penguncian baris pessimistik, presigned URLs, dan skrip uji mandiri tanpa framework).
-- `references/solo/SOLO_ENGINEERING_STANDARDS.md`: Standar rekayasa mendalam (protokol percabangan Git, rilis produksi bersih dari dokumen internal dev, audit keamanan OWASP/UU PDP, pencegahan N+1 query, optimasi aset, dan connection pooling).
+### Module 05B (Active)
+- `templates/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md`: Saved to **`docs/specs/SYSTEM_DESIGN_DOC.md`** (Large-scale system architecture specification, load balancing, caching, DB partitioning/sharding).
+- `templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md`: Saved to **`docs/specs/CAPACITY_PLANNING.md`** (MAU/RPS traffic projection, CPU/Memory utilization, and server/DB/Redis resource requirements).
+- `templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md`: Saved to **`docs/specs/DISASTER_RECOVERY_PLAN.md`** (RPO/RTO disaster mitigation SOP, Multi-AZ failover scenarios, and recovery procedures).
+- `templates/03-architecture-specs/DESIGN_PATTERN_DECISION_TREE_TEMPLATE.md`: Saved to **`docs/specs/DESIGN_PATTERN_DECISION_TREE.md`** (Software design pattern selection decision tree).
+- `templates/03-architecture-specs/CODE_REVIEW_PATTERN_CHECKLIST_TEMPLATE.md`: Saved to **`docs/specs/CODE_REVIEW_PATTERN_CHECKLIST.md`** (Pattern evaluation and anti-pattern code review checklist).
 
-### Modul 06B (Aktif)
-- `references/pm/PM_ANALYTICS_SETUP_GUIDE.md`: Panduan taktis analytics untuk solo dev dan PM — minimal viable analytics, platform selection decision tree (Mixpanel/Amplitude/PostHog/GA4), event taxonomy quickstart, 5 core metrics, AARRR dashboard design, A/B testing statistical significance, error monitoring Sentry, privacy compliance GDPR/UU PDP, cost optimization, dan monthly maintenance routine.
+### Module 06 (Active - 7 Root Harness Files)
+- `templates/04-dev-execution/AGENTS_TEMPLATE.md`: Saved to root (**`./AGENTS.md`**) — *MANDATORY OVERWRITE of framework default AGENTS.md (such as Next.js 15), never skip!*
+- `templates/04-dev-execution/CONTEXT_TEMPLATE.md`: Saved to root (**`./CONTEXT.md`**) — Business summary & Out-of-Scope boundaries.
+- `templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md`: Saved to root (**`./ARCHITECTURE.md`**) — Technical FSD summary for AI consumption.
+- `templates/04-dev-execution/CONVENTIONS_TEMPLATE.md`: Saved to root (**`./CONVENTIONS.md`**) — Code style conventions (kebab-case, Server Components, no barrel files).
+- `templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md`: Saved to root (**`./.env.example`**) — Standard environment variable dictionary.
+- `templates/04-dev-execution/TODO_TEMPLATE.md`: Saved to root (**`./TODO.md`**) — Sequential atomic AI coding task queue.
+- `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`: Saved to **`docs/RUNBOOK_LOCAL.md`** or root.
+- `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`: Saved to **`docs/VERIFY_LOCAL.md`** or root.
 
-### Modul 07 (Aktif)
+### Module 06B (Active)
+- `templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md`: Event tracking taxonomy template with `verb_noun` convention, user properties, and super properties. Saved to **`docs/analytics/EVENT_TAXONOMY.md`**.
+- `templates/09-product-growth/ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md`: Mixpanel/Amplitude SDK implementation plan template, tracking code locations, GDPR consent management, and QA checklist. Saved to **`docs/analytics/ANALYTICS_IMPLEMENTATION_PLAN.md`**.
+- `templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md`: Dashboard specification template for North Star Metric, AARRR funnel, cohort analysis, error monitoring, and alert thresholds. Saved to **`docs/analytics/DASHBOARD_SPEC.md`**.
 
-### Modul 08 (Aktif)
+### Module 07 (Active)
+- `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`: SIT (System Integration Testing) workbook template for third-party services in Staging.
+- `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`: OWASP Top 10 security vulnerability audit report template and PDP Law personal data compliance.
 
-### Modul 09 (Aktif)
+### Module 08 (Active)
+- `templates/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md`: Source column mapping template to SQL database, data hygiene responsibility boundaries, and transformation rules.
+- `templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md`: Quantitative reconciliation report template for imported vs rejected data rows and Client Data Sign-Off sheet.
 
-### Modul 10 (Aktif)
+### Module 09 (Active)
+- `templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md`: Combined UAT workbook template (testing guide + defect log) for non-technical users on the Staging server.
+- `templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`: Official User Acceptance Testing Sign-Off Report (UAT Sign-Off) signed by the Client Single PIC.
 
-### Modul 11 (Aktif)
+### Module 10 (Active)
+- `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`: Technical guide template for production release steps, DNS/SSL check, and live secrets.
+- `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`: Emergency 15-minute rollback procedure template for fatal go-live failure recovery.
 
-### Modul 12 (Aktif)
+### Module 11 (Active)
+- `templates/07-release-handover/USER_MANUAL_TEMPLATE.md`: User operational manual template for system staff and administrators.
+- `templates/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md`: Handover protocol template for Git repository ownership transfer and encrypted credential handover.
+- `templates/07-release-handover/BAST_TEMPLATE.md`: Official Project Handover Certificate (BAST) with legal Rp 10.000 stamp, officially triggering the warranty period.
 
-### Modul 13 (Aktif)
-- `references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md`: Panduan komprehensif continuous product improvement, Build-Measure-Learn loop, cohort retention analysis, churn prevention, dan quarterly roadmap refresh.
+### Module 12 (Active)
+- `templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md`: Official policy template for warranty boundaries, service support hours, and covered defect definitions.
+- `templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`: Recurring monthly maintenance agreement (Monthly Retainer SLA) for recurring revenue.
+- `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md`: Standard operating procedure (SOP) for production emergency incident response and root cause analysis (RCA).
+
+### Module 13 (Active)
+- `templates/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md`: Saved to **`docs/analytics/METRICS_BASELINE_REPORT.md`** (First 30 days post-launch metrics baseline report).
+- `templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`: Saved to **`docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md`** (Growth experiments backlog with RICE scoring and results tracking).
+- `templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md`: Saved to **`docs/pm/PRODUCT_HEALTH_DASHBOARD.md`** (Product health dashboard for periodic review).
+
+---
+
+## 6. Tactical References & Knowledge

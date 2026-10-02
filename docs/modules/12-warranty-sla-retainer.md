@@ -1,79 +1,79 @@
-# Modul 12: Masa Garansi & Transisi ke Monthly Retainer / SLA Support
+# Module 12: Warranty Period & Transition to Monthly Retainer / SLA Support
 
 >
 
-Modul ini adalah tahap kedua belas (fase pamungkas) dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah mengelola masa garansi perbaikan galat (*warranty period*) secara terukur, menetapkan perjanjian tingkat layanan (*Service Level Agreement* / SLA), menangani insiden darurat produksi, dan mengonversi hubungan proyek satu kali (*one-off project*) menjadi sumber pendapatan berulang yang dapat diprediksi: **Kontrak Pemeliharaan Bulanan (Monthly Retainer / SLA Contract)**.
+This module is the twelfth stage (culminating phase) in the software project lifecycle for solo developers. The objective is to manage the bug fix warranty period in a metered manner, establish Service Level Agreements (SLA), handle production emergency incidents, and convert one-off project relationships into predictable recurring revenue: **Monthly Maintenance Contracts (Monthly Retainer / SLA Contract)**.
 
 ---
 
-## 1. Siklus Eksekusi Modul 12
+## 1. Module 12 Execution Cycle
 
 ```text
-[ INPUT: Dokumen BAST Sah Bermeterai dari Modul 11 & Sistem Live di Produksi ]
+[ INPUT: Valid Stamped BAST Document from Module 11 & System Live in Production ]
                                     │
                                     ▼
-[ LANGKAH 1: Penegakan Batasan Masa Garansi Resmi (Warranty Period) ]
-  • Tanggal Mulai: Tepat sejak BAST ditandatangani (Bukan sejak mulai koding)
-  • Durasi: 30 Hari (Kecil/MVP) / 60 Hari (Menengah) / 90 Hari (Besar & Enterprise)
-  • Cakupan Wajib: Murni perbaikan galat (bug fix) yang melanggar spesifikasi FSD/PRD
+[ STEP 1: Enforcement of Official Warranty Boundaries (Warranty Period) ]
+  • Start Date: Exactly when BAST is signed (Not when coding started)
+  • Duration: 30 Days (Small/MVP) / 60 Days (Mid-scale) / 90 Days (Large & Enterprise)
+  • Mandatory Scope: Pure bug fixes that violate FSD/PRD specifications
                                     │
                                     ▼
-[ LANGKAH 2: Penegakan Matriks Respon SLA & Jam Layanan (Working Hours) ]
-  • Jam Layanan Standar: Senin – Jumat 09.00 – 17.00 WIB (Kecuali Retainer Enterprise)
-  • Respon Severity 1 (Sistem Down): Respon < 2 Jam, Resolusi < 24 Jam
-  • Respon Severity 2 (Major): Respon < 8 Jam, Resolusi < 48 Jam
-  • Respon Severity 3 (Minor/Pertanyaan): Hari kerja berikutnya
+[ STEP 2: Enforcement of SLA Response Matrix & Working Hours ]
+  • Standard Working Hours: Monday – Friday 09:00 – 17:00 WIB (Except Enterprise Retainer)
+  • Severity 1 Response (System Down): Response < 2 Hours, Resolution < 24 Hours
+  • Severity 2 Response (Major): Response < 8 Hours, Resolution < 48 Hours
+  • Severity 3 Response (Minor/Question): Next business day
                                     │
                                     ▼
-[ LANGKAH 3: Penanganan Insiden Darurat Produksi (Break-Glass SOP) ]
-  • Triase Insiden Cepat Melalui Sentry & Uptime Monitor
-  • Eksekusi Perbaikan di Branch fix/* ──► Hotfix Staging ──► Push Tag ke main
-  • Dokumentasi Post-Mortem Ringkas jika Terjadi Downtime
+[ STEP 3: Production Emergency Incident Handling (Break-Glass SOP) ]
+  • Rapid Incident Triage via Sentry & Uptime Monitor
+  • Execute Fix on fix/* Branch ──► Hotfix Staging ──► Push Tag to main
+  • Concise Post-Mortem Documentation in Case of Downtime
                                     │
                                     ▼
-[ LANGKAH 4: Transisi Menuju Kontrak Retainer Bulanan (Recurring Revenue) ]
-  • Kirim Proposal Paket Pemeliharaan (Bronze / Silver / Gold) 14 Hari Sebelum Garansi Habis
-  • Negosiasi & Penandatanganan Kontrak SLA Retainer Bulanan
-  • Penyiapan Jadwal Pemeliharaan Preventif (Update OS, Patching, Audit Backup)
+[ STEP 4: Transition to Monthly Retainer Contract (Recurring Revenue) ]
+  • Send Maintenance Package Proposal (Bronze / Silver / Gold) 14 Days Before Warranty Expires
+  • Negotiate & Sign Monthly SLA Retainer Contract
+  • Establish Preventive Maintenance Schedule (OS Updates, Patching, Backup Audits)
                                     │
                                     ▼
-[ OUTPUT: Dokumen WARRANTY_POLICY.md & Kontrak SLA_RETAINER_CONTRACT.md ]
+[ OUTPUT: WARRANTY_POLICY.md Document & SLA_RETAINER_CONTRACT.md Contract ]
 ```
 
 ---
 
-## 2. Prinsip Perlindungan Solo Developer: "Garansi vs Retainer"
+## 2. Solo Developer Protection Principles: "Warranty vs Retainer"
 
-Klien sering mengira bahwa setelah membeli software, pengembang berkewajiban merawat sistem secara gratis seumur hidup. Solo developer wajib membedakan dua konsep ini secara tegas:
+Clients often assume that after purchasing software, the developer is obligated to maintain the system for free for life. The solo developer must strictly distinguish between these two concepts:
 
-| Parameter | Masa Garansi (Warranty) | Kontrak Pemeliharaan (Monthly Retainer) |
+| Parameter | Warranty Period | Maintenance Contract (Monthly Retainer) |
 | :--- | :--- | :--- |
-| **Status Biaya** | **GRATIS** (Sudah termasuk dalam kontrak awal). | **BERBAYAR BULANAN** (Biaya rutin di muka). |
-| **Jangka Waktu** | Terbatas (30 / 60 / 90 hari kalender). | Berkelanjutan (Perjanjian 6 atau 12 bulan). |
-| **Cakupan Pekerjaan**| **HANYA BUG FIX MURNI**: Perbaikan fungsi yang terbukti tidak sesuai dengan FSD/PRD. | Pemantauan server, pembaruan versi library/keamanan, verifikasi backup DB berkala, dan jatah jam pengembangan fitur minor. |
-| **Fitur Baru** | **DILARANG MASUK**: Wajib lewat Change Request (CR). | Termasuk dalam jatah jam kerja bulanan (*monthly hours quota*). |
-| **Penyebab Eksternal**| **GUGUR**: Jika server diubah pihak ketiga atau API pihak ketiga berubah format. | Ditangani menggunakan alokasi jam retainer bulanan. |
+| **Cost Status** | **FREE** (Included in initial contract). | **PAID MONTHLY** (Routine upfront recurring fee). |
+| **Duration** | Limited (30 / 60 / 90 calendar days). | Ongoing (6 or 12-month agreement). |
+| **Scope of Work** | **STRICTLY PURE BUG FIXES ONLY**: Repairing functionality proven inconsistent with FSD/PRD. | Server monitoring, library/security version updates, regular DB backup verification, and minor feature development hourly quota. |
+| **New Features** | **STRICTLY PROHIBITED**: Must go through Change Request (CR). | Included in the monthly hours quota. |
+| **External Causes** | **VOID**: If server is modified by third parties or third-party APIs change format. | Handled using the monthly retainer hours allocation. |
 
 ---
 
-## 3. Langkah demi Langkah Eksekusi
+## 3. Step-by-Step Execution
 
-### Langkah 1: Sosialisasi Kebijakan Garansi (`WARRANTY_POLICY.md`)
-1. Bersamaan dengan penyerahan BAST (Modul 11), serahkan dokumen **`WARRANTY_POLICY.md`** kepada Single PIC Klien.
-2. Tegaskan saluran komunikasi resmi:
-   - Laporan bug wajib melalui email resmi atau satu grup koordinasi teknis.
-   - Dilarang mengirimkan pesan bug ke nomor pribadi solo developer di luar jam kerja (kecuali server berstatus *Critical Down*).
+### Step 1: Warranty Policy Socialization (`WARRANTY_POLICY.md`)
+1. Concurrently with the handover of the BAST (Module 11), deliver the **`WARRANTY_POLICY.md`** document to the Client Single PIC.
+2. Affirm official communication channels:
+   - Bug reports must go through official email or a single technical coordination group.
+   - Sending bug messages to the solo developer's personal number outside working hours is strictly prohibited (unless the server is in *Critical Down* status).
 
-### Langkah 2: Triase Insiden & Eksekusi Hotfix
-Jika klien melaporkan adanya kendala di produksi selama masa garansi:
-1. Periksa dashboard Sentry untuk melihat *stack trace* dan riwayat error.
-2. Buat branch perbaikan dari `main`:
+### Step 2: Incident Triage & Hotfix Execution
+If the client reports an issue in production during the warranty period:
+1. Inspect the Sentry dashboard to view stack traces and error history.
+2. Create a fix branch from `main`:
    ```bash
    git checkout main
    git checkout -b fix/issue-critical-payment
    ```
-3. Koding perbaikan, jalankan `pnpm run test:smoke` lokal.
-4. Merge ke `staging` untuk verifikasi kilat, lalu merge ke `main` dan beri tag hotfix:
+3. Code the fix, run local `pnpm run test:smoke`.
+4. Merge to `staging` for rapid verification, then merge to `main` and tag the hotfix:
    ```bash
    git checkout main
    git merge --no-ff fix/issue-critical-payment
@@ -81,159 +81,159 @@ Jika klien melaporkan adanya kendala di produksi selama masa garansi:
    git push origin main --tags
    ```
 
-### Langkah 3: Negosiasi Transisi ke Retainer Bulanan (14 Hari Sebelum Garansi Habis)
-Dua minggu sebelum masa garansi berakhir, kirimkan surat penawaran pemeliharaan rutin (*Retainer Proposal*). 
+### Step 3: Negotiating Transition to Monthly Retainer (14 Days Before Warranty Expires)
+Two weeks before the warranty period ends, send a routine maintenance proposal (*Retainer Proposal*).
 
-**Otomasi Pengingat**: Atur calendar reminder atau cron job untuk mengirim proposal otomatis 14 hari sebelum tanggal garansi habis:
+**Reminder Automation**: Configure a calendar reminder or cron job to automatically send the proposal 14 days before the warranty expiration date:
 ```bash
-# Contoh cron job: Kirim reminder proposal retainer
-# Tambahkan ke crontab atau gunakan scheduler layanan (Hermes cron / GitHub Actions)
+# Example cron job: Send retainer proposal reminder
+# Add to crontab or use a service scheduler (Hermes cron / GitHub Actions)
 0 9 * * * check_warranty_expiry_and_notify.sh
 ```
 
-Tawarkan 3 opsi paket:
+Offer 3 package tiers:
 
-1. **Paket Bronze (Pemeliharaan Dasar & Keamanan)**:
-   - Pemantauan server 24/7 (Uptime & Sentry).
-   - Pembaruan patch keamanan dependensi dan database setiap bulan.
-   - Verifikasi integritas cadangan data (*daily backup restore test*).
-   - Alokasi: 5 Jam kerja konsultasi teknis / bulan.
-2. **Paket Silver (Pemeliharaan Standar & Optimasi)**:
-   - Seluruh fasilitas Paket Bronze.
-   - Alokasi **15 Jam kerja / bulan** untuk penambahan fitur minor, perbaikan antarmuka, atau perubahan format laporan.
-   - SLA Respon tanggap < 4 jam di hari kerja.
-3. **Paket Gold (Enterprise SLA & Prioritas Penuh)**:
-   - Seluruh fasilitas Paket Silver.
-   - Alokasi **30 Jam kerja / bulan** untuk pengembangan berkelanjutan.
-   - Dukungan siaga darurat (*On-Call Support*) di akhir pekan jika sistem mengalami kegagalan kritis (*Severity 1*).
+1. **Bronze Package (Basic Maintenance & Security)**:
+   - 24/7 server monitoring (Uptime & Sentry).
+   - Monthly dependency security patching and database maintenance.
+   - Backup data integrity verification (*daily backup restore test*).
+   - Allocation: 5 Technical consultation hours / month.
+2. **Silver Package (Standard Maintenance & Optimization)**:
+   - All facilities of the Bronze Package.
+   - Allocation of **15 Working hours / month** for minor feature additions, UI adjustments, or report format changes.
+   - Responsive SLA response time < 4 hours on business days.
+3. **Gold Package (Enterprise SLA & Full Priority)**:
+   - All facilities of the Silver Package.
+   - Allocation of **30 Working hours / month** for continuous development.
+   - On-call emergency weekend support (*On-Call Support*) if the system encounters a critical failure (*Severity 1*).
 
 ---
 
-## 4. Adaptasi Berdasarkan Skala Proyek
+## 4. Adaptation by Project Scale
 
-| Parameter Pasca-Proyek | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
+| Post-Project Parameter | Small Scale (MVP / Freelance) | Mid-Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
 | :--- | :--- | :--- | :--- |
-| **Durasi Garansi** | 30 Hari Kalender | 60 Hari Kalender | 90 Hari Kalender |
-| **SLA Respon Bug** | Respon 1x24 jam di hari kerja | Respon 4–8 jam di hari kerja | Respon 1–2 jam dengan eskalasi darurat |
-| **Model Retainer** | Opsi perbaikan insidental (*Hourly T&M*) | Paket Retainer Silver (10–15 jam/bulan) | Kontrak SLA Enterprise formal (Bilingual) |
-| **Penagihan Retainer**| Invoice dikirim setelah jam dipakai | Ditagih di muka setiap tanggal 1 per bulan | Kontrak tahunan dibayar per kuartal/tahun |
+| **Warranty Duration** | 30 Calendar Days | 60 Calendar Days | 90 Calendar Days |
+| **Bug Response SLA** | Response within 1x24 hours on business days | Response within 4–8 hours on business days | Response within 1–2 hours with emergency escalation |
+| **Retainer Model** | Incidental repair option (*Hourly T&M*) | Silver Retainer Package (10–15 hours/month) | Formal Enterprise SLA Contract (Bilingual) |
+| **Retainer Invoicing** | Invoiced after hours are consumed | Invoiced upfront on the 1st of every month | Annual contract paid quarterly/annually |
 
 ---
 
-## 5. Artefak Keluaran (Deliverables)
+## 5. Output Deliverables
 
-> 📁 **ATURAN LOKASI BERKAS MUTLAK**:
-> Seluruh dokumen kebijakan garansi, kontrak retainer, dan laporan insiden WAJIB disimpan di dalam folder **`docs/pm/`**.
+> 📁 **ABSOLUTE FILE LOCATION RULES**:
+> All warranty policy documents, retainer contracts, and incident reports MUST be stored inside the **`docs/pm/`** folder.
 
-Modul ini menghasilkan 3 dokumen tata kelola pemeliharaan:
-1. **`docs/pm/WARRANTY_POLICY.md`**: Dokumen kebijakan resmi batas garansi, jam kerja layanan, dan definisi galat yang dilindungi (menggunakan `templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md`).
-2. **`docs/pm/SLA_RETAINER_CONTRACT.md`**: Dokumen kontrak kerja sama pemeliharaan bulanan berulang (*Monthly Retainer Agreement*) (menggunakan `templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`).
-3. **`docs/pm/INCIDENT_RESPONSE.md`**: Prosedur standar operasional (SOP) penanganan insiden darurat produksi bagi solo developer (menggunakan `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md`).
-
----
-
-## 6. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
-
-[GATE] Modul 12 dinyatakan **BERHASIL & SIKLUS PROYEK 100% PURNA** jika:
-- [x] Masa garansi 30/60/90 hari kalender telah dilewati tanpa ada sisa tiket Severity 1 & 2 yang menggantung.
-- [x] Dokumen `docs/pm/WARRANTY_POLICY.md` telah diterbitkan.
-- [x] Klien telah menandatangani lembar penutupan garansi atau telah resmi menandatangani Kontrak Retainer Bulanan (`docs/pm/SLA_RETAINER_CONTRACT.md`).
-- [x] Sistem beroperasi stabil secara mandiri di server produksi dengan pemantauan otomatis aktif.
+This module produces 3 maintenance governance documents:
+1. **`docs/pm/WARRANTY_POLICY.md`**: Official policy document defining warranty boundaries, service working hours, and covered bug definitions (using `templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md`).
+2. **`docs/pm/SLA_RETAINER_CONTRACT.md`**: Recurring monthly maintenance partnership contract (*Monthly Retainer Agreement*) (using `templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`).
+3. **`docs/pm/INCIDENT_RESPONSE.md`**: Standard operating procedure (SOP) for handling production emergency incidents for solo developers (using `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md`).
 
 ---
 
-## 🛑 PROTOKOL PENUTUPAN SIKLUS HIDUP (LIFECYCLE COMPLETION)
+## 6. [GATE] Exit Criteria
 
-Setelah seluruh tahapan Modul 12 selesai:
+[GATE] Module 12 is declared **SUCCESSFUL & PROJECT LIFECYCLE 100% COMPLETE** if:
+- [x] The 30/60/90 calendar day warranty period has passed with no pending Severity 1 & 2 tickets unresolved.
+- [x] Document `docs/pm/WARRANTY_POLICY.md` has been issued.
+- [x] The client has signed the warranty sign-off sheet or officially signed the Monthly Retainer Contract (`docs/pm/SLA_RETAINER_CONTRACT.md`).
+- [x] The system operates stably and autonomously on production servers with active automated monitoring.
 
-### **LANGKAH 0: VERIFIKASI EKSISTENSI BERKAS (BLOCKING CHECK)**
+---
 
-**WAJIB DILAKUKAN SEBELUM PENUTUPAN**:
+## 🛑 LIFECYCLE COMPLETION PROTOCOL
 
-1. **Cek keberadaan file output** menggunakan salah satu metode:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/WARRANTY_POLICY.md"` → harus return `True`
-   - Read tool: `read_file('docs/pm/WARRANTY_POLICY.md')` → harus sukses tanpa error
+After all stages of Module 12 are completed:
 
-2. **JIKA FILE TIDAK ADA**:
-   - ❌ **STOP IMMEDIATELY** - jangan lanjut ke closure
-   - ❌ **JANGAN tampilkan ucapan selamat** ke user
-   - ✅ **REPORT ERROR** ke user:
+### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
+
+**MANDATORY BEFORE CLOSURE**:
+
+1. **Check output file existence** using one of the following methods:
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/WARRANTY_POLICY.md"` → must return `True`
+   - Read tool: `read_file('docs/pm/WARRANTY_POLICY.md')` → must succeed without error
+
+2. **IF FILE DOES NOT EXIST**:
+   - ❌ **STOP IMMEDIATELY** - do not proceed to closure
+   - ❌ **DO NOT display congratulations** to user
+   - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File WARRANTY_POLICY.md tidak tercipta.
-     Module 12 INCOMPLETE - lifecycle tidak bisa ditutup.
+     CRITICAL ERROR: File WARRANTY_POLICY.md was not created.
+     Module 12 INCOMPLETE - lifecycle cannot be closed.
      
-     Kemungkinan penyebab:
-     - Write permission denied pada folder docs/pm/
-     - Path typo di tool call
+     Probable causes:
+     - Write permission denied on docs/pm/ folder
+     - Path typo in tool call
      - Disk full
      
-     Tolong investigasi issue ini sebelum closure.
+     Please investigate this issue before closure.
      ```
-   - ✅ **END TURN** dan tunggu user fix issue
+   - ✅ **END TURN** and wait for user to fix issue
 
-3. **HANYA JIKA FILE EXISTS**: Lanjut ke closure di bawah
+3. **ONLY IF FILE EXISTS**: Proceed to closure below
 
 ---
 
-### **LANGKAH 1: LIFECYCLE CLOSURE**
+### **STEP 1: LIFECYCLE CLOSURE**
 
-1. **Verifikasi warranty policy**:
+1. **Verify warranty policy**:
    - [ ] `read_file('docs/pm/WARRANTY_POLICY.md')` → Confirm warranty period, coverage, exclusions documented
    - [ ] Confirm no pending Severity 1/2 tickets
    - [ ] Confirm monitoring active and stable
-2. Tampilkan ucapan selamat dan rangkuman purna karya kepada pengguna.
+2. Display congratulations and project completion summary to user.
 3. **DECISION POINT**: Determine project closure type:
 
 ---
 
-### **LANGKAH 2: PROJECT CLOSURE TYPE ASSESSMENT**
+### **STEP 2: PROJECT CLOSURE TYPE ASSESSMENT**
 
 **A. Client Project (Delivery & Exit)**
-- [ ] Client akan maintain sendiri atau hire in-house team
-- [ ] Source code dan credentials sudah diserahkan (M11)
-- [ ] Warranty period berakhir
+- [ ] Client will maintain internally or hire in-house team
+- [ ] Source code and credentials already handed over (M11)
+- [ ] Warranty period expired
 
 **Action**: 
-> *"Masa garansi [30/60/90 hari] telah berakhir. Seluruh deliverable telah diserahkan. Proyek ini dinyatakan SELESAI 100%. Terima kasih atas kepercayaannya!*
+> *"The [30/60/90 day] warranty period has expired. All deliverables have been handed over. This project is officially declared 100% COMPLETE. Thank you for your trust!*
 > 
-> *Optional: Kami menyediakan Monthly Retainer (Rp X/bulan) untuk support ongoing. Apakah tertarik?"*
+> *Optional: We offer a Monthly Retainer (Rp X/month) for ongoing support. Are you interested?"*
 
-**AKHIRI RESPON (END TURN)** - Lifecycle complete.
+**END TURN** - Lifecycle complete.
 
 ---
 
 **B. In-House Product / Ongoing Service**
-- [ ] Product milik sendiri (bukan client project)
-- [ ] Atau: Client sign Monthly Retainer / SLA contract
-- [ ] Product akan terus dikembangkan & dioperasikan
+- [ ] Product is self-owned (not a client project)
+- [ ] Or: Client signed Monthly Retainer / SLA contract
+- [ ] Product will continue to be developed & operated
 
-**Action**: **TRANSISI KE MODUL 13** (Product Operations & Continuous Iteration)
+**Action**: **TRANSITION TO MODULE 13** (Product Operations & Continuous Iteration)
 
-> *"Masa garansi initial launch telah selesai. System stabil dan monitoring aktif.*
+> *"The initial launch warranty period has concluded. The system is stable and monitoring is active.*
 > 
-> *Untuk product operations berkelanjutan, lanjutkan ke **Modul 13: Product Operations & Continuous Iteration** untuk:*
-> - *Baseline metrics 30 hari pasca-launch*
+> *For ongoing product operations, proceed to **Module 13: Product Operations & Continuous Iteration** for:*
+> - *30-day post-launch baseline metrics*
 > - *Continuous feedback loop & prioritization*
 > - *Growth experiments & A/B testing*
 > - *Scaling signal monitoring*
 >
-> *Apakah siap memulai Modul 13?"*
+> *Are you ready to start Module 13?"*
 
-**AKHIRI RESPON (END TURN)** - Tunggu user approval sebelum load Modul 13.
+**END TURN** - Wait for user approval before loading Module 13.
 
 ---
 
 **C. Retainer / SLA Maintenance Only (No Active Development)**
-- [ ] Client sign SLA contract untuk bug-fix & monitoring saja
-- [ ] No new features atau growth experiments planned
+- [ ] Client signed SLA contract for bug fixes & monitoring only
+- [ ] No new features or growth experiments planned
 - [ ] Maintenance mode (incident response only)
 
 **Action**:
-> *"SLA contract aktif. System dalam maintenance mode. Incident monitoring berjalan.*
+> *"SLA contract active. System in maintenance mode. Incident monitoring running.*
 > 
-> *Jika suatu saat butuh new features atau growth optimization, kita bisa aktifkan Modul 13 (Product Operations). Untuk sekarang, siklus development SELESAI."*
+> *If new features or growth optimization are needed in the future, we can activate Module 13 (Product Operations). For now, the development lifecycle is COMPLETE."*
 
-**AKHIRI RESPON (END TURN)** - Lifecycle complete (maintenance-only mode).
+**END TURN** - Lifecycle complete (maintenance-only mode).
 
 ---
 
