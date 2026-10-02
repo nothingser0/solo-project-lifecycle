@@ -281,8 +281,10 @@ your-project/
 
 ### Audit & Quality
 - **Audit Report**: `audit/REPORT.md`
-- **Remediation Status**: `audit/REMAINING_FINDINGS_TODO.md` (59/59 fixed)
-- **Legal Review**: `audit/LEGAL_REVIEW_TODO.md` (F033-F036 pending lawyer)
+- **Remediation Status**: 59/59 findings fixed (100%)
+- **Legal Review Pending**: F033-F037 (4 HIGH) require Indonesian lawyer review (Rp 5-10M, 1-2 weeks)
+- **Production Ready**: ✅ All Critical + High security/functionality issues resolved
+- **Framework Weaknesses**: `audit/FRAMEWORK_WEAKNESSES.md` (14 gaps identified, 8/12 fixed)
 
 ---
 
@@ -328,6 +330,19 @@ Contributions welcome! Framework ini open-source dan aktif dikembangkan.
 Copyright (c) 2024-2026 Solo Project Lifecycle Contributors
 
 Permission granted to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies. See LICENSE file for full terms.
+
+---
+
+## 📌 Versioning
+
+This project follows [Semantic Versioning](https://semver.org/):
+- **MAJOR** (x.0.0): Breaking changes (module structure, template relocations)
+- **MINOR** (1.x.0): New features (modules, templates, references)
+- **PATCH** (1.0.x): Bug fixes (typos, clarifications, content updates)
+
+**Current version**: v1.0.0  
+**Changelog**: See [CHANGELOG.md](CHANGELOG.md)  
+**Upgrade guide**: See migration docs when upgrading major versions
 
 ---
 
