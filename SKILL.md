@@ -129,8 +129,7 @@ FASE RILIS & PENUTUPAN:
 - `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md`: Disimpan ke **`docs/pm/SCOPE_STATEMENT.md`** (Kesepakatan lingkup MoSCoW, RBAC, batas Out-of-Scope, dependensi SLA).
 
 ### Modul 03 (Aktif)
-- `templates/archive/commercial/PROJECT_CHARTER_TEMPLATE.md`: Disimpan ke **`docs/pm/PROJECT_CHARTER.md`** (Wewenang Single PIC, objektif bisnis, milestone global). *(Wajib dibuat juga untuk solo dev product)*.
-- `templates/archive/commercial/SOW_CONTRACT_TEMPLATE.md`: Disimpan ke **`docs/pm/SOW_CONTRACT.md`** (Perjanjian komersial legal, termin pembayaran, liability cap).
+- `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`: Disimpan ke **`docs/pm/SOW_CONTRACT.md`** (Perjanjian komersial legal, termin pembayaran, liability cap, project charter).
 
 ### Modul 04B (Aktif)
 - `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`: Template audit inkonsistensi visual (color inventory, typography, spacing, component duplication). Disimpan ke **`docs/design/DESIGN_SYSTEM_AUDIT.md`**.
@@ -169,23 +168,20 @@ FASE RILIS & PENUTUPAN:
 - `templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md`: Template spesifikasi dashboard North Star Metric, AARRR funnel, cohort analysis, error monitoring, dan alert thresholds. Disimpan ke **`docs/analytics/DASHBOARD_SPEC.md`**.
 
 ### Modul 07 (Aktif)
-- `templates/archive/qa/TEST_PLAN_SIT_TEMPLATE.md`: Template rencana pengujian integrasi sistem (SIT) terhadap layanan pihak ketiga di Staging.
+- `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`: Template workbook SIT (System Integration Testing) terhadap layanan pihak ketiga di Staging.
 - `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`: Template laporan audit celah keamanan OWASP Top 10 dan kepatuhan data pribadi UU PDP.
-- `templates/archive/qa/SIT_REPORT_TEMPLATE.md`: Laporan resmi bukti kelulusan pengujian integrasi sistem (SIT Pass) prasyarat pembukaan sesi UAT Klien.
 
 ### Modul 08 (Aktif)
 - `templates/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md`: Template pemetaan kolom sumber ke database SQL, batas tanggung jawab data hygiene, dan aturan transformasi.
 - `templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md`: Template laporan kuantitatif rekonsiliasi baris data terimpor vs ditolak dan lembar Data Sign-Off Klien.
 
 ### Modul 09 (Aktif)
-- `templates/archive/uat/UAT_SCENARIOS_TEMPLATE.md`: Template panduan pengujian langkah demi langkah bagi pengguna awam di server Staging.
-- `templates/archive/uat/UAT_DEFECT_LOG_TEMPLATE.md`: Template lembar kerja pelacakan temuan kendala UAT, matriks triase severity, dan status resolusi.
+- `templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md`: Template workbook UAT gabungan (panduan pengujian + defect log) bagi pengguna awam di server Staging.
 - `templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`: Dokumen resmi Berita Acara Hasil Uji Terima Pengguna (UAT Sign-Off Report) bertandatangan Single PIC Klien.
 
 ### Modul 10 (Aktif)
-- `templates/archive/deploy/DEPLOYMENT_RUNBOOK_TEMPLATE.md`: Template panduan teknis langkah rilis produksi, DNS/SSL check, dan kunci rahasia live.
+- `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`: Template panduan teknis langkah rilis produksi, DNS/SSL check, dan kunci rahasia live.
 - `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`: Template prosedur darurat 15 menit pemulihan rollback jika terjadi kegagalan fatal go-live.
-- `templates/archive/deploy/GO_LIVE_REPORT_TEMPLATE.md`: Dokumen resmi Laporan Verifikasi Peluncuran Sistem (Go-Live Report) dengan bukti operasional stabil.
 
 ### Modul 11 (Aktif)
 - `templates/07-release-handover/USER_MANUAL_TEMPLATE.md`: Template panduan operasional pengguna bagi staf dan admin sistem.

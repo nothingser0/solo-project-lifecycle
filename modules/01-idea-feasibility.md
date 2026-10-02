@@ -4,7 +4,7 @@
 > - `references/improvements/MODUL_01_IMPROVEMENTS.md` (Timeline estimation, Scoring rubric 5/4/3/2/1, Gate FAIL protocol, Pre-checklist, Risk appetite)
 > - `references/checklists/MODUL_01_ACTION_ITEMS_CHECKLIST.md` (Post-feasibility action items: Market validation, Formula verification, Security baseline)
 > - `references/checklists/FEASIBILITY_CRITERIA.md` (Detailed 4-dimension feasibility rubric)
-> - `references/pm/RICE_SCORING_GUIDE.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
+> - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
 >
 > **MANDATORY: Load references BEFORE executing this module**:
 > - Read: `references/improvements/MODUL_01_IMPROVEMENTS.md`
@@ -197,7 +197,6 @@ Contoh:
 - Story B: (50 × 2 × 0.8) / 2.0 = **40** (prioritas rendah)
 
 *Worksheet lengkap: `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`*
-*Panduan scoring RICE: `references/pm/RICE_SCORING_GUIDE.md`*
 
 ### 5.5 Jira/Linear Project Setup
 
