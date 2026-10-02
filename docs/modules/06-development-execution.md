@@ -1112,20 +1112,26 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    mkdir ../temp_scaffold
    cd ../temp_scaffold
    pnpm create next-app@latest . --typescript --tailwind --app --no-src-dir=false --import-alias "@/*"
-  
+ 
    # Copy framework files to project folder
    cd ../project_folder
    cp -r ../temp_scaffold/* .
    cp -r ../temp_scaffold/.* . 2>/dev/null || true
-  
+ 
    # Cleanup temp
    rm -rf ../temp_scaffold
    ```
-   
-   **Agent: After scaffold, overwrite AGENTS.md boilerplate**:
+  
+  **Agent: Deploy staged harness files to root (overwrites Next.js AGENTS.md boilerplate)**:
    ```
-   Source: skill://solo-project-lifecycle/templates/04-dev-execution/nextjs/AGENTS.md
-   Target: ./AGENTS.md (overwrite create-next-app boilerplate)
+  Copy from staging to root:
+    cp docs/harness-root/AGENTS.md ./AGENTS.md
+    cp docs/harness-root/ARCHITECTURE.md ./ARCHITECTURE.md
+    cp docs/harness-root/CONTEXT.md ./CONTEXT.md
+    cp docs/harness-root/CONVENTIONS.md ./CONVENTIONS.md
+    cp docs/harness-root/DESIGN.md ./DESIGN.md
+    cp docs/harness-root/TODO.md ./TODO.md
+    cp docs/harness-root/.env.example ./.env.example
    ```
 
    **Laravel Protocol**:
@@ -1133,22 +1139,11 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    # Direct scaffold (no conflict)
    composer create-project laravel/laravel .
    ```
-   
-   **Agent: Create 7 root harness files**:
+  
+  **Agent: Deploy staged harness files to root**:
    ```
-   Read from skill://solo-project-lifecycle/templates/04-dev-execution/
-   Write to user's project root (./):
-   
-   Stack-specific (laravel):
-     - ./AGENTS.md         ← laravel/AGENTS.md
-     - ./ARCHITECTURE.md   ← laravel/ARCHITECTURE.md
-     - ./CONVENTIONS.md    ← laravel/CONVENTIONS.md
-     - ./.env.example      ← laravel/ENV_EXAMPLE.md
-   
-   Universal:
-     - ./CONTEXT.md        ← CONTEXT_TEMPLATE.md
-     - ./DESIGN.md         ← ../02-design/DESIGN_MD_TEMPLATE.md
-     - ./TODO.md           ← TODO_TEMPLATE.md
+  Copy from staging to root:
+    cp docs/harness-root/* ./
    ```
 
    **Django/FastAPI Protocol**:
@@ -1156,22 +1151,11 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    # Direct init
    poetry init  # or: django-admin startproject myproject .
    ```
-   
-   **Agent: Create 7 root harness files**:
+  
+  **Agent: Deploy staged harness files to root**:
    ```
-   Read from skill://solo-project-lifecycle/templates/04-dev-execution/
-   Write to user's project root (./):
-   
-   Stack-specific (django):
-     - ./AGENTS.md         ← django/AGENTS.md
-     - ./ARCHITECTURE.md   ← django/ARCHITECTURE.md
-     - ./CONVENTIONS.md    ← django/CONVENTIONS.md
-     - ./.env.example      ← django/ENV_EXAMPLE.md
-   
-   Universal:
-     - ./CONTEXT.md        ← CONTEXT_TEMPLATE.md
-     - ./DESIGN.md         ← ../02-design/DESIGN_MD_TEMPLATE.md
-     - ./TODO.md           ← TODO_TEMPLATE.md
+  Copy from staging to root:
+    cp docs/harness-root/* ./
    ```
 
    **Flutter Protocol**:
@@ -1180,30 +1164,19 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    mkdir ../temp_scaffold
    cd ../temp_scaffold
    flutter create --org com.client --project-name legal_vault .
-  
+ 
    # Copy to project folder
    cd ../project_folder
    cp -r ../temp_scaffold/* .
-   
+  
    # Cleanup
    rm -rf ../temp_scaffold
    ```
-   
-   **Agent: Create 7 root harness files** (no AGENTS.md conflict):
+  
+  **Agent: Deploy staged harness files to root**:
    ```
-   Read from skill://solo-project-lifecycle/templates/04-dev-execution/
-   Write to user's project root (./):
-   
-   Stack-specific (flutter - use generic if no flutter template):
-     - ./AGENTS.md         ← go/AGENTS.md (adapt for Dart/Flutter)
-     - ./ARCHITECTURE.md   ← go/ARCHITECTURE.md
-     - ./CONVENTIONS.md    ← go/CONVENTIONS.md
-     - ./.env.example      ← go/ENV_EXAMPLE.md
-   
-   Universal:
-     - ./CONTEXT.md        ← CONTEXT_TEMPLATE.md
-     - ./DESIGN.md         ← ../02-design/DESIGN_MD_TEMPLATE.md
-     - ./TODO.md           ← TODO_TEMPLATE.md
+  Copy from staging to root:
+    cp docs/harness-root/* ./
    ```
 
 3. **Verify 7 Root Harness Files installed**:
