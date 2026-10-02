@@ -4,6 +4,19 @@ Quick reference for all 90+ templates organized by use case.
 
 ---
 
+## Quick Navigation
+
+**New to framework?** Start here:
+- **[Essentials (Top 20)](templates/essentials/)** - Most-used templates, 30-second discovery
+- **[MVP Fast-Track](templates/by-use-case/mvp-fast-track/)** - Ship in 2-4 weeks (5 templates, 2 hours)
+- **[Client Commercial](templates/by-use-case/client-commercial/)** - Fixed-price contracts + legal protection (5 templates, 4 hours)
+- **[Technical Specs](templates/by-use-case/technical-specs/)** - Team documentation (PRD, FSD, API contracts) (7 templates, 12-18 hours)
+- **[Operations](templates/by-use-case/operations/)** - Production deployment + incident response (5 templates, 3 hours)
+
+**Alternative navigation**: Browse [by project phase](#by-project-phase) below (original structure)
+
+---
+
 ## By Project Phase
 
 ### Phase 1: Discovery & Commercial (M00-M03)
