@@ -213,7 +213,6 @@ function Show-UseCaseMenu {
             Write-Host "Technical Specs templates:" -ForegroundColor Yellow
             Copy-Template "$TemplatesDir/03-architecture-specs/PRD_FINAL_TEMPLATE.md" "docs/specs/PRD.md"
             Copy-Template "$TemplatesDir/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md" "docs/specs/FSD.md"
-            Copy-Template "$TemplatesDir/05-data-migration/DB_SCHEMA_TEMPLATE.sql" "db/schema.sql"
             Copy-Template "$TemplatesDir/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md" "docs/specs/SYSTEM_DESIGN_DOC.md"
             Write-Host "✅ Technical Specs complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/technical-specs/README.md for workflow" -ForegroundColor Gray
