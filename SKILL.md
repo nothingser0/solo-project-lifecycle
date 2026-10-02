@@ -23,7 +23,7 @@ FASE INISIASI & DISCOVERY:
   03. [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement
 
 FASE PERANCANGAN & SPESIFIKASI:
-  04A. Design System Foundation & Implementation (Token System, Component Library, Governance) ──► modules/04A-design-system-foundation.md
+  04B. Design System Foundation & Implementation (Token System, Component Library, Governance) ──► modules/04B-design-system-foundation.md
   04. UI/UX Design & Prototyping (Design System & User Flow)
   05. Arsitektur & Spesifikasi Teknis (PRD, FSD, & Skema DB)
     05B. System Design & Infrastructure Scalability (High Availability, Capacity Planning, Caching) ──► modules/05B-system-design-infrastructure.md
@@ -90,7 +90,7 @@ FASE RILIS & PENUTUPAN:
 - [x] **Modul 01: Idea & Feasibility**: `modules/01-idea-feasibility.md` — Saringan ide 3 lapis, uji kelayakan 4 dimensi, pemotongan fitur ekstrem, penentuan skala awal.
 - [x] **Modul 02: Discovery & Scope Definition**: `modules/02-discovery-scope.md` — Elisitasi kebutuhan stakeholder, pemetaan peran pengguna, breakdown MoSCoW, penguncian In-Scope vs Out-of-Scope, dan pendaftaran dependensi klien.
 - [x] **Modul 03: [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement**: `modules/03-legal-sow-charter.md` — Penentuan model kontrak, termin pembayaran milestone, pengikatan mutlak Single PIC, protokol Change Request, dan pengamanan Down Payment.
-- [x] **Modul 04A: Design System Foundation & Implementation**: `modules/04A-design-system-foundation.md` — Terminologi DS (Design System vs Design Language vs Component Library), audit inkonsistensi visual, design tokens (primitive + semantic layers), core components (20 essentials), Figma setup & plugins, tooling workflow (Style Dictionary, Storybook, Chromatic), governance model (centralized vs federated), adoption metrics, dan product management untuk DS. **SKIP jika**: MVP solo dev <4 minggu, API-only backend, CLI tool. **WAJIB jika**: Proyek Besar/Enterprise dengan multi-platform (Web+iOS+Android), white-label requirements, atau tim 3+ engineer.
+- [x] **Modul 04B: Design System Foundation & Implementation**: `modules/04B-design-system-foundation.md` — Terminologi DS (Design System vs Design Language vs Component Library), audit inkonsistensi visual, design tokens (primitive + semantic layers), core components (20 essentials), Figma setup & plugins, tooling workflow (Style Dictionary, Storybook, Chromatic), governance model (centralized vs federated), adoption metrics, dan product management untuk DS. **SKIP jika**: MVP solo dev <4 minggu, API-...
 - **Modul 04: UI/UX Design & Specification**: `modules/04-uiux-prototyping.md` — Menghasilkan `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, dan `docs/design/DESIGN_REFERENCES.md`; mencakup arsitektur informasi, sitemap & page inventory berbasis scope, shared component standards, states, responsive behavior, accessibility, asset needs, dan Design Freeze. Google Stitch/prototype hanya opsional jika dipilih user dan lolos review.
 - [x] **Modul 05: Arsitektur & Spesifikasi Teknis (PRD & FSD)**: `modules/05-architecture-specs.md` — Pemilihan tech stack (Boring Tech ladder), skema basis data SQL DDL, kontrak API & matriks error, arsitektur keamanan (UU PDP/AES-256), dan pengesahan FSD.
 - [x] **Modul 05B: System Design & Infrastructure Scalability**: `modules/05B-system-design-infrastructure.md` — Skalabilitas infrastruktur, load balancing, caching layer (Redis), database replication/sharding, asynchronous worker/queues, high availability (Multi-AZ), dan capacity planning. **SKIP jika**: Proyek Kecil (MVP).
@@ -132,7 +132,7 @@ FASE RILIS & PENUTUPAN:
 - `templates/archive/commercial/PROJECT_CHARTER_TEMPLATE.md`: Disimpan ke **`docs/pm/PROJECT_CHARTER.md`** (Wewenang Single PIC, objektif bisnis, milestone global). *(Wajib dibuat juga untuk solo dev product)*.
 - `templates/archive/commercial/SOW_CONTRACT_TEMPLATE.md`: Disimpan ke **`docs/pm/SOW_CONTRACT.md`** (Perjanjian komersial legal, termin pembayaran, liability cap).
 
-### Modul 04A (Aktif)
+### Modul 04B (Aktif)
 - `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`: Template audit inkonsistensi visual (color inventory, typography, spacing, component duplication). Disimpan ke **`docs/design/DESIGN_SYSTEM_AUDIT.md`**.
 - `templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md`: Template spesifikasi design tokens (primitive + semantic, color/typography/spacing/shadow/motion, platform outputs CSS/iOS/Android/Flutter). Disimpan ke **`tokens/design-tokens.json`** + generated **`dist/css/variables.css`**.
 - `templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md`: Template dokumentasi komponen (props, variants, states, accessibility checklist, usage examples, migration guide). Disimpan ke **`docs/design/COMPONENT_API_SPEC.md`** per komponen.
@@ -244,7 +244,7 @@ FASE RILIS & PENUTUPAN:
 ### Modul 03 (Aktif)
 - `references/improvements/MODUL_03_IMPROVEMENTS.md`: Panduan taktis menolak scope creep, formula hitungan biaya Change Request, penegakan Single PIC, dan protokol penghentian kerja sementara (*Work Pause*).
 
-### Modul 04A (Aktif)
+### Modul 04B (Aktif)
 - `references/technical/DESIGN_SYSTEM_GUIDE.md`: Panduan komprehensif design system untuk solo dev dan tim kecil — terminologi, decision trees (build vs adopt vs extend), token architecture, component patterns (composition over configuration, controlled vs uncontrolled), tooling ecosystem (Style Dictionary, Storybook, Chromatic, Figma plugins), adoption strategies (pilot team, codemods, feature flags), governance models (centralized vs federated, RFC process), measuring success (adoption metrics, ROI calculation), common pitfalls & rescue strategies, dan case studies (Shopify Polaris, Airbnb DLS, Solo Dev SaaS).
 
 ### Modul 04 (Aktif)

@@ -1,15 +1,15 @@
-# Modul 04A: Design System Foundation & Implementation
+# Modul 04B: Design System Foundation & Implementation
 
-Modul ini adalah panduan komprehensif untuk solo developer dan tim kecil yang ingin membangun, mengadopsi, atau mengaudit Design System. Berbeda dengan **Modul 04 (UI/UX Prototyping)** yang fokus pada prototyping layar individual dengan Google Stitch, **Modul 04A** adalah fondasi strategis untuk membangun sistem desain yang scalable, maintainable, dan dapat diadopsi di seluruh produk atau organisasi.
+Modul ini adalah panduan komprehensif untuk solo developer dan tim kecil yang ingin membangun, mengadopsi, atau mengaudit Design System. Berbeda dengan **Modul 04 (UI/UX Prototyping)** yang fokus pada prototyping layar individual dengan Google Stitch, **Modul 04B** adalah fondasi strategis untuk membangun sistem desain yang scalable, maintainable, dan dapat diadopsi di seluruh produk atau organisasi.
 
-> 🎯 **KAPAN MENGGUNAKAN MODUL 04A?**
+> 🎯 **KAPAN MENGGUNAKAN MODUL 04B?**
 > - Proyek **Besar/Enterprise** dengan multiple products atau platform (Web, iOS, Android, Flutter)
 > - Produk dengan **3+ engineer** yang butuh konsistensi visual tanpa review manual
 > - Startup yang berencana **scale tim design/engineering** dalam 6-12 bulan
 > - Refactoring codebase lama dengan **inconsistent UI components** (design debt)
 > - Client request **white-label solution** atau **multi-tenant branding**
 >
-> **SKIP MODUL 04A jika:**
+> **SKIP MODUL 04B jika:**
 > - MVP solo dev <4 minggu dengan 1-3 layar (cukup Modul 04 Google Stitch)
 > - Prototyping proof-of-concept yang akan dibuang
 > - Backend API-only atau CLI tool tanpa GUI
@@ -717,7 +717,7 @@ Net ROI: $76,000/year (95% gain)
 
 | Module | Integration Point |
 |--------|-------------------|
-| **M04 (UI/UX Prototyping)** | Google Stitch uses tokens from M04A; M04A defines system, M04 applies it |
+| **M04 (UI/UX Prototyping)** | Google Stitch uses tokens from M04B; M04B defines system, M04 applies it |
 | **M05 (Architecture/FSD)** | Token structure influences CSS architecture (CSS-in-JS vs CSS Modules) |
 | **M06 (Development)** | Components published as NPM package, imported in app code |
 | **M07 (QA/SIT)** | Visual regression tests via Chromatic, accessibility audit with axe |
@@ -739,7 +739,7 @@ Net ROI: $76,000/year (95% gain)
 
 ## 11. Kriteria Kelulusan [GATE] (Gate Exit Criteria)
 
-Modul 04A dinyatakan **LOLOS (PASS)** jika:
+Modul 04B dinyatakan **LOLOS (PASS)** jika:
 - [x] Design audit selesai dengan laporan inconsistency quantified
 - [x] Design tokens JSON structure created (primitive + semantic layers)
 - [x] Minimum 16 core components (P0 + P1) implemented & documented in Storybook

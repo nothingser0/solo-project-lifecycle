@@ -90,7 +90,7 @@ cp templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md ./PROJECT.md
 # 5. Start coding (modules/06)
 ```
 
-**Skip**: Market research (00), Feasibility (01), Formal SOW (03), Design System (04A), System Design (05B)
+**Skip**: Market research (00), Feasibility (01), Formal SOW (03), Design System (04B), System Design (05B)
 
 ### Standard Flow (Commercial Project)
 
@@ -178,7 +178,7 @@ find templates -name "*.md" | wc -l
 2. **Pick module path**:
    - Fast-Track: 04 → 06 → 10
    - Standard: 00 → 01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11
-   - Enterprise: All modules + 04A, 05B, 06B
+   - Enterprise: All modules + 04B, 05B, 06B
 3. **Read module**: Open `modules/{NN}-{name}.md`
 4. **Copy template**: From `templates/{phase}/` to `docs/`
 5. **Fill template**: Follow module instructions
@@ -231,7 +231,7 @@ solo-project-lifecycle/
 │   ├── 02-discovery-scope.md
 │   ├── 03-legal-sow-charter.md
 │   ├── 04-uiux-prototyping.md
-│   ├── 04A-design-system-foundation.md
+│   ├── 04B-design-system-foundation.md
 │   ├── 05-architecture-specs.md
 │   ├── 05B-system-design-infrastructure.md
 │   ├── 06-development-execution.md
