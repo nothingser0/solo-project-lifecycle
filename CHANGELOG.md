@@ -10,21 +10,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Legal disclaimer to README and M03 (legal liability protection)
-- `scripts/validate-gate.sh` - Gate checkpoint validation tool (M03, M09, M11)
-- `scripts/lint-template.sh` - Template completeness validator
-- `scripts/template-picker.sh` - Interactive template selection CLI
-- `QUICK_START_MVP.md` - Fast-track guide for 2-4 week MVPs (300 lines)
-- `references/case-studies/01-mvp-saas-inventory.md` - Real project walkthrough
-- `audit/FRAMEWORK_WEAKNESSES.md` - Comprehensive gap analysis (14 issues)
-- `ANTI_PATTERNS.md` - When NOT to use this framework
 
 ### Changed
-- README: Removed AI agent focus, made framework-first
-- `audit/FRAMEWORK_WEAKNESSES.md`: Corrected TODO count analysis (163 false positives)
 
 ### Fixed
-- Git remote authentication (PAT → gh CLI)
+
+---
+
+## [2.0.0] - 2026-10-02
+
+### BREAKING CHANGES
+
+**Module Consolidation (17 → 14 modules)**:
+- **M04B (Design System)** merged into **M04 Section 8** [OPTIONAL]
+- **M05B (System Design)** merged into **M05 Section 6** [OPTIONAL]  
+- **M06B (Analytics)** merged into **M06 Section 6A** [OPTIONAL]
+
+**Migration Required**:
+- Update references: `M04B` → `M04 Section 8`
+- Update references: `M05B` → `M05 Section 6`
+- Update references: `M06B` → `M06 Section 6A`
+- All B-variant standalone files deleted (content preserved in parent modules)
+
+### Changed
+- **M04 UI/UX Design**: Expanded from 1425 → 1635 lines (+210 lines, Section 8 optional Design System)
+- **M05 Architecture**: Expanded from 1556 → 1839 lines (+283 lines, Section 6 optional System Design)
+- **M06 Development**: Expanded from 1388 → 1582 lines (+194 lines, Section 6A optional Analytics)
+- All optional sections clearly marked with skip rules (MVP, solo dev, specific use cases)
+
+### Benefits
+- ✅ **Clearer navigation**: 14 sequential modules (no branching to M04B/M05B/M06B)
+- ✅ **Reduced confusion**: Optional sections inline with clear "WHEN TO USE" rules
+- ✅ **Zero content loss**: All B-variant content preserved, just reorganized
+- ✅ **Better progressive disclosure**: Advanced topics skippable without separate files
+- ✅ **Easier maintenance**: Update one module instead of tracking parent+B-variant sync
+
+### Technical Details
+- M04 Section 8: Design System (765 lines condensed to 210 lines for solo dev focus)
+- M05 Section 6: System Design (1927 lines condensed to 279 lines, removed enterprise verbosity)
+- M06 Section 6A: Analytics (409 lines condensed to 194 lines, core implementation preserved)
+- Total reduction: 3101 → 683 lines in optional sections (-78% verbosity)
 
 ---
 

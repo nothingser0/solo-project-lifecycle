@@ -43,7 +43,7 @@
 - ❌ M01 (Feasibility) → Just built it
 - ❌ M02-M03 (Scope/SOW) → No client, solo project
 - ❌ M04 Section 8 (Design System) → Used Tailwind defaults
-- ❌ M05B (System Design) → Single DigitalOcean Droplet
+- ❌ M05 Section 6 (System Design) → Single DigitalOcean Droplet
 - ❌ M06 Section 6A (Analytics) → Added Mixpanel post-launch (week 6)
 - ❌ M07-M09 (QA/UAT) → Manual testing only
 - ❌ M11-M12 (Handover/Warranty) → Self-maintained
@@ -348,7 +348,7 @@ Based on this case study, recommend **MVP Fast-Track Plus**:
 - ❌ M00 Market Research (validate post-launch)
 - ❌ M02-M03 Scope/SOW (solo project)
 - ❌ M04 Section 8 Design System (use defaults)
-- ❌ M05B System Design (single server fine)
+- ❌ M05 Section 6 System Design (single server fine)
 - ❌ M08-M09 Data Migration/UAT (no legacy, no client)
 - ❌ M11-M12 Handover/Warranty (self-maintained)
 
