@@ -1,13 +1,27 @@
 ---
 name: solo-project-lifecycle
-description: Use when starting projects, scoping client work, writing PRD/FSD/SOW, planning architecture, or managing software project lifecycle from discovery to production.
+description: Comprehensive skill framework for managing software project lifecycle from discovery to production. Use when starting projects, scoping client work, writing PRD/FSD/SOW, planning architecture, or managing full SDLC.
 version: 1.0.0
 updated: 2026-10-02
 ---
 
 # Solo Project Lifecycle
 
-Apply structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
+**Skill framework** (~9MB) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
+
+## Framework architecture
+
+This is a **comprehensive skill toolkit**, not a single loadable skill file:
+
+- **Entry point**: This SKILL.md file (8KB) - lightweight navigation guide
+- **Module library**: 14 modules in `docs/modules/` loaded on-demand per project phase
+- **Template library**: 80+ templates in `templates/` by use case and phase
+- **Reference materials**: 600KB guides, playbooks, case studies in `references/`
+- **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
+
+**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 9MB at once. Similar to testing-library or design systems - comprehensive by design.
+
+**Usage model**: Clone repo → agent navigates via SKILL.md → loads relevant module → applies template → references patterns as needed.
 
 ## When to invoke
 

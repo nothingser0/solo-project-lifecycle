@@ -8,7 +8,7 @@ Software development framework for solo developers and small teams. Covers proje
 
 ## What This Is
 
-A structured approach to managing software projects:
+**Comprehensive project management framework** for solo developers and small teams managing software projects:
 
 - 14 modules covering discovery, design, development, QA, deployment, maintenance
 - 80+ templates (PRD, FSD, SOW, test plans, deployment protocols)
@@ -16,7 +16,36 @@ A structured approach to managing software projects:
 - Code patterns for common problems
 - Scripts for validation and automation
 
-Works with any tech stack. Built for solo developers, freelancers, small teams.
+Works with any tech stack. Built for solo developers, freelancers, consulting teams.
+
+---
+
+## Framework Architecture
+
+**Repository size: ~9MB** (intentionally comprehensive)
+
+This is a **skill framework/toolkit**, not a minimal starter template:
+
+| Component | Size | Purpose |
+|-----------|------|---------|
+| Module library | 440KB | 14 lifecycle phases with detailed workflows |
+| Template library | 869KB | 80+ production-ready templates |
+| Reference guides | 604KB | Playbooks, patterns, deep-dive materials |
+| Case studies | 52KB | Real project metrics and outcomes |
+| Code patterns | 80KB | Reusable validation/auth/performance code |
+
+**Why this size?**  
+Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.
+
+**Not for you if:**  
+- You want minimal boilerplate (<50KB)
+- You prefer ad-hoc project management
+- You work with established enterprise PM tools
+
+**Perfect for:**  
+- Solo devs managing client projects end-to-end
+- Freelancers needing governance without corporate overhead
+- Small teams wanting structured SDLC without bloat
 
 ---
 
