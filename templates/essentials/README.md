@@ -69,10 +69,15 @@
 **Purpose**: AI agent instructions (coding standards, context)  
 **Time**: 15 minutes  
 **Must-use**: Every project with AI assistance  
-**Output**: `AGENTS.md` (project root)
+**Output**: `docs/harness-root/AGENTS.md` (staged, deployed to root after scaffold)
 
 ```bash
-cp templates/04-dev-execution/AGENTS_TEMPLATE.md AGENTS.md
+# Stage during M01-M05 (before scaffold)
+mkdir -p docs/harness-root
+cp templates/04-dev-execution/AGENTS_TEMPLATE.md docs/harness-root/AGENTS.md
+
+# Deploy after scaffold (M06)
+cp docs/harness-root/AGENTS.md ./AGENTS.md
 ```
 
 ---
@@ -81,10 +86,11 @@ cp templates/04-dev-execution/AGENTS_TEMPLATE.md AGENTS.md
 **Path**: `../04-dev-execution/ARCHITECTURE_TEMPLATE.md`  
 **Purpose**: Tech architecture summary for AI/new developers  
 **Time**: 15 minutes  
-**Output**: `ARCHITECTURE.md` (project root)
+**Output**: `docs/harness-root/ARCHITECTURE.md` (staged, deployed to root after scaffold)
 
 ```bash
-cp templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
+mkdir -p docs/harness-root
+cp templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md docs/harness-root/ARCHITECTURE.md
 ```
 
 ---
@@ -105,24 +111,26 @@ cp templates/07-release-handover/BAST_TEMPLATE.md contracts/BAST.md
 
 ### 4. CONTEXT.md
 **Path**: `../04-dev-execution/CONTEXT_TEMPLATE.md`  
-**Purpose**: Business context, out-of-scope reminders  
+**Purpose**: Business context, user roles, out-of-scope boundaries  
 **Time**: 10 minutes  
-**Output**: `CONTEXT.md` (project root)
+**Output**: `docs/harness-root/CONTEXT.md` (staged, deployed to root after scaffold)
 
 ```bash
-cp templates/04-dev-execution/CONTEXT_TEMPLATE.md CONTEXT.md
+mkdir -p docs/harness-root
+cp templates/04-dev-execution/CONTEXT_TEMPLATE.md docs/harness-root/CONTEXT.md
 ```
 
 ---
 
 ### 5. CONVENTIONS.md
 **Path**: `../04-dev-execution/CONVENTIONS_TEMPLATE.md`  
-**Purpose**: Code style guide (kebab-case, no barrel exports)  
+**Purpose**: Code style rules (naming, formatting, patterns)  
 **Time**: 10 minutes  
-**Output**: `CONVENTIONS.md` (project root)
+**Output**: `docs/harness-root/CONVENTIONS.md` (staged, deployed to root after scaffold)
 
 ```bash
-cp templates/04-dev-execution/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
+mkdir -p docs/harness-root
+cp templates/04-dev-execution/CONVENTIONS_TEMPLATE.md docs/harness-root/CONVENTIONS.md
 ```
 
 ---
@@ -143,13 +151,14 @@ cp templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md docs/DEPLOYMENT
 
 ### 7. DESIGN.md
 **Path**: `../02-design/DESIGN_MD_TEMPLATE.md`  
-**Purpose**: Design tokens (colors, typography, spacing)  
+**Purpose**: Design tokens for AI (colors, fonts, spacing)  
 **Time**: 30 minutes  
-**Must-use**: Every project with UI  
-**Output**: `DESIGN.md` (project root)
+**Must-use**: Every project  
+**Output**: `docs/harness-root/DESIGN.md` (staged, deployed to root after scaffold)
 
 ```bash
-cp templates/02-design/DESIGN_MD_TEMPLATE.md DESIGN.md
+mkdir -p docs/harness-root
+cp templates/02-design/DESIGN_MD_TEMPLATE.md docs/harness-root/DESIGN.md
 ```
 
 ---
@@ -268,10 +277,11 @@ cp templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md contr
 **Purpose**: Atomic task queue for AI agents  
 **Time**: 20 minutes  
 **Must-use**: AI-assisted development  
-**Output**: `TODO.md` (project root)
+**Output**: `docs/harness-root/TODO.md` (staged, deployed to root after scaffold)
 
 ```bash
-cp templates/04-dev-execution/TODO_TEMPLATE.md TODO.md
+mkdir -p docs/harness-root
+cp templates/04-dev-execution/TODO_TEMPLATE.md docs/harness-root/TODO.md
 ```
 
 ---
@@ -309,10 +319,11 @@ cp templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md contracts/WARRANTY_P
 **Purpose**: Environment variable template  
 **Time**: 10 minutes  
 **Must-use**: Every project  
-**Output**: `.env.example` (project root)
+**Output**: `docs/harness-root/.env.example` (staged, deployed to root after scaffold)
 
 ```bash
-cp templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE .env.example
+mkdir -p docs/harness-root
+cp templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE docs/harness-root/.env.example
 ```
 
 ---
