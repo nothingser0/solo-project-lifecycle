@@ -60,12 +60,12 @@ Week 4: Deploy (2 days)
 1. `PROJECT.md` (core specs)
 2. `DESIGN.md` (UI tokens)
 
-**Template**:
+**Agent workflow**:
 ```bash
-# Copy lightweight template
-cp templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md ./PROJECT.md
-
-# Fill sections (20 min each):
+# Agent: Read template from skill repo, write to user's project root
+# 1. Read: skill://solo-project-lifecycle/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md
+# 2. Write: ./PROJECT.md (in user's current working directory)
+# 3. Fill sections (20 min each):
 # 1. Problem (3 sentences)
 # 2. Solution (5 bullet points)
 # 3. Core features (3 max)
@@ -128,14 +128,12 @@ CREATE TABLE todos (
 
 **Output**: `DESIGN.md` (design tokens only, no mockups)
 
-**Use shadcn/ui or Tailwind defaults**:
+**Agent workflow**:
 ```bash
-# Next.js example
-npx shadcn@latest init
-# Pick: Zinc palette, default radius
-
-# Copy design tokens
-cp templates/02-design/DESIGN_MD_TEMPLATE.md ./DESIGN.md
+# Agent: Read template from skill repo, write to user's project root
+# 1. Read: skill://solo-project-lifecycle/templates/02-design/DESIGN_MD_TEMPLATE.md
+# 2. Write: ./DESIGN.md (in user's current working directory)
+# 3. If Next.js: suggest running `npx shadcn@latest init` (Zinc palette, default radius)
 ```
 
 **MVP Design Tokens** (15 min):
@@ -309,16 +307,21 @@ If number flat/declining → MVP failing → pivot or stop.
 
 ## Templates You Actually Need
 
-Copy these 3 files only:
+**Agent workflow**: Read templates from skill repo `templates/` directory, write to user's project working directory:
+
 ```bash
-# 1. Core specs
-cp templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md ./PROJECT.md
+# Agent instructions (not shell commands):
+# 1. Core specs - Read from skill, write to user project root
+#    Source: skill://solo-project-lifecycle/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md
+#    Target: ./PROJECT.md
 
-# 2. Design tokens
-cp templates/02-design/DESIGN_MD_TEMPLATE.md ./DESIGN.md
+# 2. Design tokens - Read from skill, write to user project root
+#    Source: skill://solo-project-lifecycle/templates/02-design/DESIGN_MD_TEMPLATE.md
+#    Target: ./DESIGN.md
 
-# 3. Deployment checklist
-cp templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md ./DEPLOY.md
+# 3. Deployment checklist - Read from skill, write to user project root
+#    Source: skill://solo-project-lifecycle/templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md
+#    Target: ./DEPLOY.md
 ```
 
 Total documentation: 3 files, <5 pages.  

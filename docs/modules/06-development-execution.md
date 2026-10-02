@@ -291,19 +291,19 @@ Multiple frameworks auto-generate conflicting `AGENTS.md` or similar files:
 - **Rails**: Generates `README.md` (rename to `README_FRAMEWORK.md`)
 - **Django**: No conflict
 
-**MANDATORY to overwrite/check IMMEDIATELY** after scaffold:
-```bash
-# Next.js (MANDATORY)
-cp templates/04-dev-execution/nextjs/AGENTS.md AGENTS.md
+**Agent workflow - MANDATORY after scaffold**:
 
-# Laravel
-cp templates/04-dev-execution/laravel/AGENTS.md AGENTS.md
+```
+Read template from skill repo, write to user's project root (overwrite if exists):
 
-# Django
-cp templates/04-dev-execution/django/AGENTS.md AGENTS.md
+  Source: skill://solo-project-lifecycle/templates/04-dev-execution/{stack}/AGENTS.md
+  Target: ./AGENTS.md (in user's project working directory)
 
-# Go
-cp templates/04-dev-execution/go/AGENTS.md AGENTS.md
+Stack mapping:
+  - Next.js  → nextjs/AGENTS.md (MANDATORY overwrite create-next-app boilerplate)
+  - Laravel  → laravel/AGENTS.md
+  - Django   → django/AGENTS.md
+  - Go       → go/AGENTS.md
 ```
 
 **NEVER skip this step!** Framework boilerplate lacks 6 Engineering Pillars enforcement.
@@ -1071,48 +1071,66 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    mkdir ../temp_scaffold
    cd ../temp_scaffold
    pnpm create next-app@latest . --typescript --tailwind --app --no-src-dir=false --import-alias "@/*"
-   
+  
    # Copy framework files to project folder
    cd ../project_folder
    cp -r ../temp_scaffold/* .
    cp -r ../temp_scaffold/.* . 2>/dev/null || true
-   
+  
    # Cleanup temp
    rm -rf ../temp_scaffold
+   ```
    
-   # CRITICAL: Overwrite Next.js AGENTS.md boilerplate (3rd reminder)
-   # Get template from ROOT_HARNESS_BUNDLE (portable path)
-   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
+   **Agent: After scaffold, overwrite AGENTS.md boilerplate**:
+   ```
+   Source: skill://solo-project-lifecycle/templates/04-dev-execution/nextjs/AGENTS.md
+   Target: ./AGENTS.md (overwrite create-next-app boilerplate)
    ```
 
    **Laravel Protocol**:
    ```bash
    # Direct scaffold (no conflict)
    composer create-project laravel/laravel .
+   ```
    
-   # Copy 7 harness files from ROOT_HARNESS_BUNDLE (portable)
-   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
-   cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
-   cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
-   cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
-   cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
-   cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
-   cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
+   **Agent: Create 7 root harness files**:
+   ```
+   Read from skill://solo-project-lifecycle/templates/04-dev-execution/
+   Write to user's project root (./):
+   
+   Stack-specific (laravel):
+     - ./AGENTS.md         ← laravel/AGENTS.md
+     - ./ARCHITECTURE.md   ← laravel/ARCHITECTURE.md
+     - ./CONVENTIONS.md    ← laravel/CONVENTIONS.md
+     - ./.env.example      ← laravel/ENV_EXAMPLE.md
+   
+   Universal:
+     - ./CONTEXT.md        ← CONTEXT_TEMPLATE.md
+     - ./DESIGN.md         ← ../02-design/DESIGN_MD_TEMPLATE.md
+     - ./TODO.md           ← TODO_TEMPLATE.md
    ```
 
    **Django/FastAPI Protocol**:
    ```bash
    # Direct init
    poetry init  # or: django-admin startproject myproject .
+   ```
    
-   # Copy 7 harness files from ROOT_HARNESS_BUNDLE (portable)
-   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
-   cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
-   cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
-   cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
-   cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
-   cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
-   cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
+   **Agent: Create 7 root harness files**:
+   ```
+   Read from skill://solo-project-lifecycle/templates/04-dev-execution/
+   Write to user's project root (./):
+   
+   Stack-specific (django):
+     - ./AGENTS.md         ← django/AGENTS.md
+     - ./ARCHITECTURE.md   ← django/ARCHITECTURE.md
+     - ./CONVENTIONS.md    ← django/CONVENTIONS.md
+     - ./.env.example      ← django/ENV_EXAMPLE.md
+   
+   Universal:
+     - ./CONTEXT.md        ← CONTEXT_TEMPLATE.md
+     - ./DESIGN.md         ← ../02-design/DESIGN_MD_TEMPLATE.md
+     - ./TODO.md           ← TODO_TEMPLATE.md
    ```
 
    **Flutter Protocol**:
@@ -1121,20 +1139,30 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    mkdir ../temp_scaffold
    cd ../temp_scaffold
    flutter create --org com.client --project-name legal_vault .
-   
+  
    # Copy to project folder
    cd ../project_folder
    cp -r ../temp_scaffold/* .
    
-   # Cleanup + copy harness from ROOT_HARNESS_BUNDLE (portable, no AGENTS.md conflict)
+   # Cleanup
    rm -rf ../temp_scaffold
-   cp templates/04-dev-execution/root-harness/AGENTS_TEMPLATE.md AGENTS.md
-   cp templates/04-dev-execution/root-harness/CONTEXT_TEMPLATE.md CONTEXT.md
-   cp templates/04-dev-execution/root-harness/ARCHITECTURE_TEMPLATE.md ARCHITECTURE.md
-   cp templates/04-dev-execution/root-harness/CONVENTIONS_TEMPLATE.md CONVENTIONS.md
-   cp templates/04-dev-execution/root-harness/TODO_TEMPLATE.md TODO.md
-   cp templates/04-dev-execution/root-harness/DESIGN_MD_TEMPLATE.md DESIGN.md
-   cp templates/04-dev-execution/root-harness/ENV_EXAMPLE_TEMPLATE.md .env.example
+   ```
+   
+   **Agent: Create 7 root harness files** (no AGENTS.md conflict):
+   ```
+   Read from skill://solo-project-lifecycle/templates/04-dev-execution/
+   Write to user's project root (./):
+   
+   Stack-specific (flutter - use generic if no flutter template):
+     - ./AGENTS.md         ← go/AGENTS.md (adapt for Dart/Flutter)
+     - ./ARCHITECTURE.md   ← go/ARCHITECTURE.md
+     - ./CONVENTIONS.md    ← go/CONVENTIONS.md
+     - ./.env.example      ← go/ENV_EXAMPLE.md
+   
+   Universal:
+     - ./CONTEXT.md        ← CONTEXT_TEMPLATE.md
+     - ./DESIGN.md         ← ../02-design/DESIGN_MD_TEMPLATE.md
+     - ./TODO.md           ← TODO_TEMPLATE.md
    ```
 
 3. **Verify 7 Root Harness Files installed**:
