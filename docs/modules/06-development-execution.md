@@ -1204,7 +1204,7 @@ Pastikan kompilasi bersih (`pnpm run type-check`) dan audit dependensi aman (`pn
 
 ## 5A. Backend Development TODO Checklist (Detailed Breakdown)
 
-**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/backend-checklist.md`](../templates/04-dev-execution/checklists/backend-checklist.md)
+**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/backend-checklist.md`](../../templates/04-dev-execution/checklists/backend-checklist.md)
 
 Checklist komprehensif mencakup:
 1. **Database Setup & Migrations**: Connection pooling, schema definition, indexing strategy, soft-delete, seeders
@@ -1225,7 +1225,7 @@ Checklist komprehensif mencakup:
 
 ## 5B. Frontend Development TODO Checklist (Detailed Breakdown)
 
-**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/frontend-checklist.md`](../templates/04-dev-execution/checklists/frontend-checklist.md)
+**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/frontend-checklist.md`](../../templates/04-dev-execution/checklists/frontend-checklist.md)
 
 Checklist komprehensif mencakup:
 1. **Component Library & Design System**: Token sync, UI atoms (Button, Input), molecules (Toast, Modal), navigation, WCAG AA compliance
@@ -1246,7 +1246,7 @@ Checklist komprehensif mencakup:
 
 ## 5C. Integration TODO Checklist (Third-Party & Infrastructure)
 
-**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/integration-checklist.md`](../templates/04-dev-execution/checklists/integration-checklist.md)
+**Detailed checklist**: Lihat [`templates/04-dev-execution/checklists/integration-checklist.md`](../../templates/04-dev-execution/checklists/integration-checklist.md)
 
 Checklist komprehensif mencakup:
 1. **Payment Gateway (Stripe/Midtrans)**: Sandbox setup, transaction initiation, webhook cryptographic validation, idempotency, atomic status transitions
