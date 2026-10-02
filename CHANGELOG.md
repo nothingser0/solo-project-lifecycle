@@ -109,6 +109,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.1] - 2026-10-02
+
+### Fixed
+- Removed nonexistent `DB_SCHEMA_TEMPLATE` reference in `scripts/validate-gate.ps1` (broken v1.1.0 ship)
+- PowerShell script now correctly validates only existing template files
+
+---
+
 ## [1.1.0] - 2026-10-02
 
 ### Added
@@ -136,14 +144,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - +40% usability (template discovery, Windows support, stack quickstarts)
 - -15% duplication (patterns extracted from modules)
 - Zero breaking changes (backward compatible structure)
-
----
-
-## [1.1.1] - 2026-10-02
-
-### Fixed
-- Removed nonexistent `DB_SCHEMA_TEMPLATE` reference in `scripts/validate-gate.ps1` (broken v1.1.0 ship)
-- PowerShell script now correctly validates only existing template files
 
 ---
 
