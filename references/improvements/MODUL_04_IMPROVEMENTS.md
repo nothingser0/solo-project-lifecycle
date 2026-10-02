@@ -106,7 +106,7 @@ Gunakan format ini untuk setiap page:
 
 - Solo MVP: DESIGN.md + DESIGN_SPEC.md + DESIGN_REFERENCES.md. Self-review cukup.
 - Client project: tambah Design Freeze approval dan review client.
-- Multi-platform atau tim besar: evaluasi Modul 04B untuk governance design system.
+- Multi-platform atau tim besar: evaluasi M04 Section 8 untuk governance design system.
 - User testing dan Stitch bukan output default Modul 04. Jalankan hanya jika risiko UX, client contract, atau domain high-stakes memang membutuhkan.
 
 ## Items yang Dihapus dari Modul 04

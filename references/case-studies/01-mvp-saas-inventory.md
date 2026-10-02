@@ -42,7 +42,7 @@
 - ❌ M00 (Market Research) → Validated via founder's domain expertise
 - ❌ M01 (Feasibility) → Just built it
 - ❌ M02-M03 (Scope/SOW) → No client, solo project
-- ❌ M04B (Design System) → Used Tailwind defaults
+- ❌ M04 Section 8 (Design System) → Used Tailwind defaults
 - ❌ M05B (System Design) → Single DigitalOcean Droplet
 - ❌ M06 Section 6A (Analytics) → Added Mixpanel post-launch (week 6)
 - ❌ M07-M09 (QA/UAT) → Manual testing only
@@ -347,7 +347,7 @@ Based on this case study, recommend **MVP Fast-Track Plus**:
 **Skip Modules** (save 2 minggu):
 - ❌ M00 Market Research (validate post-launch)
 - ❌ M02-M03 Scope/SOW (solo project)
-- ❌ M04B Design System (use defaults)
+- ❌ M04 Section 8 Design System (use defaults)
 - ❌ M05B System Design (single server fine)
 - ❌ M08-M09 Data Migration/UAT (no legacy, no client)
 - ❌ M11-M12 Handover/Warranty (self-maintained)
