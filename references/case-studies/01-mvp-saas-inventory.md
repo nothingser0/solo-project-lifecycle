@@ -44,7 +44,7 @@
 - ❌ M02-M03 (Scope/SOW) → No client, solo project
 - ❌ M04B (Design System) → Used Tailwind defaults
 - ❌ M05B (System Design) → Single DigitalOcean Droplet
-- ❌ M06B (Analytics) → Added Mixpanel post-launch (week 6)
+- ❌ M06 Section 6A (Analytics) → Added Mixpanel post-launch (week 6)
 - ❌ M07-M09 (QA/UAT) → Manual testing only
 - ❌ M11-M12 (Handover/Warranty) → Self-maintained
 
@@ -214,7 +214,7 @@ forge deploy stokku-prod
 
 ### What Didn't Work
 1. **Skip M01 (Feasibility)**: Lucky domain expertise correct, otherwise bisa pivot week 8 (waste 4 minggu)
-2. **Skip M06B (Analytics)**: Added Mixpanel week 6 → lost 6 weeks baseline data
+2. **Skip M06 Section 6A (Analytics)**: Added Mixpanel week 6 → lost 6 weeks baseline data
 3. **Skip M07 (QA)**: 3 critical bugs found by beta users (could've caught with proper testing)
 
 **Recommendation**: For MVPs, M01 Feasibility (4 jam) worth doing even for fast-track.
@@ -255,13 +255,13 @@ forge deploy stokku-prod
 
 ### Do Different
 1. ❌ **Add M01 Feasibility** (4 jam scoring would validate market size earlier)
-2. ❌ **Add M06B Analytics from Day 1** (lost 6 weeks data)
+2. ❌ **Add M06 Section 6A Analytics from Day 1** (lost 6 weeks data)
 3. ❌ **Spend 2 hari on M07 Testing** (3 critical bugs cost 1 week firefighting)
 4. ❌ **Pricing too low**: Rp 50K/bulan → break-even need 160 users (impossible solo). Should be Rp 150K/bulan → need 53 users (achievable)
 
 ### Framework Verdict
 - **MVP fast-track works**: 4 minggu launch, no scope creep
-- **BUT**: Should still do M01 Feasibility (4 jam) + M06B Analytics (2 jam setup) + M07 Smoke Testing (1 hari)
+- **BUT**: Should still do M01 Feasibility (4 jam) + M06 Section 6A Analytics (2 jam setup) + M07 Smoke Testing (1 hari)
 - **Adjusted MVP**: Fast-track + 3 critical modules = 4.5 minggu (still faster than full framework)
 
 ---
@@ -340,7 +340,7 @@ Based on this case study, recommend **MVP Fast-Track Plus**:
 - ✅ M04 UI/UX (1 hari) → Design tokens
 - ✅ M05 Architecture (1 hari) → DB schema, tech stack
 - ✅ M06 Development (12 hari) → Coding
-- ✅ M06B Analytics (2 jam setup) → Don't lose baseline data
+- ✅ M06 Section 6A Analytics (2 jam setup) → Don't lose baseline data
 - ✅ M07 Smoke Testing (1 hari) → Catch critical bugs
 - ✅ M10 Deployment (1 hari) → Launch
 

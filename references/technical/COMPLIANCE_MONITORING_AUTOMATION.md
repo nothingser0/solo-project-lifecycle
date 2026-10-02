@@ -592,4 +592,4 @@ async function checkDPAExpirations() {
 
 **Created**: 2026-10-02  
 **Version**: 1.0  
-**Integration**: Add to M13 ongoing operations, M06B analytics setup
+**Integration**: Add to M13 ongoing operations, M06 Section 6A analytics setup

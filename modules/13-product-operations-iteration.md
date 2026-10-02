@@ -664,7 +664,7 @@ Modul 13 adalah **titik konvergensi** dari seluruh siklus hidup produk:
 | **M00: Product Discovery & Strategy** | North Star Metric dari M00 menjadi anchor untuk OKR tracking dan prioritas fitur. |
 | **M01: Idea & Feasibility** | OKR di M01 di-check progressnya setiap bulan di M13 monthly review. |
 | **M04: UI/UX Prototyping** | Hypothesis format dari M04 A/B testing digunakan untuk growth experiments di M13. |
-| **M06B: Analytics Implementation** | Event tracking dan dashboard di M06B menjadi data source untuk cohort analysis M13. |
+| **M06 Section 6A: Analytics** | Event tracking dan dashboard di M06 Section 6A menjadi data source untuk cohort analysis M13. |
 | **M10: Deployment & Production** | Performance metrics dari M10 monitoring di-review di M13 scaling considerations. |
 | **M12: Warranty & SLA** | Insiden dan support tickets dari M12 dianalisis di M13 untuk perbaikan produk. |
 

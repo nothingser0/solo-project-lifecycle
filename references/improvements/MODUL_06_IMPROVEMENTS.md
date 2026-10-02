@@ -626,7 +626,7 @@ SEO: 94
 
 List any **intentional** limitations or bugs deferred to Modul 07:
 
-- [ ] Email sending not implemented (deferred to Modul 06B)
+- [ ] Email sending not implemented (deferred to M06 Section 6A)
 - [ ] File virus scan disabled in local dev (ClamAV not running, enabled in production only)
 - [ ] Payment integration uses Stripe test mode (sandbox transactions)
 

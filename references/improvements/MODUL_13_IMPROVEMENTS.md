@@ -20,7 +20,7 @@
 - Experiment time = 2-4 jam per experiment (hypothesis → implement → launch)
 
 ### Bottlenecks
-- Data integration: +4-8 jam (if analytics not implemented in Modul 06B)
+- Data integration: +4-8 jam (if analytics not implemented in M06 Section 6A)
 - Dashboard tool learning curve: +4-8 jam (first-time Mixpanel/Posthog setup)
 - SQL query optimization: +2-4 jam (complex cohort analysis for large datasets)
 

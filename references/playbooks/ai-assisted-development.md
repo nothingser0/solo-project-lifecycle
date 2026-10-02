@@ -1373,7 +1373,7 @@ Include:
 | **M04 (UI/UX)** | v0.dev generates components from DESIGN.md tokens |
 | **M05 (Architecture)** | AI drafts FSD from business requirements |
 | **M06 (Development)** | Main usage: AI writes code from TODO.md tasks |
-| **M06B (Analytics)** | AI generates event tracking code |
+| **M06 Section 6A (Analytics)** | AI generates event tracking code |
 | **M07 (QA/SIT)** | AI generates test cases from requirements |
 | **M09 (UAT)** | AI creates UAT scenarios from user stories |
 | **M10 (Deployment)** | AI generates CI/CD pipelines |
