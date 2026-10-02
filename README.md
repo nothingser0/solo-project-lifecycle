@@ -1,281 +1,203 @@
-# Solo Project Lifecycle Framework
+# Solo Project Lifecycle
 
-A complete software development lifecycle framework for solo developers and small teams. Covers everything from initial product discovery through deployment and post-launch maintenance.
+Software development framework for solo developers and small teams. Covers project lifecycle from discovery through production deployment and maintenance.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![Modules](https://img.shields.io/badge/modules-14-green.svg)](./docs/modules/)
 
 ---
 
-## Overview
+## What This Is
 
-This framework provides structured guidance for managing software projects from start to finish. It includes 14 sequential modules, 80+ ready-to-use templates, real case studies, and automation scripts.
+A structured approach to managing software projects:
 
-**Built for**: Solo developers, freelancers, small development teams, indie hackers
+- 14 modules covering discovery, design, development, QA, deployment, maintenance
+- 80+ templates (PRD, FSD, SOW, test plans, deployment protocols)
+- Real case studies with metrics
+- Code patterns for common problems
+- Scripts for validation and automation
 
-**Use cases**: Client projects, SaaS MVPs, internal tools, e-commerce platforms
-
----
-
-## Features
-
-- **14 Sequential Modules** covering complete SDLC from discovery to operations
-- **80+ Templates** including PRD, FSD, SOW, API specs, test plans, deployment protocols
-- **3 Real Case Studies** with documented timelines, budgets, and outcomes
-- **Code Patterns** for validation, authentication, performance optimization
-- **Stack-Agnostic** - works with any technology stack
-- **Automation Scripts** for validation and template management
-- **JSON Schemas** for document validation
+Works with any tech stack. Built for solo developers, freelancers, small teams.
 
 ---
 
-## Prerequisites
+## What's Included
 
-**To use the framework:**
-- Git for cloning the repository
-- Text editor or IDE
-- Basic understanding of software development
-
-**To run automation scripts:**
-- Bash (Linux/Mac) or PowerShell (Windows)
-- Node.js 18+ (optional, for schema validation)
+```
+solo-project-lifecycle/
+├── docs/modules/          14 lifecycle modules (M00-M13)
+├── templates/             80+ project templates
+├── patterns/              Code patterns (validation, auth, performance)
+├── case-studies/          3 real projects with outcomes
+├── references/            Guides and playbooks
+├── schemas/               JSON validation
+└── scripts/               Automation tools
+```
 
 ---
 
-## Installation
+## Getting Started
 
-Clone the repository:
+**Clone the repo:**
 
 ```bash
 git clone https://github.com/nothingser0/solo-project-lifecycle.git
 cd solo-project-lifecycle
 ```
 
-Browse the documentation:
+**Read the framework:**
 
 ```bash
-# Framework overview
-cat docs/README.md
-
-# Quick start guide for MVPs
-cat docs/quickstart.md
-
-# List all modules
-ls docs/modules/
+cat docs/README.md              # Framework overview
+cat docs/quickstart.md          # MVP fast-track (2-4 weeks)
+ls docs/modules/                # All 14 modules
 ```
 
-Validate templates (optional):
+**Browse templates:**
 
 ```bash
-# Bash
-./scripts/validate-gate.sh
-
-# PowerShell
-.\scripts\validate-gate.ps1
+ls templates/essentials/        # 8 most-used templates
+ls templates/                   # All templates by phase
 ```
 
 ---
 
 ## Usage
 
-### For MVP Projects (2-4 Weeks)
+### Quick MVP (2-4 weeks)
 
-Recommended module sequence:
+Minimal path for solo projects:
 
-1. **M01: Idea Feasibility** (4 hours) - Score your idea across 4 dimensions
-2. **M04: UI/UX Design** (2-3 days) - Create wireframes and prototypes  
-3. **M05: Architecture** (1-2 days) - Write PRD and technical specs
-4. **M06: Development** (10-20 days) - Build features with checklists
-5. **M07: QA** (1 day) - Run smoke tests and basic validation
-6. **M10: Deployment** (1 day) - Deploy to production
+1. M01: Idea Feasibility (4 hours)
+2. M04: UI/UX Design (2-3 days)
+3. M05: Architecture (1-2 days)
+4. M06: Development (10-20 days)
+5. M07: QA smoke tests (1 day)
+6. M10: Deploy (1 day)
 
-Start here: `docs/quickstart.md`
+See `docs/quickstart.md` for details.
 
-Essential templates: `templates/essentials/`
+### Full Client Project (4-8 weeks)
 
-### For Client Projects (4-8 Weeks)
+Complete governance for paid client work:
 
-Follow all 14 modules in sequence for complete project governance.
+- Follow all 14 modules in sequence
+- Use templates from `templates/by-use-case/client-commercial/`
+- Gate checkpoints at M03 (signed SOW), M09 (UAT), M11 (handover)
 
-Use templates from: `templates/by-use-case/client-commercial/`
-
-Key gates:
-- **M03**: Signed SOW and contract
-- **M09**: Client UAT sign-off
-- **M11**: Final handover and BAST
-
-### Example: Create PRD Document
+### Using Templates
 
 ```bash
 # Copy template to your project
 cp templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md myproject/PRD.md
 
-# Edit with your requirements
+# Fill in your requirements
 vim myproject/PRD.md
 
-# Validate completeness
+# Validate completeness (optional)
 ./scripts/lint-template.sh myproject/PRD.md
-
-# Validate against JSON schema (optional)
-npx ajv validate -s schemas/prd.schema.json -d myproject/PRD.json
 ```
 
 ---
 
-## Project Structure
-
-```
-solo-project-lifecycle/
-│
-├── docs/
-│   ├── README.md              # Framework guide and usage instructions
-│   ├── modules/               # 14 sequential modules (M00-M13)
-│   └── quickstart.md          # MVP fast-track guide
-│
-├── templates/
-│   ├── essentials/            # 8 most-used templates
-│   ├── by-use-case/           # Templates organized by project type
-│   ├── 00-pre-engagement/     # Client intake and qualification
-│   ├── 01-discovery-commercial/  # Market research, SOW, stakeholder maps
-│   ├── 02-design/             # Design specs and prototypes
-│   ├── 03-architecture-specs/ # PRD, FSD, system design
-│   ├── 04-dev-execution/      # Development checklists and harness
-│   ├── 05-data-migration/     # Migration plans and validation
-│   ├── 06-qa-uat/             # Test plans and security audits
-│   ├── 07-release-handover/   # Deployment protocols and BAST
-│   ├── 08-maintenance-ops/    # SLA contracts and incident response
-│   └── 09-product-growth/     # Analytics and A/B testing
-│
-├── patterns/
-│   ├── validation/            # Form validation patterns with Zod
-│   ├── security/              # Authentication and encryption
-│   ├── performance/           # Caching and N+1 prevention
-│   └── git-workflow/          # Branching strategy and commits
-│
-├── case-studies/
-│   ├── 01-mvp-saas-inventory.md       # 4 weeks, 200 users
-│   ├── 02-ecommerce-fashion-mvp.md    # 21 days, Rp 52M GMV
-│   └── 03-crm-real-estate-internal.md # 28 days, +58% revenue
-│
-├── references/
-│   ├── checklists/            # Feasibility criteria, evaluation guides
-│   ├── playbooks/             # AI development, design patterns
-│   ├── pm/                    # PM guides for analytics, prioritization
-│   ├── solo/                  # Solo developer architecture guide
-│   ├── stacks/                # Next.js 15, Laravel 11 quickstarts
-│   └── technical/             # Deep research, compliance, design systems
-│
-├── schemas/                   # JSON validation schemas
-├── scripts/                   # Automation and validation tools
-├── README.md                  # This file
-├── LICENSE                    # MIT License
-└── .gitignore
-```
-
----
-
-## Module Overview
+## Module List
 
 | Module | Phase | Duration | Description |
 |--------|-------|----------|-------------|
-| M00 | Discovery | 2-4 days | Product discovery, market research, competitive analysis |
-| M01 | Discovery | 4 hours | Idea feasibility scoring (viability, desirability, feasibility, sustainability) |
-| M02 | Planning | 1-2 days | Scope definition, MoSCoW prioritization, RBAC design |
-| M03 | Planning | 4 hours | Legal SOW, contract terms, payment schedule |
-| M04 | Design | 2-3 days | UI/UX design, wireframes, prototypes, design system |
-| M05 | Architecture | 1-2 days | PRD, FSD, database schema, API contracts |
-| M06 | Development | 10-20 days | Backend, frontend, integrations, unit tests |
-| M07 | QA | 2-3 days | System integration testing, security audits, performance tests |
-| M08 | Preparation | 1 day | Data migration, database seeding, content import |
-| M09 | Validation | 2-3 days | User acceptance testing, client sign-off |
-| M10 | Launch | 1 day | Production deployment, monitoring, rollback plan |
-| M11 | Handover | 4 hours | Documentation handover, training, BAST signing |
-| M12 | Support | Ongoing | Warranty period, bug fixes, SLA retainer |
-| M13 | Growth | Ongoing | Product operations, analytics, feature iteration |
+| M00 | Discovery | 2-4 days | Market research, competitor analysis |
+| M01 | Discovery | 4 hours | Idea feasibility scoring |
+| M02 | Planning | 1-2 days | Scope definition, prioritization |
+| M03 | Planning | 4 hours | SOW contract, terms |
+| M04 | Design | 2-3 days | UI/UX design, prototyping |
+| M05 | Architecture | 1-2 days | PRD, FSD, technical specs |
+| M06 | Development | 10-20 days | Build, test, integrate |
+| M07 | QA | 2-3 days | Testing, security audit |
+| M08 | Preparation | 1 day | Data migration |
+| M09 | Validation | 2-3 days | UAT, sign-off |
+| M10 | Launch | 1 day | Deploy to production |
+| M11 | Handover | 4 hours | Documentation, training |
+| M12 | Support | Ongoing | Warranty, bug fixes |
+| M13 | Growth | Ongoing | Analytics, iteration |
+
+Complete module docs: `docs/modules/`
 
 ---
 
-## Technology Support
+## Tech Stacks
 
-Framework works with any technology stack. Quickstart guides included for:
+Framework is stack-agnostic. Quickstart guides for:
 
-**Frontend**: React, Next.js 15, Vue, Svelte  
-**Backend**: Node.js, Laravel 11, Django, Go  
-**Database**: PostgreSQL, MySQL, MongoDB, Supabase  
-**Hosting**: Vercel, Railway, AWS, DigitalOcean, Cloudflare
+- Frontend: React, Next.js 15, Vue, Svelte
+- Backend: Node.js, Laravel 11, Django, Go
+- Database: PostgreSQL, MySQL, Supabase
+- Deploy: Vercel, Railway, AWS, DigitalOcean
 
-See `references/stacks/` for detailed setup instructions.
+See `references/stacks/` for setup instructions.
 
 ---
 
-## Real Case Studies
+## Case Studies
 
-**Fashion E-commerce MVP**
-- Timeline: 21 days
-- Team: 1 developer
-- Stack: Next.js 14, PostgreSQL, Midtrans
-- Result: Rp 52M GMV in first 3 months
+**Fashion E-commerce**  
+21 days, solo dev, Next.js + PostgreSQL  
+Result: Rp 52M GMV in 3 months
 
-**Real Estate CRM (Internal)**
-- Timeline: 28 days
-- Team: 1 developer
-- Stack: Laravel 11, MySQL, Livewire
-- Result: +58% revenue increase, 40% time savings
+**Real Estate CRM**  
+28 days, Laravel + MySQL  
+Result: +58% revenue, 40% time savings
 
-**SaaS Inventory System**
-- Timeline: 4 weeks
-- Team: Solo developer
-- Stack: Next.js, Supabase, Stripe
-- Result: 200 active users, $2.4K MRR
+**SaaS Inventory**  
+4 weeks, Next.js + Supabase  
+Result: 200 users, $2.4K MRR
 
 Full details: `case-studies/`
 
 ---
 
+## Scripts
+
+**Bash (Linux/Mac):**
+```bash
+./scripts/validate-gate.sh     # Validate gate checkpoints
+./scripts/lint-template.sh     # Check template completeness
+./scripts/template-picker.sh   # Interactive template selector
+```
+
+**PowerShell (Windows):**
+```powershell
+.\scripts\validate-gate.ps1
+.\scripts\lint-template.ps1
+.\scripts\template-picker.ps1
+```
+
+---
+
 ## Contributing
 
-Contributions welcome. To contribute:
+Fork, branch, commit, push, PR.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-template`)
-3. Commit your changes (`git commit -m 'Add new template'`)
-4. Push to the branch (`git push origin feature/new-template`)
-5. Open a Pull Request
-
-**Contribution ideas:**
-- Additional case studies from real projects
-- Stack-specific templates (Ruby on Rails, Phoenix, etc.)
-- Translations to other languages
-- Template improvements based on field usage
+Useful contributions:
+- Additional case studies
+- Stack-specific templates
+- Translations
+- Template improvements
 
 ---
 
 ## License
 
-MIT License. See [LICENSE](./LICENSE) for full text.
+MIT License. See [LICENSE](./LICENSE).
 
-You can use this framework for:
-- Commercial client projects
-- SaaS products and startups
-- Consulting and agency work
-- Internal company projects
+Use for commercial projects, consulting, products, internal tools.
 
 ---
 
-## Documentation
+## Links
 
-**Main Guide**: [docs/README.md](./docs/README.md)  
-**Quick Start**: [docs/quickstart.md](./docs/quickstart.md)  
-**Module Details**: [docs/modules/](./docs/modules/)  
-**Templates**: [templates/](./templates/)
-
----
-
-## Support
-
-**Issues and Questions**: [GitHub Issues](https://github.com/nothingser0/solo-project-lifecycle/issues)
-
-**Status**: Production-ready, actively maintained
+- [Framework Guide](./docs/README.md)
+- [Quick Start](./docs/quickstart.md)
+- [All Modules](./docs/modules/)
+- [Templates](./templates/)
+- [Issues](https://github.com/nothingser0/solo-project-lifecycle/issues)
 
 ---
 
