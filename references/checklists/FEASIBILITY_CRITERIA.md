@@ -31,7 +31,7 @@ Pelanggaran regulasi di Indonesia dapat berujung sanksi administratif hingga pid
 * **Regulasi Data Pribadi (UU PDP No. 27/2022)**:
   - *Aturan*: Jika aplikasi mengumpulkan data KTP, data kesehatan, data finansial, atau data anak, wajib ada enkripsi saat transit dan at-rest, persetujuan eksplisit (consent), dan mekanisme penghapusan data.
 * **Regulasi Tanda Tangan Elektronik (UU ITE & PP 71/2019)**:
-  - *Tanda Tangan Tidak Tersertifikasi* (Canvas/Email OTP): Sah secara hukum perdata (KUHPerdata 1865/1866) namun memiliki kekuatan pembuktian lebih lemah di pengadilan jika disangkal.
+  - *Tanda Tangan Tidak Tersertifikasi* (Canvas/Email OTP): Sah secara hukum per UU ITE No. 19/2016 Pasal 5 jo. PP 71/2019 (supersedes KUHPerdata 1865/1866 untuk transaksi elektronik), namun memiliki kekuatan pembuktian lebih lemah di pengadilan jika disangkal.
   - *Tanda Tangan Tersertifikasi (PSrE)*: Wajib menggunakan vendor berizin Kominfo (Privy, VIDA, Peruri) jika menangani dokumen bernilai hukum tinggi / perbankan.
 * **Regulasi Finansial (Bank Indonesia / OJK)**:
   - Solo developer **DILARANG KERAS** menyimpan data kartu kredit mentah di database. Wajib menggunakan Payment Gateway berlisensi (Midtrans, Xendit, Doku) yang memiliki sertifikasi PCI-DSS Level 1.

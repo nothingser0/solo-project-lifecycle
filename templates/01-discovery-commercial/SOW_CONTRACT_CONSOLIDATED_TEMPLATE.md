@@ -156,13 +156,14 @@ Para Pihak sepakat untuk menjaga kerahasiaan informasi bisnis, data teknis, dan 
 
 ### 10. Pengesahan Perjanjian
 
-Perjanjian ini dibuat dalam rangkap 2 (dua), bermeterai cukup (Rp 10.000,-), dan memiliki kekuatan hukum yang sama bagi kedua belah pihak.
+Perjanjian ini dibuat dalam rangkap 2 (dua), bermeterai cukup (Rp 10.000,- per UU No. 10/2020 Pasal 3 ayat 1), dan memiliki kekuatan hukum yang sama bagi kedua belah pihak.
 
 | PIHAK PERTAMA (Klien) | PIHAK KEDUA (Developer) |
 | :---: | :---: |
 | [Nama Perusahaan Klien] | Independent Software Consultant |
 | *(Meterai Rp 10.000)* | *(Meterai Rp 10.000)* |
-| _____________________________ | _____________________________ |
+
+**Catatan Legal**: Tanda tangan elektronik diakui sah per UU ITE No. 19/2016 Pasal 5 jo. PP 71/2019. Meterai elektronik dapat menggunakan layanan e-Meterai resmi Peruri.
 | **Nama**: [Nama PIC Klien] | **Nama**: [Nama Anda] |
 | **Jabatan**: [Jabatan Klien] | **Jabatan**: Independent Lead Engineer |
 | Tanggal: _____________________ | Tanggal: _____________________ |
