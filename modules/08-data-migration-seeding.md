@@ -110,7 +110,7 @@ Tuliskan skrip eksekusi mandiri (misal: `scripts/migrate-data.ts` atau script Py
 
 | Aspek Migrasi Data | Skala Kecil (MVP / Freelance) | Skala Menengah (B2B SaaS / Agensi) | Skala Besar & Enterprise |
 | :--- | :--- | :--- | :--- |
-| **Volume Data** | $< 1.000$ baris data | $1.000 – 100.000$ baris data | $> 100.000$ baris data / Multi-database |
+| **Volume Data** | < 1.000 baris data | 1.000 – 100.000 baris data | > 100.000 baris data / Multi-database |
 | **Format Sumber** | File Excel tunggal / CSV | Beberapa file Excel + Database MySQL lama | Database Oracle/SAP, legacy API, data terdistribusi |
 | **Metode Eksekusi** | Skrip TypeScript sederhana satu kali jalan | Skrip ETL terstruktur dengan batching & logging | ETL Pipeline modular, rollback plan bertingkat |
 | **Sanitasi PII Staging** | Ganti nama & email generik | Skrip masking otomatis NIK & telepon | Data Anonymization Engine sesuai audit ISO/PDP |

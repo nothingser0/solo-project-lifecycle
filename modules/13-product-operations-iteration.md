@@ -226,7 +226,7 @@ Agregasi tiket support ke dalam knowledge base:
 **Contoh Workflow dengan GitHub Issues**:
 ```bash
 # Label otomatis berdasarkan keyword
-gh api repos/zeenn/project/issues/123 -X PATCH \
+gh api repos/{username}/{repo}/issues/123 -X PATCH \
   -f state='open' \
   -f labels='["bug", "high-priority"]'
 ```

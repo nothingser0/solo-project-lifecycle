@@ -179,5 +179,5 @@ Setelah penandatanganan BAST dan serah terima aset:
    - Tanggal mulai dan tanggal berakhir masa garansi resmi
    - Penawaran paket pemeliharaan (Monthly Retainer SLA)
 3. **AKHIRI RESPON ANDA (END TURN)** dan ajukan konfirmasi kepada pengguna:
-   > *"Proyek telah resmi diserahterimakan dan ditutup (BAST ditandatangani). Masa garansi resmi berjalan mulai hari ini hingga [Tanggal Berakhir] (Durasi: 30 hari untuk skala kecil / 60 hari untuk skala menengah / 90 hari untuk skala besar). Apakah Anda inkan menyusun draf kebijakan garansi dan proposal Monthly Retainer SLA (Modul 12)?"*
+   > *"Proyek telah resmi diserahterimakan dan ditutup (BAST ditandatangani). Masa garansi resmi berjalan mulai hari ini hingga [Tanggal Berakhir] (Durasi: 30 hari untuk skala kecil / 60 hari untuk skala menengah / 90 hari untuk skala besar). Apakah Anda ingin menyusun draf kebijakan garansi dan proposal Monthly Retainer SLA (Modul 12)?"*
 4. Tunggu respon persetujuan eksplisit dari pengguna sebelum melangkah ke Modul 12.

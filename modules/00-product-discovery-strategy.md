@@ -8,7 +8,6 @@
 > - Read: `references/improvements/MODUL_00_IMPROVEMENTS.md`
 
 Modul ini adalah **gerbang paling awal** dalam siklus pengembangan perangkat lunak untuk solo developer dan konsultan teknis yang mengerjakan proyek dengan anggaran waktu tak terbatas (*unlimited time budget*) dan kasus penggunaan perusahaan (*company use-case*). Modul ini wajib dieksekusi **SEBELUM Modul 01 (Idea & Feasibility)** ketika:
-- Pengguna zeenn melakukan riset produk baru dari nol tanpa deadline ketat.
 - Proyek membutuhkan standar Product Management (*PM*) tingkat industri.
 - Ada kebutuhan validasi pasar, analisis kompetitor, dan penelitian pengguna mendalam sebelum menentukan fitur.
 
@@ -89,6 +88,7 @@ SAM = TAM * (persentase_digitalisasi_aktif)
 
 SOM_tahun_1 = SAM * (target_market_share_realistis)
     # Rp 6.1 triliun * 0.01% (1 dari 10.000 UKM digital)
+    # 0.01% = 0.0001 dalam rumus Python (bukan 0.01)
     # SOM = Rp 610 juta/tahun (≈ 500 paying customers)
 ```
 
