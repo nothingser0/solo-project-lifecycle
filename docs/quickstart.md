@@ -87,7 +87,7 @@ Week 4: Deploy (2 days)
 
 **Output**: 2 files total
 1. `PROJECT.md` (core specs)
-2. `DESIGN.md` (UI tokens)
+2. `docs/harness-root/DESIGN.md` (UI tokens - staged)
 
 **Agent workflow**:
 ```bash
@@ -155,13 +155,13 @@ CREATE TABLE todos (
 
 ### Day 2: Design (4 hours)
 
-**Output**: `DESIGN.md` (design tokens only, no mockups)
+**Output**: `docs/harness-root/DESIGN.md` (design tokens only, no mockups - staged)
 
 **Agent workflow**:
 ```bash
-# Agent: Read template from skill repo, write to user's project root
+# Read template from skill repo, write to user's project directory
 # 1. Read: skill://solo-project-lifecycle/templates/02-design/DESIGN_MD_TEMPLATE.md
-# 2. Write: ./DESIGN.md (in user's current working directory)
+# 2. Write: docs/harness-root/DESIGN.md (staged for deployment after scaffold)
 # 3. If Next.js: suggest running `npx shadcn@latest init` (Zinc palette, default radius)
 ```
 
@@ -373,9 +373,9 @@ If number flat/declining → MVP failing → pivot or stop.
 #    Source: skill://solo-project-lifecycle/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md
 #    Target: ./PROJECT.md
 
-# 2. Design tokens - Read from skill, write to user project root
+# 2. Design tokens - Read from skill, write to harness staging
 #    Source: skill://solo-project-lifecycle/templates/02-design/DESIGN_MD_TEMPLATE.md
-#    Target: ./DESIGN.md
+#    Target: docs/harness-root/DESIGN.md
 
 # 3. Deployment checklist - Read from skill, write to user project root
 #    Source: skill://solo-project-lifecycle/templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md
@@ -408,7 +408,7 @@ Then read:
 ## FAQ
 
 **Q: Can I skip design entirely?**  
-A: No. Spend 4 hours on `DESIGN.md` (tokens only). Ugly UI = 0 users.
+A: No. Spend 4 hours on `docs/harness-root/DESIGN.md` (tokens only, staged). Ugly UI = 0 users.
 
 **Q: Can I use WordPress/Bubble/Webflow?**  
 A: Yes if truly no-code. But if you write ANY custom code, use proper framework (Next.js/Laravel).

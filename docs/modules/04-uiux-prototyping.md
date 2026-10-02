@@ -62,12 +62,12 @@ This module produces concrete deliverables:
 | :---: | :--- | :--- | :--- |
 | **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale). Prerequisite for DESIGN_SYSTEM.md. |
 | **2** | **`docs/specs/DESIGN_SYSTEM.md`** | Folder `docs/specs/` | Combined design system tokens and comprehensive UI specification document (color palette, typography, component specs, 5-state screen matrix per screen). |
-| **3** | **`DESIGN.md`** (root) | Project root | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. |
+| **3** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to root after scaffold. |
 | **4** | **Interactive Prototype** (Optional) | Live Staging / Stitch Viewer / Figma | Clickable interface application (only if AI/Manual Figma workflow is selected). For markdown workflow: skip prototype, proceed directly to coding in Module 06. |
 | **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
 
 > 📁 **MANDATORY FILE LOCATION RULES**:
-> - `DESIGN.md` is placed at root (`./DESIGN.md`) because it functions as an AI control file during coding (Module 06).
+> - `DESIGN.md` is staged in `docs/harness-root/DESIGN.md` during M04, then deployed to root (`./DESIGN.md`) after scaffold in M06.
 > - `DESIGN_SPEC.md` MUST be placed in **`docs/specs/DESIGN_SPEC.md`**. Placed in the root directory is STRICTLY FORBIDDEN.
 >
 > ⚠️ **GOOGLE STITCH TOOL ISSUE RESOLUTION**:
@@ -811,7 +811,7 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 ### Mandatory Files Verification (BLOCKING):
 - [x] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, contains 4 prompts)
 - [x] **`docs/specs/SITEMAP.md` exists** (≥500 bytes, contains screen count table)
-- [x] **`DESIGN.md` exists** (root, ≥1000 bytes, contains color palette + typography)
+- [x] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
 - [x] **`docs/specs/DESIGN_SYSTEM.md` exists** (≥2000 bytes, contains screen specs)
 - [x] **Screen count match**: SITEMAP.md total = DESIGN_SYSTEM.md screen inventory (±10% tolerance)
 
@@ -991,7 +991,7 @@ Next Steps:
    - Color palette recommendation (primary + accent hex codes)
    - Style references (SaaS logos: Stripe, Notion, Linear)
 
-2. ✅ **`DESIGN.md`** (project root, ~8-15KB)
+2. ✅ **`docs/harness-root/DESIGN.md`** (staged for deployment after scaffold, ~8-15KB)
    - Color palette (primary, background, text, border with hex codes)
    - Typography (font families, weights, line heights, letter-spacing)
    - Component inventory (buttons, cards, forms, tables, modals)
