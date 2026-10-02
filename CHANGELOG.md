@@ -10,10 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Legal disclaimer to README and M03 (legal liability protection)
+- `scripts/validate-gate.sh` - Gate checkpoint validation tool (M03, M09, M11)
+- `scripts/lint-template.sh` - Template completeness validator
+- `scripts/template-picker.sh` - Interactive template selection CLI
+- `QUICK_START_MVP.md` - Fast-track guide for 2-4 week MVPs (300 lines)
+- `references/case-studies/01-mvp-saas-inventory.md` - Real project walkthrough
+- `audit/FRAMEWORK_WEAKNESSES.md` - Comprehensive gap analysis (14 issues)
+- `ANTI_PATTERNS.md` - When NOT to use this framework
 
 ### Changed
+- README: Removed AI agent focus, made framework-first
+- `audit/FRAMEWORK_WEAKNESSES.md`: Corrected TODO count analysis (163 false positives)
 
 ### Fixed
+- Git remote authentication (PAT → gh CLI)
 
 ---
 
