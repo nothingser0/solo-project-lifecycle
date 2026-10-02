@@ -1,6 +1,6 @@
 # Solo Project Lifecycle
 
-> **Operational software framework for solo developers and technical consultants** — Execute projects from Small (MVP) to Enterprise scale with work boundary protection, AI automation, and graduated quality gates.
+> **Complete SDLC framework for solo developers and technical consultants** — Execute projects from small MVPs to enterprise systems with structured workflows, commercial protection, and quality gates.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/nothingser0/solo-project-lifecycle)
@@ -24,7 +24,7 @@
 
 ## 🎯 Overview
 
-**Solo Project Lifecycle** adalah framework SDLC komprehensif yang dirancang khusus untuk solo developer dan konsultan teknis yang menjalankan proyek freelance atau produk sendiri. Framework ini mencakup 13 modul dari fase discovery hingga production maintenance, lengkap dengan template dokumen, checklist, dan panduan best practices.
+**Solo Project Lifecycle** adalah framework SDLC lengkap untuk solo developer dan technical consultant yang menjalankan proyek freelance atau produk sendiri. Framework ini mencakup 13 modul dari discovery hingga production maintenance, lengkap dengan 100+ template dokumen, checklist, dan panduan best practices.
 
 **Problem yang diselesaikan**:
 - ❌ Scope creep tanpa batas
@@ -36,7 +36,7 @@
 **Solution**:
 - ✅ 12-stage gated pipeline dengan stop point jelas
 - ✅ Template kontrak & payment terms bertahap
-- ✅ Fast-track mode untuk MVP (skip dokumentasi berlebihan)
+- ✅ Fast-track mode untuk MVP (2-6 minggu)
 - ✅ Protection rules anti-kerja gratis (no DP = no code)
 - ✅ Built-in compliance untuk regulasi Indonesia
 
@@ -78,83 +78,62 @@
 
 ## 🚀 Quick Start
 
-### Fast-Track (MVP in 1-4 weeks)
+### Option 1: Fast-Track MVP (2-6 minggu)
 
 ```bash
-# 1. Copy minimal template
-cp templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md ./PROJECT.md
+# 1. Clone framework
+git clone https://github.com/nothingser0/solo-project-lifecycle.git
+cd solo-project-lifecycle
 
-# 2. Fill business context (20 min)
-# 3. Pick tech stack from ladder (Next.js/Laravel/Django)
-# 4. Generate UI with Google Stitch (modules/04)
-# 5. Start coding (modules/06)
+# 2. Copy templates ke project kamu
+cp -r templates/03-architecture-specs/PRD_TEMPLATE.md ../your-project/docs/specs/PRD.md
+cp -r templates/03-architecture-specs/FSD_TEMPLATE.md ../your-project/docs/specs/FSD.md
+
+# 3. Baca modul yang relevan
+# - modules/04-uiux-prototyping.md (Design)
+# - modules/05-architecture-specs.md (Tech specs)
+# - modules/06-development-execution.md (Coding)
+# - modules/10-deployment-production.md (Launch)
 ```
 
-**Skip**: Market research (00), Feasibility (01), Formal SOW (03), Design System (04B), System Design (05B)
+**Skip untuk MVP**: Market research (M00), Feasibility (M01), Formal SOW (M03), Design System (M04B), System Design (M05B)
 
-### Standard Flow (Commercial Project)
+### Option 2: Standard Flow (Proyek Komersial 1-6 bulan)
 
 ```bash
-# 1. Load skill in AI agent
-skill(name='solo-project-lifecycle')
-
-# 2. Agent guides through 13 modules sequentially
-# Each module has:
+# Ikuti 13 modul secara berurutan
+# Setiap modul punya:
 #   - Input prerequisites
-#   - Step-by-step execution
+#   - Step-by-step execution guide
+#   - Template dokumen
 #   - Output deliverables
-#   - Gate verification (stop until approved)
+#   - Gate checkpoint (stop sampai approved)
 ```
 
-**Example conversation**:
+**Example flow**:
 ```
-User: "Client mau bikin sistem dokumen digital, budget 50 juta, deadline 3 bulan"
+Scenario: Client ingin sistem dokumen digital, budget 50 juta, 3 bulan
 
-Agent: 
-1. Skala: Menengah (3 bulan, budget realistis)
-2. Load: modules/01-idea-feasibility.md
-3. Scoring: Technical=4, Bandwidth=4, Legal=3, Commercial=5 → Total 16/20 ✓
-4. Next: Module 02 (Scope & Requirements)
+Step 1: Baca SKILL.md → Identifikasi skala = Menengah
+Step 2: Baca modules/01-idea-feasibility.md → Scoring: 16/20 ✓ GO
+Step 3: Baca modules/02-discovery-scope.md → Buat SCOPE_STATEMENT.md
+Step 4: Baca modules/03-legal-sow-charter.md → Buat kontrak SOW
+Step 5: Terima DP 30-50% → Baru mulai design & development
+Step 6-13: Ikuti modul sampai deployment & handover
 ```
 
 ---
 
 ## 📦 Installation
 
-### As AI Agent Skill
+### Clone Repository
 
-**For OpenCode / Claude Desktop**:
-
-```bash
-cd ~/.omp/agent/skills/
-git clone https://github.com/nothingser0/solo-project-lifecycle.git
-```
-
-**For Cursor / Windsurf**:
-```bash
-cd ~/Library/Application\ Support/Cursor/skills/  # macOS
-cd ~/.config/cursor/skills/  # Linux
-git clone https://github.com/nothingser0/solo-project-lifecycle.git
-```
-
-**For Generic Use** (no AI agent):
 ```bash
 git clone https://github.com/nothingser0/solo-project-lifecycle.git
 cd solo-project-lifecycle
-
-# Browse modules/ and templates/ manually
-# Copy templates to your project as needed
 ```
 
-### Verify Installation
-
 ```bash
-# Check SKILL.md exists
-cat SKILL.md | head -20
-
-# List all modules
-ls -1 modules/*.md
-
 # Count templates
 find templates -name "*.md" | wc -l
 ```
@@ -163,26 +142,13 @@ find templates -name "*.md" | wc -l
 
 ## 💻 Usage
 
-### With AI Agent
-
-1. **Load skill**: `skill(name='solo-project-lifecycle')`
-2. **Agent reads** `SKILL.md` and understands 13-module pipeline
-3. **Agent asks** project scale (Kecil/Menengah/Besar/Enterprise)
-4. **Agent loads** appropriate module on-demand (progressive disclosure)
-5. **Agent executes** module steps and generates deliverables
-6. **Agent stops** at gate checkpoint, waits for user approval
-
-### Manual Use (No Agent)
+### Workflow
 
 1. **Identify scale**: Read `SKILL.md` section "Project Scale Table"
-2. **Pick module path**:
-   - Fast-Track: 04 → 06 → 10
-   - Standard: 00 → 01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11
-   - Enterprise: All modules + 04B, 05B, 06B
-3. **Read module**: Open `modules/{NN}-{name}.md`
-4. **Copy template**: From `templates/{phase}/` to `docs/`
-5. **Fill template**: Follow module instructions
-6. **Verify gate**: Check "GATE CHECK BEFORE EXIT" section
+2. **Read module**: Open `modules/{NN}-{name}.md` untuk step-by-step guide
+3. **Copy template**: Dari `templates/{phase}/` ke `docs/` project kamu
+4. **Fill & execute**: Ikuti instruksi modul, isi template, deliver output
+5. **Gate check**: Verifikasi deliverables sebelum lanjut modul berikutnya
 
 ### Example: Menengah Project (3 months, Rp 50M)
 
@@ -298,13 +264,13 @@ your-project/
 
 ## 📚 Documentation
 
-### Core Documentation
+### Core Docs
 - **[SKILL.md](SKILL.md)**: Framework overview, principles, module map
-- **[modules/](modules/)**: 13 execution modules with step-by-step instructions
+- **[modules/](modules/)**: 13 modul eksekusi dengan step-by-step guide
 - **[templates/](templates/)**: 100+ ready-to-use document templates
 - **[references/](references/)**: Best practices, checklists, patterns
 
-### Key Guides
+### Key References
 - **Solo Development Patterns**: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`
 - **Engineering Standards**: `references/solo/SOLO_ENGINEERING_STANDARDS.md`
 - **Feasibility Criteria**: `references/checklists/FEASIBILITY_CRITERIA.md`
@@ -312,9 +278,9 @@ your-project/
 - **AI-Assisted Development**: `references/playbooks/ai-assisted-development.md`
 
 ### Audit & Quality
-- **Audit Report**: `audit/REPORT.md` (59 findings, 85% accuracy)
-- **Remediation Progress**: `audit/REMEDIATION_PROGRESS.md` (16/59 fixed, all Critical cleared)
-- **Refactor Plan**: `audit/REFACTOR_PLAN.md` (D1-D9 structure improvements)
+- **Audit Report**: `audit/REPORT.md`
+- **Remediation Status**: `audit/REMAINING_FINDINGS_TODO.md` (59/59 fixed)
+- **Legal Review**: `audit/LEGAL_REVIEW_TODO.md` (F033-F036 pending lawyer)
 
 ---
 
@@ -334,7 +300,7 @@ Contributions welcome! Framework ini open-source dan aktif dikembangkan.
 
 ### Areas for Contribution
 
-- ✅ **Templates**: Add stack-specific templates (Flutter, Golang, FastAPI)
+- ✅ **Templates**: Stack-specific templates (Flutter, Golang, FastAPI)
 - ✅ **Translations**: English version of modules
 - ✅ **Legal Review**: Indonesia lawyer review for F032-F037 findings
 - ✅ **Cross-Platform**: Bash alternatives for PowerShell commands (F022)
