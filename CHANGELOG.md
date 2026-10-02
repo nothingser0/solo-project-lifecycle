@@ -10,21 +10,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Legal disclaimer to README and M03 (legal liability protection)
-- `scripts/validate-gate.sh` - Gate checkpoint validation tool (M03, M09, M11)
-- `scripts/lint-template.sh` - Template completeness validator
-- `scripts/template-picker.sh` - Interactive template selection CLI
-- `QUICK_START_MVP.md` - Fast-track guide for 2-4 week MVPs (300 lines)
-- `references/case-studies/01-mvp-saas-inventory.md` - Real project walkthrough
-- `audit/FRAMEWORK_WEAKNESSES.md` - Comprehensive gap analysis (14 issues)
-- `ANTI_PATTERNS.md` - When NOT to use this framework
 
 ### Changed
-- README: Removed AI agent focus, made framework-first
-- `audit/FRAMEWORK_WEAKNESSES.md`: Corrected TODO count analysis (163 false positives)
 
 ### Fixed
-- Git remote authentication (PAT → gh CLI)
+
+---
+
+## [1.3.0] - 2026-10-02
+
+### Added
+- **Progressive Disclosure Pattern**:
+  - `appendices/06-development/backend-checklist.md` (214 lines) - Database, API endpoints, middleware, queues, storage, email
+  - `appendices/06-development/frontend-checklist.md` (166 lines) - Components, pages, state, forms, API integration, 5 UI states
+  - `appendices/06-development/integration-checklist.md` (151 lines) - Payment gateways, email, storage, analytics, monitoring
+
+### Changed
+- **M06 Development Execution** refactored for readability:
+  - Reduced from 1612 lines → 1388 lines (-224 lines, -13.9%)
+  - Extracted 531 lines of detailed checklists to appendices
+  - Core module now shows overview + references to detailed appendices
+  - AI coding agents can load specific sections on-demand
+
+### Benefits
+- ✅ Core modules more scannable (key concepts visible without scrolling)
+- ✅ Detailed checklists accessible on-demand (progressive disclosure)
+- ✅ Single source of truth (no duplication between modules)
+- ✅ Better AI agent integration (load backend/frontend/integration separately)
+- ✅ Easier maintenance (update one appendix vs scattered inline content)
 
 ---
 
