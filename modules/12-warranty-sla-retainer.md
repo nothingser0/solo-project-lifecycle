@@ -3,7 +3,8 @@
 > ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/improvements/MODUL_12_IMPROVEMENTS.md` (One-off to MRR conversion, Bronze/Silver/Gold packages formula, WhatsApp panic handling, On-call anti-burnout boundaries, timeline estimation, Incident response workflow, Retainer pricing formula, Warranty expiry automation)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_12_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_12_IMPROVEMENTS.md`
 
 Modul ini adalah tahap kedua belas (fase pamungkas) dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah mengelola masa garansi perbaikan galat (*warranty period*) secara terukur, menetapkan perjanjian tingkat layanan (*Service Level Agreement* / SLA), menangani insiden darurat produksi, dan mengonversi hubungan proyek satu kali (*one-off project*) menjadi sumber pendapatan berulang yang dapat diprediksi: **Kontrak Pemeliharaan Bulanan (Monthly Retainer / SLA Contract)**.
 

@@ -6,7 +6,8 @@
 > - `references/improvements/MODUL_05_IMPROVEMENTS.md` (Timeline estimation, PRD vs FSD content matrix, API error standardization, database migration strategy, NFR template)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, Repository/Service Layer patterns for FSD authoring)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_05_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_05_IMPROVEMENTS.md`
 
 Modul ini adalah tahap kelima dalam siklus hidup proyek perangkat lunak untuk solo developer. Tujuannya adalah merancang seluruh "mesin, kabel data, basis data, dan sistem keamanan" di balik antarmuka yang telah dibekukan pada Modul 04, menghasilkan dua cetak biru utama: **`PRD.md`** (*Product Requirement Document*) dan **`FSD.md`** (*Functional Specification Document*).
 

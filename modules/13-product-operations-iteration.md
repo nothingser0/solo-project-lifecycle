@@ -4,7 +4,8 @@
 > - `references/improvements/MODUL_13_IMPROVEMENTS.md` (Timeline estimation, Metrics dashboard tool recommendations, Experiment documentation template)
 > - `references/pm/RICE_SCORING_GUIDE.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_13_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_13_IMPROVEMENTS.md`
 
 Modul ini adalah tahap **pasca-peluncuran** dalam siklus hidup produk perangkat lunak untuk solo developer. Dijalankan setelah Modul 12 (Warranty & SLA) ketika sistem telah stabil di produksi dan fokus beralih dari "membangun" menjadi "mengoptimalkan & mengembangkan" berdasarkan data riil pengguna. Tujuannya adalah membangun **kerangka operasional berbasis metrik** untuk meningkatkan produk secara berkelanjutan menggunakan data, bukan asumsi.
 

@@ -3,7 +3,8 @@
 > ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/pm/PM_ANALYTICS_SETUP_GUIDE.md` (Platform selection, Event taxonomy quickstart, AARRR dashboard, A/B testing, Privacy compliance)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/pm/PM_ANALYTICS_SETUP_GUIDE.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/pm/PM_ANALYTICS_SETUP_GUIDE.md`
 
 Modul ini adalah tahap pasca-development untuk solo developer dan PM yang butuh mengukur product-market fit, engagement funnel, dan business metrics secara kuantitatif. Tujuannya adalah memasang **event tracking taxonomy** terstruktur, **analytics platform SDK** (Mixpanel/Amplitude/GA4), dan **dashboard real-time** untuk monitoring North Star Metric tanpa menenggelamkan solo dev dengan overhead berlebih.
 

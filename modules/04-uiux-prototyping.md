@@ -8,7 +8,8 @@
 > - `references/improvements/MODUL_04_IMPROVEMENTS.md` (Output contract: DESIGN.md, DESIGN_SPEC.md, DESIGN_REFERENCES.md; manual workflow; scope-based page inventory)
 > - `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md` (AI UI prototyping & coding tools benchmark)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_04_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_04_IMPROVEMENTS.md`
 
 Modul ini menerjemahkan `SCOPE_STATEMENT.md` menjadi tiga dokumen yang menjadi source of truth UI: `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, dan `docs/design/DESIGN_REFERENCES.md`. Fokusnya standardisasi visual, shared components, semua page/sub-page yang memang in-scope, responsive behavior, accessibility, dan acceptance criteria.
 

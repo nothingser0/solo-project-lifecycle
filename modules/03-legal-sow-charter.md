@@ -3,7 +3,8 @@
 > ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/improvements/MODUL_03_IMPROVEMENTS.md` (Scope creep rejection tactics, Change Request formula, Single PIC enforcement, Work Pause protocol, timeline estimation, SOW legal clauses, Payment term calculator, IP ownership templates, Change request pricing)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_03_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_03_IMPROVEMENTS.md`
 
 Modul ini adalah **GERBANG KOMERSIAL PEMBLOKIR (BLOCKING GATE)** dalam siklus hidup proyek solo developer. Aturan fundamental: **TIDAK ADA SATU BARIS KODE ATAU DESAIN DETAIL YANG DIKERJAKAN SEBELUM GERBANG INI LOLOS.**
 

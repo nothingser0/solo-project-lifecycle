@@ -3,7 +3,8 @@
 > ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/improvements/MODUL_11_IMPROVEMENTS.md` (No Pay No Root rule, Training session limits 1-2 sessions, Bitwarden Send one-time credentials, BAST legal force Indonesia, timeline estimation, Credential handover checklist, Repo transfer verification, Payment dispute protocol)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_11_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_11_IMPROVEMENTS.md`
 
 Modul ini adalah **GERBANG PENYERAHAN & PENUTUPAN KOMERSIAL (CLOSURE & HANDOVER GATE)** dalam siklus hidup proyek solo developer. Aturan mutlak: **DILARANG MENYERAHKAN KEPEMILIKAN REPOSITORI GIT (TRANSFER OWNERSHIP), KREDENSIAL ROOT SERVER, DAN MENANDATANGANI BAST SEBELUM SISA PEMBAYARAN PELUNASAN (100%) MASUK DAN TERKONFIRMASI DI REKENING BANK DEVELOPER.**
 

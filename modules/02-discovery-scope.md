@@ -5,7 +5,8 @@
 > - `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md` (Bank pertanyaan elisitasi 5 pilar, Red-flags detection)
 > - `references/improvements/MODUL_02_IMPROVEMENTS.md` (Timeline estimation, User story splitting rules, Sprint velocity tracking, Scope freeze protocol)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_02_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_02_IMPROVEMENTS.md`
 
 Modul ini adalah tahap kedua dalam siklus pengembangan perangkat lunak untuk solo developer. Tujuannya adalah mengekstrak kebutuhan bisnis riil dari pemangku kepentingan (stakeholder/klien), mendefinisikan batasan teknis, dan mengunci batasan **In-Scope vs Out-of-Scope** ke dalam dokumen **`SCOPE_STATEMENT.md`** sebelum masuk ke komitmen kontrak atau perancangan detail.
 

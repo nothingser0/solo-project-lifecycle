@@ -4,7 +4,8 @@
 > - `references/improvements/MODUL_00_IMPROVEMENTS.md` (Timeline 3-4 minggu, Budget Rp1.5-11 juta, Respondent recruitment tactics, Competitive moat assessment, Skip decision tree, Expanded regulatory table)
 > - `references/technical/DEEP_RESEARCH_METHODOLOGY.md` (Regulatory/compliance research, Competitor deep-dive analysis, Domain knowledge acquisition for fintech/healthtech/legaltech)
 >
-> Load via: `skill_view(name='solo-project-lifecycle', file_path='references/improvements/MODUL_00_IMPROVEMENTS.md')`
+> **MANDATORY: Load references BEFORE executing this module**:
+> - Read: `references/improvements/MODUL_00_IMPROVEMENTS.md`
 
 Modul ini adalah **gerbang paling awal** dalam siklus pengembangan perangkat lunak untuk solo developer dan konsultan teknis yang mengerjakan proyek dengan anggaran waktu tak terbatas (*unlimited time budget*) dan kasus penggunaan perusahaan (*company use-case*). Modul ini wajib dieksekusi **SEBELUM Modul 01 (Idea & Feasibility)** ketika:
 - Pengguna zeenn melakukan riset produk baru dari nol tanpa deadline ketat.
