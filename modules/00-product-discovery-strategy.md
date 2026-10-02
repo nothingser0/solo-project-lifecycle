@@ -80,6 +80,7 @@ Tujuan: Memahami ukuran pasar, pertumbuhan industri, dan batasan regulasi sebelu
 # Contoh: SaaS Akuntansi untuk UKM Indonesia
 TAM = (jumlah_ukm_indonesia * arpu_tahunan)
     # 64 juta UKM (data Kemenkop 2022) * Rp 1.200.000/tahun
+    # [UPDATE 2026: Verify latest BPS/Kemenkop UKM count]
     # TAM = Rp 76.8 triliun
 
 SAM = TAM * (persentase_digitalisasi_aktif)
