@@ -335,9 +335,128 @@ def install_dependencies_with_fallback():
 - [ ] Tailwind version checked (v3 vs v4 affects config syntax)
 - [ ] Dependencies installed (with fallback strategy if timeout)
 - [ ] No blocking advisories (eslint-config-next version mismatch, etc.)
+- [ ] Peer dependencies resolved (check pnpm/npm warnings)
+- [ ] No deprecated packages (search for deprecation warnings in install output)
 ```
 
 **If blocking issues found**: Fix IMMEDIATELY before generating harness files. Harness files (AGENTS.md, CONVENTIONS.md) embed framework/library syntax that must match actual versions.
+
+---
+
+### Database Migration Anti-Patterns
+
+**Common errors caught from user feedback**:
+
+#### 1. Foreign Key Forward Reference (Topological Sort)
+```sql
+-- ❌ WRONG: References table not yet created
+CREATE TABLE time_entries (
+  id UUID PRIMARY KEY,
+  invoice_id UUID REFERENCES invoices(id)  -- invoices doesn't exist yet!
+);
+
+CREATE TABLE invoices (
+  id UUID PRIMARY KEY
+);
+
+-- ✅ CORRECT: Parent tables first
+CREATE TABLE invoices (
+  id UUID PRIMARY KEY
+);
+
+CREATE TABLE time_entries (
+  id UUID PRIMARY KEY,
+  invoice_id UUID REFERENCES invoices(id)  -- invoices exists now
+);
+```
+
+**Rule**: Topological sort - tables with no foreign keys first, then tables that reference them.
+
+**Dependency order example**:
+1. `users` (no deps)
+2. `profiles` → users
+3. `clients` → users
+4. `projects` → clients
+5. `invoices` → projects
+6. `time_entries` → invoices
+7. `expenses` → invoices
+
+#### 2. UUID Generation Function (Modern Postgres)
+```sql
+-- ❌ WRONG: Requires uuid-ossp extension
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4()
+);
+
+-- ✅ CORRECT: Built-in Postgres 13+ (Supabase default)
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid()
+);
+```
+
+**Rule**: For Supabase/modern Postgres (13+), always use `gen_random_uuid()` (no extension needed).
+
+#### 3. Peer Dependencies Check
+```bash
+# After npm/pnpm install, check for warnings:
+pnpm install
+# Look for: [WARN] unmet peer dependency "@supabase/supabase-js@^2.0.0"
+
+# Fix immediately:
+pnpm add @supabase/supabase-js
+```
+
+**Rule**: Read install warnings. Unmet peer dependencies = runtime errors.
+
+#### 4. Deprecated Packages
+```bash
+# Check deprecation warnings during install:
+npm WARN deprecated @supabase/auth-helpers-nextjs@0.10.0
+
+# ✅ Remove immediately, find replacement:
+npm uninstall @supabase/auth-helpers-nextjs
+# Use @supabase/ssr instead (current recommended)
+```
+
+**Rule**: Deprecation warning = immediate action. Don't proceed with deprecated packages.
+
+---
+
+## Module Completion Checklist
+
+**Before declaring M06 complete**, verify ALL items:
+
+### Pre-handoff Quality Gates
+```
+Scaffold verification:
+  - [ ] Framework type matches FSD.md (Next.js / Laravel / Django)
+  - [ ] Major version matches FSD.md (Next.js 15 = 15.x, NOT 16.x)
+  - [ ] Tailwind version detected (v3 vs v4)
+  - [ ] Dependencies installed successfully
+  - [ ] Peer dependencies resolved (no [WARN] unmet peer)
+  - [ ] No deprecated packages in package.json/composer.json
+  - [ ] No blocking advisories (version mismatches fixed)
+
+Harness files deployed:
+  - [ ] All 7 files copied from docs/harness-root/ to ./
+  - [ ] AGENTS.md exists in root (check cat AGENTS.md)
+  - [ ] ARCHITECTURE.md exists in root
+  - [ ] CONTEXT.md exists in root
+  - [ ] CONVENTIONS.md exists in root
+  - [ ] DESIGN.md exists in root
+  - [ ] TODO.md exists in root
+  - [ ] .env.example exists in root
+
+Smoke test:
+  - [ ] Dev server starts (npm run dev / php artisan serve)
+  - [ ] No import errors on first load
+  - [ ] Linter runs without errors (npm run lint)
+  - [ ] Database connection works (if applicable)
+```
+
+**Only declare "M06 complete" after ALL checkboxes ticked.**
+
+**If any checkbox fails**: Fix immediately. Do NOT proceed to "done" with outstanding issues.
 
 ---
 

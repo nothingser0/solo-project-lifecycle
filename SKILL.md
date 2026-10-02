@@ -64,6 +64,8 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 **Scope protection**: No feature addition without formal docs. No unpaid work.
 
+**Security**: NEVER ask user to paste secrets (API keys, tokens, passwords) in chat. Guide user to write directly to `.env.local` or config files. Verify file exists without reading content.
+
 **Gate enforcement** (client projects only):
 - Commercial gate (M03): No coding without signed SOW + down payment
 - Validation gate (M09): No production deploy without UAT sign-off
