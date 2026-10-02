@@ -66,9 +66,26 @@ solo-project-lifecycle/
 
 ## Getting Started
 
+### ⚠️ Important: Framework vs Project Separation
+
+**This repository is a template library, not a project starter.**
+
+❌ **Don't**:
+- Initialize projects inside this framework repo
+- Write `AGENTS.md`, `PROJECT.md`, etc. to `solo-project-lifecycle/` root
+- Mix your project code with framework templates
+
+✅ **Do**:
+- Clone framework once: `~/frameworks/solo-project-lifecycle/`
+- Create separate project directories: `~/projects/my-app/`
+- Read templates from framework, write to project directory
+
+---
+
 **Clone the repo:**
 
 ```bash
+# One-time framework setup
 git clone https://github.com/nothingser0/solo-project-lifecycle.git
 cd solo-project-lifecycle
 ```
@@ -81,11 +98,16 @@ cat docs/quickstart.md          # MVP fast-track (2-4 weeks)
 ls docs/modules/                # All 14 modules
 ```
 
-**Browse templates:**
+**Start a new project:**
 
 ```bash
-ls templates/essentials/        # 8 most-used templates
-ls templates/                   # All templates by phase
+# Create project directory (OUTSIDE framework repo)
+mkdir ~/projects/my-mvp-app
+cd ~/projects/my-mvp-app
+
+# Now safe to write project files here
+# Agent reads from: ~/frameworks/solo-project-lifecycle/templates/
+# Agent writes to: ~/projects/my-mvp-app/ (current directory)
 ```
 
 ---

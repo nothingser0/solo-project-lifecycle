@@ -283,6 +283,26 @@ def verify_scaffold_matches_fsd():
 
 ## 3. The 7 Root Harness Files in Root Repo (Universal Stack - The 7 Root Harness Files)
 
+⚠️ **CRITICAL: Project Directory Verification**
+
+**Before writing harness files**: Verify you are in USER'S PROJECT directory, NOT framework repo.
+
+```bash
+# Agent check:
+# 1. Does CWD contain "solo-project-lifecycle" in path? → Framework repo
+# 2. Does CWD contain "SKILL.md" file? → Framework repo
+# 3. Does CWD contain "templates/" directory? → Framework repo
+#
+# If any YES → STOP: Ask user for project directory path
+# Framework repo is READ ONLY - never write project files here
+```
+
+**Correct workflow**:
+- User project: `~/projects/my-app/` → Write harness files here ✅
+- Framework repo: `~/frameworks/solo-project-lifecycle/` → READ templates only ❌
+
+---
+
 ⚠️ **CRITICAL PRE-FLIGHT WARNING: Framework-Specific AGENTS.md Conflicts**
 
 Multiple frameworks auto-generate conflicting `AGENTS.md` or similar files:
@@ -313,6 +333,8 @@ Stack mapping:
 *AI coding tool evaluation & selection guide: `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md`*
 
 Before triggering AI agents to write code, place these 7 control files in the project root folder:
+
+**Prerequisites**: You are in USER'S PROJECT directory (not framework repo).
 
 | No | File Name | Reference Source (Stack-Specific) | Function for AI Coding Agent |
 | :---: | :--- | :--- | :--- |

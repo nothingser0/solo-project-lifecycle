@@ -5,6 +5,28 @@
 
 ---
 
+## ⚠️ CRITICAL: Project Directory Setup
+
+**Before starting**: Create a NEW project directory OUTSIDE the framework repo.
+
+```bash
+# ❌ WRONG: Don't initialize in framework repo
+cd solo-project-lifecycle/  # Framework repo - READ ONLY
+# Writing files here pollutes framework
+
+# ✅ CORRECT: Create separate project directory
+mkdir ~/projects/my-mvp-app
+cd ~/projects/my-mvp-app
+# Now safe to write project files
+```
+
+**Agent workflow**:
+- **Check CWD**: If contains `SKILL.md` or `solo-project-lifecycle/` → STOP, ask for project path
+- **Establish target**: Create/navigate to user's project directory (NOT framework repo)
+- **Write files**: All templates go to project directory, NOT framework repo
+
+---
+
 ## When to Use This Guide
 
 ✅ **Use this if**:
@@ -56,15 +78,20 @@ Week 4: Deploy (2 days)
 
 ### Day 1: Idea → Specs (4 hours)
 
+**Prerequisites**: You are in your PROJECT directory (not framework repo)
+
 **Output**: 2 files total
 1. `PROJECT.md` (core specs)
 2. `DESIGN.md` (UI tokens)
 
 **Agent workflow**:
 ```bash
-# Agent: Read template from skill repo, write to user's project root
+# Agent: Verify you are in PROJECT directory (not framework repo)
+# Check: Does CWD contain SKILL.md? If YES → WRONG DIRECTORY
+
+# Read template from skill repo, write to PROJECT directory
 # 1. Read: skill://solo-project-lifecycle/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md
-# 2. Write: ./PROJECT.md (in user's current working directory)
+# 2. Write: ./PROJECT.md (in user's PROJECT directory, NOT framework repo)
 # 3. Fill sections (20 min each):
 # 1. Problem (3 sentences)
 # 2. Solution (5 bullet points)

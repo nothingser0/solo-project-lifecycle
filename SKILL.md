@@ -23,6 +23,51 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 **Usage model**: Clone repo → agent navigates via SKILL.md → loads relevant module → applies template → references patterns as needed.
 
+---
+
+## Critical: Project Directory Separation
+
+**NEVER write project files to framework repo root**. This framework repo is read-only template source.
+
+**Agent workflow for new projects**:
+
+1. **Check current directory**:
+   ```
+   If CWD contains this file (SKILL.md) → you are in FRAMEWORK REPO
+   STOP: Do not write project files here
+   ```
+
+2. **Establish project directory**:
+   - Ask user: "Where should I create the project?" 
+   - Or use: `~/projects/[project-name]/`
+   - Confirm directory is OUTSIDE framework repo
+
+3. **Write files to project directory**:
+   ```
+   Source: skill://solo-project-lifecycle/templates/...
+   Target: [user-project-path]/ (NOT framework repo root)
+   ```
+
+**Example safe workflow**:
+```
+User: "Initialize new Next.js MVP"
+
+Agent checks:
+  - CWD = D:/Workspace/solo-project-lifecycle → FRAMEWORK REPO
+  
+Agent asks:
+  - "Where should I create the project? (e.g., D:/Workspace/my-mvp-app)"
+  
+Agent creates:
+  - mkdir D:/Workspace/my-mvp-app
+  - cd D:/Workspace/my-mvp-app
+  - Write templates here (NOT in framework repo)
+```
+
+**File placement rules**:
+- **Framework repo** (`solo-project-lifecycle/`): READ ONLY. Contains templates, docs, references.
+- **User project** (separate directory): WRITE HERE. Receives PROJECT.md, AGENTS.md, etc.
+
 ## When to invoke
 
 - User mentions starting new project, MVP, or client work
