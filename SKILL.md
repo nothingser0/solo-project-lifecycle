@@ -73,17 +73,38 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 ## Project scale
 
-**Small (MVP, 1-4 weeks)**: Use fast-track
+**Classification by complexity** (drives module path):
+
+**Small (1-3 features, <4 weeks)**:
 - Path: M04 → M05 → M06 → M10 (4 modules)
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
-- Skip: M00, M01, M02, M03, M07, M08, M09, M11
+- Example: Landing page, portfolio site, simple CRUD app
 
-**Medium (1-3 months, paid client)**: Use most modules
-- Path: M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 → M12
-- Skip: M00 (market research), M08 (data migration if new project)
+**Medium (4-10 features, 1-3 months)**:
+- Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
+- Templates: Full PRD/FSD in `templates/03-architecture-specs/`
+- Example: Multi-feature SaaS, marketplace, CRM, dashboard with auth + RBAC
 
-**Large/Enterprise (3-6+ months)**: Use all 14 modules
-- Include: M00 (market research), M08 (data migration), compliance audits
+**Large (>10 features, 3-6+ months)**:
+- Path: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13
+- All templates + compliance/scale docs
+- Example: Enterprise platform, multi-tenant SaaS, regulated industry apps
+
+---
+
+**Client project gates** (adds M03, M09, M11 to path above):
+
+**If paid client work**: Add these gates regardless of complexity
+- **M03** (before M04): SOW contract + down payment → Commercial gate
+- **M09** (before M10): UAT sign-off → Validation gate
+- **M11** (after M10): BAST + full payment → Handover gate
+
+**If solo/portfolio**: Skip gates, use complexity path only
+
+**Examples**:
+- Solo portfolio (3 features): Small path → M04 → M05 → M06 → M10
+- Solo SaaS (8 features): Medium path → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
+- Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → M07 → **M09** → M10 → **M11** → M12
 
 ## Module structure
 
