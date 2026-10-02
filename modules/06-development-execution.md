@@ -7,6 +7,7 @@
 > - `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md` (AI coding tool selection, Cursor vs Claude Code vs Windsurf benchmark)
 > - `references/playbooks/ai-assisted-development.md` (Prompt engineering patterns, multi-file orchestration, pre-merge AI review protocol)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, design patterns, and anti-pattern detection for AI-generated code)
+> - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Lembar pelacak kemajuan eksekusi koding, checklist backend, frontend, integrasi, & pos pemeriksaan review)
 >
 > **MANDATORY: Load references BEFORE executing this module**:
 > - Read: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`
@@ -1204,6 +1205,359 @@ Pastikan kompilasi bersih (`pnpm run type-check`) dan audit dependensi aman (`pn
 
 ---
 
+## 5A. Backend Development TODO Checklist (Detailed Breakdown)
+
+Checklist sekuensial untuk pemandu AI coding agent dan solo developer dalam membangun fondasi server-side yang aman, scalable, dan teruji:
+
+### 1. Database Setup & Migrations
+- [ ] **Koneksi & Connection Pooling**:
+  - [ ] Pasang URL koneksi database di `.env` (format: `postgresql://user:pass@host:5432/dbname?sslmode=prefer`).
+  - [ ] Konfigurasikan pooling (PgBouncer / Prisma connection limit / max pool size) untuk mencegah *connection exhaustion* saat traffic melonjak.
+  - [ ] Verifikasi timeout koneksi database (connect timeout: 5s, statement timeout: 30s).
+- [ ] **Definisi Skema DDL & Model Entitas**:
+  - [ ] Buat model pengguna dan akun (`User`, `Account`, `Session`, `Profile`).
+  - [ ] Buat model entitas bisnis inti sesuai `ARCHITECTURE.md` (contoh: `Document`, `Transaction`, `AuditLog`).
+  - [ ] Terapkan konstrain integritas data: `NOT NULL`, `CHECK`, dan `UNIQUE` pada level basis data.
+  - [ ] Pasang klausul integritas relasi foreign key: `ON DELETE RESTRICT` (untuk data finansial/legal) atau `CASCADE` (untuk entitas child milik parent).
+- [ ] **Strategi Indexing**:
+  - [ ] Tambahkan indeks pada seluruh kolom Foreign Key (`tenant_id`, `user_id`, `organization_id`).
+  - [ ] Buat compound index untuk kueri filter umum (contoh: `@@index([tenant_id, status, created_at])`).
+  - [ ] Buat unique index pada field penanda unik (contoh: `email`, `slug`, `transaction_code`).
+  - [ ] Terapkan indeks pencarian teks (B-Tree/Trigram/Full-Text Search) pada kolom yang sering dicari.
+- [ ] **Soft-Delete & Durabilitas Data**:
+  - [ ] Tambahkan kolom `deleted_at TIMESTAMP NULL` pada seluruh tabel entitas penting.
+  - [ ] Pasang query middleware / Prisma extension untuk memfilter baris `deleted_at IS NULL` secara otomatis.
+- [ ] **Eksekusi Migrasi & Seeders**:
+  - [ ] Generate berkas migrasi pertama (`prisma migrate dev --name init` / `php artisan migrate` / `makemigrations`).
+  - [ ] Uji balik (*rollback*) migrasi untuk memastikan migrasi *reversible*.
+  - [ ] Buat skrip seeder data awal (`seed.ts`): akun superadmin, data referensi dasar, dan mock fixture untuk uji lokal.
+
+### 2. API Endpoints Development
+- [ ] **Authentication & Identity Endpoints**:
+  - [ ] `POST /api/v1/auth/register`: Registrasi user baru, hash password (Argon2id min 12 rounds), return HTTP 201.
+  - [ ] `POST /api/v1/auth/login`: Verifikasi kredensial, proteksi brute-force delay, terbitkan session/JWT di cookie HttpOnly (`SameSite=Lax`, `Secure`).
+  - [ ] `POST /api/v1/auth/logout`: Revokasi token/sesi, hapus cookie autentikasi.
+  - [ ] `POST /api/v1/auth/refresh`: Rotasi refresh token dengan deteksi token reuse.
+  - [ ] `POST /api/v1/auth/forgot-password` & `POST /api/v1/auth/reset-password`: Token kriptografis ber-TTL 15 menit.
+  - [ ] `GET /api/v1/auth/me`: Ambil profil pengguna yang sedang login.
+- [ ] **Core Business CRUD Endpoints**:
+  - [ ] `GET /api/v1/{resources}`: Daftar data dengan filter status, date range, pagination, dan tenant isolation.
+  - [ ] `GET /api/v1/{resources}/:id`: Detail satu data dengan verifikasi kepemilikan tenant (cegah IDOR vulnerability).
+  - [ ] `POST /api/v1/{resources}`: Pembuatan data baru dibungkus validasi Zod dan transaksi basis data atomik.
+  - [ ] `PATCH /api/v1/{resources}/:id`: Pembaruan data parsial dengan validasi state-machine dan optimistic locking.
+  - [ ] `DELETE /api/v1/{resources}/:id`: Soft-delete data, update `deleted_at`, catat audit log.
+- [ ] **Search & Filtering Endpoints**:
+  - [ ] Sanitasi query string pencarian (cegah wildcard abuse & regex DoS).
+  - [ ] Dukungan filter multi-field via query parameter (contoh: `?status=pending&role=manager&from=2026-01-01`).
+  - [ ] Fuzzy matching atau trigram search untuk toleransi salah ketik ringan pada nama/judul.
+- [ ] **Standardisasi Pagination & Sorting**:
+  - [ ] Implementasikan Cursor-based pagination untuk dataset volume besar / infinite scroll.
+  - [ ] Terapkan fallback limit & offset dengan batasan tegas (`max_limit = 100`, default: 20).
+  - [ ] Standardisasi format respons JSON:
+    ```json
+    {
+      "data": [...],
+      "meta": { "total": 142, "page": 1, "limit": 20, "has_more": true },
+      "error": null
+    }
+    ```
+
+### 3. Middleware Implementation
+- [ ] **Authentication Middleware**:
+  - [ ] Ekstrak token dari HttpOnly cookie atau header `Authorization: Bearer <token>`.
+  - [ ] Validasi tanda tangan kriptografis dan masa berlaku token.
+  - [ ] Injeksi payload identitas pengguna (`userId`, `tenantId`, `role`) ke dalam *request context*.
+  - [ ] Return standard 401 Unauthorized jika token tidak ada, rusak, atau kadaluwarsa.
+- [ ] **Role-Based Access Control (RBAC) & Tenant Isolation**:
+  - [ ] Buat guard middleware untuk memvalidasi peran (`admin`, `member`, `guest`).
+  - [ ] Validasi *tenant scope*: setiap kueri wajib menyertakan filter `tenant_id` untuk mencegah kebocoran antar klien.
+- [ ] **Validation Middleware**:
+  - [ ] Validasi skema Zod otomatis pada `request.body`, `request.query`, dan `request.params`.
+  - [ ] Format error 422 Unprocessable Entity yang konsisten dengan rincian field yang gagal:
+    ```json
+    {
+      "error": { "code": "VALIDATION_ERROR", "fields": { "email": "Format email tidak valid" } }
+    }
+    ```
+- [ ] **Rate Limiting Middleware**:
+  - [ ] Terapkan pembatasan rate limit berbasis IP & User ID (in-memory sliding window / Redis).
+  - [ ] Public routes: max 100 req/min; Auth routes (login/register): max 5 req/min.
+  - [ ] Kirim header standar: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `Retry-After`.
+- [ ] **Security Headers & CORS Middleware**:
+  - [ ] Konfigurasikan CSP (Content Security Policy), HSTS (`max-age=31536000`), X-Frame-Options (`DENY`), X-Content-Type-Options (`nosniff`).
+  - [ ] CORS ketat: Whitelist domain staging/production eksplisit, dilarang `Access-Control-Allow-Origin: *` bila cookie digunakan.
+
+### 4. Background Jobs, Queues & Workers
+- [ ] **Queue Runtime Setup**:
+  - [ ] Inisialisasi antrean tugas (BullMQ / Redis / Celery / Laravel Queue / River).
+  - [ ] Pisahkan konfigurasi worker dari server HTTP agar tidak membebani event loop utama.
+- [ ] **Asynchronous Task Workers**:
+  - [ ] Worker pembuatan PDF, watermarking, dan stempel dokumen legal.
+  - [ ] Worker kompresi dan hashing berkas (SHA-256 integrity verification).
+  - [ ] Worker pengiriman email transaksional dan webhook outbox delivery.
+- [ ] **Ketahanan & Retry Policy**:
+  - [ ] Terapkan exponential backoff dengan jitter pada tugas yang gagal (contoh: retry setelah 5s, 15s, 45s).
+  - [ ] Konfigurasikan Dead Letter Queue (DLQ) untuk menampung tugas yang gagal setelah 3x percobaan.
+  - [ ] Alerting otomatis jika antrean DLQ melebihi ambang batas.
+
+### 5. File Upload & Storage Service
+- [ ] **Storage Client Abstraction**:
+  - [ ] Buat adapter storage seragam (S3 / Cloudflare R2 / MinIO / Local filesystem).
+  - [ ] Kredensial dibaca dari `.env` (`S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`).
+- [ ] **Presigned URL Architecture**:
+  - [ ] Endpoint `POST /api/v1/storage/upload-url`: Hasilkan presigned PUT URL ber-TTL 15 menit.
+  - [ ] Endpoint `GET /api/v1/storage/download-url/:id`: Hasilkan presigned GET URL ber-TTL 15 menit dengan otorisasi ketat.
+- [ ] **Validasi Berkas Server-Side**:
+  - [ ] Validasi MIME-type via *magic bytes* header berkas (bukan sekadar membaca ekstensi nama file).
+  - [ ] Batasi ukuran maksimum file (contoh: 15MB untuk PDF, 5MB untuk gambar).
+  - [ ] Sanitasi nama berkas asli (hapus karakter berbahaya, gunakan UUIDv4 sebagai storage key).
+- [ ] **Enkripsi At-Rest**:
+  - [ ] Terapkan enkripsi streaming AES-256-GCM sebelum berkas sensitif ditulis ke storage bucket.
+
+### 6. Email & Notifications
+- [ ] **Transport Email Transaksional**:
+  - [ ] Integrasikan SDK Resend / SendGrid / SES dengan logging fallback pada mode lokal.
+  - [ ] Konfigurasikan fallback mode (mock logger) jika API key email belum terpasang di lokal.
+- [ ] **Template Email HTML Responsif**:
+  - [ ] Template aktivasi akun & verifikasi email.
+  - [ ] Template reset kata sandi dengan link ber-TTL.
+  - [ ] Template notifikasi status dokumen (contoh: "Dokumen telah ditandatangani").
+  - [ ] Sediakan versi plain-text untuk setiap email demi deliverability optimal.
+- [ ] **In-App Notification Dispatcher**:
+  - [ ] Model basis data `Notification` (`id`, `user_id`, `title`, `body`, `read_at`, `created_at`).
+  - [ ] Endpoint `GET /api/v1/notifications` dan `PATCH /api/v1/notifications/:id/read`.
+- [ ] **Webhook Deliverability Handler**:
+  - [ ] Endpoint penangkap webhook bounce dan complaint dari penyedia email untuk otomatis menonaktifkan pengiriman ke email invalid.
+
+---
+
+## 5B. Frontend Development TODO Checklist (Detailed Breakdown)
+
+Checklist sekuensial untuk membangun antarmuka web modern yang responsif, aksesibel, dan terhubung mulus dengan backend:
+
+### 1. Component Library & Design System Setup
+- [ ] **Sinkronisasi Token Desain**:
+  - [ ] Petakan token warna dari `DESIGN_SYSTEM.md` ke Tailwind config / CSS variables (Zinc palette, accent primary).
+  - [ ] Konfigurasikan font family Inter, skala tipografi (text-xs hingga text-4xl), dan default border radius (rounded-md).
+- [ ] **Komponen Primitif (UI Atoms)**:
+  - [ ] `Button`: Varian primary, secondary, outline, ghost, destructive, with loading spinner state.
+  - [ ] `Input` & `Textarea`: Varian normal, focused, error, disabled, helper text.
+  - [ ] `Select`, `Checkbox`, `RadioGroup`, `Switch`: Form controls dengan status keyboard navigable.
+  - [ ] `Badge`, `Avatar`, `Separator`, `Skeleton`: Elemen dekoratif dan identitas visual.
+- [ ] **Komponen Feedback & Overlay (UI Molecules)**:
+  - [ ] `Toast`: Notifikasi pop-up (Sonner / Toast) dengan varian success, error, info, warning.
+  - [ ] `Modal / Dialog`: Overlay konfirmasi dengan trap focus dan tombol escape close.
+  - [ ] `Drawer / Sheet`: Panel samping geser untuk navigasi mobile atau form sekunder.
+  - [ ] `DropdownMenu` & `Popover`: Menu kontekstual dengan positioning dinamis.
+- [ ] **Komponen Navigasi & Struktur**:
+  - [ ] `Navbar`: Bar atas dengan logo proyek, breadcrumb dinamis, dan user profile dropdown.
+  - [ ] `Sidebar`: Navigasi samping collapsible dengan indikator rute aktif.
+  - [ ] `PageHeader`: Judul halaman, deskripsi, dan tombol aksi utama (*action bar*).
+- [ ] **Aksesibilitas (WCAG AA Compliance)**:
+  - [ ] Uji rasio kontras teks minimal 4.5:1 terhadap latar belakang.
+  - [ ] Pastikan seluruh elemen interaktif memiliki `focus-visible:ring-2` yang tampak jelas saat ditab.
+  - [ ] Pasang atribut `aria-label` dan `aria-expanded` pada tombol ikon dan modal trigger.
+
+### 2. Pages & Routing Architecture
+- [ ] **Hierarki Layout Aplikasi**:
+  - [ ] `RootLayout`: Pasang penyedia tema, font Inter, dan toaster global.
+  - [ ] `(auth)/layout.tsx`: Layout terpusat bersih untuk alur autentikasi tanpa sidebar.
+  - [ ] `(dashboard)/layout.tsx`: Layout terproteksi dengan sidebar tetap, navbar, dan auth guard.
+- [ ] **Halaman Autentikasi**:
+  - [ ] Halaman Login (`/login`), Register (`/register`), Forgot Password (`/forgot-password`), Reset Password (`/reset-password`).
+  - [ ] Alur redirect cerdas: Simpan parameter `?callbackUrl=` untuk mengembalikan user ke halaman target setelah login.
+- [ ] **Halaman Aplikasi Utama**:
+  - [ ] Halaman Index Dashboard (`/dashboard`): Menampilkan ringkasan metrik statistik dan tabel aktivitas terkini.
+  - [ ] Halaman Daftar Entitas (`/documents`): Tabel data dengan pencarian, filter status, dan pagination.
+  - [ ] Halaman Detail Entitas (`/documents/[id]`): Tampilan detail lengkap, riwayat audit, dan status approval.
+  - [ ] Halaman Buat/Edit Entitas (`/documents/new` & `/documents/[id]/edit`): Formulir terstruktur.
+  - [ ] Halaman Pengaturan (`/settings/profile`, `/settings/billing`, `/settings/team`).
+- [ ] **Halaman Error Defensif**:
+  - [ ] `not-found.tsx`: Halaman 404 ramah pengguna dengan tombol kembali ke dashboard.
+  - [ ] `error.tsx`: Global Error Boundary dengan tombol reset / coba lagi.
+
+### 3. State Management
+- [ ] **Server-State Management**:
+  - [ ] Setup TanStack Query / SWR / Server Action cache revalidation.
+  - [ ] Tetapkan kebijakan caching: `staleTime: 60_000` (1 menit) untuk data standar, 0 untuk data real-time.
+  - [ ] Pasang mutasi dengan otomatis invalidasi query kunci terkait (`queryClient.invalidateQueries`).
+- [ ] **Client UI State Store**:
+  - [ ] Setup Zustand / Context ringan untuk state UI ephemera: sidebar open/closed, active modal, tema gelap/terang.
+  - [ ] Hindari menyimpan data entitas server di dalam client store untuk mencegah *stale state mismatch*.
+- [ ] **Sinkronisasi URL Search Params**:
+  - [ ] Sinkronkan parameter tabel (search query, halaman aktif, filter status) ke URL browser (`?page=2&status=active`).
+  - [ ] Pengguna dapat membagikan (*share*) URL atau me-refresh halaman tanpa kehilangan posisi filter.
+
+### 4. Form Handling & Validation
+- [ ] **Integrasi Form Library**:
+  - [ ] Pasang React Hook Form / Formik pada seluruh form input.
+  - [ ] Hubungkan validasi resolver Zod (`@hookform/resolvers/zod`) menggunakan skema yang sama dengan backend.
+- [ ] **Umpan Balik Validasi Inline**:
+  - [ ] Tampilkan pesan error spesifik langsung di bawah input field yang bermasalah.
+  - [ ] Highlight border merah (`border-destructive`) pada input yang invalid saat disubmit.
+- [ ] **Perlindungan Double Submit & Navigation Guard**:
+  - [ ] Nonaktifkan (`disabled`) tombol submit dan tampilkan spinner saat request sedang diproses.
+  - [ ] Beri konfirmasi peringatan (*unsaved changes alert*) jika pengguna mencoba meninggalkan form yang belum disimpan.
+
+### 5. API Integration & Client Wiring
+- [ ] **Abstraksi HTTP Client**:
+  - [ ] Buat wrapper API terpusat (`src/lib/api-client.ts`) berbasis `fetch` atau `axios`.
+  - [ ] Interceptor otomatis menyuntikkan header Authorization atau mengelola credentials cookie.
+  - [ ] Tangani otomatis respons `401 Unauthorized`: redirect ke `/login` atau jalankan silent refresh token.
+- [ ] **Upload File Direct-to-Cloud**:
+  - [ ] Minta presigned URL dari backend → Upload file langsung ke S3/R2 menggunakan `fetch(putUrl, { body: file })`.
+  - [ ] Tampilkan bar progres persentase upload (0% s/d 100%) ke pengguna.
+- [ ] **Optimistic UI Updates**:
+  - [ ] Terapkan optimistic update pada aksi instan (misal: toggle bookmark, update status checkbox).
+  - [ ] Sediakan mekanisme *rollback* otomatis ke state sebelumnya jika request API backend gagal.
+
+### 6. The 5 UI States Implementation (Defensive UI)
+- [ ] **State 1 - Idle State**: Tampilan awal komponen dalam kondisi bersih dan siap menerima aksi.
+- [ ] **State 2 - Loading State**: Gunakan skeleton loader yang memiliki dimensi dan layout persis dengan konten asli (DILARANG spinner layar penuh tanpa konteks).
+- [ ] **State 3 - Success State**: Tampilkan toast konfirmasi aksi berhasil, animasikan perubahan visual, dan reset form.
+- [ ] **State 4 - Error State**: Tampilkan inline error banner, keterangan kesalahan bahasa manusiawi, dan tombol "Coba Lagi" (Retry).
+- [ ] **State 5 - Empty State**: Tampilkan ikon tematik, judul deskriptif (misal: "Belum Ada Dokumen"), teks motivasi singkat, dan tombol Call-to-Action utama ("Buat Dokumen Sekarang").
+
+---
+
+## 5C. Integration TODO Checklist (Third-Party & Infrastructure)
+
+Checklist sekuensial untuk mengintegrasikan layanan eksternal secara aman dan andal:
+
+### 1. Payment Gateway (Stripe / Midtrans)
+- [ ] **Setup Lingkungan Sandbox**:
+  - [ ] Daftarkan akun developer sandbox Stripe / Midtrans.
+  - [ ] Pasang API keys test mode di `.env` (`STRIPE_SECRET_KEY=sk_test_...`, `STRIPE_WEBHOOK_SECRET=whsec_...`).
+  - [ ] Verifikasi tidak ada kunci production (`sk_live_...`) yang bocor di branch `staging`.
+- [ ] **Inisiasi Transaksi Pembayaran**:
+  - [ ] Buat endpoint API pembuat Checkout Session (Stripe) atau Snap Token (Midtrans).
+  - [ ] Simpan nomor referensi order di tabel transaksi lokal dengan status awal `pending`.
+- [ ] **Webhook Endpoint Kriptografis**:
+  - [ ] Endpoint `POST /api/v1/webhooks/payment` dengan raw body parser.
+  - [ ] Validasi tanda tangan kriptografis webhook (`stripe.webhooks.constructEvent` atau Midtrans SHA512 signature check).
+  - [ ] Tolak langsung request dengan HTTP 400 jika tanda tangan tidak cocok.
+- [ ] **Penanganan Idempotensi Webhook**:
+  - [ ] Catat setiap event ID yang masuk di tabel `webhook_events`.
+  - [ ] Jika event ID sudah pernah diproses sebelumnya, return HTTP 200 instan tanpa mengeksekusi ulang mutasi bisnis.
+- [ ] **Transisi Status Transaksi Atomik**:
+  - [ ] Bungkus pembaruan status order (`paid`, `failed`, `expired`) dan aktivasi fitur pengguna dalam transaksi basis data (`db.$transaction`).
+  - [ ] Kirim email konfirmasi tanda terima pembayaran ke user secara asinkron.
+
+### 2. Transactional Email Service (SendGrid / Resend)
+- [ ] **Verifikasi DNS Domain**:
+  - [ ] Konfigurasi record DNS pengirim: SPF (`v=spf1`), DKIM, dan DMARC (`p=reject` atau `p=quarantine`).
+  - [ ] Verifikasi domain terkonfirmasi aktif pada dashboard Resend / SendGrid.
+- [ ] **Klien Email Terisolasi**:
+  - [ ] Buat modul layanan `email.service.ts` yang mengenkapsulasi pengiriman email.
+  - [ ] Pada environment `development`, cetak isi email ke terminal log atau gunakan layanan uji (Mailpit / Inbucket) daripada mengirim email sungguhan.
+- [ ] **Automated Alerts & Receipts**:
+  - [ ] Kirim email transaksi penting dengan menyertakan attachment PDF bukti bayar / dokumen legal.
+  - [ ] Pasang header `List-Unsubscribe` dan tautan berhenti berlangganan pada email pemberitahuan reguler.
+
+### 3. File Storage (AWS S3 / Cloudflare R2)
+- [ ] **Konfigurasi Bucket & CORS**:
+  - [ ] Buat bucket storage dengan nama unik per environment (`myproject-staging-vault`, `myproject-prod-vault`).
+  - [ ] Matikan opsi akses publik langsung (*Block Public Access: ON*). Seluruh akses wajib melalui presigned URL atau backend proxy.
+  - [ ] Konfigurasi CORS bucket hanya mengizinkan origin aplikasi web resmi dengan method `GET`, `PUT`, `HEAD`.
+- [ ] **Kredensial Hak Akses Minimum (Least-Privilege)**:
+  - [ ] Buat IAM user / API token R2 khusus aplikasi dengan permission hanya `s3:PutObject` dan `s3:GetObject` pada prefix bucket terkait.
+  - [ ] Jangan gunakan kredensial Root AWS / Cloudflare Admin.
+- [ ] **Lifecycle Policies**:
+  - [ ] Pasang aturan lifecycle bucket untuk otomatis menghapus upload parsial yang terputus (*abort incomplete multipart uploads* setelah 7 hari).
+
+### 4. Product Analytics (Mixpanel / GA4 / PostHog)
+- [ ] **Inisialisasi Patuh Privasi (UU PDP & GDPR)**:
+  - [ ] Inisialisasi SDK analitik hanya setelah pengguna memberikan izin (*consent banner*).
+  - [ ] Pasang flag DNT (*Do Not Track*) support.
+- [ ] **Pelacakan Event Inti (Core Telemetry Mapping)**:
+  - [ ] Track alur akuisisi: `auth_signup_completed`, `auth_login_succeeded`.
+  - [ ] Track nilai inti aplikasi (*North Star action*): `document_created`, `document_exported`, `payment_completed`.
+  - [ ] Resolusi identitas: tautkan anonymous ID ke ID pengguna resmi setelah login (`posthog.identify(userId)`).
+- [ ] **Scrubbing Data Sensitif**:
+  - [ ] Pastikan payload analitik TIDAK memuat PII sensitif (nama lengkap, NIK, alamat lengkap, kata sandi, detail kartu kredit).
+
+### 5. Application Monitoring & Error Tracking (Sentry)
+- [ ] **Pemasangan Sentry SDK**:
+  - [ ] Pasang Sentry SDK di sisi client (Next.js client / Vite) dan server runtime (Node.js / Python / Laravel).
+  - [ ] Atur environment tag (`staging`, `production`) dan release tag sesuai commit SHA git (`git rev-parse HEAD`).
+- [ ] **Scrubbing Data Sensitif (beforeSend Filter)**:
+  - [ ] Pasang hook `beforeSend` untuk membersihkan header `Authorization`, cookie sesi, nilai password, dan query parameter sensitif dari stack trace.
+- [ ] **Performance Tracing & Slow Query Alerts**:
+  - [ ] Atur trace sample rate (100% pada staging untuk evaluasi, 10% pada production).
+  - [ ] Konfigurasikan threshold peringatan jika kueri database memakan waktu > 500ms atau respon API > 2.000ms.
+- [ ] **Health Check Endpoints**:
+  - [ ] Buat endpoint `GET /api/healthz` (liveness check) yang merespons status `OK`.
+  - [ ] Buat endpoint `GET /api/readyz` (readiness check) yang memverifikasi koneksi aktif ke PostgreSQL dan Redis.
+
+---
+
+## 5D. Code Review Milestone Checkpoints (Solo Developer & AI Code Gates)
+
+Dalam pengembangan mandiri (solo developer) dengan akselerasi AI Coding Agents, *code review* dilakukan secara berlapis pada 4 pos pemeriksaan kunci (*milestone gates*) sebelum branch di-merge ke `staging` atau dinaikkan ke pengujian Modul 07:
+
+```text
+[Feat Branches] ──► [Checkpoint 1: Foundation Gate] ──► staging
+                                  │
+[Auth & Core]   ──► [Checkpoint 2: Alpha Release Gate] ──► Termin 2 (25-30%)
+                                  │
+[Integrations]  ──► [Checkpoint 3: Third-Party & Security] ──► staging
+                                  │
+[Full Hardening]──► [Checkpoint 4: Beta & Staging Freeze] ──► Termin 3 (20-25%) ──► Modul 07 (QA & SIT)
+```
+
+### Checkpoint 1: Scaffolding & Foundation Gate
+- **Pemicu**: Scaffolding selesai, 7 AI harness files terpasang, skema database awal terbentuk.
+- **Target Branch**: `feat/scaffold` ──► `staging`
+- **Daftar Periksa Wajib**:
+  - [ ] Seluruh 7 berkas harness AI berada di root proyek dan disesuaikan dengan FSD.md.
+  - [ ] TypeScript strict mode aktif (`tsc --noEmit` exit 0 tanpa pesan error).
+  - [ ] Tidak ada tipe `any` yang terdeteksi di seluruh berkas kode baru.
+  - [ ] Skema database dan migrasi pertama berhasil dieksekusi di database lokal.
+  - [ ] File `.env.example` mencantumkan seluruh variabel environment yang digunakan dalam kode tanpa membocorkan nilai rahasia asli.
+- **Protokol Review AI**:
+  > *"Jalankan audit pada branch `feat/scaffold`. Pastikan arsitektur folder konsisten, tidak ada circular dependencies, dan skema database memiliki konstrain integritas data yang kokoh."*
+
+### Checkpoint 2: Core Data & Domain Gate (Termin 2 Alpha Release Gate)
+- **Pemicu**: Modul autentikasi selesai, API CRUD entitas inti berfungsi, dan UI form awal tersambung.
+- **Target Milestone**: Termin 2 Alpha Release (25% s/d 30% Pembayaran Proyek).
+- **Daftar Periksa Wajib**:
+  - [ ] Autentikasi end-to-end berfungsi dengan penyimpanan JWT/sesi di HttpOnly cookie (`SameSite=Lax`, `Secure`).
+  - [ ] Validasi skema Zod aktif pada setiap handler API dan form UI.
+  - [ ] Isolasi tenant diverifikasi: Pengguna dari Tenant A tidak dapat mengakses entitas milik Tenant B via IDOR.
+  - [ ] Enkripsi AES-256-GCM aktif melindungi dokumen/data sensitif.
+  - [ ] Smoke test lokal tahap 1 lulus 100%.
+- **Keputusan Gate**:
+  - **LULUS**: Terbitkan Invoice Termin 2 ke Klien beserta video demo / laporan verifikasi lokal.
+  - **GAGAL**: Perbaiki celah keamanan atau bug logika sebelum menagih termin.
+
+### Checkpoint 3: Third-Party & Infrastructure Integration Gate
+- **Pemicu**: Integrasi payment gateway, transactional email, cloud storage, analitik, dan monitoring selesai.
+- **Target Branch**: `feat/integrations` ──► `staging`
+- **Daftar Periksa Wajib**:
+  - [ ] Webhook payment gateway memvalidasi tanda tangan kriptografis dan menerapkan penanganan idempotensi mutlak.
+  - [ ] Upload file langsung ke cloud storage via presigned URL teruji, dengan validasi MIME-type berbasis magic bytes.
+  - [ ] Email transaksional terkirim dengan template HTML bersih dan memiliki fallback text.
+  - [ ] Rate limiting aktif melindungi endpoint login dan endpoint publik dari serangan brute-force.
+  - [ ] Audit dependensi (`pnpm audit` / `composer audit`) bersih dari kerentanan kategori High atau Critical.
+- **Protokol Review AI**:
+  > *"Periksa seluruh implementasi webhook dan file upload. Pastikan penanganan replay attack aman, token signing tervalidasi, dan berkas tidak dapat dieksekusi secara sembarangan di server."*
+
+### Checkpoint 4: Release Candidate & Staging Freeze Gate (Termin 3 Beta Release Gate)
+- **Pemicu**: Seluruh fitur backend dan frontend tersambung, 5 UI states terpasang, siap masuk ke Modul 07 QA & SIT.
+- **Target Milestone**: Termin 3 Beta Release (20% s/d 25% Pembayaran Proyek).
+- **Daftar Periksa Wajib**:
+  - [ ] Defensive UI: Seluruh halaman dan komponen telah menerapkan 5 UI States (Idle, Loading skeleton, Success feedback, Error alert, Empty state).
+  - [ ] Bebas N+1 query: Seluruh relasi data dalam daftar/tabel telah dioptimasi dengan query `include`/`with` dan foreign key terindeks.
+  - [ ] Sentry / APM aktif menangkap unhandled errors dengan filter scrubbing data sensitif.
+  - [ ] Smoke test lengkap (`test:smoke`) berhasil 100%.
+  - [ ] Lembar `VERIFY_LOCAL.md` dan `DEVELOPMENT_PROGRESS_TRACKER.md` terisi lengkap dan ditandatangani.
+  - [ ] Branch `staging` bersih, ter-freeze, dan diberi tag rilis (contoh: `git tag -a v0.9.0-beta -m "Beta release ready for QA"`).
+- **Keputusan Gate**:
+  - **LULUS**: Lanjut ke **Modul 07: Quality Assurance & SIT di Staging**. Terbitkan Invoice Termin 3 jika disepakati pada kontrak.
+  - **GAGAL**: Tunda rilis, tuntaskan hutang teknis di `DEVELOPMENT_PROGRESS_TRACKER.md`.
+
+---
+
 ## 6. Pencapaian Milestone Pembayaran (Termin Gates)
 
 1. **Milestone Alpha (Termin 2 - 25% s/d 30%)**:
@@ -1222,6 +1576,7 @@ Pastikan kompilasi bersih (`pnpm run type-check`) dan audit dependensi aman (`pn
 2. **`RUNBOOK_LOCAL.md`**: Panduan lengkap setup environment, migrasi DB, dan menjalankan aplikasi di lokal (menggunakan `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`).
 3. **`VERIFY_LOCAL.md`**: Lembar hasil verifikasi mandiri bahwa seluruh endpoint FSD, 3 pilar rekayasa, dan alur Stitch berfungsi 100% (menggunakan `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`).
 4. **`AI_REVIEW_LOG.md`**: Log protokol review kode AI pre-merge sesuai panduan `references/playbooks/ai-assisted-development.md`.
+5. **`DEVELOPMENT_PROGRESS_TRACKER.md`**: Lembar pelacak kemajuan eksekusi koding, checklist backend, frontend, integrasi, dan pos pemeriksaan code review (menggunakan `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md`).
 
 ---
 

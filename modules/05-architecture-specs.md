@@ -1036,6 +1036,233 @@ Setiap tombol aksi di antarmuka harus memiliki pasangan endpoint API yang terdef
 - **Payload Request JSON**: Skema field input beserta tipe data dan aturan validasi.
 - **Respon Sukses & Respon Error**: Format seragam (`status`, `data`, `error: { code, message }`).
 
+#### OpenAPI/Swagger Documentation Generation
+
+**Automated API documentation is MANDATORY for projects with 10+ endpoints or external API consumers (B2B, mobile apps, third-party integrations).**
+
+**Implementation Ladder by Stack**:
+
+| Stack | Tool | Implementation | Auto-Generate | Status |
+|-------|------|----------------|---------------|--------|
+| **Next.js/Node.js** | `swagger-jsdoc` + `swagger-ui-express` | JSDoc annotations in route files | ✅ Runtime | Recommended |
+| **FastAPI (Python)** | Built-in OpenAPI | Type hints in endpoint decorators | ✅ Automatic | Best-in-class |
+| **Laravel** | `darkaonline/l5-swagger` | PHPDoc annotations in controllers | ✅ artisan command | Standard |
+| **Go Fiber/Gin** | `swaggo/swag` | Swagger comments in handlers | ✅ swag init | Required manual |
+| **Rails** | `rswag` gem | RSpec request specs → OpenAPI | ✅ rake task | Test-driven |
+| **Django REST** | `drf-spectacular` | DRF serializers → OpenAPI | ✅ Automatic | Built-in |
+
+---
+
+**Setup Example: Next.js API Routes**
+
+```bash
+# Install dependencies
+pnpm add swagger-jsdoc swagger-ui-express
+pnpm add -D @types/swagger-jsdoc @types/swagger-ui-express
+```
+
+**File: `app/api/swagger/route.ts`** (OpenAPI spec generator)
+```typescript
+import swaggerJsdoc from 'swagger-jsdoc';
+import { NextResponse } from 'next/server';
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Project API Documentation',
+      version: '1.0.0',
+      description: 'Auto-generated from JSDoc annotations',
+    },
+    servers: [
+      { url: 'http://localhost:3000', description: 'Development' },
+      { url: 'https://api.project.com', description: 'Production' },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+  },
+  apis: ['./app/api/**/*.ts'], // Scan all route files
+};
+
+const swaggerSpec = swaggerJsdoc(options);
+
+export async function GET() {
+  return NextResponse.json(swaggerSpec);
+}
+```
+
+**File: `app/api/docs/page.tsx`** (Swagger UI)
+```typescript
+'use client';
+import SwaggerUI from 'swagger-ui-react';
+import 'swagger-ui-react/swagger-ui.css';
+
+export default function ApiDocs() {
+  return <SwaggerUI url="/api/swagger" />;
+}
+```
+
+**Annotated Route Example: `app/api/documents/route.ts`**
+```typescript
+/**
+ * @swagger
+ * /api/documents:
+ *   post:
+ *     summary: Create new document
+ *     tags: [Documents]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - content
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Contract Agreement"
+ *               content:
+ *                 type: string
+ *                 example: "Legal document content..."
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       201:
+ *         description: Document created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "01HQZX..."
+ *                     title:
+ *                       type: string
+ *       401:
+ *         description: Unauthorized
+ *       422:
+ *         description: Validation error
+ */
+export async function POST(request: Request) {
+  // Implementation...
+}
+```
+
+---
+
+**FastAPI Example (Python)** - Zero configuration needed:
+```python
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+app = FastAPI(
+    title="Project API",
+    version="1.0.0",
+    description="Auto-generated OpenAPI docs"
+)
+
+class DocumentCreate(BaseModel):
+    title: str
+    content: str
+    tags: list[str] = []
+
+@app.post("/api/documents", status_code=201)
+async def create_document(doc: DocumentCreate):
+    """
+    Create new document
+    
+    - **title**: Document title (required)
+    - **content**: Document body (required)
+    - **tags**: Optional tags
+    """
+    return {"status": "success", "data": {"id": "01HQZX..."}}
+
+# Auto-generated docs at: /docs (Swagger UI) and /redoc (ReDoc)
+```
+
+---
+
+**Laravel Example**:
+```bash
+# Install package
+composer require darkaonline/l5-swagger
+php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+```
+
+```php
+/**
+ * @OA\Post(
+ *     path="/api/documents",
+ *     summary="Create new document",
+ *     tags={"Documents"},
+ *     security={{"bearerAuth":{}}},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"title","content"},
+ *             @OA\Property(property="title", type="string", example="Contract"),
+ *             @OA\Property(property="content", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(response=201, description="Created")
+ * )
+ */
+public function store(Request $request) {
+    // Implementation...
+}
+```
+
+```bash
+# Generate OpenAPI spec
+php artisan l5-swagger:generate
+# Access docs at: /api/documentation
+```
+
+---
+
+**OpenAPI Integration Checklist**:
+- [ ] Install OpenAPI generation library sesuai stack
+- [ ] Configure base info (title, version, servers, auth schemes)
+- [ ] Annotate 100% public-facing endpoints (prioritas: auth, core CRUD, webhooks)
+- [ ] Generate spec: `pnpm swagger` / `php artisan l5-swagger:generate` / automatic
+- [ ] Verify Swagger UI accessible (`/api/docs` atau `/api/documentation`)
+- [ ] Export `openapi.json` to `docs/specs/openapi.json` for version control
+- [ ] Add to M06 development checklist: "Update OpenAPI annotations when adding endpoints"
+
+**When to Skip OpenAPI**:
+- ❌ Internal-only API dengan <5 endpoints
+- ❌ GraphQL API (use GraphQL introspection instead)
+- ❌ tRPC (TypeScript end-to-end type safety, no need for OpenAPI)
+- ❌ MVP <4 minggu dengan zero external API consumers
+
+**Benefits**:
+- ✅ Auto-generated client SDKs (TypeScript, Python, Go) via `openapi-generator`
+- ✅ API testing tools (Postman, Insomnia) can import OpenAPI spec
+- ✅ Contract testing (Pact, Dredd) validates implementation vs spec
+- ✅ Frontend devs can mock API responses during parallel development
+
+---
+
 ### Langkah 3: Arsitektur Keamanan Terpasang (Built-in Security)
 Kunci protokol keamanan sebelum menulis kode:
 1. **Penyimpanan Dokumen Sensitif (Vault)**:

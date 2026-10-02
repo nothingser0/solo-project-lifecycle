@@ -186,4 +186,76 @@ Setelah seluruh tahapan Modul 12 selesai:
    - [ ] Confirm no pending Severity 1/2 tickets
    - [ ] Confirm monitoring active and stable
 2. Tampilkan ucapan selamat dan rangkuman purna karya kepada pengguna.
-3. **AKHIRI RESPON ANDA (END TURN)**. Seluruh 12 siklus rekayasa perangkat lunak solo developer telah selesai 100%.
+3. **DECISION POINT**: Determine project closure type:
+
+---
+
+### **LANGKAH 2: PROJECT CLOSURE TYPE ASSESSMENT**
+
+**A. Client Project (Delivery & Exit)**
+- [ ] Client akan maintain sendiri atau hire in-house team
+- [ ] Source code dan credentials sudah diserahkan (M11)
+- [ ] Warranty period berakhir
+
+**Action**: 
+> *"Masa garansi [30/60/90 hari] telah berakhir. Seluruh deliverable telah diserahkan. Proyek ini dinyatakan SELESAI 100%. Terima kasih atas kepercayaannya!*
+> 
+> *Optional: Kami menyediakan Monthly Retainer (Rp X/bulan) untuk support ongoing. Apakah tertarik?"*
+
+**AKHIRI RESPON (END TURN)** - Lifecycle complete.
+
+---
+
+**B. In-House Product / Ongoing Service**
+- [ ] Product milik sendiri (bukan client project)
+- [ ] Atau: Client sign Monthly Retainer / SLA contract
+- [ ] Product akan terus dikembangkan & dioperasikan
+
+**Action**: **TRANSISI KE MODUL 13** (Product Operations & Continuous Iteration)
+
+> *"Masa garansi initial launch telah selesai. System stabil dan monitoring aktif.*
+> 
+> *Untuk product operations berkelanjutan, lanjutkan ke **Modul 13: Product Operations & Continuous Iteration** untuk:*
+> - *Baseline metrics 30 hari pasca-launch*
+> - *Continuous feedback loop & prioritization*
+> - *Growth experiments & A/B testing*
+> - *Scaling signal monitoring*
+>
+> *Apakah siap memulai Modul 13?"*
+
+**AKHIRI RESPON (END TURN)** - Tunggu user approval sebelum load Modul 13.
+
+---
+
+**C. Retainer / SLA Maintenance Only (No Active Development)**
+- [ ] Client sign SLA contract untuk bug-fix & monitoring saja
+- [ ] No new features atau growth experiments planned
+- [ ] Maintenance mode (incident response only)
+
+**Action**:
+> *"SLA contract aktif. System dalam maintenance mode. Incident monitoring berjalan.*
+> 
+> *Jika suatu saat butuh new features atau growth optimization, kita bisa aktifkan Modul 13 (Product Operations). Untuk sekarang, siklus development SELESAI."*
+
+**AKHIRI RESPON (END TURN)** - Lifecycle complete (maintenance-only mode).
+
+---
+
+### **Decision Matrix: When to Proceed to Module 13?**
+
+| Condition | Proceed to M13? | Reason |
+|-----------|----------------|---------|
+| Client project + handover complete | ❌ NO | Client owns product, exit relationship |
+| Client project + monthly retainer signed | ✅ YES | Ongoing ops & iteration needed |
+| In-house product (solo dev owner) | ✅ YES | Continuous improvement & growth |
+| SLA maintenance-only (no features) | ❌ NO | Reactive mode, no proactive ops |
+| Warranty expired + no ongoing contract | ❌ NO | Project closed |
+
+---
+
+**Module 12 Gate Exit Criteria**:
+- [x] Warranty policy documented
+- [x] No Severity 1/2 pending tickets
+- [x] Closure type determined (A/B/C)
+- [x] If Type B: User approval to proceed to M13
+- [x] If Type A/C: Final closure acknowledgment
