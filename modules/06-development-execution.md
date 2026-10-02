@@ -1346,6 +1346,200 @@ Dalam pengembangan mandiri (solo developer) dengan akselerasi AI Coding Agents, 
 
 ---
 
+## 6A. Product Instrumentation & Analytics Setup [OPTIONAL SECTION]
+
+> 🎯 **WHEN TO USE THIS SECTION?**
+> - **Medium/Large scale projects**: Need funnel analysis, retention cohorts, A/B testing
+> - **Post-MVP validation**: Product launched, need data to validate product-market fit
+> - **Fundraising prep**: Investors require traction metrics dashboard
+> - **Growth phase**: Ready to optimize conversion and engagement
+>
+> **SKIP THIS SECTION IF:**
+> - MVP <4 weeks with basic page view tracking sufficient
+> - API-only backend without user-facing analytics needs
+> - Still pre-launch validation phase (wait until real users)
+
+> ⚠️ **MANDATORY: Load references BEFORE executing this section**:
+> - `references/pm/PM_ANALYTICS_SETUP_GUIDE.md` (Platform selection, Event taxonomy quickstart, AARRR dashboard, A/B testing, Privacy compliance)
+
+Tahap pasca-development untuk solo developer dan PM yang butuh mengukur product-market fit, engagement funnel, dan business metrics secara kuantitatif. Tujuannya adalah memasang **event tracking taxonomy** terstruktur, **analytics platform SDK** (Mixpanel/Amplitude/GA4), dan **dashboard real-time** untuk monitoring North Star Metric.
+
+---
+
+### 1. Analytics Platform Selection Matrix
+
+| Platform | Best For | Pricing | Solo Dev Friendly? | Key Features |
+|----------|----------|---------|-------------------|--------------|
+| **Mixpanel** | Funnel analysis, retention cohorts | Free: 100K events/mo | ✅ Yes | Event-based, user profiles, funnel viz |
+| **Amplitude** | Product analytics, user journeys | Free: 10M events/mo | ✅ Yes | Retention, behavioral cohorting |
+| **PostHog** | Self-hosted, privacy-first | Free: 1M events/mo | ✅ Yes | Feature flags + analytics + session replay |
+| **Google Analytics 4 (GA4)** | Web traffic, SEO attribution | Free: unlimited | ✅ Yes | Acquisition tracking, basic funnels |
+| **Segment.io** | CDP layer (multi-tool routing) | $120/mo minimum | ❌ Overkill for solo | Event routing to multiple destinations |
+
+**Default Stack for Solo Dev Menengah**:
+```text
+Mixpanel (funnel + retention) + GA4 (acquisition) + Sentry (errors)
+Total cost: $0/mo until scale
+```
+
+---
+
+### 2. Event Tracking Taxonomy (The Naming Convention)
+
+**Format Baku**: `verb_noun` (lowercase, underscore separator)
+
+```typescript
+// ✅ CORRECT
+track('view_page', { page_name: 'dashboard', user_role: 'admin' })
+track('click_button', { button_id: 'export_pdf', screen: 'document_detail' })
+track('complete_signup', { signup_method: 'google_oauth' })
+
+// ❌ WRONG (inconsistent naming)
+track('Page Viewed', { pageName: 'Dashboard' })  // space, PascalCase
+track('buttonClick', { id: 'export' })             // camelCase verb
+```
+
+**Kategori Event Utama**:
+
+| Category | Event Examples | Tracking Goal |
+|----------|----------------|---------------|
+| **Page Views** | `view_page`, `view_dashboard`, `view_settings` | Navigasi user, screen time |
+| **User Actions** | `click_button`, `submit_form`, `upload_file` | Interaksi fitur kunci |
+| **Conversion** | `complete_signup`, `complete_payment`, `activate_account` | Funnel drop-off analysis |
+| **Engagement** | `share_document`, `invite_user`, `enable_notification` | Viral coefficient, retention |
+| **Errors** | `error_payment_failed`, `error_upload_timeout` | Friction points |
+
+---
+
+### 3. Implementation Quickstart (Next.js + Mixpanel)
+
+**Step 1**: Install SDK
+```bash
+pnpm add mixpanel-browser
+```
+
+**Step 2**: Create Analytics Wrapper (`lib/analytics.ts`)
+```typescript
+import mixpanel from 'mixpanel-browser'
+
+const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN
+
+export const analytics = {
+  init: () => {
+    if (MIXPANEL_TOKEN) {
+      mixpanel.init(MIXPANEL_TOKEN, { 
+        debug: process.env.NODE_ENV === 'development',
+        track_pageview: false,
+        persistence: 'localStorage'
+      })
+    }
+  },
+  
+  identify: (userId: string, traits?: Record<string, any>) => {
+    mixpanel.identify(userId)
+    if (traits) mixpanel.people.set(traits)
+  },
+  
+  track: (event: string, properties?: Record<string, any>) => {
+    mixpanel.track(event, properties)
+  }
+}
+```
+
+**Step 3**: Track User Actions
+```typescript
+// app/dashboard/page.tsx
+import { analytics } from '@/lib/analytics'
+
+export default function DashboardPage() {
+  useEffect(() => {
+    analytics.track('view_page', { page_name: 'dashboard' })
+  }, [])
+  
+  const handleExport = () => {
+    analytics.track('click_button', { button_id: 'export_pdf' })
+    // ... export logic
+  }
+}
+```
+
+---
+
+### 4. Core Metrics & Dashboard Design (AARRR Framework)
+
+**North Star Metric** (from M00 Product Discovery):
+
+| Product Type | North Star Metric Example |
+|--------------|---------------------------|
+| SaaS Document Vault | Weekly Active Documents Uploaded |
+| E-commerce | Orders per Week |
+| Social App | Daily Active Users (DAU) |
+| API Service | API Calls per Day |
+
+**AARRR Metrics Breakdown**:
+```text
+Acquisition:    New signups per week (source: GA4 UTM params)
+Activation:     % users who complete first key action within 24h
+Retention:      Weekly retention cohort (W1, W2, W4 retention %)
+Referral:       Viral coefficient (invites sent / new users)
+Revenue:        MRR, ARPU, LTV/CAC ratio
+```
+
+---
+
+### 5. Privacy Compliance (GDPR & UU PDP No. 27/2022)
+
+**Consent Management Checklist**:
+- [ ] Cookie banner dengan opt-in eksplisit (bukan pre-checked)
+- [ ] Disable tracking sebelum user klik "Accept Analytics"
+- [ ] Sediakan opt-out URL: `/privacy/opt-out`
+- [ ] Anonymize IP addresses: `mixpanel.set_config({ ip: false })`
+- [ ] Data retention policy: Auto-delete events > 2 tahun
+
+**Code Example**: Consent Wrapper
+```typescript
+export const analytics = {
+  init: () => {
+    const consent = localStorage.getItem('analytics_consent')
+    if (consent === 'granted' && MIXPANEL_TOKEN) {
+      mixpanel.init(MIXPANEL_TOKEN)
+    }
+  },
+  
+  grantConsent: () => {
+    localStorage.setItem('analytics_consent', 'granted')
+    analytics.init()
+  }
+}
+```
+
+---
+
+### 6. Output Artifacts (Deliverables)
+
+| Artifact | Location | Purpose |
+|----------|----------|---------|
+| **Event Taxonomy Doc** | `docs/analytics/EVENT_TAXONOMY.md` | Single source of truth untuk nama event |
+| **Implementation Plan** | `docs/analytics/ANALYTICS_IMPLEMENTATION_PLAN.md` | Langkah instalasi SDK, tracking code locations |
+| **Dashboard Spec** | `docs/analytics/DASHBOARD_SPEC.md` | Definisi metrics, chart types, alert thresholds |
+
+**Template Sources**:
+- `templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md`
+- `templates/09-product-growth/ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md`
+- `templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md`
+
+---
+
+### 7. Prinsip Solo Developer Analytics
+
+1. **Prioritize Signal over Noise**: Track maksimal 10 core events, bukan 100 random clicks
+2. **No Vendor Lock-In**: Gunakan wrapper abstraction (`lib/analytics.ts`) agar mudah swap platform
+3. **Privacy-First by Default**: Opt-in analytics untuk compliance UU PDP
+4. **Dashboard as Product Compass**: North Star Metric harus terlihat dalam 3 detik
+5. **Free Tier Sufficiency**: Proyek solo dev jarang melewati 100K events/bulan sebelum PMF
+
+---
+
 ## 7. Artefak Keluaran (Deliverables)
 
 1. **Source Code Repositori Git**: Basis kode bersih dengan branch `staging` aktif dan riwayat commit terstruktur.
