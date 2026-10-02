@@ -18,7 +18,7 @@ Modul ini adalah panduan komprehensif untuk solo developer dan tim kecil yang in
 
 ## 1. Terminologi Kritis (Disambiguation)
 
-Istilah-istilah ini sering dipakai campur aduk. Definisi di bawah adalah standar industri 2024-2026:
+Istilah-istilah ini sering dipakai campur aduk. Definisi di bawah adalah standar industri 2026:
 
 | Istilah | Definisi | Contoh Konkret | Deliverable Utama |
 |---------|----------|----------------|-------------------|
@@ -530,7 +530,6 @@ main (Production DS)
 - [ ] Accessibility audit passed (contrast, keyboard nav)
 - [ ] Documented in Storybook (if component change)
 
-**Alternative to Figma Branching**: **Abstract** (deprecated 2024), **Zeplin** (legacy), **Storybook as design tool** (emerging 2025-2026).
 **Alternative to Figma Branching**: **Abstract** (deprecated 2024), **Zeplin** (legacy), **Storybook as design tool** (standard 2026).
 
 ### 6.5 CI/CD for Design Systems
