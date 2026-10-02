@@ -67,12 +67,12 @@ Evaluasi kelayakan ide menggunakan skor 1–5 pada 4 dimensi:
 
 | Dimensi Kelayakan | Pertanyaan Uji Kritis Solo Dev | Batas Minimum Lolos |
 | :--- | :--- | :--- |
-| **1. Kelayakan Teknis** | Apakah pustaka, SDK, dan API yang dibutuhkan sudah matang dan terdokumentasi? Apakah membutuhkan riset R&D komputasi berat? | Skor $\ge 3$ (Jika butuh R&D berat sendirian, simplifikasi ide) |
-| **2. Kelayakan Bandwidth** | Apakah aplikasi bisa diselesaikan dalam rentang waktu solo dev (maks. 1–3 bulan untuk rilis pertama)? Apakah biaya operasional hariannya rendah? | Skor $\ge 4$ (Hindari arsitektur multi-service yang butuh on-call 24/7) |
-| **3. Kelayakan Regulasi & Legal** | Apakah pengoperasian sistem melanggar hukum, membutuhkan izin khusus (OJK, Kominfo, Kemenkes), atau memegang data pribadi sensitif (UU PDP)? | Skor $\ge 4$ (Jika ada risiko pidana/denda tanpa modal hukum, pivot/scope down) |
-| **4. Kelayakan Komersial** | Apakah ada pihak yang bersedia membayar untuk sistem ini (B2B/B2C)? Jika pesanan klien, apakah budget realistis terhadap effort? | Skor $\ge 3$ (Harus ada kejelasan sumber pendapatan atau margin yang layak) |
+| **1. Kelayakan Teknis** | Apakah pustaka, SDK, dan API yang dibutuhkan sudah matang dan terdokumentasi? Apakah membutuhkan riset R&D komputasi berat? | Skor ≥3 (Jika butuh R&D berat sendirian, simplifikasi ide) |
+| **2. Kelayakan Bandwidth** | Apakah aplikasi bisa diselesaikan dalam rentang waktu solo dev (maks. 1–3 bulan untuk rilis pertama)? Apakah biaya operasional hariannya rendah? | Skor ≥4 (Hindari arsitektur multi-service yang butuh on-call 24/7) |
+| **3. Kelayakan Regulasi & Legal** | Apakah pengoperasian sistem melanggar hukum, membutuhkan izin khusus (OJK, Kominfo, Kemenkes), atau memegang data pribadi sensitif (UU PDP)? | Skor ≥4 (Jika ada risiko pidana/denda tanpa modal hukum, pivot/scope down) |
+| **4. Kelayakan Komersial** | Apakah ada pihak yang bersedia membayar untuk sistem ini (B2B/B2C)? Jika pesanan klien, apakah budget realistis terhadap effort? | Skor ≥3 (Harus ada kejelasan sumber pendapatan atau margin yang layak) |
 
-**Aggregate Threshold**: Total skor $\ge 14/20$ (rata-rata 3.5 per dimensi). Proyek dengan total < 14 wajib disederhanakan atau ditolak.
+**Aggregate Threshold**: Total skor ≥14/20 (rata-rata 3.5 per dimensi). Proyek dengan total < 14 wajib disederhanakan atau ditolak.
 
 *Lihat panduan lengkap di: `references/checklists/FEASIBILITY_CRITERIA.md`.*
 

@@ -63,7 +63,7 @@ Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk
 2. **Kunci Kredensial Asli (Zero Sandbox Keys in Prod)**:
    - Pastikan variabel lingkungan di server produksi telah diganti dengan akun asli (Live API Key Payment Gateway, Live SMTP, Live Cloudflare R2), bukan akun pengujian sandbox staging.
 3. **Wajib Memiliki Rencana Mundur Darurat (Rollback Plan)**:
-   - Sebelum menyentuh tombol deploy, solo dev harus tahu persis cara mengembalikan sistem ke kondisi semula dalam waktu $< 15\text{ menit}$ jika terjadi kegagalan fatal.
+   - Sebelum menyentuh tombol deploy, solo dev harus tahu persis cara mengembalikan sistem ke kondisi semula dalam waktu < 15 menit jika terjadi kegagalan fatal.
 
 ---
 
@@ -145,8 +145,8 @@ Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk
 
 1. Masuk ke dashboard DNS penyedia domain klien (Cloudflare, Niagahoster, Route53).
 2. Arahkan DNS Record:
-   - `Type A`: `@` $\to$ IP Server Produksi / Load Balancer.
-   - `CNAME`: `app` atau `www` $\to$ domain hosting (Vercel / Cloud Run).
+   - `Type A`: `@` → IP Server Produksi / Load Balancer.
+   - `CNAME`: `app` atau `www` → domain hosting (Vercel / Cloud Run).
 3. Verifikasi propagasi DNS menggunakan `dig` atau `nslookup`.
 4. Pastikan sertifikat SSL terbit dan mendapatkan peringkat minimal **Grade A** di SSL Labs (TLS 1.3 aktif).
 

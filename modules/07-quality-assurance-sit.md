@@ -38,7 +38,7 @@ Modul ini adalah tahap ketujuh dalam siklus hidup proyek perangkat lunak untuk s
                                     ▼
 [ LANGKAH 4: Uji Beban & Performa Concurrency (Load Testing) ]
   • Uji Beban Menggunakan k6 / Autocannon (Misal: 50–100 Concurrent Virtual Users)
-  • Verifikasi Latency API $\le 200\text{ ms}$ & Error Rate $0\%$
+  • Verifikasi Latency API ≤200 ms & Error Rate 0%
                                     │
                                     ▼
 [ LANGKAH 5: Deployment ke Lingkungan Staging & Pengesahan SIT ]
@@ -61,7 +61,7 @@ Solo developer tidak memiliki tim QA beranggotakan 5 orang. Dilarang menulis rat
 2. **Lapisan Tengah (25% - API Integration & SIT Tests)**:
    - Menguji interaksi controller dengan database lokal dan sandbox pihak ketiga (Payment, Email, S3).
 3. **Lapisan Atas (5% - Critical Path E2E Smoke Test)**:
-   - Hanya menguji 1 alur terpenting (*Core Happy Path*): Login $\to$ Buat dokumen $\to$ Generate PDF $\to$ Tanda tangan $\to$ Status `SIGNED`.
+   - Hanya menguji 1 alur terpenting (*Core Happy Path*): Login → Buat dokumen → Generate PDF → Tanda tangan → Status `SIGNED`.
 
 ---
 
@@ -80,13 +80,13 @@ Kriteria Lolos: 100% tes lulus tanpa kegagalan (`exit code 0`).
 
 Uji seluruh titik sambungan ke layanan pihak ketiga di lingkungan sandbox:
 1. **Payment Gateway Sandbox**:
-   - Tembakkan payload webhook pembayaran sukses $\to$ Pastikan status pesanan berubah menjadi `PAID` dan stok terkunci.
-   - Tembakkan webhook pembayaran kedaluwarsa/gagal $\to$ Pastikan status berubah menjadi `CANCELLED`.
+   - Tembakkan payload webhook pembayaran sukses → Pastikan status pesanan berubah menjadi `PAID` dan stok terkunci.
+   - Tembakkan webhook pembayaran kedaluwarsa/gagal → Pastikan status berubah menjadi `CANCELLED`.
 2. **Document Vault Storage**:
-   - Upload file dokumen $\to$ Pastikan file tersimpan di bucket storage dalam kondisi biner terenkripsi.
-   - Ambil presigned URL $\to$ Pastikan file dapat diunduh dan didekripsi dengan sempurna dalam batas waktu 15 menit.
+   - Upload file dokumen → Pastikan file tersimpan di bucket storage dalam kondisi biner terenkripsi.
+   - Ambil presigned URL → Pastikan file dapat diunduh dan didekripsi dengan sempurna dalam batas waktu 15 menit.
 3. **Email Transaksional**:
-   - Uji pengiriman email OTP $\to$ Pastikan masuk ke inbox email penguji dengan format template rapi.
+   - Uji pengiriman email OTP → Pastikan masuk ke inbox email penguji dengan format template rapi.
 
 ### Langkah 3: Audit Keamanan & Hardening
 1. **Audit Dependensi**:
@@ -111,7 +111,7 @@ Gunakan skrip uji beban sederhana (k6 atau autocannon):
 npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 ```
 - **Ambang Batas Minimum**:
-  - Rata-rata latency $\le 200\text{ ms}$.
+  - Rata-rata latency ≤200 ms.
   - Tidak ada kegagalan koneksi database (*zero 500 server errors*).
 
 ### Langkah 5: Deployment ke Staging Server & SIT Report

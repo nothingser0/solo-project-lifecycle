@@ -80,7 +80,7 @@ Daftar seluruh hal yang wajib disediakan klien agar pengerjaan tidak terhambat:
 - Master data awal dalam format digital terstruktur (CSV/JSON/Excel).
 - Ketersediaan Single PIC untuk sesi klarifikasi mingguan.
 
-Tentukan klausul: *Setiap keterlambatan penyerahan dependensi oleh klien $\ge 3$ hari kerja otomatis menggeser target rilis sistem tanpa denda bagi developer.*
+Tentukan klausul: *Setiap keterlambatan penyerahan dependensi oleh klien ≥3 hari kerja otomatis menggeser target rilis sistem tanpa denda bagi developer.*
 
 ### Langkah 5: Pemetaan Stakeholder & Komunikasi
 
@@ -118,7 +118,7 @@ Tentukan cadence komunikasi berdasarkan kuadran:
 | **Monitor** | Milestone report | Email broadcast | Launch announcement, major release notes |
 
 **Escalation Path**: Definisikan kapan masalah harus di-escalate ke tier lebih tinggi:
-- Blocker $\ge$ 3 hari tanpa resolusi → Escalate ke "Keep Satisfied"
+- Blocker ≥3 hari tanpa resolusi → Escalate ke "Keep Satisfied"
 - Scope creep request → Escalate ke "Manage Closely" untuk keputusan
 - Budget/Timeline overrun risk → Escalate ke CFO/Financial stakeholder
 

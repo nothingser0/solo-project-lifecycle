@@ -42,6 +42,12 @@ FASE RILIS & PENUTUPAN:
   13. Product Operations & Continuous Iteration (Baseline Metrik, RICE, Feedback Loop) ──► modules/13-product-operations-iteration.md
 ```
 
+**CRITICAL: Progressive Loading Protocol**
+- **DO NOT load all 17 modules at once** (total ~100K tokens)
+- Load specific module ONLY when entering that phase
+- Example: "Load modules/03-legal-sow-charter.md" when at Module 03
+- Reduces context pollution and improves response quality
+
 ---
 
 ## 2. Prinsip Pertahanan Solo Developer (Core Solo Rules)

@@ -670,9 +670,9 @@ Panggil `stitch_generate_screen_from_text` untuk **SETIAP halaman** yang tertera
 ### Langkah 4: Merakit Clickable Demo Lengkap
 1. Ambil kode HTML/CSS komponen dari Stitch untuk seluruh layar.
 2. Pasang tag hyperlink routing standar untuk menghubungkan alur tombol:
-   - Tombol "Login" → mengarahkan ke `/dashboard`
-   - Tombol "Buat Dokumen Baru" → mengarahkan ke `/documents/new`
-   - Tombol "Simpan Draf" → menampilkan modal/toast sukses dan mengarahkan ke `/documents/:id`
+   - Tombol "Login" $\to$ mengarahkan ke `/dashboard`
+   - Tombol "Buat Dokumen Baru" $\to$ mengarahkan ke `/documents/new`
+   - Tombol "Simpan Draf" $\to$ menampilkan modal/toast sukses dan mengarahkan ke `/documents/:id`
 3. Deploy kode ke staging URL gratis (Vercel / Cloudflare Pages) agar dapat dibuka langsung oleh klien di HP maupun laptop untuk menguji alur utuh 100%.
 
 ### Langkah 5: Walk-Through & Pembekuan Desain (Design Freeze)
@@ -688,7 +688,7 @@ Panggil `stitch_generate_screen_from_text` untuk **SETIAP halaman** yang tertera
 | :--- | :--- | :--- | :--- |
 | **Cakupan Layar** | **100% seluruh halaman** dalam Scope (tanpa pengurangan) | **100% seluruh halaman** dalam Scope (tanpa pengurangan) | **Phased if ≥50 screens**: Phase 1 (MVP core), Phase 2 (admin/secondary) |
 | **Media Demo** | Tautan Viewer Stitch / Live Preview | Live Staging Web (Vercel/Cloudflare) | Live Staging Web + Dokumen Audit Aksesibilitas |
-| **Kepatuhan Desain** | Kontras visual standar ≥4.5:1 | WCAG AA terverifikasi pada form | Full WCAG AA audit (Keyboard nav, Screen reader) |
+| **Kepatuhan Desain** | Kontras visual standar $\ge 4.5:1$ | WCAG AA terverifikasi pada form | Full WCAG AA audit (Keyboard nav, Screen reader) |
 | **Approval** | Konfirmasi tertulis email/chat | Tanda tangan lembar Design Freeze | Formal Design Sign-Off & Berita Acara Review UI |
 
 ---

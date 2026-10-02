@@ -70,7 +70,7 @@ Sebagai solo developer, jangan pernah menerima pembayaran di akhir proyek (100% 
 | **Termin 1 (DP)** | Tanda Tangan Kontrak & Inisiasi Proyek | **30% – 50%** | Penyerahan SOW & Project Charter yang disepakati |
 | **Termin 2 (Alpha)**| Core Engine & Integrasi Database Selesai | **25% – 30%** | Demo fungsionalitas backend & UI dasar di lokal/staging |
 | **Termin 3 (Beta)** | Integrasi Lengkap & Lolos UAT Internal | **20% – 25%** | Aplikasi siap diuji klien di Staging (SIT Pass) |
-| **Termin 4 (Final)**| Go-Live Production & Serah Terima Resmi | **10% – 15%** | UAT Sign-off Klien disetujui, siap penyerahan BAST |
+| **Termin 4 (Final)**| Go-Live Production & Serah Terima Resmi | **10% – 20%** | UAT Sign-off Klien disetujui, siap penyerahan BAST |
 
 ---
 

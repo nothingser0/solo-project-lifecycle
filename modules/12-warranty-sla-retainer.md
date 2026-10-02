@@ -104,7 +104,7 @@ Tawarkan 3 opsi paket:
 2. **Paket Silver (Pemeliharaan Standar & Optimasi)**:
    - Seluruh fasilitas Paket Bronze.
    - Alokasi **15 Jam kerja / bulan** untuk penambahan fitur minor, perbaikan antarmuka, atau perubahan format laporan.
-   - SLA Respon tanggap $< 4\text{ jam}$ di hari kerja.
+   - SLA Respon tanggap < 4 jam di hari kerja.
 3. **Paket Gold (Enterprise SLA & Prioritas Penuh)**:
    - Seluruh fasilitas Paket Silver.
    - Alokasi **30 Jam kerja / bulan** untuk pengembangan berkelanjutan.

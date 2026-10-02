@@ -81,8 +81,8 @@ Salah satu jebakan terbesar yang menghabiskan waktu solo developer tanpa dibayar
 
 ### Langkah 2: Penyusunan Dokumen Rencana Migrasi (Mapping Matrix)
 Susun tabel pemetaan dari format lama ke skema FSD baru:
-- Contoh: Kolom Excel `"Nama Lengkap"` $\to$ Kolom SQL `users.full_name` (`VARCHAR(150)`).
-- Contoh: Kolom Excel `"Tgl Lahir"` $\to$ Transformasi `new Date(row.tgl)` $\to$ `users.birth_date` (`DATE`).
+- Contoh: Kolom Excel `"Nama Lengkap"` → Kolom SQL `users.full_name` (`VARCHAR(150)`).
+- Contoh: Kolom Excel `"Tgl Lahir"` → Transformasi `new Date(row.tgl)` → `users.birth_date` (`DATE`).
 
 ### Langkah 3: Penulisan Skrip Otomasi ETL (Batch Loading)
 Tuliskan skrip eksekusi mandiri (misal: `scripts/migrate-data.ts` atau script Python):
@@ -92,9 +92,9 @@ Tuliskan skrip eksekusi mandiri (misal: `scripts/migrate-data.ts` atau script Py
 
 ### Langkah 4: Rekonsiliasi & Penanganan Baris Ditolak
 1. Skrip menghitung:
-   - Total baris di berkas sumber: $N_{\text{source}}$
-   - Total baris berhasil diimpor: $N_{\text{imported}}$
-   - Total baris gagal/korup: $N_{\text{rejected}}$
+   - Total baris di berkas sumber: N_source
+   - Total baris berhasil diimpor: N_imported
+   - Total baris gagal/korup: N_rejected
 2. Seluruh baris yang gagal otomatis diekspor ke `rejected-rows.csv` lengkap dengan nomor baris dan pesan error validasinya.
 3. Berikan berkas `rejected-rows.csv` kepada Klien untuk diperbaiki oleh tim operasional mereka.
 

@@ -20,9 +20,11 @@ Tujuannya adalah menyelenggarakan pelatihan operasional (*training*) bagi staf k
 [ LANGKAH 1: Penerbitan Invoice Pelunasan (Termin 4: 10% – 20%) ]
   • Terbitkan Invoice Final Berdasarkan Bukti Go-Live Report
   • Berikan Tenggat Pembayaran Sesuai SOW (Maksimal 7 Hari Kerja)
+  • **CRITICAL SEQUENCE**: 100% payment RECEIVED → THEN proceed to training
                                     │
                                     ▼
 [ LANGKAH 2: Pelatihan Pengguna (Training & Onboarding Klien) ]
+  • **PREREQUISITE**: Konfirmasi 100% payment diterima sebelum memulai training
   • Jatah Sesi Terbatas: 1x Sesi Staf Operasional & 1x Sesi Super Admin
   • Rekam Video Tutorial Ringkas & Serahkan Dokumen USER_MANUAL.md
   • Sesi Tambahan di Luar Jatah Wajib Dikenakan Biaya Training Tambahan

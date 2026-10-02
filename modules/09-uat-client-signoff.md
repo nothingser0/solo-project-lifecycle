@@ -71,10 +71,10 @@ Setiap laporan kendala dari klien wajib diklasifikasikan ke dalam 4 tingkatan:
 
 | Tingkat Keparahan | Definisi & Dampak | Batas Waktu Respon Dev | Dampak Terhadap UAT Sign-Off |
 | :--- | :--- | :---: | :--- |
-| **Severity 1 (Blocker)** | Sistem crash, data korup, pembayaran gagal, alur inti terputus total. | $< 24$ Jam | **MEMBLOKIR** sign-off (Wajib beres). |
-| **Severity 2 (Major)** | Fitur penting tidak berjalan sesuai FSD, namun ada cara alternatif sementara (*workaround*). | $< 48$ Jam | Wajib diperbaiki sebelum deploy produksi. |
-| **Severity 3 (Minor)** | Salah ketik (*typo*), pergeseran margin teks 2px, warna badge kurang kontras. | $< 72$ Jam | **TIDAK MEMBLOKIR** sign-off (Bisa dibereskan saat jeda rilis / garansi). |
-| **Out-of-Scope (CR)** | Permintaan alur baru atau penambahan kolom database di luar PRD. | Dijawab hari itu | **DITOLAK DARI UAT** $\to$ Masuk lembar Change Request. |
+| **Severity 1 (Blocker)** | Sistem crash, data korup, pembayaran gagal, alur inti terputus total. | < 24 Jam | **MEMBLOKIR** sign-off (Wajib beres). |
+| **Severity 2 (Major)** | Fitur penting tidak berjalan sesuai FSD, namun ada cara alternatif sementara (*workaround*). | < 48 Jam | Wajib diperbaiki sebelum deploy produksi. |
+| **Severity 3 (Minor)** | Salah ketik (*typo*), pergeseran margin teks 2px, warna badge kurang kontras. | < 72 Jam | **TIDAK MEMBLOKIR** sign-off (Bisa dibereskan saat jeda rilis / garansi). |
+| **Out-of-Scope (CR)** | Permintaan alur baru atau penambahan kolom database di luar PRD. | Dijawab hari itu | **DITOLAK DARI UAT** → Masuk lembar Change Request. |
 
 ---
 

@@ -1046,13 +1046,13 @@ Kunci protokol keamanan sebelum menulis kode:
      - **Enterprise**: Hardware Security Module (HSM) + FIPS 140-2 compliance
    - Tautan unduhan dokumen wajib menggunakan *Presigned URL* dengan masa kedaluwarsa maksimal 15 menit.
 2. **Otentikasi & Password**:
-   - Password wajib di-hash menggunakan **Argon2id** (atau bcrypt dengan cost factor $\ge 12$).
+   - Password wajib di-hash menggunakan **Argon2id** (atau bcrypt dengan cost factor ≥12).
    - Token sesi disimpan di `HttpOnly, Secure, SameSite=Strict` cookie untuk mencegah pencurian token melalui serangan Cross-Site Scripting (XSS).
 3. **Pembatasan Laju Request (Rate Limiting)**:
    - Endpoint sensitif (Login, Kirim OTP, Checkout) diproteksi pembatasan laju (contoh: maksimal 5 percobaan per IP dalam 15 menit).
 
 ### Langkah 4: Penyusunan Dokumen PRD & FSD
-- **`PRD.md`**: Memuat ringkasan kebutuhan fungsional bisnis, matriks hak akses pengguna (RBAC), metrik keberhasilan (KPI), dan batasan non-fungsional (NFR: latency $< 200\text{ ms}$, uptime $99.9\%$).
+- **`PRD.md`**: Memuat ringkasan kebutuhan fungsional bisnis, matriks hak akses pengguna (RBAC), metrik keberhasilan (KPI), dan batasan non-fungsional (NFR: latency < 200 ms, uptime 99.9%).
 - **`FSD.md`**: Memuat detail teknis mutlak (diagram ERD, script SQL DDL, tabel API contract, state machine transaksi, dan audit logging).
 
 ### Langkah 5: Technical Sign-Off Bersama Klien

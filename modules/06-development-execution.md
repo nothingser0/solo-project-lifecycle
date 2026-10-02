@@ -29,9 +29,9 @@ Modul ini adalah tahap keenam dalam siklus hidup proyek perangkat lunak untuk so
                                     ▼
 [ LANGKAH 1: Inisiasi Repositori & Scaffold (Stack-Adapted) ]
   • Execute scaffold command untuk chosen stack:
-    - Next.js: pnpm create next-app
-    - Laravel: composer create-project laravel/laravel
-    - Django: django-admin startproject
+    - Next.js: pnpm create next-app@latest
+    - Laravel: composer create-project laravel/laravel --prefer-dist
+    - Django: django-admin startproject (verify Django version: pip install django>=4.2)
     - Go: mkdir + go mod init
   • Pasang 7 Berkas Harness AI (stack-specific templates)
   • Git Init & Strategi Percabangan (main ──► staging ──► feat/*)

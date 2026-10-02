@@ -199,7 +199,7 @@ Acceptance Criteria:
 - [ ] **Likelihood quantified** (10-90%, bukan "Low/Medium/High" vague)
 - [ ] **Impact konkrit** (Rp loss, delay X weeks, user churn Y%)
 - [ ] **Mitigation actionable** (bukan "Monitor", tapi "Unit test 30+ scenario + review konsultan")
-- [ ] **Owner assigned** (solo dev = zeenn, tapi jika ada external dependency, owner = vendor)
+- [ ] **Owner assigned** (solo dev = developer name, tapi jika ada external dependency, owner = vendor)
 - [ ] **Trigger defined** (kondisi kapan risk jadi issue, contoh: "API down >1 jam")
 - [ ] **Contingency plan** (fallback jika mitigation gagal, contoh: "Manual input kurs jika API down")
 
