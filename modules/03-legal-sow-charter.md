@@ -137,8 +137,10 @@ Setelah berkas `docs/pm/PROJECT_CHARTER.md` (dan `docs/pm/SOW_CONTRACT.md`) sele
 
 1. **Cek keberadaan file output** menggunakan salah satu metode:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/PROJECT_CHARTER.md"` → harus return `True`
+   - Bash/Zsh: `test -f "docs/pm/PROJECT_CHARTER.md" && echo "True" || echo "False"`
    - Read tool: `read_file('docs/pm/PROJECT_CHARTER.md')` → harus sukses tanpa error
    - PowerShell: `Test-Path -LiteralPath "docs/pm/SOW_CONTRACT.md"` → harus return `True`
+   - Bash/Zsh: `test -f "docs/pm/SOW_CONTRACT.md" && echo "True" || echo "False"`
    - Read tool: `read_file('docs/pm/SOW_CONTRACT.md')` → harus sukses tanpa error
 
 2. **JIKA FILE TIDAK ADA**:

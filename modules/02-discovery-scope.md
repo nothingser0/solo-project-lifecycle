@@ -261,6 +261,7 @@ Setelah berkas `docs/pm/SCOPE_STATEMENT.md` selesai ditulis:
 
 1. **Cek keberadaan file output** menggunakan salah satu metode:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/SCOPE_STATEMENT.md"` → harus return `True`
+   - Bash/Zsh: `test -f "docs/pm/SCOPE_STATEMENT.md" && echo "True" || echo "False"`
    - Read tool: `read_file('docs/pm/SCOPE_STATEMENT.md')` → harus sukses tanpa error
 
 2. **JIKA FILE TIDAK ADA**:

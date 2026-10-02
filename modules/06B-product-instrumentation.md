@@ -368,6 +368,7 @@ Setelah analytics instrumentation setup selesai:
 
 1. **Cek keberadaan file output** menggunakan salah satu metode:
    - PowerShell: `Test-Path -LiteralPath "docs/analytics/EVENT_TAXONOMY.md"` → harus return `True`
+   - Bash/Zsh: `test -f "docs/analytics/EVENT_TAXONOMY.md" && echo "True" || echo "False"`
    - Read tool: `read_file('docs/analytics/EVENT_TAXONOMY.md')` → harus sukses tanpa error
 
 2. **JIKA FILE TIDAK ADA**:

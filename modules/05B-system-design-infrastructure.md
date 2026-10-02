@@ -1895,7 +1895,9 @@ vercel env add STRIPE_SECRET_KEY production
 
 1. **Cek keberadaan file output** (jika dibuat):
    - PowerShell: `Test-Path -LiteralPath "docs/infrastructure/SYSTEM_DESIGN.md"` → harus return `True`
+   - Bash/Zsh: `test -f "docs/infrastructure/SYSTEM_DESIGN.md" && echo "True" || echo "False"`
    - PowerShell: `Test-Path -LiteralPath "docs/infrastructure/DISASTER_RECOVERY_PLAN.md"` → harus return `True`
+   - Bash/Zsh: `test -f "docs/infrastructure/DISASTER_RECOVERY_PLAN.md" && echo "True" || echo "False"`
 
 2. **JIKA FILE DIRENCANAKAN TAPI TIDAK ADA**:
    - ❌ **STOP IMMEDIATELY** - jangan declare documentation complete
