@@ -91,7 +91,7 @@
 
 **Yellow → Red**:
 - Blocker not resolved within 3 days
-- Timeline slip >2 minggu confirmed
+- Timeline slip >2 weeks confirmed
 - Budget overrun >20%
 - Data breach / security incident
 
@@ -277,12 +277,12 @@
 
 ### Type 1: The Micromanager
 
-**Ciri-ciri**:
-- Tanya progress setiap hari (berkali-kali)
+**Characteristics**:
+- Asks for progress updates multiple times daily
 - Asks for status updates on every small task
 - Doesn't believe progress without visible proof (screenshots, videos)
 
-**Strategi**:
+**Strategy**:
 1. **Proactive Daily Update** (morning at 09:00 before they ask):
    ```
    **Today's Focus**: Completing checkout flow backend API
@@ -294,18 +294,18 @@
    > "To keep things efficient, I will send updates at 09:00 and 17:00 daily. If any urgent blockers arise, I will notify you immediately. This way we can stay synchronized without interruptions during coding. Sound good?"
 
 3. **Over-Document**:
-   - Commit messages jelas
+   - Clear commit messages
    - Staging environment always accessible
    - Loom videos to demo progress
 
 ### Type 2: The Scope Creeper
 
-**Ciri-ciri**:
-- Setiap minggu ada "ide bagus" baru
+**Characteristics**:
+- Every week brings a "great new idea"
 - "Just a small addition" is their mantra
 - Unaware that accumulated "small additions" = major delay
 
-**Strategi**:
+**Strategy**:
 1. **Change Request Form** (formal process):
    ```markdown
    **Feature Request**: [Name]
@@ -325,12 +325,12 @@
 
 ### Type 3: The Silent Approver
 
-**Ciri-ciri**:
+**Characteristics**:
 - Does not reply to email/Slack for approval requests
 - "I'll look at it later" but never completes the review
 - Blocks progress due to lack of sign-off
 
-**Strategi**:
+**Strategy**:
 1. **Time-Bound Approval**:
    > "I have sent the design mockups via Figma (link: ...). Need approval by Wednesday 17:00 WIB. If there is no feedback by the deadline, I will proceed on the assumption of approval to keep the timeline on track. Sound good?"
 
@@ -342,15 +342,15 @@
 
 ### Type 4: The "I'll Know It When I See It"
 
-**Ciri-ciri**:
+**Characteristics**:
 - Cannot clearly articulate requirements
-- Revisi design/feature berkali-kali setelah development dimulai
+- Multiple design/feature revisions after development has started
 - "Hmm, that's not quite what I meant" after seeing the result
 
-**Strategi**:
+**Strategy**:
 1. **Prototype-First Approach**:
-   - Buat low-fidelity wireframe/mockup sebelum coding
-   - 30-min feedback session setelah mockup
+   - Create low-fidelity wireframe/mockup before coding
+   - 30-min feedback session after mockup
    - Lock design before development
 
 2. **Revision Budget**:
@@ -493,7 +493,7 @@
 > "This stalls development because completed code must be rewritten. The timeline risks a 2-week delay."
 
 **S = Specify** (What you want):
-> "Going forward, saya usulkan: Design locked before dev starts. Max 2 revision rounds. Round 3+ = paid change order."
+> "Going forward, I propose: Design locked before dev starts. Max 2 revision rounds. Round 3+ = paid change order."
 
 **C = Consequences** (Positive if they agree, negative if not):
 > "This way, we can deliver on time and on budget. Otherwise, we risk delays and budget overruns that harm both of us."
@@ -504,7 +504,7 @@
 
 ### High-Context vs Low-Context Cultures
 
-**Low-Context** (Barat: US, Jerman, Belanda):
+**Low-Context** (Western: US, Germany, Netherlands):
 - Direct communication preferred
 - "No" means no
 - Written agreements paramount
@@ -520,7 +520,7 @@
 
 **For High-Context Clients**:
 - Add buffer: "Should finish next week" → You plan 2 weeks
-- Read between lines: "Sepertinya bagus" ≠ approval, follow up
+- Read between lines: "Looks good" ≠ approval, follow up
 - Build relationship first: 10-min small talk before business
 
 **For Low-Context Clients**:
@@ -557,7 +557,7 @@
 ### Mistake 1: The "Almost Done" Trap
 
 **❌ Problem**:
-> "Hampir selesai kok, tinggal sedikit lagi." (Diucapkan 3 minggu berturut-turut)
+> "Almost done, just a little bit more." (Said 3 weeks in a row)
 
 **✅ Fix**:
 > "Progress: 75% complete. Remaining tasks: X (2 days), Y (1 day), Z (3 days). ETA: Friday."
@@ -573,7 +573,7 @@
 ### Mistake 3: Hiding Bad News
 
 **❌ Problem**:
-> (Tahu ada blocker besar tapi diam 1 minggu sampai krisis)
+> (Aware of major blocker but stays silent for 1 week until crisis)
 
 **✅ Fix**:
 > (Day 1 of blocker): "FYI, blocker X encountered. Estimated 2-3 days to resolve. Updating daily."
