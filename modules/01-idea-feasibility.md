@@ -11,6 +11,11 @@
 
 Modul ini adalah gerbang pertama dalam siklus pengembangan perangkat lunak untuk solo developer. Tujuannya adalah mengubah ide mentah yang abstrak menjadi **Ringkasan Ide Teruji (Validated Idea Brief)** dengan batasan skala yang jelas sebelum waktu terbuang untuk menulis dokumen panjang atau koding.
 
+**Solo Dev Tooling Prerequisites**:
+- [ ] Password manager installed (Bitwarden/1Password) for secure credential sharing with clients
+- [ ] Git client configured with proper email/name
+- [ ] AI coding assistant ready (Cursor/Claude Code/Windsurf) if planning to use AI-assisted development
+
 ---
 
 ## 1. Siklus Eksekusi Modul 01

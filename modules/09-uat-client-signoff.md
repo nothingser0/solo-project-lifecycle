@@ -88,6 +88,12 @@ Setiap laporan kendala dari klien wajib diklasifikasikan ke dalam 4 tingkatan:
 | **Media Pencatatan** | Spreadsheet / UAT Checklist Markdown | Dokumen `UAT_DEFECT_LOG.md` formal | Issue tracker resmi (Jira / Linear / Redmine) |
 | **Pengesahan** | Konfirmasi email persetujuan resmi | Berita Acara UAT bertandatangan digital | Dokumen Berita Acara UAT fisik bermeterai |
 
+**UAT Iteration Limit**: Maximum 3 UAT cycles. If UAT fails 3 consecutive times:
+- Stop UAT process
+- Re-evaluate scope with client (possible scope reduction or timeline extension)  
+- Renegotiate contract if fundamental misalignment detected
+- Document lessons learned for future projects
+
 ---
 
 ## 5. Artefak Keluaran (Deliverables)
@@ -105,6 +111,11 @@ Modul ini menghasilkan 2 berkas pengesahan:
 
 [GATE] Modul 09 dinyatakan **LOLOS (PASS)** jika dan hanya jika:
 - [x] Seluruh skenario pengujian berstatus **PASS** atau seluruh temuan Severity 1 & 2 telah **RESOLVED**.
+- [x] **Quantitative Stability Criteria**:
+  - 0 critical bugs (Severity 1) unresolved
+  - Error rate < 1% (99%+ request success rate in staging logs)
+  - System uptime ≥99% over last 48 hours
+  - All core user flows (login, create, submit, approve) complete without blocking issues
 - [x] Permintaan penambahan fitur baru telah dipisahkan secara tertulis ke lembar Change Request.
 - [x] **Single PIC Klien telah menandatangani dokumen `docs/pm/UAT_SIGNOFF_REPORT.md`.**
 

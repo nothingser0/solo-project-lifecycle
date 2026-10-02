@@ -59,6 +59,7 @@ Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk
 
 1. **Aturan "No Friday Deployment"**:
    - DILARANG melakukan peluncuran sistem baru ke lingkungan produksi pada hari **Jumat sore, akhir pekan, atau malam sebelum hari libur nasional**.
+   - **Agent Check**: Before deploying, check current day. If Friday >14:00, Saturday, or Sunday → prompt user: "⚠️ Deploy ditunda. Reschedule to Tuesday-Thursday 09:00-14:00 for optimal support window."
    - Jika terjadi kendala tak terduga, solo developer akan terjebak lembur darurat di akhir pekan tanpa dukungan tim teknis klien atau customer support vendor cloud.
    - Waktu rilis ideal: **Selasa atau Rabu pukul 09.00–11.00 pagi** (seluruh pihak siaga penuh).
 2. **Kunci Kredensial Asli (Zero Sandbox Keys in Prod)**:
@@ -104,6 +105,9 @@ Modul ini adalah tahap kesepuluh dalam siklus hidup proyek perangkat lunak untuk
 
    **Checklist Production ENV**:
    - [ ] `PAYMENT_GATEWAY_MODE=production` (NOT sandbox)
+   - [ ] **STRIPE_SECRET_KEY** (if used) starts with `sk_live_` (not `sk_test_`)
+   - [ ] **MIDTRANS_SERVER_KEY** (if used) does NOT contain `sandbox`
+   - [ ] Run verification: `grep -E "sk_test|sandbox|test_" .env.production && echo "⚠️ TEST KEYS DETECTED" || echo "✓ Production keys verified"`
    - [ ] `DATABASE_URL` points to production DB
    - [ ] `STRIPE_SECRET_KEY` starts with `sk_live_`
    - [ ] `MIDTRANS_IS_PRODUCTION=true`

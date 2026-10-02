@@ -291,7 +291,7 @@ Q: Jika software ini tersedia hari ini dengan harga Rp [X]/bulan,
    [ ] Tidak tertarik
 ```
 
-**Gate Pass Criteria**: Minimum 30% responden pilih "Pasti beli" atau "Mungkin beli".
+**Gate Pass Criteria**: Minimum 30% dari 50+ responden (15 orang) pilih "Pasti beli" atau "Mungkin beli".
 
 #### 3.3 Persona Creation (Jobs-to-be-Done Framework)
 
@@ -560,7 +560,7 @@ Setelah keempat berkas PM selesai ditulis:
    - [ ] `read_file('docs/pm/PRODUCT_STRATEGY.md')` → Vision/Mission tertulis, North Star Metric defined dengan formula + rationale, 3-5 Strategic Pillars ada
 
 3. **GATE PASS CRITERIA** (Market Validation):
-   - [ ] **Intent-to-Buy ≥30%**: Dari survey, minimal 30% responden pilih "Pasti beli" atau "Mungkin beli".
+   - [ ] **Intent-to-Buy ≥30%**: Dari survey minimal 50 responden, minimal 30% (15 orang) pilih "Pasti beli" atau "Mungkin beli".
    - [ ] **Competitive Moat Identified**: Ada minimal 1 diferensiasi jelas yang kompetitor tidak punya atau sulit tiru (contoh: offline-first architecture, specific niche focus).
    - [ ] **North Star Metric Measurable**: NSM bisa di-track dengan instrumentasi teknis (event logging, DB query).
 
