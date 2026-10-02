@@ -27,6 +27,7 @@ Istilah-istilah ini sering dipakai campur aduk. Definisi di bawah adalah standar
 | **Pattern Library** | Katalog solusi UI untuk kasus umum (navigation, forms, data display) | Navigation patterns (drawer, tabs, breadcrumb) | Storybook / Zeroheight |
 | **Component Library** | Kumpulan komponen UI yang sudah di-code (buttons, inputs, cards) | Chakra UI, Shadcn, MUI, Ant Design | NPM package / Git submodule |
 | **Design Tokens** | Variabel atomic untuk visual properties (color, spacing, typography) | `--color-primary-500: #3B82F6;` | JSON / CSS variables / Swift enums |
+Istilah-istilah ini sering dipakai campur aduk. Definisi di bawah adalah standar industri 2026:
 
 **Atomic Design Methodology (Brad Frost)**:
 ```text
@@ -530,6 +531,7 @@ main (Production DS)
 - [ ] Accessibility audit passed (contrast, keyboard nav)
 - [ ] Documented in Storybook (if component change)
 
+**Alternative to Figma Branching**: **Abstract** (deprecated 2024), **Zeplin** (legacy), **Storybook as design tool** (standard 2026).
 **Alternative to Figma Branching**: **Abstract** (deprecated 2024), **Zeplin** (legacy), **Storybook as design tool** (emerging 2025-2026).
 
 ### 6.5 CI/CD for Design Systems

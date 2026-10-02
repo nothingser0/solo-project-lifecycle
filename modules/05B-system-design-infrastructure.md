@@ -737,10 +737,10 @@ async function getCachedOrFetch(key: string, ttl: number, fetchFn: () => Promise
 ```javascript
 // Event store
 const events = [
-  { type: 'OrderCreated', orderId: 1, amount: 100, timestamp: '2024-01-01' },
-  { type: 'OrderPaid', orderId: 1, timestamp: '2024-01-02' },
-  { type: 'OrderShipped', orderId: 1, timestamp: '2024-01-03' },
-];
+  { type: 'OrderCreated', orderId: 1, amount: 100, timestamp: '2026-10-01' },
+  { type: 'OrderPaid', orderId: 1, timestamp: '2026-10-02' },
+  { type: 'OrderShipped', orderId: 1, timestamp: '2026-10-03' },
+
 
 // Rebuild state
 function getOrderState(orderId) {
@@ -1461,7 +1461,7 @@ GET /api/users?version=2
 **Deprecation Strategy**:
 ```javascript
 app.get('/api/v1/users', (req, res) => {
-  res.set('Warning', '299 - "API v1 deprecated, migrate to v2 by 2024-12-31"');
+  res.set('Warning', '299 - "API v1 deprecated, migrate to v2 by 2027-06-30"');
   // ... handler
 });
 ```
