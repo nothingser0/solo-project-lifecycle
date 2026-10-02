@@ -10,6 +10,8 @@
 
 Modul ini adalah tahap kedua dalam siklus pengembangan perangkat lunak untuk solo developer. Tujuannya adalah mengekstrak kebutuhan bisnis riil dari pemangku kepentingan (stakeholder/klien), mendefinisikan batasan teknis, dan mengunci batasan **In-Scope vs Out-of-Scope** ke dalam dokumen **`SCOPE_STATEMENT.md`** sebelum masuk ke komitmen kontrak atau perancangan detail.
 
+**Pre-Contract Work**: Modules 00-02 (Discovery phase, 1-4 weeks) typically unpaid for new clients. DP (Down Payment, Termin 1) in Module 03 triggers paid work (Modules 03+ execution). For repeat clients, consider charging discovery fee upfront.
+
 ---
 
 ## 1. Siklus Eksekusi Modul 02

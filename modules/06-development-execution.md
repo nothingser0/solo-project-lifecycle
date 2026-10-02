@@ -1209,6 +1209,7 @@ Pastikan kompilasi bersih (`pnpm run type-check`) dan audit dependensi aman (`pn
 1. **Milestone Alpha (Termin 2 - 25% s/d 30%)**:
    - *Kriteria Lolos*: Basis data termigrasi, otentikasi login aktif, alur pembuatan draf dokumen berjalan lokal, dan pilar keamanan/performa dasar terverifikasi di branch `staging`.
    - *Tindakan*: Terbitkan Invoice Termin 2 ke Klien.
+   - *Template*: Use accounting software (Wave/Invoicely) or simple format: Project name, Termin 2 (Alpha 25-30%), Amount, Due date, Payment method.
 2. **Milestone Beta (Termin 3 - 20% s/d 25%)**:
    - *Kriteria Lolos*: Seluruh modul backend, frontend, vault terenkripsi terhubung lengkap serta siap diuji coba di server Staging.
    - *Tindakan*: Lanjut ke Modul 07 (QA & SIT) sebelum UAT klien.

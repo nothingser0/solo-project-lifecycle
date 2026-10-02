@@ -98,13 +98,15 @@ Start → Do you need custom branding?
 
 ### 2.3 Phase 3: Governance Model
 
+**[SKIP IF SOLO DEV OR TEAM <3]** - Governance models below assume team structure. Solo dev: you are owner + champion + executor (100%).
+
 **Option A: Centralized (Small Team <10 people)**:
 - 1 "Design System Owner" (50% bandwidth allocation)
 - All changes go through central review
 - Fast decision, consistent quality, bottleneck risk
 
 **Option B: Federated (Scale Team >20 people)**:
-- Each squad has "DS Champion" (10% bandwidth)
+- **[ENTERPRISE ONLY]** Each squad has "DS Champion" (10% bandwidth). Solo dev: you are the champion.
 - RFC (Request for Comments) process untuk new components
 - Slower decision, decentralized ownership, higher adoption
 
@@ -654,7 +656,7 @@ npx @myds/codemod v1-to-v2 ./src
 - Weekly 30min Zoom: "DS Q&A"
 - Topics: How to use X component, contribution workflow
 
-**Slack Channel Strategy**:
+**[ENTERPRISE ONLY] Slack Channel Strategy** (Solo dev: skip or use personal notes):
 - `#design-system-updates`: Announcements only (low noise)
 - `#design-system-help`: Questions & troubleshooting
 - `#design-system-rfcs`: Proposals discussion

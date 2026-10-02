@@ -1160,7 +1160,7 @@ registerInstrumentations({
 **On-Call Rotation** (Solo Dev Reality):
 - Define critical alerts (payment down, site down)
 - Non-critical alerts: batch daily email digest
-- Use PagerDuty/Opsgenie free tier or Slack webhooks
+- **[ENTERPRISE]** Use PagerDuty/Opsgenie or **[SOLO]** Slack webhooks / email alerts
 
 ---
 
@@ -1200,7 +1200,7 @@ import CircuitBreaker from 'opossum';
 
 const breaker = new CircuitBreaker(externalApiCall, {
   timeout: 3000, // 3s timeout
-  errorThresholdPercentage: 50, // Open circuit if 50% fail
+  errorThresholdPercentage: 20, // Open circuit if 20% fail (industry standard 20-30%, adjust based on criticality: 20% critical services, 30-50% non-critical)
   resetTimeout: 30000, // Try again after 30s
 });
 
