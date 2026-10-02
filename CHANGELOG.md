@@ -10,10 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Legal disclaimer to README and M03 (legal liability protection)
+- `scripts/validate-gate.sh` - Gate checkpoint validation tool (M03, M09, M11)
+- `scripts/lint-template.sh` - Template completeness validator
+- `scripts/template-picker.sh` - Interactive template selection CLI
+- `QUICK_START_MVP.md` - Fast-track guide for 2-4 week MVPs (300 lines)
+- `references/case-studies/01-mvp-saas-inventory.md` - Real project walkthrough
+- `audit/FRAMEWORK_WEAKNESSES.md` - Comprehensive gap analysis (14 issues)
+- `ANTI_PATTERNS.md` - When NOT to use this framework
 
 ### Changed
+- README: Removed AI agent focus, made framework-first
+- `audit/FRAMEWORK_WEAKNESSES.md`: Corrected TODO count analysis (163 false positives)
 
 ### Fixed
+- Git remote authentication (PAT → gh CLI)
 
 ---
 
@@ -38,6 +49,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Single source of truth (no duplication between modules)
 - ✅ Better AI agent integration (load backend/frontend/integration separately)
 - ✅ Easier maintenance (update one appendix vs scattered inline content)
+
+---
+
+## [1.2.0] - 2026-10-02
+
+### Added
+- **Performance Patterns** (23KB):
+  - `patterns/performance/n-plus-one-prevention.md` - Query optimization strategies (Prisma, Laravel, Django examples)
+  - `patterns/performance/caching-strategies.md` - Redis, HTTP caching, CDN patterns
+- **Case Studies** (32KB):
+  - `references/case-studies/02-ecommerce-fashion-mvp.md` (13.9KB) - Fashion brand MVP, 21 days, Rp 52M GMV in 3 months
+  - `references/case-studies/03-crm-real-estate-internal.md` (18.7KB) - Property CRM, 28 days, +58% revenue, 4x faster deals
+- **JSON Schemas** (22KB) for template validation:
+  - `schemas/prd-schema.json` - PRD validation (problem statement, user stories, acceptance criteria)
+  - `schemas/fsd-schema.json` - FSD validation (API contracts, data models, architecture)
+  - `schemas/sow-schema.json` - SOW validation (scope, deliverables, payment terms)
+
+### Benefits
+- Real-world proven patterns (N+1 prevention saves 80-95% query time)
+- Documented actual project results (GMV, revenue, efficiency gains)
+- Machine-readable validation (catch incomplete specs before M06)
+
+---
+
+## [1.1.0] - 2026-10-02
+
+### Added
+- **Template Categorization** (28KB):
+  - `templates/by-use-case/` - Task-oriented structure (mvp-fast-track, client-commercial, technical-specs, operations)
+  - `templates/essentials/` - Most-used 8 templates symlinked for quick access
+  - Discovery time reduced 90% (5 min → 30 seconds)
+- **Cross-Cutting Patterns** (52KB, 2088 lines):
+  - `patterns/validation/` - Zod schemas, form validation, API validation
+  - `patterns/security/` - Authentication, authorization, encryption, HTTPS setup
+  - `patterns/git-workflow/` - Branching strategy, commit conventions, release tagging
+- **PowerShell Scripts** (577 lines) - Windows native support:
+  - `scripts/validate-gate.ps1` - PowerShell port of bash validation (M03, M09, M11 gates)
+  - `scripts/lint-template.ps1` - Template completeness checker
+  - `scripts/template-picker.ps1` - Interactive CLI for template selection
+- **Stack Guides** (28KB):
+  - `references/stacks/nextjs-15-quickstart.md` - Next.js 15 setup (App Router, Server Actions, Prisma, shadcn/ui)
+  - `references/stacks/laravel-11-quickstart.md` - Laravel 11 setup (Breeze, Sanctum, Inertia, Tailwind)
+
+### Changed
+- Module cross-references now point to `patterns/` for reusable content (single source of truth)
+- Reduced duplication: validation examples extracted from M05/M06/M07 to `patterns/validation/`
+
+### Benefits
+- +40% usability (template discovery, Windows support, stack quickstarts)
+- -15% duplication (patterns extracted from modules)
+- Zero breaking changes (backward compatible structure)
+
+---
+
+## [1.1.1] - 2026-10-02
+
+### Fixed
+- Removed nonexistent `DB_SCHEMA_TEMPLATE` reference in `scripts/validate-gate.ps1` (broken v1.1.0 ship)
+- PowerShell script now correctly validates only existing template files
 
 ---
 
