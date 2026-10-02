@@ -1553,4 +1553,287 @@ Agent harus:
 **Jika user approve**:
 - Mark Module 05 complete
 - Proceed to Module 06 (Development Implementation)
+
+---
+
+## 6. System Design & Infrastructure Scalability [OPTIONAL SECTION]
+
+> 🎯 **WHEN TO USE THIS SECTION?**
+> - **Medium/Large projects**: MAU >10K, RPS >100, need HA/DR
+> - **Viral growth expected**: Traffic spikes, auto-scaling required
+> - **Real-time features**: WebSockets, streaming, sub-second latency
+> - **Compliance**: Data residency, multi-region, audit trails
+>
+> **SKIP THIS SECTION IF:**
+> - MVP <10K MAU with single VPS sufficient
+> - Prototyping/POC without production load
+> - PaaS handles scaling (Vercel/Railway auto-scale)
+
+**Objective**: Design scalable, reliable, performant infrastructure — boring tech, decision trees, explicit trade-offs.
+
+---
+
+### 6.1 Performance & Scalability Fundamentals
+
+**Vertical vs Horizontal Scaling Decision Tree**:
+```
+MAU < 10K?     → Single VPS vertical ($24→$48/mo upgrade)
+MAU 10K-100K?  → Horizontal app layer (2-3 instances) + DB read replica
+MAU > 100K?    → Auto-scaling + CDN + caching wajib
+```
+
+**CAP Theorem Trade-offs** (pick 2):
+- **CP** (Consistency + Partition tolerance): Bank, payment, inventory
+- **AP** (Availability + Partition tolerance): Social feed, analytics
+- **CA** (Consistency + Availability): Single-region monolith (default solo dev)
+
+**Performance Budgets**:
+- **Core Web Vitals**: LCP <2.5s, FID <100ms, CLS <0.1
+- **API Latency**: p50 <200ms, p95 <500ms, p99 <1s
+- **Error Rate**: <0.1%
+
+**Capacity Planning Formula**:
+```
+Max RPS = (Worker Count × Worker Throughput) / Safety Factor
+
+Example Next.js Vercel:
+- Workers: 0-100 auto-scale
+- Throughput: ~50 RPS/instance
+- Safety: 2× (50% headroom)
+- Max sustained: 2500 RPS
+```
+
+---
+
+### 6.2 Caching Strategy
+
+**HTTP Caching Headers**:
+```javascript
+// Cache static assets 1 year
+res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+
+// Cache API responses 5 minutes
+res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=3600');
+```
+
+**Redis Caching Patterns**:
+```javascript
+// Cache-aside pattern
+async function getUser(id) {
+  const cached = await redis.get(`user:${id}`);
+  if (cached) return JSON.parse(cached);
+  
+  const user = await db.user.findUnique({ where: { id } });
+  await redis.set(`user:${id}`, JSON.stringify(user), 'EX', 300);
+  return user;
+}
+```
+
+**CDN Strategy**:
+- **Static assets**: Cloudflare/Vercel Edge (cache forever, immutable)
+- **API responses**: Edge caching with `stale-while-revalidate`
+- **Images**: On-demand optimization (Next.js Image, Cloudinary)
+
+---
+
+### 6.3 Database Optimization
+
+**Index Strategy**:
+```sql
+-- Compound index for common queries
+CREATE INDEX idx_orders_user_status ON orders(user_id, status, created_at);
+
+-- Partial index for active records
+CREATE INDEX idx_active_users ON users(email) WHERE deleted_at IS NULL;
+```
+
+**Query Optimization**:
+- **N+1 Prevention**: Use `include`/`with` for eager loading
+- **Pagination**: Cursor-based for large datasets (not offset/limit)
+- **Read Replicas**: Route read queries to replicas (PostgreSQL streaming replication)
+
+**Connection Pooling**:
+```
+Pool Size = (Core Count × 2) + Spindle Count
+Example 4 vCPU + SSD: (4 × 2) + 1 = 9 connections/instance
+```
+
+---
+
+### 6.4 High Availability & Disaster Recovery
+
+**SLA Targets**:
+| Uptime % | Downtime/year | Downtime/month | Solo Dev Realistic? |
+|----------|---------------|----------------|---------------------|
+| 99%      | 3.65 days     | 7.2 hours      | ✅ Yes (managed DB) |
+| 99.9%    | 8.76 hours    | 43.2 minutes   | ✅ Yes (multi-AZ)   |
+| 99.99%   | 52.6 minutes  | 4.32 minutes   | ❌ Needs team       |
+
+**Backup Strategy**:
+```bash
+# Daily automated backups (Supabase/PlanetScale managed)
+# 30-day retention
+# Point-in-time recovery (PITR) last 7 days
+```
+
+**Health Checks**:
+```javascript
+// GET /api/healthz (liveness)
+export function GET() {
+  return Response.json({ status: 'ok' });
+}
+
+// GET /api/readyz (readiness)
+export async function GET() {
+  const dbOk = await prisma.$queryRaw`SELECT 1`;
+  const redisOk = await redis.ping();
+  return Response.json({ db: !!dbOk, redis: redisOk === 'PONG' });
+}
+```
+
+---
+
+### 6.5 Load Balancing & Auto-Scaling
+
+**Load Balancer Options**:
+- **PaaS**: Vercel/Railway (built-in, zero config)
+- **DIY**: Nginx reverse proxy or Cloudflare Load Balancing
+- **Enterprise**: AWS ALB/NLB with target groups
+
+**Auto-Scaling Rules** (AWS/DigitalOcean):
+```yaml
+min_instances: 2
+max_instances: 10
+target_cpu: 70%
+scale_up: +2 instances if CPU >70% for 5 minutes
+scale_down: -1 instance if CPU <30% for 10 minutes
+```
+
+---
+
+### 6.6 Monitoring & Observability
+
+**Golden Signals**:
+1. **Latency**: p50/p95/p99 response time
+2. **Traffic**: RPS (requests per second)
+3. **Errors**: 4xx/5xx rate
+4. **Saturation**: CPU/memory/disk usage
+
+**Monitoring Stack**:
+- **APM**: Sentry Performance Monitoring ($26/mo)
+- **Logs**: Vercel Logs (integrated) or BetterStack ($15/mo)
+- **Metrics**: Grafana Cloud free tier or Prometheus self-hosted
+
+**Alert Thresholds**:
+```yaml
+- p95_latency > 1s for 5 minutes → Page on-call
+- error_rate > 1% for 5 minutes → Slack alert
+- cpu_usage > 85% for 10 minutes → Auto-scale trigger
+```
+
+---
+
+### 6.7 Security Hardening
+
+**DDoS Protection**:
+- Cloudflare Free tier (5 seconds under attack mode)
+- Rate limiting: 100 req/min per IP (authenticated), 10 req/min (anonymous)
+
+**WAF Rules** (Web Application Firewall):
+- Block SQL injection patterns
+- XSS prevention (CSP headers)
+- CSRF token validation
+
+**Secrets Management**:
+```bash
+# .env.production (encrypted at rest)
+DATABASE_URL="postgresql://..."  # Supabase connection pooler
+REDIS_URL="redis://..."          # Upstash Redis
+SECRET_KEY="..."                 # Rotate every 90 days
+```
+
+---
+
+### 6.8 Cost Optimization
+
+**Solo Dev Budget Targets**:
+- **<1K MAU**: $0-20/mo (free tier PaaS)
+- **1K-10K MAU**: $20-100/mo (Vercel Pro + managed DB)
+- **10K-50K MAU**: $100-300/mo (multi-instance + CDN)
+
+**Cost Reduction Strategies**:
+1. **Cold storage**: Move old data to S3 Glacier ($0.004/GB/mo)
+2. **Aggressive caching**: CDN cache hit rate >90%
+3. **Serverless functions**: Pay per invocation not per hour
+4. **Reserved instances**: 40% discount for 1-year commit (AWS/DO)
+
+---
+
+### 6.9 Load Testing & Capacity Planning
+
+**k6 Load Test Script**:
+```javascript
+import http from 'k6/http';
+
+export let options = {
+  stages: [
+    { duration: '2m', target: 100 },  // Ramp-up
+    { duration: '5m', target: 100 },  // Sustained
+    { duration: '2m', target: 0 },    // Ramp-down
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<500'],
+    http_req_failed: ['rate<0.01'],
+  },
+};
+
+export default function () {
+  http.get('https://staging.example.com/api/health');
+}
+```
+
+Run: `k6 run scripts/load-test.js`
+
+---
+
+### 6.10 Output Artifacts
+
+| Artifact | Location | Purpose |
+|----------|----------|---------|
+| **System Design Doc** | `docs/specs/SYSTEM_DESIGN.md` | Infrastructure architecture, scaling strategy |
+| **Load Test Report** | `docs/load-test/report.html` | Performance benchmarks, bottlenecks |
+| **DR Runbook** | `docs/ops/DISASTER_RECOVERY.md` | Backup restoration, failover procedures |
+
+**Template Sources**:
+- `templates/03-architecture-specs/SYSTEM_DESIGN_TEMPLATE.md`
+- `templates/08-maintenance-ops/DISASTER_RECOVERY_RUNBOOK_TEMPLATE.md`
+
+---
+
+### 6.11 Integration with Other Modules
+
+| Module | Integration Point |
+|--------|-------------------|
+| **M05 (Architecture)** | FSD.md tech stack informs infrastructure choices |
+| **M06 (Development)** | Performance budgets enforced via CI/CD |
+| **M07 (QA)** | Load testing validates capacity planning |
+| **M10 (Deployment)** | Auto-scaling policies deployed with app |
+| **M12 (Warranty)** | SLA targets define support response times |
+
+---
+
+### 6.12 Gate Exit Criteria
+
+Section 6 dinyatakan **LOLOS** jika:
+- [x] Performance budgets documented (LCP, API latency targets)
+- [x] Caching strategy defined (HTTP headers, Redis patterns, CDN)
+- [x] Database optimization plan (indexes, read replicas, connection pooling)
+- [x] Monitoring setup (APM, logs, alert thresholds)
+- [x] Load test results validate capacity planning (k6 report)
+- [x] DR runbook created (backup restoration, failover procedures)
+
+**AKHIRI RESPON** dan konfirmasi:
+> *"System design selesai: Performance budgets set, caching strategy defined, monitoring configured. Load test report: p95 latency [X]ms, error rate [Y]%. Siap lanjut ke M06 (Development)?"*
+
+---
 - Carry forward FSD.md + chosen stack sebagai blueprint untuk coding
