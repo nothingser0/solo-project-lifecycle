@@ -2,6 +2,8 @@
 
 > **Complete SDLC framework for solo developers and technical consultants** — Execute projects from small MVPs to enterprise systems with structured workflows, commercial protection, and quality gates.
 
+> ⚠️ **LEGAL DISCLAIMER**: This framework provides general SDLC guidance and is NOT legal advice. References to Indonesian regulations (UU PDP, KUHPerdata, UU ITE) are educational only and have NOT been verified by licensed Indonesian lawyers. Always consult qualified legal counsel for contract drafting, regulatory compliance, and legal matters. Framework authors assume no liability for legal decisions based on this content.
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/nothingser0/solo-project-lifecycle)
 [![Language](https://img.shields.io/badge/lang-Indonesian-red.svg)]()

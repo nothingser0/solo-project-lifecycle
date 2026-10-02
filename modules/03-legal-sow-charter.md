@@ -1,5 +1,7 @@
 # Modul 03: [GATE KOMERSIAL] Legal SOW, DP, & Single PIC Agreement
 
+> ⚠️ **LEGAL DISCLAIMER**: Content ini adalah panduan umum SDLC, BUKAN nasihat hukum. Referensi ke UU PDP, KUHPerdata, UU ITE bersifat edukatif dan BELUM diverifikasi oleh advokat berlisensi Indonesia. Selalu konsultasi dengan pengacara qualified untuk drafting kontrak, compliance regulasi, dan masalah hukum. Framework authors tidak bertanggung jawab atas keputusan legal berdasarkan konten ini.
+
 > ⚠️ **MANDATORY: Load references BEFORE executing this module**:
 > - `references/improvements/MODUL_03_IMPROVEMENTS.md` (Scope creep rejection tactics, Change Request formula, Single PIC enforcement, Work Pause protocol, timeline estimation, SOW legal clauses, Payment term calculator, IP ownership templates, Change request pricing)
 >
