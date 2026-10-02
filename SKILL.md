@@ -7,7 +7,7 @@ updated: 2026-10-02
 
 # Solo Project Lifecycle
 
-**Skill framework** (~9MB) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
+**Skill framework** (~2.2MB content) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
 
 ## Framework architecture
 
@@ -19,7 +19,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 - **Reference materials**: 600KB guides, playbooks, case studies in `references/`
 - **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
 
-**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 9MB at once. Similar to testing-library or design systems - comprehensive by design.
+**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 2.2MB at once. Similar to testing-library or design systems - comprehensive by design.
 
 **Usage model**: Clone repo → agent navigates via SKILL.md → loads relevant module → applies template → references patterns as needed.
 
