@@ -7,23 +7,30 @@
 
 ## ⚠️ CRITICAL: Project Directory Setup
 
-**Before starting**: Create a NEW project directory OUTSIDE the framework repo.
+**Project initialization workflow**: Create project folder, initialize git, then generate docs.
 
 ```bash
-# ❌ WRONG: Don't initialize in framework repo
-cd solo-project-lifecycle/  # Framework repo - READ ONLY
-# Writing files here pollutes framework
-
-# ✅ CORRECT: Create separate project directory
+# Step 1: Create project directory
 mkdir ~/projects/my-mvp-app
 cd ~/projects/my-mvp-app
-# Now safe to write project files
+
+# Step 2: Initialize git
+git init
+
+# Step 3: Load framework skill in Omp/Kiro
+# Agent generates:
+#   - docs/pm/ (PM documents)
+#   - docs/specs/ (PRD, FSD)
+#   - docs/harness-root/ (7 AI control files - STAGED, not in root yet)
+
+# Step 4: After scaffold (npx create-next-app, etc.)
+# Agent copies: docs/harness-root/* → ./ (root)
 ```
 
-**Agent workflow**:
-- **Check CWD**: If contains `SKILL.md` or `solo-project-lifecycle/` → STOP, ask for project path
-- **Establish target**: Create/navigate to user's project directory (NOT framework repo)
-- **Write files**: All templates go to project directory, NOT framework repo
+**Why staging in docs/harness-root/?**
+- Root folder empty/git-only before scaffold
+- Framework CLI (create-next-app, laravel new) needs empty/minimal root
+- Harness files deployed AFTER scaffold to avoid conflicts
 
 ---
 
@@ -78,20 +85,15 @@ Week 4: Deploy (2 days)
 
 ### Day 1: Idea → Specs (4 hours)
 
-**Prerequisites**: You are in your PROJECT directory (not framework repo)
-
 **Output**: 2 files total
 1. `PROJECT.md` (core specs)
 2. `DESIGN.md` (UI tokens)
 
 **Agent workflow**:
 ```bash
-# Agent: Verify you are in PROJECT directory (not framework repo)
-# Check: Does CWD contain SKILL.md? If YES → WRONG DIRECTORY
-
-# Read template from skill repo, write to PROJECT directory
+# Read template from skill repo, write to user's project directory
 # 1. Read: skill://solo-project-lifecycle/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md
-# 2. Write: ./PROJECT.md (in user's PROJECT directory, NOT framework repo)
+# 2. Write: ./PROJECT.md (project root)
 # 3. Fill sections (20 min each):
 # 1. Problem (3 sentences)
 # 2. Solution (5 bullet points)
@@ -194,8 +196,37 @@ CREATE TABLE todos (
 
 ### Day 3-12: Build (10 days @ 8 hours/day)
 
+**Pre-build setup**:
+
+1. **Scaffold framework** (Day 3 morning):
+   ```bash
+   # Next.js
+   npx create-next-app@latest . --typescript --tailwind --app
+   
+   # Laravel
+   composer create-project laravel/laravel .
+   
+   # Django
+   poetry init && django-admin startproject myproject .
+   ```
+
+2. **Deploy AI harness files**:
+   ```bash
+   # Agent copies staged files to root
+   # Source: docs/harness-root/AGENTS.md, ARCHITECTURE.md, etc.
+   # Target: ./AGENTS.md, ./ARCHITECTURE.md, etc. (root)
+   # Overwrites framework boilerplate if exists (e.g., Next.js AGENTS.md)
+   ```
+
+3. **Verify harness installed**:
+   ```bash
+   ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO)\.md$'
+   ls -1 .env.example
+   # Expected: 7 files total
+   ```
+
 **Week 1 (Day 3-7): Backend + Auth**
-- Day 3: Project scaffold + DB migrations
+- Day 3: Scaffold + harness deployment + DB migrations
 - Day 4: Auth (register, login, logout)
 - Day 5-7: Core feature 1 (CRUD endpoints)
 

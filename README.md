@@ -68,17 +68,20 @@ solo-project-lifecycle/
 
 ### ⚠️ Important: Framework vs Project Separation
 
-**This repository is a template library, not a project starter.**
+**This repository is a template library. Projects are created in separate directories.**
 
-❌ **Don't**:
-- Initialize projects inside this framework repo
-- Write `AGENTS.md`, `PROJECT.md`, etc. to `solo-project-lifecycle/` root
-- Mix your project code with framework templates
+**Project initialization workflow**:
 
-✅ **Do**:
-- Clone framework once: `~/frameworks/solo-project-lifecycle/`
-- Create separate project directories: `~/projects/my-app/`
-- Read templates from framework, write to project directory
+1. **Create project directory** (separate from framework)
+2. **Initialize git**: `git init`
+3. **Load skill in Omp/Kiro**: Agent generates `docs/pm/`, `docs/specs/`, `docs/harness-root/`
+4. **Scaffold framework**: Run `npx create-next-app`, `laravel new`, etc.
+5. **Deploy harness**: Agent copies `docs/harness-root/*` → `./` (root)
+
+**Why `docs/harness-root/` staging?**
+- Root folder empty/git-only before scaffold
+- Framework CLI needs empty root
+- Harness files deployed AFTER scaffold to avoid conflicts
 
 ---
 
@@ -90,24 +93,22 @@ git clone https://github.com/nothingser0/solo-project-lifecycle.git
 cd solo-project-lifecycle
 ```
 
-**Read the framework:**
-
-```bash
-cat docs/README.md              # Framework overview
-cat docs/quickstart.md          # MVP fast-track (2-4 weeks)
-ls docs/modules/                # All 14 modules
-```
-
 **Start a new project:**
 
 ```bash
 # Create project directory (OUTSIDE framework repo)
 mkdir ~/projects/my-mvp-app
 cd ~/projects/my-mvp-app
+git init
 
-# Now safe to write project files here
-# Agent reads from: ~/frameworks/solo-project-lifecycle/templates/
-# Agent writes to: ~/projects/my-mvp-app/ (current directory)
+# Load skill in Omp/Kiro: solo-project-lifecycle
+# Agent generates:
+#   - docs/pm/ (planning docs)
+#   - docs/specs/ (PRD, FSD)
+#   - docs/harness-root/ (7 AI control files - staged)
+
+# After scaffold (npx create-next-app, etc.)
+# Agent deploys: docs/harness-root/* → ./ (root)
 ```
 
 ---

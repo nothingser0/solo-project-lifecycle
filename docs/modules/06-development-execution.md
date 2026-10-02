@@ -283,23 +283,20 @@ def verify_scaffold_matches_fsd():
 
 ## 3. The 7 Root Harness Files in Root Repo (Universal Stack - The 7 Root Harness Files)
 
-⚠️ **CRITICAL: Project Directory Verification**
+⚠️ **CRITICAL: Harness File Staging & Deployment**
 
-**Before writing harness files**: Verify you are in USER'S PROJECT directory, NOT framework repo.
+**Harness files are staged in `docs/harness-root/` during M01-M05, then deployed to root AFTER scaffold.**
 
-```bash
-# Agent check:
-# 1. Does CWD contain "solo-project-lifecycle" in path? → Framework repo
-# 2. Does CWD contain "SKILL.md" file? → Framework repo
-# 3. Does CWD contain "templates/" directory? → Framework repo
-#
-# If any YES → STOP: Ask user for project directory path
-# Framework repo is READ ONLY - never write project files here
-```
+**Why staging?**
+- Root folder is empty/git-only before scaffold
+- Framework CLI (create-next-app, laravel new) requires empty or minimal root
+- Harness files deployed AFTER scaffold to overwrite framework boilerplate
 
-**Correct workflow**:
-- User project: `~/projects/my-app/` → Write harness files here ✅
-- Framework repo: `~/frameworks/solo-project-lifecycle/` → READ templates only ❌
+**Timeline**:
+1. **M01-M05**: Agent reads from skill://, writes to `docs/harness-root/` (7 files staged)
+2. **M06 scaffold**: User runs framework CLI
+3. **M06 deployment** (this step): Agent copies `docs/harness-root/*` → `./`
+4. **M06+ development**: Code with harness files in root
 
 ---
 
@@ -311,22 +308,25 @@ Multiple frameworks auto-generate conflicting `AGENTS.md` or similar files:
 - **Rails**: Generates `README.md` (rename to `README_FRAMEWORK.md`)
 - **Django**: No conflict
 
-**Agent workflow - MANDATORY after scaffold**:
+**Agent deployment workflow (MANDATORY after scaffold)**:
 
 ```
-Read template from skill repo, write to user's project root (overwrite if exists):
+Copy staged harness files from docs/harness-root/ to project root:
 
-  Source: skill://solo-project-lifecycle/templates/04-dev-execution/{stack}/AGENTS.md
-  Target: ./AGENTS.md (in user's project working directory)
+  Source: docs/harness-root/
+  Target: ./ (project root)
 
-Stack mapping:
-  - Next.js  → nextjs/AGENTS.md (MANDATORY overwrite create-next-app boilerplate)
-  - Laravel  → laravel/AGENTS.md
-  - Django   → django/AGENTS.md
-  - Go       → go/AGENTS.md
+  Files (7 total):
+    - AGENTS.md (overwrites Next.js boilerplate if exists)
+    - ARCHITECTURE.md
+    - CONTEXT.md
+    - CONVENTIONS.md
+    - DESIGN.md
+    - TODO.md
+    - .env.example
 ```
 
-**NEVER skip this step!** Framework boilerplate lacks 6 Engineering Pillars enforcement.
+**NEVER skip deployment!** Framework boilerplate lacks engineering standards.
 
 ---
 
@@ -334,7 +334,26 @@ Stack mapping:
 
 Before triggering AI agents to write code, place these 7 control files in the project root folder:
 
-**Prerequisites**: You are in USER'S PROJECT directory (not framework repo).
+**Prerequisites**: Scaffold completed, deploying staged harness files to root.
+
+**Staging workflow (M01-M05)**:
+```
+Agent reads stack-specific templates from skill://, writes to staging:
+  Source: skill://solo-project-lifecycle/templates/04-dev-execution/{stack}/
+  Target: docs/harness-root/
+  
+  Stack files (nextjs | laravel | django | go):
+    - AGENTS.md, ARCHITECTURE.md, CONVENTIONS.md, .env.example
+  
+  Universal files:
+    - CONTEXT.md, DESIGN.md, TODO.md
+```
+
+**Deployment workflow (M06 after scaffold)**:
+```
+Agent copies from staging to root:
+  cp docs/harness-root/* ./
+```
 
 | No | File Name | Reference Source (Stack-Specific) | Function for AI Coding Agent |
 | :---: | :--- | :--- | :--- |

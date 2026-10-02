@@ -27,46 +27,28 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 ## Critical: Project Directory Separation
 
-**NEVER write project files to framework repo root**. This framework repo is read-only template source.
+**Framework repo is read-only**. User projects are created in separate directories.
 
 **Agent workflow for new projects**:
 
-1. **Check current directory**:
-   ```
-   If CWD contains this file (SKILL.md) → you are in FRAMEWORK REPO
-   STOP: Do not write project files here
-   ```
+1. **Pre-scaffold phase** (M01-M05): Generate PM/spec docs + stage harness files
+   - Write: `docs/pm/`, `docs/specs/`, `docs/harness-root/`
+   - `docs/harness-root/` contains 7 files: AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md, TODO.md, .env.example
+   - User can inspect staged files before scaffold
 
-2. **Establish project directory**:
-   - Ask user: "Where should I create the project?" 
-   - Or use: `~/projects/[project-name]/`
-   - Confirm directory is OUTSIDE framework repo
+2. **Scaffold phase** (M06): User runs framework CLI (create-next-app, laravel new, etc.)
+   - Framework generates its boilerplate in root
 
-3. **Write files to project directory**:
-   ```
-   Source: skill://solo-project-lifecycle/templates/...
-   Target: [user-project-path]/ (NOT framework repo root)
-   ```
-
-**Example safe workflow**:
-```
-User: "Initialize new Next.js MVP"
-
-Agent checks:
-  - CWD = D:/Workspace/solo-project-lifecycle → FRAMEWORK REPO
-  
-Agent asks:
-  - "Where should I create the project? (e.g., D:/Workspace/my-mvp-app)"
-  
-Agent creates:
-  - mkdir D:/Workspace/my-mvp-app
-  - cd D:/Workspace/my-mvp-app
-  - Write templates here (NOT in framework repo)
-```
+3. **Harness deployment** (M06 continuation): Agent copies staged files to root
+   - Source: `docs/harness-root/*`
+   - Target: `./` (project root)
+   - Overwrites framework boilerplate (e.g., Next.js AGENTS.md)
+   - Keep `docs/harness-root/` as reference (user can re-copy if needed)
 
 **File placement rules**:
-- **Framework repo** (`solo-project-lifecycle/`): READ ONLY. Contains templates, docs, references.
-- **User project** (separate directory): WRITE HERE. Receives PROJECT.md, AGENTS.md, etc.
+- **Framework repo**: READ templates only (skill:// paths)
+- **User project staging**: `docs/harness-root/` (before scaffold)
+- **User project root**: `./` (after scaffold, copy from staging)
 
 ## When to invoke
 
