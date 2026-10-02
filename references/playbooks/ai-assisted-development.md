@@ -3,27 +3,27 @@
 
 # Modul 06C: AI-Assisted Development & Vibe Coding Workflow
 
-Modul ini adalah panduan praktis untuk solo developer yang menggunakan **AI coding agents** (Cursor, Windsurf, Claude Code, GitHub Copilot, v0.dev) sebagai partner coding utama. Tujuannya adalah memaksimalkan kecepatan iterasi tanpa mengorbankan kualitas kode, dengan protokol review yang jelas untuk area kritis (auth, payment, data privacy), strategi prompt engineering, dan anti-pattern AI code generation.
+This module is a practical guide for solo developers using **AI coding agents** (Cursor, Windsurf, Claude Code, GitHub Copilot, v0.dev) as their primary coding partner. Its goal is to maximize iteration speed without sacrificing code quality, providing clear review protocols for critical areas (auth, payment, data privacy), prompt engineering strategies, and anti-patterns in AI code generation.
 
 ---
 
-## 1. Kapan Modul 06C Digunakan?
+## 1. When to Use Module 06C
 
 ```text
 [ TIMING & TRIGGER ]
 
-Pre-Coding Phase:     ──► Load M06C sebelum memulai M06 (Development Execution)
-Mid-Development:      ──► Saat prompt AI menghasilkan code smell atau bug berulang
-Refactoring Phase:    ──► Saat butuh re-architect existing codebase dengan AI
-Code Review:          ──► Sebelum merge ke staging, wajib jalankan AI Code Review Protocol
+Pre-Coding Phase:     ──► Load M06C before starting M06 (Development Execution)
+Mid-Development:      ──► When AI prompts produce code smells or recurring bugs
+Refactoring Phase:    ──► When re-architecting an existing codebase with AI
+Code Review:          ──► Before merging to staging, running the AI Code Review Protocol is mandatory
 ```
 
 **Activation Triggers**:
-- User menyebut tool: "Cursor", "Windsurf", "Copilot", "Claude Code", "v0.dev"
-- User bertanya: "bagaimana cara prompt AI untuk generate [feature]?"
-- User komplain: "AI-generated code punya bug [X]"
-- Project setup baru dengan AI workflow
-- Team onboarding untuk AI-assisted development
+- User mentions tools: "Cursor", "Windsurf", "Copilot", "Claude Code", "v0.dev"
+- User asks: "how do I prompt AI to generate [feature]?"
+- User reports: "AI-generated code has bug [X]"
+- New project setup with AI workflow
+- Team onboarding for AI-assisted development
 
 ---
 
@@ -31,9 +31,9 @@ Code Review:          ──► Sebelum merge ke staging, wajib jalankan AI Code
 
 ### 2.1 Problem Definition: User Story → AI Prompt Translation
 
-**Teknik Konversi User Story ke AI Prompt**:
+**User Story to AI Prompt Conversion Technique**:
 
-| User Story (Ambiguitas Tinggi) | AI Prompt (Spesifik & Actionable) |
+| User Story (High Ambiguity) | AI Prompt (Specific & Actionable) |
 |--------------------------------|-------------------------------------|
 | "As a user, I want to login" | "Create Next.js 14 App Router login page with email/password validation using Zod, submit to POST /api/auth/login, store JWT in httpOnly cookie, redirect to /dashboard on success, show inline error on 401" |
 | "I need a dashboard" | "Create dashboard page with 4 metric cards (Total Users, Active Sessions, Revenue MTD, Conversion Rate), responsive grid layout, skeleton loading state, fetch data from GET /api/dashboard/metrics using React Query" |

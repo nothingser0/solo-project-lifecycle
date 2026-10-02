@@ -1,27 +1,27 @@
-# Standar Rekayasa Solo Developer: Git, Keamanan, Performa, & Efisiensi Sumber Daya
+# Solo Developer Engineering Standards: Git, Security, Performance, & Resource Efficiency
 
-Dokumen ini adalah pedoman teknis mendalam bagi solo developer untuk menegakkan disiplin version control (Git), keamanan data, kecepatan aplikasi, dan penghematan biaya server.
+This document is an in-depth technical guide for solo developers to enforce discipline in version control (Git), data security, application performance, and server cost optimization.
 
 ---
 
-## 1. Protokol Percabangan Git & Kebersihan Produksi (Clean Production)
+## 1. Git Branching Protocol & Clean Production
 
-### 1.1 Struktur Cabang (Branch Hierarchy)
+### 1.1 Branch Hierarchy
 ```text
-[ main ]        ──► Kode produksi stabil, bersih dari berkas internal dev, ber-tag SemVer (v1.0.0)
+[ main ]        ──► Stable production code, free of internal dev files, tagged with SemVer (v1.0.0)
    ▲
-   │ (Pull Request / Merge setelah lulus UAT Klien)
-[ staging ]     ──► Lingkungan integrasi untuk pengujian bersama Single PIC Klien
+   │ (Pull Request / Merge after passing Client UAT)
+[ staging ]     ──► Integration environment for testing with the Client's Single PIC
    ▲
-   │ (Merge setelah lulus smoke test lokal)
-[ feat/* ]      ──► Cabang kerja per fitur/tugas atomik di TODO.md
-[ fix/* ]       ──► Cabang perbaikan bug
+   │ (Merge after passing local smoke test)
+[ feat/* ]      ──► Working branch per atomic feature/task in TODO.md
+[ fix/* ]       ──► Bug fix branch
 ```
 
-### 1.2 Kebersihan Produksi (Omission of Internal Docs)
-Berkas kerja internal seperti `TODO.md`, draf catatan rapat, atau skrip uji lokal tidak boleh disertakan dalam bundle produksi publik atau image Docker.
+### 1.2 Clean Production (Omission of Internal Docs)
+Internal development files such as `TODO.md`, draft meeting notes, or local test scripts must never be included in public production bundles or Docker images.
 
-Tambahkan pada berkas `.dockerignore`:
+Add to `.dockerignore`:
 ```text
 TODO.md
 docs/specs/
@@ -31,106 +31,106 @@ scripts/smoke-test.ts
 README.md
 ```
 
-### 1.3 Standar Pesan Commit (Conventional Commits)
-Format wajib: `<type>(<scope>): <subject>`
-- `feat(vault)`: Penambahan fitur baru
-- `fix(auth)`: Perbaikan bug
-- `perf(db)`: Peningkatan performa (indeks, query optimization)
-- `sec(crypto)`: Penguatan keamanan atau rotasi kunci
-- `chore(deps)`: Pembaruan dependensi paket
+### 1.3 Conventional Commits Standard
+Mandatory format: `<type>(<scope>): <subject>`
+- `feat(vault)`: New feature addition
+- `fix(auth)`: Bug fix
+- `perf(db)`: Performance improvement (indexes, query optimization)
+- `sec(crypto)`: Security hardening or key rotation
+- `chore(deps)`: Package dependency update
 
 ---
 
-## 2. Pilar Keamanan Kritis (Security Engineering)
+## 2. Security Engineering Pillar
 
-### 2.1 Pencegahan SQL Injection & Celah Input
-- DILARANG menyambung string kueri SQL mentah:
+### 2.1 SQL Injection Prevention & Input Sanitization
+- DO NOT concatenate raw SQL query strings:
   ```typescript
-  // SALAH & BERBAHAYA:
+  // INCORRECT & DANGEROUS:
   await db.$queryRawUnsafe(`SELECT * FROM users WHERE email = '${email}'`);
 
-  // BENAR: Menggunakan kueri berparameter aman
+  // CORRECT: Using secure parameterized queries
   await db.$queryRaw`SELECT * FROM users WHERE email = ${email}`;
   ```
-- Seluruh input dari client wajib melalui skema **Zod** sebelum diproses lebih lanjut.
+- All client inputs must pass through **Zod** validation schemas before further processing.
 
-### 2.2 Keamanan Sesi & Password
-- Kata sandi wajib di-hash menggunakan **Argon2id**:
+### 2.2 Session Security & Password Hashing
+- Passwords must be hashed using **Argon2id**:
   ```typescript
   import * as argon2 from "argon2";
   const hash = await argon2.hash(password, { type: argon2.argon2id });
   ```
-- Token sesi disimpan di cookie dengan atribut wajib:
+- Session tokens stored in cookies must set mandatory attributes:
   ```http
   Set-Cookie: session_token=...; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=604800
   ```
 
-### 2.3 Audit Keamanan Dependensi Otomatis
-Jalankan audit berkala:
+### 2.3 Automated Dependency Security Audits
+Run regular security audits:
 ```bash
 pnpm audit --audit-level=high
 ```
-Jika ditemukan celah dengan tingkat keparahan tinggi (*high/critical*), segera perbarui paket terkait sebelum melanjutkan koding.
+If vulnerabilities with high or critical severity are detected, update the affected packages immediately before resuming development.
 
 ---
 
-## 3. Pilar Performa (Performance Engineering)
+## 3. Performance Engineering Pillar
 
-### 3.1 Pencegahan Masalah N+1 Query
-Masalah N+1 query adalah pembunuh performa utama pada ORM:
+### 3.1 N+1 Query Prevention
+The N+1 query problem is the primary performance killer in ORMs:
 ```typescript
-// SALAH: 1 query untuk ambil user + N query di dalam loop (N+1 queries)
+// INCORRECT: 1 query to fetch users + N queries inside the loop (N+1 queries)
 const users = await db.user.findMany();
 for (const user of users) {
   const docs = await db.document.findMany({ where: { creatorId: user.id } });
 }
 
-// BENAR: Cukup 1 query dengan relasi join / eager loading
+// CORRECT: Single query with relation join / eager loading
 const usersWithDocs = await db.user.findMany({
   include: { documents: true },
 });
 ```
 
-### 3.2 Indeks Basis Data yang Presisi
-Pasang indeks pada:
-1. Seluruh kolom **Foreign Key** (`creator_id`, `document_id`).
-2. Kolom status yang sering digunakan pada klausa `WHERE`:
+### 3.2 Precise Database Indexing
+Add indexes to:
+1. All **Foreign Key** columns (`creator_id`, `document_id`).
+2. Status columns frequently queried in `WHERE` clauses:
    ```sql
    CREATE INDEX idx_documents_status ON documents(status);
-   -- Composite index jika sering dicari bersamaan:
+   -- Composite index if frequently filtered together:
    CREATE INDEX idx_documents_creator_status ON documents(creator_id, status);
    ```
 
-### 3.3 Optimasi Aset Visual
-- Dilarang memuat gambar format PNG/JPEG mentah ukuran besar.
-- Gunakan format **WebP / AVIF** otomatis melalui komponen Next.js `<Image />`.
-- Gunakan teknik **Font Subsetting** (hanya memuat karakter Latin yang dibutuhkan) untuk memangkas ukuran file font $< 30\text{ KB}$.
+### 3.3 Visual Asset Optimization
+- Do not load large uncompressed PNG/JPEG images.
+- Use **WebP / AVIF** automatically via Next.js `<Image />` component.
+- Apply **Font Subsetting** (loading only required Latin characters) to reduce font file size to $< 30\text{ KB}$.
 
 ---
 
-## 4. Pilar Efisiensi Sumber Daya & Biaya (Resource Efficiency)
+## 4. Resource & Cost Efficiency Pillar
 
 ### 4.1 Database Connection Pooling
-Serverless functions (seperti Next.js API routes atau AWS Lambda) membuka koneksi database baru setiap kali ada request. Tanpa pooling, database PostgreSQL akan kehabisan batas koneksi (*Connection Exhaustion*).
-- Gunakan **Connection Pooler** (Supabase Connection Pooler / PgBouncer / Prisma Accelerate).
-- Batasi ukuran pool di connection string:
+Serverless functions (such as Next.js API routes or AWS Lambda) open a new database connection on every request. Without pooling, PostgreSQL will quickly hit connection limits (Connection Exhaustion).
+- Use a **Connection Pooler** (Supabase Connection Pooler / PgBouncer / Prisma Accelerate).
+- Limit pool size in the connection string:
   ```text
   DATABASE_URL="postgresql://user:pass@host:6543/db?pgbouncer=true&connection_limit=10"
   ```
 
-### 4.2 Pemrosesan File Berbasis Aliran (Streaming)
-Jangan membaca berkas besar langsung ke memori RAM:
+### 4.2 Stream-Based File Processing
+Never read large files directly into memory:
 ```typescript
-// SALAH: Memuat seluruh file 50 MB ke RAM
+// INCORRECT: Loading entire 50 MB file into RAM
 const fileBuffer = fs.readFileSync("large-document.pdf");
 
-// BENAR: Alirkan data secara streaming (konsumsi RAM < 10 MB konstan)
+// CORRECT: Stream data sequentially (constant RAM usage < 10 MB)
 const readStream = fs.createReadStream("large-document.pdf");
 readStream.pipe(cipherStream).pipe(s3UploadStream);
 ```
 
-### 4.3 Multi-Stage Docker Build untuk Efisiensi Server
-Jika men-deploy menggunakan Docker container, gunakan teknik multi-stage:
+### 4.3 Multi-Stage Docker Builds for Server Efficiency
+When deploying via Docker containers, use multi-stage builds:
 ```dockerfile
 # Stage 1: Build
 FROM node:20-alpine AS builder
@@ -140,7 +140,7 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
 
-# Stage 2: Production Runner (Ukuran akhir < 150 MB)
+# Stage 2: Production Runner (Final size < 150 MB)
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
@@ -150,16 +150,16 @@ COPY --from=builder /app/.next/static ./.next/static
 EXPOSE 3000
 CMD ["node", "server.js"]
 ```
-Teknik ini memangkas ukuran image dari 1.2 GB menjadi **hanya 130 MB**, menghemat biaya penyimpanan registry dan mempercepat waktu deployment hingga 5x lipat.
+This technique reduces image size from 1.2 GB to **just 130 MB**, saving registry storage costs and speeding up deployment times by up to 5x.
 
 ---
 
-## 5. Pilar Observabilitas & Ketahanan (Observability & Reliability)
+## 5. Observability & Reliability Pillar
 
-Solo developer tidak dapat memantau terminal server 24 jam sehari. Sistem harus mampu melapor mandiri saat terjadi anomali:
+Solo developers cannot monitor a server terminal 24 hours a day. The system must autonomously report anomalies:
 
 ### 5.1 Structured JSON Logging
-Dilarang menggunakan `console.log()` teks polos di produksi. Gunakan logger terstruktur JSON (Pino/Winston) yang menyertakan trace ID, actor ID, dan error stack:
+Never use plain text `console.log()` in production. Use structured JSON loggers (Pino/Winston) including trace IDs, actor IDs, and error stack traces:
 ```typescript
 import pino from "pino";
 export const logger = pino({
@@ -170,12 +170,12 @@ export const logger = pino({
 });
 ```
 
-### 5.2 Rute Healthcheck & Graceful Shutdown
-- Wajib sediakan endpoint `GET /api/health` yang menguji koneksi basis data aktif.
-- Tangani sinyal sistem operasi (`SIGTERM` / `SIGINT`) untuk menutup koneksi database secara tertib sebelum proses dihentikan:
+### 5.2 Healthcheck Routes & Graceful Shutdown
+- Provide a `GET /api/health` endpoint that actively tests database connectivity.
+- Handle operating system signals (`SIGTERM` / `SIGINT`) to close database connections cleanly before processes terminate:
   ```typescript
   process.on("SIGTERM", async () => {
-    logger.info("Menerima SIGTERM, menutup koneksi database...");
+    logger.info("SIGTERM received, closing database connections...");
     await db.$disconnect();
     process.exit(0);
   });
@@ -183,22 +183,22 @@ export const logger = pino({
 
 ---
 
-## 6. Pilar Kemudahan Perawatan & Kebersihan Tipe (Maintainability & Type Hygiene)
+## 6. Maintainability & Type Hygiene Pillar
 
-### 6.1 Sumber Tunggal Tipe Data (Single Source of Truth)
-- Tipe data TypeScript wajib diturunkan secara otomatis dari skema validasi Zod (`z.infer<typeof Schema>`).
-- Dilarang menduplikasi definisi tipe secara manual di tempat terpisah.
+### 6.1 Single Source of Truth for Data Types
+- TypeScript data types must be inferred automatically from Zod validation schemas (`z.infer<typeof Schema>`).
+- Never duplicate type definitions manually in separate files.
 
-### 6.2 Pola Early Returns (Guard Clauses)
-Validasi seluruh kondisi salah, akses tidak sah, dan input kosong di baris paling awal fungsi:
+### 6.2 Early Returns Pattern (Guard Clauses)
+Validate all error conditions, unauthorized access, and empty inputs at the top of the function:
 ```typescript
-// BENAR: Flat dan mudah dipahami
+// CORRECT: Flat and easy to reason about
 export async function processDocument(user: User, docId: string) {
-  if (!user.isActive) throw new ForbiddenError("Akun tidak aktif");
-  if (!docId) throw new BadRequestError("Document ID kosong");
+  if (!user.isActive) throw new ForbiddenError("Account is inactive");
+  if (!docId) throw new BadRequestError("Document ID is required");
   
   const doc = await getDoc(docId);
-  if (!doc) throw new NotFoundError("Dokumen tidak ditemukan");
+  if (!doc) throw new NotFoundError("Document not found");
 
   return executeLogic(doc);
 }
@@ -206,11 +206,11 @@ export async function processDocument(user: User, docId: string) {
 
 ---
 
-## 7. Pilar Ketahanan Data & Pemulihan (Data Durability & Disaster Recovery)
+## 7. Data Durability & Disaster Recovery Pillar
 
-### 7.1 Kebijakan Soft-Delete vs Hard-Delete
-- Data transaksi finansial, draf kontrak legal, dan jejak audit **DILARANG DIHAPUS PERMANEN** dari basis data (`DELETE FROM`).
-- Gunakan kolom `deleted_at TIMESTAMP WITH TIME ZONE NULL` (Soft-Delete) agar data tetap memiliki nilai pembuktian audit dan dapat dipulihkan jika pengguna salah menghapus.
+### 7.1 Soft-Delete vs Hard-Delete Policy
+- Financial transactional data, legal contract drafts, and audit trails **MUST NEVER BE PERMANENTLY DELETED** from the database (`DELETE FROM`).
+- Use a `deleted_at TIMESTAMP WITH TIME ZONE NULL` column (Soft-Delete) so data retains evidentiary audit value and can be restored if accidentally deleted by users.
 
-### 7.2 Integritas Transaksi Multi-Tabel
-Operasi mutasi data yang melibatkan lebih dari satu tabel wajib dibungkus dalam transaksi atomik (`db.$transaction`). Jika langkah kedua gagal, langkah pertama otomatis dibatalkan (*rollback*) sehingga data tidak pernah korup sebagian.
+### 7.2 Multi-Table Transaction Integrity
+Data mutation operations involving more than one table must be wrapped in atomic transactions (`db.$transaction`). If any subsequent step fails, all preceding steps are automatically rolled back, ensuring data is never left in a partially corrupted state.

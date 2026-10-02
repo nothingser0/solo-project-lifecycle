@@ -1,6 +1,6 @@
 # Git Workflow & Conventions
 
-**Purpose**: Consistent git practices untuk solo dev & team collaboration
+**Purpose**: Consistent git practices for solo dev & team collaboration
 
 **Reference locations**: M03 (git branching), M06 (git workflow), M10 (git tagging)
 

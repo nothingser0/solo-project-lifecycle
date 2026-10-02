@@ -1,17 +1,17 @@
 # PM Analytics Setup Guide for Solo Developers
 
-Panduan taktis untuk solo developer dan PM yang butuh data-driven decision making tanpa menenggelamkan diri dalam analitik berlebih. Fokus: **Minimal Viable Analytics** untuk validasi product-market fit.
+Tactical guide for solo developers and PMs who need data-driven decision making without drowning in excessive analytics. Focus: **Minimal Viable Analytics** for validating product-market fit.
 
 ---
 
-## 1. Filosofi Analytics untuk Solo Dev
+## 1. Analytics Philosophy for Solo Devs
 
-**Prinsip Dasar**:
-1. **Track Less, Learn More**: 10 core events yang dimengerti > 100 random events
-2. **Free Tier First**: Gunakan free tier sampai PMF tercapai (100K events/bulan Mixpanel cukup untuk 500 MAU)
-3. **Privacy by Default**: GDPR/UU PDP compliance bukan optional, wajib sejak hari pertama
-4. **Dashboard as Compass**: North Star Metric harus terlihat dalam 3 detik
-5. **No Vendor Lock-In**: Wrapper abstraction (`lib/analytics.ts`) agar mudah migrasi platform
+**Core Principles**:
+1. **Track Less, Learn More**: 10 well-understood core events > 100 random events
+2. **Free Tier First**: Use free tiers until PMF is reached (Mixpanel's 100K events/month is sufficient for 500 MAU)
+3. **Privacy by Default**: GDPR/UU PDP compliance is not optional; it is mandatory from day one
+4. **Dashboard as Compass**: North Star Metric must be visible within 3 seconds
+5. **No Vendor Lock-In**: Wrapper abstraction (`lib/analytics.ts`) for easy platform migration
 
 ---
 
@@ -40,20 +40,20 @@ START: What's your primary goal?
 └─ [Multi-Tool Data Warehouse (Advanced)]
     └─► Segment.io as CDP
         ✅ Send events to multiple destinations (Mixpanel + Amplitude + Slack)
-        ❌ $120/mo minimum, overkill untuk solo dev
+        ❌ $120/mo minimum, overkill for solo devs
 ```
 
-**Rekomendasi Default untuk Solo Dev Skala Menengah**:
+**Default Recommendation for Medium-Scale Solo Devs**:
 ```
 Mixpanel (product analytics) + GA4 (acquisition) + Sentry (errors)
-Total biaya: $0/bulan sampai >500 MAU
+Total cost: $0/month up to >500 MAU
 ```
 
 ---
 
 ## 3. The 5 Core Metrics (Minimal Viable Analytics)
 
-Jangan track segalanya. Mulai dengan 5 metrics ini:
+Don't track everything. Start with these 5 metrics:
 
 | Metric | Definition | Why It Matters | How to Track |
 |--------|------------|----------------|--------------|
@@ -66,7 +66,7 @@ Jangan track segalanya. Mulai dengan 5 metrics ini:
 **Action Triggers**:
 - Signups dropping >30% week-over-week → Investigate acquisition channel
 - Activation rate <20% → Onboarding is broken, fix before scaling
-- W1 retention <40% → Product-market fit belum tercapai
+- W1 retention <40% → Product-market fit not yet achieved
 - Error rate >5% → Critical engineering issue
 
 ---
@@ -78,9 +78,9 @@ Jangan track segalanya. Mulai dengan 5 metrics ini:
 **Format**: `verb_noun` (lowercase, underscore)
 
 **Why?**
-- Consistency: Mudah filter di Mixpanel (`view_*`, `error_*`)
+- Consistency: Easy to filter in Mixpanel (`view_*`, `error_*`)
 - Readability: Self-documenting
-- Scalability: 100 events tetap terorganisir
+- Scalability: 100 events stay organized
 
 **Examples**:
 ```typescript
@@ -125,7 +125,7 @@ track('error_api_failure', { endpoint: '/api/documents', status_code: 500 })
 ## 5. Implementation Checklist (Copy-Paste for PM/Dev)
 
 ### Pre-Implementation (1 hour)
-- [ ] Define North Star Metric (1 metric yang reflect true user value)
+- [ ] Define North Star Metric (1 metric reflecting true user value)
 - [ ] List 5 core events (signup, activation, retention anchor, engagement, error)
 - [ ] Create Mixpanel account (free tier)
 - [ ] Get project token from Mixpanel settings
@@ -176,7 +176,7 @@ track('error_api_failure', { endpoint: '/api/documents', status_code: 500 })
 
 ## 7. Solo Dev Dashboard Design (Single Screen)
 
-**Goal**: Founder/PM dapat menjawab "How's the business?" dalam 10 detik.
+**Goal**: Founder/PM can answer "How's the business?" within 10 seconds.
 
 **Layout (Mixpanel Board)**:
 ```
@@ -235,8 +235,8 @@ Minimum sample size per variant = (1.96² × 0.5 × 0.5) / 0.05²
 ### Tool: PostHog Feature Flags + Analytics
 
 **Why PostHog for A/B Testing?**
-- Feature flags + analytics dalam satu platform
-- Free tier: 1M events/bulan
+- Feature flags + analytics in a single platform
+- Free tier: 1M events/month
 - Built-in statistical significance calculator
 
 **Implementation**:
@@ -294,21 +294,21 @@ Severity 3 (P2): Performance regression > 50% → Dashboard only
 ### UU PDP No. 27/2022 (Indonesia)
 
 **Key Requirements**:
-1. **Explicit Consent**: User harus aktif menyetujui (bukan pre-checked checkbox)
-2. **Data Minimization**: Hanya track data yang esensial untuk operasional
-3. **Right to Erasure**: User bisa minta data dihapus
-4. **Data Breach Notification**: Wajib lapor ke pemerintah dalam 3x24 jam
+1. **Explicit Consent**: User must actively consent (not a pre-checked checkbox)
+2. **Data Minimization**: Only track data essential for operations
+3. **Right to Erasure**: Users can request data deletion
+4. **Data Breach Notification**: Mandatory reporting to authorities within 3x24 hours
 
-**Penalties**: Denda hingga Rp 6 miliar atau 2% omzet tahunan
+**Penalties**: Fines up to Rp 6 billion or 2% of annual turnover
 
 ### Implementation Checklist
 
-- [ ] **Consent Banner**: Opt-in eksplisit sebelum analytics aktif
-- [ ] **Privacy Policy**: Dokumen yang menjelaskan data apa yang dikumpulkan
-- [ ] **Opt-Out URL**: `/privacy/opt-out` untuk revoke consent
+- [ ] **Consent Banner**: Explicit opt-in before analytics activates
+- [ ] **Privacy Policy**: Document explaining what data is collected
+- [ ] **Opt-Out URL**: `/privacy/opt-out` to revoke consent
 - [ ] **IP Anonymization**: `mixpanel.init({ ip: false })`
 - [ ] **Data Retention**: Auto-delete events older than 2 years
-- [ ] **No Sensitive Data**: Jangan track password, credit card, NIK, KTP
+- [ ] **No Sensitive Data**: Never track passwords, credit cards, national ID (NIK/KTP)
 
 ### Consent Banner Code (Copy-Paste)
 
@@ -457,4 +457,4 @@ Example:
 
 ---
 
-**Next Step**: Gunakan template di `templates/09-product-growth/` untuk membuat dokumen EVENT_TAXONOMY.md, ANALYTICS_IMPLEMENTATION_PLAN.md, dan DASHBOARD_SPEC.md untuk proyek Anda.
+**Next Step**: Use the templates in `templates/09-product-growth/` to create EVENT_TAXONOMY.md, ANALYTICS_IMPLEMENTATION_PLAN.md, and DASHBOARD_SPEC.md documents for your project.

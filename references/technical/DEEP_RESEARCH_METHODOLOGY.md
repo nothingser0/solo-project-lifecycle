@@ -1,6 +1,6 @@
 # Deep Research Methodology: Regulatory, Competitor & Domain Analysis
 
-Panduan lengkap untuk riset mendalam sebelum development — regulasi/compliance, competitor analysis, dan domain-specific knowledge acquisition.
+Comprehensive guide for deep research before development — regulation/compliance, competitor analysis, and domain-specific knowledge acquisition.
 
 **Last Updated**: 2026-09-29  
 **Target**: Solo devs building regulated products (fintech, healthtech, legaltech, edtech)
@@ -72,7 +72,7 @@ Panduan lengkap untuk riset mendalam sebelum development — regulasi/compliance
    - Example: PPh 21 progressive rates (5 brackets), PTKP categories (TK0-K3)
 
 4. **What changes frequently?**
-   - Tarif pajak (yearly budget law)
+   - Tax rates (yearly budget law)
    - PTKP values (every 2-5 years)
    - Regulatory updates (quarterly/annually)
    - Mitigation: Versioned data (JSON with effective_date, changelog)
@@ -81,7 +81,7 @@ Panduan lengkap untuk riset mendalam sebelum development — regulasi/compliance
    - User harm: Incorrect tax advice → user fined by DJP
    - Regulatory violation: Operating without license (e.g., insurance broker without AAJI)
    - Liability: Class-action if systemic error causes mass user losses
-   - Mitigation: Disclaimer ("konsultasikan dengan konsultan pajak"), E&O insurance
+   - Mitigation: Disclaimer ("consult a certified tax consultant"), E&O insurance
 
 ### 2.2 Research Process (Step-by-Step)
 
@@ -109,7 +109,7 @@ Site-specific search (more accurate than Google):
 1. UU No. 7 Tahun 2021 (UU HPP) — Tarif progresif PPh OP
    URL: https://peraturan.bpk.go.id/Details/195158/uu-no-7-tahun-2021
    
-2. PMK No. 168/PMK.010/2023 — PPh 21 bukan pegawai (Norma 50%)
+2. PMK No. 168/PMK.010/2023 — Non-employee PPh 21 (50% deemed profit rate / Norma)
    URL: https://jdih.kemenkeu.go.id/fulltext/2023/168~PMK.010~2023Per.pdf
    
 3. PP No. 20 Tahun 2026 — PPh Final 0.5% influencer/content creator
@@ -129,7 +129,7 @@ Site-specific search (more accurate than Google):
 
 **Example** (PPh 21 progressive rates):
 ```markdown
-## Tarif Progresif PPh OP (Pasal 17 UU HPP)
+## Progressive PPh OP Rates (Article 17 HPP Law)
 
 | Bracket | PKP Range | Rate | Cumulative Tax |
 |---------|-----------|------|----------------|
@@ -139,7 +139,7 @@ Site-specific search (more accurate than Google):
 | 4 | 500 juta - 5 miliar | 30% | 94 juta + (PKP - 500 jt) × 30% |
 | 5 | > 5 miliar | 35% | 1.444 juta + (PKP - 5 M) × 35% |
 
-**Source**: UU No. 7/2021 Pasal 17 ayat (1) huruf a  
+**Source**: Law No. 7/2021 Article 17 paragraph (1) letter a  
 **Effective**: 1 Januari 2022  
 **Last Updated**: 28 September 2026 (no changes since 2022)
 ```
@@ -183,7 +183,7 @@ Site-specific search (more accurate than Google):
 
 ### Tax Calculation Accuracy
 - [ ] Source citation on every calculation screen ("Berdasarkan UU HPP 2021")
-- [ ] Disclaimer: "Hasil perhitungan bersifat estimasi. Konsultasikan dengan konsultan pajak."
+- [ ] Disclaimer: "Calculations are estimates. Consult a certified tax consultant."
 - [ ] Version tagging for regulation data (v2026.1, v2027.1)
 - [ ] Changelog for formula updates (notify users if recalculation needed)
 
@@ -201,12 +201,12 @@ Site-specific search (more accurate than Google):
 
 **File**: `docs/research/RISET_REGULASI_[DOMAIN]_[YEAR].md`
 
-**Structure**:
-```markdown
-# Riset Regulasi [Domain] [Year]
 
-**Dokumen Referensi untuk**: [Project Name]  
-**Tanggal Riset**: [Date]  
+```markdown
+# Regulatory Research [Domain] [Year]
+
+**Reference Document for**: [Project Name]  
+**Research Date**: [Date]  
 **Status**: VALIDATED / IN REVIEW / DRAFT
 
 ---
@@ -320,15 +320,15 @@ Industry reports:
 | Feature | FreePajak | Ortax | Desent | KlikPajak | InfoPajak | KantorKu |
 |---------|-----------|-------|--------|-----------|-----------|----------|
 | **Core Features** | | | | | | |
-| Kalkulator pajak | ✅ Multi-skema | ✅ One-shot | ❌ (blog only) | ✅ Enterprise | ✅ Basic | ❌ |
-| Compare 3 skema side-by-side | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Tracking longitudinal (histori) | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ (payroll) |
+| Tax calculator | ✅ Multi-scheme | ✅ One-shot | ❌ (blog only) | ✅ Enterprise | ✅ Basic | ❌ |
+| Compare 3 schemes side-by-side | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Longitudinal tracking (history) | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ (payroll) |
 | Multi-client management | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ |
 | Export SPT-ready (Excel) | ✅ | ❌ | ❌ | ✅ (XML) | ❌ | ✅ |
 | Reminder deadline | ✅ Email+WA | ❌ | ❌ | ✅ Email | ❌ | ✅ |
 | **Advanced Features** | | | | | | |
-| Tax treaty 71 negara | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Crypto payment tracker | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Tax treaties for 71 countries | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Crypto tax | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Payment gateway fee adjuster | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **Pricing** | | | | | | |
 | Free tier | ✅ (3 calc/mo) | ✅ Unlimited | ✅ N/A (blog) | ❌ Trial only | ✅ Unlimited | ❌ Trial only |
@@ -348,15 +348,15 @@ Industry reports:
 4. ✅ Crypto payment tracking (NO competitor handles crypto income)
 
 ### Features competitors have that we DON'T (MVP scope):
-1. ❌ e-Filing integration (KlikPajak/OnlinePajak) — Complex, butuh API DJP
+1. ❌ e-Filing integration (KlikPajak/OnlinePajak) — Complex, requires DJP API
 2. ❌ e-Faktur PPN (KlikPajak) — Not relevant for freelancer <Rp4.8M
 3. ❌ Payroll bulk upload (KantorKu) — Not solo dev target
 4. ❌ Tax consultant marketplace (OnlinePajak) — Different business model
 
 ### Opportunity = Gap × Pain Intensity
-- **Highest opportunity**: Multi-skema comparison (high pain: "bingung pilih skema", no solution exists)
-- **Medium opportunity**: Tax treaty (medium pain: "client LN bingung pajak", Ortax partial coverage)
-- **Low opportunity**: Crypto tracker (low pain: "masih niche", few freelancers paid in crypto 2026)
+- **Highest opportunity**: Multi-scheme comparison (high pain: "confused about choosing scheme", no solution exists)
+- **Medium opportunity**: Tax treaty (medium pain: "confused about foreign client taxes", Ortax partial coverage)
+- **Low opportunity**: Crypto tracker (low pain: "still niche", few freelancers paid in crypto 2026)
 ```
 
 ### 3.4 Positioning Analysis (2-3 hours)
@@ -372,25 +372,25 @@ Industry reports:
 ## Competitor Positioning
 
 ### 1. Ortax Kalkulator
-- **Headline**: "Kalkulator Pajak Online" (generic)
+- **Headline**: "Online Tax Calculator" (generic)
 - **Target**: Tax professionals, accountants (not freelancer-specific)
 - **Pricing**: Free (ad-supported)
 - **Differentiator**: Trusted brand (20+ years, backed by tax consultants)
 - **Weakness**: One-shot calculator (no account, no tracking, no export)
 
 ### 2. KlikPajak (Mekari)
-- **Headline**: "Solusi Pajak Perusahaan" (B2B focus)
+- **Headline**: "Corporate Tax Solutions" (B2B focus)
 - **Target**: SME 5-50 employees, enterprise
-- **Pricing**: Rp200rb-2jt/bulan (too expensive for solopreneur)
+- **Pricing**: Rp200k-2M/month (too expensive for solopreneurs)
 - **Differentiator**: Full compliance suite (e-Filing, e-Faktur, e-Bupot)
 - **Weakness**: Overkill for 1-person freelancer (feature bloat, high price)
 
 ### 3. FreePajak (our positioning)
-- **Headline**: "Hitung 3 Skema. Pilih yang Paling Hemat. Simpan Jutaan Rupiah."
+- **Headline**: "Calculate 3 Schemes. Choose the Most Cost-Effective. Save Millions."
 - **Target**: Freelancer, solopreneur, content creator 1-person business
 - **Pricing**: Freemium (Rp0-99k/bulan, 10x cheaper than KlikPajak)
-- **Differentiator**: Tax planning assistant (compare 3 skema, track multi-client, international)
-- **Moat**: Tax treaty database (71 negara), crypto tracker, longitudinal histori
+- **Differentiator**: Tax planning assistant (compare 3 schemes, track multi-client, international)
+- **Moat**: Tax treaty database (71 countries), crypto tracker, longitudinal history
 ```
 
 **Positioning statement template**:
@@ -401,7 +401,7 @@ unlike [competitor/alternative] which [competitor weakness].
 ```
 
 **FreePajak example**:
-> "For freelancer & solopreneur Indonesia who bingung pilih skema pajak paling hemat (Final 0.5%, NPPN, Tarif Umum) dan ribet tracking penghasilan dari banyak client (DN/LN/crypto), FreePajak adalah tax planning assistant yang otomatis compare 3 skema sekaligus, kasih rekomendasi paling hemat, plus tracking multi-client & export SPT-ready, unlike Ortax/InfoPajak yang one-shot calculator (data hilang setelah selesai) dan KlikPajak yang untuk perusahaan (Rp200rb-2jt/bulan terlalu mahal)."
+> "For Indonesian freelancers & solopreneurs who struggle to choose the most cost-effective tax scheme (Final 0.5%, NPPN, General Rate) and find it cumbersome to track income from multiple clients (domestic/overseas/crypto), FreePajak is a tax planning assistant that automatically compares 3 schemes simultaneously, recommends the most cost-effective option, and provides multi-client tracking with SPT-ready export, unlike Ortax/InfoPajak which are one-shot calculators (data lost after completion) and KlikPajak which is enterprise-focused (Rp200k-2M/month, too expensive)."
 
 ### 3.5 Write Competitor Analysis Document (4-6 hours)
 
@@ -409,10 +409,10 @@ unlike [competitor/alternative] which [competitor weakness].
 
 **Structure**:
 ```markdown
-# Analisis Kompetitor Mendalam: [Project Name]
+# In-Depth Competitor Analysis: [Project Name]
 
 **Project**: [Name]  
-**Tanggal Riset**: [Date]  
+**Research Date**: [Date]  
 **Target User**: [User segment]
 
 ---
@@ -491,7 +491,7 @@ Example axes:
 ### 4.2 Learning Sprint Framework (5-7 days)
 
 **Day 1-2: Vocabulary & Concepts**
-- Read 3-5 beginner articles/blog posts (e.g., "Pajak Freelancer untuk Pemula")
+- Read 3-5 beginner articles/blog posts (e.g., "Freelancer Taxes for Beginners")
 - Watch 2-3 YouTube explainer videos (visual learning)
 - Create glossary (20-30 terms with definitions)
 
@@ -574,8 +574,8 @@ Example axes:
 ```markdown
 # [Document Title]
 
-**Dokumen Referensi untuk**: [Project Name]  
-**Tanggal Riset**: [YYYY-MM-DD]  
+**Reference Document for**: [Project Name]  
+**Research Date**: [YYYY-MM-DD]  
 **Status**: DRAFT | IN REVIEW | VALIDATED  
 **Researcher**: [Name]  
 **Last Updated**: [YYYY-MM-DD]  
@@ -620,17 +620,17 @@ Example axes:
 
 **Inline citation** (every factual claim):
 ```markdown
-PPh 21 bukan pegawai dihitung dengan Norma 50% (DPP = 50% × bruto), lalu tarif progresif tanpa PTKP. **[Source: PMK 168/2023 Pasal 14]**
+Non-employee PPh 21 is calculated using 50% Norma (tax base = 50% × gross), then progressive rates without PTKP. **[Source: PMK 168/2023 Article 14]**
 
-Tax treaty Indonesia-Singapura: WHT 15% (Article 11 - Interest), 10% (Article 10 - Dividends). **[Source: P3B Indonesia-Singapura 2007, https://pajak.go.id/tax-treaty/singapore]**
+Indonesia-Singapore Tax Treaty: WHT 15% (Article 11 - Interest), 10% (Article 10 - Dividends). **[Source: P3B Indonesia-Singapura 2007, https://pajak.go.id/tax-treaty/singapore]**
 ```
 
 **Footnotes** (if many citations):
 ```markdown
-PPh 21 bukan pegawai dihitung dengan Norma 50%[^1], lalu tarif progresif tanpa PTKP[^2].
+Non-employee PPh 21 is calculated using 50% Norma[^1], then progressive rates without PTKP[^2].
 
-[^1]: PMK No. 168/PMK.010/2023 Pasal 14 — https://jdih.kemenkeu.go.id/...
-[^2]: UU No. 7 Tahun 2021 (UU HPP) Pasal 17 ayat (1) huruf a
+[^1]: PMK No. 168/PMK.010/2023 Article 14 — https://jdih.kemenkeu.go.id/...
+[^2]: Law No. 7 of 2021 (HPP Law) Article 17 paragraph (1) letter a
 ```
 
 **References section** (end of document):
@@ -638,14 +638,14 @@ PPh 21 bukan pegawai dihitung dengan Norma 50%[^1], lalu tarif progresif tanpa P
 ## References
 
 ### Primary Sources
-1. UU No. 7 Tahun 2021 (UU HPP) — Tarif progresif PPh OP  
+1. Law No. 7 of 2021 (HPP Law) — Progressive PPh OP rates  
    https://peraturan.bpk.go.id/Details/195158/uu-no-7-tahun-2021
    
-2. PMK No. 168/PMK.010/2023 — PPh 21 pegawai & bukan pegawai  
+2. PMK No. 168/PMK.010/2023 — PPh 21 employee & non-employee  
    https://jdih.kemenkeu.go.id/fulltext/2023/168~PMK.010~2023Per.pdf
 
 ### Secondary Sources
-3. Ortax (2026). "Panduan PPh 21 Freelancer 2026"  
+3. Ortax (2026). "Freelancer PPh 21 Guide 2026"  
    https://ortax.org/pajak-freelance-2026
 
 ### Competitor Analysis

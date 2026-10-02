@@ -3,9 +3,9 @@
 
 # Modul 05C: Software Design Patterns & Clean Code Principles
 
-**Trigger**: Gunakan saat mengevaluasi kualitas kode AI-generated, melakukan code review, refactoring, atau merancang arsitektur komponen. Wajib untuk proyek Menengah ke atas yang membutuhkan maintainability jangka panjang.
+**Trigger**: Use when evaluating the quality of AI-generated code, performing code reviews, refactoring, or designing component architecture. Required for medium-to-large projects requiring long-term maintainability.
 
-**Objektif**: Membekali solo developer dengan pengetahuan fundamental design patterns, clean code principles, dan kemampuan mendeteksi anti-patterns dalam kode yang dihasilkan AI (ChatGPT, GitHub Copilot, Claude, dll).
+**Objective**: Equip solo developers with fundamental knowledge of design patterns, clean code principles, and the ability to detect anti-patterns in AI-generated code (ChatGPT, GitHub Copilot, Claude, etc.).
 
 ---
 

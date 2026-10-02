@@ -1,6 +1,6 @@
 # Data Assets Management: Regulations, Calculations, Reference Data & Seed Data
 
-Panduan untuk mengelola data non-visual: regulasi, rumus bisnis, referensi statis, seed data, dan content data dengan fokus pada maintainability, versioning, dan source of truth.
+Guide for managing non-visual data: regulations, business rules, static references, seed data, and content data with a focus on maintainability, versioning, and source of truth.
 
 ---
 
@@ -37,7 +37,7 @@ const PTKP_TK0 = 54_000_000; // Stale data
 **Problems**:
 - Regulation changes (e.g., PTKP 54jt → 58.5jt) require finding all hardcoded values
 - No audit trail ("when did this rate change?")
-- No source citation ("dari mana angka ini?")
+- No source citation ("where did this number come from?")
 
 ---
 
@@ -78,36 +78,36 @@ const PTKP_TK0 = 54_000_000; // Stale data
       "min": 0,
       "max": 60000000,
       "rate": 0.05,
-      "description": "Penghasilan hingga Rp60 juta"
+      "description": "Income up to Rp60 million"
     },
     {
       "min": 60000000,
       "max": 250000000,
       "rate": 0.15,
-      "description": "Penghasilan Rp60 juta - Rp250 juta"
+      "description": "Income Rp60 million - Rp250 million"
     },
     {
       "min": 250000000,
       "max": 500000000,
       "rate": 0.25,
-      "description": "Penghasilan Rp250 juta - Rp500 juta"
+      "description": "Income Rp250 million - Rp500 million"
     },
     {
       "min": 500000000,
       "max": 5000000000,
       "rate": 0.30,
-      "description": "Penghasilan Rp500 juta - Rp5 miliar"
+      "description": "Income Rp500 million - Rp5 billion"
     },
     {
       "min": 5000000000,
       "max": null,
       "rate": 0.35,
-      "description": "Penghasilan di atas Rp5 miliar"
+      "description": "Income above Rp5 billion"
     }
   ],
   "notes": [
-    "Berlaku untuk Wajib Pajak Orang Pribadi",
-    "Tarif progresif sesuai Pasal 17 ayat (1) huruf a UU HPP"
+    "Applies to Individual Taxpayers",
+    "Progressive rates in accordance with Article 17 paragraph (1) letter a of the HPP Law"
   ]
 }
 ```
@@ -117,41 +117,41 @@ const PTKP_TK0 = 54_000_000; // Stale data
 {
   "version": "2026.1",
   "effective_date": "2022-01-01",
-  "source": "PMK No. 101/PMK.010/2016 (belum berubah per 2026)",
+  "source": "PMK No. 101/PMK.010/2016 (unchanged as of 2026)",
   "url": "https://jdih.kemenkeu.go.id/fulltext/2016/101~PMK.010~2016Per.pdf",
   "last_updated": "2026-09-29",
   "categories": {
     "TK0": {
       "value": 54000000,
-      "description": "Tidak Kawin, 0 tanggungan"
+      "description": "Single, 0 dependents"
     },
     "TK1": {
       "value": 58500000,
-      "description": "Tidak Kawin, 1 tanggungan"
+      "description": "Single, 1 dependent"
     },
     "K0": {
       "value": 58500000,
-      "description": "Kawin, 0 tanggungan"
+      "description": "Married, 0 dependents"
     },
     "K1": {
       "value": 63000000,
-      "description": "Kawin, 1 tanggungan"
+      "description": "Married, 1 dependent"
     },
     "K2": {
       "value": 67500000,
-      "description": "Kawin, 2 tanggungan"
+      "description": "Married, 2 dependents"
     },
     "K3": {
       "value": 72000000,
-      "description": "Kawin, 3 tanggungan (maksimal)"
+      "description": "Married, 3 dependents (maximum)"
     }
   },
   "rules": {
     "max_dependents": 3,
     "dependent_value": 4500000,
     "notes": [
-      "Tanggungan maksimal 3 orang",
-      "Setiap tanggungan menambah PTKP Rp4,5 juta"
+      "Maximum 3 dependents",
+      "Each dependent increases PTKP by Rp4.5 million"
     ]
   }
 }
@@ -344,9 +344,9 @@ npm run test:calculations
 import { getPTKP, calculatePPh21 } from '@/lib/regulations/loader';
 
 export interface PPh21Input {
-  grossIncome: number;      // Penghasilan bruto
+  grossIncome: number;      // Gross income
   maritalStatus: 'TK' | 'K';
-  dependents: number;       // Jumlah tanggungan (0-3)
+  dependents: number;       // Number of dependents (0-3)
   employmentType: 'pegawai' | 'bukan_pegawai';
 }
 
@@ -358,15 +358,15 @@ export interface PPh21Result {
   };
   netIncome: number;        // Netto
   ptkp: number;
-  taxableIncome: number;    // Penghasilan Kena Pajak (PKP)
-  tax: number;              // PPh 21 terutang
+  taxableIncome: number;    // Taxable Income (PKP)
+  tax: number;              // PPh 21 tax due
   effectiveRate: number;    // %
 }
 
 export function calculatePPh21Pegawai(input: PPh21Input): PPh21Result {
   const { grossIncome, maritalStatus, dependents } = input;
   
-  // 1. Biaya Jabatan (5%, max Rp6 juta/tahun)
+  // 1. Occupational Expense (biaya jabatan: 5%, max Rp6 million/year)
   const biayaJabatan = Math.min(grossIncome * 0.05, 6_000_000);
   
   // 2. Iuran Pensiun (5.7% of gross)
@@ -401,10 +401,10 @@ export function calculatePPh21Pegawai(input: PPh21Input): PPh21Result {
 export function calculatePPh21BukanPegawai(input: PPh21Input): PPh21Result {
   const { grossIncome, maritalStatus, dependents } = input;
   
-  // 1. Norma (50% of gross for bukan pegawai)
+  // 1. Norma (50% of gross for non-employees / bukan pegawai)
   const dpp = grossIncome * 0.5;
   
-  // 2. No PTKP for bukan pegawai (tarif langsung)
+  // 2. No PTKP for non-employees (direct tax bracket application)
   const ptkp = 0;
   
   // 3. Taxable Income = DPP
@@ -445,10 +445,10 @@ describe('PPh21 Calculations', () => {
     expect(result.ptkp).toBe(54_000_000);
     expect(result.taxableIncome).toBe(34_300_000); // 88.3jt - 54jt
     expect(result.tax).toBeCloseTo(1_715_000, 0); // (34.3jt * 5%)
-    expect(result.effectiveRate).toBeCloseTo(1.715, 2); // 1.715%
+    expect(result.effectiveRate).toBeCloseTo(0.625, 2); // ~0.6%
   });
   
-  it('should calculate PPh21 bukan pegawai correctly (50% norma)', () => {
+  it('should calculate PPh21 non-employee (bukan pegawai) correctly (50% norma)', () => {
     const result = calculatePPh21BukanPegawai({
       grossIncome: 100_000_000,
       maritalStatus: 'TK',
@@ -457,7 +457,7 @@ describe('PPh21 Calculations', () => {
     });
     
     expect(result.netIncome).toBe(50_000_000); // 50% norma
-    expect(result.ptkp).toBe(0); // No PTKP for bukan pegawai
+    expect(result.ptkp).toBe(0); // No PTKP for non-employee
     expect(result.taxableIncome).toBe(50_000_000);
     expect(result.tax).toBeCloseTo(2_500_000, 0); // 50jt * 5%
     expect(result.effectiveRate).toBeCloseTo(2.5, 2); // 2.5%
@@ -648,30 +648,30 @@ npx prisma db seed
 **Example Post** (`content/blog/2026-09-29-cara-hitung-pph21-freelancer.mdx`):
 ```mdx
 ---
-title: "Cara Hitung PPh 21 Freelancer 2026 (Panduan Lengkap)"
-description: "Panduan step-by-step menghitung PPh 21 untuk freelancer dengan 3 skema berbeda."
-author: "Tim FreePajak"
+title: "How to Calculate Freelancer PPh 21 2026 (Complete Guide)"
+description: "Step-by-step guide to calculating PPh 21 for freelancers with 3 different schemes."
+author: "FreePajak Team"
 date: "2026-09-29"
 tags: ["tutorial", "pph21", "freelancer"]
 featured_image: "/blog/pph21-freelancer-cover.jpg"
 ---
 
-# Cara Hitung PPh 21 Freelancer 2026
+# How to Calculate Freelancer PPh 21 2026
 
-Freelancer Indonesia wajib bayar PPh 21, tapi cara hitungnya beda dari karyawan tetap...
+Indonesian freelancers are required to pay PPh 21, but the calculation method differs from permanent employees...
 
-## 3 Skema Pajak Freelancer
+## 3 Freelancer Tax Schemes
 
-### 1. PPh 21 Bukan Pegawai (Norma 50%)
+### 1. Non-Employee PPh 21 (50% Deemed Profit Rate / Norma)
 ...
 
-### 2. PPh Final 0,5% (PP 23/2018)
+### 2. PPh Final 0.5% (PP 23/2018)
 ...
 
-### 3. PPh Pasal 17 (Pembukuan)
+### 3. PPh Article 17 (Bookkeeping)
 ...
 
-## Kalkulator Otomatis
+## Automated Calculator
 
 <TaxCalculator defaultScheme="bukan_pegawai" />
 ```
@@ -783,15 +783,15 @@ PPh21RatesSchema.parse(pph21Data); // Throws if invalid
 - [ ] Tax treaty rates (treaty-rates.json)
 
 ### Business Rules (Code)
-- [ ] PPh 21 pegawai calculation (lib/calculations/pph21-pegawai.ts)
-- [ ] PPh 21 bukan pegawai calculation
+- [ ] Employee PPh 21 calculation (lib/calculations/pph21-pegawai.ts)
+- [ ] Non-employee PPh 21 calculation (lib/calculations/pph21-bukan-pegawai.ts)
 - [ ] PPh Final 0.5% calculation
-- [ ] PPh Pasal 17 (pembukuan) calculation
+- [ ] PPh Article 17 (bookkeeping) calculation
 - [ ] Tax comparison logic (3 schemes)
 - [ ] Unit tests (100% coverage for calculations)
 
 ### Reference Data
-- [ ] Indonesian cities (cities.json) — 514 kabupaten/kota
+- [ ] Indonesian cities (cities.json) — 514 regencies/cities
 - [ ] Banks (banks.json) — Top 20 banks
 - [ ] Industry codes (industries.json) — KBLI 2020
 

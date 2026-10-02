@@ -1,6 +1,6 @@
 # Authentication & Password Security
 
-**Purpose**: Production-ready auth patterns dengan compliance UU PDP No. 27/2022
+**Purpose**: Production-ready auth patterns compliant with UU PDP No. 27/2022
 
 **Reference locations**: M05 (lines 48, 1277, 1300, 1518), M05B (lines 1682, 1819, 1825), M06 (lines 910-913, 945, 1237-1238, 1524), M10 (lines 97-98, 116)
 
@@ -8,11 +8,11 @@
 
 ## Core Security Requirements
 
-1. **Password Hashing**: Argon2id (recommended) atau bcrypt cost ≥12
+1. **Password Hashing**: Argon2id (recommended) or bcrypt cost ≥12
 2. **Session Storage**: HttpOnly, Secure, SameSite cookies
 3. **Token Management**: JWT rotation, 15-min access + 7-day refresh
 4. **Rate Limiting**: 5 attempts per IP per 15 minutes
-5. **Password Reset**: Cryptographic tokens dengan TTL 15 menit
+5. **Password Reset**: Cryptographic tokens with 15-minute TTL
 
 ---
 
@@ -608,10 +608,10 @@ export async function POST(req: NextRequest) {
 
 **UU PDP No. 27/2022 Requirements**:
 
-1. **Data Minimization** (Pasal 16): Only store necessary user data
-2. **Consent** (Pasal 20): User must agree to data processing
-3. **Security** (Pasal 28): Implement encryption & access control
-4. **Breach Notification** (Pasal 54): Report breaches within 72 hours
+1. **Data Minimization** (Article 16): Only store necessary user data
+2. **Consent** (Article 20): User must agree to data processing
+3. **Security** (Article 28): Implement encryption & access control
+4. **Breach Notification** (Article 54): Report breaches within 72 hours
 
 **Implementation**:
 ```typescript

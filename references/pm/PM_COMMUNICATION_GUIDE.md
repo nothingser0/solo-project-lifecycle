@@ -1,19 +1,19 @@
-# PM Communication Guide: Business Communication Skills untuk Solo Developer
+# PM Communication Guide: Business Communication Skills for Solo Developers
 
-**Audience**: Solo developer yang berhadapan dengan stakeholder bisnis, klien, atau tim internal  
-**Goal**: Master komunikasi profesional untuk membangun trust, mengelola ekspektasi, dan mempertahankan scope  
+**Audience**: Solo developers dealing with business stakeholders, clients, or internal teams  
+**Goal**: Master professional communication to build trust, manage expectations, and protect project scope  
 **Last Updated**: 2026-09-27
 
 ---
 
-## 1. Foundation: Komunikasi adalah Pertahanan Scope Terbaik
+## 1. Foundation: Communication is the Best Scope Defense
 
-**Prinsip Inti**:
-- **Clarity > Politeness**: Jelas lebih penting dari sopan. Ambiguitas = scope creep.
-- **Proactive > Reactive**: Update sebelum ditanya, bukan setelah krisis.
-- **Data > Opinion**: "80% selesai" lebih baik dari "hampir selesai".
-- **Options > Problems**: Jangan lapor masalah tanpa bawa 2-3 solusi.
-- **Written > Verbal**: Semua keputusan konfirmasi tertulis dalam 2 jam.
+**Core Principles**:
+- **Clarity > Politeness**: Clarity is more important than politeness. Ambiguity = scope creep.
+- **Proactive > Reactive**: Update before being asked, not after a crisis.
+- **Data > Opinion**: "80% complete" is better than "almost done".
+- **Options > Problems**: Never report a problem without bringing 2-3 solutions.
+- **Written > Verbal**: Confirm all decisions in writing within 2 hours.
 
 ---
 
@@ -58,10 +58,10 @@
 2. [Approval request with deadline]
 ```
 
-### Contoh Nyata: Bad vs Good
+### Real-World Example: Bad vs Good
 
 **❌ Bad (Vague, No Action)**:
-> "Project berjalan lumayan lancar. Ada beberapa kendala kecil tapi sedang ditangani. Mungkin ada sedikit delay tapi insyaallah bisa selesai tepat waktu."
+> "The project is going reasonably well. There are a few minor issues but they are being handled. There might be a slight delay but hopefully we can finish on time."
 
 **✅ Good (Data-Driven, Actionable)**:
 > **Status**: 🟡 Yellow (at risk)  
@@ -82,28 +82,28 @@
 | 🟡 **Yellow** | At risk | 1+ risk detected, mitigation active | Escalate to "Keep Satisfied" tier, increase update frequency |
 | 🔴 **Red** | Blocked | Critical blocker >3 days, or timeline slip >2 weeks | Immediate escalation to CEO/CFO, crisis protocol |
 
-### Kapan Mengubah Status?
+### When to Change Status?
 
 **Green → Yellow**:
-- Blocker muncul yang berpotensi delay >3 hari
-- Budget burn rate >10% di atas forecast
-- Key stakeholder tidak responsif >48 jam pada keputusan kritis
+- A blocker arises with potential to delay >3 days
+- Budget burn rate >10% above forecast
+- Key stakeholder unresponsive >48 hours on critical decisions
 
 **Yellow → Red**:
-- Blocker tidak resolved dalam 3 hari
+- Blocker not resolved within 3 days
 - Timeline slip >2 minggu confirmed
 - Budget overrun >20%
 - Data breach / security incident
 
 **Red → Yellow → Green**:
-- Hanya setelah mitigation action terbukti efektif (bukan sekadar plan)
-- Tunggu 1 sprint cycle untuk konfirmasi stabilitas
+- Only after mitigation action proves effective (not just a plan)
+- Wait 1 sprint cycle to confirm stability
 
 ---
 
 ## 4. Status Report Format (Weekly Update)
 
-### Template untuk "Keep Informed" Tier (Slack/Discord)
+### Template for "Keep Informed" Tier (Slack/Discord)
 
 ```markdown
 **[Project Name] - Week [X] Update**
@@ -128,7 +128,7 @@
 - P0 bugs: 0 | P1 bugs: 2 (down from 5)
 ```
 
-### Template untuk "Keep Satisfied" Tier (Email - Bi-weekly)
+### Template for "Keep Satisfied" Tier (Email - Bi-weekly)
 
 **Subject**: [Project Name] - Bi-weekly Status Report 🟢 [Date]
 
@@ -185,10 +185,10 @@
 **Decision Needed By**: [Date] (after this date, we default to [Option X])
 ```
 
-### Contoh Nyata
+### Real-World Example
 
 **❌ Bad (Vague, Panic Mode)**:
-> "Ada masalah besar dengan server! Kayaknya database bakal overload kalau user banyak. Harus di-fix sekarang atau nanti crash!"
+> "There is a huge problem with the server! Looks like the database will overload if there are too many users. Must fix it right now or it will crash later!"
 
 **✅ Good (Structured, Options-Oriented)**:
 > **Risk**: Database Performance at Scale - Impact: High, Probability: Medium
@@ -222,54 +222,54 @@
 
 ### Script 1: The "Small Feature" Request
 
-**Klien**: "Bisa tambahin fitur X? Cuma kecil kok, seharusnya cepat kan?"
+**Client**: "Can you add feature X? It's just a small thing, should be quick, right?"
 
 **❌ Bad Response**:
-> "Oh iya bisa kok, nanti saya coba ya."
+> "Oh sure, I'll give it a try."
 
 **✅ Good Response**:
-> "Bisa, tapi mari kita lihat trade-off-nya. Fitur X butuh estimasi 2-3 hari dev time karena [alasan teknis singkat]. Kita punya 3 opsi:
-> 1. **Masukkan sprint ini**: Timeline geser 3 hari, atau kita drop fitur Y yang sudah di-plan
-> 2. **Masukkan Phase 2** (post-launch): Tidak ganggu timeline current release
-> 3. **Paid change order**: +$X jika di luar scope original yang sudah disepakati
+> "We can, but let's look at the trade-offs. Feature X takes an estimated 2-3 days of dev time because [brief technical reason]. We have 3 options:
+> 1. **Include in this sprint**: Timeline slips by 3 days, or we drop planned feature Y
+> 2. **Add to Phase 2** (post-launch): Does not affect the current release timeline
+> 3. **Paid change order**: +$X if outside the original agreed scope
 >
-> Yang mana yang paling sesuai prioritas bisnis Anda?"
+> Which one best aligns with your business priorities?"
 
 ### Script 2: The "Just Make It Work" Ambiguity
 
-**Klien**: "Dashboard-nya harus user-friendly ya, biar mudah dipakai."
+**Client**: "The dashboard needs to be user-friendly so it's easy to use."
 
 **❌ Bad Response**:
-> "Siap, akan saya buat user-friendly."
+> "Got it, I'll make it user-friendly."
 
 **✅ Good Response**:
-> "Noted. Supaya kita satu persepsi, boleh saya konfirmasi definisi 'user-friendly' di konteks ini:
-> - Apakah maksudnya: Loading time <2 detik?
-> - Atau: Max 3 klik untuk akses fitur utama?
-> - Atau: Mobile-responsive (bisa dipakai di HP)?
-> - Atau: Ada tutorial/onboarding pertama kali login?
+> "Noted. To ensure we're aligned, may I clarify what 'user-friendly' means in this context:
+> - Does it mean: Loading time <2 seconds?
+> - Or: Max 3 clicks to access core features?
+> - Or: Mobile-responsive (usable on mobile devices)?
+> - Or: Interactive tutorial/onboarding upon first login?
 >
-> Kalau saya tangkap, prioritas tertinggi adalah [X] dan [Y]. Betul begitu?"
+> As I understand it, the highest priorities are [X] and [Y]. Is that correct?"
 
 ### Script 3: The "Why Is This Taking So Long?"
 
-**Klien**: "Kok lama ya? Bukannya cuma CRUD biasa?"
+**Client**: "Why is this taking so long? Isn't it just standard CRUD?"
 
 **❌ Bad Response**:
-> "Ini kompleks, banyak yang harus dipikirkan." (Defensif, vague)
+> "It's complex, there are lots of things to consider." (Defensive, vague)
 
 **✅ Good Response**:
-> "Betul, secara konsep CRUD memang standar. Tapi ada beberapa requirement yang bikin waktu lebih lama:
-> 1. **Security**: Encrypt sensitive data, implement RBAC untuk 3 user roles
-> 2. **Validation**: 12 business rules yang harus dicek sebelum save data
-> 3. **Integration**: Sync dengan 2 external APIs yang rate-limited
+> "True, conceptually CRUD is standard. However, several specific requirements add time:
+> 1. **Security**: Encrypt sensitive data, implement RBAC for 3 user roles
+> 2. **Validation**: 12 business rules that must be checked before saving data
+> 3. **Integration**: Sync with 2 external APIs that are rate-limited
 >
-> Dari 5 hari estimasi, breakdown-nya:
-> - 2 hari: Core CRUD (sudah selesai)
-> - 2 hari: Security + validation (in progress)
-> - 1 hari: API integration + testing
+> For the 5-day estimate, the breakdown is:
+> - 2 days: Core CRUD (already completed)
+> - 2 days: Security + validation (in progress)
+> - 1 day: API integration + testing
 >
-> Kalau mau lebih cepat, kita bisa temporary skip API integration (tambahkan nanti), hemat 1 hari. Mau?"
+> If you want to move faster, we can temporarily skip the API integration (add it later), saving 1 day. Would you like that?"
 
 ---
 
@@ -279,11 +279,11 @@
 
 **Ciri-ciri**:
 - Tanya progress setiap hari (berkali-kali)
-- Minta status update untuk setiap task kecil
-- Tidak percaya kalau tidak lihat bukti (screenshot, video)
+- Asks for status updates on every small task
+- Doesn't believe progress without visible proof (screenshots, videos)
 
 **Strategi**:
-1. **Proactive Daily Update** (pagi 09:00 sebelum mereka tanya):
+1. **Proactive Daily Update** (morning at 09:00 before they ask):
    ```
    **Today's Focus**: Completing checkout flow backend API
    **Expected Done By**: EOD today
@@ -291,19 +291,19 @@
    ```
 
 2. **Set Update Schedule**: 
-   > "Supaya lebih efisien, saya akan kirim update pagi jam 09:00 dan sore jam 17:00 setiap hari. Jika ada blocker urgent, saya kabari immediate. Dengan cara ini kita bisa tetap sinkron tanpa interupsi di tengah coding. Setuju?"
+   > "To keep things efficient, I will send updates at 09:00 and 17:00 daily. If any urgent blockers arise, I will notify you immediately. This way we can stay synchronized without interruptions during coding. Sound good?"
 
 3. **Over-Document**:
    - Commit messages jelas
    - Staging environment always accessible
-   - Loom video untuk demo progress
+   - Loom videos to demo progress
 
 ### Type 2: The Scope Creeper
 
 **Ciri-ciri**:
 - Setiap minggu ada "ide bagus" baru
-- "Cuma tambah kecil kok" adalah mantra mereka
-- Tidak sadar akumulasi "kecil" = delay besar
+- "Just a small addition" is their mantra
+- Unaware that accumulated "small additions" = major delay
 
 **Strategi**:
 1. **Change Request Form** (formal process):
@@ -317,25 +317,25 @@
    ```
 
 2. **Visual Timeline Impact**:
-   - Tunjukkan Gantt chart: "Tambah fitur ini = geser launch dari 15 Nov jadi 30 Nov"
-   - Gunakan trade-off: "Mau fitur ini masuk, mana yang mau di-drop: A, B, atau C?"
+   - Show Gantt chart: "Adding this feature = slips launch from Nov 15 to Nov 30"
+   - Use trade-offs: "If this feature goes in, which one do we drop: A, B, or C?"
 
 3. **Iron Triangle Script**:
-   > "Kita punya 3 variabel: Scope, Time, Quality. Saat ini kita locked di Time (launch 15 Nov) dan Quality (80% test coverage). Kalau Scope nambah, salah satu variabel lain harus flex. Mau yang mana?"
+   > "We have 3 variables: Scope, Time, Quality. Right now we are locked on Time (Nov 15 launch) and Quality (80% test coverage). If Scope increases, one of the other variables must flex. Which one would you prefer?"
 
 ### Type 3: The Silent Approver
 
 **Ciri-ciri**:
-- Tidak reply email/Slack untuk approval request
-- "Nanti saya liat dulu" tapi tidak pernah selesai review
-- Blocking progress karena tidak ada sign-off
+- Does not reply to email/Slack for approval requests
+- "I'll look at it later" but never completes the review
+- Blocks progress due to lack of sign-off
 
 **Strategi**:
 1. **Time-Bound Approval**:
-   > "Design mockup sudah saya kirim via Figma (link: ...). Need approval by Wednesday 17:00 WIB. Jika belum ada feedback by deadline, saya proceed dengan asumsi approved untuk keep timeline on track. Setuju?"
+   > "I have sent the design mockups via Figma (link: ...). Need approval by Wednesday 17:00 WIB. If there is no feedback by the deadline, I will proceed on the assumption of approval to keep the timeline on track. Sound good?"
 
 2. **Escalation Warning**:
-   > "API spec approval sudah pending 3 hari. Jika tidak ada feedback by tomorrow EOD, saya akan escalate ke [Boss/PO] supaya tidak block dev team. Prefer to get your input first if possible."
+   > "API spec approval has been pending for 3 days. If there is no feedback by tomorrow EOD, I will escalate to [Boss/PO] so it doesn't block the dev team. Prefer to get your input first if possible."
 
 3. **Default to Last Agreed Version**:
    > "Since no feedback received on Version 3, I'm proceeding with Version 2 (last approved). Can always iterate in Phase 2 if needed."
@@ -343,9 +343,9 @@
 ### Type 4: The "I'll Know It When I See It"
 
 **Ciri-ciri**:
-- Tidak bisa articulate requirement secara jelas
+- Cannot clearly articulate requirements
 - Revisi design/feature berkali-kali setelah development dimulai
-- "Hmm, kayaknya bukan gini deh" setelah lihat hasil
+- "Hmm, that's not quite what I meant" after seeing the result
 
 **Strategi**:
 1. **Prototype-First Approach**:
@@ -354,10 +354,10 @@
    - Lock design before development
 
 2. **Revision Budget**:
-   > "Design revision: Max 2 rounds included in contract. Round 3+ = change order +$X per round. Ini untuk protect timeline kita berdua."
+   > "Design revisions: Max 2 rounds included in contract. Round 3+ = change order +$X per round. This is to protect both of our timelines."
 
 3. **Reference Examples**:
-   > "Supaya kita align, bisa kasih contoh website/app yang style-nya Anda suka? Misal: 'Seperti Tokopedia tapi lebih minimalis' atau 'Seperti Notion tapi lebih colorful'."
+   > "To help us align, could you share examples of websites/apps whose style you like? For instance: 'Like Linear but more minimalist' or 'Like Notion but more colorful'."
 
 ---
 
@@ -477,26 +477,26 @@
 - **ZOPA**: $32K-$38K (if you optimize, they stretch budget)
 
 **Negotiation Script**:
-> "Saya pahami budget constraint $30K. Untuk deliver semua fitur butuh $40K. Ada 3 opsi:
+> "I understand the $30K budget constraint. Delivering all features requires $40K. There are 3 options:
 > 1. **Full scope**: $40K, 10 weeks
 > 2. **Phase 1 (MVP)**: $30K, 6 weeks → Phase 2 (remaining): $10K, 4 weeks
 > 3. **Reduced scope**: $30K, 10 weeks, drop Feature X, Y, Z
 >
-> Yang mana yang paling align dengan prioritas bisnis Anda?"
+> Which one best aligns with your business priorities?"
 
 ### Conflict Resolution: DESC Model
 
 **D = Describe** (Facts, no judgment):
-> "Design mockup sudah 3 kali revisi, dan setiap kali setelah development dimulai."
+> "The design mockups have gone through 3 revision rounds, each occurring after development had already started."
 
 **E = Express** (Impact on you):
-> "Ini membuat development terhambat, karena harus re-code yang sudah jadi. Timeline berisiko delay 2 minggu."
+> "This stalls development because completed code must be rewritten. The timeline risks a 2-week delay."
 
 **S = Specify** (What you want):
 > "Going forward, saya usulkan: Design locked before dev starts. Max 2 revision rounds. Round 3+ = paid change order."
 
 **C = Consequences** (Positive if they agree, negative if not):
-> "Dengan cara ini, kita bisa deliver on time and on budget. Kalau tidak, risk delay dan budget overrun yang merugikan kita berdua."
+> "This way, we can deliver on time and on budget. Otherwise, we risk delays and budget overruns that harm both of us."
 
 ---
 
@@ -519,7 +519,7 @@
 **Adaptation Strategy**:
 
 **For High-Context Clients**:
-- Add buffer: "Seharusnya selesai minggu depan" → Anda plan 2 minggu
+- Add buffer: "Should finish next week" → You plan 2 weeks
 - Read between lines: "Sepertinya bagus" ≠ approval, follow up
 - Build relationship first: 10-min small talk before business
 
@@ -565,10 +565,10 @@
 ### Mistake 2: Over-Promising to Please
 
 **❌ Problem**:
-> "Bisa, saya coba ya!" (Padahal tidak yakin feasible)
+> "Sure, I'll try!" (Despite being unsure if feasible)
 
 **✅ Fix**:
-> "Menarik idenya. Biar saya riset dulu 1-2 hari untuk feasibility check. Saya update kembali Kamis dengan estimasi akurat."
+> "Interesting idea. Let me research it for 1-2 days for a feasibility check. I will update you on Thursday with an accurate estimate."
 
 ### Mistake 3: Hiding Bad News
 
@@ -576,23 +576,23 @@
 > (Tahu ada blocker besar tapi diam 1 minggu sampai krisis)
 
 **✅ Fix**:
-> (Hari ke-1 blocker): "FYI, ada blocker X. Estimasi 2-3 hari untuk resolve. Update daily."
+> (Day 1 of blocker): "FYI, blocker X encountered. Estimated 2-3 days to resolve. Updating daily."
 
 ### Mistake 4: Technical Jargon to Non-Tech Stakeholders
 
 **❌ Problem**:
-> "CORS preflight failed karena OPTIONS request tidak return proper headers dari backend."
+> "CORS preflight failed because the OPTIONS request didn't return proper headers from the backend."
 
 **✅ Fix**:
-> "Ada issue komunikasi antara frontend dan backend. Sedang diperbaiki, estimasi selesai besok."
+> "There is a communication issue between frontend and backend. Currently being fixed, estimated completion tomorrow."
 
 ### Mistake 5: No Follow-Up on Verbal Decisions
 
 **❌ Problem**:
-> (Meeting: "Ok approved") → (2 minggu kemudian: "Loh kok fitur ini ada? Saya tidak setuju!")
+> (Meeting: "Ok approved") → (2 weeks later: "Wait, why is this feature here? I never agreed to that!")
 
 **✅ Fix**:
-> (Email 2 jam setelah meeting): "Confirming today's decision: Approved $2K budget for SMS gateway. Development starts tomorrow."
+> (Email 2 hours after meeting): "Confirming today's decision: Approved $2K budget for SMS gateway. Development starts tomorrow."
 
 ---
 

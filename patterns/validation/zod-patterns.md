@@ -1,6 +1,6 @@
 # Zod Validation Patterns
 
-**Purpose**: Reusable Zod schemas untuk type-safe validation di backend & frontend
+**Purpose**: Reusable Zod schemas for type-safe validation across backend & frontend
 
 **Reference locations**: M06 (lines 229, 342, 1013, 1033, 1193, 1246, 1275, 1394, 1525), M07 (line 22, 61), M08 (line 36, 66, 91)
 
@@ -8,9 +8,9 @@
 
 ## Core Principles
 
-1. **Single Source of Truth**: Semua TypeScript types derived dari Zod (`z.infer<typeof Schema>`)
-2. **Share schemas**: Backend dan frontend gunakan schema yang sama (DRY)
-3. **Fail fast**: Validasi di pintu masuk (API handler, form submit)
+1. **Single Source of Truth**: All TypeScript types derived from Zod (`z.infer<typeof Schema>`)
+2. **Share schemas**: Backend and frontend share the exact same schema (DRY)
+3. **Fail fast**: Validate at entry boundaries (API handler, form submit)
 4. **Structured errors**: Return field-level error messages (422 Unprocessable Entity)
 
 ---
@@ -36,22 +36,22 @@ pnpm add zod
 import { z } from 'zod';
 
 export const RegisterSchema = z.object({
-  email: z.string().email('Email tidak valid'),
+  email: z.string().email('Invalid email'),
   password: z.string()
-    .min(8, 'Password minimal 8 karakter')
-    .regex(/[A-Z]/, 'Harus ada huruf besar')
-    .regex(/[0-9]/, 'Harus ada angka'),
-  name: z.string().min(2, 'Nama minimal 2 karakter'),
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/[A-Z]/, 'Must contain an uppercase letter')
+    .regex(/[0-9]/, 'Must contain a number'),
+  name: z.string().min(2, 'Name must be at least 2 characters'),
 });
 
 export const LoginSchema = z.object({
-  email: z.string().email('Email tidak valid'),
-  password: z.string().min(1, 'Password wajib diisi'),
+  email: z.string().email('Invalid email'),
+  password: z.string().min(1, 'Password is required'),
 });
 
 export const ResetPasswordSchema = z.object({
-  token: z.string().length(32, 'Token tidak valid'),
-  password: z.string().min(8, 'Password minimal 8 karakter'),
+  token: z.string().length(32, 'Invalid token'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
 // Infer types
@@ -68,10 +68,10 @@ export type LoginInput = z.infer<typeof LoginSchema>;
 import { z } from 'zod';
 
 export const CreateDocumentSchema = z.object({
-  title: z.string().min(1, 'Judul wajib diisi').max(200),
+  title: z.string().min(1, 'Title is required').max(200),
   content: z.string().optional(),
-  categoryId: z.string().uuid('Category ID tidak valid'),
-  tags: z.array(z.string()).max(10, 'Maksimal 10 tags'),
+  categoryId: z.string().uuid('Invalid Category ID'),
+  tags: z.array(z.string()).max(10, 'Maximum 10 tags'),
   status: z.enum(['draft', 'published', 'archived']),
 });
 
@@ -104,14 +104,14 @@ const ALLOWED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
 
 export const FileUploadSchema = z.object({
   file: z.custom<File>()
-    .refine(file => file.size <= MAX_FILE_SIZE, 'File maksimal 5MB')
+    .refine(file => file.size <= MAX_FILE_SIZE, 'Maximum file size is 5MB')
     .refine(file => ALLOWED_FILE_TYPES.includes(file.type), 
-      'Format file harus PDF, JPEG, atau PNG'),
+      'File format must be PDF, JPEG, or PNG'),
   description: z.string().max(500).optional(),
 });
 
 export const BulkUploadSchema = z.object({
-  files: z.array(z.custom<File>()).min(1).max(10, 'Maksimal 10 files'),
+  files: z.array(z.custom<File>()).min(1).max(10, 'Maximum 10 files'),
 });
 ```
 
@@ -449,7 +449,7 @@ describe('RegisterSchema', () => {
       name: 'John',
     };
     
-    expect(() => RegisterSchema.parse(data)).toThrow('Email tidak valid');
+    expect(() => RegisterSchema.parse(data)).toThrow('Invalid email');
   });
 
   it('rejects weak password', () => {

@@ -8,8 +8,8 @@
 
 | Regulation | Region | Key Requirements | Penalties |
 |------------|--------|------------------|-----------|
-| **UU PDP No. 27/2022** | Indonesia | Consent, data minimization, breach notification (3×24h), data deletion | Denda max Rp 6M atau 2% revenue |
-| **GDPR** | EU | Consent, right to erasure, data portability, DPO (if >5K users) | €20M atau 4% revenue |
+| **UU PDP No. 27/2022** | Indonesia | Consent, data minimization, breach notification (3×24h), data deletion | Max fine Rp 6B or 2% revenue |
+| **GDPR** | EU | Consent, right to erasure, data portability, DPO (if >5K users) | €20M or 4% revenue |
 | **CCPA** | California | Right to know, delete, opt-out of sale | $2,500 per violation |
 | **PIPEDA** | Canada | Consent, breach notification (ASAP), access requests | CAD $100K fine |
 
@@ -90,7 +90,7 @@ async function auditConsentCompliance() {
 
 ### Data Retention Policy Enforcement
 
-**UU PDP Pasal 14**: Data hanya boleh disimpan selama diperlukan
+**UU PDP Article 14**: Data may only be stored for as long as necessary
 
 **Automated deletion**:
 ```typescript
@@ -129,7 +129,7 @@ async function enforceRetentionPolicy() {
 
 ---
 
-### Right to Erasure (GDPR Art. 17 / UU PDP Pasal 35)
+### Right to Erasure (GDPR Art. 17 / UU PDP Article 35)
 
 **User-initiated deletion**:
 ```typescript
@@ -218,7 +218,7 @@ async function deleteUserDataCompletely(userId: string) {
 
 ### Data Breach Detection & Notification
 
-**UU PDP Pasal 59**: Wajib lapor ke Menkominfo dalam 3×24 jam
+**UU PDP Article 59**: Mandatory reporting to Ministry of Communication and Information Technology (Kominfo) within 3×24 hours
 
 **Automated anomaly detection**:
 ```typescript
@@ -313,7 +313,7 @@ async function triggerBreachProtocol(breach: Breach) {
 
 ## 3. Data Subject Access Requests (DSAR)
 
-**GDPR Art. 15 / UU PDP Pasal 33**: User berhak minta salinan data mereka
+**GDPR Art. 15 / UU PDP Article 33**: Users have the right to request a copy of their data
 
 **Automated export**:
 ```typescript
@@ -385,7 +385,7 @@ export async function POST(request: Request) {
 
 ## 4. Cookie Consent Management
 
-**GDPR/UU PDP**: Wajib consent sebelum set cookies non-essential
+**GDPR/UU PDP**: Mandatory consent before setting non-essential cookies
 
 **Frontend implementation**:
 ```typescript
@@ -553,7 +553,7 @@ function calculateComplianceScore(): number {
 
 ## 8. Third-Party Processor Management
 
-**GDPR Art. 28 / UU PDP Pasal 21**: Data Processor Agreement (DPA) wajib
+**GDPR Art. 28 / UU PDP Article 21**: Data Processor Agreement (DPA) mandatory
 
 **Vendor compliance checklist**:
 

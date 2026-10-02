@@ -1,67 +1,67 @@
 # PM User Testing Guide: Best Practices & Common Pitfalls
 
-**Purpose**: Tactical reference untuk solo PM/developer melakukan iterative user testing yang menghasilkan actionable insights, bukan sekadar ritual validasi.
+**Purpose**: Tactical reference for solo PMs/developers conducting iterative user testing that generates actionable insights, not just a validation ritual.
 
 ---
 
-## 1. Kapan Wajib User Testing vs Kapan Boleh Skip
+## 1. When User Testing is Mandatory vs When It Can Be Skipped
 
-### WAJIB (Non-Negotiable)
-- ✅ **New product/feature** yang belum pernah divalidasi pasar
-- ✅ **Redesign major** dari flow existing (contoh: checkout process)
-- ✅ **Complex workflow** (>5 langkah, conditional branching)
+### MANDATORY (Non-Negotiable)
+- ✅ **New product/feature** that has never been market-validated
+- ✅ **Major redesign** of existing flow (e.g., checkout process)
+- ✅ **Complex workflow** (>5 steps, conditional branching)
 - ✅ **High-stakes actions** (financial transactions, legal docs, data deletion)
 - ✅ **Target user = non-technical** (elderly, low digital literacy)
 
-### BOLEH SKIP (dengan syarat)
-- ⚠️ **Minor UI polish** (button color, icon style) → Gunakan A/B test saja
+### CAN SKIP (with conditions)
+- ⚠️ **Minor UI polish** (button color, icon style) → Use A/B testing instead
 - ⚠️ **Industry-standard patterns** (login form, pagination) → Stick to conventions
-- ⚠️ **Internal tool** dengan <10 power users → Informal feedback loop cukup
-- ⚠️ **MVP ultra-early stage** → 3-5 user interviews informal (bukan full usability test)
+- ⚠️ **Internal tool** with <10 power users → Informal feedback loops are sufficient
+- ⚠️ **MVP ultra-early stage** → 3-5 informal user interviews (not a full usability test)
 
 ---
 
 ## 2. Recruiting Participants: Budget & Quality Trade-offs
 
-### Opsi 1: Professional Panel (UserTesting.com, Respondent.io)
-**Pros**: Fast (recruit dalam 24 jam), diverse demografi, video recording built-in  
-**Cons**: Mahal ($49-200/participant), "professional testers" kadang tidak genuine  
-**Best For**: B2C dengan target luas, timeline ketat
+### Option 1: Professional Panel (UserTesting.com, Respondent.io)
+**Pros**: Fast (recruitment within 24 hours), diverse demographics, built-in video recording  
+**Cons**: Expensive ($49-200/participant), "professional testers" are sometimes not genuine  
+**Best For**: B2C with a broad target, tight timeline
 
-### Opsi 2: Network Recruitment (LinkedIn, Twitter, Komunitas Industri)
+### Option 2: Network Recruitment (LinkedIn, Twitter, Industry Communities)
 **Pros**: High-quality participants (real users), lower cost (Rp 150-300k incentive)  
-**Cons**: Lambat (1-2 minggu), bias menuju early adopters  
+**Cons**: Slow (1-2 weeks), bias toward early adopters  
 **Best For**: B2B SaaS, niche industry tools
 
-### Opsi 3: Existing User Base
+### Option 3: Existing User Base
 **Pros**: Most authentic feedback, zero recruitment cost  
 **Cons**: Bias towards satisfied users (churned users won't participate)  
 **Best For**: Iteration testing post-launch
 
-### Opsi 4: Friends & Family (LAST RESORT)
+### Option 4: Friends & Family (LAST RESORT)
 **Pros**: Free, fast  
-**Cons**: Confirmation bias, tidak merepresentasikan real users, cenderung "too nice"  
-**Only Valid If**: User persona = "general public" (contoh: consumer social app)
+**Cons**: Confirmation bias, does not represent real users, tends to be "too nice"  
+**Only Valid If**: User persona = "general public" (e.g., consumer social app)
 
 ---
 
 ## 3. The Nielsen Norman 5-User Rule: When It Works & When It Fails
 
-**The Claim**: 5 pengguna mengungkap 85% usability problems (Nielsen, 1993).
+**The Claim**: 5 users uncover 85% of usability problems (Nielsen, 1993).
 
 **When It Works**:
 - ✅ Single user persona (homogenous group)
 - ✅ Task-based testing (5-10 specific scenarios)
-- ✅ Mature design (iterasi ke-2 atau ke-3)
+- ✅ Mature design (2nd or 3rd iteration)
 
 **When You Need More**:
 - ❌ **Multiple personas** (admin vs end-user) → 5 per persona = 10 total
-- ❌ **Quantitative validation** (contoh: "70% users dapat complete task") → Minimum 30 users
-- ❌ **A/B test hypothesis** → Lihat statistical power calculation (typical: 200-500 per variant)
+- ❌ **Quantitative validation** (e.g., "70% of users can complete the task") → Minimum 30 users
+- ❌ **A/B test hypothesis** → See statistical power calculation (typical: 200-500 per variant)
 
 **Practical Guideline**:
-- **Iterasi 1**: 5 users (discovery blockers)
-- **Iterasi 2**: 5 users (validate fixes)
+- **Iteration 1**: 5 users (discovery blockers)
+- **Iteration 2**: 5 users (validate fixes)
 - **Pre-launch validation**: 8-10 users (confidence boost)
 
 ---
@@ -69,24 +69,24 @@
 ## 4. Think-Aloud Protocol: Dos & Don'ts
 
 ### ✅ DO
-- **Explain upfront**: "Katakan apapun yang Anda pikirkan, seolah saya tidak ada di ruangan."
+- **Explain upfront**: "Say whatever you are thinking, as if I'm not in the room."
 - **Use neutral prompts**:
-  - "Apa yang Anda cari saat ini?"
-  - "Ceritakan apa yang Anda lihat di layar ini."
-  - "Apa yang Anda harapkan terjadi setelah klik tombol ini?"
-- **Observe silence**: Biarkan user stuck 30-60 detik sebelum intervensi (that's the data!)
-- **Record verbatim quotes**: Tulis kutipan exact words untuk laporan ("Di mana tombol simpan?")
+  - "What are you looking for right now?"
+  - "Describe what you see on this screen."
+  - "What do you expect to happen after clicking this button?"
+- **Observe silence**: Let the user get stuck for 30-60 seconds before intervening (that's the data!)
+- **Record verbatim quotes**: Note down exact quoted words for the report ("Where is the save button?")
 
 ### ❌ DON'T
-- **Jangan leading questions**: "Apakah tombol ini cukup jelas?" → Bias menuju "Ya"
-- **Jangan ajarkan UI**: "Coba klik menu sebelah kiri" → Anda corrupt test validity
-- **Jangan defensive**: User bilang "ini membingungkan" → JANGAN jawab "tapi ada tooltip-nya lho"
-- **Jangan interrupting**: User lagi mikir keras → jangan langsung prompt "kenapa diam?"
+- **No leading questions**: "Is this button clear enough?" → Biases towards "Yes"
+- **Don't teach the UI**: "Try clicking the left menu" → You corrupt test validity
+- **Don't be defensive**: User says "this is confusing" → DO NOT reply "but there is a tooltip right there"
+- **Don't interrupt**: User is thinking hard → don't immediately prompt "why are you silent?"
 
 ### Red Flags (Signs of Bad Moderator)
-- User bertanya "apakah ini benar?" dan moderator jawab "ya, lanjutkan" (seharusnya: "tidak ada benar/salah, lakukan seperti biasa")
-- Moderator menjelaskan fitur sebelum user explore sendiri
-- User menyelesaikan semua task dengan success rate 100% (likely diarahkan)
+- User asks "is this right?" and moderator answers "yes, continue" (should be: "there is no right or wrong, just proceed as you normally would")
+- Moderator explains features before user explores them independently
+- User completes all tasks with 100% success rate (likely guided)
 
 ---
 
@@ -106,17 +106,17 @@
 ✅ **RIGHT**: SUS is **percentile rank**, not percentage. SUS 75 = 60th percentile (beats 60% of products).
 
 ❌ **WRONG**: "Target SUS 100 for our MVP"  
-✅ **RIGHT**: SUS 100 virtually impossible (even Apple.com ~85-90). Target 70-80 untuk MVP.
+✅ **RIGHT**: SUS 100 is virtually impossible (even Apple.com ~85-90). Target 70-80 for MVP.
 
 ❌ **WRONG**: "SUS 68 vs 72 → B is winner"  
-✅ **RIGHT**: Difference <5 points = margin of error. Need A/B test dengan n≥30 per group untuk confidence.
+✅ **RIGHT**: Difference <5 points = margin of error. Need A/B test with n≥30 per group for confidence.
 
 ### What SUS DOESN'T Tell You
 - **Which specific features** are broken (need qualitative data)
 - **Why** users struggle (need think-aloud observation)
-- **Business impact** (low SUS doesn't always = low revenue; contoh: enterprise tools with lock-in)
+- **Business impact** (low SUS doesn't always = low revenue; e.g., enterprise tools with lock-in)
 
-**Actionable Framework**: Pair SUS dengan **Task Completion Rate**:
+**Actionable Framework**: Pair SUS with **Task Completion Rate**:
 | SUS | Task Success | Interpretation | Action |
 | :--- | :--- | :--- | :--- |
 | <70 | <70% | Critical issues | Full redesign cycle |
@@ -133,36 +133,36 @@
 ### Tier 1: Automated Scanners (30 minutes, catch 30-40% issues)
 - **Chrome Lighthouse** (Accessibility tab): Target score ≥90
 - **axe DevTools** browser extension: Zero critical/serious issues
-- **WAVE** (WebAIM): Visual overlay untuk kontras + structure problems
+- **WAVE** (WebAIM): Visual overlay for contrast + structure problems
 
 **Typical Catches**: Missing alt text, low contrast, missing form labels, broken heading hierarchy.
 
 ### Tier 2: Keyboard Navigation (60 minutes, critical)
 Manual test:
-1. Unplug mouse. Navigate entire app dengan **Tab/Shift+Tab/Enter/Esc/Arrow keys**
+1. Unplug mouse. Navigate entire app with **Tab/Shift+Tab/Enter/Esc/Arrow keys**
 2. Checklist:
    - [ ] Can reach every interactive element (buttons, links, form inputs)
    - [ ] Focus indicator visible (outline 2px minimum)
    - [ ] Modals/dropdowns can be closed with Esc
    - [ ] No keyboard traps (can Tab out of every component)
 
-**Common Failure**: `<div onclick>` tanpa `tabindex="0"` + `role="button"` (unreachable via keyboard).
+**Common Failure**: `<div onclick>` without `tabindex="0"` + `role="button"` (unreachable via keyboard).
 
 ### Tier 3: Screen Reader Spot Check (90 minutes, high-impact)
-Test **3 critical paths** dengan screen reader:
-- **Windows**: NVDA (free) atau JAWS (paid)
+Test **3 critical paths** with a screen reader:
+- **Windows**: NVDA (free) or JAWS (paid)
 - **Mac**: VoiceOver (built-in, Cmd+F5)
 - **Mobile**: TalkBack (Android) / VoiceOver (iOS)
 
 **Minimal Test Scenarios**:
 1. Login flow (input labels announced correctly?)
-2. Primary CRUD action (form validation errors readable?)
+2. Form submission (are validation errors read aloud?)
 3. Navigation (landmark roles: `<nav>`, `<main>`, `<aside>` detected?)
 
-**Common Failure**: Error messages displayed visually (`color: red`) tapi tidak programmatically linked (`aria-describedby`).
+**Common Failure**: Error messages displayed visually (`color: red`) but not programmatically linked (`aria-describedby`).
 
 ### Tier 4: Professional Audit (Only If Legally Required)
-B2G (government contracts), large enterprise clients, atau publicly-traded companies → hire WCAG auditor ($3k-10k).
+B2G (government contracts), large enterprise clients, or publicly-traded companies → hire WCAG auditor ($3k-10k).
 
 ---
 
@@ -188,34 +188,34 @@ B2G (government contracts), large enterprise clients, atau publicly-traded compa
 **Fix**: Test clickable prototype (Google Stitch HTML) BEFORE Modul 05.
 
 ### ❌ Confirmation Bias Testing
-**Symptom**: "Users love the new dashboard!" (selective memory dari positive feedback).  
+**Symptom**: "Users love the new dashboard!" (selective memory from positive feedback).  
 **Problem**: Ignore pain points, ship broken UX.  
 **Fix**: Document EVERY negative observation. Count failure rate, not just success stories.
 
 ### ❌ No Actionable Prioritization
-**Symptom**: Report berisi 47 bullet points "users struggle with X" tanpa ranking.  
+**Symptom**: Report contains 47 bullet points of "users struggle with X" without ranking.  
 **Problem**: Designer/developer overwhelmed, nothing gets fixed.  
 **Fix**: Triage **P0 (blockers: <70% task success) → P1 (friction: <85%) → P2 (polish)**.
 
 ### ❌ Testing Without Real Tasks
 **Symptom**: "Just browse around and give feedback."  
-**Problem**: Users give generic opinions ("looks nice"), bukan behavioral insights.  
-**Fix**: Specific scenarios: "Bayangkan Anda perlu X, cobalah lakukan Y."
+**Problem**: Users give generic opinions ("looks nice"), not behavioral insights.  
+**Fix**: Specific scenarios: "Imagine you need X, try doing Y."
 
 ### ❌ Single Iteration Testing
 **Symptom**: "We tested once, SUS 65, we'll fix it later."  
 **Problem**: Never gets fixed, ships broken.  
-**Fix**: MINIMUM 2 iterasi (test → fix → re-test) before M05 gate.
+**Fix**: MINIMUM 2 iterations (test → fix → re-test) before M05 gate.
 
 ---
 
 ## 9. Case Study: Iterative Testing Done Right
 
 **Project**: B2B HR SaaS — Employee Onboarding Module  
-**Timeline**: 3 minggu testing (2 iterasi), sebelum development dimulai
+**Timeline**: 3 weeks testing (2 iterations), before development started
 
 ### Iteration 1 (Week 1)
-- **Participants**: 5 HR managers (perusahaan 100-300 karyawan)
+- **Participants**: 5 HR managers (companies with 100-300 employees)
 - **Key Findings**:
   - Task 1 "Add new employee": 2/5 failed (couldn't find "Add Employee" button, buried in submenu)
   - Task 2 "Bulk upload via Excel": 5/5 complained "no template link visible"
@@ -248,7 +248,7 @@ B2G (government contracts), large enterprise clients, atau publicly-traded compa
 | **Scale-up** | 15 (3 iterations) | Maze Pro + Hotjar | $150/mo | 40 hours |
 | **Enterprise** | 30 + Accessibility Audit | UserTesting + WCAG Auditor | $5,000 | 80 hours |
 
-**Rule of Thumb**: Allocate **10-15% dari total design+dev budget** untuk user research & testing.
+**Rule of Thumb**: Allocate **10-15% of total design+dev budget** for user research & testing.
 
 ---
 

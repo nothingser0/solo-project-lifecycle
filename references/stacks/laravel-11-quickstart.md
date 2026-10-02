@@ -300,8 +300,8 @@ class StoreDocumentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'Judul dokumen wajib diisi.',
-            'title.max' => 'Judul maksimal 200 karakter.',
+            'title.required' => 'The document title is required.',
+            'title.max' => 'The title may not exceed 200 characters.',
         ];
     }
 }

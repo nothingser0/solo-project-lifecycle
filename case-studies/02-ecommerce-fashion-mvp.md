@@ -1,7 +1,7 @@
 # Case Study: E-Commerce Platform MVP
 
-**Project**: Toko Online B2C untuk Fashion Brand  
-**Timeline**: 3 minggu (21 hari kerja)  
+**Project**: B2C Online Store for Fashion Brand  
+**Timeline**: 3 weeks (21 working days)  
 **Budget**: Rp 45.000.000  
 **Team**: 1 solo developer  
 **Tech Stack**: Next.js 15 + Prisma + PostgreSQL + Midtrans
@@ -10,13 +10,13 @@
 
 ## Executive Summary
 
-**Problem**: Fashion brand menjual via Instagram DM (manual order processing, payment tracking chaos)
+**Problem**: Fashion brand selling via Instagram DM (manual order processing, payment tracking chaos)
 
-**Solution**: E-commerce MVP dengan katalog, cart, checkout, payment gateway
+**Solution**: E-commerce MVP with catalog, cart, checkout, payment gateway
 
 **Results**:
-- ✅ **Launch**: 21 hari (on-time)
-- ✅ **First sale**: 2 hari post-launch
+- ✅ **Launch**: 21 days (on-time)
+- ✅ **First sale**: 2 days post-launch
 - ✅ **Month 1**: 127 orders, Rp 18.4M GMV
 - ✅ **Month 3**: 340 orders, Rp 52.1M GMV
 - ✅ **Conversion rate**: 3.2% (industry average 1-2%)
@@ -37,10 +37,10 @@ Total              : Rp 45.000.000
 
 ### Timeline
 ```
-Week 1: Discovery + Design     (5 hari)
-Week 2: Development            (5 hari)
-Week 3: Testing + Deployment   (5 hari)
-Buffer: 6 hari (contingency)
+Week 1: Discovery + Design     (5 days)
+Week 2: Development            (5 days)
+Week 3: Testing + Deployment   (5 days)
+Buffer: 6 days (contingency)
 ```
 
 ---
@@ -50,11 +50,11 @@ Buffer: 6 hari (contingency)
 ### M00-M01: Product Discovery (Skipped)
 **Decision**: Client already validated market (Instagram followers 12K, engagement 4%)
 
-**Time saved**: 3 hari
+**Time saved**: 3 days
 
 ---
 
-### M02: Discovery & Scope (1 hari)
+### M02: Discovery & Scope (1 day)
 
 **Deliverable**: `docs/pm/SCOPE_STATEMENT.md`
 
@@ -75,13 +75,13 @@ Buffer: 6 hari (contingency)
 - ❌ Mobile app
 
 **Acceptance Criteria**:
-- User dapat browse, add to cart, checkout dalam 3 menit
-- Admin dapat kelola produk, view orders dalam 1 panel
-- Payment callback dari Midtrans terintegrasi (<5 menit delay)
+- Users can browse, add to cart, checkout within 3 minutes
+- Admin can manage products, view orders in 1 panel
+- Payment callback from Midtrans integrated (<5 minutes delay)
 
 ---
 
-### M03: Legal & SOW (1 hari)
+### M03: Legal & SOW (1 day)
 
 **Deliverable**: `contracts/SOW_CONTRACT.md`
 
@@ -92,11 +92,11 @@ Buffer: 6 hari (contingency)
 
 **IP Ownership**: Transfer to client after final payment
 
-**Warranty**: 60 hari bug fixes (excluding third-party API issues)
+**Warranty**: 60 days bug fixes (excluding third-party API issues)
 
 ---
 
-### M04: UI/UX Design (2 hari)
+### M04: UI/UX Design (2 days)
 
 **Deliverable**: `DESIGN.md` + Figma prototype
 
@@ -118,13 +118,13 @@ Buffer: 6 hari (contingency)
 5. Checkout (shipping address, payment method)
 6. Order confirmation (order ID, payment instructions)
 
-**Responsive**: Mobile-first (70% traffic dari Instagram mobile)
+**Responsive**: Mobile-first (70% traffic from Instagram mobile)
 
-**Tool**: Figma (free tier) + Vercel v0 untuk component prototyping
+**Tool**: Figma (free tier) + Vercel v0 for component prototyping
 
 ---
 
-### M05: Architecture & Specs (2 hari)
+### M05: Architecture & Specs (2 days)
 
 **Deliverable**: `PROJECT_LITE.md` (used instead of PRD+FSD)
 
@@ -207,7 +207,7 @@ GET    /api/admin/orders       (admin panel)
 
 ---
 
-### M06: Development (10 hari)
+### M06: Development (10 days)
 
 **Week 1 (Backend)**:
 - Day 1-2: Prisma setup, migrations, seed data (50 products)
@@ -238,7 +238,7 @@ GET    /api/admin/orders       (admin panel)
 
 ---
 
-### M07: Quality Assurance (2 hari)
+### M07: Quality Assurance (2 days)
 
 **Testing Approach**: Manual exploratory testing (no automated suite)
 
@@ -250,21 +250,21 @@ GET    /api/admin/orders       (admin panel)
 5. **Admin**: Can view/update order status
 
 **Bugs Found** (7 total):
-- **S1**: Payment webhook tidak update order status (race condition fix)
-- **S2**: Cart quantity dapat negative (validation fix)
-- **S3**: Mobile header menu tidak close after click (CSS fix)
-- **S2**: Product filter tidak persist saat pagination (URL state fix)
+- **S1**: Payment webhook did not update order status (race condition fix)
+- **S2**: Cart quantity could become negative (validation fix)
+- **S3**: Mobile header menu did not close after click (CSS fix)
+- **S2**: Product filter did not persist upon pagination (URL state fix)
 - **S3**: Image lazy loading flicker (preload fix)
-- **S3**: Typo di checkout form label (copy fix)
+- **S3**: Typo in checkout form label (copy fix)
 - **S3**: Footer social links broken (URL fix)
 
-**All bugs fixed**: 1.5 hari
+**All bugs fixed**: 1.5 days
 
 ---
 
-### M08: Data Migration (0.5 hari)
+### M08: Data Migration (0.5 days)
 
-**Data**: 50 SKUs dari spreadsheet client
+**Data**: 50 SKUs from client spreadsheet
 
 **Migration Script**:
 ```typescript
@@ -292,11 +292,11 @@ for (const record of records) {
 }
 ```
 
-**Validation**: Manual QA check 50 products di staging
+**Validation**: Manual QA check of 50 products in staging
 
 ---
 
-### M09: UAT (1 hari)
+### M09: UAT (1 day)
 
 **Testers**: Client + 2 staff members
 
@@ -316,7 +316,7 @@ for (const record of records) {
 
 ---
 
-### M10: Deployment (1 hari)
+### M10: Deployment (1 day)
 
 **Platform**: Vercel Pro ($20/month)
 
@@ -343,7 +343,7 @@ NEXTAUTH_URL="https://tokofashion.com"
 
 ---
 
-### M11: Handover (0.5 hari)
+### M11: Handover (0.5 days)
 
 **Deliverables**:
 - ✅ Source code (GitHub private repo)
@@ -365,7 +365,7 @@ NEXTAUTH_URL="https://tokofashion.com"
 - **GMV**: Rp 18.400.000
 - **AOV** (Average Order Value): Rp 145.000
 - **Conversion Rate**: 3.2% (vs Instagram DM 0.8%)
-- **Traffic**: 3.940 visitors (68% mobile)
+- **Traffic**: 3,940 visitors (68% mobile)
 - **Page Load**: 1.8s avg (Lighthouse 94)
 
 ### Month 3 (November 2026)
@@ -373,14 +373,14 @@ NEXTAUTH_URL="https://tokofashion.com"
 - **GMV**: Rp 52.100.000 (+183%)
 - **AOV**: Rp 153.000 (+5%)
 - **Conversion Rate**: 3.5%
-- **Traffic**: 9.710 visitors (+146%)
+- **Traffic**: 9,710 visitors (+146%)
 - **Repeat Customers**: 23%
 
 ---
 
 ## Client Feedback
 
-> "Sebelumnya manual banget via Instagram DM, sering miss payment confirmation. Sekarang otomatis semua, waktu aku buat manage orders jadi 5 jam/hari jadi 30 menit/hari. ROI balik dalam 2.5 bulan!"  
+> "Previously it was completely manual via Instagram DM, frequently missing payment confirmations. Now everything is automated; the time I spend managing orders dropped from 5 hours/day to 30 minutes/day. ROI was recovered in 2.5 months!"  
 > — Owner, Fashion Brand
 
 ---
@@ -447,7 +447,7 @@ Under budget                        : Rp  8.000.000
 4. Promo codes (seasonal campaigns)
 5. Product recommendations (AI-based)
 
-**Budget v2**: Rp 25.000.000 (15 hari development)
+**Budget v2**: Rp 25.000.000 (15 days development)
 
 ---
 
@@ -472,15 +472,15 @@ Under budget                        : Rp  8.000.000
 - ❌ M13 (Ops - not needed for MVP)
 
 **Time vs Estimate**:
-- Framework estimate: 29-478 jam (M06 guidance)
-- Actual: 168 jam (21 days × 8 hours)
+- Framework estimate: 29-478 hours (M06 guidance)
+- Actual: 168 hours (21 days × 8 hours)
 - **Accuracy**: Within range (lower bound, solo dev efficiency)
 
 ---
 
 ## Conclusion
 
-E-commerce MVP launched **on-time, under-budget**, generating **Rp 52M GMV** dalam 3 bulan. Framework Solo Project Lifecycle terbukti cocok untuk **solo developer + client commercial projects**.
+E-commerce MVP launched **on-time, under-budget**, generating **Rp 52M GMV** within 3 months. The Solo Project Lifecycle framework proved well-suited for **solo developer + client commercial projects**.
 
 **Key Success Factors**:
 1. Clear scope definition (M02 SCOPE_STATEMENT)

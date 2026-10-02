@@ -1,8 +1,8 @@
 # PM Tools Setup Guide (Jira, Linear, Notion, Productboard)
 
-**Target Audience**: Solo developers atau small teams yang butuh struktur project management tanpa overhead enterprise tools.
+**Target Audience**: Solo developers or small teams needing project management structure without enterprise tool overhead.
 
-**Philosophy**: Tools are servants, not masters. Pilih tool yang fit workflow kamu, bukan sebaliknya.
+**Philosophy**: Tools are servants, not masters. Pick the tool that fits your workflow, not the other way around.
 
 **Last Updated**: 2026-09-27
 
@@ -248,8 +248,8 @@ linear issue open LIN-123
 
 ### Why Notion?
 - All-in-one: Docs + Roadmap + Backlog + Knowledge Base
-- Powerful databases dengan formulas (auto-calculate RICE)
-- Great for solo dev yang butuh centralized workspace
+- Powerful databases with formulas (auto-calculate RICE)
+- Great for solo devs who need a centralized workspace
 - Free for solo use (up to 10 guest collaborators)
 
 ### 3.1 Initial Setup (30 minutes)
@@ -566,7 +566,7 @@ Notion has REST API → You can sync with external tools (GitHub Issues, Linear,
 2. Drag features to **Now / Next / Later** columns
 3. Share with stakeholders (public URL)
 
-**Limitation for solo dev**: Overkill jika tidak ada stakeholder eksternal atau banyak user feedback channels.
+**Limitation for solo dev**: Overkill if there are no external stakeholders or extensive user feedback channels.
 
 ---
 

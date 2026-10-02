@@ -1,57 +1,57 @@
-# Panduan Kriteria Kelayakan (Feasibility Criteria) Solo Developer
+# Solo Developer Feasibility Criteria Guide
 
-Dokumen ini adalah rubrik acuan objektif untuk mengevaluasi kelayakan ide perangkat lunak bagi solo developer sebelum menyepakati komitmen atau memulai koding.
-
----
-
-## 1. Empat Dimensi Kelayakan Solo Developer
-
-### 1.1 Kelayakan Teknis (Technical Feasibility)
-Sebagai solo developer, batas kegagalan teknis sangat tipis. Hindari "Research & Development (R&D) Trap".
-
-* **Skor 5 (Sangat Layak)**: Menggunakan stack teruji (Boring Tech), pustaka open-source populer (>5k bintang GitHub), API pihak ketiga memiliki dokumentasi resmi (OpenAPI/Swagger) dan SDK stabil.
-* **Skor 3 (Layak dengan Catatan)**: Membutuhkan integrasi sistem pihak ketiga yang dokumentasinya minim, atau ada proses background worker yang membutuhkan penanganan failover cermat.
-* **Skor 1 (Red Flag / Tidak Layak)**: Membutuhkan riset model AI dari nol, reverse-engineering API tertutup tanpa izin, integrasi hardware kustom tanpa simulator, atau dependensi yang belum stabil.
-
-### 1.2 Kelayakan Bandwidth & Operasional (Solo Bandwidth Feasibility)
-Solo dev memiliki batas kapasitas rata-rata **120–160 jam kerja produktif per bulan**.
-
-* **Skor 5 (Sangat Layak)**:
-  - Arsitektur berbasis PaaS/Serverless (Vercel, Supabase, Cloudflare, Railway) dengan zero server maintenance.
-  - Alur bisnis otomatis tanpa intervensi manual developer harian (self-service).
-* **Skor 3 (Layak dengan Catatan)**:
-  - Membutuhkan setup VPS mandiri (Docker, Nginx, cron backup) yang membutuhkan monitoring mingguan.
-* **Skor 1 (Red Flag / Tidak Layak)**:
-  - Membutuhkan penanganan tiket operasional manual 24/7.
-  - Arsitektur microservices terfragmentasi yang membebani debugging lokal.
-
-### 1.3 Kelayakan Regulasi & Hukum (Compliance & Legal Feasibility)
-Pelanggaran regulasi di Indonesia dapat berujung sanksi administratif hingga pidana.
-
-* **Regulasi Data Pribadi (UU PDP No. 27/2022)**:
-  - *Aturan*: Jika aplikasi mengumpulkan data KTP, data kesehatan, data finansial, atau data anak, wajib ada enkripsi saat transit dan at-rest, persetujuan eksplisit (consent), dan mekanisme penghapusan data.
-* **Regulasi Tanda Tangan Elektronik (UU ITE & PP 71/2019)**:
-  - *Tanda Tangan Tidak Tersertifikasi* (Canvas/Email OTP): Sah secara hukum per UU ITE No. 19/2016 Pasal 5 jo. PP 71/2019 (supersedes KUHPerdata 1865/1866 untuk transaksi elektronik), namun memiliki kekuatan pembuktian lebih lemah di pengadilan jika disangkal.
-  - *Tanda Tangan Tersertifikasi (PSrE)*: Wajib menggunakan vendor berizin Kominfo (Privy, VIDA, Peruri) jika menangani dokumen bernilai hukum tinggi / perbankan.
-* **Regulasi Finansial (Bank Indonesia / OJK)**:
-  - Solo developer **DILARANG KERAS** menyimpan data kartu kredit mentah di database. Wajib menggunakan Payment Gateway berlisensi (Midtrans, Xendit, Doku) yang memiliki sertifikasi PCI-DSS Level 1.
-* **Klausul Disclaimer Wajib**:
-  - Untuk produk legal-tech/health-tech: Aplikasi wajib menampilkan klausul bahwa sistem adalah penyedia teknologi pendukung, bukan pengganti advokat/dokter berlisensi.
-
-### 1.4 Kelayakan Komersial & Nilai Proyek (Economic Feasibility)
-* **Untuk Produk Mandiri (SaaS/Micro-app)**:
-  - *Uji Willingness to Pay*: Apakah calon pengguna sudah mengeluarkan uang untuk mengatasi masalah ini sekarang? Jika mereka saat ini menggunakan solusi gratisan dan enggan membayar, ide tersebut berisiko tinggi.
-* **Untuk Proyek Klien**:
-  - *Rasio Nilai terhadap Waktu*: Nilai kontrak dibagi estimasi jam kerja harus memenuhi batas minimum tarif profesional per jam Anda.
-  - Jika klien meminta sistem skala besar dengan budget skala kecil, proyek wajib ditolak atau dipangkas ke MVP dasar.
+This document is an objective reference rubric for evaluating the feasibility of a software idea for solo developers before agreeing to commitments or writing code.
 
 ---
 
-## 2. Sakelar Pembatal Otomatis (The "Kill Switch" Red Flags)
+## 1. Four Dimensions of Solo Developer Feasibility
 
-Jika menemukan salah satu kondisi di bawah ini, **BATALKAN PROYEK ATAU PIVOT SECARA TEGAS**:
+### 1.1 Technical Feasibility
+As a solo developer, your margin for technical failure is razor-thin. Avoid the "Research & Development (R&D) Trap".
 
-1. **Bypassing / Scraping Ilegal**: Klien meminta membuat bot/scraper untuk mengambil data dari platform pihak ketiga yang secara eksplisit melarang bot di Ketentuan Layanannya (Terms of Service).
-2. **Ketergantungan API Tanpa Izin**: Bisnis bergantung pada *undocumented/private API* milik platform lain yang bisa ditutup sewaktu-waktu.
-3. **Ekspektasi Tim Besar dengan Harga Solo**: Klien menuntut ketersediaan support 24/7 dan SLA 99.99% tanpa bersedia membayar biaya infrastruktur berlebih dan retainer bulanan.
-4. **Ketiadaan PIC Berwenang**: Klien tidak bisa menunjuk satu orang pengambil keputusan, sehingga arahan selalu berubah setiap kali rapat.
+* **Score 5 (Highly Feasible)**: Uses a proven stack (Boring Tech), popular open-source libraries (>5k GitHub stars), and third-party APIs with official documentation (OpenAPI/Swagger) and stable SDKs.
+* **Score 3 (Feasible with Reservations)**: Requires integrating third-party systems with minimal documentation, or background workers requiring careful failover handling.
+* **Score 1 (Red Flag / Infeasible)**: Requires training AI models from scratch, reverse-engineering private/closed APIs without authorization, custom hardware integration without simulators, or unstable dependencies.
+
+### 1.2 Solo Bandwidth & Operational Feasibility
+A solo developer has an average productive capacity of **120–160 productive hours per month**.
+
+* **Score 5 (Highly Feasible)**:
+  - Architecture based on PaaS/Serverless (Vercel, Supabase, Cloudflare, Railway) with zero server maintenance.
+  - Automated business workflows without daily manual developer intervention (self-service).
+* **Score 3 (Feasible with Reservations)**:
+  - Requires self-managed VPS setup (Docker, Nginx, cron backups) needing weekly monitoring.
+* **Score 1 (Red Flag / Infeasible)**:
+  - Requires 24/7 manual operational support tickets.
+  - Fragmented microservice architectures that burden local debugging.
+
+### 1.3 Compliance & Legal Feasibility
+Regulatory violations in Indonesia can lead to administrative sanctions and criminal liability.
+
+* **Personal Data Protection (UU PDP No. 27/2022)**:
+  - *Rule*: If the application collects national ID (KTP) data, health data, financial data, or children's data, encryption in transit and at rest, explicit consent, and data deletion mechanisms are mandatory.
+* **Electronic Signature Regulations (UU ITE & PP 71/2019)**:
+  - *Uncertified Signatures* (Canvas/Email OTP): Legally valid under UU ITE No. 19/2016 Article 5 jo. PP 71/2019 (supersedes Civil Code 1865/1866 for electronic transactions), but carry weaker evidentiary weight in court if contested.
+  - *Certified Signatures (PSrE)*: Mandatory to use Kominfo-licensed providers (Privy, VIDA, Peruri) when handling high-stakes legal or banking documents.
+* **Financial Regulations (Bank Indonesia / OJK)**:
+  - Solo developers are **STRICTLY PROHIBITED** from storing raw credit card details in databases. Always use licensed Payment Gateways (Midtrans, Xendit, Doku) with PCI-DSS Level 1 certification.
+* **Mandatory Disclaimer Clauses**:
+  - For legal-tech/health-tech products: Applications must prominently display disclaimers stating that the system is a supporting technology provider, not a substitute for licensed attorneys or doctors.
+
+### 1.4 Economic & Project Value Feasibility
+* **For Independent Products (SaaS/Micro-app)**:
+  - *Willingness to Pay Test*: Are prospective users already spending money to solve this problem today? If they currently rely on free workarounds and are unwilling to pay, the idea carries high financial risk.
+* **For Client Projects**:
+  - *Value-to-Time Ratio*: Contract value divided by estimated working hours must meet your minimum professional hourly rate.
+  - If a client demands enterprise-scale scope on a shoestring budget, the project must be rejected or trimmed down to a basic MVP.
+
+---
+
+## 2. Automatic "Kill Switch" Red Flags
+
+If any of the following conditions are encountered, **ABORT THE PROJECT OR PIVOT DECISIVELY**:
+
+1. **Bypassing / Illegal Scraping**: The client requests building a bot/scraper to extract data from third-party platforms that explicitly prohibit automated scraping in their Terms of Service.
+2. **Unauthorized API Dependencies**: The core business relies on an undocumented/private API of another platform that could be shut down at any moment.
+3. **Large Team Expectations at Solo Rates**: The client demands 24/7 support availability and 99.99% uptime SLAs without paying infrastructure surcharges and monthly retainers.
+4. **Lack of Authorized Decision Maker**: The client cannot designate a Single PIC, causing project requirements to change direction at every meeting.

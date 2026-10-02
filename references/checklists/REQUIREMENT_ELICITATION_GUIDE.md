@@ -1,72 +1,72 @@
-# Panduan Elisitasi Kebutuhan (Requirement Elicitation Guide)
+# Requirement Elicitation Guide
 
-Panduan wawancara praktis dan bank pertanyaan terarah untuk solo developer dalam menggali kebutuhan riil klien, membedah kompleksitas tersembunyi, dan mengamankan batasan lingkup sejak hari pertama.
-
----
-
-## 1. Bank Pertanyaan 5 Pilar Elisitasi (The 5-Pillar Question Bank)
-
-### Pilar 1: Motivasi Bisnis & Metrik Keberhasilan (Business Drivers & KPIs)
-*Tujuan: Memahami alasan sebenarnya di balik pembuatan perangkat lunak.*
-
-- *"Masalah operasional apa yang paling memakan waktu atau biaya perusahaan dalam 6 bulan terakhir?"*
-- *"Jika aplikasi ini sukses besar saat go-live, angka apa yang ingin Bapak/Ibu lihat berubah (contoh: biaya operasional turun 30%, waktu pemrosesan order turun dari 2 jam ke 5 menit)?"*
-- *"Apa dampak buruk terbesar bagi bisnis jika proyek ini gagal selesai tepat waktu?"*
-
-### Pilar 2: Alur Kerja Harian & Kasus Pengecualian (Daily Workflow & Edge Cases)
-*Tujuan: Memetakan proses nyata, bukan sekadar teori.*
-
-- *"Coba ceritakan skenario dari saat staf membuka sistem di pagi hari sampai pekerjaan selesai (End-to-End Happy Path)?"*
-- *"Apa skenario terburuk yang sering terjadi di lapangan (contoh: pelanggan membatalkan pesanan setelah bayar, jaringan internet mati saat kasir input transaksi, barang hilang saat kirim)?"*
-- *"Bagaimana staf saat ini menyelesaikan situasi darurat tersebut secara manual?"*
-
-### Pilar 3: Volume Operasional & Skalabilitas (Operational Volume & Concurrency)
-*Tujuan: Menentukan batas arsitektur dan kapasitas infrastruktur.*
-
-- *"Berapa perkiraan jumlah transaksi, dokumen, atau pesanan yang diproses dalam sehari pada bulan pertama?"*
-- *"Kapan biasanya terjadi lonjakan transaksi paling padat (peak hours: jam makan siang, tanggal gajian, atau promo akhir bulan)?"*
-- *"Berapa jumlah staf yang akan membuka aplikasi ini secara bersamaan di waktu yang sama?"*
-
-### Pilar 4: Ekosistem Sistem & Integrasi Pihak Ketiga (System Ecology)
-*Tujuan: Mendeteksi dependensi teknis berisiko tinggi.*
-
-- *"Apakah sistem ini harus bertukar data dengan software lain yang sudah dipakai kantor (contoh: SAP, Accurate, Zahir, CRM Salesforce, atau database MySQL lama)?"*
-- *"Apakah sistem tersebut memiliki dokumentasi API resmi (REST/GraphQL/SOAP) dan siapa tim teknis yang bisa dihubungi jika API mereka bermasalah?"*
-- *Catatan Solo Dev: Jika klien tidak memiliki tim teknis untuk sistem integrasi lama, jangan tawarkan integrasi dua arah otomatis.*
-
-### Pilar 5: Kepatuhan Hukum, Keamanan, & Retensi Data (Compliance & Governance)
-*Tujuan: Menjaga developer dari risiko pidana dan denda regulasi.*
-
-- *"Apakah ada data pribadi sensitif pelanggan yang disimpan (contoh: foto KTP, rekam medis, nomor rekening perbankan)?"*
-- *"Sesuai UU PDP No. 27/2022, data sensitif wajib dienkripsi dan memiliki jejak audit. Apakah ada kebijakan perusahaan mengenai batas waktu penyimpanan data (data retention policy) sebelum dihapus permanen?"*
+A practical interview guide and targeted question bank for solo developers to uncover real client requirements, dissect hidden complexities, and lock down scope boundaries from day one.
 
 ---
 
-## 2. Trik Taktis Solo Dev Menghadapi Klien (Tactical Probes)
+## 1. The 5-Pillar Question Bank
 
-### Teknik 1: Menghadapi "Cuma Bikin Fitur Simpel Kok"
-Klien sering mengira tombol di layar itu mudah dibuat.
-- **Pola Respons**:
-  > *"Tampilan tombolnya memang sederhana, Pak/Bu. Namun di belakang tombol tersebut, sistem harus memproses: (1) validasi stok secara bersamaan, (2) memotong saldo payment gateway, (3) mengirim webhook verifikasi, dan (4) mencatat jurnal audit ke basis data. Supaya aman dan tidak ada uang hilang, pengerjaannya butuh waktu pengujian khusus."*
+### Pillar 1: Business Drivers & KPIs
+*Goal: Understand the real motivations behind building the software.*
 
-### Teknik 2: Permainan Barter Fitur (The Feature Trade-Off)
-Jika klien mendadak meminta tambahan fitur baru saat sesi wawancara namun tidak ingin jadwal mundur.
-- **Pola Respons**:
-  > *"Fitur [A] yang baru Bapak/Ibu usulkan sangat bagus. Namun dengan kapasitas waktu rilis 6 minggu yang kita kunci, jika kita memasukkan fitur [A], kita harus memilih apakah menunda fitur [B] atau fitur [C] ke rilis berikutnya. Mana yang paling prioritas untuk operasional awal?"*
+- *"What operational problem has consumed the most company time or budget over the last 6 months?"*
+- *"If this application is a massive success upon go-live, what specific metrics do you want to see move (e.g., operating costs down 30%, order processing time reduced from 2 hours to 5 minutes)?"*
+- *"What is the single biggest downside risk to the business if this project fails to deliver on time?"*
 
-### Teknik 3: Deteksi Masalah Akar dengan "5 Whys"
-Klien sering meminta solusi yang keliru untuk masalah mereka (contoh: *"Kami butuh aplikasi mobile native iOS dan Android"*).
-- *Tanya*: *"Kenapa butuh aplikasi mobile?"* $\to$ *"Supaya kurir bisa update status di jalan."*
-- *Tanya*: *"Kenapa kurir butuh app store?"* $\to$ *"Supaya bisa buka di HP Android murah."*
-- *Kesimpulan Solo Dev*: Kebutuhan sebenarnya adalah **Web Responsif / PWA** yang ringan diakses browser ponsel, bukan dua aplikasi native terpisah yang butuh biaya maintenance ganda.
+### Pillar 2: Daily Workflow & Edge Cases
+*Goal: Map actual operational processes, not just theoretical assumptions.*
+
+- *"Can you walk through the scenario from the moment staff opens the system in the morning until the job is completed (End-to-End Happy Path)?"*
+- *"What are the worst-case scenarios that frequently occur in the field (e.g., customer cancels an order after payment, internet drops while the cashier inputs a transaction, package lost in transit)?"*
+- *"How do staff currently resolve those emergencies manually?"*
+
+### Pillar 3: Operational Volume & Concurrency
+*Goal: Establish architectural boundaries and infrastructure sizing.*
+
+- *"What is the estimated volume of transactions, documents, or orders processed daily during the first month?"*
+- *"When do peak traffic surges typically occur (e.g., lunch hours, payday, or month-end promotional events)?"*
+- *"How many concurrent staff members will be active in this application simultaneously?"*
+
+### Pillar 4: System Ecology & Third-Party Integrations
+*Goal: Identify high-risk technical dependencies early.*
+
+- *"Does this system need to exchange data with existing software in the company (e.g., SAP, Accurate, Zahir, Salesforce CRM, or legacy MySQL databases)?"*
+- *"Do those systems provide official API documentation (REST/GraphQL/SOAP), and who is the designated technical point of contact if their API experiences issues?"*
+- *Solo Dev Note: If the client does not have technical support for their legacy systems, do not commit to automated bidirectional integrations.*
+
+### Pillar 5: Compliance, Security, & Governance
+*Goal: Protect the developer from legal risks and regulatory penalties.*
+
+- *"Will sensitive personal data from customers be collected or stored (e.g., national ID photos, medical records, bank account numbers)?"*
+- *"Under data privacy regulations (UU PDP No. 27/2022), sensitive data requires encryption and audit trails. Does your company have an established data retention policy before data is permanently purged?"*
 
 ---
 
-## 3. Indikator Bahaya (Red Flags) Saat Discovery
+## 2. Tactical Probes for Solo Developers
 
-| Perilaku Klien Saat Discovery | Risiko Nyata Bagi Solo Developer | Tindakan Mitigasi |
+### Technique 1: Handling "It's Just a Simple Button"
+Clients often assume UI buttons are trivial to implement.
+- **Response Pattern**:
+  > *"The button appearance is straightforward. However, behind that button, the system must process: (1) concurrent stock validation, (2) payment gateway deductions, (3) verification webhook handling, and (4) audit log entries in the database. To ensure security and prevent financial losses, implementation requires thorough testing."*
+
+### Technique 2: The Feature Trade-Off
+When a client introduces new feature requests during discovery interviews without wanting deadlines to slip.
+- **Response Pattern**:
+  > *"The new feature [A] you suggested is valuable. However, given our fixed 6-week release window, incorporating feature [A] means deciding whether to defer feature [B] or feature [C] to the next release. Which of these is the higher priority for initial operations?"*
+
+### Technique 3: Uncovering Root Problems with the "5 Whys"
+Clients frequently ask for the wrong technical solution to their underlying problem (e.g., *"We need native iOS and Android mobile apps"*).
+- *Ask*: *"Why do you need mobile apps?"* $\to$ *"So couriers can update delivery statuses on the go."*
+- *Ask*: *"Why do couriers need the app store?"* $\to$ *"So they can access it on inexpensive Android phones."*
+- *Solo Dev Conclusion*: The true requirement is a lightweight, **Mobile-Responsive Web App / PWA** accessible via phone browsers, avoiding two separate native codebases and duplicate maintenance overhead.
+
+---
+
+## 3. Red Flags During Discovery
+
+| Client Behavior During Discovery | Real Risk to Solo Developer | Mitigation Action |
 | :--- | :--- | :--- |
-| **Klien tidak tahu proses bisnisnya sendiri** | Pengerjaan akan macet di tengah jalan karena klien terus mengubah alur. | Wajibkan klien memetakan flowchart manual sebelum developer menulis kode. |
-| **Menolak membagi prioritas (Semua fitur dibilang P0/Urgent)** | Beban kerja membengkak tidak masuk akal (*burnout*). | Terapkan batasan: Maksimal hanya 5 fitur utama yang berstatus *Must-Have*. Sisanya otomatis masuk *Should/Could*. |
-| **Menyembunyikan sistem lama yang rusak** | Klien berharap developer memperbaiki database lama mereka yang berantakan secara gratis. | Nyatakan secara tertulis: *Data cleaning & database recovery* dari sistem warisan dikenakan tarif terpisah per hari kerja. |
-| **PIC selalu berhalangan hadir saat wawancara** | Keputusan ditunda-tunda dan proyek molor berbulan-bulan. | Aktifkan klausul *Dependency SLA*: Tiap 3 hari tanpa respons rapat/feedback, jadwal rilis resmi digeser. |
+| **Client does not understand their own business processes** | Development stalls mid-flight as client continuously reshuffles workflows. | Require the client to map a manual flowchart before writing code. |
+| **Refusal to prioritize (claims all features are P0/Urgent)** | Unrealistic scope explosion leading to burnout. | Enforce boundaries: Maximum 5 core features classified as *Must-Have*. The rest automatically shift to *Should/Could*. |
+| **Hiding broken legacy systems** | Client expects developer to clean up and debug messy legacy databases for free. | State in writing: *Data cleaning & database recovery* from legacy systems is billed separately on a daily rate basis. |
+| **Designated PIC is perpetually unavailable for interviews** | Decisions are delayed, extending project timelines by months. | Activate the *Dependency SLA* clause: Every 3 business days without meeting attendance or feedback extends the official launch date accordingly. |

@@ -1,79 +1,79 @@
-# Panduan UI/UX Solo Developer: Efisiensi, Aksesibilitas, & Pembekuan Desain
+# Solo Developer UI/UX Guide: Efficiency, Accessibility, & Design Freeze
 
-Dokumen ini adalah pedoman praktis bagi solo developer dalam merancang antarmuka pengguna yang profesional, ergonomis, dan aksesibel tanpa terjebak dalam perangkap *pixel-pushing* atau revisi visual tanpa batas dari klien.
+This document provides practical guidelines for solo developers to design professional, ergonomic, and accessible user interfaces without falling into the traps of pixel-pushing or endless visual revisions from clients.
 
 ---
 
-## 1. Workflow `DESIGN.md`: Efisiensi Maksimal Solo Developer
+## 1. `DESIGN.md` Workflow: Maximum Efficiency for Solo Developers
 
-> **Pemberitahuan deprecasi:** Google Stitch deprecated as of 2024; use pure Markdown DESIGN.md workflow instead.
+> **Deprecation Notice:** Google Stitch deprecated as of 2024; use pure Markdown DESIGN.md workflow instead.
 
-Solo developer dilarang membuang waktu mendesain dua kali (di kanvas vektor lalu koding ulang). Gunakan `DESIGN.md` sebagai sumber kebenaran tunggal untuk keputusan visual pada seluruh skala proyek, dari Kecil hingga Enterprise.
+Solo developers should never waste time designing twice (first on a vector canvas, then recoding from scratch). Use `DESIGN.md` as the single source of truth for visual decisions across all project scales, from Small to Enterprise.
 
-### 1.1 Prosedur Tiga Langkah Menjalankan Workflow `DESIGN.md` Bebas Slop
-1. **Langkah 1: Kunci Design System (`DESIGN.md`)**:
-    - Isi template `DESIGN.md` terlebih dahulu dengan token warna, tipografi, radius, spacing, state interaktif, dan batasan aksesibilitas.
-    - Jadikan dokumen ini acuan bagi desain, implementasi, dan review agar tidak muncul gradien ungu, kartu mengambang, atau font yang tidak sesuai identitas produk.
-2. **Langkah 2: Formula Prompting Layar Presisi**:
-    - *Pola Prompt*:
-      > *"Bangun antarmuka [Nama Layar] untuk pengguna [Role]. Ikuti `DESIGN.md`. Tampilkan layout berbasis Tailwind yang bersih dan flat. Data yang ditampilkan: [Daftar Kolom/Field Riil]. Komponen: gunakan tabel data rapat, badge status warna semantik, dan tombol aksi bergaris batas 1px. Jangan gunakan drop-shadow tebal atau gradien warna."*
-3. **Langkah 3: Menghubungkan Layar Menjadi Prototipe Nyata**:
-    - Implementasikan komponen sesuai `DESIGN.md`.
-    - Hubungkan tautan routing: `<a href="/target-halaman">`.
-    - Deploy instan ke Vercel atau Cloudflare Pages sebagai live demo interaktif untuk klien.
+### 1.1 Three-Step Procedure for a Slop-Free `DESIGN.md` Workflow
+1. **Step 1: Lock the Design System (`DESIGN.md`)**:
+    - Populate the `DESIGN.md` template upfront with color tokens, typography, radius, spacing, interactive states, and accessibility constraints.
+    - Treat this document as the reference for design, implementation, and review to prevent purple gradients, floating cards, or fonts that clash with the product identity.
+2. **Step 2: Precision Screen Prompting Formula**:
+    - *Prompt Pattern*:
+      > *"Build the [Screen Name] interface for the [Role] user. Follow `DESIGN.md`. Display a clean, flat Tailwind-based layout. Displayed data: [List of Real Columns/Fields]. Components: use dense data tables, semantic status badges, and 1px bordered action buttons. Do not use heavy drop-shadows or color gradients."*
+3. **Step 3: Connecting Screens into a Real Prototype**:
+    - Implement components strictly according to `DESIGN.md`.
+    - Connect routing links: `<a href="/target-page">`.
+    - Deploy instantly to Vercel or Cloudflare Pages as an interactive live demo for the client.
 
-### 1.2 Matriks Penerapan `DESIGN.md` Sesuai Skala:
-| Skala | Cakupan Layar dengan `DESIGN.md` | Output Demo |
+### 1.2 `DESIGN.md` Implementation Matrix by Scale:
+| Scale | Screen Coverage with `DESIGN.md` | Demo Output |
 | :--- | :--- | :--- |
-| **Kecil (MVP / Freelance)** | **100% seluruh halaman** dalam Scope (tanpa pengurangan) | Tautan Live Staging Vercel instan |
-| **Menengah (B2B SaaS)** | **100% seluruh halaman** lengkap dengan varian 5 state | Live Staging Web interaktif penuh |
-| **Besar & Enterprise** | **100% seluruh halaman** mencakup seluruh user role & permission | Live Staging Web + Audit Kepatuhan Aksesibilitas WCAG AA |
+| **Small (MVP / Freelance)** | **100% of all pages** in Scope (no reductions) | Instant Live Vercel Staging link |
+| **Medium (B2B SaaS)** | **100% of all pages** complete with 5-state variants | Fully interactive Live Web Staging |
+| **Large & Enterprise** | **100% of all pages** covering all user roles & permissions | Live Web Staging + WCAG AA Accessibility Compliance Audit |
 
 ---
 
-## 2. Prinsip "Anti-Slop" Visual Solo Engineer
+## 2. Solo Engineer Visual "Anti-Slop" Principles
 
-Desain perangkat lunak yang matang dicirikan oleh **keterbacaan dan kejelasan interaksi**, bukan ornamen grafis berlebihan:
+Mature software design is characterized by **readability and interaction clarity**, not gratuitous graphic ornamentation:
 
-1. **Aturan 60-30-10 untuk Warna**:
-   - **60%**: Warna dasar netral (Putih `#FFFFFF` / Abu-abu terang `#F4F4F5` untuk background dan kontainer).
-   - **30%**: Tipografi gelap berdaya kontras tinggi (Hitam `#09090B` / Slate `#334155`).
-   - **10%**: Warna aksen utama brand klien (hanya untuk tombol tindakan utama, tautan aktif, dan penanda fokus).
-2. **Kepatuhan Kontras Teks (WCAG 2.1 AA)**:
-   - Jangan gunakan teks abu-abu pudar di atas background putih yang membuat mata lelah.
-   - Rasio kontras teks biasa ke background wajib minimal **4.5 : 1**.
-   - Rasio kontras teks besar (heading $> 18\text{px}$ bold) minimal **3.0 : 1**.
-3. **Penyelamat Pengalaman: Empty State & Skeleton Loader**:
-   - Jangan biarkan layar kosong melompong saat pengguna baru pertama kali mendaftar.
-   - Selalu siapkan ilustrasi ringkas, teks panduan, dan tombol Call-to-Action (*"Belum ada dokumen yang dibuat. Klik tombol di bawah untuk membuat dokumen pertama Anda."*).
-   - Gantikan spinner bulat berputar dengan *Skeleton Loader* yang menyerupai bentuk kartu/tabel agar layout halaman tidak bergeser (*zero layout shift*).
-
----
-
-## 3. Protokol Walk-Through Prototipe Bersama Klien
-
-Saat melakukan sesi demo prototipe dengan **Single PIC Klien**, arahkan percakapan pada alur fungsi, bukan debat selera artistik pribadi:
-
-### Taktik Mengarahkan Feedback:
-- **Jangan Tanya**: *"Gimana tampilannya, suka nggak dengan warnanya?"* (Pertanyaan ini memicu opini subjektif liar).
-- **Pertanyaan yang Benar**:
-  - *"Apakah urutan pengisian formulir ini sudah sesuai dengan SOP operasional staf Bapak/Ibu di kantor?"*
-  - *"Apakah informasi status dokumen di halaman ini sudah cukup jelas bagi staf untuk mengambil tindakan berikutnya?"*
-
-### Menghadapi Komentar Subjektif Klien:
-- **Kasus**: *"Mas, warnanya kurang jreng ya, coba dibuat merah menyala dan logonya diperbesar."*
-- **Respon Solo Dev**:
-  > *"Warna saat ini dirancang mengikuti panduan identitas resmi perusahaan Bapak/Ibu dan telah lolos uji rasio kontras aksesibilitas standar WCAG 2.1 AA. Hal ini penting agar mata staf tidak cepat lelah saat bekerja berjam-jam di depan layar. Jika ingin warna lebih menonjol, kita bisa terapkan pada tombol aksi utama tanpa mengubah warna dasar halaman."*
+1. **The 60-30-10 Rule for Color**:
+   - **60%**: Neutral base color (White `#FFFFFF` / Light Gray `#F4F4F5` for backgrounds and containers).
+   - **30%**: High-contrast dark typography (Black `#09090B` / Slate `#334155`).
+   - **10%**: Client's primary brand accent color (reserved exclusively for primary action buttons, active links, and focus rings).
+2. **Text Contrast Compliance (WCAG 2.1 AA)**:
+   - Do not use washed-out gray text on white backgrounds that causes eye fatigue.
+   - Regular body text contrast ratio to background must be at least **4.5 : 1**.
+   - Large text contrast ratio (headings $> 18\text{px}$ bold) must be at least **3.0 : 1**.
+3. **Experience Lifesavers: Empty States & Skeleton Loaders**:
+   - Never leave a screen completely blank when a new user first signs up.
+   - Always provide concise illustrations, guiding copy, and a Call-to-Action button (*"No documents created yet. Click the button below to create your first document."*).
+   - Replace generic spinning loading spinners with *Skeleton Loaders* mimicking the card/table layout to eliminate visual jarring (*zero layout shift*).
 
 ---
 
-## 4. Penegakan Protokol Pembekuan Desain (Design Freeze)
+## 3. Client Prototype Walkthrough Protocol
 
-Setelah Single PIC Klien menyetujui alur prototipe pada dokumen `DESIGN_SPEC.md`:
+During prototype demo sessions with the **Client's Single PIC**, direct conversations toward functional workflows rather than subjective artistic debates:
 
-1. **Kunci Seluruh Layout**:
-   - Status desain resmi dinyatakan **FROZEN**.
-   - Halaman Figma atau kode mockup dilabeli sebagai *Approved Baseline*.
-2. **Batas Toleransi Perubahan Pasca-Freeze**:
-   - *Boleh direvisi gratis*: Perubahan teks label (copywriting), penggantian warna tombol sedikit, atau penukaran ikon kecil.
-   - *Wajib masuk Change Request (CR)*: Pemindahan posisi kolom di database yang mengubah struktur form, penambahan halaman baru, perombakan alur multi-step wizard, atau perubahan arsitektur navigasi.
+### Feedback Steering Tactics:
+- **Don't Ask**: *"How does it look? Do you like the colors?"* (This invites wild subjective opinions).
+- **The Right Questions**:
+  - *"Does this form sequence match your staff's standard operating procedure at the office?"*
+  - *"Is the document status on this page clear enough for staff to take their next action?"*
+
+### Handling Subjective Client Comments:
+- **Scenario**: *"Could we make the colors pop more, maybe bright red, and make the logo bigger?"*
+- **Solo Dev Response**:
+  > *"The current palette follows your company's official brand guidelines and passes standard WCAG 2.1 AA accessibility contrast ratios. This is critical to prevent staff eye fatigue during hours of screen work. If you'd like certain actions to stand out more, we can emphasize the primary action buttons without changing the page's neutral foundation."*
+
+---
+
+## 4. Enforcing Design Freeze Protocols
+
+Once the Client's Single PIC approves the prototype workflow in `DESIGN_SPEC.md`:
+
+1. **Lock All Layouts**:
+   - Official design status transitions to **FROZEN**.
+   - Figma pages or mockup code are designated as the *Approved Baseline*.
+2. **Post-Freeze Change Tolerance**:
+   - *Free minor revisions*: Text label changes (copywriting), subtle button color tweaks, or minor icon swaps.
+   - *Mandatory Change Request (CR)*: Moving database column positions that alter form layouts, adding new pages, overhauling multi-step wizards, or changing navigation architecture.

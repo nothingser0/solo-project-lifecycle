@@ -1,6 +1,6 @@
 # Asset Management Guide: Images, SVG, WebP, Fonts & Static Files
 
-Panduan lengkap untuk mengelola asset frontend (gambar, icon, font, video) dengan fokus pada performance, accessibility, dan maintainability.
+Comprehensive guide for managing frontend assets (images, icons, fonts, video) with a focus on performance, accessibility, and maintainability.
 
 ---
 
@@ -478,7 +478,7 @@ module.exports = {
 
 ### 3.1 Clean & Minify SVG
 
-**Problem**: Export dari Figma/Illustrator sering punya metadata bloat (300KB → 30KB setelah cleanup).
+**Problem**: Exports from Figma/Illustrator often contain metadata bloat (300KB → 30KB after cleanup).
 
 **Solution**: SVGO (SVG Optimizer)
 ```bash

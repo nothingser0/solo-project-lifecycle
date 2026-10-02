@@ -1,7 +1,7 @@
 # Case Study: Internal CRM for Real Estate Agency
 
-**Project**: Customer Relationship Management untuk Agen Properti  
-**Timeline**: 4 minggu (28 hari kerja)  
+**Project**: Customer Relationship Management for Real Estate Agency  
+**Timeline**: 4 weeks (28 working days)  
 **Budget**: Rp 60.000.000  
 **Team**: 1 solo developer  
 **Tech Stack**: Laravel 11 + MySQL + Livewire + Filament Admin
@@ -10,17 +10,17 @@
 
 ## Executive Summary
 
-**Problem**: Real estate agency mengelola leads via spreadsheet Excel (data loss risk, no collaboration, manual follow-up)
+**Problem**: Real estate agency managing leads via Excel spreadsheets (data loss risk, no collaboration, manual follow-up)
 
-**Solution**: Internal CRM dengan lead tracking, property database, automated follow-up reminders
+**Solution**: Internal CRM with lead tracking, property database, automated follow-up reminders
 
 **Results**:
-- ✅ **Launch**: 28 hari (on-time)
+- ✅ **Launch**: 28 days (on-time)
 - ✅ **Users**: 8 agents + 2 managers
-- ✅ **Leads managed**: 420 leads (3 bulan pertama)
+- ✅ **Leads managed**: 420 leads (first 3 months)
 - ✅ **Conversion rate**: 12% → 18% (+50% improvement)
-- ✅ **Follow-up response time**: 2 hari → 6 jam (75% reduction)
-- ✅ **Data loss incidents**: 3/bulan → 0 (100% elimination)
+- ✅ **Follow-up response time**: 2 days → 6 hours (75% reduction)
+- ✅ **Data loss incidents**: 3/month → 0 (100% elimination)
 
 ---
 
@@ -29,15 +29,15 @@
 **Client**: Mid-sized real estate agency (10 staff, Rp 2.4B annual revenue)
 
 **Pain Points**:
-1. Leads tersebar di WhatsApp, email, Excel (no single source of truth)
-2. Agent lupa follow-up leads (opportunity loss)
-3. Manager tidak bisa track agent performance
-4. Data lead hilang saat staff keluar
-5. Duplikasi leads antar agents (internal conflict)
+1. Leads scattered across WhatsApp, email, Excel (no single source of truth)
+2. Agents forget to follow up with leads (lost opportunities)
+3. Managers cannot track agent performance
+4. Lead data lost when staff leave
+5. Duplicate leads between agents (internal conflict)
 
 **Business Impact**:
-- Estimated lost revenue: Rp 300M/year (dari late follow-up)
-- Staff time wasted: 2 jam/hari per agent (manual data entry)
+- Estimated lost revenue: Rp 300M/year (from late follow-ups)
+- Staff time wasted: 2 hours/day per agent (manual data entry)
 
 ---
 
@@ -56,33 +56,33 @@ Total              : Rp 60.000.000
 
 ### Timeline
 ```
-Week 1: Discovery + Legal      (7 hari)
-Week 2: Design + Specs         (7 hari)
-Week 3: Development            (7 hari)
-Week 4: Testing + Deployment   (7 hari)
+Week 1: Discovery + Legal      (7 days)
+Week 2: Design + Specs         (7 days)
+Week 3: Development            (7 days)
+Week 4: Testing + Deployment   (7 days)
 ```
 
 ---
 
 ## Module Execution
 
-### M00: Product Discovery (1 hari)
+### M00: Product Discovery (1 day)
 
 **Method**: Stakeholder interviews (2 agents + 1 manager)
 
 **Key Findings**:
 - **Lead sources**: 60% WhatsApp, 30% walk-in, 10% website form
 - **Average leads**: 50/month per agent
-- **Conversion cycle**: 30-90 hari (property sale)
+- **Conversion cycle**: 30-90 days (property sale)
 - **Critical features**: Lead assignment, follow-up reminders, property matching
 
-**Market Research**: Existing CRM (Salesforce, Zoho) terlalu kompleks & mahal (Rp 15M/year)
+**Market Research**: Existing CRMs (Salesforce, Zoho) are too complex & expensive (Rp 15M/year)
 
-**Decision**: Build custom internal CRM (TCO 4x lebih murah dalam 3 tahun)
+**Decision**: Build custom internal CRM (TCO 4x cheaper over 3 years)
 
 ---
 
-### M01: Idea & Feasibility (1 hari)
+### M01: Idea & Feasibility (1 day)
 
 **Deliverable**: `docs/pm/IDEA_BRIEF.md`
 
@@ -96,14 +96,14 @@ Week 4: Testing + Deployment   (7 hari)
 
 ---
 
-### M02: Discovery & Scope (2 hari)
+### M02: Discovery & Scope (2 days)
 
 **Deliverable**: `docs/pm/SCOPE_STATEMENT.md`
 
 **Must-Have Features** (MoSCoW):
 - **Leads Management**: Create, assign, status tracking (New → Contacted → Qualified → Won/Lost)
-- **Property Database**: Listings (dijual/disewa), price, location, agent assignment
-- **Follow-up Reminders**: Auto-notification via WhatsApp/SMS (1 hari, 3 hari, 7 hari intervals)
+- **Property Database**: Listings (for sale/rent), price, location, agent assignment
+- **Follow-up Reminders**: Auto-notification via WhatsApp/SMS (1 day, 3 days, 7 days intervals)
 - **Agent Dashboard**: My leads, upcoming follow-ups, conversion stats
 - **Manager Dashboard**: Team performance, lead pipeline, revenue forecast
 - **User Management**: Role-based access (Agent, Manager, Admin)
@@ -114,7 +114,7 @@ Week 4: Testing + Deployment   (7 hari)
 - Commission calculator
 
 **Could-Have**:
-- Mobile app (use mobile web responsive first)
+- Mobile app (use responsive mobile web first)
 - AI lead scoring
 
 **Won't-Have**:
@@ -127,14 +127,14 @@ Week 4: Testing + Deployment   (7 hari)
 - ❌ Property portal integration (99.co, Rumah123)
 
 **Acceptance Criteria**:
-- Agent dapat input lead baru dalam <2 menit
-- Manager dapat view semua leads & assign agents dalam 1 dashboard
-- System send otomatis follow-up reminder via WhatsApp
-- Zero data loss (database backup daily)
+- Agents can input a new lead in <2 minutes
+- Managers can view all leads & assign agents in 1 dashboard
+- System automatically sends follow-up reminders via WhatsApp
+- Zero data loss (daily database backup)
 
 ---
 
-### M03: Legal & SOW (2 hari)
+### M03: Legal & SOW (2 days)
 
 **Deliverable**: `contracts/SOW_CONTRACT.md`
 
@@ -149,15 +149,15 @@ Week 4: Testing + Deployment   (7 hari)
 
 **IP Ownership**: Client owns source code + database after final payment
 
-**Warranty**: 90 hari bug fixes + on-site training (2 sesi @ 2 jam)
+**Warranty**: 90 days bug fixes + on-site training (2 sessions @ 2 hours)
 
-**SLA Post-Warranty**: Rp 5.000.000/bulan (20 hours support, bug fixes, feature requests)
+**SLA Post-Warranty**: Rp 5.000.000/month (20 hours support, bug fixes, feature requests)
 
-**Data Privacy**: Compliant dengan UU PDP No. 27/2022 (data lead adalah data pribadi)
+**Data Privacy**: Compliant with UU PDP No. 27/2022 (lead data is personal data)
 
 ---
 
-### M04: UI/UX Design (3 hari)
+### M04: UI/UX Design (3 days)
 
 **Deliverable**: `DESIGN.md` + Figma prototype
 
@@ -184,11 +184,11 @@ Week 4: Testing + Deployment   (7 hari)
 
 **UI Framework**: Filament Admin (Laravel package, pre-built admin UI)
 
-**Mobile**: Responsive breakpoints (agents use tablets di lapangan)
+**Mobile**: Responsive breakpoints (agents use tablets in the field)
 
 ---
 
-### M05: Architecture & Specs (3 hari)
+### M05: Architecture & Specs (3 days)
 
 **Deliverable**: `docs/specs/FSD.md`
 
@@ -289,7 +289,7 @@ CREATE TABLE notifications (
 
 ---
 
-### M06: Development (14 hari)
+### M06: Development (14 days)
 
 **Week 1 (Backend + Auth)**:
 - Day 1-2: Laravel setup, migrations, seeders (test data)
@@ -355,7 +355,7 @@ protected function schedule(Schedule $schedule)
 
 ---
 
-### M07: Quality Assurance (3 hari)
+### M07: Quality Assurance (3 days)
 
 **Testing Strategy**: Manual + Feature tests
 
@@ -368,16 +368,16 @@ protected function schedule(Schedule $schedule)
 - 12 bugs found during manual testing (8 fixed immediately, 4 deferred to v2)
 
 **Critical Bugs Fixed**:
-- **S1**: Follow-up job tidak send WhatsApp (API token typo)
-- **S1**: Manager tidak bisa assign lead ke agent (permission missing)
-- **S2**: Lead status tidak update saat follow-up completed
+- **S1**: Follow-up job did not send WhatsApp (API token typo)
+- **S1**: Manager could not assign lead to agent (missing permission)
+- **S2**: Lead status did not update when follow-up was completed
 - **S2**: Property filter by price range broken (SQL query error)
 
 ---
 
-### M08: Data Migration (2 hari)
+### M08: Data Migration (2 days)
 
-**Source Data**: Excel spreadsheet (520 leads historis, 80 properties)
+**Source Data**: Excel spreadsheet (520 historical leads, 80 properties)
 
 **Migration Script**:
 ```php
@@ -401,17 +401,17 @@ foreach ($leads as $index => $lead) {
 
 ---
 
-### M09: UAT (2 hari)
+### M09: UAT (2 days)
 
 **Testers**: 3 agents + 1 manager
 
 **UAT Scenarios** (15 scenarios):
 - ✅ Agent login, view my leads
-- ✅ Create new lead (dari WhatsApp inquiry)
+- ✅ Create new lead (from WhatsApp inquiry)
 - ✅ Assign lead to another agent (manager only)
 - ✅ Add follow-up note, schedule next action
 - ✅ Mark follow-up as completed
-- ✅ Receive WhatsApp reminder 1 hari before follow-up
+- ✅ Receive WhatsApp reminder 1 day before follow-up
 - ✅ Change lead status (New → Qualified → Won)
 - ✅ Search properties by location, price, type
 - ✅ View property detail, assign to lead
@@ -426,7 +426,7 @@ foreach ($leads as $index => $lead) {
 
 ---
 
-### M10: Deployment (2 hari)
+### M10: Deployment (2 days)
 
 **Hosting**: Hetzner VPS (CPX31: 4 vCPU, 8GB RAM, Rp 450K/month)
 
@@ -460,18 +460,18 @@ FONNTE_TOKEN=xxx
 - ✅ Daily backup to R2 configured
 - ✅ Laravel Telescope enabled (debugging)
 
-**Launch**: 2026-09-25 (28 hari on-time)
+**Launch**: 2026-09-25 (28 days on-time)
 
 ---
 
-### M11: Handover & Training (3 hari)
+### M11: Handover & Training (3 days)
 
-**Training Sessions** (2 sesi):
-1. **Agent Training** (2 jam): Lead input, follow-up tracking, property search
-2. **Manager Training** (2 jam): Team dashboard, lead assignment, reports
+**Training Sessions** (2 sessions):
+1. **Agent Training** (2 hours): Lead input, follow-up tracking, property search
+2. **Manager Training** (2 hours): Team dashboard, lead assignment, reports
 
 **Deliverables**:
-- ✅ `docs/USER_MANUAL.md` (30 halaman, screenshot per fitur)
+- ✅ `docs/USER_MANUAL.md` (30 pages, screenshots per feature)
 - ✅ Admin credentials (3 roles: admin, manager, agent)
 - ✅ Database backup procedure
 - ✅ Server access (SSH, Forge dashboard)
@@ -481,16 +481,16 @@ FONNTE_TOKEN=xxx
 
 ---
 
-### M12: Warranty & Support (90 hari)
+### M12: Warranty & Support (90 days)
 
-**Warranty Period**: 90 hari (hingga 2026-12-28)
+**Warranty Period**: 90 days (until 2026-12-28)
 
 **Support Provided**:
 - Bug fixes: 5 minor bugs (UI glitches, notification delays)
 - Feature requests deferred to v2: 3 (email integration, commission calculator)
-- On-call support: 2 jam/minggu rata-rata
+- On-call support: 2 hours/week average
 
-**Post-Warranty SLA**: Client subscribe Rp 5M/bulan (started 2027-01-01)
+**Post-Warranty SLA**: Client subscribed at Rp 5M/month (started 2027-01-01)
 
 ---
 
@@ -499,34 +499,34 @@ FONNTE_TOKEN=xxx
 ### Quantitative Metrics (3 Months Post-Launch)
 
 **Lead Management**:
-- **Total leads**: 420 (vs 380 pre-CRM, +10% karena agents lebih rajin input)
+- **Total leads**: 420 (vs 380 pre-CRM, +10% because agents were more diligent in inputting)
 - **Conversion rate**: 18% (vs 12% pre-CRM, **+50% improvement**)
 - **Closed deals**: 76 (vs 46 pre-CRM, **+65% increase**)
-- **Revenue**: Rp 2.85B (3 bulan) vs Rp 1.8B (historical, **+58%**)
+- **Revenue**: Rp 2.85B (3 months) vs Rp 1.8B (historical, **+58%**)
 
 **Operational Efficiency**:
-- **Follow-up response time**: 6 jam avg (vs 2 hari, **75% reduction**)
-- **Data entry time**: 2 menit/lead (vs 10 menit manual Excel)
+- **Follow-up response time**: 6 hours avg (vs 2 days, **75% reduction**)
+- **Data entry time**: 2 min/lead (vs 10 min manual Excel)
 - **Manager oversight**: Real-time dashboard (vs weekly manual reports)
-- **Data loss incidents**: 0 (vs 3/bulan, **100% elimination**)
+- **Data loss incidents**: 0 (vs 3/month, **100% elimination**)
 
 **User Adoption**:
 - **Daily active users**: 9/10 staff (90%)
-- **Mobile usage**: 40% (agents di lapangan)
-- **Average session**: 15 menit/hari per agent
+- **Mobile usage**: 40% (agents in the field)
+- **Average session**: 15 min/day per agent
 
 ---
 
-### Qualitative Feedback
+## Qualitative Feedback
 
 **Agent (4.5/5 satisfaction)**:
-> "Sekarang gak pernah miss follow-up lagi. Reminder WhatsApp sangat membantu. Conversion naik karena follow-up tepat waktu."
+> "Now I never miss a follow-up. The WhatsApp reminders are extremely helpful. Conversions increased because follow-ups happen on time."
 
 **Manager (5/5 satisfaction)**:
-> "Dashboard real-time game changer. Bisa langsung lihat siapa agent yang performa bagus, mana lead yang stuck. Sebelumnya harus manual tanya satu-satu."
+> "The real-time dashboard is a game changer. I can instantly see which agents are performing well and which leads are stuck. Previously I had to manually ask each one."
 
 **Owner**:
-> "ROI balik dalam 2 bulan. Revenue naik 58%, productivity naik. Worth every penny."
+> "ROI was recovered in 2 months. Revenue increased 58%, productivity jumped. Worth every penny."
 
 ---
 
@@ -537,19 +537,19 @@ FONNTE_TOKEN=xxx
 1. **Filament Admin**: Saved 10+ days vs building admin UI from scratch
 2. **Laravel Breeze**: Auth scaffold in 1 hour vs 1 day custom
 3. **Queue Jobs**: Async WhatsApp sending (no blocking requests)
-4. **On-site Training**: 2 sesi hands-on lebih efektif vs manual PDF
-5. **Incremental Migration**: Import historis leads post-launch (not blocking)
+4. **On-site Training**: 2 hands-on sessions were more effective than a PDF manual
+5. **Incremental Migration**: Historical leads imported post-launch (not blocking)
 
 ### What Could Be Better ⚠️
 
-1. **No automated E2E tests**: Manual UAT took 2 hari (Dusk would've saved time)
-2. **WhatsApp API rate limit**: Hit 100 msg/hour cap (need upgrade plan)
-3. **Mobile app**: Agents request native app (mobile web sufficient for now)
-4. **Email integration**: Deferred to v2 but agents requested early
+1. **No automated E2E tests**: Manual UAT took 2 days (Dusk would have saved time)
+2. **WhatsApp API rate limit**: Hit 100 msg/hour cap (needed upgrade plan)
+3. **Mobile app**: Agents requested a native app (mobile web sufficient for now)
+4. **Email integration**: Deferred to v2 but agents requested it early
 
 ### What to Avoid ❌
 
-1. **Over-customizing Filament**: Stick to defaults (custom UI ate 3 extra days)
+1. **Over-customizing Filament**: Stick to defaults (custom UI consumed 3 extra days)
 2. **Real-time everything**: Not needed, hourly batch jobs sufficient
 3. **Complex permissions**: Initially 10 roles, simplified to 3 (agent, manager, admin)
 
@@ -576,8 +576,8 @@ FONNTE_TOKEN=xxx
 - ❌ M13 (Operations - post-warranty only)
 
 **Time vs Estimate**:
-- Framework estimate: 29-478 jam (M06 guidance)
-- Actual: 224 jam (28 days × 8 hours)
+- Framework estimate: 29-478 hours (M06 guidance)
+- Actual: 224 hours (28 days × 8 hours)
 - **Accuracy**: Within range (mid-range, internal tool complexity)
 
 ---
@@ -605,15 +605,15 @@ FONNTE_TOKEN=xxx
 2. Document management (upload SOW, contracts)
 3. Commission calculator (auto-calculate from closed deals)
 4. AI lead scoring (predict conversion likelihood)
-5. Multi-branch support (expansion to 2 cabang)
+5. Multi-branch support (expansion to 2 branches)
 
-**Budget**: Rp 35.000.000 (20 hari development)
+**Budget**: Rp 35.000.000 (20 days development)
 
 ---
 
 ## Conclusion
 
-Internal CRM launched **on-time, on-budget**, meningkatkan **conversion rate 50%** dan **revenue 58%** dalam 3 bulan. Laravel + Filament terbukti cocok untuk **internal tools dengan rapid development needs**.
+Internal CRM launched **on-time, on-budget**, increasing **conversion rate by 50%** and **revenue by 58%** within 3 months. Laravel + Filament proved ideal for **internal tools with rapid development needs**.
 
 **Key Success Factors**:
 1. Clear pain points → focused feature set
