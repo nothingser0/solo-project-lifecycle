@@ -23,13 +23,13 @@ cp templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md PROJECT_LITE.md
 ---
 
 ### 2. DESIGN.md
-**Path**: `../../02-design/DESIGN_TEMPLATE.md`  
+**Path**: `../../02-design/DESIGN_MD_TEMPLATE.md`  
 **Purpose**: Design tokens (colors, typography, spacing)  
 **Time**: 30 minutes  
 **Output**: `DESIGN.md` (project root)
 
 ```bash
-cp templates/02-design/DESIGN_TEMPLATE.md DESIGN.md
+cp templates/02-design/DESIGN_MD_TEMPLATE.md DESIGN.md
 # Define 1 primary color, 1-2 fonts, 4-6 spacing values
 ```
 

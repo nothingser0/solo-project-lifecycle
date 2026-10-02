@@ -103,7 +103,7 @@ cp templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md contracts/WARRANTY_P
 ---
 
 ### 5. SLA_RETAINER.md
-**Path**: `../../08-maintenance-ops/SLA_RETAINER_TEMPLATE.md`  
+**Path**: `../../08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`  
 **Purpose**: Ongoing monthly support contract  
 **Time**: 1 hour  
 **When**: Optional, if client wants post-warranty support
@@ -111,7 +111,7 @@ cp templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md contracts/WARRANTY_P
 **Output**: `contracts/SLA_RETAINER.md`
 
 ```bash
-cp templates/08-maintenance-ops/SLA_RETAINER_TEMPLATE.md contracts/SLA_RETAINER.md
+cp templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md contracts/SLA_RETAINER.md
 # Define: monthly hours (e.g., 20 hours/month), hourly rate, rollover policy
 ```
 

@@ -33,7 +33,7 @@ cp templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md docs/specs/PRD.md
 ---
 
 ### 2. FSD.md (Functional Specification Document)
-**Path**: `../../03-architecture-specs/FSD_TEMPLATE.md`  
+**Path**: `../../03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`  
 **Purpose**: Technical implementation spec (tech stack, DB schema, API contracts)  
 **Time**: 6 hours  
 **When**: After PRD approved, before coding
@@ -41,7 +41,7 @@ cp templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md docs/specs/PRD.md
 **Output**: `docs/specs/FSD.md`
 
 ```bash
-cp templates/03-architecture-specs/FSD_TEMPLATE.md docs/specs/FSD.md
+cp templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md docs/specs/FSD.md
 # Fill: tech stack decisions, database schema, API endpoint contracts
 ```
 
@@ -85,46 +85,9 @@ cp templates/05-data-migration/DB_SCHEMA_TEMPLATE.sql db/schema.sql
 
 ---
 
-### 4. API_CONTRACT.md
-**Path**: `../../03-architecture-specs/API_CONTRACT_TEMPLATE.md`  
-**Purpose**: Detailed API endpoint documentation (OpenAPI-style)  
-**Time**: 3 hours  
-**When**: Frontend & backend split (different developers)
-
-**Output**: `docs/specs/API_CONTRACT.md`
-
-```bash
-cp templates/03-architecture-specs/API_CONTRACT_TEMPLATE.md docs/specs/API_CONTRACT.md
-# Document all endpoints: method, path, request schema, response schema, errors
-```
-
-**Format** (each endpoint):
-```markdown
-### POST /api/auth/login
-
-**Request**:
-```json
-{ "email": "user@example.com", "password": "secret123" }
-```
-
-**Response 200**:
-```json
-{ "token": "jwt...", "user": { "id": 1, "email": "user@example.com" } }
-```
-
-**Errors**:
-- 400: Invalid email format
-- 401: Wrong password
-- 429: Rate limit exceeded (5 attempts/minute)
-```
-
-**Tools**: Generate from code comments with `tsdoc` or manual
-
----
-
 ## Advanced Specs (High-Traffic Only)
 
-### 5. SYSTEM_DESIGN_DOC.md
+### 4. SYSTEM_DESIGN_DOC.md
 **Path**: `../../03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md`  
 **Purpose**: Scalability design (load balancing, caching, high availability)  
 **Time**: 3 hours  
@@ -147,7 +110,7 @@ cp templates/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md docs/specs/SYST
 
 ---
 
-### 6. CAPACITY_PLANNING.md
+### 5. CAPACITY_PLANNING.md
 **Path**: `../../03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md`  
 **Purpose**: Resource sizing (CPU, RAM, storage) based on traffic projection  
 **Time**: 2 hours  
@@ -160,7 +123,7 @@ cp templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md docs/specs/CAPA
 
 ---
 
-### 7. DISASTER_RECOVERY_PLAN.md
+### 6. DISASTER_RECOVERY_PLAN.md
 **Path**: `../../03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md`  
 **Purpose**: RPO/RTO targets, backup procedures, failover runbook  
 **Time**: 2 hours  
@@ -178,15 +141,15 @@ cp templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md docs/specs
 | Project Type | Must Have | Recommended | Skip |
 |-------------|-----------|-------------|------|
 | **Solo MVP** | None (use PROJECT_LITE) | - | PRD, FSD, SYSTEM_DESIGN |
-| **Team 2-4 devs** | PRD, FSD, DB_SCHEMA | API_CONTRACT | SYSTEM_DESIGN, CAPACITY |
-| **Team 5+ devs** | PRD, FSD, DB_SCHEMA, API_CONTRACT | SYSTEM_DESIGN | CAPACITY, DISASTER_RECOVERY |
+| **Team 2-4 devs** | PRD, FSD, DB_SCHEMA | SYSTEM_DESIGN | CAPACITY, DISASTER_RECOVERY |
+| **Team 5+ devs** | PRD, FSD, DB_SCHEMA, SYSTEM_DESIGN | CAPACITY | DISASTER_RECOVERY |
 | **Enterprise** | All | - | - |
 
 **Time investment**:
 - Solo: 0 hours (use PROJECT_LITE)
 - Team 2-4: 12 hours (PRD + FSD + DB_SCHEMA)
-- Team 5+: 18 hours (add API_CONTRACT + SYSTEM_DESIGN)
-- Enterprise: 25+ hours (all specs)
+- Team 5+: 15 hours (add SYSTEM_DESIGN)
+- Enterprise: 22+ hours (all specs)
 
 ---
 
@@ -196,12 +159,9 @@ cp templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md docs/specs
 graph LR
     A[PRD approved] --> B[Write FSD]
     B --> C[Extract DB_SCHEMA.sql]
-    B --> D[Extract API_CONTRACT.md]
-    C --> E[Run migrations]
-    D --> F[Generate API client]
-    E --> G[Backend coding]
-    F --> G
-    G --> H[Frontend coding]
+    C --> D[Run migrations]
+    D --> E[Backend coding]
+    E --> F[Frontend coding]
 ```
 
 **Critical path**: PRD (4h) → FSD (6h) → DB_SCHEMA (2h) → Code
@@ -215,13 +175,13 @@ graph LR
 ❌ **Writing specs during coding** - Specs should be complete before first line of code  
 ❌ **Copy-paste from ChatGPT** - LLM-generated specs lack business context  
 ❌ **Skipping DB schema** - "We'll figure out schema as we go" → migration hell  
-❌ **No API contracts** - Frontend/backend integration becomes trial-and-error  
 ❌ **Over-speccing MVP** - 25-hour spec for 2-week MVP (spec takes longer than build)
 
 ✅ **Do this instead**:
 - Write specs collaboratively (PM + tech lead + designer)
 - Review specs with team before approval (catch gaps early)
 - Use PROJECT_LITE for MVPs, upgrade to PRD+FSD when team grows
+- Document API contracts in FSD (no separate API_CONTRACT.md needed)
 - Update specs when reality diverges (living documents, not museum artifacts)
 
 ---

@@ -113,7 +113,7 @@ cp templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md docs/INCIDENT_RESP
 ---
 
 ### 5. SLA_RETAINER.md
-**Path**: `../../08-maintenance-ops/SLA_RETAINER_TEMPLATE.md`  
+**Path**: `../../08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`  
 **Purpose**: Ongoing support contract (monthly retainer)  
 **Time**: 1 hour  
 **When**: Client wants post-warranty support
@@ -122,7 +122,7 @@ cp templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md docs/INCIDENT_RESP
 
 ```bash
 mkdir -p contracts
-cp templates/08-maintenance-ops/SLA_RETAINER_TEMPLATE.md contracts/SLA_RETAINER.md
+cp templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md contracts/SLA_RETAINER.md
 # Define: monthly fee, hour bucket, SLA per severity
 ```
 

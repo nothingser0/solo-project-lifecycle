@@ -142,14 +142,14 @@ cp templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md docs/DEPLOYMENT
 ---
 
 ### 7. DESIGN.md
-**Path**: `../02-design/DESIGN_TEMPLATE.md`  
+**Path**: `../02-design/DESIGN_MD_TEMPLATE.md`  
 **Purpose**: Design tokens (colors, typography, spacing)  
 **Time**: 30 minutes  
 **Must-use**: Every project with UI  
 **Output**: `DESIGN.md` (project root)
 
 ```bash
-cp templates/02-design/DESIGN_TEMPLATE.md DESIGN.md
+cp templates/02-design/DESIGN_MD_TEMPLATE.md DESIGN.md
 ```
 
 ---
@@ -168,14 +168,14 @@ cp templates/02-design/DESIGN_SPEC_TEMPLATE.md docs/specs/DESIGN_SPEC.md
 ---
 
 ### 9. FSD.md
-**Path**: `../03-architecture-specs/FSD_TEMPLATE.md`  
+**Path**: `../03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`  
 **Purpose**: Functional Spec (tech stack, DB schema, API)  
 **Time**: 6 hours  
 **Must-use**: Team projects (2+ developers)  
 **Output**: `docs/specs/FSD.md`
 
 ```bash
-cp templates/03-architecture-specs/FSD_TEMPLATE.md docs/specs/FSD.md
+cp templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md docs/specs/FSD.md
 ```
 
 ---
@@ -237,14 +237,14 @@ cp templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md docs/pm/SCOPE_S
 ---
 
 ### 14. SLA_RETAINER.md
-**Path**: `../08-maintenance-ops/SLA_RETAINER_TEMPLATE.md`  
+**Path**: `../08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`  
 **Purpose**: Monthly support contract  
 **Time**: 1 hour  
 **Output**: `contracts/SLA_RETAINER.md`
 
 ```bash
 mkdir -p contracts
-cp templates/08-maintenance-ops/SLA_RETAINER_TEMPLATE.md contracts/SLA_RETAINER.md
+cp templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md contracts/SLA_RETAINER.md
 ```
 
 ---
