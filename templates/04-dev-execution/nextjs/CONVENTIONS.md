@@ -7,7 +7,7 @@
 ## File Naming
 
 1. **Format**: `kebab-case` for all files
-   - ✅ `user-profile.tsx`, `auth-middleware.ts`
+   - ✅ `user-profile.tsx`, `auth-proxy.ts`
    - ❌ `UserProfile.tsx`, `authMiddleware.ts`
 
 2. **Component Names**: PascalCase for React components

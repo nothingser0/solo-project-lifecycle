@@ -126,7 +126,7 @@ my-app/
 │   └── forms/
 ├── prisma/
 │   └── schema.prisma
-└── middleware.ts         # Route protection
+└── proxy.ts         # Route protection
 ```
 
 ---
@@ -237,7 +237,7 @@ export default async function DocumentsPage() {
 
 ### Middleware for Route Protection
 
-**middleware.ts**:
+**proxy.ts**:
 ```typescript
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -478,7 +478,7 @@ Use `'use client'` for components with interactivity (forms, buttons)
 
 ### Middleware Not Working
 
-Check `middleware.ts` `matcher` config
+Check `proxy.ts` `matcher` config
 
 ---
 

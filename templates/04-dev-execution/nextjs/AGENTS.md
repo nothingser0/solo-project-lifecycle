@@ -1,5 +1,25 @@
 # AI Agent Guidelines - Next.js Project
 
+## CRITICAL: Read Official Documentation First
+
+**BEFORE implementing any feature, check official docs for current syntax:**
+
+- **Next.js Docs**: https://nextjs.org/docs (check version-specific pages)
+- **React Docs**: https://react.dev
+- **Prisma Docs**: https://www.prisma.io/docs
+- **NextAuth Docs**: https://authjs.dev
+
+**Why**: Framework syntax changes between versions. This project uses:
+- Next.js 15.x (check ARCHITECTURE.md for exact version)
+- Breaking changes exist in 16.x (middleware→proxy)
+
+**When uncertain about syntax:**
+1. Read official docs for installed version
+2. Check migration guides for breaking changes
+3. Verify with type-checking before committing
+
+---
+
 ## Code Style Rules
 1. **TypeScript Strict Mode**: No `any` types. Use proper interfaces.
 2. **Server Components**: Default to Server Components, use 'use client' only when needed.

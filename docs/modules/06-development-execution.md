@@ -26,9 +26,17 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Verify stack decision matches Module 05 approval (GATE check)
                                     │
                                     ▼
+[ STEP 0.5: Framework Version Gate (MANDATORY) ]
+  • Run version gate script: ./scripts/verify-framework-version.sh
+  • Verify installed framework version matches FSD locked version
+  • If mismatch → FAIL with downgrade/upgrade options
+  • If major version mismatch → Show breaking changes
+  • Example: FSD locked Next.js 15, but Next.js 16 installed → FAIL
+                                    │
+                                    ▼
 [ STEP 1: Repository Initiation & Scaffold (Stack-Adapted) ]
   • Execute scaffold command for chosen stack:
-    - Next.js: pnpm create next-app@latest
+    - Next.js: pnpm create next-app@15.0.3 (use FSD pinned version, NOT @latest)
     - Laravel: composer create-project laravel/laravel --prefer-dist
     - Django: django-admin startproject (verify Django version: pip install django>=4.2)
     - Go: mkdir + go mod init
