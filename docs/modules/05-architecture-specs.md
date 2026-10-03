@@ -66,6 +66,29 @@ This module is the fifth phase in the software project lifecycle for solo develo
 
 **MANDATORY BEFORE generating FSD.** There is no "default stack" — all decisions are context-driven.
 
+### Pre-Questionnaire: Version Check (NEW)
+
+**Before asking tech stack questions, run real-time version check**:
+
+```bash
+# Check current ecosystem state for primary frameworks
+./scripts/check-package-versions.sh nextjs
+# OR
+.\scripts\check-package-versions.ps1 -Framework nextjs
+```
+
+**Why**: Model knowledge cutoff = April 2024. Current date = October 2026 (18 month gap). Real-time npm queries ensure recommendations use current stable versions, catch deprecations, and avoid incompatible package combinations.
+
+**Output provides**:
+- Current stable versions (Next.js, React, Tailwind, Zod, etc.)
+- Deprecation warnings (@supabase/auth-helpers-nextjs → @supabase/ssr)
+- Compatibility analysis (Zod v3 vs v4, Tailwind v3 vs v4)
+- Recommended scaffold commands with pinned versions
+
+**Use version check output to inform FSD.md generation in STEP 1.**
+
+---
+
 The agent must ask the user these 8 questions and wait for answers before recommending stack options:
 
 ### Question 1: Team Expertise

@@ -1,8 +1,7 @@
 # Module 04: UI/UX Design & Prototyping (Google Stitch Universal Engine)
 
-> ⚠️ **MARKDOWN-FIRST WORKFLOW (2026)**: This skill defaults to markdown-only specifications.  
-> Google Stitch (AI prototyping tool, launched 2025) remains available via MCP but is **optional**.  
-> **Default workflow**: Create `DESIGN.md` + `DESIGN_SPEC.md` only (Stitch prototype optional).  
+> **PROTOTYPING OPTIONS (2026)**: Multiple approaches available - Markdown-only, Google Stitch, AI tools (v0/Bolt), or design tools (Figma).
+> **Default workflow**: Choose based on project context (see STEP 2).
 
 > - `references/solo/SOLO_UIUX_GUIDE.md` (Solo dev UI/UX efficiency guide, Component library selection, WCAG contrast, Prototype walkthrough)
 > - `references/pm/PM_USER_TESTING_GUIDE.md` (User testing facilitation, Usability test plan)
@@ -13,7 +12,7 @@
 
 This module translates `SCOPE_STATEMENT.md` into three documents that serve as the UI source of truth: `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`. Its focus is visual standardization, shared components, all pages/sub-pages that are genuinely in-scope, responsive behavior, accessibility, and acceptance criteria.
 
-> **Default workflow:** do not use Google Stitch. Stitch is only an optional addition if the user chooses it and the result passes review. Markdown descriptions are not a shortcut; for a solo developer, consistent specifications are more useful than an inconsistent AI prototype.
+> **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (Stitch/AI/Figma) when client needs visual sign-off.
 
 > **Output gate:** Module 04 does not produce UI code, Stitch prompts, Screen IDs, or live prototypes by default. Code is created in Module 06 based on these three documents.
 
@@ -30,19 +29,21 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
   • Inter & JetBrains Mono Typography, Flat 1px Border, Zero Gradient
                                 │
                                 ▼
-[ STEP 2: Project Initiation & Design System in Google Stitch ]
-  • Create Project Container (stitch_create_project)
-  • Upload DESIGN.md (stitch_upload_design_md & stitch_create_design_system_from_design_md)
+[ STEP 2: Choose Prototyping Approach (Context-Driven) ]
+  • Markdown-only: DESIGN.md + DESIGN_SPEC.md (fast, solo projects)
+  • Google Stitch: Visual builder with design system upload
+  • AI prototype: v0.dev / Bolt.new (AI-generated components)
+  • Design tool: Figma Dev Mode (professional handoff)
                                 │
                                 ▼
-[ STEP 3: Real Data-Based Screen Generation (stitch_generate_screen_from_text) ]
-  • Generate Each Main Page (Login, Dashboard, Form, Detail)
+[ STEP 3: Screen Specification (5-State Matrix) ]
+  • Document/Generate Each Main Page (Login, Dashboard, Form, Detail)
   • Mandatory Inclusion of 5 States: Default, Loading Skeleton, Empty, Error, Success
                                 │
                                 ▼
-[ STEP 4: Navigation Integration & Live Staging Clickable Prototype ]
-  • Connect Cross-Screen Links (<a href="...">)
-  • Instant Deployment to Live Preview URL (Vercel / Cloudflare Pages / Stitch Viewer)
+[ STEP 4: Navigation & Prototype (If Interactive Path Chosen) ]
+  • Connect screen flows and user journeys
+  • Deploy to staging URL (if interactive prototype built)
                                 │
                                 ▼
 [ STEP 5: Walk-Through Session & Design Freeze ]
@@ -55,6 +56,152 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
 
 ---
 
+## 1A. Prototyping Approach Selection (STEP 2)
+
+**Choose approach based on project context**:
+
+### Option A: Markdown-Only (FASTEST - Solo Projects)
+**Use when**:
+- Solo developer project (no client visual approval needed)
+- Budget <$5K USD (time = money)
+- Simple UI (forms, tables, dashboards)
+
+**Deliverables**:
+- ✅ DESIGN.md (tokens)
+- ✅ DESIGN_SPEC.md (5-state matrix per screen)
+- ❌ No interactive prototype
+
+**Pros**: Fastest (2-4 hours), no tool dependency, forces clear specification
+**Cons**: No visual preview before coding, client may request changes post-M06
+
+---
+
+### Option B: Google Stitch (Visual Builder)
+**Use when**:
+- Need rapid visual prototyping (drag-and-drop)
+- Client requires interactive demo
+- Design system can be uploaded programmatically
+
+**Tools**: Google Stitch (MCP integration available)
+
+**Workflow**:
+1. Generate DESIGN.md (tokens, guidelines)
+2. Create Stitch project: `stitch_create_project`
+3. Upload design system: `stitch_upload_design_md`
+4. Generate screens: `stitch_generate_screen_from_text`
+5. Connect navigation, deploy to Stitch Viewer
+6. Document final specs in DESIGN_SPEC.md
+
+**Deliverables**:
+- ✅ DESIGN.md (tokens)
+- ✅ DESIGN_SPEC.md (5-state matrix)
+- ✅ Stitch prototype URL
+
+**Pros**: Fast iteration, visual drag-and-drop, instant preview
+**Cons**: MCP tool dependency, proprietary platform
+
+> ⚠️ **STITCH TOOL TROUBLESHOOTING**:
+> If Stitch MCP tools fail (authentication/network):
+> - Check API key in `opencode.json` / `STITCH_API_KEY`
+> - Report technical issues to user (don't skip Stitch unilaterally)
+> - Fallback to Option C (AI prototype) only if Stitch unavailable
+
+---
+
+### Option C: AI-Powered Prototype (Modern Alternative)
+**Use when**:
+- Stitch unavailable or user prefers code-based output
+- Need production-ready component code
+- Client needs visual sign-off before M06
+
+**Tools** (choose one):
+
+#### 1. v0.dev (Vercel)
+```bash
+Pros: Next.js/React output, Tailwind built-in, production-ready code
+Cons: Vercel account required, rate limits
+Use: Next.js projects (70% of solo projects)
+```
+
+#### 2. Bolt.new (StackBlitz)
+```bash
+Pros: Multiple frameworks (Vue/Svelte/React), instant deploy
+Cons: WebContainers dependency, limited backend
+Use: Frontend-heavy apps, rapid iteration
+```
+
+#### 3. Lovable.dev (formerly GPT Engineer)
+```bash
+Pros: Database schema + API + UI generation
+Cons: Opinionated stack, subscription required
+Use: CRUD apps with clear data model
+```
+
+**Workflow**:
+1. Generate DESIGN.md first (tokens, guidelines)
+2. Feed DESIGN.md to AI tool with screen descriptions
+3. Iterate 2-3 rounds (colors, layout, components)
+4. Export prototype URL for client review
+5. Document final design in DESIGN_SPEC.md
+
+**Deliverables**:
+- ✅ DESIGN.md (tokens)
+- ✅ DESIGN_SPEC.md (5-state matrix)
+- ✅ Interactive prototype URL
+
+---
+
+### Option D: Design Tool Workflow (Complex UI)
+**Use when**:
+- Complex visual design (brand-heavy, marketing site)
+- Designer on team (handoff to dev)
+- Client requires Figma design files
+
+**Tools**:
+
+#### 1. Figma Dev Mode
+```bash
+Pros: Industry standard, code export, design tokens
+Cons: Subscription required ($15/mo), manual design work
+Use: Professional client work, complex UI systems
+```
+
+#### 2. Penpot (Open-Source Figma Alternative)
+```bash
+Pros: Free, self-hosted, SVG-native
+Cons: Smaller ecosystem, fewer plugins
+Use: Budget-conscious projects, design freedom
+```
+
+**Workflow**:
+1. Create design system (colors, typography, components)
+2. Design all screens with 5-state variants
+3. Export design tokens to DESIGN.md
+4. Document specs in DESIGN_SPEC.md
+5. Share Figma/Penpot link for client review
+
+**Deliverables**:
+- ✅ DESIGN.md (tokens)
+- ✅ DESIGN_SPEC.md (specifications)
+- ✅ Figma file / Penpot project
+
+---
+
+### Decision Matrix
+
+| Criteria | Markdown | Stitch | AI Prototype | Design Tool |
+|----------|----------|--------|--------------|-------------|
+| Time | 2-4 hours | 4-8 hours | 1-2 days | 2-3 days |
+| Cost | Free | Free* | $0-50 | $15-50/mo |
+| Client demo | ❌ | ✅ | ✅ | ✅ |
+| Code output | N/A | HTML | React/Vue | Manual |
+| Tool dependency | None | MCP | Web | Desktop app |
+| Best for | Solo MVP | Quick visual | Modern stack | Professional |
+
+*Stitch: Free if MCP available; otherwise N/A
+
+---
+
 ## 2. Module 04 Deliverables
 
 This module produces concrete deliverables:
@@ -63,18 +210,20 @@ This module produces concrete deliverables:
 | :---: | :--- | :--- | :--- |
 | **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale). Prerequisite for DESIGN_SYSTEM.md. |
 | **2** | **`docs/specs/DESIGN_SYSTEM.md`** | Folder `docs/specs/` | Combined design system tokens and comprehensive UI specification document (color palette, typography, component specs, 5-state screen matrix per screen). |
-| **3** | **`DESIGN.md`** (root) | Project root | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. |
-| **4** | **Interactive Prototype** (Optional) | Live Staging / Stitch Viewer / Figma | Clickable interface application (only if AI/Manual Figma workflow is selected). For markdown workflow: skip prototype, proceed directly to coding in Module 06. |
-| **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
+| **3** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to root after scaffold. |
+|| **4** | **Interactive Prototype** (Optional) | Stitch / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
+|| **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
 
 > 📁 **MANDATORY FILE LOCATION RULES**:
-> - `DESIGN.md` is placed at root (`./DESIGN.md`) because it functions as an AI control file during coding (Module 06).
+> - `DESIGN.md` is staged in `docs/harness-root/DESIGN.md` during M04, then deployed to root (`./DESIGN.md`) after scaffold in M06.
 > - `DESIGN_SPEC.md` MUST be placed in **`docs/specs/DESIGN_SPEC.md`**. Placed in the root directory is STRICTLY FORBIDDEN.
 >
-> ⚠️ **GOOGLE STITCH TOOL ISSUE RESOLUTION**:
-> If invoking Stitch tools (`stitch_create_project` or `stitch_generate_screen_from_text`) encounters authentication or network failure:
-> - **STRICTLY FORBIDDEN to unilaterally decide to "skip Stitch / implement directly in code"**!
-> - Check whether the Stitch API Key is correctly configured in MCP settings (`opencode.json` / `STITCH_API_KEY`). Report technical issues to the user to ensure the Stitch connection is restored, rather than taking shortcuts to truncate the design phase.
+> ⚠️ **PROTOTYPING TOOL SELECTION**:
+> - Default to Option A (Markdown-only) for solo projects
+> - Use Option B (Stitch) if MCP available and user prefers visual builder
+> - Use Option C (AI prototype) for modern stack with code output
+> - Use Option D (Design tool) for professional design handoff
+> - Never skip DESIGN.md + DESIGN_SPEC.md documentation (mandatory regardless of prototype choice)
 
 ---
 
@@ -813,7 +962,7 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 ### Mandatory Files Verification (BLOCKING):
 - [x] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, contains 4 prompts)
 - [x] **`docs/specs/SITEMAP.md` exists** (≥500 bytes, contains screen count table)
-- [x] **`DESIGN.md` exists** (root, ≥1000 bytes, contains color palette + typography)
+- [x] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
 - [x] **`docs/specs/DESIGN_SYSTEM.md` exists** (≥2000 bytes, contains screen specs)
 - [x] **Screen count match**: SITEMAP.md total = DESIGN_SYSTEM.md screen inventory (±10% tolerance)
 
@@ -993,7 +1142,7 @@ Next Steps:
    - Color palette recommendation (primary + accent hex codes)
    - Style references (SaaS logos: Stripe, Notion, Linear)
 
-2. ✅ **`DESIGN.md`** (project root, ~8-15KB)
+2. ✅ **`docs/harness-root/DESIGN.md`** (staged for deployment after scaffold, ~8-15KB)
    - Color palette (primary, background, text, border with hex codes)
    - Typography (font families, weights, line heights, letter-spacing)
    - Component inventory (buttons, cards, forms, tables, modals)

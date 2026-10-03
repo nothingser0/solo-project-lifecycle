@@ -249,19 +249,25 @@ Agent selects template files based on stack:
 
 ### Anti-Pattern Detection (AI SLOP Prevention)
 
-Agent must verify scaffold matches FSD.md:
+Agent must verify scaffold matches FSD.md with expanded checks:
 
 ```python
 # Pseudo-code verification
 def verify_scaffold_matches_fsd():
     fsd_stack = parse_fsd_stack("docs/specs/FSD.md")  # "Laravel 11"
     
-    # Check package.json or composer.json exists
+    # 1. Framework type check
     if fsd_stack.startswith("Laravel"):
         if not exists("composer.json"):
             raise Error("FSD says Laravel, but no composer.json found. Wrong scaffold.")
         if exists("package.json") and "next" in read("package.json"):
             raise Error("FSD says Laravel, but scaffolded Next.js. Re-scaffold.")
+        
+        # Version check
+        composer = json.load("composer.json")
+        laravel_version = composer["require"]["laravel/framework"]
+        if "11." not in laravel_version and fsd_stack == "Laravel 11":
+            warn("FSD specifies Laravel 11, but scaffolded version mismatch. Consider downgrade.")
     
     elif fsd_stack.startswith("Next.js"):
         if not exists("package.json"):
@@ -269,15 +275,357 @@ def verify_scaffold_matches_fsd():
         pkg = json.load("package.json")
         if "next" not in pkg.get("dependencies", {}):
             raise Error("FSD says Next.js, but package.json missing 'next' dependency.")
+        
+        # 2. Major version match (CRITICAL)
+        next_version = pkg["dependencies"]["next"]
+        fsd_version = parse_version(fsd_stack)  # "Next.js 15" → 15
+        actual_version = parse_major(next_version)  # "^16.0.0" → 16
+        
+        if actual_version != fsd_version:
+            raise Error(f"BLOCKING: FSD specifies Next.js {fsd_version}, scaffolded {actual_version}. "
+                       f"Version mismatch causes API incompatibilities. "
+                       f"Fix: npx create-next-app@{fsd_version} or update FSD.md")
+        
+        # 3. Tailwind version detection (affects AGENTS.md syntax)
+        if "tailwindcss" in pkg.get("dependencies", {}):
+            tw_version = parse_major(pkg["dependencies"]["tailwindcss"])
+            if tw_version >= 4:
+                warn("Tailwind v4 detected. Uses CSS-first config (not tailwind.config.js). "
+                     "AGENTS.md/CONVENTIONS.md must reference v4 syntax.")
+                return {"framework": "nextjs", "tailwind_version": 4}
+            else:
+                return {"framework": "nextjs", "tailwind_version": 3}
     
     elif fsd_stack.startswith("Django"):
         if not exists("manage.py"):
             raise Error("FSD says Django, but no manage.py found. Wrong scaffold.")
     
-    return True
+    return {"framework": fsd_stack.split()[0].lower()}
+
+# 4. Package manager fallback strategy
+def install_dependencies_with_fallback():
+    """
+    Attempt npm install with timeout fallback to pnpm.
+    User feedback: npm timeout loop (3x) wasted 6 minutes.
+    """
+    try:
+        run("npm install", timeout=120)  # 2 min timeout
+    except TimeoutError:
+        warn("npm install timeout (1st attempt). Retrying once...")
+        try:
+            run("npm install", timeout=120)
+        except TimeoutError:
+            warn("npm install timeout (2nd attempt). Switching to pnpm...")
+            if not command_exists("pnpm"):
+                run("npm install -g pnpm")
+            run("pnpm install")  # pnpm usually faster for large node_modules
 ```
 
-**If mismatch detected**: Agent MUST stop and re-scaffold the correct framework.
+**Verification gates**:
+1. **Framework type mismatch** → STOP, re-scaffold correct framework
+2. **Major version mismatch** → BLOCKING, fix before proceeding (causes API breaks)
+3. **Tailwind v4 detected** → Adjust harness files to use v4 syntax (CSS-first config)
+4. **npm timeout (2x)** → Auto-switch to pnpm (avoid 3rd retry loop)
+
+**Post-scaffold checklist**:
+```bash
+# Verify scaffold output structure
+- [ ] Framework files exist (package.json / composer.json / manage.py)
+- [ ] Major version matches FSD.md (Next.js 15 = 15.x, not 16.x)
+- [ ] Tailwind version checked (v3 vs v4 affects config syntax)
+- [ ] Dependencies installed (with fallback strategy if timeout)
+- [ ] No blocking advisories (eslint-config-next version mismatch, etc.)
+- [ ] Peer dependencies resolved (check pnpm/npm warnings)
+- [ ] No deprecated packages (search for deprecation warnings in install output)
+```
+
+**If blocking issues found**: Fix IMMEDIATELY before generating harness files. Harness files (AGENTS.md, CONVENTIONS.md) embed framework/library syntax that must match actual versions.
+
+---
+
+### Database Migration Anti-Patterns
+
+**Common errors caught from user feedback**:
+
+#### 1. Foreign Key Forward Reference (Topological Sort)
+```sql
+-- ❌ WRONG: References table not yet created
+CREATE TABLE time_entries (
+  id UUID PRIMARY KEY,
+  invoice_id UUID REFERENCES invoices(id)  -- invoices doesn't exist yet!
+);
+
+CREATE TABLE invoices (
+  id UUID PRIMARY KEY
+);
+
+-- ✅ CORRECT: Parent tables first
+CREATE TABLE invoices (
+  id UUID PRIMARY KEY
+);
+
+CREATE TABLE time_entries (
+  id UUID PRIMARY KEY,
+  invoice_id UUID REFERENCES invoices(id)  -- invoices exists now
+);
+```
+
+**Rule**: Topological sort - tables with no foreign keys first, then tables that reference them.
+
+**Dependency order example**:
+1. `users` (no deps)
+2. `profiles` → users
+3. `clients` → users
+4. `projects` → clients
+5. `invoices` → projects
+6. `time_entries` → invoices
+7. `expenses` → invoices
+
+#### 2. UUID Generation Function (Modern Postgres)
+```sql
+-- ❌ WRONG: Requires uuid-ossp extension
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4()
+);
+
+-- ✅ CORRECT: Built-in Postgres 13+ (Supabase default)
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid()
+);
+```
+
+**Rule**: For Supabase/modern Postgres (13+), always use `gen_random_uuid()` (no extension needed).
+
+#### 3. Peer Dependencies Check
+```bash
+# After npm/pnpm install, check for warnings:
+pnpm install
+# Look for: [WARN] unmet peer dependency "@supabase/supabase-js@^2.0.0"
+
+# Fix immediately:
+pnpm add @supabase/supabase-js
+```
+
+**Rule**: Read install warnings. Unmet peer dependencies = runtime errors.
+
+#### 4. Deprecated Packages
+```bash
+# Check deprecation warnings during install:
+npm WARN deprecated @supabase/auth-helpers-nextjs@0.10.0
+
+# ✅ Remove immediately, find replacement:
+npm uninstall @supabase/auth-helpers-nextjs
+# Use @supabase/ssr instead (current recommended)
+```
+
+**Rule**: Deprecation warning = immediate action. Don't proceed with deprecated packages.
+
+---
+
+## Dependency Compatibility & Pre-Install Checks
+
+**CRITICAL: Check compatibility BEFORE installing any package.**
+
+### Pre-Install Verification Workflow
+
+```bash
+# STEP 1: Check peer dependencies (MANDATORY)
+npm info <package-name> peerDependencies
+
+# STEP 2: Check deprecation status
+npm view <package-name> deprecated
+
+# STEP 3: Check current stable version
+npm view <package-name> version
+
+# STEP 4: If installing, pin to compatible version
+pnpm add <package-name>@<compatible-version>
+```
+
+### Common Compatibility Matrices
+
+#### Next.js Ecosystem (v15.x)
+```
+next@15.x requires:
+  - react@18.x (NOT 19.x)
+  - @types/react@18.x (NOT 19.x)
+  - eslint-config-next@15.x (must match next version)
+  - tailwindcss@3.x (v4 has breaking changes)
+```
+
+#### Form Validation Stack
+```
+react-hook-form@7.x + Zod validation:
+  - zod@3.x (v4 has breaking changes with existing ecosystem)
+  - @hookform/resolvers@3.x (v5 requires Zod v4, breaks with v3)
+```
+
+#### Supabase Auth Stack
+```
+✅ CURRENT (2026):
+  - @supabase/ssr@latest (official auth solution)
+  - @supabase/supabase-js@2.x (peer dependency)
+
+❌ DEPRECATED:
+  - @supabase/auth-helpers-nextjs (discontinued, no security updates)
+  - @supabase/auth-helpers-react (discontinued)
+```
+
+### Critical Dependency Errors (User-Reported)
+
+#### Error 1: Zod v4 Incompatibility
+```bash
+# ❌ WRONG: Installs v4.6.5 (breaks react-hook-form)
+pnpm add zod
+
+# ✅ CORRECT: Pin to v3.x
+pnpm add zod@^3.23.8
+
+# Verify compatibility:
+npm info react-hook-form peerDependencies
+# Shows: "zod": "^3.0.0" → v4 NOT supported
+```
+
+**Why v4 breaks**: API changes in `.refine()`, `.transform()`, schema composition.
+
+#### Error 2: @hookform/resolvers Version Mismatch
+```bash
+# ❌ WRONG: v5 requires Zod v4
+pnpm add @hookform/resolvers@latest  # installs v5.9.1
+
+# ✅ CORRECT: v3.x for Zod v3
+pnpm add @hookform/resolvers@^3.9.1
+
+# Runtime error if mismatched:
+# TypeError: zodResolver is not a function
+```
+
+#### Error 3: Type Package Version Mismatch
+```bash
+# ❌ WRONG: @types/react v19 with React v18
+pnpm add @types/react@latest
+
+# ✅ CORRECT: Types must match runtime
+pnpm add @types/react@18.3.11 @types/react-dom@18.3.1
+
+# Verify:
+grep '"react"' package.json  # Check React version
+grep '@types/react' package.json  # Must match major version
+```
+
+### Font Loading Fallback Strategy
+
+**Problem**: `next/font/google` CDN timeouts (network blocking/slow).
+
+```typescript
+// ❌ FRAGILE: Depends on Google Fonts CDN
+import { Geist } from 'next/font/google'
+
+const geist = Geist({ subsets: ['latin'] })
+
+// ✅ RELIABLE: Local font package (no network dependency)
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
+
+// Install first:
+// pnpm add geist
+```
+
+**Rule**: Prefer local font packages over CDN for dev reliability.
+
+### Deprecated Package Handling
+
+```bash
+# Check before install:
+npm view @supabase/auth-helpers-nextjs deprecated
+# Output: "Package discontinued. Use @supabase/ssr"
+
+# If deprecated found:
+# 1. Find official replacement (check package README or migration guide)
+# 2. DO NOT INSTALL deprecated package
+# 3. Use replacement immediately
+
+# Example migration:
+pnpm remove @supabase/auth-helpers-nextjs
+pnpm add @supabase/ssr @supabase/supabase-js
+```
+
+**Deprecation types**:
+- **Critical**: Security vulnerabilities (Next.js CVE warnings) → upgrade ASAP or document risk
+- **High**: Runtime packages discontinued → find replacement before install
+- **Low**: Dev dependencies (ESLint) → lower priority, but track for future upgrade
+
+### Security Vulnerability Handling
+
+```bash
+# Example: Next.js 15.0.3 CVE warning
+npm WARN deprecated next@15.0.3: CVE-2025-66478
+
+# Decision matrix:
+# 1. FSD locks version → Document as known risk in README
+# 2. No spec lock → Upgrade to patched version
+# 3. Critical CVE + locked → Escalate to user for spec change approval
+```
+
+**Documentation template**:
+```markdown
+## Known Security Risks
+
+- **next@15.0.3**: CVE-2025-66478 (unspecified vulnerability)
+  - Status: Tracked, locked per FSD.md requirement
+  - Mitigation: [describe workaround if available]
+  - Upgrade path: [when spec allows upgrade to 15.0.4+]
+```
+
+---
+
+## Module Completion Checklist
+
+**Before declaring M06 complete**, verify ALL items:
+
+### Pre-handoff Quality Gates
+```
+Scaffold verification:
+  - [ ] Framework type matches FSD.md (Next.js / Laravel / Django)
+  - [ ] Major version matches FSD.md (Next.js 15 = 15.x, NOT 16.x)
+  - [ ] Tailwind version detected (v3 vs v4)
+  - [ ] Dependencies installed successfully
+  - [ ] Peer dependencies resolved (no [WARN] unmet peer)
+  - [ ] No deprecated packages in package.json/composer.json
+  - [ ] No blocking advisories (version mismatches fixed)
+
+Dependency compatibility checks (MANDATORY):
+  - [ ] Run: npm info <key-packages> peerDependencies
+  - [ ] Zod version compatible with react-hook-form (v3.x, NOT v4)
+  - [ ] @hookform/resolvers matches Zod version (v3.x for Zod v3)
+  - [ ] @types/react matches react version (18.x for react 18)
+  - [ ] eslint-config-next matches next version
+  - [ ] No deprecated packages installed (check npm view <pkg> deprecated)
+  - [ ] Font loading strategy: Local packages preferred over CDN
+  - [ ] Security vulnerabilities documented (if spec-locked versions have CVEs)
+
+Harness files deployed:
+  - [ ] All 7 files copied from docs/harness-root/ to ./
+  - [ ] AGENTS.md exists in root (check cat AGENTS.md)
+  - [ ] ARCHITECTURE.md exists in root
+  - [ ] CONTEXT.md exists in root
+  - [ ] CONVENTIONS.md exists in root
+  - [ ] DESIGN.md exists in root
+  - [ ] TODO.md exists in root
+  - [ ] .env.example exists in root
+
+Smoke test:
+  - [ ] Dev server starts (npm run dev / php artisan serve)
+  - [ ] No import errors on first load
+  - [ ] Linter runs without errors (npm run lint)
+  - [ ] Type check passes (pnpm run type-check or tsc --noEmit)
+  - [ ] No peer dependency warnings in pnpm list
+  - [ ] Database connection works (if applicable)
+```
+
+**NEVER declare "M06 complete" with outstanding checkboxes.**
+
+**If any checkbox fails**: Fix immediately. "Deployed" ≠ "Verified". Test execution required.
 
 ---
 
