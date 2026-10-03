@@ -524,7 +524,8 @@ import { Geist } from 'next/font/google'
 const geist = Geist({ subsets: ['latin'] })
 
 // ✅ RELIABLE: Local font package (no network dependency)
-import { GeistSans, GeistMono } from 'geist/font/sans'
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
 
 // Install first:
 // pnpm add geist
