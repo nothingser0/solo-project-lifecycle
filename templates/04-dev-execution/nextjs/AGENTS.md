@@ -20,26 +20,28 @@
 
 ## CRITICAL: Read Project Design Specifications
 
-**BEFORE implementing any UI component, check project design docs:**
+**BEFORE implementing any UI component, read project design docs in docs/ folder:**
 
-- **DESIGN.md**: Color tokens, typography, spacing, component styles
-- **DESIGN_SPEC.md** (or DESIGN_SYSTEM.md): Screen specifications, component specs
-- **SITEMAP.md**: Route structure, navigation hierarchy
+- **docs/specs/DESIGN_SYSTEM.md**: Design tokens, screen specifications, component styles
+- **docs/specs/SITEMAP.md**: Route structure with Screen IDs (SCR-XX)
+- **docs/design/stitch-output/**: Generated screen components (if using Google Stitch)
+- **DESIGN.md** (root): Simplified tokens reference (copied from docs/)
 
 **Why**: Generic Tailwind ≠ project design. Must match brand identity.
 
 **For each screen/component:**
-1. Find screen ID in SITEMAP.md (e.g., SCR-09 Dashboard)
-2. Read corresponding section in DESIGN_SPEC.md
-3. Extract design tokens from DESIGN.md:
+1. Find screen ID in docs/specs/SITEMAP.md (e.g., SCR-09 Dashboard)
+2. Read corresponding section in docs/specs/DESIGN_SYSTEM.md
+3. Check docs/design/stitch-output/SCR-09/ if available
+4. Extract design tokens from DESIGN.md (root):
    - Primary brand color (not generic neutral)
    - Shadow style (flat border vs heavy shadow)
    - Typography scale (specific font weights/sizes)
-4. Implement exactly as specified
+5. Implement exactly as specified
 
 **Anti-Pattern:**
 ❌ `className="bg-neutral-100"` (generic)
-✅ `className="bg-primary-600"` (brand primary from DESIGN.md)
+✅ `className="bg-primary-600"` (brand primary from docs/specs/DESIGN_SYSTEM.md)
 
 ---
 
