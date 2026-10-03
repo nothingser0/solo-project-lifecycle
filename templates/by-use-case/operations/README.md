@@ -23,7 +23,7 @@ cp templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md docs/RUNBOOK_LOCAL.md
 ```
 
 **Must include**:
-- Prerequisites (Node.js 20+, PostgreSQL 16)
+- Prerequisites (Node.js 22 LTS, PostgreSQL 16)
 - Environment variables (`.env.example` → `.env`)
 - Database setup (`npx prisma migrate dev`)
 - Smoke test (`curl http://localhost:3000/api/health`)

@@ -1,5 +1,3 @@
-> **⚠️ DEPRECATED:** This module has moved to `references/playbooks/ai-assisted-development.md` as of 2026-10.  
-> This file remains for reference but is no longer maintained. Update your links to the new location.
 
 # Module 06C: AI-Assisted Development & Vibe Coding Workflow
 
@@ -219,8 +217,8 @@ pnpm test:affected          # Run tests for changed files
 // package.json - Pin versions to prevent AI suggesting deprecated packages
 {
   "dependencies": {
-    "next": "14.2.5",           // AI might suggest 13.x deprecated patterns
-    "react": "18.3.1",
+    "next": "15.2.5",           // AI might suggest 13.x deprecated patterns
+    "react": "19.3.1",
     "zod": "^3.23.8",           // ^ allows minor updates
     "prisma": "5.17.0"          // Exact version for schema stability
   },
@@ -638,7 +636,7 @@ PROMPT: "Generate GitHub Actions workflow for Next.js app:
 Trigger: Push to main branch
 Steps:
 1. Checkout code
-2. Setup Node.js 20
+2. Setup Node.js 22
 3. Install dependencies (pnpm)
 4. Run TypeScript check
 5. Run ESLint
@@ -1306,7 +1304,7 @@ Output: .github/workflows/[name].yml
 Containerize [app]:
 
 Requirements:
-- Base image: [node:20-alpine]
+- Base image: [node:22-alpine]
 - Dependencies: [list]
 - Build steps: [commands]
 - Exposed port: [number]

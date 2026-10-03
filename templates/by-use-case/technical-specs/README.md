@@ -63,18 +63,14 @@ Errors: 400 (invalid items), 402 (payment failed), 500 (server error)
 ---
 
 ### 3. DB_SCHEMA.sql
-**Path**: `../../05-data-migration/DB_SCHEMA_TEMPLATE.sql`  
+**Path**: Write manually in `db/schema.sql`  
 **Purpose**: Database schema DDL (tables, indexes, constraints)  
 **Time**: 2 hours  
 **When**: After FSD database section finalized
 
 **Output**: `db/schema.sql`
 
-```bash
-mkdir -p db
-cp templates/05-data-migration/DB_SCHEMA_TEMPLATE.sql db/schema.sql
-# Write CREATE TABLE statements, indexes, foreign keys
-```
+> **Note**: Write database schema directly in `db/schema.sql`. No template file exists — use FSD.md database section as reference.
 
 **Best practices**:
 - ✅ Use `BIGSERIAL` for IDs (not `SERIAL`)

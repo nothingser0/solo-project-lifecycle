@@ -4,7 +4,7 @@
 # DATABASE CONFIGURATION
 # ==============================================================================
 # PostgreSQL database connection URL (Managed / Supabase / Local)
-DATABASE_URL="postgresql://postgres:password@localhost:5432/legal_vault?schema=public"
+DATABASE_URL="postgresql://postgres:password@localhost:5432/[database_name]?schema=public"
 
 # ==============================================================================
 # AUTHENTICATION & SESSION SECURITY
@@ -19,7 +19,7 @@ JWT_EXPIRES_IN="7d"
 # ==============================================================================
 # 32-byte Master Encryption Key in hexadecimal format (64 hex characters)
 # Generate via terminal: node -e "console.log(crypto.randomBytes(32).toString('hex'))"
-VAULT_MASTER_KEY="0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+[ENCRYPTION_KEY]="0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 
 # ==============================================================================
 # CLOUD STORAGE (CLOUDFLARE R2 / AWS S3)
@@ -33,7 +33,7 @@ STORAGE_REGION="auto"
 # ==============================================================================
 # TRANSACTIONAL EMAIL (RESEND / SMTP)
 # ==============================================================================
-EMAIL_FROM="Legal Notification <no-reply@domain.com>"
+EMAIL_FROM="[App Name] <no-reply@domain.com>"
 RESEND_API_KEY="re_123456789_abcdefg"
 
 # ==============================================================================

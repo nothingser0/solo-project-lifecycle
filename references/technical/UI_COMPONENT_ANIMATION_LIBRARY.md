@@ -1022,7 +1022,11 @@ export function TodoList({ todos }) {
 
 **Use Case**: Marketing landing pages, portfolio, storytelling
 
+
+> **Note**: Example uses Indonesian locale content ("Mulai Sekarang" = Get Started). Replace with your target language.
+
 #### Pattern A: Video Background (Hero Section)
+
 ```tsx
 export function HeroWithVideo() {
   return (

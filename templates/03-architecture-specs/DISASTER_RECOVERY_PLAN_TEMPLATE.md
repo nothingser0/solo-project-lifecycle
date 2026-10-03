@@ -213,7 +213,7 @@ $ aws s3 ls s3://backups-bucket/db/ | grep $(date -d "yesterday" +%Y%m%d)
 Step 3: Restore backup to temporary instance (10 min)
 $ aws rds restore-db-instance-from-db-snapshot \
   --db-instance-identifier prod-db-restore-temp \
-  --db-snapshot-identifier backup-20240127-020000
+  --db-snapshot-identifier backup-20261027-020000
 
 Step 4: Validate restored data (5 min)
 $ psql $TEMP_DATABASE_URL
@@ -223,7 +223,7 @@ $ psql $TEMP_DATABASE_URL
 Step 5: Merge recent data if needed (10 min)
 # If corruption happened 2 hours ago, export data from 02:00-04:00 from corrupt DB
 $ pg_dump --data-only --table=orders \
-  --where="created_at >= '2024-01-27 02:00:00'" \
+  --where="created_at >= '2026-10-27 02:00:00'" \
   $OLD_DATABASE_URL > recent_data.sql
 
 # Import into restored DB
@@ -376,9 +376,9 @@ Resolved (30 min)  → Status page: "Resolved"
 We are experiencing a complete service outage affecting all users.
 Our team is actively investigating and working on a fix.
 
-Started: 2024-01-27 14:23 UTC
-Last Update: 2024-01-27 14:38 UTC
-Next Update: 2024-01-27 14:45 UTC
+Started: 2026-10-27 14:23 UTC
+Last Update: 2026-10-27 14:38 UTC
+Next Update: 2026-10-27 14:45 UTC
 
 Updates:
 - 14:38 UTC: Identified database issue, restoring from backup
@@ -407,7 +407,7 @@ Updates:
 
 **Objective**: Validate recovery procedures and team readiness.
 
-**Drill Date**: [Next drill: Q1 2024 - March 15]
+**Drill Date**: [Next drill: Q1 2027 - March 15]
 
 **Drill Scenario**: Database corruption requiring restore from backup
 
@@ -442,7 +442,7 @@ Success Criteria:
 
 | Date | Scenario | RTO Target | RTO Actual | Pass/Fail | Issues Found |
 |------|----------|------------|------------|-----------|--------------|
-| 2024-01-15 | DB restore | 30 min | 25 min | ✅ Pass | None |
+| 2026-09-15 | DB restore | 30 min | 25 min | ✅ Pass | None |
 | [Next drill] | — | 30 min | — | — | — |
 
 ---
@@ -488,7 +488,7 @@ After any disaster recovery, validate these items before declaring "fully recove
 
 ### 8.1 Incident Summary
 
-**Incident ID**: [INC-2024-001]  
+**Incident ID**: [INC-2026-001]
 **Date**: [YYYY-MM-DD]  
 **Duration**: [Start time] - [End time] = [Total downtime]  
 **Severity**: [S1 / S2 / S3]  
@@ -530,9 +530,9 @@ After any disaster recovery, validate these items before declaring "fully recove
 
 | Action | Owner | Due Date | Status |
 |--------|-------|----------|--------|
-| Automate DNS failover using Route53 health checks | DevOps | 2024-02-01 | 🟡 In Progress |
-| Add read replica promotion playbook to runbook | DevOps | 2024-01-28 | ✅ Done |
-| Schedule quarterly DR drill | CTO | 2024-03-15 | 🟢 Scheduled |
+| Automate DNS failover using Route53 health checks | DevOps | 2027-02-01 | 🟡 In Progress |
+| Add read replica promotion playbook to runbook | DevOps | 2026-10-28 | ✅ Done |
+| Schedule quarterly DR drill | CTO | 2027-03-15 | 🟢 Scheduled |
 
 ---
 
@@ -565,9 +565,9 @@ After any disaster recovery, validate these items before declaring "fully recove
 aws s3 ls s3://backups-bucket/db/
 
 # Download and restore
-aws s3 cp s3://backups-bucket/db/backup_20240127_020000.sql.gz /tmp/
-gunzip /tmp/backup_20240127_020000.sql.gz
-psql $DATABASE_URL < /tmp/backup_20240127_020000.sql
+aws s3 cp s3://backups-bucket/db/backup_20261027_020000.sql.gz /tmp/
+gunzip /tmp/backup_20261027_020000.sql.gz
+psql $DATABASE_URL < /tmp/backup_20261027_020000.sql
 ```
 
 **Deployment Rollback**:
@@ -594,4 +594,4 @@ curl -X POST https://api.twilio.com/Messages \
 - **Approved by**: [Name, CEO/CTO]  
 - **Date**: [YYYY-MM-DD]
 
-**Next Review**: [Quarterly - Q2 2024]
+**Next Review**: [Quarterly - Q2 2027]

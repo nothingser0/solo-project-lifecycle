@@ -19,8 +19,8 @@
 | :--- | :--- | :--- | :--- | :---: |
 | **Code Repository** | GitHub / GitLab | `github.com/[client-org]/[repo-name]` | Organization Ownership Transfer | [x] COMPLETED |
 | **Hosting Server** | Cloudflare / Vercel / VPS | `app.client.com` | Primary Account Owner Invitation | [x] COMPLETED |
-| **Database** | Managed PostgreSQL | Host: `prod-db.client.com` | Encrypted Master Credentials Handover | [x] COMPLETED |
-| **Storage Vault** | Cloudflare R2 / AWS S3 | Bucket: `legal-vault-prod` | Bucket IAM Access Rights Transfer | [x] COMPLETED |
+| **Database** | Managed PostgreSQL | Host: `prod-db.[client].com` | Encrypted Master Credentials Handover | [x] COMPLETED |
+| **Storage Vault** | Cloudflare R2 / AWS S3 | Bucket: `[project-name]-prod` | Bucket IAM Access Rights Transfer | [x] COMPLETED |
 | **Payment Gateway** | Midtrans / Stripe / Xendit | Merchant ID: `[MID_12345]` | LIVE Mode Transferred to Client Account | [x] COMPLETED |
 | **Email SMTP** | Resend / SendGrid | Domain: `clientdomain.com` | Email Dashboard Ownership Transfer | [x] COMPLETED |
 

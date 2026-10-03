@@ -43,7 +43,7 @@ Features:
 - Loading skeleton
 - Empty state with CTA button
 
-Tech: Next.js 14 App Router, Tailwind, TanStack Table v8, React Query
+Tech: Next.js 15 App Router, Tailwind, TanStack Table v8, React Query
 
 File structure:
 - components/docs/modules/[Entity]Table.tsx
@@ -82,7 +82,7 @@ Submission:
 - On error: Display API error message above form
 - Reset form after successful submission
 
-Tech: Next.js 14, React Hook Form v7, Zod v3, Sonner toast
+Tech: Next.js 15, React Hook Form v7, Zod v3, Sonner toast
 
 File: components/docs/modules/[Entity]Form.tsx
 ```
@@ -459,8 +459,8 @@ Track prompt iterations to improve success rate:
 
 | Date | Original Prompt | Issue | Improved Prompt | Result |
 |------|----------------|-------|-----------------|--------|
-| 2024-01-15 | "Create user table" | Missing pagination | "Create user table with sorting, pagination (20/page), search" | ⭐⭐⭐ Works |
-| 2024-01-20 | "Add auth" | Too vague | "Add JWT auth with httpOnly cookies, bcrypt hashing, Zod validation" | ⭐⭐⭐ Works |
+| 2026-09-15 | "Create user table" | Missing pagination | "Create user table with sorting, pagination (20/page), search" | ⭐⭐⭐ Works |
+| 2026-09-20 | "Add auth" | Too vague | "Add JWT auth with httpOnly cookies, bcrypt hashing, Zod validation" | ⭐⭐⭐ Works |
 
 ---
 

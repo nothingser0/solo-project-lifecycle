@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Date**: [YYYY-MM-DD]  
-**Planning Period**: [Q1 2024 / Year 2024]  
+**Planning Period**: [Q1 2027 / Year 2027]
 **Author**: [Your Name]
 
 ---
@@ -61,21 +61,21 @@
 
 | Month | MAU (Projected) | Growth % | Notes |
 |-------|-----------------|----------|-------|
-| Jan 2024 | 5,000 | — | Current baseline |
-| Feb 2024 | 6,000 | +20% | Marketing campaign launch |
-| Mar 2024 | 7,200 | +20% | — |
-| Apr 2024 | 8,640 | +20% | — |
-| May 2024 | 10,368 | +20% | — |
-| Jun 2024 | 12,442 | +20% | Product launch v2.0 |
-| Jul 2024 | 9,954 | -20% | Summer seasonality |
-| Aug 2024 | 11,944 | +20% | — |
-| Sep 2024 | 14,333 | +20% | — |
-| Oct 2024 | 17,200 | +20% | — |
-| Nov 2024 | 20,640 | +20% | Pre-holiday prep |
-| Dec 2024 | 30,960 | +50% | Holiday spike |
+| Jan 2027 | 5,000 | — | Current baseline |
+| Feb 2027 | 6,000 | +20% | Marketing campaign launch |
+| Mar 2027 | 7,200 | +20% | — |
+| Apr 2027 | 8,640 | +20% | — |
+| May 2027 | 10,368 | +20% | — |
+| Jun 2027 | 12,442 | +20% | Product launch v2.0 |
+| Jul 2027 | 9,954 | -20% | Summer seasonality |
+| Aug 2027 | 11,944 | +20% | — |
+| Sep 2027 | 14,333 | +20% | — |
+| Oct 2027 | 17,200 | +20% | — |
+| Nov 2027 | 20,640 | +20% | Pre-holiday prep |
+| Dec 2027 | 30,960 | +50% | Holiday spike |
 
-**Conservative Scenario** (50% of projected): 15,480 MAU by Dec 2024  
-**Aggressive Scenario** (150% of projected): 46,440 MAU by Dec 2024
+**Conservative Scenario** (50% of projected): 15,480 MAU by Dec 2027
+**Aggressive Scenario** (150% of projected): 46,440 MAU by Dec 2027
 
 ### 2.2 Traffic Scaling Formula
 
@@ -86,17 +86,17 @@
 
 **Projected Traffic**:
 ```
-Dec 2024 (Holiday spike):
+Dec 2027 (Holiday spike):
 - MAU: 30,960
 - DAU: 30,960 × 0.24 = 7,430
 - Peak CCU: 7,430 × 0.20 = 1,486
-- Peak RPS: 1,486 × 0.5 = 743 RPS
+- Peak RPS: 1,486 × 2 ÷ 4 = 743 RPS
 
-Conservative (Dec 2024):
+Conservative (Dec 2027):
 - MAU: 15,480
 - Peak RPS: 371 RPS
 
-Aggressive (Dec 2024):
+Aggressive (Dec 2027):
 - MAU: 46,440
 - Peak RPS: 1,115 RPS
 ```
@@ -204,7 +204,7 @@ Phase 1 Implementation (Week 1-2):
 | Monitoring | Sentry | 10K errors/mo | $0 (free tier) |
 | **Total** | — | — | **$65/mo** |
 
-**Projected Monthly Cost** (30K MAU - Dec 2024):
+**Projected Monthly Cost** (30K MAU - Dec 2027):
 | Service | Provider | Usage | Cost |
 |---------|----------|-------|------|
 | Application hosting | Vercel Pro | Auto-scale 4-12 instances | $80 |
@@ -306,7 +306,7 @@ k6 run --out json=load-test-results.json load-test-capacity.js
 |-----------|-----------|-------|----------------|
 | Baseline (Scenario 1) | Monthly | DevOps | [Next month 1st] |
 | Peak Load (Scenario 2) | Before major releases | DevOps | [Before Dec launch] |
-| Stress Test (Scenario 3) | Quarterly | DevOps | [Q2 2024] |
+| Stress Test (Scenario 3) | Quarterly | DevOps | [Q2 2027] |
 | Soak Test (Scenario 4) | Before production scale-up | DevOps | [Before Phase 2] |
 
 ---

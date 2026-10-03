@@ -167,7 +167,7 @@ So that [value].
 #### Linking to Code (GitHub Integration)
 1. **Settings → Integrations → GitHub** (one-time setup)
 2. Connect your repo
-3. In commit message, reference issue: `git commit -m "Add password reset (LIN-123)"`
+3. In commit message, reference issue: `git commit -m "feat(auth): add password reset (LIN-123)"`
 4. Linear auto-links commit to issue, shows in issue activity
 
 #### Sprint Planning (Start of Cycle)
@@ -601,12 +601,12 @@ START
 
 ### GitHub + Linear
 - Install Linear GitHub app
-- Commit format: `git commit -m "Fix login (LIN-123)"`
+- Commit format: `git commit -m "fix(auth): resolve login issue (LIN-123)"`
 - Auto-links commit to issue, updates status
 
 ### GitHub + Jira
 - Install Jira GitHub app
-- Commit format: `git commit -m "PROJ-123 Fix login"`
+- Commit format: `git commit -m "fix(auth): PROJ-123 resolve login"`
 - Auto-transitions issue based on branch/PR status
 
 ### Notion + Zapier + GitHub

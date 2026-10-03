@@ -1,6 +1,6 @@
 # Quick Start MVP Guide (2-4 Weeks)
 
-> **Target**: Solo developers building simple MVPs (1-3 features, < Rp 20 million, < 4 weeks)  
+> **Target**: Solo developers building simple MVPs (1-3 features, < Rp 20 million (~$1,250), < 4 weeks)  
 > **Philosophy**: Ship working software fast, skip documentation overhead
 
 ---
@@ -40,13 +40,13 @@ git init
 - MVP / proof-of-concept (< 4 weeks timeline)
 - 1-3 core features only
 - Solo founder (you are owner & developer)
-- Budget < Rp 20 million
+- Budget < Rp 20 million (~$1,250)
 - Tech stack familiar (no learning curve)
 
 ❌ **Don't use this if**:
 - Client project (requires formal contract → use full framework)
 - Team > 1 developer
-- Budget > Rp 50 million
+- Budget > Rp 50 million (~$3,150)
 - Compliance required (banking, healthcare, government)
 - >3 months timeline
 
@@ -395,7 +395,7 @@ Upgrade when:
 - ✅ Raising funding or signing first client
 - ✅ Hiring second developer (need proper docs)
 - ✅ Compliance required (banking, healthcare)
-- ✅ Budget increases >Rp 50 million
+- ✅ Budget increases >Rp 50 million (~$3,150)
 
 Then read:
 - `docs/modules/02-discovery-scope.md` (scope protection)

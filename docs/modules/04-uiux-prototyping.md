@@ -1,7 +1,8 @@
 # Module 04: UI/UX Design & Prototyping (Google Stitch Universal Engine)
 
-> ⚠️ **GOOGLE STITCH DEPRECATED (2024)**: References to Google Stitch below are LEGACY ONLY.  
-> **Default workflow (2026)**: Create `DESIGN.md` + `DESIGN_SPEC.md` only (no Stitch prototype).  
+> ⚠️ **MARKDOWN-FIRST WORKFLOW (2026)**: This skill defaults to markdown-only specifications.  
+> Google Stitch (AI prototyping tool, launched 2025) remains available via MCP but is **optional**.  
+> **Default workflow**: Create `DESIGN.md` + `DESIGN_SPEC.md` only (Stitch prototype optional).  
 
 > - `references/solo/SOLO_UIUX_GUIDE.md` (Solo dev UI/UX efficiency guide, Component library selection, WCAG contrast, Prototype walkthrough)
 > - `references/pm/PM_USER_TESTING_GUIDE.md` (User testing facilitation, Usability test plan)
@@ -603,6 +604,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 **Example Full Prompt:**
 ```
 Generate Landing Page (Screen ID: SCR-01) for FreePajak tax SaaS:
+(Note: Indonesian locale example for demonstration - replace with your language)
 
 CONTENT:
 - Hero section: Headline "Hitung 3 Skema Pajak. Pilih yang Paling Hemat.", 

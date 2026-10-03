@@ -8,7 +8,7 @@
 
 ### 1. Test Metadata
 - **System Name**: [Application Name]
-- **Test Environment**: Staging Server (`https://staging.domainklien.com`)
+- **Test Environment**: Staging Server (`https://staging.[client-domain].com`)
 - **Person in Charge / Solo QA & Dev**: [Your Name]
 - **Target Execution Date**: [YYYY-MM-DD]
 - **Document References**: FSD-[ID] v1.0 & PRD-[ID] v1.0
@@ -58,7 +58,7 @@
 ### 1. Report Metadata
 - **System Name**: [Application Name]
 - **Staging Build Version**: `v0.9.0-rc1` (Commit: `[git-hash]`)
-- **Staging Server URL**: `https://staging.domainklien.com`
+- **Staging Server URL**: `https://staging.[client-domain].com`
 - **Testing Completion Date**: [YYYY-MM-DD]
 - **Tester / Lead Engineer**: [Your Name]
 - **Final Testing Status**: **PASSED (SIT PASS - READY FOR UAT)**

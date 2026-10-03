@@ -182,14 +182,16 @@ After `docs/pm/PROJECT_CHARTER.md` (and `docs/pm/SOW_CONTRACT.md`) has been writ
    The SOW and PROJECT_CHARTER documents are complete.
    
    ❓ Has the Down Payment of [Rp X] been received in your bank account?
-   
+  
    Reply: SUDAH / YES / YA / OK to proceed to Module 04 (UI/UX Design)
+         (SUDAH = already received, YA = yes in Indonesian)
    Reply: BELUM / NO / NOT YET if still awaiting transfer
-   
+         (BELUM = not yet in Indonesian)
+  
    (Solo dev internal product: reply BYPASS to skip DP gate)
    ```
 
-5. **Fuzzy Match Logic**: Accept variations (sudah/SUDAH/yes/YES/ya/ok as CONFIRMED; belum/no/not yet as WAITING; bypass/BYPASS/skip for internal projects)
+5. **Fuzzy Match Logic**: Accept variations (sudah/SUDAH/yes/YES/ya/ok as CONFIRMED; belum/no/not yet as WAITING; bypass/BYPASS/skip for internal projects). Indonesian keywords kept for local client convenience.
 6. **DO NOT proceed to Module 04** until user confirms DP received or bypass for internal
 7. After user confirms, log confirmation in `PROJECT_CHARTER.md` footer:
    ```markdown

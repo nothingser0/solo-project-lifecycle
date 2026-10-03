@@ -114,7 +114,7 @@ RELEASE & CLOSURE PHASE:
 > - **Root Directory (`./`)**: EXCLUSIVELY RESERVED ONLY FOR 7 AI HARNESS FILES (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`), `README.md`, and framework configuration. **Never place planning documents in root!**
 
 ### Fast-Track Mode
-- `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`: Unified streamlined specification template (Idea + Scope + Commercial + DB Schema) for 1–4 week MVP projects. Saved to root (`./PROJECT_LITE.md`). *(Note: Module 04 Google Stitch remains mandatory for Web/Mobile).*
+- `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`: Unified streamlined specification template (Idea + Scope + Commercial + DB Schema) for 1–4 week MVP projects. Saved to root (`./PROJECT_LITE.md`). *(Note: Module 04 Design workflow applies to Web/Mobile; Google Stitch optional).*
 
 ### Module 00 (Active)
 - `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`: Saved to **`docs/pm/MARKET_RESEARCH.md`** (TAM/SAM/SOM results, industry trends, regulatory landscape).

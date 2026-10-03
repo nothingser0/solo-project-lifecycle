@@ -33,7 +33,7 @@ TAM = [Total Market Units] × [Annual ARPU/ARPA]
 **Calculation**:
 ```python
 # Example: HR SaaS for Indonesian SMEs
-total_indonesian_smes = 64_000_000  # BPS / Ministry of Cooperatives & SMEs data 2024
+total_indonesian_smes = 64_000_000  # BPS / Ministry of Cooperatives & SMEs data 2026
 annual_arpu = 1_200_000  # Rp 100k/month × 12 months
 
 TAM = total_indonesian_smes * annual_arpu
@@ -134,10 +134,10 @@ Is this target realistic with available marketing channels? [Yes/No]
 
 | Year | Market Size | YoY Growth |
 | :--- | :--- | :--- |
-| 2022 | Rp [X] billion | - |
-| 2023 | Rp [X] billion | +[Y]% |
-| 2024 | Rp [X] billion | +[Y]% |
-| 2025 | Rp [X] billion (est.) | +[Y]% |
+| 2024 | Rp [X] billion | - |
+| 2025 | Rp [X] billion | +[Y]% |
+| 2026 | Rp [X] billion | +[Y]% |
+| 2027 | Rp [X] billion (est.) | +[Y]% |
 
 **Data Source**: [Report name, year, URL]
 

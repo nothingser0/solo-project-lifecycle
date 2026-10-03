@@ -6,7 +6,7 @@
 
 ## 1. Audit Metadata
 - **System Name**: [Application Name]
-- **Target Environment URL**: `https://staging.domainklien.com`
+- **Target Environment URL**: `https://staging.[client-domain].com`
 - **Technical Auditor / Solo Security Engineer**: [Your Name]
 - **Audit Date**: [YYYY-MM-DD]
 - **Compliance Level**: Standard Web Application / Regulated Data

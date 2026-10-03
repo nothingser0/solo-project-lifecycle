@@ -305,28 +305,25 @@ cp templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md contracts/WARRANTY_P
 ---
 
 ### 19. .env.example
-**Path**: `../04-dev-execution/ENV_EXAMPLE_TEMPLATE`  
+**Path**: `../04-dev-execution/ENV_EXAMPLE_TEMPLATE.md`  
 **Purpose**: Environment variable template  
 **Time**: 10 minutes  
 **Must-use**: Every project  
 **Output**: `.env.example` (project root)
 
 ```bash
-cp templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE .env.example
+cp templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md .env.example
 ```
 
 ---
 
 ### 20. DB_SCHEMA.sql
-**Path**: `../05-data-migration/DB_SCHEMA_TEMPLATE.sql`  
-**Purpose**: Database schema DDL  
+**Path**: Write manually in `db/schema.sql`  
+**Purpose**: Database schema DDL (no template file)  
 **Time**: 2 hours  
 **Output**: `db/schema.sql`
 
-```bash
-mkdir -p db
-cp templates/05-data-migration/DB_SCHEMA_TEMPLATE.sql db/schema.sql
-```
+> **Note**: Write database schema directly based on FSD.md database section. No template file exists.
 
 ---
 

@@ -15,7 +15,7 @@
    - ❌ `UserProfile.blade.php`
 
 3. **Database Files**: snake_case
-   - ✅ `2024_01_01_create_users_table.php`
+   - ✅ `2026_10_01_create_users_table.php`
 
 ---
 

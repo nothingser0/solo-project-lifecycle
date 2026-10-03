@@ -291,7 +291,7 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 
 **Frontend**: Next.js 15 (static export) via Nginx
 **Backend**: Node.js Express (PM2 process manager)
-**Database**: PostgreSQL 15 (Docker container)
+**Database**: PostgreSQL 16 (Docker container)
 **File Storage**: DigitalOcean Spaces ($5/month, 250GB)
 **Deployment**: DigitalOcean Droplet 2GB ($18/month)
 **Monitoring**: Self-hosted Grafana + Prometheus (free)
@@ -625,7 +625,7 @@ Top 3 recommendations (score ≥95/100):
 ## Option A: Next.js Full-Stack (Score: 100/100) ⭐ RECOMMENDED
 
 **Stack**:
-- Frontend: Next.js 15 App Router (React 18, TypeScript)
+- Frontend: Next.js 15 App Router (React 19, TypeScript)
 - Backend: Next.js API Routes (serverless functions)
 - Database: Supabase PostgreSQL (500MB free tier)
 - File Storage: Supabase Storage (1GB free)
@@ -1798,8 +1798,8 @@ Run: `k6 run scripts/load-test.js`
 | **DR Runbook** | `docs/ops/DISASTER_RECOVERY.md` | Backup restoration, failover procedures |
 
 **Template Sources**:
-- `templates/03-architecture-specs/SYSTEM_DESIGN_TEMPLATE.md`
-- `templates/08-maintenance-ops/DISASTER_RECOVERY_RUNBOOK_TEMPLATE.md`
+- `templates/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md`
+- `templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md`
 
 ---
 

@@ -328,11 +328,11 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 ## 6. Deliverables
 
 > 📁 **MANDATORY FILE LOCATION RULE**:
-> Runbooks and go-live reports MUST be stored in the **`docs/deploy/`** or **`docs/pm/`** folder.
+> Runbooks and go-live reports MUST be stored in the **`docs/pm/`** or **`docs/pm/`** folder.
 
 This module produces 2 execution documents:
-1. **`docs/deploy/DEPLOYMENT_PROTOCOL.md`**: Combined deployment protocol guide and go-live report proving the system is active in Production (using `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`).
-2. **`docs/deploy/ROLLBACK_PLAN.md`**: Emergency recovery procedures in case of fatal failure during go-live (using `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`).
+1. **`docs/pm/DEPLOYMENT_PROTOCOL.md`**: Combined deployment protocol guide and go-live report proving the system is active in Production (using `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`).
+2. **`docs/pm/ROLLBACK_PLAN.md`**: Emergency recovery procedures in case of fatal failure during go-live (using `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`).
 
 ---
 
@@ -357,8 +357,8 @@ After the system is officially Live in Production and the PVT report is publishe
 **MANDATORY BEFORE CONTENT VALIDATION**:
 
 1. **Check output file existence** using one of the following methods:
-   - PowerShell: `Test-Path -LiteralPath "docs/deploy/GO_LIVE_VERIFICATION_REPORT.md"` → must return `True`
-   - Read tool: `read_file('docs/deploy/GO_LIVE_VERIFICATION_REPORT.md')` → must succeed without error
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/GO_LIVE_VERIFICATION_REPORT.md"` → must return `True`
+   - Read tool: `read_file('docs/pm/GO_LIVE_VERIFICATION_REPORT.md')` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -370,7 +370,7 @@ After the system is officially Live in Production and the PVT report is publishe
      Module 10 FAILED - cannot proceed to Module 11 (Handover & BAST).
      
      Possible causes:
-     - Write permission denied on docs/deploy/ folder
+     - Write permission denied on docs/pm/ folder
      - Path typo in tool call
      - Disk full
      
@@ -386,7 +386,7 @@ After the system is officially Live in Production and the PVT report is publishe
 
 1. **STRICTLY PROHIBITED from directly handing over repositories, root passwords, or calling tools for Module 11 within the same turn!**
 2. **Verify production deployment**:
-   - [ ] `read_file('docs/deploy/GO_LIVE_VERIFICATION_REPORT.md')` → Confirm PVT tests PASS
+   - [ ] `read_file('docs/pm/GO_LIVE_VERIFICATION_REPORT.md')` → Confirm PVT tests PASS
    - [ ] Confirm domain live with valid SSL (https://app.client.com accessible)
    - [ ] Confirm monitoring active (Sentry DSN, uptime checker)
    - [ ] Confirm production transaction tested successfully

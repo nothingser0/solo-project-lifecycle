@@ -7,7 +7,7 @@
 ## PART I: UAT TEST SCENARIOS
 
 ### 1. Environment Information & Test Credentials
-- **Staging Server URL**: `https://staging.domainklien.com`
+- **Staging Server URL**: `https://staging.[client-domain].com`
 - **Testing Window**: [Start Date] to [End Date] (Maximum 7 Business Days)
 - **Tester Credentials**:
   - Super Admin: `tester-admin@staging.local` / `UatTest2026!`
@@ -21,7 +21,7 @@
 - **Scenario ID**: `UAT-SCN-01`
 - **Test Objective**: Verify users can log in securely and are redirected to the appropriate dashboard.
 - **Test Steps**:
-  1. Open URL `https://staging.domainklien.com/login`.
+  1. Open URL `https://staging.[client-domain].com/login`.
   2. Enter staff tester email and password.
   3. Click **"Log In to Account"** button.
 - **Expected Result**:

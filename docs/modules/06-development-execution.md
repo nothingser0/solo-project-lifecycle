@@ -357,12 +357,12 @@ Agent copies from staging to root:
 
 | No | File Name | Reference Source (Stack-Specific) | Function for AI Coding Agent |
 | :---: | :--- | :--- | :--- |
-| **1** | **`AGENTS.md`** | `templates/04-dev-execution/{stack}/AGENTS_TEMPLATE.md` | Absolute ground rules: prohibition of `any` types (TS) or raw SQL, build/test commands, and commit format. **Stack-specific**: Next.js (Server Components), Laravel (Eloquent), Django (ORM). |
+| **1** | **`AGENTS.md`** | `templates/04-dev-execution/{stack}/AGENTS.md` | Absolute ground rules: prohibition of `any` types (TS) or raw SQL, build/test commands, and commit format. **Stack-specific**: Next.js (Server Components), Laravel (Eloquent), Django (ORM). |
 | **2** | **`CONTEXT.md`** | `templates/04-dev-execution/CONTEXT_TEMPLATE.md` | Business context, user roles (RBAC), and strict *Out-of-Scope* boundaries to prevent AI hallucination. **Universal** (same for all stacks). |
-| **3** | **`ARCHITECTURE.md`** | `templates/04-dev-execution/{stack}/ARCHITECTURE_TEMPLATE.md` | FSD summary: folder structure, table schemas, and JSON API route contracts. **Stack-specific**: Next.js (`app/` dir), Laravel (`app/Http`), Django (`myapp/views.py`). |
+| **3** | **`ARCHITECTURE.md`** | `templates/04-dev-execution/{stack}/ARCHITECTURE.md` | FSD summary: folder structure, table schemas, and JSON API route contracts. **Stack-specific**: Next.js (`app/` dir), Laravel (`app/Http`), Django (`myapp/views.py`). |
 | **4** | **`DESIGN.md`** | `templates/02-design/DESIGN_MD_TEMPLATE.md` | Visual tokens from Module 04: Zinc palette, 1 brand accent, Inter font, flat 1px border. **Universal** (design tokens are framework-agnostic). |
-| **5** | **`CONVENTIONS.md`** | `templates/04-dev-execution/{stack}/CONVENTIONS_TEMPLATE.md` | Code style rules: naming conventions like `kebab-case` (Next.js), `PascalCase` (Laravel), `snake_case` (Django/Python). **Stack-specific**. |
-| **6** | **`.env.example`** | `templates/04-dev-execution/{stack}/ENV_EXAMPLE_TEMPLATE.md` | Standard environment variable dictionary so AI does not invent database/secret key names. **Stack-specific**: Next.js (`DATABASE_URL`), Laravel (`DB_CONNECTION`), Django (`DATABASES`). |
+| **5** | **`CONVENTIONS.md`** | `templates/04-dev-execution/{stack}/CONVENTIONS.md` | Code style rules: naming conventions like `kebab-case` (Next.js), `PascalCase` (Laravel), `snake_case` (Django/Python). **Stack-specific**. |
+| **6** | **`.env.example`** | `templates/04-dev-execution/{stack}/ENV_EXAMPLE.md` | Standard environment variable dictionary so AI does not invent database/secret key names. **Stack-specific**: Next.js (`DATABASE_URL`), Laravel (`DB_CONNECTION`), Django (`DATABASES`). |
 | **7** | **`TODO.md`** | `templates/04-dev-execution/TODO_TEMPLATE.md` | Sequential atomic task list checked off `[x]` one by one by AI. **Universal** (task structure identical across stacks). |
 
 ---

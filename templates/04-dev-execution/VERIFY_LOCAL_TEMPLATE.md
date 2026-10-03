@@ -42,13 +42,13 @@
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Dashboard** | [x] PASS | [x] PASS | [x] PASS | [x] PASS | [x] PASS |
 | **Document Form** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
-| **E-Sign Screen** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
+| **[Feature] Screen** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
 
 ---
 
 ## 5. Critical Security Verification (Security Sanity)
 
-- [x] **Vault Encryption**: PDF files in Cloudflare R2 / AWS S3 bucket are confirmed binary encrypted (cannot be opened directly without decryption key).
+- [x] **[Security feature]**: PDF files in Cloudflare R2 / AWS S3 bucket are confirmed binary encrypted (cannot be opened directly without decryption key).
 - [x] **Presigned URL**: Download links expire automatically and return `403 Forbidden` after 15 minutes.
 - [x] **Password Protection**: `password_hash` column in PostgreSQL database is confirmed prefixed with `$argon2id$` (not plaintext).
 - [x] **Rate Limiting**: Login endpoint temporarily blocked after 5 consecutive failed attempts.

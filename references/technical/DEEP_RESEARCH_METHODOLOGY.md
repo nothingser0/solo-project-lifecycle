@@ -115,7 +115,7 @@ Site-specific search (more accurate than Google):
 3. PP No. 20 Tahun 2026 — PPh Final 0.5% influencer/content creator
    URL: [actual URL]
    
-4. PMK No. 101/PMK.010/2016 — PTKP values (belum berubah per 2026)
+4. PMK No. 101/PMK.010/2016 — PTKP values (unchanged as of 2026)
    URL: https://jdih.kemenkeu.go.id/fulltext/2016/101~PMK.010~2016Per.pdf
 ```
 
@@ -140,7 +140,7 @@ Site-specific search (more accurate than Google):
 | 5 | > 5 miliar | 35% | 1.444 juta + (PKP - 5 M) × 35% |
 
 **Source**: Law No. 7/2021 Article 17 paragraph (1) letter a  
-**Effective**: 1 Januari 2022  
+**Effective**: 1 January 2022  
 **Last Updated**: 28 September 2026 (no changes since 2022)
 ```
 
@@ -342,9 +342,9 @@ Industry reports:
 ## Gap Analysis
 
 ### Features NO competitor has:
-1. ✅ Multi-skema comparison side-by-side (ALL competitors one-shot only)
+1. ✅ Multi-scheme comparison side-by-side (ALL competitors one-shot only)
 2. ✅ Longitudinal tracking multi-client (Ortax/InfoPajak one-off, KlikPajak enterprise-only)
-3. ✅ Tax treaty 71 negara (NO competitor covers international freelance)
+3. ✅ Tax treaty 71 countries (NO competitor covers international freelance)
 4. ✅ Crypto payment tracking (NO competitor handles crypto income)
 
 ### Features competitors have that we DON'T (MVP scope):
@@ -418,17 +418,17 @@ unlike [competitor/alternative] which [competitor weakness].
 ---
 
 ## Executive Summary
-- **[N] kompetitor** analyzed (X direct, Y indirect)
-- **Gap terbesar**: [Primary gap — what no competitor does]
+- **[N] competitors** analyzed (X direct, Y indirect)
+- **Largest gap**: [Primary gap — what no competitor does]
 - **Opportunity**: [Your unique value prop]
 - **Positioning**: [Your positioning statement]
 
 ## 1. [Competitor Name 1]
 ### Overview
-- **Jenis**: [Tool/Platform/Blog/Consultant]
+- **Type**: [Tool/Platform/Blog/Consultant]
 - **URL**: [Link]
 - **Target**: [User type]
-- **Harga**: [Free/Paid/Freemium]
+- **Price**: [Free/Paid/Freemium]
 
 ### Features
 [Bullet list 5-10 key features]
@@ -759,7 +759,7 @@ Non-employee PPh 21 is calculated using 50% Norma[^1], then progressive rates wi
 - **Opportunity**: Tax planning assistant (track + compare + recommend)
 
 **Business impact**:
-- Positioned as affordable (Rp29-99k/mo vs Rp200k-2jt kompetitor)
+- Positioned as affordable (Rp29-99k/mo vs Rp200k-2jt competitors)
 - Target freelancer (vs Ortax = tax professional, KlikPajak = enterprise)
 - Moat: tax treaty database + crypto tracker (hard to replicate)
 

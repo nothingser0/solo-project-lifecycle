@@ -1,5 +1,7 @@
 # Template Picker (PowerShell)
 # Interactive template selection tool
+# Note: Phases 5-7 (QA/Deployment/Maintenance) not yet implemented
+#       Use template-picker.sh (Bash) for these phases
 # Usage: .\scripts\template-picker.ps1
 
 $ErrorActionPreference = "Stop"

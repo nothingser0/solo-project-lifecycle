@@ -34,7 +34,7 @@ If database schema is corrupted due to failed migration:
 ```bash
 # Temporarily halt database connections
 # Restore data from pre-deployment snapshot backup:
-pg_restore -U postgres -d legal_vault_prod -c "backup-pre-deploy-[DATE].dump"
+pg_restore -U postgres -d [database_name]_prod -c "backup-pre-deploy-[DATE].dump"
 ```
 
 ### Step 3: Post-Rollback System Verification

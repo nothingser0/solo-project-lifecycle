@@ -88,6 +88,8 @@ export const metadata = {
 
 ### 2.3 Social Media Assets (MANDATORY for Marketing)
 
+> **Note**: Code examples in this section use Indonesian locale content (FreePajak tax app). Replace all text with your target language.
+
 | Asset | Size | Format | Purpose |
 |-------|------|--------|---------|
 | **Open Graph Image** | 1200×630px | JPG/PNG | Facebook, LinkedIn, Twitter link previews |

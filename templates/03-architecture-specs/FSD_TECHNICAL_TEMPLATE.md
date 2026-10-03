@@ -34,8 +34,8 @@
 ```
 
 ### Technology Decisions (Tech Stack Matrix)
-- **Frontend / Client UI**: Next.js (App Router, React 19, TypeScript, Tailwind CSS, Shadcn UI).
-- **Backend Runtime**: Node.js v20+ LTS / Next.js Server Actions / Route Handlers.
+- **Frontend / Client UI**: Next.js 15 (App Router, React 19, TypeScript, Tailwind CSS, Shadcn UI).
+- **Backend Runtime**: Node.js 22+ LTS / Next.js Server Actions / Route Handlers.
 - **Primary Database**: PostgreSQL 16 (with `pgcrypto` and `uuid-ossp` extensions).
 - **ORM / Query Builder**: Prisma ORM / Drizzle ORM (with versioned schema migrations).
 - **In-Memory Cache & Lock**: Redis v7 (Rate limiting and background job queues).

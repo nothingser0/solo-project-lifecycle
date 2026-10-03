@@ -350,7 +350,7 @@ export function DocumentForm() {
 ```bash
 git init
 git add .
-git commit -m "Initial commit"
+git commit -m "chore: initial commit"
 git branch -M main
 git remote add origin https://github.com/username/my-app.git
 git push -u origin main

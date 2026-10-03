@@ -110,7 +110,7 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
   - Average latency ≤200 ms.
   - No database connection failures (*zero 500 server errors*).
 
-### Step 5: Deployment to Staging Server & SIT Report
+### Step 5: Deployment to Staging Server & SIT Workbook
 1. Push branch `staging` to remote: `git push origin staging`.
 2. CI/CD automatically builds and deploys to the staging domain: `https://staging.clientdomain.com`.
 3. Run a quick smoke test directly on the staging domain.
@@ -126,7 +126,7 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 | **Security Audit** | `pnpm audit` + basic OWASP checklist | SAST scan (Semgrep) + SSL Labs grade A | Certified third-party Penetration Test (Pentest) |
 | **Load Testing** | Verify 20 concurrent users is sufficient | 100 concurrent users load test via k6 | Stress test peak load 1,000+ users & DB failover |
 | **Staging Environment** | Automated preview URL (Vercel/Railway) | Isolated Staging server with dummy data | Mirror Production Staging with data sanitization |
-| **SIT Report** | Concise checklist in VERIFY.md | Formal `SIT_REPORT.md` document | Formal SIT Sign-off + Security Audit Attestation |
+| **SIT Workbook** | Concise checklist in VERIFY.md | Formal `SIT_REPORT.md` document | Formal SIT Sign-off + Security Audit Attestation |
 
 ---
 
@@ -145,7 +145,7 @@ This module produces 2 primary artifacts:
 - [x] SIT with all third-party sandboxes (Payment, Vault S3/R2, Email) is proven successful.
 - [x] Dependency audit `pnpm audit` is free of High/Critical category vulnerabilities.
 - [x] Application has been successfully deployed and runs stably on the **Staging** server.
-- [x] Document **`docs/qa/SIT_REPORT.md`** has been published with the conclusion: **READY FOR CLIENT UAT**.
+- [x] Document **`docs/qa/SIT_WORKBOOK.md`** has been published with the conclusion: **READY FOR CLIENT UAT**.
 
 ---
 

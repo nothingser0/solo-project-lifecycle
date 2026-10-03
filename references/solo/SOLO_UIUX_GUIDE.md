@@ -6,7 +6,7 @@ This document provides practical guidelines for solo developers to design profes
 
 ## 1. `DESIGN.md` Workflow: Maximum Efficiency for Solo Developers
 
-> **Deprecation Notice:** Google Stitch deprecated as of 2024; use pure Markdown DESIGN.md workflow instead.
+> **Workflow Note:** This guide defaults to pure Markdown `DESIGN.md` workflow. Google Stitch (AI prototyping tool, launched 2025) remains available but is optional.
 
 Solo developers should never waste time designing twice (first on a vector canvas, then recoding from scratch). Use `DESIGN.md` as the single source of truth for visual decisions across all project scales, from Small to Enterprise.
 
