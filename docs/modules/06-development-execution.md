@@ -36,6 +36,17 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Git Init & Branching Strategy (main ──► staging ──► feat/*)
                                     │
                                     ▼
+[ STEP 1.5: Generate Project-Specific TODO.md (AI-Guided) ]
+  • AI reads PRD.md, FSD.md, SITEMAP.md to extract scope
+  • Generate TODO.md with 100% coverage:
+    - 1 task per FSD table (database schema)
+    - 1 task per SITEMAP screen (UI implementation)
+    - 1 task per FSD endpoint (API implementation)
+    - 1 task per PRD feature (integration)
+  • Human validates coverage matrix (all entities mapped)
+  • Commit TODO.md before coding starts
+                                    │
+                                    ▼
 [ STEP 2: Module 04 Prototype Conversion (4 Compatibility Levels) ]
   • Level 1 (React → Next.js/Remix): Direct copy (1 day, 95% reuse)
   • Level 2 (React → Vue/Svelte): Syntax conversion (3-4 days, 70% reuse)
@@ -972,6 +983,190 @@ def select_templates(fsd_content: str) -> dict:
             "env_example": "templates/04-dev-execution/generic/.env.example",
         }
 ```
+
+---
+
+## 3A. STEP 1.5: Generate Project-Specific TODO.md (AI-Guided with Coverage Matrix)
+
+**CRITICAL**: `TODO_TEMPLATE.md` is a generic 48-task example for legal-vault project. **NEVER use it directly** for your project.
+
+**Goal**: Generate project-specific `TODO.md` with 100% coverage of PRD features, FSD entities/endpoints, and SITEMAP screens.
+
+---
+
+### AI-Guided Generation Workflow
+
+**Prerequisites**:
+- ✅ PRD.md exists in `docs/specs/`
+- ✅ FSD.md exists in `docs/specs/`
+- ✅ SITEMAP.md exists in `docs/specs/`
+- ✅ DESIGN.md exists in root
+- ✅ Harness files deployed (AGENTS, ARCHITECTURE, CONVENTIONS, .env.example)
+
+**Agent Prompt** (copy to AI coding tool):
+
+```
+Generate project-specific TODO.md for this project:
+
+INPUTS:
+1. Read docs/specs/PRD.md - Extract all Must-Have features (P0) and acceptance criteria
+2. Read docs/specs/FSD.md - Extract all database tables, API endpoints, and business logic
+3. Read docs/specs/SITEMAP.md - Extract all screens/routes with Screen IDs
+4. Read DESIGN.md - Extract design tokens and component library
+
+OUTPUT FORMAT (TODO.md):
+
+# TODO.md — [Project Name]
+
+> Atomic task list for autonomous coding execution.
+> Rule: Complete sequentially. Check [x] after verified.
+
+## Phase 1: Repository Setup (4-6 tasks)
+- [ ] package.json: Install dependencies per ARCHITECTURE.md
+- [ ] tsconfig.json: Enable strict mode
+- [ ] .env.example: Complete environment variables per ARCHITECTURE.md
+- [ ] Database client singleton (lib/db.ts or equivalent)
+
+## Phase 2: Database Schema & Migrations (1 task per table from FSD)
+[Generate from FSD.md Section 4 "Database Schema"]
+- [ ] Schema: Define [table_1] model per FSD DDL section 4.1 - expect valid schema
+- [ ] Schema: Define [table_2] model per FSD DDL section 4.2
+... (repeat for all N tables)
+- [ ] Migrations: Run initial migration - expect all tables created
+- [ ] Seed: Create seed data per FSD section 4.X
+
+## Phase 3: UI Components (1 task per screen from SITEMAP)
+[Generate from SITEMAP.md + DESIGN.md]
+> Source: DESIGN.md (tokens) + screens from SITEMAP or stitch-output/
+
+- [ ] src/components/ui/: Implement primitives per DESIGN.md tokens - expect design system match
+- [ ] [route_1]: Implement [Screen Name] from SITEMAP section X or stitch-output/SCR-XX - expect 5 states (ideal/loading/error/success/empty)
+- [ ] [route_2]: Implement [Screen Name 2] from SITEMAP section Y
+... (repeat for all M screens)
+
+## Phase 4: API Endpoints (1 task per endpoint from FSD)
+[Generate from FSD.md Section 5 "API Contracts"]
+- [ ] [endpoint_1]: Implement [METHOD] [path] per FSD section 5.1 - expect [status_code] [validation]
+- [ ] [endpoint_2]: Implement [METHOD] [path] per FSD section 5.2
+... (repeat for all K endpoints)
+
+## Phase 5: Feature Integration (1 task per PRD feature)
+[Generate from PRD.md Must-Have Features]
+- [ ] [Feature 1]: Implement [feature name] per PRD section 3.1 - expect [acceptance criteria]
+- [ ] [Feature 2]: Implement [feature name] per PRD section 3.2
+... (repeat for all P features)
+- [ ] 5-State Review: Verify all screens have loading/empty/error states
+
+## Phase 6: Testing & Verification
+- [ ] scripts/smoke-test.ts: Write end-to-end flow per PRD user journeys
+- [ ] VERIFY_LOCAL.md: Complete self-verification checklist
+
+REQUIREMENTS:
+1. Every FSD table → 1 schema task
+2. Every SITEMAP screen → 1 UI task with Screen ID reference
+3. Every FSD endpoint → 1 API task with section reference
+4. Every PRD Must-Have feature → 1 integration task
+5. File paths match stack conventions (AGENTS.md)
+6. Expect conditions specific and testable
+```
+
+---
+
+### Coverage Matrix Validation (MANDATORY)
+
+**Before proceeding to coding**, human MUST verify 100% coverage:
+
+```markdown
+## TODO.md Coverage Matrix
+
+### Database Tables (from FSD Section 4)
+| Table Name | FSD Section | TODO Task | Status |
+|:-----------|:------------|:----------|:------:|
+| users | 4.1 | Phase 2, line 12 | ✅ |
+| products | 4.2 | Phase 2, line 13 | ✅ |
+| transactions | 4.3 | Phase 2, line 14 | ✅ |
+... (all N tables)
+
+### Screens (from SITEMAP)
+| Screen | Route | SITEMAP Section | TODO Task | Status |
+|:-------|:------|:----------------|:----------|:------:|
+| Login | /login | 2.1 | Phase 3, line 25 | ✅ |
+| Dashboard | /dashboard | 3.1 | Phase 3, line 26 | ✅ |
+| Sales Entry | /transactions/sales/new | 4.3 | Phase 3, line 30 | ✅ |
+... (all M screens)
+
+### API Endpoints (from FSD Section 5)
+| Method | Path | FSD Section | TODO Task | Status |
+|:-------|:-----|:------------|:----------|:------:|
+| POST | /api/v1/auth/login | 5.1 | Phase 4, line 45 | ✅ |
+| GET | /api/v1/transactions | 5.8 | Phase 4, line 52 | ✅ |
+... (all K endpoints)
+
+### Features (from PRD Must-Have)
+| Feature | PRD Section | Acceptance Criteria | TODO Task | Status |
+|:--------|:------------|:-------------------|:----------|:------:|
+| User Authentication | 3.1 | Login + 2FA | Phase 5, line 68 | ✅ |
+| Double-Entry Accounting | 3.3 | Auto-journal generation | Phase 5, line 70 | ✅ |
+... (all P features)
+
+**Coverage Summary:**
+- Database: N/N tables (100%)
+- Screens: M/M screens (100%)
+- Endpoints: K/K endpoints (100%)
+- Features: P/P features (100%)
+```
+
+---
+
+### Quality Gates
+
+**CANNOT proceed to STEP 2 (prototype conversion) until:**
+
+- [ ] TODO.md generated with AI guidance
+- [ ] Coverage matrix created and validated
+- [ ] 100% coverage confirmed (all tables/screens/endpoints/features mapped)
+- [ ] Human reviewed TODO.md for:
+  - [ ] Correct file paths per stack conventions
+  - [ ] Realistic expect conditions
+  - [ ] Proper task granularity (1 file/endpoint/screen per task)
+  - [ ] Sequential dependencies respected (database → UI → API → integration)
+- [ ] TODO.md committed to git before coding starts
+
+**Anti-Pattern Detection:**
+
+❌ **WRONG**: Copy `TODO_TEMPLATE.md` blindly
+```bash
+cp templates/04-dev-execution/TODO_TEMPLATE.md ./TODO.md
+# Result: AI builds legal-vault features (crypto, signatures) not your project
+```
+
+✅ **CORRECT**: AI-guided generation from specs
+```bash
+# 1. Prompt AI with generation template above
+# 2. AI reads PRD/FSD/SITEMAP
+# 3. AI generates project-specific TODO.md
+# 4. Human validates coverage matrix
+# 5. Commit TODO.md
+git add TODO.md
+git commit -m "chore: generate project-specific TODO from specs"
+```
+
+---
+
+### Example: TataBuku vs Legal Vault
+
+**Legal Vault** (TODO_TEMPLATE.md - 48 tasks):
+- Documents table, signatures, AES-256-GCM encryption
+- 4 screens (login, dashboard, documents, sign)
+- 6 endpoints (auth, documents CRUD, sign)
+
+**TataBuku** (Generated TODO.md - 150 tasks):
+- 18 tables (users, products, transactions, invoices, coa, journal_entries, etc.)
+- 42 screens (dashboard, sales entry, purchase entry, reports, e-Faktur, etc.)
+- 42 endpoints (auth, transactions, inventory, reports, receivables, e-Faktur)
+- 10 features (double-entry accounting, offline-first, e-Faktur integration)
+
+**Conclusion**: Generic template ≠ project-specific work plan. AI-guided generation required.
 
 ---
 
