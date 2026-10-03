@@ -78,9 +78,12 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Execute strategy documented in FSD.md "Module 04 Handoff Strategy"
   • MANDATORY: Check framework docs for component syntax (Next.js Image, Laravel Blade, etc.)
   • Ensure UI Visuals are 100% Identical to Frozen Prototype
-  • Execute TODO.md Phase 3 tasks (UI Component Setup) with verification
+  • Execute TODO.md Phase 3A tasks (Static UI Components only):
+    - Landing, About, Terms, Login, Register screens (no data dependency)
+    - Reusable UI components (Button, Input, Card, Modal)
+    - Layout components (Header, Footer, Sidebar)
   • Phase Gate: Verify static screens render (Landing, Login, About) with mock data
-  • Note: Data-backed screens (Dashboard, Lists) verified in Step 5 after DB+API ready
+  • Note: Data-backed screens moved to TODO Phase 5 (after DB+API ready)
                                     │
                                     ▼
 [ STEP 3: Database Schema & Migrations (Framework-Adapted) ]
@@ -119,12 +122,19 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Audit: pnpm audit / composer audit / pip-audit
   • TypeScript check (if applicable): tsc --noEmit
   • Merge to branch staging → Tag milestone (Alpha ready)
-  • Execute TODO.md Phase 5 tasks (Integration) with verification
+  • Execute TODO.md Phase 5 tasks (Data-backed UI + Integration) with verification:
+    - Data-backed screens (Dashboard, Document List, Detail views)
+    - Wire frontend → backend endpoints (POST /auth/login → LoginForm)
+    - Implement 5 UI states per screen (idle, loading, success, error, empty)
   • Phase Gate: 
     - Verify ALL SITEMAP screens render (static + data-backed)
     - Verify UI→API integration works for data-backed screens
     - Verify 5 UI states implemented (idle, loading, success, error, empty)
-    - Verify cross-phase consistency (all FSD endpoints have UI consumers)
+    - Verify endpoint consumer mapping:
+      * User-facing endpoints → UI screens exist (e.g., POST /auth/login → Login page)
+      * Webhook endpoints → Provider config documented (e.g., POST /webhooks/stripe → webhook signature validation)
+      * Internal/cron endpoints → Caller documented in RUNBOOK_LOCAL.md (e.g., GET /health → monitoring service)
+      * Background job endpoints → Worker setup verified (e.g., POST /jobs/email → queue consumer)
                                     │
                                     ▼
 [ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ] ──► Ready to Enter Module 07: QA & SIT

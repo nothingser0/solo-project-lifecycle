@@ -61,24 +61,26 @@
 
 **Red Flags (Outdated Patterns):**
 
-❌ **Pre-Generics Patterns (DO NOT USE if Go 1.18+)**:
+❌ **Deprecated Packages (DO NOT USE)**:
 ```go
-// ❌ OLD: interface{} everywhere
-func Process(data interface{}) { }
-
-// ✅ NEW: Use generics (Go 1.18+)
-func Process[T any](data T) { }
-```
-
-❌ **Pre-1.16 Patterns (DO NOT USE)**:
-```go
-// ❌ OLD: io/ioutil (deprecated)
+// ❌ OLD: io/ioutil (deprecated in Go 1.16+)
 import "io/ioutil"
 data, _ := ioutil.ReadFile("file.txt")
 
 // ✅ NEW: Use os/io packages
 import "os"
 data, _ := os.ReadFile("file.txt")
+```
+
+**Note on Generics (Go 1.18+)**:
+```go
+// ✅ Use generics for type-parameterized operations
+func Map[T, U any](slice []T, fn func(T) U) []U { }
+
+// ✅ Keep interface{} for polymorphism/dynamic values
+func HandleWebhook(payload interface{}) error { }
+
+// Don't force generics where interface{}/any is correct
 ```
 
 **Enforcement Rules**:

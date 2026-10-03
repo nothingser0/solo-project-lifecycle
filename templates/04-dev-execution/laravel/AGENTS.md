@@ -61,13 +61,15 @@
 
 **Red Flags (Outdated Patterns):**
 
-❌ **Laravel 8/9 Patterns (DO NOT USE)**:
+❌ **Deprecated Syntax (Verify Current Docs)**:
 ```php
-// ❌ OLD: Route model binding (pre-11.x)
-Route::get('/user/{user}', function (User $user) { });
+// If you encounter errors with familiar patterns:
+// 1. Check Laravel 11.x docs for that specific feature
+// 2. Read upgrade guide: https://laravel.com/docs/11.x/upgrade
+// 3. Verify syntax hasn't changed between versions
 
-// ✅ NEW: Check docs for current syntax
-// Syntax may have evolved in 11.x
+// Example: Route model binding still works in 11.x
+Route::get('/user/{user}', function (User $user) { }); // ✅ Valid
 ```
 
 **Enforcement Rules**:
@@ -75,6 +77,7 @@ Route::get('/user/{user}', function (User $user) { });
 2. **Check version dropdown**: Verify docs match composer.json version
 3. **Run `composer show laravel/framework`**: Confirm installed version
 4. **If syntax error**: Update code to match docs, not vice versa
+5. **Read upgrade guide**: https://laravel.com/docs/11.x/upgrade for breaking changes
 
 ## Code Style Rules
 1. **PSR-12 Standard**: Follow PHP-FIG coding standards.
