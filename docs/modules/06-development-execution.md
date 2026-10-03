@@ -37,7 +37,10 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Laravel: composer require laravel/framework:{FSD.Laravel}
     - Django: pip install django=={FSD.Django}
     - Go: Update go.mod with go {FSD.Go}
-  • Install 7 AI Harness Files (stack-specific templates)
+  • Install 9 AI Harness Files from docs/harness-root/ to project root:
+    - Stack-specific: AGENTS.md, ARCHITECTURE.md, CONVENTIONS.md, .env.example
+    - Universal: CONTEXT.md, DESIGN.md
+    - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • Git Init & Branching Strategy (main ──► staging ──► feat/*)
                                     │
                                     ▼
@@ -74,6 +77,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Level 4 (React → Inertia.js): Hybrid glue layer (5-6 days, 70% reuse)
   • Execute strategy documented in FSD.md "Module 04 Handoff Strategy"
   • Ensure UI Visuals are 100% Identical to Frozen Prototype
+  • Execute TODO.md Phase 3 tasks (UI Component Setup) with verification
+  • Phase Gate: Verify all SITEMAP screens render before proceeding to database
                                     │
                                     ▼
 [ STEP 3: Database Schema & Migrations (Framework-Adapted) ]
@@ -84,6 +89,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Go: SQL migration files + golang-migrate
   • Set up Database Pooling & Indexing on Foreign Key Columns
   • Execute Local Migrations & Seed Data (faker data for testing)
+  • Execute TODO.md Phase 2 tasks (Database Schema) with verification
+  • Phase Gate: Verify migrations reversible, seed data works, tables exist
                                     │
                                     ▼
 [ STEP 4: Backend API & 6 Engineering Pillars (Framework-Agnostic) ]
@@ -93,6 +100,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Performance Pillar: N+1 Prevention, Caching, Query Indexing
   • Resource Pillar: Connection Pooling, Stream Processing, Memory Management
   • Wire frontend components → backend endpoints (5 UI states: idle, loading, success, error, empty)
+  • Execute TODO.md Phase 4 tasks (API Endpoints) with verification
+  • Phase Gate: Verify all FSD endpoints return correct status codes, validation works
                                     │
                                     ▼
 [ STEP 5: Testing & Git Workflow (Stack-Adapted) ]
@@ -104,6 +113,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Audit: pnpm audit / composer audit / pip-audit
   • TypeScript check (if applicable): tsc --noEmit
   • Merge to branch staging → Tag milestone (Alpha ready)
+  • Execute TODO.md Phase 5 tasks (Integration) with verification
+  • Phase Gate: Verify UI→API integration works, 5 UI states implemented
                                     │
                                     ▼
 [ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ] ──► Ready to Enter Module 07: QA & SIT
@@ -695,7 +706,7 @@ Copy staged harness files from docs/harness-root/ to project root:
   Source: docs/harness-root/
   Target: ./ (project root)
 
-  Files (7 total):
+  Files (9 total):
     - AGENTS.md (overwrites Next.js boilerplate if exists)
     - ARCHITECTURE.md
     - CONTEXT.md
@@ -703,7 +714,12 @@ Copy staged harness files from docs/harness-root/ to project root:
     - DESIGN.md
     - TODO.md
     - .env.example
+    - VERIFY_LOCAL.md (generated from template, customized per FSD)
+    - RUNBOOK_LOCAL.md (generated from template, customized per stack)
 ```
+
+**Note**: VERIFY_LOCAL.md and RUNBOOK_LOCAL.md require project-specific generation.
+Templates contain placeholders that MUST be replaced with FSD endpoints, stack commands, and actual screens.
 
 **NEVER skip deployment!** Framework boilerplate lacks engineering standards.
 
@@ -725,13 +741,34 @@ Agent reads stack-specific templates from skill://, writes to staging:
     - AGENTS.md, ARCHITECTURE.md, CONVENTIONS.md, .env.example
   
   Universal files:
-    - CONTEXT.md, DESIGN.md, TODO.md
+    - CONTEXT.md, DESIGN.md
+  
+  Generated files (require FSD/SITEMAP data):
+    - TODO.md (from TODO_TEMPLATE.md + FSD tables + SITEMAP screens)
+    - VERIFY_LOCAL.md (from VERIFY_LOCAL_TEMPLATE.md + FSD endpoints + stack commands)
+    - RUNBOOK_LOCAL.md (from RUNBOOK_LOCAL_TEMPLATE.md + stack-specific commands)
+  
+  Template → Target mapping:
+    skill://templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md → docs/harness-root/VERIFY_LOCAL.md
+    skill://templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md → docs/harness-root/RUNBOOK_LOCAL.md
+    skill://templates/04-dev-execution/TODO_TEMPLATE.md → docs/harness-root/TODO.md
+  
+  Generation process:
+    1. Read FSD.md: extract tables, endpoints, security features
+    2. Read SITEMAP.md: extract screens
+    3. Read ARCHITECTURE.md: extract stack (nextjs|laravel|django|go)
+    4. Substitute placeholders in templates with actual project data
+    5. Write generated files to docs/harness-root/
 ```
 
 **Deployment workflow (M06 after scaffold)**:
 ```
 Agent copies from staging to root:
   cp docs/harness-root/* ./
+  
+  Verifies 9 files present:
+    AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md,
+    TODO.md, .env.example, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
 ```
 
 | No | File Name | Reference Source (Stack-Specific) | Function for AI Coding Agent |
@@ -1881,10 +1918,13 @@ In solo development accelerated by AI Coding Agents, *code review* is conducted 
 ```
 
 ### Checkpoint 1: Scaffolding & Foundation Gate
-- **Trigger**: Scaffolding complete, 7 AI harness files installed, initial database schema created.
+- **Trigger**: Scaffolding complete, 9 AI harness files installed, initial database schema created.
 - **Target Branch**: `feat/scaffold` ──► `staging`
 - **Mandatory Checklist**:
-  - [ ] All 7 AI harness files located in project root and customized per FSD.md.
+  - [ ] All 9 AI harness files located in project root and customized per FSD.md.
+  - [ ] TODO.md generated with all FSD tables, SITEMAP screens, and API endpoints mapped.
+  - [ ] VERIFY_LOCAL.md generated with project-specific endpoints and stack commands (not template placeholders).
+  - [ ] RUNBOOK_LOCAL.md contains correct stack-specific commands (npm/composer/python/go).
   - [ ] TypeScript strict mode active (`tsc --noEmit` exits 0 with zero errors).
   - [ ] No `any` types detected across all new code files.
   - [ ] Database schema and initial migration successfully executed in local database.
@@ -1927,6 +1967,13 @@ In solo development accelerated by AI Coding Agents, *code review* is conducted 
   - [ ] Complete smoke test (`test:smoke`) passes 100%.
   - [ ] `VERIFY_LOCAL.md` and `DEVELOPMENT_PROGRESS_TRACKER.md` fully completed and signed off.
   - [ ] Branch `staging` clean, frozen, and tagged with release tag (example: `git tag -a v0.9.0-beta -m "Beta release ready for QA"`).
+
+**Note on VERIFY_LOCAL.md Verification**:
+- VERIFY_LOCAL.md is generated per-project with FSD endpoints and stack-specific commands
+- Manual review required: verify all checkboxes reflect actual testing (not template defaults)
+- Evidence required: commit SHA filled, smoke test output pasted, API responses documented
+- Automated gate script pending implementation (requires universal stack detection)
+
 - **Gate Decision**:
   - **PASS**: Advance to **Module 07: Quality Assurance & SIT on Staging**. Issue Term 3 Invoice if agreed in contract.
   - **FAIL**: Postpone release, resolve technical debt in `DEVELOPMENT_PROGRESS_TRACKER.md`.
