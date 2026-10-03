@@ -8,10 +8,15 @@ Stacks with complete scaffold, harness templates, version gates, and verificatio
 
 | Stack | Scaffold | AGENTS.md | ARCHITECTURE.md | Version Gate | VERIFY Commands | Status |
 |:------|:---------|:----------|:----------------|:-------------|:----------------|:-------|
-| **Next.js 15** | ✅ `pnpm create next-app@latest` | ✅ | ✅ | ✅ | `npm run type-check`, `npm run build` | **PRODUCTION** |
-| **Laravel 11** | ✅ `composer create-project laravel/laravel` | ✅ | ✅ | ✅ | `php artisan test`, `composer audit` | **PRODUCTION** |
-| **Django 5** | ✅ `django-admin startproject` | ✅ | ✅ | ✅ | `python manage.py test`, `pip-audit` | **PRODUCTION** |
-| **Go 1.23** | ✅ `go mod init` | ✅ | ✅ | ✅ | `go test ./...`, `go build` | **PRODUCTION** |
+| **Next.js** | ✅ `pnpm create next-app@latest` | ✅ | ✅ | ✅ package-lock.json | `npm run type-check`, `npm run build` | **PRODUCTION** |
+| **Laravel** | ✅ `composer create-project laravel/laravel` | ✅ | ✅ | ✅ composer.lock | `php artisan test`, `composer audit` | **PRODUCTION** |
+| **Django** | ✅ `django-admin startproject` | ✅ | ✅ | ✅ requirements.txt | `python manage.py test`, `pip-audit` | **PRODUCTION** |
+| **Go** | ✅ `go mod init` | ✅ | ✅ | ✅ go.mod | `go test ./...`, `go build` | **PRODUCTION** |
+
+**Note**: Versions determined by M05 real-time registry check, NOT hardcoded by skill.
+- M05 runs `npm view next version` → locks result in FSD.md
+- M06 scaffolds @latest → pins exact FSD version → version gate validates lockfile
+- Skill templates work across framework versions (Next.js 15, 16, 17+)
 
 ---
 
@@ -79,17 +84,42 @@ From "12 Tech Stacks Worth Considering 2026" - pending template development:
 ## Recommendation for New Projects
 
 ### Web Applications (SaaS, Dashboards, CRMs)
-- **Rapid Prototyping**: Next.js 15 (React + TypeScript)
-- **API-Heavy Backend**: Laravel 11 or Django 5
-- **Microservices**: Go 1.23
+- **Rapid Prototyping**: Next.js (React + TypeScript) - check latest stable in M05
+- **API-Heavy Backend**: Laravel or Django - check latest stable in M05
+- **Microservices**: Go - check latest stable in M05
 
 ### Mobile Applications
 - **Status**: Not yet supported by skill
 - **Workaround**: Use Next.js + PWA for cross-platform web apps
 
 ### Enterprise/Legacy
-- **PHP**: Use Laravel 11 (modern PHP framework)
+- **PHP**: Use Laravel (modern PHP framework, check latest in M05)
 - **.NET/Java**: Pending template development
+
+### Version Selection Process
+
+**M05 Module: Real-Time Version Check**
+```bash
+# Step 1: Check registry for latest stable
+npm view next version          # Output: 16.3.8 (example, actual varies)
+composer show laravel/framework --latest  # Output: 11.5.2 (example)
+pip index versions django | head -1       # Output: 5.1.3 (example)
+go list -m -versions golang.org/x/mod    # Check Go releases
+
+# Step 2: Lock in FSD.md
+## Framework Versions (Pinned):
+- Next.js: 16.3.8
+- React: 19.2.8
+- Node.js: 22.11.0
+
+# Step 3: Human approves locked versions
+# Step 4: M06 scaffolds + pins exact versions from FSD
+```
+
+**Why Real-Time Check?**
+- Skill written 2026-10-03, but used 2027-04-15 → Next.js might be 17.x
+- Security patches: Django 5.0.1 → 5.0.8 (critical fixes)
+- Breaking changes: User decides to lock known-stable version vs bleeding edge
 
 ---
 
