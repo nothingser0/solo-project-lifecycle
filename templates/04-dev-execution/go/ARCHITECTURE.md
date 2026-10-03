@@ -22,6 +22,22 @@
 ## Directory Structure (Clean Architecture)
 
 ```text
+docs/
+├── specs/                    # Technical specifications (from M04-M05)
+│   ├── PRD.md                # Product requirements
+│   ├── FSD.md                # Functional specification
+│   ├── SITEMAP.md            # Screen inventory with IDs
+│   └── DESIGN_SYSTEM.md      # Design tokens & component specs
+├── design/                   # Design artifacts (optional)
+│   ├── stitch-output/        # Generated screens from Google Stitch (if used)
+│   │   ├── SCR-01/           # Landing page components
+│   │   ├── SCR-06/           # Login screen components
+│   │   └── ...               # One folder per Screen ID
+│   └── references/           # Design inspiration (optional)
+│       ├── competitors/      # Competitor screenshots
+│       └── brand/            # Brand assets, guidelines
+└── pm/                       # Project management docs
+
 cmd/
 └── server/
     └── main.go              # Application entry point
