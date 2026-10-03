@@ -26,25 +26,31 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Verify stack decision matches Module 05 approval (GATE check)
                                     │
                                     ▼
-[ STEP 0.5: Framework Version Gate (MANDATORY) ]
-  • Run version gate script: ./scripts/verify-framework-version.sh
-  • Verify installed framework version matches FSD locked version
-  • If mismatch → FAIL with downgrade/upgrade options
-  • If major version mismatch → Show breaking changes
-  • Example: FSD locked Next.js 15, but Next.js 16 installed → FAIL
-                                    │
-                                    ▼
 [ STEP 1: Repository Initiation & Scaffold (Stack-Adapted) ]
   • Execute scaffold command for chosen stack:
-    - Next.js: pnpm create next-app@15.0.3 (use FSD pinned version, NOT @latest)
+    - Next.js: pnpm create next-app@latest
     - Laravel: composer create-project laravel/laravel --prefer-dist
-    - Django: django-admin startproject (verify Django version: pip install django>=4.2)
+    - Django: django-admin startproject
     - Go: mkdir + go mod init
+  • Pin exact framework versions from FSD.md "Framework Versions (Pinned):" section:
+    - Next.js: npm install next@{FSD.Next} react@{FSD.React} react-dom@{FSD.React}
+    - Laravel: composer require laravel/framework:{FSD.Laravel}
+    - Django: pip install django=={FSD.Django}
+    - Go: Update go.mod with go {FSD.Go}
   • Install 7 AI Harness Files (stack-specific templates)
   • Git Init & Branching Strategy (main ──► staging ──► feat/*)
                                     │
                                     ▼
-[ STEP 1.5: Generate Project-Specific TODO.md (AI-Guided) ]
+[ STEP 1.5: Verify Framework Versions (Version Gate - MANDATORY) ]
+  • Run version gate: ./scripts/verify-framework-version.sh (or .ps1)
+  • Verifies resolved lockfile versions match FSD locked versions
+  • Checks package-lock.json / composer.lock / requirements.txt / go.mod
+  • Compares major.minor versions (exact match required)
+  • Missing lockfile or version mismatch → FAIL with fix command
+  • Example: FSD has Next.js: 15.0.3, lockfile resolved 16.3.8 → FAIL
+                                    │
+                                    ▼
+[ STEP 1.6: Generate Project-Specific TODO.md (AI-Guided) ]
   • AI reads PRD.md, FSD.md, SITEMAP.md to extract scope
   • Generate TODO.md with 100% coverage:
     - 1 task per FSD table (database schema)
