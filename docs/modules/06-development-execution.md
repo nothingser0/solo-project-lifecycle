@@ -79,7 +79,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • MANDATORY: Check framework docs for component syntax (Next.js Image, Laravel Blade, etc.)
   • Ensure UI Visuals are 100% Identical to Frozen Prototype
   • Execute TODO.md Phase 3 tasks (UI Component Setup) with verification
-  • Phase Gate: Verify all SITEMAP screens render before proceeding to database
+  • Phase Gate: Verify static screens render (Landing, Login, About) with mock data
+  • Note: Data-backed screens (Dashboard, Lists) verified in Step 5 after DB+API ready
                                     │
                                     ▼
 [ STEP 3: Database Schema & Migrations (Framework-Adapted) ]
@@ -119,7 +120,11 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • TypeScript check (if applicable): tsc --noEmit
   • Merge to branch staging → Tag milestone (Alpha ready)
   • Execute TODO.md Phase 5 tasks (Integration) with verification
-  • Phase Gate: Verify UI→API integration works, 5 UI states implemented
+  • Phase Gate: 
+    - Verify ALL SITEMAP screens render (static + data-backed)
+    - Verify UI→API integration works for data-backed screens
+    - Verify 5 UI states implemented (idle, loading, success, error, empty)
+    - Verify cross-phase consistency (all FSD endpoints have UI consumers)
                                     │
                                     ▼
 [ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ] ──► Ready to Enter Module 07: QA & SIT
