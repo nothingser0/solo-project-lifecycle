@@ -6,10 +6,10 @@
 
 ## 1. Verification Metadata
 - **Project Name**: [Application Name]
-- **Latest Commit SHA**: `[git rev-parse --short HEAD]`
+- **Latest Commit SHA**: `______` (run `git rev-parse --short HEAD`)
 - **Tester / Solo Engineer**: [Your Name]
 - **Verification Date**: [YYYY-MM-DD]
-- **Target Status**: [Ready for Staging QA / Incomplete]
+- **Target Status**: ❌ INCOMPLETE (mark ✅ READY after all checks pass)
 
 ---
 
@@ -17,9 +17,9 @@
 
 | Test Command | Success Criteria | Self-Test Result | Notes |
 | :--- | :--- | :---: | :--- |
-| `npm run type-check` | TypeScript compiles without errors (`exit 0`) | [x] PASS | Free of type errors |
-| `npm run lint` | Linter clean without critical warnings | [x] PASS | Code adheres to style rules |
-| `npm run build` | Frontend & backend bundle built successfully | [x] PASS | Output ready for release |
+| `npm run type-check` | TypeScript compiles without errors (`exit 0`) | [ ] PASS | Run and document output |
+| `npm run lint` | Linter clean without critical warnings | [ ] PASS | Run and document output |
+| `npm run build` | Frontend & backend bundle built successfully | [ ] PASS | Run and document output |
 
 ---
 
@@ -27,12 +27,11 @@
 
 | Endpoint | Method | Test Scenario | Expected Status Code | Test Result |
 | :--- | :---: | :--- | :---: | :---: |
-| `/api/v1/auth/login` | `POST` | Valid credentials $\to$ HttpOnly cookie set | `200 OK` | PASS |
-| `/api/v1/auth/login` | `POST` | Invalid password $\to$ Specific error message | `401 Unauthorized` | PASS |
-| `/api/v1/documents` | `POST` | Valid payload + new Idempotency key | `201 Created` | PASS |
-| `/api/v1/documents` | `POST` | Duplicate idempotency key re-sent $\to$ Rejected | `409 Conflict` | PASS |
-| `/api/v1/documents/:id` | `GET` | Fetch document data $\to$ Presigned URL issued | `200 OK` | PASS |
-| `/api/v1/sign/:token` | `POST` | Digital signature $\to$ Status updated to `SIGNED` | `200 OK` | PASS |
+| `/api/v1/auth/login` | `POST` | Valid credentials → HttpOnly cookie set | `200 OK` | [ ] PASS |
+| `/api/v1/auth/login` | `POST` | Invalid password → Error message | `401 Unauthorized` | [ ] PASS |
+| (Add all FSD endpoints here) | | | | [ ] PASS |
+
+**Evidence Required**: Paste curl command output or Postman screenshots showing actual responses
 
 ---
 
@@ -44,24 +43,28 @@
 
 | Screen | Brand Color Used | Typography Scale | Shadow Style | Border Style | Result |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Dashboard** | Primary (not neutral) | Per DESIGN.md section 3 | Flat (shadow-sm) | 1px border | [x] PASS |
-| **Login** | Primary brand | Correct weights | Flat | 1px border | [x] PASS |
-| **[Screen]** | Primary brand | Correct | Flat | 1px border | [x] PASS |
+| **Dashboard** | Primary (not neutral) | Per DESIGN.md section 3 | Flat (shadow-sm) | 1px border | [ ] PASS |
+| **Login** | Primary brand | Correct weights | Flat | 1px border | [ ] PASS |
+| (Add all SITEMAP screens) | | | | [ ] PASS |
 
-**Design Token Verification:**
+**Design Token Verification**:
 - [ ] Primary brand color applied to CTA buttons (not `bg-neutral-100`)
 - [ ] Typography matches DESIGN.md scale (specific font weights/sizes)
 - [ ] Shadow style consistent (flat `shadow-sm border` vs heavy `shadow-lg`)
 - [ ] Border width matches spec (typically 1px `border-neutral-200`)
 - [ ] Spacing follows Tailwind scale from DESIGN.md
 
+**Evidence Required**: Attach screenshots showing brand colors applied correctly
+
 ### 4B. 5-State Matrix (Per SITEMAP Screens)
 
 | Page Name | Default State | Skeleton Loader | Empty State | Inline Error | Success Toast |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Dashboard** | [x] PASS | [x] PASS | [x] PASS | [x] PASS | [x] PASS |
-| **Document Form** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
-| **[Feature] Screen** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
+| **Dashboard** | [ ] PASS | [ ] PASS | [ ] PASS | [ ] PASS | [ ] PASS |
+| **Document Form** | [ ] PASS | [ ] PASS | N/A | [ ] PASS | [ ] PASS |
+| (Add all screens) | [ ] PASS | [ ] PASS | [ ] PASS | [ ] PASS | [ ] PASS |
+
+**Evidence Required**: Test each state manually, document with screenshots
 
 ### 4C. Hydration Error Check (Next.js SSR)
 
@@ -79,6 +82,8 @@ npm run dev
 - [ ] No "Text content did not match" errors
 - [ ] No "Extra attributes from server" warnings
 
+**Evidence Required**: Console screenshot showing zero hydration errors
+
 **Common Hydration Sources (If Found):**
 - ❌ `Date.now()` or timestamps in SSR components
 - ❌ `Math.random()` values
@@ -95,14 +100,38 @@ npm run dev
 
 ## 5. Critical Security Verification (Security Sanity)
 
-- [x] **[Security feature]**: PDF files in Cloudflare R2 / AWS S3 bucket are confirmed binary encrypted (cannot be opened directly without decryption key).
-- [x] **Presigned URL**: Download links expire automatically and return `403 Forbidden` after 15 minutes.
-- [x] **Password Protection**: `password_hash` column in PostgreSQL database is confirmed prefixed with `$argon2id$` (not plaintext).
-- [x] **Rate Limiting**: Login endpoint temporarily blocked after 5 consecutive failed attempts.
+- [ ] **Encryption**: Sensitive data encrypted at rest (check FSD security spec)
+- [ ] **Presigned URL**: Download links expire per FSD timeout (test expiry)
+- [ ] **Password Hashing**: Database shows hashed passwords (not plaintext)
+- [ ] **Rate Limiting**: Login endpoint blocks after X attempts (test manually)
+
+**Evidence Required**: 
+- Database query showing `$argon2id$` or `$2b$` prefixed passwords
+- Rate limit test: curl login 6 times, 6th fails with 429
+- Presigned URL expires: wait timeout, verify 403 Forbidden
 
 ---
 
 ## 6. Final Local Verification Decision
 
-- [x] **LOCAL PASS**: All checklist items above are fulfilled. Code is ready to be pushed to the `staging` branch for integration testing in **Module 07: QA & SIT**.
+**Smoke Test Execution**:
+```bash
+npm run test:smoke
+# OR
+npx tsx scripts/smoke-test.ts
+```
+
+**Smoke Test Result**: ______ passed, ______ failed (paste output below)
+
+```
+[Paste smoke test output here]
+```
+
+**Final Decision**:
+- [ ] **LOCAL PASS**: All checklist items above fulfilled, all evidence attached, smoke test passed 100%
 - [ ] **FAIL**: Critical bugs or compilation failures found. Resolve before pushing.
+
+**If FAIL, document blockers**:
+1. 
+2. 
+3.

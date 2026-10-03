@@ -36,8 +36,10 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Next.js: npm install next@{FSD.Next} react@{FSD.React} react-dom@{FSD.React}
     - Laravel: composer require laravel/framework:{FSD.Laravel}
     - Django: pip install django=={FSD.Django}
-    - Go: Update go.mod with go {FSD.Go}
-  • Install 7 AI Harness Files (stack-specific templates)
+    - Go: Update go.mod: go {FSD.Go}
+  • Install 9 AI Harness Files to project root from docs/harness-root/:
+    - AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md
+    - TODO.md, .env.example, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • Git Init & Branching Strategy (main ──► staging ──► feat/*)
                                     │
                                     ▼
@@ -695,7 +697,7 @@ Copy staged harness files from docs/harness-root/ to project root:
   Source: docs/harness-root/
   Target: ./ (project root)
 
-  Files (7 total):
+  Files (9 total):
     - AGENTS.md (overwrites Next.js boilerplate if exists)
     - ARCHITECTURE.md
     - CONTEXT.md
@@ -703,6 +705,8 @@ Copy staged harness files from docs/harness-root/ to project root:
     - DESIGN.md
     - TODO.md
     - .env.example
+    - VERIFY_LOCAL.md
+    - RUNBOOK_LOCAL.md
 ```
 
 **NEVER skip deployment!** Framework boilerplate lacks engineering standards.
@@ -725,13 +729,23 @@ Agent reads stack-specific templates from skill://, writes to staging:
     - AGENTS.md, ARCHITECTURE.md, CONVENTIONS.md, .env.example
   
   Universal files:
-    - CONTEXT.md, DESIGN.md, TODO.md
+    - CONTEXT.md, DESIGN.md, TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
+  
+  Template → Target mapping:
+    - VERIFY_LOCAL_TEMPLATE.md → VERIFY_LOCAL.md
+    - RUNBOOK_LOCAL_TEMPLATE.md → RUNBOOK_LOCAL.md
+    - TODO_TEMPLATE.md → TODO.md (generated, not copied)
+    - Other files: copy as-is
 ```
 
 **Deployment workflow (M06 after scaffold)**:
 ```
 Agent copies from staging to root:
   cp docs/harness-root/* ./
+  
+  Verifies 9 files copied:
+    AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md,
+    TODO.md, .env.example, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
 ```
 
 | No | File Name | Reference Source (Stack-Specific) | Function for AI Coding Agent |
@@ -1881,10 +1895,11 @@ In solo development accelerated by AI Coding Agents, *code review* is conducted 
 ```
 
 ### Checkpoint 1: Scaffolding & Foundation Gate
-- **Trigger**: Scaffolding complete, 7 AI harness files installed, initial database schema created.
+- **Trigger**: Scaffolding complete, 9 AI harness files installed, initial database schema created.
 - **Target Branch**: `feat/scaffold` ──► `staging`
 - **Mandatory Checklist**:
-  - [ ] All 7 AI harness files located in project root and customized per FSD.md.
+  - [ ] All 9 AI harness files located in project root and customized per FSD.md.
+  - [ ] VERIFY_LOCAL.md and RUNBOOK_LOCAL.md present and ready for use.
   - [ ] TypeScript strict mode active (`tsc --noEmit` exits 0 with zero errors).
   - [ ] No `any` types detected across all new code files.
   - [ ] Database schema and initial migration successfully executed in local database.
@@ -1927,9 +1942,58 @@ In solo development accelerated by AI Coding Agents, *code review* is conducted 
   - [ ] Complete smoke test (`test:smoke`) passes 100%.
   - [ ] `VERIFY_LOCAL.md` and `DEVELOPMENT_PROGRESS_TRACKER.md` fully completed and signed off.
   - [ ] Branch `staging` clean, frozen, and tagged with release tag (example: `git tag -a v0.9.0-beta -m "Beta release ready for QA"`).
+
+- **Mandatory Verification Gate (BLOCKING)**:
+  ```bash
+  # Must execute before M07
+  # Check that evidence fields are filled (not template defaults)
+  
+  # 1. Check metadata filled
+  grep "Latest Commit SHA.*git rev-parse" VERIFY_LOCAL.md && {
+    echo "❌ Commit SHA not filled (still has template placeholder)"
+    exit 1
+  }
+  
+  # 2. Check test results documented
+  grep "\[x\] PASS.*Free of type errors" VERIFY_LOCAL.md || {
+    echo "❌ TypeScript check not documented"
+    exit 1
+  }
+  
+  # 3. Check API endpoints tested (not template example)
+  grep "/api/v1/auth/login.*200 OK.*PASS" VERIFY_LOCAL.md || {
+    echo "❌ API endpoints not tested (still has template examples)"
+    exit 1
+  }
+  
+  # 4. Check final decision is PASS with FAIL unchecked
+  grep "- \[x\] \*\*LOCAL PASS\*\*" VERIFY_LOCAL.md && 
+  grep "- \[ \] \*\*FAIL\*\*" VERIFY_LOCAL.md || {
+    echo "❌ Final decision not marked correctly"
+    exit 1
+  }
+  
+  echo "✅ VERIFY_LOCAL.md verification complete"
+  ```
+  
+  **Verification Requirements**:
+  - [ ] Section 4A: Design Compliance - All screens match DESIGN_SYSTEM.md tokens
+  - [ ] Section 4C: Hydration Check - Zero errors in browser console
+  - [ ] Section 3: API Matrix - All FSD endpoints return correct status codes
+  - [ ] Section 5: Security - Encryption active, passwords hashed, rate limiting works
+  - [ ] Metadata: Commit SHA, tester name, date filled in (not template placeholders)
+  - [ ] Evidence: Screenshots/logs attached, test outputs documented
+  - [ ] Final Decision: LOCAL PASS checked AND FAIL unchecked
+
 - **Gate Decision**:
-  - **PASS**: Advance to **Module 07: Quality Assurance & SIT on Staging**. Issue Term 3 Invoice if agreed in contract.
-  - **FAIL**: Postpone release, resolve technical debt in `DEVELOPMENT_PROGRESS_TRACKER.md`.
+  - **PASS**: All evidence fields filled, gate script passes → Advance to **Module 07**
+  - **FAIL**: Template placeholders remain OR FAIL checked → **BLOCKED**
+    - Return to development
+    - Fix documented blockers in VERIFY_LOCAL.md
+    - Re-run verification
+    - Cannot proceed to M07 until PASS
+
+**Enforcement**: M07 deployment scripts MUST check for VERIFY_LOCAL.md PASS decision before allowing staging deployment.
 
 ---
 
