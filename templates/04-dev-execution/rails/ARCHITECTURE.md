@@ -18,16 +18,12 @@ app/
 │   ├── application_controller.rb
 │   ├── api/
 │   │   └── v1/          # API versioning
-│   │       ├── auth_controller.rb
-│   │       └── documents_controller.rb
 │   └── concerns/        # Controller mixins
 ├── helpers/             # View helpers
 ├── jobs/                # ActiveJob background jobs
 ├── mailers/             # ActionMailer email templates
 ├── models/
 │   ├── application_record.rb
-│   ├── user.rb
-│   ├── document.rb
 │   └── concerns/        # Model mixins
 ├── views/
 │   ├── layouts/
@@ -48,7 +44,7 @@ config/
 
 db/
 ├── migrate/             # Database migrations
-├── schema.rb            # Current database schema
+├── schema.rb            # Current database schema (auto-generated)
 └── seeds.rb             # Seed data
 
 lib/
@@ -66,87 +62,69 @@ spec/ (or test/)
 
 ## Database Schema (ActiveRecord)
 
-Refer to `docs/specs/FSD.md` for complete DDL.
+**Complete schema in `docs/specs/FSD.md`**
 
-### Example Models
+Models, migrations, and relationships generated from FSD table definitions.
+
+### Model Pattern
 
 ```ruby
-# app/models/user.rb
-class User < ApplicationRecord
-  has_secure_password
+# app/models/{model_name}.rb
+class {ModelName} < ApplicationRecord
+  # Associations (from FSD foreign keys)
+  has_many :{related_models}, dependent: :destroy
+  belongs_to :{parent_model}
   
-  has_many :documents, dependent: :destroy
+  # Validations (from FSD constraints)
+  validates :{column}, presence: true
+  validates :{column}, uniqueness: true
   
-  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :role, presence: true, inclusion: { in: %w[admin manager staff] }
+  # Enums (from FSD enum types)
+  enum {status_column}: { draft: 0, published: 1 }
   
-  enum role: { admin: 0, manager: 1, staff: 2 }
-end
-
-# app/models/document.rb
-class Document < ApplicationRecord
-  belongs_to :user
-  
-  validates :title, presence: true, length: { maximum: 255 }
-  validates :status, presence: true, inclusion: { in: %w[DRAFT SIGNED ARCHIVED] }
-  
-  enum status: { draft: 0, signed: 1, archived: 2 }
-  
+  # Scopes (common queries)
   scope :recent, -> { order(created_at: :desc) }
-  scope :by_status, ->(status) { where(status: status) }
 end
 ```
 
-### Migrations
+### Migration Pattern
 
 ```ruby
-# db/migrate/20261003_create_users.rb
-class CreateUsers < ActiveRecord::Migration[7.0]
+# db/migrate/{timestamp}_create_{table_name}.rb
+class Create{TableName} < ActiveRecord::Migration[7.0]
   def change
-    create_table :users, id: :uuid do |t|
-      t.string :email, null: false, index: { unique: true }
-      t.string :password_digest, null: false
-      t.integer :role, null: false, default: 2
-      
-      t.timestamps
-    end
-  end
-end
-
-# db/migrate/20261003_create_documents.rb
-class CreateDocuments < ActiveRecord::Migration[7.0]
-  def change
-    create_table :documents, id: :uuid do |t|
-      t.references :user, null: false, foreign_key: true, type: :uuid, index: true
-      t.string :title, null: false
-      t.integer :status, null: false, default: 0
+    create_table :{table_name}, id: :uuid do |t|
+      # Columns from FSD DDL
+      t.string :{column_name}, null: false
+      t.references :{foreign_key}, foreign_key: true, type: :uuid, index: true
       
       t.timestamps
     end
     
-    add_index :documents, :status
+    # Indexes from FSD
+    add_index :{table_name}, :{indexed_column}
   end
 end
 ```
 
+**Generate models from FSD.md schema definitions**
+
 ---
 
 ## Routing (RESTful API)
+
+**Complete API contract in `docs/specs/FSD.md`**
 
 ```ruby
 # config/routes.rb
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      # Authentication
-      post 'auth/login', to: 'auth#create'
-      delete 'auth/logout', to: 'auth#destroy'
+      # Resources from FSD endpoints
+      resources :{resource_name}, only: [:index, :show, :create, :update, :destroy]
       
-      # Resources
-      resources :documents, only: [:index, :show, :create, :update, :destroy]
-      
-      # Custom routes
-      post 'documents/:id/sign', to: 'documents#sign'
+      # Custom actions from FSD
+      post '{resource}/:id/{action}', to: '{resource}#{action}'
     end
   end
   
@@ -155,121 +133,85 @@ Rails.application.routes.draw do
 end
 ```
 
+**Generate routes from FSD.md API endpoint specifications**
+
 ---
 
 ## Controllers (RESTful Actions)
 
 ```ruby
-# app/controllers/api/v1/auth_controller.rb
+# app/controllers/api/v1/{resource}_controller.rb
 module Api
   module V1
-    class AuthController < ApplicationController
-      skip_before_action :authenticate_user!, only: [:create]
-      
-      def create
-        user = User.find_by(email: auth_params[:email])
-        
-        if user&.authenticate(auth_params[:password])
-          session[:user_id] = user.id
-          render json: { user: user.as_json(only: [:id, :email, :role]) }, status: :ok
-        else
-          render json: { error: 'Invalid credentials' }, status: :unauthorized
-        end
-      end
-      
-      def destroy
-        session.delete(:user_id)
-        head :no_content
-      end
-      
-      private
-      
-      def auth_params
-        params.require(:auth).permit(:email, :password)
-      end
-    end
-  end
-end
-
-# app/controllers/api/v1/documents_controller.rb
-module Api
-  module V1
-    class DocumentsController < ApplicationController
-      before_action :set_document, only: [:show, :update, :destroy, :sign]
+    class {Resource}Controller < ApplicationController
+      before_action :set_{resource}, only: [:show, :update, :destroy]
       
       def index
-        @documents = current_user.documents.recent
-        render json: @documents
+        @{resources} = current_user.{resources}
+        render json: @{resources}
       end
       
       def show
-        render json: @document
+        render json: @{resource}
       end
       
       def create
-        @document = current_user.documents.build(document_params)
+        @{resource} = current_user.{resources}.build({resource}_params)
         
-        if @document.save
-          render json: @document, status: :created
+        if @{resource}.save
+          render json: @{resource}, status: :created
         else
-          render json: { errors: @document.errors }, status: :unprocessable_entity
+          render json: { errors: @{resource}.errors }, status: :unprocessable_entity
         end
       end
       
       def update
-        if @document.update(document_params)
-          render json: @document
+        if @{resource}.update({resource}_params)
+          render json: @{resource}
         else
-          render json: { errors: @document.errors }, status: :unprocessable_entity
+          render json: { errors: @{resource}.errors }, status: :unprocessable_entity
         end
       end
       
       def destroy
-        @document.destroy
+        @{resource}.destroy
         head :no_content
-      end
-      
-      def sign
-        if @document.update(status: :signed)
-          render json: @document
-        else
-          render json: { errors: @document.errors }, status: :unprocessable_entity
-        end
       end
       
       private
       
-      def set_document
-        @document = current_user.documents.find(params[:id])
+      def set_{resource}
+        @{resource} = current_user.{resources}.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Document not found' }, status: :not_found
+        render json: { error: '{Resource} not found' }, status: :not_found
       end
       
-      def document_params
-        params.require(:document).permit(:title, :status)
+      def {resource}_params
+        params.require(:{resource}).permit({permitted_attributes})
       end
     end
   end
 end
 ```
 
+**Generate controllers from FSD.md endpoint specifications**
+
 ---
 
 ## Background Jobs (ActiveJob)
 
 ```ruby
-# app/jobs/send_notification_job.rb
-class SendNotificationJob < ApplicationJob
+# app/jobs/{job_name}_job.rb
+class {JobName}Job < ApplicationJob
   queue_as :default
   
-  def perform(user_id, message)
-    user = User.find(user_id)
-    # Send notification logic
+  def perform({arguments})
+    # Background task logic
   end
 end
 
-# Usage in controller:
-SendNotificationJob.perform_later(user.id, "Document signed")
+# Usage:
+{JobName}Job.perform_later({arguments})
 ```
 
 ---
@@ -277,89 +219,70 @@ SendNotificationJob.perform_later(user.id, "Document signed")
 ## Services (Business Logic)
 
 ```ruby
-# lib/services/document_encryption_service.rb
+# lib/services/{service_name}_service.rb
 module Services
-  class DocumentEncryptionService
-    def initialize(document)
-      @document = document
+  class {ServiceName}Service
+    def initialize({dependencies})
+      @{dependency} = {dependency}
     end
     
-    def encrypt
-      # AES-256-GCM encryption logic
-    end
-    
-    def decrypt
-      # Decryption logic
+    def call
+      # Business logic implementation
     end
   end
 end
 
 # Usage:
-Services::DocumentEncryptionService.new(document).encrypt
+Services::{ServiceName}Service.new({args}).call
 ```
 
 ---
 
 ## Environment Variables
 
-```ruby
-# config/initializers/environment.rb
-ENV['DATABASE_URL']
-ENV['SECRET_KEY_BASE']
-ENV['REDIS_URL']
-ENV['AWS_ACCESS_KEY_ID']
-ENV['AWS_SECRET_ACCESS_KEY']
-ENV['AWS_REGION']
-ENV['S3_BUCKET']
-```
+**See `.env.example` for complete list**
 
-See `.env.example` for complete list.
+Required configuration:
+- `DATABASE_URL`: PostgreSQL connection string
+- `SECRET_KEY_BASE`: Rails secret (generate with `rails secret`)
+- `REDIS_URL`: Redis for ActionCable/Sidekiq (if applicable)
+- External service credentials (AWS, SMTP, etc.)
 
 ---
 
 ## Testing Structure
 
 ```ruby
-# spec/models/user_spec.rb
+# spec/models/{model}_spec.rb
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe {Model}, type: :model do
   describe 'validations' do
-    it { should validate_presence_of(:email) }
-    it { should validate_uniqueness_of(:email) }
+    it { should validate_presence_of(:{attribute}) }
   end
   
   describe 'associations' do
-    it { should have_many(:documents).dependent(:destroy) }
+    it { should have_many(:{related_models}) }
   end
 end
 
-# spec/requests/api/v1/auth_spec.rb
+# spec/requests/api/v1/{resource}_spec.rb
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::Auth', type: :request do
-  describe 'POST /api/v1/auth/login' do
-    let(:user) { create(:user, email: 'test@example.com', password: 'password123') }
-    
-    context 'with valid credentials' do
-      it 'returns user data and sets session' do
-        post '/api/v1/auth/login', params: { auth: { email: user.email, password: 'password123' } }
+RSpec.describe 'Api::V1::{Resource}', type: :request do
+  describe 'POST /api/v1/{resources}' do
+    context 'with valid params' do
+      it 'creates {resource}' do
+        post '/api/v1/{resources}', params: { {resource}: valid_attributes }
         
-        expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)['user']['email']).to eq(user.email)
-      end
-    end
-    
-    context 'with invalid credentials' do
-      it 'returns unauthorized' do
-        post '/api/v1/auth/login', params: { auth: { email: user.email, password: 'wrong' } }
-        
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(:created)
       end
     end
   end
 end
 ```
+
+**Generate tests from FSD.md API contracts**
 
 ---
 
@@ -376,5 +299,6 @@ end
 
 ---
 
-**For complete schema**: See `docs/specs/FSD.md`
-**For API contracts**: See `docs/specs/FSD.md` endpoint specifications
+**For complete schema**: See `docs/specs/FSD.md`  
+**For API contracts**: See `docs/specs/FSD.md` endpoint specifications  
+**For security requirements**: See `docs/specs/FSD.md` security specifications
