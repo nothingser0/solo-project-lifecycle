@@ -38,11 +38,58 @@
 
 ## 4. UI Screen Verification (Per Google Stitch & 5 States)
 
+### 4A. Design Compliance (Per DESIGN.md Tokens)
+
+**Check each screen against DESIGN.md specifications:**
+
+| Screen | Brand Color Used | Typography Scale | Shadow Style | Border Style | Result |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Dashboard** | Primary (not neutral) | Per DESIGN.md section 3 | Flat (shadow-sm) | 1px border | [x] PASS |
+| **Login** | Primary brand | Correct weights | Flat | 1px border | [x] PASS |
+| **[Screen]** | Primary brand | Correct | Flat | 1px border | [x] PASS |
+
+**Design Token Verification:**
+- [ ] Primary brand color applied to CTA buttons (not `bg-neutral-100`)
+- [ ] Typography matches DESIGN.md scale (specific font weights/sizes)
+- [ ] Shadow style consistent (flat `shadow-sm border` vs heavy `shadow-lg`)
+- [ ] Border width matches spec (typically 1px `border-neutral-200`)
+- [ ] Spacing follows Tailwind scale from DESIGN.md
+
+### 4B. 5-State Matrix (Per SITEMAP Screens)
+
 | Page Name | Default State | Skeleton Loader | Empty State | Inline Error | Success Toast |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Dashboard** | [x] PASS | [x] PASS | [x] PASS | [x] PASS | [x] PASS |
 | **Document Form** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
 | **[Feature] Screen** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
+
+### 4C. Hydration Error Check (Next.js SSR)
+
+**Run dev server and check browser console:**
+
+```bash
+npm run dev
+# Open http://localhost:3000 in browser
+# Open DevTools Console (F12)
+# Navigate through all screens
+```
+
+**Hydration Errors to Check:**
+- [ ] No "Hydration failed" warnings in console
+- [ ] No "Text content did not match" errors
+- [ ] No "Extra attributes from server" warnings
+
+**Common Hydration Sources (If Found):**
+- ❌ `Date.now()` or timestamps in SSR components
+- ❌ `Math.random()` values
+- ❌ Browser APIs (`window`, `document`) without `useEffect`
+- ❌ Conditional rendering based on `useEffect` state
+- ❌ Third-party scripts (analytics, chat widgets) injecting DOM
+
+**Resolution:**
+- Move dynamic values to client components (`'use client'`)
+- Use `useEffect` for browser-only code
+- Suppress hydration warnings only if unavoidable (e.g., timestamp display)
 
 ---
 
