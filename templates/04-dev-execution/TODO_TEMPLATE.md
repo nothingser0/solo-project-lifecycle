@@ -17,12 +17,14 @@
 - [ ] `prisma/seed.ts`: Create initial seed data script (super admin account and document templates) - expect seed loaded successfully
 
 ## Phase 3: UI Component Setup
-> **Source**: Use Google Stitch output if available, otherwise implement from DESIGN.md + DESIGN_SPEC.md
+> **Source**: Reference `DESIGN.md` (tokens) + `DESIGN_SPEC.md` (screen specs)  
+> - **With Stitch**: Copy from `stitch-output/SCR-XX/` folders  
+> - **Without Stitch**: Implement manually using shadcn/ui + Tailwind matching DESIGN.md tokens
 
-- [ ] `src/components/ui/`: Create/copy primitive components (Button, Input, Table, Badge) from Stitch OR shadcn/ui matching DESIGN.md tokens - expect clean components
-- [ ] `src/app/(auth)/login/page.tsx`: Implement login page layout from Stitch output OR DESIGN_SPEC.md SCR-XX wireframe - expect clean login form rendering
-- [ ] `src/app/(dashboard)/page.tsx`: Implement dashboard layout from Stitch output OR DESIGN_SPEC.md - expect statistics widgets & table rendered
-- [ ] `src/app/(dashboard)/documents/new/page.tsx`: Implement dynamic form from Stitch output OR DESIGN_SPEC.md component spec - expect input form rendered
+- [ ] `src/components/ui/`: Implement primitive components (Button, Input, Table, Badge) per DESIGN.md color/typography tokens - expect clean components matching design system
+- [ ] `src/app/(auth)/login/page.tsx`: Implement Screen SCR-06 (Login) from DESIGN_SPEC.md section 3.6 or `stitch-output/SCR-06/` - expect clean login form with 5 states (ideal/loading/error/success/validation)
+- [ ] `src/app/(dashboard)/page.tsx`: Implement Screen SCR-09 (Dashboard) from DESIGN_SPEC.md section 3.9 or `stitch-output/SCR-09/` - expect statistics widgets & data table rendered
+- [ ] `src/app/(dashboard)/documents/new/page.tsx`: Implement Screen SCR-12 (Create Resource) from DESIGN_SPEC.md section 3.12 or `stitch-output/SCR-12/` - expect dynamic form with validation
 
 ## Phase 4: API Endpoints & Backend Services
 - [ ] `src/lib/crypto.ts`: Create AES-256-GCM streaming encryption and SHA-256 hashing functions - expect encryption & decryption pass
