@@ -16,11 +16,13 @@
 - [ ] `migrations/`: Run initial database migration to local PostgreSQL - expect tables created in database
 - [ ] `prisma/seed.ts`: Create initial seed data script (super admin account and document templates) - expect seed loaded successfully
 
-## Phase 3: UI Component Setup from Google Stitch
-- [ ] `src/components/ui/`: Copy primitive components (Button, Input, Table, Badge) from Stitch output - expect clean components
-- [ ] `src/app/(auth)/login/page.tsx`: Mount login page layout from Stitch - expect clean login form rendering
-- [ ] `src/app/(dashboard)/page.tsx`: Mount dashboard layout from Stitch - expect statistics widgets & table rendered
-- [ ] `src/app/(dashboard)/documents/new/page.tsx`: Mount dynamic document form from Stitch - expect input form rendered
+## Phase 3: UI Component Setup
+> **Source**: Use Google Stitch output if available, otherwise implement from DESIGN.md + DESIGN_SPEC.md
+
+- [ ] `src/components/ui/`: Create/copy primitive components (Button, Input, Table, Badge) from Stitch OR shadcn/ui matching DESIGN.md tokens - expect clean components
+- [ ] `src/app/(auth)/login/page.tsx`: Implement login page layout from Stitch output OR DESIGN_SPEC.md SCR-XX wireframe - expect clean login form rendering
+- [ ] `src/app/(dashboard)/page.tsx`: Implement dashboard layout from Stitch output OR DESIGN_SPEC.md - expect statistics widgets & table rendered
+- [ ] `src/app/(dashboard)/documents/new/page.tsx`: Implement dynamic form from Stitch output OR DESIGN_SPEC.md component spec - expect input form rendered
 
 ## Phase 4: API Endpoints & Backend Services
 - [ ] `src/lib/crypto.ts`: Create AES-256-GCM streaming encryption and SHA-256 hashing functions - expect encryption & decryption pass
