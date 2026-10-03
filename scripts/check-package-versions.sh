@@ -21,31 +21,31 @@ check_package() {
     local pkg=$1
     local expected_major=$2
     
-    echo -n "Checking $pkg..."
+    echo -n "Checking $pkg..." >&2
     
     local latest=$(npm view "$pkg" version 2>/dev/null || echo "")
     local deprecated=$(npm view "$pkg" deprecated 2>/dev/null || echo "")
     
     if [ -z "$latest" ]; then
-        echo -e " ${RED}FAILED${NC}"
+        echo -e " ${RED}FAILED${NC}" >&2
         return 1
     fi
     
     if [ -n "$deprecated" ]; then
-        echo -e " ${RED}DEPRECATED${NC}"
-        echo -e "  ${YELLOW}Reason: $deprecated${NC}"
+        echo -e " ${RED}DEPRECATED${NC}" >&2
+        echo -e "  ${YELLOW}Reason: $deprecated${NC}" >&2
         return 1
     fi
     
     local major=$(echo "$latest" | cut -d. -f1)
     
     if [ -n "$expected_major" ] && [ "$major" != "$expected_major" ]; then
-        echo -e " ${YELLOW}v$latest (MISMATCH: expected v$expected_major)${NC}"
+        echo -e " ${YELLOW}v$latest (MISMATCH: expected v$expected_major)${NC}" >&2
         return 1
     fi
     
-    echo -e " ${GREEN}v$latest${NC}"
-    echo "$latest|$major"
+    echo -e " ${GREEN}v$latest${NC}" >&2
+    echo "$latest|$major"  # stdout only - for capture
     return 0
 }
 
