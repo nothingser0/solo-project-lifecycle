@@ -76,6 +76,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Level 3 (React → Laravel Blade): Template rewrite (5-7 days, 0% code reuse)
   • Level 4 (React → Inertia.js): Hybrid glue layer (5-6 days, 70% reuse)
   • Execute strategy documented in FSD.md "Module 04 Handoff Strategy"
+  • MANDATORY: Check framework docs for component syntax (Next.js Image, Laravel Blade, etc.)
   • Ensure UI Visuals are 100% Identical to Frozen Prototype
   • Execute TODO.md Phase 3 tasks (UI Component Setup) with verification
   • Phase Gate: Verify all SITEMAP screens render before proceeding to database
@@ -87,6 +88,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Laravel: Eloquent migrations + artisan migrate
     - Django: Django ORM models + makemigrations
     - Go: SQL migration files + golang-migrate
+  • MANDATORY: Check ORM docs for syntax (Prisma schema, Eloquent relationships, Django models)
+  • Verify ORM version matches docs (check package.json / composer.json / requirements.txt / go.mod)
   • Set up Database Pooling & Indexing on Foreign Key Columns
   • Execute Local Migrations & Seed Data (faker data for testing)
   • Execute TODO.md Phase 2 tasks (Database Schema) with verification
@@ -95,6 +98,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
                                     ▼
 [ STEP 4: Backend API & 6 Engineering Pillars (Framework-Agnostic) ]
   • AI Reads TODO.md Sequentially → Build API endpoints according to FSD.md
+  • MANDATORY: Check official framework docs before implementing (syntax changes per version)
+  • Verify installed version matches docs examples (npm list / composer show / pip show / go version)
   • Implement validation library (Zod/Laravel Validation/Django Forms)
   • Security Pillar: Encryption, HttpOnly Cookies, Parameterized Queries
   • Performance Pillar: N+1 Prevention, Caching, Query Indexing

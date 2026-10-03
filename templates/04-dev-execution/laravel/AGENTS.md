@@ -33,7 +33,49 @@
 4. Extract design tokens from DESIGN.md (root)
 5. Implement exactly as specified
 
----
+
+## CRITICAL: Read Official Documentation First
+
+**BEFORE implementing any feature, check official docs for current syntax:**
+
+- **Laravel Docs**: https://laravel.com/docs (check version-specific pages)
+- **PHP Docs**: https://www.php.net/manual/en/
+- **Eloquent ORM**: https://laravel.com/docs/eloquent
+
+**Why**: Laravel syntax changes between versions. This project uses:
+- Laravel 11.x (check composer.json for exact version)
+- Breaking changes exist between major versions (10.x vs 11.x)
+
+### Version-Specific Syntax Enforcement
+
+**MANDATORY: Check docs before using these APIs** (syntax changes frequently):
+
+| API Category | Docs URL | Common Version Conflicts |
+|:-------------|:---------|:-------------------------|
+| **Routing** | https://laravel.com/docs/routing | Resource routes syntax evolves |
+| **Eloquent Relationships** | https://laravel.com/docs/eloquent-relationships | Eager loading changes |
+| **Validation** | https://laravel.com/docs/validation | Rule syntax changes per version |
+| **Middleware** | https://laravel.com/docs/middleware | Registration method changes |
+| **Blade Templates** | https://laravel.com/docs/blade | Component syntax evolves |
+| **Migrations** | https://laravel.com/docs/migrations | Column types added/deprecated |
+
+**Red Flags (Outdated Patterns):**
+
+❌ **Laravel 8/9 Patterns (DO NOT USE)**:
+```php
+// ❌ OLD: Route model binding (pre-11.x)
+Route::get('/user/{user}', function (User $user) { });
+
+// ✅ NEW: Check docs for current syntax
+// Syntax may have evolved in 11.x
+```
+
+**Enforcement Rules**:
+1. **Before using any API**: Search Laravel docs for exact method name
+2. **Check version dropdown**: Verify docs match composer.json version
+3. **Run `composer show laravel/framework`**: Confirm installed version
+4. **If syntax error**: Update code to match docs, not vice versa
+
 ## Code Style Rules
 1. **PSR-12 Standard**: Follow PHP-FIG coding standards.
 2. **Eloquent Only**: No raw SQL queries. Use Eloquent ORM.

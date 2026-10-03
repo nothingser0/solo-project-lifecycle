@@ -18,6 +18,70 @@
 2. Check migration guides for breaking changes
 3. Verify with type-checking before committing
 
+### Version-Specific Syntax Enforcement
+
+**MANDATORY: Check docs before using these APIs** (syntax changes frequently):
+
+| API Category | Docs URL | Common Version Conflicts |
+|:-------------|:---------|:-------------------------|
+| **Metadata API** | https://nextjs.org/docs/app/api-reference/functions/generate-metadata | Next.js 13 vs 15 signature changes |
+| **Server Actions** | https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations | Stability changes per version |
+| **Image Component** | https://nextjs.org/docs/app/api-reference/components/image | Props differ Next.js 13 vs 15 |
+| **Middleware** | https://nextjs.org/docs/app/building-your-application/routing/middleware | Breaking changes in 16.x |
+| **Route Handlers** | https://nextjs.org/docs/app/building-your-application/routing/route-handlers | Request/Response types evolve |
+| **Prisma Client** | https://www.prisma.io/docs/orm/prisma-client | Query syntax changes per version |
+| **React 19 Features** | https://react.dev/blog | use(), useOptimistic(), transitions |
+
+**Red Flags (Outdated Patterns from Old Versions):**
+
+❌ **Next.js 12/13 Patterns (DO NOT USE)**:
+```typescript
+// ❌ OLD: getServerSideProps (Pages Router)
+export async function getServerSideProps(context) { }
+
+// ✅ NEW: Server Component (App Router)
+async function Page() {
+  const data = await fetch(...)
+  return <div>{data}</div>
+}
+```
+
+❌ **React 17/18 Patterns (DO NOT USE)**:
+```typescript
+// ❌ OLD: Class components
+class MyComponent extends React.Component { }
+
+// ✅ NEW: Function components + hooks
+function MyComponent() { }
+```
+
+❌ **Prisma Old Syntax (Verify Current Docs)**:
+```typescript
+// If you see error: check current Prisma version docs
+// Syntax evolves between major versions
+// Read: https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries
+```
+
+**Enforcement Rules**:
+
+1. **Before using any API**: Search official docs for the EXACT function name
+2. **Copy-paste from docs**: Don't rely on memory or old tutorials
+3. **Check "Version" dropdown**: Verify docs match installed version (run `npm list next react`)
+4. **Migration guides**: Read if upgrading mid-project
+
+**If syntax error occurs**:
+```bash
+# 1. Check installed version
+npm list next react prisma
+
+# 2. Search official docs for that exact version
+# Example: "Next.js 15.0.3 generateMetadata"
+
+# 3. Compare your code vs docs example
+
+# 4. If mismatch: update code to match docs, NOT docs to match code
+```
+
 ## CRITICAL: Read Project Design Specifications
 
 **BEFORE implementing any UI component, read project design docs in docs/ folder:**

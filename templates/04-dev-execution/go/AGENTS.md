@@ -33,7 +33,60 @@
 4. Extract design tokens from DESIGN.md (root)
 5. Implement exactly as specified
 
----
+
+## CRITICAL: Read Official Documentation First
+
+**BEFORE implementing any feature, check official docs for current syntax:**
+
+- **Go Docs**: https://go.dev/doc/ (check version-specific pages)
+- **Standard Library**: https://pkg.go.dev/std
+- **Go by Example**: https://gobyexample.com/ (practical patterns)
+
+**Why**: Go syntax and stdlib evolve between versions. This project uses:
+- Go 1.23.x (check go.mod for exact version)
+- Breaking changes rare but stdlib additions common (generics in 1.18+, slices package in 1.21+)
+
+### Version-Specific Syntax Enforcement
+
+**MANDATORY: Check docs before using these APIs** (syntax/stdlib changes):
+
+| API Category | Docs URL | Common Version Conflicts |
+|:-------------|:---------|:-------------------------|
+| **HTTP Server** | https://pkg.go.dev/net/http | Handler patterns evolve |
+| **Context** | https://pkg.go.dev/context | Usage patterns standardized |
+| **Generics** | https://go.dev/doc/tutorial/generics | Added in 1.18+ |
+| **Slices Package** | https://pkg.go.dev/slices | Added in 1.21+ |
+| **Database/SQL** | https://pkg.go.dev/database/sql | Connection pool changes |
+| **Testing** | https://pkg.go.dev/testing | Subtests, fuzzing added |
+
+**Red Flags (Outdated Patterns):**
+
+❌ **Pre-Generics Patterns (DO NOT USE if Go 1.18+)**:
+```go
+// ❌ OLD: interface{} everywhere
+func Process(data interface{}) { }
+
+// ✅ NEW: Use generics (Go 1.18+)
+func Process[T any](data T) { }
+```
+
+❌ **Pre-1.16 Patterns (DO NOT USE)**:
+```go
+// ❌ OLD: io/ioutil (deprecated)
+import "io/ioutil"
+data, _ := ioutil.ReadFile("file.txt")
+
+// ✅ NEW: Use os/io packages
+import "os"
+data, _ := os.ReadFile("file.txt")
+```
+
+**Enforcement Rules**:
+1. **Before using any package**: Search pkg.go.dev for exact package/function
+2. **Check "Since" badge**: Verify feature exists in your Go version
+3. **Run `go version`**: Confirm installed version
+4. **If syntax error**: Update code to match docs, not vice versa
+
 ## Code Style Rules
 1. **gofmt/goimports**: Auto-format all code.
 2. **Error Handling**: Always check errors, never ignore.

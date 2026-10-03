@@ -33,7 +33,61 @@
 4. Extract design tokens from DESIGN.md (root)
 5. Implement exactly as specified
 
----
+
+## CRITICAL: Read Official Documentation First
+
+**BEFORE implementing any feature, check official docs for current syntax:**
+
+- **Django Docs**: https://docs.djangoproject.com/en/stable/ (check version-specific pages)
+- **Python Docs**: https://docs.python.org/3/
+- **Django ORM**: https://docs.djangoproject.com/en/stable/topics/db/queries/
+- **Django REST Framework**: https://www.django-rest-framework.org/ (if using DRF)
+
+**Why**: Django syntax changes between versions. This project uses:
+- Django 5.x (check requirements.txt for exact version)
+- Breaking changes exist between major versions (4.x vs 5.x)
+
+### Version-Specific Syntax Enforcement
+
+**MANDATORY: Check docs before using these APIs** (syntax changes frequently):
+
+| API Category | Docs URL | Common Version Conflicts |
+|:-------------|:---------|:-------------------------|
+| **Models & ORM** | https://docs.djangoproject.com/en/stable/topics/db/models/ | Field types evolve per version |
+| **Views (CBV)** | https://docs.djangoproject.com/en/stable/topics/class-based-views/ | Mixin syntax changes |
+| **URL Patterns** | https://docs.djangoproject.com/en/stable/topics/http/urls/ | path() vs re_path() |
+| **Forms** | https://docs.djangoproject.com/en/stable/topics/forms/ | Widget rendering changes |
+| **Migrations** | https://docs.djangoproject.com/en/stable/topics/migrations/ | Operation syntax evolves |
+| **Admin** | https://docs.djangoproject.com/en/stable/ref/contrib/admin/ | Customization API changes |
+
+**Red Flags (Outdated Patterns):**
+
+❌ **Django 3.x Patterns (DO NOT USE)**:
+```python
+# ❌ OLD: url() function (pre-4.x)
+from django.conf.urls import url
+urlpatterns = [url(r'^articles/', views.articles)]
+
+# ✅ NEW: path() function (4.x+)
+from django.urls import path
+urlpatterns = [path('articles/', views.articles)]
+```
+
+❌ **Python 2.x Patterns (DO NOT USE)**:
+```python
+# ❌ OLD: unicode strings
+from __future__ import unicode_literals
+
+# ✅ NEW: Python 3 native strings
+# No import needed
+```
+
+**Enforcement Rules**:
+1. **Before using any API**: Search Django docs for exact function/class name
+2. **Check version dropdown**: Verify docs match requirements.txt version
+3. **Run `pip show django`**: Confirm installed version
+4. **If syntax error**: Update code to match docs, not vice versa
+
 ## Code Style Rules
 1. **PEP 8**: Follow Python style guide (snake_case for functions/variables).
 2. **Django ORM Only**: No raw SQL queries. Use QuerySet API.
