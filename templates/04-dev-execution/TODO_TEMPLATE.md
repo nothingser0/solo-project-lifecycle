@@ -1,45 +1,130 @@
 # TODO.md
 
 > Atomic task list for autonomous coding execution by AI coding agents (OpenCode / OpenChamber).
-> Rule: Complete tasks sequentially one by one. Check `[x]` immediately after each task is completed and verified.
+> **CRITICAL RULE**: Complete task → verify immediately → check [x] → next task.
+> **NO skipping verification.** Catch bugs when introduced, not 50 tasks later.
+>
+> **Verification Format** (AI substitutes stack-specific commands):
+> - **Verify**: {command to run} 
+> - **Expected**: {success criteria}
+> - **Evidence**: {proof required - output/screenshot/query}
 
 ---
 
 ## Phase 1: Repository Initialization & Baseline Tooling
-- [ ] `package.json`: Initialize core dependencies (Next.js, React, TypeScript, Tailwind, Zod, Prisma) - expect local build succeeds
-- [ ] `tsconfig.json`: Enable TypeScript strict mode with zero tolerance for `any` types - expect tsc --noEmit passes
-- [ ] `.env.example`: Create environment variable template (DATABASE_URL, JWT_SECRET, S3/R2 keys) - expect complete env dictionary
-- [ ] `src/lib/env.ts`: Create environment variable parser using Zod - expect fail-fast crash when required env vars are missing
+
+- [ ] Dependencies: Initialize core framework + validation + ORM dependencies per FSD tech stack
+   - **Verify**: Build command succeeds
+   - **Expected**: Exit code 0, no errors
+   - **Evidence**: Build output log
+
+- [ ] Type Safety: Enable strict type checking with zero tolerance for unsafe types
+   - **Verify**: Type checker passes
+   - **Expected**: Zero type errors
+   - **Evidence**: Type check output
+
+- [ ] Environment Variables: Create .env template with all required variables per FSD infrastructure
+   - **Verify**: All FSD variables documented
+   - **Expected**: DATABASE_URL, auth secrets, storage keys, API keys listed
+   - **Evidence**: .env.example file contents
+
+- [ ] Environment Validation: Create env parser that fails fast on missing required variables
+   - **Verify**: Run with missing variable
+   - **Expected**: Clear validation error thrown
+   - **Evidence**: Error message shows which variable missing
 
 ## Phase 2: Database Schema & Migrations
-- [ ] `prisma/schema.prisma`: Define users, documents, and signatures models per FSD DDL - expect valid schema
-- [ ] `migrations/`: Run initial database migration to local PostgreSQL - expect tables created in database
-- [ ] `prisma/seed.ts`: Create initial seed data script (super admin account and document templates) - expect seed loaded successfully
+
+- [ ] Schema Definition: Define all FSD tables with exact DDL (columns, types, constraints, indexes)
+   - **Verify**: Schema validation passes
+   - **Expected**: Valid schema, no warnings
+   - **Evidence**: Validation output
+
+- [ ] Initial Migration: Run first migration to create all tables in local database
+   - **Verify**: Migration executes successfully
+   - **Expected**: All FSD tables created
+   - **Evidence**: Query database for table list, confirm all exist
+
+- [ ] Seed Data: Create seed script with initial admin account + test data per FSD
+   - **Verify**: Seed executes successfully
+   - **Expected**: Admin account created, test data loaded
+   - **Evidence**: Query admin user exists, count test records
 
 ## Phase 3: UI Component Setup
-> **Source**: Reference `DESIGN.md` (tokens) + `DESIGN_SPEC.md` (screen specs)  
+> **Source**: Reference `docs/specs/DESIGN_SYSTEM.md` (tokens + screen specs) + `docs/specs/SITEMAP.md` (Screen IDs)
 > - **With Stitch**: Copy from `stitch-output/SCR-XX/` folders  
-> - **Without Stitch**: Implement manually using shadcn/ui + Tailwind matching DESIGN.md tokens
+> - **Without Stitch**: Implement manually matching design tokens exactly
 
-- [ ] `src/components/ui/`: Implement primitive components (Button, Input, Table, Badge) per DESIGN.md color/typography tokens - expect clean components matching design system
-- [ ] `src/app/(auth)/login/page.tsx`: Implement Screen SCR-06 (Login) from DESIGN_SPEC.md section 3.6 or `stitch-output/SCR-06/` - expect clean login form with 5 states (ideal/loading/error/success/validation)
-- [ ] `src/app/(dashboard)/page.tsx`: Implement Screen SCR-09 (Dashboard) from DESIGN_SPEC.md section 3.9 or `stitch-output/SCR-09/` - expect statistics widgets & data table rendered
-- [ ] `src/app/(dashboard)/documents/new/page.tsx`: Implement Screen SCR-12 (Create Resource) from DESIGN_SPEC.md section 3.12 or `stitch-output/SCR-12/` - expect dynamic form with validation
+- [ ] Primitive Components: Implement base UI components (Button, Input, Select, Table) per DESIGN_SYSTEM.md tokens
+   - **Verify**: Start dev server, render test page with all components
+   - **Expected**: All components render without errors
+   - **Evidence**: Browser screenshot, console shows no errors/warnings
+   - **Design Check**: Brand primary color applied (not generic neutral), typography matches spec
+
+- [ ] Screen {SCR-ID}: {Screen Name} - Implement per DESIGN_SYSTEM.md section X.X or stitch-output/{SCR-ID}/
+   - **Verify**: Open {route} in browser
+   - **Expected**: Screen renders matching design spec
+   - **Evidence**: Screenshot shows correct layout, colors, typography
+   - **Console Check**: Zero hydration errors, zero warnings
+   - **States Check**: Test validation errors, loading states work
+
+(Repeat for each SITEMAP screen - generated by Step 1.5 AI)
 
 ## Phase 4: API Endpoints & Backend Services
-- [ ] `src/lib/crypto.ts`: Create AES-256-GCM streaming encryption and SHA-256 hashing functions - expect encryption & decryption pass
-- [ ] `src/lib/storage.ts`: Create Cloudflare R2 / S3 storage client and presigned URL generator - expect file upload succeeds
-- [ ] `src/app/api/v1/auth/login/route.ts`: Create Zod-validated login handler and set HttpOnly cookie - expect login 200 OK
-- [ ] `src/app/api/v1/documents/route.ts`: Create POST handler for new document draft creation - expect 201 Created
-- [ ] `src/app/api/v1/documents/[id]/route.ts`: Create GET handler for document detail and presigned URL - expect 200 OK
-- [ ] `src/app/api/v1/sign/[token]/route.ts`: Create signature transaction handler with pessimistic locking - expect 200 OK
+
+- [ ] Encryption Library: Implement AES-256-GCM encryption + SHA-256 hashing per FSD security spec
+   - **Verify**: Write test script: encrypt → decrypt → assert equals original
+   - **Expected**: Roundtrip works, hash generates correct length
+   - **Evidence**: Test output shows successful encryption/decryption
+
+- [ ] Storage Client: Implement cloud storage client + presigned URL generator per FSD infrastructure
+   - **Verify**: Upload test file, generate presigned URL
+   - **Expected**: Upload succeeds, URL accessible then expires per FSD timeout
+   - **Evidence**: Log upload response, verify URL expiry
+
+- [ ] Endpoint {METHOD} {path}: Implement per FSD.md API contract with validation
+   - **Verify Valid Case**: HTTP request with valid payload
+   - **Expected**: Correct status code, response matches FSD schema
+   - **Evidence**: Response body + headers logged
+   - **Verify Invalid Case**: HTTP request with invalid/missing data
+   - **Expected**: Validation error with clear message, correct error status
+   - **Evidence**: Error response logged
+   - **Verify DB**: Query database confirms record created/updated
+   - **Evidence**: Database query result
+
+(Repeat for each FSD endpoint - generated by Step 1.5 AI)
 
 ## Phase 5: UI to Backend API Integration (Wiring)
-- [ ] `src/components/docs/modules/LoginForm.tsx`: Connect login form submission to /api/v1/auth/login - expect redirect to dashboard
-- [ ] `src/components/docs/modules/DocumentForm.tsx`: Connect document form submission to POST /api/v1/documents - expect draft saved
-- [ ] `src/components/docs/modules/SignCanvas.tsx`: Connect [Interactive feature] to POST /api/v1/sign/[token] - expect SIGNED status
-- [ ] `5-State Review`: Verify loading skeleton, empty state, and inline error views across all pages - expect defensive UI
+
+- [ ] {Component} → {Endpoint}: Wire UI component to backend API endpoint
+   - **Verify Success Flow**: Submit valid data in browser
+   - **Expected**: Success state shown (toast/redirect/update), API returns success
+   - **Evidence**: Browser DevTools Network tab shows 2xx response
+   - **Verify DB**: Query confirms data persisted
+   - **Verify Error Flow**: Submit invalid data or simulate API failure
+   - **Expected**: Error state shown inline, user not blocked
+   - **Evidence**: Screenshot shows error message displayed
+
+(Repeat for each screen-endpoint pair - generated by Step 1.5 AI)
+
+- [ ] 5-State Review: Test all screens for defensive UI patterns
+   - **Verify Loading**: Throttle network, check skeleton/spinner appears
+   - **Expected**: Loading state shows during data fetch
+   - **Verify Empty**: Navigate to screen with no data
+   - **Expected**: Empty state with helpful message/CTA shown
+   - **Verify Error**: Simulate API failure (stop backend)
+   - **Expected**: Error boundary catches, user sees actionable error
+   - **Evidence**: Screenshots of all 5 states per screen
 
 ## Phase 6: Self-Assertion Testing (Local Smoke Test)
-- [ ] `scripts/smoke-test.ts`: Write complete flow assertion script from login through document hash verification - expect 100% PASS
-- [ ] `VERIFY_LOCAL.md`: Fill in self-verification evidence sheet before releasing to Staging - expect PASS decision
+
+- [ ] Smoke Test Script: Write end-to-end flow assertions per FSD critical path
+   - **Verify**: Run smoke test script
+   - **Expected**: All assertions pass, exit code 0
+   - **Evidence**: Test output shows pass/fail counts
+
+- [ ] Local Verification: Complete VERIFY_LOCAL.md checklist with evidence
+   - **Verify**: All sections completed (design, hydration, API, security)
+   - **Expected**: PASS decision with all checks green
+   - **Evidence**: Signed VERIFY_LOCAL.md with screenshots/logs attached
+   - **Blockers**: If FAIL, document exact blockers preventing PASS

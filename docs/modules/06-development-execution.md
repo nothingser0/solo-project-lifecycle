@@ -51,8 +51,14 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - 1 task per SITEMAP screen (UI implementation)
     - 1 task per FSD endpoint (API implementation)
     - 1 task per PRD feature (integration)
+  • Each task MUST include verification steps:
+    - Verify: {stack-specific command to run}
+    - Expected: {success criteria}
+    - Evidence: {proof required - output/screenshot/query}
+  • AI substitutes {placeholders} with stack-specific commands from FSD
   • Human validates coverage matrix (all entities mapped)
   • Commit TODO.md before coding starts
+  • ENFORCEMENT: AI agents MUST complete Verify step before marking task [x]
                                     │
                                     ▼
 [ STEP 2: Module 04 Prototype Conversion (4 Compatibility Levels) ]
