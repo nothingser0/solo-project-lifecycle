@@ -422,6 +422,162 @@ npm uninstall @supabase/auth-helpers-nextjs
 
 ---
 
+## Dependency Compatibility & Pre-Install Checks
+
+**CRITICAL: Check compatibility BEFORE installing any package.**
+
+### Pre-Install Verification Workflow
+
+```bash
+# STEP 1: Check peer dependencies (MANDATORY)
+npm info <package-name> peerDependencies
+
+# STEP 2: Check deprecation status
+npm view <package-name> deprecated
+
+# STEP 3: Check current stable version
+npm view <package-name> version
+
+# STEP 4: If installing, pin to compatible version
+pnpm add <package-name>@<compatible-version>
+```
+
+### Common Compatibility Matrices
+
+#### Next.js Ecosystem (v15.x)
+```
+next@15.x requires:
+  - react@18.x (NOT 19.x)
+  - @types/react@18.x (NOT 19.x)
+  - eslint-config-next@15.x (must match next version)
+  - tailwindcss@3.x (v4 has breaking changes)
+```
+
+#### Form Validation Stack
+```
+react-hook-form@7.x + Zod validation:
+  - zod@3.x (v4 has breaking changes with existing ecosystem)
+  - @hookform/resolvers@3.x (v5 requires Zod v4, breaks with v3)
+```
+
+#### Supabase Auth Stack
+```
+✅ CURRENT (2026):
+  - @supabase/ssr@latest (official auth solution)
+  - @supabase/supabase-js@2.x (peer dependency)
+
+❌ DEPRECATED:
+  - @supabase/auth-helpers-nextjs (discontinued, no security updates)
+  - @supabase/auth-helpers-react (discontinued)
+```
+
+### Critical Dependency Errors (User-Reported)
+
+#### Error 1: Zod v4 Incompatibility
+```bash
+# ❌ WRONG: Installs v4.6.5 (breaks react-hook-form)
+pnpm add zod
+
+# ✅ CORRECT: Pin to v3.x
+pnpm add zod@^3.23.8
+
+# Verify compatibility:
+npm info react-hook-form peerDependencies
+# Shows: "zod": "^3.0.0" → v4 NOT supported
+```
+
+**Why v4 breaks**: API changes in `.refine()`, `.transform()`, schema composition.
+
+#### Error 2: @hookform/resolvers Version Mismatch
+```bash
+# ❌ WRONG: v5 requires Zod v4
+pnpm add @hookform/resolvers@latest  # installs v5.9.1
+
+# ✅ CORRECT: v3.x for Zod v3
+pnpm add @hookform/resolvers@^3.9.1
+
+# Runtime error if mismatched:
+# TypeError: zodResolver is not a function
+```
+
+#### Error 3: Type Package Version Mismatch
+```bash
+# ❌ WRONG: @types/react v19 with React v18
+pnpm add @types/react@latest
+
+# ✅ CORRECT: Types must match runtime
+pnpm add @types/react@18.3.11 @types/react-dom@18.3.1
+
+# Verify:
+grep '"react"' package.json  # Check React version
+grep '@types/react' package.json  # Must match major version
+```
+
+### Font Loading Fallback Strategy
+
+**Problem**: `next/font/google` CDN timeouts (network blocking/slow).
+
+```typescript
+// ❌ FRAGILE: Depends on Google Fonts CDN
+import { Geist } from 'next/font/google'
+
+const geist = Geist({ subsets: ['latin'] })
+
+// ✅ RELIABLE: Local font package (no network dependency)
+import { GeistSans, GeistMono } from 'geist/font/sans'
+
+// Install first:
+// pnpm add geist
+```
+
+**Rule**: Prefer local font packages over CDN for dev reliability.
+
+### Deprecated Package Handling
+
+```bash
+# Check before install:
+npm view @supabase/auth-helpers-nextjs deprecated
+# Output: "Package discontinued. Use @supabase/ssr"
+
+# If deprecated found:
+# 1. Find official replacement (check package README or migration guide)
+# 2. DO NOT INSTALL deprecated package
+# 3. Use replacement immediately
+
+# Example migration:
+pnpm remove @supabase/auth-helpers-nextjs
+pnpm add @supabase/ssr @supabase/supabase-js
+```
+
+**Deprecation types**:
+- **Critical**: Security vulnerabilities (Next.js CVE warnings) → upgrade ASAP or document risk
+- **High**: Runtime packages discontinued → find replacement before install
+- **Low**: Dev dependencies (ESLint) → lower priority, but track for future upgrade
+
+### Security Vulnerability Handling
+
+```bash
+# Example: Next.js 15.0.3 CVE warning
+npm WARN deprecated next@15.0.3: CVE-2025-66478
+
+# Decision matrix:
+# 1. FSD locks version → Document as known risk in README
+# 2. No spec lock → Upgrade to patched version
+# 3. Critical CVE + locked → Escalate to user for spec change approval
+```
+
+**Documentation template**:
+```markdown
+## Known Security Risks
+
+- **next@15.0.3**: CVE-2025-66478 (unspecified vulnerability)
+  - Status: Tracked, locked per FSD.md requirement
+  - Mitigation: [describe workaround if available]
+  - Upgrade path: [when spec allows upgrade to 15.0.4+]
+```
+
+---
+
 ## Module Completion Checklist
 
 **Before declaring M06 complete**, verify ALL items:
@@ -437,6 +593,16 @@ Scaffold verification:
   - [ ] No deprecated packages in package.json/composer.json
   - [ ] No blocking advisories (version mismatches fixed)
 
+Dependency compatibility checks (MANDATORY):
+  - [ ] Run: npm info <key-packages> peerDependencies
+  - [ ] Zod version compatible with react-hook-form (v3.x, NOT v4)
+  - [ ] @hookform/resolvers matches Zod version (v3.x for Zod v3)
+  - [ ] @types/react matches react version (18.x for react 18)
+  - [ ] eslint-config-next matches next version
+  - [ ] No deprecated packages installed (check npm view <pkg> deprecated)
+  - [ ] Font loading strategy: Local packages preferred over CDN
+  - [ ] Security vulnerabilities documented (if spec-locked versions have CVEs)
+
 Harness files deployed:
   - [ ] All 7 files copied from docs/harness-root/ to ./
   - [ ] AGENTS.md exists in root (check cat AGENTS.md)
@@ -451,12 +617,14 @@ Smoke test:
   - [ ] Dev server starts (npm run dev / php artisan serve)
   - [ ] No import errors on first load
   - [ ] Linter runs without errors (npm run lint)
+  - [ ] Type check passes (pnpm run type-check or tsc --noEmit)
+  - [ ] No peer dependency warnings in pnpm list
   - [ ] Database connection works (if applicable)
 ```
 
-**Only declare "M06 complete" after ALL checkboxes ticked.**
+**NEVER declare "M06 complete" with outstanding checkboxes.**
 
-**If any checkbox fails**: Fix immediately. Do NOT proceed to "done" with outstanding issues.
+**If any checkbox fails**: Fix immediately. "Deployed" ≠ "Verified". Test execution required.
 
 ---
 
