@@ -16,68 +16,124 @@ Stacks with complete scaffold, harness templates, version gates, and verificatio
 **Note**: Versions determined by M05 real-time registry check, NOT hardcoded by skill.
 - M05 runs `npm view next version` → locks result in FSD.md
 - M06 scaffolds @latest → pins exact FSD version → version gate validates lockfile
-- Skill templates work across framework versions (Next.js 15, 16, 17+)
+- Templates tested with current stable versions (as of 2026-10-03)
+- Cross-major-version compatibility not guaranteed (Next.js 15→16 may need template updates)
 
 ---
 
-## Candidate Stacks (Research/Planning Only)
+## Roadmap: 8 Additional Stacks
 
-From "12 Tech Stacks Worth Considering 2026" - pending template development:
+### Phase 1: JavaScript Ecosystem (Estimated 10-15 days)
 
-### JavaScript Ecosystem
-1. **MERN/MEAN** (MongoDB + Express + React/Angular + Node)
-   - **Overlap with Next.js**: Next.js already covers React + Node
-   - **Gap**: MongoDB templates, Express backend structure
-   - **Effort**: 2-3 days (add MongoDB ARCHITECTURE.md, seed templates)
+**1. Ruby on Rails** (5-7 days)
+- Scaffold: `rails new project-name --database=postgresql --skip-git`
+- Version gate: Parse Gemfile.lock for `rails (x.x.x)`
+- Templates needed:
+  - `AGENTS.md`: Ruby style (snake_case), Rails conventions, ActiveRecord patterns
+  - `ARCHITECTURE.md`: MVC structure, app/models, app/controllers, app/views
+  - `CONVENTIONS.md`: Ruby gems, Bundler, RSpec/Minitest
+- Verification: `bundle exec rspec`, `bundle audit`
+- Use case: Rapid MVPs, startup prototyping, convention-over-configuration
 
-2. **JAMstack** (JavaScript + APIs + Markup)
-   - **Overlap with Next.js**: Next.js supports static generation
-   - **Gap**: Pure static site scaffold (no API routes)
-   - **Effort**: 1 day (subset of Next.js templates)
+**2. Remix** (2-3 days)
+- Scaffold: `npx create-remix@latest`
+- Version gate: package-lock.json (similar to Next.js)
+- Templates needed:
+  - `AGENTS.md`: Reuse Next.js base, add Remix-specific (loader/action patterns, nested routes)
+  - `ARCHITECTURE.md`: app/routes structure, loader/action exports
+- Verification: `npm run build`, `npm run typecheck`
+- Use case: Progressive enhancement, web standards focus, nested routing
 
-### Backend-Heavy
-3. **Ruby on Rails**
-   - **Status**: No templates
-   - **Effort**: 5-7 days (AGENTS.md, ARCHITECTURE.md, version gate, Gemfile parsing)
+**3. MERN Stack** (3-4 days)
+- Scaffold: Express.js generator + MongoDB setup scripts
+- Version gate: package-lock.json
+- Templates needed:
+  - `AGENTS.md`: Express middleware patterns, Mongoose schemas
+  - `ARCHITECTURE.md`: MongoDB collections, Express routes, React frontend
+  - `CONVENTIONS.md`: NoSQL data modeling, aggregation pipelines
+- Verification: `npm test`, `mongosh` validation
+- Use case: Real-time apps, flexible NoSQL data, rapid iteration
 
-4. **Microsoft .NET** (C# + ASP.NET Core)
-   - **Status**: No templates
-   - **Effort**: 5-7 days (.csproj parsing, NuGet version gate, C# conventions)
+---
 
-5. **Spring (Java)**
-   - **Status**: No templates
-   - **Effort**: 5-7 days (pom.xml/build.gradle, Maven/Gradle version gate)
+### Phase 2: Enterprise Backends (Estimated 20-25 days)
 
-### Legacy/Specialized
-6. **LAMP** (Linux + Apache + MySQL + PHP)
-   - **Overlap with Laravel**: Laravel is modern PHP
-   - **Gap**: Raw PHP (no framework) support
-   - **Note**: Recommend Laravel instead for new projects
+**4. ASP.NET Core** (7-10 days)
+- Scaffold: `dotnet new webapi -n ProjectName`
+- Version gate: Parse .csproj for `<TargetFramework>net8.0</TargetFramework>` and NuGet packages
+- Templates needed:
+  - `AGENTS.md`: C# conventions (PascalCase, async/await, LINQ patterns)
+  - `ARCHITECTURE.md`: Controllers, Models, Services pattern, Entity Framework
+  - `CONVENTIONS.md`: Dependency injection, middleware pipeline, appsettings.json
+- Verification: `dotnet test`, `dotnet build`
+- Use case: Enterprise SaaS, finance, healthcare, Microsoft ecosystem integration
 
-7. **Python Django** - ✅ **ALREADY SUPPORTED**
+**5. Spring Boot** (7-10 days)
+- Scaffold: `spring init --dependencies=web,data-jpa --build=maven`
+- Version gate: Parse pom.xml (Maven) or build.gradle (Gradle) for Spring Boot version
+- Templates needed:
+  - `AGENTS.md`: Java conventions (camelCase, annotations, streams)
+  - `ARCHITECTURE.md`: Controllers, Services, Repositories, JPA entities
+  - `CONVENTIONS.md`: Maven/Gradle, application.properties, Bean lifecycle
+- Verification: `mvn test` or `gradle test`, `mvn package`
+- Use case: Banking, e-commerce, microservices, enterprise backends
 
-### Mobile/Cross-Platform
-8. **Flutter** (Dart + iOS/Android)
-   - **Status**: No templates (mobile-first, different lifecycle)
-   - **Effort**: 10+ days (mobile-specific M04 prototype, app store deployment)
+**6. JAMstack** (3-5 days)
+- Scaffold: `npm create astro@latest` or `npx degit 11ty/eleventy-base-blog`
+- Version gate: package-lock.json
+- Templates needed:
+  - `AGENTS.md`: Subset of Next.js (no API routes, focus on SSG)
+  - `ARCHITECTURE.md`: Static generation, content sources (Markdown/CMS)
+  - `CONVENTIONS.md`: Build-time data fetching, CDN deployment
+- Verification: `npm run build`, check dist/ output
+- Use case: Marketing sites, blogs, documentation, high-performance static content
 
-9. **Android Kotlin**
-   - **Status**: No templates
-   - **Effort**: 10+ days (mobile architecture, separate from web flow)
+---
 
-### Specialized Architectures
-10. **Serverless** (AWS Lambda, Azure Functions, Google Cloud Functions)
-    - **Status**: No templates
-    - **Gap**: Event-driven architecture (no traditional server scaffold)
-    - **Effort**: 7-10 days (infrastructure-as-code, deployment templates)
+### Phase 3: Specialized Architectures (Estimated 25-30 days)
 
-11. **AI/ML Stack** (TensorFlow/PyTorch + Python)
-    - **Status**: Not a web framework
-    - **Note**: Complementary to backend stacks, not replacement
+**7. Serverless** (10-15 days)
+- Scaffold: `sam init` (AWS SAM) or `serverless create --template aws-nodejs`
+- Version gate: Parse serverless.yml or template.yaml for runtime versions
+- Templates needed:
+  - `AGENTS.md`: Event-driven patterns, stateless functions, cold start optimization
+  - `ARCHITECTURE.md`: Lambda functions, API Gateway, DynamoDB/S3 integration
+  - `CONVENTIONS.md`: Infrastructure-as-code, environment variables, IAM policies
+- Verification: `sam validate`, `serverless package`
+- Use case: Event-driven systems, variable workloads, pay-per-use cost model
+- **Note**: Different deployment model (not traditional server), separate M07 deployment guide needed
 
-12. **Blockchain** (Ethereum, Hyperledger, Solidity)
-    - **Status**: Not a web framework
-    - **Note**: Specialized domain, different development lifecycle
+**8. Flutter** (10-15 days)
+- Scaffold: `flutter create project_name`
+- Version gate: Parse pubspec.lock for Flutter SDK and package versions
+- Templates needed:
+  - `AGENTS.md`: Dart conventions (camelCase, async/await, widget composition)
+  - `ARCHITECTURE.md`: lib/screens, lib/widgets, lib/services, state management (Riverpod/Bloc)
+  - `CONVENTIONS.md`: pubspec.yaml, platform channels, asset management
+- Verification: `flutter analyze`, `flutter test`, `flutter build apk --debug`
+- Use case: iOS + Android apps from single Dart codebase
+- **Note**: Mobile lifecycle (app stores, device testing, platform-specific features) differs from web development
+
+---
+
+### Excluded from Roadmap (Not Standalone Frameworks)
+
+**LAMP** (Linux + Apache + MySQL + PHP)
+- **Decision**: Raw PHP without framework → recommend Laravel instead
+- Laravel is modern PHP with routing, ORM, security - no reason to support raw PHP
+
+**Android Kotlin**
+- **Decision**: Native single-platform mobile → recommend Flutter for cross-platform instead
+- If user specifically needs Kotlin, they're doing native development (outside solo web workflow)
+
+**AI/ML Stack** (TensorFlow/PyTorch)
+- **Decision**: Not a web framework - it's a complementary layer added to backends
+- Django/Flask + TensorFlow is supported via Django templates + custom integration
+
+**Blockchain** (Ethereum, Hyperledger, Solidity)
+- **Decision**: Specialized domain with fundamentally different development paradigm
+- Smart contract deployment, gas optimization, consensus ≠ CRUD web apps
+- Outside scope of solo web project lifecycle
 
 ---
 
@@ -104,7 +160,7 @@ From "12 Tech Stacks Worth Considering 2026" - pending template development:
 npm view next version          # Output: 16.3.8 (example, actual varies)
 composer show laravel/framework --latest  # Output: 11.5.2 (example)
 pip index versions django | head -1       # Output: 5.1.3 (example)
-go list -m -versions golang.org/x/mod    # Check Go releases
+go version                                # Check installed Go toolchain
 
 # Step 2: Lock in FSD.md
 ## Framework Versions (Pinned):
@@ -169,21 +225,19 @@ bundle exec rspec && bundle audit
 
 ---
 
-## Priority Roadmap
+## Implementation Status
 
-### Q4 2026 (If Requested)
-1. **Ruby on Rails** (high demand for MVPs)
-2. **MERN** (MongoDB templates for Next.js)
+**Current Coverage**: 4/12 stacks fully supported (33%)
+**Roadmap**: 8 additional stacks across 3 phases
+**Total Effort**: ~60 days development + testing
+**Timeline**: 12 months to reach 12/12 (100%)
 
-### Q1 2027
-3. **.NET Core** (enterprise demand)
-4. **Spring Boot** (Java enterprise)
+**Expansion Strategy**: Demand-driven
+- Phase 1 (Rails/Remix/MERN): Implement when JavaScript/Ruby clients appear
+- Phase 2 (.NET/Spring/JAMstack): Implement for enterprise clients
+- Phase 3 (Serverless/Flutter): Implement for specialized projects
 
-### Future Consideration
-- Serverless templates (infrastructure-as-code)
-- Flutter/React Native (mobile pivot)
-
----
-
-**Current Coverage**: 4/12 stacks fully supported (33%)  
-**Recommended Action**: Focus on 4 production stacks, expand only on explicit client demand
+**Truth**: Skill supports FRAMEWORKS not VERSIONS
+- ✅ Templates adapt to framework patterns (routing, ORM, validation)
+- ✅ Version locked per-project in M05 via real-time registry check
+- ✅ Cross-major-version compatibility requires template validation per major release
