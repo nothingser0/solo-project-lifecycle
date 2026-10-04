@@ -8,6 +8,7 @@
 > - `references/technical/UI_COMPONENT_ANIMATION_LIBRARY.md` (Animation patterns library)
 > - `references/technical/ASSET_MANAGEMENT_GUIDE.md` (Images/SVG/WebP/fonts optimization, Favicon package, Accessibility alt text, Performance budgets)
 > - `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md` (AI UI prototyping & coding tools benchmark)
+> - `references/technical/FIGMA_MCP_SETUP.md` (Figma MCP server installation, live design sync, token setup, usage patterns)
 >
 
 This module translates `SCOPE_STATEMENT.md` into three documents that serve as the UI source of truth: `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`. Its focus is visual standardization, shared components, all pages/sub-pages that are genuinely in-scope, responsive behavior, accessibility, and acceptance criteria.
@@ -82,7 +83,7 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
 - Client requires interactive demo
 - Design system can be uploaded programmatically
 
-**Tools**: Google Stitch (MCP integration available)
+**Tools**: Google Stitch MCP Server
 
 **Workflow**:
 1. Generate DESIGN.md (tokens, guidelines)
@@ -155,15 +156,17 @@ Use: CRUD apps with clear data model
 **Use when**:
 - Complex visual design (brand-heavy, marketing site)
 - Designer on team (handoff to dev)
-- Client requires Figma design files
+- Client requires design files (Figma/Penpot)
+- Manual design control needed
 
 **Tools**:
 
-#### 1. Figma Dev Mode
+#### 1. Figma Dev Mode (Manual Export)
 ```bash
 Pros: Industry standard, code export, design tokens
 Cons: Subscription required ($15/mo), manual design work
 Use: Professional client work, complex UI systems
+Note: For live sync, use Option E (Figma MCP) instead
 ```
 
 #### 2. Penpot (Open-Source Figma Alternative)
@@ -176,7 +179,7 @@ Use: Budget-conscious projects, design freedom
 **Workflow**:
 1. Create design system (colors, typography, components)
 2. Design all screens with 5-state variants
-3. Export design tokens to DESIGN.md
+3. Export design tokens to DESIGN.md (manual)
 4. Document specs in DESIGN_SPEC.md
 5. Share Figma/Penpot link for client review
 
@@ -187,16 +190,165 @@ Use: Budget-conscious projects, design freedom
 
 ---
 
+### Option E: Figma MCP (Live Design Sync)
+**Use when**:
+- Active designer making frequent iterations
+- Need real-time design system sync
+- Want AI to generate code directly from Figma frames
+- MCP-compatible AI tool available (Claude Desktop, etc.)
+
+**Requirements**:
+- Figma account with API access
+- MCP-compatible AI client
+- Personal access token (Figma → Settings → Personal Access Tokens)
+
+**Setup**:
+
+#### 1. Install Figma MCP Server (Remote - Recommended)
+
+**For Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@figma/mcp-server-figma@latest"
+      ],
+      "env": {
+        "FIGMA_PERSONAL_ACCESS_TOKEN": "figd_YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+```
+
+**For Other MCP Clients**: See [Figma MCP Catalog](https://www.figma.com/mcp-catalog/)
+
+#### 2. Get Figma Personal Access Token
+```bash
+1. Open Figma → Settings → Personal Access Tokens
+2. Generate new token: "MCP Server Access"
+3. Scopes: File content (read), Variables (read)
+4. Copy token (starts with figd_)
+5. Store in MCP config env variable
+```
+
+#### 3. Available MCP Tools
+
+**Read Operations** (Design → Code):
+```typescript
+// Get file metadata
+figma_get_file_info(fileKey: string)
+→ Returns: file name, version, last modified
+
+// Extract design tokens
+figma_get_variables(fileKey: string)
+→ Returns: colors, typography, spacing, effects
+
+// Get frame content
+figma_get_node(fileKey: string, nodeId: string)
+→ Returns: frame structure, layers, styles
+
+// List components
+figma_get_components(fileKey: string)
+→ Returns: component library, properties, variants
+```
+
+**Write Operations** (Code → Figma):
+```typescript
+// Create frame from spec
+figma_create_frame(fileKey: string, spec: FrameSpec)
+→ Creates: new frame with components
+
+// Update design system
+figma_update_variables(fileKey: string, variables: Variables)
+→ Updates: color tokens, typography
+```
+
+**Workflow**:
+
+**Phase 1: Extract Design System (M04)**
+```bash
+# AI with Figma MCP reads live Figma file
+User: "Extract design system from Figma file ABC123"
+
+AI calls:
+1. figma_get_file_info("ABC123")
+2. figma_get_variables("ABC123")
+3. figma_get_components("ABC123")
+
+AI generates:
+→ DESIGN_SYSTEM.md with live tokens (colors, typography, spacing)
+→ Component inventory (Button, Input, Card variants)
+→ 5-state documentation per component
+```
+
+**Phase 2: Generate Specs from Frames**
+```bash
+# AI reads specific screen frames
+User: "Document Login screen from frame node-XYZ"
+
+AI calls:
+figma_get_node("ABC123", "node-XYZ")
+
+AI generates:
+→ Screen spec in DESIGN_SPEC.md (layout, components used)
+→ 5-state matrix (default, loading, error, success, empty)
+```
+
+**Phase 3: Code Generation (M06)**
+```bash
+# AI generates code from Figma frame
+User: "Generate Next.js component from Figma frame node-XYZ"
+
+AI calls:
+1. figma_get_node("ABC123", "node-XYZ")
+2. Reads DESIGN_SYSTEM.md for tokens
+3. Generates React component with Tailwind
+
+Output:
+→ components/LoginForm.tsx (matches Figma exactly)
+→ Uses design tokens from DESIGN_SYSTEM.md
+```
+
+**Deliverables**:
+- ✅ DESIGN_SYSTEM.md (auto-generated from Figma variables)
+- ✅ DESIGN_SPEC.md (extracted from frames)
+- ✅ Live Figma file (source of truth)
+- ✅ No manual export needed
+
+**Pros**:
+- ✅ No manual token export (reads Figma variables directly)
+- ✅ Always synced (queries live file)
+- ✅ AI generates code from frames (visual → code)
+- ✅ Bidirectional (can write back to Figma)
+
+**Cons**:
+- ❌ Requires MCP setup (config file, API token)
+- ❌ Only works with MCP-compatible AI tools
+- ❌ Network dependency (Figma API must be reachable)
+- ❌ Figma subscription required
+
+**Best for**:
+- Teams with active designer + developer collaboration
+- Design systems with frequent token updates
+- Projects where Figma is single source of truth
+
+---
+
 ### Decision Matrix
 
-| Criteria | Markdown | Stitch | AI Prototype | Design Tool |
-|----------|----------|--------|--------------|-------------|
-| Time | 2-4 hours | 4-8 hours | 1-2 days | 2-3 days |
-| Cost | Free | Free* | $0-50 | $15-50/mo |
-| Client demo | ❌ | ✅ | ✅ | ✅ |
-| Code output | N/A | HTML | React/Vue | Manual |
-| Tool dependency | None | MCP | Web | Desktop app |
-| Best for | Solo MVP | Quick visual | Modern stack | Professional |
+| Criteria | Markdown | Stitch | AI Prototype | Design Tool | Figma MCP |
+|----------|----------|--------|--------------|-------------|-----------|
+| Time | 2-4 hours | 4-8 hours | 1-2 days | 2-3 days | 4-6 hours |
+| Cost | Free | Free* | $0-50 | $15-50/mo | $15/mo |
+| Client demo | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Code output | N/A | HTML | React/Vue | Manual | React/Vue |
+| Tool dependency | None | MCP | Web | Desktop app | MCP + Figma |
+| Live sync | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Best for | Solo MVP | Quick visual | Modern stack | Professional | Design systems |
 
 *Stitch: Free if MCP available; otherwise N/A
 
