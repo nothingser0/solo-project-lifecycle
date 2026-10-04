@@ -25,10 +25,20 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
 [ INPUT: SCOPE_STATEMENT.md & Valid Contract + Down Payment from Module 03 ]
                                 │
                                 ▼
+[ STEP 0: Component Discovery & UI Pattern Analysis ]
+  • Read PRD.md → Extract features & acceptance criteria
+  • Map features → UI patterns (forms, tables, modals, etc.)
+  • Identify component inventory (primitives, composite, layout)
+  • Define interaction states (5-state matrix, form states)
+  • Document responsive breakpoints & accessibility requirements
+  • OUTPUT: COMPONENT_REQUIREMENTS.md (prevents AI slop)
+                                │
+                                ▼
 [ STEP 1: Drafting DESIGN.md Guardrails (Anti-Slop Tokens) ]
+  • READ: COMPONENT_REQUIREMENTS.md (component inventory as input)
   • Neutral Color Palette (Zinc/Slate) + 1 Accent Brand Color
   • Inter & JetBrains Mono Typography, Flat 1px Border, Zero Gradient
-                                │
+                               │
                                 ▼
 [ STEP 2: Choose Prototyping Approach (Context-Driven) ]
   • Markdown-only: DESIGN.md + DESIGN_SPEC.md (fast, solo projects)
@@ -54,6 +64,233 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
                                 ▼
 [ OUTPUT: 4 COMPLETE ARTIFACTS ] ──► Ready to Proceed to Module 05: Architecture & FSD
 ```
+
+---
+
+## 0. Component Discovery & UI Pattern Analysis (STEP 0)
+
+> **CRITICAL: This step prevents AI slop by mapping PRD features to concrete UI patterns BEFORE designing.**
+> **Duration**: 1-2 hours
+> **Input**: `PRD.md` (features, user stories, acceptance criteria)
+> **Output**: `COMPONENT_REQUIREMENTS.md` (justified component inventory)
+
+### Why This Step Exists
+
+**Problem without Step 0:**
+```
+AI generates generic design system:
+- Colors: Primary, secondary, tertiary (no context)
+- Components: Button, Input, Card (generic descriptions)
+- Result: 50+ components, many unused, no justification
+```
+
+**Solution with Step 0:**
+```
+Read PRD → Map features → Identify patterns → List components
+- Every component has a reason (traced to PRD feature)
+- Right-sized inventory (20-30 components, not 50+)
+- Interaction states defined upfront (5-state matrix)
+- No generic additions without justification
+```
+
+---
+
+### Step 0 Process
+
+#### 1. Read PRD.md (15 min)
+
+Extract:
+- **Features**: What the app does (authentication, dashboard, CRUD, etc.)
+- **User stories**: Who needs what and why
+- **Acceptance criteria**: Observable success conditions
+- **Critical flows**: Login → Dashboard → Create task → View detail
+
+**Example (TaskFlow app):**
+```markdown
+Feature 1: Authentication
+- User story: As a team member, I want to log in, so I can access my tasks
+- Acceptance: Email validation, password min 8 chars, error messages
+
+Feature 2: Dashboard
+- User story: As a team lead, I want to see task stats, so I can monitor progress
+- Acceptance: Show total/in-progress/completed counts, load in <2s
+
+Feature 3: Task List
+- User story: As a team member, I want to view all tasks, so I can pick work
+- Acceptance: Sortable table, filter by status, search by title, pagination
+```
+
+---
+
+#### 2. Map Features → UI Patterns (45 min)
+
+For each feature, identify:
+- **UI pattern needed**: Form, table, dashboard, detail view, modal, etc.
+- **User interactions**: What user does → What system shows
+- **Edge cases**: Empty state, error state, loading state
+
+**Example:**
+```markdown
+Feature 1: Authentication
+
+UI Patterns:
+- Form layout (email + password fields)
+- Input validation (inline errors)
+- Submit button (primary variant)
+- Loading state (spinner during API call)
+
+User Interactions:
+1. User enters email → System validates format
+2. User enters password → System checks length
+3. User clicks "Login" → System shows loading, then redirects or error
+
+Edge Cases:
+- Invalid email: Show "Invalid email format" below field
+- Wrong password: Show "Invalid credentials" below form
+- Network error: Show "Connection failed. Retry?" with button
+
+Components Required:
+- Input (with error state)
+- Button (primary variant, loading state)
+- FormField (label + input + error wrapper)
+- LoadingSpinner
+```
+
+Repeat for ALL features in PRD.
+
+---
+
+#### 3. Consolidate Component Inventory (30 min)
+
+Group components into:
+
+**A. Primitives (Atomic)**: Button, Input, Badge, Icon, etc.
+**B. Composite (Combinations)**: FormField, Modal, Table, Toast, etc.
+**C. Layout (Structure)**: Container, Grid, Stack, ButtonGroup
+**D. Patterns (Feature-specific)**: StatWidget, DescriptionList, etc.
+
+**Rules:**
+- ✅ Include ONLY if used by ≥1 PRD feature
+- ❌ Exclude generic "might need later" components
+- ✅ Document which features use each component
+- ✅ Count variants (Button: primary/secondary/ghost)
+
+**Example Inventory:**
+```markdown
+Primitives (11):
+1. Button (4 variants) - Used by Features 1,2,3,4,5
+2. Input (5 states) - Used by Features 1,3,4
+3. Textarea - Used by Feature 4
+4. Select/Dropdown - Used by Features 3,4
+5. Badge - Used by Features 3,5
+... (total 11)
+
+Composite (9):
+1. FormField - Used by Features 1,4 (all forms)
+2. Card - Used by Features 2,5
+3. Modal - Used by Feature 5 (delete confirmation)
+4. Table - Used by Feature 3 (task list)
+... (total 9)
+
+TOTAL: 27 components (justified, no slop)
+
+EXCLUDED (Not in MVP):
+❌ Tabs - No complex navigation
+❌ Accordion - No collapsible sections
+❌ Slider - No range inputs
+❌ File Upload - No attachments in MVP
+```
+
+---
+
+#### 4. Define Interaction States (15 min)
+
+**Per Component:**
+- Input: default, hover, focus, error, disabled
+- Button: default, hover, active, disabled, loading
+- Modal: closed, opening, open, closing
+
+**Per Screen (5-State Matrix):**
+- All data screens MUST have:
+  1. **Idle**: Normal render with data
+  2. **Loading**: Skeleton loaders (gray pulsing)
+  3. **Success**: Data loaded (same as idle)
+  4. **Error**: Error message + retry button
+  5. **Empty**: Empty state illustration + CTA
+
+**Per Form:**
+- Pristine, Validating, Valid, Invalid, Submitting
+
+---
+
+#### 5. Responsive & Accessibility (15 min)
+
+**Responsive Breakpoints:**
+```markdown
+Mobile (375px): Single column, stacked layout
+Tablet (768px): 2 columns for dashboard, table scrolls
+Desktop (1440px): 3 columns, full table
+
+Critical decisions:
+- Navigation: Hamburger menu on mobile
+- Dashboard: 3 cols → 2 cols → 1 col
+- Table: Horizontal scroll on mobile (not card view)
+- Forms: Always single column
+```
+
+**Accessibility:**
+```markdown
+Per Component:
+- Input: aria-label, aria-invalid, aria-describedby
+- Button: aria-disabled, aria-busy
+- Modal: aria-modal, role="dialog", focus trap, Esc to close
+- Table: scope="col" for headers
+
+Global:
+- Focus ring: 2px solid #3B82F6, offset 2px
+- Color contrast: WCAG AA (4.5:1 body, 3:1 large text)
+- Touch targets: 44×44px minimum
+```
+
+---
+
+#### 6. Write COMPONENT_REQUIREMENTS.md (15 min)
+
+Use template: `templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md`
+
+**Sections:**
+1. Feature summary (from PRD)
+2. Feature → UI pattern mapping
+3. Component inventory (27 components with justification)
+4. Interaction states matrix
+5. Responsive breakpoints
+6. Accessibility requirements
+7. Design decisions rationale (why NO tabs/accordion/slider)
+
+**Output file:**
+```
+docs/specs/COMPONENT_REQUIREMENTS.md
+```
+
+---
+
+### Step 0 Checklist
+
+Before proceeding to Step 1 (DESIGN.md generation):
+
+- [ ] All PRD features extracted
+- [ ] Each feature mapped to UI patterns
+- [ ] Component inventory: 20-40 components (not 50+)
+- [ ] Every component has justification (which features use it)
+- [ ] Excluded components documented (why NOT in MVP)
+- [ ] 5-state matrix defined for data screens
+- [ ] Responsive breakpoints decided
+- [ ] Accessibility requirements listed
+- [ ] COMPONENT_REQUIREMENTS.md committed
+
+**Time budget:** 1-2 hours
+
+**Next step:** Generate DESIGN.md using component inventory as input (prevents generic slop)
 
 ---
 
