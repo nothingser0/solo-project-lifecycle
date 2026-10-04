@@ -538,6 +538,50 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
+### 📋 Enterprise Governance & Compliance Templates
+
+**Compliance & Audit** (SOC 2, ISO 27001, GDPR):
+- `templates/03-governance/SOC2_ISO27001_COMPLIANCE.md` - Audit preparation (Trust Service Criteria, evidence collection)
+- `templates/03-governance/AUDIT_TRAIL_REQUIREMENTS.md` - Immutable audit logs (auth, data access, config changes)
+- `templates/03-governance/DATA_RETENTION_POLICY.md` - GDPR/HIPAA retention periods (7yr financial, 1yr logs)
+- `templates/03-governance/DATA_CLASSIFICATION_POLICY.md` - Public/Internal/Confidential/Restricted data handling
+- `templates/03-governance/GDPR_COMPLIANCE_CHECKLIST.md` - Right to erasure, data portability, consent management
+
+**Risk & Incident Management**:
+- `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` - Risk scoring (Probability × Impact), mitigation tracking
+- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, war room)
+- `templates/08-maintenance-ops/BACKUP_RESTORE_PROCEDURES.md` - Daily backups, quarterly restore tests, RTO/RPO
+- `templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md` - Business continuity (failover, data center redundancy)
+
+**Architecture & Infrastructure**:
+- `templates/03-governance/ADR_TEMPLATE.md` - Architecture Decision Records (context, decision, consequences, tradeoffs)
+- `templates/04-dev-execution/IAC_GUIDE.md` - Infrastructure as Code (Terraform/Pulumi for AWS/GCP/Azure)
+- `templates/08-maintenance-ops/CAPACITY_PLANNING_GUIDE.md` - Scale projections (1K → 10K → 100K users)
+- `templates/08-maintenance-ops/SLA_SLO_DEFINITIONS.md` - Service levels (99.9% uptime, <200ms p95 latency)
+
+**Stakeholder Collaboration**:
+- `templates/03-governance/RACI_MATRIX.md` - Responsible/Accountable/Consulted/Informed for major decisions
+- `templates/03-governance/MEETING_CADENCE_GUIDE.md` - Standups, sprint reviews, steering committee, QBR
+- `templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md` - 10-15 slide deck for C-level (traffic light status)
+- `templates/03-governance/ESCALATION_MATRIX.md` - Severity levels, response times, escalation paths
+- `templates/03-governance/STAKEHOLDER_REGISTER.md` - Power/Interest matrix, communication frequency
+- `templates/03-governance/COMMUNICATION_PLAN.md` - Who gets what info, when, via which channel
+
+**Pre-Sales & Vendor Evaluation**:
+- `templates/00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md` - Government/corporate tender response (technical + commercial)
+- `templates/03-governance/VENDOR_COMPARISON_MATRIX.md` - Weighted scoring for build-vs-buy (features, cost, support)
+- `templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md` - Proof-of-concept scope (2-4 weeks, success criteria)
+
+**Change & Release Management**:
+- `templates/03-governance/CAB_PROCESS.md` - Change Advisory Board (RFC approval, risk assessment, rollback plan)
+- `templates/07-release-handover/RELEASE_APPROVAL_CHECKLIST.md` - 10-section go/no-go gate (code, tests, security, perf, rollback)
+
+**Operations & Training**:
+- `templates/07-release-handover/TRAINING_PLAN.md` - End-user, admin, technical ops, executive training sessions
+- `templates/02-legal-commercial/FINANCIAL_TRACKING.md` - Budget tracking, burn rate, milestone forecasting
+
+---
+
 ### Enterprise Module Extensions
 
 **M00 - Product Discovery & Strategy** (4-6 minggu):
@@ -601,36 +645,49 @@ M02 Discovery: "Does client have existing data?"
 
 **Phase 1: Pre-Sales & Discovery** (4-6 minggu):
 - Week 1-2: M00 Product Discovery
+  - **Templates**: `RFP_RESPONSE_TEMPLATE.md`, `POC_PLAN_TEMPLATE.md`, `VENDOR_COMPARISON_MATRIX.md`
 - Week 3: M01 Idea & Feasibility
 - Week 4-5: M02 Discovery & Scope Definition
+  - **Templates**: `STAKEHOLDER_REGISTER.md`, `COMMUNICATION_PLAN.md`, `RISK_ASSESSMENT_MATRIX.md`
 - Week 6-8: M03 Legal SOW, DP, & Single PIC Agreement
+  - **Templates**: `SLA_SLO_DEFINITIONS.md`, `GDPR_COMPLIANCE_CHECKLIST.md`, `DATA_CLASSIFICATION_POLICY.md`
 
 **Phase 2: Design & Architecture** (6-8 minggu):
 - Week 9-11: M04B Design System Foundation
 - Week 12-13: M04 UI/UX Design & Prototyping
 - Week 14-15: M05 Architecture & Technical Specifications (PRD & FSD)
+  - **Templates**: `ADR_TEMPLATE.md`, `IAC_GUIDE.md`
 - Week 16: M05B System Design & Infrastructure Scalability
+  - **Templates**: `CAPACITY_PLANNING_GUIDE.md`, `DISASTER_RECOVERY_PLAN.md`
 
 **Phase 3: Development & Instrumentation** (12-20 minggu):
 - Week 17-32: M06 Development Execution
+  - **Change Control**: `CAB_PROCESS.md` (production changes require RFC approval)
+  - **Governance**: `MEETING_CADENCE_GUIDE.md`, `ESCALATION_MATRIX.md`
+  - **Security**: `AUDIT_TRAIL_REQUIREMENTS.md` (log all privileged actions)
 - Week 33: M06B Product Instrumentation & Analytics Setup
 
 **Phase 4: Testing & Migration** (4-6 minggu):
 - Week 34-36: M07 Quality Assurance & Security Audit
+  - **Templates**: `SOC2_ISO27001_COMPLIANCE.md`, `INCIDENT_RESPONSE_PLAN.md`
 - Week 37-38: M08 Data Migration & Seeding
+  - **Templates**: `BACKUP_RESTORE_PROCEDURES.md`, `DATA_RETENTION_POLICY.md`
 
 **Phase 5: Validation Gate** (2-3 minggu):
 - Week 39-41: M09 Client UAT & Sign-Off
 
 **Phase 6: Launch** (1-2 minggu):
 - Week 42: M10 Production Deployment & Go-Live
+  - **Templates**: `RELEASE_APPROVAL_CHECKLIST.md` (10-section pre-release gate)
 
 **Phase 7: Handover Gate** (1-2 minggu):
 - Week 43-44: M11 Training, BAST, & Repository Handover
+  - **Templates**: `TRAINING_PLAN.md`
 
 **Phase 8: Post-Launch Support** (90 hari + ongoing):
 - Week 45-57: M12 Warranty Period (3 bulan)
 - Month 4-12: M13 Product Operations & Continuous Iteration
+  - **Templates**: `FINANCIAL_TRACKING.md`, `EXECUTIVE_DECK_TEMPLATE.md` (monthly QBR)
 
 **Total Timeline**: **40-44 minggu (10-11 bulan) untuk full implementation + 3 bulan warranty**
 
