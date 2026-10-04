@@ -195,122 +195,87 @@ Use: Budget-conscious projects, design freedom
 - Active designer making frequent iterations
 - Need real-time design system sync
 - Want AI to generate code directly from Figma frames
-- MCP-compatible AI tool available (Claude Desktop, etc.)
+- MCP-compatible AI tool available (Claude Code, Cursor, VS Code, Codex, Xcode)
 
 **Requirements**:
 - Figma account with API access
-- MCP-compatible AI client
-- Personal access token (Figma → Settings → Personal Access Tokens)
+- MCP-compatible AI client ([Figma MCP Catalog](https://www.figma.com/mcp-catalog/))
+- OAuth authentication (browser flow)
 
-**Setup**:
+**Quick Start**:
 
-#### 1. Install Figma MCP Server (Remote - Recommended)
+**If MCP already configured globally** (e.g., in `~/.omp`):
+Figma MCP server already available. Skip to Usage below.
 
-**For Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
-```json
-{
-  "mcpServers": {
-    "figma": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@figma/mcp-server-figma@latest"
-      ],
-      "env": {
-        "FIGMA_PERSONAL_ACCESS_TOKEN": "figd_YOUR_TOKEN_HERE"
-      }
-    }
-  }
-}
-```
+**Setup per Client**:
 
-**For Other MCP Clients**: See [Figma MCP Catalog](https://www.figma.com/mcp-catalog/)
-
-#### 2. Get Figma Personal Access Token
+**Claude Code**:
 ```bash
-1. Open Figma → Settings → Personal Access Tokens
-2. Generate new token: "MCP Server Access"
-3. Scopes: File content (read), Variables (read)
-4. Copy token (starts with figd_)
-5. Store in MCP config env variable
+claude plugin install figma@claude-plugins-official
+# Or: claude mcp add --scope user --transport http figma https://mcp.figma.com/mcp
 ```
 
-#### 3. Available MCP Tools
+**Cursor**: `/add-plugin figma`
 
-**Read Operations** (Design → Code):
-```typescript
-// Get file metadata
-figma_get_file_info(fileKey: string)
-→ Returns: file name, version, last modified
+**VS Code**: Install Figma MCP extension or add to `mcp.json`
 
-// Extract design tokens
-figma_get_variables(fileKey: string)
-→ Returns: colors, typography, spacing, effects
+**Codex**: `codex mcp add figma --url https://mcp.figma.com/mcp`
 
-// Get frame content
-figma_get_node(fileKey: string, nodeId: string)
-→ Returns: frame structure, layers, styles
+**Xcode**: One-click setup via plugin
 
-// List components
-figma_get_components(fileKey: string)
-→ Returns: component library, properties, variants
-```
+See `references/technical/FIGMA_MCP_SETUP.md` for full installation guide.
 
-**Write Operations** (Code → Figma):
-```typescript
-// Create frame from spec
-figma_create_frame(fileKey: string, spec: FrameSpec)
-→ Creates: new frame with components
+**Available Tools**:
 
-// Update design system
-figma_update_variables(fileKey: string, variables: Variables)
-→ Updates: color tokens, typography
-```
+**Read** (Design → Code):
+- `get_design_context` - Extract design + generate code (React+Tailwind default)
+- `get_metadata` - XML outline of frame structure
+- `get_screenshot` - Screenshot of selection
+- `download_assets` - Export assets (PNG/SVG/PDF/JPG)
+- `get_variable_defs` - Design tokens (colors, typography, spacing)
+- `get_motion_context` - Animation keyframes
+- `search_design_system` - Search libraries for components/variables
 
-**Workflow**:
+**Write** (Code → Design):
+- `use_figma` - Create/edit Figma content
+- `generate_figma_design` - Capture live UI to Figma
+- `generate_diagram` - Create FigJam diagrams from Mermaid
+- `upload_assets` - Upload images to Figma
 
-**Phase 1: Extract Design System (M04)**
+Full reference: https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/
+
+**Usage Examples**:
+
+**Extract Design System (M04)**:
 ```bash
-# AI with Figma MCP reads live Figma file
-User: "Extract design system from Figma file ABC123"
+User: "Extract design system from https://figma.com/file/ABC123/Design-System"
 
 AI calls:
-1. figma_get_file_info("ABC123")
-2. figma_get_variables("ABC123")
-3. figma_get_components("ABC123")
+- get_design_context(fileKey="ABC123", nodeId from URL)
+- get_variable_defs() for tokens
 
-AI generates:
+Generates:
 → DESIGN_SYSTEM.md with live tokens (colors, typography, spacing)
-→ Component inventory (Button, Input, Card variants)
-→ 5-state documentation per component
+→ Component inventory from Figma libraries
 ```
 
-**Phase 2: Generate Specs from Frames**
+**Generate Code from Frame (M06)**:
 ```bash
-# AI reads specific screen frames
-User: "Document Login screen from frame node-XYZ"
+User: "Generate Next.js component from https://figma.com/file/ABC123/.../node-XYZ"
 
 AI calls:
-figma_get_node("ABC123", "node-XYZ")
+- get_design_context(fileKey="ABC123", nodeId="node-XYZ")
 
-AI generates:
-→ Screen spec in DESIGN_SPEC.md (layout, components used)
-→ 5-state matrix (default, loading, error, success, empty)
+Returns:
+→ React + Tailwind component code
+→ Matches Figma design exactly
 ```
 
-**Phase 3: Code Generation (M06)**
+**Custom Framework**:
 ```bash
-# AI generates code from Figma frame
-User: "Generate Next.js component from Figma frame node-XYZ"
-
-AI calls:
-1. figma_get_node("ABC123", "node-XYZ")
-2. Reads DESIGN_SYSTEM.md for tokens
-3. Generates React component with Tailwind
-
-Output:
-→ components/LoginForm.tsx (matches Figma exactly)
-→ Uses design tokens from DESIGN_SYSTEM.md
+"Generate in Vue using components from src/ui/"
+"Generate iOS SwiftUI view from this Figma frame"
+"Generate plain HTML + CSS"
 ```
 
 **Deliverables**:
@@ -323,11 +288,12 @@ Output:
 - ✅ No manual token export (reads Figma variables directly)
 - ✅ Always synced (queries live file)
 - ✅ AI generates code from frames (visual → code)
-- ✅ Bidirectional (can write back to Figma)
+- ✅ Bidirectional (can capture live UI to Figma)
+- ✅ Component reuse via Code Connect
 
 **Cons**:
-- ❌ Requires MCP setup (config file, API token)
-- ❌ Only works with MCP-compatible AI tools
+- ❌ Requires MCP setup (OAuth authentication)
+- ❌ Only works with supported clients (Claude Code, Cursor, VS Code, Codex, Xcode)
 - ❌ Network dependency (Figma API must be reachable)
 - ❌ Figma subscription required
 
