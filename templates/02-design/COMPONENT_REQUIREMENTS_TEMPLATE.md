@@ -94,6 +94,32 @@
 
 ---
 
+## Design Style Decision
+
+> Brief aesthetic choice that guides DESIGN_SYSTEM.md generation. Details documented in DESIGN.md.
+
+**Chosen Style**: [Flat Design / Minimalist / Glassmorphism / Brutalist / Material Design]
+
+**Rationale**: [1-2 sentences: why this style? Budget, brand, timeline, audience]
+
+**Reference Examples** (3 max):
+- [Website/App 1] - [What aspect to emulate]
+- [Website/App 2] - [Specific component style]
+
+**Quick Reference:**
+
+| Style | Speed | Accessibility | Best For MVP? |
+|:------|:------|:--------------|:--------------|
+| Flat Design | Fast ✅ | High ✅ | Yes (recommended) |
+| Minimalist | Fast ✅ | High ✅ | Yes |
+| Material Design | Medium | High ✅ | Yes (if Android/Google) |
+| Glassmorphism | Slow | Medium ⚠️ | No (performance cost) |
+| Brutalist | Medium | Medium ⚠️ | No (polarizing) |
+
+**For detailed style guide (borders, shadows, CSS examples), see:** `DESIGN_SYSTEM.md` (generated next)
+
+---
+
 ## Component Inventory
 
 > Consolidated list of ALL components needed across features (no duplicates, no generic additions)
