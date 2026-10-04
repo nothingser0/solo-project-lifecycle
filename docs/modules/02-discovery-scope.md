@@ -58,12 +58,21 @@ Conduct the interview using the guide in `references/checklists/REQUIREMENT_ELIC
 
 ### Step 2: Feature Breakdown & MoSCoW Prioritization
 Break each module into specific features with priority labels:
+
+**Template**: `templates/01-discovery-commercial/MOSCOW_MATRIX.md` (60-min workshop format, decision tree, examples)
+
 - **Must Have (P0)**: The system fails to function without this feature (e.g., order checkout, login authentication).
   - **Max Must-Haves by Scale**: Small: 3–7 features | Medium: 8–15 features | Large: 16–25 features | Enterprise: 26–40 features
   - If limits are exceeded, downgrade to Should-Have or Phase 2.
 - **Should Have (P1)**: Important features with temporary manual workarounds (e.g., export reports to Excel).
 - **Could Have (P2)**: Additional features if time and solo dev capacity permit (e.g., WhatsApp notifications).
 - **Won't Have (P3)**: Features formally agreed not to be built in this phase (e.g., AI recommendation chatbot).
+
+**MoSCoW Workshop** (Medium/Large projects):
+- Run 60-min prioritization workshop with client stakeholders
+- Use decision tree: "Can we launch without this?" → Must/Should/Could/Won't
+- Document in `docs/pm/MOSCOW_MATRIX.md`
+- Reference in SCOPE_STATEMENT.md
 
 ### Step 3: Scope Boundary Locking (In-Scope vs Out-of-Scope)
 Solo developers must document the **Out-of-Scope** section with aggressive detail. Civil law principle: *"Everything not explicitly stated as In-Scope is outside the developer's responsibility."*

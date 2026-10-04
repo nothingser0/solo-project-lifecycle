@@ -74,8 +74,23 @@ To prevent the solo developer from being turned into an indefinite free operatio
 
 ### Step 2: Credential Handover Protocol (Zero Plaintext Sharing)
 Sending server passwords, database master keys, or API secrets via WhatsApp chat or unencrypted plaintext email is strictly prohibited.
+
+**Template**: `templates/07-release-handover/CREDENTIALS_VAULT.md` (1Password/Bitwarden setup guide)
+
 - Use secure one-time channels such as **Bitwarden Send**, **1Password**, or **Yopass** (encrypted links that automatically self-destruct after being opened once).
+- **Recommended**: Set up shared vault (1Password/Bitwarden) for permanent credential access during warranty period
 - Summarize the inventory of handed-over accounts in the **`HANDOVER_PROTOCOL.md`** file.
+
+**Credentials to hand over**:
+- Production admin login
+- Staging admin login  
+- Database credentials
+- API keys (payment, email, storage)
+- Hosting/cloud provider access
+- Domain/DNS management
+- Git repository access
+
+**Best Practice**: Client changes all passwords within 7 days post-handover for security ownership transfer.
 
 ### Step 3: Git Repository Ownership Transfer
 1. Go to GitHub / GitLab project settings:

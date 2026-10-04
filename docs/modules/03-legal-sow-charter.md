@@ -107,7 +107,17 @@ Corporate clients often have multiple heads with conflicting directions.
 > 📁 **ABSOLUTE FILE LOCATION RULE**:
 > All Module 03 documents MUST be stored inside the **`docs/pm/`** directory (never in the root directory).
 
-1. **`docs/pm/SOW_CONTRACT.md`**: Consolidated commercial agreement document (Project Charter + SOW) binding objectives, Single PIC, scope, fees, payment milestones, and legal clauses (using template `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`).
+1. **`docs/pm/SOW_CONTRACT.md`**: Consolidated commercial agreement document (Project Charter + SOW) binding objectives, Single PIC, scope, fees, payment milestones, and legal clauses.
+
+**Templates Available**:
+- **Small/Medium (SMB clients)**: `templates/02-legal-commercial/SOW_SMB.md` (simplified, no legal review needed, <Rp 100M)
+- **Large/Enterprise**: `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md` (full contract with comprehensive clauses)
+
+**When to use SOW_SMB**:
+- Client is small-medium business (<50 employees)
+- Budget <Rp 100M
+- No legal department (client won't redline)
+- Straightforward project (no compliance requirements)
 
 > 💡 **ADAPTATION FOR SOLO DEV PRODUCT (SELF-INITIATED/INTERNAL)**:
 > If the project is a self-initiated product without an external client, commercial contracts and DP invoicing may be adapted for internal use, **HOWEVER `docs/pm/PROJECT_CHARTER.md` REMAINS MANDATORY** to lock timeline baselines, infrastructure budgets, and risk boundaries. Skipping Module 03 entirely is STRICTLY PROHIBITED!
