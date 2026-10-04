@@ -85,11 +85,13 @@ Style: Flat Design (minimal shadows, 1px borders)
 **Upload to Stitch:**
 
 1. Generate `DESIGN_SYSTEM.md` from `notes.md` analysis
-2. Upload `DESIGN_SYSTEM.md` to Stitch: `stitch_upload_design_md()`
-3. Upload reference screenshots: `stitch_upload_reference_images()`
-4. Generate screens: `stitch_generate_screen_from_text("Dashboard with stats")`
-5. Stitch outputs match reference style
-6. Save results to `references/design/stitch-output/`
+2. Open https://stitch.google.com in browser
+3. Create new project
+4. Upload `DESIGN_SYSTEM.md` (drag and drop file)
+5. Upload screenshots from `inspiration/` (drag multiple PNG files)
+6. Use Stitch visual builder to create screens
+7. Export generated screens
+8. Save results to `stitch-output/`
 
 ---
 

@@ -138,15 +138,17 @@ Saved in `references/design/inspiration/`:
 
 **Manual (Google Stitch)**:
 1. Generate `DESIGN_SYSTEM.md` from `notes.md` analysis
-2. Upload to Stitch: `stitch_upload_design_md("DESIGN_SYSTEM.md")`
-3. Upload screenshots: `stitch_upload_reference_images("references/design/inspiration/*.png")`
-4. Generate screens matching reference style
+2. Open Stitch in browser (https://stitch.google.com)
+3. Create project, upload `DESIGN_SYSTEM.md` + screenshots (drag and drop)
+4. Use Stitch visual builder to create screens
+5. Export results to `stitch-output/`
 
 **Automated (AI/MCP)**:
 1. AI reads `references/design/inspiration/notes.md`
 2. AI analyzes screenshots (visual confirmation)
 3. AI generates `DESIGN_SYSTEM.md` matching extracted patterns
 4. AI generates components following reference style
+5. No manual uploads - fully automated
 
 **For detailed implementation (borders, shadows, CSS examples)**: See `DESIGN_SYSTEM.md` (generated from references)
 
