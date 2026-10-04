@@ -96,15 +96,33 @@
 
 ## Design Style Decision
 
-> Brief aesthetic choice that guides DESIGN_SYSTEM.md generation. Details documented in DESIGN.md.
+> **Source**: Design references stored in `references/design/inspiration/`
+> Brief aesthetic choice extracted from references. Details in DESIGN_SYSTEM.md.
 
-**Chosen Style**: [Flat Design / Minimalist / Glassmorphism / Brutalist / Material Design]
+### Reference Screenshots
 
-**Rationale**: [1-2 sentences: why this style? Budget, brand, timeline, audience]
+Saved in `references/design/inspiration/`:
 
-**Reference Examples** (3 max):
-- [Website/App 1] - [What aspect to emulate]
-- [Website/App 2] - [Specific component style]
+- [ ] `screenshot-1-[name].png` - [What to extract: dashboard layout, spacing]
+- [ ] `screenshot-2-[name].png` - [What to extract: form styling, validation]
+- [ ] `screenshot-3-[name].png` - [What to extract: button states, interactions]
+- [ ] (3-5 screenshots recommended)
+
+**Analysis**: See `references/design/inspiration/notes.md` (use `notes-template.md` as starting point)
+
+### Extracted Style
+
+**Detected Style**: [Flat Design / Minimalist / Glassmorphism / Brutalist / Material Design]
+*(Auto-detected from reference analysis)*
+
+**Key Patterns** (from notes.md):
+- **Colors**: [Primary #HEX, neutrals extracted]
+- **Typography**: [Font family, weights]
+- **Borders**: [Width, color, radius]
+- **Shadows**: [Minimal / None / Soft / Hard]
+- **Spacing**: [Grid system, padding values]
+
+**Rationale**: [Why these references? Brand alignment, budget, timeline]
 
 **Quick Reference:**
 
@@ -116,7 +134,21 @@
 | Glassmorphism | Slow | Medium ⚠️ | No (performance cost) |
 | Brutalist | Medium | Medium ⚠️ | No (polarizing) |
 
-**For detailed style guide (borders, shadows, CSS examples), see:** `DESIGN_SYSTEM.md` (generated next)
+### Integration
+
+**Manual (Google Stitch)**:
+1. Generate `DESIGN_SYSTEM.md` from `notes.md` analysis
+2. Upload to Stitch: `stitch_upload_design_md("DESIGN_SYSTEM.md")`
+3. Upload screenshots: `stitch_upload_reference_images("references/design/inspiration/*.png")`
+4. Generate screens matching reference style
+
+**Automated (AI/MCP)**:
+1. AI reads `references/design/inspiration/notes.md`
+2. AI analyzes screenshots (visual confirmation)
+3. AI generates `DESIGN_SYSTEM.md` matching extracted patterns
+4. AI generates components following reference style
+
+**For detailed implementation (borders, shadows, CSS examples)**: See `DESIGN_SYSTEM.md` (generated from references)
 
 ---
 
