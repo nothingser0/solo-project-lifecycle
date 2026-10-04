@@ -758,7 +758,7 @@ Stack decision LOCKS after selection. Changes later = +2 weeks timeline impact.
 
 ### Stack Validation Gate (MANDATORY After User Selection)
 
-**After user selects stack option, agent MUST validate decision against context:**
+**After user selects stack option, agent validates decision against context and flags mismatches:**
 
 #### Validation Checklist
 
@@ -775,10 +775,10 @@ Stack decision LOCKS after selection. Changes later = +2 weeks timeline impact.
 
 **3. Scale Appropriateness**
 - [ ] Not over-engineering: Stack complexity matches scale (Question 3)
-  - Scale: <100 users → Avoid: Kubernetes, microservices, sharding
-  - Scale: 100-1K users → Simple monolith sufficient
-  - Scale: 1K-10K users → Consider caching, read replicas
-  - Scale: 10K+ users → Advanced scalability (load balancing, CDN)
+  - Scale: <100 users → Simple stack recommended (monolith, managed services)
+  - Scale: 100-1K users → Monolith + caching usually sufficient
+  - Scale: 1K-10K users → May need caching, read replicas (measure first)
+  - Scale: 10K+ users → Likely needs load balancing, CDN (based on metrics)
   - **Red flag**: Premature optimization (Kafka for <100 users)
 
 **4. Timeline Feasibility**
@@ -792,7 +792,7 @@ Stack decision LOCKS after selection. Changes later = +2 weeks timeline impact.
 - [ ] Ops burden acceptable: Team can maintain chosen stack (Question 5)
   - Self-hosted (DigitalOcean Droplet): Requires SSH, OS updates, backups
   - Managed (Vercel, Supabase): Minimal ops, auto-updates
-  - If solo dev + self-hosted: Warn about maintenance burden (2-4 hours/week)
+  - If solo dev + self-hosted: Warn about ops burden (varies by stack)
 
 **6. Integration Compatibility**
 - [ ] Third-party support: Required integrations available (Question 6)
@@ -823,18 +823,19 @@ Stack decision LOCKS after selection. Changes later = +2 weeks timeline impact.
 
 **Conditional Pass (Yellow Flag)** ⚠️:
 - 1-2 checks have warnings (e.g., learning curve, tight timeline)
-- Action: Document risks in FSD.md, get user acknowledgment
-- User confirms: "I understand the risk, proceed"
+- Action: Flag warnings to user, document in FSD.md
+- User decision: Proceed with acknowledgment or re-select stack
 
 **Fail (Red Flag)** ❌:
-- 3+ checks fail OR critical mismatch (budget overage, compliance gap)
-- Action: STOP, re-run questionnaire with corrected constraints
+- Multiple critical mismatches (budget overage >2x, compliance gap, technical impossibility)
+- Action: Strongly recommend re-selection, explain risks
+- User decision: Override and proceed (at own risk) or re-select
 - Examples:
   - User budget $0, selected AWS stack ($50/month) → Fail
   - HIPAA required, selected Vercel Hobby (no BAA) → Fail
   - Solo dev, selected self-hosted Kubernetes → Fail (over-engineering)
 
-**Agent MUST NOT proceed to FSD.md generation until validation passes.**
+**Agent flags mismatches but user has final decision. Document acknowledged risks in FSD.md.**
 
 **Reference**: See `references/stacks/STACK_DECISION_METRICS.md` for detailed tradeoff analysis per stack combination.
 

@@ -8,10 +8,10 @@
 
 | Scale | Budget Range | Timeline | Team Size | Module Path |
 |:------|:-------------|:---------|:----------|:------------|
-| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 7 modules (skip M00/M07/M08/M12/M13) |
+| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 8 modules (skip M00/M07/M08/M12/M13) |
 | **Menengah (Agency)** | Rp 50-200M | 3-6 bulan | 3-6 orang | 9 modules (skip M00/M12/M13) |
 | **Besar (Vendor)** | Rp 200-500M | 6-12 bulan | 6-12 orang | 11 modules (skip M00/M13) |
-| **Enterprise** | >Rp 500M | 12-24 bulan | 12+ orang | 13 modules (full M00-M13) |
+| **Enterprise** | >Rp 500M | 12-24 bulan | 12+ orang | 14 modules (full M00-M13) |
 
 ---
 
@@ -22,7 +22,7 @@
 - Budget <Rp 50M
 - Timeline: 1-3 bulan
 - No legal complexity (internal project, prototype)
-- Direct deployment (no UAT gates)
+- Lightweight acceptance testing (self-sign-off in M09)
 
 **Module Sequence**: **M02 → M03 → M04 → M05 → M06 → M09 → M10 → M11**
 
@@ -32,6 +32,8 @@
 - ❌ **M08** - Data Migration (skip: greenfield project)
 - ❌ **M12** - Warranty Period (skip: internal/self-maintained)
 - ❌ **M13** - Product Ops (skip: no analytics team)
+
+**Note**: 8 modules executed (M02, M03, M04, M05, M06, M09, M10, M11), 5 modules skipped.
 
 ---
 
@@ -92,8 +94,8 @@
 
 #### **Week 9: M09 Client UAT (Solo Bypass)**
 
-**M09 - UAT (3-5 hari)**:
-- Solo MVP: Self-testing (you ARE the client)
+**M09 - Lightweight Acceptance Testing (3-5 hari)**:
+- Solo MVP: Self-testing and self-sign-off
 - Manual testing: 10-15 test scenarios (critical paths only)
 - Bug fixes (S1/S2 only, defer S3 to post-launch)
 - Output: `docs/qa/UAT_REPORT.md` (self sign-off)
@@ -457,7 +459,9 @@
 
 **Module Sequence**: **FULL M00 → M01 → M02 → M03 → M04 → M04B → M05 → M05B → M06 → M06B → M07 → M08 → M09 → M10 → M11 → M12 → M13**
 
-**No Skipped Modules** - Full lifecycle required for regulatory compliance.
+**No Skipped Modules** - Full 14-module lifecycle required for regulatory compliance.
+
+**Module Count**: M00, M01, M02, M03, M04, M04B, M05, M05B, M06, M06B, M07, M08, M09, M10, M11, M12, M13 = 17 total steps (14 major modules + 3 sub-modules B)
 
 ---
 

@@ -232,13 +232,22 @@ DATABASE_URL="postgresql://user:pass@pooler.host:6543/db"
   - ❌ Drop column (breaks old app version)
   - ❌ Rename column (breaks old app version)
   - ⚠️ CREATE INDEX (without CONCURRENTLY) locks table for writes (avoid in production)
-- [ ] **Rollback script**: Every migration has DOWN migration
+- [ ] **Rollback strategy**: Consider if migration needs DOWN script
+  - Reversible changes (add nullable column, add index): DOWN script optional
+  - Irreversible changes (drop column, data migration): DOWN script may not be possible
+  - Forward-only migrations acceptable if rollback = redeploy old code
   ```sql
-  -- UP migration
+  -- UP migration (reversible)
   ALTER TABLE users ADD COLUMN phone VARCHAR(20);
   
-  -- DOWN migration (rollback)
+  -- DOWN migration (optional, nice to have)
   ALTER TABLE users DROP COLUMN phone;
+  
+  -- UP migration (irreversible - data transformation)
+  UPDATE users SET full_name = CONCAT(first_name, ' ', last_name);
+  ALTER TABLE users DROP COLUMN first_name, DROP COLUMN last_name;
+  -- DOWN migration: NOT POSSIBLE (data lost)
+  -- Rollback strategy: Redeploy old code + restore DB backup
   ```
 - [ ] **Production deployment**: Apply migrations BEFORE deploying new code
   - Order: Deploy DB migration → Deploy app code
