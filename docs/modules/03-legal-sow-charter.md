@@ -37,7 +37,7 @@ The purpose is to bind the `SCOPE_STATEMENT.md` document into a legally enforcea
   • Feature Modification Protocol (Formal Change Request / CR)
                          │
                          ▼
-[ OUTPUT: SOW_CONTRACT.md & PROJECT_CHARTER.md Documents ]
+[ OUTPUT: SOW_CONTRACT.md (includes charter in Part I) ]
                          │
           ┌──────────────┴──────────────┐
           ▼                             ▼
@@ -155,14 +155,14 @@ Corporate clients often have multiple heads with conflicting directions.
 - Straightforward project (no compliance requirements)
 
 > 💡 **ADAPTATION FOR SOLO DEV PRODUCT (SELF-INITIATED/INTERNAL)**:
-> If the project is a self-initiated product without an external client, commercial contracts and DP invoicing may be adapted for internal use, **HOWEVER `docs/pm/PROJECT_CHARTER.md` REMAINS MANDATORY** to lock timeline baselines, infrastructure budgets, and risk boundaries. Skipping Module 03 entirely is STRICTLY PROHIBITED!
+> If the project is a self-initiated product without an external client, commercial contracts and DP invoicing may be adapted for internal use, **HOWEVER `docs/pm/SOW_CONTRACT.md` with charter section (Part I) REMAINS MANDATORY** to lock timeline baselines, infrastructure budgets, and risk boundaries. Skipping Module 03 entirely is STRICTLY PROHIBITED!
 
 ---
 
 ## 5. Gate Exit Criteria
 
 This [GATE] is declared **PASSED** if and only if:
-- [x] The `docs/pm/PROJECT_CHARTER.md` document has been approved.
+- [x] The `docs/pm/SOW_CONTRACT.md` document (including Part I: Project Charter) has been approved.
 - [x] The SOW contract has been signed by both Client and Developer (or approved internally for solo products).
 - [x] The Client Single PIC has been officially designated.
 - [x] **Down Payment funds (Milestone 1) have been received and confirmed in Developer's bank account** (or self-budget has been allocated).
@@ -171,16 +171,13 @@ This [GATE] is declared **PASSED** if and only if:
 
 ## 🛑 [GATE] EXIT & MANDATORY STOP PROTOCOL
 
-After `docs/pm/PROJECT_CHARTER.md` (and `docs/pm/SOW_CONTRACT.md`) has been written:
+After `docs/pm/SOW_CONTRACT.md` (consolidated charter + contract) has been written:
 
 ### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
 
 **MANDATORY BEFORE CONTENT VALIDATION**:
 
 1. **Verify output file existence** using one of the following methods:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/PROJECT_CHARTER.md"` → must return `True`
-   - Bash/Zsh: `test -f "docs/pm/PROJECT_CHARTER.md" && echo "True" || echo "False"`
-   - Read tool: `read_file('docs/pm/PROJECT_CHARTER.md')` → must succeed without error
    - PowerShell: `Test-Path -LiteralPath "docs/pm/SOW_CONTRACT.md"` → must return `True`
    - Bash/Zsh: `test -f "docs/pm/SOW_CONTRACT.md" && echo "True" || echo "False"`
    - Read tool: `read_file('docs/pm/SOW_CONTRACT.md')` → must succeed without error
@@ -191,7 +188,7 @@ After `docs/pm/PROJECT_CHARTER.md` (and `docs/pm/SOW_CONTRACT.md`) has been writ
    - ❌ **DO NOT prompt for DP confirmation**
    - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: PROJECT_CHARTER.md or SOW_CONTRACT.md file was not created.
+     CRITICAL ERROR: SOW_CONTRACT.md file was not created.
      Module 03 FAILED - cannot proceed to Module 04 (UI/UX Design).
      
      Possible causes:
@@ -211,8 +208,8 @@ After `docs/pm/PROJECT_CHARTER.md` (and `docs/pm/SOW_CONTRACT.md`) has been writ
 
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 04 within the same turn!**
 2. **CONTENT VERIFICATION (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/PROJECT_CHARTER.md')` → Confirm baseline dates set
    - [ ] `read_file('docs/pm/SOW_CONTRACT.md')` → Confirm milestone structure documented (or BYPASS flag for internal)
+   - [ ] Confirm Part I (Project Charter) section exists with baseline dates
    - [ ] Single PIC identified with contact info
    - [ ] Liability cap clause present
 3. Present a commitment summary to the user:
@@ -238,7 +235,7 @@ After `docs/pm/PROJECT_CHARTER.md` (and `docs/pm/SOW_CONTRACT.md`) has been writ
 
 5. **Fuzzy Match Logic**: Accept variations (sudah/SUDAH/yes/YES/ya/ok as CONFIRMED; belum/no/not yet as WAITING; bypass/BYPASS/skip for internal projects). Indonesian keywords kept for local client convenience.
 6. **DO NOT proceed to Module 04** until user confirms DP received or bypass for internal
-7. After user confirms, log confirmation in `PROJECT_CHARTER.md` footer:
+7. After user confirms, log confirmation in `SOW_CONTRACT.md` footer:
    ```markdown
    ---
    ## Gate Confirmation Log

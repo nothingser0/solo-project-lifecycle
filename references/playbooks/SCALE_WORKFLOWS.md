@@ -8,7 +8,7 @@
 
 | Scale | Budget Range | Timeline | Team Size | Module Path |
 |:------|:-------------|:---------|:----------|:------------|
-| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 9 modules (M01 + skip M00/M07/M08/M12/M13) |
+| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 10 modules (M01 → M11 + M07-LITE, skip M00/M08/M12/M13) |
 | **Menengah (Agency)** | Rp 50-200M | 3-6 bulan | 3-6 orang | 10 modules (M01 + skip M00/M08/M12/M13) |
 | **Besar (Vendor)** | Rp 200-500M | 6-12 bulan | 6-12 orang | 12 modules (M01 + skip M00/M13) |
 | **Enterprise** | >Rp 500M | 12-24 bulan | 12+ orang | 14 modules (full M00-M13) |
@@ -32,15 +32,17 @@
 
 **Skipped Modules**:
 - ❌ **M00** - Product Discovery (skip: idea validated already)
-- ⚠️ **M07** - Full QA/Security Audit (skip: use M07-LITE baseline instead)
 - ⚠️ **M08** - Full Data Migration (skip if greenfield, use M08-LITE if data exists)
-- ❌ **M12** - Warranty Period (skip: internal/self-maintained)
+- ❌ **M12** - Warranty Period module (skip: 30-day warranty attached in M11 handover instead)
 - ❌ **M13** - Product Ops (skip: no analytics team)
+
+**Required Modules** (executed for Small Scale):
+- ✅ **M07-LITE** - Security Baseline Checklist (mandatory: SECURITY_CHECKLIST_SMALL.md)
 
 **Module Count**: 
 - Base: 10 modules (M01, M02, M03, M04, M05, M06, M07-LITE, M09, M10, M11)
 - +1 if data migration needed: M08-LITE (conditional)
-- Full modules skipped: M00, M12, M13
+- Full modules skipped: M00, M12 (warranty in M11), M13
 
 ---
 
@@ -198,7 +200,7 @@ M02 Discovery: "Does client have existing data?"
 
 **Payment Structure (if client work)**:
 - Milestone 1 (DP): 50% upfront (design + architecture done)
-- Milestone 2 (Final): 50% on production deploy (no warranty period)
+- Milestone 2 (Final): 50% on production deploy (includes 30-day warranty in M11 handover)
 
 **Deliverables**:
 - Source code (Git repo)
@@ -536,6 +538,8 @@ M02 Discovery: "Does client have existing data?"
 
 **Module Count**: M00, M01, M02, M03, M04, M04B, M05, M05B, M06, M06B, M07, M08, M09, M10, M11, M12, M13 = 17 total steps (14 major modules + 3 sub-modules B)
 
+> **Note**: M04B, M05B, M06B are **subsections within their parent module files** (`docs/modules/04-uiux-prototyping.md`, `05-architecture-specs.md`, `06-development-execution.md`), not separate module files. They represent Enterprise-specific extensions executed after the base module.
+
 ---
 
 ### 📋 Enterprise Governance & Compliance Templates
@@ -707,12 +711,12 @@ M02 Discovery: "Does client have existing data?"
 | **M05B** System Design | ❌ | ❌ | 🟡 | ✅ | Besar: Optional (10K+ users), Enterprise: Mandatory |
 | **M06** Development | ✅ | ✅ | ✅ | ✅ | Universal: Coding execution |
 | **M06B** Analytics | ❌ | ❌ | 🟡 | ✅ | Besar: Optional, Enterprise: Mandatory |
-| **M07** QA & Security | ❌ | ✅ | ✅ | ✅ | Menengah+: Mandatory (Kecil: Manual testing) |
+| **M07** QA & Security | ✅ | ✅ | ✅ | ✅ | Universal: Kecil uses M07-LITE, Menengah+ uses full M07 |
 | **M08** Data Migration | ❌ | 🟡 | ✅ | ✅ | Kecil: Skip (greenfield), Menengah: If legacy data |
 | **M09** Client UAT | ✅ | ✅ | ✅ | ✅ | Universal: User acceptance testing |
 | **M10** Deployment | ✅ | ✅ | ✅ | ✅ | Universal: Production go-live |
 | **M11** Handover | ✅ | ✅ | ✅ | ✅ | Universal: BAST + credentials transfer |
-| **M12** Warranty | ❌ | 🟡 | ✅ | ✅ | Kecil: Skip, Menengah: Optional, Besar+: Mandatory |
+| **M12** Warranty | ❌ | 🟡 | ✅ | ✅ | Kecil: 30-day in M11 (not separate module), Menengah: Optional, Besar+: Mandatory |
 | **M13** Product Ops | ❌ | ❌ | ❌ | ✅ | Enterprise only: Analytics, growth experiments |
 
 Legend:
@@ -848,8 +852,10 @@ Which do you prefer?"
 | **DATA_MIGRATION_PLAN.md** | ❌ | 🟡 | ✅ | ✅ |
 | **UAT_WORKBOOK.md** | 🟡 | ✅ | ✅ | ✅ |
 | **BAST.md** (signed PDF) | ❌ | ✅ | ✅ | ✅ |
-| **WARRANTY_POLICY.md** | ❌ | 🟡 | ✅ | ✅ |
+| **WARRANTY_POLICY.md** | ✅ | 🟡 | ✅ | ✅ |
 | **SLA_RETAINER_CONTRACT.md** | ❌ | 🟡 | ✅ | ✅ |
+
+> **Note**: Small scale uses `WARRANTY_POLICY_SMALL.md` (30-day warranty included in M11 handover).
 
 ---
 

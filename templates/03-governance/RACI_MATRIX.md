@@ -116,7 +116,7 @@
 | Frontend development | I | I | C | I | A | R | I | C |
 | Code review | I | I | A | R | R | C | C | I |
 | Unit testing | I | I | C | A | R | R | I | I |
-| Integration testing | I | I | C | R | R | A | R | C | I |
+| Integration testing | I | I | C | R | R | A | R | C |
 | Sprint demo | I | A | R | R | R | R | I | R |
 
 **Key**:
@@ -130,11 +130,11 @@
 
 | Task | Sponsor | PM | Tech Lead | Dev Team | QA | DevOps | Client | Security |
 |:-----|:--------|:---|:----------|:---------|:---|:-------|:-------|:---------|
-| Test plan creation | I | C | C | I | A | R | I | C | I |
+| Test plan creation | I | C | C | I | A | R | I | C |
 | Functional testing | I | I | C | C | A | R | I | I |
 | Performance testing | I | I | C | C | A | R | C | I |
-| Security testing | I | I | C | C | C | R | I | A | R |
-| UAT coordination | I | A | R | I | C | R | C | R | I |
+| Security testing | I | I | C | C | C | R | I | A |
+| UAT coordination | I | A | R | I | C | R | C | R |
 | Bug fixes | I | I | A | R | R | C | I | I |
 | UAT sign-off | C | R | I | I | I | C | A | I |
 

@@ -39,10 +39,10 @@ This module is the seventh phase in the software project lifecycle for solo deve
                                     ▼
 [ STEP 5: Deployment to Staging Environment & SIT Sign-Off ]
   • Deploy staging Branch to Client Staging Server (Vercel / VPS / Cloud Run)
-  • Prepare Test Results Report Document (SIT_REPORT.md)
+  • Prepare Test Results Report Document (SIT_WORKBOOK.md)
                                     │
                                     ▼
-[ OUTPUT: SIT_REPORT.md & Staging Server Ready for UAT ] ──► Ready to Proceed to Module 08: Data Migration
+[ OUTPUT: SIT_WORKBOOK.md & Staging Server Ready for UAT ] ──► Ready to Proceed to Module 08: Data Migration
 ```
 
 ---
@@ -100,6 +100,21 @@ Test all integration points to third-party services in sandbox environments:
      Content-Security-Policy: default-src 'self' ...
      ```
 
+**Bug Classification Template**:  
+Use **`templates/06-qa-uat/BUG_TRIAGE_MATRIX.md`** (7.97 KB) for standardized severity/priority classification during SIT defect tracking:
+- **P0/Critical**: Blocker bugs (data loss, security breach, system crash)
+- **P1/High**: Major functionality broken, no workaround
+- **P2/Medium**: Minor bugs with workarounds available
+- **P3/Low**: Cosmetic issues, nice-to-have fixes
+
+**Penetration Testing (Large/Enterprise Only)**:  
+For Large/Enterprise scales requiring third-party security assessment, use **`templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md`** (13.65 KB) to define:
+- Testing scope and in-scope systems/endpoints
+- Out-of-scope assets and boundaries
+- Rules of engagement and testing methodology
+- Reporting format and success criteria
+- Timeline and deliverables
+
 ### Step 4: Load & Concurrency Testing
 Use a simple load testing script (k6 or autocannon):
 ```bash
@@ -114,7 +129,7 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 1. Push branch `staging` to remote: `git push origin staging`.
 2. CI/CD automatically builds and deploys to the staging domain: `https://staging.clientdomain.com`.
 3. Run a quick smoke test directly on the staging domain.
-4. Compile all test evidence into the **`SIT_REPORT.md`** file.
+4. Compile all test evidence into the **`SIT_WORKBOOK.md`** file.
 
 ---
 
@@ -126,7 +141,7 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 | **Security Audit** | `pnpm audit` + basic OWASP checklist | SAST scan (Semgrep) + SSL Labs grade A | Certified third-party Penetration Test (Pentest) |
 | **Load Testing** | Verify 20 concurrent users is sufficient | 100 concurrent users load test via k6 | Stress test peak load 1,000+ users & DB failover |
 | **Staging Environment** | Automated preview URL (Vercel/Railway) | Isolated Staging server with dummy data | Mirror Production Staging with data sanitization |
-| **SIT Workbook** | Concise checklist in VERIFY.md | Formal `SIT_REPORT.md` document | Formal SIT Sign-off + Security Audit Attestation |
+| **SIT Workbook** | Concise checklist in VERIFY.md | Formal `SIT_WORKBOOK.md` document | Formal SIT Sign-off + Security Audit Attestation |
 
 ---
 
@@ -197,7 +212,7 @@ This module produces 2 primary artifacts:
 
 ## 🛑 EXIT [GATE] PROTOCOL & MANDATORY STOP
 
-After the Staging server is active and the `SIT_REPORT.md` document is published:
+After the Staging server is active and the `SIT_WORKBOOK.md` document is published:
 
 ### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
 

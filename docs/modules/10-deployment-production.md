@@ -41,7 +41,7 @@ This module is the tenth phase in the software project lifecycle for solo develo
                                     ▼
 [ STEP 6: Post-Deployment Verification Testing (Production Smoke Test) ]
   • Test Real Transactions on Public Domain (https://app.client.com)
-  • Prepare GO_LIVE_VERIFICATION_REPORT.md Document
+  • Prepare GO_LIVE_REPORT.md Document
                                     │
                                     ▼
 [ OUTPUT: System LIVE on Production & GO_LIVE_REPORT.md ] ──► Ready to Proceed to Module 11: Handover & BAST
@@ -149,6 +149,10 @@ This module is the tenth phase in the software project lifecycle for solo develo
 3. Verify DNS propagation using `dig` or `nslookup`.
 4. Ensure SSL certificate is issued and achieves at least a **Grade A** rating on SSL Labs (TLS 1.3 enabled).
 
+
+> **M08 CONDITIONAL BYPASS**: M08 Data Migration is skipped for greenfield projects (no legacy data to import).
+> - IF M08 executed: Follow data import and reconciliation steps below
+> - IF M08 skipped (greenfield): Skip to Step 5 (schema migration), verify seed data only
 ### Step 4: Import Verified Client Real Data (Result from Module 08)
 
 **IMPORTANT**: This data originates from Module 08 results that passed UAT. Choose one of the following 3 methods to migrate data to production:
@@ -222,7 +226,7 @@ psql postgresql://prod-db/legal_vault_prod -c "COPY documents FROM STDIN WITH CS
 **Post-Migration Verification (MANDATORY)**:
 
 ```bash
-# Check row count consistency with M08 reconciliation
+# Check row count consistency (IF M08 executed: match M08 reconciliation report)
 echo "Users: $(psql $PROD_DB_URL -tAc 'SELECT COUNT(*) FROM users')"
 echo "Documents: $(psql $PROD_DB_URL -tAc 'SELECT COUNT(*) FROM documents')"
 
@@ -244,7 +248,8 @@ curl https://app.client.com/api/documents?limit=5 \
   -H "Authorization: Bearer ***" # Should return real documents
 ```
 
-**MANDATORY: Match row count with UAT_SIGNOFF_REPORT.md Section "Data Migration Reconciliation"**.
+**IF M08 executed**: Match row count with UAT_SIGNOFF_REPORT.md Section "Data Migration Reconciliation".  
+**IF M08 skipped** (Small/Medium greenfield): Verify seed data exists (admin user, sample records).
 
 ---
 
@@ -268,7 +273,7 @@ Open a browser on the official public domain:
 1. Test authentication login flow with production accounts.
 2. Test creating 1 sample document and ensure the PDF generates and stores in the production storage bucket.
 3. Perform 1 real low-nominal payment transaction (e.g. Rp 10.000 via QRIS) to validate the production payment gateway webhook.
-4. Compile test evidence into the **`GO_LIVE_VERIFICATION_REPORT.md`** document.
+4. Compile test evidence into the **`GO_LIVE_REPORT.md`** document.
 
 ---
 
@@ -396,8 +401,8 @@ After the system is officially Live in Production and the PVT report is publishe
 **MANDATORY BEFORE CONTENT VALIDATION**:
 
 1. **Check output file existence** using one of the following methods:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/GO_LIVE_VERIFICATION_REPORT.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/GO_LIVE_VERIFICATION_REPORT.md')` → must succeed without error
+   - PowerShell: `Test-Path -LiteralPath "docs/pm/GO_LIVE_REPORT.md"` → must return `True`
+   - Read tool: `read_file('docs/pm/GO_LIVE_REPORT.md')` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -405,7 +410,7 @@ After the system is officially Live in Production and the PVT report is publishe
    - ❌ **DO NOT request confirmation** to proceed to Module 11
    - ✅ **REPORT ERROR** to user:
      ```
-     CRITICAL ERROR: File GO_LIVE_VERIFICATION_REPORT.md was not created.
+     CRITICAL ERROR: File GO_LIVE_REPORT.md was not created.
      Module 10 FAILED - cannot proceed to Module 11 (Handover & BAST).
      
      Possible causes:
@@ -425,7 +430,7 @@ After the system is officially Live in Production and the PVT report is publishe
 
 1. **STRICTLY PROHIBITED from directly handing over repositories, root passwords, or calling tools for Module 11 within the same turn!**
 2. **Verify production deployment**:
-   - [ ] `read_file('docs/pm/GO_LIVE_VERIFICATION_REPORT.md')` → Confirm PVT tests PASS
+   - [ ] `read_file('docs/pm/GO_LIVE_REPORT.md')` → Confirm PVT tests PASS
    - [ ] Confirm domain live with valid SSL (https://app.client.com accessible)
    - [ ] Confirm monitoring active (Sentry DSN, uptime checker)
    - [ ] Confirm production transaction tested successfully
@@ -434,5 +439,5 @@ After the system is officially Live in Production and the PVT report is publishe
    - Real transaction verification test (PVT) results
    - Uptime monitoring status & Sentry error tracker
 4. **END YOUR RESPONSE (END TURN)** and ask user for confirmation:
-   > *"The system is officially running on the Production server (Live). Verification evidence is documented in `docs/pm/GO_LIVE_VERIFICATION_REPORT.md`. Are you ready to issue the final invoice and initiate the handover process (Module 11: Handover & BAST)?"*
+   > *"The system is officially running on the Production server (Live). Verification evidence is documented in `docs/pm/GO_LIVE_REPORT.md`. Are you ready to issue the final invoice and initiate the handover process (Module 11: Handover & BAST)?"*
 5. Wait for explicit approval response from user before advancing to Module 11.
