@@ -26,7 +26,7 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
                                 │
                                 ▼
 [ STEP 0: Component Discovery & UI Pattern Analysis ]
-  • Read PRD.md → Extract features & acceptance criteria
+  • Read SCOPE_STATEMENT.md → Extract features & acceptance criteria
   • Map features → UI patterns (forms, tables, modals, etc.)
   • Identify component inventory (primitives, composite, layout)
   • Define interaction states (5-state matrix, form states)
@@ -74,9 +74,9 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
 
 ## 0. Component Discovery & UI Pattern Analysis (STEP 0)
 
-> **CRITICAL: This step prevents AI slop by mapping PRD features to concrete UI patterns BEFORE designing.**
+> **CRITICAL: This step prevents AI slop by mapping scope features to concrete UI patterns BEFORE designing.**
 > **Duration**: 1-2 hours
-> **Input**: `PRD.md` (features, user stories, acceptance criteria)
+> **Input**: `SCOPE_STATEMENT.md` (features, user stories, acceptance criteria)
 > **Output**: `COMPONENT_REQUIREMENTS.md` (justified component inventory)
 
 ### Why This Step Exists
@@ -91,8 +91,8 @@ AI generates generic design system:
 
 **Solution with Step 0:**
 ```
-Read PRD → Map features → Identify patterns → List components
-- Every component has a reason (traced to PRD feature)
+Read SCOPE_STATEMENT → Map features → Identify patterns → List components
+- Every component has a reason (traced to scope feature)
 - Right-sized inventory (20-30 components, not 50+)
 - Interaction states defined upfront (5-state matrix)
 - No generic additions without justification
@@ -102,7 +102,7 @@ Read PRD → Map features → Identify patterns → List components
 
 ### Step 0 Process
 
-#### 1. Read PRD.md (15 min)
+#### 1. Read SCOPE_STATEMENT.md (15 min)
 
 Extract:
 - **Features**: What the app does (authentication, dashboard, CRUD, etc.)
@@ -161,7 +161,7 @@ Components Required:
 - LoadingSpinner
 ```
 
-Repeat for ALL features in PRD.
+Repeat for ALL features in SCOPE_STATEMENT.
 
 ---
 
@@ -175,7 +175,7 @@ Group components into:
 **D. Patterns (Feature-specific)**: StatWidget, DescriptionList, etc.
 
 **Rules:**
-- ✅ Include ONLY if used by ≥1 PRD feature
+- ✅ Include ONLY if used by ≥1 scope feature
 - ❌ Exclude generic "might need later" components
 - ✅ Document which features use each component
 - ✅ Count variants (Button: primary/secondary/ghost)
@@ -264,7 +264,7 @@ Global:
 Use template: `templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md`
 
 **Sections:**
-1. Feature summary (from PRD)
+1. Feature summary (from SCOPE_STATEMENT)
 2. Feature → UI pattern mapping
 3. Component inventory (27 components with justification)
 4. Interaction states matrix
@@ -283,7 +283,7 @@ docs/specs/COMPONENT_REQUIREMENTS.md
 
 Before proceeding to Step 1 (DESIGN.md generation):
 
-- [ ] All PRD features extracted
+- [ ] All scope features extracted
 - [ ] Each feature mapped to UI patterns
 - [ ] Component inventory: 20-40 components (not 50+)
 - [ ] Every component has justification (which features use it)
