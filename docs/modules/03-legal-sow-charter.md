@@ -102,6 +102,41 @@ Corporate clients often have multiple heads with conflicting directions.
 
 ---
 
+### 🔴 Enterprise Scale: Governance & Compliance Templates
+
+**When**: Budget >Rp 500M, Banking/Healthcare/Government clients, mandatory SOC 2/ISO 27001
+
+**Additional M03 Requirements** (beyond SOW/Charter):
+
+**Compliance & Data Protection**:
+- `templates/03-governance/GDPR_COMPLIANCE_CHECKLIST.md` - Right to erasure, data portability, consent management (GDPR/PDP Law)
+- `templates/03-governance/DATA_CLASSIFICATION_POLICY.md` - Public/Internal/Confidential/Restricted data handling rules
+- `templates/08-maintenance-ops/SLA_SLO_DEFINITIONS.md` - Service levels (99.9% uptime, <200ms p95 latency, incident response SLA)
+
+**Risk & Stakeholder Management**:
+- `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` - Score risks (Probability × Impact), track mitigation progress
+- `templates/03-governance/STAKEHOLDER_REGISTER.md` - Power/Interest matrix, identify decision makers beyond Single PIC
+- `templates/03-governance/COMMUNICATION_PLAN.md` - Who gets what info, when, via which channel (executives, steering committee)
+- `templates/03-governance/ESCALATION_MATRIX.md` - P0-P4 severity levels, response times, escalation contacts
+
+**Financial & Decision Tracking**:
+- `templates/02-legal-commercial/FINANCIAL_TRACKING.md` - Budget tracking, burn rate monitoring, milestone forecasting
+- `templates/03-governance/RACI_MATRIX.md` - Responsible/Accountable/Consulted/Informed for major contract decisions
+
+**Pre-Sales (if RFP/Tender)**:
+- `templates/00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md` - Government/corporate tender response structure
+
+**Why These Matter**:
+- **GDPR/PDP Law**: Enterprise clients demand data protection compliance before contract signing
+- **SLA/SLO**: Banking/healthcare require contractual uptime guarantees (99.9%+)
+- **Risk Matrix**: Corporate governance requires risk register before project approval
+- **Stakeholder Register**: Enterprise projects have 10+ stakeholders beyond Single PIC (steering committee, legal, security, compliance)
+- **Escalation Matrix**: Clear escalation paths prevent project delays (know who to call for P0 incidents)
+
+**M03 Gate for Enterprise** = SOW signed + DP received + **Risk Register approved** + **RACI Matrix confirmed**
+
+---
+
 ## 4. Output Artifacts (Deliverables)
 
 > 📁 **ABSOLUTE FILE LOCATION RULE**:

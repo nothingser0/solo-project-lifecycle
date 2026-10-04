@@ -325,6 +325,45 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 
 ---
 
+### 🔴 Enterprise Scale: Release Management & Deployment Templates
+
+**When**: Budget >Rp 500M, Banking/Healthcare/Government, mission-critical production systems
+
+**Pre-Deployment Gate**:
+- `templates/07-release-handover/RELEASE_APPROVAL_CHECKLIST.md` - 10-section go/no-go decision checklist
+  - **Sections**: Code quality, testing, security, performance, infrastructure, docs, data migration, business readiness, communication, rollback plan
+  - **Decision makers**: Tech Lead, QA Lead, Security Lead, DevOps Lead, Product Manager (all must sign off)
+  - **Why**: Enterprise deployments cannot fail (financial penalties, regulatory risks, brand damage)
+
+**Change Control**:
+- `templates/03-governance/CAB_PROCESS.md` - Change Advisory Board approval workflow
+  - **RFC (Request for Change)**: Submit 48 hours before deployment
+  - **CAB review**: Risk assessment, blast radius, rollback plan, maintenance window approval
+  - **Why**: Banking/government require formal change control (audit trail, stakeholder approval)
+
+**Deployment Procedures**:
+- Blue-green deployment (zero-downtime cutover)
+- Canary deployment (10% → 50% → 100% traffic shift)
+- Database migrations tested 3x on staging
+- War room staffed (Tech Lead, DevOps, Client PIC, Support)
+- Rollback decision criteria defined (error rate >5%, latency >500ms p95)
+
+**Post-Deployment Monitoring**:
+- `templates/03-governance/ESCALATION_MATRIX.md` - P0-P4 incident escalation paths
+  - **P0 (Critical)**: System down, data loss → 15min response, Tech Lead + CTO notified
+  - **P1 (High)**: Major feature broken → 1hr response
+  - **Why**: Clear escalation prevents "who do I call?" delays during incidents
+
+**M10 Gate for Enterprise**:
+- ✅ Release approval checklist signed by all 5 decision makers
+- ✅ CAB RFC approved (if change control required)
+- ✅ War room staffed and ready
+- ✅ Rollback plan tested on staging
+- ✅ Monitoring dashboards configured (APM, error tracking, uptime)
+- ✅ Escalation contacts confirmed (PagerDuty rotations set)
+
+---
+
 ## 6. Deliverables
 
 > 📁 **MANDATORY FILE LOCATION RULE**:

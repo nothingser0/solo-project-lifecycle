@@ -1672,6 +1672,50 @@ The agent must:
 > - Prototyping/POC without production load
 > - PaaS handles scaling (Vercel/Railway auto-scale)
 
+---
+
+### 🔴 Enterprise Scale: Architecture & Infrastructure Templates
+
+**When**: Budget >Rp 500M, 100K+ MAU, multi-region, SOC 2/ISO 27001 compliance
+
+**Architecture Decision Records**:
+- `templates/03-governance/ADR_TEMPLATE.md` - Document context, decision, consequences, alternatives
+  - **Use for**: Database choice (PostgreSQL vs MongoDB), cloud provider (AWS vs GCP), microservices vs monolith
+  - **Why**: Enterprise audits require architecture decision audit trail
+
+**Infrastructure as Code**:
+- `templates/04-dev-execution/IAC_GUIDE.md` - Terraform/Pulumi/CloudFormation for AWS/GCP/Azure
+  - **Use for**: Reproducible infrastructure provisioning (VPC, RDS, S3, IAM roles)
+  - **Why**: SOC 2 requires version-controlled, auditable infrastructure changes
+
+**Capacity Planning**:
+- `templates/08-maintenance-ops/CAPACITY_PLANNING_GUIDE.md` - Scale projections (1K → 10K → 100K users)
+  - **Use for**: Infrastructure cost estimates, auto-scaling triggers, database sharding thresholds
+  - **Why**: Enterprise contracts demand capacity planning before signing
+
+**Disaster Recovery**:
+- `templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md` - RTO/RPO targets, failover procedures
+  - **Use for**: Multi-region failover, database replication, backup/restore testing
+  - **Why**: Banking/healthcare require <4hr RTO, <1hr RPO (regulatory compliance)
+
+**Service Levels**:
+- `templates/08-maintenance-ops/SLA_SLO_DEFINITIONS.md` - 99.9% uptime, <200ms p95 latency, incident SLA
+  - **Use for**: Contractual uptime guarantees, API latency targets, support response times
+  - **Why**: Enterprise SLA penalties (downtime = refunds)
+
+**Audit Logging**:
+- `templates/03-governance/AUDIT_TRAIL_REQUIREMENTS.md` - Log auth, data access, config changes
+  - **Use for**: CloudWatch/Splunk immutable audit logs, retention policies
+  - **Why**: SOC 2/ISO 27001 require complete audit trail
+
+**M05B Outputs** (Enterprise):
+- `docs/specs/SYSTEM_DESIGN.md` (load balancing, caching, async workers, sharding)
+- `docs/specs/CAPACITY_PLANNING.md` (cost projections, scaling thresholds)
+- `docs/ops/DISASTER_RECOVERY.md` (RTO/RPO, backup procedures, failover runbook)
+- `docs/architecture/decisions/*.md` (ADR files for major decisions)
+
+---
+
 **Objective**: Design scalable, reliable, performant infrastructure — boring tech, decision trees, explicit trade-offs.
 
 ---
