@@ -746,7 +746,7 @@ ELSE IF scale == "Besar":
   → Gates: M03 DP gate, M07 pentest gate, M09 UAT gate, M11 final payment gate
 
 ELSE IF scale == "Enterprise":
-  → Path: FULL M00 → M13 (all 13 modules)
+  → Path: FULL M00 → M13 (all 14 modules)
   → Timeline: 40-44 minggu + 3 bulan warranty + ongoing M13
   → Payment: 20-30-30-20% (4 milestones)
   → Gates: M00 feasibility gate, M03 DP gate, M04B design system gate, M05B capacity planning gate, M07 pentest gate, M09 UAT gate, M11 BAST gate

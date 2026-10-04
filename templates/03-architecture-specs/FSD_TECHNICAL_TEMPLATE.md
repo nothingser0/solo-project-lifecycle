@@ -123,7 +123,8 @@ CREATE INDEX idx_signatures_document ON document_signatures(document_id);
   - Example: `CREATE INDEX idx_documents_form_data ON documents USING GIN (form_data);`
 - [ ] **Index cost-benefit**: Each index costs write performance; justify via query patterns
   - Measure: EXPLAIN ANALYZE actual queries, not guesses
-  - Add indexes when: Query scans >10K rows or takes >100ms
+  - Add indexes when: Query performance degrades below acceptable SLO
+  - SLO examples: API p95 <200ms, dashboard query <1s, report <5s (project-specific)
 
 **Index Selection Rules**:
 - Query pattern: `WHERE a = ? AND b = ?` → Composite index `(a, b)` (order matters: most selective first)
@@ -191,8 +192,8 @@ CREATE TABLE audit_logs (
 #### **4. Scalability (Conditional - Load-Dependent)**
 
 **Read Replicas** - *Required ONLY if:*
-- Read:Write ratio > 10:1 (analytics dashboards, reports)
-- Measured database CPU >70% on read queries
+- Primary database CPU saturated by read queries (measure via monitoring)
+- Read-heavy workload (analytics dashboards, reports) causing performance degradation
 - Not needed for: Until actual bottleneck measured
 
 **Sharding/Partitioning** - *Required ONLY if:*
@@ -203,7 +204,7 @@ CREATE TABLE audit_logs (
 
 **Connection Pooling** - *ALWAYS required for:*
 - Serverless functions (Lambda, Vercel Functions)
-- High concurrency (>50 concurrent requests)
+- High concurrency workloads (measure connection exhaustion)
 
 ```bash
 # External connection pooler (PgBouncer, Supabase Pooler)
