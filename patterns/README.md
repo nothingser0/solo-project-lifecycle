@@ -16,8 +16,19 @@ patterns/
 │   └── authentication.md (15.6KB) - JWT, password hashing, rate limiting
 ├── git-workflow/
 │   └── branching-strategy.md (10.4KB) - Conventional commits, releases
-└── performance/
-    └── (planned for v1.2)
+├── performance/
+│   ├── caching-strategies.md - Redis, CDN, cache invalidation
+│   └── n-plus-one-prevention.md - DataLoader, eager loading, batch queries
+├── database/
+│   └── supabase-migrations.md - Migration patterns, RLS policies
+├── api/
+│   └── rest-conventions.md - HTTP methods, status codes, API design
+├── error-handling/
+│   └── error-boundaries.md - Custom error classes, logging, recovery
+├── testing/
+│   └── test-pyramid.md - Unit/integration/E2E strategy
+└── deployment/
+    └── ci-cd-pipeline.md - GitHub Actions, blue-green, canary
 ```
 
 ---
@@ -25,94 +36,69 @@ patterns/
 ## Quick Reference
 
 ### Validation Patterns
-**File**: `patterns/validation/zod-patterns.md`
-
-**Covers**:
-- Basic schemas (auth, CRUD, file upload)
-- Backend validation (Next.js API routes, middleware)
-- Frontend validation (React Hook Form integration)
-- Advanced patterns (dependent fields, transforms, refinements)
-- Error handling best practices
-
+**File**: `patterns/validation/zod-patterns.md`  
+**Covers**: Basic schemas, backend/frontend validation, transforms, refinements  
 **Referenced in**: M06 (9 locations), M07, M08
-
-**Usage**:
-```typescript
-import { RegisterSchema } from '@/lib/schemas/auth';
-const validatedData = RegisterSchema.parse(body);
-```
 
 ---
 
 ### Security Patterns
-**File**: `patterns/security/authentication.md`
-
-**Covers**:
-- Password hashing (Argon2id, bcrypt)
-- JWT authentication (access + refresh tokens)
-- HttpOnly cookies configuration
-- Rate limiting (memory + Redis)
-- Password reset flow
-- UU PDP No. 27/2022 compliance
-
+**File**: `patterns/security/authentication.md`  
+**Covers**: Password hashing, JWT, rate limiting, UU PDP No. 27/2022 compliance  
 **Referenced in**: M05 (4 locations), M05B (3 locations), M06 (8 locations), M10 (2 locations)
-
-**Usage**:
-```typescript
-import { hashPassword, verifyPassword } from '@/lib/auth/password';
-import { generateAccessToken } from '@/lib/auth/jwt';
-```
 
 ---
 
 ### Git Workflow Patterns
-**File**: `patterns/git-workflow/branching-strategy.md`
-
-**Covers**:
-- Branch strategies (solo vs team)
-- Conventional commits format
-- Atomic commits best practices
-- Release tagging (SemVer)
-- Merge strategies (fast-forward, squash, merge commit)
-- Conflict resolution
-- Git hooks (Husky setup)
-
+**File**: `patterns/git-workflow/branching-strategy.md`  
+**Covers**: Branch strategies, conventional commits, SemVer, merge strategies  
 **Referenced in**: M03 (git branching), M06 (git workflow), M10 (git tagging)
 
-**Usage**:
-```bash
-git checkout -b feature/auth-login
-git commit -m "feat(auth): add JWT refresh token rotation"
-git tag -a v1.0.0 -m "Release v1.0.0"
-```
+---
+
+### API Design Patterns
+**File**: `patterns/api/rest-conventions.md`  
+**Covers**: HTTP methods, status codes, pagination, filtering, error responses, versioning  
+**Referenced in**: M05 (API design), M06 (API development), M07 (API testing)
 
 ---
 
-## Performance Patterns (Planned v1.2)
-
-### N+1 Query Prevention
-**Planned**: `patterns/performance/n-plus-one-prevention.md`
-
-**Will cover**:
-- Eager loading vs lazy loading
-- DataLoader pattern
-- Batch SQL queries
-- ORM optimization (Prisma `include`, Laravel `with()`)
-
-**Currently in**: M06 line 65, M05B (multiple references)
+### Error Handling Patterns
+**File**: `patterns/error-handling/error-boundaries.md`  
+**Covers**: Custom error classes, global handlers, React error boundaries, graceful shutdown  
+**Referenced in**: M06 (error handling), M07 (QA), M10 (production errors)
 
 ---
 
-### Caching Strategies
-**Planned**: `patterns/performance/caching-strategies.md`
+### Testing Patterns
+**File**: `patterns/testing/test-pyramid.md`  
+**Covers**: Unit/integration/E2E balance, mocking strategies, frameworks (Vitest, Playwright)  
+**Referenced in**: M06 (TDD), M07 (SIT), M09 (UAT)
 
-**Will cover**:
-- Redis caching layers
-- CDN configuration
-- Stale-while-revalidate
-- Cache invalidation patterns
+---
 
-**Currently in**: M05B System Design, M06 Performance Pillar
+### Deployment Patterns
+**File**: `patterns/deployment/ci-cd-pipeline.md`  
+**Covers**: GitHub Actions, blue-green deployment, canary releases, health checks  
+**Referenced in**: M10 (deployment), M11 (handover)
+
+---
+
+### Performance Patterns
+**File**: `patterns/performance/caching-strategies.md`  
+**Covers**: Redis caching, CDN, stale-while-revalidate, cache invalidation  
+**Referenced in**: M05B (system design), M06 (performance pillar)
+
+**File**: `patterns/performance/n-plus-one-prevention.md`  
+**Covers**: Eager loading, DataLoader pattern, Prisma optimization  
+**Referenced in**: M06 (backend development), M05B (database design)
+
+---
+
+### Database Patterns
+**File**: `patterns/database/supabase-migrations.md`  
+**Covers**: Migration strategies, RLS policies, type safety  
+**Referenced in**: M05 (database design), M06 (migrations)
 
 ---
 
