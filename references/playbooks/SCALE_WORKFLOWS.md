@@ -8,10 +8,12 @@
 
 | Scale | Budget Range | Timeline | Team Size | Module Path |
 |:------|:-------------|:---------|:----------|:------------|
-| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 8 modules (skip M00/M07/M08/M12/M13) |
-| **Menengah (Agency)** | Rp 50-200M | 3-6 bulan | 3-6 orang | 9 modules (skip M00/M12/M13) |
-| **Besar (Vendor)** | Rp 200-500M | 6-12 bulan | 6-12 orang | 11 modules (skip M00/M13) |
+| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 9 modules (M01 + skip M00/M07/M08/M12/M13) |
+| **Menengah (Agency)** | Rp 50-200M | 3-6 bulan | 3-6 orang | 10 modules (M01 + skip M00/M08/M12/M13) |
+| **Besar (Vendor)** | Rp 200-500M | 6-12 bulan | 6-12 orang | 12 modules (M01 + skip M00/M13) |
 | **Enterprise** | >Rp 500M | 12-24 bulan | 12+ orang | 14 modules (full M00-M13) |
+
+**Note**: M01 (Idea & Feasibility) always executes first to determine scale classification, then routes to scale-specific modules starting from M02.
 
 ---
 
@@ -24,7 +26,7 @@
 - No legal complexity (internal project, prototype)
 - Lightweight acceptance testing (self-sign-off in M09)
 
-**Module Sequence**: **M02 → M03 → M04 → M05 → M06 → M09 → M10 → M11**
+**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M09 → M10 → M11**
 
 **Skipped Modules**:
 - ❌ **M00** - Product Discovery (skip: idea validated already)
@@ -33,7 +35,7 @@
 - ❌ **M12** - Warranty Period (skip: internal/self-maintained)
 - ❌ **M13** - Product Ops (skip: no analytics team)
 
-**Note**: 8 modules executed (M02, M03, M04, M05, M06, M09, M10, M11), 5 modules skipped.
+**Note**: 9 modules executed (M01, M02, M03, M04, M05, M06, M09, M10, M11), 5 modules skipped.
 
 ---
 
@@ -147,13 +149,15 @@
 - Client: SME, startup Series A/B
 - Payment: 3 milestones (30-30-40%)
 
-**Module Sequence**: **M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11**
+**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11**
 
 **Skipped Modules**:
 - ❌ **M00** - Product Discovery (client has validated idea)
 - ❌ **M08** - Data Migration (greenfield project OR client data clean)
 - ❌ **M12** - Warranty (included in retainer contract)
 - ❌ **M13** - Product Ops (client handles post-launch)
+
+**Note**: 10 modules executed (M01 + 9 scale-specific), 4 modules skipped.
 
 ---
 
@@ -411,11 +415,13 @@
 - Compliance: PDP Law, ISO 27001 (optional)
 - Payment: 4 milestones (20-30-30-20%)
 
-**Module Sequence**: **M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12**
+**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12**
 
 **Skipped Modules**:
 - ❌ **M00** - Product Discovery (RFP already defines product)
 - ❌ **M13** - Product Ops (client internal analytics team)
+
+**Note**: 12 modules executed (M01 + 11 scale-specific), 2 modules skipped.
 
 ---
 
@@ -729,18 +735,18 @@ Which do you prefer?"
 START: User identifies project scale in M01
 
 IF scale == "Kecil":
-  → Path: M02 → M03(bypass) → M04 → M05 → M06 → M09(self-test) → M10 → M11(bypass)
+  → Path: M01 → M02 → M03(bypass) → M04 → M05 → M06 → M09(self-test) → M10 → M11(bypass)
   → Timeline: 10-12 minggu
   → Payment: 50-50% (if external) or no payment (if internal)
 
 ELSE IF scale == "Menengah":
-  → Path: M02 → M03(SOW) → M04 → M05 → M06 → M07 → M09(formal UAT) → M10 → M11(BAST)
+  → Path: M01 → M02 → M03(SOW) → M04 → M05 → M06 → M07 → M09(formal UAT) → M10 → M11(BAST)
   → Timeline: 18-20 minggu
   → Payment: 30-30-40% (3 milestones)
   → Gates: M03 DP gate, M09 UAT gate, M11 final payment gate
 
 ELSE IF scale == "Besar":
-  → Path: M02 → M03(SOW+MSA) → M04 → M05 → M06 → M07(pentest) → M08(migration) → M09(UAT) → M10(CAB) → M11(training+BAST) → M12(warranty)
+  → Path: M01 → M02 → M03(SOW+MSA) → M04 → M05 → M06 → M07(pentest) → M08(migration) → M09(UAT) → M10(CAB) → M11(training+BAST) → M12(warranty)
   → Timeline: 32-36 minggu
   → Payment: 20-30-30-20% (4 milestones)
   → Gates: M03 DP gate, M07 pentest gate, M09 UAT gate, M11 final payment gate

@@ -105,10 +105,12 @@ Determine project category upfront to establish the required weight of subsequen
 - Real-world workflow examples (Solo MVP, Agency, Vendor, Enterprise)
 
 **Quick Reference**:
-- **Small Scale**: M02 → M03(bypass) → M04 → M05 → M06 → M09 → M10 → M11 (8 modules, skip M00/M07/M08/M12/M13)
-- **Medium Scale**: M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 (9 modules, skip M00/M08/M12/M13)
-- **Large Scale**: M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 (11 modules, skip M00/M13)
+- **Small Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M09 → M10 → M11 (9 modules, skip M00/M07/M08/M12/M13)
+- **Medium Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 (10 modules, skip M00/M08/M12/M13)
+- **Large Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 (12 modules, skip M00/M13)
 - **Enterprise**: Full M00 → M13 (14 modules, no skips)
+
+**Note**: M01 always executes first to determine scale, then routes to scale-specific modules starting from M02.
 
 *See `references/playbooks/SCALE_WORKFLOWS.md` for complete timelines, payment structures, and gate enforcement.*
 
