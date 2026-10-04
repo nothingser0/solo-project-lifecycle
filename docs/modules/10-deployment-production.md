@@ -65,6 +65,13 @@ This module is the tenth phase in the software project lifecycle for solo develo
 
 ## 3. Step-by-Step Execution
 
+**Deployment Patterns**: See `../../patterns/deployment/ci-cd-pipeline.md` for:
+- GitHub Actions CI/CD setup (lint, test, build, deploy)
+- Deployment strategies (blue-green, rolling, canary)
+- Health checks and monitoring
+- Automated rollback mechanisms
+- Secrets management (GitHub Secrets, Vault)
+
 ### Step 1: Pre-Release Verification (Pre-Flight Checklist)
 
 1. Verify `UAT_SIGNOFF_REPORT.md` file: Ensure the Client Single PIC signature is valid.

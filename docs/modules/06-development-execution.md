@@ -1146,6 +1146,18 @@ OUTPUT FORMAT (TODO.md):
 - [ ] scripts/smoke-test.ts: Write end-to-end flow per PRD user journeys
 - [ ] VERIFY_LOCAL.md: Complete self-verification checklist
 
+**Testing Strategy**: See `../../patterns/testing/test-pyramid.md` for:
+- Unit/integration/E2E balance (60%/30%/10%)
+- Mocking strategies (database, external APIs, time)
+- Framework recommendations (Vitest, Playwright, React Testing Library)
+- Test coverage guidelines (what to test, what to skip)
+
+**Error Handling**: See `../../patterns/error-handling/error-boundaries.md` for:
+- Custom error classes (ValidationError, NotFoundError, UnauthorizedError)
+- Global error handlers (Express middleware, Next.js error boundaries)
+- Logging strategies (structured logging, error monitoring)
+- Graceful shutdown and recovery patterns
+
 REQUIREMENTS:
 1. Every FSD table → 1 schema task
 2. Every SITEMAP screen → 1 UI task with Screen ID reference
@@ -1186,6 +1198,13 @@ REQUIREMENTS:
 | POST | /api/v1/auth/login | 5.1 | Phase 4, line 45 | ✅ |
 | GET | /api/v1/transactions | 5.8 | Phase 4, line 52 | ✅ |
 ... (all K endpoints)
+
+**API Design Patterns**: See `../../patterns/api/rest-conventions.md` for:
+- HTTP method semantics (GET/POST/PUT/PATCH/DELETE)
+- Status code conventions (200/201/400/401/404/422/500)
+- Pagination strategies (offset, cursor, page-based)
+- Error response format (machine-readable codes)
+- Authentication patterns (Bearer token, API key)
 
 ### Features (from PRD Must-Have)
 | Feature | PRD Section | Acceptance Criteria | TODO Task | Status |
