@@ -13,7 +13,7 @@
 | **Besar (Vendor)** | Rp 200-500M | 6-12 bulan | 6-12 orang | 12 modules (M01 + skip M00/M13) |
 | **Enterprise** | >Rp 500M | 12-24 bulan | 12+ orang | 14 modules (full M00-M13) |
 
-**Note**: M01 (Idea & Feasibility) always executes first to determine scale classification, then routes to scale-specific modules starting from M02.
+**Note**: For Small/Medium/Large scales, M01 executes first to determine scale classification. For Enterprise scale, M00 (Product Discovery) executes before M01.
 
 ---
 
@@ -731,33 +731,43 @@ Which do you prefer?"
 
 ## 🎯 Quick Decision Tree
 
+**Pre-Routing Note**: Enterprise projects (>Rp 500M, RFP/tender context) start at M00 (Product Discovery) and skip M01 scale classification. For all other projects, complete M01 first, then route by scale:
+
 ```
-START: User identifies project scale in M01
+START: After completing M01 (Idea & Feasibility), route by scale:
 
 IF scale == "Kecil":
-  → Path: M01 → M02 → M03(bypass) → M04 → M05 → M06 → M09(self-test) → M10 → M11(bypass)
+  → Path: M02 → M03(bypass) → M04 → M05 → M06 → M09(self-test) → M10 → M11(bypass)
+  → Total lifecycle: M01 + 8 scale-specific = 9 modules
   → Timeline: 10-12 minggu
   → Payment: 50-50% (if external) or no payment (if internal)
 
 ELSE IF scale == "Menengah":
-  → Path: M01 → M02 → M03(SOW) → M04 → M05 → M06 → M07 → M09(formal UAT) → M10 → M11(BAST)
+  → Path: M02 → M03(SOW) → M04 → M05 → M06 → M07 → M09(formal UAT) → M10 → M11(BAST)
+  → Total lifecycle: M01 + 9 scale-specific = 10 modules
   → Timeline: 18-20 minggu
   → Payment: 30-30-40% (3 milestones)
   → Gates: M03 DP gate, M09 UAT gate, M11 final payment gate
 
 ELSE IF scale == "Besar":
-  → Path: M01 → M02 → M03(SOW+MSA) → M04 → M05 → M06 → M07(pentest) → M08(migration) → M09(UAT) → M10(CAB) → M11(training+BAST) → M12(warranty)
+  → Path: M02 → M03(SOW+MSA) → M04 → M05 → M06 → M07(pentest) → M08(migration) → M09(UAT) → M10(CAB) → M11(training+BAST) → M12(warranty)
+  → Total lifecycle: M01 + 11 scale-specific = 12 modules
   → Timeline: 32-36 minggu
   → Payment: 20-30-30-20% (4 milestones)
   → Gates: M03 DP gate, M07 pentest gate, M09 UAT gate, M11 final payment gate
 
-ELSE IF scale == "Enterprise":
-  → Path: FULL M00 → M13 (all 14 modules)
+END
+```
+
+**Enterprise Path (Separate - Pre-M01)**:
+```
+IF project context == RFP/tender/corporate (budget >Rp 500M):
+  → Start: M00 (Product Discovery) - skip M01 scale classification
+  → Path: M00 → M01 → M02 → ... → M13 (all 14 modules)
+  → Total lifecycle: 14 modules (M00 through M13)
   → Timeline: 40-44 minggu + 3 bulan warranty + ongoing M13
   → Payment: 20-30-30-20% (4 milestones)
   → Gates: M00 feasibility gate, M03 DP gate, M04B design system gate, M05B capacity planning gate, M07 pentest gate, M09 UAT gate, M11 BAST gate
-
-END
 ```
 
 ---
