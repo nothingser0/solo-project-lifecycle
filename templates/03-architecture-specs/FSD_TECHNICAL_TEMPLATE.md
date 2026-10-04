@@ -191,20 +191,21 @@ CREATE TABLE audit_logs (
 
 #### **4. Scalability (Conditional - Load-Dependent)**
 
-**Read Replicas** - *Required ONLY if:*
+**Read Replicas** - *Consider when:*
 - Primary database CPU saturated by read queries (measure via monitoring)
 - Read-heavy workload (analytics dashboards, reports) causing performance degradation
-- Not needed for: Until actual bottleneck measured
+- Decision: Add when measured performance degrades, not preemptively
 
-**Sharding/Partitioning** - *Required ONLY if:*
+**Sharding/Partitioning** - *Consider when:*
 - Queries slow despite proper indexes (measure first)
 - Time-series data (partition by month/year)
 - Multi-tenant isolation (partition by tenant_id)
-- Not needed for: Until query performance degrades
+- Decision: Add when query performance violates SLO, not by row count
 
-**Connection Pooling** - *ALWAYS required for:*
+**Connection Pooling** - *Strongly recommended for:*
 - Serverless functions (Lambda, Vercel Functions)
 - High concurrency workloads (measure connection exhaustion)
+- Decision: Essential for serverless, beneficial for high concurrency (measure pool saturation)
 
 ```bash
 # External connection pooler (PgBouncer, Supabase Pooler)
