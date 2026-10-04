@@ -27,11 +27,12 @@ This is a **skill framework/toolkit**, not a minimal starter template:
 
 | Component | Size | Purpose |
 |-----------|------|---------|
-| Module library | 440KB | 14 lifecycle phases with detailed workflows |
-| Template library | 869KB | 80+ production-ready templates |
-| Reference guides | 604KB | Playbooks, patterns, deep-dive materials |
+| Module library | 460KB | 14 lifecycle phases with detailed workflows |
+| Template library | 1.8MB | 80+ production-ready templates |
+| Reference guides | 756KB | Playbooks, patterns, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
 | Code patterns | 144KB | 11 reusable patterns (API, testing, deployment, etc.) |
+| Scripts | 96KB | Validation and automation tools |
 
 **Why this size?**  
 Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.
