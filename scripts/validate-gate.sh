@@ -5,6 +5,7 @@
 set -e
 
 GATE_MODULE="${1:-}"
+GATE_FAILED=0
 
 if [ -z "$GATE_MODULE" ]; then
     echo "Usage: $0 <MODULE_ID>"
@@ -31,6 +32,7 @@ case "$GATE_MODULE" in
         else
             echo "❌ SCOPE_STATEMENT.md NOT FOUND"
             echo "   Expected: docs/pm/SCOPE_STATEMENT.md"
+            GATE_FAILED=1
         fi
         
         # Check SOW_CONTRACT exists
@@ -52,6 +54,7 @@ case "$GATE_MODULE" in
         else
             echo "❌ SOW_CONTRACT.md NOT FOUND"
             echo "   Expected: docs/pm/SOW_CONTRACT.md"
+            GATE_FAILED=1
         fi
         
         echo ""
@@ -68,22 +71,23 @@ case "$GATE_MODULE" in
         echo "=== M09: Validation Gate Checklist ==="
         echo ""
         
-        # Check UAT_SIGNOFF exists
-        if [ -f "docs/qa/UAT_SIGNOFF.md" ]; then
-            echo "✅ UAT_SIGNOFF.md exists"
+        # Check UAT_SIGNOFF_REPORT exists
+        if [ -f "docs/pm/UAT_SIGNOFF_REPORT.md" ]; then
+            echo "✅ UAT_SIGNOFF_REPORT.md exists"
             
             # Check for sign-off
-            if grep -q "Single PIC.*Signature" "docs/qa/UAT_SIGNOFF.md"; then
+            if grep -q "Single PIC.*Signature" "docs/pm/UAT_SIGNOFF_REPORT.md"; then
                 echo "✅ Sign-off section present"
             else
                 echo "⚠️  Sign-off section incomplete"
             fi
         else
-            echo "❌ UAT_SIGNOFF.md NOT FOUND"
-            echo "   Expected: docs/qa/UAT_SIGNOFF.md"
+            echo "❌ UAT_SIGNOFF_REPORT.md NOT FOUND"
+            echo "   Expected: docs/pm/UAT_SIGNOFF_REPORT.md"
+            GATE_FAILED=1
         fi
         
-        # Check SIT passed
+        # Check SIT passed (M07 output)
         if [ -f "docs/qa/SIT_WORKBOOK.md" ]; then
             echo "✅ SIT_WORKBOOK.md exists"
         else
@@ -93,7 +97,7 @@ case "$GATE_MODULE" in
         echo ""
         echo "📋 Manual verification required:"
         echo "   [ ] All Severity 1 & 2 defects resolved"
-        echo "   [ ] Client signed UAT_SIGNOFF.md"
+        echo "   [ ] Client signed UAT_SIGNOFF_REPORT.md"
         echo "   [ ] Staging environment stable (no critical bugs)"
         echo "   [ ] Deemed acceptance deadline documented (if applicable)"
         echo ""
@@ -110,15 +114,16 @@ case "$GATE_MODULE" in
         else
             echo "❌ BAST.md NOT FOUND"
             echo "   Expected: contracts/BAST.md or docs/pm/BAST.md"
+            GATE_FAILED=1
         fi
         
         # Check production deployment
-        if [ -f "docs/GO_LIVE_REPORT.md" ]; then
-            echo "✅ GO_LIVE_REPORT.md exists"
+        if [ -f "docs/pm/GO_LIVE_REPORT.md" ]; then
+            echo "✅ docs/pm/GO_LIVE_REPORT.md exists"
         else
-            echo "⚠️  GO_LIVE_REPORT.md not found"
+            echo "⚠️  docs/pm/GO_LIVE_REPORT.md not found"
         fi
-        
+
         echo ""
         echo "📋 Manual verification required:"
         echo "   [ ] 100% payment received (all termin paid)"
@@ -140,4 +145,11 @@ case "$GATE_MODULE" in
 esac
 
 echo ""
-echo "✨ Gate validation complete"
+
+if [ $GATE_FAILED -eq 1 ]; then
+    echo "❌ Gate validation FAILED - missing mandatory artifacts"
+    exit 1
+else
+    echo "✅ Gate validation PASSED"
+    exit 0
+fi

@@ -9,7 +9,10 @@ Its purpose is to facilitate direct testing by the **Client Single PIC** and end
 ## 1. Execution Cycle of Module 09
 
 ```text
-[ INPUT: Staging Server Passed SIT (Module 07) & Real Data Imported (Module 08) ]
+[ INPUT: Staging Server Ready & Data Populated ]
+  • M07 REQUIRED: Staging must pass SIT (docs/qa/SIT_WORKBOOK.md or SECURITY_CHECKLIST_SMALL.md)
+  • M08 CONDITIONAL: If legacy data exists, must be imported and reconciled
+  • M08 BYPASS: Greenfield projects (no legacy data) use seed data only
                                     │
                                     ▼
 [ STEP 1: UAT Scenario Preparation & Client Tester Credentials ]
@@ -45,7 +48,40 @@ Its purpose is to facilitate direct testing by the **Client Single PIC** and end
 
 ---
 
-## 2. Solo Developer Protection Principles During UAT
+## 2. UAT Preparation Resources
+
+Before UAT execution, use these optional templates to structure client preparation:
+
+### Client Training Script
+**`templates/06-qa-uat/UAT_TRAINING_SCRIPT.md`** (12.77 KB) - Conduct 1-2 hour training session covering:
+- System walkthrough and feature demonstrations
+- Test account credentials and access setup
+- UAT process explanation and timeline expectations
+- Feedback submission workflow and defect reporting
+
+**When to use**: Medium/Large scales, or Small scale with non-technical clients unfamiliar with testing.
+
+### Demo Kickoff Script
+**`templates/06-qa-uat/DEMO_SCRIPT.md`** (10.15 KB) - Structure formal UAT kickoff meeting:
+- Feature demonstrations with scenario walkthroughs
+- Success criteria review per PRD acceptance criteria
+- Q&A preparation and edge case handling
+- Recording demo session for reference
+
+**When to use**: All scales for Step 2 kickoff session (30-minute orientation).
+
+### Structured Feedback Collection
+**`templates/06-qa-uat/FEEDBACK_MATRIX.md`** (11.17 KB) - Organize client feedback systematically:
+- Feedback ID, category (bug/feature/UX), priority classification
+- Screenshot/video evidence attachment
+- Resolution status tracking (Open/In Progress/Resolved/Closed)
+- Sign-off tracking per feature area
+
+**When to use**: Medium/Large scales with multiple UAT participants requiring centralized feedback tracking.
+
+---
+
+## 3. Solo Developer Protection Principles During UAT
 
 ### 1. Deflecting "New Features Disguised as Bugs"
 Clients often say: *"Hey, why doesn't this button send notifications to Telegram yet? This is a bug, please fix it."*
@@ -60,7 +96,7 @@ To prevent clients from delaying testing sessions for weeks and causing project 
 
 ---
 
-## 3. Defect Severity Matrix
+## 4. Defect Severity Matrix
 
 Every issue reported by the client must be classified into 4 levels:
 
@@ -73,7 +109,7 @@ Every issue reported by the client must be classified into 4 levels:
 
 ---
 
-## 4. Adaptation by Project Scale
+## 5. Adaptation by Project Scale
 
 | UAT Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
 | :--- | :--- | :--- | :--- |
@@ -90,7 +126,7 @@ Every issue reported by the client must be classified into 4 levels:
 
 ---
 
-## 5. Deliverables
+## 6. Deliverables
 
 > 📁 **MANDATORY FILE LOCATION RULE**:
 > All scenario files, defect logs, and UAT Sign-Off reports MUST be stored in the **`docs/pm/`** folder.
@@ -101,9 +137,9 @@ This module produces 2 sign-off documents:
 
 ---
 
-## 6. Gate Exit Criteria [GATE]
+## 7. Gate Exit Criteria [GATE]
 
-[GATE] Module 09 is declared **PASSED (PASS)** if and only if:
+[GATE] Module 09 is declared **PASSED** if:
 - [x] All test scenarios have **PASS** status or all Severity 1 & 2 findings are **RESOLVED**.
 - [x] **Quantitative Stability Criteria**:
   - 0 critical bugs (Severity 1) unresolved

@@ -1,0 +1,38 @@
+# Enforce LF line endings for all text files
+* text=auto eol=lf
+
+# Shell scripts must have LF (critical for execution)
+*.sh text eol=lf
+
+# Markdown files
+*.md text eol=lf
+
+# JSON/YAML
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# JavaScript/TypeScript
+*.js text eol=lf
+*.ts text eol=lf
+*.jsx text eol=lf
+*.tsx text eol=lf
+
+# Python
+*.py text eol=lf
+
+# Go
+*.go text eol=lf
+
+# PHP
+*.php text eol=lf
+
+# Binary files (never modify)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary

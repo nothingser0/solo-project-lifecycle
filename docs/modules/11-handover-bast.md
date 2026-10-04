@@ -118,7 +118,27 @@ Sending server passwords, database master keys, or API secrets via WhatsApp chat
 
 ---
 
-## 5. Output Deliverables
+## 5. Post-Project Retrospective (Optional - Internal Only)
+
+After handover completion and final payment clearance, conduct internal retrospective using **`templates/08-maintenance-ops/PROJECT_RETROSPECTIVE_TEMPLATE.md`** (10.74 KB):
+
+**Purpose**: Capture lessons learned for continuous skill improvement and process refinement.
+
+**Structure**:
+- **What went well**: Successful practices, tools, workflows to repeat
+- **What went wrong**: Mistakes, blockers, technical debt sources
+- **Lessons learned**: Concrete takeaways and action items
+- **Process improvements**: Changes to templates, workflows, or client communication for next project
+
+**Audience**: Internal team only (not client-facing)  
+**Duration**: 1-2 hours self-reflection or team discussion  
+**Output**: Retrospective notes stored in project archive for future reference
+
+**When to use**: All scales. Recommended after every project to build systematic improvement habits.
+
+---
+
+## 6. Output Deliverables
 
 > 📁 **ABSOLUTE FILE LOCATION RULES**:
 > - User manual must be stored in **`docs/USER_MANUAL.md`** (or at the project root for easy staff access).
@@ -132,7 +152,7 @@ This module produces official closing documents:
 
 ---
 
-## 6. [GATE] Exit Criteria
+## 7. [GATE] Exit Criteria
 
 [GATE] Module 11 is declared **PASSED** if:
 - [x] **Final settlement funds (100%) have cleared and are confirmed in the Developer's bank account.**

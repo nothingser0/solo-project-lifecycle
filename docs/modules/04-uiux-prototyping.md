@@ -571,8 +571,8 @@ This module produces concrete deliverables:
 | **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale). Prerequisite for DESIGN_SYSTEM.md. |
 | **2** | **`docs/specs/DESIGN_SYSTEM.md`** | Folder `docs/specs/` | Combined design system tokens and comprehensive UI specification document (color palette, typography, component specs, 5-state screen matrix per screen). |
 | **3** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to root after scaffold. |
-|| **4** | **Interactive Prototype** (Optional) | Stitch / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
-|| **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
+| **4** | **Interactive Prototype** (Optional) | Stitch / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
+| **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
 
 > 📁 **MANDATORY FILE LOCATION RULES**:
 > - `DESIGN.md` is staged in `docs/harness-root/DESIGN.md` during M04, then deployed to root (`./DESIGN.md`) after scaffold in M06.
@@ -1410,7 +1410,7 @@ def verify_module_04():
         raise GateError(f"Screen count mismatch: SITEMAP ({sitemap_screen_count}) vs DESIGN_SYSTEM ({spec_screen_count})")
     
     # 4. Verify DESIGN.md contains required sections
-    design_md = read_file("DESIGN.md")
+    design_md = read_file("docs/harness-root/DESIGN.md")  # Staged path during M04, deployed to root in M06
     required_sections = ["Color Palette", "Typography", "Spacing", "Components"]
     for section in required_sections:
         if section not in design_md:
@@ -1924,10 +1924,12 @@ EOF
 
 ---
 
-## 8. Design System Foundation & Implementation [OPTIONAL SECTION]
+## 8. Design System Foundation & Implementation [M04B - Enterprise Extension]
 
 > 🎯 **WHEN TO USE THIS SECTION?**
-> - **Large/Enterprise** projects with multiple products or platforms (Web, iOS, Android, Flutter)
+> - **MANDATORY for Enterprise** projects (regulatory compliance, multi-product platforms)
+> - **Optional for Large** projects with 3+ platforms (Web, iOS, Android, Flutter)
+> - **Skip for Small/Medium** projects (use base M04 DESIGN.md only)
 > - Products with **3+ engineers** requiring visual consistency without manual review
 > - Startups planning to **scale design/engineering teams** within 6-12 months
 > - Refactoring legacy codebases with **inconsistent UI components** (design debt)

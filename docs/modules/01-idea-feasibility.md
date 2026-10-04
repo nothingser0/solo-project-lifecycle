@@ -85,18 +85,23 @@ Evaluate idea feasibility using a 1–5 score across 4 dimensions:
 Determine project category upfront to establish the required weight of subsequent document formalities:
 
 1. **Small Scale (MVP / Freelance Tool)**:
-   - *Indicators*: Single user/small team, 1–2 data entities, work duration < 1 month, no banking/regulatory integrations.
-   - *Next Steps*: Draft a simple 1-page Brief & Scope Statement directly; skip formal charter.
-   - **Fast-Track**: If feasibility ≥ 17/20 and risk is low, Module 03 charter may be skipped (proceed directly to Module 04 design).
+   - *Indicators*: Single user/small team, 1–2 data entities, timeline 1-3 months, no banking/regulatory integrations.
+   - *Next Steps*: Draft simple 1-page Brief & Scope Statement, then create SOW_CONTRACT.md (simplified template with charter in Part I).
+   - **Note**: M03 SOW_CONTRACT.md (with charter in Part I) is mandatory for all scales to lock scope baseline and payment terms. For internal projects, use simplified SOW template with BYPASS flag.
 2. **Medium Scale (B2B SaaS / Agency)**:
-   - *Indicators*: Multi-tenant, subscription payments, role-based access control (RBAC), 1–3 third-party API integrations, work duration 1–3 months (exclusive range: ≥1 month and <3 months).
+   - *Indicators*: Multi-tenant, subscription payments, role-based access control (RBAC), 1–3 third-party API integrations, timeline 3-6 months.
    - *Next Steps*: Mandatory light PRD, formal SOW contract, and modular database architecture.
 3. **Large Scale (Scale-Up / Distributed Platform)**:
-   - *Indicators*: High transaction volume, high concurrency, enterprise multi-system integrations, work duration ≥3 months and <6 months (exclusive range).
+   - *Indicators*: High transaction volume, high concurrency, enterprise multi-system integrations, timeline 6-12 months.
    - *Next Steps*: Mandatory Project Charter, formal PRD, in-depth FSD, and detailed WBS.
 4. **Enterprise / Industrial Scale (Corporate, Banking, State-Owned Enterprises)**:
-   - *Indicators*: Strict regulatory compliance (PDP Law, ISO 27001, SOC2), multiple client internal stakeholders, permanent audit trails, 99.9% uptime SLA, work duration ≥6 months.
+   - *Indicators*: Strict regulatory compliance (PDP Law, ISO 27001, SOC2), multiple client internal stakeholders, permanent audit trails, 99.9% uptime SLA, timeline 12-24 months.
    - *Next Steps*: Mandatory formal legal sign-off, signed Project Charter, bound Single PIC, comprehensive FSD, and RTM.
+   - *M00 Integration*: **IF M00 (Product Discovery) was executed**: Use M00 outputs as inputs for M01 feasibility analysis:
+     - `MARKET_RESEARCH.md` → Market size/TAM validation (Step 1)
+     - `COMPETITIVE_LANDSCAPE.md` → Competitor analysis (Step 1)
+     - `USER_RESEARCH_REPORT.md` → User persona validation (Step 2)
+     - `PRODUCT_STRATEGY.md` → Strategic positioning context (Step 3)
 
 **Module Routing**: After scale classification, refer to `references/playbooks/SCALE_WORKFLOWS.md` for:
 - Module sequence per scale (which modules to execute, which to skip)
@@ -105,7 +110,7 @@ Determine project category upfront to establish the required weight of subsequen
 - Real-world workflow examples (Solo MVP, Agency, Vendor, Enterprise)
 
 **Quick Reference**:
-- **Small Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M09 → M10 → M11 (9 modules, skip M00/M07/M08/M12/M13)
+- **Small Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07-LITE → M09 → M10 → M11 (10 modules, skip M00/M08/M12/M13)
 - **Medium Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 (10 modules, skip M00/M08/M12/M13)
 - **Large Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 (12 modules, skip M00/M13)
 - **Enterprise**: Full M00 → M13 (14 modules, no skips)

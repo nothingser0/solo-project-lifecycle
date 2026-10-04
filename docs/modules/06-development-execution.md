@@ -2015,7 +2015,38 @@ In solo development accelerated by AI Coding Agents, *code review* is conducted 
 
 ---
 
-## 6. Payment Milestone Achievements (Term Gates)
+## 6. Optional Development Resources
+
+The following templates provide additional structure for development workflows. Use based on project needs and scale:
+
+### Agile Workflow Templates (Medium/Large Scales)
+
+For iterative development with 2+ week sprints:
+
+- **`templates/04-dev-execution/SPRINT_PLANNING.md`** (9.37 KB) - Sprint planning ceremony structure with capacity planning and story estimation
+- **`templates/04-dev-execution/DAILY_STANDUP.md`** (10.11 KB) - Daily standup format, anti-patterns to avoid, and async standup alternatives for solo devs
+- **`templates/04-dev-execution/SPRINT_RETRO.md`** (11.19 KB) - Sprint retrospective template with what went well/wrong/improve structure
+
+**When to use**: Medium/Large scales with client-facing sprint demos or milestone-based payment gates requiring structured iteration tracking.
+
+### Documentation Standards
+
+- **`templates/04-dev-execution/API_DOCUMENTATION_GUIDE.md`** (11.43 KB) - REST/GraphQL API documentation standards covering endpoint structure, authentication, request/response examples, error codes, and versioning
+- **`templates/04-dev-execution/PERFORMANCE_PROFILING_GUIDE.md`** (12.97 KB) - Performance bottleneck analysis workflow including profiling tools, memory leak detection, database query optimization, and load testing interpretation
+
+**When to use**: 
+- API_DOCUMENTATION_GUIDE: API-heavy projects, third-party integrations, or projects with external developers
+- PERFORMANCE_PROFILING_GUIDE: High-traffic applications, real-time systems, or performance-critical features
+
+### Development Tools
+
+- **`templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh`** (8.99 KB) - Automated TODO.md completeness checker script verifying all tasks marked done and blocking incomplete handoffs
+
+**When to use**: All scales. Run before M07 gate check to ensure development completion claims are accurate.
+
+---
+
+## 7. Payment Milestone Achievements (Term Gates)
 
 1. **Alpha Milestone (Term 2 - 25% to 30%)**:
    - *Pass Criteria*: Database migrated, login authentication active, document draft creation workflow running locally, and baseline security/performance pillars verified on branch `staging`.
@@ -2027,10 +2058,12 @@ In solo development accelerated by AI Coding Agents, *code review* is conducted 
 
 ---
 
-## 6A. Product Instrumentation & Analytics Setup [OPTIONAL SECTION]
+## 6A. Product Instrumentation & Analytics Setup [M06B - Enterprise Extension]
 
 > 🎯 **WHEN TO USE THIS SECTION?**
-> - **Medium/Large scale projects**: Need funnel analysis, retention cohorts, A/B testing
+> - **MANDATORY for Enterprise** projects (product analytics, funnel tracking, compliance)
+> - **Optional for Large** scale projects: Need funnel analysis, retention cohorts, A/B testing
+> - **Skip for Small/Medium** projects (use basic error monitoring only)
 > - **Post-MVP validation**: Product launched, need data to validate product-market fit
 > - **Fundraising prep**: Investors require traction metrics dashboard
 > - **Growth phase**: Ready to optimize conversion and engagement
@@ -2220,7 +2253,7 @@ export const analytics = {
 
 ---
 
-## 7. Output Artifacts (Deliverables)
+## 8. Output Artifacts (Deliverables)
 
 1. **Git Repository Source Code**: Clean codebase with active `staging` branch and structured commit history.
 2. **`RUNBOOK_LOCAL.md`**: Complete guide for environment setup, DB migrations, and running the application locally (using `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`).
@@ -2230,7 +2263,7 @@ export const analytics = {
 
 ---
 
-## 8. Gate Exit Criteria [GATE]
+## 9. Gate Exit Criteria [GATE]
 
 [GATE] Module 06 is declared **PASSED** if:
 - [x] Git branching is structured (`main`, `staging`, `feat/*`) with clean commits.

@@ -1659,10 +1659,12 @@ The agent must:
 
 ---
 
-## 6. System Design & Infrastructure Scalability [OPTIONAL SECTION]
+## 6. System Design & Infrastructure Scalability [M05B - Enterprise Extension]
 
 > 🎯 **WHEN TO USE THIS SECTION?**
-> - **Medium/Large projects**: MAU >10K, RPS >100, need HA/DR
+> - **MANDATORY for Enterprise** projects (HA/DR, multi-AZ, capacity planning)
+> - **Optional for Large** projects: MAU >10K, RPS >100, need HA/DR
+> - **Skip for Small/Medium** projects (use base M05 PRD/FSD only)
 > - **Viral growth expected**: Traffic spikes, auto-scaling required
 > - **Real-time features**: WebSockets, streaming, sub-second latency
 > - **Compliance**: Data residency, multi-region, audit trails

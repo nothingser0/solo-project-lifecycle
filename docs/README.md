@@ -71,7 +71,7 @@ RELEASE & CLOSURE PHASE:
 
 | Scale | Characteristic Boundaries | Module 01: Ideation & Feasibility | Modules 02–05: Specs & Design | Modules 06–09: QA & UAT | Modules 10–12: Release & BAST |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Small (MVP / Fast-Track)** | 1–4 weeks, 1–3 features, solo user | **Fast-Track Protocol**: Use 1 file `PROJECT_LITE.md` (Combined Modules 01, 02, 03, 05). **Module 04 MANDATORY for**: Web app, Mobile app, Desktop GUI. **Module 04 SKIP for**: CLI tool, API-only backend, cron job, automation script. | Core logic unit tests + local smoke test, UAT directly with business owner | Direct PaaS/Store deploy, simplified BAST format via email |
+| **Small (MVP / Fast-Track)** | 1–4 weeks, 1–3 features, solo user | Use 1 file `PROJECT_LITE.md` (Combined M01-M03-M05) | **M04 MANDATORY for**: Web/Mobile/Desktop GUI. **M04 SKIP for**: CLI/API/cron | Core logic unit tests + smoke test | Direct PaaS deploy, email BAST |
 | **Medium** | 1–3 months, Auth, DB, Payment/API | 4-Dimensional Feasibility, Market Validation | Modular PRD, Google Stitch Design System, FSD, API Contract | Automated API tests, SIT, signed PIC UAT | CI/CD pipeline, stamped BAST, 60-day warranty |
 | **Large** | 3–6 months, multi-system integration | Initial Architecture Audit, Risk Analysis | Formal PRD, In-depth FSD, Context Map, WBS level 3 | Full test pyramid, Basic Pentest, staged formal UAT | Zero-downtime deploy, physical/digital BAST, 90-day warranty |
 | **Enterprise** | ≥ 6 months, legal compliance, banking/SOE | PDP Law Audit, Compliance, Security Gate | Business Case, Formal Charter, PRD, FSD, RTM, DPA | Third-party Pentest, Disaster recovery drill, Formal UAT | CAB Approval, scheduled maintenance window, legal BAST, SLA |

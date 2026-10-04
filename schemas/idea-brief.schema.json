@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://solo-project-lifecycle.dev/schemas/idea-brief.schema.json",
+  "title": "Project Idea Brief (M01 Output)",
+  "description": "Initial project feasibility and scale classification document",
+  "type": "object",
+  "required": [
+    "projectName",
+    "elevatorPitch",
+    "coreLoop",
+    "mvpFeature",
+    "scaleClassification",
+    "feasibilityScore"
+  ],
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Project working title",
+      "minLength": 3,
+      "maxLength": 100
+    },
+    "elevatorPitch": {
+      "type": "string",
+      "description": "30-second product description",
+      "minLength": 50,
+      "maxLength": 500
+    },
+    "coreLoop": {
+      "type": "object",
+      "description": "3-step user interaction loop",
+      "required": ["input", "process", "output"],
+      "properties": {
+        "input": {
+          "type": "string",
+          "description": "User input data"
+        },
+        "process": {
+          "type": "string",
+          "description": "System processes/transforms"
+        },
+        "output": {
+          "type": "string",
+          "description": "User receives result/value"
+        }
+      }
+    },
+    "mvpFeature": {
+      "type": "string",
+      "description": "Single primary feature that compels users",
+      "minLength": 20
+    },
+    "scaleClassification": {
+      "type": "string",
+      "enum": ["Small", "Medium", "Large", "Enterprise"],
+      "description": "Project scale based on timeline, features, complexity"
+    },
+    "timeline": {
+      "type": "string",
+      "description": "Estimated project timeline",
+      "pattern": "^[0-9]+-[0-9]+ (weeks|months)$"
+    },
+    "feasibilityScore": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Technical feasibility score (1=impossible, 5=trivial)"
+    },
+    "feasibilityDimensions": {
+      "type": "object",
+      "description": "4-dimensional feasibility analysis",
+      "properties": {
+        "technical": {
+          "type": "object",
+          "properties": {
+            "score": { "type": "number", "minimum": 1, "maximum": 5 },
+            "notes": { "type": "string" }
+          }
+        },
+        "market": {
+          "type": "object",
+          "properties": {
+            "score": { "type": "number", "minimum": 1, "maximum": 5 },
+            "notes": { "type": "string" }
+          }
+        },
+        "operational": {
+          "type": "object",
+          "properties": {
+            "score": { "type": "number", "minimum": 1, "maximum": 5 },
+            "notes": { "type": "string" }
+          }
+        },
+        "financial": {
+          "type": "object",
+          "properties": {
+            "score": { "type": "number", "minimum": 1, "maximum": 5 },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "targetUsers": {
+      "type": "array",
+      "description": "Target user personas",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "competitors": {
+      "type": "array",
+      "description": "Main competitors or similar products",
+      "items": {
+        "type": "string"
+      }
+    },
+    "uniqueValueProposition": {
+      "type": "string",
+      "description": "What makes this different from competitors"
+    },
+    "technicalRisks": {
+      "type": "array",
+      "description": "Identified technical risks",
+      "items": {
+        "type": "object",
+        "properties": {
+          "risk": { "type": "string" },
+          "severity": { 
+            "type": "string",
+            "enum": ["Low", "Medium", "High", "Critical"]
+          },
+          "mitigation": { "type": "string" }
+        }
+      }
+    },
+    "nextSteps": {
+      "type": "array",
+      "description": "Recommended next actions",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

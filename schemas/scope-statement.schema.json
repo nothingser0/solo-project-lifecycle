@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://solo-project-lifecycle.dev/schemas/scope-statement.schema.json",
+  "title": "Scope Statement (M02 Output)",
+  "description": "Formal project scope definition with in-scope/out-of-scope boundaries",
+  "type": "object",
+  "required": [
+    "projectName",
+    "projectObjective",
+    "inScope",
+    "outOfScope",
+    "assumptions",
+    "constraints"
+  ],
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Official project name",
+      "minLength": 3
+    },
+    "projectObjective": {
+      "type": "string",
+      "description": "Primary business objective and success criteria",
+      "minLength": 50
+    },
+    "inScope": {
+      "type": "array",
+      "description": "Features and deliverables explicitly included",
+      "items": {
+        "type": "object",
+        "required": ["feature", "description"],
+        "properties": {
+          "feature": { "type": "string" },
+          "description": { "type": "string" },
+          "priority": {
+            "type": "string",
+            "enum": ["Must Have", "Should Have", "Nice to Have"]
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "outOfScope": {
+      "type": "array",
+      "description": "Features explicitly excluded to prevent scope creep",
+      "items": {
+        "type": "object",
+        "required": ["feature", "reason"],
+        "properties": {
+          "feature": { "type": "string" },
+          "reason": { "type": "string" },
+          "futurePhase": { "type": "string" }
+        }
+      },
+      "minItems": 1
+    },
+    "deliverables": {
+      "type": "array",
+      "description": "Concrete project deliverables",
+      "items": {
+        "type": "object",
+        "required": ["deliverable", "format"],
+        "properties": {
+          "deliverable": { "type": "string" },
+          "format": { "type": "string" },
+          "dueDate": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "description": "Project assumptions that must hold true",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "constraints": {
+      "type": "object",
+      "description": "Project constraints and limitations",
+      "properties": {
+        "budget": {
+          "type": "object",
+          "properties": {
+            "amount": { "type": "number" },
+            "currency": { "type": "string" }
+          }
+        },
+        "timeline": {
+          "type": "object",
+          "properties": {
+            "startDate": { "type": "string", "format": "date" },
+            "endDate": { "type": "string", "format": "date" },
+            "duration": { "type": "string" }
+          }
+        },
+        "technical": {
+          "type": "array",
+          "description": "Technical constraints (tech stack, infrastructure, etc.)",
+          "items": { "type": "string" }
+        },
+        "resources": {
+          "type": "array",
+          "description": "Resource constraints (team size, availability, etc.)",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "stakeholders": {
+      "type": "array",
+      "description": "Project stakeholders and their roles",
+      "items": {
+        "type": "object",
+        "required": ["name", "role"],
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "responsibilities": { "type": "string" },
+          "contactInfo": { "type": "string" }
+        }
+      }
+    },
+    "successCriteria": {
+      "type": "array",
+      "description": "Measurable success criteria",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "riskRegister": {
+      "type": "array",
+      "description": "Identified project risks",
+      "items": {
+        "type": "object",
+        "required": ["risk", "impact", "probability"],
+        "properties": {
+          "risk": { "type": "string" },
+          "impact": {
+            "type": "string",
+            "enum": ["Low", "Medium", "High", "Critical"]
+          },
+          "probability": {
+            "type": "string",
+            "enum": ["Low", "Medium", "High"]
+          },
+          "mitigation": { "type": "string" },
+          "owner": { "type": "string" }
+        }
+      }
+    }
+  }
+}
