@@ -337,7 +337,7 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 
 **Change Control**:
 - `templates/03-governance/CAB_PROCESS.md` - Change Advisory Board approval workflow
-  - **RFC (Request for Change)**: Submit 48 hours before deployment
+  - **RFC (Request for Change)**: Submit 3 business days before deployment
   - **CAB review**: Risk assessment, blast radius, rollback plan, maintenance window approval
   - **Why**: Banking/government require formal change control (audit trail, stakeholder approval)
 
