@@ -731,7 +731,7 @@ Which do you prefer?"
 
 ## 🎯 Quick Decision Tree
 
-**Pre-Routing Note**: Enterprise projects (>Rp 500M, RFP/tender context) start at M00 (Product Discovery) and skip M01 scale classification. For all other projects, complete M01 first, then route by scale:
+**Pre-Routing Note**: Enterprise projects (>Rp 500M, RFP/tender context) start at M00 (Product Discovery) before M01. For all other projects, complete M01 first, then route by scale:
 
 ```
 START: After completing M01 (Idea & Feasibility), route by scale:
@@ -761,8 +761,9 @@ END
 
 **Enterprise Path (Separate - Pre-M01)**:
 ```
-IF project context == RFP/tender/corporate (budget >Rp 500M):
-  → Start: M00 (Product Discovery) - skip M01 scale classification
+IF project context == RFP/tender/corporate (>Rp 500M):
+  → Start: M00 (Product Discovery) validates RFP requirements
+  → M01 performs feasibility check (scale already known from RFP context)
   → Path: M00 → M01 → M02 → ... → M13 (all 14 modules)
   → Total lifecycle: 14 modules (M00 through M13)
   → Timeline: 40-44 minggu + 3 bulan warranty + ongoing M13
