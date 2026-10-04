@@ -22,8 +22,7 @@ Works with any tech stack. Built for solo developers, freelancers, consulting te
 
 ## Framework Architecture
 
-**Repository size: ~9MB** (intentionally comprehensive)
-
+**Repository size: ~7MB** (intentionally comprehensive)
 This is a **skill framework/toolkit**, not a minimal starter template:
 
 | Component | Size | Purpose |
@@ -31,8 +30,8 @@ This is a **skill framework/toolkit**, not a minimal starter template:
 | Module library | 440KB | 14 lifecycle phases with detailed workflows |
 | Template library | 869KB | 80+ production-ready templates |
 | Reference guides | 604KB | Playbooks, patterns, deep-dive materials |
-| Case studies | 52KB | Real project metrics and outcomes |
-| Code patterns | 80KB | Reusable validation/auth/performance code |
+| Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
+| Code patterns | 144KB | 11 reusable patterns (API, testing, deployment, etc.) |
 
 **Why this size?**  
 Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.
@@ -55,10 +54,9 @@ Completeness = utility. Similar to design systems or testing frameworks - compre
 solo-project-lifecycle/
 ├── docs/modules/          14 lifecycle modules (M00-M13)
 ├── templates/             80+ project templates
-├── patterns/              Code patterns (validation, auth, performance)
-├── case-studies/          3 real projects with outcomes
+├── patterns/              11 code patterns (API, testing, deployment, error handling)
+├── case-studies/          5 examples (3 real + 2 worked examples)
 ├── references/            Guides and playbooks
-├── schemas/               JSON validation
 └── scripts/               Automation tools
 ```
 
@@ -189,17 +187,27 @@ See `references/stacks/` for setup instructions.
 
 ## Case Studies
 
-**Fashion E-commerce**  
-21 days, solo dev, Next.js + PostgreSQL  
-Result: Rp 52M GMV in 3 months
+### Real Projects (Anonymized)
 
-**Real Estate CRM**  
-28 days, Laravel + MySQL  
-Result: +58% revenue, 40% time savings
+**1. MVP SaaS Inventory (Small Scale)**  
+4 weeks, Laravel + MySQL, solo founder  
+Result: 23 paying users, Rp 1.15M MRR after 3 months
 
-**SaaS Inventory**  
-4 weeks, Next.js + Supabase  
-Result: 200 users, $2.4K MRR
+**2. E-commerce Fashion MVP**  
+Real anonymized client project
+
+**3. Real Estate CRM (Internal Tool)**  
+Real anonymized agency project
+
+### Worked Examples (Hypothetical)
+
+**4. Medium-Scale B2B SaaS Platform**  
+12 weeks, Next.js + Supabase, multi-tenant with Stripe  
+Demonstrates: M01-M11 workflow, RLS security, real-time features
+
+**5. Large-Scale System Integration**  
+25 weeks, Node.js + PostgreSQL, hospital legacy integration  
+Demonstrates: M00-M12 full workflow, data migration, compliance
 
 Full details: `case-studies/`
 
