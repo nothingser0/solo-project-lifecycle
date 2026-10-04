@@ -1935,6 +1935,13 @@ Comprehensive checklist covers:
 
 In solo development accelerated by AI Coding Agents, *code review* is conducted across 4 layered checkpoint gates (*milestone gates*) before branches are merged into `staging` or advanced to Module 07 testing:
 
+**Scale Adaptation**:
+- **Small/Medium (1-6 developers)**: AI-assisted self-review + optional peer review
+- **Large/Enterprise (7+ developers)**: Mandatory Pull Request approval workflow
+  - Template: `templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md`
+  - Requires: 2 approvals, passing CI checks, branch protection rules
+  - Tools: GitHub PR reviews, code owners, automated checks
+
 ```text
 [Feat Branches] ──► [Checkpoint 1: Foundation Gate] ──► staging
                                   │
