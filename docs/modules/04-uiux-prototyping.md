@@ -62,7 +62,12 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
   • Sign Design Freeze Sign-Off Sheet
                                 │
                                 ▼
-[ OUTPUT: 4 COMPLETE ARTIFACTS ] ──► Ready to Proceed to Module 05: Architecture & FSD
+[ OUTPUT: 5 COMPLETE ARTIFACTS ] ──► Ready to Proceed to Module 05: Architecture & FSD
+  1. COMPONENT_REQUIREMENTS.md (component inventory)
+  2. DESIGN.md (design system tokens)
+  3. DESIGN_SPEC.md (screen specifications)
+  4. SITEMAP.md (screen hierarchy)
+  5. Prototype URL (if interactive path chosen)
 ```
 
 ---
@@ -2090,12 +2095,14 @@ v2.0.0: Remove deprecated API (breaking)
 
 | Artifact | Location | Purpose |
 |----------|----------|---------|
+| **Component Requirements** | `docs/specs/COMPONENT_REQUIREMENTS.md` | Feature-to-component mapping, prevents AI slop |
 | **Design System Audit** | `docs/design/DESIGN_SYSTEM_AUDIT.md` | Baseline inconsistency assessment |
 | **Design Tokens Spec** | `tokens/design-tokens.json` + `dist/css/variables.css` | Single source of truth |
 | **Component API Spec** | `docs/design/COMPONENT_API_SPEC.md` | Props, states, accessibility |
 | **Storybook Docs** | `https://storybook.myapp.com` | Living documentation |
 
 **Template Sources**:
+- `templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md`
 - `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`
 - `templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md`
 - `templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md`

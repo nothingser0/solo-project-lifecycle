@@ -106,12 +106,10 @@
 | 2 | Input | text, email, password, number | default, focus, error, disabled | [N features] | [Feature 1 (login), 2 (search), 4 (form)] |
 | 3 | Textarea | - | default, focus, error, disabled | [N features] | [Feature 4 (description field)] |
 | 4 | Select/Dropdown | single, multi (optional) | closed, open, selected, disabled | [N features] | [Feature 4 (assignee picker), 3 (filter)] |
-| 5 | Checkbox | - | unchecked, checked, indeterminate, disabled | [N features] | [Feature X (bulk actions)] |
-| 6 | Radio | - | unchecked, checked, disabled | [N features] | [Feature Y (options)] |
-| 7 | Badge | status, info, warning, error | - | [N features] | [Feature 5 (task status display)] |
-| 8 | Icon | various | - | [All features] | [Navigation, actions, status indicators] |
-| 9 | LoadingSpinner | - | spinning | [All data features] | [Global loading indicator] |
-| 10 | Link | - | default, hover, visited, active | [N features] | [Navigation between screens] |
+| 5 | Badge | status, info, warning, error | - | [N features] | [Feature 5 (task status display)] |
+| 6 | Icon | various | - | [All features] | [Navigation, actions, status indicators] |
+| 7 | LoadingSpinner | - | spinning | [All data features] | [Global loading indicator] |
+| 8 | Link | - | default, hover, visited, active | [N features] | [Navigation between screens] |
 
 **Total Primitives**: [N]
 
