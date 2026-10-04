@@ -152,3 +152,60 @@
    - **Expected**: PASS decision with all checks green
    - **Evidence**: Signed VERIFY_LOCAL.md with screenshots/logs attached
    - **Blockers**: If FAIL, document exact blockers preventing PASS
+
+## Phase 7: Security Verification (Before UAT)
+> **Target**: Small scale projects - run security baseline checklist before M09 UAT
+> **Reference**: `templates/06-qa-uat/SECURITY_CHECKLIST_SMALL.md`
+> **Duration**: 1-2 hours
+
+- [ ] Password Security: Verify bcrypt/argon2 hashing, no plain text passwords
+   - **Verify**: Check password storage implementation
+   - **Expected**: Hashing library used (NOT MD5/SHA1), min 8 chars enforced
+   - **Evidence**: Code snippet showing bcrypt.hash() or equivalent
+
+- [ ] HTTPS Enforcement: Verify production uses HTTPS, localhost exception OK
+   - **Verify**: Check deployment config
+   - **Expected**: HTTPS redirect configured, SSL cert valid
+   - **Evidence**: Deployment config file or URL test
+
+- [ ] SQL Injection Prevention: Verify parameterized queries, no string concatenation
+   - **Verify**: Grep codebase for SQL concatenation patterns
+   - **Expected**: All queries use ? placeholders or ORM methods
+   - **Evidence**: Code search results show safe patterns only
+
+- [ ] XSS Prevention: Verify user input escaped, React/Vue auto-escape not bypassed
+   - **Verify**: Check for dangerouslySetInnerHTML or v-html usage
+   - **Expected**: No unsafe HTML rendering without sanitization
+   - **Evidence**: Code search confirms safe patterns
+
+- [ ] Environment Variables: Verify no secrets in code, .env in .gitignore
+   - **Verify**: Run `git log --all --full-history -- .env`
+   - **Expected**: No results (no .env commits)
+   - **Evidence**: Git log output empty
+
+- [ ] CSRF Protection: Verify anti-CSRF tokens for forms, SameSite cookies
+   - **Verify**: Check middleware/session config
+   - **Expected**: CSRF middleware enabled OR SameSite cookies configured
+   - **Evidence**: Middleware config file
+
+- [ ] Rate Limiting: Verify login rate limit (5 attempts per 15 min)
+   - **Verify**: Check rate limiter configuration
+   - **Expected**: Rate limiter configured for auth endpoints
+   - **Evidence**: Config showing rate limits
+
+- [ ] Session Security: Verify httpOnly + secure cookies in production
+   - **Verify**: Check session configuration
+   - **Expected**: httpOnly=true, secure=true for production
+   - **Evidence**: Session config code
+
+- [ ] Dependency Audit: Run npm/pnpm audit, fix critical/high vulnerabilities
+   - **Verify**: `npm audit --production` or `pnpm audit`
+   - **Expected**: Zero critical/high vulnerabilities
+   - **Evidence**: Audit output showing 0 vulnerabilities or all fixed
+
+- [ ] Security Checklist Complete: All 10 items from SECURITY_CHECKLIST_SMALL.md verified
+   - **Verify**: Review completed checklist
+   - **Expected**: All items checked, sign-off obtained
+   - **Evidence**: Signed SECURITY_CHECKLIST_SMALL.md
+
+**Gate**: Do NOT proceed to M09 UAT if critical security issues (S1/S2) remain unresolved.

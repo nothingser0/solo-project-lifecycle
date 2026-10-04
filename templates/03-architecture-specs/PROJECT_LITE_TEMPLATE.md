@@ -54,6 +54,22 @@
   - **Milestone 2 (50% Final Settlement)**: Paid after UAT passes and system is live, prior to handing over root credentials/repo.
 - **Client Response SLA**: Client must provide testing feedback within **3 business days** maximum.
 
+### Single PIC Authority (Decision Power)
+
+- **Designated Single PIC**: [Client PIC Name from Section 1] has **exclusive decision authority** for:
+  - Scope changes and feature prioritization
+  - UAT approval and bug severity classification
+  - Final acceptance and payment authorization
+
+- **Authority Enforcement**:
+  - Only the designated Single PIC can approve scope changes or sign-off deliverables
+  - Requests from non-PIC stakeholders (colleagues, management) are **invalid** unless routed through the Single PIC
+  - If PIC changes, client must provide written notification with new PIC contact details
+
+- **Conflict Resolution**: If multiple stakeholders provide conflicting requirements, developer will defer to Single PIC's decision only
+
+**Rationale**: This clause prevents scope creep from multiple voices and ensures clear accountability.
+
 ---
 
 ## 4. UI Prototype Reference (Google Stitch UI/UX Mandate)

@@ -76,6 +76,16 @@
 | **DEP-02** | Cloud storage (AWS / GCS) & SMTP email credentials | Project Day 7 | Postponement of backend vault & notification setup |
 | **DEP-03** | DNS Domain access for system web address configuration | Project Day 14 | Postponement of SSL provisioning and staging deployment |
 | **DEP-04** | Written feedback on functional draft review sessions | Max 3 business days | Postponement of go-live target by the number of delayed days |
+| **DEP-05** | Existing data export (if migration required) | Project Day 5 | Postponement of data migration development (+2-3 days) |
+
+**Data Migration Question** (to be asked during M02 Discovery):
+- **Does client have existing data to migrate?** ☐ Yes ☐ No
+- **If YES**:
+  - Source system: __________ (Excel / CSV / Old database / Manual)
+  - Estimated row count: __________
+  - Data types: ☐ Users ☐ Products ☐ Transactions ☐ Other: __________
+  - Action: Add DEP-05 to register + allocate 2-3 days for migration in timeline
+  - Reference: Use `templates/05-data-migration/DATA_MIGRATION_LITE.md` for small projects (<1000 rows)
 
 ---
 
