@@ -37,14 +37,22 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Laravel: composer require laravel/framework:{FSD.Laravel}
     - Django: pip install django=={FSD.Django}
     - Go: Update go.mod with go {FSD.Go}
-  • Install 9 AI Harness Files from docs/harness-root/ to project root:
-    - Stack-specific: AGENTS.md, ARCHITECTURE.md, CONVENTIONS.md, .env.example
-    - Universal: CONTEXT.md, DESIGN.md
-    - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • Git Init & Branching Strategy (main ──► staging ──► feat/*)
                                     │
                                     ▼
-[ STEP 1.5: Verify Framework Versions (Version Gate - MANDATORY) ]
+[ STEP 1.5: Deploy AI Harness Files to Root (AFTER Scaffold) ]
+  • CRITICAL: Harness files deployed AFTER framework scaffold completes
+  • Source: docs/harness-root/ (staged in M01-M05)
+  • Target: ./ (project root)
+  • Copy 9 files from staging to root:
+    - Stack-specific: AGENTS.md, ARCHITECTURE.md, CONVENTIONS.md, .env.example
+    - Universal: CONTEXT.md, DESIGN.md
+    - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
+  • OVERWRITES framework boilerplate (e.g., Next.js auto-generated AGENTS.md)
+  • Verify all 9 files present in root: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
+                                    │
+                                    ▼
+[ STEP 1.6: Verify Framework Versions (Version Gate - MANDATORY) ]
   • Run version gate: ./scripts/verify-framework-version.sh (or .ps1)
   • Verifies resolved lockfile versions match FSD locked versions
   • Checks package-lock.json / composer.lock / requirements.txt / go.mod
@@ -53,7 +61,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Example: FSD has Next.js: 15.0.3, lockfile resolved 16.3.8 → FAIL
                                     │
                                     ▼
-[ STEP 1.6: Generate Project-Specific TODO.md (AI-Guided) ]
+[ STEP 1.7: Generate Project-Specific TODO.md (AI-Guided) ]
   • AI reads PRD.md, FSD.md, SITEMAP.md to extract scope
   • Generate TODO.md with 100% coverage:
     - 1 task per FSD table (database schema)

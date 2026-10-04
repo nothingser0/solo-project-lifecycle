@@ -752,6 +752,92 @@ Stack decision LOCKS after selection. Changes later = +2 weeks timeline impact.
 ⚠️ WAITING FOR SELECTION...
 ```
 
+**User responds**: "Option A" or "I choose Option B"
+
+---
+
+### Stack Validation Gate (MANDATORY After User Selection)
+
+**After user selects stack option, agent MUST validate decision against context:**
+
+#### Validation Checklist
+
+**1. Team Expertise Alignment**
+- [ ] Match confirmed: Team has experience with chosen stack
+  - If NO: Document learning curve (estimated ramp-up time: X weeks)
+  - Risk: Slower development, more bugs, dependency on external help
+
+**2. Budget Reality Check**
+- [ ] Cost validated: Monthly cost fits within budget (Question 2)
+  - Selected stack cost: $X/month
+  - User budget: $Y/month
+  - If X > Y: Flag overage, propose cost reduction options
+
+**3. Scale Appropriateness**
+- [ ] Not over-engineering: Stack complexity matches scale (Question 3)
+  - Scale: <100 users → Avoid: Kubernetes, microservices, sharding
+  - Scale: 100-1K users → Simple monolith sufficient
+  - Scale: 1K-10K users → Consider caching, read replicas
+  - Scale: 10K+ users → Advanced scalability (load balancing, CDN)
+  - **Red flag**: Premature optimization (Kafka for <100 users)
+
+**4. Timeline Feasibility**
+- [ ] Delivery realistic: Setup time + development fits timeline (Question 4)
+  - Stack setup time: X days
+  - Development time estimate: Y days
+  - User timeline: Z days
+  - If (X + Y) > Z: Flag unrealistic, propose simpler stack or extend timeline
+
+**5. Maintenance Capacity**
+- [ ] Ops burden acceptable: Team can maintain chosen stack (Question 5)
+  - Self-hosted (DigitalOcean Droplet): Requires SSH, OS updates, backups
+  - Managed (Vercel, Supabase): Minimal ops, auto-updates
+  - If solo dev + self-hosted: Warn about maintenance burden (2-4 hours/week)
+
+**6. Integration Compatibility**
+- [ ] Third-party support: Required integrations available (Question 6)
+  - Payment gateway SDKs exist for chosen backend language
+  - Email service compatible with chosen stack
+  - Example: Stripe has official SDKs (Node.js, PHP, Python, Go)
+
+**7. Compliance Feasibility**
+- [ ] Regulatory match: Stack supports compliance requirements (Question 8)
+  - HIPAA/ISO27001: Need audit logs, encryption at rest, access controls
+  - PDP Law: User consent management, data deletion endpoints
+  - If compliance required: Validate chosen DB/hosting has compliance certs
+
+**8. Module 04 Handoff Strategy Validated**
+- [ ] Prototype conversion feasible: Clear path from Stitch to chosen stack
+  - Direct copy (React → Next.js): 1 day
+  - Syntax conversion (React → Vue): 3-4 days
+  - Template rewrite (React → Blade): 5-7 days
+  - Document in FSD.md "Module 04 Handoff Strategy" section
+
+---
+
+#### Validation Outcomes
+
+**Pass (Green Light)** ✅:
+- All 8 checks pass
+- Action: Proceed to FSD.md generation with chosen stack
+
+**Conditional Pass (Yellow Flag)** ⚠️:
+- 1-2 checks have warnings (e.g., learning curve, tight timeline)
+- Action: Document risks in FSD.md, get user acknowledgment
+- User confirms: "I understand the risk, proceed"
+
+**Fail (Red Flag)** ❌:
+- 3+ checks fail OR critical mismatch (budget overage, compliance gap)
+- Action: STOP, re-run questionnaire with corrected constraints
+- Examples:
+  - User budget $0, selected AWS stack ($50/month) → Fail
+  - HIPAA required, selected Vercel Hobby (no BAA) → Fail
+  - Solo dev, selected self-hosted Kubernetes → Fail (over-engineering)
+
+**Agent MUST NOT proceed to FSD.md generation until validation passes.**
+
+**Reference**: See `references/stacks/STACK_DECISION_METRICS.md` for detailed tradeoff analysis per stack combination.
+
 ---
 
 ### Handling "Other" Request (Ranks 4-6)

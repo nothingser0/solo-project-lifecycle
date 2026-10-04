@@ -98,6 +98,20 @@ Determine project category upfront to establish the required weight of subsequen
    - *Indicators*: Strict regulatory compliance (PDP Law, ISO 27001, SOC2), multiple client internal stakeholders, permanent audit trails, 99.9% uptime SLA, work duration ≥6 months.
    - *Next Steps*: Mandatory formal legal sign-off, signed Project Charter, bound Single PIC, comprehensive FSD, and RTM.
 
+**Module Routing**: After scale classification, refer to `references/playbooks/SCALE_WORKFLOWS.md` for:
+- Module sequence per scale (which modules to execute, which to skip)
+- Week-by-week timeline breakdown
+- Payment gate locations (DP, Alpha, Beta, Final)
+- Real-world workflow examples (Solo MVP, Agency, Vendor, Enterprise)
+
+**Quick Reference**:
+- **Small Scale**: M02 → M03(bypass) → M04 → M05 → M06 → M09 → M10 → M11 (7 modules, skip M00/M07/M08/M12/M13)
+- **Medium Scale**: M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 (9 modules, skip M00/M08/M12/M13)
+- **Large Scale**: M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 (11 modules, skip M00/M13)
+- **Enterprise**: Full M00 → M13 (13 modules, no skips)
+
+*See `references/playbooks/SCALE_WORKFLOWS.md` for complete timelines, payment structures, and gate enforcement.*
+
 ---
 
 ## 3. Output Artifacts (Deliverables)

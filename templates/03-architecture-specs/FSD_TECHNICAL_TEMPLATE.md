@@ -98,6 +98,205 @@ CREATE TABLE document_signatures (
 CREATE INDEX idx_signatures_document ON document_signatures(document_id);
 ```
 
+### 3.1 Database Schema Enforcement Checklist
+
+**MANDATORY verification before finalizing schema:**
+
+#### **1. Relational Integrity (Foreign Keys & Constraints)**
+- [ ] **Foreign keys defined**: Every reference column has `REFERENCES table(column)` constraint
+- [ ] **Cascade behavior**: ON DELETE CASCADE/RESTRICT/SET NULL appropriate per business rule
+  - CASCADE: Child records deleted when parent deleted (e.g., signatures when document deleted)
+  - RESTRICT: Prevent parent deletion if children exist (e.g., user with active documents)
+  - SET NULL: Orphan child records (rare, usually avoid)
+- [ ] **Check constraints**: Enum fields use CHECK (status IN ('draft', 'published'))
+- [ ] **NOT NULL enforcement**: All required fields marked NOT NULL (prevent NULL accidents)
+- [ ] **Unique constraints**: Unique emails, idempotency keys, tokens enforced at DB level
+
+#### **2. Index Strategy (Query Performance)**
+- [ ] **Foreign key indexes**: EVERY foreign key column indexed (PostgreSQL doesn't auto-index FKs)
+  - Example: `creator_id`, `document_id`, `user_id` columns ALL need indexes
+- [ ] **Composite indexes**: Multi-column WHERE clauses get composite index
+  - Example: `CREATE INDEX idx_documents_creator_status ON documents(creator_id, status);`
+  - Use case: `WHERE creator_id = ? AND status = 'draft'` (common filter pattern)
+- [ ] **Timestamp indexes**: created_at, updated_at indexed if used in ORDER BY or WHERE
+- [ ] **JSONB GIN indexes**: If querying JSONB fields, add GIN index
+  - Example: `CREATE INDEX idx_documents_form_data ON documents USING GIN (form_data);`
+- [ ] **Index cost-benefit**: Each index costs write performance; justify via query patterns
+  - Measure: EXPLAIN ANALYZE actual queries, not guesses
+  - Add indexes when: Query scans >10K rows or takes >100ms
+
+**Index Selection Rules**:
+- Query pattern: `WHERE a = ? AND b = ?` → Composite index `(a, b)` (order matters: most selective first)
+- Query pattern: `WHERE a = ? OR b = ?` → Separate indexes `(a)` and `(b)`
+- Query pattern: `ORDER BY created_at DESC LIMIT 10` → Index on `created_at`
+
+#### **3. Security & Access Control (Conditional - Scale-Dependent)**
+
+**Row-Level Security (RLS)** - *Required ONLY for:*
+- Multi-tenant SaaS (tenant_id isolation)
+- Direct client database access (Supabase, Firebase)
+- Compliance: Banking, healthcare, government (PDP Law, HIPAA, SOC2)
+
+**NOT required for:**
+- Single-tenant apps
+- Backend-only database access (no client SQL)
+- Internal tools (corporate network isolated)
+
+**If RLS required:**
+```sql
+-- Enable RLS on table
+ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Users see only their own documents
+CREATE POLICY documents_isolation ON documents
+  FOR SELECT
+  USING (creator_id = auth.uid());
+
+-- Policy: Users edit only drafts they created
+CREATE POLICY documents_edit_own_drafts ON documents
+  FOR UPDATE
+  USING (creator_id = auth.uid() AND status = 'draft');
+```
+
+**Column-Level Encryption** - *Required ONLY for:*
+- PII: Passwords (hashed, not encrypted), SSN, credit card numbers
+- Compliance: PDP Law sensitive data (religion, health, biometrics)
+
+```sql
+-- Encrypted column (AES-256-GCM via application layer)
+ALTER TABLE users ADD COLUMN ssn_encrypted BYTEA;
+-- Encrypt BEFORE INSERT (application-side with AES-256-GCM)
+-- Decrypt AFTER SELECT (application-side)
+```
+
+**Audit Logging** - *Required for:*
+- Enterprise scale (compliance trail)
+- Financial transactions (OJK requirement)
+- Healthcare (HIPAA)
+
+```sql
+-- Audit trail table (if required)
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  table_name VARCHAR(100) NOT NULL,
+  record_id UUID NOT NULL,
+  action VARCHAR(20) NOT NULL CHECK (action IN ('INSERT', 'UPDATE', 'DELETE')),
+  old_data JSONB,
+  new_data JSONB,
+  changed_by UUID REFERENCES users(id),
+  changed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **4. Scalability (Conditional - Load-Dependent)**
+
+**Read Replicas** - *Required ONLY if:*
+- Read:Write ratio > 10:1 (analytics dashboards, reports)
+- Measured database CPU >70% on read queries
+- Not needed for: Until actual bottleneck measured
+
+**Sharding/Partitioning** - *Required ONLY if:*
+- Queries slow despite proper indexes (measure first)
+- Time-series data (partition by month/year)
+- Multi-tenant isolation (partition by tenant_id)
+- Not needed for: Until query performance degrades
+
+**Connection Pooling** - *ALWAYS required for:*
+- Serverless functions (Lambda, Vercel Functions)
+- High concurrency (>50 concurrent requests)
+
+```bash
+# External connection pooler (PgBouncer, Supabase Pooler)
+# Configured at infrastructure level, not in Prisma schema
+DATABASE_URL="postgresql://user:pass@pooler.host:6543/db"
+
+# Prisma uses connection limit via pool_timeout/connection_limit in URL
+# https://www.prisma.io/docs/orm/overview/databases/postgresql#connection-pool
+```
+
+#### **5. Migration & Rollback Strategy**
+- [ ] **Topological sort**: Tables created in dependency order (parents before children)
+  - Common error: Foreign key references table not yet created
+  - Fix: Sort tables by foreign key dependency (zero-dependency tables first)
+- [ ] **Versioned migrations**: Use migration tool (Prisma Migrate, Flyway, Liquibase)
+  - NOT idempotent SQL: Track applied migrations, never re-run
+  - Migration files: `001_create_users.sql`, `002_add_indexes.sql`
+  - Migration table: `_prisma_migrations` or `schema_migrations` (tracks applied)
+- [ ] **Backward-compatible changes**: Avoid breaking changes in production migrations
+  - ✅ Add column (nullable or with default)
+  - ✅ Add index (use CREATE INDEX CONCURRENTLY - doesn't lock table)
+    ```sql
+    CREATE INDEX CONCURRENTLY idx_users_email ON users(email);
+    -- CONCURRENTLY prevents table lock, but cannot run in transaction
+    ```
+  - ❌ Drop column (breaks old app version)
+  - ❌ Rename column (breaks old app version)
+  - ⚠️ CREATE INDEX (without CONCURRENTLY) locks table for writes (avoid in production)
+- [ ] **Rollback script**: Every migration has DOWN migration
+  ```sql
+  -- UP migration
+  ALTER TABLE users ADD COLUMN phone VARCHAR(20);
+  
+  -- DOWN migration (rollback)
+  ALTER TABLE users DROP COLUMN phone;
+  ```
+- [ ] **Production deployment**: Apply migrations BEFORE deploying new code
+  - Order: Deploy DB migration → Deploy app code
+  - Reason: New code may require new columns/tables
+
+#### **6. Data Integrity & Business Rules**
+- [ ] **Enum constraints**: Status fields use CHECK constraint (not app-only validation)
+- [ ] **Date ranges**: Check `end_date >= start_date` at DB level
+  ```sql
+  ALTER TABLE contracts ADD CONSTRAINT valid_date_range 
+    CHECK (end_date >= start_date);
+  ```
+- [ ] **Positive values**: Amounts, quantities >= 0
+  ```sql
+  ALTER TABLE invoices ADD CONSTRAINT positive_amount 
+    CHECK (amount >= 0);
+  ```
+
+---
+
+### 3.2 Database Schema Documentation
+
+**Entity Relationship Diagram (ERD)**: *(Include Mermaid diagram or dbdiagram.io link)*
+
+```mermaid
+erDiagram
+    USERS ||--o{ DOCUMENTS : creates
+    DOCUMENTS ||--o{ SIGNATURES : has
+    
+    USERS {
+        uuid id PK
+        string email UK
+        string password_hash
+        string role
+    }
+    
+    DOCUMENTS {
+        uuid id PK
+        uuid creator_id FK
+        string status
+        jsonb form_data
+    }
+    
+    SIGNATURES {
+        uuid id PK
+        uuid document_id FK
+        string signer_email
+        timestamp signed_at
+    }
+```
+
+**Table Inventory**:
+| Table Name | Row Count (Est.) | Primary Index | Secondary Indexes | Notes |
+|:-----------|:-----------------|:--------------|:------------------|:------|
+| `users` | 10K | `id` (PK) | `email` (unique) | Auth table |
+| `documents` | 500K | `id` (PK) | `creator_id`, `(creator_id, status)` | Main entity |
+| `document_signatures` | 1M | `id` (PK) | `document_id` | Audit trail |
+
 ---
 
 ## 4. API Contracts & Endpoint Matrix
