@@ -99,25 +99,23 @@ Style: Flat Design (minimal shadows, 1px borders)
 
 **AI reads references folder:**
 
-```javascript
-// M04 Step 0 - Component Discovery
-const refs = await readDirectory('references/design/inspiration/');
-// Files: *.png, notes.md
+```
+M04 Step 0 - AI agent workflow:
 
-// Parse extracted patterns
-const patterns = await parseDesignNotes('references/design/inspiration/notes.md');
-// Extracted: colors, typography, spacing, shadows, style
+1. Read file: references/design/inspiration/notes.md
+   Extract from analysis: colors, typography, spacing, shadows, style
 
-// Generate DESIGN_SYSTEM.md
-const designSystem = generateDesignSystemFromPatterns(patterns);
-await writeFile('docs/specs/DESIGN_SYSTEM.md', designSystem);
+2. Read files: references/design/inspiration/*.png
+   Visual confirmation: patterns match notes.md analysis
 
-// Generate components matching reference style
-const components = await generateComponents({
-  designSystem: 'docs/specs/DESIGN_SYSTEM.md',
-  referenceImages: 'references/design/inspiration/*.png',
-  screens: SITEMAP.screens
-});
+3. Generate file: docs/specs/DESIGN_SYSTEM.md
+   Content: colors, typography, spacing from extracted patterns
+   Format: Matches reference aesthetic
+
+4. Generate components: Button, Card, Input, etc.
+   Read: DESIGN_SYSTEM.md specification
+   Read: reference screenshots for visual guidance
+   Output: components matching reference style
 ```
 
 AI automatically:
@@ -125,6 +123,8 @@ AI automatically:
 2. Views screenshots (visual confirmation)
 3. Generates `DESIGN_SYSTEM.md` matching references
 4. Generates components following extracted style
+
+No executable code - AI agent interprets these instructions.
 
 ---
 
