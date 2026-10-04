@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://solo-project-lifecycle.dev/schemas/uat-signoff.schema.json",
+  "title": "UAT Sign-Off Report (M09 Gate)",
+  "description": "Client acceptance testing sign-off document",
+  "type": "object",
+  "required": [
+    "projectName",
+    "signoffDate",
+    "clientPIC",
+    "testingPeriod",
+    "testResults",
+    "signoffStatus"
+  ],
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Project name from contract"
+    },
+    "signoffDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of client sign-off"
+    },
+    "clientPIC": {
+      "type": "object",
+      "description": "Client Single Point of Contact",
+      "required": ["name", "position", "signature"],
+      "properties": {
+        "name": { "type": "string" },
+        "position": { "type": "string" },
+        "organization": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "signature": {
+          "type": "object",
+          "required": ["signed", "signedDate"],
+          "properties": {
+            "signed": { "type": "boolean" },
+            "signedDate": { "type": "string", "format": "date-time" },
+            "signatureImage": { "type": "string", "format": "uri" }
+          }
+        }
+      }
+    },
+    "testingPeriod": {
+      "type": "object",
+      "required": ["startDate", "endDate"],
+      "properties": {
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "durationDays": { "type": "integer" },
+        "deemedAcceptanceApplied": { "type": "boolean" }
+      }
+    },
+    "stagingEnvironment": {
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "version": { "type": "string" },
+        "deployedDate": { "type": "string", "format": "date" }
+      }
+    },
+    "testResults": {
+      "type": "object",
+      "description": "UAT test execution results",
+      "required": ["totalScenarios", "passedScenarios"],
+      "properties": {
+        "totalScenarios": { "type": "integer", "minimum": 1 },
+        "passedScenarios": { "type": "integer", "minimum": 0 },
+        "failedScenarios": { "type": "integer", "minimum": 0 },
+        "skippedScenarios": { "type": "integer", "minimum": 0 },
+        "passRate": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "defectSummary": {
+      "type": "object",
+      "description": "Defects found during UAT",
+      "properties": {
+        "severity1": { "type": "integer", "minimum": 0, "description": "Blocker bugs" },
+        "severity2": { "type": "integer", "minimum": 0, "description": "Major bugs" },
+        "severity3": { "type": "integer", "minimum": 0, "description": "Minor bugs" },
+        "totalDefects": { "type": "integer", "minimum": 0 },
+        "resolvedDefects": { "type": "integer", "minimum": 0 },
+        "deferredToWarranty": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "testScenarios": {
+      "type": "array",
+      "description": "Individual test scenarios executed",
+      "items": {
+        "type": "object",
+        "required": ["scenarioId", "description", "status"],
+        "properties": {
+          "scenarioId": { "type": "string" },
+          "description": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["PASS", "FAIL", "BLOCKED", "SKIPPED"]
+          },
+          "testedBy": { "type": "string" },
+          "testedDate": { "type": "string", "format": "date" },
+          "notes": { "type": "string" },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["screenshot", "video", "log"] },
+                "url": { "type": "string", "format": "uri" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "signoffStatus": {
+      "type": "string",
+      "enum": ["APPROVED", "CONDITIONAL", "REJECTED"],
+      "description": "Final UAT decision"
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Conditions for conditional approval",
+      "items": { "type": "string" }
+    },
+    "clientComments": {
+      "type": "string",
+      "description": "Additional client feedback or comments"
+    },
+    "nextSteps": {
+      "type": "array",
+      "description": "Actions before production deployment",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://solo-project-lifecycle.dev/schemas/sit-workbook.schema.json",
+  "title": "SIT Workbook (M07 QA Output)",
+  "description": "System Integration Testing workbook and results",
+  "type": "object",
+  "required": [
+    "projectName",
+    "testDate",
+    "environment",
+    "testSuites",
+    "overallStatus"
+  ],
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Project name"
+    },
+    "testDate": {
+      "type": "string",
+      "format": "date",
+      "description": "SIT execution date"
+    },
+    "environment": {
+      "type": "object",
+      "description": "Staging environment details",
+      "required": ["url", "version"],
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "version": { "type": "string" },
+        "branch": { "type": "string" },
+        "commitSHA": { "type": "string" }
+      }
+    },
+    "testSuites": {
+      "type": "array",
+      "description": "Test suites executed",
+      "items": {
+        "type": "object",
+        "required": ["suite", "tests"],
+        "properties": {
+          "suite": {
+            "type": "string",
+            "enum": [
+              "Unit Tests",
+              "Integration Tests",
+              "API Contract Tests",
+              "Payment Gateway",
+              "Email Delivery",
+              "File Storage",
+              "Security Audit",
+              "Performance Tests"
+            ]
+          },
+          "tests": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["testId", "description", "status"],
+              "properties": {
+                "testId": { "type": "string" },
+                "description": { "type": "string" },
+                "status": {
+                  "type": "string",
+                  "enum": ["PASS", "FAIL", "SKIP", "ERROR"]
+                },
+                "executionTime": { "type": "string" },
+                "errorMessage": { "type": "string" },
+                "stackTrace": { "type": "string" }
+              }
+            }
+          },
+          "totalTests": { "type": "integer" },
+          "passed": { "type": "integer" },
+          "failed": { "type": "integer" },
+          "skipped": { "type": "integer" },
+          "passRate": { "type": "number" }
+        }
+      },
+      "minItems": 1
+    },
+    "integrationTests": {
+      "type": "object",
+      "description": "Third-party integration test results",
+      "properties": {
+        "paymentGateway": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string" },
+            "successTest": { "type": "boolean" },
+            "failureTest": { "type": "boolean" },
+            "webhookTest": { "type": "boolean" }
+          }
+        },
+        "email": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string" },
+            "deliveryTest": { "type": "boolean" },
+            "templateTest": { "type": "boolean" }
+          }
+        },
+        "storage": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string" },
+            "uploadTest": { "type": "boolean" },
+            "downloadTest": { "type": "boolean" },
+            "encryptionTest": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "securityAudit": {
+      "type": "object",
+      "description": "Security checks performed",
+      "properties": {
+        "dependencyVulnerabilities": {
+          "type": "object",
+          "properties": {
+            "critical": { "type": "integer", "minimum": 0 },
+            "high": { "type": "integer", "minimum": 0 },
+            "medium": { "type": "integer", "minimum": 0 },
+            "low": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "owaspChecklist": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "vulnerability": { "type": "string" },
+              "status": { "type": "string", "enum": ["PASS", "FAIL", "N/A"] },
+              "notes": { "type": "string" }
+            }
+          }
+        },
+        "authenticationTests": { "type": "boolean" },
+        "authorizationTests": { "type": "boolean" },
+        "csrfProtection": { "type": "boolean" },
+        "xssProtection": { "type": "boolean" }
+      }
+    },
+    "performanceTests": {
+      "type": "object",
+      "description": "Load and performance test results",
+      "properties": {
+        "tool": { "type": "string" },
+        "concurrentUsers": { "type": "integer" },
+        "duration": { "type": "string" },
+        "avgResponseTime": { "type": "number" },
+        "maxResponseTime": { "type": "number" },
+        "errorRate": { "type": "number" },
+        "throughput": { "type": "number" }
+      }
+    },
+    "defects": {
+      "type": "array",
+      "description": "Defects found during SIT",
+      "items": {
+        "type": "object",
+        "required": ["defectId", "severity", "description", "status"],
+        "properties": {
+          "defectId": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["P0", "P1", "P2", "P3"]
+          },
+          "description": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["OPEN", "IN_PROGRESS", "RESOLVED", "DEFERRED"]
+          },
+          "foundDate": { "type": "string", "format": "date" },
+          "resolvedDate": { "type": "string", "format": "date" },
+          "assignedTo": { "type": "string" }
+        }
+      }
+    },
+    "overallStatus": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "CONDITIONAL"],
+      "description": "Overall SIT result"
+    },
+    "gateDecision": {
+      "type": "string",
+      "enum": ["PROCEED_TO_UAT", "FIX_DEFECTS", "MAJOR_REWORK"],
+      "description": "Gate decision to proceed to M09"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional testing notes"
+    }
+  }
+}
