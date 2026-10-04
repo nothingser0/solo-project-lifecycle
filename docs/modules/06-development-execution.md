@@ -1018,7 +1018,7 @@ def select_templates(fsd_content: str) -> dict:
             "agents": "templates/04-dev-execution/nextjs/AGENTS.md",
             "architecture": "templates/04-dev-execution/nextjs/ARCHITECTURE.md",
             "conventions": "templates/04-dev-execution/nextjs/CONVENTIONS.md",
-            "env_example": "templates/04-dev-execution/nextjs/.env.example",
+            "env_example": "templates/04-dev-execution/nextjs/ENV_EXAMPLE.md",
         }
     
     elif "laravel" in stack_name:
@@ -1027,7 +1027,7 @@ def select_templates(fsd_content: str) -> dict:
             "agents": "templates/04-dev-execution/laravel/AGENTS.md",
             "architecture": "templates/04-dev-execution/laravel/ARCHITECTURE.md",
             "conventions": "templates/04-dev-execution/laravel/CONVENTIONS.md",
-            "env_example": "templates/04-dev-execution/laravel/.env.example",
+            "env_example": "templates/04-dev-execution/laravel/ENV_EXAMPLE.md",
         }
     
     elif "django" in stack_name:
@@ -1036,7 +1036,7 @@ def select_templates(fsd_content: str) -> dict:
             "agents": "templates/04-dev-execution/django/AGENTS.md",
             "architecture": "templates/04-dev-execution/django/ARCHITECTURE.md",
             "conventions": "templates/04-dev-execution/django/CONVENTIONS.md",
-            "env_example": "templates/04-dev-execution/django/.env.example",
+            "env_example": "templates/04-dev-execution/django/ENV_EXAMPLE.md",
         }
     
     elif "go" in stack_name or "fiber" in stack_name or "gin" in stack_name:
@@ -1045,7 +1045,7 @@ def select_templates(fsd_content: str) -> dict:
             "agents": "templates/04-dev-execution/go/AGENTS.md",
             "architecture": "templates/04-dev-execution/go/ARCHITECTURE.md",
             "conventions": "templates/04-dev-execution/go/CONVENTIONS.md",
-            "env_example": "templates/04-dev-execution/go/.env.example",
+            "env_example": "templates/04-dev-execution/go/ENV_EXAMPLE.md",
         }
     
     elif "rails" in stack_name or "ruby" in stack_name:
@@ -1054,7 +1054,7 @@ def select_templates(fsd_content: str) -> dict:
             "agents": "templates/04-dev-execution/rails/AGENTS.md",
             "architecture": "templates/04-dev-execution/rails/ARCHITECTURE.md",
             "conventions": "templates/04-dev-execution/rails/CONVENTIONS.md",
-            "env_example": "templates/04-dev-execution/rails/.env.example",
+            "env_example": "templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md",
         }
     
     else:
@@ -1062,10 +1062,10 @@ def select_templates(fsd_content: str) -> dict:
         warn(f"Unknown stack: {stack_name}. Using generic templates.")
         return {
             "category": "generic",
-            "agents": "templates/04-dev-execution/generic/AGENTS.md",
-            "architecture": "templates/04-dev-execution/generic/ARCHITECTURE.md",
-            "conventions": "templates/04-dev-execution/generic/CONVENTIONS.md",
-            "env_example": "templates/04-dev-execution/generic/.env.example",
+            "agents": "templates/04-dev-execution/AGENTS_TEMPLATE.md",
+            "architecture": "templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md",
+            "conventions": "templates/04-dev-execution/CONVENTIONS_TEMPLATE.md",
+            "env_example": "templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md",
         }
 ```
 
