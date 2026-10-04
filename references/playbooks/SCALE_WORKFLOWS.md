@@ -26,16 +26,21 @@
 - No legal complexity (internal project, prototype)
 - Lightweight acceptance testing (self-sign-off in M09)
 
-**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M09 → M10 → M11**
+**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07-LITE → [M08-LITE*] → M09 → M10 → M11**
+
+**Note**: *M08-LITE only if client has existing data to migrate (discovered in M02)
 
 **Skipped Modules**:
 - ❌ **M00** - Product Discovery (skip: idea validated already)
-- ❌ **M07** - QA/Security Audit (skip: manual testing sufficient)
-- ❌ **M08** - Data Migration (skip: greenfield project)
+- ⚠️ **M07** - Full QA/Security Audit (skip: use M07-LITE baseline instead)
+- ⚠️ **M08** - Full Data Migration (skip if greenfield, use M08-LITE if data exists)
 - ❌ **M12** - Warranty Period (skip: internal/self-maintained)
 - ❌ **M13** - Product Ops (skip: no analytics team)
 
-**Note**: 9 modules executed (M01, M02, M03, M04, M05, M06, M09, M10, M11), 5 modules skipped.
+**Module Count**: 
+- Base: 10 modules (M01, M02, M03, M04, M05, M06, M07-LITE, M09, M10, M11)
+- +1 if data migration needed: M08-LITE (conditional)
+- Full modules skipped: M00, M12, M13
 
 ---
 
@@ -94,13 +99,66 @@
 
 ---
 
+#### **Week 8.5: M07-LITE Security Baseline (1-2 hours)**
+
+**M07-LITE - Security Checklist (NEW)**:
+- Template: `templates/06-qa-uat/SECURITY_CHECKLIST_SMALL.md`
+- Run 10-item security baseline (1-2 hours)
+- Critical checks:
+  1. Password hashing (bcrypt/argon2)
+  2. HTTPS enforced
+  3. SQL injection prevention (parameterized queries)
+  4. XSS protection (input sanitization)
+  5. CSRF tokens
+  6. Env vars for secrets (no hardcoded keys)
+  7. Rate limiting (login, API)
+  8. Error messages (no stack traces to users)
+  9. File upload validation
+  10. CORS configured
+- Output: Signed `SECURITY_CHECKLIST_SMALL.md`
+- **Gate**: No S1/S2 security issues → proceed to M09
+
+**Integration**:
+- Added to `TODO_TEMPLATE.md` Phase 7
+- Takes 1-2 hours (not days)
+- Prevents common vulnerabilities without full pentest
+
+---
+
+#### **[Conditional] M08-LITE: Data Migration (2-3 days)**
+
+**M08-LITE - Lightweight Data Migration (NEW)**:
+- **When**: Only if client has existing data (Excel/CSV/old system)
+- **Discovered in**: M02 Discovery (question added to `SCOPE_STATEMENT_TEMPLATE.md`)
+- **Template**: `templates/05-data-migration/DATA_MIGRATION_LITE.md`
+- **Scope**: <1000 rows, simple column mapping
+
+**Process**:
+1. **Day 1**: Client exports data, dev analyzes schema
+2. **Day 2**: Write migration script (Python/Node), test on staging
+3. **Day 3**: Client verifies sample (10-20 rows), production import
+
+**Timeline Impact**: +2-3 days if applicable
+
+**Decision Tree**:
+```
+M02 Discovery: "Does client have existing data?"
+├─ NO → Skip M08-LITE, proceed directly to M09
+└─ YES → Add M08-LITE after M07-LITE (before M09)
+```
+
+**Gate**: Data reconciliation confirmed (old count = new count)
+
+---
+
 #### **Week 9: M09 Client UAT (Solo Bypass)**
 
 **M09 - Lightweight Acceptance Testing (3-5 hari)**:
 - Solo MVP: Self-testing and self-sign-off
-- Manual testing: 10-15 test scenarios (critical paths only)
+- Template: `templates/06-qa-uat/UAT_WORKBOOK_SMALL.md` (15 test cases)
+- Manual testing: Login, CRUD, validation, mobile, edge cases
 - Bug fixes (S1/S2 only, defer S3 to post-launch)
-- Output: `docs/qa/UAT_REPORT.md` (self sign-off)
+- Output: `templates/06-qa-uat/UAT_SIGNOFF_SMALL.md` (self sign-off)
 - **Gate**: Self sign-off → ready to deploy
 
 ---
@@ -119,11 +177,20 @@
 #### **Week 11: M11 Handover (Solo Bypass)**
 
 **M11 - Handover (2-3 hari)**:
+- Email BAST: Use `templates/07-release-handover/BAST_EMAIL_SMALL.md`
 - Write `README.md` (setup instructions)
 - Write `RUNBOOK_PRODUCTION.md` (deployment SOP)
-- No formal BAST (internal project)
+- Warranty policy: Attach `templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md` (30 days)
 - Output: Documentation complete
 - **Gate**: Documentation verified
+
+**Handover Package** (from `HANDOVER_PROTOCOL_TEMPLATE.md`):
+- [ ] BAST email sent (or skipped if internal project)
+- [ ] Warranty policy attached (30-day coverage)
+- [ ] Staging credentials sent
+- [ ] Production credentials sent (1Password/Bitwarden secure send)
+- [ ] Source code repo access granted
+- [ ] Admin guide provided
 
 ---
 
