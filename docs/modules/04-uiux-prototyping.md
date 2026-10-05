@@ -348,7 +348,7 @@ Before proceeding to Step 1 (DESIGN.md generation):
 
 > ⚠️ **PROTOTYPING TOOL TROUBLESHOOTING**:
 > If Prototype MCP tools fail (authentication/network):
-> - Check API key in `opencode.json` / `FIGMA_ACCESS_TOKEN`
+> - Check access token in configuration / `FIGMA_ACCESS_TOKEN`
 > - Report technical issues to user (don't skip Prototype unilaterally)
 > - Fallback to Option C (AI prototype) only if Prototype unavailable
 
@@ -1568,9 +1568,9 @@ freepajak-design-export/
 ### 7.2 Phase B: UI Generation & Development (PC with MCP Prototype)
 
 **User works on local PC with tools**:
-- **MCP Server**: `mcp-server-figma` (built-in in Claude Desktop/Codex/OpenCode/Windsurf)
+- **MCP Server**: `mcp-server-figma` (built-in in Claude Desktop/Codex/Cursor/Windsurf)
 - **Code editor**: VS Code / Cursor / Windsurf
-- **AI coding agent**: Claude Desktop, Codex CLI, OpenCode CLI (with MCP Prototype enabled)
+- **AI coding agent**: Claude Desktop, Codex CLI, Cursor, Windsurf (with MCP Prototype enabled)
 - **Framework**: Next.js 15, Tailwind CSS, shadcn/ui
 
 **Workflow on PC**:
@@ -1614,7 +1614,7 @@ export FIGMA_ACCESS_TOKEN="your-figma-access-token-here"
 
 #### Step 3: Generate UI Screens via MCP Prototype (Autonomous AI Agent)
 
-**User prompt to Claude Desktop / Codex / OpenCode**:
+**User prompt to Claude Desktop / Codex / Cursor / Windsurf**:
 ```
 Read DESIGN.md and docs/specs/DESIGN_SPEC.md from this project, then generate all 10 screens using Design prototyping MCP.
 
@@ -1900,7 +1900,7 @@ EOF
 | Phase | Location | Tools | Primary Output | Duration |
 |-------|----------|-------|----------------|----------|
 | **Planning & Spec** | Hermes (chat AI) | web_search, write_file, patch, skill_view | DESIGN.md, DESIGN_SPEC.md, JSON data, Prototype prompts | 4-6 hours |
-| **UI Generation** | PC + MCP Prototype | Claude Desktop/Codex/OpenCode + MCP | 10 screens (Next.js code), interactive prototype | 3-5 hours |
+| **UI Generation** | PC + MCP Prototype | Claude Desktop/Codex/Cursor/Windsurf + MCP | 10 screens (Next.js code), interactive prototype | 3-5 hours |
 | **Review & Iterate** | PC | Browser, Lighthouse, WAVE | Anti-slop verification, accessibility audit | 2-3 hours |
 | **Development** | PC | VS Code, Next.js, Supabase, Vercel | Full-stack app implementation | 40-80 hours |
 | **Documentation** | Hermes (optional) | read_file, patch, memory | Design freeze archive, project status update | 30 minutes |

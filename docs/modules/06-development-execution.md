@@ -22,7 +22,7 @@
 >
 > - Read: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`
 
-This module is the sixth phase in the software project lifecycle for solo developers. Its purpose is to execute real code writing (*coding*) in a directed manner using **AI Coding Agents (OpenChamber + OpenCode + OhMyOpenCode / Cursor / Claude Code)** through the provision of an **Agent Harness (AI guide files)**, managing design implementation, managing **Git** branching, and enforcing 3 non-negotiable engineering pillars: **Security**, **Performance**, and **Resource Efficiency**.
+This module is the sixth phase in the software project lifecycle for solo developers. Its purpose is to execute real code writing (*coding*) in a directed manner using **AI Coding Agents (Cursor / Claude Code / Windsurf / Codex CLI)** through the provision of an **Agent Harness (AI guide files)**, managing design implementation, managing **Git** branching, and enforcing 3 non-negotiable engineering pillars: **Security**, **Performance**, and **Resource Efficiency**.
 
 ---
 
@@ -1875,7 +1875,7 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    grep -E '(DATABASE_URL|STRIPE_SECRET_KEY|AWS_SECRET)' .env
    # Confirm staging endpoints (e.g., Stripe test mode key prefix sk_test_)
    ```
-2. Instruct the AI agent (OpenCode):
+2. Instruct the AI coding agent:
    > *"Read ARCHITECTURE.md Database Models section. Create complete Prisma/Drizzle schema with CHECK constraints, foreign key relations, and performance indexes. Run the migration."*
 3. Run migrations: `pnpm db:migrate`
 4. Run initial seed data: `pnpm db:seed`
