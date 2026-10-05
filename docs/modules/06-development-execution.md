@@ -16,7 +16,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
 ## 1. Module 06 Execution Cycle (Universal Tech Stack Development Loop)
 
 ```text
-[ INPUT: FSD.md (with LOCKED stack decision), PRD.md, & Stitch Prototype from Modules 04-05 ]
+[ INPUT: FSD.md (with LOCKED stack decision), PRD.md, & Design Prototype from Modules 04-05 ]
                                     │
                                     ▼
 [ STEP 0: Extract Tech Stack Decision from FSD.md (MANDATORY FIRST) ]
@@ -227,7 +227,7 @@ Stack Decision LOCKED: Laravel Monolith (Option A)
 **Compatibility Level**: Level 4 (Hybrid - Inertia.js)
 
 **Conversion Plan**:
-1. Extract 18 Vue components from Stitch export
+1. Extract 18 Vue components from component specs
 2. Setup Inertia.js in Laravel (ziggy routes, Vite config)
 3. Create Laravel routes for every page
 ...
@@ -1122,10 +1122,10 @@ OUTPUT FORMAT (TODO.md):
 
 ## Phase 3: UI Components (1 task per screen from SITEMAP)
 [Generate from SITEMAP.md + DESIGN.md]
-> Source: DESIGN.md (tokens) + screens from SITEMAP or stitch-output/
+> Source: DESIGN.md (tokens) + screens from SITEMAP or design-specs/
 
 - [ ] src/components/ui/: Implement primitives per DESIGN.md tokens - expect design system match
-- [ ] [route_1]: Implement [Screen Name] from SITEMAP section X or stitch-output/SCR-XX - expect 5 states (ideal/loading/error/success/empty)
+- [ ] [route_1]: Implement [Screen Name] from SITEMAP section X or design-specs/ - expect 5 states (ideal/loading/error/success/empty)
 - [ ] [route_2]: Implement [Screen Name 2] from SITEMAP section Y
 ... (repeat for all M screens)
 
@@ -1293,7 +1293,7 @@ Agent reads FSD.md to extract:
 **Conversion Steps**:
 
 ```bash
-# 1. Export Stitch components (via MCP or manual download)
+# 1. Export Design components (via MCP or manual download)
 design implementation(projectId="...", screenId="...")
 
 # 2. Copy components to target directory
@@ -1301,7 +1301,7 @@ design implementation(projectId="...", screenId="...")
 # Remix: app/components/
 
 # 3. Minimal refactoring
-# - Add TypeScript types (if Stitch exported vanilla JS)
+# - Add TypeScript types (if component specsed vanilla JS)
 # - Adjust import paths
 # - Split into one component per file
 ```
@@ -1309,7 +1309,7 @@ design implementation(projectId="...", screenId="...")
 **Example Conversion**:
 
 ```tsx
-// ✅ Stitch Export (dashboard-card.tsx)
+// ✅ Design Export (dashboard-card.tsx)
 function DashboardCard({ title, value }) {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -1348,7 +1348,7 @@ export function DashboardCard({ title, value }: DashboardCardProps) {
 **Conversion Steps**:
 
 ```bash
-# 1. Export Stitch components
+# 1. Export Design components
 design implementation(...)
 
 # 2. Convert JSX → framework syntax
@@ -1364,7 +1364,7 @@ npx react-to-vue src/components/*.tsx --output resources/js/components/
 **Example Conversion**:
 
 ```vue
-<!-- ✅ Stitch Export (React JSX) -->
+<!-- ✅ Design Export (React JSX) -->
 <div className="bg-white rounded-lg shadow-sm p-6">
   <h3 className="text-zinc-700 font-semibold">{title}</h3>
   <p className="text-3xl font-bold text-zinc-900">{value}</p>
@@ -1396,12 +1396,12 @@ defineProps<{
 
 **Applicable Stacks**: Laravel Blade, Django Templates, Rails ERB, PHP
 
-**Conversion Strategy**: Stitch prototype = **visual reference only**
+**Conversion Strategy**: design specs = **visual reference only**
 
 **Conversion Steps**:
 
 ```bash
-# 1. Open Stitch prototype in browser as reference
+# 1. Open design specs in browser as reference
 # 2. Identify layout patterns:
 #    - Header (logo, nav, user menu)
 #    - Sidebar (if exists)
@@ -1412,14 +1412,14 @@ defineProps<{
 # Laravel: resources/views/*.blade.php
 # Django: templates/myapp/*.html
 
-# 4. Extract Tailwind classes from Stitch → copy to templates
+# 4. Extract Tailwind classes from design specs → copy to templates
 # Keep design tokens (DESIGN.md) consistent
 ```
 
 **Example Conversion**:
 
 ```blade
-{{-- ✅ Stitch React JSX (reference only) --}}
+{{-- ✅ Design React JSX (reference only) --}}
 {{-- <div className="bg-white rounded-lg shadow-sm p-6">
        <h3 className="text-zinc-700 font-semibold">{title}</h3>
        <p className="text-3xl font-bold text-zinc-900">{value}</p>
@@ -1466,7 +1466,7 @@ module.exports = {
 **Conversion Steps**:
 
 ```bash
-# 1. Export Stitch components (Vue/React)
+# 1. Export Design components (Vue/React)
 design implementation(...)
 
 # 2. Setup glue layer
@@ -1477,7 +1477,7 @@ design implementation(...)
 # Laravel: Inertia::render('Dashboard', ['stats' => $stats])
 # Rails: render inertia: 'Dashboard', props: { stats: stats }
 
-# 4. Copy Stitch components to framework structure
+# 4. Copy Design components to framework structure
 # Laravel Inertia: resources/js/Pages/*.vue
 # Rails Hotwire: app/frontend/pages/*.jsx
 ```
@@ -1498,7 +1498,7 @@ Route::get('/dashboard', function () {
 
 ```vue
 <!-- ✅ Vue Component (resources/js/Pages/Dashboard.vue) -->
-<!-- Copied from Stitch export with minimal changes -->
+<!-- Copied from component specs with minimal changes -->
 <script setup>
 defineProps(['stats'])
 </script>
@@ -1525,7 +1525,7 @@ defineProps(['stats'])
 
 After conversion is complete, verify:
 
-- [ ] **Visual Parity**: UI matches Stitch prototype 100% (compare screenshots)
+- [ ] **Visual Parity**: UI matches design specs 100% (compare screenshots)
 - [ ] **Design Tokens Applied**: Colors, fonts, spacing from DESIGN.md consistent
 - [ ] **Responsive**: Mobile/tablet/desktop layouts work (test breakpoints)
 - [ ] **All Screens Converted**: X/Y screens complete (track in TODO.md)
@@ -1843,7 +1843,7 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
    git commit -m "chore: initial project scaffolding with 7 AI harness files"
    ```
 
-### Step 2: UI Component Implementation (Stitch or Manual Scaffold)
+### Step 2: UI Component Implementation (Design or Manual Scaffold)
 
 **Component Implementation**
 
@@ -2271,7 +2271,7 @@ export const analytics = {
 
 1. **Git Repository Source Code**: Clean codebase with active `staging` branch and structured commit history.
 2. **`RUNBOOK_LOCAL.md`**: Complete guide for environment setup, DB migrations, and running the application locally (using `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`).
-3. **`VERIFY_LOCAL.md`**: Self-verification results sheet proving that all FSD endpoints, 3 engineering pillars, and Stitch flows are 100% functional (using `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`).
+3. **`VERIFY_LOCAL.md`**: Self-verification results sheet proving that all FSD endpoints, 3 engineering pillars, and Design flows are 100% functional (using `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`).
 4. **`AI_REVIEW_LOG.md`**: Pre-merge AI code review protocol log following `references/playbooks/ai-assisted-development.md`.
 5. **`DEVELOPMENT_PROGRESS_TRACKER.md`**: Coding execution progress tracker sheet, backend, frontend, integration checklists, and code review checkpoints (using `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md`).
 

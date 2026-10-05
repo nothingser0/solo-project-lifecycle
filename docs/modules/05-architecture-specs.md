@@ -47,7 +47,7 @@ This module is the fifth phase in the software project lifecycle for solo develo
                                     │
                                     ▼
 [ STEP 5: Module 04 Prototype → Module 06 Handoff Strategy ]
-  • Define conversion strategy (Stitch → chosen framework)
+  • Define conversion strategy (Prototype → chosen framework)
   • Document component mapping (React → Vue/Svelte/Blade)
   • Extract design tokens for reuse in chosen stack
                                     │
@@ -302,8 +302,8 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 **Best For**: MVP, solo dev first project, testing market fit
 **Avoid If**: Need guaranteed <200ms response, high traffic (>10K MAU)
 
-**Stitch Prototype Conversion**: 
-- ✅ **Direct copy** - Stitch generates React/Tailwind code
+**Prototype Conversion**: 
+- ✅ **Direct copy** - Design tool generates React/Tailwind code
 - Minimal refactoring: Import paths, component structure
 - Estimated conversion time: 1 day
 
@@ -337,9 +337,9 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 **Best For**: Budget-conscious dev, comfortable with Linux, 100-1K users
 **Avoid If**: Zero DevOps knowledge, need auto-scaling, compliance requirements
 
-**Stitch Prototype Conversion**:
+**Prototype Conversion**:
 - ✅ **Direct copy** - Next.js static export compatible
-- Add Express API layer (Stitch only generates frontend)
+- Add Express API layer (Prototype only generates frontend)
 - Estimated conversion time: 2 days
 
 
@@ -372,8 +372,8 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 **Best For**: Global user base, low-latency priority, modern edge-first stack
 **Avoid If**: Need Node.js specific libraries, team unfamiliar with edge concepts
 
-**Stitch Prototype Conversion**:
-- ⚠️ **Moderate conversion** - Stitch React → Remix requires route refactoring
+**Prototype Conversion**:
+- ⚠️ **Moderate conversion** - React prototype → Remix requires route refactoring
 - Components reusable, routes need restructuring (file-based → Remix conventions)
 - Estimated conversion time: 3-4 days
 ```
@@ -411,8 +411,8 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 **Best For**: PHP teams, CRUD-heavy apps, traditional web apps
 **Avoid If**: Team prefers JS/TS, requires serverless architecture
 
-**Stitch Prototype Conversion**:
-- ⚠️ **Full rewrite** - Stitch React → Laravel Blade templates
+**Prototype Conversion**:
+- ⚠️ **Full rewrite** - React prototype → Laravel Blade templates
 - Strategy: Extract layout patterns from design specs, rewrite as Blade components
 - Inertia.js option: Keep Vue components, wire to Laravel backend
 - Estimated conversion time: 5-7 days (Blade) or 3-4 days (Inertia)
@@ -444,8 +444,8 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 **Best For**: Transitioning to modern JS stack, team split (PHP backend, JS frontend)
 **Avoid If**: Solo dev (overhead not worth it), tight timeline
 
-**Stitch Prototype Conversion**:
-- ✅ **Direct copy** - Stitch React → Next.js components
+**Prototype Conversion**:
+- ✅ **Direct copy** - React prototype → Next.js components
 - Backend API: Laravel routes + Eloquent (familiar)
 - Estimated conversion time: 2-3 days (frontend) + 3-4 days (API)
 ```
@@ -674,7 +674,7 @@ Top 3 recommendations (score ≥95/100):
 - ❌ Cold starts (300-500ms first request after 5min idle)
 - ❌ Vendor lock-in (Vercel-specific features: Edge Middleware, ISR)
 
-**Module 04 Handoff**: Direct copy (Stitch React → Next.js, 1 day, 95% reuse)
+**Module 04 Handoff**: Direct copy (React prototype → Next.js, 1 day, 95% reuse)
 
 ---
 
@@ -705,7 +705,7 @@ Top 3 recommendations (score ≥95/100):
 - ❌ Smaller ecosystem vs Next.js (fewer examples)
 - ❌ Learning curve (islands architecture is a new concept)
 
-**Module 04 Handoff**: Component extraction (Stitch React → Astro islands, 2 days, 80% reuse)
+**Module 04 Handoff**: Component extraction (React prototype → Astro islands, 2 days, 80% reuse)
 
 ---
 
@@ -735,7 +735,7 @@ Top 3 recommendations (score ≥95/100):
 - ❌ Smaller ecosystem vs Next.js (newer framework, 2021)
 - ❌ Not free ($5/month minimum)
 
-**Module 04 Handoff**: Route restructuring (Stitch React → Remix routes, 3 days, 70% reuse)
+**Module 04 Handoff**: Route restructuring (React prototype → Remix routes, 3 days, 70% reuse)
 
 ---
 
@@ -896,19 +896,19 @@ Agent: [Re-score with Go Fiber + HTMX]
 **Applicable When**: User selects Next.js, Remix, Gatsby, Create React App
 
 **Strategy**:
-1. Export Stitch code (React + Tailwind)
+1. Export Prototype code (React + Tailwind)
 2. Copy components directly into `components/` folder
 3. Minimal refactoring:
    - Import paths adjustment
    - Component file structure (one component per file)
-   - Add TypeScript types (if Stitch generated vanilla JS)
+   - Add TypeScript types (if Prototype generated vanilla JS)
 
 **Conversion Effort**: 1 day
 **Conversion Rate**: 95% code reuse
 
 **Example**:
 ```typescript
-// Stitch export (single file)
+// component export (single file)
 function DashboardCard({ title, value }) {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -952,7 +952,7 @@ export function DashboardCard({ title, value }: DashboardCardProps) {
 
 **Example**:
 ```vue
-<!-- Stitch export (React JSX) -->
+<!-- component export (React JSX) -->
 <div className="bg-white rounded-lg shadow-sm p-6">
   <h3 className="text-zinc-700 font-semibold">{title}</h3>
   <p className="text-3xl font-bold text-zinc-900">{value}</p>
@@ -1000,7 +1000,7 @@ defineProps<{
 
 **Example**:
 ```blade
-{{-- Stitch export (React JSX) - reference only --}}
+{{-- component export (React JSX) - reference only --}}
 <div className="bg-white rounded-lg shadow-sm p-6">
   <h3 className="text-zinc-700 font-semibold">{title}</h3>
   <p className="text-3xl font-bold text-zinc-900">{value}</p>
@@ -1619,7 +1619,7 @@ FSD Content Summary:
 - ✅ Database Schema: 5 tables (users, documents, signatures, audit_logs, sessions), 12 relationships, 18 indexes
 - ✅ API Endpoints: 24 endpoints (auth, documents, signatures, users) with request/response examples
 - ✅ Security: JWT auth (HttpOnly cookies), Argon2id password hashing, rate limiting (5 attempts/15min), AES-256 file encryption
-- ✅ Module 04 Handoff: Direct copy strategy (Stitch React → Next.js, 95% code reuse, 1 day conversion)
+- ✅ Module 04 Handoff: Direct copy strategy (React prototype → Next.js, 95% code reuse, 1 day conversion)
 
 Performance Requirements:
 - Page load: <2s (P95)

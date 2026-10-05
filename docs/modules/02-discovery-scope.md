@@ -1,6 +1,6 @@
 # Module 02: Discovery & Scope Definition (Requirements Elicitation & Scope Locking)
 
-> - `references/checklists/MODUL_02_EVALUATION_CHECKLIST.md` (MoSCoW quality check, User Stories INVEST validation, Database Schema validation, Tech Stack validation, NFR realism check, Timeline buffer, Risk completeness, Scope boundaries)
+> - `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` (MoSCoW quality check, User Stories INVEST validation, Database Schema validation, Tech Stack validation, NFR realism check, Timeline buffer, Risk completeness, Scope boundaries)
 > - `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md` (5-pillar elicitation question bank, Red-flags detection)
 
 

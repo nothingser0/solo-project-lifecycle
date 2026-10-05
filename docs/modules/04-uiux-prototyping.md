@@ -13,9 +13,9 @@
 
 This module translates `SCOPE_STATEMENT.md` into three documents that serve as the UI source of truth: `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`. Its focus is visual standardization, shared components, all pages/sub-pages that are genuinely in-scope, responsive behavior, accessibility, and acceptance criteria.
 
-> **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (Stitch/AI/Figma) when client needs visual sign-off.
+> **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (Prototype/AI/Figma) when client needs visual sign-off.
 
-> **Output gate:** Module 04 does not produce UI code, Stitch prompts, Screen IDs, or live prototypes by default. Code is created in Module 06 based on these three documents.
+> **Output gate:** Module 04 does not produce UI code, Prototype prompts, Screen IDs, or live prototypes by default. Code is created in Module 06 based on these three documents.
 
 ---
 
@@ -329,28 +329,28 @@ Before proceeding to Step 1 (DESIGN.md generation):
 
 **Workflow**:
 1. Generate DESIGN.md (tokens, guidelines)
-5. Connect navigation, deploy to Stitch Viewer
+5. Connect navigation, deploy to Prototype Viewer
 6. Document final specs in DESIGN_SPEC.md
 
 **Deliverables**:
 - ✅ DESIGN.md (tokens)
 - ✅ DESIGN_SPEC.md (5-state matrix)
-- ✅ Stitch prototype URL
+- ✅ UI prototype URL
 
 **Pros**: Fast iteration, visual drag-and-drop, instant preview
 **Cons**: MCP tool dependency, proprietary platform
 
 > ⚠️ **STITCH TOOL TROUBLESHOOTING**:
-> If Stitch MCP tools fail (authentication/network):
+> If Prototype MCP tools fail (authentication/network):
 > - Check API key in `opencode.json` / `STITCH_API_KEY`
-> - Report technical issues to user (don't skip Stitch unilaterally)
-> - Fallback to Option C (AI prototype) only if Stitch unavailable
+> - Report technical issues to user (don't skip Prototype unilaterally)
+> - Fallback to Option C (AI prototype) only if Prototype unavailable
 
 ---
 
 ### Option C: AI-Powered Prototype (Modern Alternative)
 **Use when**:
-- Stitch unavailable or user prefers code-based output
+- Prototype unavailable or user prefers code-based output
 - Need production-ready component code
 - Client needs visual sign-off before M06
 
@@ -545,7 +545,7 @@ Returns:
 
 ### Decision Matrix
 
-| Criteria | Markdown | Stitch | AI Prototype | Design Tool | Figma MCP |
+| Criteria | Markdown | Prototype | AI Prototype | Design Tool | Figma MCP |
 |----------|----------|--------|--------------|-------------|-----------|
 | Time | 2-4 hours | 4-8 hours | 1-2 days | 2-3 days | 4-6 hours |
 | Cost | Free | Free* | $0-50 | $15-50/mo | $15/mo |
@@ -555,7 +555,7 @@ Returns:
 | Live sync | ❌ | ❌ | ❌ | ❌ | ✅ |
 | Best for | Solo MVP | Quick visual | Modern stack | Professional | Design systems |
 
-*Stitch: Free if MCP available; otherwise N/A
+*Prototype: Free if MCP available; otherwise N/A
 
 ---
 
@@ -568,7 +568,7 @@ This module produces concrete deliverables:
 | **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale). Prerequisite for DESIGN_SPEC.md. |
 | **2** | **`docs/specs/DESIGN_SPEC.md`** | Folder `docs/specs/` | Combined design system tokens and comprehensive UI specification document (color palette, typography, component specs, 5-state screen matrix per screen). |
 | **3** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to root after scaffold. |
-| **4** | **Interactive Prototype** (Optional) | Stitch / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
+| **4** | **Interactive Prototype** (Optional) | Prototype / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
 | **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
 
 > 📁 **MANDATORY FILE LOCATION RULES**:
@@ -577,7 +577,7 @@ This module produces concrete deliverables:
 >
 > ⚠️ **PROTOTYPING TOOL SELECTION**:
 > - Default to Option A (Markdown-only) for solo projects
-> - Use Option B (Stitch) if MCP available and user prefers visual builder
+> - Use Option B (Prototype) if MCP available and user prefers visual builder
 > - Use Option C (AI prototype) for modern stack with code output
 > - Use Option D (Design tool) for professional design handoff
 > - Never skip DESIGN.md + DESIGN_SPEC.md documentation (mandatory regardless of prototype choice)
@@ -798,13 +798,13 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
    - Accept: 80% quality (not pixel-perfect yet)
 
 2. **Manual polish** in Figma (if needed) (1-2 days):
-   - Export Stitch designs to Figma (via HTML → Figma plugin)
+   - Export Prototype designs to Figma (via HTML → Figma plugin)
    - Polish: Typography hierarchy, spacing consistency, color refinement
    - Add brand-specific elements (custom icons, illustrations, photography)
    - Create reusable component library from AI output
 
 3. **Code implementation** (Module 06):
-   - Use Stitch-generated code as starting point (HTML structure, Tailwind classes)
+   - Use Prototype-generated code as starting point (HTML structure, Tailwind classes)
    - Refactor to match codebase patterns (component composition, naming conventions)
    - Replace placeholder data with real data from database
 
@@ -816,7 +816,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 
 **Cons**:
 - ⚠️ Still requires basic Figma skills for polishing
-- ⚠️ Two tools overhead (learning both Stitch + Figma)
+- ⚠️ Two tools overhead (learning both Prototype + Figma)
 
 **Best For**:
 - Solo developer with limited design skills but willing to learn
@@ -1135,7 +1135,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 
 #### 1.10 Post-Generation Review (MANDATORY BEFORE DESIGN FREEZE)
 
-After Stitch generates screens, **MANUALLY REVIEW** each screen for slop:
+After Prototype generates screens, **MANUALLY REVIEW** each screen for slop:
 
 **Review Checklist (Per Screen):**
 1. [ ] Open screen preview in browser DevTools
@@ -1172,7 +1172,7 @@ After Stitch generates screens, **MANUALLY REVIEW** each screen for slop:
 - Record the `screen_id` of **every successfully generated screen** into the inventory table in `DESIGN_SPEC.md`.
 
 ### Step 4: Assembling the Complete Clickable Demo
-1. Retrieve HTML/CSS component code from Stitch for all screens.
+1. Retrieve HTML/CSS component code from Prototype for all screens.
 2. Add standard routing hyperlink tags to link button flows:
    - "Login" button → navigates to `/dashboard`
    - "Create New Document" button → navigates to `/documents/new`
@@ -1191,7 +1191,7 @@ After Stitch generates screens, **MANUALLY REVIEW** each screen for slop:
 | Parameter | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large Scale & Enterprise |
 | :--- | :--- | :--- | :--- |
 | **Screen Coverage** | **100% of all pages** in Scope (no reductions) | **100% of all pages** in Scope (no reductions) | **Phased if ≥50 screens**: Phase 1 (MVP core), Phase 2 (admin/secondary) |
-| **Demo Media** | Stitch Viewer Link / Live Preview | Live Staging Web (Vercel/Cloudflare) | Live Staging Web + Accessibility Audit Document |
+| **Demo Media** | Prototype Viewer Link / Live Preview | Live Staging Web (Vercel/Cloudflare) | Live Staging Web + Accessibility Audit Document |
 | **Design Compliance** | Standard visual contrast ≥4.5:1 | WCAG AA verified on forms | Full WCAG AA audit (Keyboard nav, Screen reader) |
 | **Approval** | Written confirmation via email/chat | Signed Design Freeze sheet | Formal Design Sign-Off & UI Review Minutes |
 
@@ -1199,7 +1199,7 @@ After Stitch generates screens, **MANUALLY REVIEW** each screen for slop:
 
 ## 5. User Testing & Iterative Validation
 
-After the interactive Stitch prototype is complete, user testing is **MANDATORY** before the final design freeze. Skipping this phase merely shifts usability issues to post-launch (5x more expensive to fix).
+After the interactive UI prototype is complete, user testing is **MANDATORY** before the final design freeze. Skipping this phase merely shifts usability issues to post-launch (5x more expensive to fix).
 
 ### 5.1 User Testing Plan (Template: `templates/02-design/USABILITY_TEST_PLAN_TEMPLATE.md`)
 
@@ -1278,7 +1278,7 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 
 ### 5.5 Accessibility Audit (WCAG 2.1 Level AA Compliance)
 
-**Pre-Development Checklist** (Perform on Stitch Prototype):
+**Pre-Development Checklist** (Perform on Prototype Prototype):
 - [ ] **Contrast Ratio**: Text ≥4.5:1, Large text ≥3:1 (use WebAIM Contrast Checker)
 - [ ] **Keyboard Navigation**: All interactions can be performed without a mouse (Tab, Enter, Esc, Arrow keys)
 - [ ] **Focus Indicators**: Visible focus state on all interactive elements (outline 2px solid)
@@ -1482,9 +1482,9 @@ Next Steps:
 > **AUTHORITATIVE WORKFLOW OVERRIDE**
 >
 
-## 7. Workflow Split: Planning (Hermes) vs Development (PC with MCP Stitch)
+## 7. Workflow Split: Planning (Hermes) vs Development (PC with MCP Prototype)
 
-**Use Case**: User conducts planning/PM/design specification in Hermes (chat AI), then executes UI generation & development on a local PC with MCP Stitch.
+**Use Case**: User conducts planning/PM/design specification in Hermes (chat AI), then executes UI generation & development on a local PC with MCP Prototype.
 
 ### 7.1 Phase A: Planning & Design Specification (Hermes)
 
@@ -1559,12 +1559,12 @@ freepajak-design-export/
 
 ---
 
-### 7.2 Phase B: UI Generation & Development (PC with MCP Stitch)
+### 7.2 Phase B: UI Generation & Development (PC with MCP Prototype)
 
 **User works on local PC with tools**:
 - **MCP Server**: `mcp-server-google-stitch` (built-in in Claude Desktop/Codex/OpenCode/Windsurf)
 - **Code editor**: VS Code / Cursor / Windsurf
-- **AI coding agent**: Claude Desktop, Codex CLI, OpenCode CLI (with MCP Stitch enabled)
+- **AI coding agent**: Claude Desktop, Codex CLI, OpenCode CLI (with MCP Prototype enabled)
 - **Framework**: Next.js 15, Tailwind CSS, shadcn/ui
 
 **Workflow on PC**:
@@ -1577,7 +1577,7 @@ tar -xzf ~/Downloads/freepajak-design-export-20260929.tar.gz
 ls -lh  # Verify DESIGN.md, docs/, data/, stitch-prompts/ extracted
 ```
 
-#### Step 2: Setup MCP Stitch (if not yet configured)
+#### Step 2: Setup MCP Prototype (if not yet configured)
 
 **Option A: Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json` on Mac):
 ```json
@@ -1600,13 +1600,13 @@ ls -lh  # Verify DESIGN.md, docs/, data/, stitch-prompts/ extracted
 export STITCH_API_KEY="your-google-stitch-api-key-here"
 ```
 
-**Get Stitch API Key**:
+**Get Prototype API Key**:
 - Visit https://stitch.withgoogle.com
 - Sign in with Google account
 - Go to Settings → API Keys → Generate New Key
 - Copy key (starts with `sk-stitch-...`)
 
-#### Step 3: Generate UI Screens via MCP Stitch (Autonomous AI Agent)
+#### Step 3: Generate UI Screens via MCP Prototype (Autonomous AI Agent)
 
 **User prompt to Claude Desktop / Codex / OpenCode**:
 ```
@@ -1631,7 +1631,7 @@ For each screen in DESIGN_SPEC.md (SCR-001 to SCR-010):
    - /app/(routes)/[route-name]/page.tsx
    - Tailwind classes only (no inline styles)
    - shadcn/ui components where applicable
-5. Update DESIGN_SPEC.md with Stitch URL per screen
+5. Update DESIGN_SPEC.md with Prototype URL per screen
 
 After all screens generated:
 - Create interactive prototype links (stitch_link_screens)
@@ -1743,7 +1743,7 @@ Proceed autonomously and report progress every 3 screens.
    
    **Route**: `/`
    **Status**: ✅ Generated
-   **Stitch URL**: https://stitch.withgoogle.com/p/abc123/s/001
+   **Prototype URL**: https://stitch.withgoogle.com/p/abc123/s/001
    **Generated**: 2026-09-29
    **Anti-Slop Compliance**: ✅ Pass (0 gradients, 0 violations)
    ```
@@ -1776,7 +1776,7 @@ Proceed autonomously and report progress every 3 screens.
    
    ## Screen Inventory
    
-   | Screen ID | Route | Status | Stitch URL | Compliance |
+   | Screen ID | Route | Status | Prototype URL | Compliance |
    |-----------|-------|--------|------------|------------|
    | SCR-001 | / | ✅ Approved | [Link](https://stitch.../001) | ✅ Pass |
    | SCR-002 | /dashboard | ✅ Approved | [Link](https://stitch.../002) | ✅ Pass |
@@ -1893,8 +1893,8 @@ EOF
 
 | Phase | Location | Tools | Primary Output | Duration |
 |-------|----------|-------|----------------|----------|
-| **Planning & Spec** | Hermes (chat AI) | web_search, write_file, patch, skill_view | DESIGN.md, DESIGN_SPEC.md, JSON data, Stitch prompts | 4-6 hours |
-| **UI Generation** | PC + MCP Stitch | Claude Desktop/Codex/OpenCode + MCP | 10 screens (Next.js code), interactive prototype | 3-5 hours |
+| **Planning & Spec** | Hermes (chat AI) | web_search, write_file, patch, skill_view | DESIGN.md, DESIGN_SPEC.md, JSON data, Prototype prompts | 4-6 hours |
+| **UI Generation** | PC + MCP Prototype | Claude Desktop/Codex/OpenCode + MCP | 10 screens (Next.js code), interactive prototype | 3-5 hours |
 | **Review & Iterate** | PC | Browser, Lighthouse, WAVE | Anti-slop verification, accessibility audit | 2-3 hours |
 | **Development** | PC | VS Code, Next.js, Supabase, Vercel | Full-stack app implementation | 40-80 hours |
 | **Documentation** | Hermes (optional) | read_file, patch, memory | Design freeze archive, project status update | 30 minutes |
@@ -1908,7 +1908,7 @@ EOF
 
 **Common Pitfalls to Avoid**:
 - ❌ Skipping DESIGN.md → MCP agent generates inconsistent styling across screens
-- ❌ Vague Stitch prompts → AI outputs generic templates with gradients/glassmorphism
+- ❌ Vague Prototype prompts → AI outputs generic templates with gradients/glassmorphism
 - ❌ No anti-slop verification → Accepting first MCP output without compliance check
 - ❌ Skipping accessibility audit → Launch with WCAG violations (legal risk)
 - ❌ No design freeze sign-off → Scope creep during development ("can we change the layout?")
