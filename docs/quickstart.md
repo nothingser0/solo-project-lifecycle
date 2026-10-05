@@ -65,9 +65,9 @@ Week 4: Deploy (2 days)
 - ❌ M01 (Feasibility) → Just build it
 - ❌ M02 (Scope) → Keep it in your head or 1-page doc
 - ❌ M03 (Legal/SOW) → No client = no contract
-- ❌ M04B (Design System) → Use Tailwind defaults
-- ❌ M05B (System Design) → Single server is fine
-- ❌ M06B (Analytics) → Add post-launch
+- ❌ M04 section 8 (Design System Foundation) → Use Tailwind defaults
+- ❌ M05 section 6 (System Design & Infrastructure) → Single server is fine
+- ❌ M06 section 6A (Analytics Setup) → Add post-launch
 - ❌ M07 (QA/SIT) → Manual testing only
 - ❌ M08 (Data Migration) → No legacy data
 - ❌ M09 (UAT) → You are the user
@@ -337,11 +337,11 @@ vercel --prod
 
 **When MVP proves traction** (>10 active users, >50% retention):
 1. Read full framework `docs/README.md`
-2. Add proper monitoring (M06B)
+2. Add proper monitoring (M06 section 6A - Analytics)
 3. Write tests for critical paths (M07)
 4. Refactor code (remove copy-paste)
 5. Add admin panel
-6. Scale infrastructure (M05B)
+6. Scale infrastructure (M05 section 6 - System Design)
 
 **When MVP fails** (<5 users, <20% retention):
 - Pivot or kill
@@ -400,7 +400,7 @@ Upgrade when:
 Then read:
 - `docs/modules/02-discovery-scope.md` (scope protection)
 - `docs/modules/03-legal-sow-charter.md` (contracts)
-- `docs/modules/05B-system-design-infrastructure.md` (scaling)
+- `docs/modules/05-architecture-specs.md` section 6 (scaling & infrastructure)
 - `docs/modules/07-quality-assurance-sit.md` (testing)
 
 ---

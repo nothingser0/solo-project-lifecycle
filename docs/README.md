@@ -23,14 +23,14 @@ INITIATION & DISCOVERY PHASE:
   03. [COMMERCIAL GATE] Legal SOW, Down Payment, & Single PIC Agreement
 
 DESIGN & SPECIFICATION PHASE:
-  04B. Design System Foundation & Implementation (Token System, Component Library, Governance) ──► docs/modules/04B-design-system-foundation.md
   04. UI/UX Design & Prototyping (Design System & User Flow)
+    - Section 8: Design System Foundation & Implementation [M04B - Enterprise Extension]
   05. Architecture & Technical Specifications (PRD, FSD, & DB Schema)
-    05B. System Design & Infrastructure Scalability (High Availability, Capacity Planning, Caching) ──► docs/modules/05B-system-design-infrastructure.md
+    - Section 6: System Design & Infrastructure Scalability [M05B - Enterprise Extension]
 
 EXECUTION & VALIDATION PHASE:
   06. Development (Backend, Frontend, API Integration)
-  06B. Product Instrumentation & Analytics Setup (Mixpanel, Event Taxonomy, Dashboards)
+    - Section 6A: Product Instrumentation & Analytics Setup [M06B - Enterprise Extension]
   07. Quality Assurance (Unit Test, SIT, & Security Audit)
   08. Data Migration & Seeding (Data Cleaning & Transformation)
   09. [VALIDATION GATE] Client UAT & Sign-Off in Staging
@@ -90,12 +90,12 @@ RELEASE & CLOSURE PHASE:
 - [x] **Module 01: Idea & Feasibility**: `docs/modules/01-idea-feasibility.md` — 3-filter idea triage, 4-dimensional feasibility testing, extreme feature pruning, initial scale classification.
 - [x] **Module 02: Discovery & Scope Definition**: `docs/modules/02-discovery-scope.md` — Stakeholder requirements elicitation, user role mapping, MoSCoW breakdown, In-Scope vs Out-of-Scope locking, and client dependency register.
 - [x] **Module 03: [COMMERCIAL GATE] Legal SOW, DP, & Single PIC Agreement**: `docs/modules/03-legal-sow-charter.md` — Contract model selection, milestone payment terms, binding Single PIC agreement, Change Request protocol, and Down Payment security.
-- [x] **Module 04B: Design System Foundation & Implementation**: `docs/modules/04B-design-system-foundation.md` — DS terminology (Design System vs Design Language vs Component Library), visual inconsistency audit, design tokens (primitive + semantic layers), core components (20 essentials), Figma setup & plugins, tooling workflow (Style Dictionary, Storybook, Chromatic), governance model (centralized vs federated), adoption metrics, and product management for DS. **SKIP if**: Solo dev MVP <4 weeks, API-only backend.
-- **Module 04: UI/UX Design & Specification**: `docs/modules/04-uiux-prototyping.md` — Produces `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`; covers information architecture, scope-based sitemap & page inventory, shared component standards, states, responsive behavior, accessibility, asset needs, and Design Freeze. Google Stitch/prototype is optional only if chosen by user and passes review.
+- **Module 04: UI/UX Design & Specification**: `docs/modules/04-uiux-prototyping.md` — Produces `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`; covers information architecture, scope-based sitemap & page inventory, shared component standards, states, responsive behavior, accessibility, asset needs, and Design Freeze. Interactive prototype optional.
+  - Section 8: **Design System Foundation [M04B]** — Enterprise design systems with tokens, component libraries, Storybook, governance. **SKIP if**: Solo MVP <4 weeks.
 - [x] **Module 05: Architecture & Technical Specifications (PRD & FSD)**: `docs/modules/05-architecture-specs.md` — Tech stack selection (Boring Tech ladder), SQL DDL database schema, API contracts & error matrix, security architecture (PDP Law/AES-256), and FSD sign-off.
-- [x] **Module 05B: System Design & Infrastructure Scalability**: `docs/modules/05B-system-design-infrastructure.md` — Infrastructure scalability, load balancing, caching layer (Redis), database replication/sharding, asynchronous workers/queues, high availability (Multi-AZ), and capacity planning. **SKIP if**: Small Project (MVP).
-- [x] **Module 06: Development (Backend, Frontend, API Integration)**: `docs/modules/06-development-execution.md` — Repo & tooling setup, DB migration & local seeding, Zod-gated API implementation, Stitch UI assembly, AES-256 streaming encryption, and self-smoke test.
-- [x] **Module 06B: Product Instrumentation & Analytics Setup**: `docs/modules/06B-product-instrumentation.md` — Mixpanel/Amplitude/GA4 integration, `verb_noun` event taxonomy, AARRR funnel tracking, A/B testing infrastructure, North Star Metric dashboard, Sentry error monitoring, and GDPR/PDP Law privacy compliance.
+  - Section 6: **System Design & Infrastructure [M05B]** — Load balancing, Redis caching, DB sharding, high availability, capacity planning. **SKIP if**: Small projects.
+- [x] **Module 06: Development (Backend, Frontend, API Integration)**: `docs/modules/06-development-execution.md` — Repo & tooling setup, DB migration & local seeding, Zod-gated API implementation, component implementation, AES-256 streaming encryption, and self-smoke test.
+  - Section 6A: **Analytics Setup [M06B]** — Mixpanel/Amplitude integration, event taxonomy, AARRR funnels, dashboards, error monitoring.
 - [x] **Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)**: `docs/modules/07-quality-assurance-sit.md` — Solo dev testing pyramid, third-party SIT sandbox (Payment/Storage/Email), OWASP/PDP Law security audit, k6 load testing, and staging release.
 - [x] **Module 08: Data Migration & Seeding**: `docs/modules/08-data-migration-seeding.md` — Data hygiene protocol (Clean-In/Clean-Out), source-to-target column mapping, Staging PII masking sanitation, atomic ETL batch scripts, and data sign-off reconciliation.
 - [x] **Module 09: [VALIDATION GATE] Client UAT & Sign-Off in Staging**: `docs/modules/09-uat-client-signoff.md` — User testing in Staging, defect triage matrix (Severity 1/2/3/CR), scope creep repulsion, deemed acceptance clause, and signed UAT Report.
@@ -131,10 +131,11 @@ RELEASE & CLOSURE PHASE:
 ### Module 03 (Active)
 - `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`: Saved to **`docs/pm/SOW_CONTRACT.md`** (Legal commercial agreement, payment terms, liability cap, project charter).
 
-### Module 04B (Active)
+### Module 04 - Advanced Templates
 - `templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md`: Visual inconsistency audit template (color inventory, typography, spacing, component duplication). Saved to **`docs/design/DESIGN_SYSTEM_AUDIT.md`**.
 - `templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md`: Design tokens specification template (primitive + semantic, color/typography/spacing/shadow/motion, platform outputs CSS/iOS/Android/Flutter). Saved to **`tokens/design-tokens.json`** + generated **`dist/css/variables.css`**.
 - `templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md`: Component documentation template (props, variants, states, accessibility checklist, usage examples, migration guide). Saved to **`docs/design/COMPONENT_API_SPEC.md`** per component.
+> For M04 Section 8 (Design System Foundation) - Enterprise projects only.
 
 ### Module 04 (Active)
 - `templates/02-design/DESIGN_MD_TEMPLATE.md`: Saved to root (**`./DESIGN.md`**) as source of truth for design tokens and component standards.
@@ -145,12 +146,13 @@ RELEASE & CLOSURE PHASE:
 - `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`: Saved to **`docs/specs/PRD.md`** (Official product specifications, RBAC matrix, KPI metrics, NFR constraints).
 - `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`: Saved to **`docs/specs/FSD.md`** (Technical architectural specifications, ERD, standard SQL DDL, JSON API contracts, security blueprint).
 
-### Module 05B (Active)
+### Module 05 - Advanced Templates
 - `templates/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md`: Saved to **`docs/specs/SYSTEM_DESIGN_DOC.md`** (Large-scale system architecture specification, load balancing, caching, DB partitioning/sharding).
 - `templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md`: Saved to **`docs/specs/CAPACITY_PLANNING.md`** (MAU/RPS traffic projection, CPU/Memory utilization, and server/DB/Redis resource requirements).
 - `templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md`: Saved to **`docs/specs/DISASTER_RECOVERY_PLAN.md`** (RPO/RTO disaster mitigation SOP, Multi-AZ failover scenarios, and recovery procedures).
 - `templates/03-architecture-specs/DESIGN_PATTERN_DECISION_TREE_TEMPLATE.md`: Saved to **`docs/specs/DESIGN_PATTERN_DECISION_TREE.md`** (Software design pattern selection decision tree).
 - `templates/03-architecture-specs/CODE_REVIEW_PATTERN_CHECKLIST_TEMPLATE.md`: Saved to **`docs/specs/CODE_REVIEW_PATTERN_CHECKLIST.md`** (Pattern evaluation and anti-pattern code review checklist).
+> For M05 Section 6 (System Design & Infrastructure) - Large/Enterprise projects.
 
 ### Module 06 (Active - 7 Root Harness Files)
 - `templates/04-dev-execution/AGENTS_TEMPLATE.md`: Saved to root (**`./AGENTS.md`**) — *MANDATORY OVERWRITE of framework default AGENTS.md (such as Next.js 15), never skip!*
@@ -162,10 +164,11 @@ RELEASE & CLOSURE PHASE:
 - `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`: Saved to **`docs/RUNBOOK_LOCAL.md`** or root.
 - `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`: Saved to **`docs/VERIFY_LOCAL.md`** or root.
 
-### Module 06B (Active)
+### Module 06 - Advanced Templates
 - `templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md`: Event tracking taxonomy template with `verb_noun` convention, user properties, and super properties. Saved to **`docs/analytics/EVENT_TAXONOMY.md`**.
 - `templates/09-product-growth/ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md`: Mixpanel/Amplitude SDK implementation plan template, tracking code locations, GDPR consent management, and QA checklist. Saved to **`docs/analytics/ANALYTICS_IMPLEMENTATION_PLAN.md`**.
 - `templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md`: Dashboard specification template for North Star Metric, AARRR funnel, cohort analysis, error monitoring, and alert thresholds. Saved to **`docs/analytics/DASHBOARD_SPEC.md`**.
+> For M06 Section 6A (Analytics Setup) - Post-MVP or enterprise analytics.
 
 ### Module 07 (Active)
 - `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`: SIT (System Integration Testing) workbook template for third-party services in Staging.
