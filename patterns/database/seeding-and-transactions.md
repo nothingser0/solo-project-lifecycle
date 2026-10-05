@@ -151,14 +151,14 @@ async function main() {
       await prisma.user.upsert({
         where: { email: SEED_ADMIN_EMAIL },
         update: { roleId: adminRole.id },
-      create: {
+        create: {
           email: SEED_ADMIN_EMAIL,
-        name: 'Local Dev Admin',
-        passwordHash,
-        roleId: adminRole.id,
-        emailVerified: true,
-      },
-    });
+          name: 'Local Dev Admin',
+          passwordHash,
+          roleId: adminRole.id,
+          emailVerified: true,
+        },
+      });
 
       console.log(`🔑 Development admin created/verified for account: ${SEED_ADMIN_EMAIL}`);
     }
