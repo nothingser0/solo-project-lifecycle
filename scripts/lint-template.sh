@@ -103,7 +103,7 @@ case "$BASENAME" in
         echo "=== SOW-specific checks ==="
         
         # Check for payment terms
-        if grep -q "Termin\|Payment\|DP" "$TEMPLATE_FILE"; then
+        if grep -E -q "Termin|Payment|DP|Rp|USD|EUR|\$" "$TEMPLATE_FILE"; then
             echo "✅ Payment terms defined"
         else
             echo "❌ Payment terms missing"

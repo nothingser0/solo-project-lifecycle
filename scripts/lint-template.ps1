@@ -77,8 +77,8 @@ if ($filename -match "PRD|FSD|DESIGN_SPEC") {
 
 if ($filename -match "SOW_CONTRACT") {
     # Check for monetary values
-    if ($content -notmatch 'Rp\s+[\d,\.]+') {
-        $issues += "No monetary values found (required in contract)"
+    if ($content -notmatch '(?:Rp|IDR|\$|USD|EUR)\s*[\d,\.]+') {
+        $issues += "No monetary values found (required in contract, e.g. Rp, $, USD, EUR)"
     }
     
     # Check for signatures section
