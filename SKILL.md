@@ -149,10 +149,12 @@ All templates in `templates/` directory:
 - `by-use-case/operations/` - Post-launch maintenance
 
 **By phase** (match module number):
-- `00-pre-engagement/` - Client intake
+- `00-pre-sales-enterprise/` - RFP response, POC plans
 - `01-discovery-commercial/` - Market research, SOW, scope
 - `02-design/` - Design specs, prototypes
+- `02-legal-commercial/` - Financial tracking, SMB SOW
 - `03-architecture-specs/` - PRD, FSD, system design
+- `03-governance/` - Enterprise governance (ADR, RACI, compliance, incident response)
 - `04-dev-execution/` - AGENTS.md, CONTEXT.md, TODO.md (7 root harness files)
 - `05-data-migration/` - Migration plans
 - `06-qa-uat/` - Test plans, security audits
@@ -190,12 +192,13 @@ PowerShell: Same commands, use `.ps1` extension.
 ## References
 
 Deep-dive guides in `references/`:
+- `checklists/` - Feasibility criteria, evaluation
 - `playbooks/` - AI development, design patterns
 - `pm/` - Analytics setup, prioritization, communication
+- `pre-sales/` - Discovery calls, proposals, quotations
 - `solo/` - Solo dev architecture, patterns, engineering standards
 - `stacks/` - Next.js 15, Laravel 11 quickstarts
-- `technical/` - Deep research, compliance, design systems
-- `checklists/` - Feasibility criteria, evaluation
+- `technical/` - Deep research, compliance, design systems, APM, mobile architecture
 
 Load references when entering relevant module. Don't preload all.
 
