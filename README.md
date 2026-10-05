@@ -55,7 +55,7 @@ Completeness = utility. Similar to design systems or testing frameworks - compre
 solo-project-lifecycle/
 ├── docs/modules/          14 lifecycle modules (M00-M13)
 ├── templates/             170+ project templates
-├── patterns/              11 code patterns (API, testing, deployment, error handling)
+├── patterns/              12 code patterns (API, testing, deployment, database, security)
 ├── case-studies/          5 examples (3 real + 2 worked examples)
 ├── references/            Guides and playbooks
 └── scripts/               Automation tools
@@ -218,14 +218,18 @@ Full details: `case-studies/`
 
 **Bash (Linux/Mac):**
 ```bash
-./scripts/validate-gate.sh     # Validate gate checkpoints
-./scripts/lint-template.sh     # Check template completeness
-./scripts/template-picker.sh   # Interactive template selector
+./scripts/validate-gate.sh              # Validate gate checkpoints
+./scripts/check-package-versions.sh     # Real-time registry dependency checks
+./scripts/verify-framework-version.sh   # Validate lockfile against FSD
+./scripts/lint-template.sh              # Check template completeness
+./scripts/template-picker.sh            # Interactive template selector
 ```
 
 **PowerShell (Windows):**
 ```powershell
 .\scripts\validate-gate.ps1
+.\scripts\check-package-versions.ps1
+.\scripts\verify-framework-version.ps1
 .\scripts\lint-template.ps1
 .\scripts\template-picker.ps1
 ```
@@ -259,10 +263,12 @@ Use for commercial projects, consulting, products, internal tools.
 - [All Modules](./docs/modules/)
 - [Templates](./templates/)
 - [Patterns](./patterns/)
+- [References](./references/)
+- [Scripts](./scripts/)
 - [Issues](https://github.com/nothingser0/solo-project-lifecycle/issues)
 
 ---
 
 Built by solo developers, for solo developers.
 
-Last updated: 2026-10-04
+Last updated: 2026-10-05

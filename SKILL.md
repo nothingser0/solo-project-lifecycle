@@ -2,7 +2,7 @@
 name: solo-project-lifecycle
 description: Comprehensive skill framework for managing software project lifecycle from discovery to production. Use when starting projects, scoping client work, writing PRD/FSD/SOW, planning architecture, or managing full SDLC.
 version: 1.0.0
-updated: 2026-10-04
+updated: 2026-10-05
 ---
 
 # Solo Project Lifecycle
@@ -179,6 +179,8 @@ Validation tools in `scripts/` (bash + PowerShell):
 ./scripts/validate-gate.sh M03  # Commercial gate
 ./scripts/validate-gate.sh M09  # UAT gate
 ./scripts/validate-gate.sh M11  # Handover gate
+./scripts/check-package-versions.sh nextjs  # Real-time package checks
+./scripts/verify-framework-version.sh       # Verify lockfile matches FSD
 
 # Check template completeness
 ./scripts/lint-template.sh path/to/template.md
@@ -218,7 +220,7 @@ Real projects in `case-studies/` (reference for timelines/budgets):
 - `03-crm-real-estate-internal.md` - 28 days, +58% revenue
 
 ## Tech stack support
-
+Stack-agnostic. Quickstart guides in `references/stacks/`:
 
 - Frontend: React, Next.js (v15–v16+), Vue, Svelte
 - Backend: Node.js, Laravel (v11–v13+), Django (v5–v6+), Go (v1.23–v1.27+)
