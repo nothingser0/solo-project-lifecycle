@@ -257,17 +257,17 @@ Test examples
 
 ### Updating Patterns
 
-1. Edit pattern file (`patterns/<category>/<name>.md`)
+1. Edit pattern file (`patterns/{category}/{name}.md`)
 2. Verify references in modules still accurate
-4. Commit: `docs(patterns): update <pattern> with <change>`
+3. Commit: `docs(patterns): update {pattern} with {change}`
 
 ### Adding New Patterns
 
 1. Identify duplication (3+ module references)
-2. Extract to `patterns/<category>/<name>.md`
+2. Extract to `patterns/{category}/{name}.md`
 3. Update module references to point to pattern
 4. Update this index
-5. Commit: `feat(patterns): extract <pattern> from modules`
+5. Commit: `feat(patterns): extract {pattern} from modules`
 
 ---
 
