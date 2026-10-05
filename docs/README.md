@@ -43,7 +43,7 @@ RELEASE & CLOSURE PHASE:
 ```
 
 **CRITICAL: Progressive Loading Protocol**
-- **DO NOT load all 17 modules at once** (total ~100K tokens)
+- **DO NOT load all 14 modules at once** (total ~100K tokens)
 - Load specific module ONLY when entering that phase
 - Example: "Load docs/modules/03-legal-sow-charter.md" when at Module 03
 - Reduces context pollution and improves response quality
@@ -207,3 +207,30 @@ RELEASE & CLOSURE PHASE:
 
 - **Package Version Checker**: See [`docs/package-version-auto-check.md`](./package-version-auto-check.md) for real-time package version verification (`check-package-versions.sh` / `.ps1`) to avoid AI knowledge cutoff regressions.
 - **Gate Validation CLI**: Run `./scripts/validate-gate.sh` to programmatically verify quality gates between modules.
+
+---
+
+## 7. Complete `docs/` Directory File Catalog
+
+Full inventory of all 17 files in the `docs/` directory:
+
+| Path | Category | Purpose |
+|---|---|---|
+| [`docs/README.md`](./README.md) | Framework Guide | Master SDLC orchestration manual, rules, and module index |
+| [`docs/quickstart.md`](./quickstart.md) | Quickstart Guide | 2–4 week fast-track MVP path (skip 8 modules, 5 core steps) |
+| [`docs/package-version-auto-check.md`](./package-version-auto-check.md) | Tooling Guide | Ecosystem version checking to prevent AI knowledge-cutoff hallucinations |
+| [`docs/pm/README.md`](./pm/README.md) | Directory Guide | Specification of `docs/pm/` output destination for governance artifacts |
+| [`docs/modules/00-product-discovery-strategy.md`](./modules/00-product-discovery-strategy.md) | Module 00 | Market research, competitor analysis, JTBD interviews, North Star Metric |
+| [`docs/modules/01-idea-feasibility.md`](./modules/01-idea-feasibility.md) | Module 01 | 3-filter triage, 4-dimensional feasibility scoring, idea brief |
+| [`docs/modules/02-discovery-scope.md`](./modules/02-discovery-scope.md) | Module 02 | MoSCoW scope definition, user stories, out-of-scope boundaries |
+| [`docs/modules/03-legal-sow-charter.md`](./modules/03-legal-sow-charter.md) | Module 03 [Gate 1] | Legal SOW, milestone payments, Single PIC, down payment |
+| [`docs/modules/04-uiux-prototyping.md`](./modules/04-uiux-prototyping.md) | Module 04 | UI/UX specifications, design tokens, screen inventory (incl. M04B DS) |
+| [`docs/modules/05-architecture-specs.md`](./modules/05-architecture-specs.md) | Module 05 | PRD, technical FSD, SQL schema, API contracts (incl. M05B scaling) |
+| [`docs/modules/06-development-execution.md`](./modules/06-development-execution.md) | Module 06 | Coding execution, 7 root harness files, security, performance |
+| [`docs/modules/07-quality-assurance-sit.md`](./modules/07-quality-assurance-sit.md) | Module 07 | Testing pyramid, third-party SIT sandbox, OWASP security audit |
+| [`docs/modules/08-data-migration-seeding.md`](./modules/08-data-migration-seeding.md) | Module 08 | Legacy data ETL, PII sanitization, reconciliation reporting |
+| [`docs/modules/09-uat-client-signoff.md`](./modules/09-uat-client-signoff.md) | Module 09 [Gate 2] | Staging client UAT, defect triage, signed UAT report |
+| [`docs/modules/10-deployment-production.md`](./modules/10-deployment-production.md) | Module 10 | Production go-live, zero-downtime DB migration, DNS/SSL |
+| [`docs/modules/11-handover-bast.md`](./modules/11-handover-bast.md) | Module 11 [Gate 3] | Final 100% payment, credentials transfer, legally binding BAST |
+| [`docs/modules/12-warranty-sla-retainer.md`](./modules/12-warranty-sla-retainer.md) | Module 12 | 30-90 day bug warranty, incident response, recurring SLA retainer |
+| [`docs/modules/13-product-operations-iteration.md`](./modules/13-product-operations-iteration.md) | Module 13 | 30-day baseline metrics, RICE growth backlog, cohort retention |
