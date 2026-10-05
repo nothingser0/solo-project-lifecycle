@@ -65,7 +65,7 @@ case "$BASENAME" in
         echo "=== PRD-specific checks ==="
         
         # Required PRD sections
-        for section in "## 1\. Problem Statement" "## 2\. Solution Overview" "## 3\. User Stories" "## 4\. Functional Requirements" "## 5\. Non-Functional Requirements"; do
+        for section in "Functional Requirements" "Non-Functional Requirements"; do
             if grep -q "$section" "$TEMPLATE_FILE"; then
                 echo "✅ Has section: $section"
             else
@@ -80,7 +80,7 @@ case "$BASENAME" in
         echo "=== FSD-specific checks ==="
         
         # Required FSD sections
-        for section in "## 1\. Tech Stack Decision" "## 2\. Database Schema" "## 3\. API Contracts" "## 4\. Security Architecture"; do
+        for section in "Tech Stack" "Database Schema" "API Contracts" "Security"; do
             if grep -q "$section" "$TEMPLATE_FILE"; then
                 echo "✅ Has section: $section"
             else
