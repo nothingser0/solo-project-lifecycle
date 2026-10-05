@@ -63,10 +63,10 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
                                 │
                                 ▼
 [ OUTPUT: 5 COMPLETE ARTIFACTS ] ──► Ready to Proceed to Module 05: Architecture & FSD
-  1. COMPONENT_REQUIREMENTS.md (component inventory)
-  2. DESIGN.md (design system tokens)
-  3. DESIGN_SPEC.md (screen specifications)
-  4. SITEMAP.md (screen hierarchy)
+  1. docs/specs/COMPONENT_REQUIREMENTS.md (component inventory)
+  2. docs/specs/DESIGN.md (design system tokens - for Google Stitch)
+  3. docs/specs/DESIGN_SPEC.md (screen specifications)
+  4. docs/specs/SITEMAP.md (screen hierarchy)
   5. Prototype URL (if interactive path chosen)
 ```
 
