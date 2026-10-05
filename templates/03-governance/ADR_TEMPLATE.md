@@ -189,14 +189,14 @@ Rejected Options:
 - ADR-005: API gateway selection
 
 **References**:
-- [POC results](link)
-- [Load test report](link)
-- [Cost analysis spreadsheet](link)
-- [Architecture diagram](link)
+- [POC results](#)
+- [Load test report](#)
+- [Cost analysis spreadsheet](#)
+- [Architecture diagram](#)
 
 **Discussion**:
-- [Slack thread](link)
-- [Design review meeting notes](link)
+- [Slack thread](#)
+- [Design review meeting notes](#)
 
 ---
 
