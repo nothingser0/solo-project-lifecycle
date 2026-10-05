@@ -346,9 +346,9 @@ Before proceeding to Step 1 (DESIGN.md generation):
 **Pros**: Fast iteration, visual drag-and-drop, instant preview
 **Cons**: MCP tool dependency, proprietary platform
 
-> ⚠️ **STITCH TOOL TROUBLESHOOTING**:
+> ⚠️ **PROTOTYPING TOOL TROUBLESHOOTING**:
 > If Prototype MCP tools fail (authentication/network):
-> - Check API key in `opencode.json` / `STITCH_API_KEY`
+> - Check API key in `opencode.json` / `FIGMA_ACCESS_TOKEN`
 > - Report technical issues to user (don't skip Prototype unilaterally)
 > - Fallback to Option C (AI prototype) only if Prototype unavailable
 
@@ -1165,7 +1165,7 @@ After Prototype generates screens, **MANUALLY REVIEW** each screen for slop:
 1. Create a new project container:
 2. Convert `DESIGN.md` file into base64, then upload:
 3. Apply the Design System to the project:
-   `stitch_create_design_system_from_design_md(projectId="...", ...)`
+   `ui_prototype_action(projectId="...", ...)`
 
 ### Step 3: Generating All Screens (Phased Coverage for Enterprise)
 - **Small/Medium Scale (<50 screens)**: 100% exhaustive coverage in a single phase. Truncation is FORBIDDEN.
@@ -1523,9 +1523,9 @@ Next Steps:
    - Metadata: version, source URL, last_updated, changelog
 
 5. ✅ **Design prototyping Prompt Files** (optional — pre-write prompts for each screen)
-   - `stitch-prompts/01-landing-page.txt` (10-20 lines: layout + strict style + components)
-   - `stitch-prompts/02-dashboard.txt`
-   - `stitch-prompts/03-calculation-form.txt`
+   - `ui-prompts/01-landing-page.txt` (10-20 lines: layout + strict style + components)
+   - `ui-prompts/02-dashboard.txt`
+   - `ui-prompts/03-calculation-form.txt`
    - Format: Layout sections, Style (STRICT anti-slop), Components list, References
 
 **How to Export from Hermes to PC**:
@@ -1538,7 +1538,7 @@ Next Steps:
 
 # Example terminal command (Hermes executes):
 cd /opt/data/home/project/freepajak
-tar -czf ../freepajak-design-export-$(date +%Y%m%d).tar.gz   DESIGN.md   docs/specs/LOGO_DESIGN_BRIEF.md   docs/specs/DESIGN_SPEC.md   data/regulations/*.json   stitch-prompts/*.txt
+tar -czf ../freepajak-design-export-$(date +%Y%m%d).tar.gz   DESIGN.md   docs/specs/LOGO_DESIGN_BRIEF.md   docs/specs/DESIGN_SPEC.md   data/regulations/*.json   ui-prompts/*.txt
 
 # Output: /opt/data/home/project/freepajak-design-export-20260929.tar.gz
 # User downloads this file to PC
@@ -1556,7 +1556,7 @@ freepajak-design-export/
 │   └── regulations/
 │       ├── pph21-rates.json               # Tax data assets
 │       └── ptkp-values.json
-└── stitch-prompts/                        # Optional pre-written prompts
+└── ui-prompts/                        # Optional pre-written prompts
     ├── 01-landing-page.txt
     ├── 02-dashboard.txt
     ├── 03-calculation-form.txt
@@ -1568,7 +1568,7 @@ freepajak-design-export/
 ### 7.2 Phase B: UI Generation & Development (PC with MCP Prototype)
 
 **User works on local PC with tools**:
-- **MCP Server**: `mcp-server-google-stitch` (built-in in Claude Desktop/Codex/OpenCode/Windsurf)
+- **MCP Server**: `mcp-server-figma` (built-in in Claude Desktop/Codex/OpenCode/Windsurf)
 - **Code editor**: VS Code / Cursor / Windsurf
 - **AI coding agent**: Claude Desktop, Codex CLI, OpenCode CLI (with MCP Prototype enabled)
 - **Framework**: Next.js 15, Tailwind CSS, shadcn/ui
@@ -1580,7 +1580,7 @@ freepajak-design-export/
 # On PC
 cd ~/projects/freepajak
 tar -xzf ~/Downloads/freepajak-design-export-20260929.tar.gz
-ls -lh  # Verify DESIGN.md, docs/, data/, stitch-prompts/ extracted
+ls -lh  # Verify DESIGN.md, docs/, data/, ui-prompts/ extracted
 ```
 
 #### Step 2: Setup MCP Prototype (if not yet configured)
@@ -1589,11 +1589,11 @@ ls -lh  # Verify DESIGN.md, docs/, data/, stitch-prompts/ extracted
 ```json
 {
   "mcpServers": {
-    "google-stitch": {
+    "figma": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-google-stitch"],
+      "args": ["-y", "@modelcontextprotocol/server-figma"],
       "env": {
-        "STITCH_API_KEY": "your-google-stitch-api-key-here"
+        "FIGMA_ACCESS_TOKEN": "your-figma-access-token-here"
       }
     }
   }
@@ -1603,14 +1603,14 @@ ls -lh  # Verify DESIGN.md, docs/, data/, stitch-prompts/ extracted
 **Option B: Environment Variable** (if MCP built-in):
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-export STITCH_API_KEY="your-google-stitch-api-key-here"
+export FIGMA_ACCESS_TOKEN="your-figma-access-token-here"
 ```
 
 **Get Prototype API Key**:
-- Visit https://stitch.withgoogle.com
+- Visit https://figma.com
 - Sign in with Google account
 - Go to Settings → API Keys → Generate New Key
-- Copy key (starts with `sk-stitch-...`)
+- Copy key (starts with `figd_...`)
 
 #### Step 3: Generate UI Screens via MCP Prototype (Autonomous AI Agent)
 
@@ -1624,7 +1624,7 @@ Project context:
 - Design style: Minimalist, flat colors, NO gradients, NO glassmorphism
 
 For each screen in DESIGN_SPEC.md (SCR-001 to SCR-010):
-1. Read the corresponding prompt file from stitch-prompts/[screen].txt
+1. Read the corresponding prompt file from ui-prompts/[screen].txt
    - prompt: content from .txt file
    - screen_id: from DESIGN_SPEC.md (e.g., "SCR-001")
    - design_system: color palette + typography from DESIGN.md
@@ -1640,7 +1640,7 @@ For each screen in DESIGN_SPEC.md (SCR-001 to SCR-010):
 5. Update DESIGN_SPEC.md with Prototype URL per screen
 
 After all screens generated:
-- Create interactive prototype links (stitch_link_screens)
+- Create interactive prototype links (ui_prototype_action)
 - Generate accessibility report (WCAG AA compliance)
 - Save summary to design-freeze-report.md
 
@@ -1654,7 +1654,7 @@ Proceed autonomously and report progress every 3 screens.
 1. **Read specifications**:
    - `read_file('DESIGN.md')` → Extract color palette (`#0891B2`, `#FFFFFF`, `#18181B`), typography (`Inter`, `600 semibold`)
    - `read_file('docs/specs/DESIGN_SPEC.md')` → Extract screen list (10 screens: SCR-001 to SCR-010, routes `/`, `/dashboard`, `/calculations`, etc.)
-   - `read_file('stitch-prompts/01-landing-page.txt')` → Get prompt text for first screen
+   - `read_file('ui-prompts/01-landing-page.txt')` → Get prompt text for first screen
 
 2. **Generate screen 1** (Landing Page):
    ```javascript
@@ -1687,7 +1687,7 @@ Proceed autonomously and report progress every 3 screens.
 3. **Verify anti-slop compliance**:
    ```javascript
    // Agent checks generated code
-   const code = stitch_export_code({ screen_id: "SCR-001", format: "nextjs-tailwind" });
+   const code = ui_prototype_action({ screen_id: "SCR-001", format: "nextjs-tailwind" });
    
    // Check for violations
    const hasGradient = code.includes('bg-gradient') || code.includes('linear-gradient');
@@ -1695,7 +1695,7 @@ Proceed autonomously and report progress every 3 screens.
    
    if (hasGradient || hasShadowLarge) {
      // Regenerate with stricter prompt
-     stitch_regenerate_screen({
+     ui_prototype_action({
        screen_id: "SCR-001",
        prompt: "... (add more explicit NO GRADIENT rule)"
      });
@@ -1749,7 +1749,7 @@ Proceed autonomously and report progress every 3 screens.
    
    **Route**: `/`
    **Status**: ✅ Generated
-   **Prototype URL**: https://stitch.withgoogle.com/p/abc123/s/001
+   **Prototype URL**: https://staging-preview.app/screens
    **Generated**: 2026-09-29
    **Anti-Slop Compliance**: ✅ Pass (0 gradients, 0 violations)
    ```
@@ -1759,7 +1759,7 @@ Proceed autonomously and report progress every 3 screens.
 7. **Generate interactive prototype**:
    ```javascript
    // Link screens together
-   stitch_link_screens({
+   ui_prototype_action({
      links: [
        { from: "SCR-001", to: "SCR-002", trigger: "button[Mulai Gratis]" },
        { from: "SCR-002", to: "SCR-003", trigger: "card[PPh 21 Pegawai]" },
@@ -1768,8 +1768,8 @@ Proceed autonomously and report progress every 3 screens.
    });
    
    // Get preview URL
-   const prototypeURL = stitch_get_prototype_url({ project_id: "abc123" });
-   // Returns: https://stitch.withgoogle.com/p/abc123/preview
+   const prototypeURL = ui_prototype_action({ project_id: "abc123" });
+   // Returns: https://staging-preview.app/preview
    ```
 
 8. **Generate Design Freeze Report**:
@@ -1784,9 +1784,9 @@ Proceed autonomously and report progress every 3 screens.
    
    | Screen ID | Route | Status | Prototype URL | Compliance |
    |-----------|-------|--------|------------|------------|
-   | SCR-001 | / | ✅ Approved | [Link](https://stitch.../001) | ✅ Pass |
-   | SCR-002 | /dashboard | ✅ Approved | [Link](https://stitch.../002) | ✅ Pass |
-   | SCR-003 | /calculations | ✅ Approved | [Link](https://stitch.../003) | ✅ Pass |
+   | SCR-001 | / | ✅ Approved | [Link](https://staging-preview.app/screen) | ✅ Pass |
+   | SCR-002 | /dashboard | ✅ Approved | [Link](https://staging-preview.app/screen) | ✅ Pass |
+   | SCR-003 | /calculations | ✅ Approved | [Link](https://staging-preview.app/screen) | ✅ Pass |
    | ... | ... | ... | ... | ... |
    
    ## Anti-Slop Compliance Summary
@@ -1799,7 +1799,7 @@ Proceed autonomously and report progress every 3 screens.
    
    ## Interactive Prototype
    
-   **Preview URL**: https://stitch.withgoogle.com/p/abc123/preview
+   **Preview URL**: https://staging-preview.app/preview
    **Status**: Ready for user testing
    
    ## Next Steps
@@ -1855,7 +1855,7 @@ User to AI agent:
 
 AI agent:
 [reads DESIGN.md anti-slop section]
-[calls stitch_regenerate_screen with updated prompt]
+[calls ui_prototype_action with updated prompt]
 [verifies new output, exports code]
 [reports: "SCR-002 regenerated, gradient removed, compliance verified"]
 ```
@@ -1875,7 +1875,7 @@ FreePajak Design Freeze Summary
 Date: 2026-09-29
 Screens: 10/10 generated
 Anti-Slop Compliance: 100% (0 violations)
-Prototype URL: https://stitch.withgoogle.com/p/abc123/preview
+Prototype URL: https://staging-preview.app/preview
 Lighthouse Scores: Performance 92, Accessibility 95, Best Practices 90, SEO 94
 
 Design Freeze Approved: Yes
