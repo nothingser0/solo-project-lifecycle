@@ -856,36 +856,44 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 ## 3. Step-by-Step Execution
 
 ### Step 0A: Generate Logo Design Brief (MANDATORY - Pre-Design Phase)
-**MANDATORY BEFORE STEP 1** for all projects (client or solo product):
+**MANDATORY BEFORE STEP 1** for all projects (client or solo product).
 
-1. **Create document `LOGO_DESIGN_BRIEF.md`** in `docs/specs/` with structure:
-   - Brand Identity (positioning statement, tagline, target user)
-   - Brand Personality (tone of voice, mood keywords)
-   - Logo Requirements (SVG format, scalability 16px-512px, versatility light/dark)
-   - 4 Logo Concept Ideas (Lettermark, Abstract Symbol, Iconographic, Wordmark)
-   - Color Palette Recommendation (primary + accent colors with hex codes)
-   - **4 Ready-to-Use Prompts** for AI logo generators:
-     - Prompt 1: Lettermark Style (for ChatGPT/Claude/Midjourney)
-     - Prompt 2: Abstract Symbol Style
-     - Prompt 3: Iconographic Style
-     - Prompt 4: Wordmark Style
-   - Deliverables Checklist (3 variants, color versions, file naming)
-   - Style References (SaaS logos: Stripe, Notion, Linear, Vercel)
+**Directive**: Generate minimal brief (2KB max). Do NOT generate over-prescriptive design documents or pre-baked concepts.
 
-2. **Inform User Explicitly**:
-   > "Logo design brief has been created in `docs/specs/LOGO_DESIGN_BRIEF.md` (Xkb). Please generate a logo using one of the 4 available prompts (copy-paste into ChatGPT/Claude/Midjourney/LogoAI). Once the logo is ready, save the SVG files to `/assets/logo/` and proceed to Step 0B (SITEMAP.md). **Alternatively, if you want to skip with a placeholder logo for now, we can proceed with a placeholder and you can generate the logo later before launch.**"
+1. **Create document `docs/specs/LOGO_DESIGN_BRIEF.md`** with ONLY these 5 elements:
+   - **Product Name + Philosophy**: 2-3 sentences on what the product does and why it exists.
+   - **Target User**: 1 sentence defining primary audience.
+   - **Brand Vibe**: 4-5 keywords (e.g., trustworthy, practical, modern).
+   - **User Responsibility**: Explicit note that user generates the logo, extracts colors from the chosen logo, and saves asset files.
+   - **Empty AI Prompt Template**: Minimal prompt skeleton with placeholder:
+     ```text
+     [UPLOAD YOUR LOGO REFERENCES HERE]
 
-3. **Wait for User Decision** (Do NOT proceed automatically):
-   - User generates logo now → Wait for logo files, then proceed to Step 0B
+     Create a modern, minimal vector logo inspired by the style and structure of the reference images above.
+     Product: [Product Name] - [Philosophy]
+     Target User: [Audience]
+     Vibe: [Keywords]
+     Constraints: Flat vector, high contrast, transparent background, works at 16px favicon and 512px icon. No gradients, no 3D effects.
+     ```
+
+2. **ANTI-PATTERNS (What NOT to Include)**:
+   - ❌ **NO Logo concept ideas**: Omit Lettermark, Grid, Book+Chart, Wordmark directions (user brainstorms concepts).
+   - ❌ **NO Color recommendations**: Do not pre-select cyan `#0891B2`, emerald `#10B981`, etc. (user extracts colors from chosen logo).
+   - ❌ **NO Ready-made AI prompts**: Do not provide pre-written multi-variant prompts (user crafts based on references).
+   - ❌ **NO Style references list**: Omit pre-selected lists like Linear, Notion, Stripe (user picks own references).
+   - ❌ **NO Technical specs detail**: Omit export size matrices, file naming rules, and 20+ item deliverables checklists.
+
+3. **Inform User Explicitly**:
+   > "Minimal logo design brief created at `docs/specs/LOGO_DESIGN_BRIEF.md` (<2KB). Add your visual references to the prompt template, generate the logo, extract your primary/accent colors for `DESIGN.md`, and save SVG assets to `/assets/logo/`. Once ready, proceed to Step 0B (SITEMAP.md). **Alternatively, we can proceed with a placeholder logo and finalize branding before launch.**"
+
+4. **Wait for User Decision** (Do NOT proceed automatically):
+   - User generates logo now → Extract brand colors from user logo, save to `/assets/logo/`, proceed to Step 0B
    - User wants placeholder → Proceed to Step 0B with placeholder logo note
 
 **Why This is Mandatory**:
-- Logo colors inform the primary/accent color palette in `DESIGN.md`
-- Logo style (geometric/rounded/modern) informs design system tokens
-- Generating brief upfront prevents color/style mismatches later
-- User can generate logo asynchronously without blocking Module 04 progress
-
-**Template**: Use `templates/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md` (if not exists, create inline using the structure above).
+- User extracts actual brand colors from logo to inform `DESIGN.md` palette
+- Prevents premature design decisions and over-prescriptive AI slop
+- User maintains full creative control over branding without blocking workflow progress
 
 ---
 
@@ -1319,7 +1327,7 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 [GATE] Module 04 is declared **PASSED** if:
 
 ### Mandatory Files Verification (BLOCKING):
-- [x] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, contains 4 prompts)
+- [x] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, ≤2KB minimal brief)
 - [x] **`docs/specs/SITEMAP.md` exists** (≥500 bytes, contains screen count table)
 - [x] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
 - [x] **`docs/specs/DESIGN_SPEC.md` exists** (≥2000 bytes, contains screen specs)
@@ -1358,7 +1366,7 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 # Run this PowerShell script to verify all mandatory files exist
 
 $requiredFiles = @(
-    @{Path="docs/specs/LOGO_DESIGN_BRIEF.md"; MinSize=500},
+    @{Path="docs/specs/LOGO_DESIGN_BRIEF.md"; MinSize=500; MaxSize=2048},
     @{Path="docs/specs/SITEMAP.md"; MinSize=500},
     @{Path="DESIGN.md"; MinSize=1000},
     @{Path="docs/specs/DESIGN_SPEC.md"; MinSize=2000}
@@ -1376,7 +1384,12 @@ foreach ($file in $requiredFiles) {
             Write-Error "❌ GATE FAILED: File $($file.Path) is too small ($size bytes < $($file.MinSize) bytes minimum)."
             $allPassed = $false
         } else {
+            if ($file.MaxSize -and $size -gt $file.MaxSize) {
+                Write-Error "❌ GATE FAILED: File $($file.Path) exceeds maximum allowed size ($size bytes > $($file.MaxSize) bytes maximum)."
+                $allPassed = $false
+            } else {
             Write-Host "✅ $($file.Path) verified ($size bytes)"
+            }
         }
     }
 }
@@ -1442,7 +1455,7 @@ After all checks pass, display a summary:
 ✅ MODULE 04 COMPLETE - Design Deliverables Ready
 
 Files Generated:
-- ✅ LOGO_DESIGN_BRIEF.md (11.2KB) - 4 AI prompts ready
+- ✅ LOGO_DESIGN_BRIEF.md (1.8KB) - Minimal brief ready (2KB max)
 - ✅ SITEMAP.md (6.8KB) - 18 screens mapped
 - ✅ DESIGN.md (12.4KB) - Design tokens defined
 - ✅ DESIGN_SPEC.md (34.7KB) - Screen specs complete
@@ -1496,10 +1509,10 @@ Next Steps:
 
 **Deliverables created in Hermes**:
 
-1. ✅ **`docs/specs/LOGO_DESIGN_BRIEF.md`** (~11KB)
-   - 4 AI prompts to generate logo (ChatGPT/Claude/Midjourney)
-   - Color palette recommendation (primary + accent hex codes)
-   - Style references (SaaS logos: Stripe, Notion, Linear)
+1. ✅ **`docs/specs/LOGO_DESIGN_BRIEF.md`** (≤2KB minimal brief)
+   - Product name + philosophy (2-3 sentences)
+   - Target user (1 sentence) + brand vibe (4-5 keywords)
+   - User responsibility + empty prompt template with reference placeholder
 
 2. ✅ **`docs/harness-root/DESIGN.md`** (staged for deployment after scaffold, ~8-15KB)
    - Color palette (primary, background, text, border with hex codes)
@@ -1550,7 +1563,7 @@ freepajak-design-export/
 ├── DESIGN.md                              # Root design system tokens
 ├── docs/
 │   └── specs/
-│       ├── LOGO_DESIGN_BRIEF.md           # Logo generation prompts
+│       ├── LOGO_DESIGN_BRIEF.md           # Minimal logo brief
 │       └── DESIGN_SPEC.md                 # Screen breakdown + sitemap
 ├── data/
 │   └── regulations/
