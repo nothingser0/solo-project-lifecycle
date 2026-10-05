@@ -1845,20 +1845,15 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
 
 ### Step 2: UI Component Implementation (Stitch or Manual Scaffold)
 
-**Option A: Import from Google Stitch (If Screen IDs Available)**
-1. Read Screen IDs from `DESIGN_SYSTEM.md` (Part II: Screen Inventory).
-2. Instruct OpenCode (if Stitch MCP is available):
-   > *"Use the `stitch_get_screen` tool for registered Screen IDs. Extract HTML/Tailwind code into React components in `src/components/ui/` and wire the pages in `src/app/`."*
-3. Run `pnpm dev` to verify the UI is identical to the design.
+**Component Implementation**
 
-**Option B: Manual Scaffold (Without Stitch)**
-1. Read screen descriptions from `DESIGN_SYSTEM.md` (sitemap + color/typography tokens).
+1. Read screen descriptions from `DESIGN.md` and `DESIGN_SPEC.md` (sitemap + color/typography tokens).
 2. Create empty shell UI components with proper folder structure:
    ```bash
    mkdir -p src/components/ui src/app/{dashboard,documents,login}
    ```
-3. Instruct AI to generate components based on DESIGN_SYSTEM.md without Stitch:
-   > *"Read `DESIGN_SYSTEM.md`. Create React/Vue/Flutter components matching Zinc palette, Inter font, flat 1px border. Scaffold login, dashboard, document list pages."*
+3. Instruct AI to generate components based on design specs:
+   > *"Read `DESIGN.md` and `DESIGN_SPEC.md`. Create React/Vue/Flutter components matching design tokens. Implement login, dashboard, document list pages."*
 
 ### Step 3: Database Migration Execution & Seeding
 1. **Verify Staging ENV**: Before migrations, verify `.env` (staging):

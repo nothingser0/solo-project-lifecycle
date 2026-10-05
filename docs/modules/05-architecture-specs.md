@@ -12,7 +12,7 @@ This module is the fifth phase in the software project lifecycle for solo develo
 ## 1. Module 05 Execution Cycle
 
 ```text
-[ INPUT: SCOPE_STATEMENT.md from Module 02 & DESIGN_SYSTEM.md from Module 04 ]
+[ INPUT: SCOPE_STATEMENT.md from Module 02 & DESIGN_SPEC.md from Module 04 ]
                                     │
                                     ▼
 [ STEP 0: Tech Stack Discovery Questionnaire (NEW - MANDATORY) ]
