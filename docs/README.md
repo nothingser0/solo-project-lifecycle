@@ -1,6 +1,6 @@
 ---
 name: solo-project-lifecycle
-description: End-to-end software development lifecycle (SDLC) orchestrator for solo developers and technical consultants executing projects from Small (MVP) to Enterprise scale. Covers the full 12-stage pipeline from raw idea triage, feasibility evaluation, discovery, contract gating, UI/UX, architecture/FSD, development, QA/SIT, data migration, UAT sign-off, production deployment, to BAST handover and maintenance. Trigger whenever proposing a new app idea, scoping a project, qualifying clients, drafting PRD/FSD, planning architectures, or closing projects.
+description: End-to-end software development lifecycle (SDLC) orchestrator for solo developers and technical consultants executing projects from Small (MVP) to Enterprise scale. Covers the full 14-module pipeline from raw idea triage, feasibility evaluation, discovery, contract gating, UI/UX, architecture/FSD, development, QA/SIT, data migration, UAT sign-off, production deployment, to BAST handover and maintenance. Trigger whenever proposing a new app idea, scoping a project, qualifying clients, drafting PRD/FSD, planning architectures, or closing projects.
 ---
 
 # Solo Software Lifecycle Orchestrator
@@ -8,12 +8,12 @@ description: End-to-end software development lifecycle (SDLC) orchestrator for s
 Software operational framework for solo developers and technical consultants executing projects from Small (MVP) to Enterprise scale with scope protection, AI automation, and tiered quality gates.
 
 > 🚀 **QUICK INITIATION GUIDE (ANTI-CONFLICT PROTOCOL)**:
-> Before starting to code or creating a project folder, read the Quickstart guide in **`README.md`**.
+> Before starting to code or creating a project folder, read the Quickstart guide in **`docs/quickstart.md`**.
 > Never copy harness files (`AGENTS.md`, `TODO.md`, etc.) to an empty folder **before** running your language framework scaffolding (`create-next-app`, `poetry init`, `composer`, `dotnet new`, `flutter create`, etc.) to avoid CLI rejection (*directory conflict*).
 
 ---
 
-## 1. The 12-Stage Pipeline
+## 1. The 14-Module Pipeline
 
 ```text
 INITIATION & DISCOVERY PHASE:
@@ -161,8 +161,8 @@ RELEASE & CLOSURE PHASE:
 - `templates/04-dev-execution/CONVENTIONS_TEMPLATE.md`: Saved to root (**`./CONVENTIONS.md`**) — Code style conventions (kebab-case, Server Components, no barrel files).
 - `templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md`: Saved to root (**`./.env.example`**) — Standard environment variable dictionary.
 - `templates/04-dev-execution/TODO_TEMPLATE.md`: Saved to root (**`./TODO.md`**) — Sequential atomic AI coding task queue.
-- `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`: Saved to **`docs/RUNBOOK_LOCAL.md`** or root.
-- `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`: Saved to **`docs/VERIFY_LOCAL.md`** or root.
+- `templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md`: Saved to **`docs/specs/RUNBOOK_LOCAL.md`** or root.
+- `templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md`: Saved to **`docs/specs/VERIFY_LOCAL.md`** or root.
 
 ### Module 06 - Advanced Templates
 - `templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md`: Event tracking taxonomy template with `verb_noun` convention, user properties, and super properties. Saved to **`docs/analytics/EVENT_TAXONOMY.md`**.
@@ -203,4 +203,7 @@ RELEASE & CLOSURE PHASE:
 
 ---
 
-## 6. Tactical References & Knowledge
+## 6. Framework Automation & Tooling
+
+- **Package Version Checker**: See [`docs/package-version-auto-check.md`](./package-version-auto-check.md) for real-time package version verification (`check-package-versions.sh` / `.ps1`) to avoid AI knowledge cutoff regressions.
+- **Gate Validation CLI**: Run `./scripts/validate-gate.sh` to programmatically verify quality gates between modules.

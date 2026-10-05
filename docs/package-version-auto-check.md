@@ -183,7 +183,7 @@ npx create-next-app@latest my-app
 ### 1. Auto-Update FSD.md Template
 ```bash
 # Generate FSD.md from script output
-./scripts/generate-fsd.sh nextjs > docs/FSD.md
+./scripts/generate-fsd.sh nextjs > docs/specs/FSD.md
 ```
 
 ### 2. CI/CD Integration
