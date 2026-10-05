@@ -20,9 +20,11 @@ patterns/
 │   ├── caching-strategies.md - Redis, CDN, cache invalidation
 │   └── n-plus-one-prevention.md - DataLoader, eager loading, batch queries
 ├── database/
-│   └── supabase-migrations.md - Migration patterns, RLS policies
+│   ├── supabase-migrations.md - Migration patterns, RLS policies
+│   └── seeding-and-transactions.md - Idempotent seeders, atomic transactions, row locking
 ├── api/
-│   └── rest-conventions.md - HTTP methods, status codes, API design
+│   ├── rest-conventions.md - HTTP methods, status codes, API design
+│   └── graphql-and-versioning.md - GraphQL schema design, depth limits, URI versioning
 ├── error-handling/
 │   └── error-boundaries.md - Custom error classes, logging, recovery
 ├── testing/
@@ -60,6 +62,10 @@ patterns/
 **File**: `patterns/api/rest-conventions.md`  
 **Covers**: HTTP methods, status codes, pagination, filtering, error responses, versioning  
 **Referenced in**: M05 (API design), M06 (API development), M07 (API testing)
+
+**File**: `patterns/api/graphql-and-versioning.md`
+**Covers**: REST vs GraphQL decision matrix, query depth limiting, URI/Header versioning, RFC 7807 errors
+**Referenced in**: M05 (API architecture), M06 (API implementation)
 
 ---
 
@@ -99,6 +105,10 @@ patterns/
 **File**: `patterns/database/supabase-migrations.md`  
 **Covers**: Migration strategies, RLS policies, type safety  
 **Referenced in**: M05 (database design), M06 (migrations)
+
+**File**: `patterns/database/seeding-and-transactions.md`
+**Covers**: Atomic transactions ($transaction), row locking (FOR UPDATE), idempotent upsert seeding, batch imports
+**Referenced in**: M05 (schema design), M06 (transactions), M08 (seeding)
 
 ---
 
@@ -230,20 +240,16 @@ Test examples
 
 ## Roadmap
 
-### v1.1 (Current) ✅
+### Production Core Patterns (Complete) ✅
 - [x] Validation patterns (Zod)
 - [x] Security patterns (Auth, JWT, rate limiting)
 - [x] Git workflow patterns (Conventional commits, branching)
-
-### v1.2 (Q1 2027)
-- [ ] Performance patterns (N+1, caching)
-- [ ] Error handling patterns (try-catch, boundary)
-- [ ] Testing patterns (unit, integration, E2E)
-
-### v2.0 (Q2 2027)
-- [ ] Database patterns (migrations, seeding, transactions)
-- [ ] Deployment patterns (CI/CD, rollback, monitoring)
-- [ ] API design patterns (REST, GraphQL, versioning)
+- [x] Performance patterns (N+1 prevention, Redis caching)
+- [x] Error handling patterns (custom classes, global boundaries)
+- [x] Testing patterns (Test pyramid: unit, integration, E2E)
+- [x] Database patterns (Supabase migrations, seeding, atomic transactions)
+- [x] Deployment patterns (CI/CD pipelines, canary monitoring, rollback)
+- [x] API design patterns (REST conventions, GraphQL architecture, versioning)
 
 ---
 
