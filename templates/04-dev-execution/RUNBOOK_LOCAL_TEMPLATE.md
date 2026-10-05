@@ -68,18 +68,27 @@ The web application can be accessed via browser at:
 
 | Role | Email Address | Default Password | Special Access |
 | :--- | :--- | :--- | :--- |
-| **Super Admin** | `admin@company.local` | `Admin12345!` | Access to all modules & audit trail |
-| **Manager** | `manager@company.local` | `Manager12345!` | Draft approval & send e-sign requests |
-| **Staff** | `staff@company.local` | `Staff12345!` | Document template form filling |
+| **Admin / Owner** | `admin@project.local` | `[SET_IN_LOCAL_ENV_SEED]` | Access to system administration & audit logs |
+| **Manager / Supervisor** | `manager@project.local`| `[SET_IN_LOCAL_ENV_SEED]` | Operational reviews & approval workflows |
+| **Staff / Operator** | `staff@project.local` | `[SET_IN_LOCAL_ENV_SEED]` | Data entry & task execution |
+
+> ⚠️ **SECURITY WARNING**: Fixed default passwords in repositories lead to accidental credential reuse. Local seed scripts MUST read credentials from local environment variables or generate ephemeral dev-only tokens that cannot be used in deployed environments.
 
 ---
 
 ## 6. Self-Assertion Testing (Local Smoke Test)
 
-Run the quick smoke test script to validate the flow from registration, encrypted PDF generation, through digital signing:
+Execute the automated test suites to validate functional flows, RLS multi-tenant security, and database concurrency:
 
 ```bash
-npm run test:smoke
+# 1. End-to-end smoke test of core user loop (configured test script)
+npm run test:smoke # (or: pnpm test:smoke / pytest / go test ./... / php artisan test)
+
+# 2. Automated security & data isolation test (conditional on multi-tenant architecture)
+npm run test:security # (runs configured security suite, e.g. tests/db/rls.test.ts)
+
+# 3. Database concurrency & anti-deadlock test (conditional on concurrent transaction scope)
+npm run test:concurrency # (runs configured load/concurrency suite, e.g. tests/db/concurrency.test.ts)
 ```
 
-*If all assertions display `PASS` status, the application is ready to be deployed to the Staging environment.*
+*If all assertions display `PASS` status and zero deadlock errors occur, the application is verified and ready for Staging deployment.*

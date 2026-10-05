@@ -1,211 +1,265 @@
-# TODO.md
+# TODO.md — Engineering Execution Plan & Automated Quality Gates
 
-> Atomic task list for autonomous coding execution by AI coding agents (Cursor / Claude Code / Windsurf / Codex CLI).
-> **CRITICAL RULE**: Complete task → verify immediately → check [x] → next task.
-> **NO skipping verification.** Catch bugs when introduced, not 50 tasks later.
->
-> **Verification Format** (AI substitutes stack-specific commands):
-> - **Verify**: {command to run} 
-> - **Expected**: {success criteria}
-> - **Evidence**: {proof required - output/screenshot/query}
+> **Role & Purpose**: Sequential atomic task list for AI Coding Agents (Cursor / Claude Code / Windsurf / Codex CLI).
+> **Execution Rule**: Execute one task $\rightarrow$ run automated verification $\rightarrow$ record evidence $\rightarrow$ check `[x]` $\rightarrow$ advance to next task.
+> **Integrity Mandate**: Zero unverified tasks. Zero hallucinated features outside In-Scope. Zero bypassed TypeScript compiler errors.
+> **Scale & Domain Adaptability**: Adaptable across all software categories (CRM, CMS, HRIS, E-Commerce, Retail/POS, Fintech, Developer Tools) and all 4 scales:
+> - **Small (MVP / Internal)**: Core database, UI shell, essential CRUD, and smoke tests (mark billing, webhooks, offline queues N/A).
+> - **Medium (B2B SaaS / Agency)**: 7 Sprints covering multi-tenant RLS, state journals, mutation idempotency, and automated QA.
+> - **Large / Enterprise**: Comprehensive execution covering high-concurrency row-locking, audit vaults, load testing, and disaster recovery.
+
+### 100% Atomic Task Ratio Mandate (Anti-Macro Tasks)
+Grouping multiple screens or multiple database tables into a single macro task (e.g., "Build SCR-01 to SCR-14" or "Create all database tables") is **strictly prohibited**.
+Maintain an exact 1:1 ratio:
+- 1 task per database table or migration unit (`M06-DB-xx`).
+- 1 task per UI screen (`M06-FE-xx`) specifying exact `SCR-xx`, route, and 5-state matrix.
+- 1 task per backend endpoint / Action / RPC (`M06-BE-xx`).
+- Dedicated automated test tasks (`M06-TEST-xx`).
+
+### Traceability Mapping Framework
+| Task Prefix | Source Document | Primary Concrete Output |
+| :--- | :--- | :--- |
+| **`M06-DB-xx`** | `docs/specs/FSD.md` (§2, §3, §5) | `supabase/migrations/*.sql` (Tables, RLS, RPCs) |
+| **`M06-FE-xx`** | `docs/specs/SITEMAP.md` & `DESIGN_SPEC.md` | `src/app/*` (UI Components & 100% SCR-xx Screens) |
+| **`M06-BE-xx`** | `docs/specs/FSD.md` (§4, §5) & `PRD.md` | `src/actions/*.ts` & `src/app/api/v1/*` (Route Handlers) |
+| **`M06-TEST-xx`**| `docs/specs/PRD.md` (Acceptance Criteria) | `tests/db/*` & `tests/e2e/*` (pgTAP / Playwright) |
 
 ---
 
-## Phase 1: Repository Initialization & Baseline Tooling
+## Sprint 1: Database Foundation, DDL Migrations & Atomic Operations
 
-- [ ] Dependencies: Initialize core framework + validation + ORM dependencies per FSD tech stack
-   - **Verify**: Build command succeeds
-   - **Expected**: Exit code 0, no errors
-   - **Evidence**: Build output log
+- [ ] **M06-DB-01: Relational Schema & 100% Foreign Key Indexing (Universal)**
+  - Define all tables in FSD schema (core entities, authentication, audit logs, and domain tables).
+  - Enforce `BIGINT` or `NUMERIC(15, 2)` for monetary values (no float rounding) and `NUMERIC(12, 3)` for fractional quantities.
+  - Add explicit `CREATE INDEX` for every column referencing another table (`REFERENCES table(id)`).
+  - Add arithmetic CHECK constraints (`net_amount = subtotal - discount`, `quantity > 0`).
+  - **Verify**: Run database migration in local development container (`pnpm db:migrate` / `prisma migrate dev` / `supabase db push`).
+  - **Expected**: Migration executes with exit code 0; all tables, constraints, and indexes created.
+  - **Evidence**: Query `information_schema.tables` and `pg_indexes` confirming 100% table and FK index creation.
 
-- [ ] Type Safety: Enable strict type checking with zero tolerance for unsafe types
-   - **Verify**: Type checker passes
-   - **Expected**: Zero type errors
-   - **Evidence**: Type check output
+- [ ] **M06-DB-02: Access Control, RLS & Security Definer Hardening (Universal)**
+  - Enable RLS on multi-tenant tables: `ALTER TABLE [table] ENABLE ROW LEVEL SECURITY;` (or document single-tenant/internal N/A).
+  - Create granular, role-differentiated policies (`SELECT`, `INSERT`, `UPDATE`, `DELETE`). Zero lax `FOR ALL` policies.
+  - Harden helper functions: `CREATE OR REPLACE FUNCTION get_current_user_org_id() ... SET search_path = public, pg_temp STABLE;` with explicit `is_active = TRUE` check.
+  - Provide onboarding bootstrap policy allowing first-time account and organization creation.
+  - **Verify**: Automated RLS access tests (attempt cross-tenant SELECT and unauthorized staff INSERT).
+  - **Expected**: Cross-tenant queries return 0 rows; unauthorized staff mutations rejected with policy violation.
+  - **Evidence**: Test execution log or psql output showing permission denial.
 
-- [ ] Environment Variables (if FSD requires): Create .env template with all required variables per FSD infrastructure
-   - **Verify**: All FSD variables documented
-   - **Expected**: Required variables from FSD infrastructure section listed
-   - **Evidence**: .env.example file contents
+- [ ] **M06-DB-03: Atomic Organization Registration RPC (Universal)**
+  - Create stored procedure or atomic transaction `rpc_register_organization` creating organization, tenant owner user, and default workspace in a single transaction (`BEGIN ... COMMIT`).
+  - **Verify**: Execute registration call with simulated mid-transaction failure (e.g. duplicate email).
+  - **Expected**: Entire transaction rolls back atomically; zero orphaned organization rows created.
+  - **Evidence**: Database query confirms 0 rows inserted in `organizations` after simulated failure.
 
-- [ ] Environment Validation: Create env parser that fails fast on missing required variables
-   - **Verify**: Run with missing variable
-   - **Expected**: Clear validation error thrown
-   - **Evidence**: Error message shows which variable missing
+- [ ] **M06-DB-04: Atomic Mutation Stored Procedure / Concurrency Guard (Conditional)**
+  - *(Applicable for high-concurrency state transitions, checkouts, reservations, or balance deductions; mark N/A for low-concurrency CRUD)*
+  - Implement atomic stored procedure (`rpc_execute_[mutation]`) with deterministic row-locking: `SELECT ... FOR UPDATE ORDER BY id ASC`.
+  - Fetch official pricing/valuation from server tables (anti-tampering).
+  - Record mutations into an append-only ledger (`inventory_movements`, `balance_movements`, or `entity_activity_logs`) and snapshot historical cost/value.
+  - **Verify**: Simulate concurrent execution from 2 sessions attempting to mutate the exact same resource.
+  - **Expected**: Second transaction waits cleanly for row lock release; zero deadlocks, zero negative overselling.
+  - **Evidence**: Concurrency test log showing serialized lock acquisition and exact final balance match.
 
-## Phase 2: Database Schema & Migrations (if FSD has database)
+- [ ] **M06-DB-05: Sensitive Data Masking & Database Views (Conditional)**
+  - *(Applicable if sensitive costs, margins, or executive salaries exist; mark N/A if all data is non-sensitive)*
+  - Create secure database views for operational roles (e.g., `products_cashier_view`, `employee_public_view`) excluding sensitive cost prices (`buy_price`), gross margins, or salaries.
+  - Revoke direct `SELECT` on sensitive base tables from operational staff roles; grant access strictly via secure views (`security_invoker = true`).
+  - **Verify**: Query API / SDK with a Staff JWT requesting sensitive fields.
+  - **Expected**: API omits sensitive fields; zero cost leaks over the network wire.
+  - **Evidence**: Network HTTP response JSON showing absence of sensitive fields.
 
-- [ ] Schema Definition: Define all FSD tables with exact DDL (columns, types, constraints, indexes)
-   - **Verify**: Schema validation passes
-   - **Expected**: Valid schema, no warnings
-   - **Evidence**: Validation output
+- [ ] **M06-DB-06: Idempotency Response Cache & Immutable Audit Log Tables (Universal)**
+  - Create `idempotency_keys` table with unique constraint on `(org_id, idempotency_key)` to cache responses.
+  - Create `audit_logs` table with strict RLS policies allowing only `SELECT` and `INSERT` (zero `UPDATE` / `DELETE`).
+  - **Verify**: Execute an `UPDATE audit_logs SET action = 'tampered'` as an authenticated user.
+  - **Expected**: Database rejects query with permission denied error.
+  - **Evidence**: SQL error message confirming update rejection.
 
-- [ ] Initial Migration: Run first migration to create all tables in local database
-   - **Verify**: Migration executes successfully
-   - **Expected**: All FSD tables created
-   - **Evidence**: Query database for table list, confirm all exist
+---
 
-- [ ] Seed Data: Create seed script with initial admin account + test data per FSD
-   - **Verify**: Seed executes successfully
-   - **Expected**: Seed data loaded per FSD requirements
-   - **Evidence**: Query confirms seed records exist
+## Sprint 2: Design Tokens, UI Shell & Authentication Flows
 
-## Phase 3: UI Component Setup
-> **Source**: Reference `docs/specs/DESIGN_SYSTEM.md` (tokens + screen specs) + `docs/specs/SITEMAP.md` (Screen IDs)
-> - **With Prototype**: Copy from `docs/design/prototype-output/SCR-XX/` folders
-> - **Without Prototype**: Implement manually matching design tokens exactly
+- [ ] **M06-FE-01: Semantic CSS Tokens & TypeScript Strict Configuration (Universal)**
+  - Declare CSS variables in `globals.css` matching `DESIGN.md`: base surfaces, typography, borders, triad status tokens (`--success/-border/-bg`, `--warning/-border/-bg`, `--destructive/-border/-bg`, `--info/-border/-bg`), and unified z-index scale.
+  - Separate passive borders (`--border`, 1.3:1) from interactive input borders (`--input`, $\ge 3:1$).
+  - Configure `tsconfig.json` with `strict: true` and `noUncheckedIndexedAccess: true`.
+  - **Verify**: Run `pnpm type-check` and inspect computed CSS variables in browser DevTools.
+  - **Expected**: Exit code 0, all tokens resolve to valid hex/rgba values.
+  - **Evidence**: TypeScript compiler output log.
 
-## Phase 3A: Static UI Components (Before Database)
-> **Note**: Only static screens with no data dependency. Data-backed screens in Phase 5.
+- [ ] **M06-FE-02: Public Marketing Shell & Authentication Flow (SCR-001, SCR-002)**
+  - Implement landing page (`SCR-001`) and login portal (`SCR-002`) matching `DESIGN_SPEC.md`.
+  - Form inputs MUST specify `text-base` (`16px`) universally across all viewports to prevent iOS Safari auto-zoom.
+  - Anti-Disabled Pristine Rule: Submit buttons remain enabled in pristine state; clicking triggers validation, smooth-scrolls, and auto-focuses the first invalid field.
+  - **Verify**: Open `/login` on simulated mobile/touch viewport; click submit with empty inputs.
+  - **Expected**: Viewport does not auto-zoom; inline error messages ($\ge 13$px, $\ge 4.5:1$ contrast) render below inputs; first field focused.
+  - **Evidence**: DevTools screenshot showing error states and element focus.
 
-- [ ] Primitive Components: Implement base UI components (Button, Input, Select, Table) per DESIGN_SYSTEM.md tokens
-   - **Verify**: Start dev server, render test page with all components
-   - **Expected**: All components render without errors
-   - **Evidence**: Browser screenshot, console shows no errors/warnings
-   - **Design Check**: Brand primary color applied (not generic neutral), typography matches spec
+- [ ] **M06-FE-03: Onboarding & Workspace Setup Wizard (SCR-003)**
+  - Implement multi-step onboarding wizard invoking `rpc_register_organization`.
+  - Session management: In Next.js, ensure dynamic request functions are properly awaited (`await cookies()`).
+  - Verify server-side session authentication using `supabase.auth.getUser()`.
+  - **Verify**: Complete full onboarding flow from signup to dashboard redirect.
+  - **Expected**: Organization, location, and owner account created in database; redirected to `/dashboard`.
+  - **Evidence**: Network tab showing 200 OK RPC response and subsequent dashboard render.
 
-- [ ] Layout Components: Header, Footer, Sidebar (no data dependency)
-   - **Verify**: Render in dev server
-   - **Expected**: Layout structure correct
-   - **Evidence**: Screenshot
+---
 
-- [ ] Static Screen {SCR-ID}: {Screen Name} - Landing, About, Terms, Login, Register (no API calls)
-   - **Verify**: Open {route} in browser
-   - **Expected**: Screen renders matching design spec with mock/placeholder data
-   - **Evidence**: Screenshot shows correct layout, colors, typography
-   - **Console Check (SSR frameworks only)**: Zero hydration errors, zero warnings
+## Sprint 3: Operational Dashboards, Master Data & Access Boundaries
 
-(Repeat for each SITEMAP screen - generated by Step 1.5 AI)
+- [ ] **M06-FE-04: Operational Dashboard & Analytical Widgets (SCR-003)**
+  - Implement dashboard shell with responsive layout: desktop sidebar (240–260px, `border-l-4` active state) and mobile bottom navigation bar (`h-16`, auto-hiding on keyboard focus).
+  - Implement 5-state matrix: Idle/Default, Loading Skeletons (`h-12 animate-pulse`), Empty State with CTA, Server Error Banner with retry button, and Success Toast.
+  - **Verify**: Throttle network to Slow 3G in DevTools; simulate API error.
+  - **Expected**: Skeleton loaders display during data fetch; error banner catches failure with actionable retry button.
+  - **Evidence**: Screenshots of loading skeleton and error boundary states.
 
-## Phase 4: API Endpoints & Backend Services
+- [ ] **M06-FE-05: Team & Staff Management with Immediate Session Revocation**
+  - Implement staff directory and role assignment (`Owner`, `Manager`, `Staff`, `Auditor`).
+  - Implement active toggle (`is_active`): When a staff member is deactivated, RLS `is_active = TRUE` check denies data access immediately across all active sessions.
+  - **Verify**: Deactivate staff user from admin panel while user has an active session open in an incognito window.
+  - **Expected**: User's subsequent request is blocked immediately by RLS (`is_active = FALSE` returns null org); redirected to login.
+  - **Evidence**: Screenshot showing access denied on deactivated session.
 
-- [ ] Encryption Library (if FSD requires): Implement AES-256-GCM encryption + SHA-256 hashing per FSD security spec
-   - **Verify**: Write test script: encrypt → decrypt → assert equals original
-   - **Expected**: Roundtrip works, hash generates correct length
-   - **Evidence**: Test output shows successful encryption/decryption
+- [ ] **M06-FE-06: Resource Catalog Master Directory & Input Masking (SCR-005, SCR-006)**
+  - Implement primary resource catalog with search, category filtering, and pagination.
+  - Format monetary fields with `inputmode="numeric"` and live dot-thousand formatting (e.g., `Rp 1.250.000`), NEVER `<input type="number">`.
+  - Verify data masking: When logged in as Staff/Operator, the UI and API queries use the restricted view, keeping sensitive costs/margins hidden.
+  - **Verify**: Inspect browser Network tab response payload as Staff user.
+  - **Expected**: Sensitive cost properties are undefined/absent in the JSON response payload.
+  - **Evidence**: DevTools Network preview showing payload without cost fields.
 
-- [ ] Storage Client (if FSD requires): Implement cloud storage client + presigned URL generator per FSD infrastructure
-   - **Verify**: Upload test file, generate presigned URL
-   - **Expected**: Upload succeeds, URL accessible then expires per FSD timeout
-   - **Evidence**: Log upload response, verify URL expiry
+---
 
-- [ ] Endpoint {METHOD} {path}: Implement per FSD.md API contract with validation
-   - **Verify Valid Case**: HTTP request with valid payload
-   - **Expected**: Correct status code, response matches FSD schema
-   - **Evidence**: Response body + headers logged
-   - **Verify Invalid Case**: HTTP request with invalid/missing data
-   - **Expected**: Validation error with clear message, correct error status
-   - **Evidence**: Error response logged
-   - **Verify DB**: Query database confirms record created/updated
-   - **Evidence**: Database query result
+## Sprint 4: Operational Execution & Input Safeguards (Domain-Adaptive)
 
-(Repeat for each FSD endpoint - generated by Step 1.5 AI)
+- [ ] **M06-FE-07: Operational Execution Workspace / Action Canvas (SCR-004)**
+  - *(Domain-Adaptive: POS for retail; Deal Pipeline Canvas for CRM; Block Editor for CMS; Attendance Terminal for HRIS)*
+  - Implement split layout: resource selection on left, active cart/workspace on right (tablet/desktop) or bottom action dock (mobile).
+  - Interactive touch targets strictly meet minimum $\ge 44\text{px} \times 44\text{px}$ (`h-11 min-w-11`).
+  - Input Safety: Common entry keys (`Enter`) are bound strictly to item entry/search; final mutation/checkout is bound to dedicated action buttons or function keys (`F4`).
+  - **Verify**: Simulate hardware scanner or rapid keyboard entry in search input.
+  - **Expected**: Item adds to active workspace; search input clears and refocuses; final checkout is NOT triggered prematurely.
+  - **Evidence**: Video or animated GIF recording action sequence.
 
-## Phase 5: UI to Backend API Integration (Wiring)
+- [ ] **M06-FE-08: Offline Queue & Collision-Free Device Sequencing (Conditional)**
+  - *(Applicable if offline/local-first mode is in scope; mark N/A for online-only apps)*
+  - Store pending mutations in client IndexedDB (Dexie.js).
+  - Format offline invoice/document numbers with unique device prefix: `[BRANCH]-[DEVICE-UUID-SHORT]-[YYYYMMDD]-[SEQ]`.
+  - Multi-event sync fallback for Safari iOS: register listeners for `online`, `visibilitychange`, and manual sync button.
+  - **Verify**: Disconnect network in DevTools; complete 2 offline checkout transactions; reconnect network.
+  - **Expected**: Transactions store in IndexedDB with unique sequential IDs; auto-sync executes upon reconnect via `rpc_execute_*` with idempotency keys.
+  - **Evidence**: IndexedDB inspection screenshot and server database log confirming receipt.
 
-- [ ] Data-Backed Screen {SCR-ID}: {Screen Name} - Dashboard, Document List, Detail views (requires DB+API)
-   - **Verify**: Open {route} in browser with backend running
-   - **Expected**: Screen renders with real data from API
-   - **Evidence**: Screenshot shows actual data, Network tab shows API calls
-   - **Console Check**: Zero hydration errors, zero warnings
-   - **5 States Check**: Idle, Loading skeleton, Success (data shown), Error (API fails), Empty (no records)
+- [ ] **M06-FE-09: Hardware Output & Receipt Printing Protocol (Conditional)**
+  - *(Applicable to POS / thermal hardware; mark N/A for standard web apps)*
+  - Implement `@media print` thermal receipt stylesheet (58mm/80mm width, 0 margins, monospaced font, dashed dividers).
+  - Provide fallback: If printer disconnects, transaction remains locked in database and dialog offers "Cetak Ulang" without re-mutating stock.
+  - **Verify**: Trigger print dialog for completed transaction.
+  - **Expected**: Print preview renders cleanly at 58mm width; zero page headers/footers bleeding into receipt.
+  - **Evidence**: Thermal print preview screenshot.
 
-(Repeat for each data-backed SITEMAP screen - generated by Step 1.5 AI)
+---
 
-- [ ] {Component} → {Endpoint}: Wire UI component to backend API endpoint
-   - **Verify Success Flow**: Submit valid data in browser
-   - **Expected**: Success state shown (toast/redirect/update), API returns success
-   - **Evidence**: Browser DevTools Network tab shows 2xx response
-   - **Verify DB**: Query confirms data persisted
-   - **Verify Error Flow**: Submit invalid data or simulate API failure
-   - **Expected**: Error state shown inline, user not blocked
-   - **Evidence**: Screenshot shows error message displayed
+## Sprint 5: Transaction History, Backend Actions & Ledgers
 
-(Repeat for each screen-endpoint pair - generated by Step 1.5 AI)
+- [ ] **M06-BE-01: Transaction History & Document Details (SCR-011, SCR-012)**
+  - Implement transaction history table with date range, status, and filter controls.
+  - Details view renders line items, snapshot costs (`unit_cost`), and audit metadata.
+  - Spreadsheet Export Sanitization: Implement `sanitizeExportCell` to escape formula triggers (`=, +, -, @, \t, \r`) with `'` while preserving pure negative numbers (e.g. `"-150000"`).
+  - **Verify**: Export CSV containing notes starting with `=SUM(A1:A10)` and a negative currency string `"-50000"`.
+  - **Expected**: `=SUM` cell is exported as `'=SUM(A1:A10)`; negative number `-50000` remains numeric without single quote.
+  - **Evidence**: Open exported CSV in text editor and Microsoft Excel confirming safe formula neutralization.
 
-- [ ] Endpoint Consumer Mapping: Verify all FSD endpoints have documented consumers
-   - **User-facing endpoints**: Verify UI screen exists (e.g., POST /auth/login → Login page)
-   - **Webhook endpoints**: Document provider config in RUNBOOK_LOCAL.md (e.g., POST /webhooks/stripe)
-   - **Internal/cron endpoints**: Document caller in RUNBOOK_LOCAL.md (e.g., GET /health → monitoring)
-   - **Background job endpoints**: Verify worker setup (e.g., POST /jobs/email → queue consumer)
-   - **Expected**: No orphaned endpoints (all have purpose documented)
-   - **Evidence**: Consumer mapping table in VERIFY_LOCAL.md
+- [ ] **M06-BE-02: Void & Cancellation Protocol (Reversal Entries)**
+  - Operators/Staff CANNOT void completed records independently.
+  - Void requires Manager or Owner authorization with mandatory explanation note ($\ge 10$ characters).
+  - Executing void appends an immutable **reversal entry** to the movement ledger (`VOID_RETURN`) with positive quantity to restore balance.
+  - **Verify**: Execute void on transaction #001 with reason "Salah input nominal oleh kasir".
+  - **Expected**: Transaction status updates to `VOID`; new reversal movement appended to `inventory_movements`; original transaction record preserved.
+  - **Evidence**: Query `transactions` and `inventory_movements` confirming status change and reversal row.
 
-- [ ] 5-State Review: Test all screens for defensive UI patterns
-   - **Verify Loading**: Throttle network, check skeleton/spinner appears
-   - **Expected**: Loading state shows during data fetch
-   - **Verify Empty**: Navigate to screen with no data
-   - **Expected**: Empty state with helpful message/CTA shown
-   - **Verify Error**: Simulate API failure (stop backend)
-   - **Expected**: Error boundary catches, user sees actionable error
-   - **Evidence**: Screenshots of all 5 states per screen
+- [ ] **M06-BE-03: In-Flow Mutations & Receivables / Payables Ledgers**
+  - Implement purchase order / incoming stock entry with mandatory snapshot of new unit buy price.
+  - Implement receivables/payables installment tracking with separate `payment_records` table (not just a single scalar counter).
+  - **Verify**: Record partial payment on an outstanding receivable invoice.
+  - **Expected**: Payment record created with timestamp and actor ID; remaining balance decrements accurately.
+  - **Evidence**: Database query showing ledger entries and updated balance.
 
-## Phase 6: Self-Assertion Testing (Local Smoke Test)
+---
 
-- [ ] Smoke Test Script: Write end-to-end flow assertions per FSD critical path
-   - **Verify**: Run smoke test script
-   - **Expected**: All assertions pass, exit code 0
-   - **Evidence**: Test output shows pass/fail counts
+## Sprint 6: Domain Integrity Workflows, Reconciliation, Tax & SaaS Billing
 
-- [ ] Local Verification: Complete VERIFY_LOCAL.md checklist with evidence
-   - **Verify**: All sections completed (design, hydration, API, security)
-   - **Expected**: PASS decision with all checks green
-   - **Evidence**: Signed VERIFY_LOCAL.md with screenshots/logs attached
-   - **Blockers**: If FAIL, document exact blockers preventing PASS
+- [ ] **M06-BE-04: Domain Audit / Opname / Publishing Review (SCR-008, SCR-009, SCR-010)**
+  - *(Domain-Adaptive: Inventory Blind Opname for retail; Deal Approval for CRM; Editorial Review for CMS)*
+  - For Inventory Scope: Staff physical count screen renders ONLY item identification and empty count input; expected stock is **100% physically excluded from client DOM and API payload**. Management review calculates net variance accounting for in-flight transactions:
+    $$\text{Net Variance} = \text{Count} - (\text{Snapshot} - \text{In-Flight Sales} + \text{In-Flight Purchases})$$
+  - Escalation rule: Discrepancies exceeding defined threshold require Owner sign-off; Manager cannot self-approve own count.
+  - **Verify**: Inspect network payload of staff opname screen; submit variance exceeding threshold.
+  - **Expected**: Network payload contains 0 expected stock numbers; submitted opname routes to Owner approval queue with mandatory $\ge 10$-character note.
+  - **Evidence**: DevTools network response screenshot and approval queue state.
 
-## Phase 7: Security Verification (Before UAT)
-> **Target**: Small scale projects - run security baseline checklist before M09 UAT
-> **Reference**: `templates/06-qa-uat/SECURITY_CHECKLIST_SMALL.md`
-> **Duration**: 1-2 hours
+- [ ] **M06-BE-05: Statutory Tax Calculations & In-App Disclaimers (Conditional)**
+  - *(Conditional: Applicable if financial/tax calculations are in scope; mark N/A for non-statutory projects)*
+  - Model official statutory rules from verified government legal sources: e.g. Indonesian SME turnover tax (PP 55/2022) with Rp 500M annual non-taxable threshold for individual taxpayers (WP OP) vs 0.5% flat from first Rupiah for corporate entities (Badan Usaha).
+  - Calculate cumulative gross turnover starting January 1st (YTD).
+  - Display persistent in-app disclaimers: *"Perhitungan bersifat estimasi operasional dan tidak menggantikan pelaporan resmi SPT ke regulator."*
+  - **Verify**: Calculate tax for individual taxpayer with cumulative turnover of Rp 450M, then Rp 600M.
+  - **Expected**: Tax for Rp 450M is Rp 0 (under threshold); tax for Rp 600M is calculated on the excess Rp 100M ($100\text{M} \times 0.5\% = \text{Rp } 500.000$).
+  - **Evidence**: Test calculation output log.
 
-- [ ] Password Security: Verify bcrypt/argon2 hashing, no plain text passwords
-   - **Verify**: Check password storage implementation
-   - **Expected**: Hashing library used (NOT MD5/SHA1), min 8 chars enforced
-   - **Evidence**: Code snippet showing bcrypt.hash() or equivalent
+- [ ] **M06-BE-06: SaaS Subscription Engine & Webhook Security (Conditional)**
+  - *(Applicable to commercial SaaS products; mark N/A for internal tools)*
+  - Integrate payment gateway (Midtrans / Xendit / Stripe) with 14-day trial and 7-day grace period.
+  - Webhook Security: Exclude `/api/webhooks/payment` from session auth guards; verify cryptographic payload signature (HMAC SHA-512 / SHA-256); cross-check `gross_amount` with database invoice.
+  - Enforce idempotency: Log external event ID in `idempotency_keys`; duplicate webhook events return HTTP 200 without duplicate renewals.
+  - Offboarding: 30-day grace period (access blocked, export available) $\rightarrow$ 90-day hard database purge.
+  - **Verify**: Dispatch simulated webhook event with invalid signature, then valid signature, then duplicate event.
+  - **Expected**: Invalid signature rejected with 401; valid signature activates subscription; duplicate returns 200 without side effects.
+  - **Evidence**: Webhook server logs showing signature verification and idempotent return.
 
-- [ ] HTTPS Enforcement: Verify production uses HTTPS, localhost exception OK
-   - **Verify**: Check deployment config
-   - **Expected**: HTTPS redirect configured, SSL cert valid
-   - **Evidence**: Deployment config file or URL test
+---
 
-- [ ] SQL Injection Prevention: Verify parameterized queries, no string concatenation
-   - **Verify**: Grep codebase for SQL concatenation patterns
-   - **Expected**: All queries use ? placeholders or ORM methods
-   - **Evidence**: Code search results show safe patterns only
+## Sprint 7: Automated Quality Assurance, Concurrency & Release Gates
 
-- [ ] XSS Prevention: Verify user input escaped, React/Vue auto-escape not bypassed
-   - **Verify**: Check for dangerouslySetInnerHTML or v-html usage
-   - **Expected**: No unsafe HTML rendering without sanitization
-   - **Evidence**: Code search confirms safe patterns
+- [ ] **M06-TEST-01: Automated RLS & Security Test Suite (Universal)**
+  - Write automated tests (using Vitest / Jest / pgTAP) verifying multi-tenant isolation:
+    1. User Org A cannot SELECT, INSERT, UPDATE, or DELETE records in Org B.
+    2. Operational staff cannot query sensitive cost fields directly via raw queries or view bypassing.
+    3. Deactivated user token cannot execute mutations.
+    4. Audit logs and movement ledgers reject any `UPDATE` or `DELETE` statements.
+  - **Verify**: Run automated security test suite: `pnpm test:security`.
+  - **Expected**: 100% assertions pass with exit code 0.
+  - **Evidence**: Test runner output log.
 
-- [ ] Environment Variables: Verify no secrets in code, .env in .gitignore
-   - **Verify**: Run `git log --all --full-history -- .env`
-   - **Expected**: No results (no .env commits)
-   - **Evidence**: Git log output empty
+- [ ] **M06-TEST-02: Database Concurrency & Anti-Deadlock Load Test (Conditional)**
+  - *(Applicable to multi-user concurrent mutation systems; mark N/A for single-user tools)*
+  - Execute concurrency script dispatching 50 parallel mutation requests against overlapping resources.
+  - **Verify**: Run concurrency benchmark script (`k6` or Node.js parallel script).
+  - **Expected**: Zero PostgreSQL deadlocks (`SQLSTATE 40P01`); all transactions complete or serialize cleanly; final stock/balance matches ledger sum.
+  - **Evidence**: Concurrency test report showing 0 deadlock errors and verified balance reconciliation.
 
-- [ ] CSRF Protection: Verify anti-CSRF tokens for forms, SameSite cookies
-   - **Verify**: Check middleware/session config
-   - **Expected**: CSRF middleware enabled OR SameSite cookies configured
-   - **Evidence**: Middleware config file
+- [ ] **M06-TEST-03: End-to-End User Journey Tests (Playwright) (Universal)**
+  - Write Playwright E2E tests for the core user loop: Login $\rightarrow$ Action Mutation $\rightarrow$ State Transition $\rightarrow$ Receipt/Report $\rightarrow$ Audit Verification.
+  - Test keyboard navigation: Tab order, focus rings visible, and ESC closing modals.
+  - **Verify**: Run headless E2E suite: `pnpm test:e2e`.
+  - **Expected**: All critical path journeys pass; zero hydration errors, zero console errors.
+  - **Evidence**: Playwright test report summary and video recording.
 
-- [ ] Rate Limiting: Verify login rate limit (5 attempts per 15 min)
-   - **Verify**: Check rate limiter configuration
-   - **Expected**: Rate limiter configured for auth endpoints
-   - **Evidence**: Config showing rate limits
+- [ ] **M06-TEST-04: Asset Budget & Production Build Verification (Universal)**
+  - Execute production build: `pnpm build`.
+  - Verify client initial JavaScript bundle weight is $\le 250\text{ KB}$ gzipped per route using `@next/bundle-analyzer`.
+  - Verify zero TypeScript compiler suppressions (`// @ts-ignore`, `as any`) exist in the repository:
+    `! grep -rn "// @ts-ignore" src/ && ! grep -rn "as any" src/`
+  - **Verify**: Run type-check, lint, and bundle check.
+  - **Expected**: Exit code 0, bundle sizes within budget, clean lint audit.
+  - **Evidence**: Build terminal output showing route bundle sizes.
 
-- [ ] Session Security: Verify httpOnly + secure cookies in production
-   - **Verify**: Check session configuration
-   - **Expected**: httpOnly=true, secure=true for production
-   - **Evidence**: Session config code
-
-- [ ] Dependency Audit: Run npm/pnpm audit, fix critical/high vulnerabilities
-   - **Verify**: `npm audit --production` or `pnpm audit`
-   - **Expected**: Zero critical/high vulnerabilities
-   - **Evidence**: Audit output showing 0 vulnerabilities or all fixed
-
-- [ ] Security Checklist Complete: All 10 items from SECURITY_CHECKLIST_SMALL.md verified
-   - **Verify**: Review completed checklist
-   - **Expected**: All items checked, sign-off obtained
-   - **Evidence**: Signed SECURITY_CHECKLIST_SMALL.md
-
-**Gate**: Do NOT proceed to M09 UAT if critical security issues (S1/S2) remain unresolved.
+- [ ] **M06-TEST-05: Staging Deployment & Disaster Recovery Dry Run (Universal)**
+  - Deploy build to staging environment (Vercel Preview / isolated staging container).
+  - Perform environment variable security check: Verify no live production secret keys (`sk_live_`) leaked into staging configuration.
+  - Perform rollback dry run: Verify automated backup restoration can recover staging database within defined RTO ($<4$ hours).
+  - **Verify**: Execute staging smoke test and test database restore script.
+  - **Expected**: Staging application accessible and fully functional; backup restores without data corruption.
+  - **Evidence**: Staging URL live check and backup restore completion timestamp.

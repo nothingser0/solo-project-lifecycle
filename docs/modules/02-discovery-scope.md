@@ -17,30 +17,44 @@ This module is the second stage in the software development lifecycle for solo d
                       │
                       ▼
 [ STEP 1: Targeted Discovery Interview (The 5 Pillars) ]
-  • Real Business Objectives & Success Metrics
-  • User Persona Mapping & Access Permissions Matrix
+  • Real Business Objectives & Realistic Growth Ramp (50-100 Users Year 1)
+  • Non-Circular North Star Metric & Pre-Launch Validation
+  • User Persona Mapping & Access Boundaries
                       │
                       ▼
-[ STEP 2: Feature Breakdown & MoSCoW Prioritization ]
-  • Must-Have (Vital Release Features)
+[ STEP 2: Problem-Solution Fit & MoSCoW Prioritization ]
+  • 80/20 Root Cause Cross-Check (Every Must-Have solves ≥50% root cause)
+  • Target Segment Feature Fit (Drop mismatched segments like Cafe without BOM)
+  • Dependency Contradiction Check (Gross Profit vs Deferred Expenses)
+  • Mandatory SaaS Revenue Features (Billing, Offboarding, Admin Panel, Receipts)
   • Should-Have / Could-Have (Secondary Features)
   • Won't-Have (Rejected / Deferred Features)
                       │
                       ▼
-[ STEP 3: Scope Boundary Locking (Scope Defense) ]
+[ STEP 3: Detailed RBAC Matrix & Approval Decision Tree ]
+  • Role Permission Table (Owner, Manager, Kasir, Akuntan)
+  • Multi-Location Access & Approval Workflow (Zero Self-Approval)
+  • Permission Escalation & Role-Based Session Timeouts
+                      │
+                      ▼
+[ STEP 4: Architecture Decisions & Database Schema Design ]
+  • Multi-Tenant Schema (org_id on all tables, RLS via public.user_roles)
+  • Financial Precision (DECIMAL, unit_cost snapshot, soft delete, append-only)
+  • Architecture Realism (Offline/Real-time decision matrix, TTI <5s, client-side PDF)
+  • Tech Stack Version Locking & Accurate Security Claims
+                      │
+                      ▼
+[ STEP 5: Scope Boundary Locking, Tax Disclaimers & Legal Compliance ]
   • Explicit List: WHAT IS BUILT vs WHAT IS NOT BUILT
-  • Technical Assumptions & Initial Architecture Constraints
+  • Tax Disclaimers (PP 55/2022, Rp 500M threshold, non-PKP)
+  • Mandatory UU PDP Compliance (Privacy Policy, ToS, DPA, 3Y Retention, PII Scrubbing)
                       │
                       ▼
-[ STEP 4: Client Dependency Registration (Client Dependencies) ]
-  • Master Data, Server Access, Third-Party API Credentials
-  • Handover Deadlines (Dependency SLA)
-                      │
-                      ▼
-[ STEP 5: Stakeholder Mapping & Communication ]
+[ STEP 6: Stakeholder Mapping, Dependencies & Realistic Timeline ]
   • Power/Interest Matrix (4 Quadrants)
   • Communication Plan & Escalation Path
   • Expectation Management & RACI Matrix
+  • Phase Duration Guidelines & 20% Dev Buffer (CR freeze = QA - 2w)
                       │
                       ▼
 [ OUTPUT: SCOPE_STATEMENT.md Document + Stakeholder Artifacts ] ──► Ready to Proceed to Module 03: Legal SOW & DP
@@ -48,15 +62,62 @@ This module is the second stage in the software development lifecycle for solo d
 
 ---
 
-## 2. Step-by-Step Execution
-
 ### Step 1: Targeted Discovery Interview
 Conduct the interview using the guide in `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md`:
-1. **Identify Decision Makers**: Ensure the interviewee has final authority to approve features.
-2. **Dissect Needs vs Wants**: Distinguish core business needs (*needs*) from cosmetic enhancements (*nice-to-have wishes*).
-3. **Map User Roles**: Determine everyone who logs into the system and their specific access permissions (e.g., Super Admin, Cashier, Customer).
 
-### Step 2: Feature Breakdown & MoSCoW Prioritization
+#### 1.1 Decision Authority & Needs vs Wants
+1. **Identify Decision Makers**: Ensure the interviewee has final commercial and technical authority to sign off on deliverables.
+2. **Dissect Needs vs Wants**: Distinguish core revenue/operational blockers (*needs*) from cosmetic wishlists (*nice-to-have wishes*).
+
+#### 1.2 Realistic Business Metrics Ramp (Avoid Fantasy Projections)
+Solo developers must ground business metrics in achievable adoption curves. Claiming *"500 customers and Rp 50M MRR in Month 1"* is an anti-pattern.
+
+| Timeline Post-Launch | Realistic Cumulative Customers | Monthly Acquisition Pace | Typical MRR (@ Rp 99k/mo) |
+| :--- | :---: | :---: | :---: |
+| **Month 1** | 5–10 | Beta cohort conversion | Rp 500k – Rp 1M |
+| **Month 3** | 20–30 | +5–10 / month (organic referrals) | Rp 2M – Rp 3M |
+| **Month 6** | 50–75 | +10–15 / month (initial PMF) | Rp 5M – Rp 7.5M |
+| **Month 12** | 100–200 | +15–20 / month (scaling) | Rp 10M – Rp 20M |
+
+- **Year 1 Target Baseline**: Model **50–100 paying customers** for early-stage B2B/SME SaaS (typically generating Rp 5–10M MRR).
+
+#### 1.3 Retention vs LTV Metric Realism
+- **D30 Retention Benchmark**: Expect **30%–40%** user retention after initial 30 days.
+- **Average Customer Lifetime**: SME/UMKM SaaS exhibits annual churn of $30\%–50\%$. Never model customer lifetimes $>18$ months without historical data; assume **12–18 months** for initial LTV models.
+- **Anti-Pattern Check**: Do NOT pair a high-churn metric (e.g., "D30 retention 40%") with an optimistic long lifetime (e.g., "LTV 24 months").
+
+#### 1.4 Non-Circular North Star Metric
+- ❌ *Circular Definition*: "70% of Weekly Active Users record $\ge 5$ transactions per week" (WAU is already defined by activity).
+- ✅ *Non-Circular Definition*: "Active Tenant Rate = $70\%$ of signed-up organizations with $\ge 1$ login in the past 30 days record $\ge 5$ operational transactions per week."
+
+#### 1.5 Pre-Launch Validation Integration
+Include a pre-launch validation checkpoint in early discovery:
+- **M01.5 Landing Page (Week 2)**: Lightweight landing page (Carrd/Webflow, 2 days effort) with email capture and willingness-to-pay question (*"Would you pay Rp 99k/month for this?"*).
+- **Validation Gate**: Target 50–100 email signups prior to major development investment. If $<50$ signups occur in 2 weeks, reassess positioning before locking scope.
+
+---
+
+### Step 2: Problem-Solution Fit & MoSCoW Prioritization
+
+#### 2.1 Problem-Solution Fit Validation (MANDATORY CROSS-CHECK)
+Before prioritizing features into MoSCoW buckets, validate every proposed capability against root-cause research:
+
+1. **80/20 Root Cause Mapping**:
+   - Extract stated problem metrics according to your domain (e.g., Retail: stock discrepancy 10-15%; HRIS: unverified overtime leakage 12%; Legal: contract approval turnaround 5 days).
+   - Dissect underlying causes: Identify primary operational bottlenecks ($\approx 80\%$) vs secondary friction ($\approx 20\%$).
+   - **Rule**: The Must-Have (P0) feature set **collectively** must resolve $\ge 70\%$ of the primary root cause. Any standalone feature claiming P0 status that addresses only minor secondary friction ($<20\%$) must be demoted to Should-Have (P1) or Won't-Have (P3).
+   - *Domain Examples*: Retail P0 = stock opname audit trail (not real-time branch sync); HRIS P0 = geofenced clock-in & tiered approval workflow (not AI facial recognition); Legal P0 = clause diff engine & role-based sign-off (not multi-jurisdictional AI chatbot).
+
+2. **Target Segment Feature Dependency Audit**:
+   - Map required capabilities per targeted user persona.
+   - *Example*: Targeting "Cafe / Coffee Shop" requires Bill of Materials (BOM) for recipe ingredient deduction (coffee beans $\rightarrow$ espresso).
+   - **Rule**: If the MVP excludes BOM, the agent **MUST DROP THE CAFE SEGMENT** from MVP scope or upgrade BOM to P0. Never retain a user persona whose pain points cannot be solved by the MVP feature set.
+
+3. **Dependency Contradiction Check**:
+   - If a feature generates reports claiming *"Net Profit (Revenue - COGS - Expenses)"*, verify whether expense tracking is in-scope.
+   - If expense tracking is deferred to Phase 1.5, the report MUST be labeled *"Gross Profit only (Laba Kotor; Operational expenses deferred to Phase 1.5)"*.
+
+#### 2.2 MoSCoW Categorization Limits
 Break each module into specific features with priority labels:
 
 **Template**: `templates/01-discovery-commercial/MOSCOW_MATRIX.md` (60-min workshop format, decision tree, examples)
@@ -68,139 +129,237 @@ Break each module into specific features with priority labels:
 - **Could Have (P2)**: Additional features if time and solo dev capacity permit (e.g., WhatsApp notifications).
 - **Won't Have (P3)**: Features formally agreed not to be built in this phase (e.g., AI recommendation chatbot).
 
-**MoSCoW Workshop** (Medium/Large projects):
-- Run 60-min prioritization workshop with client stakeholders
-- Use decision tree: "Can we launch without this?" → Must/Should/Could/Won't
-- Document in `docs/pm/MOSCOW_MATRIX.md`
-- Reference in SCOPE_STATEMENT.md
+#### 2.3 Mandatory SaaS Revenue & Operations Features (P0 MVP)
+Every commercial SaaS scope statement **MUST** include these operational capabilities in P0 *(Note: Untuk Internal Company Tools seperti HRIS internal atau tool operasional perusahaan sendiri, modul billing/subscription dikecualikan/dilewati)*:
 
-### Step 3: Scope Boundary Locking (In-Scope vs Out-of-Scope)
-Solo developers must document the **Out-of-Scope** section with aggressive detail. Civil law principle: *"Everything not explicitly stated as In-Scope is outside the developer's responsibility."*
+1. **F-XX: Billing & Subscription Engine**:
+   - Payment gateway integration (Midtrans, Xendit, or Stripe).
+   - Subscription plans (e.g., Rp 99k/month) with automated invoice generation.
+   - 14-day free trial without credit card requirement.
+   - 7-day grace period post-expiry before access blocking.
+   - Automated email reminder (3 days before expiration via transactional SMTP).
+   - Middleware subscription guard (intercept expired tenants, redirect to `/settings/billing`).
 
-Standard Out-of-Scope examples that must be listed:
-- Manual data migration from physical books/paper or corrupted database formats.
-- Purchasing font licenses, paid stock image assets, or third-party API subscription fees.
-- Handling local network issues, damaged scanner hardware, or client office machines infected with malware.
+2. **F-XX: Offboarding & Data Deletion Flow (UU PDP Compliance)**:
+   - User initiates subscription cancellation.
+   - 30-day grace period: Access blocked, data retained, one-click full data export to CSV/JSON.
+   - Day 31: Tenant marked `is_deleted = true`, credentials revoked, data quarantined.
+   - Day 90: Irreversible automated database purge satisfying the *"Right to be Forgotten"*.
 
-### Step 4: Client Dependency Identification (Client Dependency SLA)
+3. **F-XX: Receipt Printing / Dispatch**:
+   - Browser printing dialog (`window.print()`) with `@media print` CSS supporting 58mm and 80mm thermal printers.
+   - WhatsApp and PDF dispatch deferred to Phase 1.5 if vendor API budgets are constrained.
+
+4. **F-XX: Solo Developer Internal Admin Panel**:
+   - Protected internal route (`/admin`) isolated from tenant users.
+   - Organization directory, active user counts, storage utilization, and tenant error logs.
+   - Manual subscription override tool (extend trial, grant comp account, manual activation).
+
+---
+
+### Step 3: Detailed RBAC Matrix & Approval Decision Tree
+
+Vague role descriptions (e.g., *"Manager has full access"*) create authorization bugs. Define concrete permissions per role:
+*(Contoh di bawah memakai arketipe Retail/Accounting. Sesuaikan peran dengan domain proyek: misal HRIS = Super Admin, HR Manager, Department Head, Karyawan; Edutech = Admin, Guru, Siswa, Orang Tua)*:
+#### 3.1 Mandatory Role-Based Access Control (RBAC) Table
+
+| Role Code | Role Name | Create | Read | Update | Delete / Void | Special Permissions & Guardrails |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **ROL-01** | **Owner** | All resources | All org locations | All resources | **Void only** (Immutable audit log; soft-delete via `is_active=false`) | Full organization control, staff invitations, billing management, financial statements |
+| **ROL-02** | **Manager** | Transactions, stock adjustments | Assigned locations (`location_ids[]`) | Transactions, products | Void transactions (assigned locations only) | **Stock adjustment approval**: Approves adjustments $>Rp 1M$ or variance $>10\%$. **ZERO SELF-APPROVAL** |
+| **ROL-03** | **Kasir** | **Sales transactions only** | Inventory (own location only) | Own same-day sales | **CANNOT VOID** (Must escalate to Manager) | **Hidden Buy Price**: Application query layer excludes `buy_price` / cost fields. Zero access to profit reports |
+| **ROL-04** | **Akuntan** | None (read-only audit) | Financial statements, tax reports, ledgers | None | None | Read-only reporting access. Export PDF/Excel. Cannot alter operational balances |
+
+#### 3.2 Location Assignment Architecture
+- **Owner**: Global access across all organization locations automatically.
+- **Manager**: Multi-location assignment via `user_roles.location_ids UUID[]` array.
+- **Kasir**: Single location bound to first element of `location_ids`.
+
+#### 3.3 Stock Adjustment Approval Decision Tree
+```text
+Adjustment Created By ──► Authorization Rule
+├── Kasir   ──► CANNOT CREATE (Inventory read-only)
+├── Manager ──► Value < Rp 1.000.000 AND variance < 10% ──► Auto-Approved
+├── Manager ──► Value ≥ Rp 1.000.000 OR variance ≥ 10%  ──► Requires OWNER Approval
+├── Manager ──► Own created adjustment (Any amount)      ──► Requires OWNER Approval (NO SELF-APPROVAL)
+└── Owner   ──► Auto-Approved (Highest internal authority)
+   ```
+
+#### 3.4 Session Timeout by Device Profile
+- **Kasir (Shared POS Hardware)**: 24-hour maximum session with auto-lock on inactivity.
+- **Owner / Manager / Akuntan (Personal Hardware)**: 7-day session with refresh token rotation.
+
+---
+
+### Step 4: Technical Architecture Constraints & Database Schema Design
+
+#### 4.1 Database Schema Design Checklists
+*(Sesuaikan dengan arsitektur deployment: Multi-tenant SaaS wajib partisi tenant, sedangkan single-tenant internal database cukup skema relasional standar)*:
+**Multi-Tenant SaaS Guardrails**:
+- [ ] **Universal Tenant Column**: Every table **MUST** include `org_id UUID NOT NULL REFERENCES organizations(id)`.
+- [ ] **Junction Table Isolation**: Multi-to-multi tables (e.g., `transaction_items`) must include `org_id` directly to prevent tenant leakage.
+- [ ] **Row-Level Security (RLS) Policy**: Query the application table, NOT the protected auth schema:
+  ```sql
+  -- ✅ CORRECT:
+  CREATE POLICY org_isolation ON transactions
+  FOR ALL USING (
+    org_id = (SELECT org_id FROM public.user_roles WHERE user_id = auth.uid() LIMIT 1)
+  );
+  -- ❌ WRONG: org_id = auth.user_org_id() (Auth schema is read-only)
+   ```
+- [ ] **Column-Level Security Mitigation**: RLS filters rows, NOT columns. To hide `buy_price` from Cashiers, enforce column omission in application query builders (e.g., Prisma select / Supabase `.select('id, name, sell_price')`).
+
+**Financial Domain Precision**:
+- [ ] **Currency & Monetary Amounts**: Always use `DECIMAL(15, 2)` or `NUMERIC` (NEVER `FLOAT` or `DOUBLE`).
+- [ ] **Unit Cost Snapshotting**: `transaction_items` **MUST** record `unit_cost DECIMAL(15, 2) NOT NULL` (the exact buy price at the second of checkout). Never recalculate historical COGS from current product master data.
+- [ ] **Immutable Audit Log Pattern**:
+  - `inventory_movements`: Append-only log. Never execute `UPDATE` or `DELETE`.
+  - `transactions`: Status enum (`completed`, `void`, `returned`). Voiding sets `voided_at` and `voided_by_user_id`; records remain permanently.
+  - **No `balance_after` in Movement Records**: Storing computed balances causes race conditions during concurrent offline submissions. Calculate balance dynamically via `SUM(quantity)` triggers or read-model projections.
+
+**Offline Sync Columns (If Offline Supported)**:
+- [ ] `idempotency_key TEXT UNIQUE`: Client-generated UUID preventing duplicate transaction sync.
+- [ ] `device_timestamp TIMESTAMPTZ`: Captured from client clock (server `created_at` remains the authoritative source of truth).
+
+**System Audit Trail Table**:
+```sql
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  org_id UUID NOT NULL REFERENCES organizations(id),
+  user_id UUID REFERENCES auth.users(id),
+  action TEXT NOT NULL,         -- e.g., 'STOCK_ADJUSTMENT_APPROVED'
+  entity_type TEXT NOT NULL,    -- e.g., 'stock_adjustments'
+  entity_id UUID NOT NULL,
+  changes JSONB,                -- {"old": {...}, "new": {...}}
+  ip_address INET,
+  user_agent TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+#### 4.2 Architecture Decisions & Realism Check
+
+**Offline-First Decision Matrix**:
+
+| Scale & Connectivity | Architecture Recommendation | Rationale |
+| :--- | :--- | :--- |
+| **<100 users / 1–2 locations / Stable 4G** | **Online-Only MVP** | Defer offline sync to Phase 2; eliminates complex conflict resolution |
+| **100–500 users / Intermittent 3G** | **Selective Offline** | Cache product catalogue; queue sales transactions with retry guards |
+| **500+ users / Harsh connectivity** | **Full Offline-First** | IndexedDB (Dexie.js) + Append-only delta sync (Never Last-Write-Wins) |
+
+**Real-Time Sync Decision Matrix**:
+- Latency requirement $>5$ seconds $\rightarrow$ Implement 30-second polling or manual refresh button.
+- Latency requirement $<5$ seconds $\rightarrow$ Use WebSocket Broadcast channels (Supabase Realtime Broadcast).
+- Avoid Postgres Changes Realtime on large tables with complex RLS due to heavy server-side subscriber overhead.
+
+**Realistic Performance Budgets**:
+- **Time to Interactive (TTI) on 3G**: Realistic target is **$<5$ seconds** (not $<3$s) with an initial JS bundle budget of **$<200$ KB gzipped**.
+- **API p95 Response Time**: Target **$<500$ ms** (accounting for Indonesia-to-Singapore cloud baseline latency of $50–100$ ms).
+- **Client-Side PDF Generation**: Use `@react-pdf/renderer` in browser. Avoid serverless Puppeteer on Vercel due to $50$ MB bundle bloat and $10$-second function timeouts.
+
+**Tech Stack Version Locking**:
+Pin minor versions in specification (e.g., Next.js `15.0.x`, React `19.0.x`, Tailwind `4.0.x`, TypeScript `5.6.x`, Dexie `4.0.x`). Never specify `"latest"` or floating semver ranges.
+
+**Accurate Security Claims**:
+- ❌ *"SQL injection prevented by RLS"* $\rightarrow$ Misleading. RLS is authorization. SQL injection is prevented by parameterized queries.
+- ❌ *"CSRF tokens handled by Supabase"* $\rightarrow$ Inaccurate. Supabase Auth mitigates CSRF using `SameSite=Lax` cookies.
+- ❌ *"Encryption at-rest via pgcrypto"* $\rightarrow$ Misleading. pgcrypto is an application tool. Database encryption at-rest is handled by AWS/PostgreSQL AES-256 storage.
+
+---
+
+### Step 5: Scope Boundary Locking, Tax Disclaimers & Legal Compliance
+
+#### 5.1 In-Scope vs Out-of-Scope (Scope Defense)
+Civil law principle: *"Everything not explicitly documented as In-Scope is strictly outside the developer's responsibility."*
+
+Mandatory Out-of-Scope exclusions:
+1. Manual physical paper digitization or entry of corrupted legacy databases.
+2. Licensing costs for third-party fonts, commercial icon sets, or cloud vendor API subscription tiers.
+3. Local hardware malfunctions, network router misconfigurations, or point-of-sale thermal printer driver corruptions.
+4. Formal legal counsel or tax advisory certifications.
+
+#### 5.2 Tax & Statutory Disclaimers (Domain-Specific)
+If the system includes automated tax, payroll, or statutory calculations, cite the authoritative regulation for your specific sector and jurisdiction:
+
+**1. Retail / SME Commerce (PPh UMKM)**:
+- Regulation: **PP 55/2022** (PPh Final 0.5%). Model the **Rp 500.000.000/year** non-taxable threshold for individual taxpayers (WP OP).
+- Mandatory In-App Disclaimer: *"Perhitungan pajak bersifat estimasi operasional dan tidak menggantikan pelaporan resmi pada DJP. PPN tidak diperhitungkan (non-PKP)."*
+
+**2. HRIS / Payroll (PPh 21 & Social Security)**:
+- Regulation: **PP 58/2023 & PMK 168/2023** (PPh 21 skema Tarif Efektif Rata-rata / TER Kategori A, B, C) + BPJS Ketenagakerjaan & BPJS Kesehatan.
+- Mandatory In-App Disclaimer: *"Kalkulasi pemotongan PPh 21 TER dan BPJS bersifat panduan internal penggajian; verifikasi akhir dilakukan oleh pejabat pemotong pajak (withholding tax agent) terdaftar."*
+
+**3. General Rule for All Domains**:
+- **Mandatory In-App Disclaimers**:
+  - *"Kalkulasi sistem ini bersifat alat bantu estimasi operasional dan tidak menggantikan opini profesional bersertifikasi atau pelaporan resmi regulator."*
+
+#### 5.3 Mandatory Data Privacy Compliance (UU PDP No. 27/2022)
+Every application storing user or customer information must incorporate compliance deliverables:
+1. **Privacy Policy (Kebijakan Privasi)**: Documenting data collection categories, actual server region/residency (e.g., AWS Jakarta `ap-southeast-3` / Singapore `ap-southeast-1`), statutory retention periods (e.g., 3-10 years for financial records under UU KUP, employment records for HRIS), third-party sub-processors, and user deletion rights.
+2. **Terms of Service (Syarat & Ketentuan)**: Stating platform availability limitations, subscription renewal terms, and liability caps.
+3. **PII Scrubbing in Error Monitoring (Sentry)**:
+   ```javascript
+   // sentry.client.config.js
+   Sentry.init({
+     beforeSend(event) {
+       if (event.request) {
+         delete event.request.cookies;
+         delete event.request.headers;
+       }
+       if (event.extra) {
+         delete event.extra.customer_name;
+         delete event.extra.email;
+         delete event.extra.phone;
+         delete event.extra.amount;
+       }
+       return event;
+     }
+   });
+   ```
+4. **CSV Formula Injection Sanitization**:
+   ```typescript
+   function sanitizeCSVCell(value: string): string {
+     if (/^[=+@-]/.test(value)) {
+       return `'${value}`; // Prepend single quote to neutralize spreadsheet execution
+     }
+     return value;
+   }
+   ```
+
+---
+
+### Step 6: Client Dependency Registration (Dependency SLA)
 List everything the client must provide to prevent work blockages:
-- Sandbox accounts and API secret keys (payment gateways, email service providers, cloud hosting).
-- Initial master data in structured digital format (CSV/JSON/Excel).
-- Availability of a Single PIC for weekly clarification sessions.
+- Payment gateway sandbox keys (Midtrans/Xendit) and transactional email credentials.
+- Initial master data in standardized digital templates (CSV/Excel).
+- Design approval turnarounds within a strict 3-business-day window.
 
-Include the clause: *Any delay in client dependency handover of ≥3 business days automatically pushes back the target release date without penalty to the developer.*
+Include the contractual clause: *Any client dependency handover delay $\ge 3$ business days automatically extends the target production launch date by an equal duration without liability.*
 
-### Step 5: Stakeholder Mapping & Communication
+---
 
-**Stakeholder Identification & Power/Interest Matrix**
+### Step 7: Stakeholder Mapping, Communication & Realistic Timelines
 
-Map all stakeholders using the Power/Interest matrix (4 quadrants):
+#### 7.1 Stakeholder Identification & Power/Interest Matrix
+Map all participants into 4 quadrants: Manage Closely (Paying Owner), Keep Satisfied (CFO/Legal), Keep Informed (Power User/Staff), Monitor (End Customers).
 
-1. **Manage Closely** (High Power, High Interest): Key decision-makers requiring regular updates and consultation for major decisions.
-   - *Solo Dev Example*: Direct paying client/owner.
-   - *Company Example*: Product Owner, Engineering Lead, CTO.
+#### 7.2 Phase Duration Guidelines & Buffer Rules
 
-2. **Keep Satisfied** (High Power, Low Interest): Holds authority but is not involved daily. Needs periodic status updates to avoid approval bottlenecks.
-   - *Solo Dev Example*: Client's executive/manager signing invoices.
-   - *Company Example*: CFO, Legal, Compliance team.
+| Lifecycle Stage | Small MVP (5–10 Features) | Medium SaaS (11–15 Features) | Large Platform (16–25 Features) |
+| :--- | :---: | :---: | :---: |
+| **M04 UI/UX Design** | 1 week | **2–3 weeks** (30–50 screens + legal docs) | 3–4 weeks |
+| **M05 Architecture** | 0.5 week | **1 week** (ERD + RLS policies) | 1–2 weeks |
+| **M06 Development** | 4–6 weeks | **8–12 weeks** | 12–16 weeks |
+| **M07 QA & SIT** | 1 week | **2 weeks** (Automated + Manual) | 2–3 weeks |
 
-3. **Keep Informed** (Low Power, High Interest): Actively involved in execution without scope decision authority. Daily/weekly tactical communication.
-   - *Solo Dev Example*: Power user/champion providing UI/UX feedback.
-   - *Company Example*: Designer, QA, DevOps engineer, Marketing.
-
-4. **Monitor** (Low Power, Low Interest): Passive stakeholders needing only final outcome awareness.
-   - *Solo Dev Example*: Client internal staff using the system post-launch.
-   - *Company Example*: Sales team, external partners.
-
-Use the template in `templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md` to document this mapping.
-
-**Communication Plan per Stakeholder**
-
-Establish communication cadence based on quadrants:
-
-| Stakeholder Tier | Cadence | Channel | Format |
-| :--- | :--- | :--- | :--- |
-| **Manage Closely** | Daily/Weekly sync | Slack/Discord + 30-min call | Status dashboard + decision items |
-| **Keep Satisfied** | Bi-weekly/Monthly | Email summary | Executive summary (1-page, RAG status) |
-| **Keep Informed** | Weekly standup | Slack/Discord + shared doc | Detailed progress update, blockers |
-| **Monitor** | Milestone report | Email broadcast | Launch announcement, major release notes |
-
-**Escalation Path**: Define when issues must escalate to a higher tier:
-- Blocker ≥3 days unresolved → Escalate to "Keep Satisfied"
-- Scope creep request → Escalate to "Manage Closely" for decision
-- Budget/Timeline overrun risk → Escalate to CFO/Financial stakeholder
-
-Use the template in `templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md`.
-
-**Expectation Management (Reality vs Promises)**
-
-The key to scope defense is upfront expectation alignment:
-
-1. **Success Criteria Alignment Workshop**: Before kick-off, run a 1-hour session to agree on measurable definitions of "done".
-   - *Bad*: "A great, user-friendly dashboard."
-   - *Good*: "A dashboard with 5 mandatory widgets (X, Y, Z), response time <2s, mobile-responsive, tested on Chrome/Safari."
-
-2. **Scope Boundary Communication**: Explain **In-Scope vs Out-of-Scope** boundaries in business language, not technical jargon.
-   - *Bad*: "We do not support horizontal pod autoscaling in Kubernetes."
-   - *Good*: "The system automatically scales for 100-500 concurrent users. If traffic surges past >500 users, a separate infrastructure upgrade is required (estimated cost +$X)."
-
-3. **Timeline Reality Check (Under-Promise, Over-Deliver)**:
-   - Solo dev time buffer formula: `Technical estimate × 1.5` (50% buffer for bug fixing, scope clarification, dependency delays).
-   - Communicate: *"A conservative timeline is 8 weeks. If everything proceeds smoothly, it may finish by week 6, but we commit to week 8."*
-
-4. **Trade-Off Transparency (Iron Triangle: Scope/Time/Quality)**:
-   - If client pushes deadline: "To deliver 2 weeks earlier, we must cut features X and Y, or accept technical debt that slows down Phase 2."
-   - If client adds features: "Feature Z adds 10 days of dev time. Should we push the deadline or drop another feature?"
-
-**RACI Matrix for Core Deliverables**
-
-Define responsibilities per deliverable using a RACI matrix:
-- **R (Responsible)**: Who performs the task.
-- **A (Accountable)**: Who holds final approval (only 1 person per item).
-- **C (Consulted)**: Who is consulted prior to decisions.
-- **I (Informed)**: Who is informed of results without direct involvement.
-
-| Deliverable | R | A | C | I |
-| :--- | :--- | :--- | :--- | :--- |
-| **Scope Statement** | Solo Dev | Client/PO | Designer, QA | Exec |
-| **UI/UX Design** | Designer | Client/PO | Solo Dev | Marketing |
-| **Backend API** | Solo Dev | Tech Lead | Security Reviewer | QA |
-| **Deployment** | Solo Dev/DevOps | CTO | Client PIC | Support Team |
-
-Use the template in `templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md`.
-
-**Business Communication Skills for Solo Devs**
-
-5 mandatory communication patterns to master:
-
-1. **Executive Summary (Top-Down, 1-Page Max)**:
-   ```
-   **Status**: 🟢 Green (on track) / 🟡 Yellow (at risk) / 🔴 Red (blocked)
-   **Progress**: 40% complete (Week 4 of 10)
-   **Key Wins**: Feature X shipped, API integration done
-   **Blockers**: Waiting for client data (3 days overdue)
-   **Next Week**: Complete Feature Y, start QA testing
-   **Asks**: Need client approval on design mockup by Friday
-   ```
-
-2. **Status Report Format (RAG + Blockers + Asks)**:
-   - Send every Friday EOD to the "Manage Closely" tier.
-   - Structure: What shipped this week → What's next week → Blockers → Explicit asks.
-
-3. **Risk Communication (Early Warning + Mitigation Options)**:
-   - *Bad*: "There is an issue with the third-party API." (vague, no action)
-   - *Good*: "The third-party API has been down for 2 days. Options: (1) Wait for their fix (ETA unknown), (2) Switch to an alternative provider (+3 days dev), (3) Build a temporary mock API (+2 days). Recommendation: Option 2. Decision needed by tomorrow."
-
-4. **Scope Creep Defense Script**:
-   - Client: "Can you add feature X? It's just a small thing."
-   - Solo Dev: "Feature X requires Y days. If included in this sprint, we must drop feature Z or extend the deadline. Alternatively, can we defer it to Phase 2 post-launch?"
-
-5. **Handling Difficult Stakeholders**:
-   - **The Micromanager**: Send proactive daily updates (morning 09:00) before being asked. Reduces interruption frequency.
-   - **The Scope Creeper**: Always respond to feature additions with trade-offs (time/budget). Never say "yes" without negotiation.
-   - **The Silent Approver**: Set approval deadlines: "Need design approval by Wednesday EOD, or we proceed under the assumption of approval to keep the timeline on track."
-
-See full guide in `references/pm/PM_COMMUNICATION_GUIDE.md`.
+- **Development Estimation Formula**:
+  $$\text{Dev Weeks} = \left[ (\text{Simple CRUD} \times 2.5\text{ days}) + (\text{Complex Features} \times 1\text{ week}) \right] \times 1.20\text{ (Buffer)}$$
+- **Change Request (CR) Freeze**: Locked exactly **2 weeks before QA starts** (e.g., if QA starts Week 17, CR freeze is strictly enforced at Week 15).
+- **Phase 1.5 Execution Window**: Scheduled strictly post-launch (Week 21+), NEVER overlapping with active QA.
+- **Closed Beta Testing (M07 Week 2)**: Recruit 5 representative business owners with a 3-month free subscription incentive. Conduct 60-minute remote recorded usability sessions.
+- **Definition of Done (DoD) Clarification**:
+  - *Staging*: Automatic Vercel Preview deployment per pull request with isolated database branch.
+  - *Penetration Testing*: Manual security audit testing multi-tenant RLS bypass attempts plus automated Playwright cross-tenant data access tests.
 
 ---
 
@@ -297,8 +456,16 @@ After the file `docs/pm/SCOPE_STATEMENT.md` has been written:
 
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 03 within the same turn!**
 2. **CONTENT VERIFICATION (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/SCOPE_STATEMENT.md')` → Confirm 60+ lines
+   - [ ] `read_file('docs/pm/SCOPE_STATEMENT.md')` → Confirm 120+ lines
    - [ ] Must-Have count within scale limits (3-7 Small, 8-15 Medium, etc.)
+   - [ ] **Problem-Solution Fit**: Every Must-Have feature resolves $\ge 50\%$ of stated problem root causes
+   - [ ] **Target Segment Dependency**: Retained personas require zero out-of-scope features to experience core value
+   - [ ] **Multi-Tenant Schema**: Every table includes `org_id UUID NOT NULL` with RLS querying `public.user_roles`
+   - [ ] **Financial Precision**: Money stored as `DECIMAL`, `unit_cost` snapshot present in line items, movements append-only
+   - [ ] **RBAC Approval Workflow**: Documented decision tree with zero self-approval for managers
+   - [ ] **Mandatory Revenue Features**: Billing & subscription engine (F-XX) and offboarding flow included in P0
+   - [ ] **Legal Compliance**: Privacy Policy, Terms of Service, PP 55/2022 tax disclaimers, and Sentry PII scrubbing planned
+   - [ ] **Realistic Timeline**: Epic sum + 20% buffer matches timeline claim; CR freeze set to QA start minus 2 weeks
    - [ ] Out-of-Scope section documented with ≥3 explicit exclusions
    - [ ] Client dependencies listed with SLA timeline
 3. Present a scope boundary summary to the user:

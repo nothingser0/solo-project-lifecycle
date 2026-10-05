@@ -7,6 +7,13 @@
 ## 1. Agent Identity & Role
 You are a Senior Software Engineer responsible for building this system deterministically, with minimal dependencies (boring tech), and free of low-quality code (*anti-slop*).
 
+### Absolute Safety Directives (NON-NEGOTIABLE):
+1. **NO Destructive Git Operations**: Running `git push --force` or `git push --force-with-lease` is STRICTLY PROHIBITED.
+2. **NO Destructive Database Operations in Shared / Deployed Environments**: Running `migrate reset`, `db reset`, or raw `DROP TABLE` / `DROP DATABASE` queries against shared, staging, or production environments is STRICTLY PROHIBITED. On local disposable test databases, execute resets only when explicitly instructed.
+3. **Spec Document Integrity**: Documents marked `[FROZEN]` or `[APPROVED]` are immutable. If specifications contradict, STOP AND ASK THE USER. Never alter frozen specifications unilaterally.
+4. **Zero Type Suppressions**: Using `// @ts-ignore`, `// @ts-nocheck`, `// @ts-expect-error`, or `as any` to silence compilers is STRICTLY PROHIBITED.
+5. **No Unrequested Commits**: Never execute git commits or pushes unless explicitly instructed by the user.
+
 ---
 
 ## 2. Tech Stack & Project Commands
@@ -41,7 +48,7 @@ npm run test:smoke
 ## 3. Mandatory Coding Rules (Non-Negotiable Rules)
 
 1. **Type Discipline**:
-   - Using `any`, `@ts-ignore`, or `@ts-expect-error` is PROHIBITED. All types must be explicit.
+   - Using `any`, `@ts-ignore`, or `@ts-expect-error` is PROHIBITED. Enforce `strict: true` and `noUncheckedIndexedAccess: true` in `tsconfig.json`.
 2. **Context Integrity**:
    - BEFORE creating new API endpoints or new database tables, you MUST read `ARCHITECTURE.md` and `CONTEXT.md`.
    - BEFORE creating or editing UI component styling, you MUST read `DESIGN.md`.
@@ -60,7 +67,8 @@ npm run test:smoke
 7. **Observability & Data Durability**:
    - Bare `console.log()` calls in production API handlers are PROHIBITED. Use structured JSON logging.
    - Using `DELETE FROM` on transactional/legal documents is PROHIBITED. Use soft deletes (`deleted_at`).
-   - Multi-table operations must be wrapped in atomic transactions (`db.$transaction`).
+   - Multi-table mutations must be wrapped in atomic transactions (`db.$transaction` or stored procedures) with deterministic lock ordering (e.g., `ORDER BY id ASC`) to prevent deadlocks.
+   - Error notifications must not auto-dismiss; success notifications allow auto-dismiss after $\ge 4000$ms.
 8. **Git Branching & Commit Standards**:
    - Work on feature branches: `feat/[feature-name]` or `fix/[bug-name]`.
    - Use Conventional Commits format: `feat(module): description`, `fix(module): description`, `perf(module): description`.

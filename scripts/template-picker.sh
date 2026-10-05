@@ -152,7 +152,7 @@ phase_dev_harness() {
     echo "7. .env.example (Environment variables)"
     echo "8. RUNBOOK_LOCAL.md (Local setup guide)"
     echo "9. VERIFY_LOCAL.md (Verification checklist)"
-    echo "10. Copy all 7 harness files at once"
+    echo "10. Copy all 9 harness files at once"
     echo "11. Back to main menu"
     echo ""
     read -p "Select template (1-11): " choice
@@ -165,8 +165,8 @@ phase_dev_harness() {
         5) copy_template "$TEMPLATES_DIR/04-dev-execution/CONVENTIONS_TEMPLATE.md" "CONVENTIONS.md" ;;
         6) copy_template "$TEMPLATES_DIR/04-dev-execution/TODO_TEMPLATE.md" "TODO.md" ;;
         7) copy_template "$TEMPLATES_DIR/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example" ;;
-        8) copy_template "$TEMPLATES_DIR/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "docs/RUNBOOK_LOCAL.md" ;;
-        9) copy_template "$TEMPLATES_DIR/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "docs/VERIFY_LOCAL.md" ;;
+        8) copy_template "$TEMPLATES_DIR/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md" ;;
+        9) copy_template "$TEMPLATES_DIR/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md" ;;
         10)
             copy_template "$TEMPLATES_DIR/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/CONTEXT_TEMPLATE.md" "CONTEXT.md"
@@ -175,7 +175,9 @@ phase_dev_harness() {
             copy_template "$TEMPLATES_DIR/04-dev-execution/CONVENTIONS_TEMPLATE.md" "CONVENTIONS.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/TODO_TEMPLATE.md" "TODO.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example"
-            echo -e "${GREEN}✅ All 7 harness files copied${NC}"
+            copy_template "$TEMPLATES_DIR/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md"
+            copy_template "$TEMPLATES_DIR/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md"
+            echo -e "${GREEN}✅ All 9 harness files copied${NC}"
             ;;
         11) return ;;
         *) echo "Invalid choice" ;;

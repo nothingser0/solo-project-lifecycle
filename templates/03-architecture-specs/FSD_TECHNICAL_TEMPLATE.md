@@ -1,412 +1,462 @@
-# Functional Specification Document (FSD)
+# Functional Specification Document (FSD) — Technical Architecture & Database DDL
 
-> Technical architecture specification document defining "HOW" the system is built: database schemas, API contracts, security models, and state machine logic.
+> **Purpose**: Definitive engineering blueprint defining "HOW" the system is constructed: standard SQL DDL, access control & RLS architecture, atomic transaction functions with row-locking, append-only journals, idempotency caches, and immutable audit logs.
+> **Standard**: Zero silent RLS data leaks, zero client-side race conditions, and hardened `SECURITY DEFINER` execution across all project scales (Small, Medium, Large, Enterprise) and software domains (CRM, CMS, HRIS, E-Commerce, Fintech, SaaS, Developer Tools).
+> **Output**: `docs/specs/FSD.md`
 
 ---
 
 ## 1. Document Metadata
-- **System Name**: [Application Name]
-- **Client**: [Client Company / Organization]
+- **System / Application Name**: [System / Application Name]
+- **Client / Organization**: [Client Company / Organization]
 - **Lead Software Architect**: [Your Name]
-- **PRD Reference**: PRD-[ID] v1.0 (Approved)
-- **Design Reference**: DESIGN_SPEC-[ID] v1.0 (Frozen)
-- **Document Version**: 1.0.0
-- **Document Status**: [Approved for Build]
+- **Project Domain**: [CRM / CMS / HRIS / E-Commerce / Fintech / B2B SaaS / Developer Tool]
+- **Defined Project Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
+- **PRD Reference**: `docs/specs/PRD.md` (v2.0 Approved)
+- **Design Reference**: `docs/specs/DESIGN_SPEC.md` (v2.1 Frozen)
+- **Specification Version**: 2.0.0
+- **Document Status**: [APPROVED_FOR_BUILD]
 - **Approval Date**: [YYYY-MM-DD]
+
+### 1.1 Scale-Adaptive FSD Architecture Framework
+*Adapt technical depth and architectural patterns based on project scale:*
+
+| Scale Tier | Typical Tables | State & Persistence Architecture | Concurrency & Isolation | Security Architecture |
+| :--- | :---: | :--- | :--- | :--- |
+| **Small (MVP / Internal Tool)** | 3–6 tables | Standard relational tables with `created_at`/`updated_at`; simple audit logging | Database unique constraints & client submit debouncing | Application-layer auth; basic RLS or single-tenant database |
+| **Medium (B2B SaaS / Agency)** | 10–20 tables | State machine / event journals; cached aggregate projections; versioned migrations | Atomic transactions / stored procedures (`FOR UPDATE`) on critical paths | 100% multi-tenant RLS (`org_id`); hardened `SECURITY DEFINER` helper functions |
+| **Large (Scale-Up / Multi-System)**| 20–35 tables | Full append-only movement ledgers; decoupled background workers; Redis caching | Row-level locking; idempotency key response caches; partition strategies | Role-scoped RLS; database view isolation; rate limiting; KMS encryption |
+| **Enterprise (Corporate / Regulated)**| 40+ tables | Immutable audit vaults; event sourcing; high-concurrency read replicas | Sharding / time-series partitioning; multi-master or distributed consensus | SOC2 / ISO 27001 / UU PDP compliance; HSM keys; multi-tier CAB sign-off |
 
 ---
 
 ## 2. Component Architecture & Tech Stack Decisions
 
 ```text
-[ Browser / Mobile Client ]
-            │
-            ▼ (HTTPS / TLS 1.3 - JSON API)
-    [ API Gateway / Reverse Proxy (Caddy / Nginx / Cloudflare) ]
-            │
-            ▼
-    [ Application Backend (Node.js / Next.js / Go) ]
-            │
-            ├──► [ Database: PostgreSQL (Managed / Supabase) ]
-            ├──► [ Cache & Rate Limit: Redis (Upstash) ]
-            ├──► [ Document Vault: Cloudflare R2 / AWS S3 (AES-256) ]
-            └──► [ Third-Party APIs: SMTP (Resend) / Payment (Midtrans) ]
+[ Browser / Mobile Client / External Worker ]
+                    │
+                    ▼ (HTTPS / TLS 1.3 - JSON API / WebSockets)
+        [ Reverse Proxy / Edge CDN (Cloudflare / Caddy) ]
+                    │
+                    ▼
+        [ Application Backend (Next.js / Laravel / Django / Go / Rails) ]
+                    │
+                    ├──► [ Database: PostgreSQL (Managed / Supabase / Local) ]
+                    │     ├── Access Isolation (RLS / Tenant Scoping)
+                    │     ├── Atomic Transactions & Concurrency Guards
+                    │     └── Audit Logs & State Event Journals
+                    │
+                    ├──► [ In-Memory Cache / Worker Queue: Redis (Optional) ]
+                    │     └── Rate Limiting, Session Stores, Background Jobs
+                    │
+                    └──► [ Object Storage: S3 / Cloudflare R2 (Optional) ]
+                          └── Encrypted Assets & Presigned URLs
 ```
 
-### Technology Decisions (Tech Stack Matrix)
-- **Frontend / Client UI**: Next.js 15 (App Router, React 19, TypeScript, Tailwind CSS, Shadcn UI).
-- **Backend Runtime**: Node.js 22+ LTS / Next.js Server Actions / Route Handlers.
-- **Primary Database**: PostgreSQL 16 (with `pgcrypto` and `uuid-ossp` extensions).
-- **ORM / Query Builder**: Prisma ORM / Drizzle ORM (with versioned schema migrations).
-- **In-Memory Cache & Lock**: Redis v7 (Rate limiting and background job queues).
-- **File Storage (Blob Storage)**: Cloudflare R2 (S3-compatible, zero egress fee).
+### Framework Versions (Pinned)
+*(Populate directly from `./scripts/check-package-versions.sh <stack>`)*
+- **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]
+- **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
+- **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
+- **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
 
 ---
 
-## 3. Relational Database Schema (Standard SQL DDL)
+## 3. Relational Database Schema & DDL Integrity (SQL DDL)
+
+### 3.1 DDL Integrity Rules
+1. **Monetary Precision**: All currency amounts MUST use `BIGINT` (stored in smallest currency unit / full Rupiah) or `NUMERIC(15, 2)` to eliminate floating-point rounding errors.
+2. **Quantity Precision**: Quantities supporting fractional measurements (weights, volumes, hours) MUST use `NUMERIC(12, 3)`. Whole items use `INTEGER`.
+3. **100% Foreign Key Indexing**: Every column with a `REFERENCES` constraint **MUST** have an explicit `CREATE INDEX` to prevent sequential table scans under load.
+4. **Strict CHECK Constraints**: Enforce domain invariants and arithmetic correctness directly in the database engine.
 
 ```sql
--- Cryptographic and UUID Extensions
+-- Extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- 1. Users Table (users)
-CREATE TABLE users (
+-- ============================================================================
+-- CORE PLATFORM SCHEMA (Universal: Multi-Tenant & User Access)
+-- ============================================================================
+
+-- 1. Organizations (Tenants)
+CREATE TABLE organizations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(150) NOT NULL,
-    role VARCHAR(30) NOT NULL DEFAULT 'staff' CHECK (role IN ('super_admin', 'manager', 'staff')),
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_users_email ON users(email);
+-- 2. Users & Tenant Roles
+CREATE TABLE users (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE RESTRICT,
+    email VARCHAR(255) NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    role VARCHAR(30) NOT NULL CHECK (role IN ('Owner', 'Manager', 'Staff', 'Auditor')),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT uq_users_org_email UNIQUE (org_id, email)
+);
+CREATE INDEX idx_users_org_id ON users(org_id);
 
--- 2. Documents Table (documents)
-CREATE TABLE documents (
+-- ============================================================================
+-- DOMAIN SCHEMAS (Select the pattern matching project domain; adapt or mark N/A)
+-- ============================================================================
+
+-- ----------------------------------------------------------------------------
+-- PATTERN A: Commerce / Inventory / Transactions (Retail / POS / WMS Scope)
+-- ----------------------------------------------------------------------------
+CREATE TABLE products (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    creator_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE RESTRICT,
+    sku VARCHAR(100) NOT NULL,
+    barcode VARCHAR(100),
+    name VARCHAR(255) NOT NULL,
+    unit VARCHAR(30) NOT NULL DEFAULT 'pcs',
+    buy_price BIGINT NOT NULL CHECK (buy_price >= 0),
+    sell_price BIGINT NOT NULL CHECK (sell_price >= buy_price),
+    min_stock NUMERIC(12, 3) NOT NULL DEFAULT 0 CHECK (min_stock >= 0),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT uq_product_sku_per_org UNIQUE (org_id, sku)
+);
+CREATE INDEX idx_products_org_id ON products(org_id);
+CREATE INDEX idx_products_barcode ON products(org_id, barcode) WHERE barcode IS NOT NULL;
+
+CREATE TABLE inventory (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE RESTRICT,
+    product_id UUID NOT NULL REFERENCES products(id) ON DELETE RESTRICT,
+    quantity NUMERIC(12, 3) NOT NULL DEFAULT 0,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT uq_inventory_product_org UNIQUE (org_id, product_id)
+);
+CREATE INDEX idx_inventory_org_id ON inventory(org_id);
+CREATE INDEX idx_inventory_product_id ON inventory(product_id);
+
+CREATE TABLE inventory_movements (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE RESTRICT,
+    product_id UUID NOT NULL REFERENCES products(id) ON DELETE RESTRICT,
+    movement_type VARCHAR(30) NOT NULL CHECK (movement_type IN ('INBOUND', 'OUTBOUND', 'ADJUSTMENT', 'VOID_RETURN')),
+    quantity NUMERIC(12, 3) NOT NULL,
+    unit_cost BIGINT NOT NULL CHECK (unit_cost >= 0),
+    reference_id UUID NOT NULL,
+    created_by UUID NOT NULL REFERENCES users(id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX idx_movements_org_id ON inventory_movements(org_id);
+CREATE INDEX idx_movements_prod_time ON inventory_movements(product_id, created_at);
+
+-- ----------------------------------------------------------------------------
+-- PATTERN B: CRM / Pipeline / Activity Journals (CRM / Lead Management Scope)
+-- ----------------------------------------------------------------------------
+CREATE TABLE crm_deals (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE RESTRICT,
     title VARCHAR(255) NOT NULL,
-    template_type VARCHAR(50) NOT NULL CHECK (template_type IN ('pkwt', 'nda', 'freelance_contract', 'invoice')),
-    form_data JSONB NOT NULL,
-    status VARCHAR(30) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'pending_sign', 'signed', 'archived')),
-    file_vault_key VARCHAR(500), -- S3 path for encrypted PDF file
-    document_hash_sha256 VARCHAR(64), -- Integrity hash of document content
-    idempotency_key VARCHAR(100) UNIQUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    deal_value BIGINT NOT NULL DEFAULT 0 CHECK (deal_value >= 0),
+    stage VARCHAR(50) NOT NULL CHECK (stage IN ('LEAD', 'CONTACTED', 'PROPOSAL', 'NEGOTIATION', 'WON', 'LOST')),
+    assigned_to UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+CREATE INDEX idx_deals_org_id ON crm_deals(org_id);
+CREATE INDEX idx_deals_assigned ON crm_deals(assigned_to);
 
-CREATE INDEX idx_documents_creator_status ON documents(creator_id, status);
-CREATE INDEX idx_documents_created_at ON documents(created_at);
-
--- 3. Signatures & Audit Trail Table (document_signatures)
-CREATE TABLE document_signatures (
+-- ----------------------------------------------------------------------------
+-- PATTERN C: CMS / Content Lifecycle & Revisions (CMS / Publishing Scope)
+-- ----------------------------------------------------------------------------
+CREATE TABLE cms_articles (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    document_id UUID NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
-    signer_name VARCHAR(150) NOT NULL,
-    signer_email VARCHAR(255) NOT NULL,
-    token_hash VARCHAR(64) UNIQUE NOT NULL,
-    signature_svg_path VARCHAR(500),
-    signer_ip_address VARCHAR(45) NOT NULL,
-    signer_user_agent TEXT NOT NULL,
-    signed_at TIMESTAMP WITH TIME ZONE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE RESTRICT,
+    slug VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT', 'IN_REVIEW', 'SCHEDULED', 'PUBLISHED', 'ARCHIVED')),
+    published_at TIMESTAMPTZ,
+    author_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT uq_article_slug_org UNIQUE (org_id, slug)
 );
+CREATE INDEX idx_articles_org_id ON cms_articles(org_id);
+CREATE INDEX idx_articles_status ON cms_articles(status, published_at);
 
-CREATE INDEX idx_signatures_document ON document_signatures(document_id);
-```
+-- ============================================================================
+-- COMMON PLATFORM INFRASTRUCTURE (Idempotency & Immutable Audit Logs)
+-- ============================================================================
 
-### 3.1 Database Schema Enforcement Checklist
+-- Idempotency Request Cache (Prevents duplicate processing on network retry)
+CREATE TABLE idempotency_keys (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    idempotency_key VARCHAR(100) NOT NULL,
+    response_code INT NOT NULL,
+    response_body JSONB NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + INTERVAL '24 hours'),
+    CONSTRAINT uq_idempotency_org_key UNIQUE (org_id, idempotency_key)
+);
+CREATE INDEX idx_idempotency_org_key ON idempotency_keys(org_id, idempotency_key);
+CREATE INDEX idx_idempotency_expires ON idempotency_keys(expires_at);
 
-**MANDATORY verification before finalizing schema:**
+-- Automated TTL Cleanup: An index on expires_at does not auto-purge rows.
+-- Purge expired keys via pg_cron or periodic background worker: DELETE FROM idempotency_keys WHERE expires_at < now();
 
-#### **1. Relational Integrity (Foreign Keys & Constraints)**
-- [ ] **Foreign keys defined**: Every reference column has `REFERENCES table(column)` constraint
-- [ ] **Cascade behavior**: ON DELETE CASCADE/RESTRICT/SET NULL appropriate per business rule
-  - CASCADE: Child records deleted when parent deleted (e.g., signatures when document deleted)
-  - RESTRICT: Prevent parent deletion if children exist (e.g., user with active documents)
-  - SET NULL: Orphan child records (rare, usually avoid)
-- [ ] **Check constraints**: Enum fields use CHECK (status IN ('draft', 'published'))
-- [ ] **NOT NULL enforcement**: All required fields marked NOT NULL (prevent NULL accidents)
-- [ ] **Unique constraints**: Unique emails, idempotency keys, tokens enforced at DB level
-
-#### **2. Index Strategy (Query Performance)**
-- [ ] **Foreign key indexes**: EVERY foreign key column indexed (PostgreSQL doesn't auto-index FKs)
-  - Example: `creator_id`, `document_id`, `user_id` columns ALL need indexes
-- [ ] **Composite indexes**: Multi-column WHERE clauses get composite index
-  - Example: `CREATE INDEX idx_documents_creator_status ON documents(creator_id, status);`
-  - Use case: `WHERE creator_id = ? AND status = 'draft'` (common filter pattern)
-- [ ] **Timestamp indexes**: created_at, updated_at indexed if used in ORDER BY or WHERE
-- [ ] **JSONB GIN indexes**: If querying JSONB fields, add GIN index
-  - Example: `CREATE INDEX idx_documents_form_data ON documents USING GIN (form_data);`
-- [ ] **Index cost-benefit**: Each index costs write performance; justify via query patterns
-  - Measure: EXPLAIN ANALYZE actual queries, not guesses
-  - Add indexes when: Query performance degrades below acceptable SLO
-  - SLO examples: API p95 <200ms, dashboard query <1s, report <5s (project-specific)
-
-**Index Selection Rules**:
-- Query pattern: `WHERE a = ? AND b = ?` → Composite index `(a, b)` (order matters: most selective first)
-- Query pattern: `WHERE a = ? OR b = ?` → Separate indexes `(a)` and `(b)`
-- Query pattern: `ORDER BY created_at DESC LIMIT 10` → Index on `created_at`
-
-#### **3. Security & Access Control (Conditional - Scale-Dependent)**
-
-**Row-Level Security (RLS)** - *Required ONLY for:*
-- Multi-tenant SaaS (tenant_id isolation)
-- Direct client database access (Supabase, Firebase)
-- Compliance: Banking, healthcare, government (PDP Law, HIPAA, SOC2)
-
-**NOT required for:**
-- Single-tenant apps
-- Backend-only database access (no client SQL)
-- Internal tools (corporate network isolated)
-
-**If RLS required:**
-```sql
--- Enable RLS on table
-ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
-
--- Policy: Users see only their own documents
-CREATE POLICY documents_isolation ON documents
-  FOR SELECT
-  USING (creator_id = auth.uid());
-
--- Policy: Users edit only drafts they created
-CREATE POLICY documents_edit_own_drafts ON documents
-  FOR UPDATE
-  USING (creator_id = auth.uid() AND status = 'draft');
-```
-
-**Column-Level Encryption** - *Required ONLY for:*
-- PII: Passwords (hashed, not encrypted), SSN, credit card numbers
-- Compliance: PDP Law sensitive data (religion, health, biometrics)
-
-```sql
--- Encrypted column (AES-256-GCM via application layer)
-ALTER TABLE users ADD COLUMN ssn_encrypted BYTEA;
--- Encrypt BEFORE INSERT (application-side with AES-256-GCM)
--- Decrypt AFTER SELECT (application-side)
-```
-
-**Audit Logging** - *Required for:*
-- Enterprise scale (compliance trail)
-- Financial transactions (OJK requirement)
-- Healthcare (HIPAA)
-
-```sql
--- Audit trail table (if required)
+-- Immutable Audit Trail
 CREATE TABLE audit_logs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  table_name VARCHAR(100) NOT NULL,
-  record_id UUID NOT NULL,
-  action VARCHAR(20) NOT NULL CHECK (action IN ('INSERT', 'UPDATE', 'DELETE')),
-  old_data JSONB,
-  new_data JSONB,
-  changed_by UUID REFERENCES users(id),
-  changed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    action VARCHAR(50) NOT NULL,
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id UUID NOT NULL,
+    changes JSONB,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+CREATE INDEX idx_audit_logs_org_id ON audit_logs(org_id);
+CREATE INDEX idx_audit_logs_entity ON audit_logs(entity_type, entity_id);
+CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
 ```
-
-#### **4. Scalability (Conditional - Load-Dependent)**
-
-**Read Replicas** - *Consider when:*
-- Primary database CPU saturated by read queries (measure via monitoring)
-- Read-heavy workload (analytics dashboards, reports) causing performance degradation
-- Decision: Add when measured performance degrades, not preemptively
-
-**Sharding/Partitioning** - *Consider when:*
-- Queries slow despite proper indexes (measure first)
-- Time-series data (partition by month/year)
-- Multi-tenant isolation (partition by tenant_id)
-- Decision: Add when query performance violates SLO, not by row count
-
-**Connection Pooling** - *Strongly recommended for:*
-- Serverless functions (Lambda, Vercel Functions)
-- High concurrency workloads (measure connection exhaustion)
-- Decision: Essential for serverless, beneficial for high concurrency (measure pool saturation)
-
-```bash
-# External connection pooler (PgBouncer, Supabase Pooler)
-# Configured at infrastructure level, not in Prisma schema
-DATABASE_URL="postgresql://user:pass@pooler.host:6543/db"
-
-# Prisma uses connection limit via pool_timeout/connection_limit in URL
-# https://www.prisma.io/docs/orm/overview/databases/postgresql#connection-pool
-```
-
-#### **5. Migration & Rollback Strategy**
-- [ ] **Topological sort**: Tables created in dependency order (parents before children)
-  - Common error: Foreign key references table not yet created
-  - Fix: Sort tables by foreign key dependency (zero-dependency tables first)
-- [ ] **Versioned migrations**: Use migration tool (Prisma Migrate, Flyway, Liquibase)
-  - NOT idempotent SQL: Track applied migrations, never re-run
-  - Migration files: `001_create_users.sql`, `002_add_indexes.sql`
-  - Migration table: `_prisma_migrations` or `schema_migrations` (tracks applied)
-- [ ] **Backward-compatible changes**: Avoid breaking changes in production migrations
-  - ✅ Add column (nullable or with default)
-  - ✅ Add index (use CREATE INDEX CONCURRENTLY - doesn't lock table)
-    ```sql
-    CREATE INDEX CONCURRENTLY idx_users_email ON users(email);
-    -- CONCURRENTLY prevents table lock, but cannot run in transaction
-    ```
-  - ❌ Drop column (breaks old app version)
-  - ❌ Rename column (breaks old app version)
-  - ⚠️ CREATE INDEX (without CONCURRENTLY) locks table for writes (avoid in production)
-- [ ] **Rollback strategy**: Consider if migration needs DOWN script
-  - Reversible changes (add nullable column, add index): DOWN script optional
-  - Irreversible changes (drop column, data migration): DOWN script may not be possible
-  - Forward-only migrations acceptable if rollback = redeploy old code
-  ```sql
-  -- UP migration (reversible)
-  ALTER TABLE users ADD COLUMN phone VARCHAR(20);
-  
-  -- DOWN migration (optional, nice to have)
-  ALTER TABLE users DROP COLUMN phone;
-  
-  -- UP migration (irreversible - data transformation)
-  UPDATE users SET full_name = CONCAT(first_name, ' ', last_name);
-  ALTER TABLE users DROP COLUMN first_name, DROP COLUMN last_name;
-  -- DOWN migration: NOT POSSIBLE (data lost)
-  -- Rollback strategy: Redeploy old code + restore DB backup
-  ```
-- [ ] **Production deployment**: Apply migrations BEFORE deploying new code
-  - Order: Deploy DB migration → Deploy app code
-  - Reason: New code may require new columns/tables
-
-#### **6. Data Integrity & Business Rules**
-- [ ] **Enum constraints**: Status fields use CHECK constraint (not app-only validation)
-- [ ] **Date ranges**: Check `end_date >= start_date` at DB level
-  ```sql
-  ALTER TABLE contracts ADD CONSTRAINT valid_date_range 
-    CHECK (end_date >= start_date);
-  ```
-- [ ] **Positive values**: Amounts, quantities >= 0
-  ```sql
-  ALTER TABLE invoices ADD CONSTRAINT positive_amount 
-    CHECK (amount >= 0);
-  ```
 
 ---
 
-### 3.2 Database Schema Documentation
+## 4. Multi-Tenant Row-Level Security (RLS) Architecture
 
-**Entity Relationship Diagram (ERD)**: *(Include Mermaid diagram or dbdiagram.io link)*
+*(Applicable when building multi-tenant SaaS or exposing database directly to client SDKs. For single-tenant internal apps or backend-only APIs, document application-layer authorization and mark database RLS N/A)*
 
-```mermaid
-erDiagram
-    USERS ||--o{ DOCUMENTS : creates
-    DOCUMENTS ||--o{ SIGNATURES : has
-    
-    USERS {
-        uuid id PK
-        string email UK
-        string password_hash
-        string role
-    }
-    
-    DOCUMENTS {
-        uuid id PK
-        uuid creator_id FK
-        string status
-        jsonb form_data
-    }
-    
-    SIGNATURES {
-        uuid id PK
-        uuid document_id FK
-        string signer_email
-        timestamp signed_at
-    }
+### 4.1 Security Definer Helper Function Hardening
+```sql
+-- Secure helper function locking search_path to prevent privilege escalation exploits:
+CREATE OR REPLACE FUNCTION get_current_user_org_id()
+RETURNS UUID AS $$
+  SELECT org_id FROM public.users WHERE id = auth.uid() AND is_active = TRUE;
+$$ LANGUAGE sql SECURITY DEFINER SET search_path = public, pg_temp STABLE;
+
+CREATE OR REPLACE FUNCTION get_current_user_role()
+RETURNS VARCHAR AS $$
+  SELECT role FROM public.users WHERE id = auth.uid() AND is_active = TRUE;
+$$ LANGUAGE sql SECURITY DEFINER SET search_path = public, pg_temp STABLE;
 ```
 
-**Table Inventory**:
-| Table Name | Row Count (Est.) | Primary Index | Secondary Indexes | Notes |
-|:-----------|:-----------------|:--------------|:------------------|:------|
-| `users` | 10K | `id` (PK) | `email` (unique) | Auth table |
-| `documents` | 500K | `id` (PK) | `creator_id`, `(creator_id, status)` | Main entity |
-| `document_signatures` | 1M | `id` (PK) | `document_id` | Audit trail |
+### 4.2 Explicit Granular RLS Policies (Zero Lax `FOR ALL`)
+
+```sql
+-- Enable RLS on multi-tenant tables:
+ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory_movements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE crm_deals ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cms_articles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE idempotency_keys ENABLE ROW LEVEL SECURITY;
+ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+
+-- 1. Tenant Data Isolation Policies
+CREATE POLICY users_isolation_policy ON users
+    FOR SELECT USING (org_id = get_current_user_org_id());
+
+CREATE POLICY products_isolation_policy ON products
+    FOR SELECT USING (org_id = get_current_user_org_id());
+
+CREATE POLICY deals_isolation_policy ON crm_deals
+    FOR ALL USING (org_id = get_current_user_org_id());
+
+CREATE POLICY articles_isolation_policy ON cms_articles
+    FOR ALL USING (org_id = get_current_user_org_id());
+
+-- 2. Immutable Event & Audit Log Policies (Append-Only Enforcement)
+CREATE POLICY movements_select_policy ON inventory_movements
+    FOR SELECT USING (org_id = get_current_user_org_id());
+
+CREATE POLICY movements_insert_policy ON inventory_movements
+    FOR INSERT WITH CHECK (org_id = get_current_user_org_id());
+
+CREATE POLICY audit_logs_select_policy ON audit_logs
+    FOR SELECT USING (org_id = get_current_user_org_id());
+
+CREATE POLICY audit_logs_insert_policy ON audit_logs
+    FOR INSERT WITH CHECK (org_id = get_current_user_org_id());
+
+-- STRICT RULE: ZERO UPDATE OR DELETE POLICIES ON AUDIT LOGS OR MOVEMENT JOURNALS!
+-- PostgreSQL denies UPDATE/DELETE by default when no policy exists.
+```
+
+### 4.3 Database View Isolation (Sensitive Field Masking)
+*(Enforce database-level masking where lower-privileged roles must not see sensitive costs, margins, or salaries)*
+```sql
+CREATE OR REPLACE VIEW products_public_view AS
+SELECT
+    id, org_id, sku, barcode, name, unit, sell_price, is_active, created_at
+FROM public.products
+WHERE is_active = TRUE;
+-- Notice: Sensitive buy_price is completely excluded from projection!
+
+GRANT SELECT ON products_public_view TO authenticated;
+```
 
 ---
 
-## 4. API Contracts & Endpoint Matrix
+## 5. Atomic Concurrency Guards & Stored Procedures (Conditional)
 
-### 4.1 Endpoint: `POST /api/v1/documents`
-- **Function**: Issue a new document draft from form input.
-- **Authentication**: Required (`Bearer <JWT_TOKEN>`).
+*(Applicable to high-concurrency state transitions, seat reservations, checkout mutations, or balance settlements; mark N/A for standard low-concurrency CRUD)*
+
+### 5.1 Failure Mode: Client-Side Multi-Step Mutation Race Condition
+Executing balance deductions or state transitions via sequential client-side API calls causes race conditions under concurrent submissions. If two users mutate the last available unit simultaneously, both succeed, resulting in data inconsistency or overselling.
+
+### 5.2 Atomic Stored Procedure Pattern (Row-Locking via `SELECT FOR UPDATE`)
+> 💡 *Illustrative Architectural Pattern: The following procedure demonstrates server-side tenant authorization, atomic idempotency locking, and deterministic row-locking. Adapt table names, lock hierarchy, and error codes to your project's specific domain entities.*
+
+```sql
+CREATE OR REPLACE FUNCTION rpc_execute_atomic_checkout(
+    p_org_id UUID,
+    p_idempotency_key VARCHAR(100),
+    p_product_id UUID,
+    p_quantity NUMERIC(12, 3)
+)
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+    v_current_stock NUMERIC(12, 3);
+    v_server_price BIGINT;
+    v_server_cost BIGINT;
+    v_existing_response JSONB;
+    v_actor_id UUID := auth.uid();
+    v_user_org_id UUID;
+BEGIN
+    -- 0. Authentication & Organization Membership Validation
+    IF v_actor_id IS NULL THEN
+        RAISE EXCEPTION 'Authentication required to execute atomic mutation';
+    END IF;
+
+    IF p_quantity <= 0 THEN
+        RAISE EXCEPTION 'Invalid mutation quantity: % must be greater than zero', p_quantity;
+    END IF;
+
+    SELECT org_id INTO v_user_org_id
+    FROM public.users
+    WHERE id = v_actor_id AND is_active = TRUE;
+
+    IF v_user_org_id IS NULL OR v_user_org_id != p_org_id THEN
+        RAISE EXCEPTION 'Unauthorized: User does not belong to specified organization';
+    END IF;
+
+    -- 1. Idempotency Check: Return cached response if already committed
+    SELECT response_body INTO v_existing_response
+    FROM idempotency_keys
+    WHERE org_id = p_org_id AND idempotency_key = p_idempotency_key;
+
+    IF v_existing_response IS NOT NULL THEN
+        RETURN v_existing_response;
+    END IF;
+
+    -- 2. ROW-LOCKING: Lock inventory record exclusively to prevent concurrent race condition:
+    -- Note: In multi-item transactions, always query and lock resources in deterministic order (ORDER BY product_id ASC)
+    SELECT quantity INTO v_current_stock
+    FROM inventory
+    WHERE org_id = p_org_id AND product_id = p_product_id
+    FOR UPDATE;
+
+    IF NOT FOUND THEN
+    RAISE EXCEPTION 'Resource not found or unstocked in this organization';
+    END IF;
+
+    IF v_current_stock < p_quantity THEN
+        RAISE EXCEPTION 'Insufficient stock. Available: %, Requested: %', v_current_stock, p_quantity;
+    END IF;
+
+    -- 3. Fetch server truth pricing (anti-tampering)
+    SELECT sell_price, buy_price INTO v_server_price, v_server_cost
+    FROM products
+    WHERE id = p_product_id AND org_id = p_org_id;
+
+    IF NOT FOUND THEN
+    RAISE EXCEPTION 'Resource inactive or unavailable';
+    END IF;
+
+    -- 4. Deduct inventory aggregate
+    UPDATE inventory
+    SET quantity = quantity - p_quantity, updated_at = now()
+    WHERE org_id = p_org_id AND product_id = p_product_id;
+
+    -- 5. Record immutable movement ledger
+    INSERT INTO inventory_movements (
+        org_id, product_id, movement_type, quantity, unit_cost, reference_id, created_by
+    ) VALUES (
+        p_org_id, p_product_id, 'OUTBOUND', -p_quantity, v_server_cost, gen_random_uuid(), v_actor_id
+    );
+
+    -- 6. Atomically persist idempotency response within the same transaction.
+    -- Concurrency Behavior: If an identical concurrent request inserts the same key before this commits,
+    -- PostgreSQL raises a unique violation (23505) and rolls back the duplicate. The application layer handles 23505 by re-reading the committed response.
+    v_existing_response := jsonb_build_object('status', 'SUCCESS', 'product_id', p_product_id, 'deducted', p_quantity);
+    INSERT INTO idempotency_keys (org_id, idempotency_key, response_code, response_body)
+    VALUES (p_org_id, p_idempotency_key, 200, v_existing_response);
+
+    RETURN v_existing_response;
+END;
+$$;
+
+-- Restrict execution permissions (never leave SECURITY DEFINER callable by anonymous public):
+REVOKE EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMERIC) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMERIC) TO authenticated;
+```
+
+---
+
+## 6. API Contract Specifications (REST / JSON API)
+
+### 6.1 Standard Endpoint Specification
+- **Route**: `POST /api/v1/[resource]/mutate`
+- **Authentication**: Bearer JWT (`Role-scoped access`)
 - **Headers**:
   ```http
-  Authorization: Bearer eyJhbGciOi...
+  Authorization: Bearer <TOKEN>
   Content-Type: application/json
-  X-Idempotency-Key: 9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d
+  X-Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
   ```
-
-#### Request Payload JSON
-```json
-{
-  "title": "Freelance Contract - Budi Santoso",
-  "template_type": "freelance_contract",
-  "form_data": {
-    "employer_name": "PT Sinar Maju",
-    "contractor_name": "Budi Santoso",
-    "compensation_amount": 15000000,
-    "scope_of_work": "Website frontend development",
-    "start_date": "2026-10-01",
-    "end_date": "2026-12-31"
+- **Request Body Schema**:
+  ```json
+  {
+    "resource_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "quantity": 2.000,
+    "action_type": "EXECUTE"
   }
-}
-```
-
-#### Success Response (`201 Created`)
-```json
-{
-  "status": "success",
-  "data": {
-    "document_id": "8c4e6123-5e92-4f31-893c-623ab1e4811a",
-    "title": "Freelance Contract - Budi Santoso",
-    "status": "draft",
-    "preview_url": "https://vault.domain.com/preview/8c4e6123?token=exp15m...",
-    "created_at": "2026-09-24T10:00:00Z"
-  }
-}
-```
-
-#### Error Response Matrix
-| HTTP Code | Error Code | Root Cause / Trigger Condition | JSON Response |
-| :---: | :--- | :--- | :--- |
-| `400` | `VALIDATION_ERROR` | Invalid JSON form_data format or missing required fields | `{"status": "error", "code": "VALIDATION_ERROR", "details": [...]}` |
-| `401` | `UNAUTHORIZED` | Missing or expired JWT token | `{"status": "error", "code": "UNAUTHORIZED", "message": "Your session has expired"}` |
-| `409` | `IDEMPOTENCY_CONFLICT`| Request with identical idempotency key is already processing | `{"status": "error", "code": "IDEMPOTENCY_CONFLICT", "message": "Duplicate request"}` |
-| `500` | `PDF_RENDER_FAILED` | PDF generator library failed to render document | `{"status": "error", "code": "SERVER_ERROR", "message": "Failed to render PDF file"}` |
+  ```
+- **Standardized Response Format**:
+  - Success: `{"status": "SUCCESS", "data": { ... }}`
+  - Error: `{"status": "ERROR", "error": {"code": "RESOURCE_LOCKED", "message": "Descriptive error"}}`
 
 ---
 
-## 5. Security & Cryptographic Architecture (Security Blueprint)
+## 7. Automated Quality Validation Checklist (FSD Exit Gate)
 
-1. **Document File Encryption (Vault Encryption-at-Rest)**:
-   - Document PDF files are encrypted using the **AES-256-GCM** algorithm before being streamed to S3/R2 storage.
-   - The encapsulated encryption key (*Data Encryption Key / DEK*) is stored encrypted using a master key (*Master Key*) maintained in an isolated server environment variable.
-2. **Download Link Security (Presigned URLs)**:
-   - Files in storage are never opened for public access (`public-read`).
-   - Download access is issued exclusively through cryptographically signed *Presigned URLs* with a maximum validity of **15 minutes**.
-3. **Password Credential Storage**:
-   - Passwords must be hashed using **Argon2id** with parameters: `memoryCost: 65536` (64 MB), `timeCost: 3`, `parallelism: 4`.
-4. **Cryptographic Signature Verification (Integrity Hash)**:
-   - Each completed signed document has its hash calculated using **SHA-256**.
-   - The hash value is stored in the `documents.document_hash_sha256` table and included in the PDF footer as proof of document authenticity (*tamper-evident seal*).
+*Before completing `docs/specs/FSD.md`, verify:*
+
+- [ ] **1. Data Access & RLS Scoping**: Multi-tenant tables enforce appropriate isolation (`ENABLE ROW LEVEL SECURITY;` with granular role policies), or reasoned single-tenant/internal N/A documented.
+- [ ] **2. Hardened Security Definer**: All database helper functions declare `SET search_path = public, pg_temp STABLE`.
+- [ ] **3. Atomic Mutations with Concurrency Guards**: High-risk concurrent mutations (e.g. checkout, reservations, balance deductions, state transitions) are wrapped in atomic database transactions or stored procedures with row-locking (`FOR UPDATE`), or marked N/A with rationale for standard low-concurrency CRUD.
+- [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
+- [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
+- [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
 
 ---
 
-## 6. Document State Machine
+## 8. Technical Sign-Off Sheet
 
-```text
-               ┌────────────────────────────────────────────────────────┐
-               ▼                                                        │
-         [ 1. DRAFT ] ──(Send Signature Link)────────► [ 2. PENDING_SIGN ]
-               │                                                │
-               │ (Deleted by Creator)                           │ (Expired after 7 Days)
-               ▼                                                ▼
-         [ ARCHIVED ]                                     [ EXPIRED ]
-                                                                │
-                                       (All Parties Signed)     │
-                                                                ▼
-                                                        [ 3. SIGNED (LOCKED) ]
-```
-
-### State Invariants:
-1. Documents in `SIGNED` status are **STRICTLY FORBIDDEN** from having form data or PDF files modified.
-2. Signing is executed within a single database atomic transaction (`BEGIN ... COMMIT`) using row-level locking (`SELECT ... FOR UPDATE`) to prevent race conditions when two signers submit signatures at the exact same second.
-
----
-
-## 7. Technical Specification Sign-Off
-
-This document represents the final architecture specification. All code implementations in **Module 06: Development** must adhere to the schema definitions, API routes, and security architecture above.
-
-| Approved by Client Single PIC | Validated by Lead Software Architect |
+| Validated by Lead Software Architect | Approved by Client PIC / Lead Stakeholder |
 | :--- | :--- |
 | **Name**: _________________________ | **Name**: _________________________ |
-| **Title / Role**: ______________________ | **Title / Role**: Independent Lead Engineer |
-| **Date**: ______________________ | **Date**: ______________________ |
-| **Signature**: | **Signature**: |
+| **Role**: Lead Software Architect | **Role**: Client Single PIC / Project Lead |
+| **Date**: [YYYY-MM-DD] | **Date**: [YYYY-MM-DD] |
+| **Signature**: _____________________ | **Signature**: _____________________ |

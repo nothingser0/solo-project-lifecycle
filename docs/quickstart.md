@@ -21,10 +21,10 @@ git init
 # Framework generates:
 #   - docs/pm/ (PM documents)
 #   - docs/specs/ (PRD, FSD)
-#   - docs/harness-root/ (7 AI control files - STAGED, not in root yet)
+#   - docs/harness-root/ (9 AI control files - STAGED, not in root yet)
 
 # Step 4: After scaffold (npx create-next-app, etc.)
-# Agent copies: docs/harness-root/* → ./ (root)
+# Agent copies: cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
 ```
 
 **Why staging in docs/harness-root/?**
@@ -220,9 +220,9 @@ CREATE TABLE todos (
 
 3. **Verify harness installed**:
    ```bash
-   ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO)\.md$'
+   ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO|RUNBOOK_LOCAL|VERIFY_LOCAL)\.md$'
    ls -1 .env.example
-   # Expected: 7 files total
+   # Expected: 9 files total
    ```
 
 **Week 1 (Day 3-7): Backend + Auth**

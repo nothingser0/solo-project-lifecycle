@@ -1,114 +1,169 @@
-# CONVENTIONS.md - Next.js Project
+# Code Style & Engineering Conventions (CONVENTIONS.md)
 
-> Code style standards and technical conventions for AI agents
+> **Purpose**: Technical code style standards, TypeScript strictness, Server Action contracts, touch accessibility, and data sanitization conventions for AI coding agents.
+> **Standard**: Zero TypeScript bypasses, robust `ActionResult<T>` contracts, iOS-safe 16px inputs, and formula-injection-safe spreadsheet exports.
 
 ---
 
-## File Naming
+## 1. File Naming, Directory Structure & Components
 
-1. **Format**: `kebab-case` for all files
-   - ✅ `user-profile.tsx`, `auth-proxy.ts`
-   - ❌ `UserProfile.tsx`, `authMiddleware.ts`
-
-2. **Component Names**: PascalCase for React components
+1. **Format**: `kebab-case` for all files and folders
+   - ✅ `user-profile.tsx`, `auth-proxy.ts`, `data-table.tsx`
+   - ❌ `UserProfile.tsx`, `authMiddleware.ts`, `data_table.tsx`
+2. **Component Exports**: PascalCase for React component definitions:
    ```typescript
-   // file: user-card.tsx
-   export function UserCard() { ... }
+   // file: src/components/domain/order-card.tsx
+   export function OrderCard({ id }: OrderCardProps) { ... }
    ```
-
-3. **No Barrel Files**: Direct imports only
-   - ❌ `index.ts` re-exports
+3. **No Barrel Files (`index.ts`)**: Direct imports only to optimize Turbopack bundling and prevent circular dependencies:
+   - ❌ `import { Button, Card } from '@/components'`
    - ✅ `import { Button } from '@/components/ui/button'`
+   - ✅ `import { Card } from '@/components/ui/card'`
 
 ---
 
-## React & Next.js Standards
+## 2. TypeScript Strict Discipline & Zero-Bypass Policy
 
-1. **Server Components Default**
-   - All components in `app/` are Server Components
-   - Use `'use client'` only for interactivity (useState, onClick)
-
-2. **Async Server Components**
+1. **Strict Compiler Flags**:
+   `tsconfig.json` MUST enforce `strict: true` and `noUncheckedIndexedAccess: true`.
+2. **Zero `any` Policy**:
+   Using `any` is strictly prohibited. Use `unknown` if the incoming payload is unverified, then narrow it using Zod schemas or type guards.
+3. **Prohibition of TypeScript Bypasses**:
+   - Double assertions (`as unknown as TargetType`) are **STRICTLY PROHIBITED**.
+   - Non-null assertions (`!`) are **STRICTLY PROHIBITED** without adjacent runtime guard checks.
+   - Using `// @ts-ignore` or `// @ts-nocheck` is **STRICTLY PROHIBITED**.
+4. **Zod Single Source of Truth**:
+   Infer application types directly from Zod schemas:
    ```typescript
-   export default async function Page() {
-     const data = await fetchData()
-     return <div>{data}</div>
-   }
+   export const ResourceSchema = z.object({
+     id: z.string().uuid(),
+     name: z.string().min(1, 'Name is required'),
+     amount: z.number().int().nonnegative('Amount must be non-negative')
+   });
+   export type Resource = z.infer<typeof ResourceSchema>;
    ```
-
-3. **Client Component Pattern**
-   ```typescript
-   'use client'
-   import { useState } from 'react'
-   
-   export function InteractiveButton() {
-     const [count, setCount] = useState(0)
-     return <button onClick={() => setCount(c => c + 1)}>{count}</button>
-   }
-   ```
+5. **Monetary Precision**:
+   Store all financial amounts as integer minor units or full currency units using `BIGINT` or integer types, never floating-point `number`.
 
 ---
 
-## TypeScript Discipline
+## 3. Server Actions & Standardized `ActionResult<T>` Contract
 
-1. **No `any` Types**
-   - Use `unknown` if type uncertain, then narrow with type guards
-   
-2. **Zod-First Types**
-   ```typescript
-   const UserSchema = z.object({ id: z.string(), name: z.string() })
-   type User = z.infer<typeof UserSchema>
-   ```
-
-3. **Discriminated Unions for States**
-   ```typescript
-   type State<T> =
-     | { status: 'idle' }
-     | { status: 'loading' }
-     | { status: 'error'; error: string }
-     | { status: 'success'; data: T }
-   ```
-
----
-
-## Error Handling
-
-1. **Early Returns** (guard clauses)
-   ```typescript
-   if (!user) return { error: 'Not found' }
-   if (!user.isActive) return { error: 'Inactive' }
-   // happy path continues
-   ```
-
-2. **Never Empty Catch**
-   ```typescript
-   try {
-     await action()
-   } catch (error) {
-     console.error('Action failed:', error)
-     throw error // or handle meaningfully
-   }
-   ```
-
----
-
-## API Route Conventions
+Every Next.js Server Action MUST return a structured, type-safe result contract to facilitate automated testing and client form handling:
 
 ```typescript
-// app/api/users/route.ts
-export async function GET(request: Request) {
-  // 1. Auth check
-  const session = await getSession()
-  if (!session) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  
-  // 2. Validation (if query params)
-  const url = new URL(request.url)
-  const page = parseInt(url.searchParams.get('page') || '1')
-  
-  // 3. Business logic
-  const users = await db.user.findMany({ skip: (page - 1) * 20, take: 20 })
-  
-  // 4. Response
-  return Response.json({ users })
+// src/types/action-result.ts
+export type ActionError = {
+  code: string; // Machine-readable error code, e.g., 'INSUFFICIENT_STOCK', 'UNAUTHORIZED'
+  message: string; // Human-readable error message
+  fieldErrors?: Record<string, string[]>; // Field-specific validation errors for forms
+};
+
+export type ActionResult<T> =
+  | { success: true; data: T }
+  | { success: false; error: ActionError };
+```
+
+### Standard Action Implementation Pattern
+```typescript
+'use server';
+
+import { createServerClient } from '@/lib/supabase/server';
+import { ActionResult } from '@/types/action-result';
+
+export async function updateResourceAction(
+  id: string,
+  formData: FormData
+): Promise<ActionResult<{ id: string }>> {
+  const supabase = await createServerClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return {
+      success: false,
+      error: { code: 'UNAUTHORIZED', message: 'Authentication required' }
+    };
+  }
+
+  // Validate inputs, execute mutations...
+  return { success: true, data: { id } };
 }
 ```
+
+---
+
+## 4. Form Accessibility & Touch Ergonomics
+
+1. **Universal 16px Input Font Size (iOS Anti-Zoom Rule)**:
+   - Form inputs (`<input>`, `<select>`, `<textarea>`) **MUST BE AT LEAST `16px` (`text-base`) across ALL viewports**.
+   - ❌ **Prohibited**: Using `text-base md:text-sm` (causes iOS Safari on iPad viewports $\ge 768\text{px}$ to zoom and break the viewport).
+   - ✅ **Correct**: `className="text-base h-11 w-full rounded-md border border-border-input ..."`
+2. **Anti-Disabled Pristine Button Rule**:
+   - Form submission buttons MUST NOT be `disabled` while the form is untouched/pristine.
+   - Clicking submit on an incomplete form triggers inline validation, smooth-scrolls, and auto-focuses the first invalid field.
+3. **Touch Target Sizing**:
+   - Primary interactive touch targets on mobile and tablet interfaces **MUST meet minimum $\ge 44\text{px} \times 44\text{px}$** (`h-11 min-w-11`).
+   - *Accessibility Reference*: While WCAG 2.2 Level AA establishes 24px minimum (SC 2.5.8), $44\text{px}$ is our internal ergonomics standard (aligned with WCAG AAA / Apple HIG) to ensure error-free operation on touch terminals.
+4. **Calibrated Notification Toast Behavior**:
+   - Success & Informational toasts: Auto-dismiss permitted after $\ge 4000\text{ms}$, with timer pause on hover or keyboard focus.
+   - Error & System Warning toasts: **STRICTLY FORBIDDEN to auto-dismiss**. They must remain visible until the user explicitly clicks dismiss.
+
+---
+
+## 5. Safe Spreadsheet Export Sanitization (`sanitizeExportCell`)
+
+When exporting user-generated records to CSV or Excel, formula injection triggers must be safely escaped without breaking pure negative numbers:
+
+```typescript
+// src/lib/csv.ts
+export function sanitizeExportCell(value: unknown): string | number {
+  // Preserve pure numbers
+  if (typeof value === 'number') {
+    return value;
+  }
+
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  const str = String(value);
+
+  // Preserve pure numeric strings including negative numbers (e.g. "-150000" or "-15.5")
+  if (/^-?\d+(\.\d+)?$/.test(str)) {
+    return str;
+  }
+
+  // Escape dangerous spreadsheet formula triggers (=, +, -, @, \t, \r)
+  // Notice: check without trimming so leading control characters are caught
+  const formulaTriggers = ['=', '+', '-', '@', '\t', '\r'];
+  if (formulaTriggers.some(trigger => str.startsWith(trigger))) {
+    return `'${str}`;
+  }
+
+  return str;
+}
+```
+
+---
+
+## 6. Multi-Layer Security & System Time Conventions
+
+1. **Database-Level Data Masking**:
+   - Cost prices (`buy_price`), gross margins, and executive salaries MUST NOT be exposed to operational staff roles.
+   - Enforce data masking via database views (`products_cashier_view`, `products_public_view`) with `security_invoker = true`.
+2. **Authoritative Timestamping**:
+   - Store all database timestamps in UTC with timezone: `TIMESTAMPTZ NOT NULL DEFAULT now()`.
+   - Never trust client device clock time for ledger ordering. Client timestamps may be logged as `device_timestamp` for metadata, but server `created_at` remains the authoritative source of truth.
+   - Format dates on client side according to the tenant's configured timezone (e.g., `Asia/Jakarta`, `en-US`).
+
+---
+
+## 7. Automated Quality Validation Checklist
+
+*Before committing code changes, verify:*
+
+- [ ] **1. Safe Spreadsheet Sanitization**: `sanitizeExportCell` properly preserves pure negative numbers while prepending single quote `'` to formula triggers without premature trimming.
+- [ ] **2. Universal 16px Inputs**: All form input styles specify `text-base` (16px) universally without `md:text-sm` viewport overrides.
+- [ ] **3. Zero TypeScript Bypasses**: The codebase contains zero occurrences of `any`, `// @ts-ignore`, non-null assertions `!`, or double-casts `as unknown as`.
+- [ ] **4. Standardized `ActionResult<T>`**: Server Actions return uniform `{ success: true, data }` or `{ success: false, error: { code, message } }` objects.
+- [ ] **5. Touch Ergonomics**: Tap targets on mobile/tablet interfaces meet the 44px comfort standard, with error toasts configured for manual close only.

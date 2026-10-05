@@ -14,7 +14,7 @@ templates/
 ├── 02-legal-commercial/         (2 files)  - Financial tracking ledger, SMB simplified SOW
 ├── 03-architecture-specs/       (8 files)  - Full PRD, technical FSD, system design docs, project lite
 ├── 03-governance/               (16 files) - Enterprise governance: ADRs, CAB, RACI, GDPR, SOC2, risk matrices
-├── 04-dev-execution/            (54 files) - 7 AI harness files, stack templates (Next.js, Laravel, Go, etc.)
+├── 04-dev-execution/            (54 files) - 9 AI harness files, stack templates (Next.js, Laravel, Go, etc.)
 ├── 05-data-migration/           (3 files)  - Data migration plans, reconciliation sheets, lite ETL
 ├── 06-qa-uat/                   (14 files) - SIT workbooks, security audits, pentest scope, UAT sign-offs
 ├── 07-release-handover/         (9 files)  - Deployment protocols, rollback plans, training plans, BAST
@@ -69,6 +69,7 @@ templates/
 | [`DESIGN_TOKENS_SPEC_TEMPLATE.md`](./02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md) | Design token definitions (primitive, semantic, multi-platform CSS/iOS/Android) | Module 04B |
 | [`SITEMAP_TEMPLATE.md`](./02-design/SITEMAP_TEMPLATE.md) | Information Architecture, page hierarchy, route paths map | Module 04 |
 | [`LOGO_DESIGN_BRIEF_TEMPLATE.md`](./02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md) | Brand identity guidelines and AI image prompts for logo generation | Module 04 |
+| [`SCREEN_PROMPT_TEMPLATE.md`](./02-design/SCREEN_PROMPT_TEMPLATE.md) | Standardized per-screen AI prompt template for v0/Stitch/Bolt | Module 04 |
 | [`USABILITY_TEST_PLAN_TEMPLATE.md`](./02-design/USABILITY_TEST_PLAN_TEMPLATE.md) | User testing scripts, task scenarios, SUS calculation workbook | Module 04 |
 | [`AB_TEST_HYPOTHESIS_TEMPLATE.md`](./02-design/AB_TEST_HYPOTHESIS_TEMPLATE.md) | A/B testing hypothesis format for validating UI variants | Module 04 |
 | [`references/README.md`](./02-design/references/README.md) | Design reference system guide (inspiration collection, prompt inputs) | Module 04 |

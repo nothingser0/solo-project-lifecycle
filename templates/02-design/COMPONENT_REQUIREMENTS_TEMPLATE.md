@@ -1,673 +1,202 @@
-# Component Requirements & UI Pattern Analysis
+# Component Requirements & UI Pattern Analysis (WCAG 2.2 AA)
 
-> **Purpose**: Map PRD features to UI patterns and component inventory BEFORE designing.
-> **Input**: `PRD.md` features, user flows, acceptance criteria
-> **Output**: Justified component list, interaction states, responsive strategy
-> **Duration**: 1-2 hours (prevents AI slop, ensures right-sized design system)
+> **Purpose**: Map `SCOPE_STATEMENT.md` features and `SITEMAP.md` routes to concrete UI interaction patterns, atomic primitives, and composite components BEFORE drafting `DESIGN.md`.
+> **Standard**: Strict WCAG 2.2 Level AA compliance, anti-slop nomenclature parity, and domain-grounded interaction states.
+> **Output**: `docs/specs/COMPONENT_REQUIREMENTS.md`
 
 ---
 
-## Metadata
+## 1. Metadata & Scope Alignment
 
 - **Project**: [Project Name]
 - **Date**: [YYYY-MM-DD]
-- **Author**: [Your Name]
-- **PRD Version**: [Link to PRD.md]
-- **Total Features Analyzed**: [N features]
+- **Author / Designer**: [Your Name]
+- **Scope Reference**: `docs/pm/SCOPE_STATEMENT.md` (v1.0)
+- **Sitemap Reference**: `docs/specs/SITEMAP.md` (v1.0)
+- **Accessibility Target**: **WCAG 2.2 Level AA** (Tested & Mathematically Verified)
+- **Scope Alignment Affirmation**:
+  - [ ] All features analyzed below are strictly in-scope (P0/P1) in `SCOPE_STATEMENT.md`.
+  - [ ] Zero unrequested "nice-to-have" components added without direct feature justification.
 
 ---
 
-## Input: PRD Feature Summary
+## 2. Feature → UI Pattern Mapping & Domain Edge Cases
 
-> Copy critical features from PRD.md for quick reference
+*Map each in-scope feature to interaction patterns. Every named component MUST match 100% with the inventory in Section 3.*
 
-### Feature 1: [Feature Name]
-**User Story**: As a [role], I want [goal], so that [benefit]
-
-**Acceptance Criteria**:
-- [ ] Criterion 1
-- [ ] Criterion 2
-
----
-
-### Feature 2: [Feature Name]
-**User Story**: As a [role], I want [goal], so that [benefit]
-
-**Acceptance Criteria**:
-- [ ] Criterion 1
-- [ ] Criterion 2
-
----
-
-(Repeat for all features in PRD)
+### Feature 1: [Feature Name, e.g., POS Cashier Checkout / Employee Check-In]
+- **Scope ID**: [e.g., F-04]
+- **User Story**: As a [role], I want to [action], so that [benefit].
+- **UI Patterns Needed**:
+  - [Pattern 1, e.g., Split dual-panel catalog & cart layout]
+  - [Pattern 2, e.g., Quick SKU/Barcode search with autofocus]
+  - [Pattern 3, e.g., Modal confirmation for payment execution]
+- **User Interaction Sequence**:
+  1. User triggers action $\rightarrow$ System provides immediate visual/tactile feedback.
+  2. User inputs data $\rightarrow$ System performs inline validation on blur.
+  3. User submits $\rightarrow$ Primary button enters loading state, action executes, success toast/modal fires.
+- **Edge Cases & Domain Scenarios**:
+  - **Empty State**: [e.g., Cart is empty $\rightarrow$ show illustration + "Scan barcode or tap product to start"]
+  - **Error State (Screen-Level)**: [e.g., Network/API failure $\rightarrow$ show alert card with retry CTA]
+  - **Domain Exception Mitigation**: [e.g., If system stock reaches 0 but physical goods exist on shelf $\rightarrow$ provide warning badge with supervisor override rather than rigidly blocking cashier queue]
+- **Key Components Used**:
+  - `Button`, `Input`, `SearchInput`, `Card`, `Table`, `Modal`, `Toast`, `Badge` (Names must match Section 3 exactly)
 
 ---
 
-## Feature → UI Pattern Mapping
-
-> For each feature, identify UI patterns needed to implement it
-
-### Feature 1: [Feature Name]
-
-**UI Patterns Needed**:
-- Pattern 1: [e.g., "Form layout with validation"]
-- Pattern 2: [e.g., "Loading spinner during submission"]
-- Pattern 3: [e.g., "Inline error messages"]
-
-**User Interactions**:
-- User action 1 → System response 1
-- User action 2 → System response 2
-
-**Edge Cases**:
-- Empty state: [What shows when no data?]
-- Error state: [What shows on failure?]
-- Loading state: [What shows during async operations?]
-
-**Components Required**:
-- Component A: [e.g., "Input (with error state)"]
-- Component B: [e.g., "Button (primary variant)"]
-- Component C: [e.g., "FormField (label + input + error wrapper)"]
+### Feature 2: [Feature Name, e.g., Stock Opname & Adjustment / Leave Request]
+- **Scope ID**: [e.g., F-03]
+- **User Story**: As a [role], I want to [action], so that [benefit].
+- **UI Patterns Needed**:
+  - [Pattern 1, e.g., Form with blind physical count input]
+  - [Pattern 2, e.g., Discrepancy indicator badge with arithmetic sign]
+  - [Pattern 3, e.g., Two-person review drawer for adjustments > threshold]
+- **Domain Edge Cases**:
+  - [e.g., Blind count pattern prevents bias by hiding expected quantities until count is submitted]
+- **Key Components Used**:
+  - `FormField`, `Input`, `Select`, `Badge`, `ConfirmDialog`, `Toast`
 
 ---
 
-### Feature 2: [Feature Name]
+## 3. Official Component Inventory (Strict Three-Tier Categorization)
 
-**UI Patterns Needed**:
-- Pattern 1
-- Pattern 2
+*Consolidated, deduplicated inventory. Every component used in Section 2 must be tabulated here.*
 
-**User Interactions**:
-- User action → System response
+### 3.1 Primitives (Atomic Components)
 
-**Edge Cases**:
-- Empty state
-- Error state
-- Loading state
+| # | Component Name | Variants | Interactive States | Usage Justification |
+|:--:|:---------------|:---------|:-------------------|:--------------------|
+| 1 | `Button` | primary, secondary, outline, ghost, destructive | default, hover, active, focus, disabled, loading | Form actions, dialog triggers, checkout submission |
+| 2 | `Input` | text, email, password, search | default, hover, focus, error, disabled | Data entry across all forms; uses `inputmode="numeric"` for currency |
+| 3 | `Textarea` | standard | default, hover, focus, error, disabled | Notes, adjustment reasons, address fields |
+| 4 | `Select` | single, combobox / search-select | closed, open, focused, selected, disabled | Categories, units, branch pickers |
+| 5 | `Badge` | neutral, success, warning, destructive, info | default, interactive hover (optional) | Status flags, stock levels, role indicators |
+| 6 | `Checkbox` | default | unchecked, checked, indeterminate, disabled | Multi-item selection, agreement terms |
+| 7 | `LoadingSpinner`| sm (16px), md (24px), lg (32px) | animated spin | Async indicators, submit buttons |
+| 8 | `Icon` | Lucide React (standardized) | default | Visual cues paired with text (never color alone) |
 
-**Components Required**:
-- Component X
-- Component Y
+### 3.2 Standard Composites
 
----
+| # | Component Name | Composition Structure | Usage Justification |
+|:--:|:---------------|:----------------------|:--------------------|
+| 1 | `FormField` | Label + Input/Select/Textarea + Error Message (≥13px) + Hint | Standardized form wrapper with accessible aria associations |
+| 2 | `Card` | CardHeader + CardTitle + CardContent + CardFooter | Content containers, dashboard metric tiles, list cards |
+| 3 | `Table` | TableHeader + TableBody + TableRow + TableCell + TablePagination | Tabular data records; reflows to stacked cards on mobile (<640px) |
+| 4 | `Modal` | DialogBackdrop (z-40) + DialogContent (z-50) + DialogClose | Focused interactive overlays with focus-trap and Esc handler |
+| 5 | `ConfirmDialog`| Modal + Icon + Title + Description + Cancel/Confirm Action | Destruction / void confirmations |
+| 6 | `Toast` | ToastContainer (z-60) + ToastItem + CloseAction | Action feedback; error & offline toasts have NO auto-dismiss |
+| 7 | `EmptyState` | Icon / Illustration + Heading + Description + ActionButton | Rendered when collections contain 0 records |
+| 8 | `SearchInput` | Input + SearchIcon + ClearButton | Filterable headers, product lookup |
 
-(Repeat for all features)
+### 3.3 Domain-Specific Composites (Conditional Extensions)
 
----
+*Include only components required by the project's specific domain (Retail, HRIS, Fintech, etc.):*
 
-## Design Style Decision
-
-> **Source**: Design references stored in `references/design/inspiration/`
-> Brief aesthetic choice extracted from references. Details in DESIGN_SYSTEM.md.
-
-### Reference Screenshots
-
-Saved in `references/design/inspiration/`:
-
-- [ ] `screenshot-1-[name].png` - [What to extract: dashboard layout, spacing]
-- [ ] `screenshot-2-[name].png` - [What to extract: form styling, validation]
-- [ ] `screenshot-3-[name].png` - [What to extract: button states, interactions]
-- [ ] (3-5 screenshots recommended)
-
-**Analysis**: See `references/design/inspiration/notes.md` (use `notes-template.md` as starting point)
-
-### Extracted Style
-
-**Detected Style**: [Flat Design / Minimalist / Glassmorphism / Brutalist / Material Design]
-*(Auto-detected from reference analysis)*
-
-**Key Patterns** (from notes.md):
-- **Colors**: [Primary #HEX, neutrals extracted]
-- **Typography**: [Font family, weights]
-- **Borders**: [Width, color, radius]
-- **Shadows**: [Minimal / None / Soft / Hard]
-- **Spacing**: [Grid system, padding values]
-
-**Rationale**: [Why these references? Brand alignment, budget, timeline]
-
-**Quick Reference:**
-
-| Style | Speed | Accessibility | Best For MVP? |
-|:------|:------|:--------------|:--------------|
-| Flat Design | Fast ✅ | High ✅ | Yes (recommended) |
-| Minimalist | Fast ✅ | High ✅ | Yes |
-| Material Design | Medium | High ✅ | Yes (if Android/Google) |
-| Glassmorphism | Slow | Medium ⚠️ | No (performance cost) |
-| Brutalist | Medium | Medium ⚠️ | No (polarizing) |
-
-### Integration
-
-**Manual (Interactive Prototype)**:
-1. Generate `DESIGN_SYSTEM.md` from `notes.md` analysis
-2. Open Prototype in browser (https://v0.dev)
-3. Create project, upload `DESIGN_SYSTEM.md` + screenshots (drag and drop)
-4. Use Prototype visual builder to create screens
-5. Export results to `prototype-output/`
-
-**Automated (AI/MCP)**:
-1. AI reads `references/design/inspiration/notes.md`
-2. AI analyzes screenshots (visual confirmation)
-3. AI generates `DESIGN_SYSTEM.md` matching extracted patterns
-4. AI generates components following reference style
-5. No manual uploads - fully automated
-
-**For detailed implementation (borders, shadows, CSS examples)**: See `DESIGN_SYSTEM.md` (generated from references)
+| # | Component Name | Domain / Context | Purpose & Interaction |
+|:--:|:---------------|:-----------------|:----------------------|
+| 1 | `POSCartDock` | Retail / Point of Sale | Two-panel split on tablet/desktop; sticky bottom bar on mobile (<768px) with total and pay button |
+| 2 | `ChangeCalculator`| Cashier / Retail | Large display of tender amount, quick cash chips, and change calculation |
+| 3 | `ThermalPrintView`| Hardware / Retail | `@media print` 58mm/80mm receipt format with zero margins and monospaced typography |
+| 4 | `OfflineSyncBadge`| Local-First / Field Ops | 4 connection states: Online (green pulse), Offline (amber + pending count), Syncing (spinner), Error (retry) |
+| 5 | `CurrencyInput` | Financial / Accounting | Uses `inputmode="numeric"`, live thousand-separator dot formatting, without browser float spinners |
 
 ---
 
-## Component Inventory
+## 4. Priority Screen 5-State Matrix
 
-> Consolidated list of ALL components needed across features (no duplicates, no generic additions)
+*Document the 5 structural states for all P0 data-driven screens. Crucial: Field validation errors are inline form states, NEVER screen-level error states.*
 
-### Primitives (Atomic Components)
-
-| # | Component | Variants | States | Usage Count | Justification |
-|:--|:----------|:---------|:-------|:------------|:--------------|
-| 1 | Button | primary, secondary, ghost, icon-only | default, hover, active, disabled, loading | [N features] | [Feature 1, 3, 5 require form submissions] |
-| 2 | Input | text, email, password, number | default, focus, error, disabled | [N features] | [Feature 1 (login), 2 (search), 4 (form)] |
-| 3 | Textarea | - | default, focus, error, disabled | [N features] | [Feature 4 (description field)] |
-| 4 | Select/Dropdown | single, multi (optional) | closed, open, selected, disabled | [N features] | [Feature 4 (assignee picker), 3 (filter)] |
-| 5 | Badge | status, info, warning, error | - | [N features] | [Feature 5 (task status display)] |
-| 6 | Icon | various | - | [All features] | [Navigation, actions, status indicators] |
-| 7 | LoadingSpinner | - | spinning | [All data features] | [Global loading indicator] |
-| 8 | Link | - | default, hover, visited, active | [N features] | [Navigation between screens] |
-
-**Total Primitives**: [N]
+| Screen ID | Screen Name | 1. Default (Idle) | 2. Loading Skeleton | 3. Success | 4. Screen Error (500/Net) | 5. Empty State |
+|:----------|:------------|:------------------|:--------------------|:-----------|:--------------------------|:---------------|
+| `SCR-001` | Dashboard | KPI cards with live values | Pulsing gray skeleton cards (3 cards) | Values refreshed smoothly | Error banner + "Muat Ulang" retry button | "Belum ada transaksi hari ini" |
+| `SCR-002` | Product Catalog | Search bar + product data table | Table header + 5 skeleton row bars | Row updated / toast notification | Red card with retry button | "Belum ada produk" + "Tambah Produk" CTA |
+| `SCR-003` | POS Checkout | Split catalog + active cart | Skeleton grid on product tiles | Green transaction modal + receipt print | Offline warning banner + local cache fallback | Cart empty illustration + instructions |
+| `SCR-004` | Stock Opname | Adjustment list & filter bar | Skeleton list items | Opname saved + status badge | Connection failure alert | "Belum ada riwayat adjustment" |
 
 ---
 
-### Composite Components (Combinations of Primitives)
+## 5. Calibrated Accessibility Protocol (WCAG 2.2 Level AA Enforcement)
 
-| # | Component | Composition | Usage Count | Justification |
-|:--|:----------|:------------|:------------|:--------------|
-| 1 | FormField | Label + Input/Textarea/Select + Error message | [N forms] | [Standard form field wrapper, DRY principle] |
-| 2 | Card | Container + Padding + Border + Shadow | [N features] | [Feature 2 (dashboard widgets), 5 (detail view)] |
-| 3 | Modal | Overlay + Dialog + Close button + Focus trap | [N features] | [Feature 5 (delete confirmation), future features] |
-| 4 | ConfirmDialog | Modal + Message + Yes/No buttons | [N features] | [Feature 5 (delete task confirmation)] |
-| 5 | Table | Header + Body + Row + Cell | [N features] | [Feature 3 (task list)] |
-| 6 | Pagination | Previous + Next + Page numbers | [N features] | [Feature 3 (task list pagination)] |
-| 7 | EmptyState | Icon + Heading + Description + Optional CTA | [N features] | [Feature 3 (no tasks), 2 (no data)] |
-| 8 | Toast | Notification + Auto-dismiss timer | [All features] | [Success/error feedback across all actions] |
-| 9 | SearchInput | Input + Search icon + Clear button | [N features] | [Feature 3 (task search)] |
+### 5.1 Anti-Disabled Pristine Rule
+- Form submission buttons **MUST NOT** be `disabled` while the form is untouched/pristine.
+- **Rationale**: Disabled buttons prevent users from discovering required fields or understanding form requirements.
+- **Behavior**: Clicking the enabled submit button on an incomplete form triggers validation immediately, scrolls smoothly, and **auto-focuses the first invalid field** with descriptive error text.
 
-**Total Composite**: [N]
+### 5.2 Timing Adjustable (WCAG 2.2.1)
+- **Error Toasts & Offline Alerts**: **STRICTLY FORBIDDEN to auto-dismiss**. They must remain visible until the user explicitly dismisses them or the error condition is resolved.
+- **Success & Informational Toasts**: Allowed to auto-dismiss after $\ge 5000\text{ms}$, with timer pause on hover or keyboard focus.
 
----
+### 5.3 Focus Not Obscured (WCAG 2.4.11)
+- Sticky top bars (`z-10`) and fixed bottom checkout bars (`z-20`) must not obscure focused inputs.
+- **Enforcement**: Containers must declare CSS `scroll-padding`:
+  ```css
+  html, body, .scroll-container {
+    scroll-padding-top: 80px;    /* Height of sticky navbar + offset */
+    scroll-padding-bottom: 96px; /* Height of bottom action bar + offset */
+  }
+  ```
 
-### Layout Components (Structure & Spacing)
-
-| # | Component | Purpose | Usage |
-|:--|:----------|:--------|:------|
-| 1 | Container | Max-width wrapper, horizontal centering | All screens |
-| 2 | Grid | Responsive column system | Dashboard, layouts |
-| 3 | Stack | Vertical spacing utility | Forms, content blocks |
-| 4 | ButtonGroup | Horizontal button layout | Form actions (Cancel + Submit) |
-
-**Total Layout**: [N]
+### 5.4 Form Error Text Readability
+- Error message text associated with input fields (`aria-describedby`) **MUST be at least 13px** (`text-xs md:text-sm`).
+- Error text color **MUST achieve $\ge 4.5:1$** contrast against background (e.g., `#B91C1C` / `#991B1B` on white = 5.6:1+).
+- Every error state pairs color with an alert icon and explicit text explanation.
 
 ---
 
-### Composite Patterns (Feature-Specific Assemblies)
+## 6. Technical Specifications & Unified Z-Index Scale
 
-| # | Pattern | Components Used | Where Used |
-|:--|:--------|:----------------|:-----------|
-| 1 | StatWidget | Card + Large number typography + Label | Dashboard (Feature 2) |
-| 2 | DescriptionList | Key-value pairs (dt/dd) | Task detail (Feature 5) |
-| 3 | ToastContainer | Toast queue manager | Global (all features) |
+### 6.1 Modern Font Loading & Breakpoints
+- **Font Module**: Use `next/font/google` (Inter, JetBrains Mono). The deprecated package `@next/font/google` is **strictly prohibited**.
+- **Standardized Responsive Breakpoints**:
+  - `sm`: 640px (Mobile landscape / compact cards)
+  - `md`: 768px (**Definitive switch point** between Mobile Bottom Navigation / Drawer and Desktop Sidebar / Two-Panel layouts)
+  - `lg`: 1024px (Standard tablet desktop)
+  - `xl`: 1280px (Wide desktop viewports)
 
-**Total Patterns**: [N]
+### 6.2 Strict Unified Z-Index Hierarchy
+*To prevent modal dropdown collisions, combobox clipping, and sticky bar bleed-through:*
 
----
-
-## Component Inventory Summary
-
-- **Primitives**: [N] components
-- **Composite**: [N] components
-- **Layout**: [N] components
-- **Patterns**: [N] components
-- **TOTAL**: [N] components
-
-**Excluded (Not Needed for MVP)**:
-- ❌ Tabs: No complex navigation within screens
-- ❌ Accordion: No collapsible sections required
-- ❌ Slider: No numeric range inputs
-- ❌ Switch: Using dropdown for status instead
-- ❌ File Upload: No file attachments in MVP
-- ❌ Rich Text Editor: Plain text descriptions sufficient
-
----
-
-## Interaction States Matrix
-
-### Per Component
-
-| Component | States | Examples |
-|:----------|:-------|:---------|
-| Input | default, hover, focus, error, disabled | Focus ring #3B82F6, Error border #EF4444 |
-| Button | default, hover, active, disabled, loading | Loading shows spinner, Disabled opacity 0.5 |
-| Dropdown | closed, open, selected, disabled | Open shows options list, keyboard navigation |
-| Modal | closed, opening, open, closing | Fade in overlay + slide up dialog, 200ms |
-| Toast | entering, visible, exiting | Slide in from top-right, auto-dismiss 5s |
-
----
-
-### Per Screen (5-State Matrix)
-
-All data-driven screens MUST implement:
-
-1. **Idle/Default**: Normal render with data
-2. **Loading**: Skeleton loaders (shimmer effect)
-3. **Success**: Data loaded successfully (same as idle)
-4. **Error**: Error message + retry button
-5. **Empty**: Empty state illustration + CTA
-
-**Example: Task List Screen**
-- Idle: Table with 10 tasks
-- Loading: 5 skeleton rows (gray pulsing rectangles)
-- Success: Transition from loading to idle
-- Error: Red card "Failed to load tasks. Retry?"
-- Empty: Illustration "No tasks found. Create your first task!"
-
----
-
-### Form States
-
-All forms MUST implement:
-
-1. **Pristine**: Initial state, no user input
-2. **Validating**: Client-side validation running
-3. **Valid**: All fields pass validation, submit enabled
-4. **Invalid**: Errors shown, submit disabled
-5. **Submitting**: Loading spinner on submit button, form disabled
-
----
-
-## Responsive Breakpoints
-
-Based on [N] screens analyzed:
-
-| Breakpoint | Width | Layout Changes |
-|:-----------|:------|:---------------|
-| **Mobile** | 375px - 767px | Single column, stacked forms, hamburger menu |
-| **Tablet** | 768px - 1023px | 2 columns for dashboard, table horizontal scroll |
-| **Desktop** | 1024px+ | 3 columns for dashboard, full table, sidebar navigation |
-
-**Critical responsive decisions**:
-- **Mobile navigation**: Hamburger menu (not bottom nav)
-- **Dashboard grid**: 3 cols desktop → 2 cols tablet → 1 col mobile
-- **Table overflow**: Horizontal scroll on mobile (not card view)
-- **Forms**: Always single column (even desktop)
-
----
-
-## Accessibility Requirements
-
-### Per Component
-
-| Component | ARIA Attributes | Keyboard Support | Screen Reader |
-|:----------|:----------------|:-----------------|:--------------|
-| Input | aria-label, aria-invalid, aria-describedby | Tab to focus, Esc to clear | Announces label + error |
-| Button | aria-disabled, aria-busy | Enter/Space activates, Tab navigation | Announces state changes |
-| Modal | aria-modal, role="dialog" | Esc to close, Tab traps focus | Announces dialog open/close |
-| Dropdown | aria-expanded, aria-haspopup | Arrow keys navigate, Enter selects | Announces expanded state |
-| Table | scope="col" (headers), scope="row" | Arrow keys navigate cells | Announces row/column |
-
----
-
-### Global Patterns
-
-| Pattern | Implementation |
-|:--------|:---------------|
-| **Focus management** | Visible focus ring (2px solid #3B82F6, offset 2px) |
-| **Skip links** | "Skip to main content" at top (hidden until focused) |
-| **Color contrast** | WCAG AA minimum (4.5:1 for body text, 3:1 for large text) |
-| **Touch targets** | Minimum 44×44px (mobile buttons, icon buttons) |
-| **Screen reader announcements** | role="status" for success, role="alert" for errors |
-
----
-
-## Animation Requirements
-
-> Subtle animations for polish, not decoration
-
-| Element | Animation | Duration | Easing | Rationale |
-|:--------|:----------|:---------|:-------|:----------|
-| Button (click) | scale(0.98) | 100ms | ease-out | Tactile feedback |
-| Modal (open) | Overlay fade + Dialog slide-up | 200ms | ease-out | Smooth entrance |
-| Toast (enter) | Slide from top-right | 300ms | ease-out | Draw attention |
-| Dropdown (open) | Fade + scale(0.95) from top-left | 150ms | ease-out | Natural expansion |
-| Page transitions | None | - | - | Instant for MVP speed |
-
-**Animation principle**: Functional only, no decorative motion. All animations <500ms.
-
----
-
-## Design Decisions Rationale
-
-### Why These Components?
-
-| Decision | Rationale |
-|:---------|:----------|
-| **No Tabs** | Single-page screens, no complex in-screen navigation needed |
-| **No Accordion** | No collapsible sections in current features |
-| **No Slider** | No numeric range inputs (priority, progress) in MVP |
-| **No Switch** | Status changes via dropdown (todo/in progress/done) more explicit |
-| **No File Upload** | MVP scope excludes attachments (PRD Feature X deferred) |
-| **Table over Cards** | Task list has 5+ columns, table more scannable than cards |
-
----
-
-### Future Considerations (NOT MVP)
-
-Components intentionally excluded but may be needed later:
-
-| Component | Future Use Case | When to Add |
-|:----------|:----------------|:------------|
-| **Tags/Pills** | Task categories/labels | Post-MVP Feature: Categories |
-| **Avatar** | User profile photos | Post-MVP Feature: User profiles |
-| **Progress Bar** | Task completion percentage | Post-MVP Feature: Subtasks |
-| **Rich Text Editor** | Formatted descriptions | Post-MVP Feature: Markdown support |
-| **Date Range Picker** | Filter by date range | Post-MVP Feature: Advanced filters |
-
----
-
-## Asset Requirements
-
-> Document asset decisions made in M04 (NOT implementation - actual files added in M06)
-
-### Typography
-
-| Aspect | Decision | Source |
-|:-------|:---------|:-------|
-| **Primary font** | [e.g., Inter] | [Google Fonts / Fontsource npm / Self-hosted] |
-| **Weights needed** | [e.g., 400 (regular), 600 (semibold)] | - |
-| **Code font** | [e.g., JetBrains Mono] (optional) | [If code blocks in app] |
-| **Fallback stack** | system-ui, -apple-system, BlinkMacSystemFont, sans-serif | Standard system fonts |
-| **Loading strategy** | [Google Fonts CDN / npm package / preload] | [Performance consideration] |
-
-**Example:**
-```
-Primary: Inter (Google Fonts)
-Weights: 400, 600
-Code: JetBrains Mono (optional, for code snippets)
-Fallback: system-ui, sans-serif
-Loading: Google Fonts CDN with preconnect
+```css
+:root {
+  --z-canvas: 0;             /* Base content layer */
+  --z-sticky-nav: 10;        /* Sticky top navigation bar */
+  --z-floating-action: 20;   /* Floating action button / POS cart dock */
+  --z-page-dropdown: 30;     /* Page-level dropdowns, select menus, popovers */
+  --z-modal-backdrop: 40;    /* Backdrop dimming overlay */
+  --z-modal-dialog: 50;      /* Dialog window, Sheet drawer */
+  --z-modal-dropdown: 55;    /* Dropdowns/comboboxes rendered INSIDE modal portals */
+  --z-toast: 60;             /* Global toast notification stack */
+  --z-payment-gateway: 999999; /* Third-party payment iframes (Midtrans Snap, Stripe) */
+}
 ```
 
 ---
 
-### Icons
+## 7. Regulatory Compliance & Local Domain Policies
 
-| Aspect | Decision | Rationale |
-|:-------|:---------|:----------|
-| **Library chosen** | [Lucide / Heroicons / Phosphor / Custom] | [Bundle size, style, tree-shakeable] |
-| **Version** | [e.g., lucide-react@0.400.0] | Lock version for consistency |
-| **Icon count** | [N icons needed] | Based on component inventory |
-| **Loading strategy** | [Tree-shakeable imports / Icon sprite / CDN] | Performance |
+*Document sector-specific statutory rules and legal liability disclaimers:*
 
-**Icon Inventory** (list all icons needed):
+### 7.1 Statutory Calculation Rules (Domain-Specific)
+- **Retail / SME Tax (PP 55/2022 jo. PP 20/2026)**:
+  - Model PPh Final 0.5% with the **Rp 500.000.000/year** gross revenue threshold for individual taxpayers (Wajib Pajak Orang Pribadi).
+  - Explicitly define Non-PKP status (zero PPN calculation).
+- **HRIS / Payroll (PP 58/2023 & PMK 168/2023)**:
+  - Model PPh 21 TER (Categories A, B, C) and BPJS deductions.
 
-| Icon Name | Usage | Component | Critical? |
-|:----------|:------|:----------|:----------|
-| search | Search input | SearchInput | ✅ Yes |
-| edit | Edit button | IconButton | ✅ Yes |
-| delete / trash | Delete button | IconButton | ✅ Yes |
-| plus | Create new button | Button | ✅ Yes |
-| x / close | Modal close | Modal | ✅ Yes |
-| spinner / loader | Loading state | LoadingSpinner | ✅ Yes |
-| chevron-down | Dropdown indicator | Select | ✅ Yes |
-| chevron-up | Collapse/expand | (future) | ⚠️ Medium |
-| calendar | Date picker | DatePicker | ⚠️ Medium |
-| user | User avatar fallback | (if needed) | ⚠️ Medium |
-| logout | Logout button | Header | ✅ Yes |
-| menu / hamburger | Mobile nav toggle | Header (mobile) | ✅ Yes |
-| check / checkmark | Success state | Toast, Checkbox | ✅ Yes |
-| alert-circle | Error state | Toast, Error messages | ✅ Yes |
-| info | Info messages | Toast | ⚠️ Medium |
-| arrow-left | Back navigation | (if needed) | ⚠️ Medium |
-| arrow-right | Forward/next | Pagination | ⚠️ Medium |
-| external-link | External links | Link | ⚠️ Low |
-
-**Total**: [N] icons
-
-**Example:**
-```
-Library: Lucide React v0.400.0
-Count: 18 icons
-Import: Tree-shakeable (import { Search, Edit, Trash2 } from 'lucide-react')
-Bundle impact: ~2KB total (only imported icons)
-```
+### 7.2 Mandatory Financial & Operational Disclaimers
+Display persistent in-app disclaimers:
+1. *"Perhitungan ini bersifat estimasi operasional dan tidak menggantikan pelaporan resmi pada regulator atau nasihat profesional bersertifikasi."*
+2. *"Pengguna bertanggung jawab penuh atas kebenaran data fisik dan transaksi yang diinput ke dalam sistem."*
 
 ---
 
-### Images
+## 8. Agent Validation Checklist (Step 0 Exit Gate)
 
-| Type | Decision | Format | Source | Implementation |
-|:-----|:---------|:-------|:-------|:---------------|
-| **Logo** | [Wordmark / Icon / Combination] | SVG | [Client provides / Text placeholder] | M06 |
-| **Hero images** | [Count, dimensions] | JPG/WebP | [Unsplash placeholder URLs] | M04: placeholder, M06: optimize |
-| **Empty state illustrations** | [Style: line art / 3D / photo] | SVG | [undraw.co / humaaans.com / custom] | M06 |
-| **User avatars** | [Strategy] | - | [Initials fallback / Gravatar / placeholder] | M06 |
-| **Product images** | [If e-commerce] | JPG/WebP | [Placeholder in M04, real in M07] | M07 (content) |
+*Before completing Step 0 and proceeding to `DESIGN.md`, the agent MUST verify:*
 
-**Image Inventory:**
-
-```markdown
-### Logo
-- Type: Wordmark (text-based logo)
-- Colors: Primary brand color (#3B82F6)
-- Format: SVG (scalable, small file size)
-- Source: Client provides or use text placeholder ("TaskFlow")
-- Fallback: CSS text logo with brand font
-
-### Hero Image (Landing page)
-- Dimensions: 1200×600px (desktop), 800×400px (mobile)
-- Style: Abstract gradient or productivity photo
-- Placeholder: https://images.unsplash.com/photo-[id]?w=1200&h=600
-- Optimization: Convert to WebP in M06, lazy load
-- Alt text: "Team collaborating on tasks" (accessibility)
-
-### Empty State Illustrations (3 screens)
-1. Task list empty: "No tasks yet" illustration
-2. Dashboard empty: "Get started" illustration
-3. Search no results: "No matches found" illustration
-
-- Style: Minimalist line art (consistent style)
-- Source: undraw.co (free, customizable colors)
-- Format: SVG inline (small file size, color control)
-- Fallback: Text-only empty state if SVG fails
-
-### User Avatars
-- Strategy: Initials fallback (no photo uploads in MVP)
-- Format: CSS generated (first letter of name)
-- Colors: Hash-based color from user ID (consistent per user)
-- Fallback: Generic user icon (Lucide User icon)
-- Future: Gravatar support (post-MVP)
-```
-
----
-
-### Branding Assets
-
-| Asset | Decision | Implementation |
-|:------|:---------|:---------------|
-| **Favicon** | [Emoji / Logo-based / Text letter] | M06: realfavicongenerator.net |
-| **Apple touch icon** | [Yes / No] | 180×180px PNG if needed |
-| **PWA icons** | [In MVP? Yes/No] | Defer to post-MVP if No |
-| **OG image** (social share) | [Yes / No] | 1200×630px, defer to post-launch |
-| **App splash screen** | [If PWA] | Defer to post-MVP |
-
-**Example:**
-```markdown
-### Favicon
-- Type: Emoji-based (✅ checkmark icon)
-- Formats: favicon.ico (16×16, 32×32), PNG (192×192, 512×512)
-- Tool: realfavicongenerator.net (auto-generates all sizes)
-- Implementation: M06 (after logo finalized)
-
-### Social Share (OG Image)
-- Defer to post-launch (not critical for MVP)
-- Dimensions: 1200×630px
-- Includes: Logo + tagline + screenshot
-```
-
----
-
-### Asset Optimization Strategy
-
-> Decisions made in M04, implemented in M06
-
-| Asset Type | Optimization | Tool | When |
-|:-----------|:-------------|:-----|:-----|
-| **Images** | WebP conversion, lazy loading | sharp, next/image | M06 |
-| **Icons** | Tree-shakeable imports | ES modules | M06 |
-| **Fonts** | Preload, subset | Google Fonts API | M06 |
-| **SVGs** | Inline critical, lazy load others | SVGO | M06 |
-
-**Performance Budget:**
-```
-- Total page weight: <500KB (first load)
-- Images: <200KB (WebP, lazy loaded)
-- Fonts: <50KB (2 weights, Latin subset)
-- Icons: <5KB (tree-shaken)
-```
-
----
-
-### NOT in MVP (Deferred Assets)
-
-Assets intentionally excluded from MVP scope:
-
-- ❌ **Custom illustrations**: Use library (undraw.co) instead
-- ❌ **Product photography**: If applicable, use placeholders in MVP
-- ❌ **Video assets**: No video in MVP (defer to post-launch)
-- ❌ **Animations/Lottie files**: CSS animations only (no heavy animation libraries)
-- ❌ **3D assets**: Not applicable for MVP
-- ❌ **Icon packs**: Use single library (Lucide), don't mix multiple
-- ❌ **Multiple logo variants**: One wordmark sufficient for MVP
-- ❌ **Professional photography**: Stock photos or Unsplash placeholders
-
-**Rationale**: Keep M04 fast (6 hours), optimize assets in M06 implementation phase.
-
----
-
-## Asset Requirements Checklist
-
-Before proceeding to DESIGN_SYSTEM.md:
-
-### Typography
-- [ ] Primary font chosen (with justification)
-- [ ] Weights needed documented (2-3 weights max)
-- [ ] Code font decided (if applicable)
-- [ ] Loading strategy defined
-
-### Icons
-- [ ] Icon library chosen (Lucide/Heroicons/Phosphor)
-- [ ] Icon count estimated (15-25 for typical app)
-- [ ] All needed icons listed in inventory
-- [ ] Tree-shakeable import strategy confirmed
-
-### Images
-- [ ] Logo type decided (wordmark/icon/combination)
-- [ ] Hero image placeholder URLs documented
-- [ ] Empty state illustration style chosen
-- [ ] User avatar strategy defined (initials fallback)
-
-### Branding
-- [ ] Favicon type decided (emoji or logo-based)
-- [ ] PWA icons decision made (in MVP or defer)
-- [ ] Social share images decision made (defer to post-launch)
-
-### Optimization
-- [ ] Performance budget defined
-- [ ] Image optimization strategy documented
-- [ ] Font loading strategy confirmed
-
----
-
-## Trade-offs & Constraints
-
-### Design System Scope
-
-| Aspect | Decision | Trade-off |
-|:-------|:---------|:----------|
-| **Component count** | 27 components | More than minimal (10), less than generic (50+) |
-| **Variant coverage** | 2-4 variants per component | Enough flexibility, avoids over-engineering |
-| **Animation complexity** | Functional only (<500ms) | Polish without performance cost |
-| **Responsive breakpoints** | 3 breakpoints (mobile/tablet/desktop) | Standard coverage, not pixel-perfect |
-| **Accessibility** | WCAG 2.1 AA | Legal minimum, not AAA |
-
----
-
-### Technical Constraints
-
-| Constraint | Impact on Design | Mitigation |
-|:-----------|:-----------------|:-----------|
-| **Budget <$5K** | Simple components, no custom illustrations | Use icon libraries (Lucide, Heroicons) |
-| **Solo developer** | No designer for polish iterations | Clear specs upfront, follow system |
-| **6-week timeline** | No time for advanced interactions | Focus on functional, skip decorative |
-| **No backend yet (M05)** | Mock data for prototypes | Use realistic sample data |
-
----
-
-## Next Steps
-
-### Immediate (M04 Continuation)
-
-1. **Generate DESIGN_SYSTEM.md** (2 hours)
-   - Colors: Primary, success, error, neutral scales (from component needs)
-   - Typography: Sizes needed (stat numbers, headings, body, captions)
-   - Spacing: Consistent padding/margins (4/8/16/24/32/48px)
-   - **Component specifications**: Each of 27 components detailed
-   - Shadows: 3 levels (sm/md/lg for cards, modals, dropdowns)
-
-2. **Generate SITEMAP.md** (30 min)
-   - [N] screens mapped
-   - Route hierarchy
-   - Navigation flows
-
-3. **Generate DESIGN_SPEC.md** (1.5 hours)
-   - Per screen: Components used (from inventory above)
-   - 5-state matrix (idle, loading, success, error, empty)
-   - Responsive variants (mobile/tablet/desktop)
-   - Accessibility notes (ARIA, keyboard)
-
-### Before M06 (Development)
-
-- [ ] Design freeze sign-off (client/stakeholder approval)
-- [ ] Component library decision (shadcn/ui, Headless UI, build from scratch)
-- [ ] Icon library selection (Lucide, Heroicons, Phosphor)
-- [ ] Accessibility audit checklist prepared
-
----
-
-## Appendix: Component Justification Map
-
-> Quick reference: Which features need which components
-
-| Component | Used By Features | Critical Path? |
-|:----------|:-----------------|:---------------|
-| Button | 1, 2, 3, 4, 5 | ✅ Yes (all forms) |
-| Input | 1, 3, 4 | ✅ Yes (login, search, forms) |
-| Table | 3 | ✅ Yes (main task list) |
-| Modal | 5 | ⚠️ Medium (delete confirmation) |
-| Toast | All | ✅ Yes (feedback for all actions) |
-| Badge | 3, 5 | ⚠️ Medium (status display) |
-| DatePicker | 4 | ⚠️ Medium (due date) |
-| Pagination | 3 | ⚠️ Medium (large task lists) |
-| EmptyState | 2, 3 | ⚠️ Medium (empty data) |
-
-**Critical path components** (✅): Must be implemented first, core functionality depends on them
-**Medium priority** (⚠️): Important for UX, can use simple fallback initially
-
----
-
-## Sign-off
-
-- [ ] Component inventory reviewed by: [Name, Date]
-- [ ] Interaction states approved by: [Name, Date]
-- [ ] Accessibility requirements confirmed by: [Name, Date]
-- [ ] Ready to proceed to DESIGN_SYSTEM.md generation
-
----
-
-**Next Document**: `DESIGN_SYSTEM.md` (generated from this component inventory)
+- [ ] **1. Nomenclature Parity**: 100% of component names referenced in Section 2 exist in Section 3 inventory table.
+- [ ] **2. Anti-Disabled Pristine**: Form submit buttons are NOT disabled in pristine state (validation triggers on click with auto-focus).
+- [ ] **3. Non-Dismissing Errors**: Error toasts and offline reconnection alerts are configured without auto-dismiss (manual close required).
+- [ ] **4. Numeric Input Optimization**: All monetary/currency inputs use `inputmode="numeric"` and NEVER `type="number"`.
+- [ ] **5. Z-Index Layer Integrity**: Modal dropdowns/comboboxes (`--z-modal-dropdown: 55`) are layered higher than the dialog itself (`--z-modal-dialog: 50`).
+- [ ] **6. Accessible Error Typography**: All form error text is minimum 13px with $\ge 4.5:1$ contrast against the card background.

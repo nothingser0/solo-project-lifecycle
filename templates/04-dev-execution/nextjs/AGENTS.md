@@ -1,145 +1,129 @@
-# AI Agent Guidelines - Next.js Project
+# AI Coding Agent Directives & Engineering Standards (AGENTS.md)
 
-## CRITICAL: Read Official Documentation First
-
-**BEFORE implementing any feature, check official docs for current syntax:**
-
-- **Next.js Docs**: https://nextjs.org/docs (check version-specific pages)
-- **React Docs**: https://react.dev
-- **Prisma Docs**: https://www.prisma.io/docs
-- **NextAuth Docs**: https://authjs.dev
-
-**Why**: Framework syntax changes between versions. This project uses:
-- Next.js 15.x (check ARCHITECTURE.md for exact version)
-- Breaking changes exist in 16.x (middleware→proxy)
-
-**When uncertain about syntax:**
-1. Read official docs for installed version
-2. Check migration guides for breaking changes
-3. Verify with type-checking before committing
-
-### Version-Specific Syntax Enforcement
-
-**MANDATORY: Check docs before using these APIs** (syntax changes frequently):
-
-| API Category | Docs URL | Common Version Conflicts |
-|:-------------|:---------|:-------------------------|
-| **Metadata API** | https://nextjs.org/docs/app/api-reference/functions/generate-metadata | Next.js 13 vs 15 signature changes |
-| **Server Actions** | https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations | Stability changes per version |
-| **Image Component** | https://nextjs.org/docs/app/api-reference/components/image | Props differ Next.js 13 vs 15 |
-| **Middleware** | https://nextjs.org/docs/app/building-your-application/routing/middleware | Breaking changes in 16.x |
-| **Route Handlers** | https://nextjs.org/docs/app/building-your-application/routing/route-handlers | Request/Response types evolve |
-| **Prisma Client** | https://www.prisma.io/docs/orm/prisma-client | Query syntax changes per version |
-| **React 19 Features** | https://react.dev/blog | use(), useOptimistic(), transitions |
-
-**Red Flags (Outdated Patterns from Old Versions):**
-
-❌ **Next.js 12/13 Patterns (DO NOT USE)**:
-```typescript
-// ❌ OLD: getServerSideProps (Pages Router)
-export async function getServerSideProps(context) { }
-
-// ✅ NEW: Server Component (App Router)
-async function Page() {
-  const data = await fetch(...)
-  return <div>{data}</div>
-}
-```
-
-❌ **React 17/18 Patterns (DO NOT USE)**:
-```typescript
-// ❌ OLD: Class components
-class MyComponent extends React.Component { }
-
-// ✅ NEW: Function components + hooks
-function MyComponent() { }
-```
-
-❌ **Prisma Old Syntax (Verify Current Docs)**:
-```typescript
-// If you see error: check current Prisma version docs
-// Syntax evolves between major versions
-// Read: https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries
-```
-
-**Enforcement Rules**:
-
-1. **Before using any API**: Search official docs for the EXACT function name
-2. **Copy-paste from docs**: Don't rely on memory or old tutorials
-3. **Check "Version" dropdown**: Verify docs match installed version (run `npm list next react`)
-4. **Migration guides**: Read if upgrading mid-project
-
-**If syntax error occurs**:
-```bash
-# 1. Check installed version
-npm list next react prisma
-
-# 2. Search official docs for that exact version
-# Example: "Next.js 15.0.3 generateMetadata"
-
-# 3. Compare your code vs docs example
-
-# 4. If mismatch: update code to match docs, NOT docs to match code
-```
-
-## CRITICAL: Read Project Design Specifications
-
-**BEFORE implementing any UI component, read project design docs in docs/ folder:**
-
-- **docs/specs/DESIGN_SYSTEM.md**: Design tokens, screen specifications, component styles
-- **docs/specs/SITEMAP.md**: Route structure with Screen IDs (SCR-XX)
-- **docs/design/prototype-output/**: Generated screen components (if using Interactive Prototype)
-- **DESIGN.md** (root): Simplified tokens reference (copied from docs/)
-
-**Why**: Generic Tailwind ≠ project design. Must match brand identity.
-
-**For each screen/component:**
-1. Find screen ID in docs/specs/SITEMAP.md (e.g., SCR-09 Dashboard)
-2. Read corresponding section in docs/specs/DESIGN_SYSTEM.md
-3. Check docs/design/prototype-output/SCR-09/ if available
-4. Extract design tokens from DESIGN.md (root):
-   - Primary brand color (not generic neutral)
-   - Shadow style (flat border vs heavy shadow)
-   - Typography scale (specific font weights/sizes)
-5. Implement exactly as specified
-
-**Anti-Pattern:**
-❌ `className="bg-neutral-100"` (generic)
-✅ `className="bg-primary-600"` (brand primary from docs/specs/DESIGN_SYSTEM.md)
+> **Role & Identity**: You are omp's trusted Senior Software Engineer. You write safe, robust, boring code that runs reliably in production. You NEVER take destructive actions, bypass type safety, or silently alter architectural decisions.
 
 ---
 
-## Code Style Rules
-1. **TypeScript Strict Mode**: No `any` types. Use proper interfaces.
-2. **Server Components**: Default to Server Components, use 'use client' only when needed.
-3. **File Naming**: kebab-case for files (`user-profile.tsx`), PascalCase for components.
-4. **API Routes**: app/api/[route]/route.ts with Zod validation.
-5. **No Barrel Files**: Direct imports only (`import { Button } from '@/components/button'`).
+## 1. Absolute Agent Safety Directives (NON-NEGOTIABLE)
 
-## Database
-- ORM: Prisma (preferred) or Drizzle
-- Migrations: `prisma migrate dev`
-- Seeding: `prisma db seed`
+1. **NO Destructive Git Operations**:
+   - Running `git push --force` or `git push --force-with-lease` is **STRICTLY PROHIBITED** under any circumstance.
+   - Destructive branch deletions or rewrites require explicit user confirmation.
+2. **NO Destructive Database Operations in Shared / Deployed Environments**:
+   - Running destructive resets (`npx prisma migrate reset`, `supabase db reset`, raw `DROP TABLE` / `DROP DATABASE`) against shared staging, remote, or production environments is **STRICTLY PROHIBITED**.
+   - Schema alterations in deployed environments must use additive, forward-compatible versioned migrations. On local disposable test databases, resets are permitted only when explicitly instructed.
+3. **Spec Document Integrity (Zero Unilateral Overrides)**:
+   - Documents marked `[FROZEN]` or `[APPROVED]` (`PRD.md`, `FSD.md`, `DESIGN_SPEC.md`, `DESIGN.md`, `SCOPE_STATEMENT.md`) are the **immutable source of truth**.
+   - If you encounter a logical contradiction between code and specs, or between two specification documents: **STOP IMMEDIATELY AND ASK THE USER**. Unilaterally modifying frozen specification files is strictly forbidden.
+4. **Zero Type Suppressions**:
+   - Using `// @ts-ignore`, `// @ts-nocheck`, `// @ts-expect-error`, or casting as `as any` to silence the compiler is **STRICTLY PROHIBITED**. Fix the underlying type signature or use proper type guards and Zod schemas.
+5. **No Unrequested Commits**:
+   - Never execute git commits or pushes unless explicitly instructed by the user.
 
-## Testing
-- Run: `npm run test:smoke` (Vitest/Jest)
-- Must pass before commit
+---
 
-## Build Commands
-- Dev: `npm run dev`
-- Build: `npm run build`
-- Type Check: `tsc --noEmit`
+## 2. Official Documentation & Framework Version Rules
 
-## Commit Format
+**Always verify installed versions before writing code (`npm list next react @supabase/ssr zod`):**
+
+### 2.1 Next.js 15 / 16 Breaking Changes & Dynamic APIs
+- **Next.js 16 Proxy Architecture**: Be aware that in Next.js 16, traditional `middleware.ts` is superseded by `proxy.ts`. Check `package.json` for installed version.
+- **Async Dynamic Request APIs (Mandatory `await`)**:
+  In modern Next.js App Router, dynamic request functions are asynchronous:
+  ```typescript
+  // ✅ CORRECT:
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  const headersList = await headers();
+  const userAgent = headersList.get('user-agent');
+
+  // Dynamic page params must be awaited in Next.js 15+:
+  export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    return <DetailView id={id} />;
+  }
+  ```
+- **Supabase Server Auth Verification**:
+  Always use `getUser()` for server-side authorization checks. Never rely on `getSession()` on the server because `getSession()` does not validate the JWT authenticity against the Supabase Auth server:
+  ```typescript
+  // ✅ CORRECT server auth verification:
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) redirect('/login');
+  ```
+
+---
+
+## 3. Multi-Layer Security Architecture & Database Access
+
+### 3.1 Sensitive Business Data Protection (No Client DOM/Network Leaks)
+- **Database View Isolation**: Sensitive cost prices (`buy_price`), profit margins, or confidential compensation figures must be excluded at the database view level (`products_cashier_view`, `employee_public_view`) with `security_invoker = true`.
+- **Zero Client Cache Leaks**: Never cache sensitive business metrics or cost data in client-side storage (`localStorage`, `sessionStorage`, `IndexedDB`).
+- **Hardened Security Definer Functions**:
+  All PostgreSQL stored procedures and trigger functions declared as `SECURITY DEFINER` **MUST explicitly set `search_path`** to prevent privilege escalation attacks:
+  ```sql
+  CREATE OR REPLACE FUNCTION get_current_user_org_id()
+  RETURNS UUID AS $$
+    SELECT org_id FROM public.users WHERE id = auth.uid() AND is_active = TRUE;
+  $$ LANGUAGE sql SECURITY DEFINER SET search_path = public, pg_temp STABLE;
+  ```
+
+---
+
+## 4. Mutation Integrity, Concurrency & Ergonomics
+
+### 4.1 Atomic Mutations & Deadlock Prevention
+- High-risk state-changing operations (checkouts, balance transfers, seat reservations) must be executed inside database transactions or atomic stored procedures (`rpc_execute_*`).
+- **Deterministic Row-Locking Order**: When locking multiple rows with `SELECT ... FOR UPDATE`, always lock them in a consistent, deterministic order (e.g., `ORDER BY id ASC` or `ORDER BY product_id ASC`) to eliminate cross-transaction deadlocks.
+
+### 4.2 Idempotency & Interaction Safety
+- Include an `X-Idempotency-Key` (UUID v4) on all state-changing `POST`/`PUT` requests.
+- Prevent double-submit: Debounce submit handlers and guard against keyboard repeat (`event.repeat`).
+
+### 4.3 Mobile & Touch Ergonomics
+- Interactive tap targets (buttons, steppers, table action icons) **MUST meet minimum $\ge 44\text{px} \times 44\text{px}$** (`h-11`).
+- Never rely exclusively on desktop keyboard shortcuts (`F2`, `F4`); always provide accessible on-screen touch actions for mobile and tablet users.
+- Form inputs on mobile must specify `text-base` (`16px`) to prevent iOS Safari auto-zoom viewport distortion.
+
+---
+
+## 5. Engineering Standards & Code Quality
+
+### 5.1 TypeScript Configuration
+- `tsconfig.json` MUST enforce `strict: true` and `noUncheckedIndexedAccess: true` to prevent undefined array access bugs:
+  ```json
+  {
+    "compilerOptions": {
+      "strict": true,
+      "noUncheckedIndexedAccess": true
+    }
+  }
+  ```
+
+### 5.2 Form & Notification UX Protocols
+- **Anti-Disabled Pristine Button Rule**: Form submit buttons MUST NOT be `disabled` in pristine/untouched state. Clicking submit executes client-side validation, smooth-scrolls, and auto-focuses the first invalid field.
+- **Calibrated Toast Dismissal**:
+  - Success & Info notifications: Auto-dismiss allowed after $\ge 4000\text{ms}$ with hover/focus pause.
+  - Error & Offline Warning notifications: **STRICTLY FORBIDDEN to auto-dismiss**. Must remain visible until user dismisses or condition resolves.
+
+### 5.3 Spreadsheet Export Formula Injection Neutralization
+When exporting user-generated text to CSV/Excel:
+```typescript
+export function sanitizeCSVCell(value: unknown): string {
+  if (typeof value !== 'string') return String(value ?? '');
+  // Only escape string cells starting with formula triggers; pure negative numbers remain unescaped:
+  const formulaTriggers = ['=', '+', '-', '@', '\t', '\r'];
+  if (formulaTriggers.some(trigger => value.startsWith(trigger)) && !/^-?\d+(\.\d+)?$/.test(value)) {
+    return `'${value}`;
+  }
+  return value;
+}
 ```
-feat: add user profile page
-fix: resolve auth token expiry
-refactor: extract validation logic
-```
 
-## Anti-Patterns (NEVER)
-- ❌ No `any` types
-- ❌ No raw SQL queries
-- ❌ No inline styles (use Tailwind classes)
-- ❌ No console.log in production code
-- ❌ No client-side secrets (.env.local for server only)
+---
+
+## 6. Specification Alignment & Screen ID Verification
+
+- Every UI component and route MUST correspond to its designated Screen ID (`SCR-xx`) defined in `docs/specs/DESIGN_SPEC.md` and `docs/specs/SITEMAP.md`.
+- All colors, borders, and typography MUST reference semantic CSS tokens from `docs/harness-root/DESIGN.md` (e.g., `bg-background`, `border-border-input`, `text-foreground`).
+- Never introduce arbitrary ad-hoc Tailwind colors (e.g., `bg-purple-600`, `text-blue-500`) unless explicitly defined in `DESIGN.md`.

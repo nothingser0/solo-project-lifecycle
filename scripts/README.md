@@ -41,18 +41,20 @@ Validates blocking gates before progressing between project phases:
 ## 2. Dynamic Package Version Checker (`check-package-versions`)
 
 Queries package registries directly in real time to guarantee up-to-date dependency decisions in Module 05:
-
+Supports 12 production stacks via official public registries (`nextjs`, `laravel`, `django`, `go`, `rails`, `mern`, `aspnet`, `spring`, `serverless`, `flutter`, `remix`, `astro`):
 ```bash
 # Query latest stable versions
 ./scripts/check-package-versions.sh nextjs
 ./scripts/check-package-versions.sh laravel
 ./scripts/check-package-versions.sh django
 ./scripts/check-package-versions.sh go
+./scripts/check-package-versions.sh rails
 ```
 
 ```powershell
 .\scripts\check-package-versions.ps1 -Framework nextjs
 .\scripts\check-package-versions.ps1 -Framework laravel
+.\scripts\check-package-versions.ps1 -Framework go
 ```
 
 ---

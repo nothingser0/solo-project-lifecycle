@@ -38,7 +38,8 @@
 ## 3. TypeScript Discipline & Type Handling
 
 1. **Zero `any` Policy**:
-   - Using the `any` type is PROHIBITED. Use `unknown` if the data type cannot be determined in advance, then narrow it using *Type Guards* or Zod validation.
+   - Using the `any` type is PROHIBITED. Enforce `strict: true` and `noUncheckedIndexedAccess: true` in `tsconfig.json`.
+   - Double assertions (`as unknown as TargetType`) and non-null assertions (`!`) without guards are STRICTLY PROHIBITED.
 2. **Single Source of Truth Types from Zod**:
    - Writing TypeScript interfaces and Zod schemas separately when they represent the same data is prohibited. Always infer types from Zod schemas:
      ```typescript
@@ -56,3 +57,34 @@
    - Writing empty catch blocks: `catch (e) {}` is PROHIBITED. All errors must be logged using structured loggers or rethrown with meaningful messages.
 3. **Centralized Constants**:
    - Magic numbers or transaction status strings must be defined as typed constants (*const assertions* or TypeScript enums).
+4. **Uniform Action Result Contract**:
+   - Server mutations must return a consistent `ActionResult<T>` structure:
+     ```typescript
+     export type ActionError = { code: string; message: string; fieldErrors?: Record<string, string[]> };
+     export type ActionResult<T> = { success: true; data: T } | { success: false; error: ActionError };
+     ```
+
+---
+
+## 5. Form Ergonomics & Data Sanitization
+
+1. **Universal 16px Input Font Size (iOS Anti-Zoom Rule)**:
+   - Form inputs (`<input>`, `<select>`, `<textarea>`) MUST be at least `16px` (`text-base`) across all viewports.
+   - Never override with `md:text-sm`, which triggers auto-zoom on touch tablets and iPads ($\ge 768$px).
+2. **Anti-Disabled Pristine Button Rule**:
+   - Form submit buttons remain enabled in pristine/untouched state (validation triggers on click with auto-focus to first invalid field).
+3. **Calibrated Notification Toast Behavior**:
+   - Success notifications: Auto-dismiss permitted after $\ge 4000$ms with pause on hover/focus.
+   - Error and offline alert notifications: STRICTLY FORBIDDEN to auto-dismiss (manual dismissal required).
+4. **Safe Spreadsheet Export Sanitization**:
+   - When exporting tabular data to CSV or Excel, escape formula triggers without breaking pure negative numbers:
+     ```typescript
+     export function sanitizeExportCell(value: unknown): string | number {
+       if (typeof value === 'number') return value;
+       if (value === null || value === undefined) return '';
+       const str = String(value);
+       if (/^-?\d+(\.\d+)?$/.test(str)) return str; // Preserve pure numeric strings
+       const triggers = ['=', '+', '-', '@', '\t', '\r'];
+       return triggers.some(t => str.startsWith(t)) ? `'${str}` : str;
+     }
+     ```

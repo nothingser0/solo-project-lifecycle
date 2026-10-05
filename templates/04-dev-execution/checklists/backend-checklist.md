@@ -72,7 +72,7 @@
   - [ ] Implement cursor-based pagination for large volume datasets / infinite scroll.
   - [ ] Apply fallback limit & offset with strict bounds (`max_limit = 100`, default: 20).
   - [ ] Standardize JSON response format:
-
+    ```json
     {
       "data": [...],
       "meta": { "total": 142, "page": 1, "limit": 20, "has_more": true },
@@ -104,6 +104,7 @@
     {
       "error": { "code": "VALIDATION_ERROR", "fields": { "email": "Invalid email format" } }
     }
+    ```
 
 
 ### Rate Limiting
@@ -119,7 +120,7 @@
 
 ---
 
-## 4. Background Jobs, Queues & Workers
+## 4. Background Jobs, Queues & Workers (Conditional: If in Scope)
 
 ### Queue Setup
 - [ ] **Queue Runtime Setup**:
@@ -140,7 +141,7 @@
 
 ---
 
-## 5. File Upload & Storage Service
+## 5. File Upload & Storage Service (Conditional: If in Scope)
 
 ### Storage Abstraction
 - [ ] **Storage Client Abstraction**:
@@ -164,7 +165,7 @@
 
 ---
 
-## 6. Email & Notifications
+## 6. Email & Notifications (Conditional: If in Scope)
 
 ### Email Transport
 - [ ] **Transactional Email Transport**:
@@ -189,6 +190,19 @@
 
 ---
 
+## 7. Automated Testing & Concurrency Verification (Proportionate to Scale & Risk)
+
+### RLS Security Suite (`tests/db/rls.test.ts`)
+- [ ] Anonymous queries return 0 rows on protected tables.
+- [ ] Staff roles cannot query sensitive cost fields (`buy_price`, margins, private salaries) via raw queries or view bypasses.
+- [ ] Cross-tenant IDOR attack returns 0 rows / access denied.
+
+### Concurrency & Anti-Deadlock (`tests/db/concurrency.test.ts`)
+- [ ] Simulate 20–50 parallel mutations with `Promise.allSettled()`.
+- [ ] Zero database deadlock errors (`40P01 deadlock_detected`).
+- [ ] Deterministic global lock order: `organizations` $\to$ `locations` $\to$ `domain_entities ORDER BY id ASC`.
+- [ ] In-place and movement ledger quantities reconcile cleanly.
+
 ## Verification Checklist
 
 Before merging to staging:
@@ -202,6 +216,10 @@ Before merging to staging:
 - [ ] Email sending (or mock in dev) functional
 - [ ] Database migrations reversible (tested rollback)
 - [ ] Zero TypeScript errors (`tsc --noEmit`)
+- [ ] `noUncheckedIndexedAccess: true` enforced in `tsconfig.json`
+- [ ] Server Actions return uniform `ActionResult<T>` contract with `idempotencyKey` in payload
+- [ ] Automated RLS tests pass (where multi-tenant RLS is in scope)
+- [ ] Automated concurrency tests pass (where concurrent mutation risk exists)
 - [ ] No `any` types in new code
 
 ---

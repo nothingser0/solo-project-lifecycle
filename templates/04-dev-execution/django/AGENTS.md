@@ -1,5 +1,14 @@
 # AI Agent Guidelines - Django Project
 
+## 1. Absolute Agent Safety Directives (NON-NEGOTIABLE)
+1. **NO Destructive Git Operations**: Running `git push --force` or `git push --force-with-lease` is STRICTLY PROHIBITED.
+2. **NO Destructive Database Operations in Shared / Deployed Environments**: Running `python manage.py flush` or issuing raw `DROP TABLE` / `DROP DATABASE` queries against shared, staging, or production environments is STRICTLY PROHIBITED. On local disposable test databases, execute resets only when explicitly instructed.
+3. **Spec Document Integrity**: Documents marked `[FROZEN]` or `[APPROVED]` (`PRD.md`, `FSD.md`, `DESIGN_SPEC.md`, `DESIGN.md`, `SCOPE_STATEMENT.md`) are immutable. If specifications contradict, STOP AND ASK THE USER. Never alter frozen specifications unilaterally.
+4. **Zero Ignored Exceptions**: Empty `except:` blocks or `# type: ignore` without justification is STRICTLY PROHIBITED.
+5. **No Unrequested Commits**: Never execute commits or pushes unless explicitly instructed by the user.
+
+---
+
 ## CRITICAL: Read Official Documentation First
 
 **BEFORE implementing any feature, check official docs for current syntax:**
