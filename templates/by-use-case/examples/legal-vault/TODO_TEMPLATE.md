@@ -1,6 +1,6 @@
 # TODO.md
 
-> Atomic task list for autonomous coding execution by AI coding agents (OpenCode / OpenChamber).
+> Atomic task list for autonomous coding execution by AI coding agents (Cursor / Claude Code / Windsurf / Codex CLI).
 > Rule: Complete tasks sequentially one by one. Check `[x]` immediately after each task is completed and verified.
 
 ---

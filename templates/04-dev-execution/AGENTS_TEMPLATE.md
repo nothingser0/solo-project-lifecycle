@@ -1,6 +1,6 @@
 # AGENTS.md
 
-> Absolute operational instructions and rules for AI Coding Agents (OpenCode, OpenChamber, Cursor, Claude Code).
+> Absolute operational instructions and rules for AI Coding Agents (Cursor, Claude Code, Windsurf, Codex CLI).
 
 ---
 

@@ -1,6 +1,6 @@
 # DEVELOPMENT_PROGRESS_TRACKER.md
 
-> Progress tracker for coding execution, component implementation status, third-party integrations, and code review checkpoints for solo developers & AI coding agents (OpenCode / Cursor / Claude Code).
+> Progress tracker for coding execution, component implementation status, third-party integrations, and code review checkpoints for solo developers & AI coding agents (Cursor / Claude Code / Windsurf / Codex CLI).
 
 ---
 
