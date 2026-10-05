@@ -33,14 +33,14 @@ Code Review:          ──► Before merging to staging, running the AI Code R
 
 | User Story (High Ambiguity) | AI Prompt (Specific & Actionable) |
 |--------------------------------|-------------------------------------|
-| "As a user, I want to login" | "Create Next.js 14 App Router login page with email/password validation using Zod, submit to POST /api/auth/login, store JWT in httpOnly cookie, redirect to /dashboard on success, show inline error on 401" |
-| "I need a dashboard" | "Create dashboard page with 4 metric cards (Total Users, Active Sessions, Revenue MTD, Conversion Rate), responsive grid layout, skeleton loading state, fetch data from GET /api/dashboard/metrics using React Query" |
+| "As a user, I want to login" | "Create Next.js 15 App Router login page with email/password validation using Zod, submit to POST /api/auth/login, store JWT in httpOnly cookie, redirect to /dashboard on success, show inline error on 401" |
+| "I need a dashboard" | "Create dashboard page with 4 metric cards (Total Users, Active Sessions, Revenue MTD, Conversion Rate), responsive grid layout, skeleton loading state, fetch data from GET /api/dashboard/metrics using TanStack Query" |
 | "Add file upload" | "Create file upload component with drag-drop zone, file type validation (PDF/DOCX only, max 10MB), progress bar during upload, generate presigned S3 URL via POST /api/upload/presigned, upload directly to S3, display thumbnail on success" |
 
 **Prompt Engineering Formula (5-Part Structure)**:
 
 ```text
-[1. CONTEXT]      Tech stack: Next.js 14 App Router, TypeScript, Zod, Prisma
+[1. CONTEXT]      Tech stack: Next.js 15 App Router, React 19, TypeScript, Zod, Prisma
 [2. TASK]         Create user registration API endpoint
 [3. CONSTRAINTS]  Must validate email uniqueness, hash password with bcrypt (12 rounds), return 409 on duplicate
 [4. FORMAT]       Return Zod schema + route handler + error handling
@@ -51,7 +51,7 @@ Code Review:          ──► Before merging to staging, running the AI Code R
 
 ```markdown
 ## Essential Context (Always Include)
-- [ ] Tech stack versions (Next.js 14, React 18, TypeScript 5.x)
+- [ ] Tech stack versions (Next.js 15, React 19, TypeScript 5.x)
 - [ ] File structure conventions (from CONVENTIONS.md)
 - [ ] API contract (from ARCHITECTURE.md)
 - [ ] Design tokens (from DESIGN.md)
@@ -80,7 +80,7 @@ PROMPT: "Create [feature] following this structure:
 
 /src/components/
   ui/                  # Primitives (Button, Input, Card)
-  docs/modules/             # Feature-specific (LoginForm, DocumentTable)
+  modules/             # Feature-specific (LoginForm, DocumentTable)
   layouts/             # Page shells (DashboardLayout, AuthLayout)
 
 Rules:
@@ -90,7 +90,7 @@ Rules:
 
 Generate:
 1. UI primitive if needed (e.g., FileUploader in /ui/)
-2. Module component in /docs/modules/[feature]/
+2. Module component in /modules/[feature]/
 3. Usage example in page.tsx
 "
 ```
@@ -122,7 +122,7 @@ src/
 │       └── page.tsx
 ├── components/
 │   ├── ui/                # Shadcn/ui primitives
-│   ├── docs/modules/           # Feature components
+│   ├── modules/           # Feature components
 │   └── layouts/           # Page layouts
 ├── lib/
 │   ├── api.ts             # API client (fetch wrapper)
@@ -262,7 +262,7 @@ STEP 3: Iterate with refinement prompt
 add loading skeleton state"
 
 STEP 4: Copy to codebase
-- Paste into src/components/docs/modules/MRRCard.tsx
+- Paste into src/components/modules/MRRCard.tsx
 - Replace hardcoded data with API call
 - Add Zod validation for props
 ```
@@ -357,7 +357,7 @@ ORDER OF OPERATIONS:
 1. Database schema changes (Prisma schema.prisma)
 2. Type definitions (types/user.ts)
 3. API route handlers (app/api/users/route.ts)
-4. UI components (components/docs/modules/UserForm.tsx)
+4. UI components (components/modules/UserForm.tsx)
 5. Page integration (app/dashboard/users/page.tsx)
 
 RULE: Never modify same file in parallel prompts
@@ -480,7 +480,7 @@ git commit -m "feat(db): add user role enum to schema"
 git add src/app/api/auth/route.ts
 git commit -m "feat(auth): add role-based access control"
 
-git add src/components/docs/modules/AdminPanel.tsx
+git add src/components/modules/AdminPanel.tsx
 git commit -m "feat(ui): add admin user management panel"
 ```
 
@@ -866,10 +866,10 @@ Features:
 - Loading skeleton
 - Empty state with CTA
 
-Tech: Next.js 14, Tailwind, TanStack Table, React Query
+Tech: Next.js 15, React 19, Tailwind, TanStack Table, TanStack Query
 
 File structure:
-- components/docs/modules/[Entity]Table.tsx
+- components/modules/[Entity]Table.tsx
 - types/[entity].ts
 ```
 
@@ -896,7 +896,7 @@ Submission:
 - Redirect to [page] on success
 - Display API errors
 
-Tech: Next.js 14, React Hook Form, Zod, Sonner toast
+Tech: Next.js 15, React 19, React Hook Form, Zod, Sonner toast
 ```
 
 **Template 3: Modal Dialog**:

@@ -11,7 +11,7 @@ As a solo developer, you are the only person on call when a server goes down at 
 ### Priority Technology Ladder:
 1. **Rung 1: Modern Monoliths Outperform Microservices**:
    - DO NOT split an application into distributed microservices when maintained by a single person, unless mandated by an enterprise client's architectural guidelines.
-   - Use a **Modular Monolith**: A single, clean codebase with modular domain boundaries organized in folders (`docs/modules/auth`, `docs/modules/documents`, `docs/modules/billing`).
+   - Use a **Modular Monolith**: A single, clean codebase with modular domain boundaries organized in folders (`src/modules/auth`, `src/modules/documents`, `src/modules/billing`).
 2. **Rung 2: PostgreSQL as the "Swiss Army Knife"**:
    - Do not add a separate NoSQL database (e.g., MongoDB or CouchDB) just for semi-structured data.
    - PostgreSQL's `JSONB` columns support index queries (`GIN Index`), schema validation, and high performance without needing to maintain two separate database clusters.
