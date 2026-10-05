@@ -440,7 +440,7 @@ const cached = await redis.get(cacheKey);
 ### Pre-populate on Deploy
 
 ```typescript
-// scripts/warm-cache.ts
+// Example project script: scripts/warm-cache.ts (create in user project)
 async function warmCache() {
   console.log('Warming cache...');
 

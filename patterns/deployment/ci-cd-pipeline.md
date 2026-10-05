@@ -610,7 +610,7 @@ CMD ["node", "dist/index.js"]
 
 ### Error Rate Monitoring
 ```bash
-# scripts/monitor-canary.sh
+# Example project script: scripts/monitor-canary.sh (create in user project)
 #!/bin/bash
 
 DURATION=$1
