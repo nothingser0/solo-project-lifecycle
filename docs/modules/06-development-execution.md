@@ -6,6 +6,7 @@
 > - `references/playbooks/ai-assisted-development.md` (Prompt engineering patterns, multi-file orchestration, pre-merge AI review protocol)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, design patterns, and anti-pattern detection for AI-generated code)
 > - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Coding execution progress tracker sheet, backend, frontend, integration checklists, & review checkpoints)
+> - `templates/04-dev-execution/scripts/check-dependencies.sh` (Pre-install dependency compatibility and deprecation validation script)
 > - `references/stacks/nextjs-15-quickstart.md` (Next.js 15 App Router, React Server Components, Tailwind, Supabase setup)
 > - `references/stacks/laravel-11-quickstart.md` (Laravel 11, Inertia.js, PostgreSQL/MySQL, Sanctum auth quickstart)
 > - `references/stacks/django-5-quickstart.md` (Django 5, DRF, PostgreSQL, Vite/Tailwind, Celery quickstart)

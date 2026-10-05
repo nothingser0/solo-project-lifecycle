@@ -14,10 +14,10 @@ references/design/
 │   ├── screenshot-3-buttons.png
 │   └── notes.md                    ← ANALYSIS (use notes-template.md)
 │
-├── stitch-input/                   ← Prompts for Google Stitch
+├── prompt-input/                   ← Prompts for Interactive Prototype
 │   └── README.md
 │
-└── stitch-output/                  ← Results from Stitch
+└── prototype-output/                  ← Results from prototype
     └── README.md
 ```
 
@@ -80,18 +80,18 @@ Style: Flat Design (minimal shadows, 1px borders)
 
 ---
 
-### Step 3A: Manual Workflow (Google Stitch)
+### Step 3A: Manual Workflow (Interactive Prototype)
 
-**Upload to Stitch:**
+**Upload to Prototype:**
 
 1. Generate `DESIGN_SYSTEM.md` from `notes.md` analysis
-2. Open https://stitch.google.com in browser
+2. Open https://v0.dev in browser
 3. Create new project
 4. Upload `DESIGN_SYSTEM.md` (drag and drop file)
 5. Upload screenshots from `inspiration/` (drag multiple PNG files)
-6. Use Stitch visual builder to create screens
+6. Use Prototype visual builder to create screens
 7. Export generated screens
-8. Save results to `stitch-output/`
+8. Save results to `prototype-output/`
 
 ---
 
@@ -268,8 +268,8 @@ Before proceeding to DESIGN_SYSTEM.md generation:
 - `inspiration-template/notes-template.md` - Copy this to `inspiration/notes.md` to start analysis
 - `COMPONENT_REQUIREMENTS_TEMPLATE.md` - Links to design references
 - `DESIGN_MD_TEMPLATE.md` - Generated from reference analysis
-- `stitch-input/README.md` - Google Stitch prompt guidelines
-- `stitch-output/README.md` - Store Stitch generation results
+- `prompt-input/README.md` - Interactive Prototype prompt guidelines
+- `prototype-output/README.md` - Store Prototype generation results
 
 ---
 

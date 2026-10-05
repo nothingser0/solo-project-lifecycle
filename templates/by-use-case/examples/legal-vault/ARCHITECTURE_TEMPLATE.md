@@ -7,7 +7,7 @@
 ## 1. System Topology & Data Flow
 
 ```text
-[ Browser Client (HTML/Tailwind from Google Stitch) ]
+[ Browser Client (HTML/Tailwind from Interactive Prototype) ]
                       │
                       ▼ (HTTPS / JSON API)
         [ Next.js App Router / API Handlers ]
@@ -34,7 +34,7 @@ src/
 │   │   ├── documents/        # Document CRUD & render handlers
 │   │   └── sign/             # Signature verification handler
 │   └── sign/[token]/         # Guest signature public page
-├── components/               # UI components adapted from Google Stitch
+├── components/               # UI components adapted from Interactive Prototype
 │   ├── ui/                   # Primitive components (Button, Dialog, Input, Table)
 │   └── docs/modules/         # Business domain components (DocumentForm, PDFPreview, SignCanvas)
 ├── lib/                      # Shared utilities

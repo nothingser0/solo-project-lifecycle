@@ -10,9 +10,9 @@
 - **Solo Lead UI/UX & Engineer**: [Your Name]
 - **Design Version**: 1.0.0
 - **Design Status**: [Draft / In Review / Frozen (Approved)]
-- **Google Stitch Project ID**: `projects/[PROJECT_ID]`
+- **Prototype Project ID**: `projects/[PROJECT_ID]`
 - **Design System Asset ID**: `assets/[ASSET_ID]` (from `DESIGN.md`)
-- **Live Interactive Prototype Link**: `[https://staging-preview-url or Stitch Viewer URL]`
+- **Live Interactive Prototype Link**: `[https://staging-preview-url or Live Preview URL]`
 - **Approval Date**: [YYYY-MM-DD]
 
 ---
@@ -65,9 +65,9 @@
 
 ## 5. Exhaustive Screen Inventory (100% Coverage)
 
-> **ABSOLUTE COVERAGE RULE**: This table MUST cover **100% of all pages/screens** defined in the scope boundaries (`SCOPE_STATEMENT.md` / `PRD.md`) from start to finish without exception. If the scope contains 10, 20, or 100 pages, every single one MUST be listed and generated in Google Stitch with its respective unique Screen ID. Cutting corners or selecting only a sample subset of screens is STRICTLY FORBIDDEN.
+> **ABSOLUTE COVERAGE RULE**: This table MUST cover **100% of all pages/screens** defined in the scope boundaries (`SCOPE_STATEMENT.md` / `PRD.md`) from start to finish without exception. If the scope contains 10, 20, or 100 pages, every single one MUST be listed and generated in Interactive Prototype with its respective unique Screen ID. Cutting corners or selecting only a sample subset of screens is STRICTLY FORBIDDEN.
 
-| Screen Code | Screen Name | Google Stitch Screen ID | Default State | Loading Skeleton | Empty State | Error State |
+| Screen Code | Screen Name | Screen Prototype ID | Default State | Loading Skeleton | Empty State | Error State |
 | :---: | :--- | :--- | :--- | :--- | :--- | :--- |
 | **SCR-01** | Dashboard | `screens/[ID_01]` | Statistical widgets & table | Gray skeleton bars | "No documents yet" banner + create CTA | Server timeout banner |
 | **SCR-02** | Document Form | `screens/[ID_02]` | Structured dynamic form inputs | Disabled submit button + loader | - | Red inline error text |

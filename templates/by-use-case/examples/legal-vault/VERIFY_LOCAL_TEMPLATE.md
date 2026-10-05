@@ -36,7 +36,7 @@
 
 ---
 
-## 4. UI Screen Verification (Per Google Stitch & 5 States)
+## 4. UI Screen Verification (Per Interactive Prototype & 5 States)
 
 | Page Name | Default State | Skeleton Loader | Empty State | Inline Error | Success Toast |
 | :--- | :---: | :---: | :---: | :---: | :---: |

@@ -52,8 +52,8 @@
 
 ## Phase 3: UI Component Setup
 > **Source**: Reference `docs/specs/DESIGN_SYSTEM.md` (tokens + screen specs) + `docs/specs/SITEMAP.md` (Screen IDs)
-> - **With Stitch**: Copy from `docs/design/stitch-output/SCR-XX/` folders  
-> - **Without Stitch**: Implement manually matching design tokens exactly
+> - **With Prototype**: Copy from `docs/design/prototype-output/SCR-XX/` folders
+> - **Without Prototype**: Implement manually matching design tokens exactly
 
 ## Phase 3A: Static UI Components (Before Database)
 > **Note**: Only static screens with no data dependency. Data-backed screens in Phase 5.

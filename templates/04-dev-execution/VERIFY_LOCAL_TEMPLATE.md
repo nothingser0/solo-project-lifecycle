@@ -36,7 +36,7 @@
 
 ---
 
-## 4. UI Screen Verification (Per Google Stitch & 5 States)
+## 4. UI Screen Verification (Per Interactive Prototype & 5 States)
 
 ### 4A. Design Compliance (Per DESIGN.md Tokens)
 

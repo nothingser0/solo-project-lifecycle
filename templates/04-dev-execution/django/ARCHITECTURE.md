@@ -29,7 +29,7 @@ docs/
 │   ├── SITEMAP.md            # Screen inventory with IDs
 │   └── DESIGN_SYSTEM.md      # Design tokens & component specs
 ├── design/                   # Design artifacts (optional)
-│   ├── stitch-output/        # Generated screens from Google Stitch (if used)
+│   ├── prototype-output/        # Generated screens from Interactive Prototype (if used)
 │   │   ├── SCR-01/           # Landing page components
 │   │   ├── SCR-06/           # Login screen components
 │   │   └── ...               # One folder per Screen ID

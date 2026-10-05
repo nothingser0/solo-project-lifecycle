@@ -61,7 +61,7 @@ User.where(email: 'test@example.com') # ✅ Valid
 
 - **docs/specs/DESIGN_SYSTEM.md**: Design tokens, screen specifications, component styles
 - **docs/specs/SITEMAP.md**: Route structure with Screen IDs (SCR-XX)
-- **docs/design/stitch-output/**: Generated screen components (if using Google Stitch)
+- **docs/design/prototype-output/**: Generated screen components (if using Interactive Prototype)
 - **DESIGN.md** (root): Simplified tokens reference (copied from docs/)
 
 **Why**: Generic Tailwind/Bootstrap ≠ project design. Must match brand identity.
@@ -69,7 +69,7 @@ User.where(email: 'test@example.com') # ✅ Valid
 **For each screen/component:**
 1. Find screen ID in docs/specs/SITEMAP.md (e.g., SCR-09 Dashboard)
 2. Read corresponding section in docs/specs/DESIGN_SYSTEM.md
-3. Check docs/design/stitch-output/SCR-09/ if available
+3. Check docs/design/prototype-output/SCR-09/ if available
 4. Extract design tokens from DESIGN.md (root):
    - Primary brand color (not generic neutral)
    - Shadow style (flat border vs heavy shadow)

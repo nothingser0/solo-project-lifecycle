@@ -13,7 +13,7 @@ You are a Senior Software Engineer responsible for building this system determin
 
 - **Framework**: Next.js (App Router) / Node.js
 - **Language**: TypeScript (Strict Mode)
-- **Styling**: Tailwind CSS + Shadcn UI / Google Stitch-based components
+- **Styling**: Tailwind CSS + Shadcn UI / Interactive Prototype-based components
 - **Database & ORM**: PostgreSQL 16 + Prisma ORM / Drizzle ORM
 - **Data Validation**: Zod (Parse, don't validate)
 - **File Storage**: S3-compatible (Cloudflare R2 / AWS S3) encrypted with AES-256-GCM

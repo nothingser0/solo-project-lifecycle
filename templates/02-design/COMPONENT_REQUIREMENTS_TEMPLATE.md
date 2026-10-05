@@ -136,12 +136,12 @@ Saved in `references/design/inspiration/`:
 
 ### Integration
 
-**Manual (Google Stitch)**:
+**Manual (Interactive Prototype)**:
 1. Generate `DESIGN_SYSTEM.md` from `notes.md` analysis
-2. Open Stitch in browser (https://stitch.google.com)
+2. Open Prototype in browser (https://v0.dev)
 3. Create project, upload `DESIGN_SYSTEM.md` + screenshots (drag and drop)
-4. Use Stitch visual builder to create screens
-5. Export results to `stitch-output/`
+4. Use Prototype visual builder to create screens
+5. Export results to `prototype-output/`
 
 **Automated (AI/MCP)**:
 1. AI reads `references/design/inspiration/notes.md`

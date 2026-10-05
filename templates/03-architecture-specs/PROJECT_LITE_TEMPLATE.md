@@ -2,7 +2,7 @@
 
 > Lean unified specification document for **Small-Scale (MVP / 1–4 Week Freelance)** projects.
 > Combines Module 01 (Idea), Module 02 (Scope), Module 03 (Commercial), and Module 05 (Technical) into a single reference document.
-> **ABSOLUTE RULE**: For all Web and Mobile projects, **Module 04 (Google Stitch UI/UX) REMAINS STRICTLY MANDATORY** to prevent UI from becoming "AI Slop" and to provide clients with a real interactive prototype. Module 04 may only be skipped if the project is purely backend/CLI/automation with no user interface.
+> **ABSOLUTE RULE**: For all Web and Mobile projects, **Module 04 (Interactive Prototype UI/UX) REMAINS STRICTLY MANDATORY** to prevent UI from becoming "AI Slop" and to provide clients with a real interactive prototype. Module 04 may only be skipped if the project is purely backend/CLI/automation with no user interface.
 
 ---
 
@@ -11,8 +11,8 @@
 **Mandatory Execution Order:**
 
 - [ ] **Step 1**: Fill `PROJECT_LITE.md` (Idea + Scope + Commercial + DB Schema) — 1 unified file
-- [ ] **Step 2**: **MANDATORY — Execute Module 04 Google Stitch (MUST NOT BE SKIPPED for Web/Mobile/Desktop GUI!)**
-  - [ ] `DESIGN.md` generated and uploaded to Stitch
+- [ ] **Step 2**: **MANDATORY — Execute Module 04 Interactive Prototype (MUST NOT BE SKIPPED for Web/Mobile/Desktop GUI!)**
+  - [ ] `DESIGN.md` generated and uploaded to Prototype
   - [ ] All screens generated (even 3-screen MVPs must have all screens generated)
   - [ ] Design Freeze self-approved (or client approval if working with a client)
 - [ ] **Step 3**: Jump directly to Module 06 Development (skip formal PRD/FSD since they are already covered in PROJECT_LITE.md)
@@ -72,10 +72,10 @@
 
 ---
 
-## 4. UI Prototype Reference (Google Stitch UI/UX Mandate)
+## 4. UI Prototype Reference (Interactive Prototype UI/UX Mandate)
 *This section must be completed for Web and Mobile applications:*
 
-- **Stitch Project ID**: `projects/[PROJECT_ID]`
+- **Prototype Project ID**: `projects/[PROJECT_ID]`
 - **Design System Asset ID**: `assets/[ASSET_ID]` (using `DESIGN.md` anti-slop guardrails)
 - **Live Interactive Prototype Link**: `[https://staging-preview-url]`
 - **Design Status**: **FROZEN** — Visual layout and navigation flows have been approved by the client and must not be reworked during coding.

@@ -1,12 +1,12 @@
-# Google Stitch Input Prompts
+# Interactive Prototype Input Prompts
 
-> **Purpose**: Pre-written prompts for each screen to generate UI via Google Stitch MCP tools.
+> **Purpose**: Pre-written prompts for each screen to generate UI via Interactive Prototype MCP tools.
 
 ## Usage
 
 1. Fill out sitemap in `DESIGN_SPEC.md` (list all screens with Screen IDs)
 2. For each screen, create a prompt file: `SCR-01-landing.txt`, `SCR-02-dashboard.txt`, etc.
-3. Use MCP tool `stitch_generate_screen_from_text` with prompt content
+3. Use MCP tool `prototype_generate_screen_from_text` with prompt content
 
 ## Prompt Template Structure
 
@@ -44,7 +44,7 @@ STRICT RULES:
 Create one file per screen:
 
 ```
-stitch-input/
+prompt-input/
 ├── SCR-01-landing.txt          # Landing page
 ├── SCR-02-login.txt            # Login screen
 ├── SCR-03-dashboard.txt        # Main dashboard
@@ -66,8 +66,8 @@ Always include these constraints to prevent generic AI output:
 
 ```typescript
 // Example: Generate screen from prompt file
-const prompt = fs.readFileSync('stitch-input/SCR-01-landing.txt', 'utf-8');
-await tool.stitch_generate_screen_from_text({
+const prompt = fs.readFileSync('prompt-input/SCR-01-landing.txt', 'utf-8');
+await tool.prototype_generate_screen_from_text({
   projectId: 'projects/[PROJECT_ID]',
   screenId: 'SCR-01',
   prompt: prompt
@@ -76,4 +76,4 @@ await tool.stitch_generate_screen_from_text({
 
 ---
 
-**Note**: Google Stitch is optional. You can skip this folder and implement screens directly in code using DESIGN.md + DESIGN_SPEC.md as reference.
+**Note**: Interactive Prototype is optional. You can skip this folder and implement screens directly in code using DESIGN.md + DESIGN_SPEC.md as reference.

@@ -16,11 +16,11 @@
 - [ ] `migrations/`: Run initial database migration to local PostgreSQL - expect tables created in database
 - [ ] `prisma/seed.ts`: Create initial seed data script (super admin account and document templates) - expect seed loaded successfully
 
-## Phase 3: UI Component Setup from Google Stitch
-- [ ] `src/components/ui/`: Copy primitive components (Button, Input, Table, Badge) from Stitch output - expect clean components
-- [ ] `src/app/(auth)/login/page.tsx`: Mount login page layout from Stitch - expect clean login form rendering
-- [ ] `src/app/(dashboard)/page.tsx`: Mount dashboard layout from Stitch - expect statistics widgets & table rendered
-- [ ] `src/app/(dashboard)/documents/new/page.tsx`: Mount dynamic document form from Stitch - expect input form rendered
+## Phase 3: UI Component Setup from Interactive Prototype
+- [ ] `src/components/ui/`: Copy primitive components (Button, Input, Table, Badge) from prototype output - expect clean components
+- [ ] `src/app/(auth)/login/page.tsx`: Mount login page layout from prototype - expect clean login form rendering
+- [ ] `src/app/(dashboard)/page.tsx`: Mount dashboard layout from prototype - expect statistics widgets & table rendered
+- [ ] `src/app/(dashboard)/documents/new/page.tsx`: Mount dynamic document form from prototype - expect input form rendered
 
 ## Phase 4: API Endpoints & Backend Services
 - [ ] `src/lib/crypto.ts`: Create AES-256-GCM streaming encryption and SHA-256 hashing functions - expect encryption & decryption pass

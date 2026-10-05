@@ -79,8 +79,8 @@ if [ -n "$NEXT_VERSION" ]; then
   ESLINT_CONFIG_VERSION=$(grep '"eslint-config-next"' package.json | sed 's/.*: "\^\?\([0-9]*\).*/\1/' || echo "")
   
   # Validate
-  if [ "$NEXT_VERSION" = "15" ] && [ "$REACT_VERSION" != "18" ]; then
-    echo -e "${RED}✗ Version mismatch: Next.js 15 requires React 18 (found React $REACT_VERSION)${NC}"
+  if [ "$NEXT_VERSION" = "15" ] && [ "$REACT_VERSION" != "19" ] && [ "$REACT_VERSION" != "18" ]; then
+    echo -e "${RED}✗ Version mismatch: Next.js 15 requires React 19 or 18 (found React $REACT_VERSION)${NC}"
   else
     echo -e "${GREEN}✓ React version compatible${NC}"
   fi

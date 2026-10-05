@@ -1,6 +1,6 @@
-# Design System Specification (Anti-Slop Guardrail for Google Stitch)
+# Design System Specification (Anti-Slop Guardrail for Interactive Prototype)
 
-> Foundational design system reference document to upload to Google Stitch (`upload_design_md`). Maintains visual consistency and prevents generic interface generation ("AI Slop").
+> Foundational design system reference document to upload to Interactive Prototype (`upload_design_md`). Maintains visual consistency and prevents generic interface generation ("AI Slop").
 
 ---
 

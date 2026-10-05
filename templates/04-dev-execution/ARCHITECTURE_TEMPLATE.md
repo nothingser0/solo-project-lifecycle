@@ -7,7 +7,7 @@
 ## 1. System Topology & Data Flow
 
 ```text
-[ Browser Client (HTML/Tailwind from Google Stitch) ]
+[ Browser Client (HTML/Tailwind from Interactive Prototype) ]
                       │
                       ▼ (HTTPS / JSON API)
         [ Next.js App Router / API Handlers ]
@@ -30,7 +30,7 @@ docs/
 │   ├── SITEMAP.md            # Screen inventory with IDs
 │   └── DESIGN_SYSTEM.md      # Design tokens & component specs
 ├── design/                   # Design artifacts (optional)
-│   ├── stitch-output/        # Generated screens from Google Stitch (if used)
+│   ├── prototype-output/        # Generated screens from Interactive Prototype (if used)
 │   │   ├── SCR-01/           # Landing page components
 │   │   ├── SCR-06/           # Login screen components
 │   │   └── ...               # One folder per Screen ID
@@ -50,7 +50,7 @@ src/
 │   │   ├── documents/        # Document CRUD & render handlers
 │   │   └── sign/             # Signature verification handler
 │   └── sign/[token]/         # Guest signature public page
-├── components/               # UI components adapted from Google Stitch
+├── components/               # UI components adapted from Interactive Prototype
 │   ├── ui/                   # Primitive components (Button, Dialog, Input, Table)
 │   └── docs/modules/         # Business domain components (DocumentForm, PDFPreview, SignCanvas)
 ├── lib/                      # Shared utilities

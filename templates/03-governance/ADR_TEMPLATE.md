@@ -325,7 +325,7 @@ Positive:
 ✅ Auto-documentation: GraphQL Playground
 
 Negative:
-⚠️ Backend complexity increases (schema stitching, DataLoader)
+⚠️ Backend complexity increases (schema prototypeing, DataLoader)
 ⚠️ Caching strategy more complex (field-level caching)
 ⚠️ Team learning curve (1-2 weeks ramp-up)
 

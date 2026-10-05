@@ -21,7 +21,7 @@
 
 - **docs/specs/DESIGN_SYSTEM.md**: Design tokens, screen specifications, component styles
 - **docs/specs/SITEMAP.md**: Route structure with Screen IDs (SCR-XX)
-- **docs/design/stitch-output/**: Generated screen components (if using Google Stitch)
+- **docs/design/prototype-output/**: Generated screen components (if using Interactive Prototype)
 - **DESIGN.md** (root): Simplified tokens reference (copied from docs/)
 
 **Why**: Generic styles ≠ project design. Must match brand identity.
@@ -29,7 +29,7 @@
 **For each screen/component:**
 1. Find screen ID in docs/specs/SITEMAP.md (e.g., SCR-09 Dashboard)
 2. Read corresponding section in docs/specs/DESIGN_SYSTEM.md
-3. Check docs/design/stitch-output/SCR-09/ if available
+3. Check docs/design/prototype-output/SCR-09/ if available
 4. Extract design tokens from DESIGN.md (root)
 5. Implement exactly as specified
 

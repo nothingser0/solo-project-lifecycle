@@ -1,7 +1,7 @@
 # Design Reference Analysis
 
 > Extract visual patterns from reference screenshots saved in this folder.
-> **Purpose**: Guide AI/Stitch to generate components matching reference style, not generic templates.
+> **Purpose**: Guide AI/Prototype to generate components matching reference style, not generic templates.
 
 ---
 
