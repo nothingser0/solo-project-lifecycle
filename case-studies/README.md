@@ -22,22 +22,28 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 ---
 
 ### 2. [E-commerce Fashion MVP](./02-ecommerce-fashion-mvp.md)
-**Scale**: Small (6 weeks)  
-**Type**: Client project  
-**Stack**: Next.js + Supabase + Stripe  
-**Outcome**: (Real anonymized project data)
+**Scale**: Small (3 weeks / 21 working days)
+**Type**: Client commercial project
+**Stack**: Next.js 15 + Prisma + PostgreSQL + Midtrans
+**Outcome**: Launched in 21 days; 340 orders and Rp 52.1M GMV by Month 3; 3.2% conversion rate.
 
-**Key Lessons**: (To be extracted from file content)
+**Key Lessons**:
+- Scope discipline: Cut customer reviews and multi-currency for v1 to guarantee on-time launch
+- Payment gateway webhook idempotency is critical to prevent duplicate order fulfillments
+- Pre-written SOW change request clauses prevented 3 major unpaid scope additions
 
 ---
 
 ### 3. [CRM for Real Estate (Internal Tool)](./03-crm-real-estate-internal.md)
-**Scale**: Small-Medium (8 weeks)  
-**Type**: Internal tool for agency  
-**Stack**: (To be extracted)  
-**Outcome**: (Real anonymized project data)
+**Scale**: Small-Medium (4 weeks / 28 working days)
+**Type**: Internal commercial agency tool
+**Stack**: Laravel 11 + MySQL + Livewire + Filament Admin
+**Outcome**: Launched in 28 days for 10 users; 420 leads managed; conversion increased from 12% to 18% (+50%); follow-up response time reduced by 75%.
 
-**Key Lessons**: (To be extracted from file content)
+**Key Lessons**:
+- Boring tech ladder (Filament + Laravel) saved 10+ days compared to building a custom React admin panel
+- Single PIC rule prevented conflicting requirements from 8 different sales agents
+- Role-based access control (RBAC) eliminated lead theft and duplicate assignments
 
 ---
 
