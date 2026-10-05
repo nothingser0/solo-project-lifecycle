@@ -1,6 +1,6 @@
-# Module 04: UI/UX Design & Prototyping (Google Stitch Universal Engine)
+# Module 04: UI/UX Design & Prototyping
 
-> **PROTOTYPING OPTIONS (2026)**: Multiple approaches available - Markdown-only, Google Stitch, AI tools (v0/Bolt), or design tools (Figma).
+> **PROTOTYPING OPTIONS (2026)**: Multiple approaches available - Markdown-only, AI tools (v0/Bolt/Lovable), or design tools (Figma).
 > **Default workflow**: Choose based on project context (see STEP 2).
 
 > - `references/solo/SOLO_UIUX_GUIDE.md` (Solo dev UI/UX efficiency guide, Component library selection, WCAG contrast, Prototype walkthrough)
@@ -497,7 +497,7 @@ AI calls:
 - get_variable_defs() for tokens
 
 Generates:
-→ DESIGN_SYSTEM.md with live tokens (colors, typography, spacing)
+→ DESIGN_SPEC.md with live tokens (colors, typography, spacing)
 → Component inventory from Figma libraries
 ```
 
@@ -521,7 +521,7 @@ Returns:
 ```
 
 **Deliverables**:
-- ✅ DESIGN_SYSTEM.md (auto-generated from Figma variables)
+- ✅ DESIGN_SPEC.md (auto-generated from Figma variables)
 - ✅ DESIGN_SPEC.md (extracted from frames)
 - ✅ Live Figma file (source of truth)
 - ✅ No manual export needed
@@ -568,8 +568,8 @@ This module produces concrete deliverables:
 
 | No | Artifact Name | Format / Location | Description & Function |
 | :---: | :--- | :--- | :--- |
-| **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale). Prerequisite for DESIGN_SYSTEM.md. |
-| **2** | **`docs/specs/DESIGN_SYSTEM.md`** | Folder `docs/specs/` | Combined design system tokens and comprehensive UI specification document (color palette, typography, component specs, 5-state screen matrix per screen). |
+| **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale). Prerequisite for DESIGN_SPEC.md. |
+| **2** | **`docs/specs/DESIGN_SPEC.md`** | Folder `docs/specs/` | Combined design system tokens and comprehensive UI specification document (color palette, typography, component specs, 5-state screen matrix per screen). |
 | **3** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to root after scaffold. |
 | **4** | **Interactive Prototype** (Optional) | Stitch / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
 | **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
@@ -591,7 +591,7 @@ This module produces concrete deliverables:
 
 **File**: `docs/specs/SITEMAP.md`
 
-The sitemap defines **page hierarchy, route paths, and navigation structure** prior to creating mockups. Mandatory prerequisite for DESIGN_SYSTEM.md.
+The sitemap defines **page hierarchy, route paths, and navigation structure** prior to creating mockups. Mandatory prerequisite for DESIGN_SPEC.md.
 
 ### Template Structure
 
@@ -1323,8 +1323,8 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 - [x] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, contains 4 prompts)
 - [x] **`docs/specs/SITEMAP.md` exists** (≥500 bytes, contains screen count table)
 - [x] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
-- [x] **`docs/specs/DESIGN_SYSTEM.md` exists** (≥2000 bytes, contains screen specs)
-- [x] **Screen count match**: SITEMAP.md total = DESIGN_SYSTEM.md screen inventory (±10% tolerance)
+- [x] **`docs/specs/DESIGN_SPEC.md` exists** (≥2000 bytes, contains screen specs)
+- [x] **Screen count match**: SITEMAP.md total = DESIGN_SPEC.md screen inventory (±10% tolerance)
 
 ### Design Quality (BLOCKING):
 - [x] **Anti-slop compliance**: Zero gradients, zero glassmorphism, shadows ≤4px blur
@@ -1336,7 +1336,7 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 - [x] **SUS Score ≥70** (Acceptable) on the final iteration (if user testing conducted)
 
 ### Design Freeze Sign-Off (BLOCKING):
-- [x] **Design Freeze approval** embedded in DESIGN_SYSTEM.md with:
+- [x] **Design Freeze approval** embedded in DESIGN_SPEC.md with:
   - Approver name (Client PIC or solo developer self-approval)
   - Approval date (YYYY-MM-DD)
   - Signature placeholder (digital signature or statement: "Approved via [email/chat]")
@@ -1362,7 +1362,7 @@ $requiredFiles = @(
     @{Path="docs/specs/LOGO_DESIGN_BRIEF.md"; MinSize=500},
     @{Path="docs/specs/SITEMAP.md"; MinSize=500},
     @{Path="DESIGN.md"; MinSize=1000},
-    @{Path="docs/specs/DESIGN_SYSTEM.md"; MinSize=2000}
+    @{Path="docs/specs/DESIGN_SPEC.md"; MinSize=2000}
 )
 
 $allPassed = $true
@@ -1401,13 +1401,13 @@ def verify_module_04():
     sitemap = read_file("docs/specs/SITEMAP.md")
     sitemap_screen_count = extract_screen_count(sitemap)  # Parse "Total Screens: X"
     
-    # 2. Read DESIGN_SYSTEM.md and count screen specs
-    design_spec = read_file("docs/specs/DESIGN_SYSTEM.md")
+    # 2. Read DESIGN_SPEC.md and count screen specs
+    design_spec = read_file("docs/specs/DESIGN_SPEC.md")
     spec_screen_count = count_screen_sections(design_spec)  # Count "## Screen: ..." sections
     
     # 3. Verify match (±10% tolerance)
     if abs(sitemap_screen_count - spec_screen_count) > (sitemap_screen_count * 0.1):
-        raise GateError(f"Screen count mismatch: SITEMAP ({sitemap_screen_count}) vs DESIGN_SYSTEM ({spec_screen_count})")
+        raise GateError(f"Screen count mismatch: SITEMAP ({sitemap_screen_count}) vs DESIGN_SPEC ({spec_screen_count})")
     
     # 4. Verify DESIGN.md contains required sections
     design_md = read_file("docs/harness-root/DESIGN.md")  # Staged path during M04, deployed to root in M06
@@ -1418,7 +1418,7 @@ def verify_module_04():
     
     # 5. Verify Design Freeze Sign-Off exists
     if "Approved by:" not in design_spec or "Date:" not in design_spec:
-        raise GateError("Design Freeze Sign-Off missing in DESIGN_SYSTEM.md")
+        raise GateError("Design Freeze Sign-Off missing in DESIGN_SPEC.md")
     
     # 6. Anti-slop check (search for violations)
     violations = []
@@ -1446,10 +1446,10 @@ Files Generated:
 - ✅ LOGO_DESIGN_BRIEF.md (11.2KB) - 4 AI prompts ready
 - ✅ SITEMAP.md (6.8KB) - 18 screens mapped
 - ✅ DESIGN.md (12.4KB) - Design tokens defined
-- ✅ DESIGN_SYSTEM.md (34.7KB) - Screen specs complete
+- ✅ DESIGN_SPEC.md (34.7KB) - Screen specs complete
 
 Quality Checks:
-- ✅ Screen count match: SITEMAP (18) = DESIGN_SYSTEM (18)
+- ✅ Screen count match: SITEMAP (18) = DESIGN_SPEC (18)
 - ✅ Anti-slop compliance: 0 violations
 - ✅ Accessibility: Contrast ratio ≥4.5:1 verified
 - ✅ Design Freeze: Approved by [Name] on [Date]
@@ -1482,7 +1482,7 @@ Next Steps:
 
 **If user approves**:
 - Proceed to Module 05 (Architecture & FSD)
-- Carry forward DESIGN.md + DESIGN_SYSTEM.md as references for technical specs
+- Carry forward DESIGN.md + DESIGN_SPEC.md as references for technical specs
 
 ---
 
