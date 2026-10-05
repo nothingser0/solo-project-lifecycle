@@ -262,7 +262,7 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 **Avoid If**: [Unsuitable user profile]
 
 **Stack Compatibility with Module 04 Prototype**:
-- Stitch/Figma prototype → [Framework]: [Conversion strategy]
+- Design prototype → [Framework]: [Conversion strategy]
   - React/Next.js: Direct copy (minimal refactoring)
   - Vue/Svelte: Convert JSX → SFC/component syntax
   - Laravel Blade: Extract layout patterns, rewrite as templates
@@ -413,7 +413,7 @@ After the user answers all 8 questions, the agent **MUST generate 2-3 stack opti
 
 **Stitch Prototype Conversion**:
 - ⚠️ **Full rewrite** - Stitch React → Laravel Blade templates
-- Strategy: Extract layout patterns from Stitch, rewrite as Blade components
+- Strategy: Extract layout patterns from design specs, rewrite as Blade components
 - Inertia.js option: Keep Vue components, wire to Laravel backend
 - Estimated conversion time: 5-7 days (Blade) or 3-4 days (Inertia)
 
@@ -807,7 +807,7 @@ Stack decision LOCKS after selection. Changes later = +2 weeks timeline impact.
   - If compliance required: Validate chosen DB/hosting has compliance certs
 
 **8. Module 04 Handoff Strategy Validated**
-- [ ] Prototype conversion feasible: Clear path from Stitch to chosen stack
+- [ ] Prototype conversion feasible: Clear path from design specs to chosen stack
   - Direct copy (React → Next.js): 1 day
   - Syntax conversion (React → Vue): 3-4 days
   - Template rewrite (React → Blade): 5-7 days
@@ -885,7 +885,7 @@ Agent: [Re-score with Go Fiber + HTMX]
 
 ## 4. Module 04 Prototype → Module 06 Handoff Strategy
 
-**Problem**: The Stitch/Figma prototype (Module 04) is generated in a specific format (React/HTML), but the user selects a different stack (Laravel/Vue/Django).
+**Problem**: The Design prototype (Module 04) is generated in a specific format (React/HTML), but the user selects a different stack (Laravel/Vue/Django).
 
 **Solution**: Define the conversion strategy in FSD based on the stack compatibility level.
 
@@ -942,7 +942,7 @@ export function DashboardCard({ title, value }: DashboardCardProps) {
 **Applicable When**: User selects Vue, Svelte, Solid, Preact
 
 **Strategy**:
-1. Extract component structure from Stitch
+1. Extract component structure from design specs
 2. Convert JSX → framework syntax
 3. Keep Tailwind classes identical (design system preserved)
 4. Rewrite state management (React hooks → Vue Composition API / Svelte stores)
@@ -985,14 +985,14 @@ defineProps<{
 **Applicable When**: User selects Laravel Blade, Django Templates, Rails ERB, PHP
 
 **Strategy**:
-1. Stitch prototype = **visual reference only** (do not extract code)
+1. Design prototype = **visual reference only** (do not extract code)
 2. Identify layout patterns:
    - Header (logo, nav, user menu)
    - Sidebar (if applicable)
    - Main content area (cards, tables, forms)
    - Footer
 3. Rewrite as server-side templates using framework syntax
-4. Extract Tailwind classes from Stitch → copy to templates
+4. Extract Tailwind classes from design specs → copy to templates
 5. Design tokens (DESIGN.md) → apply manually
 
 **Conversion Effort**: 5-7 days (18 screens)
@@ -1040,7 +1040,7 @@ module.exports = {
 
 **Strategy**:
 1. Backend: Laravel/Rails (API routes, Eloquent/ActiveRecord)
-2. Frontend: Keep Vue/React components from Stitch
+2. Frontend: Keep Vue/React components from design specs
 3. Glue layer: Inertia.js wires Vue components to Laravel routes
 4. Conversion effort same as Level 2 (syntax conversion)
 
@@ -1061,7 +1061,7 @@ Route::get('/dashboard', function () {
 ```
 
 ```vue
-<!-- resources/js/Pages/Dashboard.vue (from Stitch) -->
+<!-- resources/js/Pages/Dashboard.vue (from design specs) -->
 <script setup>
 defineProps(['stats'])
 </script>
@@ -1091,7 +1091,7 @@ defineProps(['stats'])
 **Compatibility Level**: Level 4 (Hybrid)
 
 **Conversion Plan**:
-1. Extract 18 Vue components from Stitch export
+1. Extract 18 Vue components from design specs export
 2. Setup Inertia.js in Laravel project (ziggy routes, Vite config)
 3. Create Laravel routes for every page (map SITEMAP.md → web.php)
 4. Wire Vue components to Inertia::render() calls
@@ -1110,7 +1110,7 @@ defineProps(['stats'])
 - ✅ Typography (Inter font, weights 400/600)
 - ✅ Spacing scale (4/8/16/24/32px)
 
-**Deviations from Stitch Prototype** (if any):
+**Deviations from design specs Prototype** (if any):
 - None expected (visual parity maintained)
 - If deviations occur: Document in Module 06 change log
 ```
@@ -1434,7 +1434,7 @@ This module produces 2 primary technical documents:
 - [x] **Database schema written** in SQL DDL syntax matching chosen DB (PostgreSQL/MySQL/MongoDB)
 - [x] **API endpoints documented** (minimum 10 endpoints with request/response examples)
 - [x] **Security blueprint complete** (encryption, hashing, rate limiting, framework-specific patterns)
-- [x] **Module 04 handoff strategy documented** (conversion plan from Stitch → chosen stack)
+- [x] **Module 04 handoff strategy documented** (conversion plan from design specs → chosen stack)
 
 ### Phase 5: File Verification (BLOCKING)
 - [x] **`docs/specs/PRD.md` exists** (≥3000 bytes, contains RBAC matrix, NFR thresholds)

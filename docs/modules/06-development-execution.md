@@ -9,7 +9,7 @@
 >
 > - Read: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`
 
-This module is the sixth phase in the software project lifecycle for solo developers. Its purpose is to execute real code writing (*coding*) in a directed manner using **AI Coding Agents (OpenChamber + OpenCode + OhMyOpenCode / Cursor / Claude Code)** through the provision of an **Agent Harness (AI guide files)**, integrating interfaces from **Google Stitch**, managing **Git** branching, and enforcing 3 non-negotiable engineering pillars: **Security**, **Performance**, and **Resource Efficiency**.
+This module is the sixth phase in the software project lifecycle for solo developers. Its purpose is to execute real code writing (*coding*) in a directed manner using **AI Coding Agents (OpenChamber + OpenCode + OhMyOpenCode / Cursor / Claude Code)** through the provision of an **Agent Harness (AI guide files)**, managing design implementation, managing **Git** branching, and enforcing 3 non-negotiable engineering pillars: **Security**, **Performance**, and **Resource Efficiency**.
 
 ---
 
@@ -1294,7 +1294,7 @@ Agent reads FSD.md to extract:
 
 ```bash
 # 1. Export Stitch components (via MCP or manual download)
-stitch_get_screen(projectId="...", screenId="...")
+design implementation(projectId="...", screenId="...")
 
 # 2. Copy components to target directory
 # Next.js: src/components/
@@ -1349,7 +1349,7 @@ export function DashboardCard({ title, value }: DashboardCardProps) {
 
 ```bash
 # 1. Export Stitch components
-stitch_get_screen(...)
+design implementation(...)
 
 # 2. Convert JSX → framework syntax
 # Tool: react-to-vue CLI (optional, 80% accuracy)
@@ -1467,7 +1467,7 @@ module.exports = {
 
 ```bash
 # 1. Export Stitch components (Vue/React)
-stitch_get_screen(...)
+design implementation(...)
 
 # 2. Setup glue layer
 # Laravel: php artisan inertia:install vue
@@ -1871,7 +1871,7 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
 1. Instruct the AI agent to execute items on `TODO.md` one by one:
    - Apply Zod validation on API handlers.
    - Build AES-256-GCM stream encryption service to S3/R2 with 15-minute presigned URLs.
-   - Connect Stitch UI forms to API endpoints via `fetch` or Server Actions.
+   - Connect UI components forms to API endpoints via `fetch` or Server Actions.
    - Ensure all five screen states work: *Skeleton Loader*, *Empty State*, *Inline Error Message*, and *Notification Toast*.
    - Apply prompt engineering & multi-file orchestration patterns from `references/playbooks/ai-assisted-development.md`.
 
@@ -2282,7 +2282,7 @@ export const analytics = {
 [GATE] Module 06 is declared **PASSED** if:
 - [x] Git branching is structured (`main`, `staging`, `feat/*`) with clean commits.
 - [x] 7 AI control files (Agent Harness) installed in project root.
-- [x] Google Stitch components extracted via MCP and connected to backend API.
+- [x] Design specs components extracted via MCP and connected to backend API.
 - [x] Source code builds successfully without TypeScript compilation errors (`tsc --noEmit` exits 0).
 - [x] Database migrations execute smoothly with search indexes in place.
 - [x] Stream-based AES-256-GCM vault file encryption successfully stores and retrieves documents via presigned URLs.

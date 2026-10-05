@@ -42,7 +42,7 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
                                 ▼
 [ STEP 2: Choose Prototyping Approach (Context-Driven) ]
   • Markdown-only: DESIGN.md + DESIGN_SPEC.md (fast, solo projects)
-  • Google Stitch: Visual builder with design system upload
+  • Design options: Visual builder with design system upload
   • AI prototype: v0.dev / Bolt.new (AI-generated components)
   • Design tool: Figma Dev Mode (professional handoff)
                                 │
@@ -64,7 +64,7 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
                                 ▼
 [ OUTPUT: 5 COMPLETE ARTIFACTS ] ──► Ready to Proceed to Module 05: Architecture & FSD
   1. docs/specs/COMPONENT_REQUIREMENTS.md (component inventory)
-  2. docs/specs/DESIGN.md (design system tokens - for Google Stitch)
+  2. docs/specs/DESIGN.md (design system tokens - )
   3. docs/specs/DESIGN_SPEC.md (screen specifications)
   4. docs/specs/SITEMAP.md (screen hierarchy)
   5. Prototype URL (if interactive path chosen)
@@ -319,19 +319,16 @@ Before proceeding to Step 1 (DESIGN.md generation):
 
 ---
 
-### Option B: Google Stitch (Visual Builder)
+### Option B: Design prototyping (Visual Builder)
 **Use when**:
 - Need rapid visual prototyping (drag-and-drop)
 - Client requires interactive demo
 - Design system can be uploaded programmatically
 
-**Tools**: Google Stitch MCP Server
+**Tools**: Design prototyping MCP Server
 
 **Workflow**:
 1. Generate DESIGN.md (tokens, guidelines)
-2. Create Stitch project: `stitch_create_project`
-3. Upload design system: `stitch_upload_design_md`
-4. Generate screens: `stitch_generate_screen_from_text`
 5. Connect navigation, deploy to Stitch Viewer
 6. Document final specs in DESIGN_SPEC.md
 
@@ -733,9 +730,9 @@ After the sitemap is completed, choose a workflow to create mockup screens:
 
 ---
 
-### Option B: AI-Assisted Design (Google Stitch / v0.dev / Uizard)
+### Option B: AI-Assisted Design (Design prototyping / v0.dev / Uizard)
 
-**Tools**: Google Stitch (built-in MCP), v0.dev by Vercel, Uizard, Galileo AI
+**Tools**: Design prototyping (built-in MCP), v0.dev by Vercel, Uizard, Galileo AI
 
 **Workflow**:
 1. Write design system tokens in DESIGN.md (colors, typography, spacing)
@@ -748,7 +745,7 @@ After the sitemap is completed, choose a workflow to create mockup screens:
 - ✅ Fast (a few hours for 18 screens with iterations)
 - ✅ Generates code directly (skips manual HTML/CSS translation)
 - ✅ Easy iteration (re-prompt for different variants)
-- ✅ Low cost (Google Stitch free tier, v0.dev $20/month)
+- ✅ Low cost (Design prototyping free tier, v0.dev $20/month)
 
 **Cons**:
 - ❌ Generic look without customization (common AI patterns)
@@ -764,7 +761,7 @@ After the sitemap is completed, choose a workflow to create mockup screens:
 
 **Time Estimate**: 1-3 days (including prompt iteration & code cleanup)
 
-**Example Prompt (Google Stitch)**:
+**Example Prompt (Design prototyping)**:
 ```
 Generate Dashboard screen (Screen ID: SCR-02) for Legal Document Management:
 
@@ -796,7 +793,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 **Best of Both Worlds**
 
 **Workflow**:
-1. **AI wireframes** (Google Stitch / v0.dev): Generate 18 screens rapidly (1 day)
+1. **AI wireframes** (Design prototyping / v0.dev): Generate 18 screens rapidly (1 day)
    - Focus: Layout structure, component placement, navigation flow
    - Accept: 80% quality (not pixel-perfect yet)
 
@@ -1094,9 +1091,8 @@ Before finalizing `DESIGN.md`, verify ZERO of these slop indicators exist:
 
 ---
 
-#### 1.9 Google Stitch Prompt Directive (CRITICAL)
+#### 1.9 Design prototyping Prompt Directive (CRITICAL)
 
-When generating screens via `stitch_generate_screen_from_text`, **ALWAYS include this directive** in the prompt:
 
 ```
 DESIGN CONSTRAINTS (ANTI-SLOP):
@@ -1159,16 +1155,13 @@ After Stitch generates screens, **MANUALLY REVIEW** each screen for slop:
 - Solo product: Self-review checklist above
 - Client project: Walk client through checklist, get written approval per screen batch
 
-### Step 2: Registration to Google Stitch via Tooling
+### Step 2: Registration to Design prototyping via Tooling
 1. Create a new project container:
-   `stitch_create_project(reason="Initiating UI prototype for [Project Name]")`
 2. Convert `DESIGN.md` file into base64, then upload:
-   `stitch_upload_design_md(projectId="...", designMdBase64="...")`
 3. Apply the Design System to the project:
    `stitch_create_design_system_from_design_md(projectId="...", ...)`
 
 ### Step 3: Generating All Screens (Phased Coverage for Enterprise)
-Call `stitch_generate_screen_from_text` for **EVERY page** listed in `SCOPE_STATEMENT.md`:
 - **Small/Medium Scale (<50 screens)**: 100% exhaustive coverage in a single phase. Truncation is FORBIDDEN.
 - **Large/Enterprise Scale (≥50 screens)**: Phased approach to prevent context exhaustion:
   - **Phase 1 (MVP Screens)**: Core user flows (login, dashboard, primary CRUD, checkout) — max 30-40 screens
@@ -1523,7 +1516,7 @@ Next Steps:
    - `pph23-rates.json`, `pp20-2026.json`, etc.
    - Metadata: version, source URL, last_updated, changelog
 
-5. ✅ **Google Stitch Prompt Files** (optional — pre-write prompts for each screen)
+5. ✅ **Design prototyping Prompt Files** (optional — pre-write prompts for each screen)
    - `stitch-prompts/01-landing-page.txt` (10-20 lines: layout + strict style + components)
    - `stitch-prompts/02-dashboard.txt`
    - `stitch-prompts/03-calculation-form.txt`
@@ -1617,7 +1610,7 @@ export STITCH_API_KEY="your-google-stitch-api-key-here"
 
 **User prompt to Claude Desktop / Codex / OpenCode**:
 ```
-Read DESIGN.md and docs/specs/DESIGN_SPEC.md from this project, then generate all 10 screens using Google Stitch MCP.
+Read DESIGN.md and docs/specs/DESIGN_SPEC.md from this project, then generate all 10 screens using Design prototyping MCP.
 
 Project context:
 - App: FreePajak (tax calculator for Indonesian freelancers)
@@ -1626,7 +1619,6 @@ Project context:
 
 For each screen in DESIGN_SPEC.md (SCR-001 to SCR-010):
 1. Read the corresponding prompt file from stitch-prompts/[screen].txt
-2. Call stitch_generate_screen_from_text with:
    - prompt: content from .txt file
    - screen_id: from DESIGN_SPEC.md (e.g., "SCR-001")
    - design_system: color palette + typography from DESIGN.md
@@ -1661,7 +1653,6 @@ Proceed autonomously and report progress every 3 screens.
 2. **Generate screen 1** (Landing Page):
    ```javascript
    // MCP tool call
-   stitch_generate_screen_from_text({
      prompt: `Landing page for FreePajak tax calculator.
      
      Layout:
@@ -1936,11 +1927,11 @@ EOF
 > - Client requests a **white-label solution** or **multi-tenant branding**
 >
 > **SKIP THIS SECTION IF:**
-> - Solo dev MVP <4 weeks with 1-3 screens (Sections 1-7 Google Stitch are sufficient)
+> - Solo dev MVP <4 weeks with 1-3 screens (Sections 1-7 Design prototyping are sufficient)
 > - Throwaway proof-of-concept prototyping
 > - Backend API-only or CLI tool without GUI
 
-Comprehensive guide for solo developers and small teams seeking to build, adopt, or audit a Design System. Unlike **Sections 1-7** which focus on prototyping individual screens with Google Stitch, **Section 8** is the strategic foundation for building a design system that is scalable, maintainable, and adoptable across products or organizations.
+Comprehensive guide for solo developers and small teams seeking to build, adopt, or audit a Design System. Unlike **Sections 1-7** which focus on prototyping individual screens with Design prototyping, **Section 8** is the strategic foundation for building a design system that is scalable, maintainable, and adoptable across products or organizations.
 
 ---
 

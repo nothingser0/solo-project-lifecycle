@@ -72,7 +72,7 @@ RELEASE & CLOSURE PHASE:
 | Scale | Characteristic Boundaries | Module 01: Ideation & Feasibility | Modules 02–05: Specs & Design | Modules 06–09: QA & UAT | Modules 10–12: Release & BAST |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Small (MVP / Fast-Track)** | 1–4 weeks, 1–3 features, solo user | Use 1 file `PROJECT_LITE.md` (Combined M01-M03-M05) | **M04 MANDATORY for**: Web/Mobile/Desktop GUI. **M04 SKIP for**: CLI/API/cron | Core logic unit tests + smoke test | Direct PaaS deploy, email BAST |
-| **Medium** | 1–3 months, Auth, DB, Payment/API | 4-Dimensional Feasibility, Market Validation | Modular PRD, Google Stitch Design System, FSD, API Contract | Automated API tests, SIT, signed PIC UAT | CI/CD pipeline, stamped BAST, 60-day warranty |
+| **Medium** | 1–3 months, Auth, DB, Payment/API | 4-Dimensional Feasibility, Market Validation | Modular PRD, Design System, FSD, API Contract | Automated API tests, SIT, signed PIC UAT | CI/CD pipeline, stamped BAST, 60-day warranty |
 | **Large** | 3–6 months, multi-system integration | Initial Architecture Audit, Risk Analysis | Formal PRD, In-depth FSD, Context Map, WBS level 3 | Full test pyramid, Basic Pentest, staged formal UAT | Zero-downtime deploy, physical/digital BAST, 90-day warranty |
 | **Enterprise** | ≥ 6 months, legal compliance, banking/SOE | PDP Law Audit, Compliance, Security Gate | Business Case, Formal Charter, PRD, FSD, RTM, DPA | Third-party Pentest, Disaster recovery drill, Formal UAT | CAB Approval, scheduled maintenance window, legal BAST, SLA |
 
@@ -114,7 +114,7 @@ RELEASE & CLOSURE PHASE:
 > - **Root Directory (`./`)**: EXCLUSIVELY RESERVED ONLY FOR 7 AI HARNESS FILES (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`), `README.md`, and framework configuration. **Never place planning documents in root!**
 
 ### Fast-Track Mode
-- `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`: Unified streamlined specification template (Idea + Scope + Commercial + DB Schema) for 1–4 week MVP projects. Saved to root (`./PROJECT_LITE.md`). *(Note: Module 04 Design workflow applies to Web/Mobile; Google Stitch optional).*
+- `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`: Unified streamlined specification template (Idea + Scope + Commercial + DB Schema) for 1–4 week MVP projects. Saved to root (`./PROJECT_LITE.md`). *(Note: Module 04 Design workflow applies to Web/Mobile; Design specs optional).*
 
 ### Module 00 (Active)
 - `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`: Saved to **`docs/pm/MARKET_RESEARCH.md`** (TAM/SAM/SOM results, industry trends, regulatory landscape).
