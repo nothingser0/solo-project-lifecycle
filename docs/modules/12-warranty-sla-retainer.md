@@ -1,6 +1,6 @@
 # Module 12: Warranty Period & Transition to Monthly Retainer / SLA Support
 
->
+> - `templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md` (30-day simplified warranty policy for MVP & small-tier projects)
 
 This module is the twelfth stage (culminating phase) in the software project lifecycle for solo developers. The objective is to manage the bug fix warranty period in a metered manner, establish Service Level Agreements (SLA), handle production emergency incidents, and convert one-off project relationships into predictable recurring revenue: **Monthly Maintenance Contracts (Monthly Retainer / SLA Contract)**.
 

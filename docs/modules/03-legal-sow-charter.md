@@ -1,6 +1,11 @@
 # Module 03: [COMMERCIAL GATE] Legal SOW, DP, & Single PIC Agreement
 
 > ⚠️ **LEGAL DISCLAIMER**: This content provides general SDLC guidelines, NOT legal advice. References to PDP Law, Civil Code (KUHPerdata), and ITE Law are educational and HAVE NOT been verified by licensed Indonesian attorneys. Always consult a qualified lawyer for contract drafting, regulatory compliance, and legal matters. Framework authors assume no liability for legal decisions made based on this content.
+>
+> - `references/pre-sales/QUOTATION_EMAIL.md` (Commercial email template, milestone quotation, fee breakdown)
+> - `templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md` (Commercial presentation for enterprise sponsors & executives)
+> - `templates/03-governance/MEETING_CADENCE_GUIDE.md` (Stakeholder alignment schedule, commercial check-in meetings)
+> - `templates/03-governance/VENDOR_COMPARISON_MATRIX.md` (Vendor/subcontractor evaluation for specialized deliverables)
 
 
 This module is a **BLOCKING COMMERCIAL GATE** in the solo developer project lifecycle. Fundamental rule: **NOT A SINGLE LINE OF CODE OR DETAILED DESIGN IS UNDERTAKEN BEFORE PASSING THIS GATE.**

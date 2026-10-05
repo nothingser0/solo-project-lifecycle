@@ -1,6 +1,7 @@
 # Module 11: [HANDOVER GATE] Final Settlement, Training, BAST, & Repository Handover
 
->
+> - `templates/07-release-handover/BAST_EMAIL_SMALL.md` (Email-based lightweight BAST confirmation for remote/small projects)
+> - `templates/07-release-handover/TRAINING_PLAN.md` (Client staff operational training curriculum & schedule)
 
 This module is the **CLOSURE & HANDOVER GATE** in the solo developer project lifecycle. Absolute rule: **TRANSFERRING GIT REPOSITORY OWNERSHIP, SERVER ROOT CREDENTIALS, AND SIGNING THE BAST ARE STRICTLY PROHIBITED BEFORE THE FINAL SETTLEMENT PAYMENT (100%) HAS CLEARED AND IS CONFIRMED IN THE DEVELOPER'S BANK ACCOUNT.**
 

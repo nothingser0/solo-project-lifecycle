@@ -1,6 +1,7 @@
 # Module 08: Data Migration & Seeding (Legacy Data Migration & Data Seeding)
 
 > - `references/technical/DATA_ASSETS_MANAGEMENT.md` (Seed data structure, Reference data (city/bank list), Versioning regulations data, Content data management)
+> - `templates/05-data-migration/DATA_MIGRATION_LITE.md` (Lightweight migration protocol for simple CSV/Excel imports)
 
 This module is the eighth phase in the software project lifecycle for solo developers. Its purpose is to transfer client legacy data (from Excel, CSV, legacy systems, or outdated databases) into the new database schema automatically, encrypted, and validated before the user acceptance testing (UAT) session in Module 09 begins.
 

@@ -9,7 +9,13 @@
 > - `references/technical/ASSET_MANAGEMENT_GUIDE.md` (Images/SVG/WebP/fonts optimization, Favicon package, Accessibility alt text, Performance budgets)
 > - `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md` (AI UI prototyping & coding tools benchmark)
 > - `references/technical/FIGMA_MCP_SETUP.md` (Figma MCP server installation, live design sync, token setup, usage patterns)
->
+> - `references/technical/DESIGN_SYSTEM_GUIDE.md` (Design system architecture, token hierarchy, component lifecycle)
+> - `references/technical/MOBILE_ARCHITECTURE_GUIDE.md` (Mobile viewport responsiveness, touch targets, PWA/native UI guidelines)
+> - `templates/02-design/SITEMAP_TEMPLATE.md` (Information architecture & route map template)
+> - `templates/02-design/DESIGN_SPEC_TEMPLATE.md` (Full screen wireflow & interaction specification template)
+> - `templates/02-design/COMPONENT_RFC_TEMPLATE.md` (RFC template for proposing complex new design components)
+> - `templates/02-design/references/inspiration-template/notes-template.md` (Design inspiration extraction and notes template)
+
 
 This module translates `SCOPE_STATEMENT.md` into three documents that serve as the UI source of truth: `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`. Its focus is visual standardization, shared components, all pages/sub-pages that are genuinely in-scope, responsive behavior, accessibility, and acceptance criteria.
 

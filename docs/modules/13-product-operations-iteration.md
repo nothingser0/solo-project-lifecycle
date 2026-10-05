@@ -1,6 +1,7 @@
 # Module 13: Product Operations & Continuous Iteration
 
 > - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
+> - `templates/09-product-growth/AB_TEST_REPORT_TEMPLATE.md` (A/B testing execution report, conversion analysis, rollout decision sheet)
 
 This module is the **post-launch stage** in the software product lifecycle for solo developers. It is executed after Module 12 (Warranty & SLA) once the system has stabilized in production and focus shifts from "building" to "optimizing & growing" based on real user data. The objective is to establish a **metrics-driven operational framework** to continuously improve the product using data, not assumptions.
 

@@ -6,6 +6,19 @@
 > - `references/playbooks/ai-assisted-development.md` (Prompt engineering patterns, multi-file orchestration, pre-merge AI review protocol)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, design patterns, and anti-pattern detection for AI-generated code)
 > - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Coding execution progress tracker sheet, backend, frontend, integration checklists, & review checkpoints)
+> - `references/stacks/nextjs-15-quickstart.md` (Next.js 15 App Router, React Server Components, Tailwind, Supabase setup)
+> - `references/stacks/laravel-11-quickstart.md` (Laravel 11, Inertia.js, PostgreSQL/MySQL, Sanctum auth quickstart)
+> - `references/stacks/django-5-quickstart.md` (Django 5, DRF, PostgreSQL, Vite/Tailwind, Celery quickstart)
+> - `references/stacks/go-1.23-quickstart.md` (Go 1.23, Chi/Echo router, pgx, SQL migrations, Docker quickstart)
+> - `references/technical/APM_PROFILING_RUNBOOK.md` (APM tracing, profiling CPU/memory bottlenecks, slow queries)
+> - `templates/04-dev-execution/AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md` (Automated AI pre-merge code review checklist)
+> - `templates/04-dev-execution/AI_PROMPT_LIBRARY_TEMPLATE.md` (Standardized engineering prompt library for coding agents)
+> - `patterns/validation/zod-patterns.md` (Zod schema patterns for API boundary parsing & validation)
+> - `patterns/security/authentication.md` (Secure authentication, session handling, RBAC patterns)
+> - `patterns/database/supabase-migrations.md` (Supabase migration, RLS policy enforcement patterns)
+> - `patterns/git-workflow/branching-strategy.md` (Git branch flow, atomic commits, squash merge protocols)
+> - `patterns/performance/caching-strategies.md` (Server-side & HTTP caching, cache invalidation protocols)
+> - `patterns/performance/n-plus-one-prevention.md` (ORM eager loading, batching, N+1 query detection patterns)
 >
 > - Read: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md`
 

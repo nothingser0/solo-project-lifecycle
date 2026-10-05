@@ -3,6 +3,10 @@
 > - `references/solo/SOLO_ARCHITECTURE_GUIDE.md` (Boring Tech guide, SQL DDL integrity, OWASP Top 10, AES-256 encryption, UU PDP compliance)
 > - `references/technical/DATA_ASSETS_MANAGEMENT.md` (Regulations data (tax rates, PTKP), Business rules/formulas, Reference data (city/bank list), Seed data, Localization)
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, Repository/Service Layer patterns for FSD authoring)
+> - `references/stacks/STACK_SUPPORT_MATRIX.md` (Supported tech stack evaluation matrix, maturity, solo dev suitability)
+> - `templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md` (MAU/RPS traffic projection, memory/storage sizing)
+> - `templates/03-architecture-specs/DESIGN_PATTERN_DECISION_TREE_TEMPLATE.md` (Software architecture & design pattern decision tree)
+> - `templates/03-architecture-specs/CODE_REVIEW_PATTERN_CHECKLIST_TEMPLATE.md` (Pre-commit architecture pattern review checklist)
 >
 
 This module is the fifth phase in the software project lifecycle for solo developers. Its purpose is to architect the entire "engine, data cabling, database, and security systems" behind the interface frozen in Module 04, producing two primary blueprints: **`PRD.md`** (*Product Requirement Document*) and **`FSD.md`** (*Functional Specification Document*).

@@ -1,5 +1,8 @@
 # Module 09: [VALIDATION GATE] UAT & Client Sign-Off on Staging
 
+> - `templates/06-qa-uat/UAT_WORKBOOK_SMALL.md` (Lightweight UAT test matrix for MVP/Fast-track projects)
+> - `templates/06-qa-uat/UAT_SIGNOFF_SMALL.md` (Simplified single-page client sign-off sheet for small projects)
+
 This module is a **BLOCKING VALIDATION GATE** in the solo developer project lifecycle. Absolute rule: **DEPLOYMENT TO PRODUCTION SERVERS OR POINTING PRIMARY DOMAINS IS STRICTLY PROHIBITED BEFORE THIS GATE PASSES.**
 
 Its purpose is to facilitate direct testing by the **Client Single PIC** and end users (*key users*) on the Staging server based on scenarios in **`PRD.md`**, manage defect triage, deflect scope creep disguised as bugs, and secure the signing of the **UAT Sign-Off Report (Berita Acara UAT)**.

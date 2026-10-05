@@ -1,6 +1,9 @@
 # Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)
 
 > - `references/playbooks/ai-assisted-development.md` (Pre-merge AI review protocol, prompt engineering patterns, multi-file orchestration)
+> - `references/technical/COMPLIANCE_MONITORING_AUTOMATION.md` (Automated compliance auditing, continuous vulnerability scanning)
+> - `templates/06-qa-uat/BUG_REPORT.md` (Standardized defect reporting format with reproduction steps)
+> - `templates/06-qa-uat/DEMO_FEEDBACK_FORM.md` (Internal QA smoke demo feedback questionnaire)
 
 This module is the seventh phase in the software project lifecycle for solo developers. Its purpose is to validate reliability, third-party system integration integrity (*System Integration Testing* / SIT), performance resilience, and system security automatically in the **Staging** environment before handing over to the client for the UAT process (Module 09).
 

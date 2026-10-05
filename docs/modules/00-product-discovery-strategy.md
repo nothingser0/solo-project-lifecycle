@@ -1,6 +1,9 @@
 # Module 00: Product Discovery & Strategy (Market Research, Competitor, User, & Product Strategy)
 
 > - `references/technical/DEEP_RESEARCH_METHODOLOGY.md` (Regulatory/compliance research, Competitor deep-dive analysis, Domain knowledge acquisition for fintech/healthtech/legaltech)
+> - `references/pre-sales/DISCOVERY_CALL_CHECKLIST.md` (Pre-sales intake, discovery call questionnaire, stakeholder qualification)
+> - `references/pre-sales/PROPOSAL_DECK.md` (Proposal slide outline, pitch structure, commercial presentation)
+> - `templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md` (Proof-of-concept scope, evaluation criteria, client POC validation plan)
 
 
 This module is the **earliest gate** in the software development lifecycle for solo developers and technical consultants working on projects with an unlimited time budget and company use cases. This module is mandatory to execute **BEFORE Module 01 (Idea & Feasibility)** when:
