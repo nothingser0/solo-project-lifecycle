@@ -185,7 +185,7 @@ B2G (government contracts), large enterprise clients, or publicly-traded compani
 ### ❌ Testing Too Late (After Code Complete)
 **Symptom**: "We built everything, now let's validate with users."  
 **Problem**: Design flaws become expensive to fix (backend + frontend rework).  
-**Fix**: Test clickable prototype (Google Stitch HTML) BEFORE Module 05.
+**Fix**: Test clickable prototype (Figma / interactive prototype) BEFORE Module 05.
 
 ### ❌ Confirmation Bias Testing
 **Symptom**: "Users love the new dashboard!" (selective memory from positive feedback).  
