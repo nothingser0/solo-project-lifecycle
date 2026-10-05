@@ -75,7 +75,7 @@ solo-project-lifecycle/
 2. **Initialize git**: `git init`
 3. **Initialize framework**: Generate planning docs (`docs/pm/`, `docs/specs/`, `docs/harness-root/`)
 4. **Scaffold framework**: Run `npx create-next-app`, `laravel new`, etc.
-5. **Deploy harness**: Agent copies `docs/harness-root/*` → `./` (root)
+5. **Deploy harness**: Agent copies `docs/harness-root/*` and `.env.example` → `./` (root)
 
 **Why `docs/harness-root/` staging?**
 - Root folder empty/git-only before scaffold
@@ -104,10 +104,10 @@ git init
 # Framework generates:
 #   - docs/pm/ (planning docs)
 #   - docs/specs/ (PRD, FSD)
-#   - docs/harness-root/ (7 AI control files - staged)
+#   - docs/harness-root/ (9 AI control files - staged)
 
 # After scaffold (npx create-next-app, etc.)
-# Agent deploys: docs/harness-root/* → ./ (root)
+# Agent deploys: cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
 ```
 
 ---
@@ -219,7 +219,7 @@ Full details: `case-studies/`
 **Bash (Linux/Mac):**
 ```bash
 ./scripts/validate-gate.sh              # Validate gate checkpoints
-./scripts/check-package-versions.sh     # Real-time registry dependency checks
+./scripts/check-package-versions.sh     # Real-time registry dependency checks (12 stacks supported)
 ./scripts/verify-framework-version.sh   # Validate lockfile against FSD
 ./scripts/lint-template.sh              # Check template completeness
 ./scripts/template-picker.sh            # Interactive template selector
@@ -228,7 +228,7 @@ Full details: `case-studies/`
 **PowerShell (Windows):**
 ```powershell
 .\scripts\validate-gate.ps1
-.\scripts\check-package-versions.ps1
+.\scripts\check-package-versions.ps1   # 12 stacks supported (-Framework <stack>)
 .\scripts\verify-framework-version.ps1
 .\scripts\lint-template.ps1
 .\scripts\template-picker.ps1

@@ -8,24 +8,24 @@ Stacks with complete scaffold, AI harness templates in `templates/04-dev-executi
 
 | Stack | Scaffold Command | Templates in `templates/04-dev-execution/` | Version Gate Verification | Status |
 |:------|:-----------------|:-------------------------------------------|:--------------------------|:-------|
-| **Next.js** | `pnpm create next-app@latest` | `nextjs/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `npm view next version` → package-lock.json | **PRODUCTION** |
-| **Laravel** | `composer create-project laravel/laravel` | `laravel/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `composer show laravel/framework` → composer.lock | **PRODUCTION** |
-| **Django** | `django-admin startproject` | `django/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `pip index versions django` → requirements.txt | **PRODUCTION** |
-| **Go** | `go mod init` | `go/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `go version` → go.mod | **PRODUCTION** |
-| **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS) | `bundle exec rails -v` → Gemfile.lock | **PRODUCTION** |
-| **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | `npm view @remix-run/dev version` → lockfile | **PRODUCTION** |
-| **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | `npm view express version` → package-lock.json | **PRODUCTION** |
-| **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | `dotnet --version` → .csproj target | **PRODUCTION** |
-| **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | pom.xml / build.gradle plugin versions | **PRODUCTION** |
-| **JAMstack / Astro**| `npm create astro@latest` | `astro/`, `jamstack/` (AGENTS, README) | package-lock.json | **PRODUCTION** |
-| **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | serverless.yml / template.yaml runtime | **PRODUCTION** |
-| **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | `flutter --version` → pubspec.lock | **PRODUCTION** |
+| **Next.js** | `pnpm create next-app@latest` | `nextjs/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | npm Registry: `npm view next version` → package-lock.json | **PRODUCTION** |
+| **Laravel** | `composer create-project laravel/laravel` | `laravel/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Packagist API: `repo.packagist.org/p2/laravel/framework.json` → composer.lock | **PRODUCTION** |
+| **Django** | `django-admin startproject` | `django/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | PyPI API: `pypi.org/pypi/django/json` → requirements.txt | **PRODUCTION** |
+| **Go** | `go mod init` | `go/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Go API & Proxy: `go.dev/dl` + `proxy.golang.org` → go.mod | **PRODUCTION** |
+| **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS) | RubyGems API: `rubygems.org/api/v1/gems/rails.json` → Gemfile.lock | **PRODUCTION** |
+| **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | npm Registry: `npm view @remix-run/dev version` → lockfile | **PRODUCTION** |
+| **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | npm Registry: `npm view express version` → package-lock.json | **PRODUCTION** |
+| **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | NuGet API: `api.nuget.org` → .csproj target | **PRODUCTION** |
+| **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | Maven Central / `start.spring.io` → pom.xml / build.gradle | **PRODUCTION** |
+| **JAMstack / Astro**| `npm create astro@latest` | `astro/`, `jamstack/` (AGENTS, README) | npm Registry: `npm view astro version` → package-lock.json | **PRODUCTION** |
+| **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | npm Registry: `npm view serverless version` → template.yaml | **PRODUCTION** |
+| **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | Pub.dev API: `pub.dev/api/packages/flutter_lints` → pubspec.lock | **PRODUCTION** |
 
 **Note**: Versions determined by M05 real-time registry check, NOT hardcoded by skill.
 - M05 runs `npm view next version` → locks result in FSD.md
 - M06 scaffolds @latest → pins exact FSD version → version gate validates lockfile
 - Framework templates adapt dynamically; real-time queries prevent knowledge cutoff lag.
-- Upstream major updates (e.g. Next.js 15→16, Laravel 11→13, Django 5→6) are validated by `./scripts/check-package-versions.sh`.
+- Upstream major updates (e.g. Next.js 15→16, Laravel 11→13, Django 5→6, Go 1.23→1.27) are validated by `./scripts/check-package-versions.sh <stack>` via HTTP registry queries without requiring local compiler installation.
 
 ---
 

@@ -40,10 +40,28 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
   • OUTPUT: COMPONENT_REQUIREMENTS.md (prevents AI slop)
                                 │
                                 ▼
-[ STEP 1: Drafting DESIGN.md Guardrails (Anti-Slop Tokens) ]
+[ STEP 0A: Minimal Logo Design Brief (Pre-Design Phase) ]
+  • Product Name, Philosophy, Target User, Brand Vibe Keywords
+  • User Responsibility & Empty AI Prompt Template (≤2KB limit)
+                                │
+                                ▼
+[ STEP 0B: SITEMAP.md & Navigation Architecture ]
+  • Extended Screen Format (States, RBAC, Real Data Context)
+  • 3-5 Critical User Flows & Comprehensive Breadcrumbs
+                                │
+                                ▼
+[ STEP 0.5: Visual Reference Gathering & Brand Synthesis (MANDATORY) ]
+  • Scaffold `docs/design/inspiration/` & Stop Turn for User UI Screenshots
+  • Vision Extraction: Palette, Geometry, Elevation, Typography, Density
+  • Logo Cross-Alignment & Harmonized Warm/Cool Neutral Basis
+  • OUTPUT: `docs/design/inspiration/notes.md`
+                                │
+                                ▼
+[ STEP 1: Drafting DESIGN.md Guardrails (Anti-Slop & Strict WCAG AA) ]
   • READ: COMPONENT_REQUIREMENTS.md (component inventory as input)
-  • Neutral Color Palette (Zinc/Slate) + 1 Accent Brand Color
-  • Inter & JetBrains Mono Typography, Flat 1px Border, Zero Gradient
+  • Neutral & Accent Tokens, Container vs Interactive Borders (≥3:1)
+  • Placeholder Contrast (≥4.5:1), Separate Expense vs Destructive Semantics
+  • Mobile Anti-Zoom (16px), 44px Touch Targets, Z-Index Scale, Thermal CSS
                                │
                                 ▼
 [ STEP 2: Choose Prototyping Approach (Context-Driven) ]
@@ -68,41 +86,37 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
   • Sign Design Freeze Sign-Off Sheet
                                 │
                                 ▼
-[ OUTPUT: 5 COMPLETE ARTIFACTS ] ──► Ready to Proceed to Module 05: Architecture & FSD
+[ OUTPUT: 6 COMPLETE ARTIFACTS ] ──► Ready to Proceed to Module 05: Architecture & FSD
   1. docs/specs/COMPONENT_REQUIREMENTS.md (component inventory)
-  2. docs/specs/DESIGN.md (design system tokens - )
-  3. docs/specs/DESIGN_SPEC.md (screen specifications)
-  4. docs/specs/SITEMAP.md (screen hierarchy)
-  5. Prototype URL (if interactive path chosen)
+  2. docs/specs/LOGO_DESIGN_BRIEF.md (minimal brief ≤2KB)
+  3. docs/specs/SITEMAP.md (screen hierarchy, flows, RBAC)
+  4. docs/design/inspiration/notes.md (visual reference extraction)
+  5. docs/harness-root/DESIGN.md (design tokens, real WCAG AA)
+  6. docs/specs/DESIGN_SPEC.md (screen specifications)
 ```
 
 ---
 
 ## 0. Component Discovery & UI Pattern Analysis (STEP 0)
 
-> **CRITICAL: This step prevents AI slop by mapping scope features to concrete UI patterns BEFORE designing.**
+> **CRITICAL: This step prevents AI slop, naming collisions, and accessibility violations by mapping scope features to concrete UI patterns, calibrated WCAG 2.2 Level AA states, and unified layer hierarchies BEFORE designing.**
 > **Duration**: 1-2 hours
-> **Input**: `SCOPE_STATEMENT.md` (features, user stories, acceptance criteria)
+> **Input**: `SCOPE_STATEMENT.md` (features, user stories, acceptance criteria) & `SITEMAP.md`
 > **Output**: `COMPONENT_REQUIREMENTS.md` (justified component inventory)
 
-### Why This Step Exists
+### Root Causes of Design Failure (Why Step 0 Exists)
 
-**Problem without Step 0:**
-```
-AI generates generic design system:
-- Colors: Primary, secondary, tertiary (no context)
-- Components: Button, Input, Card (generic descriptions)
-- Result: 50+ components, many unused, no justification
-```
+Without systematic component discovery, AI agents generate "design slop" that appears polished on the surface but fails catastrophically during frontend implementation:
+1. **Component Nomenclature Inconsistency**: Key components referenced in feature workflows (§2) do not match the component inventory table (§3), causing developer confusion and duplicated abstractions during scaffolding.
+2. **False Accessibility Compliance**: Agents claim "Strict WCAG AA" while specifying form submit buttons disabled in pristine states (confusing users), error toasts auto-dismissing after 4 seconds (violating WCAG 2.2.1), or focused inputs obscured by sticky bars (violating WCAG 2.4.11 Focus Not Obscured).
+3. **Layer Collisions (Z-Index Conflicts)**: Modal dialogs render at higher z-index than dropdowns/comboboxes triggered inside them, clipping selection menus behind backdrops.
+4. **Naive Domain Assumptions**: Using `<input type="number">` for currency (introducing float spinners and rounding errors), assuming stock 0 rigidly blocks cashier queues when physical goods exist on shelves, or citing outdated statutory tax thresholds.
 
-**Solution with Step 0:**
-```
-Read SCOPE_STATEMENT → Map features → Identify patterns → List components
-- Every component has a reason (traced to scope feature)
-- Right-sized inventory (20-30 components, not 50+)
-- Interaction states defined upfront (5-state matrix)
-- No generic additions without justification
-```
+**The Step 0 Solution**:
+- Every component is strictly traced to an in-scope P0/P1 feature in `SCOPE_STATEMENT.md` and route in `SITEMAP.md`.
+- Nomenclature parity: 100% exact name match between interaction sequences and inventory tables.
+- Right-sized inventory: 20–35 components with variants, zero unrequested additions.
+- Calibrated WCAG 2.2 Level AA compliance built directly into component states and layout containers.
 
 ---
 
@@ -169,48 +183,45 @@ Components Required:
 
 Repeat for ALL features in SCOPE_STATEMENT.
 
+**Domain Edge Case Handling (Non-Naive Business Rules)**:
+- **Currency & Monetary Entry**: Must specify `inputmode="numeric"` with live dot-thousand formatting (e.g., `Rp 1.250.000`), NEVER `<input type="number">`.
+- **Cashier Stock Discrepancies**: If system stock reaches 0 but physical goods exist on shelves, provide a supervisor override workflow rather than rigidly blocking the cashier queue.
+- **Blind Count Opname**: For inventory adjustments, hide expected quantities during counting to prevent confirmation bias.
+
 ---
 
-#### 3. Consolidate Component Inventory (30 min)
+#### 3. Consolidate Component Inventory (Strict Three-Tier Structure)
 
-Group components into:
+Group all components into three definitive tiers. Every component named in Step 2 MUST appear here:
 
-**A. Primitives (Atomic)**: Button, Input, Badge, Icon, etc.
-**B. Composite (Combinations)**: FormField, Modal, Table, Toast, etc.
-**C. Layout (Structure)**: Container, Grid, Stack, ButtonGroup
-**D. Patterns (Feature-specific)**: StatWidget, DescriptionList, etc.
+**A. Primitives (Atomic Components)**:
+- `Button` (primary, secondary, outline, ghost, destructive)
+- `Input` (text, email, password, search, numeric)
+- `Textarea`, `Select` (single, combobox), `Badge`, `Checkbox`, `LoadingSpinner`, `Icon` (Lucide React)
+
+**B. Standard Composites**:
+- `FormField` (accessible wrapper with label, input, hint, and ≥13px error text)
+- `Card` (standard header, body, footer container)
+- `Table` (accessible table with pagination; reflows to stacked cards on mobile <640px)
+- `Modal` (backdrop `z-40`, dialog `z-50`, focus trap, Esc handler)
+- `ConfirmDialog` (destructive action prompt)
+- `Toast` (system alerts; container `z-60`)
+- `EmptyState` (illustration + heading + description + CTA)
+- `SearchInput` (input + icon + clear action)
+
+**C. Domain-Specific Composites (Conditional Extensions)**:
+*(Include only if required by project domain)*
+- `POSCartDock` (two-panel split on tablet/desktop, sticky bottom dock on mobile)
+- `ChangeCalculator` (cashier tender amount & quick cash chips)
+- `ThermalPrintView` (`@media print` 58mm/80mm receipt stylesheet)
+- `OfflineSyncBadge` (4 connection states: Online, Offline, Syncing, Sync Error)
+- `CurrencyInput` (live formatted monetary field)
 
 **Rules:**
-- ✅ Include ONLY if used by ≥1 scope feature
-- ❌ Exclude generic "might need later" components
-- ✅ Document which features use each component
-- ✅ Count variants (Button: primary/secondary/ghost)
-
-**Example Inventory:**
-```markdown
-Primitives (11):
-1. Button (4 variants) - Used by Features 1,2,3,4,5
-2. Input (5 states) - Used by Features 1,3,4
-3. Textarea - Used by Feature 4
-4. Select/Dropdown - Used by Features 3,4
-5. Badge - Used by Features 3,5
-... (total 11)
-
-Composite (9):
-1. FormField - Used by Features 1,4 (all forms)
-2. Card - Used by Features 2,5
-3. Modal - Used by Feature 5 (delete confirmation)
-4. Table - Used by Feature 3 (task list)
-... (total 9)
-
-TOTAL: 27 components (justified, no slop)
-
-EXCLUDED (Not in MVP):
-❌ Tabs - No complex navigation
-❌ Accordion - No collapsible sections
-❌ Slider - No range inputs
-❌ File Upload - No attachments in MVP
-```
+- ✅ 100% exact name match with Feature → UI Pattern Mapping.
+- ❌ Exclude generic "might need later" components (tabs, sliders, accordions if not in P0/P1 scope).
+- ✅ Right-sized inventory: typically 20–35 components total for MVP.
+- ✅ Document intentionally excluded components (e.g., No tabs/accordion/slider if not justified by scope).
 
 ---
 
@@ -223,44 +234,58 @@ EXCLUDED (Not in MVP):
 
 **Per Screen (5-State Matrix):**
 - All data screens MUST have:
-  1. **Idle**: Normal render with data
+  1. **Idle/Default**: Normal render with data
   2. **Loading**: Skeleton loaders (gray pulsing)
   3. **Success**: Data loaded (same as idle)
-  4. **Error**: Error message + retry button
+  4. **Screen Error**: Full-screen or container alert card with retry CTA (network failure / 500 error)
   5. **Empty**: Empty state illustration + CTA
 
-**Per Form:**
-- Pristine, Validating, Valid, Invalid, Submitting
+> ⚠️ **ERROR SEPARATION RULE**:
+> Field validation errors (inline red text, invalid inputs) belong strictly to component form states.
+> They MUST NEVER be conflated into screen-level error states.
 
 ---
 
 #### 5. Responsive & Accessibility (15 min)
 
 **Responsive Breakpoints:**
-```markdown
-Mobile (375px): Single column, stacked layout
-Tablet (768px): 2 columns for dashboard, table scrolls
-Desktop (1440px): 3 columns, full table
+- Standardize on Tailwind breakpoints: `sm: 640px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`.
+- **Definitive switch point**: Consistently use `md: 768px` for shifting between mobile drawer/bottom tabs and desktop sidebar/two-panel layouts.
+- Table overflow: On viewports `<640px`, data tables MUST reflow into stacked cards with key-value pairs.
 
-Critical decisions:
-- Navigation: Hamburger menu on mobile
-- Dashboard: 3 cols → 2 cols → 1 col
-- Table: Horizontal scroll on mobile (not card view)
-- Forms: Always single column
+**Calibrated Accessibility Protocol (WCAG 2.2 Level AA):**
+1. **Anti-Disabled Pristine Rule**:
+   - Form submit buttons **MUST NOT** be `disabled` while the form is untouched/pristine.
+   - *Enforcement*: Users must be able to click submit to understand expectations; clicking triggers validation, scrolls smoothly, and auto-focuses the first invalid field.
+2. **Timing Adjustable (WCAG 2.2.1)**:
+   - Error toasts and offline reconnection alerts **MUST NOT auto-dismiss**. They require explicit user dismissal or error condition resolution.
+   - Success/info toasts may auto-dismiss after $\ge 5000\text{ms}$ with pause on hover/focus.
+3. **Focus Not Obscured (WCAG 2.4.11)**:
+   - Containers with sticky navigation (`z-10`) or fixed checkout docks (`z-20`) must specify CSS `scroll-padding`:
+     ```css
+     html, body, .scroll-container {
+       scroll-padding-top: 80px;
+       scroll-padding-bottom: 96px;
+     }
 ```
+4. **Accessible Error Typography**:
+   - All form error messages (`aria-describedby`) must be at least `13px` (`text-xs md:text-sm`) with $\ge 4.5:1$ contrast against the background.
 
-**Accessibility:**
-```markdown
-Per Component:
-- Input: aria-label, aria-invalid, aria-describedby
-- Button: aria-disabled, aria-busy
-- Modal: aria-modal, role="dialog", focus trap, Esc to close
-- Table: scope="col" for headers
-
-Global:
-- Focus ring: 2px solid #3B82F6, offset 2px
-- Color contrast: WCAG AA (4.5:1 body, 3:1 large text)
-- Touch targets: 44×44px minimum
+**Technical Specifications & Unified Z-Index Hierarchy:**
+- Font package: Use `next/font/google`. Deprecated `@next/font/google` is **strictly prohibited**.
+- Unified Stacking Scale:
+  ```css
+  :root {
+    --z-canvas: 0;
+    --z-sticky-nav: 10;
+    --z-floating-action: 20;
+    --z-page-dropdown: 30;
+    --z-modal-backdrop: 40;
+    --z-modal-dialog: 50;
+    --z-modal-dropdown: 55; /* Dropdowns INSIDE modal dialog portals */
+    --z-toast: 60;
+    --z-payment-gateway: 999999;
+  }
 ```
 
 ---
@@ -269,14 +294,14 @@ Global:
 
 Use template: `templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md`
 
-**Sections:**
-1. Feature summary (from SCOPE_STATEMENT)
-2. Feature → UI pattern mapping
-3. Component inventory (27 components with justification)
-4. Interaction states matrix
-5. Responsive breakpoints
-6. Accessibility requirements
-7. Design decisions rationale (why NO tabs/accordion/slider)
+**Mandatory 7 Standardized Sections:**
+1. **Metadata & Scope Alignment**: Scope/sitemap references, verified WCAG 2.2 AA target.
+2. **Feature → UI Pattern Mapping**: Interaction sequences, edge cases, domain exception mitigations.
+3. **Official Component Inventory**: Strict 3-tier categorization (Primitives, Standard Composites, Domain Composites).
+4. **Priority Screen 5-State Matrix**: Default, Loading, Success, Screen Error, Empty State (field errors separated).
+5. **Calibrated Accessibility Protocol**: Anti-disabled pristine, WCAG 2.2.1 timing, WCAG 2.4.11 scroll-padding, error typography.
+6. **Technical Specifications & Unified Z-Index**: Modern font loading, standard breakpoints, multi-tier z-index scale (`z-0` to `z-999999`).
+7. **Regulatory Compliance & Local Domain Policies**: Statutory tax rules (PP 55/2022 jo. PP 20/2026 or sector regulations), mandatory liability disclaimers.
 
 **Output file:**
 ```
@@ -285,23 +310,20 @@ docs/specs/COMPONENT_REQUIREMENTS.md
 
 ---
 
-### Step 0 Checklist
+### Step 0 Checklist (Agent Validation Rules)
 
-Before proceeding to Step 1 (DESIGN.md generation):
+Before completing Step 0 and proceeding to `docs/harness-root/DESIGN.md` generation, verify:
 
-- [ ] All scope features extracted
-- [ ] Each feature mapped to UI patterns
-- [ ] Component inventory: 20-40 components (not 50+)
-- [ ] Every component has justification (which features use it)
-- [ ] Excluded components documented (why NOT in MVP)
-- [ ] 5-state matrix defined for data screens
-- [ ] Responsive breakpoints decided
-- [ ] Accessibility requirements listed
-- [ ] COMPONENT_REQUIREMENTS.md committed
+- [ ] **1. Nomenclature Parity**: 100% of component names in Section 2 exist in Section 3 inventory table.
+- [ ] **2. Anti-Disabled Pristine**: Form submit buttons are NOT disabled in pristine state (validation triggers on click with auto-focus).
+- [ ] **3. Non-Dismissing Errors**: Error toasts and offline reconnection alerts are configured without auto-dismiss.
+- [ ] **4. Numeric Input Optimization**: All monetary/currency inputs use `inputmode="numeric"` and NEVER `type="number"`.
+- [ ] **5. Z-Index Layer Integrity**: Modal dropdowns/comboboxes (`--z-modal-dropdown: 55`) are layered higher than the dialog itself (`--z-modal-dialog: 50`).
+- [ ] **6. Accessible Error Typography**: All form error text is minimum 13px with $\ge 4.5:1$ contrast against the card background.
+- [ ] **7. Verified Document Output**: `docs/specs/COMPONENT_REQUIREMENTS.md` committed and adheres to the 7 standardized sections.
 
-**Time budget:** 1-2 hours
-
-**Next step:** Generate DESIGN.md using component inventory as input (prevents generic slop)
+**Time budget**: 1-2 hours
+**Next step**: Proceed to Step 0.5 (Visual Reference Gathering) or Step 1 (`DESIGN.md` generation).
 
 ---
 
@@ -594,109 +616,493 @@ This module produces concrete deliverables:
 
 **File**: `docs/specs/SITEMAP.md`
 
-The sitemap defines **page hierarchy, route paths, and navigation structure** prior to creating mockups. Mandatory prerequisite for DESIGN_SPEC.md.
+The sitemap defines **page hierarchy, route paths, navigation structure, user flows, screen states, real data context, and RBAC boundaries** prior to creating mockups. Mandatory prerequisite for `DESIGN_SPEC.md`. Shallow 1-line route lists are strictly prohibited for production deliverables.
 
-### Template Structure
+### Production-Grade Template Structure
 
 ```markdown
 # SITEMAP - Information Architecture
 [Project Name]
 
-## Total Screens: [X] screens
+> *Note: The structure below uses a multi-role retail/accounting application (TataBuku) as an illustrative worked example. Adapt modules, roles, and routes to match your project's specific domain.*
+
+## Executive Summary
+- **Total Screens (MVP)**: [X] screens
+- **Deferred Screens (Phase 1.5 & Phase 2)**: [Y] screens
+- **Target Scale**: [Small 15-20 / Medium 30-50 / Large 60+ screens]
+- **Primary Architecture**: [Sidebar Desktop + Bottom Tabs Mobile]
+- **Role Matrix**: Owner (ROL-01), Manager (ROL-02), Kasir (ROL-03), Akuntan (ROL-04)
 
 ---
 
 ## PUBLIC PAGES (Unauthenticated)
 
 **Root**: `/`
-├── `/login` - User login form
-├── `/signup` - Registration form (email + password)
-├── `/forgot-password` - Request password reset email
-└── `/reset-password?token=xxx` - Reset password with token verification
+├── `/` — Landing page with hero, value proposition, pricing preview, CTA
+├── `/login` — User authentication form (email + password, forgot password link)
+├── `/signup` — Account registration wizard (business name, owner email, password)
+├── `/forgot-password` — Password reset request (email input, captcha)
+├── `/reset-password?token=xxx` — Token-authenticated new password setup
+├── `/verify-email/:token` — Email verification confirmation landing
+├── `/terms` — Terms of service static legal view
+└── `/privacy` — Privacy policy static legal view
+
+---
+
+## ONBOARDING FLOW (First-Time Setup)
+
+├── `/onboarding/step-1` — Welcome & business profile setup
+├── `/onboarding/step-2` — Organization details & tax identity (NPWP optional)
+├── `/onboarding/step-3` — Initial location/branch setup
+├── `/onboarding/step-4` — Staff invitations & initial role assignment
+└── `/onboarding/complete` — Setup completion summary with CTA to `/dashboard`
 
 ---
 
 ## AUTHENTICATED PAGES
 
-**Dashboard**: `/dashboard` (Landing page after login)
+**Dashboard**: `/dashboard` (Landing page after login, customized by role)
 
-### Documents Module
-├── `/documents` - List view (table with filters, search, pagination)
-├── `/documents/upload` - Upload new document form
-├── `/documents/:id` - Single document detail view
-└── `/documents/:id/edit` - Edit document metadata
+### Products Module (Katalog & Inventori)
+├── `/products` — List view with search, category filter, stock level badges, pagination
+├── `/products/new` — Add product form (extended specification below)
+├── `/products/:id` — Single product detail view, sales history, stock per location
+├── `/products/:id/edit` — Edit product form (inline validation, duplicate barcode prevention)
+└── `/products/categories` — Product category CRUD table and hierarchy
 
-### Signatures Module (E-signature workflow)
-├── `/signatures/pending` - Documents awaiting signature
-├── `/signatures/completed` - Signed documents archive
-└── `/signatures/:id` - Signature detail & status tracking
+### POS & Transactions Module
+├── `/pos` — Fast cashier interface with barcode scan, numpad, cart, quick checkout
+├── `/transactions` — Full transaction history table with date/status/payment filters
+├── `/transactions/new-sale` — Form-based sales entry for invoice/custom billing
+├── `/transactions/new-purchase` — Purchase order / incoming stock entry form
+└── `/transactions/:id` — Transaction detail with line items, receipt print/PDF export
 
-### Users Module (Admin only)
-├── `/users` - User management list (roles: admin, editor, viewer)
-├── `/users/invite` - Invite new user form (email + role selection)
-└── `/users/:id` - User profile & permission management
+### Stock Management Module
+├── `/stock/adjustments` — Stock adjustment log (opname history, discrepancy values)
+├── `/stock/adjustments/new` — New stock adjustment request form
+└── `/stock/adjustments/pending` — Manager approval queue for adjustments > threshold
 
-### Settings
-├── `/settings/profile` - User profile (name, email, avatar)
-├── `/settings/security` - Change password, 2FA setup
-└── `/settings/preferences` - UI theme (light/dark), language, notifications
+### Receivables & Payables Module (Hutang-Piutang)
+├── `/receivables` — Customer receivables list with aging buckets (0-30, 31-60, 60+ days)
+├── `/receivables/:id` — Customer ledger detail with outstanding balance & payment history
+├── `/receivables/new` — Manual invoice/piutang recording form
+├── `/payables` — Supplier payables list with due dates and payment terms
+├── `/payables/:id` — Supplier ledger detail with bills & payment records
+└── `/payables/new` — Manual purchase bill/hutang recording form
+
+### Reports Module (Laporan Finansial)
+├── `/reports/profit-loss` — Income statement (Laba-Rugi: Revenue, COGS, Gross Margin)
+└── `/reports/inventory` — Stock valuation, turnover rate, and slow-moving SKU report
+
+### User Management Module (Owner/Admin only)
+├── `/users` — User directory list with role badges, active status, branch assignment
+├── `/users/invite` — Staff invitation form (email, name, role selection, location access)
+└── `/users/:id` — User detail and permission inspection modal/page
+
+### Settings Module (Pengaturan Sistem)
+├── `/settings/profile` — User profile, contact, avatar upload
+├── `/settings/security` — Password change, session management, 2FA setup
+├── `/settings/preferences` — Language, date/currency formatting, dark mode toggle
+├── `/settings/organization` — Legal business identity, address, tax configuration
+├── `/settings/receipt` — Thermal receipt layout, header/footer text, print logo
+└── `/settings/notifications` — Notification preferences (low-stock alerts, daily digests)
+```
 
 ---
 
-## Screen Count by Module
+### Extended Screen Documentation Format
 
-| Module | Screens | Notes |
-|--------|---------|-------|
-| Public | 4 | Login, signup, forgot/reset password |
-| Dashboard | 1 | Main landing after auth |
-| Documents | 4 | List, upload, detail, edit |
-| Signatures | 3 | Pending, completed, detail |
-| Users (Admin) | 3 | List, invite, profile |
-| Settings | 3 | Profile, security, preferences |
-| **TOTAL** | **18** | MVP scope |
+For all non-trivial screens (forms, details, data tables, POS), agents **MUST** document each screen using the extended format below.
+
+```markdown
+### Screen: Add Product (SCR-006)
+
+**Route**: `/products/new`
+**Purpose**: Owner/Manager adds new product SKU to inventory master data
+**Components**: FormField (8), Input (5), Select (2: category, unit), ImageUpload (1), Button (2: Cancel, Save)
+**Layout**: Single column max-w-2xl, card container, padding 24px
+
+**Sections**:
+- Header: Title "Tambah Produk", Breadcrumb `Home > Produk > Tambah Produk`
+- Form Body: 8 fields (name*, SKU*, barcode, category dropdown*, buy price*, sell price*, stock*, min_stock*, unit dropdown*, image upload)
+- Footer: Cancel (secondary button), Save (primary button)
+
+**States**:
+- Pristine: Empty form, Save button disabled
+- Validating: Inline validation on blur (SKU unique check, sell price >= buy price, prices > 0)
+- Invalid: Inline error message in red below affected input, Save button disabled
+- Submitting: Save button shows loading spinner "Menyimpan...", all form inputs disabled
+- Success: Redirect to `/products/:id` (detail view), show toast "Produk berhasil ditambahkan"
+- Error: Show floating error toast "Gagal menyimpan produk: [Alasan]", re-enable inputs
+
+**Breadcrumb**: `Home > Produk > Tambah Produk`
+
+**Data Context**:
+- Example Name: "Indomie Goreng Pedas 85g"
+- Example SKU: "IDM-001"
+- Example Barcode: "8998866200115"
+- Example Category: "Makanan & Minuman > Mie Instan"
+- Example Pricing: Buy Price Rp 2.500, Sell Price Rp 3.000
+- Example Inventory: Stock 120 pcs, Min Stock 50 pcs, Unit "pcs"
+
+**RBAC**: Owner + Manager only (Kasir role blocked, redirects to 403 Forbidden with prompt to contact Owner)
+```
+
+#### Enforcement Rules
+- **MUST use extended format** for:
+  - All form screens (create, add, edit, setup)
+  - All detail screens (single record viewer, ledger cards, transaction receipts)
+  - All list screens with dynamic data tables (table columns, filter sets, empty/loading states)
+  - High-interaction screens (cashier POS, dashboard widgets, approval queues)
+- **Lightweight 1-line format allowed** for:
+  - Static legal pages (terms, privacy)
+  - Simple terminal redirects (`/onboarding/complete` → `/dashboard`)
+  - Standard HTTP error boundary pages (`/403`, `/404`, `/500`)
 
 ---
 
+### User Flows (Critical Paths — MANDATORY)
+
+Document 3 to 5 critical end-to-end user journeys covering the core value proposition of the system.
+
+#### Format per Flow
+1. **Entry point**: Initial screen route
+2. **Step-by-step navigation**: Screen → user action → system response → next screen
+3. **Decision points**: Conditional branches (`if/else`)
+4. **Success exit**: Final terminal destination and confirmation
+5. **Error handling**: Failure scenarios, input corrections, and recovery paths
+
+#### Production Examples
+
+```markdown
+### Flow 1: Onboarding (First-Time User Setup)
+1. Signup `/signup` → enter name, business email, password → submit.
+2. Verify email `/verify-email/:token` → user clicks verification link sent via email.
+3. Login `/login` → system detects first-time account → redirects to `/onboarding/step-1`.
+4. Welcome screen `/onboarding/step-1` → click "Mulai Setup Bisnis".
+5. Organization setup `/onboarding/step-2` → input nama usaha ("Toko Berkah Mandiri"), jenis usaha, NPWP (optional) → click "Lanjut".
+6. Location setup `/onboarding/step-3` → input cabang utama ("Toko Pusat - Surabaya"), alamat lengkap → click "Lanjut".
+7. Staff invite `/onboarding/step-4` → input email kasir/manager (or click "Lewati untuk sekarang").
+8. Complete `/onboarding/complete` → click "Buka Dashboard" → redirect to `/dashboard`.
+
+**Alternative Branch**: If user was invited by an Owner (received `/users/invite?token=xxx`) → complete password setup → skip onboarding wizard → redirect directly to `/dashboard`.
+
+---
+
+### Flow 2: Daily Sales Checkout (Kasir Role)
+1. Login `/login` → dashboard `/dashboard` → click quick action "Buka Kasir POS".
+2. POS screen `/pos` → barcode scanner fires or user types SKU "IDM-001" in search box.
+3. Product card displayed → click product or press Enter → item added to cart with default qty 1.
+4. Adjust quantity if needed (`+` / `-` / direct input) → unit price & subtotal auto-calculated from master data.
+5. Select payment method from dropdown or hotkey: Tunai (Cash), QRIS, Transfer Bank, or Piutang (Kredit).
+6. **If Kredit (Piutang)**:
+   - Customer name field required (search existing customer or type new name "Warung Bu Siti").
+   - Due date picker appears (default: +30 calendar days).
+   - On submit, system automatically creates invoice and increments receivables balance.
+7. Submit sale (`F9` / click "Bayar") → system validates stock availability.
+8. Thermal print dialog opens OR PDF receipt download starts → cart clears automatically → cursor refocuses to barcode search for next customer.
+9. **Error Handling**: If stock insufficient (e.g., requested 150 pcs, stock only 120 pcs) → display modal "Stok tidak mencukupi, sisa stok: 120 pcs" → checkout disabled until quantity is adjusted.
+
+---
+
+### Flow 3: Stock Adjustment Approval (Manager Role)
+1. Manager logs in → `/dashboard` displays badge notification "3 Penyesuaian Stok Menunggu Persetujuan".
+2. Click notification badge → redirects to `/stock/adjustments/pending`.
+3. List view renders table: Tanggal, Nama Produk, Lokasi Cabang, Selisih Qty (-5 pcs), Alasan ("Kemasan Rusak"), Pemohon (Kasir Andi), Nilai Kerugian (Rp 12.500).
+4. Manager clicks row → opens detail drawer with before/after stock quantities, photo attachment proof, and full audit trail.
+5. Manager decision:
+   - **Approve**: System updates inventory ledger, creates permanent audit log entry, sends notification to requester, removes row from pending list.
+   - **Reject**: System requires rejection notes (min 10 characters), stock remains unchanged, requester receives notification with rejection reason.
+6. Redirect / refresh `/stock/adjustments/pending`.
+```
+
+---
+
+### Comprehensive Breadcrumbs (25+ Examples)
+
+Breadcrumbs provide critical context awareness across deep hierarchical structures.
+
+**Pattern**: `Home > [Module] > [List/Detail/Action] > [Sub-action]`
+**Implementation Rule**: All parent segments are clickable routes. The terminal segment representing the active page is plain text (non-clickable).
+
+```markdown
+## Breadcrumbs (Context Awareness)
+
+### Dashboard & Core
+1. `Home` → Dashboard overview (`/dashboard`)
+2. `Home > Onboarding` → Setup wizard (`/onboarding/step-1`)
+
+### Products Module
+3. `Home > Produk` → Product list (`/products`)
+4. `Home > Produk > Tambah Produk` → Create product form (`/products/new`)
+5. `Home > Produk > Indomie Goreng 85g` → Product detail view (`/products/IDM-001`)
+6. `Home > Produk > Indomie Goreng 85g > Edit` → Edit product form (`/products/IDM-001/edit`)
+7. `Home > Produk > Kategori` → Product category manager (`/products/categories`)
+
+### POS & Transactions
+8. `Home > POS` → Fast cashier screen (`/pos`)
+9. `Home > Transaksi` → Transaction list (`/transactions`)
+10. `Home > Transaksi > TRX-20261005-001` → Transaction detail view (`/transactions/TRX-001`)
+11. `Home > Transaksi > TRX-20261005-001 > Void` → Transaction cancellation modal (`/transactions/TRX-001/void`)
+12. `Home > Transaksi > Catat Penjualan` → Manual sales order form (`/transactions/new-sale`)
+13. `Home > Transaksi > Catat Pembelian` → Purchase order form (`/transactions/new-purchase`)
+
+### Stock Management
+14. `Home > Stok` → Stock overview (`/stock`)
+15. `Home > Stok > Riwayat Adjustment` → Adjustment log (`/stock/adjustments`)
+16. `Home > Stok > Adjustment Baru` → Create stock opname form (`/stock/adjustments/new`)
+17. `Home > Stok > Pending Approval` → Manager approval queue (`/stock/adjustments/pending`)
+
+### Receivables & Payables (Hutang-Piutang)
+18. `Home > Piutang` → Customer receivables list (`/receivables`)
+19. `Home > Piutang > Warung Bu Siti` → Customer receivable detail (`/receivables/CUST-001`)
+20. `Home > Piutang > Warung Bu Siti > Catat Pembayaran` → Record payment modal (`/receivables/CUST-001/pay`)
+21. `Home > Hutang` → Supplier payables list (`/payables`)
+22. `Home > Hutang > PT Indofood` → Supplier payable ledger (`/payables/SUPP-001`)
+23. `Home > Hutang > PT Indofood > Bayar Hutang` → Settle bill modal (`/payables/SUPP-001/pay`)
+
+### Financial Reports
+24. `Home > Laporan > Laba-Rugi` → Income statement report (`/reports/profit-loss`)
+25. `Home > Laporan > Valuasi Inventori` → Stock valuation report (`/reports/inventory`)
+
+### Users & Settings
+26. `Home > User Management` → Staff user directory (`/users`)
+27. `Home > User Management > Undang Staf` → Invite staff modal/screen (`/users/invite`)
+28. `Home > Pengaturan > Profil` → User profile settings (`/settings/profile`)
+29. `Home > Pengaturan > Organisasi` → Organization profile (`/settings/organization`)
+30. `Home > Pengaturan > Format Struk` → Receipt layout designer (`/settings/receipt`)
+```
+
+---
+
+### Navigation Structure Detail
+
+Production sitemaps must specify both desktop and mobile navigation hierarchies.
+
+```markdown
 ## Navigation Structure
 
-**Top Navigation** (Authenticated):
-- Logo (left) → `/dashboard`
-- Main Nav (center): Documents | Signatures | Users (if admin)
-- User Menu (right): Profile | Settings | Logout
+### Desktop Navigation (Sidebar + Top Bar)
 
-**Sidebar Navigation** (Optional - for dashboard-heavy apps):
-- Dashboard
-- Documents
-- Signatures
-- Users (admin only)
-- Settings
-- Help & Support
+**Sidebar Hierarchy**: Fixed 240px width (collapsible to 64px icon rail on viewports <1280px).
 
-**Breadcrumbs** (Context awareness):
-- Example: Home > Documents > Document #123 > Edit
+```text
+[Logo] TataBuku      [Cabang Surabaya ▼]       🔔 [3]       [Avatar ▼]
+
+🏠 Dashboard            (/dashboard)
+🛒 POS (Kasir Cepat)    (/pos)                    ← Highlighted shortcut for Kasir role
+
+📦 Produk               (/products)
+   ├─ Daftar Produk     (/products)
+   └─ Kategori          (/products/categories)
+
+💰 Transaksi            (/transactions)
+   ├─ Riwayat Transaksi (/transactions)
+   ├─ Catat Penjualan   (/transactions/new-sale)
+   └─ Catat Pembelian   (/transactions/new-purchase)
+
+📊 Stok                 (/stock)
+   ├─ Penyesuaian Stok  (/stock/adjustments)
+   └─ Butuh Approval    (/stock/adjustments/pending) [Badge 3]
+
+💸 Hutang-Piutang       (/receivables)
+   ├─ Piutang Pelanggan (/receivables)
+   └─ Hutang Supplier   (/payables)
+
+📈 Laporan              (/reports/profit-loss)
+   ├─ Laba-Rugi         (/reports/profit-loss)
+   └─ Laporan Stok      (/reports/inventory)
+
+👥 User Management      (/users)                  ← Visible only to Owner (ROL-01)
+
+⚙️  Pengaturan           (/settings/profile)
+   ├─ Profil Akun       (/settings/profile)
+   ├─ Keamanan & Sandi  (/settings/security)
+   ├─ Identitas Usaha   (/settings/organization)
+   └─ Pengaturan Struk  (/settings/receipt)
 ```
+
+**Desktop Sidebar Invariants**:
+- Active link state: `bg-cyan-50 text-cyan-900 border-l-4 border-cyan-600 font-semibold`
+- Child item indentation: 16px left padding under parent accordion
+- Permission pruning: Menu items are completely hidden from DOM if user lacks role access (not just disabled)
+
+**Desktop Top Bar Components**:
+- **Brand Mark**: Left-aligned, click redirects to `/dashboard`
+- **Location Switcher Dropdown**: Allows filtering dashboard and stock data by branch ("Semua Lokasi", "Cabang Surabaya", "Cabang Jakarta", "+ Tambah Cabang")
+- **Alert Center (Bell Icon)**: Shows unread badge count (low-stock alerts, pending stock adjustment approvals)
+- **Profile Menu**: User avatar, user name, role badge, quick link to `/settings/profile`, and explicit Logout button (`POST /api/auth/logout`)
+
+---
+
+### Mobile Navigation (Bottom Tabs + More Drawer)
+
+On viewports <768px, navigation shifts to a sticky 64px bottom tab bar with maximum 5 slots:
+
+```text
+[ 🏠 Home ]   [ 🛒 POS ]   [ 💰 Transaksi ]   [ 📦 Produk ]   [ ⋯ Lainnya ]
+```
+
+**Tab Distribution**:
+1. **Home**: `/dashboard` (high-level KPI cards and quick action tiles)
+2. **POS**: `/pos` (full-screen mobile cashier interface with barcode button)
+3. **Transaksi**: `/transactions` (scrollable daily sales stream)
+4. **Produk**: `/products` (searchable product catalog with floating add button)
+5. **Lainnya (More Drawer)**: Bottom sheet modal containing remaining modules:
+   - 📊 Stok (Penyesuaian & Approval)
+   - 💸 Hutang & Piutang
+   - 📈 Laporan Laba-Rugi
+   - 👥 User Management (Owner only)
+   - ⚙️ Pengaturan & Logout
+
+**Mobile Navigation Rules**:
+- Auto-hide tab bar when soft keyboard is opened on input focus (prevent viewport distortion)
+- Active tab indicator: Icon fill in brand primary (`#0891B2`), label in 11px font weight 600
+```
+
+---
+
+### Phase Delineation (MVP vs Deferred)
+
+Every production sitemap must explicitly draw boundary lines to prevent scope creep during sprint execution.
+
+```markdown
+## Phase Delineation
+
+### MVP Scope (35-48 screens — Core Launch Criteria)
+Must-Have foundational features to achieve initial traction:
+- Public & Authentication (8 screens): Landing, login, signup, forgot password, reset password, verify email, legal terms, privacy.
+- Onboarding Wizard (5 screens): Business name, tax ID, branch location, staff invite, completion.
+- Dashboard (1 screen): Role-specific sales metrics, low stock indicators, quick actions.
+- Product Catalog (5 screens): List, add, detail, edit, categories.
+- Sales & POS (5 screens): Mobile cashier, transaction history, detail view, manual sale, manual purchase.
+- Stock Management (3 screens): Adjustment log, new adjustment, pending approval queue.
+- Hutang-Piutang (6 screens): Receivables list/detail/pay, payables list/detail/pay.
+- Reports (2 screens): Profit & Loss (Revenue - COGS = Gross Margin), Inventory valuation.
+- Users & Admin (3 screens): Staff list, invite modal, detail permissions.
+- Settings (6 screens): Profile, security, preferences, organization, receipt layout, notifications.
+
+---
+
+### Phase 1.5 Scope (Deferred — Post-Launch Validation)
+Features explicitly deferred until 30 days post-launch:
+
+1. **Beban Operasional / Operational Expenses (3 screens)**:
+   - `/expenses` — Expense history table with category filters
+   - `/expenses/new` — Record operational expense (rent, electricity, salaries, receipt attachment upload)
+   - `/expenses/:id` — Expense detail view and edit
+   - *Rationale*: MVP tracks Gross Profit (Penjualan - HPP). Operational expenses can be managed via spreadsheet during initial MVP validation without complicating financial logic.
+
+2. **Mutasi Antar Cabang / Stock Transfers (2 screens)**:
+   - `/stock/transfers` — Stock transfer history and transit statuses
+   - `/stock/transfers/new` — Transfer initiation form with source/destination selection
+   - *Rationale*: Multi-location businesses can coordinate branch restocking via phone/chat in early stages; avoids building transit approval workflows upfront.
+
+3. **Shift Kasir & Tutup Kas / Cash Drawer Reconciliation (1 screen)**:
+   - `/shift/close` — End-of-shift cash drawer count, discrepancy calculation, cashier handover
+   - *Rationale*: Requires physical cash drawer integration and shift scheduling logic; manual physical counting is sufficient for MVP.
+
+---
+
+### Phase 2 Scope (Future Enhancements — Post-Traction >500 Users)
+Features deferred until product-market fit is established:
+
+1. **Audit Trail Viewer (`/admin/audit-log`)**: System-wide event viewer (who changed what, IP address, timestamp).
+2. **Pusat Notifikasi Terpadu (`/notifications`)**: Dedicated in-app notification center inbox.
+3. **Billing & Langganan SaaS (`/settings/billing`)**: Integrated credit card / payment gateway recurring subscriptions.
+4. **Pusat Bantuan & Tutorial (`/help`)**: In-app knowledge base and video walkthrough player.
+```
+
+---
+
+### Real Business Data Context Requirements
+
+Generic placeholders like `"Product A"`, `"User 1"`, and `"Category X"` are **strictly forbidden** in sitemaps and wireframes.
+
+#### Rationale
+Real business entities expose layout bugs early:
+- Indonesian names have variable length and specific formatting (e.g., "PT Sumber Alfaria Trijaya Tbk").
+- Pricing in Rupiah uses thousand dots without decimals (`Rp 1.250.000`), whereas US SaaS uses comma separators and 2 decimal points (`$1,250.00`).
+- Addresses in Indonesia contain RT/RW, Kelurahan, Kecamatan, and 5-digit postal codes across 3-4 lines.
+
+#### Context Matrix
+
+| Domain Element | Indonesian Business Context | US SaaS Context |
+| :--- | :--- | :--- |
+| **Currency** | `Rp 1.250.000` (no decimals) | `$1,250.00` (2 decimals) |
+| **SKU Example** | `IDM-001`, `BBM-GRG-02` | `LOG-MX3-BLK`, `APL-MBP-14` |
+| **Product Name** | "Indomie Goreng Pedas 85g", "Beras Ramos 5kg" | "Logitech MX Master 3S Mouse", "MacBook Pro 14\"" |
+| **Category** | "Makanan & Minuman > Mie Instan" | "Electronics > Computer Accessories" |
+| **Customer** | "Warung Bu Siti", "Toko Sembako Barokah" | "Acme Corp", "Wayne Enterprises" |
+| **Address** | "Jl. Raya Darmo No. 123, Wonokromo, Surabaya 60241" | "500 Howard St, Suite 400, San Francisco, CA 94105" |
+| **Date Format** | DD/MM/YYYY (`05/10/2026`) | MM/DD/YYYY (`10/05/2026`) |
+| **Tax ID** | NPWP (16 digit: `01.234.567.8-901.000`) | EIN / SSN (`12-3456789`) |
+
+---
+
+### RBAC Documentation Per Screen & Module
+
+Every authenticated screen entry in `SITEMAP.md` must declare its access control rules to prevent post-release authorization holes.
+
+#### Standard Role Matrix (Retail/SaaS Default)
+1. **Owner (ROL-01)**: Unrestricted access across all screens, organizational settings, financial ledgers, and user invitations.
+2. **Manager (ROL-02)**: Operational authority. Can manage products, create transactions, view inventory, and approve stock adjustments. Cannot alter organization billing, banking details, or delete users.
+3. **Kasir / Cashier (ROL-03)**: Restricted terminal access. Allowed exclusively on `/pos`, daily sales stream, and personal profile. Blocked from financial reports, cost prices (HPP), and system settings.
+4. **Akuntan / Accountant (ROL-04)**: Read-heavy audit role. Full access to `/reports/*`, transaction ledgers, receivables/payables, and tax exports. Cannot execute POS checkout or alter inventory balances.
+
+#### RBAC Specification Format
+Attach RBAC tags directly to modules or extended screen definitions:
+
+```markdown
+### Screen: Profit-Loss Report (SCR-025)
+**Route**: `/reports/profit-loss`
+**RBAC**: Owner (ROL-01) [Full], Akuntan (ROL-04) [Read/Export], Manager (ROL-02) [Read-Only]
+**Blocked**: Kasir (ROL-03) → Intercepted by middleware, redirects to `/403` with notice: "Akses laporan keuangan hanya untuk Owner/Akuntan."
+```
+
+---
+
+### Screen Count by Module Table
+
+Include an explicit summary table reconciling scope against screen count:
+
+| Module | MVP Screens | Phase 1.5 Deferred | Phase 2 Future | Roles Allowed |
+| :--- | :---: | :---: | :---: | :--- |
+| Public & Legal | 8 | 0 | 0 | Unauthenticated |
+| Onboarding Wizard | 5 | 0 | 0 | Authenticated (New User) |
+| Dashboard | 1 | 0 | 0 | All Roles (Personalized) |
+| Products & Catalog | 5 | 0 | 0 | Owner, Manager |
+| POS & Transactions | 5 | 1 | 0 | Kasir, Manager, Owner |
+| Stock & Inventory | 3 | 2 | 0 | Manager, Owner |
+| Receivables & Payables | 6 | 0 | 0 | Owner, Manager, Akuntan |
+| Financial Reports | 2 | 3 | 0 | Owner, Akuntan |
+| User Management | 3 | 0 | 1 | Owner Only |
+| System Settings | 6 | 0 | 2 | Owner, All (Profile only) |
+| **TOTAL** | **44** | **6** | **3** | **Production Scale** |
+
+---
 
 ### Example Applications Across Different Scales
 
-**Small (10-15 screens)**: SaaS landing page
-```
-Public: /, /login, /signup, /pricing
-Authenticated: /dashboard, /settings, /billing
-Admin: /admin/users, /admin/reports
-```
-
-**Medium (20-30 screens)**: E-commerce
-```
-Public: /, /products, /product/:id, /cart, /checkout, /login
-User: /account, /orders, /orders/:id, /wishlist, /settings
-Admin: /admin/products, /admin/orders, /admin/customers, /admin/analytics
+**Small MVP (15-20 screens)**: Solo utility, developer tool, or simple single-role SaaS.
+```text
+Public: /, /login, /signup, /forgot-password
+Core: /dashboard, /projects, /projects/new, /projects/:id, /projects/:id/edit
+Settings: /settings/profile, /settings/billing
+Total: ~15 screens
 ```
 
-**Large (50-100+ screens)**: Enterprise SaaS
+**Medium Production App (30-50 screens)**: Multi-role B2B SaaS, SME ERP, accounting, inventory (e.g., TataBuku).
+```text
+Public & Onboarding: 10-12 screens
+Operational Modules (Products, Sales, Stock, Ledger): 20-25 screens
+Reports, Admin, Settings: 10-15 screens
+Total: 35-50 screens
 ```
-- 10+ modules (CRM, Inventory, Finance, HR, Reports)
-- Role-based screens (admin, manager, staff)
-- Multi-step workflows (onboarding, approval chains)
+
+**Large Enterprise System (60-100+ screens)**: Multi-tenant ERP, supply chain, multi-branch operations.
+```text
+Requires phased documentation: MVP core sitemap (40-50 screens) documented in full extended detail, with Phase 1.5/2 modules cataloged in deferred architecture specs.
 ```
 
 ---
@@ -898,41 +1304,138 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 ---
 
 ### Step 0B: Generate SITEMAP.md (MANDATORY - Information Architecture)
-**PREREQUISITE for all workflows (Manual, AI, or Hybrid)**
+**PREREQUISITE for all workflows (Manual, AI, or Hybrid)**. Shallow 1-line route maps are strictly prohibited.
+
+**Duration**: 1.5-3 hours (for 30-50 screens with full extended detail)
+- 30-45 min: Read `SCOPE_STATEMENT.md`, extract feature set, group into functional modules
+- 45-60 min: Document screens using extended format (10-15 screens/hour at full detail)
+- 15-30 min: Document 3-5 critical user flows (onboarding, daily tasks, approvals)
+- 10-15 min: Write 20+ comprehensive breadcrumb examples
+- 10-15 min: Detail desktop sidebar and mobile navigation structures
+- 10 min: Define phase delineation (MVP vs Phase 1.5 and Phase 2 deferred screens)
+- 10 min: Execute verification checklist and audit gate
+
+**Time scales with screen inventory**:
+- 15-20 screens: ~1.5 hours
+- 30-45 screens: ~2.5 hours
+- 50-60+ screens: ~3-4 hours (recommend strict phasing: MVP core first, Phase 1.5/2 documented as deferred)
+
+---
+
+### Step 0B Process
 
 1. **Read SCOPE_STATEMENT.md** from Module 02:
    - Extract all user stories (As a [role], I want to [action], so that [benefit])
-   - Group by module/feature area (Documents, Users, Settings, etc.)
-   - Identify public vs authenticated pages
-   - Map role-based access (admin-only screens, user screens)
+   - Group into functional domains (Auth, Onboarding, Products, POS, Stock, Ledgers, Reports, Settings)
+   - Identify public vs authenticated route boundaries
+   - Map role-based permissions (Owner, Manager, Kasir, Akuntan)
 
-2. **Create `docs/specs/SITEMAP.md`** with structure:
-   - **Public Pages**: Root `/`, login, signup, password reset
-   - **Authenticated Pages**: Dashboard, main modules, settings
-   - **Screen Count by Module**: Table with screen count breakdown per module
-   - **Navigation Structure**: Top nav, sidebar (if applicable), breadcrumbs
+2. **Generate `docs/specs/SITEMAP.md`** following Section 2A standard:
+   - Executive summary with role matrix
+   - Extended screen format for all forms, details, tables, and POS screens
+   - 3-5 critical user flows with branching and error handling
+   - 20+ breadcrumb navigation examples
+   - Desktop sidebar (240px) + mobile bottom tabs (5 slots max)
+   - Phase delineation (MVP in-scope vs Phase 1.5 / Phase 2 deferred with rationale)
+   - Real business data context (locale-appropriate entities, zero generic placeholders)
+   - RBAC rules per module and high-risk screens
 
-3. **Verify Completeness**:
-   ```powershell
-   # Check file exists
-   Test-Path "docs/specs/SITEMAP.md"
-   
-   # If FALSE: STOP and report error
-   # If TRUE: Read file and verify screen count matches scope
+3. **SITEMAP.md Verification Checklist**:
+
+   **Completeness Checks**:
+   - [ ] Every in-scope feature / user story from `SCOPE_STATEMENT.md` maps to at least one screen
+   - [ ] Every screen is justified by an approved requirement (flag uncovered stories or out-of-scope screens)
+   - [ ] Complete authentication flow (Login, Signup, Forgot, Reset, Verify Email, Legal Terms)
+   - [ ] Onboarding flow documented for first-time account setup
+
+   **Quality Checks**:
+   - [ ] 3-5 critical user flows documented for core journeys (entry point, navigation steps, decision branches, success exit, error handling)
+   - [ ] Breadcrumbs covering all nested paths (20+ examples for medium/large apps; full coverage of nested routes for small MVPs)
+   - [ ] Desktop sidebar (240px hierarchy) and mobile tabs (5 slots max) documented with active states and permission rules
+   - [ ] Phase 1.5 and Phase 2 deferred screens documented with concrete technical/commercial rationale
+
+   **Consistency Checks**:
+   - [ ] RBAC boundaries clearly stated per module and for sensitive actions
+   - [ ] Real business data context used throughout (Indonesian or US SaaS real entities; zero "Product A", "User 1")
+   - [ ] No orphaned routes: every authenticated route is reachable via sidebar, mobile tabs, or settings
+   - [ ] No duplicate routes (e.g., consolidate `/setup/org` vs `/settings/org`)
+
+   **Technical Checks**:
+   - [ ] Route order documented (e.g., static `/users/invite` declared before dynamic `/users/:id` to prevent framework collision)
+   - [ ] Consistent dynamic route param naming (e.g., `:id` for records, `:slug` for URL strings)
+   - [ ] File size ≥2000 bytes (indicates extended documentation rather than shallow 1-line stubs; >10KB for medium/large 30+ screen apps)
+
+4. **Agent Verification Script (Pseudo-code)**:
+
+   ```python
+   def verify_sitemap(sitemap_md: str, scope_statement_md: str):
+       # 1. Validate scope coverage (every story maps to screen)
+       uncovered_stories = check_story_coverage(sitemap_md, scope_statement_md)
+       if uncovered_stories:
+           raise VerificationError(f"Uncovered user stories: {', '.join(uncovered_stories)}")
+
+       # 2. Check user flows
+       user_flows = extract_sections(sitemap_md, "## User Flows")
+       if len(user_flows) < 2:
+           raise VerificationError(f"Found {len(user_flows)} user flows; minimum 2 required for small MVPs, 3-5 for medium/large apps.")
+
+       # 3. Check breadcrumbs
+       breadcrumbs = extract_list_items(sitemap_md, "## Breadcrumbs")
+       if len(breadcrumbs) < 5:
+           raise VerificationError("Missing breadcrumbs: must document nested paths and screen contexts.")
+
+       # 4. Check for generic placeholder slop
+       banned_placeholders = ["Product A", "User 1", "Category X", "Item 1", "Example Company"]
+       for banned in banned_placeholders:
+           if banned in sitemap_md:
+               raise VerificationError(f"Generic placeholder '{banned}' detected. Use real business context.")
+
+       # 5. Check navigation architectures
+       if "Navigation Structure" not in sitemap_md:
+           raise VerificationError("Missing navigation architecture specification.")
+
+       # 6. Check minimum size
+       if len(sitemap_md.encode('utf-8')) < 2000:
+           raise VerificationError("SITEMAP.md is under 2000 bytes. Extended screen format required.")
+
+       return True
    ```
 
-4. **Screen Count Validation**:
-   - Count total screens in SITEMAP.md
-   - Compare with scope from SCOPE_STATEMENT.md
-   - **GATE**: If mismatch >10% (missing screens or out-of-scope screens):
-     - Report discrepancy to user
-     - Ask: "Scope in SITEMAP has X screens, but SCOPE_STATEMENT only mentions Y user stories. Are there missing or out-of-scope screens?"
-     - WAIT for user confirmation before proceeding
+5. **Protocol If Verification Fails**:
+   - **STOP immediately**: Do not proceed to `DESIGN.md` or Step 1.
+   - Display failure summary:
+     ```text
+     ❌ SITEMAP.md Verification Failed
+     - Coverage: [Uncovered stories or out-of-scope screens]
+     - User flows: [Actual count] documented
+     - Breadcrumbs: [Actual count] documented
+     - Violations: [List specific placeholders or missing sections]
+     Decision required: Fix now (regenerate with full detail) or Confirm scope modification?
+     ```
+   - Wait for explicit user instruction before advancing.
 
-5. **Inform User**:
-   > "SITEMAP.md has been created at `docs/specs/SITEMAP.md` (Xkb) with a total of [X] screens. Breakdown per module: Public (4), Dashboard (1), Documents (4), Settings (3), Admin (3). Please review the navigation structure before proceeding to workflow selection (Manual Figma / AI-Assisted / Hybrid)."
+6. **PowerShell Gate Verification**:
 
-6. **WAIT for User Approval**:
+   ```powershell
+   # GATE CHECK - Step 0B
+   if (-not (Test-Path "docs/specs/SITEMAP.md")) {
+       Write-Error "STEP 0B FAILED: File docs/specs/SITEMAP.md not found."
+       exit 1
+   }
+
+   $sitemapContent = Get-Content "docs/specs/SITEMAP.md" -Raw
+   if ($sitemapContent.Length -lt 2000) {
+       Write-Error "SITEMAP.md is too small ($($sitemapContent.Length) bytes < 2000 bytes). Shallow 1-line format detected. Extended format required."
+       exit 1
+   }
+
+   Write-Host "✅ STEP 0B PASS: SITEMAP.md verified ($(($sitemapContent.Length)) bytes)"
+   ```
+
+7. **Inform User**:
+   > "SITEMAP.md has been generated at `docs/specs/SITEMAP.md` ([X] KB) containing [X] MVP screens + [Y] deferred screens across [Z] modules. Includes 5 user flows, 27 breadcrumbs, full desktop/mobile navigation specs, and role-based access rules. Review the sitemap before selecting the design workflow."
+
+8. **WAIT for User Approval**:
    > "Is this sitemap structure correct? If yes, choose a workflow:
    > - **A) Manual Figma** (2-3 weeks, pixel-perfect)
    > - **B) AI-Assisted** (1-3 days, direct code)
@@ -942,62 +1445,112 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 
 **Why This is Mandatory**:
 - Sitemap = blueprint for all screens (prevents missing pages in design)
+- Extended format locks UI component inventory and interaction states before writing specs
+- 5-state matrix and user flows prevent blank-screen syndrome and unhandled edge cases
 - Screen count validation = early detection of scope creep
-- Navigation structure locked early = consistent UX flow
-- Prerequisite for effort estimation (18 screens vs 50 screens = different timeline)
+- Navigation and breadcrumbs locked early = consistent UX hierarchy across desktop and mobile
+- Prerequisite for effort estimation (18 screens vs 48 screens = fundamentally different timeline)
 
-**Template**: Use structure from Section 2A (SITEMAP.md - Information Architecture)
+---
 
-**Example Terminal Command** (if SITEMAP.md missing):
-```powershell
-# GATE CHECK - Step 0B
-if (-not (Test-Path "docs/specs/SITEMAP.md")) {
-    Write-Error "STEP 0B FAILED: File docs/specs/SITEMAP.md not found."
-    Write-Error "Module 04 CANNOT proceed to Step 1 without SITEMAP.md."
-    Write-Error "Generate SITEMAP.md first based on SCOPE_STATEMENT.md."
-    exit 1
-}
+### Step 0.5: Visual Reference Gathering & Brand Synthesis (MANDATORY)
 
-# Verify file not empty
-$sitemapContent = Get-Content "docs/specs/SITEMAP.md" -Raw
-if ($sitemapContent.Length -lt 500) {
-    Write-Error "SITEMAP.md is too short (<500 chars). Ensure complete screen inventory."
-    exit 1
-}
+**PREREQUISITE BEFORE STEP 1**: Agents are strictly forbidden from hallucinating design tokens, inventing generic Zinc palettes, or generating `DESIGN.md` in a vacuum without grounded visual references and brand asset alignment.
 
-Write-Host "✅ STEP 0B PASS: SITEMAP.md verified ($(($sitemapContent.Length)) bytes)"
+#### 1. Automatic Scaffolding & Directory Setup
+The agent MUST execute:
+```bash
+mkdir -p docs/design/inspiration/
 ```
+
+#### 2. Mandatory Turn Stop (User UI Screenshots)
+**STRICT TURN STOP PROTOCOL**: The agent **MUST HALT** and prompt the user to provide 2–5 high-quality UI reference screenshots placed into `docs/design/inspiration/`:
+> "Visual inspiration workspace initialized at `docs/design/inspiration/`. Before generating `DESIGN.md`, please drop 2–5 UI reference screenshots (web apps, dashboards, or mobile interfaces whose visual style, density, and typography you admire) into `docs/design/inspiration/`. Alternatively, provide URLs or specific visual direction. **Waiting for your references to extract grounded design tokens.**"
+
+**No-Reference Fast-Track (Bypass Path)**:
+If the user states they have no visual references (e.g., small solo MVP, standard internal tool, or prefers default best practices), the agent proceeds directly by deriving tokens from `docs/specs/LOGO_DESIGN_BRIEF.md`, project domain conventions (e.g., HRIS, CRM, DevTools), and mathematically validated accessible defaults. Document the baseline rationale in `docs/design/inspiration/notes.md`.
+
+#### 3. Vision Extraction Protocol
+Once reference screenshots are provided, analyze them systematically:
+- **Color Palette & Surface Elevation**: Extract dominant background tones, card elevation shifts, text contrasts, and primary/secondary accent candidates.
+- **Corner Geometry**: Measure border-radius scale (sharp 4px vs refined 6-8px vs pill/rounded).
+- **Elevation & Shadows**: Analyze depth approach (flat 1px borders, subtle 1-3px ambient shadows, or layered elevation).
+- **Typography Hierarchy**: Font family style (grotesque sans, geometric sans, monospace accents), weight contrast, and heading scale.
+- **Layout Density & Spacing**: Compact high-density data tables vs spacious consumer dashboard grids.
+
+#### 4. Logo Cross-Alignment & Brand Harmonization
+- Inspect `/assets/logo/` and `docs/specs/LOGO_DESIGN_BRIEF.md`:
+  - Extract the exact primary and accent hex codes from the brand logo (e.g., `#ECECE3` monogram on `#000000` base).
+  - **Harmonize Neutrals to Brand Warmth**:
+    - If the logo/brand uses warm hues (40°–60°, paper/cream/warm stone), the neutral scale MUST use matching warm undertones (`#F5F5F0`, `#E8E8E0`, `#2B2B28`).
+    - If the logo uses cool tech blues (200°–240°), use cool zinc/slate neutrals.
+    - **Anti-Slop Rule**: Never default lazily to standard cold Zinc-240° when the brand identity is warm monochrome.
+
+#### 5. Artifact Output: `docs/design/inspiration/notes.md`
+Generate `docs/design/inspiration/notes.md` synthesizing:
+- Reference images audited with extracted traits.
+- Brand logo palette alignment table.
+- Selected neutral undertone justification.
+- Component density and corner radius decisions.
 
 ---
 
 ### Step 1: Formulating `DESIGN.md` Guardrails (ANTI-SLOP MANDATORY)
 Use template at `templates/02-design/DESIGN_MD_TEMPLATE.md` with **STRICT ANTI-SLOP RULES**:
 
-#### 1.1 Color Palette (FLAT COLORS ONLY)
+#### 1.1 Color Palette & Strict WCAG 2.2 Level AA Compliance
 **Primary/Accent (Pick ONE):**
-- From logo color palette if available, OR
+- From logo color palette and visual references, OR
 - Placeholder: `#0891B2` (Cyan-600) for fintech/SaaS, `#3B82F6` (Blue-500) for enterprise B2B
 - **FORBIDDEN:** Purple gradients (`#A855F7` → `#EC4899`), neon colors, rainbow palettes
 
-**Neutrals (Zinc Scale):**
-- Background Light: `#FFFFFF`
-- Background Dark: `#09090B` (Zinc-950) — NOT pure black `#000000`
-- Text Primary: `#3F3F46` (Zinc-700) — readable, high contrast (9.73:1 on white)
-- Text Secondary: `#71717A` (Zinc-500)
-- Border: `#E4E4E7` (Zinc-200)
-- **FORBIDDEN:** Gray scale with blue tint (`#CBD5E1` Slate), custom grays outside Tailwind default
+**Border Contrast Architecture (WCAG 1.4.11 Non-Text Contrast):**
+- **Container Divider (`--border-subtle`)**: 1px passive container divider (e.g., `#E4E4E7` on `#FFFFFF` = 1.3:1). Permitted ONLY for non-interactive content grouping.
+- **Interactive Input & Button Borders (`--border-input` / `--border`)**: **MUST achieve $\ge 3.0:1$** contrast against adjacent background surfaces (e.g., `#94A3B8` / `#71717A` achieving 3.1:1+ on white). Bypassing this with 1.3:1 borders is a critical accessibility failure.
 
-**Semantic Colors:**
-- Success: `#10B981` (Emerald-500)
-- Warning: `#F59E0B` (Amber-500)
-- Error: `#EF4444` (Red-500)
-- Info: `#3B82F6` (Blue-500)
+**Text & Placeholder Contrast (WCAG 1.4.3 Contrast Minimum):**
+- **Text Primary**: High contrast $\ge 7:1$ (e.g., `#18181B` / `#3F3F46` on white).
+- **Text Secondary**: High contrast $\ge 4.5:1$ (e.g., `#71717A` on white = 4.58:1).
+- **Placeholder Text (`--text-placeholder`)**: **MUST achieve $\ge 4.5:1$** contrast against input background. Never use `#A1A1AA` (2.8:1 FAILS); use `#71717A` or darker.
 
-#### 1.2 Typography (NO EXOTIC FONTS)
+**Separate Semantic Roles (No False Destructive States):**
+- **Operating Expenses**: Business transactions (OPEX, rent, utilities) are normal business operations. Style with **neutral warm badge & arithmetic sign** (`-Rp`, e.g., `#71717A` text with subtle border), **NEVER as `--destructive`**.
+- **Destructive (`--destructive`, `--destructive-foreground`)**: Strictly reserved for irreversible destructive actions: voiding transactions, product returns, overdue payables, and critical system errors.
+
+**Dark Mode Mirrored Semantics:**
+- Semantic status tokens MUST be fully mirrored with elevated dark surfaces and high-contrast text:
+  - Destructive Light: `#EF4444` on `#FEF2F2` (text contrast 4.8:1)
+  - Destructive Dark: `#FCA5A5` on `#450A0A` / elevated card `#27272A` (text contrast $\ge 5.2:1$, never dark red text on dark surfaces)
+  - Success Dark: `#86EFAC` on `#052E16` (contrast $\ge 5.0:1$)
+  - Warning Dark: `#FDE047` on `#422006` (contrast $\ge 5.5:1$)
+
+**Data Visualization Tokens (`--chart-1` through `--chart-5`):**
+Must be defined in both light and dark mode with distinct hue angles and $\ge 3:1$ contrast against adjacent segments:
+```css
+:root {
+  --chart-1: #0891B2; /* Cyan */
+  --chart-2: #10B981; /* Emerald */
+  --chart-3: #F59E0B; /* Amber */
+  --chart-4: #6366F1; /* Indigo */
+  --chart-5: #EC4899; /* Pink */
+}
+.dark {
+  --chart-1: #22D3EE;
+  --chart-2: #34D399;
+  --chart-3: #FBBF24;
+  --chart-4: #818CF8;
+  --chart-5: #F472B6;
+}
+```
+
+#### 1.2 Typography & iOS Anti-Zoom Rule
 **Font Families:**
 - UI/Body: **Inter** (weights: 400, 500, 600, 700 ONLY)
 - Monospace/Code: **JetBrains Mono** (weights: 400, 700 ONLY)
 - **FORBIDDEN:** Fancy display fonts (Recoleta, Clash Display, Syne), handwriting fonts, font weights outside 400-700
+
+**Anti-Zoom Rule (iOS Safari):**
+- All mobile form inputs (`<input>`, `<select>`, `<textarea>`) **MUST be at least `16px`** font size (`text-base md:text-sm` in Tailwind). Font sizes $<16$px trigger iOS Safari auto-zoom, breaking mobile viewport layout.
 
 **Type Scale:**
 - H1: 48px/700, line-height 1.1, letter-spacing -0.02em
@@ -1006,9 +1559,13 @@ Use template at `templates/02-design/DESIGN_MD_TEMPLATE.md` with **STRICT ANTI-S
 - Body: 16px/400, line-height 1.6
 - **FORBIDDEN:** Line-height < 1.4 for body text (readability), all-caps body text
 
-#### 1.3 Borders & Radius (SUBTLE ONLY)
+#### 1.3 Borders, Radius & Touch Targets
+**Touch Target Rule (WCAG 2.5.5 / Mobile Ergonomics):**
+- All interactive touch targets (buttons, quantity steppers, table action icons, dropdown triggers) **MUST be $\ge 44\text{px} \times 44\text{px}$** (`h-11 min-w-11` or minimum 44px tap area).
+
 **Borders:**
 - Width: **1px solid** (default for all cards, inputs, buttons outline)
+- Interactive input borders: $\ge 3.0:1$ contrast against background
 - **FORBIDDEN:** 2px+ thick borders, dashed/dotted borders, gradient borders
 
 **Border Radius:**
@@ -1056,6 +1613,23 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tailwind shadow-md */
 - Grid: 12-column system (Tailwind `grid-cols-12`)
 - Spacing: 4px/8px/16px/24px/32px increments (Tailwind default scale)
 
+**POS Dual-Panel & Responsive Table Architecture:**
+*(Conditional: Applicable to POS/Retail. For HRIS/CRM/SaaS, replace with domain layouts like split detail views, Kanban columns, or master-detail drawers)*:
+- Mobile Viewports (<640px): Standard data tables MUST reflow into stacked cards with key-value pairs (prevent unstyled horizontal overflow).
+
+**Z-Index Layering Scale (Strict Stacking Context):**
+```css
+:root {
+  --z-base: 0;                /* Default flow content */
+  --z-sticky-header: 10;      /* Sticky page headers & navigation rails */
+  --z-sticky-cart: 20;        /* POS bottom checkout bar & action dock */
+  --z-dropdown: 30;           /* Select popovers, tooltips, action menus */
+  --z-sync-banner: 40;        /* Fixed offline status / reconnect banner */
+  --z-modal: 50;              /* Dialog overlays & bottom sheet drawers */
+  --z-toast: 60;              /* Floating toast notifications */
+}
+```
+
 **FORBIDDEN:**
 - Absolute positioned elements without layout reason (floating badges everywhere)
 - Overlapping cards (z-index stacking for visual "depth")
@@ -1074,6 +1648,51 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tailwind shadow-md */
 - **shadcn/ui** as base (Radix UI primitives for accessibility)
 - **NO custom CSS files** (Tailwind utility classes only, config in `tailwind.config.ts`)
 - **NO Framer Motion** unless interactive prototype needs demo animations (remove before production)
+
+#### 1.7.1 Specialized Retail & Hardware Support (Conditional Domain Extensions)
+*(Note: The following sections apply specifically to projects with cashier, retail, or field POS requirements. Skip or substitute with relevant domain patterns for pure SaaS, HRIS, or developer platforms)*:
+
+**1. Offline & Sync Visual Indicator States (F-13):**
+Provide explicit CSS/component badge styling for local-first/POS connection states:
+- **Online**: Subtle green indicator dot (`#10B981`) with pulse effect.
+- **Offline**: Warm amber badge (`#F59E0B`) with pending transaction queue count (e.g., `⚡ Offline (3 pending)`).
+- **Syncing**: Active blue spinner badge (`#3B82F6`, `animate-spin`).
+- **Sync Error**: Red alert badge (`#EF4444`) with interactive "Retry Sync" button.
+
+**2. Thermal Receipt Stylesheet (58mm & 80mm Hardware):**
+Embedded `@media print` rules for direct POS receipt printing:
+```css
+@media print {
+  @page {
+    margin: 0;
+    size: 58mm auto; /* Use 80mm auto for standard wide POS printers */
+  }
+  body {
+    width: 58mm;
+    margin: 0;
+    padding: 2mm;
+    font-family: 'JetBrains Mono', monospace, courier;
+    font-size: 11px;
+    line-height: 1.25;
+    color: #000000 !important;
+    background: #FFFFFF !important;
+  }
+  .no-print, nav, aside, header, footer {
+    display: none !important;
+  }
+  .receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .receipt-divider {
+    border-top: 1px dashed #000000;
+    margin: 4px 0;
+  }
+}
+```
+
+**3. Dark Mode Logo Outlining:**
+When brand marks/monograms feature dark or black base geometries, outline the monogram with a subtle 1px border (`border border-zinc-700 dark:border-zinc-300/40`) to prevent visual disappearance on pure dark backgrounds (`#09090B`).
 
 ---
 
@@ -1176,14 +1795,68 @@ After Prototype generates screens, **MANUALLY REVIEW** each screen for slop:
    `ui_prototype_action(projectId="...", ...)`
 
 ### Step 3: Generating All Screens (Phased Coverage for Enterprise)
-- **Small/Medium Scale (<50 screens)**: 100% exhaustive coverage in a single phase. Truncation is FORBIDDEN.
+
+Use template: `templates/02-design/DESIGN_SPEC_TEMPLATE.md` to document the exhaustive screen specification in `docs/specs/DESIGN_SPEC.md`.
+
+#### 3.0 Standardized Prototype & Prompt Directory Layout
+To establish seamless synchronization between Module 04 (Design) and Module 06 (Development), create and maintain:
+
+```text
+docs/design/
+├── prompts/                          # Ready-to-use Screen Generation Prompts
+│   ├── scr-01/PROMPT.md              # Template: templates/02-design/SCREEN_PROMPT_TEMPLATE.md
+│   ├── scr-02/PROMPT.md
+│   └── ... (for each SCR-xx)
+└── screens/                          # Real User / AI Exported Code Components
+    ├── scr-01/                       # HTML, TSX, JSX, or CSS exported from v0/Stitch/Bolt
+    ├── scr-02/
+    └── ... (for each SCR-xx)
+```
+- **Prompt Generation**: For each screen in `SITEMAP.md`, generate `docs/design/prompts/scr-xx/PROMPT.md` using `templates/02-design/SCREEN_PROMPT_TEMPLATE.md`.
+- **Export Ingestion**: When the user generates screens via v0.dev, Google Stitch, or Claude Artifacts, save exported files in `docs/design/screens/scr-xx/` to enable rapid Level 1 handoff in Module 06.
+
+#### 3.1 Absolute Screen Coverage (100% Mapping)
+- **Small/Medium Scale (<50 screens)**: 100% exhaustive coverage in a single phase. Truncation or sampling is STRICTLY FORBIDDEN.
 - **Large/Enterprise Scale (≥50 screens)**: Phased approach to prevent context exhaustion:
-  - **Phase 1 (MVP Screens)**: Core user flows (login, dashboard, primary CRUD, checkout) — max 30-40 screens
-  - **Phase 2 (Admin/Secondary)**: Admin panels, reports, settings — remaining screens
-  - Document phasing plan in `DESIGN_SPEC.md` before starting.
-- Include real Indonesian business data context (rupiah format, legal/business terminology, city names).
-- Mandatory defensive states: request *Empty State* and *Loading Skeleton* screens.
-- Record the `screen_id` of **every successfully generated screen** into the inventory table in `DESIGN_SPEC.md`.
+  - **Phase 1 (MVP Screens)**: Core user flows (login, dashboard, primary CRUD, checkout) — max 30–40 screens.
+  - **Phase 2 (Admin/Secondary)**: Admin panels, reports, settings — remaining screens. Document phasing plan in `DESIGN_SPEC.md`.
+- Every route in `SITEMAP.md` MUST map to a unique `SCR-xx` ID, functional feature reference `F-xx`, and access role.
+
+#### 3.2 Adaptive Layouts & Role Viewport Boundaries
+- **Desktop**: Sidebar 260px (`w-[260px]`, `h-screen`, `border-l-4` active state) + Topbar 64px (`h-16`, `z-10`).
+- **Mobile**: Bottom Navigation Bar 64px (`h-16`, `z-20`, max 5 slots) with auto-hide behavior on virtual keyboard focus.
+- **Role-Based Routing**: Operators/Cashiers land directly on their execution interface (e.g., `/pos`), with sensitive fields (e.g., `buy_price` / HPP) completely omitted from query layers and DOM.
+
+#### 3.3 Standardized 5-State Matrix per Interface Pattern
+Every screen pattern MUST concretely define all 5 states (never write superficial labels):
+1. **Data Table Pattern**: Idle/Default, Skeleton Rows (`animate-pulse`), Empty State with CTA, Server Error Banner (`500/Net`) with retry button, Mutation Success Toast.
+2. **Form & Profile Pattern**: Pristine (Anti-Disabled submit button enabled), Validating on blur, Submitting (disabled inputs + spinner), Inline Field Errors (≥13px red text with `aria-describedby`), Success Redirect/Toast.
+3. **Document Detail Pattern**: Header Skeleton, Not Found (`404` card), Action Dialogs (`z-50`).
+4. **Validation Token Pattern**: Validating Spinner, Token Expired Card, Success Banner.
+
+#### 3.4 Wireflow Logic Defense & Hardware Traps
+1. **General Interaction & Form Defense (Universal)**:
+   - Double-submit prevention: Buttons debounce immediately upon click and display loading indicators.
+   - Idempotency: Mutations transmit unique client-generated request tokens.
+   - CSV injection neutralization: Spreadsheets prefix formula trigger characters (`=, +, -, @`) with `'`.
+2. **Conditional Domain Extensions (Retail / POS / Hardware Scope)**:
+   - **Barcode Scanner Shortcut Mitigation**:
+   - *Failure Mode*: Physical barcode scanners append an automatic `Enter` keystroke (`\n`). Binding `Enter` to "Submit Payment" causes premature transaction submission on incomplete carts.
+   - *Defense Protocol*: Cashier screens MUST NOT bind `Enter` to payment execution. Bind `Enter` to "Add Scanned Item to Cart". Reserve dedicated function keys: `F2` for search/scan, `F4` for payment modal, `F8` for new receipt.
+   - **Blind Count Opname Defense**:
+   - *Failure Mode*: Displaying expected system stock or discrepancy columns to counting staff invites confirmation bias and theft concealment.
+   - *Defense Protocol*: Staff physical count screens (`/stock/adjustments/new`) must physically exclude system stock and discrepancy columns from the client DOM. Variance calculations are strictly backend-side post-submission.
+   - **Dual Printer Protocol**:
+   - *Failure Mode*: Desktop web relies on `window.print()`, but mobile/tablet Android POS setups use Bluetooth/RawBT.
+   - *Defense Protocol*: Receipt dialog provides desktop `@media print` 58mm/80mm fallback AND raw ESC/POS text / Android RawBT intent format.
+
+#### 3.5 Automated Quality Validation Checklist
+Before submitting `DESIGN_SPEC.md`, verify:
+- [ ] 100% of sitemap screens have unique Screen IDs (`SCR-xx`) mapped to `F-xx` features.
+- [ ] Common text entry keys (e.g. `Enter`) are not bound to destructive or premature checkout actions.
+- [ ] Sensitive fields (cost prices, expected opname quantities, private tokens) are protected from DOM leakage.
+- [ ] Destructive error text contrast against light background surfaces is $\ge 4.5:1$ (measured $\ge 6.8:1$).
+- [ ] Focus Not Obscured specifies `scroll-padding-bottom` (min 96px) for mobile sticky action bars.
 
 ### Step 4: Assembling the Complete Clickable Demo
 1. Retrieve HTML/CSS component code from Prototype for all screens.
@@ -1194,9 +1867,15 @@ After Prototype generates screens, **MANUALLY REVIEW** each screen for slop:
 3. Deploy code to a free staging URL (Vercel / Cloudflare Pages) so it can be opened directly by the client on mobile or laptop to test the complete 100% flow.
 
 ### Step 5: Walk-Through & Design Freeze
-1. Schedule a demo session with **Client Single PIC** (or self-review for solo product).
-2. Let the client test clicking and typing forms in the live demo across all screens.
-3. Secure written approval: *Visual layout and navigation flow are officially FROZEN. Subsequent layout changes enter the Change Request (CR) scheme.*
+1. Schedule a structured walk-through session with **Client Single PIC** (or conduct self-audit for solo product).
+2. Execute end-to-end interactive testing across all screens, testing edge cases (empty states, field validations, keyboard navigation).
+3. Verify the 5-point Quality Validation Checklist in Section 3.5.
+4. **Execute Design Freeze Sign-Off**:
+   - Client PIC / Solo Dev signs the Design Freeze Sign-Off sheet in Section 6 of `DESIGN_SPEC.md`.
+   - **Binding Terms**:
+     1. Visual layouts, screen inventories, and interaction wireflows are officially **FROZEN**.
+     2. Implementation in Module 05 (Architecture) and Module 06 (Development) strictly reflects this specification.
+     3. Any subsequent layout additions or UX restructuring will be processed under billable *Change Request (CR)* agreements.
 
 ---
 
@@ -1327,23 +2006,40 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 [GATE] Module 04 is declared **PASSED** if:
 
 ### Mandatory Files Verification (BLOCKING):
-- [x] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, ≤2KB minimal brief)
-- [x] **`docs/specs/SITEMAP.md` exists** (≥500 bytes, contains screen count table)
-- [x] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
-- [x] **`docs/specs/DESIGN_SPEC.md` exists** (≥2000 bytes, contains screen specs)
-- [x] **Screen count match**: SITEMAP.md total = DESIGN_SPEC.md screen inventory (±10% tolerance)
+- [ ] **`docs/specs/COMPONENT_REQUIREMENTS.md` exists** (≥1000 bytes, contains component inventory & interaction states)
+- [ ] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, ≤2KB minimal brief)
+- [ ] **`docs/specs/SITEMAP.md` exists** (≥2000 bytes, contains screen inventory, user flows, and navigation structure)
+- [ ] **`docs/design/inspiration/notes.md` exists** (synthesizes 2–5 visual references, logo hex extraction, palette decisions)
+- [ ] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
+- [ ] **`docs/specs/DESIGN_SPEC.md` exists** (≥2000 bytes, contains screen specs)
+- [ ] **Screen count match**: SITEMAP.md total = DESIGN_SPEC.md screen inventory (±10% tolerance)
 
-### Design Quality (BLOCKING):
-- [x] **Anti-slop compliance**: Zero gradients, zero glassmorphism, shadows ≤4px blur
-- [x] **Contrast ratio ≥4.5:1** for all text (WCAG AA)
-- [x] **Accessibility audit**: Zero critical issues (Lighthouse ≥90 or manual WCAG checklist)
+### Strict Accessibility & Ergonomics Audit (BLOCKING - MATHEMATICALLY COMPUTED):
+
+Every `DESIGN.md` generation MUST pass this mathematical contrast and ergonomics verification table. Self-approving without actual computed ratios is STRICTLY FORBIDDEN:
+
+| Element Tested | Foreground / Border | Background Surface | Light Mode Ratio (Target) | Dark Mode Ratio (Target) | Minimum Standard |
+| :--- | :--- | :--- | :---: | :---: | :---: |
+| **Text Primary** | `--foreground` | `--background` | **≥7.0:1** (e.g., `#18181B` on `#FFFFFF` = 17.72:1) | **≥7.0:1** (e.g., `#F4F4F5` on `#09090B` = 18.10:1) | ≥7.0:1 (Enhanced) |
+| **Text Secondary** | `--muted-foreground` | `--background` | **≥4.5:1** (e.g., `#71717A` on `#FFFFFF` = 4.83:1) | **≥4.5:1** (e.g., `#A1A1AA` on `#09090B` = 7.76:1) | ≥4.5:1 (WCAG AA) |
+| **Placeholder Text** | `--text-placeholder` | `--input-bg` | **≥4.5:1** (e.g., `#71717A` on `#FFFFFF` = 4.83:1) | **≥4.5:1** (e.g., `#A1A1AA` on `#18181B` = 6.91:1) | ≥4.5:1 (WCAG AA) |
+| **Interactive Input Borders**| `--border-input` | `--card` / `--background` | **≥3.0:1** (e.g., `#71717A` on `#FFFFFF` = 4.83:1) | **≥3.0:1** (e.g., `#71717A` on `#18181B` = 3.67:1) | ≥3.0:1 (WCAG 1.4.11) |
+| **Destructive Text / Badge** | `--destructive-foreground` | `--destructive` bg | **≥4.5:1** (e.g., `#991B1B` on `#FEE2E2` = 6.80:1) | **≥4.5:1** (e.g., `#FCA5A5` on `#450A0A` = 8.51:1) | ≥4.5:1 (WCAG AA) |
+| **Success Text / Badge** | `--success-foreground` | `--success` bg | **≥4.5:1** (e.g., `#065F46` on `#D1FAE5` = 6.78:1) | **≥4.5:1** (e.g., `#86EFAC` on `#052E16` = 10.62:1) | ≥4.5:1 (WCAG AA) |
+| **Warning Text / Badge** | `--warning-foreground` | `--warning` bg | **≥4.5:1** (e.g., `#92400E` on `#FEF3C7` = 6.37:1) | **≥4.5:1** (e.g., `#FDE047` on `#422006` = 11.06:1) | ≥4.5:1 (WCAG AA) |
+
+**Ergonomics & Device Constraints (BLOCKING):**
+- [ ] **Non-Color Indicators**: Every state change (error, success, warning, expenses) pairs color with explicit text labels, arithmetic signs (e.g., `-Rp` for expenses), or icons (never color hue alone).
+- [ ] **iOS Safari Anti-Zoom**: Mobile input fields specify `text-base` (`16px`) on mobile viewports (`text-base md:text-sm`).
+- [ ] **Touch Target Compliance**: Interactive targets (buttons, steppers, icon buttons) meet `≥44px × 44px` (`h-11`).
+- [ ] **Anti-Slop Compliance**: Zero gradients, zero glassmorphism, shadows $\le 4$px blur, and z-index scale defined.
 
 ### User Testing (OPTIONAL for MVP, MANDATORY for Client Projects):
-- [x] **Minimum 2 iterations of user testing** with 5+ users per iteration (if client project)
-- [x] **SUS Score ≥70** (Acceptable) on the final iteration (if user testing conducted)
+- [ ] **Minimum 2 iterations of user testing** with 5+ users per iteration (if client project)
+- [ ] **SUS Score ≥70** (Acceptable) on the final iteration (if user testing conducted)
 
 ### Design Freeze Sign-Off (BLOCKING):
-- [x] **Design Freeze approval** embedded in DESIGN_SPEC.md with:
+- [ ] **Design Freeze approval** embedded in DESIGN_SPEC.md with:
   - Approver name (Client PIC or solo developer self-approval)
   - Approval date (YYYY-MM-DD)
   - Signature placeholder (digital signature or statement: "Approved via [email/chat]")
@@ -1366,9 +2062,11 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 # Run this PowerShell script to verify all mandatory files exist
 
 $requiredFiles = @(
+    @{Path="docs/specs/COMPONENT_REQUIREMENTS.md"; MinSize=1000},
     @{Path="docs/specs/LOGO_DESIGN_BRIEF.md"; MinSize=500; MaxSize=2048},
-    @{Path="docs/specs/SITEMAP.md"; MinSize=500},
-    @{Path="DESIGN.md"; MinSize=1000},
+    @{Path="docs/specs/SITEMAP.md"; MinSize=2000},
+    @{Path="docs/design/inspiration/notes.md"; MinSize=200},
+    @{Path="docs/harness-root/DESIGN.md"; MinSize=1000},
     @{Path="docs/specs/DESIGN_SPEC.md"; MinSize=2000}
 )
 
@@ -1423,10 +2121,16 @@ def verify_module_04():
     
     # 4. Verify DESIGN.md contains required sections
     design_md = read_file("docs/harness-root/DESIGN.md")  # Staged path during M04, deployed to root in M06
-    required_sections = ["Color Palette", "Typography", "Spacing", "Components"]
+    required_sections = ["Color Palette", "Typography", "Spacing", "Components", "Border Contrast Architecture", "Z-Index Layering Scale"]
     for section in required_sections:
         if section not in design_md:
             raise GateError(f"DESIGN.md missing section: {section}")
+
+    # 4b. Verify WCAG tokens exist
+    wcag_tokens = ["--border-input", "--text-placeholder", "--chart-1", "--z-modal"]
+    for token in wcag_tokens:
+        if token not in design_md:
+            raise GateError(f"DESIGN.md missing critical token: {token}")
     
     # 5. Verify Design Freeze Sign-Off exists
     if "Approved by:" not in design_spec or "Date:" not in design_spec:
@@ -1455,15 +2159,18 @@ After all checks pass, display a summary:
 ✅ MODULE 04 COMPLETE - Design Deliverables Ready
 
 Files Generated:
+- ✅ COMPONENT_REQUIREMENTS.md (≥1KB) - 7-section component inventory & interaction states
 - ✅ LOGO_DESIGN_BRIEF.md (1.8KB) - Minimal brief ready (2KB max)
-- ✅ SITEMAP.md (6.8KB) - 18 screens mapped
+- ✅ docs/design/inspiration/notes.md - Visual references analyzed & brand harmonized
+- ✅ SITEMAP.md ([X]KB) - [X] MVP screens + user flows & breadcrumbs (e.g., 44 screens / 14.2KB for medium SaaS)
 - ✅ DESIGN.md (12.4KB) - Design tokens defined
 - ✅ DESIGN_SPEC.md (34.7KB) - Screen specs complete
 
 Quality Checks:
-- ✅ Screen count match: SITEMAP (18) = DESIGN_SPEC (18)
+- ✅ Screen count match: SITEMAP ([X]) = DESIGN_SPEC ([X])
 - ✅ Anti-slop compliance: 0 violations
-- ✅ Accessibility: Contrast ratio ≥4.5:1 verified
+- ✅ Mathematical contrast audit: Text ≥4.5:1, Borders ≥3.0:1 verified in Light & Dark
+- ✅ Mobile ergonomics: Touch targets ≥44px, inputs 16px anti-zoom verified
 - ✅ Design Freeze: Approved by [Name] on [Date]
 
 [Optional - If prototype exists]

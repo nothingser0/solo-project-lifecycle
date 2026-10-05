@@ -72,24 +72,42 @@ This module is the fifth phase in the software project lifecycle for solo develo
 
 ### Pre-Questionnaire: Version Check (NEW)
 
-**Before asking tech stack questions, run real-time version check**:
+**Before asking tech stack questions, run real-time version check directly against official registry APIs**:
 
 ```bash
-# Check current ecosystem state for primary frameworks
-./scripts/check-package-versions.sh nextjs
+# Check current ecosystem state for target framework via official registry APIs:
+./scripts/check-package-versions.sh <nextjs|laravel|django|go|rails|flutter|remix|astro>
 # OR
-.\scripts\check-package-versions.ps1 -Framework nextjs
+.\scripts\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails>
 ```
 
-**Why**: Model knowledge cutoff = April 2024. Current date = October 2026 (18 month gap). Real-time npm queries ensure recommendations use current stable versions, catch deprecations, and avoid incompatible package combinations.
+**Universal Registry Sources (Zero Local Toolchain Dependency)**:
+| Ecosystem / Stack | Official Registry Source | Query Method | Verified Upstream Targets |
+| :--- | :--- | :--- | :--- |
+| **Next.js / Node** | npm Registry | `npm view <pkg> version` | `next`, `react`, `tailwindcss`, `zod`, `@supabase/ssr` |
+| **Laravel / PHP** | Packagist API | `repo.packagist.org/p2/laravel/framework.json` | `laravel/framework`, `breeze`, `sanctum`, PHP req |
+| **Django / Python** | PyPI JSON API | `pypi.org/pypi/django/json` | `django`, `djangorestframework`, `psycopg`, Python req |
+| **Go / Golang** | Go Official API & Proxy | `go.dev/dl/?mode=json` & `proxy.golang.org` | Stable Go runtime, `gin`, `gorm`, `pgx` |
+| **Ruby on Rails** | RubyGems API | `rubygems.org/api/v1/gems/rails.json` | `rails`, `puma`, `pg`, Ruby req |
+| **Flutter / Dart** | Pub.dev API | `pub.dev/api/packages/flutter_lints` | `flutter_lints`, `http`, `provider` |
+
+**Why**: AI models suffer from knowledge cutoff lag (e.g., assuming Next.js 14 when Next.js 15/16 is current, or assuming Laravel 10 when Laravel 11/13 is current). Real-time registry queries ensure architectural recommendations use actual current stable releases without requiring developers to pre-install local compilers (Composer, PHP, Python, Go) before scaffolding.
 
 **Output provides**:
-- Current stable versions (Next.js, React, Tailwind, Zod, etc.)
-- Deprecation warnings (@supabase/auth-helpers-nextjs → @supabase/ssr)
-- Compatibility analysis (Zod v3 vs v4, Tailwind v3 vs v4)
-- Recommended scaffold commands with pinned versions
+- Current stable versions directly from upstream registries.
+- Deprecation warnings (e.g., `@supabase/auth-helpers-nextjs` $\rightarrow$ `@supabase/ssr`).
+- Compatibility analysis & breaking change warnings (e.g., Zod v4 vs react-hook-form, Tailwind v4 PostCSS breaking changes).
+- Recommended scaffold commands and exact pinned version definitions.
 
-**Use version check output to inform FSD.md generation in STEP 1.**
+#### Agent Validation Rules (Step 0 Exit Gate)
+
+Before completing Step 0 and recommending tech stacks in Module 05:
+1. [ ] **Zero Unverified Web Search Reliance**: Dependency versions MUST be verified via live registry queries (`check-package-versions.sh` / `.ps1` or direct registry endpoints), NEVER guessed or hallucinated from outdated training data.
+2. [ ] **Breaking Changes & Pinning Strategy**:
+   - When detecting a bleeding-edge major version with ecosystem incompatibilities (e.g., Tailwind v4 breaking config changes, Zod v4 incompatible with resolvers), the agent **MUST** document an explicit pinning recommendation to the proven stable version (e.g., Tailwind v3.4, Zod v3.23.8).
+3. [ ] **Direct Synchronization to `FSD.md`**:
+   - All detected and agreed versions MUST be transcribed verbatim into the `Framework Versions (Pinned):` section of `docs/specs/FSD.md`.
+   - This guarantees that the Module 06 automated gate (`verify-framework-version.sh`) will succeed without version mismatches.
 
 ---
 
@@ -1123,14 +1141,18 @@ defineProps(['stats'])
 
 ## 5. Step-by-Step Execution
 
-### Step 1: Database Schema Design
+### Step 1: Database Schema Design & DDL Integrity
 1. Identify all data entities from forms in `DESIGN_SPEC.md`.
 2. Write the complete relational schema in standard SQL DDL format.
 3. Lock data integrity at the database level:
    - Use `UUIDv7` or `BIGINT` for Primary Keys.
-   - Set up `FOREIGN KEY` constraints with `ON DELETE RESTRICT` (never allow wild, untracked cascading deletions on transaction records).
-   - Set up `CHECK` constraints (e.g., `CHECK (nominal >= 0)`).
-   - Create indexes on frequently queried columns (`WHERE user_id = ... AND status = ...`).
+   - **Monetary Precision**: Always use `BIGINT` for currency amounts (stored in smallest currency unit / full Rupiah). Avoid `FLOAT` or `DOUBLE` rounding traps.
+   - **Quantity Precision**: Use `NUMERIC(12, 3)` for inventory/quantities to support fractional decimal units (kg, liters, metrics).
+   - **100% Foreign Key Indexing**: Every column with `REFERENCES table(id)` MUST have an explicit `CREATE INDEX` to prevent full table scans under load.
+   - **Strict Arithmetic CHECK Constraints**: Enforce domain validation at database level (e.g., `CHECK (net_amount = subtotal_amount - discount_amount)`, `CHECK (quantity > 0)`).
+   - **Append-Only Movement Ledger**: Financial mutations and stock changes are logged as immutable event records in a movement ledger; current balances act as cached projections.
+   - Set up `FOREIGN KEY` constraints with `ON DELETE RESTRICT` (never allow wild, untracked cascading deletions on transaction/ledger records).
+   - **Idempotency Response Cache**: Create an `idempotency_keys` table to store server response payloads and prevent duplicate processing on network retries.
 
 ### Step 2: API Contract Mapping
 Every action button on the interface must have a corresponding API endpoint defined in standard format:
@@ -1370,9 +1392,22 @@ php artisan l5-swagger:generate
 
 ---
 
-### Step 3: Built-in Security Architecture
+### Step 3: Built-in Security Architecture & Database Isolation
 Lock security protocols before writing code:
-1. **Sensitive Document Storage (Vault)**:
+1. **Multi-Tenant RLS Coverage (100%)**:
+   - Every tenant table without exception must declare `ALTER TABLE ... ENABLE ROW LEVEL SECURITY;`.
+   - Implement role-differentiated policies for `SELECT`, `INSERT`, `UPDATE`, `DELETE`. Indiscriminate `FOR ALL` policies are strictly prohibited.
+2. **Hardened `SECURITY DEFINER` Helper Functions**:
+   - All helper functions reading auth state or organization mapping must explicitly declare `SET search_path = public, pg_temp STABLE` to prevent search-path privilege escalation exploits.
+3. **Atomic Stored Procedures with Row-Locking**:
+   - Critical multi-step mutations (checkout, payment settlement, inventory reduction) MUST be encapsulated in PostgreSQL RPC functions.
+   - Enforce row-locking using `SELECT ... FOR UPDATE` on inventory/balance records to eliminate concurrent race conditions and overselling.
+   - Server-Side Valuation: Calculate line-item totals directly from server master pricing to prevent browser client tampering.
+4. **Database-View Data Masking (Anti-Leakage)**:
+   - Sensitive fields (cost prices, gross margins, employee salaries) must be excluded at the database view projection level (e.g., `products_cashier_view`), never relying solely on frontend UI hiding.
+5. **Immutable Audit Logging**:
+   - `audit_logs` table must be protected with only `SELECT` and `INSERT` policies. `UPDATE` and `DELETE` are denied by default.
+6. **Sensitive Document Storage (Vault)**:
    - PDF document files must be encrypted before entering cloud storage using AES-256-GCM. Encryption keys are managed separately (*Key Management Service*).
    - **KMS Implementation Ladder by Scale**:
      - **Small**: Environment variables (`process.env.ENCRYPTION_KEY`) + AWS Secrets Manager basic
@@ -1380,20 +1415,67 @@ Lock security protocols before writing code:
      - **Large**: AWS KMS / GCP Cloud KMS with envelope encryption
      - **Enterprise**: Hardware Security Module (HSM) + FIPS 140-2 compliance
    - Document download links must use *Presigned URLs* with a maximum expiration of 15 minutes.
-2. **Authentication & Passwords**:
+7. **Authentication & Passwords**:
    - Passwords must be hashed using **Argon2id** (or bcrypt with cost factor ≥12).
    - Session tokens are stored in `HttpOnly, Secure, SameSite=Strict` cookies to prevent token theft via Cross-Site Scripting (XSS) attacks.
-3. **Request Rate Limiting**:
+8. **Request Rate Limiting**:
    - Sensitive endpoints (Login, Send OTP, Checkout) are protected by rate limiting (example: max 5 attempts per IP in 15 minutes).
 
 ### Step 4: PRD & FSD Document Preparation
-- **`PRD.md`**: Contains a summary of business functional requirements, user access rights matrix (RBAC), success metrics (KPIs), and non-functional requirements (NFRs: latency < 200 ms, uptime 99.9%).
+
+Use `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md` to draft **`docs/specs/PRD.md`** and `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md` for **`docs/specs/FSD.md`**.
+
+#### PRD Architectural Requirements (The 7 Core Components)
+Every `PRD.md` bridges business scope into robust technical reality. The architecture is **domain-neutral and scales across all software types** (CRM, CMS, HRIS, E-commerce, Fintech, SaaS, Developer Tools). Domain-specific modules (POS hardware, stock opname, statutory tax) are applied conditionally when present in `SCOPE_STATEMENT.md`, or marked N/A with reasoned justification for other domains.
+
+1. **Functional Traceability Matrix (Universal)**: Complete mapping of every feature (`F-xx`) from `SCOPE_STATEMENT.md` to an explicit Technical Requirement ID (`REQ-xx`) and Screen ID (`SCR-xx`). Zero untracked features.
+2. **Append-Only Ledger & State Architecture (Universal)**: Direct un-audited in-place balance overwrites (`UPDATE ... SET balance = balance - 1`) are strictly prohibited. State transitions and balance mutations are recorded as immutable event logs (e.g., `inventory_movements`, `audit_logs`, `deal_stage_history`, or `content_revisions`), with current state acting as a cached read-model projection.
+3. **Idempotency & Interaction Safety (Universal)**:
+   - State-changing mutation requests (payments, publish events, lead status updates) transmit a unique `idempotency_key` (UUID v4) enforced by database constraints to prevent duplicate processing.
+   - Offline/disconnected sequencing: Define isolated device sequencing where multi-terminal offline operation is in scope (`[NODE]-[DEVICE]-[YYYYMMDD]-[SEQ]`).
+   - Keyboard safety: Common entry keys (`Enter`) must not trigger premature final checkout or irreversible actions.
+4. **Domain Logic Defense & Workflow Integrity (Domain-Conditional)**:
+   - *Retail / Commerce Scope*: Two-phase opname blind count (physical count screens omit system expected quantities from DOM to prevent confirmation bias; management variance review requires explanatory notes).
+   - *CRM Scope*: Lead qualification gate rules, deal stage transition validation, activity logging without orphan contacts.
+   - *CMS Scope*: Editorial workflow lifecycle (Draft $\rightarrow$ In Review $\rightarrow$ Scheduled $\rightarrow$ Published), revision diffing, slug collision prevention.
+   - *Other Domains*: Document equivalent domain boundary defenses or mark N/A with rationale.
+5. **Multi-Layer Security & Database-Level Isolation (Universal)**:
+   - Sensitive fields (cost prices in retail, deal value in restricted CRM roles, salaries in HRIS) are protected via dedicated database views or query-layer selection, never by frontend UI hiding alone.
+   - Multi-tenant / organizational data isolation enforced via RLS policies.
+   - Spreadsheet/CSV exports sanitize formula injection characters (`=`, `+`, `-`, `@`, `\t`, `\r`).
+6. **Statutory & Sector Regulatory Compliance (Domain-Conditional)**:
+   - If tax or statutory calculations are in scope: Cite verified, date-checked legal citations (e.g., PPh Final UMKM PP 55/2022 for commerce, PPh 21 TER PMK 168/2023 for HRIS payroll) with mathematical formulas.
+   - Persistent in-app legal disclaimers protecting against liability or malpractice claims.
+   - For non-statutory projects (e.g., standard CMS or developer tool): Mark N/A.
+7. **Release Acceptance Criteria (Given-When-Then BDD — Universal)**:
+   - All core functional modules, critical workflows, and boundary conditions must include formal BDD test scenarios.
+
+#### PRD Automated Quality Validation Checklist
+Before submitting `docs/specs/PRD.md`, the agent MUST verify:
+- [ ] **1. Full Traceability**: 100% of Scope Statement features are mapped in Section 2 to Technical Requirement IDs (`REQ-xx`) and Screen IDs (`SCR-xx`).
+- [ ] **2. Immutable Ledger / Event Journal**: Balance mutations and critical state changes use append-only event journals; direct un-audited overwrites are eliminated.
+- [ ] **3. Mutation Idempotency**: State-changing requests enforce `idempotency_key` unique constraints, with keyboard shortcut safeguards against premature submission.
+- [ ] **4. Domain Workflow Defense**: Operational failure modes (e.g. blind count for inventory, deal transition guards for CRM, content revision locks for CMS) are defended or marked N/A with rationale.
+- [ ] **5. Database-Layer Security**: Sensitive fields are protected via database views/queries, with tenant-scoped RLS and CSV formula injection sanitization.
+- [ ] **6. BDD Acceptance Scenarios**: Core business workflows and critical edge cases are specified in Given-When-Then format.
+- [ ] **7. Verified Statutory Compliance (If Applicable)**: Applicable statutory formulas cite date-verified regulations with required disclaimers, or are marked N/A.
+
 - **`FSD.md`**: Contains absolute technical details (ERD diagram, SQL DDL script, API contract table, transaction state machines, and audit logging).
 
+#### FSD Automated Quality Validation Checklist
+Before submitting `docs/specs/FSD.md`, the agent MUST verify:
+- [ ] **1. Data Access & RLS Scoping**: Multi-tenant tables enforce appropriate row-level security policies (`ENABLE ROW LEVEL SECURITY;` with granular role policies), or reasoned single-tenant/internal N/A documented.
+- [ ] **2. Hardened Security Definer**: All helper functions declare `SET search_path = public, pg_temp STABLE`.
+- [ ] **3. Atomic Mutations with Concurrency Guards**: High-risk concurrent mutations (e.g. checkout, reservations, balance deductions, state transitions) are wrapped in atomic database transactions or RPC procedures with row-locking (`FOR UPDATE`), or marked N/A with rationale for standard low-concurrency CRUD.
+- [ ] **4. Accurate Data Types**: Monetary amounts avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
+- [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
+- [ ] **6. Immutable Audit Trail**: Event journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
+
 ### Step 5: Technical Sign-Off with Client
-- Solo developer presents PRD & FSD documents to the **Client Single PIC**.
-- Client signs the technical specification approval sheet (*Technical Sign-off*).
-- Once the FSD is signed, the scope and technical logic are officially locked.
+1. Solo developer presents PRD & FSD documents to the **Client Single PIC** (or executes self-review for solo products).
+2. Verify both the PRD and FSD Automated Quality Validation Checklists.
+3. Client signs the technical specification approval sheet (*Technical Sign-off*).
+4. Once the FSD is signed, the scope, data schema, and technical logic are officially locked.
 
 ---
 
@@ -1428,24 +1510,24 @@ This module produces 2 primary technical documents:
 [GATE] Module 05 is declared **PASSED** if:
 
 ### Phase 0: Tech Stack Discovery (BLOCKING)
-- [x] **8-question questionnaire completed** (user answered all questions)
-- [x] **2-3 stack options generated** with cost/pros/cons comparison
-- [x] **User selected preferred stack** (LOCKED decision, cannot change without +2 weeks timeline impact)
-- [x] **Stack selection documented** in FSD.md header section
+- [ ] **8-question questionnaire completed** (user answered all questions)
+- [ ] **2-3 stack options generated** with cost/pros/cons comparison
+- [ ] **User selected preferred stack** (LOCKED decision, cannot change without +2 weeks timeline impact)
+- [ ] **Stack selection documented** in FSD.md header section
 
 ### Phase 1-4: FSD Content (BLOCKING)
-- [x] **Tech stack justification documented** (context-specific reasoning, alternatives rejected with reasons)
-- [x] **Database schema written** in SQL DDL syntax matching chosen DB (PostgreSQL/MySQL/MongoDB)
-- [x] **API endpoints documented** (minimum 10 endpoints with request/response examples)
-- [x] **Security blueprint complete** (encryption, hashing, rate limiting, framework-specific patterns)
-- [x] **Module 04 handoff strategy documented** (conversion plan from design specs → chosen stack)
+- [ ] **Tech stack justification documented** (context-specific reasoning, alternatives rejected with reasons)
+- [ ] **Database schema written** in SQL DDL syntax matching chosen DB (PostgreSQL/MySQL/MongoDB)
+- [ ] **API endpoints documented** (minimum 10 endpoints with request/response examples)
+- [ ] **Security blueprint complete** (encryption, hashing, rate limiting, framework-specific patterns)
+- [ ] **Module 04 handoff strategy documented** (conversion plan from design specs → chosen stack)
 
 ### Phase 5: File Verification (BLOCKING)
-- [x] **`docs/specs/PRD.md` exists** (≥3000 bytes, contains RBAC matrix, NFR thresholds)
-- [x] **`docs/specs/FSD.md` exists** (≥8000 bytes, contains all technical sections)
+- [ ] **`docs/specs/PRD.md` exists** (proportionate to scale: 3–5 pages for Small MVP, 10–20 pages for Medium; contains traceability matrix, domain logic defense or reasoned N/A, and BDD criteria)
+- [ ] **`docs/specs/FSD.md` exists** (proportionate to scale; contains verified DDL schema, security & access controls appropriate to architecture, atomic transactions for high-risk mutations or reasoned N/A, and API contracts)
 
 ### Phase 6: User Approval (BLOCKING)
-- [x] **Technical Sign-Off obtained** from Client Single PIC or solo developer self-approval
+- [ ] **Technical Sign-Off obtained** from Client Single PIC or solo developer self-approval
 
 ---
 

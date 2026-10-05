@@ -147,12 +147,15 @@ function Show-DevelopmentMenu {
     Write-Host "  3. TODO.md (Atomic task queue)"
     Write-Host "  4. ARCHITECTURE.md (Tech architecture summary)"
     Write-Host "  5. CONVENTIONS.md (Code style guide)"
-    Write-Host "  6. RUNBOOK_LOCAL (Local setup guide)"
-    Write-Host "  7. Copy all harness files at once"
-    Write-Host "  8. Back to main menu"
+    Write-Host "  6. DESIGN.md (Design tokens)"
+    Write-Host "  7. .env.example (Environment variables)"
+    Write-Host "  8. RUNBOOK_LOCAL.md (Local setup guide)"
+    Write-Host "  9. VERIFY_LOCAL.md (Verification checklist)"
+    Write-Host "  10. Copy all 9 harness files at once"
+    Write-Host "  11. Back to main menu"
     Write-Host ""
 
-    $choice = Read-Host "Select template (1-8)"
+    $choice = Read-Host "Select template (1-11)"
     
     switch ($choice) {
         "1" { Copy-Template "$TemplatesDir/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md" }
@@ -160,17 +163,23 @@ function Show-DevelopmentMenu {
         "3" { Copy-Template "$TemplatesDir/04-dev-execution/TODO_TEMPLATE.md" "TODO.md" }
         "4" { Copy-Template "$TemplatesDir/04-dev-execution/ARCHITECTURE_TEMPLATE.md" "ARCHITECTURE.md" }
         "5" { Copy-Template "$TemplatesDir/04-dev-execution/CONVENTIONS_TEMPLATE.md" "CONVENTIONS.md" }
-        "6" { Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "docs/RUNBOOK_LOCAL.md" }
-        "7" { 
+        "6" { Copy-Template "$TemplatesDir/02-design/DESIGN_MD_TEMPLATE.md" "DESIGN.md" }
+        "7" { Copy-Template "$TemplatesDir/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example" }
+        "8" { Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md" }
+        "9" { Copy-Template "$TemplatesDir/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md" }
+        "10" {
             Copy-Template "$TemplatesDir/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md"
             Copy-Template "$TemplatesDir/04-dev-execution/CONTEXT_TEMPLATE.md" "CONTEXT.md"
             Copy-Template "$TemplatesDir/04-dev-execution/TODO_TEMPLATE.md" "TODO.md"
             Copy-Template "$TemplatesDir/04-dev-execution/ARCHITECTURE_TEMPLATE.md" "ARCHITECTURE.md"
             Copy-Template "$TemplatesDir/04-dev-execution/CONVENTIONS_TEMPLATE.md" "CONVENTIONS.md"
-            Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "docs/RUNBOOK_LOCAL.md"
-            Write-Host "✅ All harness files copied" -ForegroundColor Green
+            Copy-Template "$TemplatesDir/02-design/DESIGN_MD_TEMPLATE.md" "DESIGN.md"
+            Copy-Template "$TemplatesDir/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example"
+            Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md"
+            Copy-Template "$TemplatesDir/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md"
+            Write-Host "✅ All 9 harness files copied" -ForegroundColor Green
         }
-        "8" { return }
+        "11" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
     }
 }

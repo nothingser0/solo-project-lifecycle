@@ -189,7 +189,7 @@ check_gate() {
     local gate_threshold="$2"
     local current_percent="$3"
     
-    if [[ $(echo "$current_percent >= $gate_threshold" | bc -l) -eq 1 ]]; then
+    if awk "BEGIN {exit !($current_percent >= $gate_threshold)}"; then
         echo -e "  ${GREEN}✓${NC} $gate_name (${gate_threshold}% required, ${current_percent}% achieved)"
     else
         echo -e "  ${RED}✗${NC} $gate_name (${gate_threshold}% required, ${current_percent}% achieved) ${RED}BLOCKED${NC}"
@@ -215,12 +215,12 @@ if [[ $COMPLETION_PERCENT == "100.0" ]]; then
     echo -e "  All TODO items checked. Ready for final handover."
     echo ""
     exit 0
-elif [[ $(echo "$COMPLETION_PERCENT >= 90" | bc -l) -eq 1 ]]; then
+elif awk "BEGIN {exit !($COMPLETION_PERCENT >= 90)}"; then
     echo -e "  ${YELLOW}◐ ALMOST THERE${NC}"
     echo -e "  ${YELLOW}${INCOMPLETE_ITEMS}${NC} items remaining. Review incomplete items above."
     echo ""
     exit 0
-elif [[ $(echo "$COMPLETION_PERCENT >= 50" | bc -l) -eq 1 ]]; then
+elif awk "BEGIN {exit !($COMPLETION_PERCENT >= 50)}"; then
     echo -e "  ${YELLOW}◐ IN PROGRESS${NC}"
     echo -e "  ${YELLOW}${INCOMPLETE_ITEMS}${NC} items remaining. Keep going!"
     echo ""

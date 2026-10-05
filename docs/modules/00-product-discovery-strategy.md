@@ -539,7 +539,7 @@ The final deliverables of Module 00 are **4 PM documents** created using the tem
 
 > 📁 **ABSOLUTE FILE LOCATION RULE**:
 > All documents MUST be stored inside the **`docs/pm/`** directory (never in the root directory).
-> The root directory `./` is reserved exclusively for the 7 AI control files (Agent Harness) once Module 06 begins.
+> The root directory `./` is reserved exclusively for the 9 AI control files (Agent Harness), README.md, and configuration once Module 06 begins.
 
 ---
 

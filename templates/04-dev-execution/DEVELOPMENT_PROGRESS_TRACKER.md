@@ -183,13 +183,13 @@
 ## 6. Code Review Milestone Checkpoints
 
 ### Checkpoint 1: Scaffolding & Foundation Gate
-- **Focus**: Directory architecture, 7 harness files, database schema, linting, & typing.
+- **Focus**: Directory architecture, 9 harness files, database schema, linting, & typing.
 - **Execution Timing**: After Repository Initialization & Initial Database Migration.
 - **Pass Criteria**:
   - [ ] `tsc --noEmit` / framework linter passes without errors and zero tolerance for `any` types.
   - [ ] `.env.example` complete with all variables required by code.
   - [ ] Database migration successfully executed locally and initial seed data loaded.
-  - [ ] 7 AI harnesses (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `TODO.md`, `DESIGN.md`, `.env.example`) present in root.
+  - [ ] 9 AI harnesses (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `TODO.md`, `DESIGN.md`, `.env.example`, `RUNBOOK_LOCAL.md`, `VERIFY_LOCAL.md`) present in root.
 - **Decision**: ☐ PASS | ☐ REWORK REQUIRED
 
 ### Checkpoint 2: Core Data & Domain Gate (Tranche Alpha Gate)

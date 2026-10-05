@@ -17,9 +17,10 @@
 
 | Test Command | Success Criteria | Self-Test Result | Notes |
 | :--- | :--- | :---: | :--- |
-| `npm run type-check` | TypeScript compiles without errors (`exit 0`) | [x] PASS | Free of type errors |
-| `npm run lint` | Linter clean without critical warnings | [x] PASS | Code adheres to style rules |
-| `npm run build` | Frontend & backend bundle built successfully | [x] PASS | Output ready for release |
+| `npm run type-check` | TypeScript compiles without errors (`exit 0`) | [ ] PASS | Free of type errors |
+| `npm run lint` | Linter clean without critical warnings | [ ] PASS | Code adheres to style rules |
+| `npm run build` | Frontend & backend bundle built successfully | [ ] PASS | Output ready for release |
+| `npm run test:smoke` | Core user loop assertions pass | [ ] PASS | Smoke tests clean |
 
 ---
 
@@ -27,12 +28,12 @@
 
 | Endpoint | Method | Test Scenario | Expected Status Code | Test Result |
 | :--- | :---: | :--- | :---: | :---: |
-| `/api/v1/auth/login` | `POST` | Valid credentials $\to$ HttpOnly cookie set | `200 OK` | PASS |
-| `/api/v1/auth/login` | `POST` | Invalid password $\to$ Specific error message | `401 Unauthorized` | PASS |
-| `/api/v1/documents` | `POST` | Valid payload + new Idempotency key | `201 Created` | PASS |
-| `/api/v1/documents` | `POST` | Duplicate idempotency key re-sent $\to$ Rejected | `409 Conflict` | PASS |
-| `/api/v1/documents/:id` | `GET` | Fetch document data $\to$ Presigned URL issued | `200 OK` | PASS |
-| `/api/v1/sign/:token` | `POST` | Digital signature $\to$ Status updated to `SIGNED` | `200 OK` | PASS |
+| `/api/v1/auth/login` | `POST` | Valid credentials $\to$ HttpOnly cookie / token set | `200 OK` | [ ] PASS |
+| `/api/v1/auth/login` | `POST` | Invalid credentials $\to$ Specific error message | `401 Unauthorized` | [ ] PASS |
+| `/api/v1/[resource]` | `POST` | Valid payload + new Idempotency key | `201 Created` | [ ] PASS |
+| `/api/v1/[resource]` | `POST` | Duplicate idempotency key re-sent $\to$ Cached response | `200 OK / 409` | [ ] PASS |
+| `/api/v1/[resource]/:id` | `GET` | Fetch resource data $\to$ Scoped by tenant | `200 OK` | [ ] PASS |
+| `/api/v1/[action]` | `POST` | Atomic mutation $\to$ Status updated | `200 OK` | [ ] PASS |
 
 ---
 
@@ -44,9 +45,9 @@
 
 | Screen | Brand Color Used | Typography Scale | Shadow Style | Border Style | Result |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Dashboard** | Primary (not neutral) | Per DESIGN.md section 3 | Flat (shadow-sm) | 1px border | [x] PASS |
-| **Login** | Primary brand | Correct weights | Flat | 1px border | [x] PASS |
-| **[Screen]** | Primary brand | Correct | Flat | 1px border | [x] PASS |
+| **Dashboard / Home** | Primary (not neutral) | Per DESIGN.md section 3 | Flat (shadow-sm) | 1px border | [ ] PASS |
+| **Login / Auth** | Primary brand | Correct weights | Flat | 1px border | [ ] PASS |
+| **[Primary Screen]** | Primary brand | Correct | Flat | 1px border | [ ] PASS |
 
 **Design Token Verification:**
 - [ ] Primary brand color applied to CTA buttons (not `bg-neutral-100`)
@@ -59,9 +60,9 @@
 
 | Page Name | Default State | Skeleton Loader | Empty State | Inline Error | Success Toast |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Dashboard** | [x] PASS | [x] PASS | [x] PASS | [x] PASS | [x] PASS |
-| **Document Form** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
-| **[Feature] Screen** | [x] PASS | [x] PASS | N/A | [x] PASS | [x] PASS |
+| **Dashboard / Overview**| [ ] PASS | [ ] PASS | [ ] PASS | [ ] PASS | [ ] PASS |
+| **Primary Resource Form**| [ ] PASS | [ ] PASS | N/A | [ ] PASS | [ ] PASS |
+| **[Feature Screen]** | [ ] PASS | [ ] PASS | N/A | [ ] PASS | [ ] PASS |
 
 ### 4C. Hydration Error Check (Next.js SSR)
 
@@ -93,16 +94,30 @@ npm run dev
 
 ---
 
-## 5. Critical Security Verification (Security Sanity)
+## 5. Automated Security & Concurrency Verification
 
-- [x] **[Security feature]**: PDF files in Cloudflare R2 / AWS S3 bucket are confirmed binary encrypted (cannot be opened directly without decryption key).
-- [x] **Presigned URL**: Download links expire automatically and return `403 Forbidden` after 15 minutes.
-- [x] **Password Protection**: `password_hash` column in PostgreSQL database is confirmed prefixed with `$argon2id$` (not plaintext).
-- [x] **Rate Limiting**: Login endpoint temporarily blocked after 5 consecutive failed attempts.
+### 5.1 Automated RLS Security Test (`tests/db/rls.test.ts`)
+| Test Scenario | Command | Expected Result | Audit Status |
+| :--- | :--- | :--- | :---: |
+| Anonymous query isolation | `pnpm test:security` | 0 rows returned on protected tables | [ ] PASS |
+| Role column masking | `pnpm test:security` | Sensitive cost fields omitted for staff | [ ] PASS |
+| Multi-tenant IDOR attack | `pnpm test:security` | Org A cannot query Org B records (0 rows) | [ ] PASS |
+
+### 5.2 Automated Concurrency & Deadlock Test (`tests/db/concurrency.test.ts`)
+| Test Scenario | Command | Expected Result | Audit Status |
+| :--- | :--- | :--- | :---: |
+| 20 parallel transactions | `pnpm test:concurrency` | Zero `40P01` deadlock errors | [ ] PASS |
+| Aggregate reconciliation | `pnpm test:concurrency` | Inventory/balance aggregate equals movement ledger sum | [ ] PASS |
+
+### 5.3 Critical Security Checks (Security Sanity)
+- [ ] **Encrypted Storage**: Sensitive files in S3/R2 are confirmed binary encrypted at rest.
+- [ ] **Presigned URLs**: Download links expire automatically and return `403 Forbidden` after 15 minutes.
+- [ ] **Password Protection**: Password hashes in database confirmed using Argon2id / bcrypt ($\ge 12$ rounds).
+- [ ] **Rate Limiting**: Auth & checkout endpoints rate-limited against brute-force attacks.
 
 ---
 
 ## 6. Final Local Verification Decision
 
-- [x] **LOCAL PASS**: All checklist items above are fulfilled. Code is ready to be pushed to the `staging` branch for integration testing in **Module 07: QA & SIT**.
+- [ ] **LOCAL PASS**: All checklist items above are fulfilled. Code is ready to be pushed to the `staging` branch for integration testing in **Module 07: QA & SIT**.
 - [ ] **FAIL**: Critical bugs or compilation failures found. Resolve before pushing.

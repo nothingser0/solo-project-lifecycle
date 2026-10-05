@@ -111,7 +111,7 @@ RELEASE & CLOSURE PHASE:
 > 📁 **ABSOLUTE FILE DISTRIBUTION RULES (FOLDER HYGIENE)**:
 > - **Folder `docs/pm/`**: Exclusively for initiation, scoping, legal, and governance documents (`IDEA_BRIEF.md`, `SCOPE_STATEMENT.md`, `PROJECT_CHARTER.md`, `SOW_CONTRACT.md`, `BAST.md`, etc.).
 > - **Folder `docs/specs/`**: Exclusively for technical specification and interface documents (`PRD.md`, `FSD.md`, `DESIGN_SPEC.md`).
-> - **Root Directory (`./`)**: EXCLUSIVELY RESERVED ONLY FOR 7 AI HARNESS FILES (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`), `README.md`, and framework configuration. **Never place planning documents in root!**
+> - **Root Directory (`./`)**: EXCLUSIVELY RESERVED ONLY FOR 9 AI HARNESS FILES (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`, `RUNBOOK_LOCAL.md`, `VERIFY_LOCAL.md`), `README.md`, and framework configuration files. **Never place planning documents in root!**
 
 ### Fast-Track Mode
 - `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`: Unified streamlined specification template (Idea + Scope + Commercial + DB Schema) for 1–4 week MVP projects. Saved to root (`./PROJECT_LITE.md`). *(Note: Module 04 Design workflow applies to Web/Mobile; Design specs optional).*
@@ -226,7 +226,7 @@ Full inventory of all 17 files in the `docs/` directory:
 | [`docs/modules/03-legal-sow-charter.md`](./modules/03-legal-sow-charter.md) | Module 03 [Gate 1] | Legal SOW, milestone payments, Single PIC, down payment |
 | [`docs/modules/04-uiux-prototyping.md`](./modules/04-uiux-prototyping.md) | Module 04 | UI/UX specifications, design tokens, screen inventory (incl. M04B DS) |
 | [`docs/modules/05-architecture-specs.md`](./modules/05-architecture-specs.md) | Module 05 | PRD, technical FSD, SQL schema, API contracts (incl. M05B scaling) |
-| [`docs/modules/06-development-execution.md`](./modules/06-development-execution.md) | Module 06 | Coding execution, 7 root harness files, security, performance |
+| [`docs/modules/06-development-execution.md`](./modules/06-development-execution.md) | Module 06 | Coding execution, 9 root harness files, security, performance |
 | [`docs/modules/07-quality-assurance-sit.md`](./modules/07-quality-assurance-sit.md) | Module 07 | Testing pyramid, third-party SIT sandbox, OWASP security audit |
 | [`docs/modules/08-data-migration-seeding.md`](./modules/08-data-migration-seeding.md) | Module 08 | Legacy data ETL, PII sanitization, reconciliation reporting |
 | [`docs/modules/09-uat-client-signoff.md`](./modules/09-uat-client-signoff.md) | Module 09 [Gate 2] | Staging client UAT, defect triage, signed UAT report |

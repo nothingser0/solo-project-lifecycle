@@ -33,15 +33,15 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 1. **Pre-scaffold phase** (M01-M05): Generate PM/spec docs + stage harness files
    - Write: `docs/pm/`, `docs/specs/`, `docs/harness-root/`
-   - `docs/harness-root/` contains 7 files: AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md, TODO.md, .env.example
+   - `docs/harness-root/` contains 9 files: AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md, TODO.md, .env.example, RUNBOOK_LOCAL.md, VERIFY_LOCAL.md
    - User can inspect staged files before scaffold
 
 2. **Scaffold phase** (M06): User runs framework CLI (create-next-app, laravel new, etc.)
    - Framework generates its boilerplate in root
 
 3. **Harness deployment** (M06 continuation): Agent copies staged files to root
-   - Source: `docs/harness-root/*`
-   - Target: `./` (project root)
+   - Source: `docs/harness-root/*` and `docs/harness-root/.env.example`
+   - Target: `./` (project root: `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./`)
    - Overwrites framework boilerplate (e.g., Next.js AGENTS.md)
    - Keep `docs/harness-root/` as reference (user can re-copy if needed)
 
@@ -125,7 +125,7 @@ Load module files from `docs/modules/` on demand:
 - M05: `05-architecture-specs.md` - PRD, FSD, database schema, API contracts
 
 **Development**:
-- M06: `06-development-execution.md` - Backend, frontend, 7 root harness files
+- M06: `06-development-execution.md` - Backend, frontend, 9 root harness files
 - M07: `07-quality-assurance-sit.md` - Tests, security audit, staging
 - M08: `08-data-migration-seeding.md` - ETL, data reconciliation
 - M09: `09-uat-client-signoff.md` - Client UAT, sign-off [GATE 2]
@@ -155,7 +155,7 @@ All templates in `templates/` directory:
 - `02-legal-commercial/` - Financial tracking, SMB SOW
 - `03-architecture-specs/` - PRD, FSD, system design
 - `03-governance/` - Enterprise governance (ADR, RACI, compliance, incident response)
-- `04-dev-execution/` - AGENTS.md, CONTEXT.md, TODO.md (7 root harness files)
+- `04-dev-execution/` - AGENTS.md, CONTEXT.md, TODO.md, RUNBOOK_LOCAL.md, VERIFY_LOCAL.md (9 root harness files)
 - `05-data-migration/` - Migration plans
 - `06-qa-uat/` - Test plans, security audits
 - `07-release-handover/` - Deployment, BAST
@@ -168,7 +168,7 @@ All templates in `templates/` directory:
 
 **docs/specs/**: Technical specs (PRD.md, FSD.md, DESIGN_SPEC.md)
 
-**Root (./)**: Reserved for 7 AI harness files ONLY (AGENTS.md, CONTEXT.md, ARCHITECTURE.md, DESIGN.md, CONVENTIONS.md, .env.example, TODO.md). Never put PM docs in root.
+**Root (./)**: Reserved for 9 AI harness files ONLY (AGENTS.md, CONTEXT.md, ARCHITECTURE.md, DESIGN.md, CONVENTIONS.md, .env.example, TODO.md, RUNBOOK_LOCAL.md, VERIFY_LOCAL.md). Never put PM docs in root.
 
 ## Scripts
 
@@ -179,7 +179,7 @@ Validation tools in `scripts/` (bash + PowerShell):
 ./scripts/validate-gate.sh M03  # Commercial gate
 ./scripts/validate-gate.sh M09  # UAT gate
 ./scripts/validate-gate.sh M11  # Handover gate
-./scripts/check-package-versions.sh nextjs  # Real-time package checks
+./scripts/check-package-versions.sh nextjs  # Real-time package checks (12 stacks supported)
 ./scripts/verify-framework-version.sh       # Verify lockfile matches FSD
 
 # Check template completeness

@@ -21,63 +21,238 @@ This module is the first gate in the software development lifecycle for solo dev
 [ RAW / ROUGH IDEA ]
           │
           ▼
-[ STEP 1: The 3-Filter Triage ]
-  • Real Problem & Unique Value
-  • Core User Loop
-  • MVP Razor (Extreme Feature Cutting)
+[ STEP 1: The 3-Filter Triage, Data Quality & Competitor Research ]
+  • Real Problem, Survey Methodology & Root Cause Breakdown
+  • 5-7 Competitor Landscape & Uniqueness Verification
+  • Core User Loop (3-Step Primary Flow)
+  • MVP Razor (Extreme Scope Pruning)
           │
           ▼
-[ STEP 2: 4-Dimension Feasibility Check ]
-  • Technical (Tech Stack & API Readiness)
-  • Solo Dev Bandwidth (Time Constraints & Maintenance)
-  • Regulatory & Legal (Business Permits, PDP Law, Liability)
-  • Economic & Business Value (Willingness to Pay / ROI)
+[ STEP 1.5: MVP Razor Validation Gate (MANDATORY) ]
+  • Root Cause Match (≥70% of stated problem solved)
+  • Target Segment Feasibility & BOM/Feature Fit
+  • Prune Mismatched Segments or Upgrade MVP Features
           │
           ▼
-[ STEP 3: Scale Classification ]
-  • Small (MVP / Freelance)
-  • Medium (B2B SaaS / Agency)
-  • Large (Scale-Up / Multi-System)
-  • Enterprise (Corporate / Strict Regulation)
+[ STEP 2: 4-Dimension Feasibility Check (Stricter Reality Scoring) ]
+  • Technical (Complexity Red Flags, Offline/Real-Time Penalties)
+  • Solo Dev Bandwidth (Epic Breakdown Sum + Non-Dev Buffer Cross-Check)
+  • Regulatory & Legal (UU PDP Compliance, Mandatory Docs, Disclaimers)
+  • Commercial & Business Value (Discounted Intent 15-25%, Unit Economics)
+  • Gate Outcome: GO (≥3.5) / GO BERSYARAT (3.0-3.5) / PIVOT (<3.0) / KILL
           │
           ▼
-[ OUTPUT: IDEA_BRIEF.md Document ] ──► Ready to Proceed to Module 02: Discovery & Scope
+[ STEP 2.5: Post-Development Kill/Pivot Criteria ]
+  • Week 4 & Week 8 Progress & Churn Thresholds
+          │
+          ▼
+[ STEP 3: Scale Classification & Module Routing ]
+  • Small (MVP) / Medium (SaaS) / Large (Scale-Up) / Enterprise
+          │
+          ▼
+[ OUTPUT: docs/pm/IDEA_BRIEF.md ] ──► Ready to Proceed to Module 02: Discovery & Scope
 ```
 
 ---
 
 ## 2. Step-by-Step Execution
 
-### Step 1: The 3-Filter Triage
+### Step 1: The 3-Filter Triage, Data Quality & Competitor Research
 
-Perform targeted interrogation on the raw idea:
+Perform rigorous interrogation on the raw idea before writing formal specifications:
 
-1. **Problem Filter (Problem Statement)**:
-   - *Question*: Who has this problem, how frequently does it occur, and how do they solve it today (manually, spreadsheets, hiring others)?
-   - *Principle*: Do not build software for problems adequately solved by a Google Sheet or simple form, unless there is a specific need for automation or data security.
-2. **Core Loop Filter (Core User Loop)**:
-   - *Question*: What is the 3-step loop of user interaction?
-   - *Standard Format*: `[User Input Data] ──► [System Processes/Transforms] ──► [User Receives Result/Value]`.
-3. **Extreme Cutting Filter (MVP Razor)**:
-   - *Question*: If this application could have only ONE primary feature at initial launch, which feature would still compel users to use it?
-   - *Action*: Cut secondary features (social login, dark mode, complex analytics charts, multi-gateway integrations) to the *Future Backlog*.
+#### 1.1 Problem Filter & Survey/Interview Methodology Standards
+- *Core Question*: Who has this problem, how frequently does it occur, and what is the measurable financial/time loss today?
+- *Workaround Rule*: Do not build custom software if a Google Sheet, Notion template, or simple form already solves 80% of the pain.
+- *Data Quality Standards*: If citing user research, survey numbers, or market loss figures, the agent **MUST** document:
+  1. **Sample Size & Split**: Disclose total respondents ($N$) and interview vs online survey breakdown (e.g., $N=52$: 10 in-depth interviews, 42 online forms). Never state "83% of users" without clarifying whether that is $8/10$ interviewees or $43/52$ survey responses.
+  2. **Recruitment Channel & Selection Bias**: State how participants were acquired (e.g., direct shop visits, WhatsApp merchant groups, paid ads). Acknowledge biases (e.g., online forms over-index on tech-savvy business owners).
+  3. **Question Formulation**: Distinguish intent from interest. A question asking *"Apakah Anda tertarik?"* measures passive curiosity. Only questions with pricing commitment (e.g., *"Apakah Anda bersedia membayar Rp 99.000/bulan untuk software ini?"*) count toward willingness-to-pay.
+  4. **Financial Loss Verification**: State the sample size behind claimed loss amounts (e.g., *"Rp 3-8 juta/bulan loss from stock discrepancy cited across 10 merchant interviews; variance is high and subject to outlier bias"*).
+
+#### 1.2 Competitor Research Minimum Standard
+Agents **MUST** benchmark at least **5–7 competitors** across three distinct categories:
+1. **Direct Competitors** (same core value proposition, same audience; e.g., BukuWarung, BukuKas).
+2. **Adjacent Competitors** (same problem for different scale OR full POS/ERP; e.g., Majoo, Moka, Accurate).
+3. **Manual / Workaround Competitors** (physical ledgers, customized Excel/Google Sheets, cash drawer paper notes).
+
+**Required Documentation Per Competitor**:
+- Product name, website URL, and detailed pricing tiers.
+- Core feature matrix (list 5–8 dominant capabilities).
+- Primary strength / market moat.
+- Operational weakness / customer complaint themes.
+- Offline capability audit: Does it support offline data entry? How does conflict resolution work?
+- Target market boundary (micro-merchants vs mid-sized retailers vs enterprise).
+
+**Uniqueness Claim Verification**:
+- If the idea claims *"First offline-first inventory"* or *"Unique zero-hardware setup"*, the agent must verify that claim against all 7 competitors.
+- If $\ge 2$ competitors already provide the feature (e.g., Majoo provides offline POS mode), the uniqueness claim is **FALSE** and must be reframed (e.g., *"Inventory-centric bookkeeping with offline mode without proprietary POS hardware at Rp 99k/month"*).
+
+#### 1.3 Core User Loop (3-Step Primary Flow)
+Define the uninterrupted daily loop delivering core value:
+```text
+[User Input / Trigger] ──► [System Process / Ledger Mutation] ──► [User Receives Value / Record Locked]
+```
+*Example*: Cashier scans barcode / types SKU `Indomie Goreng` ──► System validates stock, applies discount, records transaction hash ──► Receipt prints, inventory decrements, and daily revenue updates.
+
+#### 1.4 Extreme Scope Pruning (The MVP Razor)
+If the application could ship with only ONE capability, which feature justifies users switching from their current workaround?
+- Cut secondary features (social login, dark mode, CSV exports, multi-currency, AI analytics) to the deferred backlog.
+
+#### 1.5 Internal Consistency & Anti-Contradiction Checks
+Before finalizing the triage, verify document consistency:
+1. **Zero Ghost Features**: Every capability mentioned in the elevator pitch, problem narrative, or core loop MUST be listed in the feature table. (e.g., If the core loop mentions barcode scanning, it cannot be tagged as Phase 1.5 Should-Have).
+2. **Feature Count Parity**: Count must-have features in the brief table and ensure exact parity across `IDEA_BRIEF.md`, `SCOPE_STATEMENT.md`, and `SITEMAP.md`. Never claim "13 features" when only 8 are tabulated.
+3. **No Dual-Status Conflicts**: A feature cannot be simultaneously labeled "Should-Have (Phase 1.5)" and "Out-of-Scope (Phase 2)".
+4. **Profit Label Alignment**: If operational expense tracking is deferred, financial reports MUST be labeled "Laba Kotor (Gross Profit)", not "Laba Bersih (Net Profit)".
 
 ---
 
-### Step 2: Feasibility Rubric (4-Dimension Feasibility Check)
+### Step 1.5: MVP Razor & Root Cause Validation Gate (MANDATORY)
 
-Evaluate idea feasibility using a 1–5 score across 4 dimensions:
+Before calculating feasibility scores, the agent **MUST** pass this validation gate to prevent building features that solve the wrong problem.
 
-| Feasibility Dimension | Critical Solo Dev Test Question | Minimum Passing Threshold |
-| :--- | :--- | :--- |
-| **1. Technical Feasibility** | Are the required libraries, SDKs, and APIs mature and documented? Does it require heavy compute R&D? | Score ≥3 (If heavy R&D alone is required, simplify the idea) |
-| **2. Bandwidth Feasibility** | Can the application be completed within solo dev timeframes (max. 1–3 months for v1)? Are daily operational costs low? | Score ≥4 (Avoid multi-service architectures requiring 24/7 on-call) |
-| **3. Regulatory & Legal Feasibility** | Does system operation violate laws, require special licenses (OJK, Kominfo, Health Ministry), or handle sensitive personal data (PDP Law)? | Score ≥4 (If criminal/fine risk exists without legal capital, pivot/scope down) |
-| **4. Commercial Feasibility** | Is anyone willing to pay for this system (B2B/B2C)? If a client order, is the budget realistic relative to effort? | Score ≥3 (Must have clear revenue sources or reasonable margins) |
+#### 1. Root Cause Breakdown (80/20 Analysis)
+- Extract the quantified problem metrics from Step 1 according to your project domain:
+  - *Retail / Commerce*: Problem = 10-15% stock discrepancy $\rightarrow$ 80% root cause: unrecorded shrinkage & manual entry errors; 20%: branch sync lag $\rightarrow$ P0 = stock adjustment audit, NOT multi-branch sync.
+  - *CRM / Sales Pipeline*: Problem = 35% lead drop-off $\rightarrow$ 80% root cause: unassigned leads & delayed manual outreach ($>24$h); 20%: report generation speed $\rightarrow$ P0 = automated lead assignment & instant notifications, NOT AI predictive scoring.
+  - *CMS / Publishing*: Problem = 4-day editorial bottleneck $\rightarrow$ 80% root cause: uncoordinated email review loops; 20%: CDN cache propagation $\rightarrow$ P0 = in-app review & state approval workflow, NOT multi-region edge deployment.
+- **Validation Rule**: The proposed MVP Razor **MUST** target the primary $\approx 80\%$ root cause. If the proposed MVP Razor focuses on secondary friction ($<20\%$) while ignoring the dominant bottleneck, the MVP Razor is **REJECTED** and must be reframed.
 
-**Aggregate Threshold**: Total score ≥14/20 (average 3.5 per dimension). Projects with a total score < 14 must be simplified or rejected.
+#### 2. Target Segment Feature Fit
+- Audit every targeted user segment against the MVP feature inventory:
+  - *Persona A (Direct Fit)*: Needs are fully satisfied by core MVP feature set $\rightarrow$ **RETAIN IN MVP**.
+  - *Persona B (Complex Adjacent Persona)*: Requires complex out-of-scope capabilities to experience core value (e.g., Cafe requiring Bill of Materials when building retail inventory, or Enterprise Holding requiring Okta SSO when building SMB CRM) $\rightarrow$ **DOES NOT FIT MVP**.
+- **Decision Rule**: If a persona requires an out-of-scope complex feature to experience core value, **DROP THE SEGMENT** from MVP scope or upgrade the feature to MVP. Never retain a target persona in the brief whose pain points cannot be solved by the MVP.
 
-*See full guide at: `references/checklists/FEASIBILITY_CRITERIA.md`.*
+#### 3. Verification Gate Checklist
+- [ ] MVP Razor directly resolves $\ge 70\%$ of the primary root cause.
+- [ ] All retained target segments can achieve core value using exclusively MVP features.
+- [ ] Real-time sync or distributed networking is deferred if multi-branch coordination accounts for $<30\%$ of target users.
+
+---
+
+### Step 2: Feasibility Rubric (Stricter Reality Scoring)
+
+Evaluate idea feasibility using conservative solo developer metrics. Overinflating scores to achieve an easy "PASS" is an anti-pattern that leads to abandoned projects.
+
+#### 2.1 Technical Feasibility Scoring Rubric
+
+- **5/5 (Excellent)**: Standard CRUD application, battle-tested REST API, relational DB, standard authentication, online-only. Zero custom R&D.
+- **4/5 (Good)**: Single modern pattern: EITHER real-time WebSockets (online-only) OR local-first caching (read-only PWA), but NOT both. Well-documented SDKs.
+- **3/5 (Moderate — Complexity Red Flag)**:
+  - Combined Real-Time + Offline-First + Bi-directional Conflict Resolution (LWW/CRDT).
+  - Complex multi-tenant Row-Level Security (RLS) with dynamic hierarchical permissions.
+  - Mobile browser storage caveats (e.g., Safari iOS auto-clearing IndexedDB under storage pressure).
+  - Relying on free-tier BaaS for production (e.g., Supabase free tier projects pausing after inactivity, lack of daily automated point-in-time recovery).
+- **2/5 (Challenging)**: Custom machine learning training, background audio/video transcoding, custom cryptographic protocols, hardware peripheral drivers.
+- **1/5 (R&D Experiment)**: Novel distributed algorithms, unproven academic architectures, hardware-software co-design.
+
+#### 2.1.1 Offline & Real-Time Technical Traps (Mandatory Reality Checks)
+If offline capability or real-time networking is proposed, evaluate these failure modes:
+- [ ] **Storage Mechanism**: Use **IndexedDB (Dexie.js)**. Never use `localStorage` (5MB limit, synchronous blocking, lacks indexed queries).
+- [ ] **Conflict Resolution Strategy**: Must use **append-only delta movements**. Never use Last-Write-Wins (LWW), which silently overwrites offline sales when multiple terminals reconnect.
+- [ ] **Client Clock Drift**: Never trust client device timestamps for ledger ordering. The server's `created_at` timestamp must remain the authoritative source of truth.
+- [ ] **Safari iOS Eviction Risk**: Acknowledge that Safari iOS deletes IndexedDB storage after 7 days of inactivity under storage pressure; implement server backup sync prompts.
+- [ ] **BaaS Free-Tier Production Traps**: Free-tier Supabase projects automatically pause after inactivity and lack automated daily point-in-time recovery. Budget for paid tier ($25/mo) in production.
+- [ ] **WebSocket Concurrency Limits**: Model concurrent WebSocket connection limits for real-time channels across multiple tenant users.
+
+> ⚠️ **MANDATORY COMPLEXITY RED FLAG RULES**:
+> - Combining **Offline Data Mutation + Real-Time Sync** automatically caps Technical Feasibility at **maximum 3/5**.
+> - If scored 3/5, the brief **MUST** include an explicit deferral mitigation (e.g., *"Defer offline sync to Phase 2; MVP ships as mobile-first online-only with network reconnection retry"*), which restores the adjusted score to 4/5.
+
+#### 2.2 Bandwidth Feasibility & Epic Breakdown Cross-Check
+
+Never accept arbitrary timeline claims (e.g., *"12-16 weeks"*) without cross-checking the actual epic sums.
+
+**Cross-Check Procedure**:
+1. **Sum Development Epics**: Count must-have features. Simple CRUD features average $3–5$ working days; complex features (payments, offline sync, approval engines) average $1.5–2$ weeks.
+2. **Apply 20% Development Buffer**: $\text{Buffered Dev Weeks} = \text{Sum of Epics} \times 1.2$.
+3. **Add Non-Development Lifecycle Phases**:
+   - Discovery & Specifications (M01–M05): 2–3 weeks.
+   - QA & End-to-End Testing (M07): 2 weeks.
+   - Data Seeding & Migration (M08): 1 week.
+   - Production Deployment & Domain Setup (M10): 1 week.
+   - *Total Non-Dev Lifecycle*: 6–7 weeks.
+4. **Calculate Realistic Calendar Weeks**:
+   $$\text{Total Project Weeks} = \text{Buffered Dev Weeks} + \text{Non-Dev Weeks (6–7w)}$$
+   For part-time solo developers ($<40$ hrs/week) or teams taking holiday buffers, multiply total weeks by $1.2$.
+5. **Validation Rule**: If the epic breakdown plus non-dev buffer exceeds the high-level timeline claim by $>20\%$ (e.g., claiming 12 weeks when epic math indicates 17 weeks), the timeline claim **MUST** be revised upwards before proceeding.
+
+#### 2.3 Regulatory & Legal Feasibility (UU PDP No. 27/2022 Compliance)
+
+Claiming *"Risk: Zero"* on legal feasibility is strictly prohibited for any software handling customer data. Infrastructure encryption (AES-256) is security, **not legal compliance**.
+
+**Mandatory Compliance Deliverables**:
+- [ ] **Privacy Policy (Kebijakan Privasi)**: Detailing user data collection, retention periods, third-party sharing, and user deletion rights under UU PDP No. 27/2022.
+- [ ] **Terms of Service (Syarat & Ketentuan)**: Platform liabilities, account termination terms, and dispute jurisdiction.
+- [ ] **Data Processing Agreement (DPA)**: Required when routing user data through third-party cloud vendors (Supabase, AWS, payment gateways).
+- [ ] **Data Breach Notification Procedure**: Documenting 72-hour notice protocol in case of unauthorized data exfiltration.
+
+**Mandatory Disclaimer Requirements**:
+- Financial / Tax calculators: Must display explicit disclaimers (*"Perhitungan bersifat estimasi dan tidak menggantikan pelaporan pajak resmi atau nasihat akuntan publik"*).
+- Non-PKP / PPN Status: Explicitly clarify if the system is designed for non-PKP entities with zero PPN handling.
+- Bank Compliance Claims: Never claim "bank-compliant financial reports" unless the system generates full double-entry Balance Sheet, P&L, and Cash Flow statements.
+- Liability Limitation: Software provided "as-is"; include disclaimers absolving developer from operational discrepancies between physical cash and software records.
+- Financial records: Explicit disclaimer on user responsibility for input data accuracy.
+
+**Legal Scoring Rubric**:
+- **5/5**: Pure internal offline utility, zero personal/financial data, zero regulatory exposure.
+- **4/5**: Standard SaaS with complete legal pack (Privacy Policy, ToS, DPA templates) prepared using verified templates (e.g., GetTerms) or legal review.
+- **3/5**: Regulated financial, tax, or medical calculation requiring custom legal disclaimers and compliance review.
+- **2/5**: Handling sensitive personal data without clear privacy policy or DPA protocols.
+- **1/5**: Direct violation of licensing rules (operating uncertified payment gateway, unlicensed financial advisory).
+
+#### 2.4 Commercial Feasibility & Unit Economics Reality Check
+
+Never treat survey "intent-to-buy" percentages as real conversion rates.
+
+1. **Intent-to-Buy Discounting**:
+   - Real-world conversion from stated survey intent to actual paid subscription is typically **$15\%–25\%$**.
+   - *Formula*: $\text{Realistic Conversion Rate} = \text{Survey Intent Rate} \times 0.20$.
+   - *Example*: A $59.6\%$ survey intent translates to a realistic initial conversion rate of **$9\%–12\%$**.
+2. **Realistic SaaS COGS Breakdown**:
+   - Server hosting, database compute, and storage.
+   - Payment gateway fees ($1.5\%–3.0\%$ per transaction plus fixed fee).
+   - Transactional SMS / WhatsApp OTP / Email delivery costs.
+   - Application monitoring & error tracking (Sentry, Logtail).
+   - *Benchmark*: SaaS COGS must be modeled at **$10\%–20\%$ of ARPU**, never $<5\%$.
+3. **SME / UMKM Churn Dynamics**:
+   - Micro & small business SaaS experiences high annual churn ($30\%–50\%$ annually, or $3\%–5\%$ monthly).
+   - Assume maximum customer lifetime of **$12–18$ months** for SMB cohorts when calculating Lifetime Value (LTV).
+4. **Unit Economics Ratios**:
+   $$\text{LTV} = \text{ARPU} \times \text{Customer Lifetime (Months)} \times \text{Gross Margin \%}$$
+   $$\text{LTV : CAC Ratio} = \frac{\text{LTV}}{\text{CAC}}$$
+   - $\ge 5:1$: Highly viable commercial model.
+   - $3:1$ to $5:1$: Acceptable for solo MVP.
+   - $< 3:1$: Unviable; CAC must be reduced or pricing restructured.
+5. **Initial Traction & Operational Feasibility**:
+   - **First 20 Customers Plan**: Define an actionable acquisition channel (direct outreach, community partnerships, local retail onboarding).
+   - **Data Migration Path**: Document migration from physical paper / Excel to eliminate customer switching barriers.
+   - **Solo Dev Support Capacity**: Acknowledge support limits (1 solo developer can manage at most 50–100 active organizations without automated self-serve tooling).
+
+---
+
+### Step 2.5: Post-Development Kill & Pivot Criteria (MANDATORY)
+
+Feasibility is not a one-time gate. The Idea Brief **MUST** define concrete metrics that trigger project termination (Kill) or scope restructuring (Pivot) during execution (reviewed at M06 Week 4 and Week 8).
+
+#### 1. Kill Criteria (Halt Project & Write Off Sunk Costs)
+- **Velocity Collapse**: After 4 weeks of development in M06, working feature completion is $<30\%$ of planned milestone scope.
+- **User Rejection at Beta**: $\ge 50\%$ of closed-beta testers report they would NOT use the product even if free.
+- **Infrastructure Cost Explosion**: Operational infrastructure cost per active user exceeds $3\times$ original ARPU estimates.
+- **Regulatory Dead-End**: New legal mandates impose licensing requirements impossible for a solo developer to acquire.
+
+#### 2. Pivot Criteria (Restructure Scope & Continue)
+- **Beta Churn $>50\%$ in 30 Days**: Drastically prune feature complexity; pivot core flow to the single highest-frequency action.
+- **Timeline Slip $>30\%$**: Defer remaining complex features to Phase 1.5; freeze all new feature development and ship online-only MVP.
+- **Technical Synchronization Bottleneck**: Offline data resolution produces irrecoverable state corruption $\rightarrow$ immediately pivot to online-first PWA with optimistic UI and network reconnect guards.
+- **Direct Competitor Price War**: Incumbent drops prices or launches identical free tier $\rightarrow$ pivot positioning toward high-trust specialized niche (e.g., specific tax vertical, single-trade retail).
+
+#### 3. Review Schedule
+- **Checkpoint 1 (M06 Week 4)**: Audit development velocity against epic baseline.
+- **Checkpoint 2 (M06 Week 8)**: Audit feature completeness and database performance under load.
+- **Checkpoint 3 (M07 Beta Week 2)**: Audit user retention, bug density, and willingness-to-pay conversion.
 
 ---
 
@@ -128,7 +303,7 @@ The final deliverable of Module 01 is the file **`docs/pm/IDEA_BRIEF.md`** creat
 
 > 📁 **ABSOLUTE FILE LOCATION RULE**:
 > This file MUST be stored inside the **`docs/pm/`** directory (never in the root directory).
-> The root directory `./` is reserved exclusively for the 7 AI control files (Agent Harness) once Module 06 begins.
+> The root directory `./` is reserved exclusively for the 9 AI control files (Agent Harness), README.md, and configuration once Module 06 begins.
 
 ---
 
@@ -364,10 +539,19 @@ Identify skills NOT YET acquired but REQUIRED by the project:
 After the file `docs/pm/IDEA_BRIEF.md` has been written:
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 02 within the same turn!**
 2. **SELF-VERIFICATION CHECKLIST**:
-   - [ ] `read_file('docs/pm/IDEA_BRIEF.md')` → Confirm file exists, 80+ lines
+   - [ ] `read_file('docs/pm/IDEA_BRIEF.md')` → Confirm file exists, 120+ lines
    - [ ] Feasibility score calculated (X/5) present in file
+   - [ ] Gate decision explicitly declared: GO (≥3.5), GO BERSYARAT (3.0-3.5 with mitigations), PIVOT (<3.0), or KILL
    - [ ] Project scale (Small/Medium/Large/Enterprise) documented
    - [ ] 3-step core loop documented
+   - [ ] Root cause vs MVP Razor alignment verified (≥70% match to primary root cause)
+   - [ ] Target segment verification passed (all retained segments addressable by MVP features)
+   - [ ] Technical feasibility scored conservatively (max 3/5 if real-time + offline; deferral mitigation documented)
+   - [ ] Epic breakdown cross-check passes (epic sum + 20% buffer + 6-7w non-dev matches timeline within 20%)
+   - [ ] Legal compliance checklist complete (Privacy Policy, ToS, DPA, disclaimers)
+   - [ ] Commercial feasibility uses discounted intent (15-25% of survey intent; COGS 10-20% of ARPU)
+   - [ ] 5-7 competitors documented across direct, adjacent, and manual with uniqueness claim verified
+   - [ ] Post-development Kill/Pivot criteria documented for M06 Checkpoints
 3. Present a brief summary of Module 01 results to the user:
    - Elevator pitch of product idea
    - 3-step core loop

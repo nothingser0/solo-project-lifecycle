@@ -689,7 +689,7 @@ Dependency compatibility checks (MANDATORY):
   - [ ] Security vulnerabilities documented (if spec-locked versions have CVEs)
 
 Harness files deployed:
-  - [ ] All 7 files copied from docs/harness-root/ to ./
+  - [ ] All 9 files copied from docs/harness-root/ to ./
   - [ ] AGENTS.md exists in root (check cat AGENTS.md)
   - [ ] ARCHITECTURE.md exists in root
   - [ ] CONTEXT.md exists in root
@@ -697,6 +697,8 @@ Harness files deployed:
   - [ ] DESIGN.md exists in root
   - [ ] TODO.md exists in root
   - [ ] .env.example exists in root
+  - [ ] RUNBOOK_LOCAL.md exists in root
+  - [ ] VERIFY_LOCAL.md exists in root
 
 Smoke test:
   - [ ] Dev server starts (npm run dev / php artisan serve)
@@ -713,7 +715,7 @@ Smoke test:
 
 ---
 
-## 3. The 7 Root Harness Files in Root Repo (Universal Stack - The 7 Root Harness Files)
+## 3. The 9 Root Harness Files in Root Repo (Universal Stack - The 9 Root Harness Files)
 
 ⚠️ **CRITICAL: Harness File Staging & Deployment**
 
@@ -725,7 +727,7 @@ Smoke test:
 - Harness files deployed AFTER scaffold to overwrite framework boilerplate
 
 **Timeline**:
-1. **M01-M05**: Agent reads from skill://, writes to `docs/harness-root/` (7 files staged)
+1. **M01-M05**: Agent reads from skill://, writes to `docs/harness-root/` (9 files staged)
 2. **M06 scaffold**: User runs framework CLI
 3. **M06 deployment** (this step): Agent copies `docs/harness-root/*` → `./`
 4. **M06+ development**: Code with harness files in root
@@ -1786,13 +1788,7 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
   **Agent: Deploy staged harness files to root (overwrites Next.js AGENTS.md boilerplate)**:
    ```
   Copy from staging to root:
-    cp docs/harness-root/AGENTS.md ./AGENTS.md
-    cp docs/harness-root/ARCHITECTURE.md ./ARCHITECTURE.md
-    cp docs/harness-root/CONTEXT.md ./CONTEXT.md
-    cp docs/harness-root/CONVENTIONS.md ./CONVENTIONS.md
-    cp docs/harness-root/DESIGN.md ./DESIGN.md
-    cp docs/harness-root/TODO.md ./TODO.md
-    cp docs/harness-root/.env.example ./.env.example
+    cp -rn docs/harness-root/* ./
    ```
 
    **Laravel Protocol**:
@@ -1840,29 +1836,104 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
     cp docs/harness-root/* ./
    ```
 
-3. **Verify 7 Root Harness Files installed**:
+3. **Verify 9 Root Harness Files installed**:
 
    ```bash
-   # Fixed verification: .env.example has no .md extension
-   ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO)\.md$' && ls -1 .env.example
+   # Verify all 9 harness files are present in project root
+   ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO|RUNBOOK_LOCAL|VERIFY_LOCAL)\.md$' && ls -1 .env.example
    ```
 
-   Expected output: 6 .md files + .env.example (7 total).
+   Expected output: 8 .md files + .env.example (9 total).
 
 4. **Create staging branch**: `git checkout -b staging`
 
-5. **Initial commit** to lock harness and scaffolding:
+5. **Initial commit** (execute ONLY when explicitly requested by user):
    ```bash
    git add .
-   git commit -m "chore: initial project scaffolding with 7 AI harness files"
+   git commit -m "chore: initial project scaffolding with 9 AI harness files"
    ```
+
+### Step 1.5: AI Agent Harness Validation & Safety Directives (MANDATORY)
+
+Before the AI Coding Agent begins executing tasks from `TODO.md`, verify that `AGENTS.md` is deployed at root and strictly enforces:
+
+#### 1. Absolute Agent Safety Directives
+- **NO Destructive Git Operations**: Running `git push --force` or `git push --force-with-lease` is **STRICTLY PROHIBITED**.
+- **NO Destructive Database Operations**: Running `migrate reset`, `db reset`, or issuing raw `DROP TABLE` / `DROP DATABASE` queries is **STRICTLY PROHIBITED**.
+- **Spec Document Integrity**: Specification files marked `[FROZEN]` or `[APPROVED]` are immutable sources of truth. If documents contradict, the agent **MUST STOP AND ASK THE USER**. Never alter frozen specifications unilaterally.
+- **Zero Type Suppressions**: Silencing compilers via `// @ts-ignore`, `// @ts-nocheck`, `// @ts-expect-error`, or `as any` is **STRICTLY PROHIBITED**.
+
+#### 2. Framework Version & Dynamic API Verification
+- Next.js 16+: Verify `proxy.ts` replaces traditional middleware.
+- Dynamic Request APIs: Ensure `cookies()`, `headers()`, and route `params` are properly asynchronous (`await cookies()`, `await params`).
+- Supabase Server Auth: Always verify server sessions using `supabase.auth.getUser()`, never trust unverified `getSession()`.
+
+#### 3. Database Security & Concurrency Defenses
+- **Database View Masking**: Sensitive business metrics (cost prices, margins, executive salaries) must be excluded at the database view level (`security_invoker = true`), never by client UI hiding alone.
+- **Search Path Hardening**: All `SECURITY DEFINER` functions must declare `SET search_path = public, pg_temp STABLE`.
+- **Deterministic Lock Ordering**: Multi-row locking via `SELECT ... FOR UPDATE` must sort records deterministically (`ORDER BY id ASC`) to eliminate database deadlocks under concurrent traffic.
+- **Idempotency Keys**: All balance/payment mutations require an `X-Idempotency-Key` (UUID v4) with submit-handler debouncing.
+
+#### 4. Engineering Standards & Ergonomics
+- Enforce `noUncheckedIndexedAccess: true` in `tsconfig.json`.
+- Form submit buttons remain enabled in pristine state (validation triggers on click with auto-focus to the first invalid field).
+- Error and offline alert toasts MUST NOT auto-dismiss (manual dismissal required).
+- Sanitize spreadsheet exports: only prepend `'` to strings starting with `=, +, -, @, \t, \r` (preserve pure negative numbers).
+- Screen ID Parity: Every created component must map to its `SCR-xx` in `DESIGN_SPEC.md` and semantic tokens in `DESIGN.md`.
+
+#### 5. System Architecture & Real-World Topology (`ARCHITECTURE.md`)
+- **Directory Layout Integrity**: Verify presence of `supabase/migrations/`, Next.js 16 `src/proxy.ts` (or `middleware.ts`), `src/actions/`, `src/hooks/`, `src/stores/`, and `src/types/database.ts`.
+- **iOS Safari Offline Fallback Protocol**: Where offline operations are in scope, implement multi-event fallback (`online`, `visibilitychange`, manual sync trigger) because Safari iOS does not support the Web Background Sync API.
+- **Collision-Free Device Sequencing**: Multi-device offline documents MUST format identifiers with unique node/device prefixes: `[BRANCH]-[DEVICE]-[YYYYMMDD]-[SEQ]`.
+- **Inbound Webhook Security**: Exclude webhook endpoints (`/api/webhooks/*`) from session authentication guards, enforce cryptographic signature verification (HMAC SHA-512/SHA-256), and log event idempotency keys.
+- **Measurable NFR Budgets**: Enforce latency ($p95 \le 250$ms), initial client bundle budget ($\le 250$KB gzipped), and disaster recovery targets (RPO $<1$h, RTO $<4$h).
+
+#### 6. Business Context & Scope Governance (`CONTEXT.md`)
+- **The Closed Scope Rule**: Explicitly enforce: *"Anything not explicitly enumerated in the In-Scope list is strictly OUT OF SCOPE"*. The AI agent is strictly forbidden from hallucinating unrequested features (loyalty programs, AI chatbots, dynamic payment gateways, unmapped third-party APIs).
+- **Segregation of Duties & Exception Handling (Domain-Adaptive)**:
+  - Differentiate operator vs supervisor roles (e.g., Staff cannot void transactions independently; voiding appends a formal reversal entry).
+  - Physical opname reconciliation accounts for active in-flight transactions during the count session (retail/inventory scope), or deal/content state machine gates (CRM/CMS scope).
+- **Domain Statutory Citations (Conditional)**: When tax or statutory calculations are in scope, cite official date-verified government regulations (e.g. PP 55/2022, PPh 21 TER PMK 168/2023) with required persistent disclaimers; mark N/A for non-statutory projects.
+- **Domain Glossary Enforcement**: Establish unambiguous definitions for core terminology to prevent semantic drift.
+
+#### 7. 100% Atomic Task Decomposition in `TODO.md` (Anti-Macro Tasks)
+- Grouping multiple screens or multiple tables into a single macro task (e.g., "Create SCR-01 to SCR-14" or "Create all database tables") is **STRICTLY PROHIBITED**.
+- Maintain a strict 1:1 atomic ratio:
+  - 1 task per database table or migration unit (`M06-DB-xx`).
+  - 1 task per UI screen (`M06-FE-xx`) specifying `SCR-xx`, route, and 5-state verification.
+  - 1 task per backend endpoint / action / RPC (`M06-BE-xx`).
+  - Specific testing suites (`M06-TEST-xx`).
+
+#### Step 1.5 Automated Validation Checklist
+Before writing functional code, verify:
+- [ ] `AGENTS.md` and `ARCHITECTURE.md` deployed to root and match project domain and scale.
+- [ ] Closed Scope Rule active in `CONTEXT.md` (unlisted features strictly prohibited from implementation).
+- [ ] `TODO.md` tasks are 100% atomic (zero multi-screen or multi-table macro tasks).
+- [ ] Agent safety directives (zero force push, zero database resets, zero frozen spec overrides) are active.
+- [ ] Sensitive fields (costs, margins, private compensation) are masked at the database view level.
+- [ ] High-risk mutations enforce atomic transactions with deterministic row-locking order (`ORDER BY id ASC`).
+- [ ] Touch targets ($\ge 44$px) and input anti-zoom font size ($16$px) are implemented for touch devices.
+
+---
+
+### Step 1.7: Frontend Handoff Protocol (Traceability to docs/design/)
+
+When implementing frontend screens (`M06-FE-xx`), the AI Coding Agent MUST follow this two-tier conversion protocol:
+
+1. **Level 1 Handoff (Existing Prototype Component)**:
+   - Check if exported prototype code exists in `docs/design/screens/scr-xx/` (generated via prompt from `docs/design/prompts/scr-xx/PROMPT.md` using `SCREEN_PROMPT_TEMPLATE.md` and exported from v0.dev, Google Stitch, Bolt, or Claude Artifacts).
+   - *If files exist*: Copy and adapt them into `src/app/` or `src/components/`, adjust Tailwind utility classes to match semantic tokens in `DESIGN.md`, and wire props to Server Actions / API endpoints / Controllers.
+2. **Level 2 Handoff (Scratch Generation from Design Specs)**:
+   - *If `docs/design/screens/scr-xx/` is empty or absent*:
+   - The AI Agent generates the component directly from scratch using the ASCII wireframe, 5-state matrix, and component list from `docs/specs/DESIGN_SPEC.md` and semantic tokens in `DESIGN.md`.
+
+---
 
 ### Step 2: UI Component Implementation (Design or Manual Scaffold)
 
-**Component Implementation**
-
-1. Read screen descriptions from `DESIGN.md` and `DESIGN_SPEC.md` (sitemap + color/typography tokens).
-2. Create empty shell UI components with proper folder structure:
+1. Follow the **Step 1.7 Frontend Handoff Protocol** for each screen in `SITEMAP.md` (`SCR-xx`).
+2. Read screen descriptions from `DESIGN.md` and `DESIGN_SPEC.md` (sitemap + color/typography tokens).
+3. Check for existing generated prototypes in `docs/design/screens/scr-xx/` before generating from scratch.
    ```bash
    mkdir -p src/components/ui src/app/{dashboard,documents,login}
    ```
@@ -1872,29 +1943,90 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
 ### Step 3: Database Migration Execution & Seeding
 1. **Verify Staging ENV**: Before migrations, verify `.env` (staging):
    ```bash
-   # Check no production keys leaked to staging
-   grep -E '(DATABASE_URL|STRIPE_SECRET_KEY|AWS_SECRET)' .env
-   # Confirm staging endpoints (e.g., Stripe test mode key prefix sk_test_)
+   # Check no live production secret keys leaked into staging .env (safe grep without printing secret values):
+   grep -q "sk_live_" .env && echo "❌ CRITICAL ERROR: Live production Stripe key found in staging .env!" || echo "✅ Staging payment keys verified safe."
+   grep -q "prod" .env && echo "⚠️ WARNING: Check database and storage strings for production identifiers." || echo "✅ Environment check clean."
    ```
 2. Instruct the AI coding agent:
-   > *"Read ARCHITECTURE.md Database Models section. Create complete Prisma/Drizzle schema with CHECK constraints, foreign key relations, and performance indexes. Run the migration."*
-3. Run migrations: `pnpm db:migrate`
-4. Run initial seed data: `pnpm db:seed`
+   > *"Read ARCHITECTURE.md Database Models section. Create complete relational schema with CHECK constraints, foreign key relations, and performance indexes. Ensure migrations are topologically ordered (parent tables before dependent children)."*
+3. **Topological Migration Sequence** (Supabase / SQL):
+   - `001_create_core_entities.sql` (`organizations`, `locations`, `users`)
+   - `002_create_domain_entities.sql` (`resources`, `catalog`, `categories`)
+   - `003_create_ledgers_and_transactions.sql` (`transactions`, `items`, `movements`)
+   - `004_create_opname_and_billing.sql` (`audit_logs`, `idempotency_keys`, `subscriptions`)
+   - `005_enable_rls_and_views.sql` (100% RLS policies & secure database views)
+   - `006_create_atomic_rpc_functions.sql` (Atomic stored procedures with global lock ordering)
+4. Run migrations: `pnpm db:migrate` (or `npx supabase db push` / `prisma migrate dev`)
+5. Run initial seed data: `pnpm db:seed`
+
 
 ### Step 4: Coding Backend API, Vault Service, & UI Wiring
+
+#### 4.1 Backend Mutation Architecture (Adapts by Chosen Tech Stack)
+
+Each framework implements server-side mutations according to its idiomatic architecture:
+
+1. **Next.js Ecosystem (Server Actions vs Route Handlers)**:
+   - **Server Actions (`src/actions/*.ts`)**: Form mutations and UI state transitions.
+     - Deduplicate session checks with `React.cache()` wrapping `supabase.auth.getUser()`.
+     - Receive `idempotencyKey: string` directly in form/payload parameters (React Action RPC does not expose custom HTTP headers).
+     - Return uniform contract: `ActionResult<T> = { success: true; data: T } | { success: false; error: ActionError }`.
+   - **Route Handlers (`src/app/api/v1/*.ts`)**: Machine/POS endpoints, offline sync queues, and webhooks. Receive `X-Idempotency-Key` HTTP header.
+
+2. **Laravel Ecosystem (Action Classes & Form Requests)**:
+   - Use Single Action Controllers or Action classes (`app/Actions/*.php`) for business logic.
+   - Enforce validation via Form Request classes (`app/Http/Requests/*.php`).
+   - Read `X-Idempotency-Key` header via middleware or request header helper (`$request->header('X-Idempotency-Key')`).
+
+3. **Go Ecosystem (Clean Architecture Services & Handlers)**:
+   - HTTP Handlers (`internal/handler/*.go`) parse JSON, extract `X-Idempotency-Key` header, and validate DTOs.
+   - Business logic isolated in domain service layer (`internal/service/*.go`).
+   - Use database transactions (`tx, err := db.BeginTx(ctx, &sql.TxOptions{...})`) with context cancellation.
+
+4. **Django Ecosystem (DRF Serializers & Services)**:
+   - Use Django REST Framework Serializers for strict payload validation.
+   - Encapsulate multi-table operations in `transaction.atomic()`.
+   - Extract `X-Idempotency-Key` via `request.META.get('HTTP_X_IDEMPOTENCY_KEY')`.
+
+5. **Ruby on Rails Ecosystem (ActiveRecord & Strong Parameters)**:
+   - Encapsulate multi-table operations in `ActiveRecord::Base.transaction`.
+   - Validate incoming payloads using Strong Parameters.
+   - Read `X-Idempotency-Key` via `request.headers['X-Idempotency-Key']`.
+
+#### 4.2 Deterministic Lock Ordering (Deadlock Risk Reduction)
+When atomic transactions or stored procedures touch multiple tables:
+- Always acquire row locks in a strictly defined, consistent hierarchy derived from your actual schema (e.g. parent entity before child resources, with resource collections sorted deterministically: `ORDER BY id ASC`).
+- This design pattern significantly reduces PostgreSQL `40P01 deadlock_detected` risks under concurrent mutation traffic, complemented by application-level transaction retry logic and concurrency stress tests.
+
+#### 4.3 General Backend Execution
 1. Instruct the AI agent to execute items on `TODO.md` one by one:
    - Apply Zod validation on API handlers.
-   - Build AES-256-GCM stream encryption service to S3/R2 with 15-minute presigned URLs.
+   - Build AES-256-GCM stream encryption service to S3/R2 with 15-minute presigned URLs (where vault is in scope).
    - Connect UI components forms to API endpoints via `fetch` or Server Actions.
    - Ensure all five screen states work: *Skeleton Loader*, *Empty State*, *Inline Error Message*, and *Notification Toast*.
    - Apply prompt engineering & multi-file orchestration patterns from `references/playbooks/ai-assisted-development.md`.
 
-### Step 5: Self-Assertion Testing (Local Smoke Test)
+### Step 5: Automated Testing & Local Verification (Step 5 Gate)
+
+#### 5.1 Automated RLS Security Suite (`tests/db/rls.test.ts`)
+Execute automated RLS tests verifying:
+1. Anonymous/Public queries return 0 rows on protected tables.
+2. Operator/Cashier roles cannot query sensitive cost columns (`buy_price`, margins, private salaries) via raw queries or view bypassing.
+3. Multi-tenant IDOR attack: User from Organization A attempting to read or mutate Organization B data returns 0 rows / permission denied.
+
+#### 5.2 Automated Concurrency & Anti-Deadlock Test (`tests/db/concurrency.test.ts`)
+Simulate concurrent traffic using `Promise.allSettled()`:
+- Dispatch 20–50 parallel mutation requests competing for overlapping resources.
+- Verify zero `40P01 deadlock_detected` errors and exact reconciliation between balance aggregates and movement ledger sums.
+
+#### 5.3 Local Smoke Test Script
 Run rapid test script:
 ```bash
 pnpm run test:smoke
+pnpm test:security   # Runs tests/db/rls.test.ts
+pnpm test:concurrency # Runs tests/db/concurrency.test.ts
 ```
-Ensure clean compilation (`pnpm run type-check`) and clean dependency audit (`pnpm audit`).
+Ensure clean compilation (`pnpm run type-check`), clean dependency audit (`pnpm audit`), and sign `VERIFY_LOCAL.md`.
 
 ---
 ## 5A. Backend Development TODO Checklist (Detailed Breakdown)
@@ -2295,7 +2427,7 @@ export const analytics = {
 
 [GATE] Module 06 is declared **PASSED** if:
 - [x] Git branching is structured (`main`, `staging`, `feat/*`) with clean commits.
-- [x] 7 AI control files (Agent Harness) installed in project root.
+- [x] 9 AI control files (Agent Harness) installed in project root.
 - [x] Design specs components extracted via MCP and connected to backend API.
 - [x] Source code builds successfully without TypeScript compilation errors (`tsc --noEmit` exits 0).
 - [x] Database migrations execute smoothly with search indexes in place.

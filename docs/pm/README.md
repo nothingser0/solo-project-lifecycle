@@ -6,7 +6,7 @@ This directory is the standardized output destination for all project initiation
 
 ## Purpose & Usage
 
-In the **solo-project-lifecycle** framework, the root directory (`./`) is reserved exclusively for the 7 AI harness files (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`).
+In the **solo-project-lifecycle** framework, the root directory (`./`) is reserved exclusively for the 9 AI harness files (`AGENTS.md`, `CONTEXT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `CONVENTIONS.md`, `.env.example`, `TODO.md`, `RUNBOOK_LOCAL.md`, `VERIFY_LOCAL.md`), `README.md`, and configuration.
 
 All planning and governance documents produced by AI agents or developers must be stored here inside `docs/pm/`.
 
