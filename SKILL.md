@@ -15,7 +15,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 - **Entry point**: This SKILL.md file (8KB) - lightweight navigation guide
 - **Module library**: 14 modules in `docs/modules/` loaded on-demand per project phase
-- **Template library**: 80+ templates in `templates/` by use case and phase
+- **Template library**: 170+ templates in `templates/` by use case and phase
 - **Reference materials**: 600KB guides, playbooks, case studies in `references/`
 - **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
 
@@ -197,7 +197,7 @@ Deep-dive guides in `references/`:
 - `pm/` - Analytics setup, prioritization, communication
 - `pre-sales/` - Discovery calls, proposals, quotations
 - `solo/` - Solo dev architecture, patterns, engineering standards
-- `stacks/` - Next.js 15, Laravel 11 quickstarts
+- `stacks/` - Next.js (v15–v16+), Laravel (v11–v13+), Django, Go quickstarts
 - `technical/` - Deep research, compliance, design systems, APM, mobile architecture
 
 Load references when entering relevant module. Don't preload all.
@@ -219,9 +219,9 @@ Real projects in `case-studies/` (reference for timelines/budgets):
 
 ## Tech stack support
 
-Stack-agnostic. Quickstart guides in `references/stacks/`:
-- Frontend: React, Next.js 15, Vue, Svelte
-- Backend: Node.js, Laravel 11, Django, Go
+
+- Frontend: React, Next.js (v15–v16+), Vue, Svelte
+- Backend: Node.js, Laravel (v11–v13+), Django (v5–v6+), Go (v1.23–v1.27+)
 - Database: PostgreSQL, MySQL, Supabase
 - Deploy: Vercel, Railway, AWS, DigitalOcean
 

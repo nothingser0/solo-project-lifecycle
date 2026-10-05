@@ -11,7 +11,7 @@ Software development framework for solo developers and small teams. Covers proje
 **Comprehensive project management framework** for solo developers and small teams managing software projects:
 
 - 14 modules covering discovery, design, development, QA, deployment, maintenance
-- 80+ templates (PRD, FSD, SOW, test plans, deployment protocols)
+- 170+ production-ready templates (PRD, FSD, SOW, test plans, deployment protocols)
 - Real case studies with metrics
 - Code patterns for common problems
 - Scripts for validation and automation
@@ -28,11 +28,11 @@ This is a **skill framework/toolkit**, not a minimal starter template:
 | Component | Size | Purpose |
 |-----------|------|---------|
 | Module library | 460KB | 14 lifecycle phases with detailed workflows |
-| Template library | 1.8MB | 80+ production-ready templates |
+| Template library | 1.8MB | 170+ production-ready templates |
 | Reference guides | 756KB | Playbooks, patterns, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
-| Code patterns | 144KB | 11 reusable patterns (API, testing, deployment, etc.) |
-| Scripts | 96KB | Validation and automation tools |
+| Code patterns | 144KB | 12 reusable patterns (API, testing, deployment, etc.) |
+| Scripts | 96KB | 10 validation and automation tools |
 
 **Why this size?**  
 Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.
@@ -54,7 +54,7 @@ Completeness = utility. Similar to design systems or testing frameworks - compre
 ```
 solo-project-lifecycle/
 ├── docs/modules/          14 lifecycle modules (M00-M13)
-├── templates/             80+ project templates
+├── templates/             170+ project templates
 ├── patterns/              11 code patterns (API, testing, deployment, error handling)
 ├── case-studies/          5 examples (3 real + 2 worked examples)
 ├── references/            Guides and playbooks
@@ -177,8 +177,8 @@ Complete module docs: `docs/modules/`
 
 Framework is stack-agnostic. Quickstart guides for:
 
-- Frontend: React, Next.js 15, Vue, Svelte
-- Backend: Node.js, Laravel 11, Django, Go
+- Frontend: React, Next.js (v15–v16+), Vue, Svelte
+- Backend: Node.js, Laravel (v11–v13+), Django (v5–v6+), Go (v1.23–v1.27+)
 - Database: PostgreSQL, MySQL, Supabase
 - Deploy: Vercel, Railway, AWS, DigitalOcean
 
@@ -258,6 +258,7 @@ Use for commercial projects, consulting, products, internal tools.
 - [Quick Start](./docs/quickstart.md)
 - [All Modules](./docs/modules/)
 - [Templates](./templates/)
+- [Patterns](./patterns/)
 - [Issues](https://github.com/nothingser0/solo-project-lifecycle/issues)
 
 ---
