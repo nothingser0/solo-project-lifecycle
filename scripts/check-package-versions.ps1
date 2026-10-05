@@ -64,8 +64,8 @@ switch ($Framework) {
         
         # Check Next.js ecosystem
         if ($next.major -eq "15") {
-            if ($react.major -ne "18") {
-                Write-Host "⚠ Next.js 15 requires React 18 (found React $($react.major))" -ForegroundColor Yellow
+            if ($react.major -ne "19" -and $react.major -ne "18") {
+                Write-Host "⚠ Next.js 15 requires React 19 or 18 (found React $($react.major))" -ForegroundColor Yellow
             } else {
                 Write-Host "✓ Next.js + React compatible" -ForegroundColor Green
             }

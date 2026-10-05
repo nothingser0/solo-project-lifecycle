@@ -82,8 +82,8 @@ case $FRAMEWORK in
         
         # Check Next.js ecosystem
         if [ "$next_major" = "15" ]; then
-            if [ "$react_major" != "18" ]; then
-                echo -e "${YELLOW}⚠ Next.js 15 requires React 18 (found React $react_major)${NC}"
+            if [ "$react_major" != "19" ] && [ "$react_major" != "18" ]; then
+                echo -e "${YELLOW}⚠ Next.js 15 requires React 19 or 18 (found React $react_major)${NC}"
             else
                 echo -e "${GREEN}✓ Next.js + React compatible${NC}"
             fi
