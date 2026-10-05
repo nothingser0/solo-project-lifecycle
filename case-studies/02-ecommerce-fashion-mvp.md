@@ -268,7 +268,7 @@ GET    /api/admin/orders       (admin panel)
 
 **Migration Script**:
 ```typescript
-// scripts/seed-products.ts
+// Example project script: scripts/seed-products.ts
 import { PrismaClient } from '@prisma/client';
 import { parse } from 'csv-parse/sync';
 import fs from 'fs';
