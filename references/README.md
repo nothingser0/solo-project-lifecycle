@@ -80,10 +80,10 @@ references/
 |---|---|---|
 | [`STACK_DECISION_METRICS.md`](./stacks/STACK_DECISION_METRICS.md) | Build time, incremental compile, cold start benchmarks across major web frameworks | Module 05 |
 | [`STACK_SUPPORT_MATRIX.md`](./stacks/STACK_SUPPORT_MATRIX.md) | Supported language & framework evaluation matrix, tooling maturity, verification gates | Module 05 |
-| [`django-5-quickstart.md`](./stacks/django-5-quickstart.md) | Django 5 + Python 3.12 + PostgreSQL 16 + Celery + Redis setup and verification guide | Module 06 |
-| [`go-1.23-quickstart.md`](./stacks/go-1.23-quickstart.md) | Go 1.23 + Fiber/Echo + PostgreSQL 16 + Redis setup and verification guide | Module 06 |
-| [`laravel-11-quickstart.md`](./stacks/laravel-11-quickstart.md) | Laravel 11 + PHP 8.3 + PostgreSQL/MySQL + Blade/Livewire setup and verification guide | Module 06 |
-| [`nextjs-15-quickstart.md`](./stacks/nextjs-15-quickstart.md) | Next.js 15 + React 19 + TypeScript + Prisma/Supabase setup and verification guide | Module 06 |
+| [`django-5-quickstart.md`](./stacks/django-5-quickstart.md) | Django (v5–v6+) + Python 3.12+ + PostgreSQL 16+ + Celery setup & live version verification guide | Module 06 |
+| [`go-1.23-quickstart.md`](./stacks/go-1.23-quickstart.md) | Go (v1.23–v1.27+) + Fiber/Echo/Chi + PostgreSQL 16+ setup & live version verification guide | Module 06 |
+| [`laravel-11-quickstart.md`](./stacks/laravel-11-quickstart.md) | Laravel (v11–v13+) + PHP 8.3+ + MySQL/PostgreSQL + Livewire/Inertia setup & live version verification guide | Module 06 |
+| [`nextjs-15-quickstart.md`](./stacks/nextjs-15-quickstart.md) | Next.js (v15–v16+) + React 19+ + TypeScript + Prisma/Supabase setup & live version verification guide | Module 06 |
 
 ---
 

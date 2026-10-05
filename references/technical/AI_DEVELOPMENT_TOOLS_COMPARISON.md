@@ -285,7 +285,7 @@ Best use case: Prototyping UIs, landing pages
 
 **Weaknesses**:
 ❌ **No IDE integration**: Copy-paste workflow  
-❌ **Smaller context**: 128K tokens (GPT-4o), 16K (GPT-3.5)  
+❌ **Context limits**: Web interface truncation compared to dedicated agentic CLI tools  
 ❌ **Hallucinations**: More frequent than Claude  
 ❌ **No codebase awareness**: Can't read your project  
 
