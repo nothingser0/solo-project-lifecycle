@@ -557,5 +557,5 @@ const validatedData = LoginSchema.parse({ email, password });
 ## See Also
 
 - `patterns/security/authentication.md` - JWT & password hashing
-- `patterns/validation/form-validation.md` - Frontend form patterns
+- `templates/04-dev-execution/checklists/frontend-checklist.md` - Frontend form validation checklist
 - M06 Development Execution - Zod integration checklist

@@ -448,6 +448,5 @@ app.use((req, res, next) => {
 ## See Also
 
 - `patterns/performance/caching-strategies.md` - Cache query results
-- `patterns/performance/query-optimization.md` - Index optimization
 - M06 Development Execution - Performance pillar
 - M05B System Design - Database scaling
