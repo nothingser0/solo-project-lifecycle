@@ -689,7 +689,7 @@ PROMPT: "Create rollback script for Vercel deployment:
 4. Verify health check endpoint
 5. Send Slack notification
 
-Save to scripts/rollback.sh"
+Save to user project: scripts/rollback.sh"
 ```
 
 **Post-Deployment Monitoring Prompt**:
@@ -769,7 +769,7 @@ AGENCY/TEAM ($60+/mo):
 
 ```bash
 #!/bin/bash
-# scripts/pre-merge-ai-review.sh
+# Example user project script: scripts/pre-merge-ai-review.sh
 
 echo "🔍 Running AI Code Review Protocol..."
 
@@ -1392,8 +1392,8 @@ Include:
 
 | Artifact | Location | Purpose |
 |----------|----------|---------|
-| **AI Prompt Library** | `docs/dev/AI_PROMPT_LIBRARY.md` | Reusable prompts for common tasks |
-| **AI Code Review Checklist** | `docs/dev/AI_CODE_REVIEW_CHECKLIST.md` | Pre-merge review gate |
+| **AI Prompt Library** | `docs/specs/AI_PROMPT_LIBRARY.md` | Reusable prompts for common tasks |
+| **AI Code Review Checklist** | `docs/specs/AI_CODE_REVIEW_CHECKLIST.md` | Pre-merge review gate |
 | **AI Tool Comparison** | `docs/dev/AI_TOOLS_COMPARISON.md` | When to use Cursor vs v0 vs Claude |
 | **AI Session Log** | `docs/dev/ai-sessions/YYYY-MM-DD.md` | What was generated, what worked/failed |
 

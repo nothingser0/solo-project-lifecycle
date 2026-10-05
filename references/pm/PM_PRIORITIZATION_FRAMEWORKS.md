@@ -354,7 +354,7 @@
 - RICE Score column: `=Reach*Impact*Confidence/Effort`
 - Sort by RICE Score descending for auto-prioritization
 
-**Download**: _(Create this template in `/templates/pm/RICE_SCORING_WORKSHEET.xlsx` if needed)_
+**Template Note**: Spreadsheet calculations can be replicated using Markdown tables above or managed in client PM tools (Jira, Linear, Notion).
 
 ---
 
