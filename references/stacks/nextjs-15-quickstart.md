@@ -1,6 +1,8 @@
-# Next.js 15 Quickstart Guide
+# Next.js Quickstart Guide
 
-**Stack**: Next.js 15 + React 19 + TypeScript + Prisma + PostgreSQL
+**Stack**: Next.js (Current Stable / v15–v16+) + React 19+ + TypeScript + Prisma/Supabase + PostgreSQL
+
+> 💡 **Version Independence**: Real-time versions are verified via M05 gate (`npm view next version`). Running `pnpm create next-app@latest` automatically pins the current major release.
 
 **Timeline**: 2-4 weeks MVP for SaaS/web app
 
@@ -495,7 +497,7 @@ Check `proxy.ts` `matcher` config
 
 ## See Also
 
-- [Next.js 15 Docs](https://nextjs.org/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
 - [Prisma Docs](https://www.prisma.io/docs)
 - [shadcn/ui](https://ui.shadcn.com)
 - `patterns/validation/zod-patterns.md` - Validation schemas

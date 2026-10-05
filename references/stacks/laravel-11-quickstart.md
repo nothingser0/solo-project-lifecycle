@@ -1,6 +1,8 @@
-# Laravel 11 Quickstart Guide
+# Laravel Quickstart Guide
 
-**Stack**: Laravel 11 + PHP 8.3 + MySQL/PostgreSQL + Blade/Livewire
+**Stack**: Laravel (Current Stable / v11–v13+) + PHP 8.3+ + MySQL/PostgreSQL + Blade/Livewire/Inertia
+
+> 💡 **Version Independence**: Real-time versions are verified via M05 gate (`composer show laravel/framework --latest`). The project scaffold command `composer create-project laravel/laravel` automatically pulls the latest stable release.
 
 **Timeline**: 2-4 weeks MVP for SaaS/web app
 
@@ -793,7 +795,7 @@ DB::select('SELECT * FROM documents WHERE user_id = ?', [$userId]);
 
 ## See Also
 
-- [Laravel 11 Docs](https://laravel.com/docs/11.x)
+- [Laravel Documentation](https://laravel.com/docs)
 - [Laravel Breeze](https://laravel.com/docs/11.x/starter-kits#laravel-breeze)
 - [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum)
 - `patterns/validation/` - Validation patterns (adapt to Laravel)

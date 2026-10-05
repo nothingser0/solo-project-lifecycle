@@ -4,20 +4,28 @@
 
 ## Currently Supported (Full M06 Support)
 
-Stacks with complete scaffold, harness templates, version gates, and verification commands:
+Stacks with complete scaffold, AI harness templates in `templates/04-dev-execution/`, version gates, and verification commands:
 
-| Stack | Scaffold | AGENTS.md | ARCHITECTURE.md | Version Gate | VERIFY Commands | Status |
-|:------|:---------|:----------|:----------------|:-------------|:----------------|:-------|
-| **Next.js** | ✅ `pnpm create next-app@latest` | ✅ | ✅ | ✅ package-lock.json | `npm run type-check`, `npm run build` | **PRODUCTION** |
-| **Laravel** | ✅ `composer create-project laravel/laravel` | ✅ | ✅ | ✅ composer.lock | `php artisan test`, `composer audit` | **PRODUCTION** |
-| **Django** | ✅ `django-admin startproject` | ✅ | ✅ | ✅ requirements.txt | `python manage.py test`, `pip-audit` | **PRODUCTION** |
-| **Go** | ✅ `go mod init` | ✅ | ✅ | ✅ go.mod | `go test ./...`, `go build` | **PRODUCTION** |
+| Stack | Scaffold Command | Templates in `templates/04-dev-execution/` | Version Gate Verification | Status |
+|:------|:-----------------|:-------------------------------------------|:--------------------------|:-------|
+| **Next.js** | `pnpm create next-app@latest` | `nextjs/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `npm view next version` → package-lock.json | **PRODUCTION** |
+| **Laravel** | `composer create-project laravel/laravel` | `laravel/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `composer show laravel/framework` → composer.lock | **PRODUCTION** |
+| **Django** | `django-admin startproject` | `django/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `pip index versions django` → requirements.txt | **PRODUCTION** |
+| **Go** | `go mod init` | `go/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | `go version` → go.mod | **PRODUCTION** |
+| **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS) | `bundle exec rails -v` → Gemfile.lock | **PRODUCTION** |
+| **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | `npm view @remix-run/dev version` → lockfile | **PRODUCTION** |
+| **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | `npm view express version` → package-lock.json | **PRODUCTION** |
+| **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | `dotnet --version` → .csproj target | **PRODUCTION** |
+| **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | pom.xml / build.gradle plugin versions | **PRODUCTION** |
+| **JAMstack / Astro**| `npm create astro@latest` | `astro/`, `jamstack/` (AGENTS, README) | package-lock.json | **PRODUCTION** |
+| **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | serverless.yml / template.yaml runtime | **PRODUCTION** |
+| **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | `flutter --version` → pubspec.lock | **PRODUCTION** |
 
 **Note**: Versions determined by M05 real-time registry check, NOT hardcoded by skill.
 - M05 runs `npm view next version` → locks result in FSD.md
 - M06 scaffolds @latest → pins exact FSD version → version gate validates lockfile
-- Templates tested with current stable versions (as of 2026-10-03)
-- Cross-major-version compatibility not guaranteed (Next.js 15→16 may need template updates)
+- Framework templates adapt dynamically; real-time queries prevent knowledge cutoff lag.
+- Upstream major updates (e.g. Next.js 15→16, Laravel 11→13, Django 5→6) are validated by `./scripts/check-package-versions.sh`.
 
 ---
 
@@ -227,10 +235,9 @@ bundle exec rspec && bundle audit
 
 ## Implementation Status
 
-**Current Coverage**: 4/12 stacks fully supported (33%)
-**Roadmap**: 8 additional stacks across 3 phases
-**Total Effort**: ~60 days development + testing
-**Timeline**: 12 months to reach 12/12 (100%)
+**Current Coverage**: 12/12 stacks supported with AI harness templates (100%)
+**Active Stacks**: Next.js, Laravel, Django, Go, Rails, Remix, MERN, ASP.NET Core, Spring Boot, JAMstack, Serverless, Flutter.
+**Maintenance Strategy**: Continuous real-time package checking via M05 version gates.
 
 **Expansion Strategy**: Demand-driven
 - Phase 1 (Rails/Remix/MERN): Implement when JavaScript/Ruby clients appear

@@ -1,8 +1,10 @@
-# Go 1.23 Quickstart Guide
+# Go Quickstart Guide
 
-**Stack**: Go 1.23 + Fiber/Echo + PostgreSQL 16 + Redis
+**Stack**: Go (Current Stable / v1.23–v1.27+) + Fiber/Echo/Chi + PostgreSQL 16+ + Redis
 
-**Timeline**: 2-4 weeks MVP for high-performance APIs
+> 💡 **Version Independence**: Toolchain versions are verified via `go version`. Use standard `go mod init` and module dependencies.
+
+**Timeline**: 2-4 weeks MVP for high-throughput API / microservice
 
 **Best for**: Microservices, high-throughput APIs, system tools, real-time applications
 

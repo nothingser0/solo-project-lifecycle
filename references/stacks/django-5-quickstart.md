@@ -1,8 +1,10 @@
-# Django 5 Quickstart Guide
+# Django Quickstart Guide
 
-**Stack**: Django 5 + Python 3.12 + PostgreSQL 16 + Celery + Redis
+**Stack**: Django (Current Stable / v5–v6+) + Python 3.12+ + PostgreSQL 16+ + Celery + Redis
 
-**Timeline**: 2-4 weeks MVP for backend-heavy applications
+> 💡 **Version Independence**: Real-time versions are verified via M05 gate (`pip index versions django`). Use `pip install django` to fetch the latest stable release.
+
+**Timeline**: 2-4 weeks MVP for data-heavy/admin-heavy app
 
 **Best for**: REST APIs, admin-heavy apps, data processing, machine learning integration
 
