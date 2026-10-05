@@ -17,8 +17,8 @@ cd ~/projects/my-mvp-app
 # Step 2: Initialize git
 git init
 
-# Step 3: Load framework skill in Omp/Kiro
-# Agent generates:
+# Step 3: Generate specifications & planning docs
+# Framework generates:
 #   - docs/pm/ (PM documents)
 #   - docs/specs/ (PRD, FSD)
 #   - docs/harness-root/ (7 AI control files - STAGED, not in root yet)

@@ -73,7 +73,7 @@ solo-project-lifecycle/
 
 1. **Create project directory** (separate from framework)
 2. **Initialize git**: `git init`
-3. **Load skill in Omp/Kiro**: Agent generates `docs/pm/`, `docs/specs/`, `docs/harness-root/`
+3. **Initialize framework**: Generate planning docs (`docs/pm/`, `docs/specs/`, `docs/harness-root/`)
 4. **Scaffold framework**: Run `npx create-next-app`, `laravel new`, etc.
 5. **Deploy harness**: Agent copies `docs/harness-root/*` → `./` (root)
 
@@ -100,8 +100,8 @@ mkdir ~/projects/my-mvp-app
 cd ~/projects/my-mvp-app
 git init
 
-# Load skill in Omp/Kiro: solo-project-lifecycle
-# Agent generates:
+# Initialize framework specs:
+# Framework generates:
 #   - docs/pm/ (planning docs)
 #   - docs/specs/ (PRD, FSD)
 #   - docs/harness-root/ (7 AI control files - staged)
