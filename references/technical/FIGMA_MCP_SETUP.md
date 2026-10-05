@@ -64,7 +64,7 @@ Or visit: cursor://anysphere.cursor-deeplink/plugin/add?id=657
 
 #### VS Code
 
-**Quick install**: Install [Figma MCP extension](vscode:mcp/by-name/com.figma.mcp/mcp)
+**Quick install**: Install Figma MCP extension via URI: `vscode:mcp/by-name/com.figma.mcp/mcp`
 
 **Manual setup**:
 1. Open Command Palette (⌘ Shift P)
