@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # lint-template.sh - Validate template completeness
 # Usage: ./scripts/lint-template.sh docs/specs/PRD.md
 
@@ -65,7 +65,7 @@ case "$BASENAME" in
         echo "=== PRD-specific checks ==="
         
         # Required PRD sections
-        for section in "Functional Requirements" "Non-Functional Requirements"; do
+        for section in "Functional" "Security"; do
             if grep -q "$section" "$TEMPLATE_FILE"; then
                 echo "✅ Has section: $section"
             else
@@ -80,7 +80,7 @@ case "$BASENAME" in
         echo "=== FSD-specific checks ==="
         
         # Required FSD sections
-        for section in "Tech Stack" "Database Schema" "API Contracts" "Security"; do
+        for section in "Tech Stack" "Database Schema" "API Contract" "Security"; do
             if grep -q "$section" "$TEMPLATE_FILE"; then
                 echo "✅ Has section: $section"
             else

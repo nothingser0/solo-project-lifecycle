@@ -67,17 +67,25 @@ export const redis = new Redis({
 export async function cached<T>(
   key: string,
   ttl: number,
-  fetcher: () => Promise<T>
+  fetcher: () => Promise<T>,
+  tenantId?: string
 ): Promise<T> {
+  // Prefix key with tenantId to prevent cross-tenant data leakage in multi-tenant contexts
+  const scopedKey = tenantId ? `tenant:${tenantId}:${key}` : key;
+
   // Try cache first
-  const cached = await redis.get(key);
-  if (cached) {
-    return JSON.parse(cached);
+  const cachedData = await redis.get(scopedKey);
+  if (cachedData) {
+    try {
+      return JSON.parse(cachedData);
+    } catch {
+      // Cache corrupted, fallback to fetcher
+    }
   }
 
   // Cache miss - fetch and store
   const data = await fetcher();
-  await redis.setex(key, ttl, JSON.stringify(data));
+  await redis.setex(scopedKey, ttl, JSON.stringify(data));
   return data;
 }
 ```

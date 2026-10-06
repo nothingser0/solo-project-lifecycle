@@ -323,7 +323,7 @@ cp templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md contracts/WARRANTY_P
 
 ```bash
 mkdir -p docs/harness-root
-cp templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE docs/harness-root/.env.example
+cp templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md docs/harness-root/.env.example
 ```
 
 ---

@@ -1,6 +1,6 @@
 # Django Quickstart Guide
 
-**Stack**: Django (Current Stable / v5–v6+) + Python 3.12+ + PostgreSQL 16+ + Celery + Redis
+**Stack**: Django (Current Stable / v5.1–v5.2 LTS / v6+) + Python 3.12/3.13+ + PostgreSQL 16+ + Celery + Redis
 
 > 💡 **Version Independence**: Real-time versions are verified via M05 gate (`pip index versions django`). Use `pip install django` to fetch the latest stable release.
 

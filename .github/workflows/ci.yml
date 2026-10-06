@@ -1,0 +1,78 @@
+name: Framework Quality CI
+
+on:
+  push:
+    branches: [main, master, staging]
+  pull_request:
+    branches: [main, master, staging]
+  workflow_dispatch:
+
+jobs:
+  bash-validation:
+    name: Bash Scripts & Templates Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (for fallback package version check)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Syntax check Bash scripts (bash -n)
+        run: |
+          for script in scripts/*.sh templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh templates/04-dev-execution/scripts/check-dependencies.sh; do
+            echo "Checking syntax: $script"
+            bash -n "$script"
+          done
+
+      - name: Verify CLI template picker dry-run
+        run: |
+          ./scripts/template-picker.sh --phase 8 --dry-run --dest /tmp
+
+      - name: Verify Gate Validation execution
+        run: |
+          ./scripts/validate-gate.sh M00 || true
+
+      - name: Verify package version auto-check
+        run: |
+          ./scripts/check-package-versions.sh nextjs
+
+      - name: Lint sample PRD template
+        run: |
+          ./scripts/lint-template.sh templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md
+
+  powershell-validation:
+    name: PowerShell Scripts Tokenization & Execution
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Tokenize PowerShell scripts (PSParser)
+        shell: powershell
+        run: |
+          $files = Get-ChildItem -Path scripts -Filter *.ps1
+          $hasErrors = $false
+          foreach ($f in $files) {
+            $errors = $null
+            $tokens = [System.Management.Automation.PSParser]::Tokenize((Get-Content $f.FullName -Raw), [ref]$errors)
+            if ($errors.Count -gt 0) {
+              Write-Host "[FAIL] $($f.Name): $($errors.Count) errors" -ForegroundColor Red
+              $hasErrors = $true
+            } else {
+              Write-Host "[PASS] $($f.Name)" -ForegroundColor Green
+            }
+          }
+          if ($hasErrors) { exit 1 }
+
+      - name: Verify package version auto-check (PowerShell)
+        shell: powershell
+        run: |
+          .\scripts\check-package-versions.ps1 -Framework nextjs
+
+      - name: Test template picker dry-run
+        shell: powershell
+        run: |
+          .\scripts\template-picker.ps1 -Phase 8 -DryRun -Dest "$env:TEMP"

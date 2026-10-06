@@ -11,7 +11,7 @@ Software development framework for solo developers and small teams. Covers proje
 **Comprehensive project management framework** for solo developers and small teams managing software projects:
 
 - 14 modules covering discovery, design, development, QA, deployment, maintenance
-- 170+ production-ready templates (PRD, FSD, SOW, test plans, deployment protocols)
+- 150+ production-ready templates (PRD, FSD, SOW, test plans, deployment protocols)
 - Real case studies with metrics
 - Code patterns for common problems
 - Scripts for validation and automation
@@ -28,11 +28,11 @@ This is a **skill framework/toolkit**, not a minimal starter template:
 | Component | Size | Purpose |
 |-----------|------|---------|
 | Module library | 460KB | 14 lifecycle phases with detailed workflows |
-| Template library | 1.8MB | 170+ production-ready templates |
+| Template library | 1.8MB | 150+ production-ready templates |
 | Reference guides | 756KB | Playbooks, patterns, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
 | Code patterns | 144KB | 12 reusable patterns (API, testing, deployment, etc.) |
-| Scripts | 96KB | 10 validation and automation tools |
+| Scripts | 96KB | 12 validation and automation tools (6 Bash + 6 PowerShell) |
 
 **Why this size?**  
 Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.
@@ -54,7 +54,7 @@ Completeness = utility. Similar to design systems or testing frameworks - compre
 ```
 solo-project-lifecycle/
 ├── docs/modules/          14 lifecycle modules (M00-M13)
-├── templates/             170+ project templates
+├── templates/             150+ project templates
 ├── patterns/              12 code patterns (API, testing, deployment, database, security)
 ├── case-studies/          5 examples (3 real + 2 worked examples)
 ├── references/            Guides and playbooks
@@ -219,19 +219,21 @@ Full details: `case-studies/`
 **Bash (Linux/Mac):**
 ```bash
 ./scripts/validate-gate.sh              # Validate gate checkpoints
-./scripts/check-package-versions.sh     # Real-time registry dependency checks (12 stacks supported)
+./scripts/check-package-versions.sh     # Real-time registry dependency checks (14 stacks supported)
 ./scripts/verify-framework-version.sh   # Validate lockfile against FSD
 ./scripts/lint-template.sh              # Check template completeness
 ./scripts/template-picker.sh            # Interactive template selector
+./scripts/verify-all.sh                 # Repository sanity and integrity check
 ```
 
 **PowerShell (Windows):**
 ```powershell
 .\scripts\validate-gate.ps1
-.\scripts\check-package-versions.ps1   # 12 stacks supported (-Framework <stack>)
+.\scripts\check-package-versions.ps1   # 14 stacks supported (-Framework <stack>)
 .\scripts\verify-framework-version.ps1
 .\scripts\lint-template.ps1
 .\scripts\template-picker.ps1
+.\scripts\verify-all.ps1
 ```
 
 ---

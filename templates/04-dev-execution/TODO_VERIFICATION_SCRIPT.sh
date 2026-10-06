@@ -13,7 +13,14 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Default TODO path
-TODO_FILE="${1:-docs/pm/TODO.md}"
+TODO_FILE="${1:-}"
+if [[ -z "$TODO_FILE" ]]; then
+    if [[ -f "TODO.md" ]]; then
+        TODO_FILE="TODO.md"
+    else
+        TODO_FILE="docs/harness-root/TODO.md"
+    fi
+fi
 
 # Counters
 TOTAL_ITEMS=0
@@ -31,7 +38,7 @@ if [[ ! -f "$TODO_FILE" ]]; then
     echo -e "${RED}✗ ERROR: TODO file not found: $TODO_FILE${NC}"
     echo ""
     echo "Usage: $0 [path/to/TODO.md]"
-    echo "Example: $0 docs/pm/TODO.md"
+    echo "Example: $0 TODO.md"
     exit 1
 fi
 
@@ -123,10 +130,10 @@ if [[ ${#PHASE_STATS[@]} -gt 0 ]]; then
         phase_percent=$(awk "BEGIN {printf \"%.1f\", ($phase_complete / $phase_total) * 100}")
         
         # Color based on completion
-        if [[ $(echo "$phase_percent == 100" | bc -l) -eq 1 ]]; then
+        if awk "BEGIN {exit !($phase_percent == 100)}"; then
             color="$GREEN"
             status="✓"
-        elif [[ $(echo "$phase_percent >= 50" | bc -l) -eq 1 ]]; then
+        elif awk "BEGIN {exit !($phase_percent >= 50)}"; then
             color="$YELLOW"
             status="◐"
         else

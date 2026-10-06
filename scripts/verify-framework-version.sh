@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Framework Version Gate - M06 Step 1.5
 # Enforces exact resolved versions match FSD locked versions
 
@@ -112,10 +112,10 @@ case "$STACK" in
             exit 1
         fi
         
-        FSD_MAJOR=$(echo "$FSD_LARAVEL" | sed 's/^v//' | cut -d. -f1)
-        RESOLVED_MAJOR=$(echo "$RESOLVED" | sed 's/^v//' | cut -d. -f1)
+        FSD_MM=$(echo "$FSD_LARAVEL" | sed 's/^v//' | cut -d. -f1-2)
+        RESOLVED_MM=$(echo "$RESOLVED" | sed 's/^v//' | cut -d. -f1-2)
         
-        if [[ "$RESOLVED_MAJOR" != "$FSD_MAJOR" ]]; then
+        if [[ "$RESOLVED_MM" != "$FSD_MM" ]]; then
             echo -e "${RED}❌ VERSION MISMATCH${NC}"
             echo "FSD:      laravel/framework@$FSD_LARAVEL"
             echo "Resolved: laravel/framework@$RESOLVED"
@@ -147,10 +147,10 @@ case "$STACK" in
             exit 1
         fi
         
-        FSD_MAJOR=$(echo "$FSD_DJANGO" | cut -d. -f1)
-        RESOLVED_MAJOR=$(echo "$RESOLVED" | cut -d. -f1)
+        FSD_MM=$(echo "$FSD_DJANGO" | cut -d. -f1-2)
+        RESOLVED_MM=$(echo "$RESOLVED" | cut -d. -f1-2)
         
-        if [[ "$RESOLVED_MAJOR" != "$FSD_MAJOR" ]]; then
+        if [[ "$RESOLVED_MM" != "$FSD_MM" ]]; then
             echo -e "${RED}❌ VERSION MISMATCH${NC}"
             echo "FSD:      Django==$FSD_DJANGO"
             echo "Resolved: Django==$RESOLVED"
@@ -182,7 +182,9 @@ case "$STACK" in
             exit 1
         fi
         
-        if [[ "$RESOLVED" != "$FSD_GO"* ]]; then
+        FSD_GO_MM=$(echo "$FSD_GO" | cut -d. -f1-2)
+        RESOLVED_GO_MM=$(echo "$RESOLVED" | cut -d. -f1-2)
+        if [[ "$RESOLVED_GO_MM" != "$FSD_GO_MM" ]]; then
             echo -e "${RED}❌ VERSION MISMATCH${NC}"
             echo "FSD:      go $FSD_GO"
             echo "Resolved: go $RESOLVED"

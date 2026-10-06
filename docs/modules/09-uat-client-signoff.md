@@ -143,14 +143,14 @@ This module produces 2 sign-off documents:
 ## 7. Gate Exit Criteria [GATE]
 
 [GATE] Module 09 is declared **PASSED** if:
-- [x] All test scenarios have **PASS** status or all Severity 1 & 2 findings are **RESOLVED**.
-- [x] **Quantitative Stability Criteria**:
+- [ ] All test scenarios have **PASS** status or all Severity 1 & 2 findings are **RESOLVED**.
+- [ ] **Quantitative Stability Criteria**:
   - 0 critical bugs (Severity 1) unresolved
   - Error rate < 1% (99%+ request success rate in staging logs)
   - System uptime ≥99% over last 48 hours
   - All core user flows (login, create, submit, approve) complete without blocking issues
-- [x] New feature requests have been separated in writing into Change Request forms.
-- [x] **Client Single PIC has signed the `docs/pm/UAT_SIGNOFF_REPORT.md` document.**
+- [ ] New feature requests have been separated in writing into Change Request forms.
+- [ ] **Client Single PIC has signed the `docs/pm/UAT_SIGNOFF_REPORT.md` document.**
 
 ---
 

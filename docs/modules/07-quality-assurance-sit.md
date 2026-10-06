@@ -195,16 +195,16 @@ This module produces 2 primary artifacts:
 ## 6. Gate Exit Criteria [GATE]
 
 [GATE] Module 07 is declared **PASSED (PASS)** if:
-- [x] All unit tests and integration tests pass 100% (`pnpm test` exit code 0).
-- [x] **Test coverage meets minimum thresholds** (Large/Enterprise scale):
+- [ ] All unit tests and integration tests pass 100% (`pnpm test` exit code 0).
+- [ ] **Test coverage meets minimum thresholds** (Large/Enterprise scale):
   - **Large Scale**: ≥70% line coverage, ≥60% branch coverage
   - **Enterprise Scale**: ≥80% line coverage, ≥70% branch coverage
   - **Small/Medium Scale**: No strict threshold (pragmatic coverage of critical paths only)
   - Check: `pnpm test:coverage` or `npm run coverage`
-- [x] SIT with all third-party sandboxes (Payment, Vault S3/R2, Email) is proven successful.
-- [x] Dependency audit `pnpm audit` is free of High/Critical category vulnerabilities.
-- [x] Application has been successfully deployed and runs stably on the **Staging** server.
-- [x] Document **`docs/qa/SIT_WORKBOOK.md`** has been published with the conclusion: **READY FOR CLIENT UAT**.
+- [ ] SIT with all third-party sandboxes (Payment, Vault S3/R2, Email) is proven successful.
+- [ ] Dependency audit `pnpm audit` is free of High/Critical category vulnerabilities.
+- [ ] Application has been successfully deployed and runs stably on the **Staging** server.
+- [ ] Document **`docs/qa/SIT_WORKBOOK.md`** has been published with the conclusion: **READY FOR CLIENT UAT**.
 
 **Test Coverage Rationale**:
 - Small/Medium: Pragmatic testing (unit + critical path E2E) without strict percentage targets

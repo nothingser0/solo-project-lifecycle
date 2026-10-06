@@ -538,7 +538,7 @@ Example axes:
 ### 5.1 Folder Organization
 
 ```
-/opt/data/home/project/[project-name]/
+[project-root]/
 ├── docs/
 │   ├── research/                          # Research phase output
 │   │   ├── RISET_REGULASI_[DOMAIN]_[YEAR].md

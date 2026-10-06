@@ -150,8 +150,16 @@ import { generateAccessToken, generateRefreshToken } from '@/lib/auth/jwt';
 import { db } from '@/lib/db';
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { email, password } = LoginSchema.parse(body);
+  let email = '';
+  let password = '';
+  try {
+    const body = await req.json();
+    const parsed = LoginSchema.parse(body);
+    email = parsed.email;
+    password = parsed.password;
+  } catch {
+    return NextResponse.json({ error: 'Invalid input payload' }, { status: 400 });
+  }
 
   // Find user
   const user = await db.user.findUnique({ where: { email } });

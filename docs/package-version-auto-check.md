@@ -31,6 +31,16 @@ Run auto-check to get current ecosystem state:
 
 ---
 
+**Supported Framework Stacks**:
+- `nextjs` (Next.js, React, Tailwind, Zod, Supabase)
+- `laravel` (Laravel, PHP, Packagist)
+- `django` (Django, Python, PyPI)
+- `go` (Go runtime, Gin, Gorm, pgx)
+- `rails`, `mern`, `aspnet`, `spring`, `serverless`, `flutter`, `remix`, `astro`
+- `sveltekit`, `nuxt`
+
+---
+
 ## What It Checks
 
 ### Next.js Ecosystem

@@ -64,6 +64,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • OVERWRITES framework boilerplate (e.g., Next.js auto-generated AGENTS.md)
   • Verify all 9 files present in root: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
+  • Optional automation shortcut: ./scripts/template-picker.sh --phase 4 --dest . (or .\scripts\template-picker.ps1 -Phase 4)
                                     │
                                     ▼
 [ STEP 1.6: Verify Framework Versions (Version Gate - MANDATORY) ]
@@ -2426,13 +2427,13 @@ export const analytics = {
 ## 9. Gate Exit Criteria [GATE]
 
 [GATE] Module 06 is declared **PASSED** if:
-- [x] Git branching is structured (`main`, `staging`, `feat/*`) with clean commits.
-- [x] 9 AI control files (Agent Harness) installed in project root.
-- [x] Design specs components extracted via MCP and connected to backend API.
-- [x] Source code builds successfully without TypeScript compilation errors (`tsc --noEmit` exits 0).
-- [x] Database migrations execute smoothly with search indexes in place.
-- [x] Stream-based AES-256-GCM vault file encryption successfully stores and retrieves documents via presigned URLs.
-- [x] Self-test script (`smoke-test`) passes 100% and dependency audit (`pnpm audit`) is free of critical vulnerabilities.
+- [ ] Git branching is structured (`main`, `staging`, `feat/*`) with clean commits.
+- [ ] 9 AI control files (Agent Harness) installed in project root.
+- [ ] Design specs components extracted via MCP and connected to backend API.
+- [ ] Source code builds successfully without TypeScript compilation errors (`tsc --noEmit` exits 0).
+- [ ] Database migrations execute smoothly with search indexes in place.
+- [ ] Stream-based AES-256-GCM vault file encryption successfully stores and retrieves documents via presigned URLs.
+- [ ] Self-test script (`smoke-test`) passes 100% and dependency audit (`pnpm audit`) is free of critical vulnerabilities.
 
 ---
 
