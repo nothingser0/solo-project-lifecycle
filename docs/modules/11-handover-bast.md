@@ -156,11 +156,11 @@ This module produces official closing documents:
 ## 7. [GATE] Exit Criteria
 
 [GATE] Module 11 is declared **PASSED** if:
-- [x] **Final settlement funds (100%) have cleared and are confirmed in the Developer's bank account.**
-- [x] Staff and admin training sessions have been conducted according to the agreed quota.
-- [x] Git repository and production credentials have been transferred to the Client organization.
-- [x] Document `docs/USER_MANUAL.md` has been delivered to the client.
-- [x] **Official stamped BAST document (`docs/pm/BAST.md`) has been signed by both parties.**
+- [ ] **Final settlement funds (100%) have cleared and are confirmed in the Developer's bank account.**
+- [ ] Staff and admin training sessions have been conducted according to the agreed quota.
+- [ ] Git repository and production credentials have been transferred to the Client organization.
+- [ ] Document `docs/USER_MANUAL.md` has been delivered to the client.
+- [ ] **Official stamped BAST document (`docs/pm/BAST.md`) has been signed by both parties.**
 
 ---
 

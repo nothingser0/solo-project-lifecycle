@@ -87,7 +87,7 @@ Two weeks before the warranty period ends, send a routine maintenance proposal (
 **Reminder Automation**: Configure a calendar reminder or cron job to automatically send the proposal 14 days before the warranty expiration date:
 ```bash
 # Example cron job: Send retainer proposal reminder
-# Add to crontab or use a service scheduler (Hermes cron / GitHub Actions)
+# Add to crontab or use a service scheduler (Cron / GitHub Actions)
 0 9 * * * check_warranty_expiry_and_notify.sh
 ```
 
@@ -135,10 +135,10 @@ This module produces 3 maintenance governance documents:
 ## 6. [GATE] Exit Criteria
 
 [GATE] Module 12 is declared **SUCCESSFUL & PROJECT LIFECYCLE 100% COMPLETE** if:
-- [x] The 30/60/90 calendar day warranty period has passed with no pending Severity 1 & 2 tickets unresolved.
-- [x] Document `docs/pm/WARRANTY_POLICY.md` has been issued.
-- [x] The client has signed the warranty sign-off sheet or officially signed the Monthly Retainer Contract (`docs/pm/SLA_RETAINER_CONTRACT.md`).
-- [x] The system operates stably and autonomously on production servers with active automated monitoring.
+- [ ] The 30/60/90 calendar day warranty period has passed with no pending Severity 1 & 2 tickets unresolved.
+- [ ] Document `docs/pm/WARRANTY_POLICY.md` has been issued.
+- [ ] The client has signed the warranty sign-off sheet or officially signed the Monthly Retainer Contract (`docs/pm/SLA_RETAINER_CONTRACT.md`).
+- [ ] The system operates stably and autonomously on production servers with active automated monitoring.
 
 ---
 
@@ -250,8 +250,8 @@ After all stages of Module 12 are completed:
 ---
 
 **Module 12 Gate Exit Criteria**:
-- [x] Warranty policy documented
-- [x] No Severity 1/2 pending tickets
-- [x] Closure type determined (A/B/C)
-- [x] If Type B: User approval to proceed to M13
-- [x] If Type A/C: Final closure acknowledgment
+- [ ] Warranty policy documented
+- [ ] No Severity 1/2 pending tickets
+- [ ] Closure type determined (A/B/C)
+- [ ] If Type B: User approval to proceed to M13
+- [ ] If Type A/C: Final closure acknowledgment

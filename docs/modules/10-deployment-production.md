@@ -82,26 +82,23 @@ This module is the tenth phase in the software project lifecycle for solo develo
 
    ```bash
    # Verify payment gateway mode
-   echo $PAYMENT_GATEWAY_MODE
-   # Expected: "production" or "live"
-   # NEVER: "sandbox" or "test"
+   [[ "$PAYMENT_GATEWAY_MODE" =~ ^(production|live)$ ]] && echo "✅ Payment mode production" || echo "❌ NOT PRODUCTION"
 
-   # Verify database URL
-   echo $DATABASE_URL | grep -o 'prod\|production\|live'
-   # Must contain production identifiers
+   # Verify database URL (non-emitting check)
+   echo "$DATABASE_URL" | grep -q -E 'prod|production|live' && echo "✅ Production DB verified" || echo "❌ INVALID DB TARGET"
 
-   # Verify API keys (partial check)
-   echo $STRIPE_SECRET_KEY | cut -c1-10
-   # Production: sk_live_...
-   # Sandbox: sk_test_... (WRONG!)
+   # Verify API keys (non-emitting prefix validation)
+   if [[ "$STRIPE_SECRET_KEY" =~ ^sk_live_ ]]; then
+     echo "✅ Stripe live key verified"
+   else
+     echo "❌ INVALID STRIPE KEY"
+   fi
 
-   # Verify JWT secret different from staging
-   echo $JWT_SECRET | cut -c1-8
-   # Should differ from staging JWT_SECRET
+   # Verify JWT secret non-empty
+   [[ -n "$JWT_SECRET" && ${#JWT_SECRET} -ge 32 ]] && echo "✅ JWT secret valid" || echo "❌ WEAK OR MISSING JWT SECRET"
 
-   # Verify encryption key rotated
-   echo $ENCRYPTION_KEY | cut -c1-8
-   # Should differ from staging ENCRYPTION_KEY
+   # Verify encryption key non-empty
+   [[ -n "$ENCRYPTION_KEY" && ${#ENCRYPTION_KEY} -ge 32 ]] && echo "✅ Encryption key valid" || echo "❌ WEAK OR MISSING ENCRYPTION KEY"
    ```
 
    **Checklist Production ENV**:
@@ -390,12 +387,12 @@ This module produces 2 execution documents:
 ## 7. Gate Exit Criteria [GATE]
 
 [GATE] Module 10 is declared **PASSED (PASS)** if:
-- [x] Branch `main` has been tagged with official SemVer version (`v1.0.0`).
-- [x] Official domain (`https://app.client.com`) is active with valid SSL/TLS 1.3 encryption.
-- [x] Production database migration successfully executed without data loss.
-- [x] All environment variables use live production accounts (not sandbox).
-- [x] Post-release real transaction test (*PVT*) succeeded 100%.
-- [x] Uptime monitoring system and Sentry error tracker are active.
+- [ ] Branch `main` has been tagged with official SemVer version (`v1.0.0`).
+- [ ] Official domain (`https://app.client.com`) is active with valid SSL/TLS 1.3 encryption.
+- [ ] Production database migration successfully executed without data loss.
+- [ ] All environment variables use live production accounts (not sandbox).
+- [ ] Post-release real transaction test (*PVT*) succeeded 100%.
+- [ ] Uptime monitoring system and Sentry error tracker are active.
 
 ---
 

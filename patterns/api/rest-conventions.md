@@ -21,7 +21,7 @@ DELETE /api/users/123    - Delete user (returns 200 if exists, 404 if not)
 ### Non-Idempotent Methods (Side Effects)
 ```
 POST /api/users          - Create new user (returns 201 + Location header)
-PATCH /api/users/123     - Partial update (only changed fields)
+PATCH /api/users/123     - Partial update (may be idempotent or non-idempotent depending on operation payload)
 ```
 
 ## HTTP Status Codes

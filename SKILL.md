@@ -15,7 +15,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 - **Entry point**: This SKILL.md file (8KB) - lightweight navigation guide
 - **Module library**: 14 modules in `docs/modules/` loaded on-demand per project phase
-- **Template library**: 170+ templates in `templates/` by use case and phase
+- **Template library**: 150+ templates in `templates/` by use case and phase
 - **Reference materials**: 600KB guides, playbooks, case studies in `references/`
 - **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
 
@@ -175,18 +175,25 @@ All templates in `templates/` directory:
 Validation tools in `scripts/` (bash + PowerShell):
 
 ```bash
-# Validate gate checkpoints
-./scripts/validate-gate.sh M03  # Commercial gate
-./scripts/validate-gate.sh M09  # UAT gate
-./scripts/validate-gate.sh M11  # Handover gate
-./scripts/check-package-versions.sh nextjs  # Real-time package checks (12 stacks supported)
-./scripts/verify-framework-version.sh       # Verify lockfile matches FSD
+# Validate gate checkpoints (covers M00 through M13)
+./scripts/validate-gate.sh M03              # Commercial gate
+./scripts/validate-gate.sh M06              # Harness gate
+./scripts/validate-gate.sh M09              # UAT signoff gate
+./scripts/check-package-versions.sh nextjs  # Real-time package registry checks
+./scripts/verify-framework-version.sh       # Verify lockfile matches FSD (Next.js, Laravel, Django, Go)
 
 # Check template completeness
 ./scripts/lint-template.sh path/to/template.md
 
-# Interactive template picker
-./scripts/template-picker.sh
+# Template picker (interactive or headless)
+./scripts/template-picker.sh                # Interactive menu
+./scripts/template-picker.sh --phase 8 --dry-run  # Fast-track MVP dry-run
+
+# Verify TODO checklist completion
+./templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh TODO.md
+
+# Pre-install dependency compatibility check
+./templates/04-dev-execution/scripts/check-dependencies.sh
 ```
 
 PowerShell: Same commands, use `.ps1` extension.
@@ -210,7 +217,12 @@ Reusable patterns in `patterns/`:
 - `validation/` - Zod schemas, form validation
 - `security/` - Authentication, encryption
 - `performance/` - N+1 prevention, caching
+- `api/` - REST conventions, GraphQL & versioning
+- `database/` - Migrations, transactions, seeding
+- `deployment/` - CI/CD pipeline automation
+- `error-handling/` - Error boundaries and resilience
 - `git-workflow/` - Branching, commit conventions
+- `testing/` - Test pyramid, unit/integration strategies
 
 ## Case studies
 
@@ -218,6 +230,8 @@ Real projects in `case-studies/` (reference for timelines/budgets):
 - `01-mvp-saas-inventory.md` - 4 weeks, 200 users
 - `02-ecommerce-fashion-mvp.md` - 21 days, Rp 52M GMV
 - `03-crm-real-estate-internal.md` - 28 days, +58% revenue
+- `04-medium-b2b-saas-worked-example.md` - 12 weeks, B2B multi-tenant SaaS
+- `05-large-system-integration-worked-example.md` - 25 weeks, legacy integration & migration
 
 ## Tech stack support
 Stack-agnostic. Quickstart guides in `references/stacks/`:

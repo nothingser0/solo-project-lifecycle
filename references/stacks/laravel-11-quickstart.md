@@ -1,6 +1,6 @@
 # Laravel Quickstart Guide
 
-**Stack**: Laravel (Current Stable / v11–v13+) + PHP 8.3+ + MySQL/PostgreSQL + Blade/Livewire/Inertia
+**Stack**: Laravel (Current Stable / v11–v12/v13+) + PHP 8.3/8.4+ + MySQL/PostgreSQL + Blade/Livewire/Inertia
 
 > 💡 **Version Independence**: Real-time versions are verified via M05 gate (`composer show laravel/framework --latest`). The project scaffold command `composer create-project laravel/laravel` automatically pulls the latest stable release.
 

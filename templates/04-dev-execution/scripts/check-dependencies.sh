@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Dependency Compatibility Pre-Install Check
 # Run before installing packages to verify compatibility
 
@@ -12,6 +12,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+ERRORS=0
 
 # Check if package.json exists
 if [ ! -f package.json ]; then
@@ -81,6 +82,7 @@ if [ -n "$NEXT_VERSION" ]; then
   # Validate
   if [ "$NEXT_VERSION" = "15" ] && [ "$REACT_VERSION" != "19" ] && [ "$REACT_VERSION" != "18" ]; then
     echo -e "${RED}✗ Version mismatch: Next.js 15 requires React 19 or 18 (found React $REACT_VERSION)${NC}"
+    ERRORS=$((ERRORS + 1))
   else
     echo -e "${GREEN}✓ React version compatible${NC}"
   fi
@@ -107,6 +109,7 @@ if [ -n "$ZOD_VERSION" ] && [ -n "$RESOLVERS_VERSION" ]; then
   echo "Form validation stack:"
   if [ "$ZOD_VERSION" = "3" ] && [ "$RESOLVERS_VERSION" != "3" ]; then
     echo -e "${RED}✗ Mismatch: Zod v3 requires @hookform/resolvers v3 (found v$RESOLVERS_VERSION)${NC}"
+    ERRORS=$((ERRORS + 1))
   elif [ "$ZOD_VERSION" = "4" ] && [ "$RESOLVERS_VERSION" != "5" ]; then
     echo -e "${YELLOW}⚠ Warning: Zod v4 is incompatible with most ecosystem packages${NC}"
     echo -e "${YELLOW}  Recommendation: Downgrade to Zod v3.x${NC}"
@@ -123,3 +126,8 @@ echo "  1. Fix any RED errors before proceeding"
 echo "  2. Review YELLOW warnings and assess impact"
 echo "  3. Run: pnpm install"
 echo "  4. Verify: pnpm list | grep -i invalid"
+
+if [ "$ERRORS" -gt 0 ]; then
+  exit 1
+fi
+exit 0

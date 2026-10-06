@@ -1,10 +1,12 @@
 # Case Study: Internal CRM for Real Estate Agency
 
+> **Case Type**: Worked Example / Client Project  
 **Project**: Customer Relationship Management for Real Estate Agency  
 **Timeline**: 4 weeks (28 working days)  
 **Budget**: Rp 60.000.000  
 **Team**: 1 solo developer  
 **Tech Stack**: Laravel 11 + MySQL + Livewire + Filament Admin
+**Developer Profile**: Solo full-stack agency contractor (anonymized)
 
 ---
 

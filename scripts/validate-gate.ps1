@@ -11,11 +11,35 @@ $ErrorActionPreference = "Stop"
 
 # Gate definitions
 $Gates = @{
+    "M00" = @{
+        Name = "Product Discovery & Strategy"
+        Required = @(
+            "docs/pm/MARKET_RESEARCH.md"
+        )
+        Optional = @(
+            "docs/pm/COMPETITIVE_LANDSCAPE.md",
+            "docs/pm/COMPETITOR_ANALYSIS.md",
+            "docs/pm/PRODUCT_STRATEGY.md"
+        )
+    }
+    "M01" = @{
+        Name = "Idea Feasibility"
+        Required = @(
+            "docs/pm/IDEA_BRIEF.md"
+        )
+        Optional = @()
+    }
+    "M02" = @{
+        Name = "Discovery & Scope"
+        Required = @(
+            "docs/pm/SCOPE_STATEMENT.md"
+        )
+        Optional = @()
+    }
     "M03" = @{
         Name = "Legal SOW & Charter"
         Required = @(
-            "contracts/SOW_CONTRACT.md",
-            "docs/pm/SCOPE_STATEMENT.md"
+            "contracts/SOW_CONTRACT.md"
         )
         Optional = @(
             "contracts/NDA.md"
@@ -61,6 +85,24 @@ $Gates = @{
             "docs/qa/SECURITY_AUDIT.md"
         )
     }
+    "M08" = @{
+        Name = "Data Migration & Seeding"
+        Required = @(
+            "docs/pm/DATA_MIGRATION_PLAN.md"
+        )
+        Optional = @(
+            "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
+        )
+    }
+    "M09" = @{
+        Name = "UAT & Client Sign-off"
+        Required = @(
+            "docs/pm/UAT_SIGNOFF_REPORT.md"
+        )
+        Optional = @(
+            "docs/qa/UAT_WORKBOOK.md"
+        )
+    }
     "M10" = @{
         Name = "Deployment Production"
         Required = @(
@@ -70,53 +112,111 @@ $Gates = @{
             "docs/ROLLBACK_PLAN.md"
         )
     }
+    "M11" = @{
+        Name = "Handover & BAST"
+        Required = @(
+            "docs/pm/BAST.md"
+        )
+        Optional = @(
+            "docs/pm/GO_LIVE_REPORT.md",
+            "docs/pm/HANDOVER_PROTOCOL.md",
+            "docs/USER_MANUAL.md"
+        )
+    }
+    "M12" = @{
+        Name = "Warranty SLA Retainer"
+        Required = @(
+            "docs/pm/WARRANTY_POLICY.md"
+        )
+        Optional = @(
+            "docs/pm/SLA_RETAINER_CONTRACT.md",
+            "docs/pm/INCIDENT_RESPONSE.md"
+        )
+    }
+    "M13" = @{
+        Name = "Product Operations & Iteration"
+        Required = @(
+            "docs/pm/METRICS_BASELINE_REPORT.md"
+        )
+        Optional = @(
+            "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"
+        )
+    }
 }
 
 # Check if module exists
 if (-not $Gates.ContainsKey($Module)) {
-    Write-Host "❌ Unknown module: $Module" -ForegroundColor Red
+    Write-Host "[ERROR] Unknown module: $Module" -ForegroundColor Red
     Write-Host "Available modules: $($Gates.Keys -join ', ')" -ForegroundColor Yellow
     exit 1
 }
 
 $gate = $Gates[$Module]
-Write-Host "`n🔍 Validating gate: $Module - $($gate.Name)" -ForegroundColor Cyan
-Write-Host "=" * 60
+Write-Host "`n[INFO] Validating gate: $Module - $($gate.Name)" -ForegroundColor Cyan
+Write-Host ("=" * 60)
 
 $missingRequired = @()
 $missingOptional = @()
 $foundFiles = @()
 
 # Check required files
-Write-Host "`n📋 Required files:" -ForegroundColor White
+Write-Host "`nRequired files:" -ForegroundColor White
 foreach ($file in $gate.Required) {
-    if (Test-Path $file) {
-        Write-Host "  ✅ $file" -ForegroundColor Green
+    $pathExists = Test-Path $file
+    if (-not $pathExists -and $file -eq "DESIGN.md" -and (Test-Path "docs/harness-root/DESIGN.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "docs/DEPLOYMENT_PROTOCOL.md" -and (Test-Path "docs/pm/DEPLOYMENT_PROTOCOL.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "docs/pm/METRICS_BASELINE_REPORT.md" -and (Test-Path "docs/analytics/METRICS_BASELINE_REPORT.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "docs/pm/IDEA_BRIEF.md" -and (Test-Path "docs/pm/FEASIBILITY_REPORT.md")) {
+        $pathExists = $true
+    }
+    if ($pathExists) {
+        Write-Host "  [OK] $file" -ForegroundColor Green
         $foundFiles += $file
     } else {
-        Write-Host "  ❌ $file (MISSING)" -ForegroundColor Red
+        Write-Host "  [ERROR] $file (MISSING)" -ForegroundColor Red
         $missingRequired += $file
     }
 }
 
 # Check optional files
 if ($gate.Optional.Count -gt 0) {
-    Write-Host "`n📄 Optional files:" -ForegroundColor White
+    Write-Host "`nOptional files:" -ForegroundColor White
     foreach ($file in $gate.Optional) {
+        if (-not (Test-Path $file) -and $file -eq "docs/qa/SECURITY_AUDIT.md" -and (Test-Path "docs/qa/SECURITY_AUDIT_REPORT.md")) {
+            $file = "docs/qa/SECURITY_AUDIT_REPORT.md"
+        }
+        if (-not (Test-Path $file) -and $file -eq "docs/ROLLBACK_PLAN.md" -and (Test-Path "docs/pm/ROLLBACK_PLAN.md")) {
+            $file = "docs/pm/ROLLBACK_PLAN.md"
+        }
+        if (-not (Test-Path $file) -and $file -eq "docs/pm/HANDOVER_PROTOCOL.md" -and (Test-Path "docs/HANDOVER_PROTOCOL.md")) {
+            $file = "docs/HANDOVER_PROTOCOL.md"
+        }
+        if (-not (Test-Path $file) -and $file -eq "docs/pm/SLA_RETAINER_CONTRACT.md" -and (Test-Path "contracts/SLA_RETAINER.md")) {
+            $file = "contracts/SLA_RETAINER.md"
+        }
+        if (-not (Test-Path $file) -and $file -eq "docs/pm/INCIDENT_RESPONSE.md" -and (Test-Path "docs/INCIDENT_RESPONSE.md")) {
+            $file = "docs/INCIDENT_RESPONSE.md"
+        }
         if (Test-Path $file) {
-            Write-Host "  ✅ $file" -ForegroundColor Green
+            Write-Host "  [OK] $file" -ForegroundColor Green
             $foundFiles += $file
         } else {
-            Write-Host "  ⚠️  $file (optional, not found)" -ForegroundColor Yellow
+            Write-Host "  [WARN] $file (optional, not found)" -ForegroundColor Yellow
             $missingOptional += $file
         }
     }
 }
 
 # Summary
-Write-Host "`n" + "=" * 60
+Write-Host ("`n" + ("=" * 60))
 if ($missingRequired.Count -eq 0) {
-    Write-Host "✅ Gate $Module PASSED - All required files present" -ForegroundColor Green
+    Write-Host "[OK] Gate $Module PASSED - All required files present" -ForegroundColor Green
     Write-Host "   Found: $($foundFiles.Count) files" -ForegroundColor Gray
     
     if ($missingOptional.Count -gt 0) {
@@ -125,7 +225,7 @@ if ($missingRequired.Count -eq 0) {
     
     exit 0
 } else {
-    Write-Host "❌ Gate $Module FAILED" -ForegroundColor Red
+    Write-Host "[ERROR] Gate $Module FAILED" -ForegroundColor Red
     Write-Host "   Missing required files: $($missingRequired.Count)" -ForegroundColor Red
     Write-Host ""
     Write-Host "Create missing files:" -ForegroundColor Yellow

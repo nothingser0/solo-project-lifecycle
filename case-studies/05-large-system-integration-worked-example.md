@@ -37,8 +37,9 @@ A regional hospital needs to integrate their legacy patient management system (b
 - ✅ M10 (Deployment & Go-Live) - 3 days (phased rollout)
 - ✅ M11 (Handover & BAST) - 2 days
 - ✅ M12 (Warranty & Maintenance) - Ongoing (6-month warranty)
+- ✅ M13 (Product Operations & Iteration) - Post-launch baseline metrics & SLA tracking
 
-**Total**: 25 weeks elapsed time (team working in parallel: 2 devs + DevOps + QA + compliance consultant)
+**Total**: 25 weeks implementation + ongoing M12-M13 operations (team working in parallel: 2 devs + DevOps + QA + compliance consultant)
 
 ---
 

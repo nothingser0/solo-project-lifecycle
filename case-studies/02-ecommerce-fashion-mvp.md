@@ -1,10 +1,12 @@
 # Case Study: E-Commerce Platform MVP
 
+> **Case Type**: Worked Example / Client Project  
 **Project**: B2C Online Store for Fashion Brand  
 **Timeline**: 3 weeks (21 working days)  
 **Budget**: Rp 45.000.000  
 **Team**: 1 solo developer  
 **Tech Stack**: Next.js 15 + Prisma + PostgreSQL + Midtrans
+**Developer Profile**: Full-stack contractor (anonymized)
 
 ---
 

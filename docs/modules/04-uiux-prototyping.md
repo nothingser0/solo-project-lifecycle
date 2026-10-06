@@ -357,8 +357,10 @@ Before completing Step 0 and proceeding to `docs/harness-root/DESIGN.md` generat
 
 **Workflow**:
 1. Generate DESIGN.md (tokens, guidelines)
-5. Connect navigation, deploy to Prototype Viewer
-6. Document final specs in DESIGN_SPEC.md
+2. Upload design system tokens to visual builder
+3. Generate screens and verify interactive state transitions
+4. Connect navigation and deploy to Prototype Viewer
+5. Document final specs in DESIGN_SPEC.md
 
 **Deliverables**:
 - ✅ DESIGN.md (tokens)
@@ -1742,7 +1744,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 **Example Full Prompt:**
 ```
 Generate Landing Page (Screen ID: SCR-01) for FreePajak tax SaaS:
-(Note: Indonesian locale example for demonstration - replace with your language)
+(Note: Sample domain example for demonstration - replace with your project domain)
 
 CONTENT:
 - Hero section: Headline "Hitung 3 Skema Pajak. Pilih yang Paling Hemat.", 
@@ -2208,13 +2210,13 @@ Next Steps:
 > **AUTHORITATIVE WORKFLOW OVERRIDE**
 >
 
-## 7. Workflow Split: Planning (Hermes) vs Development (PC with MCP Prototype)
+## 7. Workflow Split: Planning (Cloud AI) vs Development (Local PC with MCP)
 
-**Use Case**: User conducts planning/PM/design specification in Hermes (chat AI), then executes UI generation & development on a local PC with MCP Prototype.
+**Use Case**: User conducts planning/PM/design specification in Cloud AI (chat interface), then executes UI generation & development on a local PC with MCP.
 
-### 7.1 Phase A: Planning & Design Specification (Hermes)
+### 7.1 Phase A: Planning & Design Specification
 
-**Deliverables created in Hermes**:
+**Deliverables created in Cloud AI**:
 
 1. ✅ **`docs/specs/LOGO_DESIGN_BRIEF.md`** (≤2KB minimal brief)
    - Product name + philosophy (2-3 sentences)
@@ -2237,7 +2239,7 @@ Next Steps:
    - Component specs (size, spacing, interaction states)
 
 4. ✅ **`data/regulations/*.json`** (if data assets exist, e.g., FreePajak)
-   - `pph21-rates.json` (tax brackets with version, source, effective date)
+   - Domain configuration or rule tables with version, source, effective date
    - `ptkp-values.json` (tax-free allowance categories)
    - `pph23-rates.json`, `pp20-2026.json`, etc.
    - Metadata: version, source URL, last_updated, changelog
@@ -2248,25 +2250,25 @@ Next Steps:
    - `ui-prompts/03-calculation-form.txt`
    - Format: Layout sections, Style (STRICT anti-slop), Components list, References
 
-**How to Export from Hermes to PC**:
+**How to Export Deliverables to PC**:
 
 ```bash
-# User action (in Hermes chat):
+# User action:
 # 1. Request: "Export all Module 04 deliverables to a single archive"
-# 2. Hermes creates tar.gz at /opt/data/workspace/ or /opt/data/home/project/[name]/
+# 2. Creates tar.gz in project directory
 # 3. User downloads via file browser or scp/rsync
 
-# Example terminal command (Hermes executes):
-cd /opt/data/home/project/freepajak
-tar -czf ../freepajak-design-export-$(date +%Y%m%d).tar.gz   DESIGN.md   docs/specs/LOGO_DESIGN_BRIEF.md   docs/specs/DESIGN_SPEC.md   data/regulations/*.json   ui-prompts/*.txt
+# Example terminal command:
+cd ./my-project
+tar -czf ../design-export-$(date +%Y%m%d).tar.gz DESIGN.md docs/specs/LOGO_DESIGN_BRIEF.md docs/specs/DESIGN_SPEC.md
 
-# Output: /opt/data/home/project/freepajak-design-export-20260929.tar.gz
+# Output: ../design-export-20260929.tar.gz
 # User downloads this file to PC
 ```
 
 **Folder structure in archive**:
 ```
-freepajak-design-export/
+project-design-export/
 ├── DESIGN.md                              # Root design system tokens
 ├── docs/
 │   └── specs/
@@ -2299,7 +2301,7 @@ freepajak-design-export/
 ```bash
 # On PC
 cd ~/projects/freepajak
-tar -xzf ~/Downloads/freepajak-design-export-20260929.tar.gz
+tar -xzf ~/Downloads/design-export-20260929.tar.gz
 ls -lh  # Verify DESIGN.md, docs/, data/, ui-prompts/ extracted
 ```
 
@@ -2340,7 +2342,7 @@ Read DESIGN.md and docs/specs/DESIGN_SPEC.md from this project, then generate al
 
 Project context:
 - App: FreePajak (tax calculator for Indonesian freelancers)
-- Framework: Next.js 15 + Tailwind CSS + TypeScript
+- Framework: Next.js + Tailwind CSS + TypeScript
 - Design style: Minimalist, flat colors, NO gradients, NO glassmorphism
 
 For each screen in DESIGN_SPEC.md (SCR-001 to SCR-010):
@@ -2495,8 +2497,8 @@ Proceed autonomously and report progress every 3 screens.
 8. **Generate Design Freeze Report**:
    ```markdown
    # Design Freeze Report — FreePajak
-   
-   **Date**: 2026-09-29
+
+   **Date**: 2026-10-06
    **Project**: FreePajak Tax Calculator
    **Screens Generated**: 10/10 (100%)
    
@@ -2582,14 +2584,14 @@ AI agent:
 
 ---
 
-### 7.3 Deliverables Handoff Back to Hermes (Optional Documentation)
+### 7.3 Deliverables Handoff Back to Planning Environment (Optional Documentation)
 
-**If user wants to document final state in Hermes for archival**:
+**If user wants to document final state in planning repository for archival**:
 
 ```bash
-# On PC, create summary to upload to Hermes
+# On PC, create summary to sync back to Planning repository
 cd ~/projects/freepajak
-cat > design-freeze-summary.txt <<EOF
+cat > design-freeze-summary.txt <<'EOF'
 FreePajak Design Freeze Summary
 
 Date: 2026-09-29
@@ -2605,12 +2607,12 @@ Date: 2026-09-29
 Ready to proceed to Module 05 (System Design & Infrastructure).
 EOF
 
-# User pastes this summary into Hermes chat
+# User archives this summary in project documentation
 ```
 
-**Hermes agent actions**:
+**Planning agent actions**:
 - Update project tracking (mark Module 04 complete)
-- Archive design freeze report to `/opt/data/home/project/freepajak/docs/specs/design-freeze-report.md`
+- Archive design freeze report to `docs/specs/design-freeze-report.md`
 - Suggest next steps: "Module 04 complete. Proceed to Module 05 (System Design & Infrastructure) to define database schema, API endpoints, and detailed tech stack?"
 
 ---
@@ -2619,17 +2621,17 @@ EOF
 
 | Phase | Location | Tools | Primary Output | Duration |
 |-------|----------|-------|----------------|----------|
-| **Planning & Spec** | Hermes (chat AI) | web_search, write_file, patch, skill_view | DESIGN.md, DESIGN_SPEC.md, JSON data, Prototype prompts | 4-6 hours |
+| **Planning & Spec** | Cloud AI (chat interface) | web_search, write_file, patch, skill_view | DESIGN.md, DESIGN_SPEC.md, JSON data, Prototype prompts | 4-6 hours |
 | **UI Generation** | PC + MCP Prototype | Claude Desktop/Codex/Cursor/Windsurf + MCP | 10 screens (Next.js code), interactive prototype | 3-5 hours |
 | **Review & Iterate** | PC | Browser, Lighthouse, WAVE | Anti-slop verification, accessibility audit | 2-3 hours |
 | **Development** | PC | VS Code, Next.js, Supabase, Vercel | Full-stack app implementation | 40-80 hours |
-| **Documentation** | Hermes (optional) | read_file, patch, memory | Design freeze archive, project status update | 30 minutes |
+| **Documentation** | Cloud AI (optional) | read_file, patch, memory | Design freeze archive, project status update | 30 minutes |
 
 **Key Benefits**:
-- ✅ **Hermes**: Thinking & Planning (specifications, research, data modeling, prompt engineering)
+- ✅ **Cloud AI**: Thinking & Planning (specifications, research, data modeling, prompt engineering)
 - ✅ **PC**: Execution (UI generation via MCP, coding, testing, deployment)
-- ✅ **No duplication**: Specs created once in Hermes, consumed autonomously by MCP agent on PC
-- ✅ **Async workflow**: User can continue planning in Hermes while PC agent generates screens in background
+- ✅ **No duplication**: Specs created once in planning, consumed autonomously by MCP agent on PC
+- ✅ **Async workflow**: User can continue planning while PC agent generates screens in background
 - ✅ **Verifiable output**: Design freeze report with concrete metrics (0 gradients, 95 Lighthouse score, etc.)
 
 **Common Pitfalls to Avoid**:
@@ -2843,12 +2845,12 @@ v2.0.0: Remove deprecated API (breaking)
 ### 8.9 Gate Exit Criteria
 
 Section 8 is declared **PASSED** if:
-- [x] Design audit completed with inconsistency quantified
-- [x] Design tokens JSON created (primitive + semantic layers)
-- [x] Minimum 12 P0/P1 components implemented in Storybook
-- [x] WCAG 2.1 AA compliance for all components
-- [x] CI/CD setup: Visual regression + NPM publish
-- [x] Adoption plan documented (80% coverage target)
+- [ ] Design audit completed with inconsistency quantified
+- [ ] Design tokens JSON created (primitive + semantic layers)
+- [ ] Minimum 12 P0/P1 components implemented in Storybook
+- [ ] WCAG 2.1 AA compliance for all components
+- [ ] CI/CD setup: Visual regression + NPM publish
+- [ ] Adoption plan documented (80% coverage target)
 
 **END RESPONSE** and confirm:
 > *"Design System foundation is complete: [X] tokens defined, [Y] components implemented. Please review Storybook at [URL]. Ready to proceed to M05 (Architecture & Specs)?"*

@@ -98,6 +98,7 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 ### 3. Compensation Value & Payment Milestone Schedule
 
 1. **Total Contract Value**: Rp [Numeric Amount] (*[Amount in words in Rupiah]*), exclusive of Value Added Tax (VAT/PPN) and third-party infrastructure subscription fees (servers, cloud storage, paid APIs).
+   - **Tax Regulatory Clause**: Applicable taxes (VAT/PPN, PPh 23) follow Indonesian tax laws in force upon invoice issuance (including UU HPP PPN 12% adjustments).
 2. **Payment Milestones (Installments)**:
    - **Milestone 1 (Down Payment / DP 30% - 50%)**: Amounting to Rp [Amount], payable upon the signing of this agreement as a prerequisite to commencing work.
    - **Milestone 2 (Alpha Delivery 25%)**: Amounting to Rp [Amount], payable after core backend engine functionality and basic interfaces are verified in local/staging environments.

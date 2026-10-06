@@ -10,12 +10,12 @@ param(
 $ErrorActionPreference = "Stop"
 
 if (-not (Test-Path $File)) {
-    Write-Host "❌ File not found: $File" -ForegroundColor Red
+    Write-Host "[ERROR] File not found: $File" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "`n🔍 Linting: $File" -ForegroundColor Cyan
-Write-Host "=" * 60
+Write-Host "`n[INFO] Linting: $File" -ForegroundColor Cyan
+Write-Host ("=" * 60)
 
 $content = Get-Content $File -Raw
 $issues = @()
@@ -46,7 +46,6 @@ $emptyPatterns = @(
     "##\s+.*?\n\s*\n\s*##",  # Empty section
     "###\s+.*?\n\s*\n\s*###" # Empty subsection
 )
-
 foreach ($pattern in $emptyPatterns) {
     if ($content -match $pattern) {
         $warnings += "Empty section detected (may be intentional)"
@@ -60,7 +59,9 @@ foreach ($match in $internalLinks) {
     # Remove anchors
     $linkPath = $linkPath -replace '#.*$', ''
     
-    if ($linkPath -and -not (Test-Path $linkPath)) {
+    $parentDir = Split-Path -Parent $File
+    $targetPath = if ($parentDir) { Join-Path $parentDir $linkPath } else { $linkPath }
+    if ($linkPath -and -not (Test-Path $targetPath)) {
         $issues += "Broken link: $linkPath"
     }
 }
@@ -72,6 +73,27 @@ if ($filename -match "PRD|FSD|DESIGN_SPEC") {
     # Check for dates
     if ($content -notmatch '\d{4}-\d{2}-\d{2}') {
         $warnings += "No dates found (expected in $filename)"
+    }
+
+    if ($filename -match "PRD") {
+        if ($content -notmatch "Functional") {
+            $issues += "Missing required PRD section: Functional (or Functional Traceability Matrix)"
+        }
+        if ($content -notmatch "Security") {
+            $issues += "Missing required PRD section: Security (Multi-Layer Security Architecture)"
+        }
+    }
+
+    if ($filename -match "FSD") {
+        $fsdSections = @("Tech Stack", "Database Schema", "API Contract", "Security")
+        foreach ($sec in $fsdSections) {
+            if ($content -notmatch $sec) {
+                $issues += "Missing required FSD section: $sec"
+            }
+        }
+        if ($content -notmatch "CREATE TABLE|ALTER TABLE") {
+            $warnings += "No SQL DDL found in FSD"
+        }
     }
 }
 
@@ -103,7 +125,7 @@ if ($wordCount -lt $minWords) {
 }
 
 # Check 6: Frontmatter (YAML)
-if ($content -match '^---\s*\n') {
+if ($content -match '\A---\s*\r?\n') {
     if ($content -notmatch '^---\s*\n.*?\n---\s*\n') {
         $issues += "Malformed YAML frontmatter"
     }
@@ -112,23 +134,23 @@ if ($content -match '^---\s*\n') {
 # Results
 Write-Host ""
 if ($issues.Count -eq 0 -and $warnings.Count -eq 0) {
-    Write-Host "✅ No issues found" -ForegroundColor Green
+    Write-Host "[OK] No issues found" -ForegroundColor Green
     Write-Host "   Word count: $wordCount" -ForegroundColor Gray
     exit 0
 }
 
 if ($issues.Count -gt 0) {
-    Write-Host "❌ Issues found: $($issues.Count)" -ForegroundColor Red
+    Write-Host "[ERROR] Issues found: $($issues.Count)" -ForegroundColor Red
     foreach ($issue in $issues) {
-        Write-Host "   • $issue" -ForegroundColor Red
+        Write-Host "   - $issue" -ForegroundColor Red
     }
     Write-Host ""
 }
 
 if ($warnings.Count -gt 0) {
-    Write-Host "⚠️  Warnings: $($warnings.Count)" -ForegroundColor Yellow
+    Write-Host "[WARN] Warnings: $($warnings.Count)" -ForegroundColor Yellow
     foreach ($warning in $warnings) {
-        Write-Host "   • $warning" -ForegroundColor Yellow
+        Write-Host "   - $warning" -ForegroundColor Yellow
     }
     Write-Host ""
 }
