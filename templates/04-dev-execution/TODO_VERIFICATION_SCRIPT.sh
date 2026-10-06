@@ -123,10 +123,10 @@ if [[ ${#PHASE_STATS[@]} -gt 0 ]]; then
         phase_percent=$(awk "BEGIN {printf \"%.1f\", ($phase_complete / $phase_total) * 100}")
         
         # Color based on completion
-        if [[ $(echo "$phase_percent == 100" | bc -l) -eq 1 ]]; then
+        if awk "BEGIN {exit !($phase_percent == 100)}"; then
             color="$GREEN"
             status="✓"
-        elif [[ $(echo "$phase_percent >= 50" | bc -l) -eq 1 ]]; then
+        elif awk "BEGIN {exit !($phase_percent >= 50)}"; then
             color="$YELLOW"
             status="◐"
         else

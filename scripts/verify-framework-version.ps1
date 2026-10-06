@@ -5,11 +5,11 @@ $ErrorActionPreference = "Stop"
 
 $FSD_FILE = "docs/specs/FSD.md"
 
-Write-Host "`n🔍 Framework Version Gate Check..." -ForegroundColor Cyan
+Write-Host "`n[INFO] Framework Version Gate Check..." -ForegroundColor Cyan
 Write-Host ""
 
 if (-not (Test-Path $FSD_FILE)) {
-    Write-Host "❌ FSD.md not found" -ForegroundColor Red
+    Write-Host "[ERROR] FSD.md not found" -ForegroundColor Red
     exit 1
 }
 
@@ -17,10 +17,10 @@ function Extract-FsdVersion {
     param($Package)
     
     $fsdContent = Get-Content $FSD_FILE -Raw
-    $versionsSection = ($fsdContent -split "Framework Versions \(Pinned\):")[1]
+    $versionsSection = ($fsdContent -split 'Framework Versions \(Pinned\):')[1]
     if ($versionsSection) {
         $versionsSection = ($versionsSection -split "`n`n")[0]
-        $line = $versionsSection -split "`n" | Where-Object { $_ -match "^- $Package:" } | Select-Object -First 1
+        $line = $versionsSection -split "`n" | Where-Object { $_ -match "^- ${Package}:" } | Select-Object -First 1
         if ($line) {
             return ($line -split ": ")[1].Trim()
         }
@@ -29,10 +29,10 @@ function Extract-FsdVersion {
 }
 
 $fsdContent = Get-Content $FSD_FILE -Raw
-$stackMatch = [regex]::Match($fsdContent, "Stack Decision LOCKED:\s*(.+?)(\r?\n|$)")
+$stackMatch = [regex]::Match($fsdContent, 'Stack Decision LOCKED:\s*(.+?)(\r?\n|$)')
 $stack = ($stackMatch.Groups[1].Value.Trim() -split ' ')[0]
 
-Write-Host "📋 FSD Stack: $stack"
+Write-Host "[INFO] FSD Stack: $stack"
 Write-Host ""
 
 switch ($stack) {
@@ -43,7 +43,7 @@ switch ($stack) {
         if (-not $fsdReact) { $fsdReact = Extract-FsdVersion "react" }
         
         if (-not $fsdNext) {
-            Write-Host "❌ FSD missing 'Next.js: X.Y.Z'" -ForegroundColor Red
+            Write-Host "[ERROR] FSD missing 'Next.js: X.Y.Z'" -ForegroundColor Red
             exit 1
         }
         
@@ -64,12 +64,12 @@ switch ($stack) {
                 $resolvedReact = ($reactLine -replace '.*react@', '' -split ':')[0]
             }
         } else {
-            Write-Host "❌ No lockfile found (package-lock.json or pnpm-lock.yaml required)" -ForegroundColor Red
+            Write-Host "[ERROR] No lockfile found (package-lock.json or pnpm-lock.yaml required)" -ForegroundColor Red
             exit 1
         }
         
         if (-not $resolvedNext) {
-            Write-Host "❌ next not resolved in lockfile" -ForegroundColor Red
+            Write-Host "[ERROR] next not resolved in lockfile" -ForegroundColor Red
             exit 1
         }
         
@@ -77,7 +77,7 @@ switch ($stack) {
         $resolvedMajorMinor = ($resolvedNext -split '\.')[0..1] -join '.'
         
         if ($resolvedMajorMinor -ne $fsdMajorMinor) {
-            Write-Host "❌ VERSION MISMATCH" -ForegroundColor Red
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
             Write-Host "FSD:      next@$fsdNext"
             Write-Host "Resolved: next@$resolvedNext"
             Write-Host ""
@@ -93,7 +93,7 @@ switch ($stack) {
             $resolvedReactMM = ($resolvedReact -split '\.')[0..1] -join '.'
             
             if ($resolvedReactMM -ne $fsdReactMM) {
-                Write-Host "❌ React version mismatch" -ForegroundColor Red
+                Write-Host "[ERROR] React version mismatch" -ForegroundColor Red
                 Write-Host "FSD:      react@$fsdReact"
                 Write-Host "Resolved: react@$resolvedReact"
                 Write-Host ""
@@ -101,10 +101,10 @@ switch ($stack) {
                 exit 1
             }
         }
-        
-        Write-Host "✅ next@$resolvedNext matches FSD" -ForegroundColor Green
+
+        Write-Host "[OK] next@$resolvedNext matches FSD" -ForegroundColor Green
         if ($resolvedReact) {
-            Write-Host "✅ react@$resolvedReact matches FSD" -ForegroundColor Green
+            Write-Host "[OK] react@$resolvedReact matches FSD" -ForegroundColor Green
         }
     }
     
@@ -113,12 +113,12 @@ switch ($stack) {
         if (-not $fsdLaravel) { $fsdLaravel = Extract-FsdVersion "laravel/framework" }
         
         if (-not $fsdLaravel) {
-            Write-Host "❌ FSD missing 'Laravel: X.Y'" -ForegroundColor Red
+            Write-Host "[ERROR] FSD missing 'Laravel: X.Y'" -ForegroundColor Red
             exit 1
         }
         
         if (-not (Test-Path "composer.lock")) {
-            Write-Host "❌ No composer.lock found" -ForegroundColor Red
+            Write-Host "[ERROR] No composer.lock found" -ForegroundColor Red
             exit 1
         }
         
@@ -127,98 +127,104 @@ switch ($stack) {
         $resolved = $laravelPkg.version
         
         if (-not $resolved) {
-            Write-Host "❌ laravel/framework not in composer.lock" -ForegroundColor Red
+            Write-Host "[ERROR] laravel/framework not in composer.lock" -ForegroundColor Red
             exit 1
         }
         
         $fsdMajor = ($fsdLaravel -replace '^v', '' -split '\.')[0]
         $resolvedMajor = ($resolved -replace '^v', '' -split '\.')[0]
+        $fsdMM = ($fsdLaravel -replace '^v', '' -split '\.')[0..1] -join '.'
+        $resolvedMM = ($resolved -replace '^v', '' -split '\.')[0..1] -join '.'
         
-        if ($resolvedMajor -ne $fsdMajor) {
-            Write-Host "❌ VERSION MISMATCH" -ForegroundColor Red
+        if ($resolvedMM -ne $fsdMM) {
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
             Write-Host "FSD:      laravel/framework@$fsdLaravel"
             Write-Host "Resolved: laravel/framework@$resolved"
             Write-Host ""
             Write-Host "Fix: composer require laravel/framework:$fsdLaravel"
             exit 1
         }
-        
-        Write-Host "✅ laravel/framework@$resolved matches FSD" -ForegroundColor Green
+
+        Write-Host "[OK] laravel/framework@$resolved matches FSD" -ForegroundColor Green
     }
     
     "Django" {
         $fsdDjango = Extract-FsdVersion "Django"
         
         if (-not $fsdDjango) {
-            Write-Host "❌ FSD missing 'Django: X.Y.Z'" -ForegroundColor Red
+            Write-Host "[ERROR] FSD missing 'Django: X.Y.Z'" -ForegroundColor Red
             exit 1
         }
         
         if (-not (Test-Path "requirements.txt")) {
-            Write-Host "❌ No requirements.txt found" -ForegroundColor Red
+            Write-Host "[ERROR] No requirements.txt found" -ForegroundColor Red
             exit 1
         }
         
         $djangoLine = Get-Content "requirements.txt" | Select-String "^Django==" | Select-Object -First 1
         
         if (-not $djangoLine) {
-            Write-Host "❌ Django not in requirements.txt" -ForegroundColor Red
+            Write-Host "[ERROR] Django not in requirements.txt" -ForegroundColor Red
             exit 1
         }
         
         $resolved = ($djangoLine -split "==")[1]
         $fsdMajor = ($fsdDjango -split '\.')[0]
         $resolvedMajor = ($resolved -split '\.')[0]
+        $fsdMM = ($fsdDjango -split '\.')[0..1] -join '.'
+        $resolvedMM = ($resolved -split '\.')[0..1] -join '.'
         
-        if ($resolvedMajor -ne $fsdMajor) {
-            Write-Host "❌ VERSION MISMATCH" -ForegroundColor Red
+        if ($resolvedMM -ne $fsdMM) {
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
             Write-Host "FSD:      Django==$fsdDjango"
             Write-Host "Resolved: Django==$resolved"
             Write-Host ""
             Write-Host "Fix: pip install django==$fsdDjango"
             exit 1
         }
-        
-        Write-Host "✅ Django==$resolved matches FSD" -ForegroundColor Green
+
+        Write-Host "[OK] Django==$resolved matches FSD" -ForegroundColor Green
     }
     
     "Go" {
         $fsdGo = Extract-FsdVersion "Go"
         
         if (-not $fsdGo) {
-            Write-Host "❌ FSD missing 'Go: X.Y'" -ForegroundColor Red
+            Write-Host "[ERROR] FSD missing 'Go: X.Y'" -ForegroundColor Red
             exit 1
         }
         
         if (-not (Test-Path "go.mod")) {
-            Write-Host "❌ No go.mod found" -ForegroundColor Red
+            Write-Host "[ERROR] No go.mod found" -ForegroundColor Red
             exit 1
         }
         
         $goLine = Get-Content "go.mod" | Select-String "^go " | Select-Object -First 1
         
         if (-not $goLine) {
-            Write-Host "❌ Go version not in go.mod" -ForegroundColor Red
+            Write-Host "[ERROR] Go version not in go.mod" -ForegroundColor Red
             exit 1
         }
         
         $resolved = ($goLine -split " ")[1]
         
-        if (-not $resolved.StartsWith($fsdGo)) {
-            Write-Host "❌ VERSION MISMATCH" -ForegroundColor Red
+        $fsdGoMM = ($fsdGo -split '\.')[0..1] -join '.'
+        $resolvedGoMM = ($resolved -split '\.')[0..1] -join '.'
+        if ($resolvedGoMM -ne $fsdGoMM) {
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
             Write-Host "FSD:      go $fsdGo"
             Write-Host "Resolved: go $resolved"
             exit 1
         }
-        
-        Write-Host "✅ go $resolved matches FSD" -ForegroundColor Green
+
+        Write-Host "[OK] go $resolved matches FSD" -ForegroundColor Green
     }
     
     default {
-        Write-Host "❌ Unknown stack: $stack" -ForegroundColor Red
+        Write-Host "[ERROR] Unknown stack: $stack" -ForegroundColor Red
         exit 1
     }
 }
 
 Write-Host ""
-Write-Host "✅ Version gate PASSED" -ForegroundColor Green
+Write-Host "[OK] Version gate PASSED" -ForegroundColor Green

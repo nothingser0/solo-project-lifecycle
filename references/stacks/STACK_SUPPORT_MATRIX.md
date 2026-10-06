@@ -12,14 +12,14 @@ Stacks with complete scaffold, AI harness templates in `templates/04-dev-executi
 | **Laravel** | `composer create-project laravel/laravel` | `laravel/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Packagist API: `repo.packagist.org/p2/laravel/framework.json` → composer.lock | **PRODUCTION** |
 | **Django** | `django-admin startproject` | `django/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | PyPI API: `pypi.org/pypi/django/json` → requirements.txt | **PRODUCTION** |
 | **Go** | `go mod init` | `go/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Go API & Proxy: `go.dev/dl` + `proxy.golang.org` → go.mod | **PRODUCTION** |
-| **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS) | RubyGems API: `rubygems.org/api/v1/gems/rails.json` → Gemfile.lock | **PRODUCTION** |
-| **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | npm Registry: `npm view @remix-run/dev version` → lockfile | **PRODUCTION** |
-| **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | npm Registry: `npm view express version` → package-lock.json | **PRODUCTION** |
-| **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | NuGet API: `api.nuget.org` → .csproj target | **PRODUCTION** |
-| **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | Maven Central / `start.spring.io` → pom.xml / build.gradle | **PRODUCTION** |
-| **JAMstack / Astro**| `npm create astro@latest` | `astro/`, `jamstack/` (AGENTS, README) | npm Registry: `npm view astro version` → package-lock.json | **PRODUCTION** |
-| **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | npm Registry: `npm view serverless version` → template.yaml | **PRODUCTION** |
-| **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | Pub.dev API: `pub.dev/api/packages/flutter_lints` → pubspec.lock | **PRODUCTION** |
+| **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS, .env.example) | RubyGems API: `rubygems.org/api/v1/gems/rails.json` → Gemfile.lock | **ROADMAP / BETA** |
+| **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | npm Registry: `npm view @remix-run/dev version` → lockfile | **ROADMAP / BETA** |
+| **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | npm Registry: `npm view express version` → package-lock.json | **ROADMAP / BETA** |
+| **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | NuGet API: `api.nuget.org` → .csproj target | **ROADMAP / BETA** |
+| **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | Maven Central / `start.spring.io` → pom.xml / build.gradle | **ROADMAP / BETA** |
+| **JAMstack / Astro**| `npm create astro@latest` | `astro/`, `jamstack/` (AGENTS, README) | npm Registry: `npm view astro version` → package-lock.json | **ROADMAP / BETA** |
+| **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | npm Registry: `npm view serverless version` → template.yaml | **ROADMAP / BETA** |
+| **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | Pub.dev API: `pub.dev/api/packages/flutter_lints` → pubspec.lock | **ROADMAP / BETA** |
 
 **Note**: Versions determined by M05 real-time registry check, NOT hardcoded by skill.
 - M05 runs `npm view next version` → locks result in FSD.md

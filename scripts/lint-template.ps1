@@ -10,12 +10,12 @@ param(
 $ErrorActionPreference = "Stop"
 
 if (-not (Test-Path $File)) {
-    Write-Host "❌ File not found: $File" -ForegroundColor Red
+    Write-Host "[ERROR] File not found: $File" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "`n🔍 Linting: $File" -ForegroundColor Cyan
-Write-Host "=" * 60
+Write-Host "`n[INFO] Linting: $File" -ForegroundColor Cyan
+Write-Host ("=" * 60)
 
 $content = Get-Content $File -Raw
 $issues = @()
@@ -60,7 +60,9 @@ foreach ($match in $internalLinks) {
     # Remove anchors
     $linkPath = $linkPath -replace '#.*$', ''
     
-    if ($linkPath -and -not (Test-Path $linkPath)) {
+    $parentDir = Split-Path -Parent $File
+    $targetPath = if ($parentDir) { Join-Path $parentDir $linkPath } else { $linkPath }
+    if ($linkPath -and -not (Test-Path $targetPath)) {
         $issues += "Broken link: $linkPath"
     }
 }
@@ -103,7 +105,7 @@ if ($wordCount -lt $minWords) {
 }
 
 # Check 6: Frontmatter (YAML)
-if ($content -match '^---\s*\n') {
+if ($content -match '\A---\s*\r?\n') {
     if ($content -notmatch '^---\s*\n.*?\n---\s*\n') {
         $issues += "Malformed YAML frontmatter"
     }
@@ -112,23 +114,23 @@ if ($content -match '^---\s*\n') {
 # Results
 Write-Host ""
 if ($issues.Count -eq 0 -and $warnings.Count -eq 0) {
-    Write-Host "✅ No issues found" -ForegroundColor Green
+    Write-Host "[OK] No issues found" -ForegroundColor Green
     Write-Host "   Word count: $wordCount" -ForegroundColor Gray
     exit 0
 }
 
 if ($issues.Count -gt 0) {
-    Write-Host "❌ Issues found: $($issues.Count)" -ForegroundColor Red
+    Write-Host "[ERROR] Issues found: $($issues.Count)" -ForegroundColor Red
     foreach ($issue in $issues) {
-        Write-Host "   • $issue" -ForegroundColor Red
+        Write-Host "   - $issue" -ForegroundColor Red
     }
     Write-Host ""
 }
 
 if ($warnings.Count -gt 0) {
-    Write-Host "⚠️  Warnings: $($warnings.Count)" -ForegroundColor Yellow
+    Write-Host "[WARN] Warnings: $($warnings.Count)" -ForegroundColor Yellow
     foreach ($warning in $warnings) {
-        Write-Host "   • $warning" -ForegroundColor Yellow
+        Write-Host "   - $warning" -ForegroundColor Yellow
     }
     Write-Host ""
 }

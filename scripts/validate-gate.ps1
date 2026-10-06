@@ -74,49 +74,53 @@ $Gates = @{
 
 # Check if module exists
 if (-not $Gates.ContainsKey($Module)) {
-    Write-Host "❌ Unknown module: $Module" -ForegroundColor Red
+    Write-Host "[ERROR] Unknown module: $Module" -ForegroundColor Red
     Write-Host "Available modules: $($Gates.Keys -join ', ')" -ForegroundColor Yellow
     exit 1
 }
 
 $gate = $Gates[$Module]
-Write-Host "`n🔍 Validating gate: $Module - $($gate.Name)" -ForegroundColor Cyan
-Write-Host "=" * 60
+Write-Host "`n[INFO] Validating gate: $Module - $($gate.Name)" -ForegroundColor Cyan
+Write-Host ("=" * 60)
 
 $missingRequired = @()
 $missingOptional = @()
 $foundFiles = @()
 
 # Check required files
-Write-Host "`n📋 Required files:" -ForegroundColor White
+Write-Host "`nRequired files:" -ForegroundColor White
 foreach ($file in $gate.Required) {
-    if (Test-Path $file) {
-        Write-Host "  ✅ $file" -ForegroundColor Green
+    $pathExists = Test-Path $file
+    if (-not $pathExists -and $file -eq "DESIGN.md" -and (Test-Path "docs/harness-root/DESIGN.md")) {
+        $pathExists = $true
+    }
+    if ($pathExists) {
+        Write-Host "  [OK] $file" -ForegroundColor Green
         $foundFiles += $file
     } else {
-        Write-Host "  ❌ $file (MISSING)" -ForegroundColor Red
+        Write-Host "  [ERROR] $file (MISSING)" -ForegroundColor Red
         $missingRequired += $file
     }
 }
 
 # Check optional files
 if ($gate.Optional.Count -gt 0) {
-    Write-Host "`n📄 Optional files:" -ForegroundColor White
+    Write-Host "`nOptional files:" -ForegroundColor White
     foreach ($file in $gate.Optional) {
         if (Test-Path $file) {
-            Write-Host "  ✅ $file" -ForegroundColor Green
+            Write-Host "  [OK] $file" -ForegroundColor Green
             $foundFiles += $file
         } else {
-            Write-Host "  ⚠️  $file (optional, not found)" -ForegroundColor Yellow
+            Write-Host "  [WARN] $file (optional, not found)" -ForegroundColor Yellow
             $missingOptional += $file
         }
     }
 }
 
 # Summary
-Write-Host "`n" + "=" * 60
+Write-Host ("`n" + ("=" * 60))
 if ($missingRequired.Count -eq 0) {
-    Write-Host "✅ Gate $Module PASSED - All required files present" -ForegroundColor Green
+    Write-Host "[OK] Gate $Module PASSED - All required files present" -ForegroundColor Green
     Write-Host "   Found: $($foundFiles.Count) files" -ForegroundColor Gray
     
     if ($missingOptional.Count -gt 0) {
@@ -125,7 +129,7 @@ if ($missingRequired.Count -eq 0) {
     
     exit 0
 } else {
-    Write-Host "❌ Gate $Module FAILED" -ForegroundColor Red
+    Write-Host "[ERROR] Gate $Module FAILED" -ForegroundColor Red
     Write-Host "   Missing required files: $($missingRequired.Count)" -ForegroundColor Red
     Write-Host ""
     Write-Host "Create missing files:" -ForegroundColor Yellow

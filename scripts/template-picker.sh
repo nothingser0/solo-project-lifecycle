@@ -200,7 +200,7 @@ phase_qa() {
         1) copy_template "$TEMPLATES_DIR/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md" "docs/qa/SIT_WORKBOOK.md" ;;
         2) copy_template "$TEMPLATES_DIR/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md" "docs/qa/SECURITY_AUDIT.md" ;;
         3) copy_template "$TEMPLATES_DIR/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md" "docs/qa/UAT_WORKBOOK.md" ;;
-        4) copy_template "$TEMPLATES_DIR/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md" "docs/qa/UAT_SIGNOFF.md" ;;
+        4) copy_template "$TEMPLATES_DIR/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md" "docs/pm/UAT_SIGNOFF_REPORT.md" ;;
         5) return ;;
         *) echo "Invalid choice" ;;
     esac
@@ -282,7 +282,7 @@ mvp_fasttrack() {
     echo "3. Build in 2-4 weeks"
     echo "4. Deploy using DEPLOY.md checklist"
     echo ""
-    echo "Read: QUICK_START_MVP.md for detailed guide"
+    echo "Read: docs/quickstart.md for detailed guide"
     echo ""
     read -p "Press Enter to continue..."
 }

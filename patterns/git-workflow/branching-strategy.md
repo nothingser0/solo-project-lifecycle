@@ -17,7 +17,7 @@ main          # Production-ready code
 ```
 
 **Workflow**:
-1. Create feature branch from `main`
+1. Create feature branch (`feat/*`) branched from `main` (clean production base) or `staging` (dependent integration base)
 2. Commit incrementally with clear messages
 3. Test locally → merge to `staging`
 4. Test staging → merge to `main`

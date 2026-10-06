@@ -21,6 +21,7 @@ echo ""
 fetch_json() {
     local url=$1
     local query=$2
+    local node_query=${3:-$query}
     local result=""
 
     if command -v python3 >/dev/null 2>&1; then
@@ -61,7 +62,7 @@ fetch('$url', { headers: { 'User-Agent': 'solo-project-lifecycle/1.0' } })
     return r.json();
   })
   .then(d => {
-    const val = $query;
+    const val = $node_query;
     if (val === undefined || val === null || val === '') process.exit(1);
     console.log(val);
   })
@@ -255,9 +256,9 @@ EOF
         echo -n "Querying go.dev API for latest Go runtime..." >&2
 
         go_ver=$(fetch_json "https://go.dev/dl/?mode=json" "d[0]['version']")
-        gin_ver=$(fetch_json "https://proxy.golang.org/github.com/gin-gonic/gin/@latest" "d.get('Version', 'N/A')")
-        gorm_ver=$(fetch_json "https://proxy.golang.org/gorm.io/gorm/@latest" "d.get('Version', 'N/A')")
-        pgx_ver=$(fetch_json "https://proxy.golang.org/github.com/jackc/pgx/v5/@latest" "d.get('Version', 'N/A')")
+        gin_ver=$(fetch_json "https://proxy.golang.org/github.com/gin-gonic/gin/@latest" "d.get('Version', 'N/A')" "d.Version || 'N/A'")
+        gorm_ver=$(fetch_json "https://proxy.golang.org/gorm.io/gorm/@latest" "d.get('Version', 'N/A')" "d.Version || 'N/A'")
+        pgx_ver=$(fetch_json "https://proxy.golang.org/github.com/jackc/pgx/v5/@latest" "d.get('Version', 'N/A')" "d.Version || 'N/A'")
 
         echo -e " ${GREEN}$go_ver${NC}" >&2
         echo -e "Go Runtime:     ${GREEN}$go_ver${NC}"
@@ -286,9 +287,9 @@ EOF
         echo ""
         echo -n "Querying RubyGems API for rails..." >&2
 
-        rails_ver=$(fetch_json "https://rubygems.org/api/v1/gems/rails.json" "d.get('version', '')")
-        pg_gem_ver=$(fetch_json "https://rubygems.org/api/v1/gems/pg.json" "d.get('version', '')")
-        puma_ver=$(fetch_json "https://rubygems.org/api/v1/gems/puma.json" "d.get('version', '')")
+        rails_ver=$(fetch_json "https://rubygems.org/api/v1/gems/rails.json" "d.get('version', '')" "d.version || ''")
+        pg_gem_ver=$(fetch_json "https://rubygems.org/api/v1/gems/pg.json" "d.get('version', '')" "d.version || ''")
+        puma_ver=$(fetch_json "https://rubygems.org/api/v1/gems/puma.json" "d.get('version', '')" "d.version || ''")
 
         rails_major=$(echo "$rails_ver" | cut -d. -f1)
         if [ "$rails_major" -ge 8 ] 2>/dev/null; then
@@ -349,9 +350,9 @@ EOF
         echo ""
         echo -n "Querying NuGet API for Microsoft.AspNetCore.App.Ref..." >&2
 
-        dotnet_ver=$(fetch_json "https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.app.ref/index.json" "[v for v in d['versions'] if '-' not in v][-1]")
-        efcore_ver=$(fetch_json "https://api.nuget.org/v3-flatcontainer/microsoft.entityframeworkcore/index.json" "[v for v in d['versions'] if '-' not in v][-1]")
-        npgsql_ver=$(fetch_json "https://api.nuget.org/v3-flatcontainer/npgsql.entityframeworkcore.postgresql/index.json" "[v for v in d['versions'] if '-' not in v][-1]")
+        dotnet_ver=$(fetch_json "https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.app.ref/index.json" "[v for v in d['versions'] if '-' not in v][-1]" "d.versions.filter(v => !v.includes('-')).slice(-1)[0]")
+        efcore_ver=$(fetch_json "https://api.nuget.org/v3-flatcontainer/microsoft.entityframeworkcore/index.json" "[v for v in d['versions'] if '-' not in v][-1]" "d.versions.filter(v => !v.includes('-')).slice(-1)[0]")
+        npgsql_ver=$(fetch_json "https://api.nuget.org/v3-flatcontainer/npgsql.entityframeworkcore.postgresql/index.json" "[v for v in d['versions'] if '-' not in v][-1]" "d.versions.filter(v => !v.includes('-')).slice(-1)[0]")
 
         echo -e " ${GREEN}v$dotnet_ver${NC}" >&2
         echo -e ".NET Core Runtime:      ${GREEN}v$dotnet_ver${NC}"
@@ -374,7 +375,7 @@ EOF
         echo ""
         echo -n "Querying Spring Initializr API for Spring Boot..." >&2
 
-        spring_ver=$(fetch_json "https://start.spring.io/actuator/info" "d.get('build', {}).get('versions', {}).get('spring-boot', 'N/A')")
+        spring_ver=$(fetch_json "https://start.spring.io/actuator/info" "d.get('build', {}).get('versions', {}).get('spring-boot', 'N/A')" "(d.build?.versions?.['spring-boot'] || 'N/A')")
 
         echo -e " ${GREEN}v$spring_ver${NC}" >&2
         echo -e "Spring Boot: ${GREEN}v$spring_ver${NC}"
@@ -416,9 +417,9 @@ EOF
         echo ""
         echo -n "Querying pub.dev API for flutter packages..." >&2
 
-        lints_ver=$(fetch_json "https://pub.dev/api/packages/flutter_lints" "d.get('latest', {}).get('version', 'N/A')")
-        http_ver=$(fetch_json "https://pub.dev/api/packages/http" "d.get('latest', {}).get('version', 'N/A')")
-        provider_ver=$(fetch_json "https://pub.dev/api/packages/provider" "d.get('latest', {}).get('version', 'N/A')")
+        lints_ver=$(fetch_json "https://pub.dev/api/packages/flutter_lints" "d.get('latest', {}).get('version', 'N/A')" "(d.latest?.version || 'N/A')")
+        http_ver=$(fetch_json "https://pub.dev/api/packages/http" "d.get('latest', {}).get('version', 'N/A')" "(d.latest?.version || 'N/A')")
+        provider_ver=$(fetch_json "https://pub.dev/api/packages/provider" "d.get('latest', {}).get('version', 'N/A')" "(d.latest?.version || 'N/A')")
 
         echo -e " ${GREEN}Ready${NC}" >&2
         echo -e "flutter_lints: ${GREEN}$lints_ver${NC}"

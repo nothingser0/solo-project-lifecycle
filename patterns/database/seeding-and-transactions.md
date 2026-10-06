@@ -21,6 +21,10 @@ interface TransferRequest {
 }
 
 export async function transferFunds(req: TransferRequest) {
+  if (!Number.isFinite(req.amount) || req.amount <= 0) {
+    throw new Error('Transfer amount must be a positive finite number');
+  }
+
   return await prisma.$transaction(async (tx) => {
     // 1. Decrement sender balance
     const sender = await tx.account.update({

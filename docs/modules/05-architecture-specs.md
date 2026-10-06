@@ -1745,7 +1745,7 @@ The agent must:
 
 ---
 
-## 6. System Design & Infrastructure Scalability [M05B - Enterprise Extension]
+## 7. System Design & Infrastructure Scalability [M05B - Enterprise Extension]
 
 > 🎯 **WHEN TO USE THIS SECTION?**
 > - **MANDATORY for Enterprise** projects (HA/DR, multi-AZ, capacity planning)
@@ -2060,12 +2060,12 @@ Run: `k6 run scripts/load-test.js`
 ### 6.12 Gate Exit Criteria
 
 Section 6 is declared **PASSED** if:
-- [x] Performance budgets documented (LCP, API latency targets)
-- [x] Caching strategy defined (HTTP headers, Redis patterns, CDN)
-- [x] Database optimization plan (indexes, read replicas, connection pooling)
-- [x] Monitoring setup (APM, logs, alert thresholds)
-- [x] Load test results validate capacity planning (k6 report)
-- [x] DR runbook created (backup restoration, failover procedures)
+- [ ] Performance budgets documented (LCP, API latency targets)
+- [ ] Caching strategy defined (HTTP headers, Redis patterns, CDN)
+- [ ] Database optimization plan (indexes, read replicas, connection pooling)
+- [ ] Monitoring setup (APM, logs, alert thresholds)
+- [ ] Load test results validate capacity planning (k6 report)
+- [ ] DR runbook created (backup restoration, failover procedures)
 
 **END RESPONSE** and confirm:
 > *"System design complete: Performance budgets set, caching strategy defined, monitoring configured. Load test report: p95 latency [X]ms, error rate [Y]%. Ready to proceed to M06 (Development)?"*

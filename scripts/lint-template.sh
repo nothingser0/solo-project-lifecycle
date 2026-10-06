@@ -65,7 +65,7 @@ case "$BASENAME" in
         echo "=== PRD-specific checks ==="
         
         # Required PRD sections
-        for section in "Functional Requirements" "Non-Functional Requirements"; do
+        for section in "Functional" "Security"; do
             if grep -q "$section" "$TEMPLATE_FILE"; then
                 echo "✅ Has section: $section"
             else

@@ -10,9 +10,9 @@ $TemplatesDir = "templates"
 
 function Show-Header {
     Write-Host ""
-    Write-Host "╔═══════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-    Write-Host "║      Solo Project Lifecycle - Template Picker        ║" -ForegroundColor Cyan
-    Write-Host "╚═══════════════════════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host "+=======================================================+" -ForegroundColor Cyan
+    Write-Host "|      Solo Project Lifecycle - Template Picker         |" -ForegroundColor Cyan
+    Write-Host "+=======================================================+" -ForegroundColor Cyan
     Write-Host ""
 }
 
@@ -38,7 +38,7 @@ function Copy-Template {
     )
 
     if (Test-Path $Destination) {
-        Write-Host "⚠️  File exists: $Destination" -ForegroundColor Yellow
+        Write-Host "[WARN] File exists: $Destination" -ForegroundColor Yellow
         $overwrite = Read-Host "Overwrite? (y/N)"
         if ($overwrite -ne 'y' -and $overwrite -ne 'Y') {
             Write-Host "Skipped." -ForegroundColor Gray
@@ -52,7 +52,7 @@ function Copy-Template {
     }
 
     Copy-Item $Source $Destination
-    Write-Host "✅ Copied to: $Destination" -ForegroundColor Green
+    Write-Host "[OK] Copied to: $Destination" -ForegroundColor Green
 }
 
 function Show-DiscoveryMenu {

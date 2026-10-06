@@ -357,8 +357,10 @@ Before completing Step 0 and proceeding to `docs/harness-root/DESIGN.md` generat
 
 **Workflow**:
 1. Generate DESIGN.md (tokens, guidelines)
-5. Connect navigation, deploy to Prototype Viewer
-6. Document final specs in DESIGN_SPEC.md
+2. Upload design system tokens to visual builder
+3. Generate screens and verify interactive state transitions
+4. Connect navigation and deploy to Prototype Viewer
+5. Document final specs in DESIGN_SPEC.md
 
 **Deliverables**:
 - ✅ DESIGN.md (tokens)
@@ -2208,11 +2210,11 @@ Next Steps:
 > **AUTHORITATIVE WORKFLOW OVERRIDE**
 >
 
-## 7. Workflow Split: Planning (Hermes) vs Development (PC with MCP Prototype)
+## 7. Workflow Split: Planning (Cloud AI) vs Development (Local PC with MCP)
 
-**Use Case**: User conducts planning/PM/design specification in Hermes (chat AI), then executes UI generation & development on a local PC with MCP Prototype.
+**Use Case**: User conducts planning/PM/design specification in Cloud AI (chat interface), then executes UI generation & development on a local PC with MCP.
 
-### 7.1 Phase A: Planning & Design Specification (Hermes)
+### 7.1 Phase A: Planning & Design Specification
 
 **Deliverables created in Hermes**:
 
@@ -2248,19 +2250,19 @@ Next Steps:
    - `ui-prompts/03-calculation-form.txt`
    - Format: Layout sections, Style (STRICT anti-slop), Components list, References
 
-**How to Export from Hermes to PC**:
+**How to Export Deliverables to PC**:
 
 ```bash
-# User action (in Hermes chat):
+# User action:
 # 1. Request: "Export all Module 04 deliverables to a single archive"
-# 2. Hermes creates tar.gz at /opt/data/workspace/ or /opt/data/home/project/[name]/
+# 2. Creates tar.gz in project directory
 # 3. User downloads via file browser or scp/rsync
 
-# Example terminal command (Hermes executes):
-cd /opt/data/home/project/freepajak
-tar -czf ../freepajak-design-export-$(date +%Y%m%d).tar.gz   DESIGN.md   docs/specs/LOGO_DESIGN_BRIEF.md   docs/specs/DESIGN_SPEC.md   data/regulations/*.json   ui-prompts/*.txt
+# Example terminal command:
+cd ./my-project
+tar -czf ../design-export-$(date +%Y%m%d).tar.gz DESIGN.md docs/specs/LOGO_DESIGN_BRIEF.md docs/specs/DESIGN_SPEC.md
 
-# Output: /opt/data/home/project/freepajak-design-export-20260929.tar.gz
+# Output: ../design-export-20260929.tar.gz
 # User downloads this file to PC
 ```
 
@@ -2582,9 +2584,9 @@ AI agent:
 
 ---
 
-### 7.3 Deliverables Handoff Back to Hermes (Optional Documentation)
+### 7.3 Deliverables Handoff Back to Planning Environment (Optional Documentation)
 
-**If user wants to document final state in Hermes for archival**:
+**If user wants to document final state in planning repository for archival**:
 
 ```bash
 # On PC, create summary to upload to Hermes
@@ -2608,9 +2610,9 @@ EOF
 # User pastes this summary into Hermes chat
 ```
 
-**Hermes agent actions**:
+**Planning agent actions**:
 - Update project tracking (mark Module 04 complete)
-- Archive design freeze report to `/opt/data/home/project/freepajak/docs/specs/design-freeze-report.md`
+- Archive design freeze report to `docs/specs/design-freeze-report.md`
 - Suggest next steps: "Module 04 complete. Proceed to Module 05 (System Design & Infrastructure) to define database schema, API endpoints, and detailed tech stack?"
 
 ---
@@ -2843,12 +2845,12 @@ v2.0.0: Remove deprecated API (breaking)
 ### 8.9 Gate Exit Criteria
 
 Section 8 is declared **PASSED** if:
-- [x] Design audit completed with inconsistency quantified
-- [x] Design tokens JSON created (primitive + semantic layers)
-- [x] Minimum 12 P0/P1 components implemented in Storybook
-- [x] WCAG 2.1 AA compliance for all components
-- [x] CI/CD setup: Visual regression + NPM publish
-- [x] Adoption plan documented (80% coverage target)
+- [ ] Design audit completed with inconsistency quantified
+- [ ] Design tokens JSON created (primitive + semantic layers)
+- [ ] Minimum 12 P0/P1 components implemented in Storybook
+- [ ] WCAG 2.1 AA compliance for all components
+- [ ] CI/CD setup: Visual regression + NPM publish
+- [ ] Adoption plan documented (80% coverage target)
 
 **END RESPONSE** and confirm:
 > *"Design System foundation is complete: [X] tokens defined, [Y] components implemented. Please review Storybook at [URL]. Ready to proceed to M05 (Architecture & Specs)?"*
