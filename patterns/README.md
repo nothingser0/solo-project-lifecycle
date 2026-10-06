@@ -274,4 +274,4 @@ Test examples
 ## See Also
 
 - `templates/by-use-case/` - Task-oriented template navigation
-- `TEMPLATE_INDEX.md` - Complete template catalog
+- `templates/README.md` - Complete template catalog and stage/gate matrix

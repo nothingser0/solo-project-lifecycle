@@ -221,7 +221,7 @@ RELEASE & CLOSURE PHASE:
 
 ## 7. Complete `docs/` Directory File Catalog
 
-Full inventory of all 17 files in the `docs/` directory:
+Full inventory of all 18 files in the `docs/` directory:
 
 | Path | Category | Purpose |
 |---|---|---|
@@ -229,6 +229,7 @@ Full inventory of all 17 files in the `docs/` directory:
 | [`docs/quickstart.md`](./quickstart.md) | Quickstart Guide | 2–4 week fast-track MVP path (skip 8 modules, 5 core steps) |
 | [`docs/package-version-auto-check.md`](./package-version-auto-check.md) | Tooling Guide | Ecosystem version checking to prevent AI knowledge-cutoff hallucinations |
 | [`docs/pm/README.md`](./pm/README.md) | Directory Guide | Specification of `docs/pm/` output destination for governance artifacts |
+| [`docs/modules/README.md`](./modules/README.md) | Module Catalog | Index and summary of all 14 lifecycle execution modules (M00-M13) |
 | [`docs/modules/00-product-discovery-strategy.md`](./modules/00-product-discovery-strategy.md) | Module 00 | Market research, competitor analysis, JTBD interviews, North Star Metric |
 | [`docs/modules/01-idea-feasibility.md`](./modules/01-idea-feasibility.md) | Module 01 | 3-filter triage, 4-dimensional feasibility scoring, idea brief |
 | [`docs/modules/02-discovery-scope.md`](./modules/02-discovery-scope.md) | Module 02 | MoSCoW scope definition, user stories, out-of-scope boundaries |

@@ -24,14 +24,17 @@ function Show-Header {
 function Show-MainMenu {
     Write-Host "Select project phase:" -ForegroundColor Green
     Write-Host "  1. Discovery & Commercial (Idea, Scope, SOW)"
+    Write-Host "  1b. Pre-Sales & Enterprise (RFP, POC Plan)"
     Write-Host "  2. Design (UI/UX, Design System, Components)"
     Write-Host "  3. Architecture & Specs (PRD, FSD, System Design)"
+    Write-Host "  3b. Governance & Enterprise Compliance (ADR, RACI, Risk, Policies)"
     Write-Host "  4. Development Harness (AGENTS, TODO, CONTEXT)"
-    Write-Host "  5. QA & UAT (SIT, Security Audit, UAT)"
-    Write-Host "  6. Deployment & Handover (BAST, Deployment Protocol)"
-    Write-Host "  7. Maintenance & Growth (SLA, Analytics, Experiments)"
-    Write-Host "  8. MVP Fast-Track (PROJECT_LITE only)"
-    Write-Host "  9. Use-Case Based (by task, not phase)"
+    Write-Host "  5. Data Migration & Seeding (ETL Plan, Reconciliation)"
+    Write-Host "  6. QA & UAT (SIT, Security Audit, UAT)"
+    Write-Host "  7. Deployment & Handover (BAST, Deployment Protocol)"
+    Write-Host "  8. Maintenance & Growth (SLA, Analytics, Experiments)"
+    Write-Host "  9. MVP Fast-Track (PROJECT_LITE only)"
+    Write-Host "  10. Use-Case Based (by task, not phase)"
     Write-Host "  0. Exit"
     Write-Host ""
 }
@@ -99,6 +102,25 @@ function Show-DiscoveryMenu {
     }
 }
 
+function Show-PreSalesMenu {
+    Write-Host ""
+    Write-Host "=== Pre-Sales & Enterprise Templates ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  1. POC_PLAN (Enterprise proof of concept scope & criteria)"
+    Write-Host "  2. RFP_RESPONSE (Formal proposal for enterprise RFP)"
+    Write-Host "  3. Back to main menu"
+    Write-Host ""
+
+    $choice = Read-Host "Select template (1-3)"
+
+    switch ($choice) {
+        "1" { Copy-Template "$TemplatesDir/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md" "docs/pm/POC_PLAN.md" }
+        "2" { Copy-Template "$TemplatesDir/00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md" "docs/pm/RFP_RESPONSE.md" }
+        "3" { return }
+        default { Write-Host "Invalid choice" -ForegroundColor Red }
+    }
+}
+
 function Show-DesignMenu {
     Write-Host ""
     Write-Host "=== Design Templates ===" -ForegroundColor Cyan
@@ -147,6 +169,60 @@ function Show-ArchitectureMenu {
         "5" { Copy-Template "$TemplatesDir/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md" "docs/specs/CAPACITY_PLANNING.md" }
         "6" { Copy-Template "$TemplatesDir/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md" "docs/specs/DISASTER_RECOVERY_PLAN.md" }
         "7" { return }
+        default { Write-Host "Invalid choice" -ForegroundColor Red }
+    }
+}
+
+function Show-GovernanceMenu {
+    Write-Host ""
+    Write-Host "=== Enterprise Governance & Compliance Templates ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  1. ADR (Architecture Decision Record)"
+    Write-Host "  2. CAB_PROCESS (Change Advisory Board)"
+    Write-Host "  3. RACI_MATRIX (Responsibility assignment)"
+    Write-Host "  4. RISK_ASSESSMENT_MATRIX (5x5 matrix)"
+    Write-Host "  5. GDPR_COMPLIANCE_CHECKLIST"
+    Write-Host "  6. SOC2_ISO27001_COMPLIANCE"
+    Write-Host "  7. DATA_CLASSIFICATION_POLICY"
+    Write-Host "  8. DATA_RETENTION_POLICY"
+    Write-Host "  9. AUDIT_TRAIL_REQUIREMENTS"
+    Write-Host "  10. Back to main menu"
+    Write-Host ""
+
+    $choice = Read-Host "Select template (1-10)"
+
+    switch ($choice) {
+        "1" { Copy-Template "$TemplatesDir/03-governance/ADR_TEMPLATE.md" "docs/adr/ADR_001.md" }
+        "2" { Copy-Template "$TemplatesDir/03-governance/CAB_PROCESS.md" "docs/pm/CAB_PROCESS.md" }
+        "3" { Copy-Template "$TemplatesDir/03-governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md" }
+        "4" { Copy-Template "$TemplatesDir/03-governance/RISK_ASSESSMENT_MATRIX.md" "docs/pm/RISK_ASSESSMENT_MATRIX.md" }
+        "5" { Copy-Template "$TemplatesDir/03-governance/GDPR_COMPLIANCE_CHECKLIST.md" "docs/compliance/GDPR_CHECKLIST.md" }
+        "6" { Copy-Template "$TemplatesDir/03-governance/SOC2_ISO27001_COMPLIANCE.md" "docs/compliance/SOC2_ISO27001.md" }
+        "7" { Copy-Template "$TemplatesDir/03-governance/DATA_CLASSIFICATION_POLICY.md" "docs/compliance/DATA_CLASSIFICATION.md" }
+        "8" { Copy-Template "$TemplatesDir/03-governance/DATA_RETENTION_POLICY.md" "docs/compliance/DATA_RETENTION.md" }
+        "9" { Copy-Template "$TemplatesDir/03-governance/AUDIT_TRAIL_REQUIREMENTS.md" "docs/compliance/AUDIT_TRAIL.md" }
+        "10" { return }
+        default { Write-Host "Invalid choice" -ForegroundColor Red }
+    }
+}
+
+function Show-DataMigrationMenu {
+    Write-Host ""
+    Write-Host "=== Data Migration & Seeding Templates ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  1. DATA_MIGRATION_PLAN (Source-to-target mapping & validation)"
+    Write-Host "  2. RECONCILIATION_REPORT (Import verification & sign-off)"
+    Write-Host "  3. DATA_MIGRATION_LITE (Lightweight CSV/Excel import checklist)"
+    Write-Host "  4. Back to main menu"
+    Write-Host ""
+
+    $choice = Read-Host "Select template (1-4)"
+
+    switch ($choice) {
+        "1" { Copy-Template "$TemplatesDir/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md" "docs/migration/DATA_MIGRATION_PLAN.md" }
+        "2" { Copy-Template "$TemplatesDir/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md" "docs/migration/RECONCILIATION_REPORT.md" }
+        "3" { Copy-Template "$TemplatesDir/05-data-migration/DATA_MIGRATION_LITE.md" "docs/migration/DATA_MIGRATION_LITE.md" }
+        "4" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
     }
 }
@@ -345,13 +421,16 @@ function Show-UseCaseMenu {
 if ($Phase) {
     switch ($Phase) {
         "1" { Show-DiscoveryMenu; exit 0 }
+        "1b" { Show-PreSalesMenu; exit 0 }
         "2" { Show-DesignMenu; exit 0 }
         "3" { Show-ArchitectureMenu; exit 0 }
+        "3b" { Show-GovernanceMenu; exit 0 }
         "4" { Show-DevelopmentMenu; exit 0 }
-        "5" { Show-QAMenu; exit 0 }
-        "6" { Show-DeploymentMenu; exit 0 }
-        "7" { Show-MaintenanceMenu; exit 0 }
-        "8" {
+        "5" { Show-DataMigrationMenu; exit 0 }
+        "6" { Show-QAMenu; exit 0 }
+        "7" { Show-DeploymentMenu; exit 0 }
+        "8" { Show-MaintenanceMenu; exit 0 }
+        "9" {
             Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
             Write-Host "[OK] PROJECT_LITE.md copied (MVP all-in-one spec)" -ForegroundColor Green
             exit 0
@@ -373,17 +452,22 @@ while ($true) {
     
     switch ($choice) {
         "1" { Show-DiscoveryMenu }
+        "1b" { Show-PreSalesMenu }
+        "1B" { Show-PreSalesMenu }
         "2" { Show-DesignMenu }
         "3" { Show-ArchitectureMenu }
+        "3b" { Show-GovernanceMenu }
+        "3B" { Show-GovernanceMenu }
         "4" { Show-DevelopmentMenu }
-        "5" { Show-QAMenu }
-        "6" { Show-DeploymentMenu }
-        "7" { Show-MaintenanceMenu }
-        "8" { 
+        "5" { Show-DataMigrationMenu }
+        "6" { Show-QAMenu }
+        "7" { Show-DeploymentMenu }
+        "8" { Show-MaintenanceMenu }
+        "9" { 
             Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
             Write-Host "[OK] PROJECT_LITE.md copied (MVP all-in-one spec)" -ForegroundColor Green
         }
-        "9" { Show-UseCaseMenu }
+        "10" { Show-UseCaseMenu }
         "0" { 
             Write-Host ""
             Write-Host "Goodbye!" -ForegroundColor Cyan

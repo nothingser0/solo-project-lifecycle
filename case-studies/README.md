@@ -106,8 +106,8 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 |-------|----------|--------------|-----------|---------|
 | **Small** | 2-6 weeks | M04-M06, M10 (fast-track) | 1 dev | MVP SaaS Inventory |
 | **Medium** | 10-14 weeks | M01-M11 (skip M00, M08) | 1-2 devs + designer | B2B SaaS Platform |
-| **Large** | 20-28 weeks | M00-M12 (all modules) | 3-5 team members | System Integration |
-| **Enterprise** | 24+ weeks | M00-M12 + custom phases | 5+ team + consultants | (No example yet) |
+| **Large** | 20-28 weeks | M00-M13 (all modules) | 3-5 team members | System Integration |
+| **Enterprise** | 24+ weeks | M00-M13 + custom phases | 5+ team + consultants | (No example yet) |
 
 ---
 
@@ -155,7 +155,7 @@ M01-M03 → M04-M05 → M06 → M07 → M09 → M10-M11
 ### Large Scale (Comprehensive)
 **Full process**:
 ```
-M00 → M01-M03 → M04-M05B → M06 → M07-M08 → M09 → M10-M11 → M12
+M00 → M01-M03 → M04-M05B → M06 → M07-M08 → M09 → M10-M11 → M12 → M13
 ```
 
 **Do not skip**:

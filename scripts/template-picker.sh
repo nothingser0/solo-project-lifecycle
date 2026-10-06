@@ -50,14 +50,17 @@ echo ""
 show_menu() {
     echo -e "${GREEN}Select project phase:${NC}"
     echo "1. Discovery & Commercial (Idea, Scope, SOW)"
+    echo "1b. Pre-Sales & Enterprise (RFP, POC Plan)"
     echo "2. Design (UI/UX, Design System, Components)"
     echo "3. Architecture & Specs (PRD, FSD, System Design)"
+    echo "3b. Governance & Enterprise Compliance (ADR, RACI, Risk, Policies)"
     echo "4. Development Harness (AGENTS, TODO, CONTEXT)"
-    echo "5. QA & UAT (SIT, Security Audit, UAT)"
-    echo "6. Deployment & Handover (BAST, Deployment Protocol)"
-    echo "7. Maintenance & Growth (SLA, Analytics, Experiments)"
-    echo "8. MVP Fast-Track (PROJECT_LITE only)"
-    echo "9. Show all templates"
+    echo "5. Data Migration & Seeding (ETL Plan, Reconciliation)"
+    echo "6. QA & UAT (SIT, Security Audit, UAT)"
+    echo "7. Deployment & Handover (BAST, Deployment Protocol)"
+    echo "8. Maintenance & Growth (SLA, Analytics, Experiments)"
+    echo "9. MVP Fast-Track (PROJECT_LITE only)"
+    echo "10. Show all templates"
     echo "0. Exit"
     echo ""
 }
@@ -119,6 +122,24 @@ phase_discovery() {
     esac
 }
 
+# Pre-Sales & Enterprise
+phase_presales() {
+    echo -e "${BLUE}=== Pre-Sales & Enterprise Templates ===${NC}"
+    echo ""
+    echo "1. POC_PLAN (Enterprise proof of concept scope & criteria)"
+    echo "2. RFP_RESPONSE (Formal proposal for enterprise RFP)"
+    echo "3. Back to main menu"
+    echo ""
+    read -p "Select template (1-3): " choice
+    
+    case $choice in
+        1) copy_template "$TEMPLATES_DIR/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md" "docs/pm/POC_PLAN.md" ;;
+        2) copy_template "$TEMPLATES_DIR/00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md" "docs/pm/RFP_RESPONSE.md" ;;
+        3) return ;;
+        *) echo "Invalid choice" ;;
+    esac
+}
+
 # Phase 2: Design
 phase_design() {
     echo -e "${BLUE}=== Design Templates ===${NC}"
@@ -169,6 +190,58 @@ phase_architecture() {
         5) copy_template "$TEMPLATES_DIR/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md" "docs/specs/DISASTER_RECOVERY_PLAN.md" ;;
         6) copy_template "$TEMPLATES_DIR/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md" ;;
         7) return ;;
+        *) echo "Invalid choice" ;;
+    esac
+}
+
+# Governance & Compliance
+phase_governance() {
+    echo -e "${BLUE}=== Governance & Compliance Templates ===${NC}"
+    echo ""
+    echo "1. ADR (Architecture Decision Record)"
+    echo "2. CAB_PROCESS (Change Advisory Board)"
+    echo "3. RACI_MATRIX (Responsibility assignment)"
+    echo "4. RISK_ASSESSMENT_MATRIX (5x5 matrix)"
+    echo "5. GDPR_COMPLIANCE_CHECKLIST"
+    echo "6. SOC2_ISO27001_COMPLIANCE"
+    echo "7. DATA_CLASSIFICATION_POLICY"
+    echo "8. DATA_RETENTION_POLICY"
+    echo "9. AUDIT_TRAIL_REQUIREMENTS"
+    echo "10. Back to main menu"
+    echo ""
+    read -p "Select template (1-10): " choice
+
+    case $choice in
+        1) copy_template "$TEMPLATES_DIR/03-governance/ADR_TEMPLATE.md" "docs/adr/ADR_001.md" ;;
+        2) copy_template "$TEMPLATES_DIR/03-governance/CAB_PROCESS.md" "docs/pm/CAB_PROCESS.md" ;;
+        3) copy_template "$TEMPLATES_DIR/03-governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md" ;;
+        4) copy_template "$TEMPLATES_DIR/03-governance/RISK_ASSESSMENT_MATRIX.md" "docs/pm/RISK_ASSESSMENT_MATRIX.md" ;;
+        5) copy_template "$TEMPLATES_DIR/03-governance/GDPR_COMPLIANCE_CHECKLIST.md" "docs/compliance/GDPR_CHECKLIST.md" ;;
+        6) copy_template "$TEMPLATES_DIR/03-governance/SOC2_ISO27001_COMPLIANCE.md" "docs/compliance/SOC2_ISO27001.md" ;;
+        7) copy_template "$TEMPLATES_DIR/03-governance/DATA_CLASSIFICATION_POLICY.md" "docs/compliance/DATA_CLASSIFICATION.md" ;;
+        8) copy_template "$TEMPLATES_DIR/03-governance/DATA_RETENTION_POLICY.md" "docs/compliance/DATA_RETENTION.md" ;;
+        9) copy_template "$TEMPLATES_DIR/03-governance/AUDIT_TRAIL_REQUIREMENTS.md" "docs/compliance/AUDIT_TRAIL.md" ;;
+        10) return ;;
+        *) echo "Invalid choice" ;;
+    esac
+}
+
+# Data Migration
+phase_data_migration() {
+    echo -e "${BLUE}=== Data Migration Templates ===${NC}"
+    echo ""
+    echo "1. DATA_MIGRATION_PLAN (Source-to-target mapping & validation)"
+    echo "2. RECONCILIATION_REPORT (Import verification & sign-off)"
+    echo "3. DATA_MIGRATION_LITE (Lightweight CSV/Excel import checklist)"
+    echo "4. Back to main menu"
+    echo ""
+    read -p "Select template (1-4): " choice
+
+    case $choice in
+        1) copy_template "$TEMPLATES_DIR/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md" "docs/migration/DATA_MIGRATION_PLAN.md" ;;
+        2) copy_template "$TEMPLATES_DIR/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md" "docs/migration/RECONCILIATION_REPORT.md" ;;
+        3) copy_template "$TEMPLATES_DIR/05-data-migration/DATA_MIGRATION_LITE.md" "docs/migration/DATA_MIGRATION_LITE.md" ;;
+        4) return ;;
         *) echo "Invalid choice" ;;
     esac
 }
@@ -342,14 +415,17 @@ show_all_templates() {
 if [ -n "$PHASE_ARG" ]; then
     case "$PHASE_ARG" in
         1) phase_discovery; exit 0 ;;
+        1b|0) phase_presales; exit 0 ;;
         2) phase_design; exit 0 ;;
         3) phase_architecture; exit 0 ;;
+        3b|gov) phase_governance; exit 0 ;;
         4) phase_dev_harness; exit 0 ;;
-        5) phase_qa; exit 0 ;;
-        6) phase_deploy; exit 0 ;;
-        7) phase_maintenance; exit 0 ;;
-        8|PROJECT_LITE) mvp_fasttrack; exit 0 ;;
-        9) show_all_templates; exit 0 ;;
+        5|migration) phase_data_migration; exit 0 ;;
+        6|qa) phase_qa; exit 0 ;;
+        7|deploy) phase_deploy; exit 0 ;;
+        8|maintenance) phase_maintenance; exit 0 ;;
+        9|PROJECT_LITE|mvp) mvp_fasttrack; exit 0 ;;
+        10|all) show_all_templates; exit 0 ;;
         *) echo "Unknown phase: $PHASE_ARG"; exit 1 ;;
     esac
 fi
@@ -362,14 +438,17 @@ while true; do
     
     case $choice in
         1) phase_discovery ;;
+        1b|1B) phase_presales ;;
         2) phase_design ;;
         3) phase_architecture ;;
+        3b|3B) phase_governance ;;
         4) phase_dev_harness ;;
-        5) phase_qa ;;
-        6) phase_deploy ;;
-        7) phase_maintenance ;;
-        8) mvp_fasttrack ;;
-        9) show_all_templates ;;
+        5) phase_data_migration ;;
+        6) phase_qa ;;
+        7) phase_deploy ;;
+        8) phase_maintenance ;;
+        9) mvp_fasttrack ;;
+        10) show_all_templates ;;
         0) echo "Goodbye!"; exit 0 ;;
         *) echo -e "${RED}Invalid choice${NC}" ;;
     esac
