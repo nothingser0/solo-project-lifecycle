@@ -261,6 +261,11 @@ git merge hotfix/critical-auth-bug
 git push origin main
 git push origin v1.0.1
 
+# Back-merge to staging to prevent regression in subsequent releases
+git checkout staging
+git merge main
+git push origin staging
+
 # Delete hotfix branch
 git branch -d hotfix/critical-auth-bug
 ```
@@ -489,6 +494,11 @@ git push origin main
 # 4. Tag hotfix release
 git tag v1.0.1 -m "Fix database connection leak"
 git push origin v1.0.1
+
+# Back-merge to staging to keep integration branch synchronized
+git checkout staging
+git merge main
+git push origin staging
 
 # 5. Clean up
 git branch -d hotfix/db-connection-leak

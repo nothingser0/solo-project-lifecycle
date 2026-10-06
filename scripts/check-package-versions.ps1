@@ -1,7 +1,7 @@
 # Universal Package & Framework Version Auto-Check
 # Run before scaffold to verify current ecosystem state
 # Queries official package registries directly via HTTP/CLI
-# Covers all 12 production stacks in STACK_SUPPORT_MATRIX.md without local compiler dependencies
+# Covers all 14 tracked stacks in STACK_SUPPORT_MATRIX.md without local compiler dependencies
 
 param(
     [string]$Framework = "nextjs"
@@ -163,6 +163,32 @@ switch ($target) {
         }
         Write-Host "Auth: Supabase (@supabase/ssr)" -ForegroundColor White
         Write-Host "Database: PostgreSQL (Supabase)" -ForegroundColor White
+    }
+
+    "sveltekit" {
+        Write-Host "Framework: SvelteKit Ecosystem (npm Registry)" -ForegroundColor Cyan
+        Write-Host ""
+        $kit = Check-NpmPackage "@sveltejs/kit"
+        $svelte = Check-NpmPackage "svelte"
+
+        Write-Host ""
+        Write-Host "=== Recommended Pinned Versions (for FSD.md) ===" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "Framework: @sveltejs/kit ^$($kit.latest)" -ForegroundColor White
+        Write-Host "Runtime: svelte ^$($svelte.latest)" -ForegroundColor White
+    }
+
+    "nuxt" {
+        Write-Host "Framework: Nuxt Ecosystem (npm Registry)" -ForegroundColor Cyan
+        Write-Host ""
+        $nuxt = Check-NpmPackage "nuxt"
+        $vue = Check-NpmPackage "vue"
+
+        Write-Host ""
+        Write-Host "=== Recommended Pinned Versions (for FSD.md) ===" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "Framework: nuxt ^$($nuxt.latest)" -ForegroundColor White
+        Write-Host "Runtime: vue ^$($vue.latest)" -ForegroundColor White
     }
 
     "laravel" {
@@ -425,7 +451,7 @@ switch ($target) {
 
     default {
         Write-Host "Error: Unsupported framework '$Framework'." -ForegroundColor Red
-        Write-Host "Supported frameworks: nextjs, laravel, django, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro" -ForegroundColor White
+        Write-Host "Supported frameworks: nextjs, laravel, django, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt" -ForegroundColor White
         exit 1
     }
 }

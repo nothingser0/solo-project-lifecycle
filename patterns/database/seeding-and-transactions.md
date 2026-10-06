@@ -100,6 +100,43 @@ export async function claimVoucher(voucherId: string, userId: string) {
 
 ---
 
+### 1.3 Idempotent Mutation Ingestion (Idempotency Key Pattern)
+
+To prevent duplicate balance deductions or double orders caused by network retries, enforce an idempotency key pattern inside database transactions:
+
+```typescript
+export async function executeIdempotentTransaction<T>(
+  idempotencyKey: string,
+  operation: (tx: PrismaClient) => Promise<T>
+): Promise<T> {
+  return await prisma.$transaction(async (tx) => {
+    // 1. Check existing record by idempotency key
+    const existing = await tx.idempotencyRecord.findUnique({
+      where: { key: idempotencyKey },
+    });
+
+    if (existing) {
+      return JSON.parse(existing.responsePayload) as T;
+    }
+
+    // 2. Execute business mutation
+    const result = await operation(tx as unknown as PrismaClient);
+
+    // 3. Store result payload atomically with transaction commit
+    await tx.idempotencyRecord.create({
+      data: {
+        key: idempotencyKey,
+        responsePayload: JSON.stringify(result),
+      },
+    });
+
+    return result;
+  });
+}
+```
+
+---
+
 ## 2. Idempotent Data Seeding Pattern
 
 Seeding must be safely re-runnable in local dev, CI/CD, and staging without duplicate key violations (`UPSERT` pattern).

@@ -64,6 +64,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • OVERWRITES framework boilerplate (e.g., Next.js auto-generated AGENTS.md)
   • Verify all 9 files present in root: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
+  • Optional automation shortcut: ./scripts/template-picker.sh --phase 4 --dest . (or .\scripts\template-picker.ps1 -Phase 4)
                                     │
                                     ▼
 [ STEP 1.6: Verify Framework Versions (Version Gate - MANDATORY) ]

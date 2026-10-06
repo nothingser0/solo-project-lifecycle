@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # template-picker.sh - Interactive template selection tool
 # Usage: ./scripts/template-picker.sh
 
@@ -6,6 +6,33 @@ set -e
 
 TEMPLATES_DIR="templates"
 PROJECT_ROOT="."
+PHASE_ARG=""
+DRY_RUN=0
+AUTO_CONFIRM=0
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dry-run)
+            DRY_RUN=1
+            shift
+            ;;
+        -y|--yes)
+            AUTO_CONFIRM=1
+            shift
+            ;;
+        --dest)
+            PROJECT_ROOT="$2"
+            shift 2
+            ;;
+        --phase)
+            PHASE_ARG="$2"
+            shift 2
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
 
 # Colors for output
 RED='\033[0;31m'
@@ -38,15 +65,22 @@ show_menu() {
 # Function to copy template
 copy_template() {
     local src=$1
-    local dest=$2
+    local dest="${PROJECT_ROOT}/${2}"
+    
+    if [ $DRY_RUN -eq 1 ]; then
+        echo -e "${BLUE}[DRY-RUN] Would copy: $src -> $dest${NC}"
+        return
+    fi
     
     if [ -f "$dest" ]; then
         echo -e "${YELLOW}⚠️  File exists: $dest${NC}"
-        read -p "Overwrite? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            echo "Skipped."
-            return
+        if [ $AUTO_CONFIRM -ne 1 ]; then
+            read -p "Overwrite? (y/N): " -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                echo "Skipped."
+                return
+            fi
         fi
     fi
     
@@ -254,8 +288,8 @@ phase_maintenance() {
         4) copy_template "$TEMPLATES_DIR/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md" "docs/analytics/EVENT_TAXONOMY.md" ;;
         5) copy_template "$TEMPLATES_DIR/09-product-growth/ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md" "docs/analytics/ANALYTICS_PLAN.md" ;;
         6) copy_template "$TEMPLATES_DIR/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md" "docs/analytics/DASHBOARD_SPEC.md" ;;
-        7) copy_template "$TEMPLATES_DIR/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md" "docs/analytics/METRICS_BASELINE.md" ;;
-        8) copy_template "$TEMPLATES_DIR/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md" "docs/pm/GROWTH_BACKLOG.md" ;;
+        7) copy_template "$TEMPLATES_DIR/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md" "docs/pm/METRICS_BASELINE_REPORT.md" ;;
+        8) copy_template "$TEMPLATES_DIR/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md" "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" ;;
         9) copy_template "$TEMPLATES_DIR/09-product-growth/AB_TEST_REPORT_TEMPLATE.md" "docs/analytics/AB_TEST_REPORT.md" ;;
         10) return ;;
         *) echo "Invalid choice" ;;
@@ -284,7 +318,9 @@ mvp_fasttrack() {
     echo ""
     echo "Read: docs/quickstart.md for detailed guide"
     echo ""
-    read -p "Press Enter to continue..."
+    if [ -z "$PHASE_ARG" ]; then
+        read -p "Press Enter to continue..."
+    fi
 }
 
 # Show all templates
@@ -297,8 +333,26 @@ show_all_templates() {
     echo ""
     echo "Total: $(find "$TEMPLATES_DIR" -name "*TEMPLATE.md" | wc -l) templates"
     echo ""
-    read -p "Press Enter to continue..."
+    if [ -z "$PHASE_ARG" ]; then
+        read -p "Press Enter to continue..."
+    fi
 }
+
+# Non-interactive phase invocation
+if [ -n "$PHASE_ARG" ]; then
+    case "$PHASE_ARG" in
+        1) phase_discovery; exit 0 ;;
+        2) phase_design; exit 0 ;;
+        3) phase_architecture; exit 0 ;;
+        4) phase_dev_harness; exit 0 ;;
+        5) phase_qa; exit 0 ;;
+        6) phase_deploy; exit 0 ;;
+        7) phase_maintenance; exit 0 ;;
+        8|PROJECT_LITE) mvp_fasttrack; exit 0 ;;
+        9) show_all_templates; exit 0 ;;
+        *) echo "Unknown phase: $PHASE_ARG"; exit 1 ;;
+    esac
+fi
 
 # Main loop
 while true; do

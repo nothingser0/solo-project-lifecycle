@@ -46,7 +46,6 @@ $emptyPatterns = @(
     "##\s+.*?\n\s*\n\s*##",  # Empty section
     "###\s+.*?\n\s*\n\s*###" # Empty subsection
 )
-
 foreach ($pattern in $emptyPatterns) {
     if ($content -match $pattern) {
         $warnings += "Empty section detected (may be intentional)"
@@ -74,6 +73,27 @@ if ($filename -match "PRD|FSD|DESIGN_SPEC") {
     # Check for dates
     if ($content -notmatch '\d{4}-\d{2}-\d{2}') {
         $warnings += "No dates found (expected in $filename)"
+    }
+
+    if ($filename -match "PRD") {
+        if ($content -notmatch "Functional") {
+            $issues += "Missing required PRD section: Functional (or Functional Traceability Matrix)"
+        }
+        if ($content -notmatch "Security") {
+            $issues += "Missing required PRD section: Security (Multi-Layer Security Architecture)"
+        }
+    }
+
+    if ($filename -match "FSD") {
+        $fsdSections = @("Tech Stack", "Database Schema", "API Contract", "Security")
+        foreach ($sec in $fsdSections) {
+            if ($content -notmatch $sec) {
+                $issues += "Missing required FSD section: $sec"
+            }
+        }
+        if ($content -notmatch "CREATE TABLE|ALTER TABLE") {
+            $warnings += "No SQL DDL found in FSD"
+        }
     }
 }
 

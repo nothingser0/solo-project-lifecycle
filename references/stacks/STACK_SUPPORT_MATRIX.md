@@ -20,16 +20,19 @@ Stacks with complete scaffold, AI harness templates in `templates/04-dev-executi
 | **JAMstack / Astro**| `npm create astro@latest` | `astro/`, `jamstack/` (AGENTS, README) | npm Registry: `npm view astro version` → package-lock.json | **ROADMAP / BETA** |
 | **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | npm Registry: `npm view serverless version` → template.yaml | **ROADMAP / BETA** |
 | **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | Pub.dev API: `pub.dev/api/packages/flutter_lints` → pubspec.lock | **ROADMAP / BETA** |
+| **SvelteKit** | `npm create svelte@latest` | `sveltekit/` (README) | npm Registry: `npm view @sveltejs/kit version` → package-lock.json | **ROADMAP / PLANNED** |
+| **Nuxt** | `npx nuxi@latest init` | `nuxt/` (README) | npm Registry: `npm view nuxt version` → package-lock.json | **ROADMAP / PLANNED** |
 
 **Note**: Versions determined by M05 real-time registry check, NOT hardcoded by skill.
 - M05 runs `npm view next version` → locks result in FSD.md
 - M06 scaffolds @latest → pins exact FSD version → version gate validates lockfile
 - Framework templates adapt dynamically; real-time queries prevent knowledge cutoff lag.
 - Upstream major updates (e.g. Next.js 15→16, Laravel 11→13, Django 5→6, Go 1.23→1.27) are validated by `./scripts/check-package-versions.sh <stack>` via HTTP registry queries without requiring local compiler installation.
+- For the roadmap/beta/planned stacks, developers can utilize the generic harness files (`templates/04-dev-execution/AGENTS_TEMPLATE.md` and `CONTEXT_TEMPLATE.md`) and customize CLI commands in `RUNBOOK_LOCAL.md` per framework specs.
 
 ---
 
-## Roadmap: 8 Additional Stacks
+## Roadmap: Additional Stacks
 
 ### Phase 1: JavaScript Ecosystem (Estimated 10-15 days)
 
@@ -235,8 +238,8 @@ bundle exec rspec && bundle audit
 
 ## Implementation Status
 
-**Current Coverage**: 12/12 stacks supported with AI harness templates (100%)
-**Active Stacks**: Next.js, Laravel, Django, Go, Rails, Remix, MERN, ASP.NET Core, Spring Boot, JAMstack, Serverless, Flutter.
+**Current Coverage**: 14 stacks tracked (4 Production, 8 Beta / Roadmap, 2 Planned)
+**Tracked Stacks**: Next.js, Laravel, Django, Go, Rails, Remix, MERN, ASP.NET Core, Spring Boot, JAMstack, Serverless, Flutter, SvelteKit, Nuxt.
 **Maintenance Strategy**: Continuous real-time package checking via M05 version gates.
 
 **Expansion Strategy**: Demand-driven

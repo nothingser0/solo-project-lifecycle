@@ -1,8 +1,13 @@
 # Template Picker (PowerShell)
 # Interactive template selection tool
-# Note: Phases 5-7 (QA/Deployment/Maintenance) not yet implemented
-#       Use template-picker.sh (Bash) for these phases
 # Usage: .\scripts\template-picker.ps1
+
+param(
+    [string]$Phase,
+    [string]$Dest = ".",
+    [switch]$DryRun,
+    [switch]$Force
+)
 
 $ErrorActionPreference = "Stop"
 
@@ -37,22 +42,30 @@ function Copy-Template {
         [string]$Destination
     )
 
-    if (Test-Path $Destination) {
-        Write-Host "[WARN] File exists: $Destination" -ForegroundColor Yellow
-        $overwrite = Read-Host "Overwrite? (y/N)"
-        if ($overwrite -ne 'y' -and $overwrite -ne 'Y') {
-            Write-Host "Skipped." -ForegroundColor Gray
-            return
+    $targetPath = Join-Path $Dest $Destination
+    if ($DryRun) {
+        Write-Host "[DRY-RUN] Would copy: $Source -> $targetPath" -ForegroundColor Cyan
+        return
+    }
+
+    if (Test-Path $targetPath) {
+        if (-not $Force) {
+            Write-Host "[WARN] File exists: $targetPath" -ForegroundColor Yellow
+            $confirm = Read-Host "Overwrite? (y/N)"
+            if ($confirm -ne "y" -and $confirm -ne "Y") {
+                Write-Host "Skipped."
+                return
+            }
         }
     }
 
-    $destDir = Split-Path -Parent $Destination
+    $destDir = Split-Path -Parent $targetPath
     if ($destDir -and -not (Test-Path $destDir)) {
         New-Item -ItemType Directory -Path $destDir -Force | Out-Null
     }
 
-    Copy-Item $Source $Destination
-    Write-Host "[OK] Copied to: $Destination" -ForegroundColor Green
+    Copy-Item $Source $targetPath -Force
+    Write-Host "[OK] Copied to: $targetPath" -ForegroundColor Green
 }
 
 function Show-DiscoveryMenu {
@@ -177,9 +190,80 @@ function Show-DevelopmentMenu {
             Copy-Template "$TemplatesDir/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example"
             Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md"
             Copy-Template "$TemplatesDir/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md"
-            Write-Host "✅ All 9 harness files copied" -ForegroundColor Green
+            Write-Host "[OK] All 9 harness files copied" -ForegroundColor Green
         }
         "11" { return }
+        default { Write-Host "Invalid choice" -ForegroundColor Red }
+    }
+}
+
+function Show-QAMenu {
+    Write-Host ""
+    Write-Host "=== QA & UAT Templates ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  1. SIT_WORKBOOK (System Integration Testing)"
+    Write-Host "  2. SECURITY_AUDIT (OWASP Top 10, UU PDP)"
+    Write-Host "  3. UAT_WORKBOOK (User Acceptance Testing)"
+    Write-Host "  4. UAT_SIGNOFF (Formal sign-off document)"
+    Write-Host "  5. Back to main menu"
+    Write-Host ""
+    $choice = Read-Host "Select template (1-5)"
+    switch ($choice) {
+        "1" { Copy-Template "$TemplatesDir/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md" "docs/qa/SIT_WORKBOOK.md" }
+        "2" { Copy-Template "$TemplatesDir/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md" "docs/qa/SECURITY_AUDIT.md" }
+        "3" { Copy-Template "$TemplatesDir/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md" "docs/qa/UAT_WORKBOOK.md" }
+        "4" { Copy-Template "$TemplatesDir/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md" "docs/pm/UAT_SIGNOFF_REPORT.md" }
+        "5" { return }
+        default { Write-Host "Invalid choice" -ForegroundColor Red }
+    }
+}
+
+function Show-DeploymentMenu {
+    Write-Host ""
+    Write-Host "=== Deployment & Handover Templates ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  1. DEPLOYMENT_PROTOCOL (Go-live checklist)"
+    Write-Host "  2. ROLLBACK_PLAN (15-min recovery procedure)"
+    Write-Host "  3. BAST (Berita Acara Serah Terima)"
+    Write-Host "  4. HANDOVER_PROTOCOL (Repo & credentials transfer)"
+    Write-Host "  5. USER_MANUAL (End-user documentation)"
+    Write-Host "  6. Back to main menu"
+    Write-Host ""
+    $choice = Read-Host "Select template (1-6)"
+    switch ($choice) {
+        "1" { Copy-Template "$TemplatesDir/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md" "docs/DEPLOYMENT_PROTOCOL.md" }
+        "2" { Copy-Template "$TemplatesDir/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md" "docs/ROLLBACK_PLAN.md" }
+        "3" { Copy-Template "$TemplatesDir/07-release-handover/BAST_TEMPLATE.md" "contracts/BAST.md" }
+        "4" { Copy-Template "$TemplatesDir/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md" "docs/HANDOVER_PROTOCOL.md" }
+        "5" { Copy-Template "$TemplatesDir/07-release-handover/USER_MANUAL_TEMPLATE.md" "docs/USER_MANUAL.md" }
+        "6" { return }
+        default { Write-Host "Invalid choice" -ForegroundColor Red }
+    }
+}
+
+function Show-MaintenanceMenu {
+    Write-Host ""
+    Write-Host "=== Maintenance & Growth Templates ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  1. WARRANTY_POLICY (Bug fix boundaries)"
+    Write-Host "  2. SLA_RETAINER_CONTRACT (Monthly retainer)"
+    Write-Host "  3. INCIDENT_RESPONSE (RCA, post-mortem)"
+    Write-Host "  4. EVENT_TAXONOMY (Analytics event spec)"
+    Write-Host "  5. METRICS_BASELINE_REPORT (30-day baseline)"
+    Write-Host "  6. GROWTH_EXPERIMENTS_BACKLOG (RICE-scored experiments)"
+    Write-Host "  7. AB_TEST_REPORT (Experiment results)"
+    Write-Host "  8. Back to main menu"
+    Write-Host ""
+    $choice = Read-Host "Select template (1-8)"
+    switch ($choice) {
+        "1" { Copy-Template "$TemplatesDir/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md" "docs/WARRANTY_POLICY.md" }
+        "2" { Copy-Template "$TemplatesDir/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md" "contracts/SLA_RETAINER.md" }
+        "3" { Copy-Template "$TemplatesDir/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md" "docs/INCIDENT_RESPONSE.md" }
+        "4" { Copy-Template "$TemplatesDir/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md" "docs/analytics/EVENT_TAXONOMY.md" }
+        "5" { Copy-Template "$TemplatesDir/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md" "docs/pm/METRICS_BASELINE_REPORT.md" }
+        "6" { Copy-Template "$TemplatesDir/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md" "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" }
+        "7" { Copy-Template "$TemplatesDir/09-product-growth/AB_TEST_REPORT_TEMPLATE.md" "docs/analytics/AB_TEST_REPORT.md" }
+        "8" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
     }
 }
@@ -205,7 +289,7 @@ function Show-UseCaseMenu {
             Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
             Copy-Template "$TemplatesDir/02-design/DESIGN_MD_TEMPLATE.md" "DESIGN.md"
             Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "docs/RUNBOOK_LOCAL.md"
-            Write-Host "✅ MVP Fast-Track complete" -ForegroundColor Green
+            Write-Host "[OK] MVP Fast-Track complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/mvp-fast-track/README.md for workflow" -ForegroundColor Gray
         }
         "2" { 
@@ -216,7 +300,7 @@ function Show-UseCaseMenu {
             Copy-Template "$TemplatesDir/07-release-handover/BAST_TEMPLATE.md" "contracts/BAST.md"
             Copy-Template "$TemplatesDir/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md" "contracts/WARRANTY_POLICY.md"
             Copy-Template "$TemplatesDir/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md" "contracts/SLA_RETAINER.md"
-            Write-Host "✅ Client Commercial complete" -ForegroundColor Green
+            Write-Host "[OK] Client Commercial complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/client-commercial/README.md for workflow" -ForegroundColor Gray
         }
         "3" { 
@@ -225,7 +309,7 @@ function Show-UseCaseMenu {
             Copy-Template "$TemplatesDir/03-architecture-specs/PRD_FINAL_TEMPLATE.md" "docs/specs/PRD.md"
             Copy-Template "$TemplatesDir/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md" "docs/specs/FSD.md"
             Copy-Template "$TemplatesDir/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md" "docs/specs/SYSTEM_DESIGN_DOC.md"
-            Write-Host "✅ Technical Specs complete" -ForegroundColor Green
+            Write-Host "[OK] Technical Specs complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/technical-specs/README.md for workflow" -ForegroundColor Gray
         }
         "4" { 
@@ -236,7 +320,7 @@ function Show-UseCaseMenu {
             Copy-Template "$TemplatesDir/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md" "docs/ROLLBACK_PLAN.md"
             Copy-Template "$TemplatesDir/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md" "docs/INCIDENT_RESPONSE.md"
             Copy-Template "$TemplatesDir/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md" "contracts/SLA_RETAINER.md"
-            Write-Host "✅ Operations complete" -ForegroundColor Green
+            Write-Host "[OK] Operations complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/operations/README.md for workflow" -ForegroundColor Gray
         }
         "5" {
@@ -245,12 +329,12 @@ function Show-UseCaseMenu {
             Write-Host "See templates/essentials/README.md for complete list" -ForegroundColor Gray
             Write-Host ""
             Write-Host "Quick picks:"
-            Write-Host "  • PROJECT_LITE.md - All-in-one MVP spec (1 hour)"
-            Write-Host "  • DESIGN.md - Design tokens (30 min)"
-            Write-Host "  • AGENTS.md - AI instructions (15 min)"
-            Write-Host "  • PRD.md - Product spec (4 hours)"
-            Write-Host "  • FSD.md - Technical spec (6 hours)"
-            Write-Host "  • SOW_CONTRACT.md - Client contract (2 hours)"
+            Write-Host "  - PROJECT_LITE.md - All-in-one MVP spec (1 hour)"
+            Write-Host "  - DESIGN.md - Design tokens (30 min)"
+            Write-Host "  - AGENTS.md - AI instructions (15 min)"
+            Write-Host "  - PRD.md - Product spec (4 hours)"
+            Write-Host "  - FSD.md - Technical spec (6 hours)"
+            Write-Host "  - SOW_CONTRACT.md - Client contract (2 hours)"
         }
         "6" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
@@ -258,6 +342,29 @@ function Show-UseCaseMenu {
 }
 
 # Main loop
+if ($Phase) {
+    switch ($Phase) {
+        "1" { Show-DiscoveryMenu; exit 0 }
+        "2" { Show-DesignMenu; exit 0 }
+        "3" { Show-ArchitectureMenu; exit 0 }
+        "4" { Show-DevelopmentMenu; exit 0 }
+        "5" { Show-QAMenu; exit 0 }
+        "6" { Show-DeploymentMenu; exit 0 }
+        "7" { Show-MaintenanceMenu; exit 0 }
+        "8" {
+            Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
+            Write-Host "[OK] PROJECT_LITE.md copied (MVP all-in-one spec)" -ForegroundColor Green
+            exit 0
+        }
+        "PROJECT_LITE" {
+            Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
+            Write-Host "[OK] PROJECT_LITE.md copied (MVP all-in-one spec)" -ForegroundColor Green
+            exit 0
+        }
+        default { Write-Host "[ERROR] Unknown phase: $Phase" -ForegroundColor Red; exit 1 }
+    }
+}
+
 Show-Header
 
 while ($true) {
@@ -269,24 +376,12 @@ while ($true) {
         "2" { Show-DesignMenu }
         "3" { Show-ArchitectureMenu }
         "4" { Show-DevelopmentMenu }
-        "5" { 
-            Write-Host ""
-            Write-Host "QA & UAT templates - see bash version for full menu" -ForegroundColor Yellow
-            Write-Host "Coming in next version" -ForegroundColor Gray
-        }
-        "6" { 
-            Write-Host ""
-            Write-Host "Deployment templates - see bash version for full menu" -ForegroundColor Yellow
-            Write-Host "Coming in next version" -ForegroundColor Gray
-        }
-        "7" { 
-            Write-Host ""
-            Write-Host "Maintenance templates - see bash version for full menu" -ForegroundColor Yellow
-            Write-Host "Coming in next version" -ForegroundColor Gray
-        }
+        "5" { Show-QAMenu }
+        "6" { Show-DeploymentMenu }
+        "7" { Show-MaintenanceMenu }
         "8" { 
             Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
-            Write-Host "✅ PROJECT_LITE.md copied (MVP all-in-one spec)" -ForegroundColor Green
+            Write-Host "[OK] PROJECT_LITE.md copied (MVP all-in-one spec)" -ForegroundColor Green
         }
         "9" { Show-UseCaseMenu }
         "0" { 

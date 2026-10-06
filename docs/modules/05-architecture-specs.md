@@ -76,9 +76,9 @@ This module is the fifth phase in the software project lifecycle for solo develo
 
 ```bash
 # Check current ecosystem state for target framework via official registry APIs:
-./scripts/check-package-versions.sh <nextjs|laravel|django|go|rails|flutter|remix|astro>
+./scripts/check-package-versions.sh <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 # OR
-.\scripts\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails>
+.\scripts\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
 **Universal Registry Sources (Zero Local Toolchain Dependency)**:
@@ -89,6 +89,8 @@ This module is the fifth phase in the software project lifecycle for solo develo
 | **Django / Python** | PyPI JSON API | `pypi.org/pypi/django/json` | `django`, `djangorestframework`, `psycopg`, Python req |
 | **Go / Golang** | Go Official API & Proxy | `go.dev/dl/?mode=json` & `proxy.golang.org` | Stable Go runtime, `gin`, `gorm`, `pgx` |
 | **Ruby on Rails** | RubyGems API | `rubygems.org/api/v1/gems/rails.json` | `rails`, `puma`, `pg`, Ruby req |
+| **SvelteKit** | npm Registry | `npm view @sveltejs/kit version` | `@sveltejs/kit`, `svelte` |
+| **Nuxt** | npm Registry | `npm view nuxt version` | `nuxt`, `vue` |
 | **Flutter / Dart** | Pub.dev API | `pub.dev/api/packages/flutter_lints` | `flutter_lints`, `http`, `provider` |
 
 **Why**: AI models suffer from knowledge cutoff lag (e.g., assuming Next.js 14 when Next.js 15/16 is current, or assuming Laravel 10 when Laravel 11/13 is current). Real-time registry queries ensure architectural recommendations use actual current stable releases without requiring developers to pre-install local compilers (Composer, PHP, Python, Go) before scaffolding.

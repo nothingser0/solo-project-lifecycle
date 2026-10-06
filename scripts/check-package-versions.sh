@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Universal Package & Framework Version Auto-Check
 # Queries official package registries directly via HTTP/CLI
-# Covers all 12 production stacks in STACK_SUPPORT_MATRIX.md without local compiler dependencies
+# Covers all 14 tracked stacks in STACK_SUPPORT_MATRIX.md without local compiler dependencies
 
 set -e
 
@@ -183,6 +183,40 @@ Styling: Tailwind CSS $( [ "$tailwind_major" = "4" ] && echo "^3.4.17 (pinned)" 
 Validation: Zod $( [ "$zod_major" = "4" ] && echo "^3.23.8 (pinned)" || echo "^$zod_ver" ) + react-hook-form
 Auth: Supabase (@supabase/ssr)
 Database: PostgreSQL (Supabase)
+EOF
+        ;;
+
+    sveltekit)
+        echo -e "${CYAN}Framework: SvelteKit Ecosystem (npm Registry)${NC}"
+        echo ""
+        kit_info=$(check_npm_package "@sveltejs/kit")
+        svelte_info=$(check_npm_package "svelte")
+        kit_ver=$(echo "$kit_info" | cut -d'|' -f1)
+        svelte_ver=$(echo "$svelte_info" | cut -d'|' -f1)
+
+        echo ""
+        echo -e "${CYAN}=== Recommended Pinned Versions (for FSD.md) ===${NC}"
+        echo ""
+        cat <<EOF
+Framework: @sveltejs/kit ^$kit_ver
+Runtime: svelte ^$svelte_ver
+EOF
+        ;;
+
+    nuxt)
+        echo -e "${CYAN}Framework: Nuxt Ecosystem (npm Registry)${NC}"
+        echo ""
+        nuxt_info=$(check_npm_package "nuxt")
+        vue_info=$(check_npm_package "vue")
+        nuxt_ver=$(echo "$nuxt_info" | cut -d'|' -f1)
+        vue_ver=$(echo "$vue_info" | cut -d'|' -f1)
+
+        echo ""
+        echo -e "${CYAN}=== Recommended Pinned Versions (for FSD.md) ===${NC}"
+        echo ""
+        cat <<EOF
+Framework: nuxt ^$nuxt_ver
+Runtime: vue ^$vue_ver
 EOF
         ;;
 
@@ -476,7 +510,7 @@ EOF
 
     *)
         echo -e "${RED}Error: Unsupported framework '$FRAMEWORK'.${NC}"
-        echo "Supported frameworks: nextjs, laravel, django, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro"
+        echo "Supported frameworks: nextjs, laravel, django, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt"
         exit 1
         ;;
 esac

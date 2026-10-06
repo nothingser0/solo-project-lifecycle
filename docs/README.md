@@ -11,6 +11,14 @@ Software operational framework for solo developers and technical consultants exe
 > Before starting to code or creating a project folder, read the Quickstart guide in **`docs/quickstart.md`**.
 > Never copy harness files (`AGENTS.md`, `TODO.md`, etc.) to an empty folder **before** running your language framework scaffolding (`create-next-app`, `poetry init`, `composer`, `dotnet new`, `flutter create`, etc.) to avoid CLI rejection (*directory conflict*).
 
+### Automation & Tooling Scripts
+Automated utilities are available in `scripts/` (both Bash and PowerShell):
+```bash
+./scripts/validate-gate.sh M05              # Gate checkpoint verification (M00-M13)
+./scripts/template-picker.sh --phase 4 --dry-run  # Headless template deployment preview
+./scripts/lint-template.sh docs/specs/PRD.md     # Template convention and completeness linter
+```
+
 ---
 
 ## 1. The 14-Module Pipeline
@@ -154,8 +162,9 @@ RELEASE & CLOSURE PHASE:
 - `templates/03-architecture-specs/CODE_REVIEW_PATTERN_CHECKLIST_TEMPLATE.md`: Saved to **`docs/specs/CODE_REVIEW_PATTERN_CHECKLIST.md`** (Pattern evaluation and anti-pattern code review checklist).
 > For M05 Section 6 (System Design & Infrastructure) - Large/Enterprise projects.
 
-### Module 06 (Active - 7 Root Harness Files)
+### Module 06 (Active - 9 Root Harness Files)
 - `templates/04-dev-execution/AGENTS_TEMPLATE.md`: Saved to root (**`./AGENTS.md`**) — *MANDATORY OVERWRITE of framework default AGENTS.md (such as Next.js 15), never skip!*
+- `templates/02-design/DESIGN_MD_TEMPLATE.md`: Saved to root (**`./DESIGN.md`**) — Visual design system tokens & guidelines.
 - `templates/04-dev-execution/CONTEXT_TEMPLATE.md`: Saved to root (**`./CONTEXT.md`**) — Business summary & Out-of-Scope boundaries.
 - `templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md`: Saved to root (**`./ARCHITECTURE.md`**) — Technical FSD summary for AI consumption.
 - `templates/04-dev-execution/CONVENTIONS_TEMPLATE.md`: Saved to root (**`./CONVENTIONS.md`**) — Code style conventions (kebab-case, Server Components, no barrel files).

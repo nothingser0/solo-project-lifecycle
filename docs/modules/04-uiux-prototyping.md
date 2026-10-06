@@ -1744,7 +1744,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 **Example Full Prompt:**
 ```
 Generate Landing Page (Screen ID: SCR-01) for FreePajak tax SaaS:
-(Note: Indonesian locale example for demonstration - replace with your language)
+(Note: Sample domain example for demonstration - replace with your project domain)
 
 CONTENT:
 - Hero section: Headline "Hitung 3 Skema Pajak. Pilih yang Paling Hemat.", 
@@ -2216,7 +2216,7 @@ Next Steps:
 
 ### 7.1 Phase A: Planning & Design Specification
 
-**Deliverables created in Hermes**:
+**Deliverables created in Cloud AI**:
 
 1. ✅ **`docs/specs/LOGO_DESIGN_BRIEF.md`** (≤2KB minimal brief)
    - Product name + philosophy (2-3 sentences)
@@ -2239,7 +2239,7 @@ Next Steps:
    - Component specs (size, spacing, interaction states)
 
 4. ✅ **`data/regulations/*.json`** (if data assets exist, e.g., FreePajak)
-   - `pph21-rates.json` (tax brackets with version, source, effective date)
+   - Domain configuration or rule tables with version, source, effective date
    - `ptkp-values.json` (tax-free allowance categories)
    - `pph23-rates.json`, `pp20-2026.json`, etc.
    - Metadata: version, source URL, last_updated, changelog
@@ -2268,7 +2268,7 @@ tar -czf ../design-export-$(date +%Y%m%d).tar.gz DESIGN.md docs/specs/LOGO_DESIG
 
 **Folder structure in archive**:
 ```
-freepajak-design-export/
+project-design-export/
 ├── DESIGN.md                              # Root design system tokens
 ├── docs/
 │   └── specs/
@@ -2301,7 +2301,7 @@ freepajak-design-export/
 ```bash
 # On PC
 cd ~/projects/freepajak
-tar -xzf ~/Downloads/freepajak-design-export-20260929.tar.gz
+tar -xzf ~/Downloads/design-export-20260929.tar.gz
 ls -lh  # Verify DESIGN.md, docs/, data/, ui-prompts/ extracted
 ```
 
@@ -2342,7 +2342,7 @@ Read DESIGN.md and docs/specs/DESIGN_SPEC.md from this project, then generate al
 
 Project context:
 - App: FreePajak (tax calculator for Indonesian freelancers)
-- Framework: Next.js 15 + Tailwind CSS + TypeScript
+- Framework: Next.js + Tailwind CSS + TypeScript
 - Design style: Minimalist, flat colors, NO gradients, NO glassmorphism
 
 For each screen in DESIGN_SPEC.md (SCR-001 to SCR-010):
@@ -2497,8 +2497,8 @@ Proceed autonomously and report progress every 3 screens.
 8. **Generate Design Freeze Report**:
    ```markdown
    # Design Freeze Report — FreePajak
-   
-   **Date**: 2026-09-29
+
+   **Date**: 2026-10-06
    **Project**: FreePajak Tax Calculator
    **Screens Generated**: 10/10 (100%)
    
@@ -2589,9 +2589,9 @@ AI agent:
 **If user wants to document final state in planning repository for archival**:
 
 ```bash
-# On PC, create summary to upload to Hermes
+# On PC, create summary to sync back to Planning repository
 cd ~/projects/freepajak
-cat > design-freeze-summary.txt <<EOF
+cat > design-freeze-summary.txt <<'EOF'
 FreePajak Design Freeze Summary
 
 Date: 2026-09-29
@@ -2607,7 +2607,7 @@ Date: 2026-09-29
 Ready to proceed to Module 05 (System Design & Infrastructure).
 EOF
 
-# User pastes this summary into Hermes chat
+# User archives this summary in project documentation
 ```
 
 **Planning agent actions**:
@@ -2621,17 +2621,17 @@ EOF
 
 | Phase | Location | Tools | Primary Output | Duration |
 |-------|----------|-------|----------------|----------|
-| **Planning & Spec** | Hermes (chat AI) | web_search, write_file, patch, skill_view | DESIGN.md, DESIGN_SPEC.md, JSON data, Prototype prompts | 4-6 hours |
+| **Planning & Spec** | Cloud AI (chat interface) | web_search, write_file, patch, skill_view | DESIGN.md, DESIGN_SPEC.md, JSON data, Prototype prompts | 4-6 hours |
 | **UI Generation** | PC + MCP Prototype | Claude Desktop/Codex/Cursor/Windsurf + MCP | 10 screens (Next.js code), interactive prototype | 3-5 hours |
 | **Review & Iterate** | PC | Browser, Lighthouse, WAVE | Anti-slop verification, accessibility audit | 2-3 hours |
 | **Development** | PC | VS Code, Next.js, Supabase, Vercel | Full-stack app implementation | 40-80 hours |
-| **Documentation** | Hermes (optional) | read_file, patch, memory | Design freeze archive, project status update | 30 minutes |
+| **Documentation** | Cloud AI (optional) | read_file, patch, memory | Design freeze archive, project status update | 30 minutes |
 
 **Key Benefits**:
-- ✅ **Hermes**: Thinking & Planning (specifications, research, data modeling, prompt engineering)
+- ✅ **Cloud AI**: Thinking & Planning (specifications, research, data modeling, prompt engineering)
 - ✅ **PC**: Execution (UI generation via MCP, coding, testing, deployment)
-- ✅ **No duplication**: Specs created once in Hermes, consumed autonomously by MCP agent on PC
-- ✅ **Async workflow**: User can continue planning in Hermes while PC agent generates screens in background
+- ✅ **No duplication**: Specs created once in planning, consumed autonomously by MCP agent on PC
+- ✅ **Async workflow**: User can continue planning while PC agent generates screens in background
 - ✅ **Verifiable output**: Design freeze report with concrete metrics (0 gradients, 95 Lighthouse score, etc.)
 
 **Common Pitfalls to Avoid**:

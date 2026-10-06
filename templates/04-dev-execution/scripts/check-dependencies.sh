@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Dependency Compatibility Pre-Install Check
 # Run before installing packages to verify compatibility
 
