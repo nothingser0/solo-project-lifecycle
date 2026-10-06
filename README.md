@@ -32,7 +32,7 @@ This is a **skill framework/toolkit**, not a minimal starter template:
 | Reference guides | 756KB | Playbooks, patterns, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
 | Code patterns | 144KB | 12 reusable patterns (API, testing, deployment, etc.) |
-| Scripts | 96KB | 10 validation and automation tools |
+| Scripts | 96KB | 12 validation and automation tools (6 Bash + 6 PowerShell) |
 
 **Why this size?**  
 Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.
@@ -223,6 +223,7 @@ Full details: `case-studies/`
 ./scripts/verify-framework-version.sh   # Validate lockfile against FSD
 ./scripts/lint-template.sh              # Check template completeness
 ./scripts/template-picker.sh            # Interactive template selector
+./scripts/verify-all.sh                 # Repository sanity and integrity check
 ```
 
 **PowerShell (Windows):**
@@ -232,6 +233,7 @@ Full details: `case-studies/`
 .\scripts\verify-framework-version.ps1
 .\scripts\lint-template.ps1
 .\scripts\template-picker.ps1
+.\scripts\verify-all.ps1
 ```
 
 ---

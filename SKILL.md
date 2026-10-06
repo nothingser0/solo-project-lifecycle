@@ -217,7 +217,12 @@ Reusable patterns in `patterns/`:
 - `validation/` - Zod schemas, form validation
 - `security/` - Authentication, encryption
 - `performance/` - N+1 prevention, caching
+- `api/` - REST conventions, GraphQL & versioning
+- `database/` - Migrations, transactions, seeding
+- `deployment/` - CI/CD pipeline automation
+- `error-handling/` - Error boundaries and resilience
 - `git-workflow/` - Branching, commit conventions
+- `testing/` - Test pyramid, unit/integration strategies
 
 ## Case studies
 
@@ -225,6 +230,8 @@ Real projects in `case-studies/` (reference for timelines/budgets):
 - `01-mvp-saas-inventory.md` - 4 weeks, 200 users
 - `02-ecommerce-fashion-mvp.md` - 21 days, Rp 52M GMV
 - `03-crm-real-estate-internal.md` - 28 days, +58% revenue
+- `04-medium-b2b-saas-worked-example.md` - 12 weeks, B2B multi-tenant SaaS
+- `05-large-system-integration-worked-example.md` - 25 weeks, legacy integration & migration
 
 ## Tech stack support
 Stack-agnostic. Quickstart guides in `references/stacks/`:
