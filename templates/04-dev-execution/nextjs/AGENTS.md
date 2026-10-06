@@ -17,8 +17,12 @@
    - If you encounter a logical contradiction between code and specs, or between two specification documents: **STOP IMMEDIATELY AND ASK THE USER**. Unilaterally modifying frozen specification files is strictly forbidden.
 4. **Zero Type Suppressions**:
    - Using `// @ts-ignore`, `// @ts-nocheck`, `// @ts-expect-error`, or casting as `as any` to silence the compiler is **STRICTLY PROHIBITED**. Fix the underlying type signature or use proper type guards and Zod schemas.
-5. **No Unrequested Commits**:
-   - Never execute git commits or pushes unless explicitly instructed by the user.
+5. **STRICT PROHIBITION of Agent Git Commits & Pushes**:
+   - AI agents and automated harnesses **MUST NEVER** execute `git commit` or `git push`. Only the human engineer may review and commit code.
+6. **Mandatory Documentation & Specs Pre-Read**:
+   - Before creating database migrations, Server Actions, or UI pages, you **MUST** read `docs/specs/FSD.md`, `docs/specs/PRD.md`, `docs/specs/DESIGN.md`, and official tech documentation (e.g., Supabase Auth/RLS, Next.js Server Components).
+7. **Mandatory Design Assets & Inspiration Usage**:
+   - Inspect `docs/design/inspiration/`, `docs/specs/LOGO_DESIGN_BRIEF.md`, and screen design prompts before building UI. Generic monochromatic AI slop without visual identity, logo, or styled UI patterns is strictly forbidden.
 
 ---
 

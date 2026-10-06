@@ -1849,6 +1849,7 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
 4. **Create staging branch**: `git checkout -b staging`
 
 5. **Initial commit** (execute ONLY when explicitly requested by user):
+   *(Note: The human developer must run this command; AI agents are strictly forbidden from running git commit or git push)*
    ```bash
    git add .
    git commit -m "chore: initial project scaffolding with 9 AI harness files"
@@ -1863,6 +1864,9 @@ Before the AI Coding Agent begins executing tasks from `TODO.md`, verify that `A
 - **NO Destructive Database Operations**: Running `migrate reset`, `db reset`, or issuing raw `DROP TABLE` / `DROP DATABASE` queries is **STRICTLY PROHIBITED**.
 - **Spec Document Integrity**: Specification files marked `[FROZEN]` or `[APPROVED]` are immutable sources of truth. If documents contradict, the agent **MUST STOP AND ASK THE USER**. Never alter frozen specifications unilaterally.
 - **Zero Type Suppressions**: Silencing compilers via `// @ts-ignore`, `// @ts-nocheck`, `// @ts-expect-error`, or `as any` is **STRICTLY PROHIBITED**.
+- **NO Agent Git Commits or Pushes**: AI agents and automated harnesses **MUST NEVER** execute `git commit` or `git push`. All version control commits must be performed manually by the developer.
+- **Mandatory Pre-Read of Docs & Specs**: Agents must read `FSD.md`, `PRD.md`, `DESIGN.md`, and official stack documentation before writing any database migration, server action, or UI component.
+- **Mandatory Design Assets Usage**: Agents must review `docs/design/inspiration/`, `docs/specs/LOGO_DESIGN_BRIEF.md`, and screen design prompts to build rich, branded, non-generic UI.
 
 #### 2. Framework Version & Dynamic API Verification
 - Next.js 16+: Verify `proxy.ts` replaces traditional middleware.

@@ -249,7 +249,11 @@ export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken')?.value;
 
   // Protected routes
-  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+  if (request.nextUrl.pathname.startsWith('/dashboard') ||
+      request.nextUrl.pathname.startsWith('/pos') ||
+      request.nextUrl.pathname.startsWith('/products') ||
+      request.nextUrl.pathname.startsWith('/stock') ||
+      request.nextUrl.pathname.startsWith('/reports')) {
     if (!accessToken) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
