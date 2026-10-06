@@ -219,7 +219,7 @@ Full details: `case-studies/`
 **Bash (Linux/Mac):**
 ```bash
 ./scripts/validate-gate.sh              # Validate gate checkpoints
-./scripts/check-package-versions.sh     # Real-time registry dependency checks (12 stacks supported)
+./scripts/check-package-versions.sh     # Real-time registry dependency checks (14 stacks supported)
 ./scripts/verify-framework-version.sh   # Validate lockfile against FSD
 ./scripts/lint-template.sh              # Check template completeness
 ./scripts/template-picker.sh            # Interactive template selector
@@ -228,7 +228,7 @@ Full details: `case-studies/`
 **PowerShell (Windows):**
 ```powershell
 .\scripts\validate-gate.ps1
-.\scripts\check-package-versions.ps1   # 12 stacks supported (-Framework <stack>)
+.\scripts\check-package-versions.ps1   # 14 stacks supported (-Framework <stack>)
 .\scripts\verify-framework-version.ps1
 .\scripts\lint-template.ps1
 .\scripts\template-picker.ps1

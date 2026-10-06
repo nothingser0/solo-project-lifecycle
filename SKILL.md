@@ -175,18 +175,25 @@ All templates in `templates/` directory:
 Validation tools in `scripts/` (bash + PowerShell):
 
 ```bash
-# Validate gate checkpoints
-./scripts/validate-gate.sh M03  # Commercial gate
-./scripts/validate-gate.sh M09  # UAT gate
-./scripts/validate-gate.sh M11  # Handover gate
-./scripts/check-package-versions.sh nextjs  # Real-time package checks (12 stacks supported)
-./scripts/verify-framework-version.sh       # Verify lockfile matches FSD
+# Validate gate checkpoints (covers M00 through M13)
+./scripts/validate-gate.sh M03              # Commercial gate
+./scripts/validate-gate.sh M06              # Harness gate
+./scripts/validate-gate.sh M09              # UAT signoff gate
+./scripts/check-package-versions.sh nextjs  # Real-time package registry checks
+./scripts/verify-framework-version.sh       # Verify lockfile matches FSD (Next.js, Laravel, Django, Go)
 
 # Check template completeness
 ./scripts/lint-template.sh path/to/template.md
 
-# Interactive template picker
-./scripts/template-picker.sh
+# Template picker (interactive or headless)
+./scripts/template-picker.sh                # Interactive menu
+./scripts/template-picker.sh --phase 8 --dry-run  # Fast-track MVP dry-run
+
+# Verify TODO checklist completion
+./templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh TODO.md
+
+# Pre-install dependency compatibility check
+./templates/04-dev-execution/scripts/check-dependencies.sh
 ```
 
 PowerShell: Same commands, use `.ps1` extension.

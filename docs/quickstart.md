@@ -86,14 +86,14 @@ Week 4: Deploy (2 days)
 ### Day 1: Idea → Specs (4 hours)
 
 **Output**: 2 files total
-1. `PROJECT.md` (core specs)
+1. `PROJECT_LITE.md` (or `PROJECT.md` — core specs)
 2. `docs/harness-root/DESIGN.md` (UI tokens - staged)
 
 **Agent workflow**:
 ```bash
 # Read template from skill repo, write to user's project directory
 # 1. Read: skill://solo-project-lifecycle/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md
-# 2. Write: ./PROJECT.md (project root)
+# 2. Write: ./PROJECT_LITE.md (or ./PROJECT.md in project root)
 # 3. Fill sections (20 min each):
 # 1. Problem (3 sentences)
 # 2. Solution (5 bullet points)
@@ -371,7 +371,7 @@ If number flat/declining → MVP failing → pivot or stop.
 # Agent instructions (not shell commands):
 # 1. Core specs - Read from skill, write to user project root
 #    Source: skill://solo-project-lifecycle/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md
-#    Target: ./PROJECT.md
+#    Target: ./PROJECT_LITE.md (or ./PROJECT.md)
 
 # 2. Design tokens - Read from skill, write to harness staging
 #    Source: skill://solo-project-lifecycle/templates/02-design/DESIGN_MD_TEMPLATE.md

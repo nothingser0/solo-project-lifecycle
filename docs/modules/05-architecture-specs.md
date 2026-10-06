@@ -76,9 +76,9 @@ This module is the fifth phase in the software project lifecycle for solo develo
 
 ```bash
 # Check current ecosystem state for target framework via official registry APIs:
-./scripts/check-package-versions.sh <nextjs|laravel|django|go|rails|flutter|remix|astro>
+./scripts/check-package-versions.sh <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 # OR
-.\scripts\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails>
+.\scripts\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
 **Universal Registry Sources (Zero Local Toolchain Dependency)**:
@@ -89,6 +89,8 @@ This module is the fifth phase in the software project lifecycle for solo develo
 | **Django / Python** | PyPI JSON API | `pypi.org/pypi/django/json` | `django`, `djangorestframework`, `psycopg`, Python req |
 | **Go / Golang** | Go Official API & Proxy | `go.dev/dl/?mode=json` & `proxy.golang.org` | Stable Go runtime, `gin`, `gorm`, `pgx` |
 | **Ruby on Rails** | RubyGems API | `rubygems.org/api/v1/gems/rails.json` | `rails`, `puma`, `pg`, Ruby req |
+| **SvelteKit** | npm Registry | `npm view @sveltejs/kit version` | `@sveltejs/kit`, `svelte` |
+| **Nuxt** | npm Registry | `npm view nuxt version` | `nuxt`, `vue` |
 | **Flutter / Dart** | Pub.dev API | `pub.dev/api/packages/flutter_lints` | `flutter_lints`, `http`, `provider` |
 
 **Why**: AI models suffer from knowledge cutoff lag (e.g., assuming Next.js 14 when Next.js 15/16 is current, or assuming Laravel 10 when Laravel 11/13 is current). Real-time registry queries ensure architectural recommendations use actual current stable releases without requiring developers to pre-install local compilers (Composer, PHP, Python, Go) before scaffolding.
@@ -1745,7 +1747,7 @@ The agent must:
 
 ---
 
-## 6. System Design & Infrastructure Scalability [M05B - Enterprise Extension]
+## 7. System Design & Infrastructure Scalability [M05B - Enterprise Extension]
 
 > 🎯 **WHEN TO USE THIS SECTION?**
 > - **MANDATORY for Enterprise** projects (HA/DR, multi-AZ, capacity planning)
@@ -2060,12 +2062,12 @@ Run: `k6 run scripts/load-test.js`
 ### 6.12 Gate Exit Criteria
 
 Section 6 is declared **PASSED** if:
-- [x] Performance budgets documented (LCP, API latency targets)
-- [x] Caching strategy defined (HTTP headers, Redis patterns, CDN)
-- [x] Database optimization plan (indexes, read replicas, connection pooling)
-- [x] Monitoring setup (APM, logs, alert thresholds)
-- [x] Load test results validate capacity planning (k6 report)
-- [x] DR runbook created (backup restoration, failover procedures)
+- [ ] Performance budgets documented (LCP, API latency targets)
+- [ ] Caching strategy defined (HTTP headers, Redis patterns, CDN)
+- [ ] Database optimization plan (indexes, read replicas, connection pooling)
+- [ ] Monitoring setup (APM, logs, alert thresholds)
+- [ ] Load test results validate capacity planning (k6 report)
+- [ ] DR runbook created (backup restoration, failover procedures)
 
 **END RESPONSE** and confirm:
 > *"System design complete: Performance budgets set, caching strategy defined, monitoring configured. Load test report: p95 latency [X]ms, error rate [Y]%. Ready to proceed to M06 (Development)?"*

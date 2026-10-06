@@ -641,13 +641,13 @@ This module produces 4 operations documents + 1 reference guide:
 
 [GATE] Module 13 is declared **SUCCESSFUL & CONTINUOUS ITERATION ACTIVE** if:
 
-- [x] Baseline metrics for the first 30 days have been collected and documented (`METRICS_BASELINE_REPORT.md`).
-- [x] Automated feedback loop system is active (NPS survey scheduled, in-app widget live, tickets aggregated).
-- [x] Cohort analysis dashboard or SQL query is available and executed at least 1x per month.
-- [x] Feature backlog has been prioritized using the RICE framework (`GROWTH_EXPERIMENTS_BACKLOG.md`).
-- [x] At least 1 growth experiment has been launched and its results documented.
-- [x] Weekly metrics review ritual has run for at least 4 consecutive weeks.
-- [x] Scaling signals monitoring system is set up (performance, cost, workload alerts).
+- [ ] Baseline metrics for the first 30 days have been collected and documented (`METRICS_BASELINE_REPORT.md`).
+- [ ] Automated feedback loop system is active (NPS survey scheduled, in-app widget live, tickets aggregated).
+- [ ] Cohort analysis dashboard or SQL query is available and executed at least 1x per month.
+- [ ] Feature backlog has been prioritized using the RICE framework (`GROWTH_EXPERIMENTS_BACKLOG.md`).
+- [ ] At least 1 growth experiment has been launched and its results documented.
+- [ ] Weekly metrics review ritual has run for at least 4 consecutive weeks.
+- [ ] Scaling signals monitoring system is set up (performance, cost, workload alerts).
 
 ---
 

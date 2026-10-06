@@ -96,7 +96,7 @@ Write a standalone execution script (e.g., `scripts/migrate-data.ts` or a Python
 3. Deliver the `rejected-rows.csv` file to the Client for their operations team to correct.
 
 ### Step 5: Data Sign-Off with Client
-1. Demonstrate the Staging dashboard which now displays the client's real data (not "Lorem Ipsum" dummy data).
+1. Demonstrate the Staging dashboard which now displays the client's sanitized production-shaped data (PII masked per Step 3, not "Lorem Ipsum" dummy data).
 2. Send the **`MIGRATION_RECONCILIATION_REPORT.md`** document to the Client's Single PIC.
 3. Client signs the data approval sheet (*Data Sign-Off*).
 
@@ -122,18 +122,18 @@ Write a standalone execution script (e.g., `scripts/migrate-data.ts` or a Python
 This module produces 3 primary artifacts:
 1. **`docs/pm/DATA_MIGRATION_PLAN.md`**: Document mapping source columns to target columns, transformation rules, and data ownership boundaries (using `templates/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md`).
 2. **`docs/pm/MIGRATION_RECONCILIATION_REPORT.md`**: Report providing proof of source vs target data count comparison, rejected rows list, and Client PIC approval sheet (using `templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md`).
-3. **Staging Database Populated with Real Data**: Database on the Staging server ready for UAT testing sessions.
+3. **Staging Database Populated with Sanitized Data**: Database on the Staging server ready for UAT testing sessions (all PII masked).
 
 ---
 
 ## 6. Gate Exit Criteria [GATE]
 
 [GATE] Module 08 is declared **PASSED (PASS)** if:
-- [x] Column mapping document (`docs/pm/DATA_MIGRATION_PLAN.md`) is agreed upon.
-- [x] ETL script successfully imports all valid data without triggering foreign key integrity errors.
-- [x] Sensitive data on the Staging server has been sanitized/masked in compliance with PDP Law.
-- [x] All failed rows have been exported to `rejected-rows.csv` and handed over to the client.
-- [x] **Client Single PIC has signed the data reconciliation sign-off sheet.**
+- [ ] Column mapping document (`docs/pm/DATA_MIGRATION_PLAN.md`) is agreed upon.
+- [ ] ETL script successfully imports all valid data without triggering foreign key integrity errors.
+- [ ] Sensitive data on the Staging server has been sanitized/masked in compliance with PDP Law.
+- [ ] All failed rows have been exported to `rejected-rows.csv` and handed over to the client.
+- [ ] **Client Single PIC has signed the data reconciliation sign-off sheet.**
 
 ---
 

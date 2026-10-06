@@ -108,7 +108,7 @@ Maintain an exact 1:1 ratio:
 
 ## Sprint 3: Operational Dashboards, Master Data & Access Boundaries
 
-- [ ] **M06-FE-04: Operational Dashboard & Analytical Widgets (SCR-003)**
+- [ ] **M06-FE-04: Operational Dashboard & Analytical Widgets (SCR-004)**
   - Implement dashboard shell with responsive layout: desktop sidebar (240–260px, `border-l-4` active state) and mobile bottom navigation bar (`h-16`, auto-hiding on keyboard focus).
   - Implement 5-state matrix: Idle/Default, Loading Skeletons (`h-12 animate-pulse`), Empty State with CTA, Server Error Banner with retry button, and Success Toast.
   - **Verify**: Throttle network to Slow 3G in DevTools; simulate API error.
@@ -134,7 +134,7 @@ Maintain an exact 1:1 ratio:
 
 ## Sprint 4: Operational Execution & Input Safeguards (Domain-Adaptive)
 
-- [ ] **M06-FE-07: Operational Execution Workspace / Action Canvas (SCR-004)**
+- [ ] **M06-FE-07: Operational Execution Workspace / Action Canvas (SCR-007)**
   - *(Domain-Adaptive: POS for retail; Deal Pipeline Canvas for CRM; Block Editor for CMS; Attendance Terminal for HRIS)*
   - Implement split layout: resource selection on left, active cart/workspace on right (tablet/desktop) or bottom action dock (mobile).
   - Interactive touch targets strictly meet minimum $\ge 44\text{px} \times 44\text{px}$ (`h-11 min-w-11`).
