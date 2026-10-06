@@ -259,6 +259,49 @@ supabase/migrations/
 
 ---
 
+## 9. Array Comparison in RLS Policies (Fix for SQLSTATE 42883)
+
+**Never compare scalar UUID against subquery returning UUID array using naive `ANY(subquery)`**:
+
+```sql
+-- ❌ WRONG: Causes ERROR: operator does not exist: uuid = uuid[] (SQLSTATE 42883)
+CREATE POLICY rls_locations_select ON locations
+  FOR SELECT USING (
+    id = ANY((SELECT get_current_user_locations()))
+  );
+
+-- ✅ CORRECT Pattern A: PostgreSQL Array Containment Operator (@>)
+CREATE POLICY rls_locations_select ON locations
+  FOR SELECT USING (
+    (SELECT get_current_user_locations()) @> ARRAY[id]
+  );
+
+-- ✅ CORRECT Pattern B: Explicit Array Cast
+CREATE POLICY rls_locations_select ON locations
+  FOR SELECT USING (
+    id = ANY((SELECT get_current_user_locations())::uuid[])
+  );
+```
+
+---
+
+## 10. Idempotent Bootstrap RPCs (Fix for `users_pkey` Duplicate Key Error)
+
+**Always handle concurrent / pre-existing Auth inserts using `ON CONFLICT`**:
+
+```sql
+-- ✅ CORRECT: Idempotent user & tenant bootstrap in Stored Procedure
+INSERT INTO users (id, organization_id, full_name, email, role, assigned_location_ids, is_active)
+VALUES (p_user_id, v_org_id, p_full_name, p_email, 'owner', ARRAY[v_loc_id], TRUE)
+ON CONFLICT (id) DO UPDATE SET
+  organization_id = EXCLUDED.organization_id,
+  role = EXCLUDED.role,
+  assigned_location_ids = EXCLUDED.assigned_location_ids,
+  is_active = TRUE;
+```
+
+---
+
 ## Quick Reference Checklist
 
 ```
@@ -270,4 +313,6 @@ Migration pre-flight:
   - [ ] Indexes on foreign keys
   - [ ] Indexes on deleted_at for soft deletes
   - [ ] tsvector indexes for search columns
+  - [ ] RLS array checks use `@> ARRAY[id]` or explicit `::uuid[]` cast
+  - [ ] User bootstrap RPCs use `ON CONFLICT (id) DO UPDATE` to prevent `users_pkey` error
 ```

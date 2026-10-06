@@ -12,6 +12,8 @@ This module is the tenth phase in the software project lifecycle for solo develo
                                     ▼
 [ STEP 1: [GATE] Pre-Release Verification (Go / No-Go Gate) ]
   • Verify Signed UAT Sign-Off Report (Mandatory Prerequisite)
+  • Local Build & Integration Test Gate: npm run build and npm run test:smoke MUST exit 0
+  • Zero Agent Auto-Deploy / Auto-Push: Agent provides runbook only; human deploys
   • Safe Release Window: Prohibited to release Friday afternoon or before holidays
   • Database Snapshot Backup Prior to Migration Execution
                                     │
@@ -60,6 +62,9 @@ This module is the tenth phase in the software project lifecycle for solo develo
    - Ensure environment variables on the production server have been replaced with real accounts (Live Payment Gateway API Key, Live SMTP, Live Cloudflare R2), not staging sandbox test accounts.
 3. **Mandatory Emergency Rollback Plan**:
    - Before hitting the deploy button, the solo dev must know exactly how to restore the system to its previous state within < 15 minutes in the event of a fatal failure.
+4. **Project Readiness Gate (No Premature Deployments)**:
+   - PROHIBITED from deploying or writing deployment runbooks before the project is fully functional locally.
+   - Compilation (`npm run build`), database migrations, and core test suites must pass 100% with exit code 0 before initiating production deployment.
 
 ---
 
