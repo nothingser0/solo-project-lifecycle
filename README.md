@@ -11,7 +11,7 @@ Software development framework for solo developers and small teams. Covers proje
 **Comprehensive project management framework** for solo developers and small teams managing software projects:
 
 - 14 modules covering discovery, design, development, QA, deployment, maintenance
-- 170+ production-ready templates (PRD, FSD, SOW, test plans, deployment protocols)
+- 150+ production-ready templates (PRD, FSD, SOW, test plans, deployment protocols)
 - Real case studies with metrics
 - Code patterns for common problems
 - Scripts for validation and automation
@@ -28,7 +28,7 @@ This is a **skill framework/toolkit**, not a minimal starter template:
 | Component | Size | Purpose |
 |-----------|------|---------|
 | Module library | 460KB | 14 lifecycle phases with detailed workflows |
-| Template library | 1.8MB | 170+ production-ready templates |
+| Template library | 1.8MB | 150+ production-ready templates |
 | Reference guides | 756KB | Playbooks, patterns, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
 | Code patterns | 144KB | 12 reusable patterns (API, testing, deployment, etc.) |
@@ -54,7 +54,7 @@ Completeness = utility. Similar to design systems or testing frameworks - compre
 ```
 solo-project-lifecycle/
 ├── docs/modules/          14 lifecycle modules (M00-M13)
-├── templates/             170+ project templates
+├── templates/             150+ project templates
 ├── patterns/              12 code patterns (API, testing, deployment, database, security)
 ├── case-studies/          5 examples (3 real + 2 worked examples)
 ├── references/            Guides and playbooks

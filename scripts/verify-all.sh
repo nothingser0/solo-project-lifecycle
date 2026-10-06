@@ -82,6 +82,51 @@ for kf in "${KEY_FILES[@]}"; do
     fi
 done
 
+# 4. Verify Case Studies Presence (01 - 05)
+echo ""
+echo "4. Checking Case Studies..."
+CASE_STUDIES=(
+    "01-mvp-saas-inventory.md"
+    "02-ecommerce-fashion-mvp.md"
+    "03-crm-real-estate-internal.md"
+    "04-medium-b2b-saas-worked-example.md"
+    "05-large-system-integration-worked-example.md"
+)
+for cs in "${CASE_STUDIES[@]}"; do
+    if [ -f "case-studies/$cs" ]; then
+        echo -e "  ${GREEN}✓${NC} case-studies/$cs"
+    else
+        echo -e "  ${RED}✗${NC} Missing case-studies/$cs"
+        ERRORS=$((ERRORS + 1))
+    fi
+done
+
+# 5. Verify Patterns Presence (12 Patterns)
+echo ""
+echo "5. Checking Patterns..."
+PATTERNS=(
+    "patterns/api/graphql-and-versioning.md"
+    "patterns/api/rest-conventions.md"
+    "patterns/database/seeding-and-transactions.md"
+    "patterns/database/supabase-migrations.md"
+    "patterns/deployment/ci-cd-pipeline.md"
+    "patterns/error-handling/error-boundaries.md"
+    "patterns/git-workflow/branching-strategy.md"
+    "patterns/performance/caching-strategies.md"
+    "patterns/performance/n-plus-one-prevention.md"
+    "patterns/security/authentication.md"
+    "patterns/testing/test-pyramid.md"
+    "patterns/validation/zod-patterns.md"
+)
+for pat in "${PATTERNS[@]}"; do
+    if [ -f "$pat" ]; then
+        echo -e "  ${GREEN}✓${NC} $pat"
+    else
+        echo -e "  ${RED}✗${NC} Missing $pat"
+        ERRORS=$((ERRORS + 1))
+    fi
+done
+
 echo ""
 if [ $ERRORS -eq 0 ]; then
     echo -e "${GREEN}All integrity checks passed successfully!${NC}"

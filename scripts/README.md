@@ -15,7 +15,7 @@ Each tool is available in both **Bash** (macOS/Linux) and **PowerShell** (Window
 | [`scripts/verify-framework-version.sh`](./verify-framework-version.sh) | [`scripts/verify-framework-version.ps1`](./verify-framework-version.ps1) | Validates installed project lockfiles against versions pinned in `FSD.md` | `docs/modules/06-development-execution.md` |
 | [`scripts/lint-template.sh`](./lint-template.sh) | [`scripts/lint-template.ps1`](./lint-template.ps1) | Lints markdown templates for unrendered placeholders (`[...]`, `<...>`) and structural validity | `SKILL.md`, `README.md` |
 | [`scripts/template-picker.sh`](./template-picker.sh) | [`scripts/template-picker.ps1`](./template-picker.ps1) | Interactive CLI selector to scaffold project templates into designated project paths | `SKILL.md`, `README.md` |
-| [`scripts/verify-all.sh`](./verify-all.sh) | — | Comprehensive repository sanity and syntax checker | CI / Pre-Release |
+| [`scripts/verify-all.sh`](./verify-all.sh) | [`scripts/verify-all.ps1`](./verify-all.ps1) | Comprehensive repository sanity and syntax checker | CI / Pre-Release |
 
 ---
 

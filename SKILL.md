@@ -15,7 +15,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 - **Entry point**: This SKILL.md file (8KB) - lightweight navigation guide
 - **Module library**: 14 modules in `docs/modules/` loaded on-demand per project phase
-- **Template library**: 170+ templates in `templates/` by use case and phase
+- **Template library**: 150+ templates in `templates/` by use case and phase
 - **Reference materials**: 600KB guides, playbooks, case studies in `references/`
 - **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
 
