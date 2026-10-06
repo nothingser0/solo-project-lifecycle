@@ -41,6 +41,18 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+get_choice() {
+    local prompt="$1"
+    local default_choice="${2:-1}"
+    if [ $DRY_RUN -eq 1 ] || [ $AUTO_CONFIRM -eq 1 ] || ! [ -t 0 ]; then
+        echo "$default_choice"
+    else
+        local ans
+        read -p "$prompt" ans || ans="$default_choice"
+        echo "${ans:-$default_choice}"
+    fi
+}
+
 echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║      Solo Project Lifecycle - Template Picker        ║${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
@@ -106,7 +118,7 @@ phase_discovery() {
     echo "8. BACKLOG (User stories, RICE prioritization)"
     echo "9. Back to main menu"
     echo ""
-    read -p "Select template (1-9): " choice
+    choice=$(get_choice "Select template (1-9): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "docs/pm/IDEA_BRIEF.md" ;;
@@ -130,7 +142,7 @@ phase_presales() {
     echo "2. RFP_RESPONSE (Formal proposal for enterprise RFP)"
     echo "3. Back to main menu"
     echo ""
-    read -p "Select template (1-3): " choice
+    choice=$(get_choice "Select template (1-3): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md" "docs/pm/POC_PLAN.md" ;;
@@ -153,7 +165,7 @@ phase_design() {
     echo "7. AB_TEST_HYPOTHESIS (Experiment design)"
     echo "8. Back to main menu"
     echo ""
-    read -p "Select template (1-8): " choice
+    choice=$(get_choice "Select template (1-8): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/02-design/DESIGN_MD_TEMPLATE.md" "DESIGN.md" ;;
@@ -180,7 +192,7 @@ phase_architecture() {
     echo "6. PROJECT_LITE (MVP all-in-one template)"
     echo "7. Back to main menu"
     echo ""
-    read -p "Select template (1-7): " choice
+    choice=$(get_choice "Select template (1-7): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/03-architecture-specs/PRD_FINAL_TEMPLATE.md" "docs/specs/PRD.md" ;;
@@ -209,7 +221,7 @@ phase_governance() {
     echo "9. AUDIT_TRAIL_REQUIREMENTS"
     echo "10. Back to main menu"
     echo ""
-    read -p "Select template (1-10): " choice
+    choice=$(get_choice "Select template (1-10): " 1)
 
     case $choice in
         1) copy_template "$TEMPLATES_DIR/03-governance/ADR_TEMPLATE.md" "docs/adr/ADR_001.md" ;;
@@ -235,7 +247,7 @@ phase_data_migration() {
     echo "3. DATA_MIGRATION_LITE (Lightweight CSV/Excel import checklist)"
     echo "4. Back to main menu"
     echo ""
-    read -p "Select template (1-4): " choice
+    choice=$(get_choice "Select template (1-4): " 1)
 
     case $choice in
         1) copy_template "$TEMPLATES_DIR/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md" "docs/migration/DATA_MIGRATION_PLAN.md" ;;
@@ -262,7 +274,7 @@ phase_dev_harness() {
     echo "10. Copy all 9 harness files at once"
     echo "11. Back to main menu"
     echo ""
-    read -p "Select template (1-11): " choice
+    choice=$(get_choice "Select template (1-11): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md" ;;
@@ -301,7 +313,7 @@ phase_qa() {
     echo "4. UAT_SIGNOFF (Formal sign-off document)"
     echo "5. Back to main menu"
     echo ""
-    read -p "Select template (1-5): " choice
+    choice=$(get_choice "Select template (1-5): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md" "docs/qa/SIT_WORKBOOK.md" ;;
@@ -324,7 +336,7 @@ phase_deploy() {
     echo "5. USER_MANUAL (End-user documentation)"
     echo "6. Back to main menu"
     echo ""
-    read -p "Select template (1-6): " choice
+    choice=$(get_choice "Select template (1-6): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md" "docs/DEPLOYMENT_PROTOCOL.md" ;;
@@ -352,7 +364,7 @@ phase_maintenance() {
     echo "9. AB_TEST_REPORT (Experiment results)"
     echo "10. Back to main menu"
     echo ""
-    read -p "Select template (1-10): " choice
+    choice=$(get_choice "Select template (1-10): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md" "docs/WARRANTY_POLICY.md" ;;
