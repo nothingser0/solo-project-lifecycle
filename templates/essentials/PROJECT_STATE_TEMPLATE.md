@@ -21,13 +21,13 @@
 
 ## 2. Lifecycle Module Progress & Gate Status
 
-*Legend: `NOT_STARTED` | `IN_PROGRESS` | `PENDING_PRIMARY_RESEARCH` | `PENDING_APPROVAL` | `PASS` | `WAIVED` (N/A for path)*
+*Legend: `NOT_STARTED` | `IN_PROGRESS` | `PENDING_PRIMARY_RESEARCH` | `PROVISIONAL` | `PENDING_APPROVAL` | `PASS` | `CONDITIONAL_GO` | `PIVOT` | `KILL` | `WAIVED`*
 
 > ℹ️ **GATE EVALUATION RULE WITH PENDING PRIMARY RESEARCH**:
 > If human user discovery (interviews, surveys, smoke test waitlists) has not yet been executed, Gate 0 MUST be set to **`PENDING_PRIMARY_RESEARCH`**.
 > AI agents are strictly prohibited from evaluating this gate as `PASS` using simulated or synthetic numbers.
 
-### Active Gate Status: `[PENDING_PRIMARY_RESEARCH / PASS / FAIL]`
+### Active Gate Status: `[PENDING_PRIMARY_RESEARCH / PROVISIONAL / PASS / CONDITIONAL_GO / PIVOT / KILL / WAIVED]`
 
 **Primary Research Staging & Readiness**:
 - **Interview Guide**: Staged at `docs/pm/USER_RESEARCH_REPORT.md` (Target: [5 / 10 / 15] interviews)
@@ -43,7 +43,7 @@
 | **M00 / M00-lite** | Product Discovery & Strategy | `docs/pm/MARKET_RESEARCH.md` or `docs/pm/M00_LITE.md` | Intent-to-buy $\ge 30\%$ / Waitlist validation | [Status] | [YYYY-MM-DD] |
 | **M01** | Idea & Feasibility | `docs/pm/IDEA_BRIEF.md` | Feasibility score $\ge 70/100$, 0 fatal blockers | [Status] | [YYYY-MM-DD] |
 | **M02** | Discovery & Scope | `docs/pm/SCOPE_STATEMENT.md` | MoSCoW locked, RBAC defined, 0 ambiguous P0s | [Status] | [YYYY-MM-DD] |
-| **M03** | Legal SOW & Charter | `contracts/SOW_CONTRACT.md` | Commercial Gate: DP received, Single PIC locked | [Status] | [YYYY-MM-DD] |
+| **M03** | Legal SOW & Charter | `docs/pm/SOW_CONTRACT.md` (or `contracts/`) | Commercial Gate: DP received, Single PIC locked (WAIVED for Solo SaaS) | [Status] | [YYYY-MM-DD] |
 | **M04** | UI/UX & Information Architecture | `docs/specs/SITEMAP.md`, `DESIGN.md` | SITEMAP multi-role coverage, contrast $\ge 4.5:1$ | [Status] | [YYYY-MM-DD] |
 | **M05** | Architecture Specs & PRD/FSD | `docs/specs/PRD.md`, `docs/specs/FSD.md` | Schema, APIs, lockfile versions pinned | [Status] | [YYYY-MM-DD] |
 | **M06** | Development Execution | Root harness files deployed, `TODO.md` | 100% TODO completed, unit tests pass | [Status] | [YYYY-MM-DD] |
@@ -51,7 +51,7 @@
 | **M08** | Data Migration & Seeding | `docs/data/RECONCILIATION_REPORT.md` | Row counts match, data hash verified | [Status] | [YYYY-MM-DD] |
 | **M09** | Client UAT & Validation | `docs/qa/UAT_SIGNOFF.md` | Validation Gate: Client UAT signed | [Status] | [YYYY-MM-DD] |
 | **M10** | Production Deployment | `docs/ops/DEPLOYMENT_REPORT.md` | Live DNS/SSL active, healthcheck 200 | [Status] | [YYYY-MM-DD] |
-| **M11** | Handover & BAST | `contracts/BAST.md` | Handover Gate: 100% payment, BAST signed | [Status] | [YYYY-MM-DD] |
+| **M11** | Handover & BAST | `docs/pm/BAST.md` (or `contracts/`) | Handover Gate: 100% payment, BAST signed (WAIVED for Solo SaaS) | [Status] | [YYYY-MM-DD] |
 | **M12** | Warranty & Maintenance Ops | `docs/ops/WARRANTY_POLICY.md` | SLA terms active, runbook verified | [Status] | [YYYY-MM-DD] |
 | **M13** | Product Growth & Iteration | `docs/pm/METRICS_REPORT.md` | North Star Metric telemetry instrumented | [Status] | [YYYY-MM-DD] |
 

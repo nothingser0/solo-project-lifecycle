@@ -52,13 +52,13 @@
 
 **M02 - Discovery (2-3 hari)**:
 - Stakeholder interview (1 person: founder/PIC)
-- MoSCoW prioritization (must-have only, 10-15 features max)
+- MoSCoW prioritization (must-have only, 3–7 features max for Small MVP)
 - Scope boundary (in/out scope, client dependencies)
 - Output: `docs/pm/SCOPE_STATEMENT.md`
 
 **M03 - Legal (1 hari bypass)**:
 - Internal project: No SOW/DP needed
-- Create `docs/pm/PROJECT_BRIEF.md` (1 page: scope, timeline, assumptions)
+- Create `docs/pm/IDEA_BRIEF.md` or `PROJECT_LITE.md` (1 page: scope, timeline, assumptions)
 - Single PIC designated (yourself or founder)
 - **Gate**: Brief approved → proceed immediately
 
@@ -261,7 +261,7 @@ M02 Discovery: "Does client have existing data?"
 - Design system reference (Shadcn? Material? Custom?)
 
 **Output**:
-- `docs/pm/PROJECT_BRIEF.md`
+- `docs/pm/IDEA_BRIEF.md`
 - `docs/pm/TECH_BRIEF.md`
 - Wireframes (Figma link)
 - Jira/Linear board dengan epic/story
@@ -839,12 +839,12 @@ Which do you prefer?"
 
 | Document | Kecil | Menengah | Besar | Enterprise |
 |:---------|:-----:|:--------:|:-----:|:----------:|
-| **PROJECT_BRIEF.md** | ✅ | ✅ | ✅ | ✅ |
-| **SCOPE_STATEMENT.md** | ✅ | ✅ | ✅ | ✅ |
+| **IDEA_BRIEF.md** (or PROJECT_LITE.md) | ✅ | ✅ | ✅ | ✅ |
+| **SCOPE_STATEMENT.md** | 🟡 (or PROJECT_LITE) | ✅ | ✅ | ✅ |
 | **SOW_CONTRACT.md** | ❌ | ✅ | ✅ | ✅ |
 | **PROJECT_CHARTER.md** | ❌ | 🟡 | ✅ | ✅ |
 | **DPA.md** (Data Processing Agreement) | ❌ | 🟡 | ✅ | ✅ |
-| **MARKET_RESEARCH.md** | ❌ | ❌ | ❌ | ✅ |
+| **MARKET_RESEARCH.md** (or M00_LITE.md) | ❌ | ✅ (Solo SaaS) | ✅ | ✅ |
 | **SYSTEM_DESIGN_DOC.md** | ❌ | ❌ | 🟡 | ✅ |
 | **CAPACITY_PLANNING.md** | ❌ | ❌ | 🟡 | ✅ |
 | **SECURITY_AUDIT_REPORT.md** | ❌ | 🟡 | ✅ | ✅ |

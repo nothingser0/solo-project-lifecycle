@@ -23,7 +23,7 @@ This module is the second stage in the software development lifecycle for solo d
                       │
                       ▼
 [ STEP 2: Problem-Solution Fit & MoSCoW Prioritization ]
-  • 80/20 Root Cause Cross-Check (Every Must-Have solves ≥50% root cause)
+  • 80/20 Root Cause Mapping (Must-Haves collectively ≥70%, each Must mapped to primary friction)
   • Target Segment Feature Fit (Drop mismatched segments like Cafe without BOM)
   • Dependency Contradiction Check (Gross Profit vs Deferred Expenses)
   • Mandatory SaaS Revenue Features (Billing, Offboarding, Admin Panel, Receipts)
@@ -46,21 +46,27 @@ This module is the second stage in the software development lifecycle for solo d
                       ▼
 [ STEP 5: Scope Boundary Locking, Tax Disclaimers & Legal Compliance ]
   • Explicit List: WHAT IS BUILT vs WHAT IS NOT BUILT
-  • Tax Disclaimers (PP 55/2022, Rp 500M threshold, non-PKP)
+  • Tax Disclaimers (PP 55/2022 jo. PP 20/2026, Rp 500M threshold, non-PKP)
   • Mandatory UU PDP Compliance (Privacy Policy, ToS, DPA, 3Y Retention, PII Scrubbing)
                       │
                       ▼
-[ STEP 6: Stakeholder Mapping, Dependencies & Realistic Timeline ]
+[ STEP 6: Client Dependency Registration (Dependency SLA) ]
+  • Sandbox credentials, master data CSV templates, 3-day turnaround SLA
+                      │
+                      ▼
+[ STEP 7: Stakeholder Mapping, Communication & Realistic Timelines ]
   • Power/Interest Matrix (4 Quadrants)
   • Communication Plan & Escalation Path
   • Expectation Management & RACI Matrix
   • Phase Duration Guidelines & 20% Dev Buffer (CR freeze = QA - 2w)
                       │
                       ▼
-[ OUTPUT: SCOPE_STATEMENT.md Document + Stakeholder Artifacts ] ──► Ready to Proceed to Module 03: Legal SOW & DP
+[ OUTPUT: SCOPE_STATEMENT.md Document + Stakeholder Artifacts ] ──► Ready to Proceed to Next Module (M03 / M04)
 ```
 
 ---
+
+## 2. Step-by-Step Execution
 
 ### Step 1: Targeted Discovery Interview
 Conduct the interview using the guide in `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md`:
@@ -77,7 +83,7 @@ Solo developers must ground business metrics in achievable adoption curves. Clai
 | **Month 1** | 5–10 | Beta cohort conversion | Rp 500k – Rp 1M |
 | **Month 3** | 20–30 | +5–10 / month (organic referrals) | Rp 2M – Rp 3M |
 | **Month 6** | 50–75 | +10–15 / month (initial PMF) | Rp 5M – Rp 7.5M |
-| **Month 12** | 100–200 | +15–20 / month (scaling) | Rp 10M – Rp 20M |
+| **Month 12** | 50–100 | +10–15 / month (scaling) | Rp 5M – Rp 10M |
 
 - **Year 1 Target Baseline**: Model **50–100 paying customers** for early-stage B2B/SME SaaS (typically generating Rp 5–10M MRR).
 
@@ -92,7 +98,7 @@ Solo developers must ground business metrics in achievable adoption curves. Clai
 
 #### 1.5 Pre-Launch Validation Integration
 Include a pre-launch validation checkpoint in early discovery:
-- **M01.5 Landing Page (Week 2)**: Lightweight landing page (Carrd/Webflow, 2 days effort) with email capture and willingness-to-pay question (*"Would you pay Rp 99k/month for this?"*).
+- **Pre-Launch Smoke Test Landing Page (Week 2)**: Lightweight landing page (Carrd/Webflow, 2 days effort) with email capture and willingness-to-pay question (*"Would you pay Rp 99k/month for this?"*).
 - **Validation Gate**: Target 50–100 email signups prior to major development investment. If $<50$ signups occur in 2 weeks, reassess positioning before locking scope.
 
 ---
@@ -105,7 +111,7 @@ Before prioritizing features into MoSCoW buckets, validate every proposed capabi
 1. **80/20 Root Cause Mapping**:
    - Extract stated problem metrics according to your domain (e.g., Retail: stock discrepancy 10-15%; HRIS: unverified overtime leakage 12%; Legal: contract approval turnaround 5 days).
    - Dissect underlying causes: Identify primary operational bottlenecks ($\approx 80\%$) vs secondary friction ($\approx 20\%$).
-   - **Rule**: The Must-Have (P0) feature set **collectively** must resolve $\ge 70\%$ of the primary root cause. Any standalone feature claiming P0 status that addresses only minor secondary friction ($<20\%$) must be demoted to Should-Have (P1) or Won't-Have (P3).
+   - **Rule**: The Must-Have (P0) feature set **collectively** must resolve $\ge 70\%$ of primary root causes, and **every individual Must-Have feature must directly map to at least one primary operational bottleneck** (resolving $\ge 50\%$ of that specific cause; zero vanity features in P0). Any standalone feature claiming P0 status that addresses only minor secondary friction ($<20\%$) must be demoted to Should-Have (P1) or Won't-Have (P3).
    - *Domain Examples*: Retail P0 = stock opname audit trail (not real-time branch sync); HRIS P0 = geofenced clock-in & tiered approval workflow (not AI facial recognition); Legal P0 = clause diff engine & role-based sign-off (not multi-jurisdictional AI chatbot).
 
 2. **Target Segment Feature Dependency Audit**:
@@ -123,7 +129,7 @@ Break each module into specific features with priority labels:
 **Template**: `templates/01-discovery-commercial/MOSCOW_MATRIX.md` (60-min workshop format, decision tree, examples)
 
 - **Must Have (P0)**: The system fails to function without this feature (e.g., order checkout, login authentication).
-  - **Max Must-Haves by Scale**: Small: 3–7 features | Medium: 8–15 features | Large: 16–25 features | Enterprise: 26–40 features
+  - **Max Must-Haves by Scale**: Small: 3–7 features (1–3 core user flows) | Medium: 8–15 features | Large: 16–25 features | Enterprise: 26–40 features
   - If limits are exceeded, downgrade to Should-Have or Phase 2.
 - **Should Have (P1)**: Important features with temporary manual workarounds (e.g., export reports to Excel).
 - **Could Have (P2)**: Additional features if time and solo dev capacity permit (e.g., WhatsApp notifications).
@@ -282,7 +288,8 @@ Mandatory Out-of-Scope exclusions:
 If the system includes automated tax, payroll, or statutory calculations, cite the authoritative regulation for your specific sector and jurisdiction:
 
 **1. Retail / SME Commerce (PPh UMKM)**:
-- Regulation: **PP 55/2022** (PPh Final 0.5%). Model the **Rp 500.000.000/year** non-taxable threshold for individual taxpayers (WP OP).
+- Regulation: **PP 55/2022 jo. PP 20/2026** (enacted 22 April 2026). The time limit for the 0.5% PPh Final facility is permanently eliminated, but the facility is **strictly restricted** to **Wajib Pajak Orang Pribadi (WP OP)**, **PT Perorangan**, and **Koperasi** with gross turnover $\le$ Rp 4.8 billion/year. It is **no longer eligible** for CV, Firma, PT Non-Perorangan, or BUMDes.
+- Model the **Rp 500.000.000/year non-taxable gross turnover threshold** strictly for individual taxpayers (WP OP).
 - Mandatory In-App Disclaimer: *"Perhitungan pajak bersifat estimasi operasional dan tidak menggantikan pelaporan resmi pada DJP. PPN tidak diperhitungkan (non-PKP)."*
 
 **2. HRIS / Payroll (PPh 21 & Social Security)**:
@@ -305,12 +312,22 @@ Every application storing user or customer information must incorporate complian
        if (event.request) {
          delete event.request.cookies;
          delete event.request.headers;
+         delete event.request.data;
+         if (typeof event.request.query_string === 'string') {
+           event.request.query_string = event.request.query_string.replace(/token=[^&]+/gi, 'token=[REDACTED]');
+         }
+       }
+       if (event.user) {
+         delete event.user.email;
+         delete event.user.ip_address;
+         delete event.user.username;
        }
        if (event.extra) {
          delete event.extra.customer_name;
          delete event.extra.email;
          delete event.extra.phone;
          delete event.extra.amount;
+         delete event.extra.nik;
        }
        return event;
      }
@@ -319,7 +336,7 @@ Every application storing user or customer information must incorporate complian
 4. **CSV Formula Injection Sanitization**:
    ```typescript
    function sanitizeCSVCell(value: string): string {
-     if (/^[=+@-]/.test(value)) {
+     if (/^[\t\r\n=+@|-]/.test(value)) {
        return `'${value}`; // Prepend single quote to neutralize spreadsheet execution
      }
      return value;
@@ -355,7 +372,7 @@ Map all participants into 4 quadrants: Manage Closely (Paying Owner), Keep Satis
 - **Development Estimation Formula**:
   $$\text{Dev Weeks} = \left[ (\text{Simple CRUD} \times 2.5\text{ days}) + (\text{Complex Features} \times 1\text{ week}) \right] \times 1.20\text{ (Buffer)}$$
 - **Change Request (CR) Freeze**: Locked exactly **2 weeks before QA starts** (e.g., if QA starts Week 17, CR freeze is strictly enforced at Week 15).
-- **Phase 1.5 Execution Window**: Scheduled strictly post-launch (Week 21+), NEVER overlapping with active QA.
+- **Phase 1.5 Execution Window**: Scheduled strictly post-launch (e.g., Week 5+ for Small MVP, Week 13+ for Medium Solo SaaS, Week 21+ for Large systems), NEVER overlapping with active QA or initial launch.
 - **Closed Beta Testing (M07 Week 2)**: Recruit 5 representative business owners with a 3-month free subscription incentive. Conduct 60-minute remote recorded usability sessions.
 - **Definition of Done (DoD) Clarification**:
   - *Staging*: Automatic Vercel Preview deployment per pull request with isolated database branch.
@@ -396,6 +413,15 @@ Map all participants into 4 quadrants: Manage Closely (Paying Owner), Keep Satis
    - Template: `templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md`
    - Contents: Responsible/Accountable/Consulted/Informed per deliverable
    - **Solo dev projects**: Optional (typically: Solo Dev = R, Client = A for most items)
+
+### Complementary Governance & Planning Artifacts (Conditional)
+
+5. **`docs/pm/RISK_REGISTER.md`** (Medium / Large / Client projects with operational exposure)
+   - Template: `templates/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md`
+6. **`docs/pm/REQUIREMENT_MATRIX.md`** (Traceability from pain points to screens & tests)
+   - Template: `templates/01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md`
+7. **`docs/pm/BACKLOG.md`** & **`docs/pm/OKR.md`** (Sprint planning and metric tracking)
+   - Templates: `templates/01-discovery-commercial/BACKLOG_TEMPLATE.md` & `OKR_TEMPLATE.md`
 
 ### Reference Guide
 
@@ -456,22 +482,31 @@ After the file `docs/pm/SCOPE_STATEMENT.md` has been written:
 
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 03 within the same turn!**
 2. **CONTENT VERIFICATION (Self-Verification Checklist)**:
-   - [ ] Read and verify file `docs/pm/SCOPE_STATEMENT.md` → Confirm 120+ lines
-   - [ ] Must-Have count within scale limits (3-7 Small, 8-15 Medium, etc.)
-   - [ ] **Problem-Solution Fit**: Every Must-Have feature resolves $\ge 50\%$ of stated problem root causes
+   - [ ] Read and verify file `docs/pm/SCOPE_STATEMENT.md` → Confirm all required sections (Objectives, RBAC, MoSCoW, User Stories, Boundaries, SLA) are complete
+   - [ ] Must-Have count strictly within scale limits: Small (3–7), Medium (8–15), Large (16–25)
+   - [ ] Zero ambiguous terms ("TBD", "maybe", "if time permits", "tentative") in Must-Have rows
+   - [ ] **Problem-Solution Fit**: Must-Haves collectively resolve $\ge 70\%$ of root causes, and every individual Must maps to at least one primary friction
    - [ ] **Target Segment Dependency**: Retained personas require zero out-of-scope features to experience core value
    - [ ] **Multi-Tenant Schema**: Every table includes `org_id UUID NOT NULL` with RLS querying `public.user_roles`
    - [ ] **Financial Precision**: Money stored as `DECIMAL`, `unit_cost` snapshot present in line items, movements append-only
    - [ ] **RBAC Approval Workflow**: Documented decision tree with zero self-approval for managers
    - [ ] **Mandatory Revenue Features**: Billing & subscription engine (F-XX) and offboarding flow included in P0
-   - [ ] **Legal Compliance**: Privacy Policy, Terms of Service, PP 55/2022 tax disclaimers, and Sentry PII scrubbing planned
+   - [ ] **Legal Compliance**: Privacy Policy, Terms of Service, PP 55/2022 jo. PP 20/2026 tax disclaimers, and Sentry PII scrubbing planned
    - [ ] **Realistic Timeline**: Epic sum + 20% buffer matches timeline claim; CR freeze set to QA start minus 2 weeks
    - [ ] Out-of-Scope section documented with ≥3 explicit exclusions
+   - [ ] Data Confidence Legend declared (`[✅ / 🔶 / ❓]`)
    - [ ] Client dependencies listed with SLA timeline
 3. Present a scope boundary summary to the user:
    - List of Must-Have (P0) features
    - Explicit list of Out-of-Scope features prohibited from being built
    - Data/access dependencies required from client (Dependency SLA)
 4. **END YOUR RESPONSE (END TURN)** and ask for confirmation from the user:
-   > *"Document `docs/pm/SCOPE_STATEMENT.md` has been completed with [X] Must-Have features and locked Out-of-Scope boundaries. Are these scope boundaries agreed upon before we proceed to Module 03 (Legal SOW & Project Charter)?"*
-5. Wait for explicit approval from user before proceeding to Module 03.
+   - **If Solo SaaS / Self-Initiated Project**:
+     > *"Document `docs/pm/SCOPE_STATEMENT.md` completed with [X] Must-Have features and locked scope boundaries. As a self-initiated product, commercial SOW (M03) is skipped. Proceed to Module 04 (UI/UX Prototyping)?"*  
+     > *(Indonesian: "Dokumen `docs/pm/SCOPE_STATEMENT.md` selesai dengan [X] fitur Must-Have. Untuk produk solo SaaS, kontrak SOW dilewati. Apakah disetujui untuk lanjut ke Modul 04 (UI/UX Prototyping)?")*
+   - **If Client Commercial Project**:
+     > *"Document `docs/pm/SCOPE_STATEMENT.md` completed with [X] Must-Have features and locked scope boundaries. Proceed to Module 03 (Legal SOW & Project Charter) to finalize milestone terms and down payment gate?"*  
+     > *(Indonesian: "Dokumen `docs/pm/SCOPE_STATEMENT.md` selesai dengan [X] fitur Must-Have. Apakah disetujui untuk lanjut ke Modul 03 (Legal SOW & Project Charter) untuk penguncian termin dan DP?")*
+   - **If Small Fast-Track MVP**:
+     > *"Document `docs/pm/SCOPE_STATEMENT.md` (or `PROJECT_LITE.md`) completed. Proceed to Module 04/M05 (Rapid Specifications & UI Tokens)?"*
+5. Wait for explicit user approval before proceeding to the designated next module.

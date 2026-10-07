@@ -9,53 +9,81 @@
 This module is the first gate in the software development lifecycle for solo developers. Its purpose is to transform abstract raw ideas into a **Validated Idea Brief** with clear scale boundaries before wasting time on lengthy documents or coding.
 
 **Solo Dev Tooling Prerequisites**:
-- [ ] Password manager installed (Bitwarden/1Password) for secure credential sharing with clients
-- [ ] Git client configured with proper email/name
-- [ ] AI coding assistant ready (Cursor/Claude Code/Windsurf) if planning to use AI-assisted development
+- [ ] Browser / cURL / REST client ready to inspect external API sandboxes and vendor pricing
+- [ ] Financial calculator or spreadsheet ready for unit economics, COGS, and break-even modeling
+- [ ] AI coding assistant environment configured (Cursor / Claude Code / Windsurf / OMP)
 
 ---
 
 ## 1. Execution Cycle of Module 01
 
 ```text
-[ RAW / ROUGH IDEA ]
+[ RAW / ROUGH IDEA or M00 RESEARCH OUTPUTS ]
           │
           ▼
-[ STEP 1: The 3-Filter Triage, Data Quality & Competitor Research ]
-  • Real Problem, Survey Methodology & Root Cause Breakdown
-  • 5-7 Competitor Landscape & Uniqueness Verification
-  • Core User Loop (3-Step Primary Flow)
+[ STEP 0: Premise Testing & M00 Inheritance ]
+  • Inherit MARKET_RESEARCH.md & COMPETITIVE_LANDSCAPE.md (if M00 ran)
+  • Catalog Riskiest Assumption Register & Kill Thresholds
+  • Provisional Gate Mode if M00 is PENDING_PRIMARY_RESEARCH
+          │
+          ▼
+[ STEP 1: The 3-Filter Triage & Competitor Benchmarking ]
+  • Problem Filter, Methodology Standards (Sample Size, Split, Bias)
+  • 5-7 Competitor Landscape & Uniqueness Verification (Direct/Adjacent/Manual)
+  • Core User Loop (3-Step Primary Flow across Retail, B2B, or Fintech)
   • MVP Razor (Extreme Scope Pruning)
           │
           ▼
-[ STEP 1.5: MVP Razor Validation Gate (MANDATORY) ]
+[ STEP 2: MVP Razor & Root Cause Validation Gate (MANDATORY) ]
   • Root Cause Match (≥70% of stated problem solved)
   • Target Segment Feasibility & BOM/Feature Fit
   • Prune Mismatched Segments or Upgrade MVP Features
           │
           ▼
-[ STEP 2: 4-Dimension Feasibility Check (Stricter Reality Scoring) ]
-  • Technical (Complexity Red Flags, Offline/Real-Time Penalties)
-  • Solo Dev Bandwidth (Epic Breakdown Sum + Non-Dev Buffer Cross-Check)
-  • Regulatory & Legal (UU PDP Compliance, Mandatory Docs, Disclaimers)
-  • Commercial & Business Value (Discounted Intent 15-25%, Unit Economics)
-  • Gate Outcome: GO (≥3.5) / GO BERSYARAT (3.0-3.5) / PIVOT (<3.0) / KILL
+[ STEP 3: 4-Dimension Feasibility Check & Dimension Floor Principle ]
+  • Technical (Offline-write, async sync, ledger delta rules, Safari ITP)
+  • Solo Dev Bandwidth (Scale-adjusted Non-Dev calculation & timeline)
+  • Regulatory & Legal (UU PDP Compliance, General Marketing Claims, Disclaimers)
+  • Commercial & Business Value (Discounted Intent 15-25%, COGS, Fixed Costs, Break-Even)
+  • Confidence Markers [✅ / 🔶 / ❓] on every dimension score
+  • Dimension Floor Decision: GO (≥3.5, no dim <3.0) / CONDITIONAL (3.0-3.49, no dim <3.0) / PIVOT (any dim=2 or <3.0) / KILL (any dim=1 or <2.5)
           │
           ▼
-[ STEP 2.5: Post-Development Kill/Pivot Criteria ]
+[ STEP 4: Post-Development Kill/Pivot Criteria & Checkpoints ]
   • Week 4 & Week 8 Progress & Churn Thresholds
           │
           ▼
-[ STEP 3: Scale Classification & Module Routing ]
-  • Small (MVP) / Medium (SaaS) / Large (Scale-Up) / Enterprise
+[ STEP 5: Scale Classification & Module Routing ]
+  • Small (Fast-Track MVP) / Solo SaaS / Medium / Large / Enterprise
           │
           ▼
-[ OUTPUT: docs/pm/IDEA_BRIEF.md ] ──► Ready to Proceed to Module 02: Discovery & Scope
+[ OUTPUT: docs/pm/IDEA_BRIEF.md & docs/pm/PROJECT_STATE.md ]
+          │
+          ▼
+[ POST-GATE PLANNING: Roadmap, Backlog, OKR, Risk, Resources (Sections 4-8) ]
 ```
 
 ---
 
 ## 2. Step-by-Step Execution
+
+### Step 0: Premise Testing & M00 Inheritance
+
+#### 0.1 M00 Output Inheritance (Reuse, Do Not Duplicate)
+- **IF Module 00 (Product Discovery) was executed**:
+  - **DO NOT** repeat market sizing or competitor analysis from scratch.
+  - Inherit TAM/SAM/SOM findings from `docs/pm/MARKET_RESEARCH.md` (or `docs/pm/M00_LITE.md`).
+  - Inherit competitor matrix and positioning map from `docs/pm/COMPETITIVE_LANDSCAPE.md`.
+  - Inherit customer personas and pain severity from `docs/pm/USER_RESEARCH_REPORT.md`.
+  - Focus Step 1 exclusively on technical solution triage and scope boundaries.
+- **IF fast-tracking directly to Module 01** (e.g. Small MVP or client fixed-scope):
+  - Execute the full 3-Filter Triage and competitor benchmark in Step 1.
+
+#### 0.2 Assumption Register & Provisional Gate Rule
+- Identify all unproven foundational premises in the idea and log them in the Assumption Register with confidence tags (`[✅ Verified / 🔶 Assumption / ❓ Unknown]`) and Kill Thresholds.
+- **Provisional Gate Rule**: If Module 00 is in status **`PENDING_PRIMARY_RESEARCH`**, Module 01 can compute a **Provisional Feasibility Score**, but CANNOT declare a final `GO`. Gate status is held as `PROVISIONAL_PENDING_M00` until human discovery data validates the underlying market demand.
+
+---
 
 ### Step 1: The 3-Filter Triage, Data Quality & Competitor Research
 
@@ -71,6 +99,7 @@ Perform rigorous interrogation on the raw idea before writing formal specificati
   4. **Financial Loss Verification**: State the sample size behind claimed loss amounts (e.g., *"Rp 3-8 juta/bulan loss from stock discrepancy cited across 10 merchant interviews; variance is high and subject to outlier bias"*).
 
 #### 1.2 Competitor Research Minimum Standard
+*If Module 00 was executed, inherit findings from `docs/pm/COMPETITIVE_LANDSCAPE.md`. If starting directly at M01:*
 Agents **MUST** benchmark at least **5–7 competitors** across three distinct categories:
 1. **Direct Competitors** (same core value proposition, same audience; e.g., BukuWarung, BukuKas).
 2. **Adjacent Competitors** (same problem for different scale OR full POS/ERP; e.g., Majoo, Moka, Accurate).
@@ -93,7 +122,9 @@ Define the uninterrupted daily loop delivering core value:
 ```text
 [User Input / Trigger] ──► [System Process / Ledger Mutation] ──► [User Receives Value / Record Locked]
 ```
-*Example*: Cashier scans barcode / types SKU `Indomie Goreng` ──► System validates stock, applies discount, records transaction hash ──► Receipt prints, inventory decrements, and daily revenue updates.
+- *Retail / Commerce*: Cashier scans barcode / types SKU `Indomie Goreng` ──► System validates stock, applies discount, records transaction hash ──► Receipt prints, inventory decrements, and daily revenue updates.
+- *B2B Compliance / Legal*: User uploads draft vendor contract ──► System parses clauses with Zod schema, checks statutory compliance against UU PDP / labor law ──► Redline audit report generated and risk score locked.
+- *Fintech Invoicing*: Merchant creates billing order ──► Gateway generates dynamic QRIS and registers webhook ──► Webhook signature verified, order marked PAID, and tax invoice generated.
 
 #### 1.4 Extreme Scope Pruning (The MVP Razor)
 If the application could ship with only ONE capability, which feature justifies users switching from their current workaround?
@@ -101,14 +132,14 @@ If the application could ship with only ONE capability, which feature justifies 
 
 #### 1.5 Internal Consistency & Anti-Contradiction Checks
 Before finalizing the triage, verify document consistency:
-1. **Zero Ghost Features**: Every capability mentioned in the elevator pitch, problem narrative, or core loop MUST be listed in the feature table. (e.g., If the core loop mentions barcode scanning, it cannot be tagged as Phase 1.5 Should-Have).
-2. **Feature Count Parity**: Count must-have features in the brief table and ensure exact parity across `IDEA_BRIEF.md`, `SCOPE_STATEMENT.md`, and `SITEMAP.md`. Never claim "13 features" when only 8 are tabulated.
+1. **Zero Ghost Features**: Every capability mentioned in the elevator pitch, problem narrative, or core loop MUST be listed in the feature table within `IDEA_BRIEF.md`. (e.g., If the core loop mentions barcode scanning, it cannot be tagged as Phase 1.5 Should-Have).
+2. **Feature Inventory Parity**: The must-have features defined in `IDEA_BRIEF.md` serve as the single source of truth for `SCOPE_STATEMENT.md` (M02) and `SITEMAP.md` (M04). Never claim "13 features" when only 8 are tabulated.
 3. **No Dual-Status Conflicts**: A feature cannot be simultaneously labeled "Should-Have (Phase 1.5)" and "Out-of-Scope (Phase 2)".
 4. **Profit Label Alignment**: If operational expense tracking is deferred, financial reports MUST be labeled "Laba Kotor (Gross Profit)", not "Laba Bersih (Net Profit)".
 
 ---
 
-### Step 1.5: MVP Razor & Root Cause Validation Gate (MANDATORY)
+### Step 2: MVP Razor & Root Cause Validation Gate (MANDATORY)
 
 Before calculating feasibility scores, the agent **MUST** pass this validation gate to prevent building features that solve the wrong problem.
 
@@ -132,54 +163,57 @@ Before calculating feasibility scores, the agent **MUST** pass this validation g
 
 ---
 
-### Step 2: Feasibility Rubric (Stricter Reality Scoring)
+### Step 3: 4-Dimension Feasibility Rubric & Dimension Floor Principle
 
 Evaluate idea feasibility using conservative solo developer metrics. Overinflating scores to achieve an easy "PASS" is an anti-pattern that leads to abandoned projects.
 
-#### 2.1 Technical Feasibility Scoring Rubric
+#### 3.1 Technical Feasibility Scoring Rubric
 
 - **5/5 (Excellent)**: Standard CRUD application, battle-tested REST API, relational DB, standard authentication, online-only. Zero custom R&D.
-- **4/5 (Good)**: Single modern pattern: EITHER real-time WebSockets (online-only) OR local-first caching (read-only PWA), but NOT both. Well-documented SDKs.
+- **4/5 (Good)**: Single modern pattern: EITHER real-time WebSockets (online-only) OR offline-first with asynchronous background sync (without distributed multi-device conflict resolution), OR read-only cached PWA. Well-documented SDKs.
 - **3/5 (Moderate — Complexity Red Flag)**:
-  - Combined Real-Time + Offline-First + Bi-directional Conflict Resolution (LWW/CRDT).
+  - Combined high-concurrency Real-Time + Bi-directional Offline Multi-Master Sync with conflict resolution (LWW/CRDT).
   - Complex multi-tenant Row-Level Security (RLS) with dynamic hierarchical permissions.
   - Mobile browser storage caveats (e.g., Safari iOS auto-clearing IndexedDB under storage pressure).
   - Relying on free-tier BaaS for production (e.g., Supabase free tier projects pausing after inactivity, lack of daily automated point-in-time recovery).
 - **2/5 (Challenging)**: Custom machine learning training, background audio/video transcoding, custom cryptographic protocols, hardware peripheral drivers.
 - **1/5 (R&D Experiment)**: Novel distributed algorithms, unproven academic architectures, hardware-software co-design.
 
-#### 2.1.1 Offline & Real-Time Technical Traps (Mandatory Reality Checks)
+#### 3.1.1 Offline & Real-Time Technical Traps (Mandatory Reality Checks)
 If offline capability or real-time networking is proposed, evaluate these failure modes:
-- [ ] **Storage Mechanism**: Use **IndexedDB (Dexie.js)**. Never use `localStorage` (5MB limit, synchronous blocking, lacks indexed queries).
-- [ ] **Conflict Resolution Strategy**: Must use **append-only delta movements**. Never use Last-Write-Wins (LWW), which silently overwrites offline sales when multiple terminals reconnect.
-- [ ] **Client Clock Drift**: Never trust client device timestamps for ledger ordering. The server's `created_at` timestamp must remain the authoritative source of truth.
-- [ ] **Safari iOS Eviction Risk**: Acknowledge that Safari iOS deletes IndexedDB storage after 7 days of inactivity under storage pressure; implement server backup sync prompts.
-- [ ] **BaaS Free-Tier Production Traps**: Free-tier Supabase projects automatically pause after inactivity and lack automated daily point-in-time recovery. Budget for paid tier ($25/mo) in production.
+- [ ] **Storage Mechanism**: Use **IndexedDB (Dexie.js / idb-keyval)**. Never use `localStorage` (5MB limit, synchronous blocking, lacks indexed queries).
+- [ ] **Data-Type Conflict Resolution**:
+  - *Financial Ledgers & Inventory*: Must use **append-only delta movements** (`stock_delta = -1`). Never use Last-Write-Wins (LWW), which silently overwrites concurrent transactions.
+  - *User Profiles & Preferences*: Timestamp-based Last-Write-Wins (LWW) is acceptable using monotonically increasing sequence IDs or UUIDv7.
+- [ ] **Client Clock Drift & Ordering**: Never trust client device wall-clock timestamps for global ledger ordering. For offline queues, use **UUIDv7** (time-ordered client sequence) paired with authoritative server timestamp assignment upon sync ingestion.
+- [ ] **Safari iOS Eviction Risk (Verified 2026)**: WebKit Intelligent Tracking Prevention (ITP) purges script-writable storage (IndexedDB) after 7 days of user inactivity without browser interaction under device storage pressure; implement server backup sync reminders and PWA home-screen install prompts.
+- [ ] **BaaS Free-Tier Production Traps (Verified 2026)**: Free-tier Supabase projects automatically pause after 7 days of inactivity and lack point-in-time recovery (PITR). Budget for the paid tier ($25/mo) in production.
 - [ ] **WebSocket Concurrency Limits**: Model concurrent WebSocket connection limits for real-time channels across multiple tenant users.
 
 > ⚠️ **MANDATORY COMPLEXITY RED FLAG RULES**:
 > - Combining **Offline Data Mutation + Real-Time Sync** automatically caps Technical Feasibility at **maximum 3/5**.
 > - If scored 3/5, the brief **MUST** include an explicit deferral mitigation (e.g., *"Defer offline sync to Phase 2; MVP ships as mobile-first online-only with network reconnection retry"*), which restores the adjusted score to 4/5.
 
-#### 2.2 Bandwidth Feasibility & Epic Breakdown Cross-Check
+#### 3.2 Bandwidth Feasibility & Scale-Adjusted Timeline
 
 Never accept arbitrary timeline claims (e.g., *"12-16 weeks"*) without cross-checking the actual epic sums.
 
 **Cross-Check Procedure**:
 1. **Sum Development Epics**: Count must-have features. Simple CRUD features average $3–5$ working days; complex features (payments, offline sync, approval engines) average $1.5–2$ weeks.
-2. **Apply 20% Development Buffer**: $\text{Buffered Dev Weeks} = \text{Sum of Epics} \times 1.2$.
-3. **Add Non-Development Lifecycle Phases**:
-   - Discovery & Specifications (M01–M05): 2–3 weeks.
-   - QA & End-to-End Testing (M07): 2 weeks.
-   - Data Seeding & Migration (M08): 1 week.
-   - Production Deployment & Domain Setup (M10): 1 week.
-   - *Total Non-Dev Lifecycle*: 6–7 weeks.
-4. **Calculate Realistic Calendar Weeks**:
-   $$\text{Total Project Weeks} = \text{Buffered Dev Weeks} + \text{Non-Dev Weeks (6–7w)}$$
+2. **Apply 20% Development Schedule Buffer**: $\text{Buffered Dev Weeks} = \text{Sum of Epics} \times 1.2$. (Note: Sprint-level task planning in §8.1 uses 70-20-10 for daily task allocation without double-counting this schedule buffer).
+3. **Add Non-Development Lifecycle Phases by Project Scale**:
+   - **Small Scale (Fast-Track MVP)**:
+     - Specifications (M04/M05): $2–3$ days | QA & Security (M07-LITE): $1$ day | Deploy (M10): $1$ day $\rightarrow$ **Non-Dev Overhead: 1 week**.
+   - **Medium Scale (Solo SaaS / B2B)**:
+     - Discovery & Specs (M01–M05 combined): $2$ weeks | QA & Security (M07): $1$ week | Production Deploy (M10): $1$ week (M08 skipped) $\rightarrow$ **Non-Dev Overhead: 3–4 weeks**.
+   - **Large / Enterprise Scale**:
+     - Discovery & Specs (M00–M05): $3$ weeks | Full QA & SIT (M07): $2$ weeks | Data Migration (M08): $1$ week | Production & BAST (M10/M11): $1$ week $\rightarrow$ **Non-Dev Overhead: 6–7 weeks**.
+4. **Calculate Realistic Total Calendar Weeks**:
+   $$\text{Total Project Weeks} = \text{Buffered Dev Weeks} + \text{Scale-Adjusted Non-Dev Weeks}$$
    For part-time solo developers ($<40$ hrs/week) or teams taking holiday buffers, multiply total weeks by $1.2$.
 5. **Validation Rule**: If the epic breakdown plus non-dev buffer exceeds the high-level timeline claim by $>20\%$ (e.g., claiming 12 weeks when epic math indicates 17 weeks), the timeline claim **MUST** be revised upwards before proceeding.
 
-#### 2.3 Regulatory & Legal Feasibility (UU PDP No. 27/2022 Compliance)
+#### 3.3 Regulatory & Legal Feasibility (UU PDP & General Marketing Claims)
 
 Claiming *"Risk: Zero"* on legal feasibility is strictly prohibited for any software handling customer data. Infrastructure encryption (AES-256) is security, **not legal compliance**.
 
@@ -192,55 +226,76 @@ Claiming *"Risk: Zero"* on legal feasibility is strictly prohibited for any soft
 **Mandatory Disclaimer Requirements**:
 - Financial / Tax calculators: Must display explicit disclaimers (*"Perhitungan bersifat estimasi dan tidak menggantikan pelaporan pajak resmi atau nasihat akuntan publik"*).
 - Non-PKP / PPN Status: Explicitly clarify if the system is designed for non-PKP entities with zero PPN handling.
-- Bank Compliance Claims: Never claim "bank-compliant financial reports" unless the system generates full double-entry Balance Sheet, P&L, and Cash Flow statements.
+- General Marketing Claims Rule: Never claim "Bank-Compliant", "Audit-Ready", "100% Tax Compliant", or "HIPAA/PDP Certified" unless substantiated by double-entry accounting records, formal legal audit, or licensed third-party certifications.
 - Liability Limitation: Software provided "as-is"; include disclaimers absolving developer from operational discrepancies between physical cash and software records.
 - Financial records: Explicit disclaimer on user responsibility for input data accuracy.
 
 **Legal Scoring Rubric**:
 - **5/5**: Pure internal offline utility, zero personal/financial data, zero regulatory exposure.
-- **4/5**: Standard SaaS with complete legal pack (Privacy Policy, ToS, DPA templates) prepared using verified templates (e.g., GetTerms) or legal review.
-- **3/5**: Regulated financial, tax, or medical calculation requiring custom legal disclaimers and compliance review.
+- **4/5**: Standard commercial SaaS (including billing and tax calculation using licensed gateways like Midtrans/Xendit with verified disclaimers) with complete legal templates (Privacy Policy, ToS, DPA) planned in brief.
+- **3/5**: Regulated financial, tax, or medical calculation requiring custom legal disclaimers and external regulatory review.
 - **2/5**: Handling sensitive personal data without clear privacy policy or DPA protocols.
 - **1/5**: Direct violation of licensing rules (operating uncertified payment gateway, unlicensed financial advisory).
 
-#### 2.4 Commercial Feasibility & Unit Economics Reality Check
+#### 3.4 Commercial Feasibility, Unit Economics & Break-Even Analysis
 
 Never treat survey "intent-to-buy" percentages as real conversion rates.
 
 1. **Intent-to-Buy Discounting**:
-   - Real-world conversion from stated survey intent to actual paid subscription is typically **$15\%–25\%$**.
-   - *Formula*: $\text{Realistic Conversion Rate} = \text{Survey Intent Rate} \times 0.20$.
-   - *Example*: A $59.6\%$ survey intent translates to a realistic initial conversion rate of **$9\%–12\%$**.
+   - Real-world conversion from stated survey pricing commitment to actual paid subscription is typically **$15\%–25\%$** `[BENCH-01: Commercial conversion 🔶]`.
+   - *Formula*: $\text{Realistic Conversion Rate} = \text{Survey Pricing Commitment Rate} \times [0.15, 0.25]$ (Midpoint: $\times 0.20$).
+   - *Rule*: This discount formula applies **STRICTLY to pricing commitment questions** (e.g., *"Would you pay Rp 99k/month?"*). Passive interest questions (*"Are you interested?"*) convert at $<5\%$ and cannot be used for commercial modeling.
+   - *Example*: A $59.6\%$ survey pricing commitment translates to a realistic initial conversion rate of **$9.0\%–14.9\%$** (midpoint $\approx 11.9\%$).
 2. **Realistic SaaS COGS Breakdown**:
    - Server hosting, database compute, and storage.
    - Payment gateway fees ($1.5\%–3.0\%$ per transaction plus fixed fee).
    - Transactional SMS / WhatsApp OTP / Email delivery costs.
    - Application monitoring & error tracking (Sentry, Logtail).
-   - *Benchmark*: SaaS COGS must be modeled at **$10\%–20\%$ of ARPU**, never $<5\%$.
+   - *Benchmark*: SaaS COGS must be modeled at **$10\%–20\%$ of ARPU** `[BENCH-02: Infrastructure COGS 🔶]`, never $<5\%$.
 3. **SME / UMKM Churn Dynamics**:
-   - Micro & small business SaaS experiences high annual churn ($30\%–50\%$ annually, or $3\%–5\%$ monthly).
+   - Micro & small business SaaS experiences high annual churn ($30\%–50\%$ annually, or $3\%–5\%$ monthly) `[BENCH-03: SMB Churn 🔶]`.
    - Assume maximum customer lifetime of **$12–18$ months** for SMB cohorts when calculating Lifetime Value (LTV).
 4. **Unit Economics Ratios**:
    $$\text{LTV} = \text{ARPU} \times \text{Customer Lifetime (Months)} \times \text{Gross Margin \%}$$
    $$\text{LTV : CAC Ratio} = \frac{\text{LTV}}{\text{CAC}}$$
-   - $\ge 5:1$: Highly viable commercial model.
-   - $3:1$ to $5:1$: Acceptable for solo MVP.
-   - $< 3:1$: Unviable; CAC must be reduced or pricing restructured.
-5. **Initial Traction & Operational Feasibility**:
-   - **First 20 Customers Plan**: Define an actionable acquisition channel (direct outreach, community partnerships, local retail onboarding).
-   - **Data Migration Path**: Document migration from physical paper / Excel to eliminate customer switching barriers.
+   - $\ge 5:1$: Highly viable commercial model. | $3:1$ to $5:1$: Acceptable for solo MVP. | $< 3:1$: Unviable; CAC must be reduced.
+5. **Pre-Launch CAC Estimation Proxies**:
+   - *Paid Channel Proxy*: $\text{Estimated CAC} = \frac{\text{Cost Per Click (CPC)}}{\text{Landing Page Conv \%} \times \text{Trial Signup Conv \%}}$. (e.g., $\frac{\text{Rp 3.000}}{0.05 \times 0.20} = \text{Rp 300.000}$).
+   - *Organic Outreach Proxy*: (Hours spent outreach $\times$ Founder hourly opportunity cost) / Converted paying accounts.
+   - *B2B Pilot Proxy*: Cost of customized pilot onboarding / Converted annual contracts.
+6. **Fixed Operational Costs & Break-Even Modeling**:
+   - Model minimum fixed costs independent of user volume: Production Database ($25/mo) + Hosting ($20/mo) + Domain/Email ($10/mo) + Monitoring ($15/mo) $\approx$ **Rp 1.000.000–1.200.000/month**.
+   - Calculate minimum subscribers required for financial break-even:
+     $$\text{Break-Even Subscribers} = \frac{\text{Fixed Monthly Overhead}}{\text{ARPU} \times \text{Gross Margin \%}}$$
+   - *Example*: At Rp 100k/mo ARPU and 80% gross margin, break-even requires $\frac{\text{Rp 1.200.000}}{\text{Rp 80.000}} = \mathbf{15 \text{ active paying subscribers}}$.
+7. **Initial Traction & Operational Feasibility**:
    - **Solo Dev Support Capacity**: Acknowledge support limits (1 solo developer can manage at most 50–100 active organizations without automated self-serve tooling).
 
 ---
 
-### Step 2.5: Post-Development Kill & Pivot Criteria (MANDATORY)
+#### 3.5 Gate Decision Framework & Dimension Floor Principle
+
+A simple average score can hide fatal single-point failures (e.g., an average of $3.5$ with Legal $= 1.0$). Therefore, the **Dimension Floor Principle** strictly overrides the average score:
+
+| Decision | Numerical Gate Criteria | Dimension Floor Condition | Mandatory Action |
+|:---------|:------------------------|:--------------------------|:-----------------|
+| **GO** | Overall Average $\ge 3.5 / 5.0$ | **Every individual dimension $\ge 3.0$** | Proceed to Module 02 after user approval. |
+| **CONDITIONAL GO** | Overall Average $3.0 - 3.49 / 5.0$ | **Every individual dimension $\ge 3.0$** | Document concrete mitigation plan for any dimension scored at 3.0 before starting M02. |
+| **PIVOT** | Overall Average $< 3.0 / 5.0$ | **OR any single dimension $= 2.0$** | Halt progression. Restructure scope, business model, or architecture in Step 1/M00. |
+| **KILL** | Overall Average $< 2.5 / 5.0$ | **OR any single dimension $= 1.0$** | Halt project immediately. Archive brief and document autopsy in `PROJECT_STATE.md`. |
+
+*Confidence Scoring*: Every dimension score must include a confidence tag (`[✅ Empirical Data / 🔶 Plausible Assumption / ❓ Unvalidated]`). If any dimension has `❓ Unvalidated`, the gate outcome is designated as **PROVISIONAL**.
+
+---
+
+### Step 4: Post-Development Kill & Pivot Criteria (MANDATORY)
 
 Feasibility is not a one-time gate. The Idea Brief **MUST** define concrete metrics that trigger project termination (Kill) or scope restructuring (Pivot) during execution (reviewed at M06 Week 4 and Week 8).
 
 #### 1. Kill Criteria (Halt Project & Write Off Sunk Costs)
 - **Velocity Collapse**: After 4 weeks of development in M06, working feature completion is $<30\%$ of planned milestone scope.
 - **User Rejection at Beta**: $\ge 50\%$ of closed-beta testers report they would NOT use the product even if free.
-- **Infrastructure Cost Explosion**: Operational infrastructure cost per active user exceeds $3\times$ original ARPU estimates.
+- **Infrastructure Cost Explosion**: Operational infrastructure and API COGS per active user exceeds **$50\%$ of ARPU** (healthy target is $10\%–20\%$; $>50\%$ destroys gross margin sustainability).
 - **Regulatory Dead-End**: New legal mandates impose licensing requirements impossible for a solo developer to acquire.
 
 #### 2. Pivot Criteria (Restructure Scope & Continue)
@@ -252,32 +307,29 @@ Feasibility is not a one-time gate. The Idea Brief **MUST** define concrete metr
 #### 3. Review Schedule
 - **Checkpoint 1 (M06 Week 4)**: Audit development velocity against epic baseline.
 - **Checkpoint 2 (M06 Week 8)**: Audit feature completeness and database performance under load.
-- **Checkpoint 3 (M07 Beta Week 2)**: Audit user retention, bug density, and willingness-to-pay conversion.
+- **Checkpoint 3**: Audit user retention and conversion (**M07 Beta Week 2** for Medium/Large; **M06 Day 10 Smoke Test** for Small/MVP).
 
 ---
 
-### Step 3: Scale Triage (Project Scale Classification)
+### Step 5: Scale Classification & Module Routing
 
 Determine project category upfront to establish the required weight of subsequent document formalities:
 
 1. **Small Scale (MVP / Freelance Tool)**:
-   - *Indicators*: Single user/small team, 1–2 data entities, timeline 1-3 months, no banking/regulatory integrations.
-   - *Next Steps*: Draft simple 1-page Brief & Scope Statement, then create SOW_CONTRACT.md (simplified template with charter in Part I).
-   - **Note**: M03 SOW_CONTRACT.md (with charter in Part I) is mandatory for all scales to lock scope baseline and payment terms. For internal projects, use simplified SOW template with BYPASS flag.
-2. **Medium Scale (B2B SaaS / Agency)**:
-   - *Indicators*: Multi-tenant, subscription payments, role-based access control (RBAC), 1–3 third-party API integrations, timeline 3-6 months.
-   - *Next Steps*: Mandatory light PRD, formal SOW contract, and modular database architecture.
-3. **Large Scale (Scale-Up / Distributed Platform)**:
-   - *Indicators*: High transaction volume, high concurrency, enterprise multi-system integrations, timeline 6-12 months.
-   - *Next Steps*: Mandatory Project Charter, formal PRD, in-depth FSD, and detailed WBS.
-4. **Enterprise / Industrial Scale (Corporate, Banking, State-Owned Enterprises)**:
+   - *Indicators*: Single user or small team, 1–3 core features, timeline 2-4 weeks, no complex external integrations.
+   - *Next Steps*: Single-file specification via `PROJECT_LITE_TEMPLATE.md`, skips heavy specification overhead.
+2. **Solo SaaS (Self-Initiated Product)**:
+   - *Indicators*: Independent founder, 4–10 features, recurring billing, RBAC, timeline 1-3 months.
+   - *Next Steps*: Mandatory market validation via `M00_LITE_TEMPLATE.md` prior to M01. Skips client-specific contract gates (M03 SOW, M11 BAST).
+3. **Medium Scale (Client Commercial Project)**:
+   - *Indicators*: Paid client engagement, 4–10 features, multi-tenant, fixed price / milestones, timeline 2-4 months.
+   - *Next Steps*: Mandatory SOW contract + down payment gate (M03), client UAT (M09), and BAST handover (M11).
+4. **Large Scale (Scale-Up / Distributed Platform)**:
+   - *Indicators*: High transaction volume, legacy data migration, enterprise integrations, timeline 4-6+ months.
+   - *Next Steps*: Mandatory full PRD, detailed FSD, data migration planning (M08), and disaster recovery specifications.
+5. **Enterprise / Industrial Scale (Corporate, Banking, State-Owned Enterprises)**:
    - *Indicators*: Strict regulatory compliance (PDP Law, ISO 27001, SOC2), multiple client internal stakeholders, permanent audit trails, 99.9% uptime SLA, timeline 12-24 months.
    - *Next Steps*: Mandatory formal legal sign-off, signed Project Charter, bound Single PIC, comprehensive FSD, and RTM.
-   - *M00 Integration*: **IF M00 (Product Discovery) was executed**: Use M00 outputs as inputs for M01 feasibility analysis:
-     - `MARKET_RESEARCH.md` → Market size/TAM validation (Step 1)
-     - `COMPETITIVE_LANDSCAPE.md` → Competitor analysis (Step 1)
-     - `USER_RESEARCH_REPORT.md` → User persona validation (Step 2)
-     - `PRODUCT_STRATEGY.md` → Strategic positioning context (Step 3)
 
 **Module Routing**: After scale classification, refer to `references/playbooks/SCALE_WORKFLOWS.md` for:
 - Module sequence per scale (which modules to execute, which to skip)
@@ -286,20 +338,23 @@ Determine project category upfront to establish the required weight of subsequen
 - Real-world workflow examples (Solo MVP, Agency, Vendor, Enterprise)
 
 **Quick Reference**:
-- **Small Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07-LITE → M09 → M10 → M11 (10 modules, skip M00/M08/M12/M13)
-- **Medium Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 (10 modules, skip M00/M08/M12/M13)
-- **Large Scale**: M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 (12 modules, skip M00/M13)
+- **Small Scale (Fast-Track MVP)**: M04 → M05 → M06 → M10 → M12 (5 modules; M01 evaluated via `PROJECT_LITE.md`)
+- **Solo SaaS (Self-Initiated)**: M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13 (10 modules, skips client contract gates)
+- **Client Commercial Medium**: M01 → M02 → **M03** → M04 → M05 → M06 → M07 → **M09** → M10 → **M11** → M12 (adds SOW, UAT, BAST gates)
+- **Large Scale**: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13 (12 modules)
 - **Enterprise**: Full M00 → M13 (14 modules, no skips)
 
-**Note**: M01 always executes first to determine scale, then routes to scale-specific modules starting from M02.
+**Lifecycle Route Note**: For self-initiated SaaS and enterprise products, M00 or M00-lite executes first for market demand validation, followed by M01 for technical and unit economics feasibility. For fast-track internal tools or fixed-price client work with scope locked by contract, M01 is the entry point.
 
 *See `references/playbooks/SCALE_WORKFLOWS.md` for complete timelines, payment structures, and gate enforcement.*
 
 ---
 
-## 3. Output Artifacts (Deliverables)
+## 6. Output Artifacts (Deliverables)
 
-The final deliverable of Module 01 is the file **`docs/pm/IDEA_BRIEF.md`** created using the template at `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`.
+The deliverables of Module 01 are:
+1. **`docs/pm/IDEA_BRIEF.md`**: Created using `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`.
+2. **`docs/pm/PROJECT_STATE.md`**: Updated with M01 feasibility scores, gate determination, active assumptions, and next module path using `templates/essentials/PROJECT_STATE_TEMPLATE.md`.
 
 > 📁 **ABSOLUTE FILE LOCATION RULE**:
 > This file MUST be stored inside the **`docs/pm/`** directory (never in the root directory).
@@ -307,9 +362,11 @@ The final deliverable of Module 01 is the file **`docs/pm/IDEA_BRIEF.md`** creat
 
 ---
 
-## 4. Product Roadmap
+## 7. Post-Feasibility Execution Planning (Sections 4-8)
 
 After the idea passes feasibility checks, build a roadmap providing timeline visibility and execution priority:
+
+> ℹ️ **NOTE**: The following sections (Roadmap, Backlog, OKR, Risk Register, Resource Allocation) are executed **ONLY AFTER the feasibility gate passes (GO or CONDITIONAL GO)**. They provide guidance for drafting the respective planning templates in `templates/01-discovery-commercial/`.
 
 ### 4.1 Now/Next/Later Framework
 
@@ -328,9 +385,10 @@ After the idea passes feasibility checks, build a roadmap providing timeline vis
 | Milestone | Target | Core Deliverables | Exit Criteria |
 | :--- | :--- | :--- | :--- |
 | **M0: Technical Spike** | Week 1 | Proof of concept core algorithm/integration | Can demo the hardest technical risk |
-| **M1: Alpha (Internal)** | Week 4 | Core user loop works end-to-end | Solo dev can complete full workflow |
-| **M2: Beta (Closed)** | Week 8 | 3–5 real users testing | At least 2 users complete workflow without help |
-| **M3: Public Launch** | Week 12 | Production-ready with docs | Ready for public traffic & payments |
+| **M1: Alpha (Internal)** | Week 4 (Small: Day 10) | Core user loop works end-to-end | Solo dev can complete full primary loop |
+| **M2: Beta (Closed)** | Week 8 (Small: N/A) | 3–5 real users testing | At least 2 users complete workflow without help |
+| **M3: Public Launch** | Week 12–14 (Small: Week 3–4) | Production-ready with docs & payments | Ready for public traffic & payments |
+*Scale Mapping: Small MVP targets Week 2–4; Medium Solo SaaS targets Week 12–14; Large platform targets Week 18–25.*
 
 ### 4.4 Roadmap Tools Setup
 
@@ -383,11 +441,11 @@ Formula: **RICE Score = (Reach × Impact × Confidence) / Effort**
 - **Reach**: Number of users affected per period (e.g., 100 users/month)
 - **Impact**: Scale of impact (Massive=3, High=2, Medium=1, Low=0.5, Minimal=0.25)
 - **Confidence**: Data confidence level (High=100%, Medium=80%, Low=50%)
-- **Effort**: Person-months to complete (e.g., 0.5 = 2 weeks solo dev)
+- **Effort**: For individual stories, use **person-days** (e.g., 1–3 days). For high-level epics, use **person-weeks**.
 
-Example:
-- Story A: (500 × 3 × 1.0) / 0.5 = **3000** (highest priority)
-- Story B: (50 × 2 × 0.8) / 2.0 = **40** (low priority)
+Example (Story Level in Person-Days):
+- Story A: $(500 \times 3 \times 1.0) / 2 \text{ days} = \mathbf{750}$ (highest priority)
+- Story B: $(50 \times 2 \times 0.8) / 5 \text{ days} = \mathbf{16}$ (low priority)
 
 *Full worksheet: `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`*
 
@@ -458,19 +516,21 @@ Anticipate risks early to minimize firefighting:
 3. **Market**: Competitor launches similar product, low user adoption
 4. **Legal/Compliance**: PDP Law violations, vendor ToS changes
 5. **Financial**: Budget overrun, revenue below projections
+6. **Regulatory Policy Shift**: Abrupt regulatory changes (tax thresholds, platform licensing bans)
+7. **Product Abuse & Fraud**: Payment chargebacks, scrapers, automated abuse, fraudulent accounts
 
 ### 7.2 Risk Assessment Matrix (Likelihood × Impact)
 
 | Likelihood | Impact Low (1) | Impact Medium (2) | Impact High (3) |
 | :--- | :---: | :---: | :---: |
-| **High (3)** | 3 (Monitor) | 6 (Mitigate) | **9 (Urgent)** |
-| **Medium (2)** | 2 (Accept) | 4 (Monitor) | 6 (Mitigate) |
+| **High (3)** | 3 (Monitor) | 6 (Mitigate / Urgent) | **9 (Mitigate / Urgent)** |
+| **Medium (2)** | 2 (Accept) | 4 (Monitor) | 6 (Mitigate / Urgent) |
 | **Low (1)** | 1 (Accept) | 2 (Accept) | 3 (Monitor) |
 
-**Action Threshold**:
-- Score 7–9: Mandatory mitigation plan BEFORE starting development
-- Score 4–6: Active monitoring, prepare contingency plan
-- Score 1–3: Accept risk, review quarterly
+Action Thresholds (Possible scores: 1, 2, 3, 4, 6, 9):
+- **Score 6 or 9 (High / Urgent)**: Mandatory mitigation plan BEFORE starting development
+- **Score 3 or 4 (Medium)**: Active monitoring, prepare contingency plan
+- **Score 1 or 2 (Low)**: Accept risk, review quarterly
 
 ### 7.3 Mitigation Strategies Per Risk
 
@@ -485,7 +545,7 @@ Example:
 
 - **Weekly**: Review top 3 risks (score ≥6) in standup/weekly review
 - **Monthly**: Re-assess likelihood & impact of all risks, update mitigation status
-- **Escalation**: If risk score increases from 4 → 7+, trigger emergency planning session
+- **Escalation**: If risk score increases from Low/Medium (1–4) to High (6 or 9), trigger emergency mitigation session
 
 *Risk register template: `templates/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md`*
 
@@ -539,23 +599,39 @@ Identify skills NOT YET acquired but REQUIRED by the project:
 After the file `docs/pm/IDEA_BRIEF.md` has been written:
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 02 within the same turn!**
 2. **SELF-VERIFICATION CHECKLIST**:
-   - [ ] Read and verify file `docs/pm/IDEA_BRIEF.md` → Confirm file exists, 120+ lines
-   - [ ] Feasibility score calculated (X/5) present in file
-   - [ ] Gate decision explicitly declared: GO (≥3.5), GO BERSYARAT (3.0-3.5 with mitigations), PIVOT (<3.0), or KILL
+   - [ ] Read and verify file `docs/pm/IDEA_BRIEF.md` → Confirm elevator pitch, core loop, 4D scorecard, and scale classification are complete
+   - [ ] 4D Feasibility Scorecard calculated with Dimension Floor applied (no dimension <3.0 for GO / CONDITIONAL GO)
+   - [ ] Gate decision explicitly declared: `GO`, `CONDITIONAL GO`, `PIVOT`, or `KILL`
+   - [ ] Confidence markers declared on all dimension scores (`[✅ / 🔶 / ❓]`)
    - [ ] Project scale (Small/Medium/Large/Enterprise) documented
    - [ ] 3-step core loop documented
    - [ ] Root cause vs MVP Razor alignment verified (≥70% match to primary root cause)
    - [ ] Target segment verification passed (all retained segments addressable by MVP features)
    - [ ] Technical feasibility scored conservatively (max 3/5 if real-time + offline; deferral mitigation documented)
-   - [ ] Epic breakdown cross-check passes (epic sum + 20% buffer + 6-7w non-dev matches timeline within 20%)
-   - [ ] Legal compliance checklist complete (Privacy Policy, ToS, DPA, disclaimers)
-   - [ ] Commercial feasibility uses discounted intent (15-25% of survey intent; COGS 10-20% of ARPU)
+   - [ ] Epic breakdown cross-check passes (epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline within 20%)
+   - [ ] Legal compliance planned (Privacy Policy, ToS, DPA, disclaimers, zero unsubstantiated marketing claims)
+   - [ ] Commercial feasibility uses discounted intent (15–25% of survey pricing commitment; COGS 10–20% of ARPU; break-even calculated)
+   - [ ] Assumption Register cataloged with Kill Thresholds
    - [ ] 5-7 competitors documented across direct, adjacent, and manual with uniqueness claim verified
+   - [ ] `docs/pm/PROJECT_STATE.md` updated with M01 outcomes, active gate status, and open assumptions
    - [ ] Post-development Kill/Pivot criteria documented for M06 Checkpoints
 3. Present a brief summary of Module 01 results to the user:
    - Elevator pitch of product idea
    - 3-step core loop
    - Feasibility Scorecard result & designated scale
 4. **END YOUR RESPONSE (END TURN)** and ask for confirmation from the user:
-   > *"Document `docs/pm/IDEA_BRIEF.md` has been completed with a feasibility score of [X/5] and scale [Tier]. Does this summary align with expectations, or are there points to adjust before proceeding to Module 02 (Discovery & Scope Definition)?"*
+   - **If Decision is `GO`**:
+     > *"Module 01 (Idea & Feasibility) complete. Score: [X/5] (All dimensions $\ge 3.0$), Scale: [Tier]. Proceed to Module 02 (Discovery & Scope Definition)?"*  
+     > *(Indonesian: "Modul 01 (Idea & Feasibility) selesai. Skor: [X/5], Skala: [Tier]. Apakah disetujui untuk lanjut ke Modul 02?")*
+   - **If Decision is `CONDITIONAL GO`**:
+     > *"Module 01 complete with CONDITIONAL GO. Score: [X/5] (Mitigation plan required for [Dimension]). Do you approve the mitigation plan to proceed to Module 02?"*  
+     > *(Indonesian: "Modul 01 berstatus GO BERSYARAT dengan skor [X/5]. Apakah Anda menyetujui rencana mitigasi untuk lanjut ke Modul 02?")*
+   - **If Decision is `PIVOT`**:
+     > *"Module 01 resulted in PIVOT (Score: [X/5] or [Dimension] = 2.0). Progression to Module 02 is HALTED. Recommend restructuring scope or business model in Step 1 or returning to Module 00. How would you like to pivot?"*  
+     > *(Indonesian: "Modul 01 berstatus PIVOT (Skor: [X/5]). Progres ke Modul 02 dihentikan. Disarankan merestrukturisasi ide di Step 1 atau kembali ke Modul 00. Opsi pivot mana yang ingin diambil?")*
+   - **If Decision is `KILL`**:
+     > *"Module 01 resulted in KILL (Score: [X/5] or fatal blocker in [Dimension]). Project termination recommended. Would you like to archive this idea brief and conduct a post-mortem in PROJECT_STATE.md?"*  
+     > *(Indonesian: "Modul 01 berstatus KILL (Skor: [X/5] atau kendala fatal pada [Dimensi]). Disarankan menghentikan proyek. Apakah ide ini ingin diarsipkan?")*
+   - **If Decision is `PROVISIONAL_PENDING_M00`**:
+     > *"Module 01 scored provisionally at [X/5], but final gate decision is held as PROVISIONAL_PENDING_M00 awaiting empirical user validation data in Module 00. Would you like to proceed with primary research interviews?"*
 5. The agent may ONLY proceed to Module 02 AFTER the user provides an affirmative response (e.g., *"ok"*, *"proceed"*, *"approved"*). Permissions such as *"fill it in first and I will review later"* apply ONLY to this Module 01, not as permission to batch subsequent modules!

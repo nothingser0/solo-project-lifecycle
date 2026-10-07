@@ -1,24 +1,35 @@
-# Essential Templates (Top 20)
+# Essential Templates (8 Core Production Templates)
 
-**Purpose**: Most frequently used templates across all project types
+**Purpose**: The 8 most frequently used templates across all project types for 80% of solo projects.
+**Location**: Stored directly in `templates/essentials/` for rapid 30-second access without navigating phase subdirectories.
 
-**Discovery time**: 30 seconds (vs 5 minutes searching by-phase)
+---
+
+## The 8 Core Production Templates
+
+| # | Template | Purpose | Primary Lifecycle Phase |
+|:---:|:---|:---|:---|
+| 1 | [`PROJECT_LITE_TEMPLATE.md`](./PROJECT_LITE_TEMPLATE.md) | Single-file complete specification for 1–4 week MVPs | Fast-Track / M01 & M05 |
+| 2 | [`PROJECT_STATE_TEMPLATE.md`](./PROJECT_STATE_TEMPLATE.md) | Single source of truth for gate progress & cross-session handoff | Universal / All Modules |
+| 3 | [`IDEA_BRIEF_TEMPLATE.md`](./IDEA_BRIEF_TEMPLATE.md) | 3-filter triage, assumption register & 4D feasibility scoring | Module 01 |
+| 4 | [`SCOPE_STATEMENT_TEMPLATE.md`](./SCOPE_STATEMENT_TEMPLATE.md) | Scope boundaries, INVEST stories, RBAC, MoSCoW inventory | Module 02 |
+| 5 | [`PRD_FINAL_TEMPLATE.md`](./PRD_FINAL_TEMPLATE.md) | Product Requirements Document (features, user journeys, NFRs) | Module 05 |
+| 6 | [`FSD_TECHNICAL_TEMPLATE.md`](./FSD_TECHNICAL_TEMPLATE.md) | Functional Specification Document (SQL DDL, REST APIs, RLS) | Module 05 |
+| 7 | [`DESIGN_MD_TEMPLATE.md`](./DESIGN_MD_TEMPLATE.md) | Design tokens, WCAG 2.2 AA palette, anti-slop typography | Module 04 / M06 Harness |
+| 8 | [`TODO_TEMPLATE.md`](./TODO_TEMPLATE.md) | Sprint-based atomic task queue with local verification steps | Module 06 Harness |
 
 ---
 
 ## Quick Start (Pick Your Path)
 
 ### Path A: Solo MVP (Internal Project)
-**Time**: 2 hours | **Templates**: 5
+**Time**: 2 hours | **Core Templates**: 5
 
 1. `PROJECT_LITE.md` - All-in-one spec (1 hour)
 2. `PROJECT_STATE.md` - Lifecycle state & cross-session handoff (15 min)
 3. `DESIGN.md` - Design tokens (30 min)
-4. `REQUIREMENT_MATRIX.md` - Traceability from user need to verification (30 min)
-5. `VERIFICATION_PLAN.md` - Verification plan & gate protocols (20 min)
-6. `AGENTS.md` - AI agent instructions (15 min)
-7. `TODO.md` - Task queue (20 min)
-8. `RUNBOOK_LOCAL.md` - Setup guide (20 min)
+4. `TODO.md` - Task queue (20 min)
+5. `RUNBOOK_LOCAL.md` - Setup guide (20 min)
 
 **Skip**: SOW, BAST, warranty (no client)
 

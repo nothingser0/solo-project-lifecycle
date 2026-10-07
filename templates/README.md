@@ -88,6 +88,8 @@ templates/
 |---|---|---|
 | [`FINANCIAL_TRACKING.md`](./02-legal-commercial/FINANCIAL_TRACKING.md) | Project cash flow ledger: invoicing milestones, receipts, expense tracking | Module 03 |
 | [`SOW_SMB.md`](./02-legal-commercial/SOW_SMB.md) | Streamlined SOW agreement for small businesses and fast-turnaround projects | Module 03 |
+| [`NDA_TEMPLATE.md`](./02-legal-commercial/NDA_TEMPLATE.md) | Mutual Non-Disclosure Agreement for confidential source code & client data | Module 03 |
+| [`CHANGE_REQUEST_TEMPLATE.md`](./02-legal-commercial/CHANGE_REQUEST_TEMPLATE.md) | Formal scope modification agreement with impact & commercial estimation | Module 03 / Post-Lock |
 
 ---
 

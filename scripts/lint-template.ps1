@@ -27,6 +27,9 @@ $placeholders = @(
     "\[FILL.*?\]",
     "\[TODO.*?\]",
     "\[REPLACE.*?\]",
+    "\[Nama.*?\]",
+    "\[isi.*?\]",
+    "\[Client.*?\]",
     "xxx",
     "yyy",
     "zzz"
@@ -43,8 +46,8 @@ foreach ($pattern in $placeholders) {
 
 # Check 2: Empty sections
 $emptyPatterns = @(
-    "##\s+.*?\n\s*\n\s*##",  # Empty section
-    "###\s+.*?\n\s*\n\s*###" # Empty subsection
+    "(?m)^##\s+[^\r\n]+\r?\n\s*\r?\n\s*^##\s+",   # Empty H2 section
+    "(?m)^###\s+[^\r\n]+\r?\n\s*\r?\n\s*^###\s+"  # Empty H3 subsection
 )
 foreach ($pattern in $emptyPatterns) {
     if ($content -match $pattern) {

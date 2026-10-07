@@ -31,7 +31,7 @@
 | **REQ-02** | [INT-01] Unreliable store connectivity | Local mutation queue syncing to cloud when connection is restored | P0 (Must) | `SCR-01` (POS Workspace) | `IndexedDB.sync_queue`<br>`POST /api/v1/sync` | Network disconnect/reconnect test | `SPECIFIED` | 🔶 |
 | **REQ-03** | [ASM-02] Owner requires remote oversight | Executive analytics dashboard showing multi-branch sales & discrepancies | P0 (Must) | `SCR-25` (Admin Overview) | `GET /api/v1/reports/summary`<br>`orders` view | End-to-end integration test | `SPECIFIED` | 🔶 |
 | **REQ-04** | Loss prevention | Two-person manager PIN override for discounts exceeding 15% | P1 (Should) | `SCR-22` (Approvals Drawer) | `POST /api/v1/orders/:id/override` | Role boundary test + Audit log check | `SPECIFIED` | 🔶 |
-| **REQ-05** | Statutory tax compliance | Automated DPP and 11% PPN calculation on tax invoices | P1 (Should) | `SCR-19` (Transactions) | `orders.tax_amount`<br>`invoices` table | Math assertion test against PP 55/2022 | `SPECIFIED` | ✅ |
+| **REQ-05** | Statutory tax compliance | Automated DPP and 11% PPN calculation on tax invoices | P1 (Should) | `SCR-19` (Transactions) | `orders.tax_amount`<br>`invoices` table | Math assertion test against PP 55/2022 jo. PP 20/2026 | `SPECIFIED` | ✅ |
 
 ---
 

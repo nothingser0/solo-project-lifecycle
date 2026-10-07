@@ -174,6 +174,12 @@ foreach ($file in $gate.Required) {
     if (-not $pathExists -and $file -eq "DESIGN.md" -and (Test-Path "docs/harness-root/DESIGN.md")) {
         $pathExists = $true
     }
+    if (-not $pathExists -and $file -eq "contracts/SOW_CONTRACT.md" -and (Test-Path "docs/pm/SOW_CONTRACT.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "contracts/BAST.md" -and (Test-Path "docs/pm/BAST.md")) {
+        $pathExists = $true
+    }
     if (-not $pathExists -and $file -eq "docs/DEPLOYMENT_PROTOCOL.md" -and (Test-Path "docs/pm/DEPLOYMENT_PROTOCOL.md")) {
         $pathExists = $true
     }
@@ -199,6 +205,46 @@ if ($Module -eq "M00") {
             Write-Host "  [WARN] Gate status: PENDING_PRIMARY_RESEARCH (Real user validation required)" -ForegroundColor Yellow
         } elseif ($content -match "PASS" -or $content -match "intent.*[3-9][0-9]%" -or $content -match "intent.*100%") {
             Write-Host "  [OK] Market validation gate criteria verified" -ForegroundColor Green
+        }
+    }
+} elseif ($Module -eq "M02") {
+    if (Test-Path "docs/pm/SCOPE_STATEMENT.md") {
+        $scopeContent = Get-Content "docs/pm/SCOPE_STATEMENT.md" -Raw
+        $scopeLines = Get-Content "docs/pm/SCOPE_STATEMENT.md"
+        $mustLines = $scopeLines | Where-Object { $_ -match '\|.*(must|p0).*\|' }
+        $hasAmbiguity = $mustLines | Where-Object { $_ -match 'TBD|maybe|if time permits|tentative|TBA' }
+        if ($hasAmbiguity) {
+            Write-Host "  [ERROR] Ambiguous terms (TBD/maybe/if time permits) detected in Must-Have rows!" -ForegroundColor Red
+        } else {
+            Write-Host "  [OK] Zero ambiguous terms in Must-Have scope rows" -ForegroundColor Green
+        }
+        if ($scopeContent -match '✅' -or $scopeContent -match 'VERIFIED') {
+            Write-Host "  [OK] Data Confidence Legend / status markers present" -ForegroundColor Green
+        }
+        if ($scopeContent -match 'out-of-scope') {
+            Write-Host "  [OK] Explicit Out-of-Scope boundaries defined" -ForegroundColor Green
+        }
+    }
+} elseif ($Module -eq "M03") {
+    $sowFile = if (Test-Path "contracts/SOW_CONTRACT.md") { "contracts/SOW_CONTRACT.md" } elseif (Test-Path "docs/pm/SOW_CONTRACT.md") { "docs/pm/SOW_CONTRACT.md" } else { $null }
+    if ($sowFile) {
+        $sowContent = Get-Content $sowFile -Raw
+        if ($sowContent -match '(?i)bypass|waived|solo saas|self-initiated') {
+            Write-Host "  [INFO] Solo SaaS / Self-Initiated product: Commercial SOW gate is WAIVED." -ForegroundColor Cyan
+        } else {
+            if ($sowContent -match '(?i)Termin|Milestone.*Payment|Down Payment|DP') {
+                Write-Host "  [OK] Payment terms defined" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Payment terms not clearly defined!" -ForegroundColor Red
+            }
+            if ($sowContent -match '(?i)Single PIC') {
+                Write-Host "  [OK] Single PIC clause present" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Single PIC clause missing!" -ForegroundColor Red
+            }
+            if ($sowContent -match '(?i)Limitation of Liability|Liability Cap') {
+                Write-Host "  [OK] Limitation of liability clause present" -ForegroundColor Green
+            }
         }
     }
 }

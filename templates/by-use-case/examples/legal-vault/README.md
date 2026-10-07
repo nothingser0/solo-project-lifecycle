@@ -1,6 +1,7 @@
 # Legal Document Vault - Worked Example
 
-> **Note**: This is a complete worked example showing how templates are filled out for a real project. Use these as reference when filling out the generic templates in the main `templates/` directories.
+> ℹ️ **WORKED EXAMPLE NOTICE**: "Legal Document Vault" is the name of an illustrative **software web application product** (an e-signature and encrypted document storage SaaS for legal firms).
+> It contains technical engineering artifacts (ARCHITECTURE, TODO, RUNBOOK, SECURITY) tailored for that product. For generic legal agreements and contracts (SOW, NDA, SOW_SMB, Change Requests), refer directly to `templates/01-discovery-commercial/` and `templates/02-legal-commercial/`.
 
 ## Project Overview
 

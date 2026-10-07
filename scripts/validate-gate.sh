@@ -75,27 +75,63 @@ case "$GATE_MODULE" in
     M02)
         echo "=== M02: Discovery & Scope Gate Checklist ==="
         check_required "docs/pm/SCOPE_STATEMENT.md"
+        if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
+            # 1. Ambiguity detection on Must-Have rows
+            if grep -iE "\|.*(must|p0).*\|" "docs/pm/SCOPE_STATEMENT.md" | grep -qiE "TBD|maybe|if time permits|tentative|TBA"; then
+                echo "  ❌ Ambiguous terms (TBD/maybe/if time permits) detected in Must-Have scope rows!"
+                GATE_FAILED=1
+            else
+                echo "  ✅ Zero ambiguous terms in Must-Have scope rows"
+            fi
+
+            # 2. Confidence Legend check
+            if grep -q "✅" "docs/pm/SCOPE_STATEMENT.md" || grep -q "VERIFIED" "docs/pm/SCOPE_STATEMENT.md"; then
+                echo "  ✅ Data Confidence Legend / status markers present"
+            else
+                echo "  ⚠️  Data Confidence Legend [✅ / 🔶 / ❓] not explicitly declared"
+            fi
+
+            # 3. Out-of-Scope exclusions check
+            if grep -qi "out-of-scope" "docs/pm/SCOPE_STATEMENT.md"; then
+                echo "  ✅ Explicit Out-of-Scope boundaries defined"
+            else
+                echo "  ⚠️  Out-of-Scope boundary section missing"
+            fi
+        fi
         ;;
     M03)
         echo "=== M03: Legal SOW & Charter Checklist ==="
-        check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
-        check_optional "contracts/NDA.md"
-        if [ -f "contracts/SOW_CONTRACT.md" ] || [ -f "docs/pm/SOW_CONTRACT.md" ]; then
             target_sow="contracts/SOW_CONTRACT.md"
             [ -f "$target_sow" ] || target_sow="docs/pm/SOW_CONTRACT.md"
-            if grep -q "Termin 1.*DP\|Down Payment" "$target_sow"; then
+        
+        if grep -qiE "bypass|waived|solo saas|self-initiated" "$target_sow" 2>/dev/null || ([ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]); then
+            echo "  [INFO] Solo SaaS / Self-Initiated product: Commercial SOW gate is WAIVED."
+            check_optional "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
+            else
+        check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
+            check_optional "contracts/NDA.md" "docs/pm/NDA.md"
+            if [ -f "$target_sow" ]; then
+                if grep -qiE "Termin|Milestone.*Payment|Down Payment|DP" "$target_sow"; then
                 echo "  ✅ Payment terms defined"
             else
-                echo "  ⚠️  Payment terms not clearly defined"
+                    echo "  ❌ Payment terms not clearly defined!"
+                    GATE_FAILED=1
             fi
-            if grep -q "Single PIC" "$target_sow"; then
+                if grep -qi "Single PIC" "$target_sow"; then
                 echo "  ✅ Single PIC clause present"
-            else
-                echo "  ⚠️  Single PIC not defined"
+                else
+                    echo "  ❌ Single PIC clause missing!"
+                    GATE_FAILED=1
             fi
+                if grep -qiE "Limitation of Liability|Liability Cap" "$target_sow"; then
+                    echo "  ✅ Limitation of liability clause present"
+                else
+                    echo "  ⚠️  Limitation of liability clause not explicitly detected"
         fi
+            fi
         echo ""
-        echo "⚠️  DO NOT proceed to M04 until DP confirmed in bank account"
+            echo "⚠️  DO NOT proceed to M04 until DP confirmed in bank account (or bypassed for Solo SaaS)"
+        fi
         ;;
     M04)
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
