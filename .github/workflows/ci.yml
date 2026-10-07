@@ -22,41 +22,41 @@ jobs:
 
       - name: Syntax check Bash scripts (bash -n)
         run: |
-          for script in scripts/*.sh templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh templates/04-dev-execution/scripts/check-dependencies.sh; do
+          for script in scripts/*/*.sh templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh templates/04-dev-execution/scripts/check-dependencies.sh; do
             echo "Checking syntax: $script"
             bash -n "$script"
           done
 
       - name: Verify CLI template picker dry-run
         run: |
-          ./scripts/template-picker.sh --phase 8 --dry-run --dest /tmp
+          ./scripts/scaffold/template-picker.sh --phase 8 --dry-run --dest /tmp
 
       - name: Verify Gate Validation execution
         run: |
           mkdir -p /tmp/mock-project/docs/pm
           echo "# M00-Lite Mock" > /tmp/mock-project/docs/pm/M00_LITE.md
           echo "PASS" >> /tmp/mock-project/docs/pm/M00_LITE.md
-          (cd /tmp/mock-project && "$GITHUB_WORKSPACE/scripts/validate-gate.sh" M00)
+          (cd /tmp/mock-project && "$GITHUB_WORKSPACE/scripts/gates/validate-gate.sh" M00)
 
       - name: Verify SKILL.md frontmatter
         run: |
-          node scripts/verify-skill-frontmatter.js
+          node scripts/verify/verify-skill-frontmatter.js
 
       - name: Verify Markdown internal links
         run: |
-          node scripts/verify-links.js
+          node scripts/verify/verify-links.js
 
       - name: Verify ETL importer execution
         run: |
-          node scripts/etl-import.js --source /tmp/mock.csv --dry-run
+          node scripts/runtime/etl-import.js --source /tmp/mock.csv --dry-run
 
       - name: Verify package version auto-check
         run: |
-          ./scripts/check-package-versions.sh nextjs
+          ./scripts/verify/check-package-versions.sh nextjs
 
       - name: Lint sample PRD template
         run: |
-          ./scripts/lint-template.sh templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md
+          ./scripts/verify/lint-template.sh templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md
 
   powershell-validation:
     name: PowerShell Scripts Tokenization & Execution
@@ -68,7 +68,7 @@ jobs:
       - name: Tokenize PowerShell scripts (PSParser)
         shell: powershell
         run: |
-          $files = Get-ChildItem -Path scripts -Filter *.ps1
+          $files = Get-ChildItem -Path scripts -Recurse -Filter *.ps1
           $hasErrors = $false
           foreach ($f in $files) {
             $errors = $null
@@ -85,12 +85,12 @@ jobs:
       - name: Verify package version auto-check (PowerShell)
         shell: powershell
         run: |
-          .\scripts\check-package-versions.ps1 -Framework nextjs
+          .\scripts\verify\check-package-versions.ps1 -Framework nextjs
 
       - name: Test template picker dry-run
         shell: powershell
         run: |
-          .\scripts\template-picker.ps1 -Phase 8 -DryRun -Dest "$env:TEMP"
+          .\scripts\scaffold\template-picker.ps1 -Phase 8 -DryRun -Dest "$env:TEMP"
 
       - name: Test Gate Validation execution (PowerShell)
         shell: powershell
@@ -100,7 +100,7 @@ jobs:
           Set-Content -Path (Join-Path $mockDir "docs/pm/M00_LITE.md") -Value "# M00 Lite Mock`nPASS"
           Push-Location $mockDir
           try {
-            & "$env:GITHUB_WORKSPACE\scripts\validate-gate.ps1" -Module M00
+            & "$env:GITHUB_WORKSPACE\scripts\gates\validate-gate.ps1" -Module M00
             if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) { throw "Gate validation failed" }
           } finally {
             Pop-Location

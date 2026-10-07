@@ -9,7 +9,7 @@ param (
 $date = (Get-Date).ToString("yyyy-MM-dd")
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-$versionScript = Join-Path $scriptDir "check-package-versions.ps1"
+$versionScript = Join-Path (Split-Path -Parent $scriptDir) "verify/check-package-versions.ps1"
 $versionHints = ""
 if (Test-Path $versionScript) {
     try {

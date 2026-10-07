@@ -2,7 +2,7 @@
 # Usage: .\scripts\build-dist.ps1
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$rootDir = Split-Path -Parent $scriptDir
+$rootDir = Split-Path -Parent (Split-Path -Parent $scriptDir)
 $distDir = Join-Path $rootDir "dist"
 $pkgDir = Join-Path $distDir "package"
 
@@ -16,8 +16,6 @@ New-Item -ItemType Directory -Force -Path $pkgDir | Out-Null
 
 Copy-Item (Join-Path $rootDir "SKILL.md") $pkgDir
 Copy-Item (Join-Path $rootDir "README.md") $pkgDir
-if (Test-Path (Join-Path $rootDir "CHANGELOG.md")) { Copy-Item (Join-Path $rootDir "CHANGELOG.md") $pkgDir }
-if (Test-Path (Join-Path $rootDir "SECURITY.md")) { Copy-Item (Join-Path $rootDir "SECURITY.md") $pkgDir }
 
 foreach ($dir in @("docs", "templates", "patterns", "references", "scripts")) {
     $src = Join-Path $rootDir $dir

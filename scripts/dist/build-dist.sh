@@ -5,7 +5,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DIST_DIR="$ROOT_DIR/dist"
 DIST_PACKAGE="$DIST_DIR/package"
 
@@ -18,8 +18,6 @@ mkdir -p "$DIST_PACKAGE"
 # Copy root metadata and core files
 cp "$ROOT_DIR/SKILL.md" "$DIST_PACKAGE/"
 cp "$ROOT_DIR/README.md" "$DIST_PACKAGE/"
-[ -f "$ROOT_DIR/CHANGELOG.md" ] && cp "$ROOT_DIR/CHANGELOG.md" "$DIST_PACKAGE/"
-[ -f "$ROOT_DIR/SECURITY.md" ] && cp "$ROOT_DIR/SECURITY.md" "$DIST_PACKAGE/"
 
 # Copy core skill directories
 for dir in docs templates patterns references scripts; do

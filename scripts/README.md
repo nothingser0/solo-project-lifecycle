@@ -1,113 +1,94 @@
 # Scripts Library Index
 
-Automation, verification, and template tooling for the **solo-project-lifecycle** framework.
+Automation, verification, scaffold, and template tooling for the **solo-project-lifecycle** framework.
 
-Each tool is available in both **Bash** (macOS/Linux) and **PowerShell** (Windows) implementations.
-
----
-
-## Tool Catalog
-
-| Script (Bash) | Script (PowerShell) | Purpose | Referenced In |
-|---|---|---|---|
-| [`scripts/validate-gate.sh`](./validate-gate.sh) | [`scripts/validate-gate.ps1`](./validate-gate.ps1) | Automated quality gate check between SDLC modules (M03, M09, M11) | `SKILL.md`, `README.md`, `docs/README.md` |
-| [`scripts/check-package-versions.sh`](./check-package-versions.sh) | [`scripts/check-package-versions.ps1`](./check-package-versions.ps1) | Real-time registry queries (npm, composer, PyPI, Go) to avoid model knowledge cutoff | `docs/package-version-auto-check.md`, `docs/modules/05-architecture-specs.md` |
-| [`scripts/verify-framework-version.sh`](./verify-framework-version.sh) | [`scripts/verify-framework-version.ps1`](./verify-framework-version.ps1) | Validates installed project lockfiles against versions pinned in `FSD.md` | `docs/modules/06-development-execution.md` |
-| [`scripts/lint-template.sh`](./lint-template.sh) | [`scripts/lint-template.ps1`](./lint-template.ps1) | Lints markdown templates for unrendered placeholders (`[...]`, `<...>`) and structural validity | `SKILL.md`, `README.md` |
-| [`scripts/template-picker.sh`](./template-picker.sh) | [`scripts/template-picker.ps1`](./template-picker.ps1) | Interactive CLI selector to scaffold project templates into designated project paths | `SKILL.md`, `README.md` |
-| [`scripts/verify-all.sh`](./verify-all.sh) | [`scripts/verify-all.ps1`](./verify-all.ps1) | Comprehensive repository sanity and syntax checker | CI / Pre-Release |
-| [`scripts/init-project.sh`](./init-project.sh) | [`scripts/init-project.ps1`](./init-project.ps1) | Deterministic project directory initializer per scale (small, solo-saas, medium, large) | `SKILL.md`, `docs/quickstart.md` |
-| [`scripts/generate-fsd.sh`](./generate-fsd.sh) | [`scripts/generate-fsd.ps1`](./generate-fsd.ps1) | Auto-generates initial FSD.md skeleton with registry-pinned versions and DDL tables | Module 05 |
-| [`scripts/calculate-size.sh`](./calculate-size.sh) | [`scripts/calculate-size.ps1`](./calculate-size.ps1) | Accurately calculates disk footprint (excl. .git) and estimated framework tokens | Quality Audits |
-| [`scripts/build-dist.sh`](./build-dist.sh) | [`scripts/build-dist.ps1`](./build-dist.ps1) | Builds distribution bundle (dist/package/ and zip) for skill installation | Skill Distribution |
-| [`scripts/load-test.js`](./load-test.js) | — | Universal k6 load testing script with p95 < 200ms latency thresholds | Module 05B, 07 |
-| [`scripts/migrate-data.ts`](./migrate-data.ts) | — | Streaming batch ETL and data reconciliation script (Zod, 500-row chunks) | Module 08 |
-| [`scripts/etl-import.js`](./etl-import.js) | — | Node.js production batch database importer | Module 10 |
-| [`scripts/verify-links.js`](./verify-links.js) | — | Automated markdown relative link integrity checker (0 broken links) | CI / QA |
-| [`scripts/verify-skill-frontmatter.js`](./verify-skill-frontmatter.js) | — | Automated validator for SKILL.md YAML frontmatter specification | CI / QA |
+Scripts are categorized into 5 functional modules. Each tool is available in both **Bash** (macOS/Linux/WSL) and **PowerShell** (Windows) implementations.
 
 ---
 
-## 1. Quality Gate Validator (`validate-gate`)
+## Directory Organization
 
-Validates blocking gates before progressing between project phases:
+```text
+scripts/
+├── gates/      - Blocking quality gate checkers between lifecycle modules
+├── scaffold/   - Deterministic project setup, template pickers, and FSD generation
+├── verify/     - Static analysis, link integrity, frontmatter, and package version checkers
+├── runtime/    - Production batch ETL, data migration, and load test scripts
+└── dist/       - Framework distribution bundling and size calculation tools
+```
+
+---
+
+## 1. Quality Gates (`scripts/gates/`)
+
+Validates blocking criteria and mandatory artifacts before progressing between SDLC phases:
+
+| Tool (Bash) | Tool (PowerShell) | Description |
+|:---|:---|:---|
+| [`scripts/gates/validate-gate.sh`](./gates/validate-gate.sh) | [`scripts/gates/validate-gate.ps1`](./gates/validate-gate.ps1) | Validates gate checkpoints for M00 through M13 |
 
 ```bash
-# Bash (Linux / macOS)
-./scripts/validate-gate.sh M03    # Commercial gate: SOW signed & Down Payment cleared
-./scripts/validate-gate.sh M09    # Validation gate: UAT signed by Client PIC
-./scripts/validate-gate.sh M11    # Handover gate: 100% final payment & BAST signed
-```
+# Bash:
+./scripts/gates/validate-gate.sh M00    # Discovery gate (M00-lite or Full M00)
+./scripts/gates/validate-gate.sh M03    # Commercial gate (SOW contract & DP)
+./scripts/gates/validate-gate.sh M04    # Design gate (Sitemap & tokens)
+./scripts/gates/validate-gate.sh M09    # Validation gate (UAT sign-off)
 
-```powershell
-# PowerShell (Windows)
-.\scripts\validate-gate.ps1 M03
-.\scripts\validate-gate.ps1 M09
-.\scripts\validate-gate.ps1 M11
+# PowerShell:
+.\scripts\gates\validate-gate.ps1 -Module M00
 ```
 
 ---
 
-## 2. Dynamic Package Version Checker (`check-package-versions`)
+## 2. Project Scaffolding & Setup (`scripts/scaffold/`)
 
-Queries package registries directly in real time to guarantee up-to-date dependency decisions in Module 05:
-Supports 14 production stacks via official public registries (`nextjs`, `laravel`, `django`, `go`, `rails`, `mern`, `aspnet`, `spring`, `serverless`, `flutter`, `remix`, `astro`, `sveltekit`, `nuxt`):
+Deterministic tools for project initialization and template extraction:
+
+| Tool (Bash) | Tool (PowerShell) | Description |
+|:---|:---|:---|
+| [`scripts/scaffold/init-project.sh`](./scaffold/init-project.sh) | [`scripts/scaffold/init-project.ps1`](./scaffold/init-project.ps1) | Bootstraps project directory tree per scale (`small`, `solo-saas`, `medium`, `large`) |
+| [`scripts/scaffold/template-picker.sh`](./scaffold/template-picker.sh) | [`scripts/scaffold/template-picker.ps1`](./scaffold/template-picker.ps1) | Interactive CLI selector to scaffold specific templates |
+| [`scripts/scaffold/generate-fsd.sh`](./scaffold/generate-fsd.sh) | [`scripts/scaffold/generate-fsd.ps1`](./scaffold/generate-fsd.ps1) | Generates initial FSD.md skeleton with pinned package registry versions |
+
 ```bash
-# Query latest stable versions
-./scripts/check-package-versions.sh nextjs
-./scripts/check-package-versions.sh laravel
-./scripts/check-package-versions.sh django
-./scripts/check-package-versions.sh go
-./scripts/check-package-versions.sh rails
-```
-
-```powershell
-.\scripts\check-package-versions.ps1 -Framework nextjs
-.\scripts\check-package-versions.ps1 -Framework laravel
-.\scripts\check-package-versions.ps1 -Framework go
+# Initialize a new Solo SaaS project:
+./scripts/scaffold/init-project.sh ~/projects/my-new-saas solo-saas
 ```
 
 ---
 
-## 3. Framework Lockfile Verifier (`verify-framework-version`)
+## 3. Verification & Quality Assurance (`scripts/verify/`)
 
-Ensures local scaffolding (`create-next-app`, `composer`, etc.) matches the architectural specifications in `docs/specs/FSD.md`:
+Sanity checks, link validators, and ecosystem compatibility tools:
 
-```bash
-# Bash
-./scripts/verify-framework-version.sh
-
-# PowerShell
-.\scripts\verify-framework-version.ps1
-```
-
----
-
-## 4. Template Completeness Linter (`lint-template`)
-
-Verifies that drafted specifications do not contain unfinished placeholder prompts before client review:
-
-```bash
-# Check single template or project specification
-./scripts/lint-template.sh docs/specs/PRD.md
-./scripts/lint-template.sh docs/pm/SOW_CONTRACT.md
-```
-
-```powershell
-.\scripts\lint-template.ps1 docs/specs/PRD.md
-```
+| Tool (Bash) | Tool (PowerShell) | Description |
+|:---|:---|:---|
+| [`scripts/verify/verify-all.sh`](./verify/verify-all.sh) | [`scripts/verify/verify-all.ps1`](./verify/verify-all.ps1) | Comprehensive repository integrity checker (scripts, modules, patterns, links) |
+| [`scripts/verify/verify-links.js`](./verify/verify-links.js) | — | Scans all Markdown files for broken local relative links (0 broken links) |
+| [`scripts/verify/verify-skill-frontmatter.js`](./verify/verify-skill-frontmatter.js) | — | Validates SKILL.md YAML frontmatter against agent specifications |
+| [`scripts/verify/check-package-versions.sh`](./verify/check-package-versions.sh) | [`scripts/verify/check-package-versions.ps1`](./verify/check-package-versions.ps1) | Real-time registry queries (npm, composer, PyPI, Go) across 14 stacks |
+| [`scripts/verify/verify-framework-version.sh`](./verify/verify-framework-version.sh) | [`scripts/verify/verify-framework-version.ps1`](./verify/verify-framework-version.ps1) | Validates installed project lockfiles against versions pinned in FSD.md |
+| [`scripts/verify/lint-template.sh`](./verify/lint-template.sh) | [`scripts/verify/lint-template.ps1`](./verify/lint-template.ps1) | Lints filled project documents and raw template structures |
 
 ---
 
-## 5. Interactive Template Picker (`template-picker`)
+## 4. Production Runtime & Migration (`scripts/runtime/`)
 
-Assists developers in quickly copying templates into designated folders (`docs/pm/`, `docs/specs/`, `./`):
+Data engineering and performance load testing scripts:
 
-```bash
-# Launch interactive menu
-./scripts/template-picker.sh
-```
+| Tool | Description |
+|:---|:---|
+| [`scripts/runtime/etl-import.js`](./runtime/etl-import.js) | Node.js production batch database importer |
+| [`scripts/runtime/migrate-data.ts`](./runtime/migrate-data.ts) | Streaming batch ETL and data reconciliation script (Zod, 500-row chunks) |
+| [`scripts/runtime/load-test.js`](./runtime/load-test.js) | Universal k6 load testing script with p95 < 200ms latency thresholds |
 
-```powershell
-.\scripts\template-picker.ps1
-```
+---
+
+## 5. Packaging & Distribution (`scripts/dist/`)
+
+Tools for calculating framework metrics and building skill installation packages:
+
+| Tool (Bash) | Tool (PowerShell) | Description |
+|:---|:---|:---|
+| [`scripts/dist/build-dist.sh`](./dist/build-dist.sh) | [`scripts/dist/build-dist.ps1`](./dist/build-dist.ps1) | Packages framework into `dist/package/` and zip ready for skill upload |
+| [`scripts/dist/calculate-size.sh`](./dist/calculate-size.sh) | [`scripts/dist/calculate-size.ps1`](./dist/calculate-size.ps1) | Calculates accurate disk footprint and token counts across documentation |

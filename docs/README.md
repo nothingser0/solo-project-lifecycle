@@ -14,9 +14,9 @@ Software operational framework for solo developers and technical consultants exe
 ### Automation & Tooling Scripts
 Automated utilities are available in `scripts/` (both Bash and PowerShell):
 ```bash
-./scripts/validate-gate.sh M05              # Gate checkpoint verification (M00-M13)
-./scripts/template-picker.sh --phase 4 --dry-run  # Headless template deployment preview
-./scripts/lint-template.sh docs/specs/PRD.md     # Template convention and completeness linter
+./scripts/gates/validate-gate.sh M05              # Gate checkpoint verification (M00-M13)
+./scripts/scaffold/template-picker.sh --phase 4 --dry-run  # Headless template deployment preview
+./scripts/verify/lint-template.sh docs/specs/PRD.md     # Template convention and completeness linter
 ```
 
 ---
@@ -215,7 +215,7 @@ RELEASE & CLOSURE PHASE:
 ## 6. Framework Automation & Tooling
 
 - **Package Version Checker**: See [`docs/package-version-auto-check.md`](./package-version-auto-check.md) for real-time package version verification (`check-package-versions.sh` / `.ps1`) to avoid AI knowledge cutoff regressions.
-- **Gate Validation CLI**: Run `./scripts/validate-gate.sh` to programmatically verify quality gates between modules.
+- **Gate Validation CLI**: Run `./scripts/gates/validate-gate.sh` to programmatically verify quality gates between modules.
 
 ---
 

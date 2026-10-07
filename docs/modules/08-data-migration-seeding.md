@@ -82,7 +82,7 @@ Draft a mapping table from the legacy format to the new FSD schema:
 - Example: Excel column `"Tgl Lahir"` → Transformation `new Date(row.tgl)` → `users.birth_date` (`DATE`).
 
 ### Step 3: Writing the Automated ETL Script (Batch Loading)
-Write a standalone execution script (e.g., `scripts/migrate-data.ts` or a Python script):
+Write a standalone execution script (e.g., `scripts/runtime/migrate-data.ts` or a Python script):
 1. **Extract**: Read source files using a stream parser (`csv-parse` or `exceljs`).
 2. **Transform**: Validate each row with Zod. Generate UUIDv7 for new primary keys. Hash temporary passwords using Argon2id.
 3. **Load**: Insert data into the database using *Batch Insert* operations (`createMany` or SQL `COPY`) in blocks of 500–1,000 rows within an atomic transaction (`db.$transaction`).

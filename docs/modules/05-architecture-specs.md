@@ -76,9 +76,9 @@ This module is the fifth phase in the software project lifecycle for solo develo
 
 ```bash
 # Check current ecosystem state for target framework via official registry APIs:
-./scripts/check-package-versions.sh <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+./scripts/verify/check-package-versions.sh <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 # OR
-.\scripts\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+.\scripts\verify\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
 **Universal Registry Sources (Zero Local Toolchain Dependency)**:
@@ -2029,7 +2029,7 @@ export default function () {
 }
 ```
 
-Run: `k6 run scripts/load-test.js`
+Run: `k6 run scripts/runtime/load-test.js`
 
 ---
 

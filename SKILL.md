@@ -218,18 +218,21 @@ Validation tools in `scripts/` (bash + PowerShell):
 
 ```bash
 # Validate gate checkpoints (covers M00 through M13)
-./scripts/validate-gate.sh M03              # Commercial gate
-./scripts/validate-gate.sh M06              # Harness gate
-./scripts/validate-gate.sh M09              # UAT signoff gate
-./scripts/check-package-versions.sh nextjs  # Real-time package registry checks
-./scripts/verify-framework-version.sh       # Verify lockfile matches FSD (Next.js, Laravel, Django, Go)
+./scripts/gates/validate-gate.sh M03              # Commercial gate
+./scripts/gates/validate-gate.sh M06              # Harness gate
+./scripts/gates/validate-gate.sh M09              # UAT signoff gate
+./scripts/verify/check-package-versions.sh nextjs  # Real-time package registry checks
+./scripts/verify/verify-framework-version.sh       # Verify lockfile matches FSD (Next.js, Laravel, Django, Go)
+
+# Initialize new project per scale (small | solo-saas | medium | large)
+./scripts/scaffold/init-project.sh ~/projects/my-app solo-saas
 
 # Check template completeness
-./scripts/lint-template.sh path/to/template.md
+./scripts/verify/lint-template.sh path/to/template.md
 
 # Template picker (interactive or headless)
-./scripts/template-picker.sh                # Interactive menu
-./scripts/template-picker.sh --phase 8 --dry-run  # Fast-track MVP dry-run
+./scripts/scaffold/template-picker.sh                # Interactive menu
+./scripts/scaffold/template-picker.sh --phase 8 --dry-run  # Fast-track MVP dry-run
 
 # Verify TODO checklist completion
 ./templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh TODO.md

@@ -4,7 +4,9 @@
 
 set -e
 
-TEMPLATES_DIR="templates"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+TEMPLATES_DIR="${TEMPLATES_DIR:-$ROOT_DIR/templates}"
 PROJECT_ROOT="."
 PHASE_ARG=""
 DRY_RUN=0

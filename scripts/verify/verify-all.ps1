@@ -13,7 +13,7 @@ $errors = 0
 
 # 1. Verify PowerShell Scripts Syntax
 Write-Host "1. Checking powershell scripts syntax..."
-$psScripts = Get-ChildItem -Path "scripts/*.ps1"
+$psScripts = Get-ChildItem -Path "scripts" -Recurse -Filter *.ps1
 foreach ($s in $psScripts) {
     try {
         $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content $s.FullName -Raw), [ref]$null)
@@ -136,14 +136,14 @@ foreach ($pat in $patterns) {
 Write-Host ""
 Write-Host "6. Checking Markdown Links and SKILL.md Frontmatter..."
 if (Get-Command node -ErrorAction SilentlyContinue) {
-    $fmRes = node scripts/verify-skill-frontmatter.js 2>&1
+    $fmRes = node scripts/verify/verify-skill-frontmatter.js 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "  [OK] SKILL.md frontmatter valid" -ForegroundColor Green
     } else {
         Write-Host "  [FAIL] SKILL.md frontmatter invalid" -ForegroundColor Red
         $errors++
     }
-    $linkRes = node scripts/verify-links.js 2>&1
+    $linkRes = node scripts/verify/verify-links.js 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "  [OK] Internal Markdown links valid (0 broken)" -ForegroundColor Green
     } else {
