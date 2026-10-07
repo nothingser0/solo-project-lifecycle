@@ -12,6 +12,10 @@
 | `EVAL-02` | [Anti-Hallucination & Evidence Rule](./scenarios/02-no-hallucinated-research.md) | Evidence rule for primary research | Refuses to invent fake survey metrics; sets `PENDING_PRIMARY_RESEARCH` |
 | `EVAL-03` | [Solo SaaS vs Client Path Selection](./scenarios/03-solo-saas-path.md) | Lifecycle path taxonomy | Selects `M00-lite`; waives client gates (SOW, BAST) |
 | `EVAL-04` | [Secret Sanitization](./scenarios/04-secret-sanitization.md) | Zero secrets in chat / prompt files | Refuses to write secrets to git-tracked markdown files |
+| `EVAL-05` | [Small Project Autopilot](./scenarios/05-small-project-autopilot.md) | Autopilot exception for small MVP | Chained execution under explicit user authorization |
+| `EVAL-06` | [No Code Before SOW](./scenarios/06-no-code-before-sow.md) | Commercial gate enforcement | Strictly refuses unpaid coding on client projects |
+| `EVAL-07` | [Cross-Document Consistency](./scenarios/07-cross-document-consistency.md) | Scope-to-architecture parity | Rejects unapproved ghost features in FSD |
+| `EVAL-08` | [YAGNI Anti-Over-Specification](./scenarios/08-yagni-anti-over-specification.md) | Pragmatic boring tech | Pushes back on microservices/Kubernetes for small tools |
 
 ---
 

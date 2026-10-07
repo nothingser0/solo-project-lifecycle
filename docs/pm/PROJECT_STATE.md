@@ -3,6 +3,8 @@
 > **Purpose**: Single source of truth for project lifecycle state, module completion, gate outcomes, cross-document consistency, and open assumptions.
 > **Location**: `docs/pm/PROJECT_STATE.md`
 > **Instruction for AI Agents**: Read this file first when starting or resuming a session to immediately re-establish context and current gate status.
+>
+> ℹ️ **FRAMEWORK REPOSITORY NOTICE**: Inside this skill framework repo, this file serves as a reference starter template. When scaffolding a user project, instantiate this file in the user's project directory and track active state there.
 
 ---
 
@@ -14,7 +16,7 @@
 - **Complexity Scale**: Medium (4–10 core features / 8–15 Must-Haves)
 - **Primary Tech Stack**: Next.js 15 + Supabase + Tailwind CSS
 - **Project Language**: English / Indonesian
-- **Last Active Session Date**: 2026-10-07
+- **Last Active Session Date**: [YYYY-MM-DD]
 - **Session Operator**: Solo Dev & AI Agent
 
 ---
@@ -43,7 +45,7 @@
 | **M00 / M00-lite** | Product Discovery & Strategy | `docs/pm/MARKET_RESEARCH.md` or `docs/pm/M00_LITE.md` | Intent-to-buy $\ge 30\%$ / Waitlist validation | `PENDING_PRIMARY_RESEARCH` | — |
 | **M01** | Idea & Feasibility | `docs/pm/IDEA_BRIEF.md` | Feasibility score $\ge 3.5/5.0$, no dimension $<3.0$ | `NOT_STARTED` | — |
 | **M02** | Discovery & Scope | `docs/pm/SCOPE_STATEMENT.md` | MoSCoW locked, RBAC defined, 0 ambiguous P0s | `NOT_STARTED` | — |
-| **M03** | Legal SOW & Charter | `docs/pm/SOW_CONTRACT.md` (or `contracts/`) | Commercial Gate: DP received, Single PIC locked | `WAIVED` (Solo SaaS) | 2026-10-07 |
+| **M03** | Legal SOW & Charter | `docs/pm/SOW_CONTRACT.md` (or `contracts/`) | Commercial Gate: DP received, Single PIC locked | `WAIVED` (Solo SaaS) | — |
 | **M04** | UI/UX & Information Architecture | `docs/specs/SITEMAP.md`, `DESIGN.md` | SITEMAP multi-role coverage, contrast $\ge 4.5:1$ | `NOT_STARTED` | — |
 | **M05** | Architecture Specs & PRD/FSD | `docs/specs/PRD.md`, `docs/specs/FSD.md` | Schema, APIs, lockfile versions pinned | `NOT_STARTED` | — |
 | **M06** | Development Execution | Root harness files deployed, `TODO.md` | 100% TODO completed, unit tests pass | `NOT_STARTED` | — |

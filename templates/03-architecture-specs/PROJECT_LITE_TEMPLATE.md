@@ -1,6 +1,6 @@
 # PROJECT_LITE.md (Fast-Track Unified Specification)
 
-> Lean unified specification document for **Small-Scale (MVP / 1–4 Week Freelance)** projects.
+> Lean unified specification document for **Small-Scale (Solo Portfolio, Personal Tool, or 1–4 Week Client Freelance)** projects.
 > Combines Module 01 (Idea), Module 02 (Scope), Module 03 (Commercial), and Module 05 (Technical) into a single reference document.
 > **ABSOLUTE RULE**: For all Web and Mobile projects, **Module 04 (Interactive Prototype UI/UX) REMAINS STRICTLY MANDATORY** to prevent UI from becoming "AI Slop" and to provide clients with a real interactive prototype. Module 04 may only be skipped if the project is purely backend/CLI/automation with no user interface.
 
@@ -24,8 +24,9 @@
 
 ## 1. Project Metadata & Elevator Pitch
 - **Project Name**: [Application / System Name]
-- **Client**: [Client Name / Initiator]
-- **Client Single PIC**: [Client PIC Name & Contact]
+- **Project Type**: [Solo Portfolio / Personal Utility / Client Freelance]
+- **Client / Sponsor**: [Client Company Name OR "Self-Initiated / Independent Developer"]
+- **Client Single PIC**: [Client PIC Contact OR "Self (Sole Decision Maker)"]
 - **Solo Developer**: [Your Name]
 - **Target Release**: [YYYY-MM-DD] (Maximum 2–4 Weeks)
 - **Elevator Pitch**: *For [Target Users] who experience [Problem], this system provides [Core Solution] that processes data through [3-Step Core Loop].*
@@ -46,12 +47,16 @@
 
 ---
 
-## 3. Commercial Commitments & Milestone Payments (Payment Gate)
+## 3. Commercial Commitments (Client Project) OR Self-Runway (Solo Project)
 
+### For Solo Portfolio / Personal Utility:
+- **Commercial Status**: `[WAIVED / SELF-FUNDED]`
+- **Self-Budget / Hosting Cost**: Rp [X] / month (e.g. Free Tier Vercel + Supabase)
+- **Single PIC**: Sole Developer (No external approval bottlenecks)
+
+### For Client Commercial Project (If Applicable):
 - **Total Project Value**: [Currency/Amount]
-- **Payment Milestones (2 Stages)**:
-  - **Milestone 1 (50% Down Payment)**: Paid upfront as a prerequisite to start coding.
-  - **Milestone 2 (50% Final Settlement)**: Paid after UAT passes and system is live, prior to handing over root credentials/repo.
+- **Payment Milestones**: 50% Down Payment upfront, 50% Final upon UAT pass & BAST.
 - **Client Response SLA**: Client must provide testing feedback within **3 business days** maximum.
 
 ### Single PIC Authority (Decision Power)

@@ -75,12 +75,13 @@ solo-project-lifecycle/
 2. **Initialize git**: `git init`
 3. **Initialize framework**: Generate planning docs (`docs/pm/`, `docs/specs/`, `docs/harness-root/`)
 4. **Scaffold framework**: Run `npx create-next-app`, `laravel new`, etc.
-5. **Deploy harness**: Agent copies `docs/harness-root/*` and `.env.example` → `./` (root)
+5. **Deploy harness & clean staging**: Agent copies `docs/harness-root/*` and `.env.example` → `./` (root), then deletes `rm -rf docs/harness-root/`
 
 **Why `docs/harness-root/` staging?**
 - Root folder empty/git-only before scaffold
 - Framework CLI needs empty root
 - Harness files deployed AFTER scaffold to avoid conflicts
+- Cleaning up `docs/harness-root/` after copy enforces a single source of truth and avoids AI agent path drift
 
 ---
 
@@ -108,6 +109,7 @@ git init
 
 # After scaffold (npx create-next-app, etc.)
 # Agent deploys: cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
+# Clean up staging: rm -rf docs/harness-root/
 ```
 
 ---

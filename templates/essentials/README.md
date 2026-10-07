@@ -9,14 +9,14 @@
 
 | # | Template | Purpose | Primary Lifecycle Phase |
 |:---:|:---|:---|:---|
-| 1 | [`PROJECT_LITE_TEMPLATE.md`](./PROJECT_LITE_TEMPLATE.md) | Single-file complete specification for 1–4 week MVPs | Fast-Track / M01 & M05 |
+| 1 | [`PROJECT_LITE_TEMPLATE.md`](../03-architecture-specs/PROJECT_LITE_TEMPLATE.md) | Single-file complete specification for 1–4 week MVPs | Fast-Track / M01 & M05 |
 | 2 | [`PROJECT_STATE_TEMPLATE.md`](./PROJECT_STATE_TEMPLATE.md) | Single source of truth for gate progress & cross-session handoff | Universal / All Modules |
-| 3 | [`IDEA_BRIEF_TEMPLATE.md`](./IDEA_BRIEF_TEMPLATE.md) | 3-filter triage, assumption register & 4D feasibility scoring | Module 01 |
-| 4 | [`SCOPE_STATEMENT_TEMPLATE.md`](./SCOPE_STATEMENT_TEMPLATE.md) | Scope boundaries, INVEST stories, RBAC, MoSCoW inventory | Module 02 |
-| 5 | [`PRD_FINAL_TEMPLATE.md`](./PRD_FINAL_TEMPLATE.md) | Product Requirements Document (features, user journeys, NFRs) | Module 05 |
-| 6 | [`FSD_TECHNICAL_TEMPLATE.md`](./FSD_TECHNICAL_TEMPLATE.md) | Functional Specification Document (SQL DDL, REST APIs, RLS) | Module 05 |
-| 7 | [`DESIGN_MD_TEMPLATE.md`](./DESIGN_MD_TEMPLATE.md) | Design tokens, WCAG 2.2 AA palette, anti-slop typography | Module 04 / M06 Harness |
-| 8 | [`TODO_TEMPLATE.md`](./TODO_TEMPLATE.md) | Sprint-based atomic task queue with local verification steps | Module 06 Harness |
+| 3 | [`IDEA_BRIEF_TEMPLATE.md`](../01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md) | 3-filter triage, assumption register & 4D feasibility scoring | Module 01 |
+| 4 | [`SCOPE_STATEMENT_TEMPLATE.md`](../01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md) | Scope boundaries, INVEST stories, RBAC, MoSCoW inventory | Module 02 |
+| 5 | [`PRD_FINAL_TEMPLATE.md`](../03-architecture-specs/PRD_FINAL_TEMPLATE.md) | Product Requirements Document (features, user journeys, NFRs) | Module 05 |
+| 6 | [`FSD_TECHNICAL_TEMPLATE.md`](../03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md) | Functional Specification Document (SQL DDL, REST APIs, RLS) | Module 05 |
+| 7 | [`DESIGN_MD_TEMPLATE.md`](../02-design/DESIGN_MD_TEMPLATE.md) | Design tokens, WCAG 2.2 AA palette, anti-slop typography | Module 04 / M06 Harness |
+| 8 | [`TODO_TEMPLATE.md`](../04-dev-execution/TODO_TEMPLATE.md) | Sprint-based atomic task queue with local verification steps | Module 06 Harness |
 
 ---
 

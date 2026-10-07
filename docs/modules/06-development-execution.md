@@ -63,6 +63,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Universal: CONTEXT.md, DESIGN.md
     - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • OVERWRITES framework boilerplate (e.g., Next.js auto-generated AGENTS.md)
+  • Clean up staging: rm -rf docs/harness-root/ (enforces single source of truth; git history serves as backup)
   • Verify all 9 files present in root: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
   • Optional automation shortcut: ./scripts/template-picker.sh --phase 4 --dest . (or .\scripts\template-picker.ps1 -Phase 4)
                                     │
@@ -810,6 +811,8 @@ Agent reads stack-specific templates from skill://, writes to staging:
 ```
 Agent copies from staging to root:
   cp docs/harness-root/* ./
+  cp docs/harness-root/.env.example ./
+  rm -rf docs/harness-root/  # Clean up duplicate staging to prevent AI path drift
   
   Verifies 9 files present:
     AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md,

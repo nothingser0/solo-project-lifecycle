@@ -24,13 +24,15 @@ git init
 #   - docs/harness-root/ (9 AI control files - STAGED, not in root yet)
 
 # Step 4: After scaffold (npx create-next-app, etc.)
-# Agent copies: cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
+# Agent copies to root, then cleans up staging:
+cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ && rm -rf docs/harness-root/
 ```
 
 **Why staging in docs/harness-root/?**
 - Root folder empty/git-only before scaffold
 - Framework CLI (create-next-app, laravel new) needs empty/minimal root
 - Harness files deployed AFTER scaffold to avoid conflicts
+- Staging folder removed after copy to enforce a single source of truth and prevent AI path drift
 
 ---
 
@@ -223,6 +225,7 @@ CREATE TABLE todos (
    # Source: docs/harness-root/AGENTS.md, ARCHITECTURE.md, etc.
    # Target: ./AGENTS.md, ./ARCHITECTURE.md, etc. (root)
    # Overwrites framework boilerplate if exists (e.g., Next.js AGENTS.md)
+   cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ && rm -rf docs/harness-root/
    ```
 
 3. **Verify harness installed**:
