@@ -428,7 +428,7 @@ After the file `docs/pm/SCOPE_STATEMENT.md` has been written:
 1. **Verify output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/SCOPE_STATEMENT.md"` → must return `True`
    - Bash/Zsh: `test -f "docs/pm/SCOPE_STATEMENT.md" && echo "True" || echo "False"`
-   - Read tool: `read_file('docs/pm/SCOPE_STATEMENT.md')` → must succeed without error
+   - Read and verify file `docs/pm/SCOPE_STATEMENT.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -456,7 +456,7 @@ After the file `docs/pm/SCOPE_STATEMENT.md` has been written:
 
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 03 within the same turn!**
 2. **CONTENT VERIFICATION (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/SCOPE_STATEMENT.md')` → Confirm 120+ lines
+   - [ ] Read and verify file `docs/pm/SCOPE_STATEMENT.md` → Confirm 120+ lines
    - [ ] Must-Have count within scale limits (3-7 Small, 8-15 Medium, etc.)
    - [ ] **Problem-Solution Fit**: Every Must-Have feature resolves $\ge 50\%$ of stated problem root causes
    - [ ] **Target Segment Dependency**: Retained personas require zero out-of-scope features to experience core value

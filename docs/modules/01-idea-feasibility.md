@@ -539,7 +539,7 @@ Identify skills NOT YET acquired but REQUIRED by the project:
 After the file `docs/pm/IDEA_BRIEF.md` has been written:
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 02 within the same turn!**
 2. **SELF-VERIFICATION CHECKLIST**:
-   - [ ] `read_file('docs/pm/IDEA_BRIEF.md')` → Confirm file exists, 120+ lines
+   - [ ] Read and verify file `docs/pm/IDEA_BRIEF.md` → Confirm file exists, 120+ lines
    - [ ] Feasibility score calculated (X/5) present in file
    - [ ] Gate decision explicitly declared: GO (≥3.5), GO BERSYARAT (3.0-3.5 with mitigations), PIVOT (<3.0), or KILL
    - [ ] Project scale (Small/Medium/Large/Enterprise) documented

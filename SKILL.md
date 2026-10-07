@@ -1,13 +1,13 @@
 ---
 name: solo-project-lifecycle
-description: Comprehensive skill framework for managing software project lifecycle from discovery to production. Use when starting projects, scoping client work, writing PRD/FSD/SOW, planning architecture, or managing full SDLC.
-version: 1.0.0
-updated: 2026-10-05
+description: Comprehensive skill framework for managing software project lifecycle from discovery to production. Use when starting projects, conducting market research, validating idea feasibility, competitive analysis, drafting PRD/FSD/SOW/BAST, scoping client work, planning architecture, or managing full SDLC.
+version: 1.1.0
+updated: 2026-10-07
 ---
 
 # Solo Project Lifecycle
 
-**Skill framework** (~2.2MB content) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
+**Skill framework** (~3.8MB content, 270+ files) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
 
 ## Framework architecture
 
@@ -19,7 +19,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 - **Reference materials**: 600KB guides, playbooks, case studies in `references/`
 - **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
 
-**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 2.2MB at once. Similar to testing-library or design systems - comprehensive by design.
+**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 3.8MB at once. Similar to testing-library or design systems - comprehensive by design. Disk size verified via `./scripts/calculate-size.sh`.
 
 **Usage model**: Clone repo → agent navigates via SKILL.md → loads relevant module → applies template → references patterns as needed.
 
@@ -53,14 +53,36 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 ## When to invoke
 
 - User mentions starting new project, MVP, or client work
+- Market research, competitor analysis, problem validation, or idea feasibility
 - Needs PRD, FSD, SOW, or technical specs
 - Planning development phases or timeline
 - Managing project with gates (SOW, UAT, handover)
 - Building with proper architecture (not ad-hoc coding)
 
+## Language & Regional Context
+
+**Language mirroring**: Reply and draft project documents in the user's primary language. If the user communicates in Indonesian, write conversational answers and project deliverables in clear, professional Indonesian. If in English, write in English.
+
+**Indonesia-first practical context**: The skill framework natively supports Indonesian commercial, legal, and regulatory standards (SOW/SPK, Down Payment/milestones, BAST handover, UU PDP No. 27/2022, e-Meterai, Komdigi Private PSE registration, PPN 11%/PKP taxation, OSS-RBA KBLI business classification, and QRIS/Midtrans/Xendit payment gateways).
+
 ## Core rules
 
 **Mandatory turn-stopping**: Stop after EVERY module completion. Present artifacts summary, request explicit approval before next module. User saying "fill it in first" applies ONLY to current module, NOT permission to chain-execute.
+
+**Template-first enforcement**: NEVER generate empty or freeform documents from module guideline prose alone. ALWAYS copy from the official template in `templates/` and populate it systematically.
+
+**Cross-document consistency**: Verify downstream documents against upstream approved artifacts (Scope Statement $\rightarrow$ Sitemap $\rightarrow$ Component Specs $\rightarrow$ PRD/FSD $\rightarrow$ DB Schema $\rightarrow$ Code).
+
+**Anti-over-specification & reusability**: Strictly enforce YAGNI. Prefer standard native platform capabilities and existing component primitives. Do not invent one-off components without explicit requirement in `SCOPE_STATEMENT.md`.
+
+**Evidence rule for primary research**: Primary research data (interviews, surveys, willingness to pay) MUST originate from real human users. Agents MUST NOT fabricate interview transcripts or survey numbers. Draft the research instruments, mark outputs as `PENDING`, and set gate status to `PENDING_PRIMARY_RESEARCH`.
+
+**Data confidence legend**: Every factual claim and persona MUST include confidence markers:
+- ✅ **VERIFIED**: Empirical data from real users, live analytics, or cited primary sources (with URL and date).
+- 🔶 **ASSUMPTION**: Working hypothesis that must be tested before scaling.
+- ❓ **UNKNOWN**: Information gap requiring research or user input.
+
+**Riskiest assumption first (RAT)**: Maintain an Assumption Register. Prioritize testing the riskiest assumption with the cheapest test before building features.
 
 **Scope protection**: No feature addition without formal docs. No unpaid work.
 
@@ -77,10 +99,16 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 **Classification by complexity** (drives module path):
 
-**Small (1-3 features, <4 weeks)**:
-- Path: M04 → M05 → M06 → M10 (4 modules)
+**Small / Fast-Track MVP (1-3 features, <4 weeks)**:
+- Path: M04 → M05 → M06 → M10 → M12 (5 core modules, skip 9 heavy modules)
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
 - Example: Landing page, portfolio site, simple CRUD app
+
+**Self-Initiated Product / Solo SaaS (4-10 features, 1-3 months)**:
+- Path: **M00-lite** → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
+- Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` + Full PRD/FSD
+- Market risk is highest: Validates assumptions via M00-lite (5 interviews + waitlist test), skips client contract gates (M03, M11).
+- Example: Independent micro-SaaS, developer tool, niche B2B automation
 
 **Medium (4-10 features, 1-3 months)**:
 - Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
@@ -104,9 +132,9 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 **If solo/portfolio**: Skip gates, use complexity path only
 
 **Examples**:
-- Solo portfolio (3 features): Small path → M04 → M05 → M06 → M10
-- Solo SaaS (8 features): Medium path → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
-- Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → M07 → **M09** → M10 → **M11** → M12
+- Solo portfolio (3 features): Small path → M04 → M05 → M06 → M10 → M12
+- Solo SaaS (8 features): Solo SaaS path → M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
+- Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → **M07** → **M09** → M10 → **M11** → M12
 
 ## Module structure
 

@@ -29,8 +29,18 @@ patterns/
 │   └── error-boundaries.md - Custom error classes, logging, recovery
 ├── testing/
 │   └── test-pyramid.md - Unit/integration/E2E strategy
-└── deployment/
-    └── ci-cd-pipeline.md - GitHub Actions, blue-green, canary
+├── deployment/
+│   └── ci-cd-pipeline.md - GitHub Actions, blue-green, canary
+├── payments/
+│   └── indonesia-payment-gateways.md - Midtrans, Xendit, QRIS, webhooks
+├── compliance/
+│   └── uu-pdp-compliance.md - UU PDP No. 27/2022, consent ledger, erasure
+├── offline/
+│   └── offline-first-sync.md - IndexedDB/SQLite, sync queue, conflict resolution
+├── observability/
+│   └── logging-monitoring.md - Pino structured JSON, Sentry, trace ID
+└── localization/
+    └── i18n-indonesia.md - Rupiah formatting, WIB/WITA/WIT, Indonesian tax
 ```
 
 ---
@@ -109,6 +119,41 @@ patterns/
 **File**: `patterns/database/seeding-and-transactions.md`
 **Covers**: Atomic transactions ($transaction), row locking (FOR UPDATE), idempotent upsert seeding, batch imports
 **Referenced in**: M05 (schema design), M06 (transactions), M08 (seeding)
+
+---
+
+### Indonesian Payment Gateways
+**File**: `patterns/payments/indonesia-payment-gateways.md`  
+**Covers**: Midtrans, Xendit, QRIS dynamic generation, idempotent webhook signature verification  
+**Referenced in**: M00 (Unit economics), M04 (Checkout), M06 (Payment integration), M10 (Live credentials)
+
+---
+
+### Indonesian Regulatory Compliance (UU PDP)
+**File**: `patterns/compliance/uu-pdp-compliance.md`  
+**Covers**: UU PDP No. 27/2022 compliance, explicit consent audit trail, right to erasure, 72-hour breach response  
+**Referenced in**: M00, M02, M05 (Data architecture), M07 (Security audit)
+
+---
+
+### Offline-First & Data Synchronization
+**File**: `patterns/offline/offline-first-sync.md`  
+**Covers**: IndexedDB/SQLite local caching, mutation queue, Last-Write-Wins, supervisor conflict drawers  
+**Referenced in**: M00 (Solo feasibility), M04 (Offline badge), M06 (Local-first implementation)
+
+---
+
+### Observability & Logging
+**File**: `patterns/observability/logging-monitoring.md`  
+**Covers**: Pino structured JSON logging, trace correlation IDs, Sentry PII sanitization, Telegram/Slack alerts  
+**Referenced in**: M06, M07, M10, M12
+
+---
+
+### Indonesian Localization & Formatting (i18n)
+**File**: `patterns/localization/i18n-indonesia.md`  
+**Covers**: Rupiah currency formatting, Indonesian timezone handling (WIB/WITA/WIT), statutory tax rounding  
+**Referenced in**: M04, M05, M06
 
 ---
 

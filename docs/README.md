@@ -51,8 +51,8 @@ RELEASE & CLOSURE PHASE:
 ```
 
 **CRITICAL: Progressive Loading Protocol**
-- **DO NOT load all 14 modules at once** (total ~100K tokens)
-- Load specific module ONLY when entering that phase
+- **DO NOT load all 14 modules at once** (~120K tokens for all 14 core modules alone; ~500K+ tokens across all templates and guides). Verified via `./scripts/calculate-size.sh`.
+- Load specific module ONLY when entering that phase (typically 5K–12K tokens per module).
 - Example: "Load docs/modules/03-legal-sow-charter.md" when at Module 03
 - Reduces context pollution and improves response quality
 

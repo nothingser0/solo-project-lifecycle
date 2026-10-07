@@ -44,9 +44,29 @@ check_optional() {
 case "$GATE_MODULE" in
     M00)
         echo "=== M00: Product Discovery & Strategy Gate Checklist ==="
-        check_required "docs/pm/MARKET_RESEARCH.md"
-        check_optional "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/COMPETITOR_ANALYSIS.md"
-        check_optional "docs/pm/PRODUCT_STRATEGY.md"
+        if [ -f "docs/pm/M00_LITE.md" ]; then
+            echo "  [INFO] Detected M00-lite rapid validation path"
+            check_required "docs/pm/M00_LITE.md"
+            if grep -q "PENDING_PRIMARY_RESEARCH" "docs/pm/M00_LITE.md"; then
+                echo "  ⏳ Gate status: PENDING_PRIMARY_RESEARCH (Real user interviews & waitlist test pending)"
+            elif grep -q "PASS" "docs/pm/M00_LITE.md"; then
+                echo "  ✅ Gate status: PASS (Empirical validation verified)"
+            fi
+        else
+            check_required "docs/pm/MARKET_RESEARCH.md"
+            check_required "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/COMPETITOR_ANALYSIS.md"
+            check_required "docs/pm/USER_RESEARCH_REPORT.md"
+            check_required "docs/pm/PRODUCT_STRATEGY.md"
+            if [ -f "docs/pm/USER_RESEARCH_REPORT.md" ]; then
+                if grep -q "PENDING_PRIMARY_RESEARCH" "docs/pm/USER_RESEARCH_REPORT.md"; then
+                    echo "  ⏳ Gate status: PENDING_PRIMARY_RESEARCH (Real user data pending; synthetic data prohibited)"
+                elif grep -qi "intent.*[3-9][0-9]%\|intent.*100%\|PASS" "docs/pm/USER_RESEARCH_REPORT.md"; then
+                    echo "  ✅ Market validation gate criteria: Intent-to-buy threshold verified"
+                else
+                    echo "  ⚠️  Market validation: Intent-to-buy ≥30% not explicitly validated"
+                fi
+            fi
+        fi
         ;;
     M01)
         echo "=== M01: Idea Feasibility Gate Checklist ==="

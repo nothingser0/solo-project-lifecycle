@@ -174,7 +174,7 @@ After BAST signing and asset handover:
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/BAST.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/BAST.md')` → must succeed without error
+   - Read and verify file `docs/pm/BAST.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -202,7 +202,7 @@ After BAST signing and asset handover:
 
 1. **STRICTLY FORBIDDEN to close the session or call tools for Module 12 within the same turn!**
 2. **Verify BAST content & payment**:
-   - [ ] `read_file('docs/pm/BAST.md')` → Confirm signature + duty stamp + warranty period
+   - [ ] Read and verify file `docs/pm/BAST.md` → Confirm signature + duty stamp + warranty period
    - [ ] Confirm payment 100% received (bank statement or screenshot)
    - [ ] Confirm repo transferred to client organization
    - [ ] Confirm credentials handed over securely

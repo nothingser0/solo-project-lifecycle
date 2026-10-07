@@ -6,11 +6,13 @@
 > - `templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md` (Proof-of-concept scope, evaluation criteria, client POC validation plan)
 
 
-This module is the **earliest gate** in the software development lifecycle for solo developers and technical consultants working on projects with an unlimited time budget and company use cases. This module is mandatory to execute **BEFORE Module 01 (Idea & Feasibility)** when:
+This module is the **earliest gate** in the software development lifecycle for solo developers, founders, and technical consultants. This module is mandatory to execute **BEFORE Module 01 (Idea & Feasibility)** when:
 - The project requires industry-grade Product Management (PM) standards.
-- There is a need for market validation, competitor analysis, and in-depth user research before defining features.
+- There is a need for market validation, competitor analysis, and in-depth user research before writing code.
 
-**For Fast-Track projects or MVPs with tight deadlines: SKIP this module and proceed directly to Module 01 (Idea & Feasibility).**
+**Lifecycle Path Guidelines**:
+- **Self-Initiated Product / Solo SaaS**: **DO NOT SKIP MARKET VALIDATION**. The #1 risk for solo SaaS is building something nobody pays for. Execute **M00-lite** (1-page rapid market validation: assumption register + 5 customer interviews + waitlist/landing page test; template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
+- **Fixed-Scope Client Projects / Internal Utilities**: Skip M00 and proceed directly to Module 01 or Module 04 since scope and commercial terms are already set by the client.
 
 ---
 
@@ -76,19 +78,21 @@ Goal: Understand market size, industry growth, and regulatory constraints before
 **Estimation Formula**:
 ```python
 # Example: Accounting SaaS for Indonesian MSMEs
-TAM = (jumlah_ukm_indonesia * arpu_tahunan)
-    # 64 million MSMEs (Kemenkop 2022 data) * Rp 1,200,000/year
-    # [UPDATE 2026: Verify latest BPS/Kemenkop UKM count]
-    # TAM = Rp 76.8 trillion
+# ⚠️ WARNING: Naive top-down TAM (e.g. 64M MSMEs * Rp 1.2M = Rp 76.8T) is a "VANITY TAM".
+# Real SAM must be modeled as a segmented funnel with Assumption IDs and realistic ranges.
 
-SAM = TAM * (persentase_digitalisasi_aktif)
-    # 64M MSMEs * 8% already using software * Rp 1,200,000
-    # SAM = Rp 6.1 trillion
+# 1. Target Segment Funnel (Live sources: BPS bps.go.id, Kemenkop kemenkopukm.go.id):
+total_msmes = 64_000_000                    # [ASM-MKT-01] Total MSMEs in Indonesia
+retail_services_segment = total_msmes * 0.15 # [ASM-MKT-02] Segment with inventory/cashier need (~9.6M)
+digitalized_with_devices = retail_services_segment * 0.12 # [ASM-MKT-03] Have PC/Smartphone & connectivity (~1.15M)
+willing_to_pay_saas = digitalized_with_devices * 0.08     # [ASM-MKT-04] Actively budget for software (~92,000)
 
-SOM_tahun_1 = SAM * (target_market_share_realistis)
-    # Rp 6.1 trillion * 0.01% (1 out of 10,000 digital MSMEs)
-    # 0.01% = 0.0001 in Python formula (not 0.01)
-    # SOM = Rp 610 million/year (≈ 500 paying customers)
+arpu_tahunan = 1_200_000                    # Rp 100,000/month * 12 months
+SAM = willing_to_pay_saas * arpu_tahunan    # Rp 110.4 billion (Realistic Serviceable Market)
+
+# 2. Obtainable Market Year 1 (Solo Developer Capacity):
+target_capture_rate = 0.005                 # 0.5% of SAM in Year 1 (≈ 460 paying stores)
+SOM_tahun_1 = SAM * target_capture_rate     # Rp 552 million/year (≈ Rp 46M MRR)
 ```
 
 **Validation Methods**:
@@ -112,13 +116,16 @@ Use Google Trends, McKinsey/BCG Indonesia reports, and startup research (DailySo
 
 #### 1.4 Regulatory Landscape Check
 
-| Industry Sector | Critical Regulations Solo Devs Must Know |
-| :--- | :--- |
-| **Fintech / Payment** | OJK (PUJK, P2P Lending License), Bank Indonesia (GPN, QRIS license mandatory) |
-| **Healthtech / Telemedicine** | Ministry of Health (SIP doctor license, electronic medical records), Medical Device Distribution License (Izin Edar Alkes) |
-| **Edtech / Online Course** | Ministry of Education (NPSN for formal education), Content copyright |
-| **Data-Heavy Apps** | PDP Law No. 27/2022 (mandatory consent management, data breach notification) |
-| **E-Signature Apps** | Kominfo PSrE (licensed provider mandatory if legally binding signature) |
+| Regulatory Domain | Critical Regulations Solo Devs Must Know in Indonesia | Compliance Action / Verification |
+| :--- | :--- | :--- |
+| **Private Scope PSE** | Komdigi (Ministry of Communication & Digital, Permen Kominfo No. 5/2020 jo. 10/2021) | Mandatory Private PSE registration via oss.go.id before commercial go-live |
+| **Taxation (VAT/PKP)** | UU HPP No. 7/2021 & PMK 60/2022 (11% Digital VAT / PKP threshold Rp 4.8B) | Account for 11% VAT in pricing/invoices; PPh Final 0.5% (PP 55/2022) for qualifying MSMEs |
+| **Legality & KBLI** | NIB via OSS-RBA (KBLI 62019 - Web Programming, 62029, 63122) | Obtain sole proprietorship/PT NIB to validate corporate bank accounts & payment gateways |
+| **Trademark & IP** | DJKI Ministry of Law (Law No. 20/2016 on Trademarks) | Query pdki-indonesia.dgip.go.id before naming product to avoid trademark infringement |
+| **Data Protection** | Law No. 27/2022 on Personal Data Protection (UU PDP) | Mandatory consent clause, transit/at-rest encryption, and right to erasure |
+| **Fintech / Payments** | OJK & Bank Indonesia (PBI No. 22/23/PBI/2020, QRIS, POJK No. 10/2022) | **Solo Dev Rule**: DO NOT hold user funds directly; MUST integrate licensed gateways (Midtrans/Xendit) |
+| **Healthtech / Telemedicine** | Ministry of Health (SIP doctor license, electronic medical records), Medical Device Distribution License (Izin Edar Alkes) | Integrasi SATUSEHAT Kemenkes jika menyentuh rekam medis elektronik |
+| **E-Signature Apps** | Komdigi PSrE (Certified Electronic Certificate Providers like Privy/Vida) | Integrate certified PSrE API if documents require statutory legal evidentiary weight |
 
 **Step 1 Output**: File **`docs/pm/MARKET_RESEARCH.md`** containing:
 - TAM/SAM/SOM calculation results with data sources.
@@ -138,6 +145,13 @@ Goal: Understand competitor landscape to identify positioning gaps and defensibl
 **Substitute Competitors**: Non-software solutions users currently rely on (Excel, WhatsApp groups, manual services).
 
 **Discovery Tactics**:
+
+> ⚡ **MANDATORY COMPETITOR TESTING RULE**:
+> - Agents and developers **MUST INSTALL & TEST** the actual product (free tier, mobile app, or trial). Do not just read marketing websites or user reviews.
+> - Record actual onboarding time, checkout friction, and mobile performance.
+> - **Check Free / Government Alternatives**: Always investigate non-commercial or state-provided solutions (e.g. Bank Indonesia SIAPIK for MSME bookkeeping, DJP e-Faktur, Google Sheets templates).
+> - **Pricing Transparency**: Every pricing figure must have a verified date and direct URL source.
+
 ```bash
 # Use Google search operators
 "<problem keyword> software site:id"
@@ -212,15 +226,27 @@ Low Price
 
 ---
 
-### Step 3: User Research
+### Step 3: User Research & Evidence Rule
 
 Goal: Validate market assumptions using qualitative data (interviews) and quantitative data (surveys).
+
+> ⚠️ **MANDATORY EVIDENCE RULE FOR PRIMARY RESEARCH**:
+> - Primary research data (interviews, surveys, WTP) **MUST COME FROM REAL HUMAN USERS**.
+> - Agents are **STRICTLY PROHIBITED** from inventing fictional interview quotes or synthetic survey percentages.
+> - If research has not yet been executed, the agent drafts the research instruments (interview guide, survey form), marks outputs as `PENDING`, and sets gate status to **`PENDING_PRIMARY_RESEARCH`**.
+> - Persona generated before empirical validation MUST be labeled as **`Proto-Persona (Hipotesis)`**.
+
+**Data Confidence Legend**:
+- ✅ **VERIFIED**: Empirical evidence from real interviews, survey results, or cited primary sources (with date & URL).
+- 🔶 **ASSUMPTION**: Working hypothesis that must be cataloged in the Assumption Register and tested.
+- ❓ **UNKNOWN**: Critical information gap requiring discovery before coding.
 
 #### 3.1 Interview Guide (10+ Users, 30-45 Min Each)
 
 **Target Respondents**:
-- **For B2B**: Decision makers (Director, Finance Manager, IT Manager).
-- **For B2C**: Active users of existing solutions or manual workarounds.
+- **Group A: End-Users / Daily Operators** (e.g., Cashiers, clerks, operational staff) $\rightarrow$ Daily friction, error rates, workarounds.
+- **Group B: Economic Buyers / Decision Makers** (e.g., Owners, Directors, Finance Managers) $\rightarrow$ Budget authority, willingness to pay, ROI expectations.
+- **Group C: Ecosystem Stakeholders / Regulators / Enablers** (e.g., Banks, tax consultants, auditors) $\rightarrow$ Statutory compliance, integration requirements, reporting standards.
 
 **Interview Structure (5-Act Framework)**:
 1. **Warm-Up (5 min)**: Introduce self, explain research objective, request recording permission.
@@ -244,6 +270,17 @@ Q: "If the software you use disappeared tomorrow, what would you do?"
 - Respondent claims "all features are important" without clear priorities.
 
 #### 3.2 Survey Design (50+ Respondents, Quantitative Validation)
+
+**Sample Size Thresholds by Project Scale**:
+- **Standard / Enterprise**: $\ge 50$ respondents ($\ge 30\%$ intent-to-buy = $\ge 15$ people).
+- **Medium / B2B SaaS**: $\ge 30$ respondents ($\ge 30\%$ intent-to-buy = $\ge 9$ people).
+- **Solo SaaS / M00-lite**: $\ge 5$ in-depth interviews + behavioral intent test (waitlist / pre-orders) OR $\ge 30$ survey respondents.
+
+#### 3.2.1 Behavioral Intent Validation (Beyond Stated Intent)
+*Stated intent ("I would buy") is weak. Validate with cheap behavioral experiments:*
+- **Landing Page + Waitlist**: Target $\ge 5\%$ visitor-to-waitlist conversion from $\ge 100$ targeted visits.
+- **Pre-Orders / Refundable Deposits**: Target $\ge 5$ paying deposits before writing backend code.
+- **Letter of Intent (LOI) / B2B Pilot**: Target $\ge 2$ signed LOIs with commitment to test the software.
 
 Use Google Forms / Typeform / Tally for structured surveys:
 
@@ -287,9 +324,9 @@ Q: If this software were available today at Rp [X]/month, would you:
    [ ] Not interested
 ```
 
-**Gate Pass Criteria**: Minimum 30% of respondents choose "Definitely buy" or "Probably buy" (from minimum 50 respondents = 15 people).
+**Gate Pass Criteria**: Minimum 30% of respondents choose "Definitely buy" or "Probably buy" (or behavioral waitlist conversion $\ge 5\%$).
 
-#### 3.3 Persona Creation (Jobs-to-be-Done Framework)
+#### 3.3 Persona Creation - Proto-Persona (Hipotesis)
 
 Create 2-3 primary personas based on interview results:
 
@@ -511,12 +548,28 @@ Pillar 3: Actionable Insights (not just data dumps)
 - Value Proposition Canvas (Gains/Pains/Jobs mapping).
 - 3-5 Strategic Pillars with initiatives and success criteria.
 
+#### 4.6 Unit Economics & Financial Viability
+*Every product must validate basic unit economics before engineering starts:*
+- **Target Price**: Rp [X]/month
+- **Estimated CAC (Customer Acquisition Cost)**: Rp [Y] via organic, ads, or direct sales
+- **Estimated LTV (Customer Lifetime Value)**: $\text{ARPU} \times \text{Average Lifespan in Months}$
+- **Payment Gateway Fee**: QRIS (0.7%), Virtual Account (Rp 2.000–4.000/tx), Credit Card (2.9% + Rp 2.000)
+- **Tax Impact**: PPN 11% (UU HPP) + PPh Final 0.5% (PP 55/2022)
+- **Gross Margin**: Must be $\ge 70\%$ for software sustainability.
+
+#### 4.7 Kill Criteria (Kriteria Berhenti)
+*Explicit stopping rules to avoid wasting months on a dead-end project:*
+1. **Market Kill**: Survey intent-to-buy $<30\%$ AND waitlist conversion $<2\%$ from 200 targeted visitors.
+2. **Economic Kill**: Calculated CAC exceeds LTV / 3 after initial marketing tests.
+3. **Solo Feasibility Kill**: Architecture requires complex real-time multi-master offline synchronization or custom banking protocols that exceed 1 solo developer's capacity.
+
 ---
 
 ## 3. Adaptation Based on Project Scale
 
 | Aspect | Solo Dev Product (Self-Initiated) | B2B SaaS Client | Enterprise Client |
 | :--- | :--- | :--- | :--- |
+| **Recommended Path** | **M00-lite** (1-page validation: Assumption Register + 5 interviews + waitlist) | Full M00 (Market, Competitors, 30+ Survey, Strategy) | Enterprise M00 (Commissioned research, compliance audit, multi-stakeholder) |
 | **Market Research Depth** | Quick TAM/SAM/SOM estimate (1-2 days) using secondary data | Formal industry research, conduct primary research (50+ survey respondents) | Commissioned report (partnership with market research consultancy), in-depth compliance audit |
 | **Competitive Analysis** | 3-5 primary competitors, baseline feature matrix | 5-10 competitors, full SWOT, detailed pricing benchmarking | 10+ competitors, Porter's Five Forces, IP/patent landscape analysis |
 | **User Research** | 5-10 interviews, 30+ survey respondents | 10-20 stakeholder interviews, 50-100 survey respondents, persona validation workshop | Multi-phase research (discovery → validation → usability testing), 30+ interviews, 200+ surveys, ethnographic study |
@@ -526,15 +579,16 @@ Pillar 3: Actionable Insights (not just data dumps)
 
 ## 4. Output Artifacts (Deliverables)
 
-The final deliverables of Module 00 are **4 PM documents** created using the templates in the `templates/01-discovery-commercial/` directory:
+The final deliverables of Module 00 are **4 PM documents** (or 1 document for **M00-lite**):
 
-1. **`docs/pm/MARKET_RESEARCH.md`**: TAM/SAM/SOM findings, industry trends, regulatory landscape.
+1. **`docs/pm/M00_LITE.md`** (For Solo SaaS / M00-lite path): Single consolidated document containing Assumption Register, 5 interview summaries, waitlist test results, and kill criteria. (Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
+2. **`docs/pm/MARKET_RESEARCH.md`**: TAM/SAM/SOM findings, industry trends, regulatory landscape.
    - Template: `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`
-2. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: 5-10 competitor analysis, feature matrix, SWOT, positioning map.
+3. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: 5-10 competitor analysis, feature matrix, SWOT, positioning map.
    - Template: `templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md`
-3. **`docs/pm/USER_RESEARCH_REPORT.md`**: Interview/survey summaries, JTBD personas, user journey, pain matrix.
+4. **`docs/pm/USER_RESEARCH_REPORT.md`**: Interview/survey summaries, JTBD personas, user journey, pain matrix.
    - Template: `templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md`
-4. **`docs/pm/PRODUCT_STRATEGY.md`**: Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars.
+5. **`docs/pm/PRODUCT_STRATEGY.md`**: Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars.
    - Template: `templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md`
 
 > 📁 **ABSOLUTE FILE LOCATION RULE**:
@@ -550,18 +604,19 @@ After all four PM documents have been written:
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 01 within the same turn!**
 
 2. **SELF-VERIFICATION CHECKLIST**:
-   - [ ] `read_file('docs/pm/MARKET_RESEARCH.md')` → Confirm TAM/SAM/SOM exists, data sources cited
-   - [ ] `read_file('docs/pm/COMPETITIVE_LANDSCAPE.md')` → Min 5 competitors, feature matrix present, positioning map present
-   - [ ] `read_file('docs/pm/USER_RESEARCH_REPORT.md')` → Min 10 interview insights, survey results (sample size ≥30), 2-3 complete personas
-   - [ ] `read_file('docs/pm/PRODUCT_STRATEGY.md')` → Vision/Mission written, North Star Metric defined with formula + rationale, 3-5 Strategic Pillars present
+   - [ ] Read and verify file `docs/pm/MARKET_RESEARCH.md` (or `docs/pm/M00_LITE.md`) $\rightarrow$ Ensure TAM/SAM/SOM is realistic and sources are verified.
+   - [ ] Read and verify file `docs/pm/COMPETITIVE_LANDSCAPE.md` $\rightarrow$ Min 3–5 competitors tested hands-on, free/government alternatives checked.
+   - [ ] Read and verify file `docs/pm/USER_RESEARCH_REPORT.md` $\rightarrow$ Multi-stakeholder interviews, primary data strictly empirical.
+   - [ ] Read and verify file `docs/pm/PRODUCT_STRATEGY.md` $\rightarrow$ Vision/Mission, North Star Metric, and Kill Criteria defined.
 
 3. **GATE PASS CRITERIA** (Market Validation):
-   - [ ] **Intent-to-Buy ≥30%**: From a survey of at least 50 respondents, at least 30% (15 people) select "Definitely buy" or "Probably buy".
+   - [ ] **Intent-to-Buy $\ge 30\%$ (or Waitlist conversion $\ge 5\%$)**: From real empirical sample. If primary research has not been executed, gate status is **`PENDING_PRIMARY_RESEARCH`**.
    - [ ] **Competitive Moat Identified**: At least 1 clear differentiator that competitors lack or cannot easily replicate (e.g., offline-first architecture, specific niche focus).
    - [ ] **North Star Metric Measurable**: NSM can be tracked with technical instrumentation (event logging, DB queries).
 
    **If Gate Pass FAILS**:
    - Intent-to-buy <30% → **PIVOT or STOP**: Idea is unvalidated; do not proceed to development.
+   - Kill criteria triggered → **STOP PROJECT IMMEDIATELY**.
    - No competitive moat → **PIVOT positioning** or identify alternative unique value propositions.
    - NSM not measurable → Revise NSM until it can be instrumented.
 

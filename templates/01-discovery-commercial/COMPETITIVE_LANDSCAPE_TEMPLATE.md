@@ -4,6 +4,21 @@
 **Created By**: [Team Name / Solo Dev]  
 **Document Version**: 1.0  
 **Target Market**: [Indonesia / SEA / Global]
+**Audit Status**: [Hands-On Tested / Secondary Research Only]
+
+---
+
+### Data Confidence Legend
+| Icon | Level | Meaning | Rule |
+|:--:|:--|:--|:--|
+| ✅ | **VERIFIED** | Hands-on installed/tested product, verified pricing URL with date, empirical data | Must cite source URL and verification date |
+| 🔶 | **ASSUMPTION** | Extrapolated from competitor reviews, forum posts, or public marketing | Must verify via direct testing |
+| ❓ | **UNKNOWN** | Unknown pricing or feature capability behind sales paywall | Requires qualification call or demo test |
+
+> ⚡ **MANDATORY COMPETITOR TESTING PROTOCOL**:
+> - Do not rely exclusively on landing page bullet points or Capterra/G2 reviews.
+> - **Install & Test**: Download and run the trial/free tier of at least 3 top direct competitors. Record onboarding friction, core action speed, and mobile responsiveness.
+> - **Investigate Free / Government Alternatives**: Explicitly check solutions provided free by authorities or open-source communities.
 
 ---
 
@@ -60,6 +75,18 @@
 
 ---
 
+### 2.4 Free & Government-Provided Alternatives (Mandatory Check)
+
+*Check free statutory platforms or government tools provided in the target domain:*
+
+| Alternative Solution | Sponsoring Entity | Capabilities | Limitations & Friction | Threat Level |
+|:---------------------|:------------------|:-------------|:-----------------------|:------------:|
+| **SIAPIK** | Bank Indonesia | Free statutory accounting & financial reporting for MSMEs | Rigid UI/UX, lacks real-time offline sync, no POS integration | Medium / High |
+| **e-Faktur / DJP Online** | Directorate General of Taxes | Tax invoice issuance and VAT filing | Strictly limited to statutory tax compliance, frequent portal lag | Low |
+| **Community Spreadsheets / Sheets** | Business Communities | Free, flexible templates | Formula corruption risk, zero multi-user RBAC, degrades >5,000 rows | High |
+
+---
+
 ## 3. Feature Matrix Comparison
 
 **Rating Scale**: ✅ (Available & High Quality) | ⚠️ (Available but Suboptimal) | ❌ (Not Available) | ⏳ (Roadmap / Beta)
@@ -103,12 +130,12 @@
 
 ### 4.1 Competitor Pricing Models
 
-| Competitor | Pricing Model | Tier 1 (Entry) | Tier 2 (Standard) | Tier 3 (Premium) | Free Tier? |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Competitor A** | Per-user / month | Rp 50k/user | Rp 150k/user | Rp 500k/user | Yes (max 2 users) |
-| **Competitor B** | Flat subscription | - | Rp 299k/month | Rp 999k/month | No |
-| **Competitor C** | Usage-based | Rp 5/tx | Rp 3/tx (>1,000) | Rp 1/tx (>10k) | Yes (100 tx/month) |
-| **[Your Product]** | [Selected model] | **Rp [X]** | **Rp [Y]** | **Rp [Z]** | **[Yes/No]** |
+| Competitor | Pricing Model | Tier 1 (Entry) | Tier 2 (Standard) | Tier 3 (Premium) | Free Tier? | Sumber URL | Tanggal Verifikasi |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
+| **Competitor A** | Per-user / month | Rp 50k/user | Rp 150k/user | Rp 500k/user | Yes (max 2) | [URL] | [YYYY-MM-DD] |
+| **Competitor B** | Flat subscription | - | Rp 299k/month | Rp 999k/month | No | [URL] | [YYYY-MM-DD] |
+| **Competitor C** | Usage-based | Rp 5/tx | Rp 3/tx (>1k) | Rp 1/tx (>10k) | Yes (100 tx) | [URL] | [YYYY-MM-DD] |
+| **[Your Product]** | [Selected model] | **Rp [X]** | **Rp [Y]** | **Rp [Z]** | **[Yes/No]** | Internal | [YYYY-MM-DD] |
 
 **Average Market Price (Tier 2)**: Rp [X]k/month
 

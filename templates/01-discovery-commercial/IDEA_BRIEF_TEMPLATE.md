@@ -22,6 +22,19 @@
 
 ## 3. The 3-Filter Triage & Market Validation
 
+### 3.0 Premise Testing & Assumption Register (Riskiest Assumption First)
+*Do not accept problem statements in the brief at face value. Catalog and test foundational premises first.*
+
+| ID | Core Premise / Assumption | Risk Level (H/M/L) | Evidence Needed to Validate | Cheap Test Method (RAT) | Kill Threshold (Ambang Gugur) | Status |
+|:---|:--------------------------|:------------------:|:----------------------------|:------------------------|:------------------------------|:-------|
+| PREM-01 | [e.g., Problem is severe enough that users actively seek solutions] | High | Users already tried or paid for workarounds | 5 Discovery interviews | If 0/5 spend money or >2 hrs/wk on this | [Unproven / Tested / Disproven] |
+| PREM-02 | [e.g., Target segment has authority to adopt & pay] | High | Budget authority confirmation from persona | Economic buyer interview (Group B) | No budget authority (<Rp 50k/mo) | [Unproven / Tested / Disproven] |
+| PREM-03 | [e.g., Regulatory barriers allow 1 developer to build MVP legally] | High | Legal checklist & licensing research | Compliance audit in M00/M01 | Direct OJK/BI license required | [Unproven / Tested / Disproven] |
+
+> ⚡ **RULE**: If any High-Risk premise hits its **Kill Threshold**, STOP or PIVOT immediately before proceeding to technical specifications or architecture design.
+
+---
+
 ### 3.1 Problem Statement & Research Methodology
 - **Primary Problem**: [Explain the user's biggest pain point today with concrete numbers]
 - **Current Workarounds / Alternatives**: [How do they solve this problem now? Example: Manual Excel, expensive notary services, Google Drive templates]

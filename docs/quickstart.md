@@ -52,7 +52,7 @@ git init
 
 ---
 
-## The 5-Step MVP Path (Skip 8 Modules)
+## The 5-Step MVP Path (Skip 9 Modules)
 
 ```
 Week 1: Idea → Specs (2 days)
@@ -71,6 +71,8 @@ Week 4: Deploy (2 days)
 - ❌ M07 (QA/SIT) → Manual testing only
 - ❌ M08 (Data Migration) → No legacy data
 - ❌ M09 (UAT) → You are the user
+- ❌ M11 (BAST & Handover) → No external client handover
+- ❌ M13 (Operations & Growth) → Defer to post-launch
 
 ### Do These Only
 - ✅ M04 (UI/UX) → 1 day design
@@ -78,6 +80,11 @@ Week 4: Deploy (2 days)
 - ✅ M06 (Development) → 10 days coding
 - ✅ M10 (Deployment) → 1 day launch
 - ✅ M12 (Warranty) → Self-maintain
+
+> 💡 **For Solo SaaS with Multiple Features (4-10 features)**:
+> Do NOT skip market validation completely. Use the **Solo SaaS Path** defined in `SKILL.md`:
+> `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13`
+> (Validates demand with 5 user interviews and waitlist test via `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
 
 ---
 

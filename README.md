@@ -22,17 +22,17 @@ Works with any tech stack. Built for solo developers, freelancers, consulting te
 
 ## Framework Architecture
 
-**Repository size: ~7MB** (intentionally comprehensive)
-This is a **skill framework/toolkit**, not a minimal starter template:
+**Repository size: ~3.8MB uncompressed framework content (270+ files)** (verified via `./scripts/calculate-size.sh`).
+This is a **comprehensive skill framework/toolkit**, not a minimal starter template:
 
 | Component | Size | Purpose |
 |-----------|------|---------|
-| Module library | 460KB | 14 lifecycle phases with detailed workflows |
-| Template library | 1.8MB | 150+ production-ready templates |
-| Reference guides | 756KB | Playbooks, patterns, deep-dive materials |
+| Module library | 620KB | 14 lifecycle phases with detailed workflows |
+| Template library | 1.8MB | 170+ production-ready templates |
+| Reference guides | 724KB | Playbooks, patterns, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
-| Code patterns | 144KB | 12 reusable patterns (API, testing, deployment, etc.) |
-| Scripts | 96KB | 12 validation and automation tools (6 Bash + 6 PowerShell) |
+| Code patterns | 188KB | 14 reusable patterns (API, testing, deployment, payments, UU PDP, etc.) |
+| Scripts | 200KB | 20+ validation and automation tools (Bash + PowerShell) |
 
 **Why this size?**  
 Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.

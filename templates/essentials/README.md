@@ -12,10 +12,13 @@
 **Time**: 2 hours | **Templates**: 5
 
 1. `PROJECT_LITE.md` - All-in-one spec (1 hour)
-2. `DESIGN.md` - Design tokens (30 min)
-3. `AGENTS.md` - AI agent instructions (15 min)
-4. `TODO.md` - Task queue (20 min)
-5. `RUNBOOK_LOCAL.md` - Setup guide (20 min)
+2. `PROJECT_STATE.md` - Lifecycle state & cross-session handoff (15 min)
+3. `DESIGN.md` - Design tokens (30 min)
+4. `REQUIREMENT_MATRIX.md` - Traceability from user need to verification (30 min)
+5. `VERIFICATION_PLAN.md` - Verification plan & gate protocols (20 min)
+6. `AGENTS.md` - AI agent instructions (15 min)
+7. `TODO.md` - Task queue (20 min)
+8. `RUNBOOK_LOCAL.md` - Setup guide (20 min)
 
 **Skip**: SOW, BAST, warranty (no client)
 

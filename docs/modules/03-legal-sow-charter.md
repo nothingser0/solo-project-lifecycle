@@ -185,7 +185,7 @@ After `docs/pm/SOW_CONTRACT.md` (consolidated charter + contract) has been writt
 1. **Verify output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/SOW_CONTRACT.md"` → must return `True`
    - Bash/Zsh: `test -f "docs/pm/SOW_CONTRACT.md" && echo "True" || echo "False"`
-   - Read tool: `read_file('docs/pm/SOW_CONTRACT.md')` → must succeed without error
+   - Read and verify file `docs/pm/SOW_CONTRACT.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -213,7 +213,7 @@ After `docs/pm/SOW_CONTRACT.md` (consolidated charter + contract) has been writt
 
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 04 within the same turn!**
 2. **CONTENT VERIFICATION (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/SOW_CONTRACT.md')` → Confirm milestone structure documented (or BYPASS flag for internal)
+   - [ ] Read and verify file `docs/pm/SOW_CONTRACT.md` → Confirm milestone structure documented (or BYPASS flag for internal)
    - [ ] Confirm Part I (Project Charter) section exists with baseline dates
    - [ ] Single PIC identified with contact info
    - [ ] Liability cap clause present

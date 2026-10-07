@@ -4,6 +4,16 @@
 **Created By**: [Team Name / Solo Dev]  
 **Document Version**: 1.0  
 **Status**: [Draft / Final / Under Review]
+**Confidence Score**: [✅ High (Empirical) / 🔶 Medium (Mixed) / ❓ Low (Assumption-heavy)]
+
+---
+
+### Data Confidence Legend
+| Icon | Level | Meaning | Rule |
+|:--:|:--|:--|:--|
+| ✅ | **VERIFIED** | Empirical data from real primary sources, official government databases, or validated transactions | Must cite source URL and verification date |
+| 🔶 | **ASSUMPTION** | Modeled hypothesis based on secondary insights | Must be tagged with Assumption ID ([ASM-MKT-xx]) |
+| ❓ | **UNKNOWN** | Critical gap requiring immediate research | Must be resolved before proceeding |
 
 ---
 
@@ -23,22 +33,29 @@
 
 ### 2.1 Total Addressable Market (TAM)
 
-**TAM Definition**: The total potential market demand assuming zero geographic boundaries, competitors, or resource constraints.
+> ⚠️ **VANITY TAM WARNING**: Unfiltered top-down TAM (e.g. 64M MSMEs $\times$ software price = Rp 76.8T) is a vanity metric that misleads founders. Real software viability depends on the bottom-up SAM funnel below.
 
 **Calculation Method**:
 ```
 TAM = [Total Market Units] × [Annual ARPU/ARPA]
 ```
 
-**Calculation**:
+**Calculation & Funnel Modeling**:
 ```python
-# Example: HR SaaS for Indonesian SMEs
-total_indonesian_smes = 64_000_000  # BPS / Ministry of Cooperatives & SMEs data 2026
-annual_arpu = 1_200_000  # Rp 100k/month × 12 months
+# Example: Accounting / Retail SaaS for Indonesian MSMEs
+# Live data portals: BPS (https://www.bps.go.id), Kemenkop-UKM (https://kemenkopukm.go.id)
 
-TAM = total_indonesian_smes * annual_arpu
-TAM = IDR 76.8 trillion
+total_indonesian_msmes = 64_000_000  # [ASM-MKT-01] Total MSMEs nationwide
+annual_arpu = 1_200_000             # Rp 100k/month × 12 months
 
+# Vanity TAM (Unfiltered):
+vanity_tam_idr = total_indonesian_msmes * annual_arpu  # IDR 76.8 trillion
+
+# Realistic Filtered Funnel (SAM):
+target_vertical_units = total_indonesian_msmes * 0.15  # [ASM-MKT-02] Retail & service with cashier (~9.6M)
+digital_equipped_units = target_vertical_units * 0.12  # [ASM-MKT-03] Have PC/Smartphone & data (~1.15M)
+active_software_budgeters = digital_equipped_units * 0.08 # [ASM-MKT-04] Actively pay for software (~92,000)
+```
 # Or in USD
 TAM_usd = 64_000_000 * (100 / 15_000)  # $100/month
 TAM_usd = $5.1 billion
@@ -47,11 +64,10 @@ TAM_usd = $5.1 billion
 **TAM Result**: Rp [X] trillion / $[Y] billion
 
 **Data Sources**:
-- [ ] BPS (Central Statistics Agency): [link / data year]
-- [ ] Ministry of Cooperatives & SMEs: [link]
-- [ ] Statista: [link]
-- [ ] Gartner/Forrester Report: [report title, year]
-- [ ] Internal data / primary survey: [methodology description]
+- [ ] BPS (Badan Pusat Statistik): [https://www.bps.go.id - Data Tahun YYYY] (Verified: [YYYY-MM-DD])
+- [ ] Kementerian Koperasi & UKM: [https://kemenkopukm.go.id - Data Tahun YYYY] (Verified: [YYYY-MM-DD])
+- [ ] Asosiasi Industri / Bank Indonesia: [link] (Verified: [YYYY-MM-DD])
+- [ ] Statista / Tech in Asia / DailySocial: [link] (Verified: [YYYY-MM-DD])
 
 ---
 
@@ -212,11 +228,14 @@ Innovators (2.5%) → Early Adopters (13.5%) → Early Majority (34%) → Late M
 
 | Regulation | Brief Description | Product Impact | Compliance Action Required |
 | :--- | :--- | :--- | :--- |
+| **PSE Lingkup Privat** | Komdigi (Permen Kominfo No. 5/2020 jo. 10/2021) | Wajib mendaftar sebelum layanan beroperasi komersial | [ ] Daftar akun OSS RBA<br>[ ] Registrasi PSE Privat Komdigi sebelum Go-Live |
 | **UU PDP No. 27/2022** | Personal Data Protection | Mandatory consent management, encryption at-rest/transit, 72h data breach notification | [ ] Implement consent management UI<br>[ ] Setup AES-256 encryption<br>[ ] Draft incident response plan |
+| **Perpajakan (PPN/PKP)** | UU HPP No. 7/2021 (PPN PMSE 11%) & PP 55/2022 | Aturan PPN 11% untuk SaaS dan PPh Final 0.5% omzet UMKM | [ ] Pasang PPN 11% jika PKP<br>[ ] Atur NPWP & rekening penampung resmi |
+| **Legalitas & KBLI** | NIB melalui OSS-RBA (KBLI 62019 / 62029 / 63122) | Dasar hukum penerbitan invoice & integrasi payment gateway | [ ] Terbitkan NIB perorangan/badan<br>[ ] Pastikan KBLI sesuai kegiatan SaaS |
+| **Hak Merek DJKI** | UU No. 20/2016 tentang Merek dan Indikasi Geografis | Perlindungan nama software dari gugatan pihak ketiga | [ ] Cek database PDKI (pdki-indonesia.dgip.go.id)<br>[ ] Daftarkan merek kelas 9/42 |
 | **UU ITE No. 19/2016** | Electronic Transactions & Signatures | E-signatures legally binding via certified Electronic Certificate Providers (PSrE) | [ ] Integrate certified PSrE API<br>[ ] Or provide clear non-certified digital signature disclaimer |
-| **OJK Regulations** | (If Fintech / Payments) | Mandatory financial service provider licensing, or partner with licensed gateway | [ ] Use licensed gateway (Midtrans/Xendit)<br>[ ] NEVER store raw credit card data |
+| **Fintech / OJK / BI** | POJK No. 10/2022 & PBI QRIS/Payment Systems | Regulasi ketat jika menyentuh dana / kredit pengguna | [ ] Gunakan gateway berizin (Midtrans/Xendit)<br>[ ] JANGAN pegang dana escrow sendiri |
 | **Ministry of Health** | (If Healthtech) | Electronic medical records must be secured, practitioners require valid licenses (SIP) | [ ] Verify practitioner license at onboarding<br>[ ] Encrypt medical records, maintain audit trails |
-| **Ministry of Education** | (If Formal Edtech) | Formal educational delivery permits | [ ] Not applicable if non-formal online courses |
 
 ---
 
@@ -244,7 +263,26 @@ Innovators (2.5%) → Early Adopters (13.5%) → Early Majority (34%) → Late M
 
 ---
 
-## 5. Conclusions & Recommendations
+## 5. Unit Economics & Feasibility Checks
+
+### 5.1 Unit Economics Model
+- **Target Subscription Price**: Rp [X] / month (or Rp [Y] / year)
+- **Estimated Blended CAC**: Rp [A] (Target: CAC $\le \frac{1}{3} \times \text{LTV}$)
+- **Target Customer Lifespan**: [Z] months $\rightarrow$ **Estimated LTV**: Rp [LTV]
+- **Payment Gateway Fee**: QRIS (0.7%), Virtual Account (Rp 2.000–4.000/tx), Kartu Kredit (2.9% + Rp 2.000)
+- **Statutory Tax**: PPN 11% (UU HPP)
+- **Gross Margin**: Target $\ge 70\%$ (after server hosting + payment fee)
+
+### 5.2 Kill Criteria
+*If any of the following conditions are met, the project MUST BE TERMINATED or PIVOTED:*
+1. **Market Kill**: Waitlist conversion $< 2\%$ after 200 targeted visits OR survey intent-to-buy $< 30\%$.
+2. **Financial Kill**: Customer Acquisition Cost (CAC) exceeds $\text{LTV} / 2$ during initial marketing tests.
+3. **Regulatory Kill**: Business model legally mandates banking or direct lending capital licenses exceeding solo founder capacity.
+4. **Technical Feasibility Kill**: Core architecture demands complex multi-master distributed synchronization exceeding 1 developer's capacity.
+
+---
+
+## 6. Conclusions & Recommendations
 
 **Market Opportunity Grade**: [A / B / C / D / F]
 

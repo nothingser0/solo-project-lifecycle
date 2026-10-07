@@ -7,10 +7,10 @@
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, design patterns, and anti-pattern detection for AI-generated code)
 > - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Coding execution progress tracker sheet, backend, frontend, integration checklists, & review checkpoints)
 > - `templates/04-dev-execution/scripts/check-dependencies.sh` (Pre-install dependency compatibility and deprecation validation script)
-> - `references/stacks/nextjs-15-quickstart.md` (Next.js 15 App Router, React Server Components, Tailwind, Supabase setup)
-> - `references/stacks/laravel-11-quickstart.md` (Laravel 11, Inertia.js, PostgreSQL/MySQL, Sanctum auth quickstart)
-> - `references/stacks/django-5-quickstart.md` (Django 5, DRF, PostgreSQL, Vite/Tailwind, Celery quickstart)
-> - `references/stacks/go-1.23-quickstart.md` (Go 1.23, Chi/Echo router, pgx, SQL migrations, Docker quickstart)
+> - `references/stacks/nextjs-quickstart.md` (Next.js App Router, React Server Components, Tailwind, Supabase setup)
+> - `references/stacks/laravel-quickstart.md` (Laravel, Inertia.js, PostgreSQL/MySQL, Sanctum auth quickstart)
+> - `references/stacks/django-quickstart.md` (Django, DRF, PostgreSQL, Vite/Tailwind, Celery quickstart)
+> - `references/stacks/go-quickstart.md` (Go, Chi/Echo router, pgx, SQL migrations, Docker quickstart)
 > - `references/technical/APM_PROFILING_RUNBOOK.md` (APM tracing, profiling CPU/memory bottlenecks, slow queries)
 > - `templates/04-dev-execution/AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md` (Automated AI pre-merge code review checklist)
 > - `templates/04-dev-execution/AI_PROMPT_LIBRARY_TEMPLATE.md` (Standardized engineering prompt library for coding agents)
@@ -2476,7 +2476,7 @@ After coding is complete and the `smoke-test` script passes 100%:
    - [ ] `terminal('pnpm run type-check')` → Exit code 0 (no TypeScript errors)
    - [ ] `terminal('pnpm run test:smoke')` → All assertions passed
    - [ ] `terminal('pnpm audit')` → No critical vulnerabilities
-   - [ ] `read_file('VERIFY_LOCAL.md')` → Documented test results exist
+   - [ ] Read and verify file `VERIFY_LOCAL.md` → Documented test results exist
    - [ ] `terminal('git log -1')` → Latest commit exists on staging branch
 3. Display summary of local development results to the user:
    - Compilation and local smoke test results

@@ -411,7 +411,7 @@ After the system is officially Live in Production and the PVT report is publishe
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/GO_LIVE_REPORT.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/GO_LIVE_REPORT.md')` → must succeed without error
+   - Read and verify file `docs/pm/GO_LIVE_REPORT.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -439,7 +439,7 @@ After the system is officially Live in Production and the PVT report is publishe
 
 1. **STRICTLY PROHIBITED from directly handing over repositories, root passwords, or calling tools for Module 11 within the same turn!**
 2. **Verify production deployment**:
-   - [ ] `read_file('docs/pm/GO_LIVE_REPORT.md')` → Confirm PVT tests PASS
+   - [ ] Read and verify file `docs/pm/GO_LIVE_REPORT.md` → Confirm PVT tests PASS
    - [ ] Confirm domain live with valid SSL (https://app.client.com accessible)
    - [ ] Confirm monitoring active (Sentry DSN, uptime checker)
    - [ ] Confirm production transaction tested successfully

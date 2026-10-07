@@ -14,12 +14,13 @@ $Gates = @{
     "M00" = @{
         Name = "Product Discovery & Strategy"
         Required = @(
-            "docs/pm/MARKET_RESEARCH.md"
+            "docs/pm/MARKET_RESEARCH.md",
+            "docs/pm/COMPETITIVE_LANDSCAPE.md",
+            "docs/pm/USER_RESEARCH_REPORT.md",
+            "docs/pm/PRODUCT_STRATEGY.md"
         )
         Optional = @(
-            "docs/pm/COMPETITIVE_LANDSCAPE.md",
-            "docs/pm/COMPETITOR_ANALYSIS.md",
-            "docs/pm/PRODUCT_STRATEGY.md"
+            "docs/pm/M00_LITE.md"
         )
     }
     "M01" = @{
@@ -161,8 +162,15 @@ $foundFiles = @()
 
 # Check required files
 Write-Host "`nRequired files:" -ForegroundColor White
+if ($Module -eq "M00" -and (Test-Path "docs/pm/M00_LITE.md")) {
+    Write-Host "  [INFO] Detected M00-lite rapid validation path" -ForegroundColor Cyan
+    $gate.Required = @("docs/pm/M00_LITE.md")
+}
 foreach ($file in $gate.Required) {
     $pathExists = Test-Path $file
+    if (-not $pathExists -and $file -eq "docs/pm/COMPETITIVE_LANDSCAPE.md" -and (Test-Path "docs/pm/COMPETITOR_ANALYSIS.md")) {
+        $pathExists = $true
+    }
     if (-not $pathExists -and $file -eq "DESIGN.md" -and (Test-Path "docs/harness-root/DESIGN.md")) {
         $pathExists = $true
     }
@@ -181,6 +189,17 @@ foreach ($file in $gate.Required) {
     } else {
         Write-Host "  [ERROR] $file (MISSING)" -ForegroundColor Red
         $missingRequired += $file
+    }
+}
+if ($Module -eq "M00") {
+    $userResearchFile = if (Test-Path "docs/pm/M00_LITE.md") { "docs/pm/M00_LITE.md" } elseif (Test-Path "docs/pm/USER_RESEARCH_REPORT.md") { "docs/pm/USER_RESEARCH_REPORT.md" } else { $null }
+    if ($userResearchFile) {
+        $content = Get-Content $userResearchFile -Raw
+        if ($content -match "PENDING_PRIMARY_RESEARCH") {
+            Write-Host "  [WARN] Gate status: PENDING_PRIMARY_RESEARCH (Real user validation required)" -ForegroundColor Yellow
+        } elseif ($content -match "PASS" -or $content -match "intent.*[3-9][0-9]%" -or $content -match "intent.*100%") {
+            Write-Host "  [OK] Market validation gate criteria verified" -ForegroundColor Green
+        }
     }
 }
 
