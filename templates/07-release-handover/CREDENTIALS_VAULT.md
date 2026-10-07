@@ -145,7 +145,7 @@ Notes: PostgreSQL production database
 ```
 Title: Stripe API Key
 Type: API Credential
-API Key: sk_live_xxxxx
+API Key: <REPLACE_ME_PRODUCTION_SECRET_KEY>
 API Secret: [if applicable]
 Webhook Secret: whsec_xxxxx
 Notes: Payment processing (live mode)

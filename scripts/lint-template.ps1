@@ -22,15 +22,33 @@ $issues = @()
 $warnings = @()
 
 # Check 1: Placeholder detection
-$placeholders = @(
-    "\[YOUR_.*?\]",
-    "\[FILL.*?\]",
-    "\[TODO.*?\]",
-    "\[REPLACE.*?\]",
-    "xxx",
-    "yyy",
-    "zzz"
-)
+$isRawTemplate = ($File -match "templates[\\/]" -or $File -match "_TEMPLATE")
+if ($isRawTemplate) {
+    $placeholders = @(
+        "\[FILL.*?\]",
+        "\[TODO:.*?\]",
+        "\[REPLACE_ME_TEST.*?\]",
+        "PLACEHOLDER",
+        "FIXME",
+        "<INSERT",
+        "<DESCRIBE",
+        "<LIST"
+    )
+} else {
+    $placeholders = @(
+        "\[YOUR_.*?\]",
+        "\[FILL.*?\]",
+        "\[TODO.*?\]",
+        "\[REPLACE.*?\]",
+        "\[Nama.*?\]",
+        "\[isi.*?\]",
+        "\[Client.*?\]",
+        "\[Your.*?\]",
+        "xxx",
+        "yyy",
+        "zzz"
+    )
+}
 
 foreach ($pattern in $placeholders) {
     if ($content -match $pattern) {
@@ -43,8 +61,8 @@ foreach ($pattern in $placeholders) {
 
 # Check 2: Empty sections
 $emptyPatterns = @(
-    "##\s+.*?\n\s*\n\s*##",  # Empty section
-    "###\s+.*?\n\s*\n\s*###" # Empty subsection
+    "(?m)^##\s+[^\r\n]+\r?\n\s*\r?\n\s*^##\s+",   # Empty H2 section
+    "(?m)^###\s+[^\r\n]+\r?\n\s*\r?\n\s*^###\s+"  # Empty H3 subsection
 )
 foreach ($pattern in $emptyPatterns) {
     if ($content -match $pattern) {

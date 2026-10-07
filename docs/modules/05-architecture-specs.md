@@ -1446,7 +1446,7 @@ Every `PRD.md` bridges business scope into robust technical reality. The archite
    - Multi-tenant / organizational data isolation enforced via RLS policies.
    - Spreadsheet/CSV exports sanitize formula injection characters (`=`, `+`, `-`, `@`, `\t`, `\r`).
 6. **Statutory & Sector Regulatory Compliance (Domain-Conditional)**:
-   - If tax or statutory calculations are in scope: Cite verified, date-checked legal citations (e.g., PPh Final UMKM PP 55/2022 for commerce, PPh 21 TER PMK 168/2023 for HRIS payroll) with mathematical formulas.
+   - If tax or statutory calculations are in scope: Cite verified, date-checked legal citations (e.g., PPh Final UMKM PP 55/2022 jo. PP 20/2026 for commerce, PPh 21 TER PMK 168/2023 for HRIS payroll) with mathematical formulas.
    - Persistent in-app legal disclaimers protecting against liability or malpractice claims.
    - For non-statutory projects (e.g., standard CMS or developer tool): Mark N/A.
 7. **Release Acceptance Criteria (Given-When-Then BDD — Universal)**:

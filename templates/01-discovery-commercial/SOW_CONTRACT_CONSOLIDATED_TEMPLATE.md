@@ -43,12 +43,12 @@ To prevent conflicting directions and ensure solo developer execution efficiency
 
 | Milestone | Key Deliverable | Target Timeline | Associated Payment Status |
 | :---: | :--- | :--- | :---: |
-| **M-01** | Scope, Charter, & SOW Agreed | Week 1 | Milestone 1 (Down Payment Received) |
-| **M-02** | UI/UX Prototyping & Architecture (FSD) | Week 3 | Prerequisite to Start Coding |
-| **M-03** | Core Backend & Alpha Release | Week 6 | Milestone 2 |
-| **M-04** | Complete Integration & Staging (SIT Pass) | Week 9 | Milestone 3 |
-| **M-05** | UAT Pass & Production Go-Live | Week 11 | Milestone 4 (100% Final Settlement) |
-| **M-06** | Repository Handover & Signed BAST | Week 12 | Project Completed / Warranty Active |
+| **M-01** | Scope, Charter, & SOW Agreed | T0 (Kickoff) | Milestone 1 (Down Payment Received) |
+| **M-02** | UI/UX Prototyping & Architecture (FSD) | T0 + 2 weeks | Prerequisite to Start Coding |
+| **M-03** | Core Backend & Alpha Release | T0 + 5 weeks | Milestone 2 (Alpha Settlement) |
+| **M-04** | Complete Integration & Staging (SIT Pass) | T0 + 8 weeks | Milestone 3 (Beta Settlement) |
+| **M-05** | UAT Pass & Production Go-Live | T0 + 11 weeks | Milestone 4 (100% Final Settlement) |
+| **M-06** | Repository Handover & Signed BAST | T0 + 12 weeks | Project Completed / Warranty Active |
 
 ---
 
@@ -98,12 +98,21 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 ### 3. Compensation Value & Payment Milestone Schedule
 
 1. **Total Contract Value**: Rp [Numeric Amount] (*[Amount in words in Rupiah]*), exclusive of Value Added Tax (VAT/PPN) and third-party infrastructure subscription fees (servers, cloud storage, paid APIs).
-   - **Tax Regulatory Clause**: Applicable taxes (VAT/PPN, PPh 23) follow Indonesian tax laws in force upon invoice issuance (including UU HPP PPN 12% adjustments).
-2. **Payment Milestones (Installments)**:
-   - **Milestone 1 (Down Payment / DP 30% - 50%)**: Amounting to Rp [Amount], payable upon the signing of this agreement as a prerequisite to commencing work.
+   - **Tax Regulatory Clause**: Applicable taxes (PPN 11% under UU HPP No. 7/2021, and PPh 23 if corporate client) follow statutory tax regulations in force upon invoice issuance.
+2. **Payment Milestones (Must sum to exactly 100%)**:
+   
+   *Standard 4-Phase Schedule (Recommended for Medium/Large Projects)*:
+   - **Milestone 1 (Down Payment / DP 40%)**: Amounting to Rp [Amount], payable upon contract signing as a prerequisite to commencing work.
    - **Milestone 2 (Alpha Delivery 25%)**: Amounting to Rp [Amount], payable after core backend engine functionality and basic interfaces are verified in local/staging environments.
-   - **Milestone 3 (Beta Delivery & SIT 25%)**: Amounting to Rp [Amount], payable after all modules are integrated and ready for User Acceptance Testing (UAT).
-   - **Milestone 4 (Final Settlement 10% - 20%)**: Amounting to Rp [Amount], payable no later than 7 (seven) business days after the UAT Sign-off is approved, prior to the handover of source code repositories and BAST.
+   - **Milestone 3 (Beta Delivery & SIT 20%)**: Amounting to Rp [Amount], payable after all modules are integrated and ready for User Acceptance Testing (UAT).
+   - **Milestone 4 (Final Settlement 15%)**: Amounting to Rp [Amount], payable within 7 (seven) business days after UAT Sign-off is approved, prior to source code repository and BAST handover.
+   *(Total: 40% + 25% + 20% + 15% = 100%)*
+
+   *Alternative 3-Phase Schedule (For Small / Accelerated Projects)*:
+   - **Milestone 1 (Down Payment / DP 50%)**: Rp [Amount], upon signing.
+   - **Milestone 2 (Beta / Staging 30%)**: Rp [Amount], upon SIT approval.
+   - **Milestone 3 (Final Settlement 20%)**: Rp [Amount], upon UAT signoff prior to BAST.
+   *(Total: 50% + 30% + 20% = 100%)*
 3. **Official Payment Account**:
    - Bank: [Bank Name, e.g., Bank Central Asia]
    - Account Number: [Account Number]
@@ -115,6 +124,14 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 1. The Client is required to deliver all data, account access credentials, and materials listed in the Client Dependency Register in a timely manner.
 2. In the event that the Client delays the submission of materials or review feedback exceeding **3 (three) business days**, the project completion target date shall automatically shift by the number of days of delay without penalty to the Developer.
+
+#### Client Dependency Register
+| Dep ID | Client Obligation | Target Delivery Date | Impact If Delayed |
+|:------:|:------------------|:---------------------|:------------------|
+| **DEP-01** | Payment gateway sandbox credentials & SMTP keys | T0 + 7 calendar days | Halts billing and transactional email integration |
+| **DEP-02** | Clean master data in agreed CSV/Excel template | T0 + 10 calendar days | Delays database seeding and integration testing |
+| **DEP-03** | DNS domain and cloud hosting credentials | T0 + 21 calendar days | Postpones staging SSL and production deployment |
+| **DEP-04** | Formal feedback on milestone demos (Single PIC) | Max 3 business days | Shifts go-live date day-for-day without liability |
 
 ---
 
@@ -157,14 +174,14 @@ The Parties agree to maintain the confidentiality of business information, techn
 
 ### 10. Execution of Agreement
 
-This Agreement is executed in duplicate (2 copies), sufficiently stamped with duty stamp (Rp 10,000 per Law No. 10/2020 Article 3 paragraph 1), and holds equal legal force for both parties.
+This Agreement is executed in duplicate (2 copies), sufficiently stamped with legal duty stamp (Rp 10,000 per Law No. 10/2020 Article 3 paragraph 1, verified current), and holds equal legal force for both parties.
+
+> ℹ️ **Legal Note**: Electronic signatures and electronic duty stamps (e-Meterai via official provider Pos Fin / Peruri) are recognized as legally binding under UU ITE No. 19/2016 Article 5 jo. PP 71/2019.
 
 | FIRST PARTY (Client) | SECOND PARTY (Developer) |
 | :---: | :---: |
 | [Client Company Name] | Independent Software Consultant |
-| *(Duty Stamp Rp 10,000)* | *(Duty Stamp Rp 10,000)* |
-
-**Legal Note**: Electronic signatures are recognized as valid under applicable law (UU ITE No. 19/2016 Art. 5 in conjunction with PP 71/2019). Electronic duty stamps may utilize the official Peruri e-Meterai service.
+| *(e-Meterai / Duty Stamp Rp 10,000)* | *(e-Meterai / Duty Stamp Rp 10,000)* |
 | **Name**: [Client PIC Name] | **Name**: [Your Name] |
 | **Title**: [Client Title] | **Title**: Independent Lead Engineer |
 | Date: _____________________ | Date: _____________________ |

@@ -337,12 +337,12 @@ it('submits form on button click', async () => {
   render(<LoginForm onSubmit={onSubmit} />);
 
   await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
-  await userEvent.type(screen.getByLabelText('Password'), 'password123');
+  await userEvent.type(screen.getByLabelText('Password'), '<REPLACE_ME_TEST_PASSWORD>');
   await userEvent.click(screen.getByRole('button', { name: 'Login' }));
 
   expect(onSubmit).toHaveBeenCalledWith({
     email: 'test@example.com',
-    password: 'password123'
+    password: '<REPLACE_ME_TEST_PASSWORD>'
   });
 });
 ```

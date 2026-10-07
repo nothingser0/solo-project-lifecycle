@@ -333,10 +333,10 @@ When in doubt, mark S2. We'll reclassify if needed.
 Now let's practice! I'll give you 15 minutes to test Feature X.
 
 Everyone open staging: https://staging.yourapp.com
-Login with test accounts (I'll paste in chat):
-- User 1: tester1@example.com / password123
-- User 2: tester2@example.com / password123
-- User 3: tester3@example.com / password123
+Login with test accounts (retrieved securely from password manager vault, NEVER pasted into chat):
+- User 1: tester1@example.com / <REPLACE_ME_TEST_ACCOUNT_PASSWORD>
+- User 2: tester2@example.com / <REPLACE_ME_TEST_ACCOUNT_PASSWORD>
+- User 3: tester3@example.com / <REPLACE_ME_TEST_ACCOUNT_PASSWORD>
 
 Task: Test "Create Order" feature
 Follow Test Case #1 in the UAT Workbook (link in chat)

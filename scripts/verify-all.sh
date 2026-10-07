@@ -101,7 +101,7 @@ for cs in "${CASE_STUDIES[@]}"; do
     fi
 done
 
-# 5. Verify Patterns Presence (12 Patterns)
+# 5. Verify Patterns Presence (17 Patterns)
 echo ""
 echo "5. Checking Patterns..."
 PATTERNS=(
@@ -117,6 +117,11 @@ PATTERNS=(
     "patterns/security/authentication.md"
     "patterns/testing/test-pyramid.md"
     "patterns/validation/zod-patterns.md"
+    "patterns/payments/indonesia-payment-gateways.md"
+    "patterns/compliance/uu-pdp-compliance.md"
+    "patterns/offline/offline-first-sync.md"
+    "patterns/observability/logging-monitoring.md"
+    "patterns/localization/i18n-indonesia.md"
 )
 for pat in "${PATTERNS[@]}"; do
     if [ -f "$pat" ]; then
@@ -127,6 +132,22 @@ for pat in "${PATTERNS[@]}"; do
     fi
 done
 
+# 6. Verify Markdown Links and Frontmatter
+echo "6. Checking Markdown Links and SKILL.md Frontmatter..."
+if command -v node >/dev/null 2>&1; then
+    if node scripts/verify-skill-frontmatter.js >/dev/null 2>&1; then
+        echo -e "  ${GREEN}✓${NC} SKILL.md frontmatter valid"
+    else
+        echo -e "  ${RED}✗${NC} SKILL.md frontmatter invalid"
+        ERRORS=$((ERRORS + 1))
+    fi
+    if node scripts/verify-links.js >/dev/null 2>&1; then
+        echo -e "  ${GREEN}✓${NC} Internal Markdown links valid (0 broken)"
+    else
+        echo -e "  ${RED}✗${NC} Broken markdown links found"
+        ERRORS=$((ERRORS + 1))
+    fi
+fi
 echo ""
 if [ $ERRORS -eq 0 ]; then
     echo -e "${GREEN}All integrity checks passed successfully!${NC}"

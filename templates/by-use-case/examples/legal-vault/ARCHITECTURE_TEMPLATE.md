@@ -36,7 +36,7 @@ src/
 │   └── sign/[token]/         # Guest signature public page
 ├── components/               # UI components adapted from Interactive Prototype
 │   ├── ui/                   # Primitive components (Button, Dialog, Input, Table)
-│   └── docs/modules/         # Business domain components (DocumentForm, PDFPreview, SignCanvas)
+│   └── modules/              # Business domain components (DocumentForm, PDFPreview, SignCanvas)
 ├── lib/                      # Shared utilities
 │   ├── db.ts                 # Prisma/PostgreSQL connection instance
 │   ├── crypto.ts             # AES-256-GCM streaming encryption & hashing

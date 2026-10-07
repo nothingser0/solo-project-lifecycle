@@ -48,9 +48,9 @@ echo ""
 # Function to extract phase name
 extract_phase() {
     local line="$1"
-    # Match patterns like "## Phase 1:" or "### Phase 1:" or "# Phase 1:"
-    if echo "$line" | grep -qE '^#{1,3} Phase [0-9]+:'; then
-        echo "$line" | sed -E 's/^#{1,3} (Phase [0-9]+:.*)/\1/'
+    # Match patterns like "## Sprint 0:" or "## Phase 1:"
+    if echo "$line" | grep -qE '^#{1,3} (Sprint [0-9]+:|Phase [0-9]+:)'; then
+        echo "$line" | sed -E 's/^#{1,3} ((Sprint|Phase) [0-9]+:.*)/\1/'
     fi
 }
 

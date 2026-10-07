@@ -4,13 +4,26 @@
 
 ---
 
-## 1. Project Metadata
+## 1. Project Metadata & Document Control
 - **Project Name**: [Application / System Name]
 - **Client / Stakeholder**: [Client Company / Organization]
 - **Solo Developer / Consultant**: [Your Name]
-- **Document Reference**: IDEA_BRIEF-[ID] v1.0
-- **Defined Project Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
+- **Document Reference**: `docs/pm/IDEA_BRIEF.md` (v1.0)
+- **Document Status**: `[DRAFT | IN_REVIEW | APPROVED | FROZEN]`
+- **Defined Project Scale**: [Small (MVP, 3–7 Must) / Solo SaaS (8–15 Must) / Medium (8–15 Must) / Large (16–25 Must) / Enterprise]
 - **Elicitation Completion Date**: [YYYY-MM-DD]
+- **Last Modified**: [YYYY-MM-DD]
+
+### Data Confidence Legend
+| Icon | Level | Meaning | Rule |
+|:--:|:--|:--|:--|
+| ✅ | **VERIFIED** | Validated via client sign-off, live empirical user data, or formal statutory text |
+| 🔶 | **ASSUMPTION** | Working operational hypothesis; must be confirmed before scope freeze |
+| ❓ | **UNKNOWN** | Open requirement or technical uncertainty; blocks sprint scheduling |
+
+### Change Control & Scope Freeze Protocol
+- **Scope Freeze Rule**: Once this document is marked `APPROVED` (for SOW signing) or `FROZEN` (for M06 development), zero features may be added without a formal Change Request (CR).
+- **Change Request (CR) Process**: Any scope modification requires: (1) Description, (2) Impact on dev days, (3) Budget adjustment, and (4) Written approval.
 
 ---
 
@@ -65,18 +78,42 @@
 
 ## 4. Functional Scope Breakdown (MoSCoW)
 
-*Feature inventory allocated across MoSCoW tiers. Respect scale-based limits (Small: 3–7 Must; Medium: 8–15 Must; Large: 16–25 Must; Enterprise: 26–40 Must):*
+> ℹ️ **IN-SCOPE CLARIFICATION**:
+> - **P0 (Must-Have)**: Strictly IN-SCOPE for **Phase 1.0 (MVP Go-Live)**.
+> - **P1 (Should-Have)**: Strictly IN-SCOPE for **Phase 1.5 (Fast-Follow Post-Launch Release)**.
+> - **P2 (Could-Have)**: OUT-OF-SCOPE for initial release; cataloged in Phase 2 Backlog.
+> - **P3 (Won't-Have)**: Formally EXCLUDED from project deliverables.
 
-| Feature ID | Module | Functional Description | Priority | Root Cause Addressed | Acceptance Criteria |
-| :--- | :--- | :--- | :---: | :--- | :--- |
-| **F-01** | [Core / Auth] | [User authentication, session handling, RBAC] | **Must** | Baseline security | Session management, role access enforcement |
-| **F-02** | [Primary Domain] | [Core entity CRUD, search, validation] | **Must** | Primary problem (80%) | Data integrity rules, duplicate prevention |
-| **F-03** | [Core Workflow] | [Primary operational flow, state transitions] | **Must** | Primary bottleneck (80%)| Role authorization gates, audit log emission |
-| **F-04** | [Monetization / Ops]| [Billing engine, subscription / internal admin (or N/A)] | **Must** | Operational sustainability| Trial guards, grace period, manual override |
-| **F-05** | [Compliance / Export]| [Offboarding flow, data export, CSV sanitization] | **Must** | Regulatory compliance | One-click export, sanitizes spreadsheet triggers |
-| **F-06** | [Secondary Workflow]| [Advanced filtering, batch processing, summary reports] | **Should** | Operational efficiency | Fallback manual workaround available |
-| **F-07** | [Integrations / Alert]| [Third-party webhooks, external notifications] | **Could** | Value enhancement | Scheduled if development runs ahead of time |
-| **F-08** | [Deferred Scope] | [Multi-currency, mobile native app, AI copilot] | **Won't** | Post-launch deferral | Formally deferred to Phase 2 |
+### 4.1 MoSCoW Feature Inventory
+*Respect scale limits: Small (3–7 Must), Medium/Solo SaaS (8–15 Must), Large (16–25 Must):*
+
+| Feature ID | Module / Domain | Functional Description | Priority | Est. Effort (Days) | Root Cause Addressed | Target Release | Confidence |
+| :--- | :--- | :--- | :---: | :---: | :--- | :---: | :---: |
+| **F-01** | [Core / Auth] | [User authentication, session handling, RBAC] | **P0 (Must)** | 3 days | Baseline access & security | Phase 1.0 (MVP) | ✅ |
+| **F-02** | [Primary Domain] | [Core entity CRUD, search, input validation] | **P0 (Must)** | 4 days | Primary problem (80%) | Phase 1.0 (MVP) | ✅ |
+| **F-03** | [Core Workflow] | [Primary operational flow, transaction locking] | **P0 (Must)** | 5 days | Primary bottleneck (80%)| Phase 1.0 (MVP) | 🔶 |
+| **F-04** | [Monetization / Ops]| [Billing engine, subscription / admin panel] | **P0 (Must)** | 4 days | Revenue sustainability | Phase 1.0 (MVP) | 🔶 |
+| **F-05** | [Compliance / Export]| [Offboarding flow, data export, CSV sanitization] | **P0 (Must)** | 2 days | Statutory compliance | Phase 1.0 (MVP) | ✅ |
+| **F-06** | [Secondary Workflow]| [Advanced filtering, batch processing, summary reports] | **P1 (Should)**| 3 days | Operational efficiency | Phase 1.5 | 🔶 |
+| **F-07** | [Integrations / Alert]| [Third-party webhooks, external notifications] | **P2 (Could)** | 3 days | Workflow enhancement | Phase 2 Backlog | 🔶 |
+| **F-08** | [Deferred Scope] | [Multi-currency, mobile native app, AI copilot] | **P3 (Won't)** | — | Non-essential scope | Excluded | ✅ |
+
+### 4.2 User Stories & Acceptance Criteria (INVEST Standard)
+*Document user stories for all P0 (Must) and P1 (Should) features:*
+
+#### Feature F-01: [Feature Name, e.g., Role-Based Authentication & Session Management]
+- **User Story**: As a [role], I want to [action], so that [benefit].
+- **Acceptance Criteria**:
+  - [ ] Given [valid credentials], when user logs in, then JWT cookie is set with `HttpOnly`, `SameSite=Lax`, and user is redirected to role dashboard.
+  - [ ] Given [invalid role permissions], when user attempts accessing unauthorized route, then system redirects to `/403` and emits audit log.
+  - [ ] Edge Case: Password reset tokens expire strictly after 15 minutes.
+
+#### Feature F-02: [Feature Name, e.g., POS Checkout & Transaction Recording]
+- **User Story**: As a [role], I want to [action], so that [benefit].
+- **Acceptance Criteria**:
+  - [ ] Given [scanned SKU], when product is added to cart, then system validates local stock balance and renders price formatted in IDR.
+  - [ ] Given [completed transaction], when cashier submits payment, then stock balance decrements atomically and receipt data is emitted.
+  - [ ] Edge Case: Offline transaction queued in IndexedDB if internet connectivity drops.
 
 ---
 
@@ -95,15 +132,17 @@
 4. **Legal & Tax Advisory**: Developer provides technological execution; formal tax filing and legal compliance remain client responsibility.
 5. **Out-of-Scope User Segments**: Segments requiring unbuilt features (e.g., Cafes requiring Bill of Materials) are formally excluded from MVP scope.
 
-### 5.3 Tax Calculation Disclaimers (PP 55/2022)
-- Regulatory basis: **PP 55/2022** (replaces PP 23/2018) with Rp 500.000.000/year non-taxable threshold for individual taxpayers.
+### 5.3 Tax Calculation Disclaimers (PP 55/2022 jo. PP 20/2026)
+- Regulatory basis: **PP 55/2022 jo. PP 20/2026** (enacted 22 April 2026). The time limit for the 0.5% PPh Final facility is permanently eliminated, but the facility is **strictly restricted** to **Wajib Pajak Orang Pribadi (WP OP)**, **PT Perorangan**, and **Koperasi** with gross turnover $\le$ Rp 4.8 billion/year.
+- Non-Eligibility: The 0.5% facility is **no longer eligible** for CV, Firma, PT Non-Perorangan, or BUMDes.
+- Threshold: The **Rp 500.000.000/year non-taxable gross turnover threshold** applies strictly to individual taxpayers (WP OP).
 - Mandatory In-App Disclaimer: *"Perhitungan pajak bersifat estimasi operasional dan tidak menggantikan pelaporan resmi pada DJP. PPN tidak diperhitungkan (non-PKP)."*
 
 ### 5.4 Mandatory Data Privacy Compliance (UU PDP No. 27/2022)
 - [ ] **Privacy Policy & Terms of Service**: Prepared in M04, accepted upon signup.
 - [ ] **Data Retention**: Accounting transaction records retained for 3 years (UU KUP compliance).
 - [ ] **PII Scrubbing**: Error tracking (Sentry) configured to strip customer names, emails, and financial amounts.
-- [ ] **CSV Injection Prevention**: All spreadsheet exports prepend `'` to formula triggers (`=`, `+`, `-`, `@`).
+- [ ] **CSV Injection Prevention**: All spreadsheet exports prepend `'` to formula triggers (`=`, `+`, `-`, `@`, `\t`, `\r`, `\n`, `|`).
 
 ---
 

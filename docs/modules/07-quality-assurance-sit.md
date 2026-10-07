@@ -223,7 +223,7 @@ After the Staging server is active and the `SIT_WORKBOOK.md` document is publish
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/qa/SIT_WORKBOOK.md"` → must return `True`
-   - Read tool: `read_file('docs/qa/SIT_WORKBOOK.md')` → must succeed without error
+   - Read and verify file `docs/qa/SIT_WORKBOOK.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -251,7 +251,7 @@ After the Staging server is active and the `SIT_WORKBOOK.md` document is publish
 
 1. **STRICTLY PROHIBITED from proceeding directly or calling tools for Module 08/09 within the same turn!**
 2. **Verify test results**:
-   - [ ] `read_file('docs/qa/SIT_WORKBOOK.md')` → Confirm all tests PASS
+   - [ ] Read and verify file `docs/qa/SIT_WORKBOOK.md` → Confirm all tests PASS
    - [ ] Confirm staging URL accessible
    - [ ] Confirm `pnpm audit` clean (zero critical vulnerabilities)
    - [ ] Confirm sandbox integrations verified (Payment/Storage/Email)

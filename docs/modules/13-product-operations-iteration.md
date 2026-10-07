@@ -676,9 +676,9 @@ After all stages of Module 13 are set up:
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/analytics/METRICS_BASELINE_REPORT.md"` → must return `True`
-   - Read tool: `read_file('docs/analytics/METRICS_BASELINE_REPORT.md')` → must succeed without error
+   - Read and verify file `docs/analytics/METRICS_BASELINE_REPORT.md` → must succeed without error
    - PowerShell: `Test-Path -LiteralPath "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md')` → must succeed without error
+   - Read and verify file `docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not declare setup complete
@@ -704,8 +704,8 @@ After all stages of Module 13 are set up:
 ### **STEP 1: CONTINUOUS ITERATION PROTOCOL**
 
 1. **Verify setup complete**:
-   - [ ] `read_file('docs/analytics/METRICS_BASELINE_REPORT.md')` → Confirm baseline metrics documented
-   - [ ] `read_file('docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md')` → Confirm RICE-scored backlog exists
+   - [ ] Read and verify file `docs/analytics/METRICS_BASELINE_REPORT.md` → Confirm baseline metrics documented
+   - [ ] Read and verify file `docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md` → Confirm RICE-scored backlog exists
    - [ ] Confirm feedback loop active (NPS, widget, tickets)
    - [ ] Confirm weekly metrics review ritual established
 2. **This is a module that is never "finished"**. Continuous iteration runs as long as the product remains active.

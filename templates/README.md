@@ -40,10 +40,12 @@ templates/
 | File | Purpose | Stage / Gate |
 |---|---|---|
 | [`IDEA_BRIEF_TEMPLATE.md`](./01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md) | 3-filter idea triage, 4D feasibility scoring, scale classification | Module 01 |
+| [`M00_LITE_TEMPLATE.md`](./01-discovery-commercial/M00_LITE_TEMPLATE.md) | 1-page rapid market validation (5 interviews, waitlist test, RAT) for solo SaaS | Module 00 (Lite) |
 | [`MARKET_RESEARCH_TEMPLATE.md`](./01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md) | TAM/SAM/SOM market sizing, industry headwinds, regulatory landscape | Module 00 |
 | [`COMPETITIVE_LANDSCAPE_TEMPLATE.md`](./01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md) | 5–10 competitor benchmarking matrix, feature gaps, positioning | Module 00 |
 | [`USER_RESEARCH_REPORT_TEMPLATE.md`](./01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md) | Customer interviews, Jobs-to-be-Done (JTBD), user personas | Module 00 |
 | [`PRODUCT_STRATEGY_TEMPLATE.md`](./01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md) | Vision, North Star Metric, strategic pillars, Value Proposition Canvas | Module 00 |
+| [`INTERVIEW_GUIDE_TEMPLATE.md`](./01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md) | The Mom Test interview questions & JTBD discovery script across 3 stakeholder groups | Module 00 / 01 |
 | [`SCOPE_STATEMENT_TEMPLATE.md`](./01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md) | In-Scope vs Out-of-Scope boundaries, user roles, client dependency SLAs | Module 02 |
 | [`MOSCOW_MATRIX.md`](./01-discovery-commercial/MOSCOW_MATRIX.md) | MoSCoW feature prioritization breakdown (Must/Should/Could/Won't) | Module 02 |
 | [`BACKLOG_TEMPLATE.md`](./01-discovery-commercial/BACKLOG_TEMPLATE.md) | Feature backlog breakdown with user story points & RICE prioritization | Module 02 |
@@ -53,6 +55,8 @@ templates/
 | [`RACI_MATRIX_TEMPLATE.md`](./01-discovery-commercial/RACI_MATRIX_TEMPLATE.md) | Role responsibility matrix (Responsible, Accountable, Consulted, Informed) | Module 02 |
 | [`RISK_REGISTER_TEMPLATE.md`](./01-discovery-commercial/RISK_REGISTER_TEMPLATE.md) | Technical and commercial risk register with mitigation strategies | Module 02 |
 | [`STAKEHOLDER_MAP_TEMPLATE.md`](./01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md) | Stakeholder power-interest grid and communication priorities | Module 02 |
+| [`REQUIREMENT_MATRIX_TEMPLATE.md`](./01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md) | Requirements Traceability Matrix linking pain points to architecture & verification | Module 02/05 |
+| [`VERIFICATION_PLAN_TEMPLATE.md`](./01-discovery-commercial/VERIFICATION_PLAN_TEMPLATE.md) | Objective verification plan & gate protocols (handles pending primary research) | Module 00/06/07 |
 
 ---
 
@@ -85,6 +89,8 @@ templates/
 |---|---|---|
 | [`FINANCIAL_TRACKING.md`](./02-legal-commercial/FINANCIAL_TRACKING.md) | Project cash flow ledger: invoicing milestones, receipts, expense tracking | Module 03 |
 | [`SOW_SMB.md`](./02-legal-commercial/SOW_SMB.md) | Streamlined SOW agreement for small businesses and fast-turnaround projects | Module 03 |
+| [`NDA_TEMPLATE.md`](./02-legal-commercial/NDA_TEMPLATE.md) | Mutual Non-Disclosure Agreement for confidential source code & client data | Module 03 |
+| [`CHANGE_REQUEST_TEMPLATE.md`](./02-legal-commercial/CHANGE_REQUEST_TEMPLATE.md) | Formal scope modification agreement with impact & commercial estimation | Module 03 / Post-Lock |
 
 ---
 
@@ -258,6 +264,7 @@ Complete harness sets (AGENTS, ARCHITECTURE, CONVENTIONS, ENV_EXAMPLE) per frame
 ## 13. By Use Case (`by-use-case/`) & Essentials (`essentials/`)
 
 - [`essentials/README.md`](./essentials/README.md): Fast-track index to the **8 most essential templates** for 80% of solo projects.
+- [`essentials/PROJECT_STATE_TEMPLATE.md`](./essentials/PROJECT_STATE_TEMPLATE.md): Single source of truth for project lifecycle state, gate progress, and cross-session handoff.
 - [`by-use-case/mvp-fast-track/README.md`](./by-use-case/mvp-fast-track/README.md): Minimal templates for 1–4 week solo MVPs.
 - [`by-use-case/client-commercial/README.md`](./by-use-case/client-commercial/README.md): Complete governance path for paid client engagements.
 - [`by-use-case/technical-specs/README.md`](./by-use-case/technical-specs/README.md): Architecture-first path for complex systems.

@@ -50,6 +50,7 @@ references/
 | [`PM_PRIORITIZATION_FRAMEWORKS.md`](./pm/PM_PRIORITIZATION_FRAMEWORKS.md) | RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheets | Module 01, 13 |
 | [`PM_TOOLS_SETUP_GUIDE.md`](./pm/PM_TOOLS_SETUP_GUIDE.md) | Configuration guide for Linear, Jira, GitHub Projects, Notion for solo dev workflows | Module 01 |
 | [`PM_USER_TESTING_GUIDE.md`](./pm/PM_USER_TESTING_GUIDE.md) | User testing facilitation scripts, usability test plans, SUS scoring calculation | Module 04 |
+| [`INDUSTRY_TOOLS_ADAPTER.md`](./pm/INDUSTRY_TOOLS_ADAPTER.md) | Integration bridge for Notion databases, Linear/Jira CSV import, and remote Figma MCP | Module 01, 04 |
 
 ---
 
@@ -80,10 +81,10 @@ references/
 |---|---|---|
 | [`STACK_DECISION_METRICS.md`](./stacks/STACK_DECISION_METRICS.md) | Build time, incremental compile, cold start benchmarks across major web frameworks | Module 05 |
 | [`STACK_SUPPORT_MATRIX.md`](./stacks/STACK_SUPPORT_MATRIX.md) | Supported language & framework evaluation matrix, tooling maturity, verification gates | Module 05 |
-| [`django-5-quickstart.md`](./stacks/django-5-quickstart.md) | Django (v5–v6+) + Python 3.12+ + PostgreSQL 16+ + Celery setup & live version verification guide | Module 06 |
-| [`go-1.23-quickstart.md`](./stacks/go-1.23-quickstart.md) | Go (v1.23–v1.27+) + Fiber/Echo/Chi + PostgreSQL 16+ setup & live version verification guide | Module 06 |
-| [`laravel-11-quickstart.md`](./stacks/laravel-11-quickstart.md) | Laravel (v11–v13+) + PHP 8.3+ + MySQL/PostgreSQL + Livewire/Inertia setup & live version verification guide | Module 06 |
-| [`nextjs-15-quickstart.md`](./stacks/nextjs-15-quickstart.md) | Next.js (v15–v16+) + React 19+ + TypeScript + Prisma/Supabase setup & live version verification guide | Module 06 |
+| [`django-quickstart.md`](./stacks/django-quickstart.md) | Django (v5–v6+) + Python 3.12+ + PostgreSQL 16+ + Celery setup & live version verification guide | Module 06 |
+| [`go-quickstart.md`](./stacks/go-quickstart.md) | Go (v1.23–v1.27+) + Fiber/Echo/Chi + PostgreSQL 16+ setup & live version verification guide | Module 06 |
+| [`laravel-quickstart.md`](./stacks/laravel-quickstart.md) | Laravel (v11–v13+) + PHP 8.3+ + MySQL/PostgreSQL + Livewire/Inertia setup & live version verification guide | Module 06 |
+| [`nextjs-quickstart.md`](./stacks/nextjs-quickstart.md) | Next.js (v15–v16+) + React 19+ + TypeScript + Prisma/Supabase setup & live version verification guide | Module 06 |
 
 ---
 
@@ -101,3 +102,11 @@ references/
 | [`FIGMA_MCP_SETUP.md`](./technical/FIGMA_MCP_SETUP.md) | Figma MCP server installation, live design synchronization, token extraction workflows | Module 04 |
 | [`MOBILE_ARCHITECTURE_GUIDE.md`](./technical/MOBILE_ARCHITECTURE_GUIDE.md) | Mobile viewport responsiveness, touch ergonomics, PWA configuration, cross-platform layouts | Module 04 |
 | [`UI_COMPONENT_ANIMATION_LIBRARY.md`](./technical/UI_COMPONENT_ANIMATION_LIBRARY.md) | Production micro-interaction animation patterns, Framer Motion/CSS transitions | Module 04 |
+
+---
+
+## 8. Team Collaboration & Agency Handoff (`references/team/`)
+
+| File | Purpose | Referenced In |
+|---|---|---|
+| [`TEAM_COLLABORATION_GUIDE.md`](./team/TEAM_COLLABORATION_GUIDE.md) | Role responsibility matrix (PM/Design/Eng/QA), multi-stage handoffs, and multi-agent coordination | Module 02, 06 |

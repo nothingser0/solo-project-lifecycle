@@ -4,6 +4,22 @@
 **Created By**: [Team Name / Solo Dev]  
 **Document Version**: 1.0  
 **Research Lead**: [Researcher Name]
+**Research Status**: [PENDING_PRIMARY_RESEARCH / IN_PROGRESS / VALIDATED]
+
+---
+
+> ⚠️ **MANDATORY EVIDENCE RULE FOR AI AGENTS & DEVELOPERS**:
+> - Primary research data (interview quotes, survey sample metrics, willingness-to-pay amounts) **MUST ORIGINATE FROM REAL HUMAN USERS**.
+> - Agents are **STRICTLY FORBIDDEN** from fabricating fictional interview transcripts or synthetic survey percentages to pass gates.
+> - If real research has not yet been conducted by the user, the agent drafts the research instruments (interview scripts, survey questionnaire, assumption register), marks results as `PENDING`, and sets the Gate status to **`PENDING_PRIMARY_RESEARCH`**.
+> - Personas generated prior to interviews MUST be labeled as **`Proto-Persona (Hypothesis)`**.
+
+### Data Confidence Legend
+| Icon | Level | Meaning | Rule |
+|:--:|:--|:--|:--|
+| ✅ | **VERIFIED** | Empirical data from real user interviews, live analytics, or verified primary sources | Must cite interview ID, sample size, URL, and date |
+| 🔶 | **ASSUMPTION** | Plausible hypothesis based on secondary insights or domain experience | Must be cataloged in Assumption Register below |
+| ❓ | **UNKNOWN** | Critical information gap | Must be tested before committing to architecture/code |
 
 ---
 
@@ -18,8 +34,12 @@
 3. **[Finding 3]**: [Third key insight]
 
 **Intent-to-Buy Validation**:
-- **Survey Result**: [X]% respondents selected "Definitely buy" or "Probably buy"
-- **Gate Pass Status**: ✅ PASS (≥30%) / ❌ FAIL (<30%)
+- **Stated Intent (Survey)**: [X]% respondents selected "Definitely buy" or "Probably buy" (Threshold: $\ge 30\%$)
+- **Behavioral Intent (Cheap Test)**: [Waitlist conversion rate % / LOI signed / Pre-orders]
+- **Gate Status**: 
+  - [ ] **✅ PASS**: Validated with $\ge 30\%$ intent-to-buy from real sample + behavioral proof
+  - [ ] **⏳ PENDING_PRIMARY_RESEARCH**: Instruments prepared; awaiting human research execution
+  - [ ] **❌ FAIL**: Real data collected but intent-to-buy $< 30\%$ $\rightarrow$ Trigger Pivot / Stop
 
 **Recommendation**:
 - [ ] **Proceed to Product Strategy**: Validated problem, clear user needs, sufficient intent-to-buy.
@@ -28,18 +48,35 @@
 
 ---
 
-## 2. Research Methodology
+## 2. Assumption Register & Riskiest Assumption Tests (RAT)
+
+*Rule: Identify premises in the idea brief and test the riskiest assumption first before building software.*
+
+| ID | Premise / Core Hypothesis | Confidence | Evidence Required | Cheap Test Method | Kill Threshold | Status |
+|:---|:--------------------------|:----------:|:------------------|:------------------|:------------------------------|:-------|
+| ASM-01 | [e.g., SME owners lose > Rp 2M/mo from stock mismatch] | 🔶 | 5+ user interview confirmations with ledger proofs | Interview Group A & B | <3 of 5 experience material loss | [Open / Tested / Disproven] |
+| ASM-02 | [e.g., Users will pay Rp 150k/mo for automated sync] | 🔶 | Landing page waitlist with price anchor | Landing page + pricing CTA | Waitlist conversion < 3% from 200 visits | [Open / Tested / Disproven] |
+| ASM-03 | [e.g., Staff can operate UI without >15m training] | 🔶 | Usability test with clickable prototype | Task completion test (SCR-01) | >50% fail unassisted checkout | [Open / Tested / Disproven] |
+
+---
+
+## 3. Research Methodology & Multi-Stakeholder Groups
 
 ### 2.1 Sample Size & Demographics
 
-**Qualitative Research (Interviews)**:
-- **Total Interviews**: [X] people
+Qualitative Research (Interviews):
+- **Total Interviews Completed**: [X] people (Target: $\ge 10$ for standard, $\ge 5$ for M00-lite)
 - **Duration per Interview**: [Y] minutes average
 - **Interview Method**: [Zoom video call / Phone / In-person / Async written]
 - **Incentive**: [Voucher Rp X / Free early access / None]
 
-**Quantitative Research (Survey)**:
-- **Total Respondents**: [X] people
+**Target Stakeholder Groups (Multi-Stakeholder Coverage)**:
+1. **Group A: End-Users / Daily Operators** (e.g., Cashiers, inventory staff, branch clerks) $\rightarrow$ Focus on operational friction, daily errors, and usability barriers.
+2. **Group B: Economic Buyers / Decision Makers** (e.g., Business owners, Directors, Finance managers) $\rightarrow$ Focus on ROI, willingness-to-pay, procurement authority, and pain point severity.
+3. **Group C: Ecosystem Enablers & Regulators** (e.g., Banks, tax consultants, auditors, industry associations) $\rightarrow$ Focus on compliance, integration requirements, and legal liabilities.
+
+Quantitative Research (Survey):
+- **Total Respondents**: [X] people (Target: $\ge 50$ for standard, $\ge 30$ for medium)
 - **Survey Platform**: [Google Forms / Typeform / Tally]
 - **Response Rate**: [X]% (if email blast list used)
 - **Survey Duration**: [Median X minutes to complete]
@@ -315,7 +352,11 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 
 ## 5. Persona Creation (Jobs-to-be-Done Framework)
 
-### Persona 1: [Persona Name, e.g., "Budi — SME Retail Operations Manager"]
+> ℹ️ **STATUS NOTE**: Until empirical user interviews are conducted, all entries below represent **`Proto-Persona (Hypothesis)`**. Only upgrade status to `Validated Persona` after linking direct quotes and validated sample demographics.
+
+### Proto-Persona 1: [Persona Name, e.g., "Budi — SME Retail Operations Manager"]
+**Validation Status**: [ 🔶 Proto-Persona (Hypothesis) / ✅ Validated Persona ]  
+**Interview Evidence**: [Pending interviews / Linked to Interview INT-01 to INT-04]
 
 **Demographics**:
 - **Age**: 32 years old
@@ -401,7 +442,9 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 
 ---
 
-### Persona 2: [Another Persona Name]
+### Proto-Persona 2: [Another Persona Name]
+**Validation Status**: [ 🔶 Proto-Persona (Hypothesis) / ✅ Validated Persona ]  
+**Interview Evidence**: [Pending interviews / Linked to Interview INT-05 to INT-08]
 
 [Repeat identical structure for personas 2-3]
 

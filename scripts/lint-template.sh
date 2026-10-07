@@ -25,8 +25,20 @@ echo ""
 ERRORS=0
 WARNINGS=0
 
-# Check for unfilled placeholders
-PLACEHOLDERS=$(grep -n "\[FILL\|PLACEHOLDER\|TODO:\|FIXME:\|XXX:\|<INSERT\|<DESCRIBE\|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+# Check for unfilled placeholders:
+# If checking a raw template in templates/, intentional user placeholders like [Your Name] are valid.
+# If checking a filled project document (e.g. docs/specs/PRD.md), all placeholders must be replaced.
+IS_RAW_TEMPLATE=0
+if [[ "$TEMPLATE_FILE" == *"templates/"* ]] || [[ "$TEMPLATE_FILE" == *"_TEMPLATE"* ]]; then
+    IS_RAW_TEMPLATE=1
+fi
+
+if [ $IS_RAW_TEMPLATE -eq 1 ]; then
+    PLACEHOLDERS=$(grep -n "\[FILL\|PLACEHOLDER\|TODO:\|FIXME:\|XXX:\|<INSERT\|<DESCRIBE\|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+else
+    PLACEHOLDERS=$(grep -nE "\[(FILL|Nama|isi|Your|Client|Company|Project|YYYY|Amount|[0-9]+%|[XYZ])[^]]*\]|PLACEHOLDER|TODO:|FIXME:|XXX:|<INSERT|<DESCRIBE|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+fi
+
 if [ -n "$PLACEHOLDERS" ]; then
     echo "❌ Unfilled placeholders detected:"
     echo "$PLACEHOLDERS" | head -10
@@ -48,9 +60,24 @@ if [ -n "$LOREM" ]; then
     echo ""
 fi
 
-# Check for empty sections (headers followed immediately by next header or EOF)
-# This is a simplified check
-EMPTY_SECTIONS=$(awk '/^##/ {if (prev_header) print prev_line ": " prev_header; prev_header=$0; prev_line=NR; next} {if (prev_header && NF > 0) prev_header=""} END {if (prev_header) print prev_line ": " prev_header}' "$TEMPLATE_FILE")
+# Check for empty sections (headers followed immediately by header of same/higher level, ignoring subheadings)
+EMPTY_SECTIONS=$(awk '
+/^#+/ {
+    match($0, /^#+/)
+    curr_level = RLENGTH
+    if (prev_header != "") {
+        if (curr_level <= prev_level) {
+            print prev_line ": " prev_header
+        }
+    }
+    prev_header = $0
+    prev_line = NR
+    prev_level = curr_level
+    next
+}
+{ if (prev_header != "" && NF > 0 && !/^---/) prev_header="" }
+END { if (prev_header != "") print prev_line ": " prev_header }
+' "$TEMPLATE_FILE")
 if [ -n "$EMPTY_SECTIONS" ]; then
     echo "⚠️  Potentially empty sections:"
     echo "$EMPTY_SECTIONS"
@@ -103,7 +130,7 @@ case "$BASENAME" in
         echo "=== SOW-specific checks ==="
         
         # Check for payment terms
-        if grep -E -q "Termin|Payment|DP|Rp|USD|EUR|\$" "$TEMPLATE_FILE"; then
+        if grep -E -iq "Termin|Payment (terms|milestone|schedule)|Down Payment|\bDP\b|Total Contract Value|Biaya Proyek" "$TEMPLATE_FILE"; then
             echo "✅ Payment terms defined"
         else
             echo "❌ Payment terms missing"
@@ -119,7 +146,7 @@ case "$BASENAME" in
         fi
         
         # Check for scope boundary
-        if grep -q "In-Scope\|Out-of-Scope" "$TEMPLATE_FILE"; then
+        if grep -iqE "In-Scope|In Scope|Out-of-Scope|Out of Scope|Ruang Lingkup" "$TEMPLATE_FILE"; then
             echo "✅ Scope boundary defined"
         else
             echo "❌ Scope boundary missing"

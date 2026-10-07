@@ -100,7 +100,7 @@ foreach ($cs in $caseStudies) {
     }
 }
 
-# 5. Verify Patterns Presence (12 Patterns)
+# 5. Verify Patterns Presence (17 Patterns)
 Write-Host ""
 Write-Host "5. Checking Patterns..."
 $patterns = @(
@@ -115,7 +115,12 @@ $patterns = @(
     "patterns/performance/n-plus-one-prevention.md",
     "patterns/security/authentication.md",
     "patterns/testing/test-pyramid.md",
-    "patterns/validation/zod-patterns.md"
+    "patterns/validation/zod-patterns.md",
+    "patterns/payments/indonesia-payment-gateways.md",
+    "patterns/compliance/uu-pdp-compliance.md",
+    "patterns/offline/offline-first-sync.md",
+    "patterns/observability/logging-monitoring.md",
+    "patterns/localization/i18n-indonesia.md"
 )
 
 foreach ($pat in $patterns) {
@@ -127,6 +132,25 @@ foreach ($pat in $patterns) {
     }
 }
 
+# 6. Verify Markdown Links and Frontmatter
+Write-Host ""
+Write-Host "6. Checking Markdown Links and SKILL.md Frontmatter..."
+if (Get-Command node -ErrorAction SilentlyContinue) {
+    $fmRes = node scripts/verify-skill-frontmatter.js 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "  [OK] SKILL.md frontmatter valid" -ForegroundColor Green
+    } else {
+        Write-Host "  [FAIL] SKILL.md frontmatter invalid" -ForegroundColor Red
+        $errors++
+    }
+    $linkRes = node scripts/verify-links.js 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "  [OK] Internal Markdown links valid (0 broken)" -ForegroundColor Green
+    } else {
+        Write-Host "  [FAIL] Broken markdown links found" -ForegroundColor Red
+        $errors++
+    }
+}
 Write-Host ""
 if ($errors -eq 0) {
     Write-Host "All integrity checks passed successfully!" -ForegroundColor Green

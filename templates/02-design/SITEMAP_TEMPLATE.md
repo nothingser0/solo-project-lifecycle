@@ -5,6 +5,8 @@
 **Project**: [Project Name]  
 **Date**: [YYYY-MM-DD]  
 **Author**: [Your Name]
+**Scope Reference**: `docs/pm/SCOPE_STATEMENT.md` (RBAC & User Stories)  
+**Tenant Architecture**: [Single-Tenant / Multi-Tenant / Hybrid]
 
 ---
 
@@ -31,32 +33,74 @@ Navigation depth: [X levels]
 
 ---
 
-## 3. Protected Routes (Authenticated)
+## 3. Authenticated Routes - Member / Customer / Client Role
 
 | Route | Page Name | Screen ID | Purpose | Priority |
 |:------|:----------|:----------|:--------|:--------:|
-| `/dashboard` | Dashboard | SCR-09 | Main user dashboard | P0 |
-| `/profile` | Profile | SCR-10 | User profile & settings | P1 |
-| `/[resource]` | Resource List | SCR-11 | Main resource listing | P0 |
-| `/[resource]/new` | Create Resource | SCR-12 | Create new item | P0 |
-| `/[resource]/:id` | Resource Detail | SCR-13 | View/edit single item | P0 |
-| `/[resource]/:id/edit` | Edit Resource | SCR-14 | Edit form | P0 |
-| `/settings` | Settings | SCR-15 | App settings | P1 |
-| `/billing` | Billing | SCR-16 | Subscription & payment | P1 |
+| `/dashboard` | Member Dashboard | SCR-09 | Main consumer/member dashboard | P0 |
+| `/profile` | Profile | SCR-10 | Self profile & credentials | P1 |
+| `/[resource]` | My Resources | SCR-11 | View own created resources | P0 |
+| `/[resource]/new` | Create Resource | SCR-12 | Submit new resource | P0 |
+| `/[resource]/:id` | Resource Detail | SCR-13 | View single own resource | P0 |
+| `/[resource]/:id/edit` | Edit Resource | SCR-14 | Edit own draft resource | P0 |
+| `/billing` | Billing & Subscription | SCR-15 | Invoices, payment method, subscription | P1 |
+| `/notifications` | Notifications | SCR-16 | In-app alerts & reminders | P2 |
 
 ---
 
-## 4. Admin Routes (Admin Role)
+## 4. Authenticated Routes - Staff / Operator / Cashier Role
 
 | Route | Page Name | Screen ID | Purpose | Priority |
 |:------|:----------|:----------|:--------|:--------:|
-| `/admin` | Admin Dashboard | SCR-17 | Admin overview | P1 |
-| `/admin/users` | User Management | SCR-18 | Manage users | P1 |
-| `/admin/settings` | System Settings | SCR-19 | Global config | P2 |
+| `/ops/workspace` | Operator Terminal / POS | SCR-17 | High-frequency daily operations terminal | P0 |
+| `/ops/queue` | Operations Queue | SCR-18 | Pending jobs, tickets, or checkout queue | P0 |
+| `/ops/transactions` | Shift Transactions | SCR-19 | View current shift transactions & totals | P1 |
+| `/ops/stock-opname` | Blind Stock Opname | SCR-20 | Physical count entry without seeing book totals | P1 |
 
 ---
 
-## 5. Navigation Structure (Sitemap Tree)
+## 5. Authenticated Routes - Manager / Supervisor Role
+
+| Route | Page Name | Screen ID | Purpose | Priority |
+|:------|:----------|:----------|:--------|:--------:|
+| `/manager/dashboard` | Branch/Team Dashboard | SCR-21 | Shift aggregation, sales, team KPIs | P0 |
+| `/manager/approvals` | Approval Center | SCR-22 | Review discount overrides, voids, leave requests | P0 |
+| `/manager/inventory` | Inventory Control | SCR-23 | Stock adjustments, supplier purchase orders | P1 |
+| `/manager/reports` | Operational Reports | SCR-24 | Shift reconciliation, discrepancy reports | P1 |
+
+---
+
+## 6. Authenticated Routes - Admin / Owner / Superadmin Role
+
+| Route | Page Name | Screen ID | Purpose | Priority |
+|:------|:----------|:----------|:--------|:--------:|
+| `/admin/overview` | Executive Dashboard | SCR-25 | Multi-branch financials, profit/loss, churn | P0 |
+| `/admin/users` | User & RBAC Management | SCR-26 | Manage roles, invite staff, revoke permissions | P0 |
+| `/admin/branches` | Branch / Tenant Config | SCR-27 | Branch settings, tax rate, printers, integrations | P1 |
+| `/admin/audit-logs` | Security Audit Trail | SCR-28 | Immutable log of all sensitive actions & overrides | P1 |
+| `/admin/settings` | Global System Settings | SCR-29 | Payment gateway keys, webhook configs, backups | P1 |
+
+---
+
+## 7. Role-Based Route Access Matrix (RBAC Alignment)
+
+*Cross-checked with `SCOPE_STATEMENT.md` Section 3 (RBAC Matrix). Every route must define access level per role.*
+
+| Route Path | Screen ID | Public / Guest | Member / Customer | Staff / Operator | Manager | Admin / Owner | Denial Redirect |
+|:-----------|:---------:|:--------------:|:-----------------:|:----------------:|:-------:|:-------------:|:----------------|
+| `/` | SCR-01 | Full | Full | Full | Full | Full | - |
+| `/pricing` | SCR-03 | Full | Full | Full | Full | Full | - |
+| `/login` | SCR-06 | Full | Redirect `/dashboard` | Redirect `/ops/workspace` | Redirect `/manager/dashboard` | Redirect `/admin/overview` | - |
+| `/dashboard` | SCR-09 | ❌ Deny | Full | ❌ Deny | ❌ Deny | ❌ Deny | `/login?redirect=/dashboard` |
+| `/ops/workspace` | SCR-17 | ❌ Deny | ❌ Deny | Full | Full | Full | `/login` or `/403` |
+| `/ops/stock-opname`| SCR-20 | ❌ Deny | ❌ Deny | Count Only | Full | Full | `/403` |
+| `/manager/approvals`| SCR-22 | ❌ Deny | ❌ Deny | ❌ Deny | Full | Full | `/403` |
+| `/admin/users` | SCR-26 | ❌ Deny | ❌ Deny | ❌ Deny | Read-Only | Full | `/403` |
+| `/admin/audit-logs`| SCR-28 | ❌ Deny | ❌ Deny | ❌ Deny | ❌ Deny | Full | `/403` |
+
+---
+
+## 8. Navigation Structure (Sitemap Tree)
 
 ```
 ├── Public
@@ -69,24 +113,31 @@ Navigation depth: [X levels]
 │   └── Sign Up (/register)
 │
 ├── Authenticated
-│   ├── Dashboard (/dashboard)
-│   ├── Profile (/profile)
-│   ├── [Resource] (/[resource])
-│   │   ├── List
-│   │   ├── Create (/new)
-│   │   └── Detail (/:id)
-│   ├── Settings (/settings)
-│   └── Billing (/billing)
-│
-└── Admin
-    ├── Dashboard (/admin)
-    ├── Users (/admin/users)
-    └── Settings (/admin/settings)
+│   ├── Member / Customer
+│   │   ├── Dashboard (/dashboard)
+│   │   ├── Resources (/[resource])
+│   │   └── Billing (/billing)
+│   │
+│   ├── Staff / Operator
+│   │   ├── Workspace / POS (/ops/workspace)
+│   │   ├── Queue (/ops/queue)
+│   │   └── Stock Opname (/ops/stock-opname)
+│   │
+│   ├── Manager / Supervisor
+│   │   ├── Manager Dashboard (/manager/dashboard)
+│   │   ├── Approvals (/manager/approvals)
+│   │   └── Reports (/manager/reports)
+│   │
+│   └── Admin / Owner
+│       ├── Overview (/admin/overview)
+│       ├── Users & RBAC (/admin/users)
+│       ├── Branches & Settings (/admin/branches)
+│       └── Audit Trail (/admin/audit-logs)
 ```
 
 ---
 
-## 6. Navigation Components
+## 9. Navigation Components
 
 ### Header (Public)
 - Logo (links to `/`)
@@ -132,7 +183,7 @@ Navigation depth: [X levels]
 
 ---
 
-## 7. Redirects & Access Control
+## 10. Redirects & Access Control
 
 | Condition | From | To | Status Code |
 |:----------|:-----|:---|:-----------:|
@@ -143,7 +194,7 @@ Navigation depth: [X levels]
 
 ---
 
-## 8. Dynamic Routes
+## 11. Dynamic Routes
 
 ### Route Parameters
 
@@ -163,7 +214,7 @@ Navigation depth: [X levels]
 
 ---
 
-## 9. Error Pages
+## 12. Error Pages
 
 | Route | Screen ID | Purpose |
 |:------|:----------|:--------|
@@ -174,7 +225,7 @@ Navigation depth: [X levels]
 
 ---
 
-## 10. SEO & Meta Pages
+## 13. SEO & Meta Pages
 
 | Route | Purpose | Index |
 |:------|:--------|:-----:|

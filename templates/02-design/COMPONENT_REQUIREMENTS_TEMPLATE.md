@@ -27,6 +27,12 @@
 ### Feature 1: [Feature Name, e.g., POS Cashier Checkout / Employee Check-In]
 - **Scope ID**: [e.g., F-04]
 - **User Story**: As a [role], I want to [action], so that [benefit].
+- **Role Access & Permissions**:
+  - **Allowed Roles**: [e.g., Cashier (Operator), Store Manager, Owner]
+  - **UI State per Role**:
+    - Operator: Full access to cashier workflow; discount > 15% triggers supervisor approval.
+    - Store Manager: Full access; can approve discount overrides and view shift total.
+    - Customer: No access (route forbidden).
 - **UI Patterns Needed**:
   - [Pattern 1, e.g., Split dual-panel catalog & cart layout]
   - [Pattern 2, e.g., Quick SKU/Barcode search with autofocus]
@@ -40,13 +46,19 @@
   - **Error State (Screen-Level)**: [e.g., Network/API failure $\rightarrow$ show alert card with retry CTA]
   - **Domain Exception Mitigation**: [e.g., If system stock reaches 0 but physical goods exist on shelf $\rightarrow$ provide warning badge with supervisor override rather than rigidly blocking cashier queue]
 - **Key Components Used**:
-  - `Button`, `Input`, `SearchInput`, `Card`, `Table`, `Modal`, `Toast`, `Badge` (Names must match Section 3 exactly)
+  - `Button`, `Input`, `SearchInput`, `Card`, `Table`, `Modal`, `Toast`, `Badge`, `PermissionGate`, `SupervisorOverrideModal` (Names must match Section 3 exactly)
 
 ---
 
 ### Feature 2: [Feature Name, e.g., Stock Opname & Adjustment / Leave Request]
 - **Scope ID**: [e.g., F-03]
 - **User Story**: As a [role], I want to [action], so that [benefit].
+- **Role Access & Permissions**:
+  - **Allowed Roles**: [e.g., Staff / Operator, Manager, Auditor]
+  - **UI State per Role**:
+    - Staff: Blind physical count form only (expected inventory count hidden).
+    - Manager: Discrepancy report + two-person approval drawer for adjustments > Rp 1.000.000.
+    - Read-Only Auditor: View-only history log; submit/approve buttons hidden.
 - **UI Patterns Needed**:
   - [Pattern 1, e.g., Form with blind physical count input]
   - [Pattern 2, e.g., Discrepancy indicator badge with arithmetic sign]
@@ -87,6 +99,9 @@
 | 6 | `Toast` | ToastContainer (z-60) + ToastItem + CloseAction | Action feedback; error & offline toasts have NO auto-dismiss |
 | 7 | `EmptyState` | Icon / Illustration + Heading + Description + ActionButton | Rendered when collections contain 0 records |
 | 8 | `SearchInput` | Input + SearchIcon + ClearButton | Filterable headers, product lookup |
+| 9 | `PermissionGate` | Role/Permission wrapper | Client-side visual gating aligned with RBAC rules |
+| 10| `SupervisorOverrideModal` | Dialog + PIN/Auth + Reason Textarea | Manager overrides for privileged actions exceeding operator limits |
+| 11| `AuditActionBadge` | Badge + Tooltip (Author, Timestamp, IP) | Displays identity & role for high-liability modifications |
 
 ### 3.3 Domain-Specific Composites (Conditional Extensions)
 
@@ -143,9 +158,21 @@
 
 ---
 
-## 6. Technical Specifications & Unified Z-Index Scale
+## 6. Multi-User & Role-Aware Component Protocols
 
-### 6.1 Modern Font Loading & Breakpoints
+### 6.1 Defense-in-Depth Principle
+- **Client-side UI gating is strictly ergonomic, NEVER security**: Hiding or disabling buttons using `PermissionGate` improves user experience, but every underlying API route, Server Action, and database mutation MUST enforce independent server-side RBAC authorization.
+
+### 6.2 Three-Tier Permission States
+1. **Hidden from DOM**: For routes or major UI sections completely unauthorized for the active role (e.g., billing settings hidden from cashiers). Ensures zero accidental DOM inspection exposure.
+2. **Disabled with Explanatory Tooltip**: For actions that the user can see exist within the workflow but lacks privilege to execute (e.g., "Minta persetujuan Supervisor untuk diskon > 15%").
+3. **Privileged Escalation Trigger**: Instead of hard-failing, interactive workflows trigger `SupervisorOverrideModal` allowing a manager to authenticate inline without disrupting current user session.
+
+---
+
+## 7. Technical Specifications & Unified Z-Index Scale
+
+### 7.1 Modern Font Loading & Breakpoints
 - **Font Module**: Use `next/font/google` (Inter, JetBrains Mono). The deprecated package `@next/font/google` is **strictly prohibited**.
 - **Standardized Responsive Breakpoints**:
   - `sm`: 640px (Mobile landscape / compact cards)
@@ -153,7 +180,7 @@
   - `lg`: 1024px (Standard tablet desktop)
   - `xl`: 1280px (Wide desktop viewports)
 
-### 6.2 Strict Unified Z-Index Hierarchy
+### 7.2 Strict Unified Z-Index Hierarchy
 *To prevent modal dropdown collisions, combobox clipping, and sticky bar bleed-through:*
 
 ```css
@@ -172,31 +199,32 @@
 
 ---
 
-## 7. Regulatory Compliance & Local Domain Policies
+## 8. Regulatory Compliance & Local Domain Policies
 
 *Document sector-specific statutory rules and legal liability disclaimers:*
 
-### 7.1 Statutory Calculation Rules (Domain-Specific)
+### 8.1 Statutory Calculation Rules (Domain-Specific)
 - **Retail / SME Tax (PP 55/2022 jo. PP 20/2026)**:
   - Model PPh Final 0.5% with the **Rp 500.000.000/year** gross revenue threshold for individual taxpayers (Wajib Pajak Orang Pribadi).
   - Explicitly define Non-PKP status (zero PPN calculation).
 - **HRIS / Payroll (PP 58/2023 & PMK 168/2023)**:
   - Model PPh 21 TER (Categories A, B, C) and BPJS deductions.
 
-### 7.2 Mandatory Financial & Operational Disclaimers
+### 8.2 Mandatory Financial & Operational Disclaimers
 Display persistent in-app disclaimers:
 1. *"Perhitungan ini bersifat estimasi operasional dan tidak menggantikan pelaporan resmi pada regulator atau nasihat profesional bersertifikasi."*
 2. *"Pengguna bertanggung jawab penuh atas kebenaran data fisik dan transaksi yang diinput ke dalam sistem."*
 
 ---
 
-## 8. Agent Validation Checklist (Step 0 Exit Gate)
+## 9. Agent Validation Checklist (Step 0 Exit Gate)
 
 *Before completing Step 0 and proceeding to `DESIGN.md`, the agent MUST verify:*
 
 - [ ] **1. Nomenclature Parity**: 100% of component names referenced in Section 2 exist in Section 3 inventory table.
-- [ ] **2. Anti-Disabled Pristine**: Form submit buttons are NOT disabled in pristine state (validation triggers on click with auto-focus).
-- [ ] **3. Non-Dismissing Errors**: Error toasts and offline reconnection alerts are configured without auto-dismiss (manual close required).
-- [ ] **4. Numeric Input Optimization**: All monetary/currency inputs use `inputmode="numeric"` and NEVER `type="number"`.
-- [ ] **5. Z-Index Layer Integrity**: Modal dropdowns/comboboxes (`--z-modal-dropdown: 55`) are layered higher than the dialog itself (`--z-modal-dialog: 50`).
-- [ ] **6. Accessible Error Typography**: All form error text is minimum 13px with $\ge 4.5:1$ contrast against the card background.
+- [ ] **2. Multi-Role RBAC Alignment**: Every feature in Section 2 defines explicit permissions and UI states across roles from `SCOPE_STATEMENT.md`.
+- [ ] **3. Anti-Disabled Pristine**: Form submit buttons are NOT disabled in pristine state (validation triggers on click with auto-focus).
+- [ ] **4. Non-Dismissing Errors**: Error toasts and offline reconnection alerts are configured without auto-dismiss (manual close required).
+- [ ] **5. Numeric Input Optimization**: All monetary/currency inputs use `inputmode="numeric"` and NEVER `type="number"`.
+- [ ] **6. Z-Index Layer Integrity**: Modal dropdowns/comboboxes (`--z-modal-dropdown: 55`) are layered higher than the dialog itself (`--z-modal-dialog: 50`).
+- [ ] **7. Accessible Error Typography**: All form error text is minimum 13px with $\ge 4.5:1$ contrast against the card background.

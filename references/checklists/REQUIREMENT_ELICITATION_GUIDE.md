@@ -67,6 +67,6 @@ Clients frequently ask for the wrong technical solution to their underlying prob
 | Client Behavior During Discovery | Real Risk to Solo Developer | Mitigation Action |
 | :--- | :--- | :--- |
 | **Client does not understand their own business processes** | Development stalls mid-flight as client continuously reshuffles workflows. | Require the client to map a manual flowchart before writing code. |
-| **Refusal to prioritize (claims all features are P0/Urgent)** | Unrealistic scope explosion leading to burnout. | Enforce boundaries: Maximum 5 core features classified as *Must-Have*. The rest automatically shift to *Should/Could*. |
+| **Refusal to prioritize (claims all features are P0/Urgent)** | Unrealistic scope explosion leading to burnout. | Enforce MoSCoW scale limits: Small = 3–7 Must-Haves, Medium = 8–15 Must-Haves. Downgrade non-essential items to Should/Could/Won't. |
 | **Hiding broken legacy systems** | Client expects developer to clean up and debug messy legacy databases for free. | State in writing: *Data cleaning & database recovery* from legacy systems is billed separately on a daily rate basis. |
 | **Designated PIC is perpetually unavailable for interviews** | Decisions are delayed, extending project timelines by months. | Activate the *Dependency SLA* clause: Every 3 business days without meeting attendance or feedback extends the official launch date accordingly. |

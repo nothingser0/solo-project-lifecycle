@@ -22,6 +22,19 @@
 
 ## 3. The 3-Filter Triage & Market Validation
 
+### 3.0 Premise Testing & Assumption Register (Riskiest Assumption First)
+*Do not accept problem statements in the brief at face value. Catalog and test foundational premises first.*
+
+| ID | Core Premise / Assumption | Risk Level (H/M/L) | Evidence Needed to Validate | Cheap Test Method (RAT) | Kill Threshold (Ambang Gugur) | Status |
+|:---|:--------------------------|:------------------:|:----------------------------|:------------------------|:------------------------------|:-------|
+| PREM-01 | [e.g., Problem is severe enough that users actively seek solutions] | High | Users already tried or paid for workarounds | 5 Discovery interviews | If 0/5 spend money or >2 hrs/wk on this | [Unproven / Tested / Disproven] |
+| PREM-02 | [e.g., Target segment has authority to adopt & pay] | High | Budget authority confirmation from persona | Economic buyer interview (Group B) | No budget authority (<Rp 50k/mo) | [Unproven / Tested / Disproven] |
+| PREM-03 | [e.g., Regulatory barriers allow 1 developer to build MVP legally] | High | Legal checklist & licensing research | Compliance audit in M00/M01 | Direct OJK/BI license required | [Unproven / Tested / Disproven] |
+
+> ⚡ **RULE**: If any High-Risk premise hits its **Kill Threshold**, STOP or PIVOT immediately before proceeding to technical specifications or architecture design.
+
+---
+
 ### 3.1 Problem Statement & Research Methodology
 - **Primary Problem**: [Explain the user's biggest pain point today with concrete numbers]
 - **Current Workarounds / Alternatives**: [How do they solve this problem now? Example: Manual Excel, expensive notary services, Google Drive templates]
@@ -78,19 +91,20 @@
 
 *Rate each dimension from 1 (Very Poor / Unfeasible) to 5 (Excellent / Highly Feasible)*
 
-| Feasibility Dimension | Score (1–5) | Solo Developer Analysis, Reality Checks & Mitigations |
-| :--- | :---: | :--- |
-| **1. Technical Feasibility** | [ ] / 5 | [CRUD vs Real-Time/Offline. Offline+Real-time capped at max 3/5. Deferral mitigation documented?] |
-| **2. Bandwidth Feasibility (Solo Effort)** | [ ] / 5 | [Epic sum + 20% buffer + 6-7w non-dev phases match timeline claim within 20%?] |
-| **3. Regulatory & Legal Feasibility** | [ ] / 5 | [UU PDP compliance plan documented (Privacy Policy, ToS, DPA, Disclaimers). Encryption ≠ compliance.] |
-| **4. Commercial Feasibility (Unit Economics)** | [ ] / 5 | [Intent discounted to 15-25%? COGS 10-20% ARPU? SMB churn 10-15%/mo modeled? LTV:CAC ≥3:1?] |
-| **AVERAGE TOTAL SCORE** | **[ ] / 5** | *(Total score divided by 4)* |
+| Feasibility Dimension | Score (1–5) | Confidence | Solo Developer Analysis, Reality Checks & Mitigations |
+| :--- | :---: | :---: | :--- |
+| **1. Technical Feasibility** | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
+| **2. Bandwidth Feasibility (Solo Effort)** | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
+| **3. Regulatory & Legal Feasibility** | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
+| **4. Commercial Feasibility (Unit Economics)** | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
+| **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4)* |
 
 ### Gate Decision
-- [ ] **GO (Pass)**: Average score $\ge 3.5$, no dimension $<3$, zero unresolved complexity red flags. Proceed to Module 02.
-- [ ] **GO BERSYARAT (Conditional Pass)**: Average score $3.0–3.5$ with mandatory deferrals (e.g., offline sync deferred to Phase 2, legal templates committed before M06).
-- [ ] **PIVOT (Adjust)**: Any dimension $<3.0$ or root cause mismatch. Prune features/segments and re-evaluate.
-- [ ] **KILL (Drop)**: Unresolvable technical complexity, prohibitive legal compliance capital, or negative unit economics.
+- [ ] **GO**: Average score $\ge 3.5 / 5.0$ AND **every individual dimension $\ge 3.0$**. Proceed to Module 02.
+- [ ] **CONDITIONAL GO**: Average score $3.0 - 3.49 / 5.0$ AND **every individual dimension $\ge 3.0$** with documented mitigation for any 3.0 score.
+- [ ] **PIVOT**: Average score $< 3.0 / 5.0$ OR **any single dimension $= 2.0$**. Scope/business model restructure required.
+- [ ] **KILL**: Average score $< 2.5 / 5.0$ OR **any single dimension $= 1.0$**. Critical single-point fatal blocker; terminate project.
+- [ ] **PROVISIONAL_PENDING_M00**: Scored provisionally; held pending primary research validation in Module 00.
 
 ---
 
@@ -100,7 +114,7 @@
 - Total Must-Have Features: `[X]` features
 - Raw Development Epic Sum: `[X]` weeks (CRUD: 3-5 days/feature, Complex: 1.5-2 weeks/feature)
 - Buffered Development Weeks ($+20\%$): `[X]` weeks
-- Non-Development Lifecycle (M01-M05: 2-3w, M07 QA: 2w, M08 Data: 1w, M10 Deploy: 1w): `[6-7]` weeks
+- Non-Development Overhead (Small: 1w, Medium: 3-4w, Large: 6-7w): `[X]` weeks
 - **Total Calculated Weeks**: `[X]` weeks (vs Initial Timeline Claim: `[Y]` weeks)
 - Variance: `[Z]%` (Must be $\le 20\%$ or timeline claim must be adjusted)
 
@@ -113,8 +127,11 @@
 ### 5.3 Unit Economics Modeling
 - Price / Subscription Tier: `Rp [X] / month`
 - Modeled COGS ($10\%–20\%$ ARPU): `Rp [X] / month` (server, gateway 2%, SMS/WhatsApp, monitoring)
-- Realistic Conversion Rate: Survey Intent `[X]%` $\times 0.20 =$ `[Y]%`
+- Realistic Conversion Rate: Survey Pricing Commitment `[X]%` $\times [0.15, 0.25] =$ `[Y]%` (Midpoint: $\times 0.20$)
 - Modeled Customer Lifetime: `[12–18]` months (accounting for SMB annual churn)
+- Pre-Launch Estimated CAC: `Rp [X]` (Proxy: channel ad clicks / conversion or outreach cost)
+- Fixed Monthly Overhead (DB $25, VPS $20, domain/email $10, APM $15): `Rp [X] / month`
+- Break-Even Subscribers: $\frac{\text{Fixed Overhead}}{\text{ARPU} \times \text{Gross Margin \%}} =$ `[Z]` active paying subscribers
 - Estimated LTV : CAC Ratio: `[X] : 1` (Target: $\ge 3:1$)
 
 ---
@@ -126,7 +143,7 @@
 - **Kill Criteria (Halt Project)**:
   - Week 4 progress check: Working features $<30\%$ of planned milestone scope.
   - Beta testing: $\ge 50\%$ of closed-beta users reject product value.
-  - Infrastructure cost: Unit hosting costs $>3\times$ original ARPU estimate.
+  - Infrastructure cost: Unit hosting and third-party API COGS exceeds **50% of ARPU** (healthy baseline is 10-20%).
 - **Pivot Criteria (Restructure Scope)**:
   - Beta churn $>50\%$ in 30 days $\rightarrow$ Prune scope to single core interaction loop.
   - Timeline slip $>30\%$ $\rightarrow$ Freeze secondary features, ship online-only MVP.
