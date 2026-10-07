@@ -25,9 +25,20 @@ echo ""
 ERRORS=0
 WARNINGS=0
 
-# Check for unfilled placeholders
-# Matches unfilled brackets like [Nama Klien], [isi ...], [Your Name], [TODO], while ignoring checkboxes [ ] and [x]
-PLACEHOLDERS=$(grep -nE "\[(FILL|Nama|isi|Your|Client|Company|Project|YYYY|Amount|[0-9]+%|[XYZ])[^]]*\]|PLACEHOLDER|TODO:|FIXME:|XXX:|<INSERT|<DESCRIBE|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+# Check for unfilled placeholders:
+# If checking a raw template in templates/, intentional user placeholders like [Your Name] are valid.
+# If checking a filled project document (e.g. docs/specs/PRD.md), all placeholders must be replaced.
+IS_RAW_TEMPLATE=0
+if [[ "$TEMPLATE_FILE" == *"templates/"* ]] || [[ "$TEMPLATE_FILE" == *"_TEMPLATE"* ]]; then
+    IS_RAW_TEMPLATE=1
+fi
+
+if [ $IS_RAW_TEMPLATE -eq 1 ]; then
+    PLACEHOLDERS=$(grep -n "\[FILL\|PLACEHOLDER\|TODO:\|FIXME:\|XXX:\|<INSERT\|<DESCRIBE\|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+else
+    PLACEHOLDERS=$(grep -nE "\[(FILL|Nama|isi|Your|Client|Company|Project|YYYY|Amount|[0-9]+%|[XYZ])[^]]*\]|PLACEHOLDER|TODO:|FIXME:|XXX:|<INSERT|<DESCRIBE|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+fi
+
 if [ -n "$PLACEHOLDERS" ]; then
     echo "❌ Unfilled placeholders detected:"
     echo "$PLACEHOLDERS" | head -10

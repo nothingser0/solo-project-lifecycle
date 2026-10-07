@@ -22,18 +22,33 @@ $issues = @()
 $warnings = @()
 
 # Check 1: Placeholder detection
-$placeholders = @(
-    "\[YOUR_.*?\]",
-    "\[FILL.*?\]",
-    "\[TODO.*?\]",
-    "\[REPLACE.*?\]",
-    "\[Nama.*?\]",
-    "\[isi.*?\]",
-    "\[Client.*?\]",
-    "xxx",
-    "yyy",
-    "zzz"
-)
+$isRawTemplate = ($File -match "templates[\\/]" -or $File -match "_TEMPLATE")
+if ($isRawTemplate) {
+    $placeholders = @(
+        "\[FILL.*?\]",
+        "\[TODO:.*?\]",
+        "\[REPLACE_ME_TEST.*?\]",
+        "PLACEHOLDER",
+        "FIXME",
+        "<INSERT",
+        "<DESCRIBE",
+        "<LIST"
+    )
+} else {
+    $placeholders = @(
+        "\[YOUR_.*?\]",
+        "\[FILL.*?\]",
+        "\[TODO.*?\]",
+        "\[REPLACE.*?\]",
+        "\[Nama.*?\]",
+        "\[isi.*?\]",
+        "\[Client.*?\]",
+        "\[Your.*?\]",
+        "xxx",
+        "yyy",
+        "zzz"
+    )
+}
 
 foreach ($pattern in $placeholders) {
     if ($content -match $pattern) {
