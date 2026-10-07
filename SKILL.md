@@ -99,23 +99,23 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 **Classification by complexity** (drives module path):
 
-**Small / Fast-Track MVP (1-3 features, <4 weeks)**:
+**Small / Fast-Track MVP (1–3 core flows / 3–7 Must-Have features, <4 weeks)**:
 - Path: M04 → M05 → M06 → M10 → M12 (5 core modules, skip 9 heavy modules)
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
 - Example: Landing page, portfolio site, simple CRUD app
 
-**Self-Initiated Product / Solo SaaS (4-10 features, 1-3 months)**:
+**Self-Initiated Product / Solo SaaS (4–10 core features / 8–15 Must-Have features, 1-3 months)**:
 - Path: **M00-lite** → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
 - Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` + Full PRD/FSD
 - Market risk is highest: Validates assumptions via M00-lite (5 interviews + waitlist test), skips client contract gates (M03, M11).
 - Example: Independent micro-SaaS, developer tool, niche B2B automation
 
-**Medium (4-10 features, 1-3 months)**:
+**Medium Client Commercial (4–10 core features / 8–15 Must-Have features, 1-3 months)**:
 - Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
 - Example: Multi-feature SaaS, marketplace, CRM, dashboard with auth + RBAC
 
-**Large (>10 features, 3-6+ months)**:
+**Large Scale (>10 features / 16–25 Must-Have features, 3-6+ months)**:
 - Path: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13
 - All templates + compliance/scale docs
 - Example: Enterprise platform, multi-tenant SaaS, regulated industry apps

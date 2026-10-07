@@ -117,9 +117,10 @@ phase_discovery() {
     echo "7. RISK_REGISTER (Risk assessment matrix)"
     echo "8. BACKLOG (User stories, RICE prioritization)"
     echo "9. M00_LITE (Rapid market validation for Solo SaaS)"
-    echo "10. Back to main menu"
+    echo "10. INTERVIEW_GUIDE (Non-leading questions & JTBD interview protocol)"
+    echo "11. Back to main menu"
     echo ""
-    choice=$(get_choice "Select template (1-10): " 1)
+    choice=$(get_choice "Select template (1-11): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "docs/pm/IDEA_BRIEF.md" ;;
@@ -131,7 +132,8 @@ phase_discovery() {
         7) copy_template "$TEMPLATES_DIR/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md" "docs/pm/RISK_REGISTER.md" ;;
         8) copy_template "$TEMPLATES_DIR/01-discovery-commercial/BACKLOG_TEMPLATE.md" "docs/pm/BACKLOG.md" ;;
         9) copy_template "$TEMPLATES_DIR/01-discovery-commercial/M00_LITE_TEMPLATE.md" "docs/pm/M00_LITE.md" ;;
-        10) return ;;
+        10) copy_template "$TEMPLATES_DIR/01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md" "docs/pm/INTERVIEW_GUIDE.md" ;;
+        11) return ;;
         *) echo "Invalid choice" ;;
     esac
 }

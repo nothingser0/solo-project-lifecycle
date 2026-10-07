@@ -45,6 +45,7 @@ templates/
 | [`COMPETITIVE_LANDSCAPE_TEMPLATE.md`](./01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md) | 5–10 competitor benchmarking matrix, feature gaps, positioning | Module 00 |
 | [`USER_RESEARCH_REPORT_TEMPLATE.md`](./01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md) | Customer interviews, Jobs-to-be-Done (JTBD), user personas | Module 00 |
 | [`PRODUCT_STRATEGY_TEMPLATE.md`](./01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md) | Vision, North Star Metric, strategic pillars, Value Proposition Canvas | Module 00 |
+| [`INTERVIEW_GUIDE_TEMPLATE.md`](./01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md) | The Mom Test interview questions & JTBD discovery script across 3 stakeholder groups | Module 00 / 01 |
 | [`SCOPE_STATEMENT_TEMPLATE.md`](./01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md) | In-Scope vs Out-of-Scope boundaries, user roles, client dependency SLAs | Module 02 |
 | [`MOSCOW_MATRIX.md`](./01-discovery-commercial/MOSCOW_MATRIX.md) | MoSCoW feature prioritization breakdown (Must/Should/Could/Won't) | Module 02 |
 | [`BACKLOG_TEMPLATE.md`](./01-discovery-commercial/BACKLOG_TEMPLATE.md) | Feature backlog breakdown with user story points & RICE prioritization | Module 02 |

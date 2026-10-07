@@ -362,7 +362,7 @@ Map all participants into 4 quadrants: Manage Closely (Paying Owner), Keep Satis
 
 #### 7.2 Phase Duration Guidelines & Buffer Rules
 
-| Lifecycle Stage | Small MVP (5–10 Features) | Medium SaaS (11–15 Features) | Large Platform (16–25 Features) |
+| Lifecycle Stage | Small MVP (3–7 Must-Haves) | Medium SaaS (8–15 Must-Haves) | Large Platform (16–25 Must-Haves) |
 | :--- | :---: | :---: | :---: |
 | **M04 UI/UX Design** | 1 week | **2–3 weeks** (30–50 screens + legal docs) | 3–4 weeks |
 | **M05 Architecture** | 0.5 week | **1 week** (ERD + RLS policies) | 1–2 weeks |

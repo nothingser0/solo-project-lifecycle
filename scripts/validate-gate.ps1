@@ -49,10 +49,15 @@ $Gates = @{
     "M04" = @{
         Name = "UI/UX Prototyping"
         Required = @(
+            "docs/specs/SITEMAP.md",
+            "docs/specs/COMPONENT_REQUIREMENTS.md",
             "DESIGN.md",
             "docs/specs/DESIGN_SPEC.md"
         )
-        Optional = @()
+        Optional = @(
+            "docs/specs/LOGO_DESIGN_BRIEF.md",
+            "docs/design/inspiration/notes.md"
+        )
     }
     "M05" = @{
         Name = "Architecture & Specs"

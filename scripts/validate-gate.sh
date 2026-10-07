@@ -135,8 +135,12 @@ case "$GATE_MODULE" in
         ;;
     M04)
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
+        check_required "docs/specs/SITEMAP.md"
+        check_required "docs/specs/COMPONENT_REQUIREMENTS.md"
         check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
         check_required "docs/specs/DESIGN_SPEC.md"
+        check_optional "docs/specs/LOGO_DESIGN_BRIEF.md"
+        check_optional "docs/design/inspiration/notes.md"
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="

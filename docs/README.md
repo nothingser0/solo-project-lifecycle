@@ -98,7 +98,7 @@ RELEASE & CLOSURE PHASE:
 - **Module 01: Idea & Feasibility**: `docs/modules/01-idea-feasibility.md` — 3-filter idea triage, 4-dimensional feasibility testing, extreme feature pruning, initial scale classification.
 - **Module 02: Discovery & Scope Definition**: `docs/modules/02-discovery-scope.md` — Stakeholder requirements elicitation, user role mapping, MoSCoW breakdown, In-Scope vs Out-of-Scope locking, and client dependency register.
 - **Module 03: [COMMERCIAL GATE] Legal SOW, DP, & Single PIC Agreement**: `docs/modules/03-legal-sow-charter.md` — Contract model selection, milestone payment terms, binding Single PIC agreement, Change Request protocol, and Down Payment security.
-- **Module 04: UI/UX Design & Specification**: `docs/modules/04-uiux-prototyping.md` — Produces `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`; covers information architecture, scope-based sitemap & page inventory, shared component standards, states, responsive behavior, accessibility, asset needs, and Design Freeze. Interactive prototype optional.
+- **Module 04: UI/UX Design & Specification**: `docs/modules/04-uiux-prototyping.md` — Produces `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, and `docs/design/inspiration/notes.md`; covers information architecture, scope-based sitemap & page inventory, shared component standards, states, responsive behavior, accessibility, asset needs, and Design Freeze. Interactive prototype optional.
   - Section 8: **Design System Foundation [M04B]** — Enterprise design systems with tokens, component libraries, Storybook, governance. **SKIP if**: Solo MVP <4 weeks.
 - **Module 05: Architecture & Technical Specifications (PRD & FSD)**: `docs/modules/05-architecture-specs.md` — Tech stack selection (Boring Tech ladder), SQL DDL database schema, API contracts & error matrix, security architecture (PDP Law/AES-256), and FSD sign-off.
   - Section 6: **System Design & Infrastructure [M05B]** — Load balancing, Redis caching, DB sharding, high availability, capacity planning. **SKIP if**: Small projects.
@@ -148,7 +148,7 @@ RELEASE & CLOSURE PHASE:
 ### Module 04 (Active)
 - `templates/02-design/DESIGN_MD_TEMPLATE.md`: Saved to root (**`./DESIGN.md`**) as source of truth for design tokens and component standards.
 - `templates/02-design/DESIGN_SPEC_TEMPLATE.md`: Saved to **`docs/specs/DESIGN_SPEC.md`** (Information architecture, URL routes, scope-based page/sub-page inventory, states, responsive behavior, and Design Freeze sheet).
-- `docs/design/DESIGN_REFERENCES.md`: Generated from visual search keywords for Pinterest, Behance, and Dribbble. Do not copy reference works directly.
+- `templates/02-design/references/inspiration-template/notes-template.md`: Saved to **`docs/design/inspiration/notes.md`** (Visual reference analysis, color extraction, neutral basis, and typography decisions).
 
 ### Module 05 (Active)
 - `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`: Saved to **`docs/specs/PRD.md`** (Official product specifications, RBAC matrix, KPI metrics, NFR constraints).

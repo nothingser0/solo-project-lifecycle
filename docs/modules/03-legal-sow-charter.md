@@ -8,9 +8,9 @@
 - `templates/03-governance/VENDOR_COMPARISON_MATRIX.md` (Vendor/subcontractor evaluation for specialized deliverables)
 
 
-This module is a **BLOCKING COMMERCIAL GATE** in the solo developer project lifecycle. Fundamental rule: **NOT A SINGLE LINE OF CODE OR DETAILED DESIGN IS UNDERTAKEN BEFORE PASSING THIS GATE.**
+This module is a **BLOCKING COMMERCIAL GATE FOR CLIENT COMMERCIAL PROJECTS** in the solo developer project lifecycle. Fundamental rule for paid client work: **NOT A SINGLE LINE OF CODE OR DETAILED DESIGN IS UNDERTAKEN BEFORE PASSING THIS GATE.** (For self-initiated products, Solo SaaS, and internal tools without an external client, this commercial gate is **FORMALLY WAIVED / BYPASSED**, and development proceeds directly to Module 04).
 
-The purpose is to bind the `SCOPE_STATEMENT.md` document into a legally enforceable agreement, secure the Down Payment (DP), lock in a Single PIC from the client side, and establish the Change Request protocol.
+The purpose for client engagements is to bind the `SCOPE_STATEMENT.md` document into a legally enforceable agreement, secure the Down Payment (DP), lock in a Single PIC from the client side, and establish the Change Request protocol.
 
 ---
 
