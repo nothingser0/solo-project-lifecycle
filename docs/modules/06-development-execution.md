@@ -1928,7 +1928,7 @@ Before the AI Coding Agent begins executing tasks from `TODO.md`, verify that `A
 - **Segregation of Duties & Exception Handling (Domain-Adaptive)**:
   - Differentiate operator vs supervisor roles (e.g., Staff cannot void transactions independently; voiding appends a formal reversal entry).
   - Physical opname reconciliation accounts for active in-flight transactions during the count session (retail/inventory scope), or deal/content state machine gates (CRM/CMS scope).
-- **Domain Statutory Citations (Conditional)**: When tax or statutory calculations are in scope, cite official date-verified government regulations (e.g. PP 55/2022, PPh 21 TER PMK 168/2023) with required persistent disclaimers; mark N/A for non-statutory projects.
+- **Domain Statutory Citations (Conditional)**: When tax or statutory calculations are in scope, cite official date-verified government regulations (e.g. PP 55/2022 jo. PP 20/2026, PPh 21 TER PMK 168/2023) with required persistent disclaimers; mark N/A for non-statutory projects.
 - **Domain Glossary Enforcement**: Establish unambiguous definitions for core terminology to prevent semantic drift.
 
 #### 7. 100% Atomic Task Decomposition in `TODO.md` (Anti-Macro Tasks)

@@ -242,7 +242,7 @@ Full details: `case-studies/`
 
 ## Contributing
 
-Fork, branch, commit, push, PR.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines, local test workflows, and commit conventions.
 
 Useful contributions:
 - Additional case studies
@@ -269,6 +269,9 @@ Use for commercial projects, consulting, products, internal tools.
 - [Patterns](./patterns/)
 - [References](./references/)
 - [Scripts](./scripts/)
+- [Changelog](./CHANGELOG.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Security Policy](./SECURITY.md)
 - [Issues](https://github.com/nothingser0/solo-project-lifecycle/issues)
 
 ---

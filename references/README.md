@@ -50,6 +50,7 @@ references/
 | [`PM_PRIORITIZATION_FRAMEWORKS.md`](./pm/PM_PRIORITIZATION_FRAMEWORKS.md) | RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheets | Module 01, 13 |
 | [`PM_TOOLS_SETUP_GUIDE.md`](./pm/PM_TOOLS_SETUP_GUIDE.md) | Configuration guide for Linear, Jira, GitHub Projects, Notion for solo dev workflows | Module 01 |
 | [`PM_USER_TESTING_GUIDE.md`](./pm/PM_USER_TESTING_GUIDE.md) | User testing facilitation scripts, usability test plans, SUS scoring calculation | Module 04 |
+| [`INDUSTRY_TOOLS_ADAPTER.md`](./pm/INDUSTRY_TOOLS_ADAPTER.md) | Integration bridge for Notion databases, Linear/Jira CSV import, and remote Figma MCP | Module 01, 04 |
 
 ---
 
@@ -101,3 +102,11 @@ references/
 | [`FIGMA_MCP_SETUP.md`](./technical/FIGMA_MCP_SETUP.md) | Figma MCP server installation, live design synchronization, token extraction workflows | Module 04 |
 | [`MOBILE_ARCHITECTURE_GUIDE.md`](./technical/MOBILE_ARCHITECTURE_GUIDE.md) | Mobile viewport responsiveness, touch ergonomics, PWA configuration, cross-platform layouts | Module 04 |
 | [`UI_COMPONENT_ANIMATION_LIBRARY.md`](./technical/UI_COMPONENT_ANIMATION_LIBRARY.md) | Production micro-interaction animation patterns, Framer Motion/CSS transitions | Module 04 |
+
+---
+
+## 8. Team Collaboration & Agency Handoff (`references/team/`)
+
+| File | Purpose | Referenced In |
+|---|---|---|
+| [`TEAM_COLLABORATION_GUIDE.md`](./team/TEAM_COLLABORATION_GUIDE.md) | Role responsibility matrix (PM/Design/Eng/QA), multi-stage handoffs, and multi-agent coordination | Module 02, 06 |

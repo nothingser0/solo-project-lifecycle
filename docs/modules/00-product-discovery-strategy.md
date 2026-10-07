@@ -119,7 +119,7 @@ Use Google Trends, McKinsey/BCG Indonesia reports, and startup research (DailySo
 | Regulatory Domain | Critical Regulations Solo Devs Must Know in Indonesia | Compliance Action / Verification |
 | :--- | :--- | :--- |
 | **Private Scope PSE** | Komdigi (Ministry of Communication & Digital, Permen Kominfo No. 5/2020 jo. 10/2021) | Mandatory Private PSE registration via oss.go.id before commercial go-live |
-| **Taxation (VAT/PKP)** | UU HPP No. 7/2021 & PMK 60/2022 (11% Digital VAT / PKP threshold Rp 4.8B) | Account for 11% VAT in pricing/invoices; PPh Final 0.5% (PP 55/2022) for qualifying MSMEs |
+| **Taxation (VAT/PKP)** | UU HPP No. 7/2021 & PMK 60/2022 (11% Digital VAT / PKP threshold Rp 4.8B) | Account for 11% VAT in pricing/invoices; PPh Final 0.5% (PP 55/2022 jo. PP 20/2026) for qualifying MSMEs |
 | **Legality & KBLI** | NIB via OSS-RBA (KBLI 62019 - Web Programming, 62029, 63122) | Obtain sole proprietorship/PT NIB to validate corporate bank accounts & payment gateways |
 | **Trademark & IP** | DJKI Ministry of Law (Law No. 20/2016 on Trademarks) | Query pdki-indonesia.dgip.go.id before naming product to avoid trademark infringement |
 | **Data Protection** | Law No. 27/2022 on Personal Data Protection (UU PDP) | Mandatory consent clause, transit/at-rest encryption, and right to erasure |
@@ -554,7 +554,7 @@ Pillar 3: Actionable Insights (not just data dumps)
 - **Estimated CAC (Customer Acquisition Cost)**: Rp [Y] via organic, ads, or direct sales
 - **Estimated LTV (Customer Lifetime Value)**: $\text{ARPU} \times \text{Average Lifespan in Months}$
 - **Payment Gateway Fee**: QRIS (0.7%), Virtual Account (Rp 2.000–4.000/tx), Credit Card (2.9% + Rp 2.000)
-- **Tax Impact**: PPN 11% (UU HPP) + PPh Final 0.5% (PP 55/2022)
+- **Tax Impact**: PPN 11% (UU HPP) + PPh Final 0.5% (PP 55/2022 jo. PP 20/2026)
 - **Gross Margin**: Must be $\ge 70\%$ for software sustainability.
 
 #### 4.7 Kill Criteria (Kriteria Berhenti)
