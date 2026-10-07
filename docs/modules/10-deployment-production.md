@@ -172,7 +172,7 @@ If source data (Excel/CSV) is still available and unchanged since UAT:
 
 ```bash
 # Run ETL script directly against production DB
-DATABASE_URL="postgresql://user:***@prod-db:5432/db" node scripts/etl-import.js --source data/client-final.xlsx
+DATABASE_URL="postgresql://user:***@prod-db:5432/db" node scripts/runtime/etl-import.js --source data/client-final.xlsx
 
 # Verify row count
 psql $DATABASE_URL -c "SELECT COUNT(*) FROM documents;"

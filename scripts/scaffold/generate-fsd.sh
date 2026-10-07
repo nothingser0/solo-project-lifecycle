@@ -12,8 +12,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Run check-package-versions if available to extract recommendations
 VERSION_HINTS=""
-if [ -f "$SCRIPT_DIR/check-package-versions.sh" ]; then
-    VERSION_HINTS=$(bash "$SCRIPT_DIR/check-package-versions.sh" "$FRAMEWORK" 2>/dev/null | grep -A 10 "Recommended Pinned Versions" || true)
+VERSION_CHECK="$SCRIPT_DIR/../verify/check-package-versions.sh"
+if [ -f "$VERSION_CHECK" ]; then
+    VERSION_HINTS=$(bash "$VERSION_CHECK" "$FRAMEWORK" 2>/dev/null | grep -A 10 "Recommended Pinned Versions" || true)
 fi
 
 cat <<EOF

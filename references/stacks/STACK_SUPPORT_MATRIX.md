@@ -27,7 +27,7 @@ Stacks with complete scaffold, AI harness templates in `templates/04-dev-executi
 - M05 runs `npm view next version` → locks result in FSD.md
 - M06 scaffolds @latest → pins exact FSD version → version gate validates lockfile
 - Framework templates adapt dynamically; real-time queries prevent knowledge cutoff lag.
-- Upstream major updates (e.g. Next.js 15→16, Laravel 11→13, Django 5→6, Go 1.23→1.27) are validated by `./scripts/check-package-versions.sh <stack>` via HTTP registry queries without requiring local compiler installation.
+- Upstream major updates (e.g. Next.js 15→16, Laravel 11→13, Django 5→6, Go 1.23→1.27) are validated by `./scripts/verify/check-package-versions.sh <stack>` via HTTP registry queries without requiring local compiler installation.
 - For the roadmap/beta/planned stacks, developers can utilize the generic harness files (`templates/04-dev-execution/AGENTS_TEMPLATE.md` and `CONTEXT_TEMPLATE.md`) and customize CLI commands in `RUNBOOK_LOCAL.md` per framework specs.
 
 ---

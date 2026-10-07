@@ -18,7 +18,7 @@ ERRORS=0
 
 # 1. Verify Shell Scripts Syntax
 echo "1. Checking bash scripts syntax..."
-for script in scripts/*.sh templates/04-dev-execution/*.sh templates/04-dev-execution/scripts/*.sh; do
+for script in scripts/*/*.sh templates/04-dev-execution/*.sh templates/04-dev-execution/scripts/*.sh; do
     if [ -f "$script" ]; then
         if bash -n "$script" 2>/dev/null; then
             echo -e "  ${GREEN}✓${NC} $script"
@@ -135,13 +135,13 @@ done
 # 6. Verify Markdown Links and Frontmatter
 echo "6. Checking Markdown Links and SKILL.md Frontmatter..."
 if command -v node >/dev/null 2>&1; then
-    if node scripts/verify-skill-frontmatter.js >/dev/null 2>&1; then
+    if node scripts/verify/verify-skill-frontmatter.js >/dev/null 2>&1; then
         echo -e "  ${GREEN}✓${NC} SKILL.md frontmatter valid"
     else
         echo -e "  ${RED}✗${NC} SKILL.md frontmatter invalid"
         ERRORS=$((ERRORS + 1))
     fi
-    if node scripts/verify-links.js >/dev/null 2>&1; then
+    if node scripts/verify/verify-links.js >/dev/null 2>&1; then
         echo -e "  ${GREEN}✓${NC} Internal Markdown links valid (0 broken)"
     else
         echo -e "  ${RED}✗${NC} Broken markdown links found"

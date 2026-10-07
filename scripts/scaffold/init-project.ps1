@@ -11,7 +11,7 @@ param (
 )
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$rootDir = Split-Path -Parent $scriptDir
+$rootDir = Split-Path -Parent (Split-Path -Parent $scriptDir)
 $templates = Join-Path $rootDir "templates"
 
 Write-Host "=== Initializing New Project ===" -ForegroundColor Cyan

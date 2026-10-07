@@ -220,29 +220,29 @@ Full details: `case-studies/`
 
 **Bash (Linux/Mac):**
 ```bash
-./scripts/validate-gate.sh              # Validate gate checkpoints
-./scripts/check-package-versions.sh     # Real-time registry dependency checks (14 stacks supported)
-./scripts/verify-framework-version.sh   # Validate lockfile against FSD
-./scripts/lint-template.sh              # Check template completeness
-./scripts/template-picker.sh            # Interactive template selector
-./scripts/verify-all.sh                 # Repository sanity and integrity check
+./scripts/gates/validate-gate.sh              # Validate gate checkpoints (M00-M13)
+./scripts/scaffold/init-project.sh            # Bootstrap new project directory per scale
+./scripts/verify/check-package-versions.sh     # Real-time registry dependency checks (14 stacks)
+./scripts/verify/verify-framework-version.sh   # Validate lockfile against FSD
+./scripts/verify/lint-template.sh              # Check template completeness
+./scripts/scaffold/template-picker.sh          # Interactive template selector
+./scripts/verify/verify-all.sh                 # Repository sanity and integrity check
 ```
 
 **PowerShell (Windows):**
 ```powershell
-.\scripts\validate-gate.ps1
-.\scripts\check-package-versions.ps1   # 14 stacks supported (-Framework <stack>)
-.\scripts\verify-framework-version.ps1
-.\scripts\lint-template.ps1
-.\scripts\template-picker.ps1
-.\scripts\verify-all.ps1
+.\scripts\gates\validate-gate.ps1
+.\scripts\scaffold\init-project.ps1
+.\scripts\verify\check-package-versions.ps1   # 14 stacks supported (-Framework <stack>)
+.\scripts\verify\verify-framework-version.ps1
+.\scripts\verify\lint-template.ps1
+.\scripts\scaffold\template-picker.ps1
+.\scripts\verify\verify-all.ps1
 ```
 
 ---
 
-## Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines, local test workflows, and commit conventions.
+## License
 
 Useful contributions:
 - Additional case studies
@@ -251,8 +251,6 @@ Useful contributions:
 - Template improvements
 
 ---
-
-## License
 
 MIT License. See [LICENSE](./LICENSE).
 
@@ -269,9 +267,6 @@ Use for commercial projects, consulting, products, internal tools.
 - [Patterns](./patterns/)
 - [References](./references/)
 - [Scripts](./scripts/)
-- [Changelog](./CHANGELOG.md)
-- [Contributing](./CONTRIBUTING.md)
-- [Security Policy](./SECURITY.md)
 - [Issues](https://github.com/nothingser0/solo-project-lifecycle/issues)
 
 ---

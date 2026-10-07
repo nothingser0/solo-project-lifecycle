@@ -65,11 +65,11 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • OVERWRITES framework boilerplate (e.g., Next.js auto-generated AGENTS.md)
   • Clean up staging: rm -rf docs/harness-root/ (enforces single source of truth; git history serves as backup)
   • Verify all 9 files present in root: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
-  • Optional automation shortcut: ./scripts/template-picker.sh --phase 4 --dest . (or .\scripts\template-picker.ps1 -Phase 4)
+  • Optional automation shortcut: ./scripts/scaffold/template-picker.sh --phase 4 --dest . (or .\scripts\scaffold\template-picker.ps1 -Phase 4)
                                     │
                                     ▼
 [ STEP 1.6: Verify Framework Versions (Version Gate - MANDATORY) ]
-  • Run version gate: ./scripts/verify-framework-version.sh (or .ps1)
+  • Run version gate: ./scripts/verify/verify-framework-version.sh (or .ps1)
   • Verifies resolved lockfile versions match FSD locked versions
   • Checks package-lock.json / composer.lock / requirements.txt / go.mod
   • Compares major.minor versions (exact match required)

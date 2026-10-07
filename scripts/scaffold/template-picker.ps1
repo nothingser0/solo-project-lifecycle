@@ -11,7 +11,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$TemplatesDir = "templates"
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$rootDir = Split-Path -Parent (Split-Path -Parent $scriptDir)
+$TemplatesDir = Join-Path $rootDir "templates"
 
 function Show-Header {
     Write-Host ""

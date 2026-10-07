@@ -14,10 +14,10 @@ Run auto-check to get current ecosystem state:
 
 ```bash
 # Bash (Linux/Mac/WSL)
-./scripts/check-package-versions.sh nextjs
+./scripts/verify/check-package-versions.sh nextjs
 
 # PowerShell (Windows)
-.\scripts\check-package-versions.ps1 -Framework nextjs
+.\scripts\verify\check-package-versions.ps1 -Framework nextjs
 ```
 
 **Output**:
@@ -76,7 +76,7 @@ Run auto-check to get current ecosystem state:
 
 **Example**:
 ```bash
-./scripts/check-package-versions.sh nextjs > /tmp/versions.txt
+./scripts/verify/check-package-versions.sh nextjs > /tmp/versions.txt
 # Copy recommended versions to FSD.md
 ```
 
@@ -152,7 +152,7 @@ pnpm add next@15 react@18 -D tailwindcss@3
 ### 1. Run Before Every New Project
 ```bash
 # Add to project initialization workflow
-./scripts/check-package-versions.sh nextjs > docs/versions-$(date +%Y%m%d).txt
+./scripts/verify/check-package-versions.sh nextjs > docs/versions-$(date +%Y%m%d).txt
 ```
 
 ### 2. Update FSD.md With Output
@@ -165,7 +165,7 @@ Styling: Tailwind CSS 3.4.14
 Validation: Zod 3.23.8 + react-hook-form 7.53.0
 Auth: Supabase (@supabase/ssr 0.5.2)
 
-Source: ./scripts/check-package-versions.sh
+Source: ./scripts/verify/check-package-versions.sh
 ```
 
 ### 3. Pin Versions in Scaffold Command
@@ -193,7 +193,7 @@ npx create-next-app@latest my-app
 ### 1. Auto-Update FSD.md Template
 ```bash
 # Generate FSD.md from script output
-./scripts/generate-fsd.sh nextjs > docs/specs/FSD.md
+./scripts/scaffold/generate-fsd.sh nextjs > docs/specs/FSD.md
 ```
 
 ### 2. CI/CD Integration
@@ -208,7 +208,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: ./scripts/check-package-versions.sh nextjs
+      - run: ./scripts/verify/check-package-versions.sh nextjs
       - name: Create issue if outdated
         if: failure()
         run: gh issue create --title "Package versions outdated"
@@ -216,7 +216,7 @@ jobs:
 
 ### 3. Interactive Mode
 ```bash
-./scripts/check-package-versions.sh nextjs --interactive
+./scripts/verify/check-package-versions.sh nextjs --interactive
 # Prompts: "Update FSD.md with these versions? [y/n]"
 ```
 
@@ -248,7 +248,7 @@ jobs:
 Add instruction:
 ```
 STEP 0: Run version check script
-./scripts/check-package-versions.sh nextjs
+./scripts/verify/check-package-versions.sh nextjs
 
 STEP 1: Review output for deprecations/incompatibilities
 STEP 2: Update FSD.md with recommended versions
@@ -268,7 +268,7 @@ Script provides **pre-scaffold** intelligence; M06 provides **post-scaffold** va
 ## Example Session
 
 ```bash
-$ ./scripts/check-package-versions.sh nextjs
+$ ./scripts/verify/check-package-versions.sh nextjs
 
 === Package Version Auto-Check ===
 
