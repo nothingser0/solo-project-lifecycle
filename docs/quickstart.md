@@ -24,13 +24,15 @@ git init
 #   - docs/harness-root/ (9 AI control files - STAGED, not in root yet)
 
 # Step 4: After scaffold (npx create-next-app, etc.)
-# Agent copies: cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
+# Agent copies to root, then cleans up staging:
+cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ && rm -rf docs/harness-root/
 ```
 
 **Why staging in docs/harness-root/?**
 - Root folder empty/git-only before scaffold
 - Framework CLI (create-next-app, laravel new) needs empty/minimal root
 - Harness files deployed AFTER scaffold to avoid conflicts
+- Staging folder removed after copy to enforce a single source of truth and prevent AI path drift
 
 ---
 
@@ -52,7 +54,7 @@ git init
 
 ---
 
-## The 5-Step MVP Path (Skip 8 Modules)
+## The 5-Step MVP Path (Skip 9 Modules)
 
 ```
 Week 1: Idea → Specs (2 days)
@@ -71,6 +73,8 @@ Week 4: Deploy (2 days)
 - ❌ M07 (QA/SIT) → Manual testing only
 - ❌ M08 (Data Migration) → No legacy data
 - ❌ M09 (UAT) → You are the user
+- ❌ M11 (BAST & Handover) → No external client handover
+- ❌ M13 (Operations & Growth) → Defer to post-launch
 
 ### Do These Only
 - ✅ M04 (UI/UX) → 1 day design
@@ -78,6 +82,11 @@ Week 4: Deploy (2 days)
 - ✅ M06 (Development) → 10 days coding
 - ✅ M10 (Deployment) → 1 day launch
 - ✅ M12 (Warranty) → Self-maintain
+
+> 💡 **For Solo SaaS with Multiple Features (4-10 features)**:
+> Do NOT skip market validation completely. Use the **Solo SaaS Path** defined in `SKILL.md`:
+> `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13`
+> (Validates demand with 5 user interviews and waitlist test via `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
 
 ---
 
@@ -216,6 +225,7 @@ CREATE TABLE todos (
    # Source: docs/harness-root/AGENTS.md, ARCHITECTURE.md, etc.
    # Target: ./AGENTS.md, ./ARCHITECTURE.md, etc. (root)
    # Overwrites framework boilerplate if exists (e.g., Next.js AGENTS.md)
+   cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ && rm -rf docs/harness-root/
    ```
 
 3. **Verify harness installed**:

@@ -44,9 +44,29 @@ check_optional() {
 case "$GATE_MODULE" in
     M00)
         echo "=== M00: Product Discovery & Strategy Gate Checklist ==="
-        check_required "docs/pm/MARKET_RESEARCH.md"
-        check_optional "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/COMPETITOR_ANALYSIS.md"
-        check_optional "docs/pm/PRODUCT_STRATEGY.md"
+        if [ -f "docs/pm/M00_LITE.md" ]; then
+            echo "  [INFO] Detected M00-lite rapid validation path"
+            check_required "docs/pm/M00_LITE.md"
+            if grep -q "PENDING_PRIMARY_RESEARCH" "docs/pm/M00_LITE.md"; then
+                echo "  ⏳ Gate status: PENDING_PRIMARY_RESEARCH (Real user interviews & waitlist test pending)"
+            elif grep -q "PASS" "docs/pm/M00_LITE.md"; then
+                echo "  ✅ Gate status: PASS (Empirical validation verified)"
+            fi
+        else
+            check_required "docs/pm/MARKET_RESEARCH.md"
+            check_required "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/COMPETITOR_ANALYSIS.md"
+            check_required "docs/pm/USER_RESEARCH_REPORT.md"
+            check_required "docs/pm/PRODUCT_STRATEGY.md"
+            if [ -f "docs/pm/USER_RESEARCH_REPORT.md" ]; then
+                if grep -q "PENDING_PRIMARY_RESEARCH" "docs/pm/USER_RESEARCH_REPORT.md"; then
+                    echo "  ⏳ Gate status: PENDING_PRIMARY_RESEARCH (Real user data pending; synthetic data prohibited)"
+                elif grep -qi "intent.*[3-9][0-9]%\|intent.*100%\|PASS" "docs/pm/USER_RESEARCH_REPORT.md"; then
+                    echo "  ✅ Market validation gate criteria: Intent-to-buy threshold verified"
+                else
+                    echo "  ⚠️  Market validation: Intent-to-buy ≥30% not explicitly validated"
+                fi
+            fi
+        fi
         ;;
     M01)
         echo "=== M01: Idea Feasibility Gate Checklist ==="
@@ -55,38 +75,94 @@ case "$GATE_MODULE" in
     M02)
         echo "=== M02: Discovery & Scope Gate Checklist ==="
         check_required "docs/pm/SCOPE_STATEMENT.md"
+        if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
+            # 1. Ambiguity detection on Must-Have rows
+            if grep -iE "\|.*(must|p0).*\|" "docs/pm/SCOPE_STATEMENT.md" | grep -qiE "TBD|maybe|if time permits|tentative|TBA"; then
+                echo "  ❌ Ambiguous terms (TBD/maybe/if time permits) detected in Must-Have scope rows!"
+                GATE_FAILED=1
+            else
+                echo "  ✅ Zero ambiguous terms in Must-Have scope rows"
+            fi
+
+            # 2. Confidence Legend check
+            if grep -q "✅" "docs/pm/SCOPE_STATEMENT.md" || grep -q "VERIFIED" "docs/pm/SCOPE_STATEMENT.md"; then
+                echo "  ✅ Data Confidence Legend / status markers present"
+            else
+                echo "  ⚠️  Data Confidence Legend [✅ / 🔶 / ❓] not explicitly declared"
+            fi
+
+            # 3. Out-of-Scope exclusions check
+            if grep -qi "out-of-scope" "docs/pm/SCOPE_STATEMENT.md"; then
+                echo "  ✅ Explicit Out-of-Scope boundaries defined"
+            else
+                echo "  ⚠️  Out-of-Scope boundary section missing"
+            fi
+        fi
         ;;
     M03)
         echo "=== M03: Legal SOW & Charter Checklist ==="
-        check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
-        check_optional "contracts/NDA.md"
-        if [ -f "contracts/SOW_CONTRACT.md" ] || [ -f "docs/pm/SOW_CONTRACT.md" ]; then
             target_sow="contracts/SOW_CONTRACT.md"
             [ -f "$target_sow" ] || target_sow="docs/pm/SOW_CONTRACT.md"
-            if grep -q "Termin 1.*DP\|Down Payment" "$target_sow"; then
+        
+        if grep -qiE "bypass|waived|solo saas|self-initiated" "$target_sow" 2>/dev/null || ([ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]); then
+            echo "  [INFO] Solo SaaS / Self-Initiated product: Commercial SOW gate is WAIVED."
+            check_optional "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
+            else
+        check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
+            check_optional "contracts/NDA.md" "docs/pm/NDA.md"
+            if [ -f "$target_sow" ]; then
+                if grep -qiE "Termin|Milestone.*Payment|Down Payment|DP" "$target_sow"; then
                 echo "  ✅ Payment terms defined"
             else
-                echo "  ⚠️  Payment terms not clearly defined"
+                    echo "  ❌ Payment terms not clearly defined!"
+                    GATE_FAILED=1
             fi
-            if grep -q "Single PIC" "$target_sow"; then
+                if grep -qi "Single PIC" "$target_sow"; then
                 echo "  ✅ Single PIC clause present"
-            else
-                echo "  ⚠️  Single PIC not defined"
+                else
+                    echo "  ❌ Single PIC clause missing!"
+                    GATE_FAILED=1
             fi
+                if grep -qiE "Limitation of Liability|Liability Cap" "$target_sow"; then
+                    echo "  ✅ Limitation of liability clause present"
+                else
+                    echo "  ⚠️  Limitation of liability clause not explicitly detected"
         fi
+            fi
         echo ""
-        echo "⚠️  DO NOT proceed to M04 until DP confirmed in bank account"
+            echo "⚠️  DO NOT proceed to M04 until DP confirmed in bank account (or bypassed for Solo SaaS)"
+        fi
         ;;
     M04)
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
+        if [ -f "PROJECT_LITE.md" ]; then
+            echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
+            check_required "docs/specs/SITEMAP.md"
+            check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
+            check_optional "docs/specs/COMPONENT_REQUIREMENTS.md"
+            check_optional "docs/specs/DESIGN_SPEC.md"
+            check_optional "docs/design/inspiration/notes.md"
+        else
+        check_required "docs/specs/SITEMAP.md"
+        check_required "docs/specs/COMPONENT_REQUIREMENTS.md"
         check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
         check_required "docs/specs/DESIGN_SPEC.md"
+        check_optional "docs/specs/LOGO_DESIGN_BRIEF.md"
+        check_optional "docs/design/inspiration/notes.md"
+        fi
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="
+        if [ -f "PROJECT_LITE.md" ]; then
+            echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
+            check_required "PROJECT_LITE.md"
+            check_optional "docs/specs/PRD.md"
+            check_optional "docs/specs/FSD.md"
+        else
         check_required "docs/specs/PRD.md"
         check_required "docs/specs/FSD.md"
         check_optional "PROJECT_LITE.md"
+        fi
         ;;
     M06)
         echo "=== M06: Development Execution Gate Checklist ==="

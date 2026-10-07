@@ -10,16 +10,16 @@
 
 ### ✅ PASS Criteria
 
-- [ ] **Must-Have features (8-12 items)** cover the core 3-step user loop (Input → Process → Output)
-- [ ] **Should-Have features (3-5 items)** have clear reasons for deferral (complexity, time, cost, external dependency)
+- [ ] **Must-Have features strictly adhere to scale limits**: Small (3–7 items), Medium (8–15 items), Large (16–25 items), covering the core 3-step user loop (Input → Process → Output)
+- [ ] **Should-Have features (Phase 1.5)** have clear reasons for deferral (complexity, time, cost, external dependency)
 - [ ] **Could-Have features (2-4 items)** are nice-to-have, Premium/Pro tier candidates
-- [ ] **Won't-Have features (4-8 items)** are explicit with rationale (out-of-scope, mobile app, multi-language, third-party integration)
-- [ ] **No ambiguity:** No features listed as "might include" or "time-permitting" (all must fall into M/S/C/W buckets)
+- [ ] **Won't-Have features (Out-of-Scope)** are explicit with rationale (mobile app, multi-language, third-party integration)
+- [ ] **No ambiguity:** No features listed as "TBD", "maybe", or "time-permitting" (all must fall into M/S/C/W buckets)
 
 ### ❌ RED FLAGS
 
-- ❌ Must-Have >15 features → **Overscoped, cut to 10 features** (rule: MVP must be demoable in 3 minutes)
-- ❌ Must-Have <5 features → **Underscoped, lacks core value** (users won't use an app with only 3 trivial features)
+- ❌ Must-Have exceeds scale limits (>7 for Small, >15 for Medium) → **Overscoped, prune to core features**
+- ❌ Must-Have <3 features → **Underscoped, lacks core value**
 - ❌ Won't-Have empty → **High scope creep risk** (all features categorized as "Maybe", lacking firm boundaries)
 - ❌ Should-Have == Could-Have (distinction unclear) → **Weak prioritization, rework MoSCoW**
 
@@ -293,7 +293,7 @@ Acceptance Criteria:
 | **TOTAL** | **100%** | — | **[ΣWeighted]** |
 
 **Gate Decision:**
-- **≥4.0/5:** PASS (Go to Module 04/05)
+- **≥4.0/5:** PASS (Proceed to Module 03 for Client Commercial, or Module 04 for Solo SaaS)
 - **3.0-3.9/5:** CONDITIONAL PASS (Fix red flags first, re-review)
 - **<3.0/5:** FAIL (Rework Module 02 from scratch)
 
@@ -301,7 +301,7 @@ Acceptance Criteria:
 
 ## 11. Action Items Template (Post-Evaluation)
 
-**CRITICAL (Must-Fix Before Module 05):**
+**CRITICAL (Must-Fix Before Next Module):**
 1. [ ] Fix formula/logic errors (e.g., incorrect NPPN calculation)
 2. [ ] Add missing database columns (e.g., `export_count`, `ptkp_amount`)
 3. [ ] Strengthen disclaimer/compliance (e.g., legal wording for UU PDP)
@@ -324,12 +324,12 @@ Acceptance Criteria:
 ## 12. Checklist Summary (Quick Gate)
 
 **Minimum Bar to PASS Module 02:**
-- ✅ MoSCoW: 8-12 Must-Have, 3-5 Should-Have, 4-8 Won't-Have
+- ✅ MoSCoW: Must-Haves adhere to scale limits (Small: 3–7, Medium: 8–15), with zero ambiguous terms
 - ✅ User Stories: INVEST format, testable acceptance criteria
 - ✅ Database: ERD 3-6 tables, foreign keys + indexes + constraints
 - ✅ Tech Stack: Mature, active maintenance, free tier sufficient for MVP
 - ✅ NFR: Performance/security/accessibility targets realistic
-- ✅ Timeline: 12-16 weeks with 30% buffer
+- ✅ Timeline: Aligned with scale formula (Small 2–4w, Medium 9–14w, Large 18–25w)
 - ✅ Risk: 7-10 risks with mitigation + contingency
 - ✅ Scope: In/Out explicit, no "TBD"
 

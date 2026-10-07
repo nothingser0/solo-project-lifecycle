@@ -152,7 +152,7 @@ After all stages of Module 12 are completed:
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/WARRANTY_POLICY.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/WARRANTY_POLICY.md')` → must succeed without error
+   - Read and verify file `docs/pm/WARRANTY_POLICY.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to closure
@@ -178,7 +178,7 @@ After all stages of Module 12 are completed:
 ### **STEP 1: LIFECYCLE CLOSURE**
 
 1. **Verify warranty policy**:
-   - [ ] `read_file('docs/pm/WARRANTY_POLICY.md')` → Confirm warranty period, coverage, exclusions documented
+   - [ ] Read and verify file `docs/pm/WARRANTY_POLICY.md` → Confirm warranty period, coverage, exclusions documented
    - [ ] Confirm no pending Severity 1/2 tickets
    - [ ] Confirm monitoring active and stable
 2. Display congratulations and project completion summary to user.

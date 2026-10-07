@@ -22,17 +22,17 @@ Works with any tech stack. Built for solo developers, freelancers, consulting te
 
 ## Framework Architecture
 
-**Repository size: ~7MB** (intentionally comprehensive)
-This is a **skill framework/toolkit**, not a minimal starter template:
+**Repository size: ~3.8MB uncompressed framework content (270+ files)** (verified via `./scripts/calculate-size.sh`).
+This is a **comprehensive skill framework/toolkit**, not a minimal starter template:
 
 | Component | Size | Purpose |
 |-----------|------|---------|
-| Module library | 460KB | 14 lifecycle phases with detailed workflows |
-| Template library | 1.8MB | 150+ production-ready templates |
-| Reference guides | 756KB | Playbooks, patterns, deep-dive materials |
+| Module library | 620KB | 14 lifecycle phases with detailed workflows |
+| Template library | 1.8MB | 170+ production-ready templates |
+| Reference guides | 724KB | Playbooks, patterns, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
-| Code patterns | 144KB | 12 reusable patterns (API, testing, deployment, etc.) |
-| Scripts | 96KB | 12 validation and automation tools (6 Bash + 6 PowerShell) |
+| Code patterns | 188KB | 14 reusable patterns (API, testing, deployment, payments, UU PDP, etc.) |
+| Scripts | 200KB | 20+ validation and automation tools (Bash + PowerShell) |
 
 **Why this size?**  
 Completeness = utility. Similar to design systems or testing frameworks - comprehensive by design. You use specific modules/templates on-demand, not everything at once.
@@ -75,12 +75,13 @@ solo-project-lifecycle/
 2. **Initialize git**: `git init`
 3. **Initialize framework**: Generate planning docs (`docs/pm/`, `docs/specs/`, `docs/harness-root/`)
 4. **Scaffold framework**: Run `npx create-next-app`, `laravel new`, etc.
-5. **Deploy harness**: Agent copies `docs/harness-root/*` and `.env.example` → `./` (root)
+5. **Deploy harness & clean staging**: Agent copies `docs/harness-root/*` and `.env.example` → `./` (root), then deletes `rm -rf docs/harness-root/`
 
 **Why `docs/harness-root/` staging?**
 - Root folder empty/git-only before scaffold
 - Framework CLI needs empty root
 - Harness files deployed AFTER scaffold to avoid conflicts
+- Cleaning up `docs/harness-root/` after copy enforces a single source of truth and avoids AI agent path drift
 
 ---
 
@@ -108,6 +109,7 @@ git init
 
 # After scaffold (npx create-next-app, etc.)
 # Agent deploys: cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
+# Clean up staging: rm -rf docs/harness-root/
 ```
 
 ---
@@ -240,7 +242,7 @@ Full details: `case-studies/`
 
 ## Contributing
 
-Fork, branch, commit, push, PR.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines, local test workflows, and commit conventions.
 
 Useful contributions:
 - Additional case studies
@@ -267,8 +269,13 @@ Use for commercial projects, consulting, products, internal tools.
 - [Patterns](./patterns/)
 - [References](./references/)
 - [Scripts](./scripts/)
+- [Changelog](./CHANGELOG.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Security Policy](./SECURITY.md)
 - [Issues](https://github.com/nothingser0/solo-project-lifecycle/issues)
 
 ---
 
 Built by solo developers, for solo developers.
+
+Last updated: 2026-10-05

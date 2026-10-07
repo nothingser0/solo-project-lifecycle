@@ -17,37 +17,37 @@
 > - `templates/02-design/references/inspiration-template/notes-template.md` (Design inspiration extraction and notes template)
 
 
-This module translates `SCOPE_STATEMENT.md` into three documents that serve as the UI source of truth: `DESIGN.md`, `docs/specs/DESIGN_SPEC.md`, and `docs/design/DESIGN_REFERENCES.md`. Its focus is visual standardization, shared components, all pages/sub-pages that are genuinely in-scope, responsive behavior, accessibility, and acceptance criteria.
+This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specification artifacts that serve as the UI source of truth: `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/design/inspiration/notes.md`, `docs/harness-root/DESIGN.md` (staged, deployed to root in M06), and `docs/specs/DESIGN_SPEC.md`. Its focus is information architecture, component inventories, accessibility, design tokens, and comprehensive screen specifications.
 
-> **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (Prototype/AI/Figma) when client needs visual sign-off.
+> **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (v0/Stitch/Figma) when client needs visual sign-off.
 
-> **Output gate:** Module 04 does not produce UI code, Prototype prompts, Screen IDs, or live prototypes by default. Code is created in Module 06 based on these three documents.
+> **Output gate:** Module 04 produces design specifications and optional interactive prototypes. Production code is implemented in Module 06 based on these verified specifications.
 
 ---
 
 ## 1. Module 04 Execution Cycle
 
 ```text
-[ INPUT: SCOPE_STATEMENT.md & Valid Contract + Down Payment from Module 03 ]
-                                │
-                                ▼
-[ STEP 0: Component Discovery & UI Pattern Analysis ]
-  • Read SCOPE_STATEMENT.md → Extract features & acceptance criteria
-  • Map features → UI patterns (forms, tables, modals, etc.)
-  • Identify component inventory (primitives, composite, layout)
-  • Define interaction states (5-state matrix, form states)
-  • Document responsive breakpoints & accessibility requirements
-  • OUTPUT: COMPONENT_REQUIREMENTS.md (prevents AI slop)
+[ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS) ]
                                 │
                                 ▼
 [ STEP 0A: Minimal Logo Design Brief (Pre-Design Phase) ]
-  • Product Name, Philosophy, Target User, Brand Vibe Keywords
-  • User Responsibility & Empty AI Prompt Template (≤2KB limit)
+  • Product Name, Philosophy, Brand Vibe Keywords, Brand Colors (≤2KB limit)
+  • OUTPUT: docs/specs/LOGO_DESIGN_BRIEF.md
                                 │
                                 ▼
 [ STEP 0B: SITEMAP.md & Navigation Architecture ]
-  • Extended Screen Format (States, RBAC, Real Data Context)
+  • Screen Hierarchy & Route Map mapped from in-scope features
   • 3-5 Critical User Flows & Comprehensive Breadcrumbs
+  • Extended Screen Format (States, RBAC, Real Data Context)
+  • OUTPUT: docs/specs/SITEMAP.md
+                                │
+                                ▼
+[ STEP 0C: Component Discovery & UI Pattern Analysis ]
+  • Read SCOPE_STATEMENT.md & SITEMAP.md → Map features & routes to UI patterns
+  • 3-Tier Component Inventory (Primitives, Standard, Domain Composites)
+  • Define interaction states, Anti-Disabled Pristine rule, WCAG 2.2 AA protocols
+  • OUTPUT: docs/specs/COMPONENT_REQUIREMENTS.md (prevents AI slop)
                                 │
                                 ▼
 [ STEP 0.5: Visual Reference Gathering & Brand Synthesis (MANDATORY) ]
@@ -57,22 +57,22 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
   • OUTPUT: `docs/design/inspiration/notes.md`
                                 │
                                 ▼
-[ STEP 1: Drafting DESIGN.md Guardrails (Anti-Slop & Strict WCAG AA) ]
-  • READ: COMPONENT_REQUIREMENTS.md (component inventory as input)
+[ STEP 1: Drafting DESIGN.md System Tokens (Anti-Slop & Strict WCAG AA) ]
+  • Input: COMPONENT_REQUIREMENTS.md & notes.md
   • Neutral & Accent Tokens, Container vs Interactive Borders (≥3:1)
   • Placeholder Contrast (≥4.5:1), Separate Expense vs Destructive Semantics
-  • Mobile Anti-Zoom (16px), 44px Touch Targets, Z-Index Scale, Thermal CSS
-                               │
+  • Mobile Anti-Zoom (16px), 44px Touch Targets, 240px Sidebar, Z-Index Scale
+                                │
                                 ▼
-[ STEP 2: Choose Prototyping Approach (Context-Driven) ]
+[ STEP 2: Choose Prototyping Workflow (Context-Driven) ]
   • Markdown-only: DESIGN.md + DESIGN_SPEC.md (fast, solo projects)
-  • Design options: Visual builder with design system upload
+  • Visual builder: v0.dev / Google Stitch / HTML click-dummy
   • AI prototype: v0.dev / Bolt.new (AI-generated components)
   • Design tool: Figma Dev Mode (professional handoff)
                                 │
                                 ▼
-[ STEP 3: Screen Specification (5-State Matrix) ]
-  • Document/Generate Each Main Page (Login, Dashboard, Form, Detail)
+[ STEP 3: Screen Specification & Wireflows (5-State Matrix) ]
+  • Document/Generate Each In-Scope Screen from SITEMAP.md (SCR-01..SCR-NN)
   • Mandatory Inclusion of 5 States: Default, Loading Skeleton, Empty, Error, Success
                                 │
                                 ▼
@@ -81,8 +81,8 @@ This module translates `SCOPE_STATEMENT.md` into three documents that serve as t
   • Deploy to staging URL (if interactive prototype built)
                                 │
                                 ▼
-[ STEP 5: Walk-Through Session & Design Freeze ]
-  • Interactive Demo with Client Single PIC
+[ STEP 5: Walk-Through Session & Design Freeze Sheet ]
+  • Walkthrough Demo (Formal with Single PIC for Client; Self-Review for Solo)
   • Sign Design Freeze Sign-Off Sheet
                                 │
                                 ▼
@@ -294,14 +294,16 @@ Group all components into three definitive tiers. Every component named in Step 
 
 Use template: `templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md`
 
-**Mandatory 7 Standardized Sections:**
+**Mandatory 9 Standardized Sections:**
 1. **Metadata & Scope Alignment**: Scope/sitemap references, verified WCAG 2.2 AA target.
-2. **Feature → UI Pattern Mapping**: Interaction sequences, edge cases, domain exception mitigations.
+2. **Feature → UI Pattern Mapping & Domain Edge Cases**: Interaction sequences, edge cases, domain exception mitigations.
 3. **Official Component Inventory**: Strict 3-tier categorization (Primitives, Standard Composites, Domain Composites).
 4. **Priority Screen 5-State Matrix**: Default, Loading, Success, Screen Error, Empty State (field errors separated).
 5. **Calibrated Accessibility Protocol**: Anti-disabled pristine, WCAG 2.2.1 timing, WCAG 2.4.11 scroll-padding, error typography.
-6. **Technical Specifications & Unified Z-Index**: Modern font loading, standard breakpoints, multi-tier z-index scale (`z-0` to `z-999999`).
-7. **Regulatory Compliance & Local Domain Policies**: Statutory tax rules (PP 55/2022 jo. PP 20/2026 or sector regulations), mandatory liability disclaimers.
+6. **Multi-User & Role-Aware Component Protocols**: Defense-in-depth UI gating vs server RBAC.
+7. **Technical Specifications & Unified Z-Index Scale**: Modern font loading, standard breakpoints, multi-tier z-index scale (`z-0` to `z-999999`).
+8. **Regulatory Compliance & Local Domain Policies**: Statutory tax rules (PP 55/2022 jo. PP 20/2026 or sector regulations), mandatory liability disclaimers.
+9. **Agent Validation Checklist**: Exit verification before proceeding to tokens.
 
 **Output file:**
 ```
@@ -347,13 +349,13 @@ Before completing Step 0 and proceeding to `docs/harness-root/DESIGN.md` generat
 
 ---
 
-### Option B: Design prototyping (Visual Builder)
+### Option B: AI Visual Builder (v0.dev / Google Stitch / HTML Click-Dummy)
 **Use when**:
 - Need rapid visual prototyping (drag-and-drop)
 - Client requires interactive demo
 - Design system can be uploaded programmatically
 
-**Tools**: Design prototyping MCP Server
+**Tools**: v0.dev by Vercel, Google Stitch, or standalone HTML/CSS click-dummy
 
 **Workflow**:
 1. Generate DESIGN.md (tokens, guidelines)
@@ -730,9 +732,9 @@ For all non-trivial screens (forms, details, data tables, POS), agents **MUST** 
 - Footer: Cancel (secondary button), Save (primary button)
 
 **States**:
-- Pristine: Empty form, Save button disabled
+- Pristine: Empty form, Save button enabled (clicking triggers inline validation and auto-focuses first invalid field per anti-disabled pristine rule)
 - Validating: Inline validation on blur (SKU unique check, sell price >= buy price, prices > 0)
-- Invalid: Inline error message in red below affected input, Save button disabled
+- Invalid: Inline error message in red (min 13px, ≥4.5:1 contrast) below affected input, Save button remains clickable to trigger auto-focus on first invalid field
 - Submitting: Save button shows loading spinner "Menyimpan...", all form inputs disabled
 - Success: Redirect to `/products/:id` (detail view), show toast "Produk berhasil ditambahkan"
 - Error: Show floating error toast "Gagal menyimpan produk: [Alasan]", re-enable inputs
@@ -1144,9 +1146,9 @@ After the sitemap is completed, choose a workflow to create mockup screens:
 
 ---
 
-### Option B: AI-Assisted Design (Design prototyping / v0.dev / Uizard)
+### Option B: AI-Assisted Visual Prototyping (v0.dev / Google Stitch / Uizard)
 
-**Tools**: Design prototyping (built-in MCP), v0.dev by Vercel, Uizard, Galileo AI
+**Tools**: v0.dev by Vercel, Google Stitch, Uizard, Galileo AI
 
 **Workflow**:
 1. Write design system tokens in DESIGN.md (colors, typography, spacing)
@@ -1159,7 +1161,7 @@ After the sitemap is completed, choose a workflow to create mockup screens:
 - ✅ Fast (a few hours for 18 screens with iterations)
 - ✅ Generates code directly (skips manual HTML/CSS translation)
 - ✅ Easy iteration (re-prompt for different variants)
-- ✅ Low cost (Design prototyping free tier, v0.dev $20/month)
+- ✅ Low cost (freemium tiers available)
 
 **Cons**:
 - ❌ Generic look without customization (common AI patterns)
@@ -1175,7 +1177,7 @@ After the sitemap is completed, choose a workflow to create mockup screens:
 
 **Time Estimate**: 1-3 days (including prompt iteration & code cleanup)
 
-**Example Prompt (Design prototyping)**:
+**Example Prompt (v0 / Stitch / AI Prototyping)**:
 ```
 Generate Dashboard screen (Screen ID: SCR-02) for Legal Document Management:
 
@@ -1193,7 +1195,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 - NO gradients, glassmorphism, colored shadows
 - Flat colors: Primary #0891B2 (Cyan-600), Neutrals Zinc-50 to Zinc-950
 - Borders: 1px solid #E4E4E7, radius 8px (cards), 6px (buttons)
-- Typography: Inter font, weights 400 (body) / 600 (headings), line-height 1.6
+- Typography: Inter font, weights 400/500/600/700, line-height 1.6
 - Shadows: 0 1px 3px rgba(0,0,0,0.1) only (no heavy shadows)
 - Layout: Sidebar 240px fixed, main content max-w-7xl, padding 24px
 - Spacing: Tailwind scale (4/8/16/24/32px)
@@ -1207,7 +1209,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 **Best of Both Worlds**
 
 **Workflow**:
-1. **AI wireframes** (Design prototyping / v0.dev): Generate 18 screens rapidly (1 day)
+1. **AI wireframes** (v0.dev / Google Stitch): Generate initial screen wireflows rapidly (1 day)
    - Focus: Layout structure, component placement, navigation flow
    - Accept: 80% quality (not pixel-perfect yet)
 
@@ -1726,15 +1728,14 @@ Before finalizing `DESIGN.md`, verify ZERO of these slop indicators exist:
 
 ---
 
-#### 1.9 Design prototyping Prompt Directive (CRITICAL)
-
+#### 1.9 AI Prototyping Prompt Directive (CRITICAL)
 
 ```
 DESIGN CONSTRAINTS (ANTI-SLOP):
 - NO gradients, glassmorphism, or colored shadows
 - Flat colors only: Primary [#HEX], Neutrals Zinc-50 to Zinc-950
 - Borders: 1px solid #E4E4E7, radius max 8px
-- Typography: Inter font, weights 400/600 only, line-height 1.6
+- Typography: Inter font, weights 400/500/600/700 only, line-height 1.6
 - Shadows: subtle 0 1px 3px rgba(0,0,0,0.1) only
 - Layout: Grid-based, NO floating/overlapping elements
 - Spacing: Tailwind default scale (4/8/16/24/32px)
@@ -1760,7 +1761,7 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 - NO gradients, glassmorphism, or colored shadows
 - Flat colors: Primary #0891B2 (Cyan-600), Neutrals Zinc-50 to Zinc-950
 - Borders: 1px solid #E4E4E7, radius 8px
-- Typography: Inter font, weights 400/600, line-height 1.6
+- Typography: Inter font, weights 400/500/600/700, line-height 1.6
 - Shadows: 0 1px 3px rgba(0,0,0,0.1) only
 - Layout: Grid-based, max-w-7xl container
 - Spacing: Tailwind scale (px-4, py-8, gap-6)
@@ -1790,11 +1791,10 @@ After Prototype generates screens, **MANUALLY REVIEW** each screen for slop:
 - Solo product: Self-review checklist above
 - Client project: Walk client through checklist, get written approval per screen batch
 
-### Step 2: Registration to Design prototyping via Tooling
-1. Create a new project container:
-2. Convert `DESIGN.md` file into base64, then upload:
-3. Apply the Design System to the project:
-   `ui_prototype_action(projectId="...", ...)`
+### Step 2: Ingesting Design Tokens into Prototyping Tooling
+1. Read `docs/harness-root/DESIGN.md` for color hex codes and spacing scales.
+2. Configure Tailwind CSS or CSS variables in your prototyping workspace.
+3. Apply the anti-slop prompt directive for every screen generation.
 
 ### Step 3: Generating All Screens (Phased Coverage for Enterprise)
 
@@ -1825,7 +1825,7 @@ docs/design/
 - Every route in `SITEMAP.md` MUST map to a unique `SCR-xx` ID, functional feature reference `F-xx`, and access role.
 
 #### 3.2 Adaptive Layouts & Role Viewport Boundaries
-- **Desktop**: Sidebar 260px (`w-[260px]`, `h-screen`, `border-l-4` active state) + Topbar 64px (`h-16`, `z-10`).
+- **Desktop**: Sidebar 240px (`w-[240px]`, `h-screen`, `border-l-4` active state) + Topbar 64px (`h-16`, `z-10`).
 - **Mobile**: Bottom Navigation Bar 64px (`h-16`, `z-20`, max 5 slots) with auto-hide behavior on virtual keyboard focus.
 - **Role-Based Routing**: Operators/Cashiers land directly on their execution interface (e.g., `/pos`), with sensitive fields (e.g., `buy_price` / HPP) completely omitted from query layers and DOM.
 
@@ -1894,7 +1894,7 @@ Before submitting `DESIGN_SPEC.md`, verify:
 
 ## 5. User Testing & Iterative Validation
 
-After the interactive UI prototype is complete, user testing is **MANDATORY** before the final design freeze. Skipping this phase merely shifts usability issues to post-launch (5x more expensive to fix).
+After the interactive UI prototype is complete, user testing is **MANDATORY for Client Projects** (and recommended/self-testing for Solo MVPs) before the final design freeze. Skipping this phase merely shifts usability issues to post-launch (5x more expensive to fix).
 
 ### 5.1 User Testing Plan (Template: `templates/02-design/USABILITY_TEST_PLAN_TEMPLATE.md`)
 
@@ -1973,7 +1973,7 @@ We will know we're right when CTR ≥15% (baseline: 11.5%) after 2 weeks with 50
 
 ### 5.5 Accessibility Audit (WCAG 2.1 Level AA Compliance)
 
-**Pre-Development Checklist** (Perform on Prototype Prototype):
+**Pre-Development Checklist** (Perform on Interactive Prototype):
 - [ ] **Contrast Ratio**: Text ≥4.5:1, Large text ≥3:1 (use WebAIM Contrast Checker)
 - [ ] **Keyboard Navigation**: All interactions can be performed without a mouse (Tab, Enter, Esc, Arrow keys)
 - [ ] **Focus Indicators**: Visible focus state on all interactive elements (outline 2px solid)
@@ -2181,7 +2181,7 @@ Quality Checks:
 ---
 
 Next Steps:
-1. User review all 4 files (spot-check content accuracy)
+1. User review all design specification artifacts (SITEMAP.md, COMPONENT_REQUIREMENTS.md, DESIGN.md, DESIGN_SPEC.md, notes.md, LOGO_DESIGN_BRIEF.md)
 2. If corrections needed: Request changes now (before Module 05)
 3. If approved: Confirm "Design Freeze approved, proceed to Module 05"
 
@@ -2244,7 +2244,7 @@ Next Steps:
    - `pph23-rates.json`, `pp20-2026.json`, etc.
    - Metadata: version, source URL, last_updated, changelog
 
-5. ✅ **Design prototyping Prompt Files** (optional — pre-write prompts for each screen)
+5. ✅ **UI Screen Prompt Files** (optional — pre-write prompts for each screen)
    - `ui-prompts/01-landing-page.txt` (10-20 lines: layout + strict style + components)
    - `ui-prompts/02-dashboard.txt`
    - `ui-prompts/03-calculation-form.txt`
@@ -2338,7 +2338,7 @@ export FIGMA_ACCESS_TOKEN="your-figma-access-token-here"
 
 **User prompt to Claude Desktop / Codex / Cursor / Windsurf**:
 ```
-Read DESIGN.md and docs/specs/DESIGN_SPEC.md from this project, then generate all 10 screens using Design prototyping MCP.
+Read DESIGN.md and docs/specs/DESIGN_SPEC.md from this project, then generate all 10 screens using AI UI prototyping tools (v0 / Stitch / Next.js).
 
 Project context:
 - App: FreePajak (tax calculator for Indonesian freelancers)
@@ -2362,7 +2362,7 @@ For each screen in DESIGN_SPEC.md (SCR-001 to SCR-010):
 5. Update DESIGN_SPEC.md with Prototype URL per screen
 
 After all screens generated:
-- Create interactive prototype links (ui_prototype_action)
+- Connect screen links in Next.js router
 - Generate accessibility report (WCAG AA compliance)
 - Save summary to design-freeze-report.md
 
@@ -2408,8 +2408,7 @@ Proceed autonomously and report progress every 3 screens.
 
 3. **Verify anti-slop compliance**:
    ```javascript
-   // Agent checks generated code
-   const code = ui_prototype_action({ screen_id: "SCR-001", format: "nextjs-tailwind" });
+   // Agent checks generated component code against anti-slop rules
    
    // Check for violations
    const hasGradient = code.includes('bg-gradient') || code.includes('linear-gradient');
@@ -2417,10 +2416,7 @@ Proceed autonomously and report progress every 3 screens.
    
    if (hasGradient || hasShadowLarge) {
      // Regenerate with stricter prompt
-     ui_prototype_action({
-       screen_id: "SCR-001",
-       prompt: "... (add more explicit NO GRADIENT rule)"
-     });
+     // Regenerate component with solid background only
    }
    ```
 
@@ -2480,18 +2476,9 @@ Proceed autonomously and report progress every 3 screens.
 
 7. **Generate interactive prototype**:
    ```javascript
-   // Link screens together
-   ui_prototype_action({
-     links: [
-       { from: "SCR-001", to: "SCR-002", trigger: "button[Mulai Gratis]" },
-       { from: "SCR-002", to: "SCR-003", trigger: "card[PPh 21 Pegawai]" },
-       // ...
-     ]
-   });
+   // Link screens together via Next.js router or static prototype
    
    // Get preview URL
-   const prototypeURL = ui_prototype_action({ project_id: "abc123" });
-   // Returns: https://staging-preview.app/preview
    ```
 
 8. **Generate Design Freeze Report**:
@@ -2577,7 +2564,7 @@ User to AI agent:
 
 AI agent:
 [reads DESIGN.md anti-slop section]
-[calls ui_prototype_action with updated prompt]
+[regenerates component with updated anti-slop prompt]
 [verifies new output, exports code]
 [reports: "SCR-002 regenerated, gradient removed, compliance verified"]
 ```
@@ -2655,11 +2642,11 @@ EOF
 > - Client requests a **white-label solution** or **multi-tenant branding**
 >
 > **SKIP THIS SECTION IF:**
-> - Solo dev MVP <4 weeks with 1-3 screens (Sections 1-7 Design prototyping are sufficient)
+> - Solo dev MVP <4 weeks with 1-3 screens (Sections 1-7 specifications are sufficient)
 > - Throwaway proof-of-concept prototyping
 > - Backend API-only or CLI tool without GUI
 
-Comprehensive guide for solo developers and small teams seeking to build, adopt, or audit a Design System. Unlike **Sections 1-7** which focus on prototyping individual screens with Design prototyping, **Section 8** is the strategic foundation for building a design system that is scalable, maintainable, and adoptable across products or organizations.
+Comprehensive guide for enterprise engineering teams seeking to build, adopt, or audit a Design System. Unlike **Sections 1-7** which focus on prototyping individual screens, **Section 8** is an Enterprise-only extension [M04B] for building a formal token repository across multiple teams.
 
 ---
 
@@ -2789,12 +2776,10 @@ jobs:
 
 **ROI Calculation**:
 ```
-Time saved: 24h/sprint/engineer
-Team size: 5 engineers
-Hourly rate: $50
-Annual saving: 24 × 50 × 5 × 26 = $156,000
-DS maintenance: $80,000
-Net ROI: $76,000/year (95% gain)
+Engineering time saved: ~20–30 hours per engineer per sprint
+Team scale: 5–10 engineers across multiple product pods
+Direct impact: Reusable token primitives eliminate manual CSS redlines and UI rework
+Adoption target: ≥80% screen coverage across all production routes within 6 months
 ```
 
 **RFC Process** (for new components):

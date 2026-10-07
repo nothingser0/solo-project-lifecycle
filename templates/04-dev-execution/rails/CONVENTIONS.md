@@ -135,7 +135,7 @@ end
 FactoryBot.define do
   factory :user do
     email { Faker::Internet.email }
-    password { 'password123' }
+    password { '<REPLACE_ME_TEST_PASSWORD>' }
     role { 'staff' }
     
     trait :admin do

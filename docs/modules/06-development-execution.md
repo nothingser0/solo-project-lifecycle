@@ -7,10 +7,10 @@
 > - `references/playbooks/software-design-patterns.md` (Clean code principles, SOLID, design patterns, and anti-pattern detection for AI-generated code)
 > - `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md` (Coding execution progress tracker sheet, backend, frontend, integration checklists, & review checkpoints)
 > - `templates/04-dev-execution/scripts/check-dependencies.sh` (Pre-install dependency compatibility and deprecation validation script)
-> - `references/stacks/nextjs-15-quickstart.md` (Next.js 15 App Router, React Server Components, Tailwind, Supabase setup)
-> - `references/stacks/laravel-11-quickstart.md` (Laravel 11, Inertia.js, PostgreSQL/MySQL, Sanctum auth quickstart)
-> - `references/stacks/django-5-quickstart.md` (Django 5, DRF, PostgreSQL, Vite/Tailwind, Celery quickstart)
-> - `references/stacks/go-1.23-quickstart.md` (Go 1.23, Chi/Echo router, pgx, SQL migrations, Docker quickstart)
+> - `references/stacks/nextjs-quickstart.md` (Next.js App Router, React Server Components, Tailwind, Supabase setup)
+> - `references/stacks/laravel-quickstart.md` (Laravel, Inertia.js, PostgreSQL/MySQL, Sanctum auth quickstart)
+> - `references/stacks/django-quickstart.md` (Django, DRF, PostgreSQL, Vite/Tailwind, Celery quickstart)
+> - `references/stacks/go-quickstart.md` (Go, Chi/Echo router, pgx, SQL migrations, Docker quickstart)
 > - `references/technical/APM_PROFILING_RUNBOOK.md` (APM tracing, profiling CPU/memory bottlenecks, slow queries)
 > - `templates/04-dev-execution/AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md` (Automated AI pre-merge code review checklist)
 > - `templates/04-dev-execution/AI_PROMPT_LIBRARY_TEMPLATE.md` (Standardized engineering prompt library for coding agents)
@@ -63,6 +63,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Universal: CONTEXT.md, DESIGN.md
     - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • OVERWRITES framework boilerplate (e.g., Next.js auto-generated AGENTS.md)
+  • Clean up staging: rm -rf docs/harness-root/ (enforces single source of truth; git history serves as backup)
   • Verify all 9 files present in root: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
   • Optional automation shortcut: ./scripts/template-picker.sh --phase 4 --dest . (or .\scripts\template-picker.ps1 -Phase 4)
                                     │
@@ -101,7 +102,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Execute strategy documented in FSD.md "Module 04 Handoff Strategy"
   • MANDATORY: Check framework docs for component syntax (Next.js Image, Laravel Blade, etc.)
   • Ensure UI Visuals are 100% Identical to Frozen Prototype
-  • Execute TODO.md Phase 3A tasks (Static UI Components only):
+  • Execute TODO.md Sprint 3 tasks (Static UI Components & Design Tokens):
     - Landing, About, Terms, Login, Register screens (no data dependency)
     - Reusable UI components (Button, Input, Card, Modal)
     - Layout components (Header, Footer, Sidebar)
@@ -119,7 +120,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Verify ORM version matches docs (check package.json / composer.json / requirements.txt / go.mod)
   • Set up Database Pooling & Indexing on Foreign Key Columns
   • Execute Local Migrations & Seed Data (faker data for testing)
-  • Execute TODO.md Phase 2 tasks (Database Schema) with verification
+  • Execute TODO.md Sprint 1 tasks (Database Schema & DDL) with verification
   • Phase Gate: Verify migrations reversible, seed data works, tables exist
                                     │
                                     ▼
@@ -132,7 +133,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Performance Pillar: N+1 Prevention, Caching, Query Indexing
   • Resource Pillar: Connection Pooling, Stream Processing, Memory Management
   • Wire frontend components → backend endpoints (5 UI states: idle, loading, success, error, empty)
-  • Execute TODO.md Phase 4 tasks (API Endpoints) with verification
+  • Execute TODO.md Sprint 2 tasks (Server Actions & API Endpoints) with verification
   • Phase Gate: Verify all FSD endpoints return correct status codes, validation works
                                     │
                                     ▼
@@ -145,7 +146,7 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Audit: pnpm audit / composer audit / pip-audit
   • TypeScript check (if applicable): tsc --noEmit
   • Merge to branch staging → Tag milestone (Alpha ready)
-  • Execute TODO.md Phase 5 tasks (Data-backed UI + Integration) with verification:
+  • Execute TODO.md Sprint 4 & Sprint 5 tasks (Integration Wire-Up, Automated Testing & QA) with verification:
     - Data-backed screens (Dashboard, Document List, Detail views)
     - Wire frontend → backend endpoints (POST /auth/login → LoginForm)
     - Implement 5 UI states per screen (idle, loading, success, error, empty)
@@ -810,6 +811,8 @@ Agent reads stack-specific templates from skill://, writes to staging:
 ```
 Agent copies from staging to root:
   cp docs/harness-root/* ./
+  cp docs/harness-root/.env.example ./
+  rm -rf docs/harness-root/  # Clean up duplicate staging to prevent AI path drift
   
   Verifies 9 files present:
     AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md,
@@ -1123,45 +1126,72 @@ OUTPUT FORMAT (TODO.md):
 > Atomic task list for autonomous coding execution.
 > Rule: Complete sequentially. Check [x] after verified.
 
-## Phase 1: Repository Setup (4-6 tasks)
-- [ ] package.json: Install dependencies per ARCHITECTURE.md
-- [ ] tsconfig.json: Enable strict mode
-- [ ] .env.example: Complete environment variables per ARCHITECTURE.md
-- [ ] Database client singleton (lib/db.ts or equivalent)
+## Sprint 0: Environment Setup, Database Init & Asset Audit (MANDATORY FIRST)
+- [ ] **M06-SETUP-01: Local Environment Configuration & Secrets Staging**
+  - Salin `.env.example` ke `.env.local`. Pastikan database connection strings & auth secret aktif.
+  - Verify: Server run command (npm run dev / php artisan serve / python manage.py runserver)
+  - Expected: Boot server bersih tanpa error variabel lingkungan hilang.
+  - Evidence: Log terminal boot dev server.
+- [ ] **M06-SETUP-02: Design Assets & Visual Identity Audit**
+  - Daftarkan logo brand asli, font, dan favicon ke direktori aset publik sesuai DESIGN.md.
+  - Verify: Aset visual terdeteksi dan terbaca.
+  - Expected: Zero missing brand assets.
+  - Evidence: File listing direktori publik / aset.
 
-## Phase 2: Database Schema & Migrations (1 task per table from FSD)
+## Sprint 1: Database Foundation, DDL Migrations & Atomic RPCs
 [Generate from FSD.md Section 4 "Database Schema"]
-- [ ] Schema: Define [table_1] model per FSD DDL section 4.1 - expect valid schema
-- [ ] Schema: Define [table_2] model per FSD DDL section 4.2
-... (repeat for all N tables)
-- [ ] Migrations: Run initial migration - expect all tables created
-- [ ] Seed: Create seed data per FSD section 4.X
+- [ ] **M06-DB-01: Relational Schema & 100% Foreign Key Indexing: [table_name]**
+  - Tipe moneter BIGINT/NUMERIC, explicit index FK, check constraints.
+  - Verify: Migrasi lokal dijalankan (supabase db push / pnpm db:migrate / artisan migrate)
+  - Expected: Seluruh tabel, index FK, dan constraint terbuat tanpa error (exit code 0).
+  - Evidence: Output query skema atau log migrasi sukses.
+... (ulangi 1 task atomik per tabel/entitas DDL)
 
-## Phase 3: UI Components (1 task per screen from SITEMAP)
-[Generate from SITEMAP.md + DESIGN.md]
-> Source: DESIGN.md (tokens) + screens from SITEMAP or design-specs/
+## Sprint 2: Core State Engine, Server Actions & Route Handlers (Backend)
+[Generate from FSD.md Section 5 "API Contracts & Actions"]
+- [ ] **M06-BE-01: API Boundary Validation & Action: [action_or_endpoint_name]**
+  - Validasi payload via Zod/validator skema, auth verification (getUser), error handling terstruktur.
+  - Verify: Kirim request payload valid dan invalid via test runner / curl.
+  - Expected: Payload salah ditolak 400/VALIDATION_ERROR; payload benar diproses 200/201.
+  - Evidence: Response payload dan HTTP status code.
+... (ulangi 1 task per Server Action / Route Handler)
 
-- [ ] src/components/ui/: Implement primitives per DESIGN.md tokens - expect design system match
-- [ ] [route_1]: Implement [Screen Name] from SITEMAP section X or design-specs/ - expect 5 states (ideal/loading/error/success/empty)
-- [ ] [route_2]: Implement [Screen Name 2] from SITEMAP section Y
-... (repeat for all M screens)
+## Sprint 3: Design Tokens, UI Shell & 100% Screen Implementation (Frontend)
+[Generate from SITEMAP.md + DESIGN.md — 100% SCR-xx mapping]
+- [ ] **M06-FE-01: Semantic CSS Tokens & Primitives**
+  - CSS variables semantik, ergonomi tombol >= 44px, input 16px universal.
+  - Verify: Build / compile komponen primitif tanpa error.
+  - Expected: Primitif UI sesuai token DESIGN.md.
+  - Evidence: Render uji komponen primitif.
+- [ ] **M06-FE-02: [SCR-xx] [Screen Name] ([Route])**
+  - Implementasi layar lengkap 5 state (pristine/loading/submitting/success/error) per SITEMAP.
+  - Verify: Render layar pada browser / component test.
+  - Expected: Layout responsif, form state lengkap, zero console error.
+  - Evidence: Screenshot atau DOM snapshot.
+... (ulangi 1 task per screen SITEMAP)
 
-## Phase 4: API Endpoints (1 task per endpoint from FSD)
-[Generate from FSD.md Section 5 "API Contracts"]
-- [ ] [endpoint_1]: Implement [METHOD] [path] per FSD section 5.1 - expect [status_code] [validation]
-- [ ] [endpoint_2]: Implement [METHOD] [path] per FSD section 5.2
-... (repeat for all K endpoints)
+## Sprint 4: Integrasi Frontend ➔ Backend (Wire-Up Bebas Mock)
+[Generate 1 task per form/wire-up mutasi nyata]
+- [ ] **M06-INT-01: Live Form Connection: [Form/Feature Name]**
+  - Sambungkan form UI langsung ke Server Actions/API Sprint 2 (larangan dummy UUID).
+  - Verify: Submit data dari UI di browser.
+  - Expected: Record tersimpan nyata di database dan state UI ter-refresh.
+  - Evidence: Record ID baru di database terkonfirmasi.
 
-## Phase 5: Feature Integration (1 task per PRD feature)
-[Generate from PRD.md Must-Have Features]
-- [ ] [Feature 1]: Implement [feature name] per PRD section 3.1 - expect [acceptance criteria]
-- [ ] [Feature 2]: Implement [feature name] per PRD section 3.2
-... (repeat for all P features)
-- [ ] 5-State Review: Verify all screens have loading/empty/error states
+## Sprint 5: Automated Testing & Verifikasi Kualitas (M07 Entry)
+[Generate automated SIT & E2E tests based on PRD acceptance criteria]
+- [ ] **M06-TEST-01: SIT Core Business Calculations & Constraints**
+  - Test suite rumus bisnis, perhitungan pajak/moneter, dan isolasi tenant.
+  - Verify: npm test / pytest / php artisan test
+  - Expected: Seluruh test pass 100% tanpa mock logic akuntansi.
+  - Evidence: Test runner summary report.
 
-## Phase 6: Testing & Verification
-- [ ] scripts/smoke-test.ts: Write end-to-end flow per PRD user journeys
-- [ ] VERIFY_LOCAL.md: Complete self-verification checklist
+## Sprint 6: Hard Release Gate (Human Handover & Deploy Guard)
+- [ ] **M06-GATE-01: Production Build & Type Integrity Gate**
+  - Jalankan build produksi dan typecheck ketat.
+  - Verify: npm run build && npx tsc --noEmit (atau kompilator setara)
+  - Expected: Exit code 0, bundle size dalam batas batas wajar.
+  - Evidence: Log build terminal sukses.
 
 **Testing Strategy**: See `../../patterns/testing/test-pyramid.md` for:
 - Unit/integration/E2E balance (60%/30%/10%)
@@ -1849,6 +1879,7 @@ CREATE INDEX idx_documents_user_status ON documents(user_id, status);
 4. **Create staging branch**: `git checkout -b staging`
 
 5. **Initial commit** (execute ONLY when explicitly requested by user):
+   *(Note: The human developer must run this command; AI agents are strictly forbidden from running git commit or git push)*
    ```bash
    git add .
    git commit -m "chore: initial project scaffolding with 9 AI harness files"
@@ -1863,6 +1894,9 @@ Before the AI Coding Agent begins executing tasks from `TODO.md`, verify that `A
 - **NO Destructive Database Operations**: Running `migrate reset`, `db reset`, or issuing raw `DROP TABLE` / `DROP DATABASE` queries is **STRICTLY PROHIBITED**.
 - **Spec Document Integrity**: Specification files marked `[FROZEN]` or `[APPROVED]` are immutable sources of truth. If documents contradict, the agent **MUST STOP AND ASK THE USER**. Never alter frozen specifications unilaterally.
 - **Zero Type Suppressions**: Silencing compilers via `// @ts-ignore`, `// @ts-nocheck`, `// @ts-expect-error`, or `as any` is **STRICTLY PROHIBITED**.
+- **NO Agent Git Commits or Pushes**: AI agents and automated harnesses **MUST NEVER** execute `git commit` or `git push`. All version control commits must be performed manually by the developer.
+- **Mandatory Pre-Read of Docs & Specs**: Agents must read `FSD.md`, `PRD.md`, `DESIGN.md`, and official stack documentation before writing any database migration, server action, or UI component.
+- **Mandatory Design Assets Usage**: Agents must review `docs/design/inspiration/`, `docs/specs/LOGO_DESIGN_BRIEF.md`, and screen design prompts to build rich, branded, non-generic UI.
 
 #### 2. Framework Version & Dynamic API Verification
 - Next.js 16+: Verify `proxy.ts` replaces traditional middleware.
@@ -1894,7 +1928,7 @@ Before the AI Coding Agent begins executing tasks from `TODO.md`, verify that `A
 - **Segregation of Duties & Exception Handling (Domain-Adaptive)**:
   - Differentiate operator vs supervisor roles (e.g., Staff cannot void transactions independently; voiding appends a formal reversal entry).
   - Physical opname reconciliation accounts for active in-flight transactions during the count session (retail/inventory scope), or deal/content state machine gates (CRM/CMS scope).
-- **Domain Statutory Citations (Conditional)**: When tax or statutory calculations are in scope, cite official date-verified government regulations (e.g. PP 55/2022, PPh 21 TER PMK 168/2023) with required persistent disclaimers; mark N/A for non-statutory projects.
+- **Domain Statutory Citations (Conditional)**: When tax or statutory calculations are in scope, cite official date-verified government regulations (e.g. PP 55/2022 jo. PP 20/2026, PPh 21 TER PMK 168/2023) with required persistent disclaimers; mark N/A for non-statutory projects.
 - **Domain Glossary Enforcement**: Establish unambiguous definitions for core terminology to prevent semantic drift.
 
 #### 7. 100% Atomic Task Decomposition in `TODO.md` (Anti-Macro Tasks)
@@ -2445,7 +2479,7 @@ After coding is complete and the `smoke-test` script passes 100%:
    - [ ] `terminal('pnpm run type-check')` → Exit code 0 (no TypeScript errors)
    - [ ] `terminal('pnpm run test:smoke')` → All assertions passed
    - [ ] `terminal('pnpm audit')` → No critical vulnerabilities
-   - [ ] `read_file('VERIFY_LOCAL.md')` → Documented test results exist
+   - [ ] Read and verify file `VERIFY_LOCAL.md` → Documented test results exist
    - [ ] `terminal('git log -1')` → Latest commit exists on staging branch
 3. Display summary of local development results to the user:
    - Compilation and local smoke test results

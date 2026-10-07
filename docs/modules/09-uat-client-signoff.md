@@ -164,7 +164,7 @@ After the UAT Sign-Off Report is signed by the client:
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/UAT_SIGNOFF_REPORT.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/UAT_SIGNOFF_REPORT.md')` → must succeed without error
+   - Read and verify file `docs/pm/UAT_SIGNOFF_REPORT.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -192,7 +192,7 @@ After the UAT Sign-Off Report is signed by the client:
 
 1. **STRICTLY PROHIBITED from directly performing git merge to `main`, deploying, or calling tools for Module 10 within the same turn!**
 2. **Verify UAT Sign-Off content**:
-   - [ ] `read_file('docs/pm/UAT_SIGNOFF_REPORT.md')` → Confirm client signature + date exists
+   - [ ] Read and verify file `docs/pm/UAT_SIGNOFF_REPORT.md` → Confirm client signature + date exists
    - [ ] Confirm all Severity 1 & 2 defects RESOLVED
    - [ ] Confirm scope creep requests rejected or moved to Change Request
 3. Present UAT closure status (all Severity 1 & 2 defects completed) and confirmation of signed UAT Report.

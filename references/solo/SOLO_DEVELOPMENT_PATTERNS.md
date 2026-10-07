@@ -232,3 +232,37 @@ Refer to [Next.js Documentation](https://nextjs.org/docs) for details.
 **MANDATORY:**
 - ✅ Fully overwrite with AGENTS_TEMPLATE.md
 - ✅ Optional: append the "Framework-Specific Notices" block at the very bottom
+
+---
+
+## 7. Anti-Fake-Success Pattern (Strict Live E2E Integrity)
+
+Never use empty catch blocks or hardcoded fallback dummy data in frontend mutation handlers.
+
+```typescript
+// ❌ STRICTLY FORBIDDEN: Silent error swallowing & fake success popups
+try {
+  await fetch('/api/v1/checkout', {
+    body: JSON.stringify({ location_id: '11111111-...', items: [...] })
+  });
+} catch {}
+setSuccess(true); // Hallucinated success! Database actually failed.
+
+// ✅ MANDATORY: Real error propagation with dynamic state IDs
+try {
+  const res = await fetch('/api/v1/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(realPayload),
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) {
+    throw new Error(data.message || 'Transaksi gagal diproses di server.');
+  }
+  setSuccess(true);
+  toast.success('Transaksi berhasil dicatat ke pembukuan.');
+} catch (err: any) {
+  setSuccess(false);
+  toast.error(err.message || 'Koneksi ke server terputus.');
+}
+```

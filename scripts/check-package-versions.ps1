@@ -111,14 +111,10 @@ switch ($target) {
         $next = Check-NpmPackage "next"
         $react = Check-NpmPackage "react"
         $reactDom = Check-NpmPackage "react-dom"
-        $typesReact = Check-NpmPackage "@types/react"
         $tailwind = Check-NpmPackage "tailwindcss"
         $zod = Check-NpmPackage "zod"
         $hookForm = Check-NpmPackage "react-hook-form"
-        $resolvers = Check-NpmPackage "@hookform/resolvers"
-        $eslintNext = Check-NpmPackage "eslint-config-next"
         $supabaseSsr = Check-NpmPackage "@supabase/ssr"
-        $supabaseJs = Check-NpmPackage "@supabase/supabase-js"
 
         Write-Host ""
         Write-Host "=== Compatibility Analysis ===" -ForegroundColor Cyan
@@ -150,7 +146,7 @@ switch ($target) {
         Write-Host "=== Recommended Pinned Versions (for FSD.md) ===" -ForegroundColor Cyan
         Write-Host ""
         Write-Host "Framework: Next.js ^$($next.latest) (App Router)" -ForegroundColor White
-        Write-Host "Runtime: React ^$($react.latest)" -ForegroundColor White
+        Write-Host "Runtime: React ^$($react.latest) (react-dom ^$($reactDom.latest))" -ForegroundColor White
         if ($tailwind.major -eq "4") {
             Write-Host "Styling: Tailwind CSS ^3.4.17 (pinned)" -ForegroundColor White
         } else {
@@ -159,9 +155,9 @@ switch ($target) {
         if ($zod.major -eq "4") {
             Write-Host "Validation: Zod ^3.23.8 (pinned) + react-hook-form" -ForegroundColor White
         } else {
-            Write-Host "Validation: Zod ^$($zod.latest) + react-hook-form" -ForegroundColor White
+            Write-Host "Validation: Zod ^$($zod.latest) + react-hook-form ^$($hookForm.latest)" -ForegroundColor White
         }
-        Write-Host "Auth: Supabase (@supabase/ssr)" -ForegroundColor White
+        Write-Host "Auth: Supabase (@supabase/ssr ^$($supabaseSsr.latest))" -ForegroundColor White
         Write-Host "Database: PostgreSQL (Supabase)" -ForegroundColor White
     }
 

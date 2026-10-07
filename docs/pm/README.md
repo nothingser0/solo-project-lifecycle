@@ -16,6 +16,11 @@ All planning and governance documents produced by AI agents or developers must b
 
 | Artifact | Generated In | Source Template | Purpose |
 |---|---|---|---|
+| `PROJECT_STATE.md` | Universal / All | `templates/essentials/PROJECT_STATE_TEMPLATE.md` | Single source of truth for gate tracking & cross-session handoff |
+| `M00_LITE.md` | Module 00 (Lite) | `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` | Rapid 1-page market validation for Solo SaaS products |
+| `INTERVIEW_GUIDE.md` | Module 00 / 01 | `templates/01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md` | The Mom Test interview questions & JTBD discovery script |
+| `REQUIREMENT_MATRIX.md`| Module 02 / 05 | `templates/01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md` | Requirements Traceability Matrix linking pain points to code & tests |
+| `VERIFICATION_PLAN.md` | Module 00 / 06 | `templates/01-discovery-commercial/VERIFICATION_PLAN_TEMPLATE.md` | Objective verification plan & gate protocols (handles pending research) |
 | `MARKET_RESEARCH.md` | Module 00 | `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md` | TAM/SAM/SOM market analysis & trends |
 | `COMPETITIVE_LANDSCAPE.md` | Module 00 | `templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md` | Feature matrix & competitor breakdown |
 | `USER_RESEARCH_REPORT.md` | Module 00 | `templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md` | JTBD interview notes & pain-point matrix |

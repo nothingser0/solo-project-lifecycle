@@ -61,7 +61,7 @@ generate low-stock alerts, and provide daily inventory reports.
 
 ---
 
-### Out of Scope
+### Out-of-Scope
 
 **NOT included in this SOW**:
 - [ ] Mobile app (native iOS/Android)
@@ -120,11 +120,15 @@ generate low-stock alerts, and provide daily inventory reports.
 ## 5. Client Responsibilities
 
 **Client must provide**:
-1. **Content**: Text, images, logos, branding guidelines
-2. **Access**: Credentials for existing systems (if integration needed)
-3. **Feedback**: Timely approval within SLA (3 business days)
-4. **Data**: Existing data for migration (if applicable)
-5. **Availability**: Attend weekly sync calls (30 min)
+1. **Designated Single PIC**:
+   - **Name**: [Client PIC Name]
+   - **Title & Contact**: [Title] / [email@company.com] / [+628...]
+   - **Authority**: The sole authorized individual on client side with authority to approve design mockups, scope adjustments, and milestone acceptance. Instructions from other client staff hold no binding authority.
+2. **Content**: Text, images, logos, branding guidelines
+3. **Access**: Credentials for existing systems (if integration needed)
+4. **Feedback**: Timely approval within SLA (3 business days)
+5. **Data**: Existing data for migration (if applicable)
+6. **Availability**: Attend weekly sync calls (30 min)
 
 **Client SLA**:
 - Design approval: 3 business days

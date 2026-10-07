@@ -31,9 +31,9 @@
 - [ ] `src/app/api/v1/sign/[token]/route.ts`: Create signature transaction handler with pessimistic locking - expect 200 OK
 
 ## Phase 5: UI to Backend API Integration (Wiring)
-- [ ] `src/components/docs/modules/LoginForm.tsx`: Connect login form submission to /api/v1/auth/login - expect redirect to dashboard
-- [ ] `src/components/docs/modules/DocumentForm.tsx`: Connect document form submission to POST /api/v1/documents - expect draft saved
-- [ ] `src/components/docs/modules/SignCanvas.tsx`: Connect e-sign canvas to POST /api/v1/sign/[token] - expect SIGNED status
+- [ ] `src/components/modules/LoginForm.tsx`: Connect login form submission to /api/v1/auth/login - expect redirect to dashboard
+- [ ] `src/components/modules/DocumentForm.tsx`: Connect document form submission to POST /api/v1/documents - expect draft saved
+- [ ] `src/components/modules/SignCanvas.tsx`: Connect e-sign canvas to POST /api/v1/sign/[token] - expect SIGNED status
 - [ ] `5-State Review`: Verify loading skeleton, empty state, and inline error views across all pages - expect defensive UI
 
 ## Phase 6: Self-Assertion Testing (Local Smoke Test)

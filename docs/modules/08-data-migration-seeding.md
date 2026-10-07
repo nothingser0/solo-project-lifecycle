@@ -147,7 +147,7 @@ After data is successfully migrated and the reconciliation report is published:
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/MIGRATION_RECONCILIATION_REPORT.md')` → must succeed without error
+   - Read and verify file `docs/pm/MIGRATION_RECONCILIATION_REPORT.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -175,7 +175,7 @@ After data is successfully migrated and the reconciliation report is published:
 
 1. **STRICTLY PROHIBITED from proceeding directly or calling tools for Module 09 within the same turn!**
 2. **Verify migration results**:
-   - [ ] `read_file('docs/pm/MIGRATION_RECONCILIATION_REPORT.md')` → Confirm row counts match
+   - [ ] Read and verify file `docs/pm/MIGRATION_RECONCILIATION_REPORT.md` → Confirm row counts match
    - [ ] Confirm PII sanitized on staging
    - [ ] Confirm client Data Sign-Off received
 3. Present data reconciliation summary (successful vs rejected row counts) to user.

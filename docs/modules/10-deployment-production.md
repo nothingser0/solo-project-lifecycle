@@ -12,6 +12,8 @@ This module is the tenth phase in the software project lifecycle for solo develo
                                     ▼
 [ STEP 1: [GATE] Pre-Release Verification (Go / No-Go Gate) ]
   • Verify Signed UAT Sign-Off Report (Mandatory Prerequisite)
+  • Local Build & Integration Test Gate: npm run build and npm run test:smoke MUST exit 0
+  • Zero Agent Auto-Deploy / Auto-Push: Agent provides runbook only; human deploys
   • Safe Release Window: Prohibited to release Friday afternoon or before holidays
   • Database Snapshot Backup Prior to Migration Execution
                                     │
@@ -60,6 +62,9 @@ This module is the tenth phase in the software project lifecycle for solo develo
    - Ensure environment variables on the production server have been replaced with real accounts (Live Payment Gateway API Key, Live SMTP, Live Cloudflare R2), not staging sandbox test accounts.
 3. **Mandatory Emergency Rollback Plan**:
    - Before hitting the deploy button, the solo dev must know exactly how to restore the system to its previous state within < 15 minutes in the event of a fatal failure.
+4. **Project Readiness Gate (No Premature Deployments)**:
+   - PROHIBITED from deploying or writing deployment runbooks before the project is fully functional locally.
+   - Compilation (`npm run build`), database migrations, and core test suites must pass 100% with exit code 0 before initiating production deployment.
 
 ---
 
@@ -406,7 +411,7 @@ After the system is officially Live in Production and the PVT report is publishe
 
 1. **Check output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/GO_LIVE_REPORT.md"` → must return `True`
-   - Read tool: `read_file('docs/pm/GO_LIVE_REPORT.md')` → must succeed without error
+   - Read and verify file `docs/pm/GO_LIVE_REPORT.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -434,7 +439,7 @@ After the system is officially Live in Production and the PVT report is publishe
 
 1. **STRICTLY PROHIBITED from directly handing over repositories, root passwords, or calling tools for Module 11 within the same turn!**
 2. **Verify production deployment**:
-   - [ ] `read_file('docs/pm/GO_LIVE_REPORT.md')` → Confirm PVT tests PASS
+   - [ ] Read and verify file `docs/pm/GO_LIVE_REPORT.md` → Confirm PVT tests PASS
    - [ ] Confirm domain live with valid SSL (https://app.client.com accessible)
    - [ ] Confirm monitoring active (Sentry DSN, uptime checker)
    - [ ] Confirm production transaction tested successfully

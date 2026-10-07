@@ -88,8 +88,10 @@ check_npm_package() {
 
     echo -n "Checking $pkg..." >&2
 
-    local latest=$(npm view "$pkg" version 2>/dev/null || echo "")
-    local deprecated=$(npm view "$pkg" deprecated 2>/dev/null || echo "")
+    local latest
+    latest=$(npm view "$pkg" version 2>/dev/null || echo "")
+    local deprecated
+    deprecated=$(npm view "$pkg" deprecated 2>/dev/null || echo "")
 
     if [ -z "$latest" ]; then
         echo -e " ${RED}NOT FOUND${NC}" >&2
@@ -100,7 +102,8 @@ check_npm_package() {
         echo -e " ${YELLOW}DEPRECATED: $deprecated${NC}" >&2
     fi
 
-    local major=$(echo "$latest" | cut -d. -f1)
+    local major
+    major=$(echo "$latest" | cut -d. -f1)
 
     if [ -n "$expected_major" ] && [ "$major" != "$expected_major" ]; then
         echo -e " ${YELLOW}v$latest (expected v$expected_major.x)${NC}" >&2
@@ -120,26 +123,22 @@ case $FRAMEWORK in
         next_info=$(check_npm_package "next")
         react_info=$(check_npm_package "react")
         react_dom_info=$(check_npm_package "react-dom")
-        types_react_info=$(check_npm_package "@types/react")
         tailwind_info=$(check_npm_package "tailwindcss")
         zod_info=$(check_npm_package "zod")
         hook_form_info=$(check_npm_package "react-hook-form")
-        resolvers_info=$(check_npm_package "@hookform/resolvers")
-        eslint_next_info=$(check_npm_package "eslint-config-next")
         supabase_ssr_info=$(check_npm_package "@supabase/ssr")
-        supabase_js_info=$(check_npm_package "@supabase/supabase-js")
 
         next_ver=$(echo "$next_info" | cut -d'|' -f1)
         next_major=$(echo "$next_info" | cut -d'|' -f2)
         react_ver=$(echo "$react_info" | cut -d'|' -f1)
         react_major=$(echo "$react_info" | cut -d'|' -f2)
-        types_react_major=$(echo "$types_react_info" | cut -d'|' -f2)
+        react_dom_ver=$(echo "$react_dom_info" | cut -d'|' -f1)
         zod_ver=$(echo "$zod_info" | cut -d'|' -f1)
         zod_major=$(echo "$zod_info" | cut -d'|' -f2)
-        resolvers_major=$(echo "$resolvers_info" | cut -d'|' -f2)
         tailwind_ver=$(echo "$tailwind_info" | cut -d'|' -f1)
         tailwind_major=$(echo "$tailwind_info" | cut -d'|' -f2)
-        eslint_next_major=$(echo "$eslint_next_info" | cut -d'|' -f2)
+        hook_form_ver=$(echo "$hook_form_info" | cut -d'|' -f1)
+        supabase_ssr_ver=$(echo "$supabase_ssr_info" | cut -d'|' -f1)
 
         echo ""
         echo -e "${CYAN}=== Compatibility Analysis ===${NC}"
@@ -178,10 +177,10 @@ case $FRAMEWORK in
         echo ""
         cat <<EOF
 Framework: Next.js ^$next_ver (App Router)
-Runtime: React ^$react_ver
+Runtime: React ^$react_ver (react-dom ^$react_dom_ver)
 Styling: Tailwind CSS $( [ "$tailwind_major" = "4" ] && echo "^3.4.17 (pinned)" || echo "^$tailwind_ver" )
-Validation: Zod $( [ "$zod_major" = "4" ] && echo "^3.23.8 (pinned)" || echo "^$zod_ver" ) + react-hook-form
-Auth: Supabase (@supabase/ssr)
+Validation: Zod $( [ "$zod_major" = "4" ] && echo "^3.23.8 (pinned)" || echo "^$zod_ver" ) + react-hook-form ^$hook_form_ver
+Auth: Supabase (@supabase/ssr ^$supabase_ssr_ver)
 Database: PostgreSQL (Supabase)
 EOF
         ;;
@@ -366,6 +365,7 @@ EOF
         express_ver=$(echo "$express_info" | cut -d'|' -f1)
         mongoose_ver=$(echo "$mongoose_info" | cut -d'|' -f1)
         cors_ver=$(echo "$cors_info" | cut -d'|' -f1)
+        dotenv_ver=$(echo "$dotenv_info" | cut -d'|' -f1)
 
         echo ""
         echo -e "${CYAN}=== Recommended Pinned Versions (for FSD.md) ===${NC}"
@@ -374,6 +374,7 @@ EOF
 Backend Framework: Express ^$express_ver
 Database ODM: Mongoose ^$mongoose_ver
 Middleware: CORS ^$cors_ver
+Environment: dotenv ^$dotenv_ver
 Frontend: React ^19.0.0 + Vite
 Architecture: Modular REST API / Service Layer
 EOF

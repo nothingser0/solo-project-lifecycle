@@ -1,16 +1,16 @@
 # Module 03: [COMMERCIAL GATE] Legal SOW, DP, & Single PIC Agreement
 
 > ⚠️ **LEGAL DISCLAIMER**: This content provides general SDLC guidelines, NOT legal advice. References to PDP Law, Civil Code (KUHPerdata), and ITE Law are educational and HAVE NOT been verified by licensed Indonesian attorneys. Always consult a qualified lawyer for contract drafting, regulatory compliance, and legal matters. Framework authors assume no liability for legal decisions made based on this content.
->
-> - `references/pre-sales/QUOTATION_EMAIL.md` (Commercial email template, milestone quotation, fee breakdown)
-> - `templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md` (Commercial presentation for enterprise sponsors & executives)
-> - `templates/03-governance/MEETING_CADENCE_GUIDE.md` (Stakeholder alignment schedule, commercial check-in meetings)
-> - `templates/03-governance/VENDOR_COMPARISON_MATRIX.md` (Vendor/subcontractor evaluation for specialized deliverables)
+
+- `references/pre-sales/QUOTATION_EMAIL.md` (Commercial email template, milestone quotation, fee breakdown)
+- `templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md` (Commercial presentation for enterprise sponsors & executives)
+- `templates/03-governance/MEETING_CADENCE_GUIDE.md` (Stakeholder alignment schedule, commercial check-in meetings)
+- `templates/03-governance/VENDOR_COMPARISON_MATRIX.md` (Vendor/subcontractor evaluation for specialized deliverables)
 
 
-This module is a **BLOCKING COMMERCIAL GATE** in the solo developer project lifecycle. Fundamental rule: **NOT A SINGLE LINE OF CODE OR DETAILED DESIGN IS UNDERTAKEN BEFORE PASSING THIS GATE.**
+This module is a **BLOCKING COMMERCIAL GATE FOR CLIENT COMMERCIAL PROJECTS** in the solo developer project lifecycle. Fundamental rule for paid client work: **NOT A SINGLE LINE OF CODE OR DETAILED DESIGN IS UNDERTAKEN BEFORE PASSING THIS GATE.** (For self-initiated products, Solo SaaS, and internal tools without an external client, this commercial gate is **FORMALLY WAIVED / BYPASSED**, and development proceeds directly to Module 04).
 
-The purpose is to bind the `SCOPE_STATEMENT.md` document into a legally enforceable agreement, secure the Down Payment (DP), lock in a Single PIC from the client side, and establish the Change Request protocol.
+The purpose for client engagements is to bind the `SCOPE_STATEMENT.md` document into a legally enforceable agreement, secure the Down Payment (DP), lock in a Single PIC from the client side, and establish the Change Request protocol.
 
 ---
 
@@ -70,10 +70,11 @@ As a solo developer, never accept payment solely at project completion (100% on 
 
 | Milestone | Milestone / Payment Condition | Percentage | Deliverable Prerequisite |
 | :---: | :--- | :---: | :--- |
-| **Milestone 1 (DP)** | Contract Signing & Project Initiation | **30% – 50%** | Handover of agreed SOW & Project Charter |
-| **Milestone 2 (Alpha)** | Core Engine & Database Integration Complete | **25% – 30%** | Demo of backend functionality & basic UI on local/staging |
-| **Milestone 3 (Beta)** | Complete Integration & Internal UAT Passed | **20% – 25%** | App ready for client testing on Staging (SIT Pass) |
-| **Milestone 4 (Final)** | Production Go-Live & Formal Handover | **10% – 20%** | Client UAT Sign-off approved, ready for BAST handover |
+| **Milestone 1 (DP)** | Contract Signing & Project Initiation | **40%** | Handover of agreed SOW & Project Charter |
+| **Milestone 2 (Alpha)** | Core Engine & Database Integration Complete | **25%** | Demo of backend functionality & basic UI on local/staging |
+| **Milestone 3 (Beta)** | Complete Integration & Internal UAT Passed | **20%** | App ready for client testing on Staging (SIT Pass) |
+| **Milestone 4 (Final)** | Production Go-Live & Formal Handover | **15%** | Client UAT Sign-off approved, ready for BAST handover |
+*Rule: Milestone percentages MUST sum to exactly 100%. Alternative 3-phase option for smaller projects: 50% DP, 30% Beta/UAT, 20% Final.*
 
 ---
 
@@ -159,8 +160,12 @@ Corporate clients often have multiple heads with conflicting directions.
 - No legal department (client won't redline)
 - Straightforward project (no compliance requirements)
 
-> 💡 **ADAPTATION FOR SOLO DEV PRODUCT (SELF-INITIATED/INTERNAL)**:
-> If the project is a self-initiated product without an external client, commercial contracts and DP invoicing may be adapted for internal use, **HOWEVER `docs/pm/SOW_CONTRACT.md` with charter section (Part I) REMAINS MANDATORY** to lock timeline baselines, infrastructure budgets, and risk boundaries. Skipping Module 03 entirely is STRICTLY PROHIBITED!
+> 💡 **ADAPTATION FOR SELF-INITIATED PRODUCTS & SOLO SAAS (BYPASS RULE)**:
+> - **Module 03 is SKIPPED / BYPASSED for Solo SaaS, Portfolio, and Internal Solo Projects** without an external paying client, as declared in `SKILL.md` (line 104 & 110) and `SCALE_WORKFLOWS.md`.
+> - Do NOT fabricate fictitious client agreements, self-invoices, or fake down payment transfers with yourself.
+> - Project baselines (timeline, architecture, cash runway, and fixed infrastructure budgets) are tracked directly in `docs/pm/PROJECT_STATE.md` and `docs/pm/IDEA_BRIEF.md`.
+> - The commercial gate is recorded as **`WAIVED (Self-Initiated)`** in `PROJECT_STATE.md`.
+> - For internal enterprise / company projects requiring internal departmental authorization, use `templates/02-legal-commercial/SOW_SMB.md` with the `[BYPASS]` flag.
 
 ---
 
@@ -185,7 +190,7 @@ After `docs/pm/SOW_CONTRACT.md` (consolidated charter + contract) has been writt
 1. **Verify output file existence** using one of the following methods:
    - PowerShell: `Test-Path -LiteralPath "docs/pm/SOW_CONTRACT.md"` → must return `True`
    - Bash/Zsh: `test -f "docs/pm/SOW_CONTRACT.md" && echo "True" || echo "False"`
-   - Read tool: `read_file('docs/pm/SOW_CONTRACT.md')` → must succeed without error
+   - Read and verify file `docs/pm/SOW_CONTRACT.md` → must succeed without error
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
@@ -213,10 +218,10 @@ After `docs/pm/SOW_CONTRACT.md` (consolidated charter + contract) has been writt
 
 1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 04 within the same turn!**
 2. **CONTENT VERIFICATION (Self-Verification Checklist)**:
-   - [ ] `read_file('docs/pm/SOW_CONTRACT.md')` → Confirm milestone structure documented (or BYPASS flag for internal)
-   - [ ] Confirm Part I (Project Charter) section exists with baseline dates
-   - [ ] Single PIC identified with contact info
-   - [ ] Liability cap clause present
+   - [ ] Read and verify file `docs/pm/SOW_CONTRACT.md` → Confirm milestone structure documented (or BYPASS flag for internal)
+   - [ ] Confirm Part I (Project Charter) section exists with baseline dates (or WAIVED for Solo SaaS)
+   - [ ] Single PIC identified with official contact info (for client projects)
+   - [ ] Limitation of Liability clause present (liability capped at total fees received)
 3. Present a commitment summary to the user:
    - Target go-live release date
    - Payment milestone schedule & DP amount (or internal project flag)
@@ -230,16 +235,15 @@ After `docs/pm/SOW_CONTRACT.md` (consolidated charter + contract) has been writt
    
    ❓ Has the Down Payment of [Rp X] been received in your bank account?
   
-   Reply: SUDAH / YES / YA / OK to proceed to Module 04 (UI/UX Design)
-         (SUDAH = already received, YA = yes in Indonesian)
+   Reply: "DP RECEIVED" / "SUDAH TRANSFER" / "PAID" to proceed to Module 04 (UI/UX Design)
+         (Explicit payment receipt confirmation required; casual "ok" is not accepted as payment proof)
    Reply: BELUM / NO / NOT YET if still awaiting transfer
-         (BELUM = not yet in Indonesian)
   
-   (Solo dev internal product: reply BYPASS to skip DP gate)
+   (Self-initiated product / Solo SaaS: reply BYPASS to record commercial gate as WAIVED)
    ```
 
-5. **Fuzzy Match Logic**: Accept variations (sudah/SUDAH/yes/YES/ya/ok as CONFIRMED; belum/no/not yet as WAITING; bypass/BYPASS/skip for internal projects). Indonesian keywords kept for local client convenience.
-6. **DO NOT proceed to Module 04** until user confirms DP received or bypass for internal
+5. **Payment Confirmation Matching Logic**: Accept explicit payment confirmations (e.g., "dp received", "sudah transfer", "paid", "lunas dp" as CONFIRMED; "belum", "no", "waiting" as WAITING; "bypass", "skip", "solo saas" for self-initiated projects). Casual conversational filler (such as "ok" or "lanjut") DOES NOT count as DP receipt confirmation!
+6. **DO NOT proceed to Module 04** until user confirms DP received or bypass for self-initiated projects.
 7. After user confirms, log confirmation in `SOW_CONTRACT.md` footer:
    ```markdown
    ---

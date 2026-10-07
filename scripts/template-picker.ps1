@@ -83,10 +83,12 @@ function Show-DiscoveryMenu {
     Write-Host "  6. OKR (Objectives & Key Results)"
     Write-Host "  7. RISK_REGISTER (Risk assessment matrix)"
     Write-Host "  8. BACKLOG (User stories, RICE prioritization)"
-    Write-Host "  9. Back to main menu"
+    Write-Host "  9. M00_LITE (Rapid market validation for Solo SaaS)"
+    Write-Host "  10. INTERVIEW_GUIDE (Non-leading questions & JTBD interview protocol)"
+    Write-Host "  11. Back to main menu"
     Write-Host ""
 
-    $choice = Read-Host "Select template (1-9)"
+    $choice = Read-Host "Select template (1-11)"
     
     switch ($choice) {
         "1" { Copy-Template "$TemplatesDir/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "docs/pm/IDEA_BRIEF.md" }
@@ -97,7 +99,9 @@ function Show-DiscoveryMenu {
         "6" { Copy-Template "$TemplatesDir/01-discovery-commercial/OKR_TEMPLATE.md" "docs/pm/OKR.md" }
         "7" { Copy-Template "$TemplatesDir/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md" "docs/pm/RISK_REGISTER.md" }
         "8" { Copy-Template "$TemplatesDir/01-discovery-commercial/BACKLOG_TEMPLATE.md" "docs/pm/BACKLOG.md" }
-        "9" { return }
+        "9" { Copy-Template "$TemplatesDir/01-discovery-commercial/M00_LITE_TEMPLATE.md" "docs/pm/M00_LITE.md" }
+        "10" { Copy-Template "$TemplatesDir/01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md" "docs/pm/INTERVIEW_GUIDE.md" }
+        "11" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
     }
 }

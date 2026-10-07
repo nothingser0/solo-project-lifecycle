@@ -1,13 +1,13 @@
 ---
 name: solo-project-lifecycle
-description: Comprehensive skill framework for managing software project lifecycle from discovery to production. Use when starting projects, scoping client work, writing PRD/FSD/SOW, planning architecture, or managing full SDLC.
-version: 1.0.0
-updated: 2026-10-05
+description: Comprehensive skill framework for managing software project lifecycle from discovery to production. Gunakan saat memulai proyek baru, riset pasar, analisis kompetitor, validasi kelayakan ide, pembuatan PRD, FSD, SOW, BAST, SPK, scoping client work, planning architecture, kepatuhan UU PDP, integrasi payment gateway Indonesia, atau mengelola full SDLC solo/tim. Use when starting projects, scoping client work, writing specs, or managing full SDLC. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
+version: 1.1.0
+updated: 2026-10-07
 ---
 
 # Solo Project Lifecycle
 
-**Skill framework** (~2.2MB content) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
+**Skill framework** (~3.8MB content, 270+ files) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
 
 ## Framework architecture
 
@@ -19,7 +19,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 - **Reference materials**: 600KB guides, playbooks, case studies in `references/`
 - **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
 
-**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 2.2MB at once. Similar to testing-library or design systems - comprehensive by design.
+**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 3.8MB at once. Similar to testing-library or design systems - comprehensive by design. Disk size verified via `./scripts/calculate-size.sh`.
 
 **Usage model**: Clone repo → agent navigates via SKILL.md → loads relevant module → applies template → references patterns as needed.
 
@@ -43,7 +43,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
    - Source: `docs/harness-root/*` and `docs/harness-root/.env.example`
    - Target: `./` (project root: `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./`)
    - Overwrites framework boilerplate (e.g., Next.js AGENTS.md)
-   - Keep `docs/harness-root/` as reference (user can re-copy if needed)
+   - **Clean up staging**: Delete staging folder (`rm -rf docs/harness-root/`) immediately after copying to root to enforce a Single Source of Truth and prevent AI coding agent path drift. (Git history serves as immutable backup).
 
 **File placement rules**:
 - **Framework repo**: READ templates only (skill:// paths)
@@ -53,18 +53,54 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 ## When to invoke
 
 - User mentions starting new project, MVP, or client work
+- Market research, competitor analysis, problem validation, or idea feasibility
 - Needs PRD, FSD, SOW, or technical specs
 - Planning development phases or timeline
 - Managing project with gates (SOW, UAT, handover)
 - Building with proper architecture (not ad-hoc coding)
 
+## When NOT to invoke
+
+- One-off throwaway helper scripts without project lifecycle scope (e.g., "write a regex to parse a string")
+- Single-file bug fixes or routine syntax questions where project architecture is already settled
+- Non-software requests or general chat
+
+## Language & Regional Context
+
+**Language mirroring**: Reply and draft project documents in the user's primary language. If the user communicates in Indonesian, write conversational answers and project deliverables in clear, professional Indonesian. If in English, write in English.
+
+**Indonesia-first practical context**: The skill framework natively supports Indonesian commercial, legal, and regulatory standards (SOW/SPK, Down Payment/milestones, BAST handover, UU PDP No. 27/2022, e-Meterai, Komdigi Private PSE registration, PPN 11%/PKP taxation, OSS-RBA KBLI business classification, and QRIS/Midtrans/Xendit payment gateways).
+
 ## Core rules
 
 **Mandatory turn-stopping**: Stop after EVERY module completion. Present artifacts summary, request explicit approval before next module. User saying "fill it in first" applies ONLY to current module, NOT permission to chain-execute.
+  - *Why*: Downstream engineering decisions (schema, APIs, code) directly depend on upstream scope and commercial locks. Chained execution without review accumulates cascading mistakes that cost $5\times$ more to refactor later.
+  - *Autopilot Exception (Small MVP Only)*: If the user explicitly authorizes fast-track execution (e.g., *"autopilot", "jalankan langsung tanpa berhenti", "chain-execute"*), the agent MAY proceed through M04 → M05 → M06 without stopping at intermediate phase boundaries, provided all generated specifications pass verification and no fatal blockers are encountered.
+
+**Template-first enforcement**: NEVER generate empty or freeform documents from module guideline prose alone. ALWAYS copy from the official template in `templates/` and populate it systematically.
+  - *Why*: Module guidelines provide educational theory, but templates contain the exact standardized section headings, compliance disclaimers, and validation tables required by downstream linters and CI scripts.
+
+**Cross-document consistency**: Verify downstream documents against upstream approved artifacts (Scope Statement $\rightarrow$ Sitemap $\rightarrow$ Component Specs $\rightarrow$ PRD/FSD $\rightarrow$ DB Schema $\rightarrow$ Code).
+  - *Why*: Discrepancies between scope definitions and database schemas cause authorization holes, missing columns, and wasted sprint cycles.
+
+**Anti-over-specification & reusability**: Strictly enforce YAGNI. Prefer standard native platform capabilities and existing component primitives. Do not invent one-off components without explicit requirement in `SCOPE_STATEMENT.md`.
+  - *Why*: Unrequested abstractions and superfluous components introduce technical debt and maintenance burden for solo developers.
+
+**Evidence rule for primary research**: Primary research data (interviews, surveys, willingness to pay) MUST originate from real human users. Agents MUST NOT fabricate interview transcripts or survey numbers. Draft the research instruments, mark outputs as `PENDING`, and set gate status to `PENDING_PRIMARY_RESEARCH`.
+  - *Why*: Synthetic interview quotes provide false confidence, leading founders to invest months building software that nobody wants to buy.
+
+**Data confidence legend**: Every factual claim and persona MUST include confidence markers:
+- ✅ **VERIFIED**: Empirical data from real users, live analytics, or cited primary sources (with URL and date).
+- 🔶 **ASSUMPTION**: Working hypothesis that must be tested before scaling.
+- ❓ **UNKNOWN**: Information gap requiring research or user input.
+
+**Riskiest assumption first (RAT)**: Maintain an Assumption Register. Prioritize testing the riskiest assumption with the cheapest test before building features.
 
 **Scope protection**: No feature addition without formal docs. No unpaid work.
+  - *Why*: Scope creep without contractual Change Requests destroys profitability and project delivery timelines.
 
 **Security**: NEVER ask user to paste secrets (API keys, tokens, passwords) in chat. Guide user to write directly to `.env.local` or config files. Verify file exists without reading content.
+  - *Why*: Secrets pasted into LLM chats risk leakage into logs, shell history, and context windows.
 
 **Gate enforcement** (client projects only):
 - Commercial gate (M03): No coding without signed SOW + down payment
@@ -77,17 +113,23 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 **Classification by complexity** (drives module path):
 
-**Small (1-3 features, <4 weeks)**:
-- Path: M04 → M05 → M06 → M10 (4 modules)
+**Small / Fast-Track MVP (1–3 core flows / 3–7 Must-Have features, <4 weeks)**:
+- Path: M04 → M05 → M06 → M10 → M12 (5 core modules, skip 9 heavy modules)
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
 - Example: Landing page, portfolio site, simple CRUD app
 
-**Medium (4-10 features, 1-3 months)**:
+**Self-Initiated Product / Solo SaaS (4–10 core features / 8–15 Must-Have features, 1-3 months)**:
+- Path: **M00-lite** → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
+- Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` + Full PRD/FSD
+- Market risk is highest: Validates assumptions via M00-lite (5 interviews + waitlist test), skips client contract gates (M03, M11).
+- Example: Independent micro-SaaS, developer tool, niche B2B automation
+
+**Medium Client Commercial (4–10 core features / 8–15 Must-Have features, 1-3 months)**:
 - Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
 - Example: Multi-feature SaaS, marketplace, CRM, dashboard with auth + RBAC
 
-**Large (>10 features, 3-6+ months)**:
+**Large Scale (>10 features / 16–25 Must-Have features, 3-6+ months)**:
 - Path: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13
 - All templates + compliance/scale docs
 - Example: Enterprise platform, multi-tenant SaaS, regulated industry apps
@@ -104,9 +146,9 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 **If solo/portfolio**: Skip gates, use complexity path only
 
 **Examples**:
-- Solo portfolio (3 features): Small path → M04 → M05 → M06 → M10
-- Solo SaaS (8 features): Medium path → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
-- Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → M07 → **M09** → M10 → **M11** → M12
+- Solo portfolio (3 features): Small path → M04 → M05 → M06 → M10 → M12
+- Solo SaaS (8 features): Solo SaaS path → M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
+- Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → **M07** → **M09** → M10 → **M11** → M12
 
 ## Module structure
 
@@ -219,6 +261,11 @@ Reusable patterns in `patterns/`:
 - `performance/` - N+1 prevention, caching
 - `api/` - REST conventions, GraphQL & versioning
 - `database/` - Migrations, transactions, seeding
+- `payments/` - Indonesian payment gateways (Midtrans, Xendit, QRIS, idempotent webhooks)
+- `compliance/` - Indonesian UU PDP No. 27/2022 data protection patterns
+- `offline/` - Local-first caching, mutation queue, and conflict resolution
+- `observability/` - Structured Pino JSON logging, trace correlation IDs, Sentry
+- `localization/` - Indonesian Rupiah formatting, WIB/WITA/WIT, statutory tax rounding
 - `deployment/` - CI/CD pipeline automation
 - `error-handling/` - Error boundaries and resilience
 - `git-workflow/` - Branching, commit conventions

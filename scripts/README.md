@@ -16,6 +16,15 @@ Each tool is available in both **Bash** (macOS/Linux) and **PowerShell** (Window
 | [`scripts/lint-template.sh`](./lint-template.sh) | [`scripts/lint-template.ps1`](./lint-template.ps1) | Lints markdown templates for unrendered placeholders (`[...]`, `<...>`) and structural validity | `SKILL.md`, `README.md` |
 | [`scripts/template-picker.sh`](./template-picker.sh) | [`scripts/template-picker.ps1`](./template-picker.ps1) | Interactive CLI selector to scaffold project templates into designated project paths | `SKILL.md`, `README.md` |
 | [`scripts/verify-all.sh`](./verify-all.sh) | [`scripts/verify-all.ps1`](./verify-all.ps1) | Comprehensive repository sanity and syntax checker | CI / Pre-Release |
+| [`scripts/init-project.sh`](./init-project.sh) | [`scripts/init-project.ps1`](./init-project.ps1) | Deterministic project directory initializer per scale (small, solo-saas, medium, large) | `SKILL.md`, `docs/quickstart.md` |
+| [`scripts/generate-fsd.sh`](./generate-fsd.sh) | [`scripts/generate-fsd.ps1`](./generate-fsd.ps1) | Auto-generates initial FSD.md skeleton with registry-pinned versions and DDL tables | Module 05 |
+| [`scripts/calculate-size.sh`](./calculate-size.sh) | [`scripts/calculate-size.ps1`](./calculate-size.ps1) | Accurately calculates disk footprint (excl. .git) and estimated framework tokens | Quality Audits |
+| [`scripts/build-dist.sh`](./build-dist.sh) | [`scripts/build-dist.ps1`](./build-dist.ps1) | Builds distribution bundle (dist/package/ and zip) for skill installation | Skill Distribution |
+| [`scripts/load-test.js`](./load-test.js) | — | Universal k6 load testing script with p95 < 200ms latency thresholds | Module 05B, 07 |
+| [`scripts/migrate-data.ts`](./migrate-data.ts) | — | Streaming batch ETL and data reconciliation script (Zod, 500-row chunks) | Module 08 |
+| [`scripts/etl-import.js`](./etl-import.js) | — | Node.js production batch database importer | Module 10 |
+| [`scripts/verify-links.js`](./verify-links.js) | — | Automated markdown relative link integrity checker (0 broken links) | CI / QA |
+| [`scripts/verify-skill-frontmatter.js`](./verify-skill-frontmatter.js) | — | Automated validator for SKILL.md YAML frontmatter specification | CI / QA |
 
 ---
 

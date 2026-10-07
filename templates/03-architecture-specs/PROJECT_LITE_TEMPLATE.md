@@ -1,6 +1,6 @@
 # PROJECT_LITE.md (Fast-Track Unified Specification)
 
-> Lean unified specification document for **Small-Scale (MVP / 1–4 Week Freelance)** projects.
+> Lean unified specification document for **Small-Scale (Solo Portfolio, Personal Tool, or 1–4 Week Client Freelance)** projects.
 > Combines Module 01 (Idea), Module 02 (Scope), Module 03 (Commercial), and Module 05 (Technical) into a single reference document.
 > **ABSOLUTE RULE**: For all Web and Mobile projects, **Module 04 (Interactive Prototype UI/UX) REMAINS STRICTLY MANDATORY** to prevent UI from becoming "AI Slop" and to provide clients with a real interactive prototype. Module 04 may only be skipped if the project is purely backend/CLI/automation with no user interface.
 
@@ -24,8 +24,9 @@
 
 ## 1. Project Metadata & Elevator Pitch
 - **Project Name**: [Application / System Name]
-- **Client**: [Client Name / Initiator]
-- **Client Single PIC**: [Client PIC Name & Contact]
+- **Project Type**: [Solo Portfolio / Personal Utility / Client Freelance]
+- **Client / Sponsor**: [Client Company Name OR "Self-Initiated / Independent Developer"]
+- **Client Single PIC**: [Client PIC Contact OR "Self (Sole Decision Maker)"]
 - **Solo Developer**: [Your Name]
 - **Target Release**: [YYYY-MM-DD] (Maximum 2–4 Weeks)
 - **Elevator Pitch**: *For [Target Users] who experience [Problem], this system provides [Core Solution] that processes data through [3-Step Core Loop].*
@@ -46,12 +47,16 @@
 
 ---
 
-## 3. Commercial Commitments & Milestone Payments (Payment Gate)
+## 3. Commercial Commitments (Client Project) OR Self-Runway (Solo Project)
 
+### For Solo Portfolio / Personal Utility:
+- **Commercial Status**: `[WAIVED / SELF-FUNDED]`
+- **Self-Budget / Hosting Cost**: Rp [X] / month (e.g. Free Tier Vercel + Supabase)
+- **Single PIC**: Sole Developer (No external approval bottlenecks)
+
+### For Client Commercial Project (If Applicable):
 - **Total Project Value**: [Currency/Amount]
-- **Payment Milestones (2 Stages)**:
-  - **Milestone 1 (50% Down Payment)**: Paid upfront as a prerequisite to start coding.
-  - **Milestone 2 (50% Final Settlement)**: Paid after UAT passes and system is live, prior to handing over root credentials/repo.
+- **Payment Milestones**: 50% Down Payment upfront, 50% Final upon UAT pass & BAST.
 - **Client Response SLA**: Client must provide testing feedback within **3 business days** maximum.
 
 ### Single PIC Authority (Decision Power)
@@ -72,13 +77,32 @@
 
 ---
 
-## 4. UI Prototype Reference (Interactive Prototype UI/UX Mandate)
-*This section must be completed for Web and Mobile applications:*
+## 4. Brand Identity, UI Design Tokens & Screen Prompts
 
-- **Prototype Project ID**: `projects/[PROJECT_ID]`
-- **Design System Asset ID**: `assets/[ASSET_ID]` (using `DESIGN.md` anti-slop guardrails)
-- **Live Interactive Prototype Link**: `[https://staging-preview-url]`
-- **Design Status**: **FROZEN** — Visual layout and navigation flows have been approved by the client and must not be reworked during coding.
+### 4.1 Minimal Brand & Logo Brief
+- **Brand Name / Wordmark**: [Product Name / Wordmark]
+- **Brand Vibe Keywords**: [e.g., Clean, Technical, Fast, Trustworthy]
+- **Primary Accent Color**: `#HEX` (e.g., `#10B981` Emerald / `#0891B2` Cyan)
+- **Neutral Foundation**: Zinc Scale (Background: `#09090B` Dark / `#FAFAFA` Light)
+- **Logo Asset Path**: `public/logo.svg` (or placeholder text icon)
+- **Logo Prompt (AI Generator)**:
+  > *"Minimalist vector app icon for [Product Name], [Core Functionality]. Simple clean geometric silhouette, flat colors, no 3D gradients, centered 1:1."*
+
+### 4.2 Visual Inspiration & Moodboard Reference
+- **Reference 1**: [URL of visual benchmark, e.g. Linear.app, Vercel, Supabase]
+- **Reference 2**: [URL of second visual benchmark]
+- **Notes & Typography**: Inter (Body 400/600), JetBrains Mono (Code/Numbers). Documented in `docs/design/inspiration/notes.md`.
+
+### 4.3 Screen Prompts & Layout Architecture
+- **Navigation Map**: Documented in `docs/specs/SITEMAP.md` (3–5 screens max: SCR-01 to SCR-03).
+- **Prompt Location**: `docs/design/prompts/` (contains standalone prompt per screen for v0.dev / Google Stitch / Cursor).
+- **Component Storage**: Save exported AI UI components into `docs/design/screens/`.
+
+### 4.4 Design Freeze & Anti-Slop Sign-Off
+- **Mobile Input Ergonomics**: All form inputs are $\ge 16$px (`text-base`) to prevent iOS Safari auto-zoom.
+- **Touch Targets**: All buttons and interactive triggers meet $\ge 44\text{px} \times 44\text{px}$.
+- **Contrast Ratio**: Text contrast $\ge 4.5:1$ against canvas background (WCAG 2.2 AA).
+- **Design Freeze Status**: `[FROZEN / APPROVED]` (UI layout locked; zero structural rework during coding).
 
 ---
 

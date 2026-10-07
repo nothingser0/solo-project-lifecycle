@@ -185,7 +185,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### API Key (Simple)
 ```http
-X-API-Key: sk_live_abc123...
+X-API-Key: <REPLACE_ME_SECRET_KEY>
 ```
 
 ### Basic Auth (Avoid for Production)
