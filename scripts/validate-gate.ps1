@@ -171,6 +171,14 @@ if ($Module -eq "M00" -and (Test-Path "docs/pm/M00_LITE.md")) {
     Write-Host "  [INFO] Detected M00-lite rapid validation path" -ForegroundColor Cyan
     $gate.Required = @("docs/pm/M00_LITE.md")
 }
+if ($Module -eq "M04" -and (Test-Path "PROJECT_LITE.md")) {
+    Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
+    $gate.Required = @("docs/specs/SITEMAP.md", "DESIGN.md")
+}
+if ($Module -eq "M05" -and (Test-Path "PROJECT_LITE.md")) {
+    Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
+    $gate.Required = @("PROJECT_LITE.md")
+}
 foreach ($file in $gate.Required) {
     $pathExists = Test-Path $file
     if (-not $pathExists -and $file -eq "docs/pm/COMPETITIVE_LANDSCAPE.md" -and (Test-Path "docs/pm/COMPETITOR_ANALYSIS.md")) {

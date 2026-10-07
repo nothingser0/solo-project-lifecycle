@@ -77,13 +77,32 @@
 
 ---
 
-## 4. UI Prototype Reference (Interactive Prototype UI/UX Mandate)
-*This section must be completed for Web and Mobile applications:*
+## 4. Brand Identity, UI Design Tokens & Screen Prompts
 
-- **Prototype Project ID**: `projects/[PROJECT_ID]`
-- **Design System Asset ID**: `assets/[ASSET_ID]` (using `DESIGN.md` anti-slop guardrails)
-- **Live Interactive Prototype Link**: `[https://staging-preview-url]`
-- **Design Status**: **FROZEN** — Visual layout and navigation flows have been approved by the client and must not be reworked during coding.
+### 4.1 Minimal Brand & Logo Brief
+- **Brand Name / Wordmark**: [Product Name / Wordmark]
+- **Brand Vibe Keywords**: [e.g., Clean, Technical, Fast, Trustworthy]
+- **Primary Accent Color**: `#HEX` (e.g., `#10B981` Emerald / `#0891B2` Cyan)
+- **Neutral Foundation**: Zinc Scale (Background: `#09090B` Dark / `#FAFAFA` Light)
+- **Logo Asset Path**: `public/logo.svg` (or placeholder text icon)
+- **Logo Prompt (AI Generator)**:
+  > *"Minimalist vector app icon for [Product Name], [Core Functionality]. Simple clean geometric silhouette, flat colors, no 3D gradients, centered 1:1."*
+
+### 4.2 Visual Inspiration & Moodboard Reference
+- **Reference 1**: [URL of visual benchmark, e.g. Linear.app, Vercel, Supabase]
+- **Reference 2**: [URL of second visual benchmark]
+- **Notes & Typography**: Inter (Body 400/600), JetBrains Mono (Code/Numbers). Documented in `docs/design/inspiration/notes.md`.
+
+### 4.3 Screen Prompts & Layout Architecture
+- **Navigation Map**: Documented in `docs/specs/SITEMAP.md` (3–5 screens max: SCR-01 to SCR-03).
+- **Prompt Location**: `docs/design/prompts/` (contains standalone prompt per screen for v0.dev / Google Stitch / Cursor).
+- **Component Storage**: Save exported AI UI components into `docs/design/screens/`.
+
+### 4.4 Design Freeze & Anti-Slop Sign-Off
+- **Mobile Input Ergonomics**: All form inputs are $\ge 16$px (`text-base`) to prevent iOS Safari auto-zoom.
+- **Touch Targets**: All buttons and interactive triggers meet $\ge 44\text{px} \times 44\text{px}$.
+- **Contrast Ratio**: Text contrast $\ge 4.5:1$ against canvas background (WCAG 2.2 AA).
+- **Design Freeze Status**: `[FROZEN / APPROVED]` (UI layout locked; zero structural rework during coding).
 
 ---
 

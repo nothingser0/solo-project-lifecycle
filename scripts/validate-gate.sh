@@ -135,18 +135,34 @@ case "$GATE_MODULE" in
         ;;
     M04)
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
+        if [ -f "PROJECT_LITE.md" ]; then
+            echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
+            check_required "docs/specs/SITEMAP.md"
+            check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
+            check_optional "docs/specs/COMPONENT_REQUIREMENTS.md"
+            check_optional "docs/specs/DESIGN_SPEC.md"
+            check_optional "docs/design/inspiration/notes.md"
+        else
         check_required "docs/specs/SITEMAP.md"
         check_required "docs/specs/COMPONENT_REQUIREMENTS.md"
         check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
         check_required "docs/specs/DESIGN_SPEC.md"
         check_optional "docs/specs/LOGO_DESIGN_BRIEF.md"
         check_optional "docs/design/inspiration/notes.md"
+        fi
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="
+        if [ -f "PROJECT_LITE.md" ]; then
+            echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
+            check_required "PROJECT_LITE.md"
+            check_optional "docs/specs/PRD.md"
+            check_optional "docs/specs/FSD.md"
+        else
         check_required "docs/specs/PRD.md"
         check_required "docs/specs/FSD.md"
         check_optional "PROJECT_LITE.md"
+        fi
         ;;
     M06)
         echo "=== M06: Development Execution Gate Checklist ==="
