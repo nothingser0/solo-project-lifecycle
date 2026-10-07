@@ -46,7 +46,7 @@ Features:
 Tech: Next.js 15 App Router, Tailwind, TanStack Table v8, React Query
 
 File structure:
-- components/docs/modules/[Entity]Table.tsx
+- components/modules/[Entity]Table.tsx
 - types/[entity].ts (if new types needed)
 
 Use design tokens from DESIGN.md (Zinc colors, Inter font, 1px borders)
@@ -84,7 +84,7 @@ Submission:
 
 Tech: Next.js 15, React Hook Form v7, Zod v3, Sonner toast
 
-File: components/docs/modules/[Entity]Form.tsx
+File: components/modules/[Entity]Form.tsx
 ```
 
 **When to use**: Any create/edit form  
@@ -120,7 +120,7 @@ Accessibility:
 
 Tech: Radix UI Dialog, Tailwind, Framer Motion
 
-File: components/docs/modules/[Name]Modal.tsx
+File: components/modules/[Name]Modal.tsx
 ```
 
 **When to use**: Confirmation dialogs, quick edit forms  
@@ -251,7 +251,7 @@ Show how component would use the hook after extraction
 
 Files:
 - hooks/use-[feature-name].ts (hook implementation)
-- components/docs/modules/[Component].tsx (refactored to use hook)
+- components/modules/[Component].tsx (refactored to use hook)
 ```
 
 **When to use**: Repeated logic across components, testing complex logic  
