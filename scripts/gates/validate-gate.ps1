@@ -165,6 +165,62 @@ $missingRequired = @()
 $missingOptional = @()
 $foundFiles = @()
 
+# Detect Solo SaaS / Internal scale from PROJECT_STATE.md or M00_LITE.md
+$isSoloSaaS = $false
+$isLargeScale = $false
+$isEnterprise = $false
+if (Test-Path "docs/pm/PROJECT_STATE.md") {
+    $stateContent = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+    if ($stateContent -match '(?i)Scale:\s*(large|enterprise)') {
+        $isLargeScale = $true
+    }
+    if ($stateContent -match '(?i)Scale:\s*enterprise') {
+        $isEnterprise = $true
+    }
+}
+
+if (Test-Path "docs/pm/M00_LITE.md") {
+    $isSoloSaaS = $true
+} elseif (Test-Path "docs/pm/PROJECT_STATE.md") {
+    $stateContent = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+    if ($stateContent -match '(?i)Scale:\s*(solo-saas|small|internal)') {
+        $isSoloSaaS = $true
+    }
+}
+
+if ($isSoloSaaS) {
+    if ($Module -eq "M03") {
+        Write-Host "  [INFO] Solo SaaS / Internal project detected: M03 SOW Contract is WAIVED." -ForegroundColor Cyan
+        $gate.Required = @()
+    }
+    if ($Module -eq "M09") {
+        Write-Host "  [INFO] Solo SaaS / Internal project detected: M09 Client UAT is WAIVED (Self-testing)." -ForegroundColor Cyan
+        $gate.Required = @()
+    }
+    if ($Module -eq "M11") {
+        Write-Host "  [INFO] Solo SaaS / Internal project detected: M11 Client BAST Handover is WAIVED." -ForegroundColor Cyan
+        $gate.Required = @()
+    }
+}
+
+if ($isLargeScale -and $Module -eq "M07") {
+    Write-Host "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY." -ForegroundColor Cyan
+    $gate.Required += "docs/qa/SECURITY_AUDIT.md"
+}
+if ($isEnterprise) {
+    if ($Module -eq "M02") {
+        Write-Host "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY." -ForegroundColor Cyan
+        $gate.Required += "docs/governance/RACI_MATRIX.md"
+    } elseif ($Module -eq "M05") {
+        Write-Host "  [INFO] Enterprise scale detected: ADR and Audit Trail Specs are MANDATORY." -ForegroundColor Cyan
+        $gate.Required += "docs/governance/ADR.md"
+        $gate.Required += "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md"
+    } elseif ($Module -eq "M10") {
+        Write-Host "  [INFO] Enterprise scale detected: CAB Approval is MANDATORY." -ForegroundColor Cyan
+        $gate.Required += "docs/governance/CAB_APPROVAL.md"
+    }
+}
+
 # Check required files
 Write-Host "`nRequired files:" -ForegroundColor White
 if ($Module -eq "M00" -and (Test-Path "docs/pm/M00_LITE.md")) {
@@ -194,6 +250,18 @@ foreach ($file in $gate.Required) {
         $pathExists = $true
     }
     if (-not $pathExists -and $file -eq "docs/DEPLOYMENT_PROTOCOL.md" -and (Test-Path "docs/pm/DEPLOYMENT_PROTOCOL.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "docs/governance/RACI_MATRIX.md" -and (Test-Path "docs/pm/RACI_MATRIX.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "docs/governance/ADR.md" -and (Test-Path "docs/specs/ADR.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "docs/governance/CAB_APPROVAL.md" -and (Test-Path "docs/pm/CAB_APPROVAL.md")) {
+        $pathExists = $true
+    }
+    if (-not $pathExists -and $file -eq "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md" -and (Test-Path "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md")) {
         $pathExists = $true
     }
     if (-not $pathExists -and $file -eq "docs/pm/METRICS_BASELINE_REPORT.md" -and (Test-Path "docs/analytics/METRICS_BASELINE_REPORT.md")) {
@@ -250,6 +318,11 @@ if ($Module -eq "M00") {
             } else {
                 Write-Host "  [ERROR] Payment terms not clearly defined!" -ForegroundColor Red
             }
+            if ($sowContent -match '\[x\]\s*(DP|Down Payment|50%|Cleared|Received)') {
+                Write-Host "  [OK] Down payment (DP) confirmation verified ([x] cleared)" -ForegroundColor Green
+            } else {
+                Write-Host "  [WARNING] Down payment (DP) not marked [x] as received/cleared in SOW!" -ForegroundColor Yellow
+            }
             if ($sowContent -match '(?i)Single PIC') {
                 Write-Host "  [OK] Single PIC clause present" -ForegroundColor Green
             } else {
@@ -259,6 +332,18 @@ if ($Module -eq "M00") {
                 Write-Host "  [OK] Limitation of liability clause present" -ForegroundColor Green
             }
         }
+    }
+} elseif ($Module -eq "M08") {
+    $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
+    if ($reconFile) {
+        $reconContent = Get-Content $reconFile -Raw
+        if ($reconContent -match '(?i)PASSED|RECONCILED|100%|SUCCESS|Zero Discrepancy') {
+            Write-Host "  [OK] Data migration reconciliation verified (Audit PASSED)" -ForegroundColor Green
+        } else {
+            Write-Host "  [WARNING] Migration reconciliation not marked as PASSED/RECONCILED!" -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "  [INFO] Data migration plan verified. Run reconciliation after seeding." -ForegroundColor Cyan
     }
 }
 

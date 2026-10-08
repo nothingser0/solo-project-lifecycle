@@ -9,6 +9,10 @@
 - **Initiator / Solo Dev**: [Your Name]
 - **Evaluation Date**: [YYYY-MM-DD]
 - **Initial Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
+- **Delivery Model**: [Bespoke Freelance / On-Premise / Academic / Proprietary Internal / Open-Source / Commercial SaaS]
+- **Monetization Model**: [Fixed Contract Price / One-Time License / Free & Non-Commercial / Recurring Subscription / Waived]
+- **Industry Archetype**: [Acronym] - [Full Archetype Name] (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)
+- **Catalog Benchmark**: #[1-1000] - [Catalog Entry Name] (from references/taxonomy/PROJECT_CATALOG_1000.md)
 
 ---
 

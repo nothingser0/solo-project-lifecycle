@@ -4,19 +4,25 @@
 $ErrorActionPreference = "Stop"
 
 $FSD_FILE = "docs/specs/FSD.md"
+$LITE_FILE = "PROJECT_LITE.md"
 
 Write-Host "`n[INFO] Framework Version Gate Check..." -ForegroundColor Cyan
 Write-Host ""
 
-if (-not (Test-Path $FSD_FILE)) {
-    Write-Host "[ERROR] FSD.md not found" -ForegroundColor Red
+if (Test-Path $FSD_FILE) {
+    $TARGET_FILE = $FSD_FILE
+} elseif (Test-Path $LITE_FILE) {
+    $TARGET_FILE = $LITE_FILE
+    Write-Host "[INFO] Fast-Track mode detected: Using PROJECT_LITE.md instead of FSD.md" -ForegroundColor Yellow
+} else {
+    Write-Host "[ERROR] Neither docs/specs/FSD.md nor PROJECT_LITE.md found" -ForegroundColor Red
     exit 1
 }
 
 function Extract-FsdVersion {
     param($Package)
     
-    $fsdContent = Get-Content $FSD_FILE -Raw
+    $fsdContent = Get-Content $TARGET_FILE -Raw
     $versionsSection = ($fsdContent -split 'Framework Versions \(Pinned\):')[1]
     if ($versionsSection) {
         $versionsSection = ($versionsSection -split "`n`n")[0]
@@ -28,7 +34,7 @@ function Extract-FsdVersion {
     return $null
 }
 
-$fsdContent = Get-Content $FSD_FILE -Raw
+$fsdContent = Get-Content $TARGET_FILE -Raw
 $stackMatch = [regex]::Match($fsdContent, 'Stack Decision LOCKED:\s*(.+?)(\r?\n|$)')
 $stack = ($stackMatch.Groups[1].Value.Trim() -split ' ')[0]
 
