@@ -516,7 +516,7 @@ eas update --branch production --message "Fix checkout bug"
 // Backend: /api/version/check
 export async function GET() {
   return Response.json({
-    minimumVersion: '1.2.0', // Force update below this
+    minimumVersion: '1.0.0', // Force update below this
     latestVersion: '1.3.0',
     forceUpdate: true,
     updateMessage: 'Critical security update required',

@@ -13,8 +13,8 @@
 - **Project Domain**: [CRM / CMS / HRIS / E-Commerce / Fintech / B2B SaaS / Developer Tool]
 - **Defined Project Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
 - **Scope Reference**: `docs/pm/SCOPE_STATEMENT.md` (v1.0)
-- **Design Reference**: `docs/specs/DESIGN_SPEC.md` (v2.1 Frozen)
-- **Specification Version**: 2.0.0
+- **Design Reference**: `docs/specs/DESIGN_SPEC.md` (v1.0 Frozen)
+- **Specification Version**: 1.0.0
 - **Document Status**: [DRAFT / IN_REVIEW / APPROVED_FOR_BUILD]
 - **Approval Date**: [YYYY-MM-DD]
 

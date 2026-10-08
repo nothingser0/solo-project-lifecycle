@@ -1,7 +1,7 @@
 ---
 name: solo-project-lifecycle
 description: Comprehensive skill framework for managing software project lifecycle from discovery to production, featuring a 1,000-system catalog across 4 scales, 250 industry software archetypes, and October 2026 modern tech stack benchmarks. Gunakan saat memulai proyek baru, riset pasar, analisis kompetitor, klasifikasi arketipe sistem, validasi kelayakan ide, pembuatan PRD, FSD, SOW, BAST, SPK, scoping client work, planning architecture anti-overkill, kepatuhan UU PDP, integrasi payment gateway Indonesia, atau mengelola full SDLC solo/tim. Use when starting projects, scoping client work, writing specs, or managing full SDLC. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
-version: 1.2.0
+version: 1.0.0
 updated: 2026-10-08
 ---
 

@@ -327,7 +327,7 @@ Decision: NO-GO until 100% passing
 
 ## Release Approval Document
 
-**Release**: v2.5.0  
+**Release**: v1.0.0
 **Date**: 2024-10-04  
 **Deployment Window**: 2024-10-05 02:00-03:00 UTC  
 

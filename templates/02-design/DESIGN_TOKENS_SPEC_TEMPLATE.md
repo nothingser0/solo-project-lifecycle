@@ -630,9 +630,9 @@ class DesignTokens {
 - ✅ Platform outputs: CSS, iOS, Android, Flutter
 
 #### Future Roadmap
-- v1.1.0: Add high-contrast mode tokens
-- v1.2.0: Add themed variants (e-commerce, dashboard, marketing)
-- v2.0.0: Breaking change - Rename color-action → color-interactive
+- [ ] Add high-contrast mode tokens
+- [ ] Add themed variants (e-commerce, dashboard, marketing)
+- [ ] Future major update: Rename color-action → color-interactive
 
 ---
 

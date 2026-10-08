@@ -25,7 +25,7 @@ model UserConsent {
   id           String   @id @default(uuid())
   userId       String
   consentType  String   // e.g., "TERMS_OF_SERVICE", "MARKETING_COMMUNICATION", "ANALYTICS_TRACKING"
-  policyVersion String   // e.g., "v1.2.0"
+  policyVersion String   // e.g., "v1.0.0"
   isGranted    Boolean  @default(true)
   ipAddress    String?
   userAgent    String?
