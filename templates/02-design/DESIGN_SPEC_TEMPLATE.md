@@ -8,7 +8,7 @@
 - **Project Name**: [System / Application Name]
 - **Client / Organization**: [Client Company / Organization]
 - **Solo Lead UI/UX Engineer**: [Your Name]
-- **Specification Version**: 2.1.0
+- **Specification Version**: 1.0.0
 - **Design Status**: [DRAFT / IN_REVIEW / FROZEN]
 - **Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
 - **Approval Date**: [YYYY-MM-DD]

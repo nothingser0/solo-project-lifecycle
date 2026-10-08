@@ -390,25 +390,11 @@ Accept: application/vnd.yourcompany.v1+json
 ```markdown
 ## API Changelog
 
-### v2.0.0 (2024-10-01)
-**Breaking Changes**:
-- Changed `user_id` to `userId` (camelCase)
-- Removed deprecated `/legacy-endpoint`
-
-**New Features**:
-- Added pagination to `/users` endpoint
-- New `/webhooks` endpoint
-
-**Bug Fixes**:
-- Fixed timezone handling in date fields
-
-### v1.2.0 (2024-09-01)
-**New Features**:
-- Added `/users/bulk` endpoint for batch operations
-
-### v1.1.0 (2024-08-01)
-**Improvements**:
-- Increased rate limit from 100 to 200 requests/hour
+### v1.0.0 (2026-10-08)
+**Initial Release**:
+- Baseline API endpoints (`/users`, `/auth`)
+- Rate limiting standard enabled
+- Standard JSON payload format
 ```
 
 ---

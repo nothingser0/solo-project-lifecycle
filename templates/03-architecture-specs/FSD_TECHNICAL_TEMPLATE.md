@@ -12,9 +12,9 @@
 - **Lead Software Architect**: [Your Name]
 - **Project Domain**: [CRM / CMS / HRIS / E-Commerce / Fintech / B2B SaaS / Developer Tool]
 - **Defined Project Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
-- **PRD Reference**: `docs/specs/PRD.md` (v2.0 Approved)
-- **Design Reference**: `docs/specs/DESIGN_SPEC.md` (v2.1 Frozen)
-- **Specification Version**: 2.0.0
+- **PRD Reference**: `docs/specs/PRD.md` (v1.0 Approved)
+- **Design Reference**: `docs/specs/DESIGN_SPEC.md` (v1.0 Frozen)
+- **Specification Version**: 1.0.0
 - **Document Status**: [APPROVED_FOR_BUILD]
 - **Approval Date**: [YYYY-MM-DD]
 
