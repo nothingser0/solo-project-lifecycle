@@ -119,16 +119,16 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
 - Example: Landing page, portfolio site, simple CRUD app
 
-**Self-Initiated Product / Solo SaaS (4–10 core features / 8–15 Must-Have features, 1-3 months)**:
+**Independent / Self-Initiated Product (SaaS, Desktop App, Open-Source Tool) (4–10 core features, 1-3 months)**:
 - Path: **M00-lite** → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
 - Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` + Full PRD/FSD
-- Market risk is highest: Validates assumptions via M00-lite (5 interviews + waitlist test), skips client contract gates (M03, M11).
-- Example: Independent micro-SaaS, developer tool, niche B2B automation
+- Validates market/user demand via M00-lite, skips external client contract gates (M03, M11). Commercial model adapts to product (SaaS subscription, one-off download, or free open-source).
+- Example: Independent micro-SaaS, desktop tool (Tauri), open-source developer utility
 
-**Medium Client Commercial (4–10 core features / 8–15 Must-Have features, 1-3 months)**:
+**Bespoke Freelance & Client Commercial (4–10 core features, 1-3 months)**:
 - Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
-- Example: Multi-feature SaaS, marketplace, CRM, dashboard with auth + RBAC
+- Example: Custom bespoke business portal, e-commerce, internal company tool, academic software deliverable
 
 **Large Scale (>10 features / 16–25 Must-Have features, 3-6+ months)**:
 - Path: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13

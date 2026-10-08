@@ -263,6 +263,30 @@ Claiming *"Risk: Zero"* on legal feasibility is strictly prohibited for any soft
 
 Never treat survey "intent-to-buy" percentages as real conversion rates.
 
+##### Context-Aware Commercial Evaluation (Select Project Delivery Model):
+
+**Model A: Bespoke Freelance / Client Project / Academic (Fixed-Price & Milestone)**:
+- **Zero Recurring Billing**: Do not model ARPU, churn, or recurring payment gateways.
+- **Project Margin Formula**:
+  $$\text{Net Profit Margin} = \frac{\text{Contract Value} - (\text{Direct Tooling / Third-Party Costs} + \text{Hosting})}{\text{Contract Value}} \times 100\%$$
+- **Effective Hourly Rate**:
+  $$\text{Real Hourly Yield} = \frac{\text{Net Project Profit}}{\text{Total Estimated Dev Hours}}$$
+  - *Viability Threshold*: Yield must exceed the developer's baseline opportunity cost (e.g., $\ge \text{Rp 100.000–250.000/jam}$).
+- **Payment Safety Gate**: Minimum 50% Down Payment (DP) locked in M03 before development.
+
+**Model B: Open-Source / Free Developer Utility / Personal Tool**:
+- **Zero Monetization Required**: Commercial score defaults to **5/5 (Feasible)** if hosting/API costs fall within the developer's personal budget ceiling ($0 to $\le \text{Rp 150.000/mo}$).
+- **Runway & Infrastructure Cap**: Validate that free-tier platforms (Cloudflare Pages, Turso, Supabase free tier, GitHub Pages) cover expected traffic without forced upgrades.
+
+**Model C: On-Premise / Enterprise One-Time Software License**:
+- **One-Time License + Annual Maintenance**: Evaluate license price vs hardware provisioning and custom deployment hours.
+- **Maintenance Retainer**: Target $15\%–25\%$ of initial license fee per year for bug fixes and OS compatibility patches.
+
+**Model D: Commercial SaaS / Subscription Product (Recurring Billing)**:
+- Apply standard subscription metrics below (Intent-to-Buy Discounting, COGS % of ARPU, Churn, LTV:CAC):
+
+###### Subscription SaaS Metrics (Model D Only):
+
 1. **Intent-to-Buy Discounting**:
    - Real-world conversion from stated survey pricing commitment to actual paid subscription is typically **$15\%–25\%$** `[BENCH-01: Commercial conversion 🔶]`.
    - *Formula*: $\text{Realistic Conversion Rate} = \text{Survey Pricing Commitment Rate} \times [0.15, 0.25]$ (Midpoint: $\times 0.20$).

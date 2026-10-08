@@ -26,6 +26,8 @@
 - **Project Name**: [Application / System Name]
 - **Project Type**: [Solo Portfolio / Personal Utility / Client Freelance]
 - **Client / Sponsor**: [Client Company Name OR "Self-Initiated / Independent Developer"]
+- **Delivery Model**: [Bespoke Freelance / Academic Joki / On-Premise / Internal Tool / Open-Source / Solo SaaS]
+- **Monetization**: [Fixed Price / Free & Open-Source / Milestone Termin / Recurring / Self-Funded]
 - **Client Single PIC**: [Client PIC Contact OR "Self (Sole Decision Maker)"]
 - **Solo Developer**: [Your Name]
 - **Target Release**: [YYYY-MM-DD] (Maximum 2–4 Weeks)

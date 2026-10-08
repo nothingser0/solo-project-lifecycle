@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # init-project.sh - Deterministic Project Directory Initializer
-# Usage: ./scripts/init-project.sh <TARGET_DIR> [small|solo-saas|medium|large|enterprise] [ARCHETYPE]
+# Usage: ./scripts/init-project.sh <TARGET_DIR> [small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise] [ARCHETYPE] [DELIVERY]
 
 set -e
 
 TARGET_DIR="${1:-}"
 SCALE="${2:-solo-saas}"
 ARCHETYPE="${3:-}"
+DELIVERY="${4:-}"
 
 if [ -z "$TARGET_DIR" ]; then
-    echo "Usage: $0 <TARGET_DIR> [small|solo-saas|medium|large|enterprise] [ARCHETYPE]"
+    echo "Usage: $0 <TARGET_DIR> [small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise] [ARCHETYPE] [DELIVERY]"
     echo "Example: $0 ~/projects/my-new-saas solo-saas"
     exit 1
 fi
@@ -37,15 +38,15 @@ cp "$TEMPLATES/02-design/references/inspiration-template/notes-template.md" "$TA
 cp "$TEMPLATES/02-design/SCREEN_PROMPT_TEMPLATE.md" "$TARGET_DIR/docs/design/prompts/SCREEN_PROMPT_TEMPLATE.md"
 
 case "$SCALE" in
-    small)
-        echo "Configuring for Small Fast-Track MVP..."
+    small|open-source)
+        echo "Configuring for Small / Open-Source Fast-Track MVP..."
         cp "$TEMPLATES/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "$TARGET_DIR/PROJECT_LITE.md"
         cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
         cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
         cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
         ;;
-    solo-saas)
-        echo "Configuring for Solo SaaS (Self-Initiated)..."
+    solo-saas|independent)
+        echo "Configuring for Independent / Self-Initiated Product..."
         cp "$TEMPLATES/01-discovery-commercial/M00_LITE_TEMPLATE.md" "$TARGET_DIR/docs/pm/M00_LITE.md"
         cp "$TEMPLATES/01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md" "$TARGET_DIR/docs/pm/INTERVIEW_GUIDE.md"
         cp "$TEMPLATES/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
@@ -58,8 +59,8 @@ case "$SCALE" in
         cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
         cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
         ;;
-    medium)
-        echo "Configuring for Medium Client Commercial..."
+    medium|bespoke|freelance)
+        echo "Configuring for Medium Bespoke / Client Commercial..."
         mkdir -p "$TARGET_DIR/contracts"
         cp "$TEMPLATES/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
         cp "$TEMPLATES/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md" "$TARGET_DIR/docs/pm/SCOPE_STATEMENT.md"
@@ -126,7 +127,7 @@ case "$SCALE" in
         cp "$TEMPLATES/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md" "$TARGET_DIR/docs/ops/DISASTER_RECOVERY_PLAN.md"
         ;;
     *)
-        echo "Invalid scale: $SCALE (options: small | solo-saas | medium | large | enterprise)"
+        echo "Invalid scale: $SCALE (options: small | solo-saas | independent | open-source | medium | bespoke | freelance | large | enterprise)"
         exit 1
         ;;
 esac
@@ -138,6 +139,16 @@ if [ -n "$ARCHETYPE" ] && [ -f "$TARGET_DIR/docs/pm/IDEA_BRIEF.md" ]; then
     fi
     if [ -f "$TARGET_DIR/PROJECT_LITE.md" ] && command -v sed >/dev/null 2>&1; then
         sed -i "s/- \*\*Industry Archetype\*\*:.*/- \*\*Industry Archetype\*\*: $ARCHETYPE (from references\/taxonomy\/SYSTEM_ARCHETYPES_250.md)/g" "$TARGET_DIR/PROJECT_LITE.md"
+    fi
+fi
+
+if [ -n "$DELIVERY" ]; then
+    echo "Applying Delivery Model ($DELIVERY)..."
+    if [ -f "$TARGET_DIR/docs/pm/IDEA_BRIEF.md" ] && command -v sed >/dev/null 2>&1; then
+        sed -i "s/- \*\*Delivery Model\*\*:.*/- \*\*Delivery Model\*\*: $DELIVERY/g" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
+    fi
+    if [ -f "$TARGET_DIR/PROJECT_LITE.md" ] && command -v sed >/dev/null 2>&1; then
+        sed -i "s/- \*\*Delivery Model\*\*:.*/- \*\*Delivery Model\*\*: $DELIVERY/g" "$TARGET_DIR/PROJECT_LITE.md"
     fi
 fi
 

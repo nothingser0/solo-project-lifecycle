@@ -1,16 +1,19 @@
 # init-project.ps1 - Deterministic Project Directory Initializer
-# Usage: .\scripts\init-project.ps1 -TargetDir <PATH> [-Scale <small|solo-saas|medium|large>] [-Archetype <ACRONYM>]
+# Usage: .\scripts\init-project.ps1 -TargetDir <PATH> [-Scale <small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise>] [-Archetype <ACRONYM>] [-Delivery <bespoke|saas|on-premise|academic|open-source>]
 
 param (
     [Parameter(Mandatory=$true)]
     [string]$TargetDir,
 
     [Parameter(Mandatory=$false)]
-    [ValidateSet("small", "solo-saas", "medium", "large", "enterprise")]
+    [ValidateSet("small", "solo-saas", "independent", "open-source", "medium", "bespoke", "freelance", "large", "enterprise")]
     [string]$Scale = "solo-saas",
 
     [Parameter(Mandatory=$false)]
-    [string]$Archetype = ""
+    [string]$Archetype = "",
+
+    [Parameter(Mandatory=$false)]
+    [string]$Delivery = ""
 )
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -43,15 +46,15 @@ Copy-Item (Join-Path $templates "02-design/references/inspiration-template/notes
 Copy-Item (Join-Path $templates "02-design/SCREEN_PROMPT_TEMPLATE.md") (Join-Path $TargetDir "docs/design/prompts/SCREEN_PROMPT_TEMPLATE.md") -Force
 
 switch ($Scale) {
-    "small" {
-        Write-Host "Configuring for Small Fast-Track MVP..."
+    { $_ -in "small", "open-source" } {
+        Write-Host "Configuring for Small / Open-Source Fast-Track MVP..."
         Copy-Item (Join-Path $templates "03-architecture-specs/PROJECT_LITE_TEMPLATE.md") (Join-Path $TargetDir "PROJECT_LITE.md") -Force
         Copy-Item (Join-Path $templates "02-design/SITEMAP_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/SITEMAP.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
     }
-    "solo-saas" {
-        Write-Host "Configuring for Solo SaaS (Self-Initiated)..."
+    { $_ -in "solo-saas", "independent" } {
+        Write-Host "Configuring for Independent / Self-Initiated Product..."
         Copy-Item (Join-Path $templates "01-discovery-commercial/M00_LITE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/M00_LITE.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/INTERVIEW_GUIDE.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md") -Force
@@ -64,8 +67,8 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
     }
-    "medium" {
-        Write-Host "Configuring for Medium Client Commercial..."
+    { $_ -in "medium", "bespoke", "freelance" } {
+        Write-Host "Configuring for Medium Bespoke / Client Commercial..."
         $contractsDir = Join-Path $TargetDir "contracts"
         if (-not (Test-Path $contractsDir)) { New-Item -ItemType Directory -Force -Path $contractsDir | Out-Null }
         Copy-Item (Join-Path $templates "01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md") -Force
@@ -153,6 +156,22 @@ if ($Archetype) {
     if (Test-Path $projectLitePath) {
         $content = Get-Content $projectLitePath -Raw
         $content = $content -replace '- \*\*Industry Archetype\*\*:\s*\[.+?\]', "- **Industry Archetype**: $Archetype (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)"
+        Set-Content -Path $projectLitePath -Value $content -Encoding utf8
+    }
+}
+
+if ($Delivery) {
+    Write-Host "Applying Delivery Model ($Delivery)..."
+    $ideaBriefPath = Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md"
+    if (Test-Path $ideaBriefPath) {
+        $content = Get-Content $ideaBriefPath -Raw
+        $content = $content -replace '- \*\*Delivery Model\*\*:\s*\[.+?\]', "- **Delivery Model**: $Delivery"
+        Set-Content -Path $ideaBriefPath -Value $content -Encoding utf8
+    }
+    $projectLitePath = Join-Path $TargetDir "PROJECT_LITE.md"
+    if (Test-Path $projectLitePath) {
+        $content = Get-Content $projectLitePath -Raw
+        $content = $content -replace '- \*\*Delivery Model\*\*:\s*\[.+?\]', "- **Delivery Model**: $Delivery"
         Set-Content -Path $projectLitePath -Value $content -Encoding utf8
     }
 }

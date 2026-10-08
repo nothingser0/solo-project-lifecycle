@@ -20,6 +20,7 @@ Software development framework for solo developers and small teams. Covers proje
 - Scripts for validation and automation
 
 Works with any tech stack. Built for solo developers, freelancers, consulting teams.
+Supports all software delivery models: **Bespoke / Custom Client Projects, On-Premise / Enterprise Systems, Desktop / Offline-First Apps, Open-Source & Free Utilities, Academic Software Deliverables, and Commercial SaaS**.
 
 ---
 
