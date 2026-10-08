@@ -75,6 +75,12 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Compares major.minor versions (exact match required)
   • Missing lockfile or version mismatch → FAIL with fix command
   • Example: FSD has Next.js: 15.0.3, lockfile resolved 16.3.8 → FAIL
+  • Anti-Overkill Runtime Sanity Check (References: `references/stacks/STACK_SUPPORT_MATRIX.md`):
+    - Small Projects: No Docker clusters, microservices, or complex state stores.
+    - Medium Projects: Monolith first (Laravel Inertia / Next.js / SvelteKit) without distributed Kafka or Kubernetes.
+    - Large Projects: Go / FastAPI / NestJS modular service with single primary DB + Redis.
+    - Enterprise: Full compliance, strict DI, robust transaction audit log.
+    - If agent detects architectural drift or unnecessary layers during scaffold/build, prune immediately.
                                     │
                                     ▼
 [ STEP 1.7: Generate Project-Specific TODO.md (AI-Guided) ]

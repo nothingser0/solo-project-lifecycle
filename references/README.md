@@ -9,11 +9,12 @@ Comprehensive index of all 36 engineering guides, checklists, playbooks, stack q
 ```
 references/
 ├── checklists/          (4 files)  - Feasibility criteria, evaluation checklists, elicitation guides
+├── taxonomy/            (2 files)  - 250 industry software archetypes, 1,000 project catalog
 ├── playbooks/           (3 files)  - AI-assisted development, design patterns, scale workflows
 ├── pm/                  (6 files)  - Prioritization, analytics, communication, testing, tooling
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
-├── stacks/              (6 files)  - Decision metrics, support matrix, stack-specific quickstarts
+├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
 └── technical/          (10 files)  - Deep research, design systems, APM, compliance, animation
 ```
 
@@ -30,7 +31,16 @@ references/
 
 ---
 
-## 2. Playbooks (`references/playbooks/`)
+## 2. Taxonomy & System Catalogs (`references/taxonomy/`)
+
+| File | Purpose | Referenced In |
+|---|---|---|
+| [`SYSTEM_ARCHETYPES_250.md`](./taxonomy/SYSTEM_ARCHETYPES_250.md) | Standard 250 industry software archetypes, acronyms, and classification definitions | Module 00, 01 |
+| [`PROJECT_CATALOG_1000.md`](./taxonomy/PROJECT_CATALOG_1000.md) | 1,000 deduplicated system ideas across 4 implementation tiers (Small, Medium, Large, Enterprise) | Module 00, 01, 05 |
+
+---
+
+## 3. Playbooks (`references/playbooks/`)
 
 | File | Purpose | Referenced In |
 |---|---|---|
@@ -40,7 +50,7 @@ references/
 
 ---
 
-## 3. Product Management (`references/pm/`)
+## 4. Product Management (`references/pm/`)
 
 | File | Purpose | Referenced In |
 |---|---|---|
@@ -54,7 +64,7 @@ references/
 
 ---
 
-## 4. Pre-Sales (`references/pre-sales/`)
+## 5. Pre-Sales (`references/pre-sales/`)
 
 | File | Purpose | Referenced In |
 |---|---|---|
@@ -64,7 +74,7 @@ references/
 
 ---
 
-## 5. Solo Engineering (`references/solo/`)
+## 6. Solo Engineering (`references/solo/`)
 
 | File | Purpose | Referenced In |
 |---|---|---|
@@ -75,7 +85,7 @@ references/
 
 ---
 
-## 6. Tech Stacks (`references/stacks/`)
+## 7. Tech Stacks (`references/stacks/`)
 
 | File | Purpose | Referenced In |
 |---|---|---|
@@ -88,7 +98,7 @@ references/
 
 ---
 
-## 7. Technical Engineering & Research (`references/technical/`)
+## 8. Technical Engineering & Research (`references/technical/`)
 
 | File | Purpose | Referenced In |
 |---|---|---|
@@ -105,7 +115,7 @@ references/
 
 ---
 
-## 8. Team Collaboration & Agency Handoff (`references/team/`)
+## 9. Team Collaboration & Agency Handoff (`references/team/`)
 
 | File | Purpose | Referenced In |
 |---|---|---|

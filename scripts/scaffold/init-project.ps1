@@ -1,5 +1,5 @@
 # init-project.ps1 - Deterministic Project Directory Initializer
-# Usage: .\scripts\init-project.ps1 -TargetDir <PATH> [-Scale <small|solo-saas|medium|large>]
+# Usage: .\scripts\init-project.ps1 -TargetDir <PATH> [-Scale <small|solo-saas|medium|large>] [-Archetype <ACRONYM>]
 
 param (
     [Parameter(Mandatory=$true)]
@@ -7,7 +7,10 @@ param (
 
     [Parameter(Mandatory=$false)]
     [ValidateSet("small", "solo-saas", "medium", "large", "enterprise")]
-    [string]$Scale = "solo-saas"
+    [string]$Scale = "solo-saas",
+
+    [Parameter(Mandatory=$false)]
+    [string]$Archetype = ""
 )
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -92,6 +95,16 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
+    }
+}
+
+if ($Archetype) {
+    Write-Host "Applying Archetype metadata ($Archetype)..."
+    $ideaBriefPath = Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md"
+    if (Test-Path $ideaBriefPath) {
+        $content = Get-Content $ideaBriefPath -Raw
+        $content = $content -replace '- \*\*Industry Archetype\*\*:\s*\[.+?\]', "- **Industry Archetype**: $Archetype (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)"
+        Set-Content -Path $ideaBriefPath -Value $content -Encoding utf8
     }
 }
 

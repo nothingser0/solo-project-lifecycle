@@ -3,6 +3,8 @@
 > - `references/checklists/MODULE_01_ACTION_ITEMS_CHECKLIST.md` (Post-feasibility action items: Market validation, Formula verification, Security baseline)
 > - `references/checklists/FEASIBILITY_CRITERIA.md` (Detailed 4-dimension feasibility rubric)
 > - `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` (RICE scoring formula, reach/impact/confidence rubrics, backlog prioritization worksheet)
+> - `references/taxonomy/SYSTEM_ARCHETYPES_250.md` (250 standard industry software archetypes and acronyms)
+> - `references/taxonomy/PROJECT_CATALOG_1000.md` (1,000 verified system variations across 4 complexity tiers)
 > - `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md` (Fast-track single-file specification for Small/MVP tier projects)
 
 
@@ -28,6 +30,7 @@ This module is the first gate in the software development lifecycle for solo dev
           │
           ▼
 [ STEP 1: The 3-Filter Triage & Competitor Benchmarking ]
+  • System Archetype & Catalog Classification (250 Archetypes & 1,000 Variations)
   • Problem Filter, Methodology Standards (Sample Size, Split, Bias)
   • 5-7 Competitor Landscape & Uniqueness Verification (Direct/Adjacent/Manual)
   • Core User Loop (3-Step Primary Flow across Retail, B2B, or Fintech)
@@ -88,6 +91,25 @@ This module is the first gate in the software development lifecycle for solo dev
 ### Step 1: The 3-Filter Triage, Data Quality & Competitor Research
 
 Perform rigorous interrogation on the raw idea before writing formal specifications:
+
+#### 1.0 System Archetype Classification & Catalog Mapping (MANDATORY)
+Before proceeding with problem filtering, the agent **MUST** map the raw idea to the standard industry software taxonomy:
+1. **Industry Archetype Classification**:
+   - Match the idea against **`references/taxonomy/SYSTEM_ARCHETYPES_250.md`** (e.g., *IMS / Inventory Management*, *POS / Point of Sale*, *ATS / Applicant Tracking*, *WMS / Warehouse Management*, *DEX / Digital Employee Experience*).
+   - Document the primary archetype acronym and formal industry category name in `IDEA_BRIEF.md`.
+   - Identify if the system is a composite archetype (e.g., *POS + IMS* or *CRM + Invoicing Engine*).
+2. **Catalog Variation & Complexity Benchmark**:
+   - Cross-reference with **`references/taxonomy/PROJECT_CATALOG_1000.md`** across the 4 verified implementation scales:
+     - **Small Scale (1–2 weeks)**: Focused utility, single-user/team, lightweight CRUD, minimal third-party dependencies (Catalog #1–250).
+     - **Medium Scale (3–6 weeks)**: Multi-role, external API integration (payment gateway, notification, map), business logic specific (Catalog #251–500).
+     - **Large Scale (8–12 weeks)**: Modular architecture, complex state/data sync, multi-tenant/multi-tier roles, statutory compliance (Catalog #501–750).
+     - **Enterprise Scale (3–6+ months)**: High-availability, mission-critical, multi-service, rigorous regulatory compliance (ISO/OJK/HIPAA/PDP), legacy integrations (Catalog #751–1000).
+3. **Output in `IDEA_BRIEF.md` Header**:
+   ```markdown
+   - **Industry Archetype**: [Acronym] - [Full Archetype Name] (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)
+   - **Catalog Benchmark**: #[1-1000] - [Catalog Entry Name] (from references/taxonomy/PROJECT_CATALOG_1000.md)
+   - **Target Scale Tier**: [Small / Medium / Large / Enterprise]
+   ```
 
 #### 1.1 Problem Filter & Survey/Interview Methodology Standards
 - *Core Question*: Who has this problem, how frequently does it occur, and what is the measurable financial/time loss today?

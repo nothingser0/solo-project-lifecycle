@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # init-project.sh - Deterministic Project Directory Initializer
-# Usage: ./scripts/init-project.sh <TARGET_DIR> [small|solo-saas|medium|large]
+# Usage: ./scripts/init-project.sh <TARGET_DIR> [small|solo-saas|medium|large] [ARCHETYPE]
 
 set -e
 
 TARGET_DIR="${1:-}"
 SCALE="${2:-solo-saas}"
+ARCHETYPE="${3:-}"
 
 if [ -z "$TARGET_DIR" ]; then
-    echo "Usage: $0 <TARGET_DIR> [small|solo-saas|medium|large]"
+    echo "Usage: $0 <TARGET_DIR> [small|solo-saas|medium|large] [ARCHETYPE]"
     echo "Example: $0 ~/projects/my-new-saas solo-saas"
     exit 1
 fi
@@ -92,6 +93,13 @@ case "$SCALE" in
         exit 1
         ;;
 esac
+
+if [ -n "$ARCHETYPE" ] && [ -f "$TARGET_DIR/docs/pm/IDEA_BRIEF.md" ]; then
+    echo "Applying Archetype metadata ($ARCHETYPE)..."
+    if command -v sed >/dev/null 2>&1; then
+        sed -i "s/- \*\*Industry Archetype\*\*:.*/- \*\*Industry Archetype\*\*: $ARCHETYPE (from references\/taxonomy\/SYSTEM_ARCHETYPES_250.md)/g" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
+    fi
+fi
 
 echo "✅ Project initialized successfully at: $TARGET_DIR"
 echo "Next step: Open docs/pm/PROJECT_STATE.md and begin Phase 1."

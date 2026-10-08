@@ -1,13 +1,13 @@
 ---
 name: solo-project-lifecycle
-description: Comprehensive skill framework for managing software project lifecycle from discovery to production. Gunakan saat memulai proyek baru, riset pasar, analisis kompetitor, validasi kelayakan ide, pembuatan PRD, FSD, SOW, BAST, SPK, scoping client work, planning architecture, kepatuhan UU PDP, integrasi payment gateway Indonesia, atau mengelola full SDLC solo/tim. Use when starting projects, scoping client work, writing specs, or managing full SDLC. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
-version: 1.1.0
-updated: 2026-10-07
+description: Comprehensive skill framework for managing software project lifecycle from discovery to production, featuring a 1,000-system catalog across 4 scales, 250 industry software archetypes, and October 2026 modern tech stack benchmarks. Gunakan saat memulai proyek baru, riset pasar, analisis kompetitor, klasifikasi arketipe sistem, validasi kelayakan ide, pembuatan PRD, FSD, SOW, BAST, SPK, scoping client work, planning architecture anti-overkill, kepatuhan UU PDP, integrasi payment gateway Indonesia, atau mengelola full SDLC solo/tim. Use when starting projects, scoping client work, writing specs, or managing full SDLC. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
+version: 1.2.0
+updated: 2026-10-08
 ---
 
 # Solo Project Lifecycle
 
-**Skill framework** (~3.8MB content, 270+ files) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance.
+**Skill framework** (~3.9MB content, 270+ files) providing structured SDLC for solo developers and small teams. 14 modules from discovery through post-launch maintenance, backed by a 1,000-system taxonomy, 250 industry software archetypes, and October 2026 tech stack benchmarks across 17 engineering domains.
 
 ## Framework architecture
 
@@ -15,11 +15,12 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 - **Entry point**: This SKILL.md file (8KB) - lightweight navigation guide
 - **Module library**: 14 modules in `docs/modules/` loaded on-demand per project phase
+- **Taxonomy & catalog**: 250 industry archetypes and 1,000 system variations in `references/taxonomy/`
 - **Template library**: 150+ templates in `templates/` by use case and phase
 - **Reference materials**: 600KB guides, playbooks, case studies in `references/`
 - **Code patterns**: Reusable validation/auth/performance patterns in `patterns/`
 
-**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 3.8MB at once. Similar to testing-library or design systems - comprehensive by design. Disk size verified via `./scripts/calculate-size.sh`.
+**Size justification**: Framework completeness = utility. Agents read specific modules/templates on-demand, not entire 3.9MB at once. Similar to testing-library or design systems - comprehensive by design. Disk size verified via `./scripts/calculate-size.sh`.
 
 **Usage model**: Clone repo → agent navigates via SKILL.md → loads relevant module → applies template → references patterns as needed.
 
@@ -246,12 +247,13 @@ PowerShell: Same commands, use `.ps1` extension.
 ## References
 
 Deep-dive guides in `references/`:
+- `taxonomy/` - 250 standard industry archetypes (`SYSTEM_ARCHETYPES_250.md`) & 1,000 system variations across 4 complexity tiers (`PROJECT_CATALOG_1000.md`)
 - `checklists/` - Feasibility criteria, evaluation
 - `playbooks/` - AI development, design patterns
 - `pm/` - Analytics setup, prioritization, communication
 - `pre-sales/` - Discovery calls, proposals, quotations
 - `solo/` - Solo dev architecture, patterns, engineering standards
-- `stacks/` - Next.js (v15–v16+), Laravel (v11–v13+), Django, Go quickstarts
+- `stacks/` - 2026 official stable benchmarks (Laravel 13, Go 1.27, Spring Boot 4.1, .NET 10, Tauri 2.12, Svelte 5, FastAPI 0.142), anti-overkill selection matrix, and stack quickstarts
 - `technical/` - Deep research, compliance, design systems, APM, mobile architecture
 
 Load references when entering relevant module. Don't preload all.

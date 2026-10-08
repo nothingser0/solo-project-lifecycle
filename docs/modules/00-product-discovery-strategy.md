@@ -1,6 +1,8 @@
 # Module 00: Product Discovery & Strategy (Market Research, Competitor, User, & Product Strategy)
 
 > - `references/technical/DEEP_RESEARCH_METHODOLOGY.md` (Regulatory/compliance research, Competitor deep-dive analysis, Domain knowledge acquisition for fintech/healthtech/legaltech)
+> - `references/taxonomy/SYSTEM_ARCHETYPES_250.md` (Standard 250 industry software archetypes and classification acronyms)
+> - `references/taxonomy/PROJECT_CATALOG_1000.md` (1,000 verified system variations across 4 complexity tiers)
 > - `references/pre-sales/DISCOVERY_CALL_CHECKLIST.md` (Pre-sales intake, discovery call questionnaire, stakeholder qualification)
 > - `references/pre-sales/PROPOSAL_DECK.md` (Proposal slide outline, pitch structure, commercial presentation)
 > - `templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md` (Proof-of-concept scope, evaluation criteria, client POC validation plan)

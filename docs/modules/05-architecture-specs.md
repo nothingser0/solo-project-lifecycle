@@ -582,6 +582,21 @@ The agent evaluates ALL potential stacks across 8 criteria with weights:
 
 ---
 
+### Anti-Overkill Stack Discipline (MANDATORY GATE)
+
+Before finalizing stack options, cross-check against **`references/stacks/STACK_SUPPORT_MATRIX.md`** and enforce the anti-overkill principle:
+
+1. **Scale Matching Guardrail**:
+   - **Small Scale (1–2 weeks / Catalog #1–250)**: Prefer **Astro 5 + Hono / SQLite** or **CodeIgniter 4 / PHP + Alpine.js**. Strictly forbid microservices, Docker clusters, Next.js + Redux + Celery, or Kubernetes.
+   - **Medium Scale (2–4 weeks / Catalog #251–500)**: Prefer **Laravel 13 + Inertia v2 + React/Vue** or **Next.js 15/16 + Supabase** or **SvelteKit 3 + PocketBase**. Strictly forbid multi-repo distributed architectures or Spring Boot + Kafka for solo delivery.
+   - **Large Scale (4–8 weeks / Catalog #501–750)**: Prefer **Go 1.27 (Fiber v3) + Postgres** or **FastAPI 0.142 + Celery + pgvector** or **NestJS + Fastify**. Strictly forbid raw unmanaged scripts lacking database migrations.
+   - **Enterprise Scale (3–6+ months / Catalog #751–1000)**: Prefer **Spring Boot 4.1 (Java 21) + Angular** or **.NET 10 (C#) + EF Core + SQL Server**. Strictly forbid hobby BaaS without complete internal audit logging and regulatory compliance.
+2. **Anti-Slop Architecture Filter**:
+   - Never recommend Kafka, Kubernetes, or multi-region service meshes when simple background queues (Laravel queues, Celery, BullMQ) and a single PostgreSQL instance handle the target workload.
+   - If user asks for an overly complex stack for a simple project, the agent **MUST push back**: *"Stack X is overkill for this scale. Proposing Stack Y instead to preserve delivery speed and maintainability."*
+
+---
+
 ### Stack Universe (Non-Exhaustive, Agent Can Recommend ANY Stack)
 
 The agent is not restricted to this list, but these are common candidates across various scenarios:

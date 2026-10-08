@@ -1,6 +1,7 @@
 # Tech Stack Support Matrix
 
-**Last Updated**: 2026-10-03
+**Last Updated**: 2026-10-08  
+**Benchmark Standards**: Modern 17 Tech Domains (October 2026 Official Stable Releases)
 
 ## Currently Supported (Full M06 Support)
 
@@ -23,7 +24,89 @@ Stacks with complete scaffold, AI harness templates in `templates/04-dev-executi
 | **SvelteKit** | `npm create svelte@latest` | `sveltekit/` (README) | npm Registry: `npm view @sveltejs/kit version` → package-lock.json | **ROADMAP / PLANNED** |
 | **Nuxt** | `npx nuxi@latest init` | `nuxt/` (README) | npm Registry: `npm view nuxt version` → package-lock.json | **ROADMAP / PLANNED** |
 
-**Note**: Versions determined by M05 real-time registry check, NOT hardcoded by skill.
+---
+
+## Official 2026 Verified Ecosystem Releases (October 2026 Baseline)
+
+While M05 enforces real-time registry queries to avoid cutoff drift, the official baseline stable ecosystem versions as of October 2026 are:
+
+| Ecosystem / Category | Primary Framework & Toolchain | Official 2026 Baseline | Key 2026 Architectural Paradigms |
+|:---|:---|:---|:---|
+| **Full-Stack PHP** | **Laravel 13.x** + Inertia.js v2 | PHP 8.4+, Vite | Native semantic/vector primitives, no-API single-file controllers |
+| **High-Concurrency Backend** | **Go 1.27.x** (Fiber v3 / Chi) | Go 1.27 (1.26 LTS) | ~15MB RAM footprint, single-binary container, sqlc type-safe SQL |
+| **Enterprise JVM** | **Spring Boot 4.1.x** | Java 21 LTS, Spring AI 2.0 | Project Loom Virtual Threads, GraalVM AOT, Indonesian Banking Standard |
+| **Enterprise .NET** | **.NET 10.0.x (LTS)** / ASP.NET Core 10 | C# 13/14, Native AOT | Minimal API high throughput, Blazor full-stack, enterprise compliance |
+| **Desktop & Cross-Platform** | **Tauri 2.12.x** (Rust 1.88+) | Rust + Svelte 5 / Solid | ~3MB installer, 50% lower RAM than Electron, Desktop + Mobile single codebase |
+| **Frontend Non-React** | **Svelte 5.57.x** + SvelteKit 3.x | Vite 6 | Runes reactivity (`$state`, `$derived`, `$effect`), zero virtual-DOM overhead |
+| **Python AI/Data & Web** | **FastAPI 0.142.x** / **Django 6.1.x** | Python 3.13 / 3.14t | Native async ORM, Celery / Redis queue, pgvector RAG integration |
+| **Frontend React Meta** | **Next.js 15.x / 16.x** + React 19 | Node.js 22 LTS / Bun 1.2 | Server Actions, Route Handlers, App Router native streaming |
+| **Vue Ecosystem** | **Vue 3.5.x** + Nuxt 4.5.x | Vite 6 | Composition API mature, Nuxt UI v3, Server Components |
+| **Mobile Cross-Platform** | **Flutter 3.47.x** (Dart 3.13+) / **React Native 0.87** | Expo SDK 54/55 | Impeller GPU 120 FPS / New Architecture (Fabric + TurboModules) |
+| **Enterprise TypeScript** | **Angular 22.x** | TypeScript Strict | Signal-based reactivity, Zoneless by default, standalone components |
+| **Lightweight Edge / Scripting** | **Astro 5.x** / **Hono 4.13.x** | Bun / Cloudflare Workers | 0 KB JS default, Turso libSQL / D1, sub-millisecond edge routing |
+
+---
+
+## Anti-Overkill Stack Selection Matrix (By Project Scale)
+
+Solo developers must adhere to the principle: **Never use a cannon to kill an ant**. Choosing a stack must match project scale to preserve velocity and eliminate unnecessary operational layers.
+
+```
++--------------------------------------------------------------------------------------------------+
+| PROJECT SCALE        | RECOMMENDED STACK (ANTI-OVERKILL)      | STRICTLY OVERKILL (DO NOT USE)   |
++--------------------------------------------------------------------------------------------------+
+| Small (1-2 weeks)    | • Astro 5 + Hono + SQLite/Turso        | • Microservices / Kubernetes     |
+| Micro-tools, utils,  | • CodeIgniter 4 / PHP + Alpine.js      | • Next.js + Redux + Celery + K8s |
+| landing pages, calcs | • FastAPI Lite / Streamlit (Data demo) | • Heavy distributed event queues |
++--------------------------------------------------------------------------------------------------+
+| Medium (2-4 weeks)   | • Laravel 13 + Inertia v2 + React/Vue  | • Distributed microservices      |
+| Solo SaaS, niche B2B,| • Next.js 15/16 + Supabase (RLS/Auth)  | • Spring Boot 4 + Apache Kafka   |
+| internal portals     | • SvelteKit 3 + PocketBase / Supabase  | • Multi-region service meshes    |
++--------------------------------------------------------------------------------------------------+
+| Large (4-8 weeks)    | • Go 1.27 (Fiber v3) + React + Postgres| • Native unmanaged PHP scripts   |
+| High concurrency,    | • FastAPI 0.142 + pgvector + Celery    |   without ORM / DB migrations    |
+| TMS/WMS, multi-tenant| • NestJS + Fastify + Prisma/Drizzle    | • Single-file SQLite databases   |
++--------------------------------------------------------------------------------------------------+
+| Enterprise (3-6+ mo) | • Spring Boot 4.1 (Java 21) + Angular  | • Serverless BaaS without audit  |
+| Core banking, HIS,   | • .NET 10 (C#) + EF Core + SQL Server  | • Ephemeral zero-auth functions  |
+| telecom BSS/OSS, ERP | • Postgres/Oracle + Kafka + Redis      | • Schema-less document stores    |
++--------------------------------------------------------------------------------------------------+
+```
+
+### Detailed Scale Breakdown:
+
+1. **Small Scale (Micro-tool, Utilitas, Single-User MVP | 1–2 Weeks)**
+   - **Target**: Deploy in 3–7 days with zero deployment friction.
+   - **Option A (Ultra-Lightweight Modern JS)**: `Astro 5.x` or `Hono 4.13.x` (Bun/Edge) + Turso (libSQL) / SQLite. 0 KB JS by default, zero cold start.
+   - **Option B (Rapid Server-Rendered PHP)**: `CodeIgniter 4.7.x` or lightweight PHP + Alpine.js + SQLite/MySQL. Zero build step, instant deployment on inexpensive hosting.
+   - **Option C (Data / Scripting Demo)**: `FastAPI 0.142.x` + Jinja2 or `Streamlit`. Instant interactive UI for algorithmic or small ML pipelines.
+   - **Overkill Red Flags**: Next.js App Router + Docker + Kubernetes + Kafka for a simple tax calculator or portfolio.
+
+2. **Medium Scale (Solo SaaS, B2B MVP, Regional Business Portal | 2–4 Weeks)**
+   - **Target**: Ship production SaaS in 2–4 weeks; optimal sweet spot for solo developers.
+   - **Option D (The Solo Developer King)**: `Laravel 13.x` + `Inertia.js v2` + Tailwind CSS + PostgreSQL/MySQL. Eliminates separate REST API layer; batteries-included auth, queue, and storage.
+   - **Option E (Modern React BaaS)**: `Next.js 15/16` / `TanStack Start` + `Supabase` (Auth, Postgres RLS, Storage) + Drizzle ORM.
+   - **Option F (High-Performance Svelte)**: `SvelteKit 3.x` + `PocketBase` (single-binary backend) or Supabase. Clean Runes reactivity, small footprint.
+   - **Overkill Red Flags**: Separating frontend and backend repositories with Spring Boot + Kafka + microservices architecture.
+
+3. **Large Scale (Multi-Tenant Logistics, TMS/WMS, B2B Multi-Vendor | 4–8 Weeks)**
+   - **Target**: High concurrency, strict ledger integrity, resilient background worker processing.
+   - **Option G (High-Performance Scalability)**: `Go 1.27.x` (Fiber v3 / Chi) + `sqlc` + React SPA (Vite) + PostgreSQL 17 + Redis 8. Minimal memory footprint (~20MB RAM), sub-millisecond execution.
+   - **Option H (AI-Native RAG & Data Engine)**: `FastAPI 0.142.x` + Celery/Redis Queue + Supabase `pgvector` + React 19. Offloads heavy embeddings and LLM tasks to dedicated background workers.
+   - **Option I (Modular TypeScript Monolith)**: `NestJS` (Fastify engine) + PostgreSQL + Prisma/Drizzle + Next.js client. Strict dependency injection for multi-developer team handoffs.
+   - **Overkill Red Flags**: Unstructured PHP/Node scripts without database migrations or unindexed single-node SQLite for multi-tenant high concurrent writes.
+
+4. **Enterprise Scale (Banking, Hospital HIS, Telecom BSS, Factory ERP | 3–6+ Months)**
+   - **Target**: Institutional regulatory compliance (UU PDP, ISO 27001, OJK/BI), full audit trail, 99.99% reliability.
+   - **Option J (Indonesian Banking & Corporate Standard)**: `Spring Boot 4.1.x` (Java 21 LTS) + Spring Security + JPA + Oracle/PostgreSQL + Apache Kafka + Angular 22 / Vue 3.5.
+   - **Option K (Enterprise Windows & FinTech)**: `.NET 10 (LTS)` + ASP.NET Core 10 Minimal APIs + EF Core 10 + SQL Server / PostgreSQL.
+   - **Overkill Red Flags**: Relying on uncertified third-party BaaS without complete internal database audit logging and compliance certifications.
+
+---
+
+## Version Resolution Protocol
+
+**Note**: Versions are determined by M05 real-time registry check, NOT hardcoded by skill.
 - M05 runs `npm view next version` → locks result in FSD.md
 - M06 scaffolds @latest → pins exact FSD version → version gate validates lockfile
 - Framework templates adapt dynamically; real-time queries prevent knowledge cutoff lag.

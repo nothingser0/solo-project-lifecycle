@@ -11,6 +11,9 @@ Software development framework for solo developers and small teams. Covers proje
 **Comprehensive project management framework** for solo developers and small teams managing software projects:
 
 - 14 modules covering discovery, design, development, QA, deployment, maintenance
+- 1,000-system verified taxonomy (`references/taxonomy/PROJECT_CATALOG_1000.md`) across 4 scales
+- 250 standard industry software archetypes (`references/taxonomy/SYSTEM_ARCHETYPES_250.md`)
+- October 2026 official modern tech stack baseline & anti-overkill matrix across 17 engineering domains
 - 150+ production-ready templates (PRD, FSD, SOW, test plans, deployment protocols)
 - Real case studies with metrics
 - Code patterns for common problems
@@ -22,14 +25,15 @@ Works with any tech stack. Built for solo developers, freelancers, consulting te
 
 ## Framework Architecture
 
-**Repository size: ~3.8MB uncompressed framework content (270+ files)** (verified via `./scripts/calculate-size.sh`).
+**Repository size: ~3.9MB uncompressed framework content (270+ files)** (verified via `./scripts/calculate-size.sh`).
 This is a **comprehensive skill framework/toolkit**, not a minimal starter template:
 
 | Component | Size | Purpose |
 |-----------|------|---------|
 | Module library | 620KB | 14 lifecycle phases with detailed workflows |
+| System taxonomy & catalog | 100KB | 250 industry archetypes & 1,000 system variations across 4 scales |
 | Template library | 1.8MB | 170+ production-ready templates |
-| Reference guides | 724KB | Playbooks, patterns, deep-dive materials |
+| Reference guides | 824KB | Playbooks, patterns, 2026 stack support matrix, deep-dive materials |
 | Case studies | 100KB | 5 examples (3 real + 2 worked examples) |
 | Code patterns | 188KB | 14 reusable patterns (API, testing, deployment, payments, UU PDP, etc.) |
 | Scripts | 200KB | 20+ validation and automation tools (Bash + PowerShell) |
@@ -58,6 +62,7 @@ solo-project-lifecycle/
 ├── patterns/              12 code patterns (API, testing, deployment, database, security)
 ├── case-studies/          5 examples (3 real + 2 worked examples)
 ├── references/            Guides and playbooks
+│   └── taxonomy/          250 industry archetypes & 1,000 project catalog
 └── scripts/               Automation tools
 ```
 
@@ -273,4 +278,4 @@ Use for commercial projects, consulting, products, internal tools.
 
 Built by solo developers, for solo developers.
 
-Last updated: 2026-10-05
+Last updated: 2026-10-08

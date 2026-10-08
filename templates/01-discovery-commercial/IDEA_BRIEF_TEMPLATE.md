@@ -9,6 +9,8 @@
 - **Initiator / Solo Dev**: [Your Name]
 - **Evaluation Date**: [YYYY-MM-DD]
 - **Initial Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
+- **Industry Archetype**: [Acronym] - [Full Archetype Name] (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)
+- **Catalog Benchmark**: #[1-1000] - [Catalog Entry Name] (from references/taxonomy/PROJECT_CATALOG_1000.md)
 
 ---
 
