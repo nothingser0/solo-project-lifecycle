@@ -29,6 +29,8 @@
 - **Client Single PIC**: [Client PIC Contact OR "Self (Sole Decision Maker)"]
 - **Solo Developer**: [Your Name]
 - **Target Release**: [YYYY-MM-DD] (Maximum 2–4 Weeks)
+- **Industry Archetype**: [Acronym] - [Full Archetype Name] (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)
+- **Catalog Benchmark**: #[1-1000] - [Catalog Entry Name] (from references/taxonomy/PROJECT_CATALOG_1000.md)
 - **Elevator Pitch**: *For [Target Users] who experience [Problem], this system provides [Core Solution] that processes data through [3-Step Core Loop].*
 
 ---
@@ -109,6 +111,13 @@
 ## 5. Lean Technical Blueprint
 
 - **Selected Tech Stack**: [Example: Next.js + PostgreSQL / Flutter + Supabase / FastAPI + SQLite]
+
+Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
+
+## Framework Versions (Pinned):
+- [Package/Framework Name]: [x.y.z]
+- [Runtime/DB Client]: [x.y.z]
+
 - **Database Schema (Core Tables)**:
 ```sql
 -- Users & Sessions Table

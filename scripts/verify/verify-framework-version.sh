@@ -5,6 +5,7 @@
 set -e
 
 FSD_FILE="docs/specs/FSD.md"
+LITE_FILE="PROJECT_LITE.md"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -14,19 +15,24 @@ NC='\033[0m'
 echo "🔍 Framework Version Gate Check..."
 echo ""
 
-if [[ ! -f "$FSD_FILE" ]]; then
-    echo -e "${RED}❌ FSD.md not found${NC}"
+if [[ -f "$FSD_FILE" ]]; then
+    TARGET_FILE="$FSD_FILE"
+elif [[ -f "$LITE_FILE" ]]; then
+    TARGET_FILE="$LITE_FILE"
+    echo -e "${YELLOW}ℹ️  Fast-Track mode detected: Using PROJECT_LITE.md instead of FSD.md${NC}"
+else
+    echo -e "${RED}❌ Neither docs/specs/FSD.md nor PROJECT_LITE.md found${NC}"
     exit 1
 fi
 
 # Extract FSD versions from "Framework Versions (Pinned):" section
 extract_fsd_version() {
     local package=$1
-    grep -A 20 "Framework Versions (Pinned):" "$FSD_FILE" | grep -i "^- $package:" | sed 's/.*: //' | tr -d ' '
+    grep -A 20 "Framework Versions (Pinned):" "$TARGET_FILE" | grep -i "^- $package:" | sed 's/.*: //' | tr -d ' '
 }
 
 # Extract stack
-STACK_LINE=$(grep -i "Stack Decision LOCKED:" "$FSD_FILE" | head -1)
+STACK_LINE=$(grep -i "Stack Decision LOCKED:" "$TARGET_FILE" | head -1)
 STACK=$(echo "$STACK_LINE" | sed 's/.*LOCKED:\s*//' | xargs | cut -d' ' -f1)
 
 echo "📋 FSD Stack: $STACK"

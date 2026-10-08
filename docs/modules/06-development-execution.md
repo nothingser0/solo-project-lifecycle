@@ -84,12 +84,12 @@ This module is the sixth phase in the software project lifecycle for solo develo
                                     │
                                     ▼
 [ STEP 1.7: Generate Project-Specific TODO.md (AI-Guided) ]
-  • AI reads PRD.md, FSD.md, SITEMAP.md to extract scope
+  • AI reads PRD.md, FSD.md, SITEMAP.md (or PROJECT_LITE.md in Small Scale) to extract scope
   • Generate TODO.md with 100% coverage:
-    - 1 task per FSD table (database schema)
+    - 1 task per FSD/PROJECT_LITE table (database schema)
     - 1 task per SITEMAP screen (UI implementation)
-    - 1 task per FSD endpoint (API implementation)
-    - 1 task per PRD feature (integration)
+    - 1 task per FSD/PROJECT_LITE endpoint (API implementation)
+    - 1 task per PRD/PROJECT_LITE feature (integration)
   • Each task MUST include verification steps:
     - Verify: {stack-specific command to run}
     - Expected: {success criteria}

@@ -75,6 +75,10 @@ case "$GATE_MODULE" in
     M02)
         echo "=== M02: Discovery & Scope Gate Checklist ==="
         check_required "docs/pm/SCOPE_STATEMENT.md"
+        if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY."
+            check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md"
+        fi
         if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
             # 1. Ambiguity detection on Must-Have rows
             if grep -iE "\|.*(must|p0).*\|" "docs/pm/SCOPE_STATEMENT.md" | grep -qiE "TBD|maybe|if time permits|tentative|TBA"; then
@@ -104,8 +108,12 @@ case "$GATE_MODULE" in
             target_sow="contracts/SOW_CONTRACT.md"
             [ -f "$target_sow" ] || target_sow="docs/pm/SOW_CONTRACT.md"
         
-        if grep -qiE "bypass|waived|solo saas|self-initiated" "$target_sow" 2>/dev/null || ([ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]); then
-            echo "  [INFO] Solo SaaS / Self-Initiated product: Commercial SOW gate is WAIVED."
+        IS_SOLO=0
+        grep -qiE "bypass|waived|solo saas|self-initiated" "$target_sow" 2>/dev/null && IS_SOLO=1
+        ([ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]) && IS_SOLO=1
+        grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null && IS_SOLO=1
+        if [ $IS_SOLO -eq 1 ]; then
+            echo "  [INFO] Solo SaaS / Internal project detected: Commercial SOW gate is WAIVED."
             check_optional "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
             else
         check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
@@ -116,6 +124,11 @@ case "$GATE_MODULE" in
             else
                     echo "  ❌ Payment terms not clearly defined!"
                     GATE_FAILED=1
+            fi
+                if grep -qiE "\[x\]\s*(DP|Down Payment|50%|Cleared|Received)" "$target_sow"; then
+                    echo "  ✅ Down payment (DP) confirmation verified ([x] cleared)"
+                else
+                    echo "  ⚠️  Down payment (DP) not marked [x] as received/cleared in SOW!"
             fi
                 if grep -qi "Single PIC" "$target_sow"; then
                 echo "  ✅ Single PIC clause present"
@@ -161,6 +174,11 @@ case "$GATE_MODULE" in
         else
         check_required "docs/specs/PRD.md"
         check_required "docs/specs/FSD.md"
+        if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Enterprise scale detected: ADR and Audit Trail Specs are MANDATORY."
+            check_required "docs/governance/ADR.md" "docs/specs/ADR.md"
+            check_required "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md" "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md"
+        fi
         check_optional "PROJECT_LITE.md"
         fi
         ;;
@@ -176,16 +194,36 @@ case "$GATE_MODULE" in
     M07)
         echo "=== M07: Quality Assurance & SIT Gate Checklist ==="
         check_required "docs/qa/SIT_WORKBOOK.md"
+        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
+            check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+        else
         check_optional "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+        fi
         ;;
     M08)
         echo "=== M08: Data Migration & Seeding Gate Checklist ==="
         check_required "docs/pm/DATA_MIGRATION_PLAN.md"
         check_optional "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
+        if [ -f "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" ]; then
+            if grep -qiE "PASSED|RECONCILED|100%|SUCCESS|Zero Discrepancy" docs/pm/MIGRATION_RECONCILIATION_REPORT.md; then
+                echo "  ✅ Data migration reconciliation verified (Audit PASSED)"
+            else
+                echo "  ⚠️  Migration reconciliation not marked as PASSED/RECONCILED!"
+            fi
+        else
+            echo "  [INFO] Data migration plan verified. Run reconciliation after seeding."
+        fi
+        echo ""
         ;;
     M09)
         echo "=== M09: Validation Gate (UAT Sign-Off) Checklist ==="
+        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Solo SaaS / Internal project detected: M09 Client UAT is WAIVED (Self-testing)."
+            check_optional "docs/pm/UAT_SIGNOFF_REPORT.md" "docs/qa/UAT_SIGNOFF.md"
+        else
         check_required "docs/pm/UAT_SIGNOFF_REPORT.md" "docs/qa/UAT_SIGNOFF.md"
+        fi
         check_optional "docs/qa/UAT_WORKBOOK.md"
         if [ -f "docs/pm/UAT_SIGNOFF_REPORT.md" ] || [ -f "docs/qa/UAT_SIGNOFF.md" ]; then
             target_uat="docs/pm/UAT_SIGNOFF_REPORT.md"
@@ -202,11 +240,20 @@ case "$GATE_MODULE" in
     M10)
         echo "=== M10: Deployment Production Gate Checklist ==="
         check_required "docs/DEPLOYMENT_PROTOCOL.md" "docs/pm/DEPLOYMENT_PROTOCOL.md"
+        if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Enterprise scale detected: CAB Approval is MANDATORY."
+            check_required "docs/governance/CAB_APPROVAL.md" "docs/pm/CAB_APPROVAL.md"
+        fi
         check_optional "docs/ROLLBACK_PLAN.md" "docs/pm/ROLLBACK_PLAN.md"
         ;;
     M11)
         echo "=== M11: Handover & BAST Gate Checklist ==="
+        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Solo SaaS / Internal project detected: M11 Client BAST Handover is WAIVED."
+            check_optional "docs/pm/BAST.md" "contracts/BAST.md"
+        else
         check_required "docs/pm/BAST.md" "contracts/BAST.md"
+        fi
         check_optional "docs/pm/GO_LIVE_REPORT.md"
         check_optional "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md"
         check_optional "docs/USER_MANUAL.md"

@@ -17,6 +17,8 @@ This module is the fifth phase in the software project lifecycle for solo develo
 
 ```text
 [ INPUT: SCOPE_STATEMENT.md from Module 02 & DESIGN_SPEC.md from Module 04 ]
+  • In Fast-Track Small Scale, input is unified PROJECT_LITE.md (replaces separate PRD/FSD generation).
+  • Architecture decisions, stack locking, DDL, and API lists are pinned directly into Section 5 of PROJECT_LITE.md.
                                     │
                                     ▼
 [ STEP 0: Tech Stack Discovery Questionnaire (NEW - MANDATORY) ]

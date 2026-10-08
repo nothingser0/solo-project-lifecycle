@@ -21,6 +21,8 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
 
 > **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (v0/Stitch/Figma) when client needs visual sign-off.
 
+> **Fast-Track Routing (Small Scale / Solo MVP)**: When executing via `PROJECT_LITE.md`, the unified document replaces `SCOPE_STATEMENT.md`. Agents produce `docs/specs/SITEMAP.md` (3–5 screens) and stage `docs/harness-root/DESIGN.md` directly. Heavy formal `DESIGN_SPEC.md` and `COMPONENT_REQUIREMENTS.md` are optional or streamlined directly inside Section 4 of `PROJECT_LITE.md`.
+
 > **Output gate:** Module 04 produces design specifications and optional interactive prototypes. Production code is implemented in Module 06 based on these verified specifications.
 
 ---
