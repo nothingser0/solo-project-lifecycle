@@ -52,15 +52,19 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
   • OUTPUT: docs/specs/COMPONENT_REQUIREMENTS.md (prevents AI slop)
                                 │
                                 ▼
-[ STEP 0.5: Visual Reference Gathering & Brand Synthesis (MANDATORY) ]
-  • Scaffold `docs/design/inspiration/` & Stop Turn for User UI Screenshots
+[ STEP 0.5: Visual Reference Gathering & Brand Synthesis (MANDATORY GATE BEFORE DESIGN.MD) ]
+  • Scaffold `docs/design/inspiration/` & Collect 2–5 UI reference screenshots/URLs
   • Vision Extraction: Palette, Geometry, Elevation, Typography, Density
-  • Logo Cross-Alignment & Harmonized Warm/Cool Neutral Basis
-  • OUTPUT: `docs/design/inspiration/notes.md`
+  • Logo & Inspiration Alignment: Agent compares references against `LOGO_DESIGN_BRIEF.md`
+  • **Selection Decision**: Agent evaluates options, selects exactly 1 primary visual benchmark ("1 paling OK")
+    or harmonizes palette with brand logo colors, and documents explicit justification
+  • OUTPUT: `docs/design/inspiration/notes.md` (STRICT PREREQUISITE for STEP 1)
+  • ⛔ FORBIDDEN: Generating `DESIGN.md` before `notes.md` is complete with selected visual benchmark
                                 │
                                 ▼
-[ STEP 1: Drafting DESIGN.md System Tokens (Anti-Slop & Strict WCAG AA) ]
-  • Input: COMPONENT_REQUIREMENTS.md & notes.md
+[ STEP 1: Drafting DESIGN.md System Tokens (Derived from Selected Inspiration & Logo) ]
+  • Input: `COMPONENT_REQUIREMENTS.md` & `notes.md` (MUST read selected benchmark from `notes.md`)
+  • Primary brand colors derived directly from chosen visual benchmark / `LOGO_DESIGN_BRIEF.md`
   • Neutral & Accent Tokens, Container vs Interactive Borders (≥3:1)
   • Placeholder Contrast (≥4.5:1), Separate Expense vs Destructive Semantics
   • Mobile Anti-Zoom (16px), 44px Touch Targets, 240px Sidebar, Z-Index Scale
@@ -327,7 +331,21 @@ Before completing Step 0 and proceeding to `docs/harness-root/DESIGN.md` generat
 - [ ] **7. Verified Document Output**: `docs/specs/COMPONENT_REQUIREMENTS.md` committed and adheres to the 7 standardized sections.
 
 **Time budget**: 1-2 hours
-**Next step**: Proceed to Step 0.5 (Visual Reference Gathering) or Step 1 (`DESIGN.md` generation).
+**Next step**: Proceed to Step 0.5 (Visual Reference Gathering & Benchmark Selection).
+
+---
+
+### Step 0.5: Visual Reference Gathering & Benchmark Selection (MANDATORY BEFORE DESIGN.MD)
+
+1. **Scaffold Inspiration Space**: Ensure `docs/design/inspiration/` exists.
+2. **Analyze 2–5 References**: User supplies screenshots/URLs or agent benchmarks top industry references.
+3. **Evaluate & Pick 1 Primary Benchmark ("Paling OK")**:
+   - Agent evaluates aesthetic fit, density, component geometry, and domain standards.
+   - Cross-check against `docs/specs/LOGO_DESIGN_BRIEF.md` to ensure palette harmony with brand logo.
+   - Select exactly 1 primary winner / unified reference baseline.
+4. **Document Decision in `docs/design/inspiration/notes.md`**:
+   - Must state chosen benchmark, why it was selected over alternatives, and extracted hex codes matched to the logo.
+5. **Enforcement**: `docs/harness-root/DESIGN.md` **CANNOT** be drafted out of thin air. It MUST explicitly cite the selected benchmark and logo alignment from `docs/design/inspiration/notes.md`.
 
 ---
 

@@ -881,8 +881,15 @@ Once reference screenshots are provided, analyze them systematically:
     - If the logo uses cool tech blues (200°–240°), use cool zinc/slate neutrals.
     - **Anti-Slop Rule**: Never default lazily to standard cold Zinc-240° when the brand identity is warm monochrome.
 
+#### 4.5 Benchmark Selection: Pick 1 Primary Winner ("Paling OK")
+The agent MUST NOT blend conflicting styles incoherently. The agent reviews the analyzed references alongside `docs/specs/LOGO_DESIGN_BRIEF.md` and makes an explicit choice:
+- **Select 1 Primary Design Benchmark**: Choose the single reference that best fits the domain density, user archetype, and logo temperament (e.g., "Reference A (Linear-style dark density) selected as primary benchmark").
+- **Logo Cohesion**: If the logo brand has distinctive geometry (e.g., sharp corners, specific saturation), adapt the chosen benchmark's primary accent to align with the logo's core hue.
+- **Decision Log**: Record the winning benchmark, why it was chosen over the others, and the exact token derivation in `docs/design/inspiration/notes.md`.
+
 #### 5. Artifact Output: `docs/design/inspiration/notes.md`
 Generate `docs/design/inspiration/notes.md` synthesizing:
+- **Selected Primary Benchmark ("Paling OK")** and decision rationale.
 - Reference images audited with extracted traits.
 - Brand logo palette alignment table.
 - Selected neutral undertone justification.
@@ -891,7 +898,9 @@ Generate `docs/design/inspiration/notes.md` synthesizing:
 ---
 
 ### Step 1: Formulating `DESIGN.md` Guardrails (ANTI-SLOP MANDATORY)
-Use template at `templates/02-design/DESIGN_MD_TEMPLATE.md` with **STRICT ANTI-SLOP RULES**:
+Use template at `templates/02-design/DESIGN_MD_TEMPLATE.md` with **STRICT ANTI-SLOP RULES**.
+
+⛔ **PREREQUISITE RULE**: `DESIGN.md` tokens **MUST** directly inherit from the winning benchmark and logo alignment documented in `docs/design/inspiration/notes.md`. Never invent tokens without referencing `notes.md`.
 
 #### 1.1 Color Palette & Strict WCAG 2.2 Level AA Compliance
 **Primary/Accent (Pick ONE):**

@@ -65,6 +65,25 @@
 
 ---
 
+## Benchmark Selection & Logo Alignment (Decision Gate)
+
+> **Rule**: Agent evaluates the references above, selects exactly **1 primary winner ("paling OK")**, and aligns it with `docs/specs/LOGO_DESIGN_BRIEF.md` before generating `DESIGN.md`.
+
+### 1. Selected Primary Benchmark ("Paling OK")
+- **Winning Reference**: [e.g., Screenshot 1 - Linear Dashboard]
+- **Why Selected**: [Justification: highest visual clarity, optimal data density, matches target user expectations]
+- **Rejected Alternatives & Why**: [e.g., Screenshot 2 rejected due to excessive visual noise / inconsistent corner radius]
+
+### 2. Logo Palette Alignment
+- **Brand Logo Source**: `docs/specs/LOGO_DESIGN_BRIEF.md` / `/assets/logo/`
+- **Logo Core Hex**: `#[LOGO_HEX]` (Primary) / `#[LOGO_ACCENT_HEX]` (Accent)
+- **Harmonization Strategy**:
+  - [ ] Retain winning benchmark's layout & density
+  - [ ] Inherit or adjust primary accent to match logo core hue
+  - [ ] Calibrate neutral undertone warmth (Warm Stone vs Cold Slate) to match logo temperature
+
+---
+
 ## Extracted Common Patterns
 
 > Consolidate patterns seen across ALL screenshots (not outliers)
