@@ -63,8 +63,10 @@ This module is the sixth phase in the software project lifecycle for solo develo
     - Universal: CONTEXT.md, DESIGN.md
     - Generated: TODO.md, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
   • OVERWRITES framework boilerplate (e.g., Next.js auto-generated AGENTS.md)
-  • Clean up staging: rm -rf docs/harness-root/ (enforces single source of truth; git history serves as backup)
-  • Verify all 9 files present in root: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
+  • STRICT ORDER (NEVER REORDER): (1) scaffold MUST have finished → (2) copy staging to root → (3) verify 9 files exist in root → (4) ONLY THEN delete staging
+  • Verify all 9 files present in root BEFORE any cleanup: ls -la | grep -E "AGENTS|ARCHITECTURE|CONTEXT|CONVENTIONS|DESIGN|TODO|\.env\.example|VERIFY_LOCAL|RUNBOOK_LOCAL"
+  • Clean up staging ONLY after verification passes: rm -rf docs/harness-root/ (enforces single source of truth; git history serves as backup)
+  • ⛔ Deleting docs/harness-root/ before the copy is verified destroys the only source of harness files. If scaffold has not run, keep staging intact.
   • Optional automation shortcut: ./scripts/scaffold/template-picker.sh --phase 4 --dest . (or .\scripts\scaffold\template-picker.ps1 -Phase 4)
                                     │
                                     ▼
@@ -815,14 +817,25 @@ Agent reads stack-specific templates from skill://, writes to staging:
 
 **Deployment workflow (M06 after scaffold)**:
 ```
-Agent copies from staging to root:
+⛔ STRICT ORDER — run top to bottom, NEVER reorder:
+
+  # Step 1: Confirm scaffold already finished (create-next-app / laravel new / django-admin / go mod init)
+
+  # Step 2: Copy from staging to root
   cp docs/harness-root/* ./
   cp docs/harness-root/.env.example ./
-  rm -rf docs/harness-root/  # Clean up duplicate staging to prevent AI path drift
-  
-  Verifies 9 files present:
+
+  # Step 3: Verify 9 files present in root (MUST pass before step 4)
+  ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO|RUNBOOK_LOCAL|VERIFY_LOCAL)\.md$'
+  ls -1 .env.example
+  # Expected: 9 files total:
     AGENTS.md, ARCHITECTURE.md, CONTEXT.md, CONVENTIONS.md, DESIGN.md,
     TODO.md, .env.example, VERIFY_LOCAL.md, RUNBOOK_LOCAL.md
+
+  # Step 4: ONLY after step 3 passes — delete staging
+  rm -rf docs/harness-root/  # Clean up duplicate staging to prevent AI path drift
+
+⛔ NEVER run step 4 before step 3 passes. If scaffold has not run, keep docs/harness-root/ intact.
 ```
 
 | No | File Name | Reference Source (Stack-Specific) | Function for AI Coding Agent |

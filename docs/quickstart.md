@@ -24,8 +24,12 @@ git init
 #   - docs/harness-root/ (9 AI control files - STAGED, not in root yet)
 
 # Step 4: After scaffold (npx create-next-app, etc.)
-# Agent copies to root, then cleans up staging:
-cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ && rm -rf docs/harness-root/
+# STRICT ORDER (scaffold MUST finish first, verify BEFORE deleting):
+cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
+ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO|RUNBOOK_LOCAL|VERIFY_LOCAL)\.md$'
+ls -1 .env.example
+# Only after all 9 files are verified in root:
+rm -rf docs/harness-root/
 ```
 
 **Why staging in docs/harness-root/?**
@@ -221,11 +225,12 @@ CREATE TABLE todos (
 
 2. **Deploy AI harness files**:
    ```bash
-   # Agent copies staged files to root
-   # Source: docs/harness-root/AGENTS.md, ARCHITECTURE.md, etc.
-   # Target: ./AGENTS.md, ./ARCHITECTURE.md, etc. (root)
-   # Overwrites framework boilerplate if exists (e.g., Next.js AGENTS.md)
-   cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ && rm -rf docs/harness-root/
+   # STRICT ORDER (scaffold must be complete first):
+   # 1. Copy staged files to root (overwrites framework boilerplate if exists)
+   cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./
+   # 2. Verify all 9 files exist in root (see Step 3 below)
+   # 3. ONLY after verification passes, clean up staging:
+   rm -rf docs/harness-root/
    ```
 
 3. **Verify harness installed**:

@@ -44,7 +44,14 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
    - Source: `docs/harness-root/*` and `docs/harness-root/.env.example`
    - Target: `./` (project root: `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./`)
    - Overwrites framework boilerplate (e.g., Next.js AGENTS.md)
-   - **Clean up staging**: Delete staging folder (`rm -rf docs/harness-root/`) immediately after copying to root to enforce a Single Source of Truth and prevent AI coding agent path drift. (Git history serves as immutable backup).
+
+> ⛔ **STRICT ORDERING (MANDATORY — NEVER REORDER)**: The 4 steps below MUST run in this exact sequence. Deleting `docs/harness-root/` BEFORE the copy succeeds destroys the only source of the 9 harness files and is **STRICTLY PROHIBITED**.
+> 1. **Scaffold finishes first**: framework CLI (`create-next-app`, `laravel new`, `django-admin startproject`, `go mod init`, etc.) MUST have completed in root.
+> 2. **Copy staging → root**: `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./`
+> 3. **Verify 9 files exist in root**: `ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO|RUNBOOK_LOCAL|VERIFY_LOCAL)\.md$'; ls -1 .env.example` → must list all 9. Gate aborts if any missing.
+> 4. **Only then delete staging**: `rm -rf docs/harness-root/` (enforces Single Source of Truth; git history is the immutable backup).
+>
+> If scaffold has NOT run yet, keep `docs/harness-root/` intact. NEVER run step 4 unless step 3 passed.
 
 **File placement rules**:
 - **Framework repo**: READ templates only (skill:// paths)
