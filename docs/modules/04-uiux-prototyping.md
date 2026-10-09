@@ -21,7 +21,7 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
 
 > **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (v0/Stitch/Figma) when client needs visual sign-off.
 
-> **Fast-Track Routing (Small Scale / Solo MVP)**: When executing via `PROJECT_LITE.md`, the unified document replaces `SCOPE_STATEMENT.md`. Agents produce `docs/specs/SITEMAP.md` (3–5 screens) and stage `docs/harness-root/DESIGN.md` directly. Heavy formal `DESIGN_SPEC.md` and `COMPONENT_REQUIREMENTS.md` are optional or streamlined directly inside Section 4 of `PROJECT_LITE.md`.
+> **Universal Design Artifact Mandate (Semua Skala Wajib Sama)**: Tidak ada pengecualian skala dari Small hingga Enterprise. Setiap proyek WAJIB menghasilkan 6 artefak spesifikasi (`LOGO_DESIGN_BRIEF.md`, `SITEMAP.md`, `COMPONENT_REQUIREMENTS.md`, `notes.md`, `DESIGN.md`, `DESIGN_SPEC.md`), menyelaraskan palet dengan logo di `/assets/logo/`, serta menghasilkan prompt layar di `docs/design/prompts/` dan artefak render/output di `docs/design/screens/`.
 
 > **Output gate:** Module 04 produces design specifications and optional interactive prototypes. Production code is implemented in Module 06 based on these verified specifications.
 
@@ -35,7 +35,8 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
                                 ▼
 [ STEP 0A: Minimal Logo Design Brief (Pre-Design Phase) ]
   • Product Name, Philosophy, Brand Vibe Keywords, Brand Colors (≤2KB limit)
-  • OUTPUT: docs/specs/LOGO_DESIGN_BRIEF.md
+  • Simpan logo hasil generate di `/assets/logo/` (`logo.svg` / `logo.png`)
+  • OUTPUT: docs/specs/LOGO_DESIGN_BRIEF.md & assets/logo/
                                 │
                                 ▼
 [ STEP 0B: SITEMAP.md & Navigation Architecture ]
@@ -82,9 +83,14 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
   • Mandatory Inclusion of 5 States: Default, Loading Skeleton, Empty, Error, Success
                                 │
                                 ▼
-[ STEP 4: Navigation & Prototype (If Interactive Path Chosen) ]
-  • Connect screen flows and user journeys
-  • Deploy to staging URL (if interactive prototype built)
+[ STEP 4: Screen Prompts & Screen Output Generation (MANDATORY ALL SCALES) ]
+  • Generate structured per-screen prompts for ALL screens in SITEMAP.md using `templates/02-design/SCREEN_PROMPT_TEMPLATE.md`
+  • Store prompts in: `docs/design/prompts/[screen-id-lowercase]/PROMPT.md`
+  • Generate/render screen code or prototype components based on prompt, DESIGN.md, and SITEMAP.md
+  • Store generated screen outputs in: `docs/design/screens/[screen-id-lowercase]/`
+  • OUTPUT: docs/design/prompts/ & docs/design/screens/ populated for all in-scope screens
+                                │
+                                ▼
                                 │
                                 ▼
 [ STEP 5: Walk-Through Session & Design Freeze Sheet ]
@@ -99,6 +105,8 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
   4. docs/design/inspiration/notes.md (visual reference extraction)
   5. docs/harness-root/DESIGN.md (design tokens, real WCAG AA)
   6. docs/specs/DESIGN_SPEC.md (screen specifications)
+  + assets/logo/ (logo asset: logo.svg / logo.png)
+  + docs/design/prompts/ & docs/design/screens/ (per-screen generation prompts and rendered components)
 ```
 
 ---
@@ -623,7 +631,8 @@ This module produces 6 authoritative design specification artifacts:
 | **4** | **`docs/design/inspiration/notes.md`** | Folder `docs/design/inspiration/` | Visual reference analysis, extracted palette/geometry/elevation, logo cross-alignment. |
 | **5** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Authoritative design tokens for coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to `./DESIGN.md` after scaffold. |
 | **6** | **`docs/specs/DESIGN_SPEC.md`** | Folder `docs/specs/` | Full screen specifications & wireflows with 5-state matrix per screen (Idle, Loading Skeleton, Empty, Screen Error, Success) and embedded Design Freeze Sign-Off. |
-| *—* | **Interactive Prototype** (Optional) | Prototype / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
+| **7** | **`assets/logo/`** | Root `/assets/logo/` | Berkas logo hasil generate (`logo.svg` / `logo.png`) yang dijadikan acuan palet warna dan mood visual. |
+| **8** | **`docs/design/prompts/` & `docs/design/screens/`** | Folder `docs/design/` | Berkas prompt per-layar berdasarkan SITEMAP/DESIGN_SPEC (`prompts/scr-xx/PROMPT.md`) dan hasil generate komponen layar (`screens/scr-xx/`). |
 
 > 📁 **MANDATORY FILE LOCATION RULES**:
 > - `DESIGN.md` is staged in `docs/harness-root/DESIGN.md` during M04, then deployed to root (`./DESIGN.md`) after scaffold in M06.
@@ -656,6 +665,8 @@ This module produces 6 authoritative design specification artifacts:
 - [ ] **`docs/design/inspiration/notes.md` exists** (synthesizes 2–5 visual references, logo hex extraction, palette decisions)
 - [ ] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
 - [ ] **`docs/specs/DESIGN_SPEC.md` exists** (≥2000 bytes, contains screen specs)
+- [ ] **`assets/logo/` exists** (contains `logo.svg` or `logo.png` referenced by DESIGN.md)
+- [ ] **Screen Prompts & Screens exist**: `docs/design/prompts/` dan `docs/design/screens/` terisi untuk seluruh layar di SITEMAP.md
 - [ ] **Screen count match**: SITEMAP.md total = DESIGN_SPEC.md screen inventory (±10% tolerance)
 
 ### Strict Accessibility & Ergonomics Audit (BLOCKING - MATHEMATICALLY COMPUTED):

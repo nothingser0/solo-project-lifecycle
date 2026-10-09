@@ -166,21 +166,13 @@ case "$GATE_MODULE" in
         ;;
     M04)
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
-            echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
-            check_required "docs/specs/SITEMAP.md"
-            check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
-            check_optional "docs/specs/COMPONENT_REQUIREMENTS.md"
-            check_optional "docs/specs/DESIGN_SPEC.md"
-            check_optional "docs/design/inspiration/notes.md"
-        else
+        # Universal: All scales MUST have components, design inspiration, logo, design tokens, and screen specs
         check_required "docs/specs/SITEMAP.md" "" 2000
         check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
         check_required "docs/specs/LOGO_DESIGN_BRIEF.md" "" 200
         check_required "docs/design/inspiration/notes.md" "" 200
         check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000
         check_required "docs/specs/DESIGN_SPEC.md" "" 2000
-        fi
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="

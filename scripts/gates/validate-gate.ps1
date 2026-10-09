@@ -237,10 +237,6 @@ if (Test-Path "docs/pm/PROJECT_STATE.md") {
 } elseif (Test-Path "PROJECT_LITE.md") {
     $isSmallScale = $true
 }
-if ($Module -eq "M04" -and $isSmallScale) {
-    Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
-    $gate.Required = @("docs/specs/SITEMAP.md", "DESIGN.md")
-}
 if ($Module -eq "M05" -and $isSmallScale) {
     Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
     $gate.Required = @("PROJECT_LITE.md")
