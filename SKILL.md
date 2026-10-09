@@ -74,6 +74,11 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 ## Core rules
 
+**Mandatory gate execution before declaration**: Agents MUST run the official gate validation script (`./scripts/gates/validate-gate.sh <MODULE>` or `.ps1`) and output the exact command output BEFORE declaring ANY module complete, presenting summaries, or stopping turn.
+  - Self-declared completion without running the validator script is STRICTLY PROHIBITED.
+  - If the script exits with code 1 (`Gate validation FAILED`), the module is INCOMPLETE. Do NOT declare completion, do NOT print pre-filled success checklists (`✅`), and do NOT ask for user approval to proceed. Fix the missing or undersized artifacts first, re-run the gate, and repeat until exit code 0.
+  - *Why*: Prose checklists allow hallucinated completion. Exact machine validation (tokens, minimum file sizes, and non-empty artifacts) is the ONLY authoritative definition of done across all 14 modules.
+
 **Mandatory turn-stopping**: Stop after EVERY module completion. Present artifacts summary, request explicit approval before next module. User saying "fill it in first" applies ONLY to current module, NOT permission to chain-execute.
   - *Why*: Downstream engineering decisions (schema, APIs, code) directly depend on upstream scope and commercial locks. Chained execution without review accumulates cascading mistakes that cost $5\times$ more to refactor later.
   - *Autopilot Exception (Small MVP Only)*: If the user explicitly authorizes fast-track execution (e.g., *"autopilot", "jalankan langsung tanpa berhenti", "chain-execute"*), the agent MAY proceed through M04 → M05 → M06 without stopping at intermediate phase boundaries, provided all generated specifications pass verification and no fatal blockers are encountered.

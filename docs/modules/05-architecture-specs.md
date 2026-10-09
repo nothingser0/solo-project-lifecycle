@@ -1703,33 +1703,20 @@ def verify_fsd_content():
 
 ### STEP 7: Display Summary & User Approval
 
-After all checks pass:
+**MANDATORY**: Execute `./scripts/gates/validate-gate.sh M05` (or `.ps1`). Paste the EXACT terminal output into your response.
+
+Do NOT use pre-filled completion checklists with hardcoded `✅`. Output must be derived from the actual validator execution:
 
 ```
-✅ MODULE 05 COMPLETE - Architecture & FSD Ready
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M05]
+```
 
-Files Generated:
-- ✅ PRD.md (12.4KB) - Product requirements document
-- ✅ FSD.md (34.8KB) - Functional specification document
+If the script exits with `❌ Gate validation FAILED`, you MUST NOT declare completion or stop the turn. Fix missing or undersized artifacts and re-run.
 
-Tech Stack Summary (LOCKED):
-- Frontend: Next.js 15 App Router
-- Backend: Next.js API Routes (serverless)
-- Database: Supabase PostgreSQL
-- Deployment: Vercel Hobby (free tier)
-- Monitoring: Sentry
+Only after `✅ Gate validation PASSED` (exit code 0), present the handoff prompt:
 
-FSD Content Summary:
-- ✅ Tech Stack Justification: Context-specific reasoning (team JS expertise, $0 budget, SEO priority)
-- ✅ Database Schema: 5 tables (users, documents, signatures, audit_logs, sessions), 12 relationships, 18 indexes
-- ✅ API Endpoints: 24 endpoints (auth, documents, signatures, users) with request/response examples
-- ✅ Security: JWT auth (HttpOnly cookies), Argon2id password hashing, rate limiting (5 attempts/15min), AES-256 file encryption
-- ✅ Module 04 Handoff: Direct copy strategy (React prototype → Next.js, 95% code reuse, 1 day conversion)
-
-Performance Requirements:
-- Page load: <2s (P95)
-- API response: <500ms (P95)
-- Concurrent users: 100 (auto-scaling serverless)
+```
+Module 05 Gate PASSED. All architectural specifications verified.
 
 Next Steps:
 1. Review FSD.md (verify tech decisions align with expectations)
@@ -1737,8 +1724,6 @@ Next Steps:
 3. If approved: Confirm "FSD approved, start Module 06 development"
 
 ⚠️ CRITICAL: Stack cannot change after approval without +2 weeks timeline impact (database migration, API rewrite, component conversion).
-
-⚠️ WAITING FOR USER CONFIRMATION - Do NOT proceed to Module 06 automatically.
 ```
 
 ---

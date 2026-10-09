@@ -21,8 +21,25 @@ echo "============================================================"
 check_required() {
     local file="$1"
     local alt="$2"
-    if [ -f "$file" ] || ([ -n "$alt" ] && [ -f "$alt" ]); then
-        [ -f "$file" ] && echo "  ✅ $file" || echo "  ✅ $alt"
+    local min_size="${3:-200}" # Default min_size: 200 bytes (anti-stub)
+    local target=""
+    if [ -f "$file" ]; then
+        target="$file"
+    elif [ -n "$alt" ] && [ -f "$alt" ]; then
+        target="$alt"
+    fi
+
+    if [ -n "$target" ]; then
+        local size=0
+        # Portable file size extraction
+        size=$(wc -c < "$target" 2>/dev/null || stat -c%s "$target" 2>/dev/null || echo 0)
+        size=$(echo "$size" | tr -d ' ')
+        if [ "$size" -lt "$min_size" ]; then
+            echo "  ❌ $target (TOO SMALL: ${size}B < ${min_size}B minimum required)"
+            GATE_FAILED=1
+        else
+            echo "  ✅ $target (${size}B >= ${min_size}B)"
+        fi
     else
         echo "  ❌ $file (MISSING)"
         GATE_FAILED=1
@@ -70,11 +87,12 @@ case "$GATE_MODULE" in
         ;;
     M01)
         echo "=== M01: Idea Feasibility Gate Checklist ==="
-        check_required "docs/pm/IDEA_BRIEF.md" "docs/pm/FEASIBILITY_REPORT.md"
+        check_required "docs/pm/IDEA_BRIEF.md" "docs/pm/FEASIBILITY_REPORT.md" 1000
+        check_required "docs/pm/PROJECT_STATE.md" "" 200
         ;;
     M02)
         echo "=== M02: Discovery & Scope Gate Checklist ==="
-        check_required "docs/pm/SCOPE_STATEMENT.md"
+        check_required "docs/pm/SCOPE_STATEMENT.md" "" 2000
         if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY."
             check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md"
@@ -148,7 +166,7 @@ case "$GATE_MODULE" in
         ;;
     M04)
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
-        if [ -f "PROJECT_LITE.md" ]; then
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
             echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
             check_required "docs/specs/SITEMAP.md"
             check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
@@ -156,24 +174,24 @@ case "$GATE_MODULE" in
             check_optional "docs/specs/DESIGN_SPEC.md"
             check_optional "docs/design/inspiration/notes.md"
         else
-        check_required "docs/specs/SITEMAP.md"
-        check_required "docs/specs/COMPONENT_REQUIREMENTS.md"
-        check_required "DESIGN.md" "docs/harness-root/DESIGN.md"
-        check_required "docs/specs/DESIGN_SPEC.md"
-        check_optional "docs/specs/LOGO_DESIGN_BRIEF.md"
-        check_optional "docs/design/inspiration/notes.md"
+        check_required "docs/specs/SITEMAP.md" "" 2000
+        check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
+        check_required "docs/specs/LOGO_DESIGN_BRIEF.md" "" 200
+        check_required "docs/design/inspiration/notes.md" "" 200
+        check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000
+        check_required "docs/specs/DESIGN_SPEC.md" "" 2000
         fi
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="
-        if [ -f "PROJECT_LITE.md" ]; then
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
             echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
             check_required "PROJECT_LITE.md"
             check_optional "docs/specs/PRD.md"
             check_optional "docs/specs/FSD.md"
         else
-        check_required "docs/specs/PRD.md"
-        check_required "docs/specs/FSD.md"
+        check_required "docs/specs/PRD.md" "" 2000
+        check_required "docs/specs/FSD.md" "" 2000
         if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Enterprise scale detected: ADR and Audit Trail Specs are MANDATORY."
             check_required "docs/governance/ADR.md" "docs/specs/ADR.md"
@@ -184,10 +202,11 @@ case "$GATE_MODULE" in
         ;;
     M06)
         echo "=== M06: Development Execution Gate Checklist ==="
-        check_required "AGENTS.md"
-        check_required "CONTEXT.md"
-        check_required "TODO.md"
-        check_required "docs/RUNBOOK_LOCAL.md"
+        check_required "AGENTS.md" "" 500
+        check_required "CONTEXT.md" "" 500
+        check_required "TODO.md" "" 500
+        check_required "docs/RUNBOOK_LOCAL.md" "" 500
+        check_required "VERIFY_LOCAL.md" "docs/VERIFY_LOCAL.md" 500
         check_optional "ARCHITECTURE.md"
         check_optional "CONVENTIONS.md"
         ;;
@@ -239,7 +258,8 @@ case "$GATE_MODULE" in
         ;;
     M10)
         echo "=== M10: Deployment Production Gate Checklist ==="
-        check_required "docs/DEPLOYMENT_PROTOCOL.md" "docs/pm/DEPLOYMENT_PROTOCOL.md"
+        check_required "docs/DEPLOYMENT_PROTOCOL.md" "docs/pm/DEPLOYMENT_PROTOCOL.md" 1000
+        check_required "docs/pm/GO_LIVE_REPORT.md" "docs/GO_LIVE_REPORT.md" 500
         if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Enterprise scale detected: CAB Approval is MANDATORY."
             check_required "docs/governance/CAB_APPROVAL.md" "docs/pm/CAB_APPROVAL.md"

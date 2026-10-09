@@ -26,7 +26,8 @@ $Gates = @{
     "M01" = @{
         Name = "Idea Feasibility"
         Required = @(
-            "docs/pm/IDEA_BRIEF.md"
+            "docs/pm/IDEA_BRIEF.md",
+            "docs/pm/PROJECT_STATE.md"
         )
         Optional = @()
     }
@@ -51,12 +52,12 @@ $Gates = @{
         Required = @(
             "docs/specs/SITEMAP.md",
             "docs/specs/COMPONENT_REQUIREMENTS.md",
+            "docs/specs/LOGO_DESIGN_BRIEF.md",
+            "docs/design/inspiration/notes.md",
             "DESIGN.md",
             "docs/specs/DESIGN_SPEC.md"
         )
         Optional = @(
-            "docs/specs/LOGO_DESIGN_BRIEF.md",
-            "docs/design/inspiration/notes.md"
         )
     }
     "M05" = @{
@@ -75,7 +76,8 @@ $Gates = @{
             "AGENTS.md",
             "CONTEXT.md",
             "TODO.md",
-            "docs/RUNBOOK_LOCAL.md"
+            "docs/RUNBOOK_LOCAL.md",
+            "VERIFY_LOCAL.md"
         )
         Optional = @(
             "ARCHITECTURE.md",
@@ -112,7 +114,8 @@ $Gates = @{
     "M10" = @{
         Name = "Deployment Production"
         Required = @(
-            "docs/DEPLOYMENT_PROTOCOL.md"
+            "docs/DEPLOYMENT_PROTOCOL.md",
+            "docs/pm/GO_LIVE_REPORT.md"
         )
         Optional = @(
             "docs/ROLLBACK_PLAN.md"
@@ -227,52 +230,93 @@ if ($Module -eq "M00" -and (Test-Path "docs/pm/M00_LITE.md")) {
     Write-Host "  [INFO] Detected M00-lite rapid validation path" -ForegroundColor Cyan
     $gate.Required = @("docs/pm/M00_LITE.md")
 }
-if ($Module -eq "M04" -and (Test-Path "PROJECT_LITE.md")) {
+$isSmallScale = $false
+if (Test-Path "docs/pm/PROJECT_STATE.md") {
+    $stateContent = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+    if ($stateContent -match '(?i)Scale:\s*small') { $isSmallScale = $true }
+} elseif (Test-Path "PROJECT_LITE.md") {
+    $isSmallScale = $true
+}
+if ($Module -eq "M04" -and $isSmallScale) {
     Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
     $gate.Required = @("docs/specs/SITEMAP.md", "DESIGN.md")
 }
-if ($Module -eq "M05" -and (Test-Path "PROJECT_LITE.md")) {
+if ($Module -eq "M05" -and $isSmallScale) {
     Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
     $gate.Required = @("PROJECT_LITE.md")
 }
 foreach ($file in $gate.Required) {
+    $actualFile = $file
     $pathExists = Test-Path $file
     if (-not $pathExists -and $file -eq "docs/pm/COMPETITIVE_LANDSCAPE.md" -and (Test-Path "docs/pm/COMPETITOR_ANALYSIS.md")) {
         $pathExists = $true
+        $actualFile = "docs/pm/COMPETITOR_ANALYSIS.md"
     }
     if (-not $pathExists -and $file -eq "DESIGN.md" -and (Test-Path "docs/harness-root/DESIGN.md")) {
         $pathExists = $true
+        $actualFile = "docs/harness-root/DESIGN.md"
     }
     if (-not $pathExists -and $file -eq "contracts/SOW_CONTRACT.md" -and (Test-Path "docs/pm/SOW_CONTRACT.md")) {
         $pathExists = $true
+        $actualFile = "docs/pm/SOW_CONTRACT.md"
     }
     if (-not $pathExists -and $file -eq "contracts/BAST.md" -and (Test-Path "docs/pm/BAST.md")) {
         $pathExists = $true
+        $actualFile = "docs/pm/BAST.md"
     }
     if (-not $pathExists -and $file -eq "docs/DEPLOYMENT_PROTOCOL.md" -and (Test-Path "docs/pm/DEPLOYMENT_PROTOCOL.md")) {
         $pathExists = $true
+        $actualFile = "docs/pm/DEPLOYMENT_PROTOCOL.md"
     }
     if (-not $pathExists -and $file -eq "docs/governance/RACI_MATRIX.md" -and (Test-Path "docs/pm/RACI_MATRIX.md")) {
         $pathExists = $true
+        $actualFile = "docs/pm/RACI_MATRIX.md"
     }
     if (-not $pathExists -and $file -eq "docs/governance/ADR.md" -and (Test-Path "docs/specs/ADR.md")) {
         $pathExists = $true
+        $actualFile = "docs/specs/ADR.md"
     }
     if (-not $pathExists -and $file -eq "docs/governance/CAB_APPROVAL.md" -and (Test-Path "docs/pm/CAB_APPROVAL.md")) {
         $pathExists = $true
+        $actualFile = "docs/pm/CAB_APPROVAL.md"
     }
     if (-not $pathExists -and $file -eq "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md" -and (Test-Path "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md")) {
         $pathExists = $true
+        $actualFile = "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md"
     }
     if (-not $pathExists -and $file -eq "docs/pm/METRICS_BASELINE_REPORT.md" -and (Test-Path "docs/analytics/METRICS_BASELINE_REPORT.md")) {
         $pathExists = $true
+        $actualFile = "docs/analytics/METRICS_BASELINE_REPORT.md"
     }
     if (-not $pathExists -and $file -eq "docs/pm/IDEA_BRIEF.md" -and (Test-Path "docs/pm/FEASIBILITY_REPORT.md")) {
         $pathExists = $true
+        $actualFile = "docs/pm/FEASIBILITY_REPORT.md"
+    }
+    if (-not $pathExists -and $file -eq "VERIFY_LOCAL.md" -and (Test-Path "docs/VERIFY_LOCAL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/VERIFY_LOCAL.md"
+    }
+    if (-not $pathExists -and $file -eq "docs/pm/GO_LIVE_REPORT.md" -and (Test-Path "docs/GO_LIVE_REPORT.md")) {
+        $pathExists = $true
+        $actualFile = "docs/GO_LIVE_REPORT.md"
     }
     if ($pathExists) {
-        Write-Host "  [OK] $file" -ForegroundColor Green
-        $foundFiles += $file
+        $minBytes = 200
+        if ($file -match 'PRD\.md|FSD\.md|SITEMAP\.md|SCOPE_STATEMENT\.md|DESIGN_SPEC\.md') {
+            $minBytes = 2000
+        } elseif ($file -match 'IDEA_BRIEF\.md|COMPONENT_REQUIREMENTS\.md|DESIGN\.md|DEPLOYMENT_PROTOCOL\.md') {
+            $minBytes = 1000
+        } elseif ($file -match 'AGENTS\.md|CONTEXT\.md|TODO\.md|RUNBOOK_LOCAL\.md|VERIFY_LOCAL\.md|GO_LIVE_REPORT\.md') {
+            $minBytes = 500
+        }
+        $fileLength = (Get-Item $actualFile).Length
+        if ($fileLength -lt $minBytes) {
+            Write-Host "  [ERROR] $file (TOO SMALL: ${fileLength}B < ${minBytes}B minimum)" -ForegroundColor Red
+            $missingRequired += $file
+        } else {
+            Write-Host "  [OK] $file (${fileLength}B >= ${minBytes}B)" -ForegroundColor Green
+            $foundFiles += $file
+        }
     } else {
         Write-Host "  [ERROR] $file (MISSING)" -ForegroundColor Red
         $missingRequired += $file

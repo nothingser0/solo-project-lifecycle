@@ -50,6 +50,7 @@ templates/
 | [`MOSCOW_MATRIX.md`](./01-discovery-commercial/MOSCOW_MATRIX.md) | MoSCoW feature prioritization breakdown (Must/Should/Could/Won't) | Module 02 |
 | [`BACKLOG_TEMPLATE.md`](./01-discovery-commercial/BACKLOG_TEMPLATE.md) | Feature backlog breakdown with user story points & RICE prioritization | Module 02 |
 | [`SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`](./01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md) | Legally binding SOW contract, milestone payments, Single PIC, liability cap | Module 03 [Gate 1] |
+| [`SOLO_SAAS_CHARTER_TEMPLATE.md`](./01-discovery-commercial/SOLO_SAAS_CHARTER_TEMPLATE.md) | Internal governance charter for self-initiated solo SaaS: runway budget, anti-creep razor, ambang gugur | Module 03 (Solo SaaS) |
 | [`COMMUNICATION_PLAN_TEMPLATE.md`](./01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md) | Stakeholder communication cadences, escalation paths, status reports | Module 02 |
 | [`OKR_TEMPLATE.md`](./01-discovery-commercial/OKR_TEMPLATE.md) | Objectives & Key Results tracking sheet for project deliverables | Module 01 |
 | [`RACI_MATRIX_TEMPLATE.md`](./01-discovery-commercial/RACI_MATRIX_TEMPLATE.md) | Role responsibility matrix (Responsible, Accountable, Consulted, Informed) | Module 02 |

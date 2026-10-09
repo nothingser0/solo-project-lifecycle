@@ -172,10 +172,10 @@ Corporate clients often have multiple heads with conflicting directions.
 ## 5. Gate Exit Criteria
 
 This [GATE] is declared **PASSED** if and only if:
-- [x] The `docs/pm/SOW_CONTRACT.md` document (including Part I: Project Charter) has been approved.
-- [x] The SOW contract has been signed by both Client and Developer (or approved internally for solo products).
-- [x] The Client Single PIC has been officially designated.
-- [x] **Down Payment funds (Milestone 1) have been received and confirmed in Developer's bank account** (or self-budget has been allocated).
+- [ ] The `docs/pm/SOW_CONTRACT.md` document (including Part I: Project Charter) has been approved.
+- [ ] The SOW contract has been signed by both Client and Developer (or approved internally for solo products).
+- [ ] The Client Single PIC has been officially designated.
+- [ ] **Down Payment funds (Milestone 1) have been received and confirmed in Developer's bank account** (or self-budget has been allocated).
 
 ---
 

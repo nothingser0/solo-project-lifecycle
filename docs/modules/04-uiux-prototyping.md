@@ -595,15 +595,17 @@ Returns:
 
 ## 2. Module 04 Deliverables
 
-This module produces concrete deliverables:
+This module produces 6 authoritative design specification artifacts:
 
 | No | Artifact Name | Format / Location | Description & Function |
 | :---: | :--- | :--- | :--- |
-| **1** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale). Prerequisite for DESIGN_SPEC.md. |
-| **2** | **`docs/specs/DESIGN_SPEC.md`** | Folder `docs/specs/` | Combined design system tokens and comprehensive UI specification document (color palette, typography, component specs, 5-state screen matrix per screen). |
-| **3** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Design tokens for AI agent consumption during coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to root after scaffold. |
-| **4** | **Interactive Prototype** (Optional) | Prototype / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
-| **5** | **Design Freeze Sign-Off** | Signed sheet | Written approval minutes from Client Single PIC locking the visual structure before coding begins. |
+| **1** | **`docs/specs/LOGO_DESIGN_BRIEF.md`** | Folder `docs/specs/` | Minimal logo & branding brief (≤2KB): product name, philosophy, brand vibe keywords, seed palette. |
+| **2** | **`docs/specs/SITEMAP.md`** | Folder `docs/specs/` | Information Architecture: navigation structure, page hierarchy, route paths (18-50 screens depending on scale), critical flows, breadcrumbs. Prerequisite for DESIGN_SPEC.md. |
+| **3** | **`docs/specs/COMPONENT_REQUIREMENTS.md`** | Folder `docs/specs/` | Justified 3-tier component inventory (Primitives, Standard Composites, Domain Composites) with WCAG 2.2 AA interaction states. |
+| **4** | **`docs/design/inspiration/notes.md`** | Folder `docs/design/inspiration/` | Visual reference analysis, extracted palette/geometry/elevation, logo cross-alignment. |
+| **5** | **`docs/harness-root/DESIGN.md`** | Folder `docs/harness-root/` (staged) | Authoritative design tokens for coding (Module 06): colors, fonts, spacing, anti-slop guardrails. Deployed to `./DESIGN.md` after scaffold. |
+| **6** | **`docs/specs/DESIGN_SPEC.md`** | Folder `docs/specs/` | Full screen specifications & wireflows with 5-state matrix per screen (Idle, Loading Skeleton, Empty, Screen Error, Success) and embedded Design Freeze Sign-Off. |
+| *—* | **Interactive Prototype** (Optional) | Prototype / v0.dev / Bolt / Figma | Clickable interface (only if Option B/C/D selected). For Option A: skip prototype, proceed to M06. |
 
 > 📁 **MANDATORY FILE LOCATION RULES**:
 > - `DESIGN.md` is staged in `docs/harness-root/DESIGN.md` during M04, then deployed to root (`./DESIGN.md`) after scaffold in M06.
@@ -2157,37 +2159,28 @@ def verify_module_04():
 
 **STEP 3: Report Summary to User**
 
-After all checks pass, display a summary:
+**MANDATORY**: Execute `./scripts/gates/validate-gate.sh M04` (or `.ps1`). Paste the EXACT terminal output into your response.
+
+Do NOT use pre-filled completion checklists with hardcoded `✅`. Output must be derived from the actual validator execution:
 
 ```
-✅ MODULE 04 COMPLETE - Design Deliverables Ready
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M04]
+```
 
-Files Generated:
-- ✅ COMPONENT_REQUIREMENTS.md (≥1KB) - 7-section component inventory & interaction states
-- ✅ LOGO_DESIGN_BRIEF.md (1.8KB) - Minimal brief ready (2KB max)
-- ✅ docs/design/inspiration/notes.md - Visual references analyzed & brand harmonized
-- ✅ SITEMAP.md ([X]KB) - [X] MVP screens + user flows & breadcrumbs (e.g., 44 screens / 14.2KB for medium SaaS)
-- ✅ DESIGN.md (12.4KB) - Design tokens defined
-- ✅ DESIGN_SPEC.md (34.7KB) - Screen specs complete
+If the script exits with `❌ Gate validation FAILED`, you MUST NOT declare completion or stop the turn. Fix missing artifacts and re-run.
 
-Quality Checks:
-- ✅ Screen count match: SITEMAP ([X]) = DESIGN_SPEC ([X])
-- ✅ Anti-slop compliance: 0 violations
-- ✅ Mathematical contrast audit: Text ≥4.5:1, Borders ≥3.0:1 verified in Light & Dark
-- ✅ Mobile ergonomics: Touch targets ≥44px, inputs 16px anti-zoom verified
-- ✅ Design Freeze: Approved by [Name] on [Date]
+Only after `✅ Gate validation PASSED` (exit code 0), present the handoff prompt:
 
-[Optional - If prototype exists]
-- ✅ Interactive Prototype: [URL or Figma link]
+```
+Module 04 Gate PASSED. All 6 design artifacts verified.
 
 ---
 
 Next Steps:
-1. User review all design specification artifacts (SITEMAP.md, COMPONENT_REQUIREMENTS.md, DESIGN.md, DESIGN_SPEC.md, notes.md, LOGO_DESIGN_BRIEF.md)
+1. User reviews design specification artifacts (SITEMAP.md, COMPONENT_REQUIREMENTS.md, DESIGN.md, DESIGN_SPEC.md, notes.md, LOGO_DESIGN_BRIEF.md)
 2. If corrections needed: Request changes now (before Module 05)
 3. If approved: Confirm "Design Freeze approved, proceed to Module 05"
 
-⚠️ WAITING FOR USER CONFIRMATION - Do NOT proceed to Module 05 automatically.
 ```
 
 **STEP 4: STOP & Wait for User Approval**
