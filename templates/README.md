@@ -172,7 +172,7 @@ Complete harness sets (AGENTS, ARCHITECTURE, CONVENTIONS, ENV_EXAMPLE) per frame
 - **`laravel/`**: Laravel 11–13+, Livewire / Inertia, Sanctum auth (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `ENV_EXAMPLE.md`)
 - **`django/`**: Django 5–6+, DRF, PostgreSQL, Celery (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `ENV_EXAMPLE.md`)
 - **`go/`**: Go 1.23+, Fiber / Echo, pgx, SQL migrations (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `ENV_EXAMPLE.md`)
-- **`rails/`**: Ruby on Rails 7+, ActiveRecord, RSpec
+- **`rails/`**: Ruby on Rails 7+, ActiveRecord, RSpec (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `.env.example`)
 - **`remix/`**: Remix / React Router v7 full-stack web standards
 - **`mern/`**: Express.js + React + MongoDB Mongoose
 - **`aspnet/`**: ASP.NET Core Web API + Entity Framework

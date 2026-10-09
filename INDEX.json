@@ -1,0 +1,1531 @@
+{
+  "generated": "scripts/verify/index-manifest.js",
+  "note": "Machine-readable index. `cataloged: false` means no catalog README mentions the file (potential orphan).",
+  "files": [
+    {
+      "path": "docs/modules/00-product-discovery-strategy.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "docs/modules/01-idea-feasibility.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "docs/modules/02-discovery-scope.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "docs/modules/03-legal-sow-charter.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "docs/modules/04-uiux-prototyping.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "docs/modules/05-architecture-specs.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "docs/modules/06-development-execution.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "docs/modules/07-quality-assurance-sit.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "docs/modules/08-data-migration-seeding.md",
+      "cataloged": true,
+      "modules": [
+        "M08"
+      ]
+    },
+    {
+      "path": "docs/modules/09-uat-client-signoff.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "docs/modules/10-deployment-production.md",
+      "cataloged": true,
+      "modules": [
+        "M10"
+      ]
+    },
+    {
+      "path": "docs/modules/11-handover-bast.md",
+      "cataloged": true,
+      "modules": [
+        "M11"
+      ]
+    },
+    {
+      "path": "docs/modules/12-warranty-sla-retainer.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "docs/modules/13-product-operations-iteration.md",
+      "cataloged": true,
+      "modules": [
+        "M13"
+      ]
+    },
+    {
+      "path": "docs/modules/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/api/graphql-and-versioning.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/api/rest-conventions.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/compliance/uu-pdp-compliance.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/database/seeding-and-transactions.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/database/supabase-migrations.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/deployment/ci-cd-pipeline.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/error-handling/error-boundaries.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/git-workflow/branching-strategy.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/localization/i18n-indonesia.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/observability/logging-monitoring.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/offline/offline-first-sync.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/payments/indonesia-payment-gateways.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/performance/caching-strategies.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/performance/n-plus-one-prevention.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/security/authentication.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/testing/test-pyramid.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/validation/zod-patterns.md",
+      "cataloged": true
+    },
+    {
+      "path": "references/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "references/checklists/FEASIBILITY_CRITERIA.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "references/checklists/MODULE_01_ACTION_ITEMS_CHECKLIST.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "references/checklists/MODULE_02_EVALUATION_CHECKLIST.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "references/checklists/REQUIREMENT_ELICITATION_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "references/playbooks/SCALE_WORKFLOWS.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "references/playbooks/ai-assisted-development.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/playbooks/software-design-patterns.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "references/pm/INDUSTRY_TOOLS_ADAPTER.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "references/pm/PM_ANALYTICS_SETUP_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/pm/PM_COMMUNICATION_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M13"
+      ]
+    },
+    {
+      "path": "references/pm/PM_PRIORITIZATION_FRAMEWORKS.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "references/pm/PM_TOOLS_SETUP_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "references/pm/PM_USER_TESTING_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/pre-sales/DISCOVERY_CALL_CHECKLIST.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "references/pre-sales/PROPOSAL_DECK.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "references/pre-sales/QUOTATION_EMAIL.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "references/solo/SOLO_ARCHITECTURE_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "references/solo/SOLO_DEVELOPMENT_PATTERNS.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/solo/SOLO_ENGINEERING_STANDARDS.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/solo/SOLO_UIUX_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/stacks/STACK_DECISION_METRICS.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "references/stacks/STACK_SUPPORT_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "references/stacks/django-quickstart.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/stacks/go-quickstart.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/stacks/laravel-quickstart.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/stacks/nextjs-quickstart.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/taxonomy/PROJECT_CATALOG_1000.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "references/taxonomy/SYSTEM_ARCHETYPES_250.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "references/team/TEAM_COLLABORATION_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/technical/APM_PROFILING_RUNBOOK.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "references/technical/ASSET_MANAGEMENT_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/technical/COMPLIANCE_MONITORING_AUTOMATION.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "references/technical/DATA_ASSETS_MANAGEMENT.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "references/technical/DEEP_RESEARCH_METHODOLOGY.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "references/technical/DESIGN_SYSTEM_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/technical/FIGMA_MCP_SETUP.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/technical/MOBILE_ARCHITECTURE_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/technical/UI_COMPONENT_ANIMATION_LIBRARY.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/01-discovery-commercial/BACKLOG_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/M00_LITE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/MOSCOW_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/OKR_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/PROJECT_STATE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/SOLO_SAAS_CHARTER_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "templates/01-discovery-commercial/VERIFICATION_PLAN_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M00"
+      ]
+    },
+    {
+      "path": "templates/02-design/AB_TEST_HYPOTHESIS_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/COMPONENT_RFC_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/DESIGN_MD_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/DESIGN_SPEC_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/SCREEN_PROMPT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/SITEMAP_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/USABILITY_TEST_PLAN_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/references/README.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/references/inspiration-template/notes-template.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/references/prompt-input/README.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-design/references/prototype-output/README.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "templates/02-legal-commercial/CHANGE_REQUEST_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/02-legal-commercial/FINANCIAL_TRACKING.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/02-legal-commercial/NDA_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/02-legal-commercial/SOW_SMB.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/CODE_REVIEW_PATTERN_CHECKLIST_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/DESIGN_PATTERN_DECISION_TREE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M01"
+      ]
+    },
+    {
+      "path": "templates/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-governance/ADR_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-governance/AUDIT_TRAIL_REQUIREMENTS.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-governance/CAB_PROCESS.md",
+      "cataloged": true,
+      "modules": [
+        "M10"
+      ]
+    },
+    {
+      "path": "templates/03-governance/COMMUNICATION_PLAN.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/03-governance/DATA_CLASSIFICATION_POLICY.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-governance/DATA_RETENTION_POLICY.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-governance/ESCALATION_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/03-governance/GDPR_COMPLIANCE_CHECKLIST.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
+      "path": "templates/03-governance/INCIDENT_RESPONSE_PLAN.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/03-governance/MEETING_CADENCE_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/03-governance/RACI_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/03-governance/RISK_ASSESSMENT_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/03-governance/SOC2_ISO27001_COMPLIANCE.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "templates/03-governance/STAKEHOLDER_REGISTER.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
+      ]
+    },
+    {
+      "path": "templates/03-governance/VENDOR_COMPARISON_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M03"
+      ]
+    },
+    {
+      "path": "templates/04-dev-execution/AGENTS_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/AI_PROMPT_LIBRARY_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/API_DOCUMENTATION_GUIDE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/CONTEXT_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/CONVENTIONS_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/DAILY_STANDUP.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/IAC_GUIDE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/PERFORMANCE_PROFILING_GUIDE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/SPRINT_PLANNING.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/SPRINT_RETRO.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/TODO_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/aspnet/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/astro/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/checklists/backend-checklist.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/checklists/frontend-checklist.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/checklists/integration-checklist.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/django/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/django/ARCHITECTURE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/django/CONVENTIONS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/django/ENV_EXAMPLE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/fastapi/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/fastapi/ARCHITECTURE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/fastapi/CONVENTIONS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/flutter/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/go/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/go/ARCHITECTURE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/go/CONVENTIONS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/go/ENV_EXAMPLE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/jamstack/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/laravel/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/laravel/ARCHITECTURE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/laravel/CONVENTIONS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/laravel/ENV_EXAMPLE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/mern/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/nextjs/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/nextjs/ARCHITECTURE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/nextjs/CONVENTIONS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/nextjs/ENV_EXAMPLE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/nuxt/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/rails/.env.example",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/rails/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/rails/ARCHITECTURE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/rails/CONVENTIONS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/rails/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/remix/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/remix/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/scripts/check-dependencies.sh",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/serverless/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/spring/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/sveltekit/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/sveltekit/ARCHITECTURE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/sveltekit/CONVENTIONS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/sveltekit/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/05-data-migration/DATA_MIGRATION_LITE.md",
+      "cataloged": true,
+      "modules": [
+        "M08"
+      ]
+    },
+    {
+      "path": "templates/05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M08"
+      ]
+    },
+    {
+      "path": "templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M08"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/BUG_REPORT.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/BUG_TRIAGE_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/DEMO_FEEDBACK_FORM.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/DEMO_SCRIPT.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/FEEDBACK_MATRIX.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/SECURITY_CHECKLIST_SMALL.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M07"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/UAT_SIGNOFF_SMALL.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/UAT_TRAINING_SCRIPT.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/UAT_WORKBOOK_SMALL.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M09"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/BAST_EMAIL_SMALL.md",
+      "cataloged": true,
+      "modules": [
+        "M11"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/BAST_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M11"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/CREDENTIALS_VAULT.md",
+      "cataloged": true,
+      "modules": [
+        "M11"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M10"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M11"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/RELEASE_APPROVAL_CHECKLIST.md",
+      "cataloged": true,
+      "modules": [
+        "M10"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M10"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/TRAINING_PLAN.md",
+      "cataloged": true,
+      "modules": [
+        "M11"
+      ]
+    },
+    {
+      "path": "templates/07-release-handover/USER_MANUAL_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M11"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/BACKUP_RESTORE_PROCEDURES.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/CAPACITY_PLANNING_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/PROJECT_RETROSPECTIVE_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/SLA_SLO_DEFINITIONS.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M12"
+      ]
+    },
+    {
+      "path": "templates/09-product-growth/AB_TEST_REPORT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M13"
+      ]
+    },
+    {
+      "path": "templates/09-product-growth/ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
+      "path": "templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M13"
+      ]
+    },
+    {
+      "path": "templates/09-product-growth/METRICS_BASELINE_REPORT_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M13"
+      ]
+    },
+    {
+      "path": "templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md",
+      "cataloged": true,
+      "modules": [
+        "M13"
+      ]
+    },
+    {
+      "path": "templates/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/client-commercial/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/ARCHITECTURE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/ENV_EXAMPLE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/HANDOVER_PROTOCOL_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/INCIDENT_RESPONSE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/ROLLBACK_PLAN_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/RUNBOOK_LOCAL_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/SECURITY_AUDIT_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/SIT_WORKBOOK_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/TODO_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/UAT_WORKBOOK_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/examples/legal-vault/VERIFY_LOCAL_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/mvp-fast-track/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/operations/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/by-use-case/technical-specs/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/essentials/PROJECT_STATE_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/essentials/README.md",
+      "cataloged": true
+    }
+  ]
+}

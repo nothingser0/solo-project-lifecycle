@@ -147,6 +147,12 @@ if command -v node >/dev/null 2>&1; then
         echo -e "  ${RED}✗${NC} Broken markdown links found"
         ERRORS=$((ERRORS + 1))
     fi
+    if node scripts/verify/index-manifest.js --check >/dev/null 2>&1; then
+        echo -e "  ${GREEN}✓${NC} INDEX.json manifest in two-way parity with filesystem"
+    else
+        echo -e "  ${RED}✗${NC} INDEX.json manifest out of sync (run: node scripts/verify/index-manifest.js)"
+        ERRORS=$((ERRORS + 1))
+    fi
 fi
 echo ""
 if [ $ERRORS -eq 0 ]; then
