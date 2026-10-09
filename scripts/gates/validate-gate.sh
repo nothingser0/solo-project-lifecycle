@@ -167,6 +167,22 @@ case "$GATE_MODULE" in
     M04)
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
         # Universal: All scales MUST have components, design inspiration, logo, design tokens, and screen specs
+        # 1. Strict Prerequisite: Logo asset must exist in assets/logo/ (logo.svg or logo.png)
+        if [ -f "assets/logo/logo.svg" ] || [ -f "assets/logo/logo.png" ] || [ -f "assets/logo/logo.webp" ]; then
+            [ -f "assets/logo/logo.svg" ] && echo "  ✅ assets/logo/logo.svg (Logo asset verified)" || echo "  ✅ assets/logo/logo.png (Logo asset verified)"
+        else
+            echo "  ❌ assets/logo/ (MISSING: logo.svg / logo.png required before DESIGN.md can be generated)"
+            GATE_FAILED=1
+        fi
+
+        # 2. Strict Prerequisite: Design inspiration notes MUST cite selected benchmark and logo alignment
+        if [ -f "docs/design/inspiration/notes.md" ]; then
+            if grep -qiE "Selected.*Benchmark|Winning Reference|Primary Benchmark|Paling OK" "docs/design/inspiration/notes.md"; then
+                echo "  ✅ docs/design/inspiration/notes.md (Benchmark selection verified)"
+            else
+                echo "  ⚠️  docs/design/inspiration/notes.md (Warning: explicit winning benchmark selection not detected)"
+            fi
+        fi
         check_required "docs/specs/SITEMAP.md" "" 2000
         check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
         check_required "docs/specs/LOGO_DESIGN_BRIEF.md" "" 200

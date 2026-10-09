@@ -84,6 +84,7 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 **Mandatory gate execution before declaration**: Agents MUST run the official gate validation script (`./scripts/gates/validate-gate.sh <MODULE>` or `.ps1`) and output the exact command output BEFORE declaring ANY module complete, presenting summaries, or stopping turn.
   - Self-declared completion without running the validator script is STRICTLY PROHIBITED.
   - If the script exits with code 1 (`Gate validation FAILED`), the module is INCOMPLETE. Do NOT declare completion, do NOT print pre-filled success checklists (`✅`), and do NOT ask for user approval to proceed. Fix the missing or undersized artifacts first, re-run the gate, and repeat until exit code 0.
+  - **Design Pre-Condition (M04)**: `DESIGN.md` CANNOT be drafted until (1) brand logo asset exists in `assets/logo/` (`logo.svg` / `logo.png`) and (2) primary benchmark selection ("paling OK") is recorded in `docs/design/inspiration/notes.md`. If either is missing, generation halts.
   - *Why*: Prose checklists allow hallucinated completion. Exact machine validation (tokens, minimum file sizes, and non-empty artifacts) is the ONLY authoritative definition of done across all 14 modules.
 
 **Mandatory turn-stopping**: Stop after EVERY module completion. Present artifacts summary, request explicit approval before next module. User saying "fill it in first" applies ONLY to current module, NOT permission to chain-execute.

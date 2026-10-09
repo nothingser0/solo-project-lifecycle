@@ -373,6 +373,20 @@ if ($Module -eq "M00") {
             }
         }
     }
+} elseif ($Module -eq "M04") {
+    $logoExists = (Test-Path "assets/logo/logo.svg") -or (Test-Path "assets/logo/logo.png") -or (Test-Path "assets/logo/logo.webp")
+    if ($logoExists) {
+        Write-Host "  [OK] assets/logo/ (Brand logo asset verified)" -ForegroundColor Green
+    } else {
+        Write-Host "  [ERROR] assets/logo/ (MISSING: logo.svg / logo.png required before DESIGN.md can be generated)" -ForegroundColor Red
+        $missingRequired += "assets/logo/logo.svg (or logo.png)"
+    }
+    if (Test-Path "docs/design/inspiration/notes.md") {
+        $notesContent = Get-Content "docs/design/inspiration/notes.md" -Raw
+        if ($notesContent -match '(?i)Selected.*Benchmark|Winning Reference|Primary Benchmark|Paling OK') {
+            Write-Host "  [OK] docs/design/inspiration/notes.md (Benchmark selection verified)" -ForegroundColor Green
+        }
+    }
 } elseif ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
     if ($reconFile) {
