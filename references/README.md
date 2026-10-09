@@ -112,6 +112,9 @@ references/
 | [`FIGMA_MCP_SETUP.md`](./technical/FIGMA_MCP_SETUP.md) | Figma MCP server installation, live design synchronization, token extraction workflows | Module 04 |
 | [`MOBILE_ARCHITECTURE_GUIDE.md`](./technical/MOBILE_ARCHITECTURE_GUIDE.md) | Mobile viewport responsiveness, touch ergonomics, PWA configuration, cross-platform layouts | Module 04 |
 | [`UI_COMPONENT_ANIMATION_LIBRARY.md`](./technical/UI_COMPONENT_ANIMATION_LIBRARY.md) | Production micro-interaction animation patterns, Framer Motion/CSS transitions | Module 04 |
+| [`UIUX_PROTOTYPING_DEEP_DIVE.md`](./technical/UIUX_PROTOTYPING_DEEP_DIVE.md) | Full 44-screen TataBuku sitemap, prototyping options tutorial, local MCP workflows, M04B design system | Module 04 |
+| [`ARCHITECTURE_SPECS_DEEP_DIVE.md`](./technical/ARCHITECTURE_SPECS_DEEP_DIVE.md) | Universal stack evaluation rubrics, Astro/Remix/Laravel comparisons, prototype conversion, M05B enterprise system design | Module 05 |
+| [`DEV_EXECUTION_DEEP_DIVE.md`](./technical/DEV_EXECUTION_DEEP_DIVE.md) | Framework-specific ORM/DDL code styles (Prisma/Eloquent/Django), Sprints 0–6 execution, M06B product instrumentation | Module 06 |
 
 ---
 

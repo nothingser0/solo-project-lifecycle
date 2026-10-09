@@ -405,6 +405,13 @@
       ]
     },
     {
+      "path": "references/technical/ARCHITECTURE_SPECS_DEEP_DIVE.md",
+      "cataloged": true,
+      "modules": [
+        "M05"
+      ]
+    },
+    {
       "path": "references/technical/ASSET_MANAGEMENT_GUIDE.md",
       "cataloged": true,
       "modules": [
@@ -440,6 +447,13 @@
       ]
     },
     {
+      "path": "references/technical/DEV_EXECUTION_DEEP_DIVE.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
+      ]
+    },
+    {
       "path": "references/technical/FIGMA_MCP_SETUP.md",
       "cataloged": true,
       "modules": [
@@ -448,6 +462,13 @@
     },
     {
       "path": "references/technical/MOBILE_ARCHITECTURE_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M04"
+      ]
+    },
+    {
+      "path": "references/technical/UIUX_PROTOTYPING_DEEP_DIVE.md",
       "cataloged": true,
       "modules": [
         "M04"
