@@ -15,7 +15,7 @@ references/
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
-└── technical/          (10 files)  - Deep research, design systems, APM, compliance, animation
+└── technical/          (13 files)  - Deep research, design systems, APM, compliance, animation, deep-dives
 ```
 
 ---
