@@ -1290,6 +1290,34 @@ if ($Module -eq "M09" -and -not $isSoloSaaS) {
         }
     }
 }
+if ($Module -eq "M10") {
+    $liveReport = if (Test-Path "docs/pm/GO_LIVE_REPORT.md") { "docs/pm/GO_LIVE_REPORT.md" } `
+                  elseif (Test-Path "docs/GO_LIVE_REPORT.md") { "docs/GO_LIVE_REPORT.md" } `
+                  else { $null }
+    if ($liveReport) {
+        $reportContent = Get-Content $liveReport -Raw
+        # 1. Reject unresolved template placeholders [...]
+        if ($reportContent -match '\[Project Name\]|\[git rev-parse|\[Vercel /|\[app\.client\.com|\[YYYY-MM-DD\]') {
+            Write-Host "  [ERROR] $liveReport still contains unresolved template placeholders ([...])! Record actual production verification." -ForegroundColor Red
+            $missingRequired += "$liveReport (unresolved template placeholders)"
+        }
+        # 2. Reject deployment failure, rollback, or incomplete PVT status (BLOCKER)
+        if ($reportContent -match '(?i)ROLLBACK\s*EXECUTED|DEPLOYMENT\s*FAILED|Status\s*:\s*FAILED|PVT\s*FAILED') {
+            Write-Host "  [ERROR] $liveReport reports deployment failure or rollback! Production cutover must be successful." -ForegroundColor Red
+            $missingRequired += "$liveReport (deployment failure or rollback)"
+        } elseif ($reportContent -match '(?i)PASSED|VERIFIED LIVE|SYSTEM LIVE|OPERATIONAL|200 OK') {
+            Write-Host "  [OK] Production Go-Live & PVT pass attestation verified in $liveReport" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] $liveReport missing explicit LIVE / PASSED attestation ('VERIFIED LIVE' / 'SYSTEM LIVE')!" -ForegroundColor Red
+            $missingRequired += "$liveReport (missing LIVE / PASSED attestation)"
+        }
+        # 3. Reject failed PVT test scenarios in the verification matrix
+        if ($reportContent -match '\|\s*\**FAIL\**\s*\|') {
+            Write-Host "  [ERROR] $liveReport contains failed PVT test scenario(s)! 100% of production verification tests must PASS." -ForegroundColor Red
+            $missingRequired += "$liveReport (failed PVT test scenario)"
+        }
+    }
+}
 
 # Check optional files
 if ($gate.Optional.Count -gt 0) {
