@@ -18,18 +18,27 @@ Navigation depth: [X levels]
 
 ---
 
-## 2. Public Routes (Unauthenticated)
+## 2. Public Marketing Routes (Header & Footer Shell)
 
-| Route | Page Name | Screen ID | Purpose | Priority |
-|:------|:----------|:----------|:--------|:--------:|
-| `/` | Landing Page | SCR-01 | Homepage, value prop, CTA | P0 |
-| `/about` | About | SCR-02 | Company info | P2 |
-| `/pricing` | Pricing | SCR-03 | Plans & pricing table | P0 |
-| `/features` | Features | SCR-04 | Feature showcase | P1 |
-| `/contact` | Contact | SCR-05 | Contact form | P2 |
-| `/login` | Login | SCR-06 | User authentication | P0 |
-| `/register` | Sign Up | SCR-07 | User registration | P0 |
-| `/forgot-password` | Password Reset | SCR-08 | Password recovery | P1 |
+| Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
+|:------|:----------|:----------|:--------|:---------------|:--------:|
+| `/` | Landing Page | SCR-01 | Homepage, value prop, CTA | Marketing (Header + Footer) | P0 |
+| `/about` | About | SCR-02 | Company info | Marketing (Header + Footer) | P2 |
+| `/pricing` | Pricing | SCR-03 | Plans & pricing table | Marketing (Header + Footer) | P0 |
+| `/features` | Features | SCR-04 | Feature showcase | Marketing (Header + Footer) | P1 |
+| `/contact` | Contact | SCR-05 | Contact form | Marketing (Header + Footer) | P2 |
+
+---
+
+## 2.1 Auth Routes (Standalone Minimalist — ZERO Marketing Navbar & Footer)
+
+> 🛡️ **Distraction-Free Auth Rule**: Auth pages MUST NOT render the public marketing header, navigation links, or standard site footer. Render only a centered card with a minimal back-link and logo to maximize conversion and prevent auth drop-off.
+
+| Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
+|:------|:----------|:----------|:--------|:---------------|:--------:|
+| `/login` | Login | SCR-06 | User authentication | Standalone (Card + Minimal Logo only) | P0 |
+| `/register` | Sign Up | SCR-07 | User registration | Standalone (Card + Minimal Logo only) | P0 |
+| `/forgot-password` | Password Reset | SCR-08 | Password recovery | Standalone (Card + Minimal Logo only) | P1 |
 
 ---
 
@@ -137,9 +146,19 @@ Navigation depth: [X levels]
 
 ---
 
-## 9. Navigation Components
+## 9. Navigation Components & Layout Shell Matrix
 
-### Header (Public)
+### Layout Shell Taxonomy
+
+| Shell ID | Shell Name | Visible Components | Target Routes |
+| :--- | :--- | :--- | :--- |
+| **SHELL-MKT** | Marketing Shell | Full Header + Full Footer | `/`, `/about`, `/pricing`, `/features`, `/contact` |
+| **SHELL-AUTH** | Standalone Auth | Centered Card + Minimal Logo (Zero Navbar, Zero Links, Zero Footer) | `/login`, `/register`, `/forgot-password`, `/reset-password` |
+| **SHELL-APP** | Application Dashboard | App Topbar + Collapsible Sidebar + Help Badge (Zero Public Marketing Navbar/Footer) | `/dashboard`, `/[resource]`, `/billing`, `/admin/*` |
+| **SHELL-OPS** | Fullscreen Terminal | High-density Header only (Zero Sidebar, Zero Marketing Navbar/Footer) | `/ops/workspace` (POS/Terminal) |
+| **SHELL-ERR** | Minimal Error | Centered Illustration + Primary Return Button | `/404`, `/403`, `/500`, `/maintenance` |
+
+### Header (Marketing Shell — `/`, `/pricing`, dll.)
 - Logo (links to `/`)
 - Features
 - Pricing
