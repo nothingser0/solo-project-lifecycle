@@ -277,50 +277,79 @@ case "$GATE_MODULE" in
         ;;
     M03)
         echo "=== M03: Legal SOW & Charter Checklist ==="
-            target_sow="contracts/SOW_CONTRACT.md"
-            [ -f "$target_sow" ] || target_sow="docs/pm/SOW_CONTRACT.md"
+        target_sow="contracts/SOW_CONTRACT.md"
+        [ -f "$target_sow" ] || target_sow="docs/pm/SOW_CONTRACT.md"
         
         IS_SOLO=0
-        grep -qiE "bypass|waived|solo saas|self-initiated" "$target_sow" 2>/dev/null && IS_SOLO=1
-        ([ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]) && IS_SOLO=1
-        grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null && IS_SOLO=1
-        grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null && IS_SOLO=1
+        # STRICT DELIVERY ROUTING: Only bypass if Delivery is explicitly solo, portfolio, or internal
+        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            IS_SOLO=1
+        elif grep -qiE "Delivery:\s*client" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            IS_SOLO=0 # Client delivery NEVER bypasses SOW regardless of scale
+        elif [ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]; then
+            IS_SOLO=1
+        fi
+
         if [ $IS_SOLO -eq 1 ]; then
             echo "  [INFO] Solo SaaS / Internal project detected: Commercial SOW gate is WAIVED."
             check_optional "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
-            else
-        check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
+        else
+            check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md" 1000
             check_optional "contracts/NDA.md" "docs/pm/NDA.md"
             if [ -f "$target_sow" ]; then
+                # 1. Check unresolved placeholders [...]
+                if grep -q "\[\.\.\.\]\|\[Numeric Amount\]\|\[Account Number\]" "$target_sow"; then
+                    echo "  ❌ Unresolved template placeholders [...] detected in SOW contract!"
+                    GATE_FAILED=1
+                fi
+
+                # 2. Payment terms & milestones
                 if grep -qiE "Termin|Milestone.*Payment|Down Payment|DP|30/40/30|50/50" "$target_sow"; then
                     echo "  ✅ Payment terms & milestone schedule defined"
                 else
                     echo "  ❌ Payment terms not clearly defined!"
                     GATE_FAILED=1
                 fi
+
+                # 3. Down payment confirmation is a HARD BLOCKER for client projects
                 if grep -qiE "\[x\]\s*(DP|Down Payment|30%|40%|50%|Cleared|Received)" "$target_sow"; then
                     echo "  ✅ Down payment (DP) confirmation verified ([x] cleared)"
                 else
-                    echo "  ⚠️  Down payment (DP) not marked [x] as received/cleared in SOW!"
+                    echo "  ❌ Down payment (DP) not confirmed! Marked [x] received required before M04."
+                    GATE_FAILED=1
                 fi
+
+                # 4. Single PIC is a HARD BLOCKER
                 if grep -qi "Single PIC" "$target_sow"; then
                     echo "  ✅ Single PIC clause present"
                 else
                     echo "  ❌ Single PIC clause missing!"
                     GATE_FAILED=1
                 fi
+
+                # 5. Deemed Acceptance is a HARD BLOCKER
                 if grep -qiE "Deemed Acceptance|Klien Diam" "$target_sow"; then
                     echo "  ✅ Deemed acceptance clause verified (Anti-ghosting protection)"
                 else
-                    echo "  ⚠️  Deemed acceptance clause (7-day feedback limit) not explicitly found in SOW"
+                    echo "  ❌ Deemed acceptance clause (7-day feedback limit) missing in SOW contract!"
+                    GATE_FAILED=1
                 fi
+
+                # 6. Limitation of Liability is a HARD BLOCKER
                 if grep -qiE "Limitation of Liability|Liability Cap" "$target_sow"; then
                     echo "  ✅ Limitation of liability clause present"
                 else
-                    echo "  ⚠️  Limitation of liability clause not explicitly detected"
-        fi
+                    echo "  ❌ Limitation of liability clause missing in SOW contract!"
+                    GATE_FAILED=1
+                fi
+
+                # 7. Enterprise scale requires approved Risk Assessment Matrix
+                if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                    echo "  [INFO] Enterprise scale detected: Risk Assessment Matrix is MANDATORY in M03."
+                    check_required "docs/governance/RISK_ASSESSMENT_MATRIX.md" "docs/pm/RISK_REGISTER.md" 500
+                fi
             fi
-        echo ""
+            echo ""
             echo "⚠️  DO NOT proceed to M04 until DP confirmed in bank account (or bypassed for Solo SaaS)"
         fi
         ;;
@@ -328,16 +357,16 @@ case "$GATE_MODULE" in
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
         # Universal: All scales MUST have components, design inspiration, logo, design tokens, and screen specs
         # 1. Strict Prerequisite: Logo asset must exist in assets/logo/ (logo.svg or logo.png)
-        local min_logo=200
+        min_logo=200
         if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
             min_logo=50 # M04-LITE: initial placeholder SVG allowed (min 50B)
         fi
-        local found_logo=""
+        found_logo=""
         for l in "assets/logo/logo.svg" "assets/logo/logo.png" "assets/logo/logo.webp"; do
             if [ -f "$l" ]; then found_logo="$l"; break; fi
         done
         if [ -n "$found_logo" ]; then
-            local lsize=$(wc -c < "$found_logo" 2>/dev/null || echo 0)
+            lsize=$(wc -c < "$found_logo" 2>/dev/null || echo 0)
             if [ "$lsize" -ge "$min_logo" ]; then
                 echo "  ✅ $found_logo (${lsize}B >= ${min_logo}B minimum)"
             else

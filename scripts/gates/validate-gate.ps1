@@ -539,29 +539,54 @@ if ($Module -eq "M00") {
     $sowFile = if (Test-Path "contracts/SOW_CONTRACT.md") { "contracts/SOW_CONTRACT.md" } elseif (Test-Path "docs/pm/SOW_CONTRACT.md") { "docs/pm/SOW_CONTRACT.md" } else { $null }
     if ($sowFile) {
         $sowContent = Get-Content $sowFile -Raw
-        if ($sowContent -match '(?i)bypass|waived|solo saas|self-initiated') {
-            Write-Host "  [INFO] Solo SaaS / Self-Initiated product: Commercial SOW gate is WAIVED." -ForegroundColor Cyan
+        $isSoloDelivery = $false
+        if (Test-Path "docs/pm/PROJECT_STATE.md") {
+            $stRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+            if ($stRaw -match "(?i)Delivery:\s*(solo|portfolio|internal)") { $isSoloDelivery = $true }
+            if ($stRaw -match "(?i)Delivery:\s*client") { $isSoloDelivery = $false }
+        }
+        if ($isSoloDelivery) {
+            Write-Host "  [INFO] Solo / Portfolio / Internal delivery: Commercial SOW gate is WAIVED." -ForegroundColor Cyan
         } else {
-            if ($sowContent -match '(?i)Termin|Milestone.*Payment|Down Payment|DP') {
-                Write-Host "  [OK] Payment terms defined" -ForegroundColor Green
+            # 1. Reject placeholders
+            if ($sowContent -match '\[\.\.\.\]|\[Numeric Amount\]|\[Account Number\]') {
+                Write-Host "  [ERROR] Unresolved template placeholders [...] detected in SOW contract!" -ForegroundColor Red
+                $missingRequired += "Unresolved template placeholders in SOW"
+            }
+            # 2. Payment terms
+            if ($sowContent -match '(?i)Termin|Milestone.*Payment|Down Payment|DP|30/40/30|50/50') {
+                Write-Host "  [OK] Payment terms & milestone schedule defined" -ForegroundColor Green
             } else {
                 Write-Host "  [ERROR] Payment terms not clearly defined!" -ForegroundColor Red
+                $missingRequired += "Payment terms not defined"
             }
+            # 3. Down payment confirmation BLOCKER
             if ($sowContent -match '\[x\]\s*(DP|Down Payment|30%|40%|50%|Cleared|Received)') {
                 Write-Host "  [OK] Down payment (DP) confirmation verified ([x] cleared)" -ForegroundColor Green
             } else {
-                Write-Host "  [WARNING] Down payment (DP) not marked [x] as received/cleared in SOW!" -ForegroundColor Yellow
+                Write-Host "  [ERROR] Down payment (DP) not marked [x] received in SOW!" -ForegroundColor Red
+                $missingRequired += "Down payment (DP) confirmation [x]"
             }
-            if ($sowContent -match '(?i)Deemed Acceptance|Klien Diam') {
-                Write-Host "  [OK] Deemed acceptance clause verified (Anti-ghosting protection)" -ForegroundColor Green
-            }
+            # 4. Single PIC BLOCKER
             if ($sowContent -match '(?i)Single PIC') {
                 Write-Host "  [OK] Single PIC clause present" -ForegroundColor Green
             } else {
                 Write-Host "  [ERROR] Single PIC clause missing!" -ForegroundColor Red
+                $missingRequired += "Single PIC clause missing"
             }
+            # 5. Deemed Acceptance BLOCKER
+            if ($sowContent -match '(?i)Deemed Acceptance|Klien Diam') {
+                Write-Host "  [OK] Deemed acceptance clause verified (Anti-ghosting protection)" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Deemed acceptance clause missing in SOW contract!" -ForegroundColor Red
+                $missingRequired += "Deemed acceptance clause"
+            }
+            # 6. Limitation of Liability BLOCKER
             if ($sowContent -match '(?i)Limitation of Liability|Liability Cap') {
                 Write-Host "  [OK] Limitation of liability clause present" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Limitation of liability clause missing in SOW contract!" -ForegroundColor Red
+                $missingRequired += "Limitation of liability clause"
             }
         }
     }
