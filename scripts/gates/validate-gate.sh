@@ -319,8 +319,20 @@ case "$GATE_MODULE" in
                 echo "  ✅ Zero ambiguous terms in Must-Have scope rows"
             fi
 
-            # 3. P0 feature count within scale limits (mechanical)
-            p0_count=$(grep -icE "\|.*(must|p0).*\|" "$scope" || true)
+            # 3. Scope-Lock-Decision verification (BLOCKER)
+            if grep -qiE "^Scope-Lock-Decision:\s*PENDING" "$scope"; then
+                echo "  ❌ Scope lock status: PENDING (Scope not frozen; M02 cannot be closed)"
+                GATE_FAILED=1
+            elif grep -qiE "^Scope-Lock-Decision:\s*LOCKED" "$scope"; then
+                echo "  ✅ Scope lock decision verified: LOCKED"
+            else
+                echo "  ❌ Explicit Scope-Lock-Decision (LOCKED | PENDING) not declared in SCOPE_STATEMENT.md!"
+                GATE_FAILED=1
+            fi
+
+            # 4. P0 feature count within scale limits (strictly count | **F-xx** | rows)
+            p0_count=$(grep -iE "\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)" "$scope" 2>/dev/null | wc -l || true)
+            p0_count=$(echo "$p0_count" | tr -d ' ')
             declared_scale=$(grep -iE "^\s*-?\s*Scale:" docs/pm/PROJECT_STATE.md 2>/dev/null | head -1 | grep -oiE "small|medium|large|enterprise|solo-saas" | head -1)
             case "$declared_scale" in
                 small)      lo=3; hi=7 ;;
@@ -328,7 +340,7 @@ case "$GATE_MODULE" in
                 large)      lo=16; hi=25 ;;
                 *)          lo=3; hi=25 ;;
             esac
-            echo "  [INFO] Declared scale: ${declared_scale:-unknown}; P0 rows counted: $p0_count (expected $lo-$hi)"
+            echo "  [INFO] Declared scale: ${declared_scale:-unknown}; P0 feature rows (F-xx) counted: $p0_count (expected $lo-$hi)"
             if [ "$p0_count" -lt "$lo" ] || [ "$p0_count" -gt "$hi" ]; then
                 echo "  ❌ P0 Must-Have count ($p0_count) outside scale '$declared_scale' limits ($lo-$hi). Prune scope or re-classify scale."
                 GATE_FAILED=1
@@ -336,7 +348,7 @@ case "$GATE_MODULE" in
                 echo "  ✅ P0 Must-Have count within scale limits"
             fi
 
-            # 4. Confidence Legend check (BLOCKER)
+            # 5. Confidence Legend check (BLOCKER)
             if grep -q "✅" "$scope" || grep -qi "VERIFIED" "$scope"; then
                 echo "  ✅ Data Confidence Legend / status markers present"
             else
@@ -344,13 +356,14 @@ case "$GATE_MODULE" in
                 GATE_FAILED=1
             fi
 
-            # 5. Out-of-Scope exclusions check (BLOCKER, require >= 3 concrete items)
+            # 6. Out-of-Scope exclusions check (strictly scoped within Section 5.2)
             if grep -qi "out-of-scope" "$scope"; then
-                oos_count=$(grep -cE "^\s*[0-9]+\.\s" "$scope" || true)
+                oos_section=$(sed -n '/### 5\.2 Out-of-Scope/,/### 5\.3/p' "$scope" 2>/dev/null || true)
+                oos_count=$(echo "$oos_section" | grep -cE "^\s*[0-9]+\.\s" || true)
                 if [ "${oos_count:-0}" -ge 3 ]; then
-                    echo "  ✅ Explicit Out-of-Scope boundaries defined ($oos_count numbered exclusions)"
+                    echo "  ✅ Explicit Out-of-Scope boundaries defined in Section 5.2 ($oos_count numbered exclusions)"
                 else
-                    echo "  ❌ Out-of-Scope section requires >= 3 explicit numbered exclusions (found: ${oos_count:-0})"
+                    echo "  ❌ Section 5.2 Out-of-Scope requires >= 3 explicit numbered exclusions (found: ${oos_count:-0})"
                     GATE_FAILED=1
                 fi
             else
@@ -358,11 +371,12 @@ case "$GATE_MODULE" in
                 GATE_FAILED=1
             fi
 
-            # 6. RBAC Zero Self-Approval guardrail
+            # 7. RBAC Zero Self-Approval guardrail (Hard blocker on non-small projects)
             if grep -qiE "zero self-approval|no self-approval" "$scope"; then
                 echo "  ✅ RBAC Zero Self-Approval guardrail present"
             else
-                echo "  ⚠️  RBAC Zero Self-Approval guardrail not explicitly stated"
+                echo "  ❌ RBAC Zero Self-Approval guardrail (no self-approval for mutations/approvals) missing in SCOPE_STATEMENT.md!"
+                GATE_FAILED=1
             fi
         fi
         # 7. Company/team projects require STAKEHOLDER_MAP, COMMUNICATION_PLAN, RACI

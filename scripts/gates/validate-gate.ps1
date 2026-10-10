@@ -648,8 +648,20 @@ if ($Module -eq "M00") {
             Write-Host "  [OK] Zero ambiguous terms in Must-Have scope rows" -ForegroundColor Green
         }
 
-        # 3. P0 count within scale limits
-        $p0Count = $mustLines.Count
+        # 3. Scope-Lock-Decision verification (BLOCKER)
+        if ($scopeContent -match '(?im)^Scope-Lock-Decision:\s*PENDING') {
+            Write-Host "  [ERROR] Scope lock status: PENDING (Scope not frozen; M02 cannot be closed)" -ForegroundColor Red
+            $missingRequired += "Scope-Lock-Decision: LOCKED (currently PENDING)"
+        } elseif ($scopeContent -match '(?im)^Scope-Lock-Decision:\s*LOCKED') {
+            Write-Host "  [OK] Scope lock decision verified: LOCKED" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] Explicit Scope-Lock-Decision (LOCKED | PENDING) not declared in SCOPE_STATEMENT.md!" -ForegroundColor Red
+            $missingRequired += "Scope-Lock-Decision: LOCKED"
+        }
+
+        # 4. P0 count within scale limits (strictly count F-xx feature rows)
+        $fRows = $scopeLines | Where-Object { $_ -match '\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)' }
+        $p0Count = $fRows.Count
         $declaredScale = ""
         if (Test-Path "docs/pm/PROJECT_STATE.md") {
             $stateRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
@@ -661,7 +673,7 @@ if ($Module -eq "M00") {
             '^(medium|solo-saas)$' { $lo = 8; $hi = 15 }
             '^large$' { $lo = 16; $hi = 25 }
         }
-        Write-Host "  [INFO] Declared scale: $declaredScale; P0 rows counted: $p0Count (expected $lo-$hi)"
+        Write-Host "  [INFO] Declared scale: $declaredScale; P0 feature rows (F-xx) counted: $p0Count (expected $lo-$hi)"
         if ($p0Count -lt $lo -or $p0Count -gt $hi) {
             Write-Host "  [ERROR] P0 Must-Have count ($p0Count) outside scale '$declaredScale' limits ($lo-$hi)." -ForegroundColor Red
             $missingRequired += "P0 count within scale limits"
@@ -669,7 +681,7 @@ if ($Module -eq "M00") {
             Write-Host "  [OK] P0 Must-Have count within scale limits" -ForegroundColor Green
         }
 
-        # 4. Confidence Legend (BLOCKER)
+        # 5. Confidence Legend (BLOCKER)
         if ($scopeContent -match '✅' -or $scopeContent -match '(?i)VERIFIED') {
             Write-Host "  [OK] Data Confidence Legend / status markers present" -ForegroundColor Green
         } else {
@@ -677,25 +689,30 @@ if ($Module -eq "M00") {
             $missingRequired += "Data Confidence Legend"
         }
 
-        # 5. Out-of-Scope exclusions (BLOCKER, >= 3)
+        # 6. Out-of-Scope exclusions (strictly within Section 5.2)
         if ($scopeContent -match '(?i)out-of-scope') {
-            $oosCount = ([regex]::Matches($scopeContent, '(?m)^\s*[0-9]+\.\s')).Count
+            $oosSection = ""
+            if ($scopeContent -match '(?s)### 5\.2 Out-of-Scope.*?(### 5\.3|## 6|$)') {
+                $oosSection = $Matches[0]
+            }
+            $oosCount = ([regex]::Matches($oosSection, '(?m)^\s*[0-9]+\.\s')).Count
             if ($oosCount -ge 3) {
-                Write-Host "  [OK] Explicit Out-of-Scope boundaries defined ($oosCount exclusions)" -ForegroundColor Green
+                Write-Host "  [OK] Explicit Out-of-Scope boundaries defined in Section 5.2 ($oosCount exclusions)" -ForegroundColor Green
             } else {
-                Write-Host "  [ERROR] Out-of-Scope section requires >= 3 explicit exclusions (found: $oosCount)" -ForegroundColor Red
-                $missingRequired += "Out-of-Scope >= 3 exclusions"
+                Write-Host "  [ERROR] Section 5.2 Out-of-Scope requires >= 3 explicit exclusions (found: $oosCount)" -ForegroundColor Red
+                $missingRequired += "Out-of-Scope >= 3 exclusions in Section 5.2"
             }
         } else {
             Write-Host "  [ERROR] Out-of-Scope boundary section missing!" -ForegroundColor Red
             $missingRequired += "Out-of-Scope section"
         }
 
-        # 6. RBAC Zero Self-Approval guardrail
+        # 7. RBAC Zero Self-Approval guardrail (Hard blocker on non-small projects)
         if ($scopeContent -match '(?i)zero self-approval|no self-approval') {
             Write-Host "  [OK] RBAC Zero Self-Approval guardrail present" -ForegroundColor Green
         } else {
-            Write-Host "  [WARN] RBAC Zero Self-Approval guardrail not explicitly stated" -ForegroundColor Yellow
+            Write-Host "  [ERROR] RBAC Zero Self-Approval guardrail missing in SCOPE_STATEMENT.md!" -ForegroundColor Red
+            $missingRequired += "RBAC Zero Self-Approval guardrail"
         }
     }
     if (Test-Path "docs/pm/PROJECT_STATE.md") {
