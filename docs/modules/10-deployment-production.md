@@ -359,7 +359,7 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 - Blue-green deployment (zero-downtime cutover)
 - Canary deployment (10% → 50% → 100% traffic shift)
 - Database migrations tested 3x on staging
-- War room staffed (Tech Lead, DevOps, Client PIC, Support)
+- Off-peak maintenance window scheduled; go/no-go checklist ready
 - Rollback decision criteria defined (error rate >5%, latency >500ms p95)
 
 **Post-Deployment Monitoring**:
@@ -371,7 +371,7 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 **M10 Gate for Enterprise**:
 - ✅ Release approval checklist signed by all 5 decision makers
 - ✅ CAB RFC approved (if change control required)
-- ✅ War room staffed and ready
+- ✅ Off-peak deployment window & escalation contacts ready
 - ✅ Rollback plan tested on staging
 - ✅ Monitoring dashboards configured (APM, error tracking, uptime)
 - ✅ Escalation contacts confirmed (PagerDuty rotations set)

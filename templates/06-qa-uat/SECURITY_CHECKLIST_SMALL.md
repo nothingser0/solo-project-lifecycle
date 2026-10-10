@@ -152,7 +152,7 @@ npm audit --production
 
 Escalate to full M07 Security Audit if:
 - Payment processing (credit cards, e-wallets)
-- Healthcare/financial data (HIPAA, PDP Law compliance)
+- Healthcare/financial data (UU PDP No. 27/2022, Kemenkes/OJK sektoral)
 - User-generated content (social media, forums)
 - Admin panel with sensitive operations
 

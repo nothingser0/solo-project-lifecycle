@@ -159,9 +159,9 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
   - **Why**: Enterprise clients require SOC 2 Type II before signing (or as contract milestone)
 
 **Incident Response Planning**:
-- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, war room procedures)
+- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, escalation procedures)
   - **Covers**: Detection, containment, eradication, recovery, post-mortem
-  - **War room contacts**: Tech Lead, Security Lead, Client PIC, Legal (for breach notification)
+  - **Escalation contacts**: Tech Lead, Security Lead, Client PIC, Legal (for breach notification)
   - **Why**: SOC 2 requires documented incident response procedures (tested quarterly)
 
 **Backup & Disaster Recovery**:

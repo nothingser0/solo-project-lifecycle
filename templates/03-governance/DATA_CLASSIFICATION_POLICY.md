@@ -2,7 +2,7 @@
 
 > **Purpose**: Classify and protect data based on sensitivity  
 > **When**: M05 Architecture (before handling sensitive data)  
-> **Target**: Enterprise projects with compliance requirements (GDPR, HIPAA, SOC 2)
+> **Target**: Enterprise projects with compliance requirements (UU PDP No. 27/2022, ISO 27001, OJK/BI)
 
 ---
 
@@ -76,7 +76,7 @@
 **Examples**:
 - Credit card numbers (PCI-DSS)
 - Social security numbers
-- Health records (HIPAA)
+- Health records (Kemenkes SatuSehat / UU PDP)
 - Authentication credentials
 - Encryption keys
 - Personal identifiable information (PII)
@@ -91,9 +91,9 @@
 
 **Storage**: Encrypted databases, AWS KMS, Secrets Manager
 
-**Compliance**: GDPR, PCI-DSS, HIPAA, SOC 2
+**Compliance**: UU PDP No. 27/2022, PCI-DSS, ISO 27001, OJK/BI
 
-**Incident**: Report to security team immediately, notify affected users within 72 hours (GDPR)
+**Incident**: Report to security team immediately, notify affected users within 72 hours (UU PDP No. 27/2022 / GDPR)
 
 ---
 
@@ -108,7 +108,7 @@
 | **Credit card numbers** | Restricted | At rest + transit | PCI-compliant | Per PCI-DSS | Payment gateway |
 | **Passwords** | Restricted | Hashed (bcrypt) | Owner only | Until changed | User table |
 | **SSN** | Restricted | At rest + transit | HR only | 7 years | Employee records |
-| **Health data** | Restricted | At rest + transit | Authorized medical only | Per HIPAA | Patient records |
+| **Health data** | Restricted | At rest + transit | Authorized medical only | Kemenkes + UU PDP | Patient records |
 
 ---
 
@@ -357,7 +357,7 @@ UPDATE users SET ssn = NULL;
 
 **Deletion**:
 - Automatic deletion after retention period
-- User can request deletion (GDPR right to erasure)
+- User can request deletion (UU PDP hak penghapusan / GDPR right to erasure)
 
 ---
 
@@ -394,7 +394,7 @@ UPDATE users SET ssn = NULL;
 
 **Short-term (4-72 hours)**:
 1. Investigate root cause
-2. Notify supervisory authority (GDPR: 72 hours)
+2. Notify supervisory authority (UU PDP: 72 jam / Lembaga PDP)
 3. Notify affected users (if high risk)
 4. Implement fixes
 

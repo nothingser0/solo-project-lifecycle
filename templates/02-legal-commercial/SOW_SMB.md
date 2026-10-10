@@ -365,7 +365,7 @@ Signature: _________________________________
 - ❌ Enterprise client (>100 employees)
 - ❌ Scope exceeds SMB limits (use full SOW_CONTRACT_CONSOLIDATED template)
 - ❌ Client has legal team (will redline)
-- ❌ Compliance requirements (ISO, SOC2, GDPR)
+- ❌ Compliance requirements (ISO 27001, SOC 2, kepatuhan regulasi ketat)
 
 ---
 

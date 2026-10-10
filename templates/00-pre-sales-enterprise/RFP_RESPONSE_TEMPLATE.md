@@ -94,8 +94,8 @@ Sincerely,
 - CISSP (Security): X people
 
 **Compliance**:
-- GDPR compliant
-- HIPAA compliant (if healthcare)
+- UU PDP No. 27/2022 compliant (Indonesia)
+- Sektoral: OJK/BI (finansial), Kemenkes SatuSehat (kesehatan), ISO 27001 (jika disyaratkan)
 - [Industry-specific regulations]
 
 ---

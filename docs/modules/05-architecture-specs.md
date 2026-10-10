@@ -244,7 +244,7 @@ Options:
 - [ ] None (personal project, MVP)
 - [ ] UU PDP (Indonesia - user consent, data deletion right)
 - [ ] GDPR (EU - strict data protection)
-- [ ] HIPAA (Healthcare US - encrypted PHI, audit logs)
+- [ ] Sektor kesehatan (Kemenkes SatuSehat, UU PDP - enkripsi rekam medis, audit log kekal)
 - [ ] SOC2 / ISO27001 (Enterprise B2B - security audit)
 - [ ] PCI-DSS (Payment processing - credit card data)
 

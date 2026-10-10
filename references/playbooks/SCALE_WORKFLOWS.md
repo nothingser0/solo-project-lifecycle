@@ -344,7 +344,7 @@ M02 Discovery: "Does client have existing data?"
 
 **Risk & Incident Management**:
 - `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` - Risk scoring (Probability × Impact), mitigation tracking
-- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, war room)
+- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, escalation playbook)
 - `templates/08-maintenance-ops/BACKUP_RESTORE_PROCEDURES.md` - Daily backups, quarterly restore tests, RTO/RPO
 - `templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md` - Business continuity (failover, data center redundancy)
 

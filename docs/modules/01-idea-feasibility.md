@@ -103,7 +103,7 @@ Before proceeding with problem filtering, the agent **MUST** map the raw idea to
      - **Small Scale (<4 weeks)**: Focused utility, 3–7 P0 Must-Haves, single-user/team, lightweight CRUD, isolated DB, low blast radius (Catalog #1–250).
      - **Medium Scale (1–3 months)**: Multi-role RBAC, 8–15 P0 Must-Haves, external API/webhook integration (payment gateway, notifications), business logic specific (Catalog #251–500).
      - **Large Scale (3–6 months)**: 16–25 P0 Must-Haves, modular architecture, legacy data migration (ETL), multi-tenant branch hierarchy, high blast radius (Catalog #501–750).
-     - **Enterprise Scale (6–12+ months)**: >25 P0 Must-Haves, high-availability (99.9% SLA), mission-critical audit trails, rigorous statutory compliance (ISO/OJK/HIPAA), legacy integrations (Catalog #751–1000).
+     - **Enterprise Scale (6–12+ months)**: >25 P0 Must-Haves, high-availability (99.9% SLA), mission-critical audit trails, rigorous statutory compliance (ISO 27001/OJK/BI/Kemenkes), legacy integrations (Catalog #751–1000).
 3. **Output in `IDEA_BRIEF.md` Header**:
    ```markdown
    - **Industry Archetype**: [Acronym] - [Full Archetype Name] (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)
@@ -248,7 +248,7 @@ Claiming *"Risk: Zero"* on legal feasibility is strictly prohibited for any soft
 **Mandatory Disclaimer Requirements**:
 - Financial / Tax calculators: Must display explicit disclaimers (*"Perhitungan bersifat estimasi dan tidak menggantikan pelaporan pajak resmi atau nasihat akuntan publik"*).
 - Non-PKP / PPN Status: Explicitly clarify if the system is designed for non-PKP entities with zero PPN handling.
-- General Marketing Claims Rule: Never claim "Bank-Compliant", "Audit-Ready", "100% Tax Compliant", or "HIPAA/PDP Certified" unless substantiated by double-entry accounting records, formal legal audit, or licensed third-party certifications.
+- General Marketing Claims Rule: Never claim "Bank-Compliant", "Audit-Ready", "100% Tax Compliant", or "ISO/SOC 2 Certified" unless substantiated by double-entry accounting records, formal legal audit, or licensed third-party certifications.
 - Liability Limitation: Software provided "as-is"; include disclaimers absolving developer from operational discrepancies between physical cash and software records.
 - Financial records: Explicit disclaimer on user responsibility for input data accuracy.
 
@@ -378,7 +378,7 @@ Determine project category upfront using the **High-Water Mark Rule** across 5 E
    - *Engineering Indicators*: 16–25 P0 Must-Have features, high transaction volume, legacy data migration (M08), multi-tenant branch/role hierarchy, 99.5% SLA, timeline 3-6 months.
    - *Next Steps*: Mandatory full PRD, detailed FSD, data migration planning (M08), and disaster recovery specifications.
 5. **Enterprise / Industrial Scale (Corporate, Banking, State-Owned Enterprises)**:
-   - *Engineering Indicators*: >25 P0 Must-Have features or statutory audit constraints (OJK, BI, SOC2, HIPAA), multiple client internal governance stakeholders, permanent audit trails, 99.9% uptime SLA, timeline 6-12+ months.
+   - *Engineering Indicators*: >25 P0 Must-Have features or statutory audit constraints (OJK, BI, ISO 27001, Kemenkes), multiple client internal governance stakeholders, permanent audit trails, 99.9% uptime SLA, timeline 6-12+ months.
    - *Next Steps*: Mandatory formal legal sign-off, signed Project Charter, bound Single PIC, comprehensive FSD, and RTM.
 
 **Module Routing**: After scale classification, refer to `references/playbooks/SCALE_WORKFLOWS.md` for:
