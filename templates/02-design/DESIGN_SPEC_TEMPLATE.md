@@ -128,6 +128,20 @@
 - **Idempotency Keys**: All financial, ledger, or state-changing mutations transmit a client-generated UUID in request headers to guarantee safe retries without duplicated records.
 - **CSV Formula Injection Neutralization**: All spreadsheet/CSV export generators prefix cells starting with `=, +, -, @` with a single quote (`'`).
 
+### 5.1.1 Form Validation & Error Feedback Standards
+- **Inline Validation on Blur**: Input field errors render immediately when the user leaves the field (`onBlur`), NEVER before the user finishes typing. Valid fields display no intrusive green ticks (keep interface clean).
+- **Pristine State Submission**: The submit button is ALWAYS enabled on page load. Clicking submit with empty inputs triggers validation on all fields simultaneously and auto-focuses the first invalid input with a smooth scroll.
+- **Destructive Action Safety Protocol**:
+  - Destructive actions (Void transaction, Delete account, Bulk archive) MUST NOT rely solely on simple `window.confirm()`.
+  - **Required Pattern**: Centered `ConfirmDialog` with:
+    1. Red destructive button explicitly stating the consequence (*"Hapus 12 Transaksi"*).
+    2. Specific confirmation text input for high-risk actions (e.g., typing *"HAPUS"* or the entity name).
+    3. Mandatory audit reason textarea for compliance and traceability.
+
+### 5.1.2 Mobile Ergonomics & Tap Target Defense
+- **Mobile Keyboard Viewport Shift**: Forms ensure active input elements maintain minimum `96px` clearance above the virtual keyboard to prevent bottom nav overlay clipping.
+- **Interactive Target Geometry**: All clickable elements (buttons, segmented controls, table row actions) guarantee minimum `44px × 44px` physical tap area on viewport $<768$px.
+
 ### 5.2 Conditional Domain Extensions
 *(Include only subsections relevant to project scope; skip or substitute for unrelated domains)*
 

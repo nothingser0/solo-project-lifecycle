@@ -180,6 +180,50 @@
   - `lg`: 1024px (Standard tablet desktop)
   - `xl`: 1280px (Wide desktop viewports)
 
+### 7.1.1 Responsive UI Reflow Rules (Mobile vs Desktop)
+
+*To prevent broken layouts on touch and mobile screens (<768px):*
+
+| Component | Desktop Behavior ($\ge 768\text{px}$) | Mobile Behavior ($< 768\text{px}$) | Anti-Pattern to Avoid |
+| :--- | :--- | :--- | :--- |
+| **Data Table** | Multi-column table with horizontal scroll fallback | Reflows into **Stacked Cards** (Key-Value pairs with primary action button) | ❌ Unstyled horizontal scrollbars on mobile viewport |
+| **Modal / Dialog** | Centered floating dialog window (`z-50 max-w-lg`) | Converts to **Bottom Sheet / Drawer** swipeable to close | ❌ Tiny centered popup with unreachable "X" button on mobile |
+| **Filters / Toolbar** | Inline horizontal row with dropdowns & search bar | Collapses into single **"Filter" trigger button** opening a Filter Drawer | ❌ 5 stacked select boxes taking up half the mobile screen |
+| **Action Controls** | Inline text + icon buttons per row | Truncates to **3-Dot Action Menu** (`DropdownMenu`) or bottom action bar | ❌ Cluttered row with 4 icon buttons causing tap collisions |
+| **Navigation** | Sticky Left Sidebar (240px width) | Collapses to **Bottom Navigation Bar** (max 5 tabs) or Top Hamburger Drawer | ❌ Fixed desktop sidebar occupying 70% of screen width |
+
+---
+
+## 7.3 Micro-Copywriting & Tone of Voice Standards (Anti-Slop UX)
+
+*Generic placeholder text destroys UX credibility. All UI copy MUST adhere to these conversational standards:*
+
+### A. Action Buttons (Verbs Over Generic Labels)
+- ❌ **BANNED**: *"Submit"*, *"OK"*, *"Click Here"*, *"Action"*, *"Yes"*, *"Lanjutkan"*
+- ✅ **REQUIRED**: Specific action verbs naming the entity:
+  - *"Simpan Perubahan"* (bukan *"Simpan"*)
+  - *"Terbitkan Faktur"* (bukan *"Submit"*)
+  - *"Hapus Pelanggan"* (bukan *"OK"*)
+  - *"Proses Pembayaran"* (bukan *"Bayar"*)
+
+### B. Empty States (3-Part Formula)
+*Every empty view MUST contain: 1) Friendly icon/illustration, 2) Clear explanatory title, 3) Actionable trigger CTA:*
+```text
+[ Icon: Empty Box / Document Stack ]
+Title: "Belum Ada Faktur Tercatat"
+Description: "Buat faktur pertama Anda untuk mulai mengirim tagihan ke pelanggan dan memantau status pembayaran."
+CTA Button: [ + Buat Faktur Baru ]
+```
+- ❌ **BANNED**: *"No data found"* / *"Data Kosong"* (dead-end with no recovery action).
+
+### C. Actionable Error Messages (Cause + Solution)
+*Error messages must never blame the user or use raw technical exceptions:*
+- ❌ **BANNED**: *"Error 500: Internal Server Error"* / *"Terjadi kesalahan sistem"* / *"Input tidak valid"*
+- ✅ **REQUIRED**:
+  - **Network Failure**: *"Gagal memuat data karena koneksi terputus. Periksa jaringan internet Anda lalu tekan [ Coba Lagi ]."*
+  - **Validation Failure**: *"Nomor WhatsApp harus diawali 08 atau 62 (contoh: 081234567890)."*
+  - **Permission Failure**: *"Akun Anda (Staf Kasir) tidak memiliki izin menghapus transaksi. Hubungi Supervisor untuk otorisasi."*
+
 ### 7.2 Strict Unified Z-Index Hierarchy
 *To prevent modal dropdown collisions, combobox clipping, and sticky bar bleed-through:*
 
