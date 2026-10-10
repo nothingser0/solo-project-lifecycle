@@ -1059,6 +1059,26 @@ if ($Module -eq "M06") {
             Write-Host "  [ERROR] TODO.md has insufficient completed tasks: found only $doneMatches marked '[x]' (minimum 3 completed tasks required)!" -ForegroundColor Red
             $missingRequired += "TODO.md (>= 3 completed tasks marked '[x]')"
         }
+        # Zero pending tasks allowed when declaring M06 complete (all tasks must be finished)
+        $pendingMatches = ([regex]::Matches($todoContent, '(?im)^\s*-\s*\[ \]')).Count
+        if ($pendingMatches -gt 0) {
+            Write-Host "  [ERROR] TODO.md has $pendingMatches unfinished task(s) marked '[ ]'! All sprint tasks must be completed before closing Module 06." -ForegroundColor Red
+            $missingRequired += "TODO.md ($pendingMatches unfinished tasks remaining)"
+        } else {
+            Write-Host "  [OK] 100% Sprint completion verified: zero pending tasks '[ ]' in TODO.md" -ForegroundColor Green
+        }
+        # Verify core engineering categories are present in tasks (DB, BE, FE)
+        $hasCoreCats = $true
+        foreach ($cat in @("DB", "BE", "FE")) {
+            if ($todoContent -notmatch "(?i)M06-$cat-[0-9]+") {
+                Write-Host "  [ERROR] TODO.md missing core category tasks for 'M06-$cat-xx'!" -ForegroundColor Red
+                $missingRequired += "TODO.md (missing M06-$cat-xx tasks)"
+                $hasCoreCats = $false
+            }
+        }
+        if ($hasCoreCats) {
+            Write-Host "  [OK] Full-stack atomic task categories verified in TODO.md (DB, BE, FE)" -ForegroundColor Green
+        }
         # Mandatory specs pre-read task must exist and be completed
         if ($todoContent -match '(?i)M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off') {
             if ($todoContent -match '(?im)^\s*-\s*\[[xX]\].*M06-SETUP-03|^\s*-\s*\[[xX]\].*Pre-Read Sign-Off') {

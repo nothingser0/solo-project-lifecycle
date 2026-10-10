@@ -752,6 +752,27 @@ case "$GATE_MODULE" in
                 echo "  ❌ TODO.md has insufficient completed tasks: found only ${done_tasks:-0} marked '[x]' (minimum 3 completed tasks required)!"
                 GATE_FAILED=1
             fi
+            # Zero pending tasks allowed when declaring M06 complete (all tasks must be finished)
+            pending_tasks=$(grep -cE "^\s*-\s*\[ \]" "TODO.md" 2>/dev/null || true)
+            pending_tasks=$(echo "$pending_tasks" | tr -d ' ')
+            if [ "${pending_tasks:-0}" -gt 0 ]; then
+                echo "  ❌ TODO.md has ${pending_tasks} unfinished task(s) marked '[ ]'! All sprint tasks must be completed before closing Module 06."
+                GATE_FAILED=1
+            else
+                echo "  ✅ 100% Sprint completion verified: zero pending tasks '[ ]' in TODO.md"
+            fi
+            # Verify core engineering categories are present in completed tasks
+            has_core_categories=1
+            for cat in "DB" "BE" "FE"; do
+                if ! grep -qiE "M06-${cat}-[0-9]+" "TODO.md"; then
+                    echo "  ❌ TODO.md missing core category tasks for 'M06-${cat}-xx'!"
+                    has_core_categories=0
+                    GATE_FAILED=1
+                fi
+            done
+            if [ $has_core_categories -eq 1 ]; then
+                echo "  ✅ Full-stack atomic task categories verified in TODO.md (DB, BE, FE)"
+            fi
             # Mandatory specs pre-read task must exist and be completed
             if grep -qiE "M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off" "TODO.md"; then
                 if grep -iE "M06-SETUP-03|Pre-Read Sign-Off" "TODO.md" | grep -qE "^\s*-\s*\[x\]"; then
