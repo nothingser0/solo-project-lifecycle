@@ -519,12 +519,22 @@ case "$GATE_MODULE" in
     M07)
         echo "=== M07: Quality Assurance & SIT Gate Checklist (medium+ only) ==="
         # NOTE: Small scale does NOT run M07; security is folded into M06.
+        is_m07_waived=0
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small Scale detected: M07 QA & SIT is WAIVED (Security absorbed in M06, UAT in M09-LITE)."
+            is_m07_waived=1
+        fi
+
+        if [ $is_m07_waived -eq 1 ]; then
+            check_optional "docs/qa/SIT_WORKBOOK.md"
+        else
         check_required "docs/qa/SIT_WORKBOOK.md"
         if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
             check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
         else
             check_optional "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+        fi
         fi
         ;;
     M08)

@@ -138,19 +138,22 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 
 ## 4. Adaptation by Project Scale
 
-| QA & SIT Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
-| :--- | :--- | :--- | :--- |
-| **Testing Scope** | Core logic unit tests + local smoke test | Unit tests + Sandbox API SIT + k6 load test | Full Test Pyramid, Pact contract test, Chaos test |
-| **Security Audit** | `pnpm audit` + basic OWASP checklist | SAST scan (Semgrep) + SSL Labs grade A | Certified third-party Penetration Test (Pentest) |
-| **Load Testing** | Verify 20 concurrent users is sufficient | 100 concurrent users load test via k6 | Stress test peak load 1,000+ users & DB failover |
-| **Staging Environment** | Automated preview URL (Vercel/Railway) | Isolated Staging server with dummy data | Mirror Production Staging with data sanitization |
-| **SIT Workbook** | Concise checklist in VERIFY.md | Formal `SIT_WORKBOOK.md` document | Formal SIT Sign-off + Security Audit Attestation |
+| QA & SIT Aspect | 🔵 Small Scale (Fast-Track MVP) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (Complex Integrations) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **M07 Status** | **M07 DI-SKIP / WAIVED** (Keamanan dilipat ke M06) | **Wajib M07 Penuh** di Staging Server | **Wajib M07 Penuh + Security Audit** | **Dialihkan ke Seri A (Fase A04)** |
+| **Testing Scope** | Tes unit lokal & verifikasi M06 | Unit tests + Sandbox API SIT + k6 load test | Full Test Pyramid, Pact contract test, load test | Pengawasan tata kelola audit pengembang vendor |
+| **Security Audit** | `SECURITY_CHECKLIST_SMALL.md` di M06 | SAST scan (Semgrep) + audit dependensi | Wajib `docs/qa/SECURITY_AUDIT.md` (Pentest pihak ke-3) | Threat Modeling STRIDE & Audit Readiness |
+| **Staging Environment** | Preview deployment per commit | Staging server terisolasi dengan data dummy | Mirror Production Staging dengan data sanitization | Staging korporat yang dikelola tim DevOps klien |
+| **Output Dokumen** | Langsung menuju **M09-LITE (UAT)** | `docs/qa/SIT_WORKBOOK.md` | `SIT_WORKBOOK.md` + `SECURITY_AUDIT.md` | Security & Compliance Advisory Dossier (A04) |
 
 ---
 
-### 🔴 Enterprise Scale: Security & Compliance Templates
+### 🔴 Enterprise Scale: Routed to Non-Solo Capacity Advisory (Phase A04)
 
-**When**: Regulated/statutory context (banking, healthcare, government), mandatory SOC 2/ISO 27001, or enterprise-scale audit requirements
+> ⚠️ **SOLO CAPACITY LIMITATION ENFORCEMENT**:  
+> Projects classified as **Enterprise Scale** ($\ge 26$ P0 features, legacy core migrations, or strict regulatory statutory mandates) **EXCEED SOLO DEVELOPER CAPACITY**.  
+> Solo developers MUST NOT perform enterprise-scale manual QA, multi-tenant penetration testing, or independent SOC 2 audits single-handedly.  
+> Instead, the solo consultant executes **Phase A04 (Security Review, Threat Modeling, & Audit Readiness)** to produce security governance specifications, review vendor test reports, and coordinate certified third-party audit firms.
 
 **Compliance Audit Preparation**:
 - `templates/03-governance/SOC2_ISO27001_COMPLIANCE.md` - Trust Service Criteria, evidence collection (6-12 month audit prep)
@@ -173,14 +176,13 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 **Data Retention & Compliance**:
 - `templates/03-governance/DATA_RETENTION_POLICY.md` - Retention periods (7yr financial, 1yr logs, 30 days deleted accounts)
   - **Covers**: GDPR/PDP Law retention rules, automated deletion, legal holds
-  - **Why**: GDPR fines for retaining data longer than needed (€20M or 4% revenue)
+  - **Why**: Sanksi administratif UU PDP No. 27/2022 Pasal 57 untuk retensi data ilegal (denda hingga 2% pendapatan tahunan)
 
-**M07 Gate for Enterprise**:
-- ✅ All standard M07 criteria (tests, coverage, SIT pass)
-- ✅ Third-party penetration test passed (no critical/high findings)
-- ✅ SOC 2 controls evidence collected (if audit in progress)
-- ✅ Incident response plan documented & reviewed
-- ✅ Backup restore test completed successfully (within RTO target)
+**Advisory Gate for Enterprise (Phase A04)**:
+- Security Architecture Review completed (`references/advisory/STRIDE_THREAT_MODEL.md`)
+- Third-party penetration testing firm scoped & rules of engagement locked (`PENTEST_SCOPE_TEMPLATE.md`)
+- Incident response plan documented & reviewed with client steering committee
+- Audit readiness dossier handed over to enterprise compliance team
 
 ---
 
@@ -188,7 +190,7 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 
 This module produces 2 primary artifacts:
 1. **`docs/qa/SIT_WORKBOOK.md`**: Combined test plan and Staging SIT pass verification workbook serving as a prerequisite for opening the Client UAT session (using `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`).
-2. **`docs/qa/SECURITY_AUDIT_REPORT.md`**: Library vulnerability audit results, OWASP security header status, and encryption verification (using `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`).
+2. **`docs/qa/SECURITY_AUDIT.md`**: Library vulnerability audit results, OWASP security header status, and encryption verification (using `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`; also accepted as `docs/qa/SECURITY_AUDIT_REPORT.md`).
 
 ---
 

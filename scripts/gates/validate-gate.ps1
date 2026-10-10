@@ -170,16 +170,22 @@ $foundFiles = @()
 
 # Detect Solo SaaS / Internal scale from PROJECT_STATE.md or M00_LITE.md
 $isSoloSaaS = $false
+$isSmallScale = $false
 $isLargeScale = $false
 $isEnterprise = $false
 if (Test-Path "docs/pm/PROJECT_STATE.md") {
     $stateContent = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+    if ($stateContent -match '(?i)Scale:\s*small') {
+        $isSmallScale = $true
+    }
     if ($stateContent -match '(?i)Scale:\s*(large|enterprise)') {
         $isLargeScale = $true
     }
     if ($stateContent -match '(?i)Scale:\s*enterprise') {
         $isEnterprise = $true
     }
+} elseif (Test-Path "PROJECT_LITE.md") {
+    $isSmallScale = $true
 }
 
 if (Test-Path "docs/pm/M00_LITE.md") {
@@ -210,7 +216,11 @@ if ($Module -eq "M06" -and $isSmallScale) {
     Write-Host "  [INFO] Small scale: SECURITY_CHECKLIST_SMALL.md absorbed into M06 (M07 folded)." -ForegroundColor Cyan
     $gate.Required += "docs/qa/SECURITY_CHECKLIST_SMALL.md"
 }
-if ($isLargeScale -and $Module -eq "M07") {
+if ($Module -eq "M07" -and $isSmallScale) {
+    Write-Host "  [INFO] Small Scale detected: M07 QA & SIT is WAIVED (Security absorbed in M06, UAT in M09-LITE)." -ForegroundColor Cyan
+    $gate.Required = @()
+}
+if ($isLargeScale -and $Module -eq "M07" -and -not $isSmallScale) {
     Write-Host "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/qa/SECURITY_AUDIT.md"
 }
@@ -251,13 +261,6 @@ if ($Module -eq "M00" -and $isM00Waived) {
 } elseif ($Module -eq "M00" -and (Test-Path "docs/pm/M00_LITE.md")) {
     Write-Host "  [INFO] Detected M00-lite rapid validation path (Solo SaaS)" -ForegroundColor Cyan
     $gate.Required = @("docs/pm/M00_LITE.md")
-}
-$isSmallScale = $false
-if (Test-Path "docs/pm/PROJECT_STATE.md") {
-    $stateContent = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
-    if ($stateContent -match '(?i)Scale:\s*small') { $isSmallScale = $true }
-} elseif (Test-Path "PROJECT_LITE.md") {
-    $isSmallScale = $true
 }
 if ($Module -eq "M01" -and $isSmallScale) {
     Write-Host "  [INFO] Small Scale detected: M01 Idea Feasibility is WAIVED (Handled by Intake Gate & PROJECT_LITE)." -ForegroundColor Cyan
