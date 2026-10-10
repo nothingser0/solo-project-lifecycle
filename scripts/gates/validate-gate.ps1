@@ -1001,6 +1001,21 @@ if ($Module -eq "M05" -and -not $isSmallScale) {
             }
         }
     }
+
+    # Architecture Decision Record is MANDATORY for Medium+ (justify architectural style choices)
+    if (Test-Path "docs/pm/PROJECT_STATE.md") {
+        $m5State = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+        if ($m5State -match '(?i)Scale:\s*(medium|large|enterprise)') {
+            Write-Host "  [INFO] Medium+ scale detected: Architecture Decision Record (ADR) is MANDATORY." -ForegroundColor Cyan
+            $adrExists = (Test-Path "docs/governance/ADR.md") -or (Test-Path "docs/specs/ADR.md")
+            if ($adrExists) {
+                Write-Host "  [OK] docs/governance/ADR.md (architecture decision record present)" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Medium+ scale requires Architecture Decision Record (docs/governance/ADR.md)!" -ForegroundColor Red
+                $missingRequired += "docs/governance/ADR.md (Medium+ architecture decision record)"
+            }
+        }
+    }
 }
 if ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }

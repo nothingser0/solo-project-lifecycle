@@ -687,9 +687,14 @@ case "$GATE_MODULE" in
             fi
         fi
 
+        # Architecture Decision Record is MANDATORY for Medium+ (justify architectural style choices)
+        if grep -qiE "Scale:\s*(medium|large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Medium+ scale detected: Architecture Decision Record (ADR) is MANDATORY."
+            check_required "docs/governance/ADR.md" "docs/specs/ADR.md" 500
+        fi
+
         if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Enterprise scale detected: ADR and Audit Trail Specs are MANDATORY."
-            check_required "docs/governance/ADR.md" "docs/specs/ADR.md"
             check_required "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md" "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md"
         fi
         check_optional "PROJECT_LITE.md"
