@@ -61,13 +61,16 @@ if ($tier -ge 3) {
     Write-Host "   A single developer cannot realistically deliver 16+ P0 features + pentest +"
     Write-Host "   data migration + 100+ UAT cases safely at $SoloHoursPerWeek hrs/week."
     Write-Host ""
-    Write-Host "   MANDATORY CHOICE (pick ONE):"
-    Write-Host "     (A) SPLIT into phased Medium projects (recommended)."
-    Write-Host "     (B) SUBCONTRACT specialists (QA/security/DevOps)."
-    Write-Host "     (C) REJECT / bid-no-bid (readiness package only)."
+    Write-Host "   MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04)" -ForegroundColor Yellow
+    Write-Host "     - A00: Pre-Sales, Administrative Eligibility, Bid/No-Bid & Consulting Agreement"
+    Write-Host "     - A01: WBS Decomposition into autonomous Medium sub-projects & Legacy Isolation"
+    Write-Host "     - A02: C4 Blueprint, STRIDE Threat Modeling, ATAM Quality Scenarios, Data Residency"
+    Write-Host "     - A03: Vendor Procurement Specifications & Build-vs-Buy Evaluation"
+    Write-Host "     - A04: Governance Handover Pack (RACI, CAB, DR Plan) & Conformance Retainer"
     Write-Host ""
-    Write-Host "   Allowed solo output for Large/Enterprise: READINESS PACKAGE ONLY."
-    Write-Host "   Exit code: 2 (capacity exceeded — decision required)." -ForegroundColor Red
+    Write-Host "   The skill STRICTLY PROHIBITS solo coding for Large/Enterprise scope." -ForegroundColor Red
+    Write-Host "   Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY." -ForegroundColor Yellow
+    Write-Host "   Exit code: 2 (Non-solo capacity — route to A00-A04 Advisory)." -ForegroundColor Red
     exit 2
 }
 

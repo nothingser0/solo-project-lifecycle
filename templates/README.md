@@ -31,6 +31,7 @@ templates/
 | File | Purpose | Stage / Gate |
 |---|---|---|
 | [`POC_PLAN_TEMPLATE.md`](./00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md) | Enterprise Proof-of-Concept scope, milestone success criteria, sandbox limits | Pre-engagement / M00 |
+| [`CONSULTING_AGREEMENT_TEMPLATE.md`](./00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md) | Enterprise advisory contract: Net 30, liability cap, anti-conflict, pure advisory scope | Module A00 |
 | [`RFP_RESPONSE_TEMPLATE.md`](./00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md) | Formal technical proposal response to enterprise Request for Proposals | Pre-engagement / M00 |
 
 ---

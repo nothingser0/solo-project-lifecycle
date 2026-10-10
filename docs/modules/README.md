@@ -22,6 +22,7 @@ Sequential 14-module delivery framework for solo developers, covering initiation
 | **M11** | Handover & BAST | `BAST.md`, `HANDOVER_PROTOCOL.md` | **Gate 3: Settlement & Handover** | [`11-handover-bast.md`](./11-handover-bast.md) |
 | **M12** | Warranty & SLA Retainer | `WARRANTY_POLICY.md`, `SLA_RETAINER_CONTRACT.md` | Warranty Transition | [`12-warranty-sla-retainer.md`](./12-warranty-sla-retainer.md) |
 | **M13** | Product Operations & Iteration | `METRICS_BASELINE_REPORT.md`, `GROWTH_EXPERIMENTS_BACKLOG.md` | Continuous Iteration | [`13-product-operations-iteration.md`](./13-product-operations-iteration.md) |
+| **A00-A04** | Enterprise Advisory Series (Non-Solo) | C4 Model, STRIDE, WBS Phasing, RFP Procurement Pack | Non-Solo Capacity Gate | [`A00-enterprise-advisory-series.md`](./A00-enterprise-advisory-series.md) |
 
 ---
 

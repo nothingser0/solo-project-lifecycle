@@ -101,6 +101,10 @@
       ]
     },
     {
+      "path": "docs/modules/A00-enterprise-advisory-series.md",
+      "cataloged": true
+    },
+    {
       "path": "docs/modules/README.md",
       "cataloged": true
     },
@@ -480,6 +484,10 @@
       "modules": [
         "M04"
       ]
+    },
+    {
+      "path": "templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md",
+      "cataloged": true
     },
     {
       "path": "templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md",

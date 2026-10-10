@@ -170,17 +170,16 @@ Scale classification is driven by **engineering risk profile and operational loa
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
 - Example: Custom bespoke business portal, e-commerce, internal company tool, academic software deliverable
 
-**Large Scale (Scale-Up / Multi-Tenant Platform — Solo Capacity Boundary)**:
-- **Criteria**: 16–25 P0 Must-Haves, legacy data migration (ETL), multi-tenant branch/role hierarchy, high financial/data blast radius, 99.5% SLA.
-- ⛔ **SOLO CAPACITY RULE (OPSI A)**: Exceeds realistic solo developer capacity. Mandatory decision: (A) SPLIT into phased Medium projects, (B) SUBCONTRACT specialists (QA/pentester/DevOps), or (C) BID-NO-BID (Readiness Package only).
-- **Path (if Subcontracted/Client)**: M00 (bid/no-bid) → M01 → M02 → **M03 (MSA+SOW)** → M04 → M05 → M06 (ETL paralel) → M07 (pentest+remediasi) → **M09 (UAT risiko)** → M10 (pilot) → **M11 (BAST & pelunasan sebelum DNS)** → M12 (garansi pasca-BAST)
-- All templates + compliance/scale docs
-- Example: Multi-tenant logistics, retail chain ERP, regional microfinance portal
-
-**Enterprise Scale (Regulated / Mission-Critical — Governance Advisory Only)**:
-- **Criteria**: >25 P0 Must-Haves or statutory audit constraints (OJK/BI/SOC2/HIPAA), permanent audit trail, multi-stakeholder governance boards, 99.9% uptime SLA.
-- ⛔ **NON-SOLO CAPACITY**: Strictly prohibited for single-developer coding. Solo role is restricted to Lead Architect / Technical Advisory.
-- **Path (Readiness & Governance Package)**: Full M00 → M13 documents generated as technical and architectural specifications for corporate engineering teams (RACI, ADR, CAB Protocol, FSD, Audit Trail Requirements). Coding is executed by a multi-disciplinary enterprise vendor/team.
+**Beyond Solo Capacity: Large & Enterprise Scale (A-Series Advisory Lifecycle)**:
+- **Criteria**: >15 P0 Must-Haves, multi-branch, high financial/medical blast radius, or statutory compliance (OJK/BI/UU PDP/ISO 27001).
+- ⛔ **STRICT SOLO CODING PROHIBITION**: Single-developer implementation is strictly prohibited. The solo practitioner acts as **Lead Enterprise Architect / Technical Advisor**.
+- **Path (A00-A04 Architecture & Procurement Readiness Package)**:
+  - **A00**: Pre-Sales, Administrative Eligibility, Bid/No-Bid Decision & `CONSULTING_AGREEMENT.md` (Net 30, liability cap, anti-conflict pact).
+  - **A01**: Work Breakdown Structure (WBS) & Phasing (decomposes scope into autonomous Medium sub-projects; isolates legacy core banking/ERP spikes).
+  - **A02**: C4 Architecture Blueprint, Threat Modeling (STRIDE), Local Data Residency ADR (AWS Jakarta / on-premise), ATAM Quality Scenarios.
+  - **A03**: Vendor Procurement Specifications, Build-vs-Buy Analysis, Weighted Evaluation Matrix & Anti-Lock-In Exit Strategy.
+  - **A04**: Governance Handover (RACI, CAB Process, DR Plan for client team) & Architecture Conformance Review Retainer.
+- Example: Regional banking portal, multi-tenant hospital network, nationwide retail supply chain.
 
 ---
 
@@ -197,6 +196,9 @@ Scale classification is driven by **engineering risk profile and operational loa
 - Solo portfolio (3 features): Small path → Intake → M04-LITE → M05 → [STOP 1] → M06 (+security) → M09-LITE → [STOP 2] → M10 → M12
 - Solo SaaS (8 features): Solo SaaS path → M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
 - Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → **M07** → **M09** → M10 → **M11** → M12
+
+## Enterprise Advisory Series (Non-Solo Capacity)
+- **A00-A04**: `A00-enterprise-advisory-series.md` - Pure architecture, STRIDE threat modeling, WBS phasing, vendor procurement, and governance advisory.
 
 ## Module structure
 

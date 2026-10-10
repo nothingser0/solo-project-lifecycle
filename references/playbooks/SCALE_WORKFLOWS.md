@@ -279,102 +279,57 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
-## 🟡 SKALA BESAR (Batas Kapasitas Solo — Solo Capacity Boundary)
+## 🟡🔴 SKALA DI LUAR KAPASITAS SOLO (Large & Enterprise — A-Series Advisory)
 
-> ⛔ **SOLO CAPACITY LIMIT (OPSI A)**:
-> Skala Besar (**16–25 fitur P0**, multi-cabang, migrasi ETL, pentest pihak ketiga, UAT 100+ kasus) **berada di luar kapasitas fisik satu developer solo**.
-> Menjanjikan 16–25 fitur P0 dalam 8–9 bulan untuk satu orang adalah anti-pola yang hampir pasti berujung *burnout*, keterlambatan, atau kegagalan rilis.
-
-### Aturan Eksekusi Wajib (Pilih Salah Satu SEBELUM Koding):
-
-1. **(A) SPLIT (Pecah Bertahap — SANGAT DIREKOMENDASIKAN)**:
-   - Pecah proyek menjadi 2–3 proyek **Skala Menengah** independen:
-     - *Fase 1 (Bulan 1–2)*: Fondasi + 8–10 fitur P0 inti (MVP live).
-     - *Fase 2 (Bulan 3–4)*: Migrasi data + 6–8 fitur sekunder.
-     - *Fase 3 (Bulan 5–6)*: Integrasi multi-vendor + analitik.
-   - Tiap fase memiliki kontrak SOW, DP, demo staging, dan pelunasan sendiri.
-2. **(B) SUBCONTRACT (Subkontrak Spesialis)**:
-   - Solo dev bertindak sebagai **Lead Architect / PM**.
-   - Subkontrak: 1 QA/pentester bersertifikat (audit keamanan M07) + 1 frontend/backend dev per sprint.
-   - Anggaran klien harus mencakup biaya tim spesialis, bukan tarif solo.
-3. **(C) BID/NO-BID & READINESS PACKAGE ONLY**:
-   - Jika klien/RFP menuntut 1 orang mengerjakan semuanya: **TOLAK penawaran (NO-BID)**.
-   - Skill ini hanya menghasilkan **Readiness Package**: draf PRD/FSD, estimasi jam, pembagian fase, dan rekomendasi tim — **BUKAN eksekusi koding mandiri**.
+> ⛔ **STRICT SOLO CODING PROHIBITION**:
+> Proyek dengan **>15 fitur P0**, multi-cabang, mutasi finansial/rekam medis massal, atau regulasi statutori (OJK/BI/UU PDP/ISO 27001) **SECARA FISIK DAN HUKUM TIDAK BISA DIKERJAKAN SOLO**.
+> Menjanjikan koding mandiri untuk skala ini adalah anti-pola berbahaya. Skill ini mengalihkan mode solo developer menjadi **Lead Enterprise Architect / Technical Advisor**.
 
 ---
 
-### Alur 11 Fase Terstruktur (Jika Subkontrak / Phased Split Dipilih)
+### Alur 5 Fase Advisory Korporat (Seri A00 – A04)
 
 ```text
-[ FASE 1: PRE-SALES & BID/NO-BID (M00) ] ──► 🛑 STOP 1 (Keputusan Bid/No-Bid)
-  • Analisis RFP / kebutuhan: evaluasi kelayakan kapasitas, margin, risiko legal
-  • Keputusan formal: BID (dengan rencana phased/subkontrak) atau NO-BID (tolak sopan)
-
-[ FASE 2: LEGAL SUITE (M03) ] ──► 🛑 STOP 2 (DP 25-30% Cair)
-  • Dokumen bertingkat: MSA (induk) + SOW (pekerjaan) + DPA (UU PDP) + NDA
-  • Hierarki: MSA mengikat prinsip; SOW mengikat detail; jika bentrok, MSA menang kecuali SOW sebut override
-  • Batas revisi (2x per fase), deemed acceptance (7 hari), klausul pembatalan + kill fee
-
-[ FASE 3: DESAIN & PROTOTIPE (M04) ] ──► 🛑 STOP 3 (Design Freeze)
-  • Benchmark selektif + logo di assets/logo/
-  • Sitemap 25-50 layar, component inventory 3-tier
-  • Prototipe interaktif untuk validasi stakeholder klien
-
-[ FASE 4: ARSITEKTUR & C4 (M05) ] ──► 🛑 STOP 4 (Tech Spec Sign-Off)
-  • PRD + FSD + C4 Model + skema DDL + Rencana Rollback DB (down migration SQL)
-  • Traceability Matrix lengkap: P0 -> FSD -> Test -> UAT
-  • Target SLA & estimasi biaya cloud bulanan (AWS/GCP/Supabase)
-
-[ FASE 5: DEV SPRINT + ETL PARALEL (M06) ] ──► 🛑 STOP 5 (Termin 2 Cair)
-  • Sprint 0: scaffold + IaC + staging setup + seeder data realistis
-  • Sprints 1-8: 2-week sprints, TODO.md ber-Definition of Done per sprint
-  • Laporan mingguan tertulis + demo staging bi-weekly (TIDAK ADA daily standup solo)
-  • M08 ETL dikembangkan PARALEL sejak sprint awal (dry-run 3-5x rekonsiliasi data)
-
-[ FASE 6: AUDIT KEAMANAN & REMEDIASI (M07) ] ──► 🛑 STOP 6 (Pentest & SIT Pass)
-  • Pentest pihak ketiga (biaya ditanggung Klien via kontrak M03)
-  • Load test berbasis profil pengguna puncak nyata (bukan angka 10K arbitrary)
-  • Jendela remediasi minimal 2 minggu + retest wajib
-
-[ FASE 7: UAT FORMAL BERBASIS RISIKO (M09) ] ──► 🛑 STOP 7 (UAT Approved)
-  • 100+ test case dikelompokkan prioritas risiko (P0 critical paths diuji duluan)
-  • Aturan bug: S1/S2 wajib 0; S3/S4 dicatat untuk garansi
-
-[ FASE 8: TRAINING PRA-DEPLOY ]
-  • Training 2-4 sesi DILAKUKAN SEBELUM GO-LIVE (bukan sesudah)
-  • User manual, admin guide, ops runbook siap
-
-[ FASE 9: PILOT BERTAHAP & RILIS (M10) ] ──► 🛑 STOP 8 (Go-Live Approval)
-  • Pilot bertahap: rilis ke 1 cabang / cohort percontohan
-  • Kriteria keluar pilot (error rate <0.1%, zero discrepancy 7 hari) terpenuhi -> rilis penuh
-  • Jendela deploy jam sepi + titik go/no-go + batas waktu rollback 30 menit (TIDAK ADA war room 24 jam solo)
-
-[ FASE 10: BAST, LEVERAGE HANDOVER & PELUNASAN (M11) ] ──► 🛑 STOP 9 (Final Settlement)
-  • Pelunasan final 100% diterima di rekening
-  • TTD BAST fisik/digital + serah terima repositori, IaC, rotasi kredensial
-  • BARU alihkan DNS utama ke domain klien
-
-[ FASE 11: WARRANTY & RETROSPEKTIF (M12) ]
-  • Garansi 90 hari aktif RELATIF TERHADAP TANGGAL BAST (bukan bulan kalender tetap)
-  • Transisi ke SLA Retainer bulanan atau sunset/handover ke tim klien
-  • Retrospektif proyek & arsip data lama
+[ TENDER / KESEMPATAN ENTERPRISE ]
+                │
+                ▼
+[ FASE A00: Bid/No-Bid, Evaluasi Kelayakan & Kontrak Konsultasi ] ──► 🛑 STOP 1 (Perjanjian Konsultasi)
+  • Uji kelayakan administratif tender (PT/CV, NPWP, sertifikasi, modal disetor)
+  • Matriks Bid/No-Bid (Kapasitas, margin risiko, larangan penawaran gratis tak terbatas)
+  • Kontrak: CONSULTING_AGREEMENT_TEMPLATE.md (Termin Net 30, limit liabilitas, pakta anti-konflik)
+                │
+                ▼
+[ FASE A01: WBS, Dekomposisi Domain & Isolasi Legacy ]
+  • Dekomposisi Scope: Memecah >15 P0 menjadi 2-3 paket Skala Menengah mandiri
+  • Uji Kelayakan Pecahan: Setiap paket wajib diuji lolos Scale: medium via classify-scale.sh
+  • Isolasi Legacy: Konektor core banking/ERP warisan dipisahkan menjadi paket spike khusus
+  • Output: WBS_PHASING_PLAN.md
+                │
+                ▼
+[ FASE A02: Arsitektur C4, STRIDE & Skenario Kualitas Terukur ] ──► 🛑 STOP 2 (Sign-Off Arsitektur)
+  • C4 Model (Context, Containers, Components) + ADR Suite
+  • Pemodelan Ancaman (STRIDE): Mitigasi konkret per container
+  • Skenario Kualitas ATAM: Latensi konkret, throughput TPS terukur, RPO <15m, RTO <1h
+  • Residensi Data Lokal: ADR penguncian region lokal (AWS Jakarta ap-southeast-3 / on-premise)
+  • Pemetaan Kepatuhan: UU PDP No. 27/2022, POJK Siber, PBI, Kemenkes SatuSehat
+  • Output: ENTERPRISE_ARCHITECTURE_BLUEPRINT.md, ADR_SUITE.md, THREAT_MODEL_STRIDE.md
+                │
+                ▼
+[ FASE A03: Pengadaan Vendor, Build-vs-Buy & Strategi Anti-Lock-In ]
+  • Penyusunan Spesifikasi Teknis Pengadaan (Lampiran Teknis RFP Korporat)
+  • Analisis Build-vs-Buy untuk komponen komoditas (Auth IAM, Payment Gateway, CMS)
+  • Matriks Evaluasi Vendor Terbobot (Objektif, tanpa konflik kepentingan advisor)
+  • Strategi Anti-Lock-In: Skema DDL terbuka dan skrip portabilitas data keluar
+  • Output: VENDOR_PROCUREMENT_SCHEDULE.md, VENDOR_COMPARISON_MATRIX.md
+                │
+                ▼
+[ FASE A04: Serah Terima Tata Kelola & Retainer Keselarasan Arsitektur ] ──► 🛑 STOP 3 (Sign-Off Final)
+  • RACI Matrix Korporat: Penanggung jawab keputusan multi-divisi
+  • Protokol CAB & Checklist Rilis: Template resmi yang diserahkan untuk dijalankan tim klien
+  • Cetak Biru Disaster Recovery: Topologi failover & protokol latihan restore berkala
+  • Retainer Keselarasan Arsitektur: Hak review arsitektur per sprint milestone vendor
+  • Output: GOVERNANCE_HANDOVER_PACK.md (Setara BAST Advisory)
 ```
-
-### Timeline Realistis Skala Besar (dengan Kontingensi 25%):
-- **Development & Spesifikasi**: 24–28 minggu
-- **Buffer Kontingensi (25%)**: 6–7 minggu
-- **Total Kalender Terjadwal**: **30–35 minggu (~7–8 bulan)**
-
----
-
-## 🔴 SKALA ENTERPRISE (Mission-Critical / Multi-Stakeholder)
-
-> ⛔ **SOLO CAPACITY LIMIT**:
-> Skala Enterprise (**>25 fitur P0**, audit OJK/BI/HIPAA, dewan CAB, multi-divisi) **SECARA MUTLAK TIDAK BISA DIKERJAKAN SOLO**.
-> Untuk skala ini, peran solo consultant/architect adalah:
-> 1. **Technical Advisory / Lead Architect**: menyusun arsitektur C4, RTM, RFP response, dan security baseline.
-> 2. **Eksekusi Koding**: WAJIB diserahkan ke tim engineering korporasi atau konsorsium vendor.
-> Skill ini hanya menghasilkan **Readiness & Governance Package** (RACI, ADR, CAB Protocol, FSD, Audit Trail Requirements).
 
 ---
 
