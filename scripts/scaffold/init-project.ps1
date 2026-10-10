@@ -121,7 +121,8 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/PRODUCT_STRATEGY.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/SCOPE_STATEMENT.md") -Force
-        Copy-Item (Join-Path $templates "01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md") (Join-Path $TargetDir "contracts/SOW_CONTRACT.md") -Force
+        Copy-Item (Join-Path $templates "00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md") (Join-Path $TargetDir "contracts/CONSULTING_AGREEMENT.md") -Force
+        Copy-Item (Join-Path $templates "00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/WBS_PHASING_PLAN.md") -Force
         Copy-Item (Join-Path $templates "02-legal-commercial/NDA_TEMPLATE.md") (Join-Path $TargetDir "contracts/NDA.md") -Force
         Copy-Item (Join-Path $templates "02-design/SITEMAP_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/SITEMAP.md") -Force
         Copy-Item (Join-Path $templates "02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/COMPONENT_REQUIREMENTS.md") -Force
