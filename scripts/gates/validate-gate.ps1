@@ -1353,6 +1353,23 @@ if ($Module -eq "M11" -and -not $isSoloSaaS) {
         }
     }
 }
+if ($Module -eq "M12" -and -not $isSoloSaaS) {
+    if (Test-Path "docs/pm/WARRANTY_POLICY.md") {
+        $wpContent = Get-Content "docs/pm/WARRANTY_POLICY.md" -Raw
+        # 1. Reject unresolved template placeholders [...]
+        if ($wpContent -match '\[Application Name\]|\[Client Company|\[Your Name\]|\[PROJECT_ID\]|\[YYYY-MM-DD\]|\[email-support') {
+            Write-Host "  [ERROR] docs/pm/WARRANTY_POLICY.md still contains unresolved template placeholders ([...])! Fill in actual warranty terms." -ForegroundColor Red
+            $missingRequired += "docs/pm/WARRANTY_POLICY.md (unresolved template placeholders)"
+        }
+        # 2. Require SLA matrix and coverage boundaries
+        if ($wpContent -match '(?i)Warranty Parameters|Warranty Coverage|Warranty Exclusions|Service Level Agreement|Severity 1') {
+            Write-Host "  [OK] Warranty policy coverage and SLA matrix verified" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] docs/pm/WARRANTY_POLICY.md missing mandatory warranty coverage or SLA matrix sections!" -ForegroundColor Red
+            $missingRequired += "docs/pm/WARRANTY_POLICY.md (missing warranty coverage or SLA matrix)"
+        }
+    }
+}
 
 # Check optional files
 if ($gate.Optional.Count -gt 0) {

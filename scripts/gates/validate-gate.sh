@@ -1201,6 +1201,22 @@ case "$GATE_MODULE" in
             check_required "docs/pm/RUNBOOK_OPS.md" "docs/pm/WARRANTY_POLICY.md" 500
         else
             check_required "docs/pm/WARRANTY_POLICY.md" "" 500
+            # Content verification for WARRANTY_POLICY.md (BLOCKER)
+            if [ -f "docs/pm/WARRANTY_POLICY.md" ]; then
+                wp_content=$(cat "docs/pm/WARRANTY_POLICY.md" 2>/dev/null || true)
+                # 1. Reject unresolved template placeholders [...]
+                if echo "$wp_content" | grep -qE "\[Application Name\]|\[Client Company|\[Your Name\]|\[PROJECT_ID\]|\[YYYY-MM-DD\]|\[email-support"; then
+                    echo "  ❌ docs/pm/WARRANTY_POLICY.md still contains unresolved template placeholders ([...])! Fill in actual warranty terms."
+                    GATE_FAILED=1
+                fi
+                # 2. Require SLA matrix and coverage boundaries
+                if echo "$wp_content" | grep -qiE "Warranty Parameters|Warranty Coverage|Warranty Exclusions|Service Level Agreement|Severity 1"; then
+                    echo "  ✅ Warranty policy coverage and SLA matrix verified"
+                else
+                    echo "  ❌ docs/pm/WARRANTY_POLICY.md missing mandatory warranty coverage or SLA matrix sections!"
+                    GATE_FAILED=1
+                fi
+            fi
         fi
         check_optional "docs/pm/SLA_RETAINER_CONTRACT.md" "contracts/SLA_RETAINER.md"
         # For Large scale, emergency incident response plan is MANDATORY
