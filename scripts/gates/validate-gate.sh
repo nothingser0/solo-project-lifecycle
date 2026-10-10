@@ -752,14 +752,14 @@ case "$GATE_MODULE" in
                 echo "  ❌ TODO.md has insufficient completed tasks: found only ${done_tasks:-0} marked '[x]' (minimum 3 completed tasks required)!"
                 GATE_FAILED=1
             fi
-            # Zero pending tasks allowed when declaring M06 complete (all tasks must be finished)
-            pending_tasks=$(grep -cE "^\s*-\s*\[ \]" "TODO.md" 2>/dev/null || true)
+            # Zero unfinished tasks allowed when declaring M06 complete (no [ ], [~], or [!] permitted)
+            pending_tasks=$(grep -cE "^\s*-\s*\[[ ~!]\]" "TODO.md" 2>/dev/null || true)
             pending_tasks=$(echo "$pending_tasks" | tr -d ' ')
             if [ "${pending_tasks:-0}" -gt 0 ]; then
-                echo "  ❌ TODO.md has ${pending_tasks} unfinished task(s) marked '[ ]'! All sprint tasks must be completed before closing Module 06."
+                echo "  ❌ TODO.md has ${pending_tasks} unfinished/blocked task(s) marked '[ ]', '[~]', or '[!]'! All sprint tasks must be completed ([x]) before closing Module 06."
                 GATE_FAILED=1
             else
-                echo "  ✅ 100% Sprint completion verified: zero pending tasks '[ ]' in TODO.md"
+                echo "  ✅ 100% Sprint completion verified: zero pending/blocked tasks in TODO.md"
             fi
             # Verify core engineering categories are present in completed tasks
             has_core_categories=1

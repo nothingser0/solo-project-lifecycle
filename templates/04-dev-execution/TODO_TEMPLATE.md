@@ -8,13 +8,25 @@
 > - **Medium (B2B SaaS / Agency)**: 7 Sprints covering multi-tenant RLS, state journals, mutation idempotency, and automated QA.
 > - **Large / Enterprise**: Comprehensive execution covering high-concurrency row-locking, audit vaults, load testing, and disaster recovery.
 
-### 100% Atomic Task Ratio Mandate (Anti-Macro Tasks)
-Maintain an exact 1:1 ratio:
-- 1 task per database table or migration unit (`M06-DB-xx`).
-- 1 task per backend endpoint / Action / RPC (`M06-BE-xx`).
-- 1 task per UI screen (`M06-FE-xx`) specifying exact `SCR-xx`, route, and 5-state matrix.
-- 1 task per integration / wire-up point (`M06-INT-xx`).
-- Dedicated automated test tasks (`M06-TEST-xx`).
+### Standard Task Architecture (8 Mandatory Elements per Task)
+Every atomic task in `TODO.md` MUST specify these 8 core fields to prevent AI hallucination and scope drift:
+1. **Unique Task ID**: e.g., `M06-DB-01`, `M06-BE-01`, `M06-FE-01` (referenced in git commits and test logs).
+2. **Title & Single Objective**: Specific, non-compound goal (1 table, 1 endpoint, or 1 screen only).
+3. **Files (Target Paths)**: Exact file paths created or modified (stops AI from inventing new ad-hoc paths).
+4. **Depends**: Preceding task IDs that MUST be completed first (e.g. `M06-DB-01` before `M06-BE-01`).
+5. **Action**: Precise implementation instructions, domain formulas, and architectural constraints.
+6. **Out of Scope**: Explicit boundaries of what NOT to touch in this task (stops unprompted side-edits).
+7. **Verify & Expected**: Executable terminal command (`Verify`) and deterministic success criteria (`Expected`).
+8. **Extended Task Status**:
+   - `- [ ]` : Not started (Pending)
+   - `- [~]` : In progress (Actively executing)
+   - `- [!]` : Blocked (Halted with explicit blocker reason)
+   - `- [x]` : Completed (Verified exit 0 with proof)
+
+### Header-Level Pre-Conditions (Before Sprint 0)
+- **Primary Objective**: Build 100% of agreed in-scope features from `FSD.md` and `PRD.md` with zero unhandled edge cases.
+- **Mandatory Pre-Read Documents**: `AGENTS.md` (anti-slop directives), `CONTEXT.md` (boundaries), `FSD.md` (DDL & RLS), `PRD.md` (BDD criteria), `DESIGN.md` (tokens), and `SITEMAP.md`.
+- **Module Exit Gate Criteria**: 100% of tasks marked `[x]` (zero `[ ]` or `[!]` remaining), `pnpm tsc --noEmit` exit 0, smoke tests passing, zero `@ts-ignore`, and `validate-gate.sh M06` passed.
 
 ### Execution Paradigm: Standard Full-Stack Architecture
 $$\text{Sprint 0 (Setup)} \longrightarrow \text{Sprint 1 (Database)} \longrightarrow \text{Sprint 2 (Backend)} \longrightarrow \text{Sprint 3 (Frontend)} \longrightarrow \text{Sprint 4 (Integrasi)} \longrightarrow \text{Sprint 5 (Testing)} \longrightarrow \text{Sprint 6 (Gate)}$$
@@ -70,10 +82,10 @@ $$\text{Sprint 0 (Setup)} \longrightarrow \text{Sprint 1 (Database)} \longrighta
 ## Sprint 1: Database Foundation, DDL Migrations & Atomic RPCs
 
 - [ ] **M06-DB-01: Relational Schema & 100% Foreign Key Indexing (Universal)**
-  - Definisikan seluruh tabel skema FSD (master data, transaksi, audit log).
-  - Tipe moneter wajib `BIGINT` atau `NUMERIC(15, 2)` (larangan float rounding) dan `NUMERIC(12, 3)` untuk kuantitas pecahan.
-  - Tambahkan eksplisit `CREATE INDEX` pada setiap kolom foreign key (`REFERENCES table(id)`).
-  - Tambahkan arithmetic CHECK constraints (`net_amount = subtotal - discount`, `quantity > 0`).
+  - **Files**: `supabase/migrations/001_initial_schema.sql` (or Prisma/Drizzle equivalent migration file)
+  - **Depends**: `M06-SETUP-01` (local environment & database instance active)
+  - **Action**: Definisikan seluruh tabel skema FSD (master data, transaksi, audit log). Tipe moneter wajib `BIGINT` atau `NUMERIC(15, 2)` (larangan float rounding) dan `NUMERIC(12, 3)` untuk kuantitas pecahan. Tambahkan eksplisit `CREATE INDEX` pada setiap kolom foreign key (`REFERENCES table(id)`) dan arithmetic CHECK constraints (`net_amount = subtotal - discount`, `quantity > 0`).
+  - **Out of Scope**: Dilarang menulis Server Actions, API routes, atau komponen UI di task ini (fokus DDL database murni).
   - **Verify**: Jalankan migrasi di container database lokal (`supabase db push` / `pnpm db:migrate`).
   - **Expected**: Migrasi sukses dengan exit code 0; seluruh tabel, index, dan constraint terbuat.
   - **Evidence**: Query `information_schema.tables` dan `pg_indexes` mengonfirmasi pembuatan tabel dan index 100%.

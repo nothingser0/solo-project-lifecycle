@@ -1059,13 +1059,13 @@ if ($Module -eq "M06") {
             Write-Host "  [ERROR] TODO.md has insufficient completed tasks: found only $doneMatches marked '[x]' (minimum 3 completed tasks required)!" -ForegroundColor Red
             $missingRequired += "TODO.md (>= 3 completed tasks marked '[x]')"
         }
-        # Zero pending tasks allowed when declaring M06 complete (all tasks must be finished)
-        $pendingMatches = ([regex]::Matches($todoContent, '(?im)^\s*-\s*\[ \]')).Count
+        # Zero unfinished tasks allowed when declaring M06 complete (no [ ], [~], or [!] permitted)
+        $pendingMatches = ([regex]::Matches($todoContent, '(?im)^\s*-\s*\[[ ~!]\]')).Count
         if ($pendingMatches -gt 0) {
-            Write-Host "  [ERROR] TODO.md has $pendingMatches unfinished task(s) marked '[ ]'! All sprint tasks must be completed before closing Module 06." -ForegroundColor Red
-            $missingRequired += "TODO.md ($pendingMatches unfinished tasks remaining)"
+            Write-Host "  [ERROR] TODO.md has $pendingMatches unfinished/blocked task(s) marked '[ ]', '[~]', or '[!]'! All sprint tasks must be completed ([x]) before closing Module 06." -ForegroundColor Red
+            $missingRequired += "TODO.md ($pendingMatches unfinished/blocked tasks remaining)"
         } else {
-            Write-Host "  [OK] 100% Sprint completion verified: zero pending tasks '[ ]' in TODO.md" -ForegroundColor Green
+            Write-Host "  [OK] 100% Sprint completion verified: zero pending/blocked tasks in TODO.md" -ForegroundColor Green
         }
         # Verify core engineering categories are present in tasks (DB, BE, FE)
         $hasCoreCats = $true
