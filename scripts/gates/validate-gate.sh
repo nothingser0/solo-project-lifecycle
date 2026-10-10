@@ -532,8 +532,12 @@ case "$GATE_MODULE" in
             if grep -qiE "Selected.*Benchmark|Winning Reference|Primary Benchmark|Paling OK" "docs/design/inspiration/notes.md"; then
                 echo "  ✅ docs/design/inspiration/notes.md (Benchmark selection verified)"
             else
-                echo "  ⚠️  docs/design/inspiration/notes.md (Warning: explicit winning benchmark selection not detected)"
+                echo "  ❌ docs/design/inspiration/notes.md (Prerequisite missing: winning benchmark selection not documented!)"
+                GATE_FAILED=1
             fi
+        else
+            echo "  ❌ docs/design/inspiration/notes.md (MISSING)"
+            GATE_FAILED=1
         fi
         min_sitemap=2000
         min_design_spec=2000
@@ -547,6 +551,40 @@ case "$GATE_MODULE" in
         check_required "docs/design/inspiration/notes.md" "" 200
         check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000
         check_required "docs/specs/DESIGN_SPEC.md" "" $min_design_spec
+
+        # 3. Accessibility & Contrast Verification in DESIGN.md (BLOCKER)
+        design_file="DESIGN.md"
+        [ -f "$design_file" ] || design_file="docs/harness-root/DESIGN.md"
+        if [ -f "$design_file" ]; then
+            if grep -qiE "[0-9]+(\.[0-9]+)?\s*:\s*1|WCAG|Contrast Ratio" "$design_file"; then
+                echo "  ✅ DESIGN.md accessibility & contrast ratios verified"
+            else
+                echo "  ❌ DESIGN.md missing mathematically computed contrast ratios (e.g. >= 4.5:1, >= 7.0:1)!"
+                GATE_FAILED=1
+            fi
+            if grep -qiE "z-index|Z-Index Layering|--z-" "$design_file"; then
+                echo "  ✅ DESIGN.md z-index layering scale verified"
+            else
+                echo "  ❌ DESIGN.md missing z-index layering scale definition!"
+                GATE_FAILED=1
+            fi
+        fi
+
+        # 4. 5-State Matrix Verification in DESIGN_SPEC.md (BLOCKER)
+        if [ -f "docs/specs/DESIGN_SPEC.md" ]; then
+            state_count=0
+            for st in "Idle" "Loading" "Empty" "Error" "Success"; do
+                if grep -qiE "$st" "docs/specs/DESIGN_SPEC.md"; then
+                    state_count=$((state_count + 1))
+                fi
+            done
+            if [ "$state_count" -ge 3 ]; then
+                echo "  ✅ DESIGN_SPEC.md 5-state matrix markers verified ($state_count/5 states detected)"
+            else
+                echo "  ❌ DESIGN_SPEC.md missing 5-state matrix coverage (found only $state_count/5 states)!"
+                GATE_FAILED=1
+            fi
+        fi
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="

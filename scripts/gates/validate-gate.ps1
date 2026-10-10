@@ -876,6 +876,42 @@ if ($Module -eq "M00") {
         $notesContent = Get-Content "docs/design/inspiration/notes.md" -Raw
         if ($notesContent -match '(?i)Selected.*Benchmark|Winning Reference|Primary Benchmark|Paling OK') {
             Write-Host "  [OK] docs/design/inspiration/notes.md (Benchmark selection verified)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] docs/design/inspiration/notes.md (Prerequisite missing: winning benchmark selection not documented!)" -ForegroundColor Red
+            $missingRequired += "docs/design/inspiration/notes.md (winning benchmark selection missing)"
+        }
+    }
+
+    # Accessibility & Contrast Verification in DESIGN.md (BLOCKER)
+    $designFile = if (Test-Path "DESIGN.md") { "DESIGN.md" } elseif (Test-Path "docs/harness-root/DESIGN.md") { "docs/harness-root/DESIGN.md" } else { $null }
+    if ($designFile) {
+        $designContent = Get-Content $designFile -Raw
+        if ($designContent -match '(?i)[0-9]+(\.[0-9]+)?\s*:\s*1|WCAG|Contrast Ratio') {
+            Write-Host "  [OK] DESIGN.md accessibility & contrast ratios verified" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] DESIGN.md missing mathematically computed contrast ratios (e.g. >= 4.5:1, >= 7.0:1)!" -ForegroundColor Red
+            $missingRequired += "DESIGN.md (accessibility & contrast ratios)"
+        }
+        if ($designContent -match '(?i)z-index|Z-Index Layering|--z-') {
+            Write-Host "  [OK] DESIGN.md z-index layering scale verified" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] DESIGN.md missing z-index layering scale definition!" -ForegroundColor Red
+            $missingRequired += "DESIGN.md (z-index layering scale)"
+        }
+    }
+
+    # 5-State Matrix Verification in DESIGN_SPEC.md (BLOCKER)
+    if (Test-Path "docs/specs/DESIGN_SPEC.md") {
+        $specContent = Get-Content "docs/specs/DESIGN_SPEC.md" -Raw
+        $stateCount = 0
+        foreach ($st in @("Idle", "Loading", "Empty", "Error", "Success")) {
+            if ($specContent -match "(?i)$st") { $stateCount++ }
+        }
+        if ($stateCount -ge 3) {
+            Write-Host "  [OK] DESIGN_SPEC.md 5-state matrix markers verified ($stateCount/5 states detected)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] DESIGN_SPEC.md missing 5-state matrix coverage (found only $stateCount/5 states)!" -ForegroundColor Red
+            $missingRequired += "docs/specs/DESIGN_SPEC.md (5-state matrix coverage)"
         }
     }
 }
