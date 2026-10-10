@@ -213,8 +213,17 @@ case "$GATE_MODULE" in
         check_required "AGENTS.md" "" 500
         check_required "CONTEXT.md" "" 500
         check_required "TODO.md" "" 500
-        check_required "docs/RUNBOOK_LOCAL.md" "" 500
-        check_required "VERIFY_LOCAL.md" "docs/VERIFY_LOCAL.md" 500
+        # RUNBOOK_LOCAL.md / VERIFY_LOCAL.md are root harness files; resolve any accepted location.
+        runbook_path="RUNBOOK_LOCAL.md"
+        for candidate in "RUNBOOK_LOCAL.md" "docs/RUNBOOK_LOCAL.md" "docs/specs/RUNBOOK_LOCAL.md"; do
+            if [ -f "$candidate" ]; then runbook_path="$candidate"; break; fi
+        done
+        check_required "$runbook_path" "" 500
+        verify_path="VERIFY_LOCAL.md"
+        for candidate in "VERIFY_LOCAL.md" "docs/VERIFY_LOCAL.md" "docs/specs/VERIFY_LOCAL.md"; do
+            if [ -f "$candidate" ]; then verify_path="$candidate"; break; fi
+        done
+        check_required "$verify_path" "" 500
         check_optional "ARCHITECTURE.md"
         check_optional "CONVENTIONS.md"
         ;;

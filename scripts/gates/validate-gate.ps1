@@ -76,7 +76,7 @@ $Gates = @{
             "AGENTS.md",
             "CONTEXT.md",
             "TODO.md",
-            "docs/RUNBOOK_LOCAL.md",
+            "RUNBOOK_LOCAL.md",
             "VERIFY_LOCAL.md"
         )
         Optional = @(
@@ -291,6 +291,18 @@ foreach ($file in $gate.Required) {
     if (-not $pathExists -and $file -eq "VERIFY_LOCAL.md" -and (Test-Path "docs/VERIFY_LOCAL.md")) {
         $pathExists = $true
         $actualFile = "docs/VERIFY_LOCAL.md"
+    }
+    if (-not $pathExists -and $file -eq "VERIFY_LOCAL.md" -and (Test-Path "docs/specs/VERIFY_LOCAL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/specs/VERIFY_LOCAL.md"
+    }
+    if (-not $pathExists -and $file -eq "RUNBOOK_LOCAL.md" -and (Test-Path "docs/RUNBOOK_LOCAL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/RUNBOOK_LOCAL.md"
+    }
+    if (-not $pathExists -and $file -eq "RUNBOOK_LOCAL.md" -and (Test-Path "docs/specs/RUNBOOK_LOCAL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/specs/RUNBOOK_LOCAL.md"
     }
     if (-not $pathExists -and $file -eq "docs/pm/GO_LIVE_REPORT.md" -and (Test-Path "docs/GO_LIVE_REPORT.md")) {
         $pathExists = $true
