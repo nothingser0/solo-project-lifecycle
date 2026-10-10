@@ -12,7 +12,7 @@
 - **Target User**: [e.g., Micro-retail store owners with 1–3 branches in metropolitan areas]
 - **Core Pain**: [e.g., Physical stock discrepancies vs Excel records averaging Rp 1–3M/month]
 - **Proposed Solution**: [e.g., Offline-first cashier & inventory app syncing automatically to Cloud/WhatsApp]
-- **Proposed Price Point**: Rp [X] / month (or $Y / month)
+- **Proposed Price Point**: Rp [X] / month
 - **Validation Lead**: [Your Name / Solo Dev]
 - **Date**: [YYYY-MM-DD]
 
@@ -45,14 +45,15 @@
 ## 4. Qualitative User Discovery (5 User Interviews)
 
 > ⚠️ **EVIDENCE RULE**: Data must originate from real user conversations. Never fabricate quotes.
+> State must explicitly be marked as `✅ Real` for verified customer conversations or `⏳ Pending` for planned ones.
 
 | Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
 |:--------------|:---------------------|:-----------------|:------------------------|:-------------------|:---------------:|
-| **INT-01** | [e.g., Grocery store, 2 staff] | Physical paper notebook | Monthly discrepancy ~Rp 800k | Willing to pay Rp 50k–100k/mo | [✅ Real / ⏳ Pending] |
-| **INT-02** | [e.g., Pet shop, 1 branch] | Excel on cashier laptop | Laptop freezes, corrupt spreadsheets | Willing to pay Rp 100k/mo | [✅ Real / ⏳ Pending] |
-| **INT-03** | [e.g., Boutique, 3 staff] | Commercial POS app X | Slow during offline, staff confusion | Willing to pay Rp 150k/mo if offline seamless | [✅ Real / ⏳ Pending] |
-| **INT-04** | [Business Type] | [Current tool] | [Friction] | [WTP] | [✅ Real / ⏳ Pending] |
-| **INT-05** | [Business Type] | [Current tool] | [Friction] | [WTP] | [✅ Real / ⏳ Pending] |
+| **INT-01** | [e.g., Grocery store, 2 staff] | Physical paper notebook | Monthly discrepancy ~Rp 800k | Willing to pay Rp 50k–100k/mo | ⏳ Pending |
+| **INT-02** | [e.g., Pet shop, 1 branch] | Excel on cashier laptop | Laptop freezes, corrupt spreadsheets | Willing to pay Rp 100k/mo | ⏳ Pending |
+| **INT-03** | [e.g., Boutique, 3 staff] | Commercial POS app X | Slow during offline, staff confusion | Willing to pay Rp 150k/mo if offline seamless | ⏳ Pending |
+| **INT-04** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
+| **INT-05** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
 
 ---
 

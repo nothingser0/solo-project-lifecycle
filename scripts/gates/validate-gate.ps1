@@ -475,18 +475,31 @@ if ($Module -eq "M00") {
             $missingRequired += "Gate-Decision: PASS"
         }
         # 2. Check unresolved placeholders
-        if ($content -match '\[\.\.\.\]|\[X\]/mo|\[Your Name\]') {
+        if ($content -match '\[\.\.\.\]|\[X\]/mo|\[Your Name\]|\[Business Type\]|\[Current tool\]|\[Competitor A\]') {
             Write-Host "  [ERROR] Unresolved template placeholders [...] detected in $userResearchFile!" -ForegroundColor Red
             $missingRequired += "Unresolved template placeholders [...]"
         }
         # 3. Check real interviews if M00_LITE
         if ($userResearchFile -like "*M00_LITE*") {
-            $realMatches = [regex]::Matches($content, "✅ Real").Count
+            $realMatches = [regex]::Matches($content, '(?i)\|\s*\*\*INT-0[1-5]\*\*\s*\|.*✅\s*Real').Count
             if ($realMatches -ge 3) {
-                Write-Host "  [OK] Real interviews verified: $realMatches (>= 3 minimum confirmed)" -ForegroundColor Green
+                Write-Host "  [OK] Real user interviews verified in INT-0x rows: $realMatches (>= 3 minimum confirmed)" -ForegroundColor Green
             } else {
-                Write-Host "  [ERROR] Insufficient real interviews: $realMatches (< 3 confirmed with '✅ Real')" -ForegroundColor Red
-                $missingRequired += "Minimum 3 real interviews (✅ Real)"
+                Write-Host "  [ERROR] Insufficient real interviews: $realMatches confirmed in INT-0x rows (< 3 confirmed with '✅ Real')" -ForegroundColor Red
+                $missingRequired += "Minimum 3 real interviews in INT-0x rows (✅ Real)"
+            }
+            # 4. Check Waitlist Conversion rate is numeric and >= 5.0%
+            if ($content -match '(?i)Waitlist-Conversion-Pct:\s*([0-9.]+)') {
+                $wlPct = [double]$matches[1]
+                if ($wlPct -lt 5.0) {
+                    Write-Host "  [ERROR] Waitlist-Conversion-Pct ($wlPct%) is below minimum gate pass threshold (5.0%)!" -ForegroundColor Red
+                    $missingRequired += "Waitlist-Conversion-Pct ($wlPct% < 5.0% threshold)"
+                } else {
+                    Write-Host "  [OK] Waitlist conversion rate verified: $wlPct% (>= 5.0% threshold)" -ForegroundColor Green
+                }
+            } else {
+                Write-Host "  [ERROR] Waitlist-Conversion-Pct numeric percentage missing in M00_LITE.md!" -ForegroundColor Red
+                $missingRequired += "Waitlist-Conversion-Pct numeric percentage"
             }
         }
     }

@@ -90,16 +90,31 @@ case "$GATE_MODULE" in
                 GATE_FAILED=1
             fi
             # 2. Check for unresolved template placeholders [...]
-            if grep -q "\[\.\.\.\]\|\[X\]/mo\|\[Your Name\]" "docs/pm/M00_LITE.md"; then
+            if grep -q "\[\.\.\.\]\|\[X\]/mo\|\[Your Name\]\|\[Business Type\]\|\[Current tool\]\|\[Competitor A\]" "docs/pm/M00_LITE.md"; then
                 echo "  ❌ Unresolved template placeholders [...] detected in M00_LITE.md!"
                 GATE_FAILED=1
             fi
-            # 3. Check real interview count (minimum 3 real interviews confirmed)
-            real_interviews=$(grep -c "✅ Real" "docs/pm/M00_LITE.md" 2>/dev/null || echo 0)
+            # 3. Check real interview count (must be in table rows INT-0x, minimum 3 confirmed)
+            real_interviews=$(grep -iE "\|\s*\*\*INT-0[1-5]\*\*\s*\|.*✅\s*Real" "docs/pm/M00_LITE.md" 2>/dev/null | wc -l || echo 0)
+            real_interviews=$(echo "$real_interviews" | tr -d ' ')
             if [ "$real_interviews" -ge 3 ]; then
-                echo "  ✅ Real interviews verified: $real_interviews (>= 3 minimum confirmed)"
+                echo "  ✅ Real user interviews verified in INT-0x rows: $real_interviews (>= 3 minimum confirmed)"
             else
-                echo "  ❌ Insufficient real interviews: $real_interviews (< 3 confirmed with '✅ Real')"
+                echo "  ❌ Insufficient real interviews: $real_interviews confirmed in INT-0x rows (< 3 confirmed with '✅ Real')"
+                GATE_FAILED=1
+            fi
+            # 4. Check Waitlist Conversion rate is numeric and >= 5.0%
+            wl_pct=$(grep -iE "Waitlist-Conversion-Pct:\s*[0-9.]+" "docs/pm/M00_LITE.md" 2>/dev/null | grep -oE "[0-9.]+" | head -1 || echo "")
+            if [ -n "$wl_pct" ]; then
+                is_low=$(awk -v val="$wl_pct" 'BEGIN { if (val < 5.0) print 1; else print 0 }' 2>/dev/null || echo 0)
+                if [ "$is_low" -eq 1 ]; then
+                    echo "  ❌ Waitlist-Conversion-Pct ($wl_pct%) is below minimum gate pass threshold (5.0%)!"
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Waitlist conversion rate verified: $wl_pct% (>= 5.0% threshold)"
+                fi
+            else
+                echo "  ❌ Waitlist-Conversion-Pct numeric percentage missing in M00_LITE.md!"
                 GATE_FAILED=1
             fi
         else
