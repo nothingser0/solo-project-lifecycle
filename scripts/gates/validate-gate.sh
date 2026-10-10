@@ -645,6 +645,48 @@ case "$GATE_MODULE" in
         else
         check_required "docs/specs/PRD.md" "" 2000
         check_required "docs/specs/FSD.md" "" 2000
+
+        # Content verification for FSD.md (Medium & Large scales)
+        if [ -f "docs/specs/FSD.md" ]; then
+            fsd="docs/specs/FSD.md"
+
+            # 1. Stack Decision LOCKED verification (BLOCKER)
+            if grep -qiE "Stack Decision LOCKED:" "$fsd"; then
+                echo "  ✅ Locked tech stack decision documented in FSD.md"
+            else
+                echo "  ❌ FSD.md missing locked tech stack decision ('Stack Decision LOCKED:')!"
+                GATE_FAILED=1
+            fi
+
+            # 2. Database Schema DDL existence (BLOCKER)
+            if grep -qiE "CREATE TABLE|mongoose\.Schema|models\.Model|Schema::create|model [A-Za-z]+ \{" "$fsd"; then
+                echo "  ✅ Database schema definition verified in FSD.md (DDL / ORM models present)"
+            else
+                echo "  ❌ FSD.md missing explicit database schema definition (CREATE TABLE / ORM models)!"
+                GATE_FAILED=1
+            fi
+
+            # 3. API Endpoints contract verification (Minimum 5 endpoints documented)
+            ep_count=$(grep -iE "####\s*(GET|POST|PUT|PATCH|DELETE)|Route::(get|post|put|delete)|@(Get|Post|Put|Delete)Mapping|path:\s*/api" "$fsd" 2>/dev/null | wc -l || echo 0)
+            ep_count=$(echo "$ep_count" | tr -d ' ')
+            if [ "${ep_count:-0}" -ge 5 ]; then
+                echo "  ✅ API endpoint contracts verified ($ep_count endpoints documented)"
+            else
+                echo "  ❌ FSD.md insufficient API endpoint contracts: found only ${ep_count:-0} endpoints (minimum 5 required)!"
+                GATE_FAILED=1
+            fi
+
+            # 4. Idempotency Key table verification for financial/mutation systems
+            if grep -qiE "financial|pembayaran|payment|saldo|transaksi|checkout|order" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                if grep -qiE "idempotency_keys|idempotency" "$fsd"; then
+                    echo "  ✅ Idempotency protection schema verified in FSD.md (idempotency_keys table present)"
+                else
+                    echo "  ❌ FSD.md missing idempotency_keys table for financial/mutation project!"
+                    GATE_FAILED=1
+                fi
+            fi
+        fi
+
         if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Enterprise scale detected: ADR and Audit Trail Specs are MANDATORY."
             check_required "docs/governance/ADR.md" "docs/specs/ADR.md"

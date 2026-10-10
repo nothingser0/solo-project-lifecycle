@@ -959,6 +959,49 @@ if ($Module -eq "M00") {
         }
     }
 }
+if ($Module -eq "M05" -and -not $isSmallScale) {
+    if (Test-Path "docs/specs/FSD.md") {
+        $fsdContent = Get-Content "docs/specs/FSD.md" -Raw
+
+        # 1. Stack Decision LOCKED
+        if ($fsdContent -match '(?i)Stack Decision LOCKED:') {
+            Write-Host "  [OK] Locked tech stack decision documented in FSD.md" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] FSD.md missing locked tech stack decision ('Stack Decision LOCKED:')!" -ForegroundColor Red
+            $missingRequired += "FSD.md (Stack Decision LOCKED:)"
+        }
+
+        # 2. Database Schema DDL
+        if ($fsdContent -match '(?i)CREATE TABLE|mongoose\.Schema|models\.Model|Schema::create|model [A-Za-z]+ \{') {
+            Write-Host "  [OK] Database schema definition verified in FSD.md (DDL / ORM models present)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] FSD.md missing explicit database schema definition (CREATE TABLE / ORM models)!" -ForegroundColor Red
+            $missingRequired += "FSD.md (database schema DDL)"
+        }
+
+        # 3. API Endpoints contract (>= 5 endpoints)
+        $epMatches = [regex]::Matches($fsdContent, '(?im)####\s*(GET|POST|PUT|PATCH|DELETE)|Route::(get|post|put|delete)|@(Get|Post|Put|Delete)Mapping|path:\s*/api').Count
+        if ($epMatches -ge 5) {
+            Write-Host "  [OK] API endpoint contracts verified ($epMatches endpoints documented)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] FSD.md insufficient API endpoint contracts: found only $epMatches endpoints (minimum 5 required)!" -ForegroundColor Red
+            $missingRequired += "FSD.md (>= 5 API endpoint contracts)"
+        }
+
+        # 4. Idempotency Key table for financial/mutation systems
+        if (Test-Path "docs/pm/PROJECT_STATE.md") {
+            $stContent = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+            if ($stContent -match '(?i)financial|pembayaran|payment|saldo|transaksi|checkout|order') {
+                if ($fsdContent -match '(?i)idempotency_keys|idempotency') {
+                    Write-Host "  [OK] Idempotency protection schema verified in FSD.md (idempotency_keys table present)" -ForegroundColor Green
+                } else {
+                    Write-Host "  [ERROR] FSD.md missing idempotency_keys table for financial/mutation project!" -ForegroundColor Red
+                    $missingRequired += "FSD.md (idempotency_keys schema)"
+                }
+            }
+        }
+    }
+}
 if ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
     if ($reconFile) {
