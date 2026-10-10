@@ -26,6 +26,36 @@
 
 ---
 
+## 1.1 Strict Anti-AI-Slop Code Directives (BANNED PATTERNS)
+
+To prevent AI generated bloat, low-quality code, and hallucinations:
+
+1. **BANNED: Redundant Explanatory Comments**:
+   - ❌ **FORBIDDEN**: Explaining obvious code (e.g., `// Increment counter` above `counter++`, or `// Import React` above imports).
+   - ❌ **FORBIDDEN**: Stub comments like `// TODO: Implement security here` or `// Add your logic`.
+   - ✅ **RULE**: Code must be self-documenting. ONLY comment non-obvious business logic, domain formulas, or deliberate workarounds with a `ponytail:` comment naming the upgrade path.
+
+2. **BANNED: Duplicated / Verbose Logic (DRY Violation)**:
+   - ❌ **FORBIDDEN**: Copy-pasting identical data fetching, auth checks, or validation routines across multiple endpoints.
+   - ✅ **RULE**: Extract reusable utility functions, custom hooks, or middleware. Functions > 50 lines must be justified or decomposed.
+
+3. **BANNED: Hallucinated Libraries & Deprecated APIs**:
+   - ❌ **FORBIDDEN**: Importing non-existent NPM packages or inventing APIs not in official documentation.
+   - ❌ **FORBIDDEN**: Using deprecated packages (e.g., `@supabase/auth-helpers-nextjs`, `bodyParser`, `request`).
+   - ✅ **RULE**: Verify package existence in `package.json` before importing. Use current dynamic APIs (e.g. `await cookies()`, `await headers()` in Next.js 15+).
+
+4. **BANNED: Silent Failures & Empty Catch Blocks**:
+   - ❌ **FORBIDDEN**: `try { ... } catch (e) {}` (eating errors silently without logging or rethrowing).
+   - ❌ **FORBIDDEN**: Returning fake static UUIDs (e.g., `'11111111-...'`) in production code.
+   - ✅ **RULE**: All errors must be explicitly logged, handled, or returned to the client as typed error responses.
+
+5. **BANNED: Insecure Input Handling & Hardcoded Secrets**:
+   - ❌ **FORBIDDEN**: Hardcoded API keys, tokens, database passwords in source code.
+   - ❌ **FORBIDDEN**: Raw SQL concatenation (SQL injection vulnerability).
+   - ✅ **RULE**: Validate 100% of external inputs with Zod schemas. Read secrets exclusively from `process.env`.
+
+---
+
 ## 2. Official Documentation & Framework Version Rules
 
 **Always verify installed versions before writing code (`npm list next react @supabase/ssr zod`):**

@@ -868,7 +868,15 @@ Agent reads stack-specific templates from skill://, writes to staging:
 #### Next.js AGENTS.md (TypeScript Strict Mode)
 ```markdown
 # AI Agent Guidelines - Next.js Project
+```
 
+### Anti-AI-Slop Code Directives (Enforced across all AGENTS.md)
+Every stack-specific `AGENTS.md` strictly bans these 5 common AI coding defects:
+1. **Banned: Redundant & Obvious Comments**: No commenting what the code clearly does (e.g., `// Add 1 to x` above `x += 1`). No leaving `// TODO: Implement later` stubs in production files.
+2. **Banned: Verbose & Duplicated Logic**: No copy-pasting the same logic 5 times. Must extract shared helpers, custom hooks, or service layers.
+3. **Banned: Hallucinated Libraries**: No importing uninstalled or fictitious packages. Verify all dependencies against `package.json` before importing.
+4. **Banned: Silent Failures & Empty Catch**: No `try { ... } catch {}` that swallows errors. All failures must be logged or surfaced cleanly.
+5. **Banned: Hardcoded Secrets & Unvalidated Inputs**: 100% of external inputs must be validated via Zod/schemas; zero raw SQL string concatenation; zero hardcoded API keys.
 
 > 📚 **EXTENDED HARNESS IMPLEMENTATIONS & SPRINT RUNBOOKS**:
 > For framework-specific DDL/ORM code styles (Next.js/Prisma, Laravel/Eloquent, Django/ORM), sprint-by-sprint execution guides (Sprints 0–6), and M06B enterprise product instrumentation, consult:
