@@ -258,6 +258,10 @@ if ($Module -eq "M01" -and $isSmallScale) {
     Write-Host "  [INFO] Small Scale detected: M01 Idea Feasibility is WAIVED (Handled by Intake Gate & PROJECT_LITE)." -ForegroundColor Cyan
     $gate.Required = @()
 }
+if ($Module -eq "M02" -and $isSmallScale) {
+    Write-Host "  [INFO] Small Scale detected: M02 Discovery & Scope is WAIVED (Handled by Intake Gate & PROJECT_LITE)." -ForegroundColor Cyan
+    $gate.Required = @()
+}
 if ($Module -eq "M05" -and $isSmallScale) {
     Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
     $gate.Required = @("PROJECT_LITE.md")
@@ -490,7 +494,9 @@ if ($Module -eq "M00") {
     }
     } # end of isM01Waived else
 } elseif ($Module -eq "M02") {
-    if (Test-Path "docs/pm/SCOPE_STATEMENT.md") {
+    if ($isSmallScale) {
+        Write-Host "  [INFO] Small Scale detected: M02 Discovery & Scope is WAIVED (Handled by Intake Gate & PROJECT_LITE)." -ForegroundColor Cyan
+    } elseif (Test-Path "docs/pm/SCOPE_STATEMENT.md") {
         $scopeContent = Get-Content "docs/pm/SCOPE_STATEMENT.md" -Raw
         $scopeLines = Get-Content "docs/pm/SCOPE_STATEMENT.md"
 

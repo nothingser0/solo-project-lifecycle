@@ -129,7 +129,7 @@ Break each module into specific features with priority labels:
 **Template**: `templates/01-discovery-commercial/MOSCOW_MATRIX.md` (60-min workshop format, decision tree, examples)
 
 - **Must Have (P0)**: The system fails to function without this feature (e.g., order checkout, login authentication).
-  - **Max Must-Haves by Scale**: Small: 3–7 features (1–3 core user flows) | Medium: 8–15 features | Large: 16–25 features | Enterprise: 26–40 features
+  - **Max Must-Haves by Scale**: Small: 3–7 features (1–3 core user flows) | Medium: 8–15 features | Large: 16–25 features (Wajib dipecah bertahap via WBS) | Beyond Solo (>25 features): Dialihkan ke Seri A Advisory (A01 WBS Phasing; dilarang koding solo)
   - If limits are exceeded, downgrade to Should-Have or Phase 2.
 - **Should Have (P1)**: Important features with temporary manual workarounds (e.g., export reports to Excel).
 - **Could Have (P2)**: Additional features if time and solo dev capacity permit (e.g., WhatsApp notifications).
@@ -382,12 +382,12 @@ Map all participants into 4 quadrants: Manage Closely (Paying Owner), Keep Satis
 
 ## 3. Adaptation Based on Project Scale
 
-| Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large Scale & Enterprise |
+| Aspect | 🔵 Small Scale (Fast-Track MVP) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡🔴 Large & Enterprise (Non-Solo Capacity) |
 | :--- | :--- | :--- | :--- |
-| **Interview Duration** | 1 chat/call session (30–60 min) | 2–3 discovery sessions (1–2 weeks) | Tiered workshops per division (2–4 weeks) |
-| **Persona Depth** | 1–2 simple user roles | 3–5 roles with RBAC matrix | Multi-division, department hierarchy, Okta/AD SSO |
-| **Scope Document** | 1-page Scope Checklist | Formal Scope Statement & API outline | Full Scope Statement, RTM draft, Compliance scope |
-| **Dependencies** | Basic hosting access & payment keys | 2–4 cloud service integrations | Legacy ERP integrations, internal firewall approvals |
+| **Recommended Path** | **M02 DI-SKIP** (Scope locked in `PROJECT_LITE.md`) | **Wajib M02 Penuh** (`docs/pm/SCOPE_STATEMENT.md`) | **Dialihkan ke Fase A01** (WBS Phasing & Domain Decomposition) |
+| **Scope Document** | Bagian In/Out-Scope di `PROJECT_LITE.md` | Formal Scope Statement $\ge 2000$B (8–15 P0) | WBS Phasing Plan (memecah sistem ke beberapa paket Medium) |
+| **Persona & RBAC** | 1–2 role sederhana | 3–5 role dengan matriks RBAC (Zero Self-Approval) | Multi-divisi, hierarki cabang, katalog izin korporat |
+| **Stakeholder Docs** | Di-waive | `STAKEHOLDER_MAP.md` & `COMMUNICATION_PLAN.md` | Matriks RACI korporat (`templates/03-governance/RACI_MATRIX.md`) |
 
 ---
 
@@ -410,7 +410,7 @@ Map all participants into 4 quadrants: Manage Closely (Paying Owner), Keep Satis
    - **Solo dev projects**: Simplified version (1-page update schedule + 1 escalation contact)
 
 4. **`docs/pm/RACI_MATRIX.md`** (Company/team projects)
-   - Template: `templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md`
+   - Template: `templates/03-governance/RACI_MATRIX.md`
    - Contents: Responsible/Accountable/Consulted/Informed per deliverable
    - **Solo dev projects**: Optional (typically: Solo Dev = R, Client = A for most items)
 

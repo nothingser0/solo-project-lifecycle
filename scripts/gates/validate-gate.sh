@@ -237,7 +237,17 @@ case "$GATE_MODULE" in
         ;;
     M02)
         echo "=== M02: Discovery & Scope Gate Checklist ==="
-        check_required "docs/pm/SCOPE_STATEMENT.md" "" 2000
+        # 1. Automatic waiver for Small Scale (handled via Intake Gate + PROJECT_LITE.md)
+        is_m02_waived=0
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small Scale detected: M02 Discovery & Scope is WAIVED (Handled by Intake Gate & PROJECT_LITE)."
+            is_m02_waived=1
+        fi
+
+        if [ $is_m02_waived -eq 1 ]; then
+            check_optional "docs/pm/SCOPE_STATEMENT.md" "PROJECT_LITE.md"
+        else
+            check_required "docs/pm/SCOPE_STATEMENT.md" "" 2000
         if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY."
             check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md"
@@ -311,6 +321,7 @@ case "$GATE_MODULE" in
             check_required "docs/pm/STAKEHOLDER_MAP.md" "" 500
             check_required "docs/pm/COMMUNICATION_PLAN.md" "" 500
         fi
+        fi # end of is_m02_waived else
         ;;
     M03)
         echo "=== M03: Legal SOW & Charter Checklist ==="
