@@ -166,7 +166,7 @@ Scale classification is driven by **engineering risk profile and operational loa
 
 **Bespoke Freelance & Client Commercial (Agency / Mid-Tier)**:
 - **Criteria**: 8–15 P0 Must-Haves, external API/payment webhooks, fixed commercial contract with 1 Client Single PIC, 99.0% SLA, 1–3 months.
-- Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
+- Path: M01 → M02 → **M03** → M04 → M05 → M06 → **M07** → **M09** → M10 → **M11** → M12
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
 - Example: Custom bespoke business portal, e-commerce, internal company tool, academic software deliverable
 

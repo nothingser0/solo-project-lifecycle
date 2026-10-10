@@ -12,9 +12,10 @@ This module is the **earliest gate** in the software development lifecycle for s
 - The project requires industry-grade Product Management (PM) standards.
 - There is a need for market validation, competitor analysis, and in-depth user research before writing code.
 
-**Lifecycle Path Guidelines**:
-- **Self-Initiated Product / Solo SaaS**: **DO NOT SKIP MARKET VALIDATION**. The #1 risk for solo SaaS is building something nobody pays for. Execute **M00-lite** (1-page rapid market validation: assumption register + 5 customer interviews + waitlist/landing page test; template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
-- **Fixed-Scope Client Projects / Internal Utilities**: Skip M00 and proceed directly to Module 01 or Module 04 since scope and commercial terms are already set by the client.
+**Lifecycle Path Guidelines (Bound to `Delivery:` in `docs/pm/PROJECT_STATE.md`)**:
+- **`Delivery: solo` (Self-Initiated Product / Solo SaaS)**: **MANDATORY — DO NOT SKIP MARKET VALIDATION**. The #1 risk for solo SaaS is building something nobody pays for. Execute **M00-lite** (1-page rapid market validation: assumption register + 5 customer interviews + waitlist test; template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
+- **`Delivery: client` (Client Commercial Project / Software House)**: **SKIPPED**. Problem scope, requirements, and commercial terms are already set by the client. Proceed directly to Module 01 (Feasibility) or Module 03 (SOW Contract).
+- **`Delivery: internal` / `portfolio`**: **SKIPPED**. Internal workflows or portfolio briefs are pre-determined. Proceed to Module 01 or Fast-Track Intake.
 
 ---
 

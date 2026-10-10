@@ -95,6 +95,26 @@ case "$GATE_MODULE" in
             check_required "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/COMPETITOR_ANALYSIS.md" 1500
             check_required "docs/pm/USER_RESEARCH_REPORT.md" "" 1500
             check_required "docs/pm/PRODUCT_STRATEGY.md" "" 1500
+
+            # 1. Reject template placeholders in all Full M00 docs
+            for doc in "docs/pm/MARKET_RESEARCH.md" "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/USER_RESEARCH_REPORT.md" "docs/pm/PRODUCT_STRATEGY.md"; do
+                if [ -f "$doc" ] && grep -q "\[\.\.\.\]" "$doc"; then
+                    echo "  ❌ Unresolved template placeholders [...] detected in $doc!"
+                    GATE_FAILED=1
+                fi
+            done
+
+            # 2. Verify MARKET_RESEARCH.md cites live sources and verification dates
+            if [ -f "docs/pm/MARKET_RESEARCH.md" ]; then
+                if grep -qiE "https?://" "docs/pm/MARKET_RESEARCH.md" && grep -qiE "Verified:|Tahun 20|202[0-9]-[0-9]{2}-[0-9]{2}" "docs/pm/MARKET_RESEARCH.md"; then
+                    echo "  ✅ Market research sources and verification dates verified"
+                else
+                    echo "  ❌ MARKET_RESEARCH.md must cite live source URLs (https://) and verification dates!"
+                    GATE_FAILED=1
+                fi
+            fi
+
+            # 3. Verify USER_RESEARCH_REPORT.md structured decision & numeric intent
             if [ -f "docs/pm/USER_RESEARCH_REPORT.md" ]; then
                 if grep -qiE "^Gate-Decision:\s*PENDING|PENDING_PRIMARY_RESEARCH" "docs/pm/USER_RESEARCH_REPORT.md"; then
                     echo "  ❌ Gate status: PENDING_PRIMARY_RESEARCH (Real user data pending; synthetic data prohibited)"
@@ -109,12 +129,14 @@ case "$GATE_MODULE" in
                     GATE_FAILED=1
                 fi
             fi
-            # Check competitor hands-on testing evidence
+
+            # 4. Hands-on competitor testing is a MANDATORY BLOCKER
             if [ -f "docs/pm/COMPETITIVE_LANDSCAPE.md" ]; then
                 if grep -qiE "Test Date|Tanggal Uji|Onboarding Time|Waktu Onboarding" "docs/pm/COMPETITIVE_LANDSCAPE.md"; then
                     echo "  ✅ Hands-on competitor testing evidence verified"
                 else
-                    echo "  ⚠️  Hands-on competitor testing evidence (Test Date / Onboarding Time) not explicitly documented"
+                    echo "  ❌ Hands-on competitor testing evidence (Test Date / Onboarding Time) missing in COMPETITIVE_LANDSCAPE.md!"
+                    GATE_FAILED=1
                 fi
             fi
         fi

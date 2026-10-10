@@ -388,6 +388,18 @@ if ($Module -eq "M00") {
         $compContent = Get-Content "docs/pm/COMPETITIVE_LANDSCAPE.md" -Raw
         if ($compContent -match '(?i)Test Date|Tanggal Uji|Onboarding Time|Waktu Onboarding') {
             Write-Host "  [OK] Hands-on competitor testing evidence verified" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] Hands-on competitor testing evidence (Test Date / Onboarding Time) missing in COMPETITIVE_LANDSCAPE.md!" -ForegroundColor Red
+            $missingRequired += "Competitor hands-on testing evidence (Test Date / Onboarding Time)"
+        }
+    }
+    if (Test-Path "docs/pm/MARKET_RESEARCH.md") {
+        $mktContent = Get-Content "docs/pm/MARKET_RESEARCH.md" -Raw
+        if ($mktContent -match "https?://" -and ($mktContent -match "(?i)Verified:|Tahun 20|202[0-9]-[0-9]{2}-[0-9]{2}")) {
+            Write-Host "  [OK] Market research sources and verification dates verified" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] MARKET_RESEARCH.md must cite live source URLs (https://) and verification dates!" -ForegroundColor Red
+            $missingRequired += "Market research sources (https://) and verification dates"
         }
     }
 } elseif ($Module -eq "M01") {
