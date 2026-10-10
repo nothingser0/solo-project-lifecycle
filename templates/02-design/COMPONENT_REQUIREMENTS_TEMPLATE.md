@@ -250,7 +250,7 @@ CTA Button: [ + Buat Faktur Baru ]
 2. **Instant Micro-Feedback**: Inline field validations trigger immediately on `blur`; successful actions trigger instant toast notifications (<100ms) before network background completion.
 3. **Make Progress Visible**: In long processes (imports, uploads, audits), show real percentage progress bars (`Progress` component), never endless spinning wheels without time estimates.
 
-### 7.2 Strict Unified Z-Index Hierarchy
+## 7.5 Strict Unified Z-Index Hierarchy
 *To prevent modal dropdown collisions, combobox clipping, and sticky bar bleed-through:*
 
 ```css
