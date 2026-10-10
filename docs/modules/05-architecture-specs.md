@@ -250,7 +250,7 @@ Options:
 - [ ] PCI-DSS (Payment processing - credit card data)
 
 **Why this matters**:
-- HIPAA/PCI-DSS: Managed cloud with compliance certifications (AWS, Azure)
+- PCI-DSS / Sektor Finansial & Medis: Managed cloud with compliance certifications (AWS, Azure)
 - ISO27001: Need audit logs (database triggers, Sentry logging)
 - None: Simpler stack choices, faster iteration
 
