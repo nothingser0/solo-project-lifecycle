@@ -403,6 +403,37 @@ if ($Module -eq "M00") {
         }
     }
 } elseif ($Module -eq "M01") {
+    $briefFile = if (Test-Path "docs/pm/IDEA_BRIEF.md") { "docs/pm/IDEA_BRIEF.md" } elseif (Test-Path "docs/pm/FEASIBILITY_REPORT.md") { "docs/pm/FEASIBILITY_REPORT.md" } else { $null }
+    if ($briefFile) {
+        $briefContent = Get-Content $briefFile -Raw
+        # 1. Reject placeholders [...]
+        if ($briefContent -match '\[\.\.\.\]|\[Example:|\[Your Name\]') {
+            Write-Host "  [ERROR] Unresolved template placeholders [...] detected in $briefFile!" -ForegroundColor Red
+            $missingRequired += "Unresolved template placeholders [...]"
+        }
+        # 2. Blocking Feasibility Decision check
+        if ($briefContent -match '(?i)Feasibility-Decision:\s*KILL|\[x\]\s*\*\*KILL\*\*') {
+            Write-Host "  [ERROR] Gate status: KILL (Fatal single-point blocker; project terminated)" -ForegroundColor Red
+            $missingRequired += "Feasibility-Decision: GO (currently KILL)"
+        } elseif ($briefContent -match '(?i)Feasibility-Decision:\s*PIVOT|\[x\]\s*\*\*PIVOT\*\*') {
+            Write-Host "  [ERROR] Gate status: PIVOT (Idea feasibility rejected; return to M00 or restructure scope)" -ForegroundColor Red
+            $missingRequired += "Feasibility-Decision: GO (currently PIVOT)"
+        } elseif ($briefContent -match '(?i)Feasibility-Decision:\s*(GO|CONDITIONAL_GO)|\[x\]\s*\*\*(GO|CONDITIONAL GO)\*\*') {
+            Write-Host "  [OK] Feasibility decision verified: GO / CONDITIONAL_GO" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] Explicit Feasibility-Decision (GO | CONDITIONAL_GO | PIVOT | KILL) not declared!" -ForegroundColor Red
+            $missingRequired += "Feasibility-Decision: GO"
+        }
+        # 3. Dimension Floor Verification
+        if ($briefContent -match '(?i)Feasibility-Score-(Technical|Operational|Regulatory|Financial):\s*[0-2](\.[0-9]+)?') {
+            Write-Host "  [ERROR] Dimension Floor Failure: Individual dimension score < 3.0 detected!" -ForegroundColor Red
+            $missingRequired += "Dimension Floor (all individual dimensions >= 3.0)"
+        } else {
+            if ($briefContent -match '(?i)Feasibility-Score-(Technical|Operational|Regulatory|Financial):') {
+                Write-Host "  [OK] Dimension Floor verified: All individual dimensions >= 3.0" -ForegroundColor Green
+            }
+        }
+    }
     if (Test-Path "docs/pm/PROJECT_STATE.md") {
         $stateRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
         $fields = @("Delivery:", "Intake-Success-Metric:", "Intake-P0-Features:", "Intake-Time-Capacity:", "Intake-Sensitive-Data:")

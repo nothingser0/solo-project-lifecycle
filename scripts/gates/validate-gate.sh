@@ -145,7 +145,44 @@ case "$GATE_MODULE" in
         echo "=== M01: Idea Feasibility Gate Checklist ==="
         check_required "docs/pm/IDEA_BRIEF.md" "docs/pm/FEASIBILITY_REPORT.md" 1000
         check_required "docs/pm/PROJECT_STATE.md" "" 200
-        # Intake Gate: reject if mandatory intake fields are empty or UNKNOWN
+
+        # Target file resolution
+        brief_file="docs/pm/IDEA_BRIEF.md"
+        [ -f "$brief_file" ] || brief_file="docs/pm/FEASIBILITY_REPORT.md"
+
+        if [ -f "$brief_file" ]; then
+            # 1. Reject template placeholders [...]
+            if grep -q "\[\.\.\.\]\|\[Example:\|\[Your Name\]" "$brief_file"; then
+                echo "  ❌ Unresolved template placeholders [...] detected in $brief_file!"
+                GATE_FAILED=1
+            fi
+
+            # 2. Blocking Feasibility Decision check
+            if grep -qiE "^Feasibility-Decision:\s*KILL|\[x\]\s*\*\*KILL\*\*" "$brief_file"; then
+                echo "  ❌ Gate status: KILL (Fatal single-point blocker; project terminated)"
+                GATE_FAILED=1
+            elif grep -qiE "^Feasibility-Decision:\s*PIVOT|\[x\]\s*\*\*PIVOT\*\*" "$brief_file"; then
+                echo "  ❌ Gate status: PIVOT (Idea feasibility rejected; return to M00 or restructure scope)"
+                GATE_FAILED=1
+            elif grep -qiE "^Feasibility-Decision:\s*(GO|CONDITIONAL_GO)|\[x\]\s*\*\*(GO|CONDITIONAL GO)\*\*" "$brief_file"; then
+                echo "  ✅ Feasibility decision verified: GO / CONDITIONAL_GO"
+            else
+                echo "  ❌ Explicit Feasibility-Decision (GO | CONDITIONAL_GO | PIVOT | KILL) not declared!"
+                GATE_FAILED=1
+            fi
+
+            # 3. Dimension Floor Verification (Every individual dimension must be >= 3.0)
+            if grep -qiE "^Feasibility-Score-(Technical|Operational|Regulatory|Financial):\s*[0-2](\.[0-9]+)?" "$brief_file"; then
+                echo "  ❌ Dimension Floor Failure: Individual dimension score < 3.0 detected!"
+                GATE_FAILED=1
+            else
+                if grep -qiE "^Feasibility-Score-(Technical|Operational|Regulatory|Financial):" "$brief_file"; then
+                    echo "  ✅ Dimension Floor verified: All individual dimensions >= 3.0"
+                fi
+            fi
+        fi
+
+        # 4. Intake Gate: reject if mandatory intake fields are empty or UNKNOWN
         if [ -f "docs/pm/PROJECT_STATE.md" ]; then
             for field in "Delivery:" "Intake-Success-Metric:" "Intake-P0-Features:" "Intake-Time-Capacity:" "Intake-Sensitive-Data:"; do
                 if grep -qiE "^\s*-?\s*$field\s*(UNKNOWN|\[|$)" "docs/pm/PROJECT_STATE.md"; then

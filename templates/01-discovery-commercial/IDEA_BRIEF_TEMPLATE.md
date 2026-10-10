@@ -103,12 +103,17 @@
 | **4. Commercial Feasibility (Unit Economics)** | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
 | **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4)* |
 
-### Gate Decision
-- [ ] **GO**: Average score $\ge 3.5 / 5.0$ AND **every individual dimension $\ge 3.0$**. Proceed to Module 02.
-- [ ] **CONDITIONAL GO**: Average score $3.0 - 3.49 / 5.0$ AND **every individual dimension $\ge 3.0$** with documented mitigation for any 3.0 score.
-- [ ] **PIVOT**: Average score $< 3.0 / 5.0$ OR **any single dimension $= 2.0$**. Scope/business model restructure required.
-- [ ] **KILL**: Average score $< 2.5 / 5.0$ OR **any single dimension $= 1.0$**. Critical single-point fatal blocker; terminate project.
-- [ ] **PROVISIONAL_PENDING_M00**: Scored provisionally; held pending primary research validation in Module 00.
+### Machine Validation Summary (M01 Feasibility Scores & Decision)
+
+```text
+Feasibility-Score-Technical: [3.0 - 5.0]
+Feasibility-Score-Operational: [3.0 - 5.0]
+Feasibility-Score-Regulatory: [3.0 - 5.0]
+Feasibility-Score-Financial: [3.0 - 5.0]
+Feasibility-Decision: PENDING
+```
+
+*(Options: GO | CONDITIONAL_GO | PIVOT | KILL. Machine validator strictly rejects M01 if any individual dimension < 3.0 or if Feasibility-Decision is KILL/PIVOT).*
 
 ---
 
