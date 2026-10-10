@@ -11,7 +11,7 @@ if [ -z "$GATE_MODULE" ]; then
     echo "Usage: $0 <MODULE_ID>"
     echo "Example: $0 M03"
     echo ""
-    echo "Available gates: M00, M01, M02, M03, M04, M05, M06, M07, M08, M09, M10, M11, M12, M13"
+    echo "Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)"
     exit 1
 fi
 
@@ -795,9 +795,35 @@ case "$GATE_MODULE" in
             fi
         fi
         ;;
+    # =========================================================================
+    # Enterprise Advisory Series (A00 - A04): Non-Solo Capacity Lifecycle
+    # =========================================================================
+    A00)
+        echo "=== A00: Bid/No-Bid & Commercial Clearance Checklist ==="
+        check_required "contracts/CONSULTING_AGREEMENT.md" "docs/pm/CONSULTING_AGREEMENT.md" 1000
+        check_optional "docs/pm/RFP_RESPONSE.md"
+        ;;
+    A01)
+        echo "=== A01: WBS Phasing & Domain Decomposition Checklist ==="
+        check_required "docs/pm/WBS_PHASING_PLAN.md" "" 1000
+        ;;
+    A02)
+        echo "=== A02: C4 Enterprise Architecture & STRIDE Threat Modeling Checklist ==="
+        check_required "docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md" "docs/specs/ARCHITECTURE_BLUEPRINT.md" 1000
+        check_required "docs/security/THREAT_MODEL_STRIDE.md" "docs/specs/THREAT_MODEL.md" 1000
+        ;;
+    A03)
+        echo "=== A03: Vendor Procurement & Build-vs-Buy Evaluation Checklist ==="
+        check_required "docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md" "docs/specs/VENDOR_PROCUREMENT_SCHEDULE.md" 800
+        check_required "docs/governance/VENDOR_COMPARISON_MATRIX.md" "docs/pm/VENDOR_COMPARISON_MATRIX.md" 500
+        ;;
+    A04)
+        echo "=== A04: Governance Handover & Architecture Conformance Retainer Checklist ==="
+        check_required "docs/governance/GOVERNANCE_HANDOVER_PACK.md" "docs/pm/GOVERNANCE_HANDOVER_PACK.md" 1000
+        ;;
     *)
         echo "❌ Unknown gate: $GATE_MODULE"
-        echo "Available gates: M00, M01, M02, M03, M04, M05, M06, M07, M08, M09, M10, M11, M12, M13"
+        echo "Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)"
         exit 1
         ;;
 esac

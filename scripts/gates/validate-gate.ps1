@@ -151,6 +151,46 @@ $Gates = @{
             "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"
         )
     }
+    # Enterprise Advisory Series (A00 - A04)
+    "A00" = @{
+        Name = "Advisory Commercial Clearance"
+        Required = @(
+            "contracts/CONSULTING_AGREEMENT.md"
+        )
+        Optional = @(
+            "docs/pm/RFP_RESPONSE.md"
+        )
+    }
+    "A01" = @{
+        Name = "WBS Phasing & Domain Decomposition"
+        Required = @(
+            "docs/pm/WBS_PHASING_PLAN.md"
+        )
+        Optional = @()
+    }
+    "A02" = @{
+        Name = "C4 Enterprise Architecture & STRIDE"
+        Required = @(
+            "docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md",
+            "docs/security/THREAT_MODEL_STRIDE.md"
+        )
+        Optional = @()
+    }
+    "A03" = @{
+        Name = "Vendor Procurement & Build-vs-Buy"
+        Required = @(
+            "docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md",
+            "docs/governance/VENDOR_COMPARISON_MATRIX.md"
+        )
+        Optional = @()
+    }
+    "A04" = @{
+        Name = "Governance Handover & Retainer"
+        Required = @(
+            "docs/governance/GOVERNANCE_HANDOVER_PACK.md"
+        )
+        Optional = @()
+    }
 }
 
 # Check if module exists

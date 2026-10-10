@@ -498,6 +498,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/01-discovery-commercial/BACKLOG_TEMPLATE.md",
       "cataloged": true,
       "modules": [

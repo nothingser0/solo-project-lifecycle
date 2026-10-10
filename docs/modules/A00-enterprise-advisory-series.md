@@ -67,11 +67,13 @@
 2. **Gate Validation**: Run `./scripts/gates/classify-scale.sh` against each phase specification. Each phase **MUST resolve to `Scale: medium`**.
 
 ### Phase A02: C4 Modeling, STRIDE & Quality Scenarios
-1. **C4 Hierarchy**: Context (System boundaries) $ightarrow$ Containers (Web, API, DB, Queue) $ightarrow$ Components (Domain engines).
+1. **C4 Hierarchy**: Context (System boundaries) $
+ightarrow$ Containers (Web, API, DB, Queue) $
+ightarrow$ Components (Domain engines).
 2. **STRIDE Threat Modeling**: Explicit mitigations per container (e.g., mTLS between services, KMS envelope encryption for PII, HMAC-SHA256 webhooks).
 3. **ATAM Scenarios**: No generic "SLA 99.9%". Define concrete stimulus-response pairs:
    - *Scenario*: Ingestion spike of 1,000 TPS during morning batch peak.
-   - *Expected Response*: Queue buffer absorbs load, worker autoscales, API p95 $\le 400	ext{ ms}$, zero messages dropped.
+   - *Expected Response*: Queue buffer absorbs load, worker autoscales, API p95 $\le 400\text{ ms}$, zero messages dropped.
 4. **Data Residency**: Lock cloud deployment to Indonesian territory (PP 71/2019 & UU PDP) via explicit ADR entry.
 
 ### Phase A03: Vendor Procurement & Build-vs-Buy
@@ -82,3 +84,30 @@
 ### Phase A04: Governance Handover
 1. **Templates as Client Deliverables**: `CAB_PROCESS.md` and `DISASTER_RECOVERY_PLAN.md` are deliverables for the client IT operations team, not runtime obligations of the advisor.
 2. **Architecture Conformance Review**: Transition into a monthly retainer to inspect vendor pull requests and architecture compliance at each sprint milestone.
+
+---
+
+## 3. Output Artifacts & Deliverables
+
+| Phase | Phase Name | Primary Deliverables | Standard Template |
+| :---: | :--- | :--- | :--- |
+| **A00** | Commercial Clearance | `contracts/CONSULTING_AGREEMENT.md` | `templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md` |
+| **A01** | WBS Decomposition | `docs/pm/WBS_PHASING_PLAN.md` | `templates/00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md` |
+| **A02** | C4 & Threat Model | `docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md`<br>`docs/security/THREAT_MODEL_STRIDE.md` | Architecture Blueprint & STRIDE Reference |
+| **A03** | Vendor Procurement | `docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md`<br>`docs/governance/VENDOR_COMPARISON_MATRIX.md` | `templates/03-governance/VENDOR_COMPARISON_MATRIX.md` |
+| **A04** | Governance Handover | `docs/governance/GOVERNANCE_HANDOVER_PACK.md` | Governance Pack & Retainer Charter |
+
+---
+
+## 4. Gate Verification Protocol (A00 - A04)
+
+Execute automated verification before declaring phase completion:
+
+```bash
+# Validate Advisory Phase Gate Checkpoints:
+./scripts/gates/validate-gate.sh A00   # Commercial Consulting Clearance
+./scripts/gates/validate-gate.sh A01   # WBS Phasing & Domain Decomposition
+./scripts/gates/validate-gate.sh A02   # C4 Architecture Blueprint & STRIDE
+./scripts/gates/validate-gate.sh A03   # Vendor Procurement Schedule & Matrix
+./scripts/gates/validate-gate.sh A04   # Governance Handover & Retainer
+```
