@@ -55,12 +55,15 @@ $$\text{Sprint 0 (Setup)} \longrightarrow \text{Sprint 1 (Database)} \longrighta
   - **Expected**: Aset brand valid; tidak ada icon placeholder kaku.
   - **Evidence**: Listing file visual di direktori aset.
 
-- [ ] **M06-SETUP-03: Documentation & Specs Pre-Read Sign-Off**
-  - Baca `docs/specs/FSD.md`, `docs/specs/PRD.md`, dan `docs/specs/DESIGN.md` secara utuh sebelum menulis kode.
-  - Pahami kontrak data, hak akses role (RBAC), dan aturan mutasi atomik.
-  - **Verify**: Catat model status, aturan idempotensi, dan kebijakan RLS.
-  - **Expected**: Pemahaman penuh sebelum menyentuh file skema.
-  - **Evidence**: Checklist bagian spesifikasi yang telah dibaca.
+- [ ] **M06-SETUP-03: Mandatory Documentation & Specs Pre-Read Sign-Off (ALL SCALES)**
+  - **Wajib dibaca utuh SEBELUM menulis baris kode pertama.** Dokumen wajib dibaca bersifat adaptif terhadap skala:
+    - **Semua skala**: `AGENTS.md` (aturan koding & anti-slop), `CONTEXT.md` (konteks bisnis & batas out-of-scope), `docs/specs/DESIGN.md` (token visual), `docs/specs/SITEMAP.md` (peta rute & Screen ID `SCR-xx`), `docs/specs/DESIGN_SPEC.md` (wireflow & matriks 5-state).
+    - **Skala Kecil (Fast-Track)**: `PROJECT_LITE.md` (Seksi 5 arsitektur: skema database & daftar API) sebagai pengganti FSD/PRD.
+    - **Skala Medium / Large / Enterprise**: `docs/specs/FSD.md` (DDL, RLS, API, idempotency) dan `docs/specs/PRD.md` (traceability `F-xx→REQ-xx` & skenario BDD).
+  - Pahami kontrak data, hak akses role (RBAC), aturan mutasi atomik, dan batas *Out-of-Scope*.
+  - **Verify**: Catat model status, aturan idempotensi, kebijakan RLS, dan daftar Screen ID yang harus diimplementasikan.
+  - **Expected**: Pemahaman penuh seluruh spesifikasi sebelum menyentuh file skema atau komponen UI.
+  - **Evidence**: Checklist dokumen spesifikasi yang telah dibaca dan diverifikasi.
 
 ---
 

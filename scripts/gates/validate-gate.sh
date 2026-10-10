@@ -752,6 +752,18 @@ case "$GATE_MODULE" in
                 echo "  ❌ TODO.md has insufficient completed tasks: found only ${done_tasks:-0} marked '[x]' (minimum 3 completed tasks required)!"
                 GATE_FAILED=1
             fi
+            # Mandatory specs pre-read task must exist and be completed
+            if grep -qiE "M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off" "TODO.md"; then
+                if grep -iE "M06-SETUP-03|Pre-Read Sign-Off" "TODO.md" | grep -qE "^\s*-\s*\[x\]"; then
+                    echo "  ✅ Specs pre-read task verified (M06-SETUP-03 completed)"
+                else
+                    echo "  ❌ Specs pre-read task (M06-SETUP-03) present but NOT completed! Read AGENTS/CONTEXT/PROJECT_LITE/FSD/PRD before coding."
+                    GATE_FAILED=1
+                fi
+            else
+                echo "  ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-03)!"
+                GATE_FAILED=1
+            fi
         fi
 
         # Content verification for AGENTS.md (BLOCKER: quality / anti-slop guidelines)

@@ -1059,6 +1059,18 @@ if ($Module -eq "M06") {
             Write-Host "  [ERROR] TODO.md has insufficient completed tasks: found only $doneMatches marked '[x]' (minimum 3 completed tasks required)!" -ForegroundColor Red
             $missingRequired += "TODO.md (>= 3 completed tasks marked '[x]')"
         }
+        # Mandatory specs pre-read task must exist and be completed
+        if ($todoContent -match '(?i)M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off') {
+            if ($todoContent -match '(?im)^\s*-\s*\[[xX]\].*M06-SETUP-03|^\s*-\s*\[[xX]\].*Pre-Read Sign-Off') {
+                Write-Host "  [OK] Specs pre-read task verified (M06-SETUP-03 completed)" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Specs pre-read task (M06-SETUP-03) present but NOT completed! Read AGENTS/CONTEXT/PROJECT_LITE/FSD/PRD before coding." -ForegroundColor Red
+                $missingRequired += "TODO.md (M06-SETUP-03 pre-read not completed)"
+            }
+        } else {
+            Write-Host "  [ERROR] TODO.md missing mandatory specs pre-read task (M06-SETUP-03)!" -ForegroundColor Red
+            $missingRequired += "TODO.md (missing M06-SETUP-03 pre-read task)"
+        }
     }
     # Content verification for AGENTS.md
     if (Test-Path "AGENTS.md") {
