@@ -961,6 +961,13 @@ case "$GATE_MODULE" in
             check_optional "docs/pm/DATA_MIGRATION_PLAN.md"
         else
         check_required "docs/pm/DATA_MIGRATION_PLAN.md" "" 1000
+        # Content verification: reject raw template placeholders in DATA_MIGRATION_PLAN.md
+        if [ -f "docs/pm/DATA_MIGRATION_PLAN.md" ]; then
+            if grep -qE "\[Your Name\]|\[Application Name\]|\[Client Company|\[YYYY-MM-DD\]" "docs/pm/DATA_MIGRATION_PLAN.md"; then
+                echo "  ❌ docs/pm/DATA_MIGRATION_PLAN.md still contains unresolved template placeholders ([...])!"
+                GATE_FAILED=1
+            fi
+        fi
         # For Large/Enterprise scale, reconciliation report is MANDATORY (zero-discrepancy audit)
         if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Large/Enterprise scale detected: MIGRATION_RECONCILIATION_REPORT.md is MANDATORY."
@@ -969,10 +976,20 @@ case "$GATE_MODULE" in
             check_optional "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
         fi
         if [ -f "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" ]; then
-            if grep -qiE "PASSED|RECONCILED|100%|SUCCESS|Zero Discrepancy" docs/pm/MIGRATION_RECONCILIATION_REPORT.md; then
+            # Content verification: reject raw template placeholders in reconciliation report
+            if grep -qE "\[Your Name\]|\[Application Name\]|\[YYYY-MM-DD\]|\[Source_File_Name" "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"; then
+                echo "  ❌ docs/pm/MIGRATION_RECONCILIATION_REPORT.md still contains unresolved template placeholders ([...])!"
+                GATE_FAILED=1
+            fi
+            # Content verification (BLOCKER): must not report FAILED or DISCREPANCY
+            if grep -qiE "FAILED|RECONCILIATION DISCREPANCY|UNRESOLVED DISCREPANCY|Status[[:space:]]*:[[:space:]]*FAIL" "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"; then
+                echo "  ❌ docs/pm/MIGRATION_RECONCILIATION_REPORT.md reports migration failure or discrepancy! Cannot close M08."
+                GATE_FAILED=1
+            elif grep -qiE "PASSED|RECONCILED|100%|SUCCESS|Zero Discrepancy|RECONCILIATION PASS" "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"; then
                 echo "  ✅ Data migration reconciliation verified (Audit PASSED)"
             else
-                echo "  ⚠️  Migration reconciliation not marked as PASSED/RECONCILED!"
+                echo "  ❌ Migration reconciliation report missing explicit PASSED/RECONCILED attestation!"
+                GATE_FAILED=1
             fi
         else
             echo "  [INFO] Data migration plan verified. Run reconciliation after seeding."

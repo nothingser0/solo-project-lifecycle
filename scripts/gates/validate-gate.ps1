@@ -1217,13 +1217,31 @@ if ($Module -eq "M07" -and -not $isSmallScale) {
     }
 }
 if ($Module -eq "M08") {
+    # Content verification: reject raw template placeholders in DATA_MIGRATION_PLAN.md
+    if (Test-Path "docs/pm/DATA_MIGRATION_PLAN.md") {
+        $planContent = Get-Content "docs/pm/DATA_MIGRATION_PLAN.md" -Raw
+        if ($planContent -match '\[Your Name\]|\[Application Name\]|\[Client Company|\[YYYY-MM-DD\]') {
+            Write-Host "  [ERROR] docs/pm/DATA_MIGRATION_PLAN.md still contains unresolved template placeholders ([...])!" -ForegroundColor Red
+            $missingRequired += "docs/pm/DATA_MIGRATION_PLAN.md (unresolved template placeholders)"
+        }
+    }
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
     if ($reconFile) {
         $reconContent = Get-Content $reconFile -Raw
-        if ($reconContent -match '(?i)PASSED|RECONCILED|100%|SUCCESS|Zero Discrepancy') {
+        # Content verification: reject raw template placeholders
+        if ($reconContent -match '\[Your Name\]|\[Application Name\]|\[YYYY-MM-DD\]|\[Source_File_Name') {
+            Write-Host "  [ERROR] docs/pm/MIGRATION_RECONCILIATION_REPORT.md still contains unresolved template placeholders ([...])!" -ForegroundColor Red
+            $missingRequired += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md (unresolved template placeholders)"
+        }
+        # Content verification (BLOCKER): must not report FAILED or DISCREPANCY
+        if ($reconContent -match '(?i)FAILED|RECONCILIATION DISCREPANCY|UNRESOLVED DISCREPANCY|Status\s*:\s*FAIL') {
+            Write-Host "  [ERROR] docs/pm/MIGRATION_RECONCILIATION_REPORT.md reports migration failure or discrepancy! Cannot close M08." -ForegroundColor Red
+            $missingRequired += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md (reports FAILED or DISCREPANCY)"
+        } elseif ($reconContent -match '(?i)PASSED|RECONCILED|100%|SUCCESS|Zero Discrepancy|RECONCILIATION PASS') {
             Write-Host "  [OK] Data migration reconciliation verified (Audit PASSED)" -ForegroundColor Green
         } else {
-            Write-Host "  [WARNING] Migration reconciliation not marked as PASSED/RECONCILED!" -ForegroundColor Yellow
+            Write-Host "  [ERROR] Migration reconciliation report missing explicit PASSED/RECONCILED attestation!" -ForegroundColor Red
+            $missingRequired += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md (missing PASSED/RECONCILED attestation)"
         }
     } else {
         Write-Host "  [INFO] Data migration plan verified. Run reconciliation after seeding." -ForegroundColor Cyan
