@@ -202,8 +202,20 @@ Client decision: Approved / Deferred to Phase 2
 
 **Acceptance**:
 - Client has 5 business days to test and accept each milestone
-- Silence = deemed accepted (payment triggered)
+- **Deemed Acceptance (Klausul Klien Diam)**: if the Client provides no written feedback within **7 calendar days** after milestone delivery, the milestone is deemed approved and its invoice becomes due.
 - Rejection must be in writing with specific issues
+
+---
+
+## 8.1 Gate Confirmation Log (M03 Exit)
+
+> Mark `[x]` ONLY after verifying against the actual bank statement / signed copy. Do NOT pre-fill.
+
+- [ ] SOW signed by both parties (dated copy filed)
+- [ ] DP received in bank account — Date: [YYYY-MM-DD] | Amount: Rp [Amount]
+- [ ] NDA signed (required when Client data is sensitive / commercial)
+
+`Gate-Decision: PENDING`
 
 ---
 
@@ -345,27 +357,24 @@ Signature: _________________________________
 
 ### Customization Points
 
-1. **Budget Range**: SMB typically Rp 20M - 100M
-2. **Timeline**: 2-6 months
-3. **Payment Split**: 30-40-30 or 50-50 (pick one)
-4. **Warranty**: 30 days standard, 60-90 days negotiable
-5. **Tax**: PPN 11% (Indonesia) - adjust for your country
+1. **Timeline**: 2-6 months
+2. **Payment Split**: 30/40/30 (Medium) or 50/50 (Small Fast-Track) - pick one
+3. **Warranty**: 30 days standard, 60-90 days negotiable
+4. **Tax**: PPN 11% (Indonesia) - adjust for your country
 
 ---
 
 ### When to Use SOW-SMB vs Full SOW
 
 **Use SOW-SMB** (this template) if:
-- ✅ Client is small-medium business (<50 employees)
-- ✅ Budget <Rp 100M
-- ✅ No legal department (client won't redline)
-- ✅ Straightforward project (no compliance requirements)
+- Client is a small-medium business (no in-house legal department, won't redline)
+- Straightforward project: 3-15 P0 features, no compliance/regulatory obligations
+- Client data handled is low-sensitivity (no health, financial, or biometric data)
 
 **Use Full SOW** if:
-- ❌ Enterprise client (>100 employees)
-- ❌ Scope exceeds SMB limits (use full SOW_CONTRACT_CONSOLIDATED template)
-- ❌ Client has legal team (will redline)
-- ❌ Compliance requirements (ISO 27001, SOC 2, kepatuhan regulasi ketat)
+- Client has a legal team (will redline the contract)
+- Scope exceeds 15 P0 features, or requires multi-party integrations
+- Compliance/regulatory obligations apply (ISO 27001, SOC 2, UU PDP sensitive data, sector rules)
 
 ---
 

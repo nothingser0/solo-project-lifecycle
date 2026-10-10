@@ -66,6 +66,11 @@ switch ($Scale) {
         if (Test-Path (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md")) {
             Copy-Item (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md") (Join-Path $TargetDir "docs/pm/RUNBOOK_OPS.md") -Force
         }
+        if ($Delivery -eq "client") {
+            $contractsDir = Join-Path $TargetDir "contracts"
+            if (-not (Test-Path $contractsDir)) { New-Item -ItemType Directory -Force -Path $contractsDir | Out-Null }
+            Copy-Item (Join-Path $templates "02-legal-commercial/SOW_SMB.md") (Join-Path $TargetDir "contracts/SOW_SMB.md") -Force
+        }
     }
     { $_ -in "solo-saas", "independent" } {
         Write-Host "Configuring for Independent / Self-Initiated Product..."

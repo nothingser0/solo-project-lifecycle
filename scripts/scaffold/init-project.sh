@@ -52,6 +52,10 @@ case "$SCALE" in
         cp "$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md" "$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md" 2>/dev/null || true
         cp "$TEMPLATES/06-qa-uat/UAT_SIGNOFF_SMALL.md" "$TARGET_DIR/docs/qa/UAT_SIGNOFF_SMALL.md" 2>/dev/null || true
         cp "$TEMPLATES/08-maintenance-ops/RUNBOOK_OPS.md" "$TARGET_DIR/docs/pm/RUNBOOK_OPS.md" 2>/dev/null || true
+        if [ "$DELIVERY" = "client" ]; then
+            mkdir -p "$TARGET_DIR/contracts"
+            cp "$TEMPLATES/02-legal-commercial/SOW_SMB.md" "$TARGET_DIR/contracts/SOW_SMB.md"
+        fi
         ;;
     solo-saas|independent)
         echo "Configuring for Independent / Self-Initiated Product..."

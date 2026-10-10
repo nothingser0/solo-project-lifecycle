@@ -22,13 +22,14 @@ The purpose for client engagements is to bind the `SCOPE_STATEMENT.md` document 
                          ▼
 [ STEP 1: Contract Model Determination & Commercial Estimation ]
   • Fixed-Price Milestone (Small & Medium Scale)
-  • Time & Materials / Monthly Retainer (Large & Flexible Scale)
+  • Time & Materials / Monthly Retainer (Large Scale, phased deliverables)
                          │
                          ▼
 [ STEP 2: Payment Milestone Structure Locking ]
-  • Milestone 1 (DP 30–50%): Prerequisite to start technical research & UI/UX
-  • Intermediate Milestones (Alpha/Beta): Tied to deliverable verification
-  • Final Milestone (100% Settlement): Prerequisite for repo handover & BAST
+  • Milestone 1 (DP 30%): Prerequisite to start technical research & UI/UX
+  • Milestone 2 (Staging Demo 40%): Core P0 flows live on staging
+  • Milestone 3 (Final 30%): UAT pass, paid before repo handover & BAST
+  • Small Fast-Track alternative: 50% DP / 50% Final
                          │
                          ▼
 [ STEP 3: Binding Single PIC Clause & Response SLA ]
@@ -60,7 +61,7 @@ The purpose for client engagements is to bind the `SCOPE_STATEMENT.md` document 
    - *When to Use*: Scope in `SCOPE_STATEMENT.md` is crystal clear and client budget is inflexible.
    - *Solo Dev Key*: Must add 20–30% contingency buffer to mitigate reasonable revisions.
 2. **Time & Materials / Monthly Retainer**:
-   - *When to Use*: Client has a dynamic roadmap (*"features figured out as we go"*) or Large/Enterprise scale projects requiring ongoing research.
+   - *When to Use*: Client has a dynamic roadmap (*"features figured out as we go"*) or Large scale projects requiring ongoing research and phased deliverables.
    - *Solo Dev Key*: Bill monthly or per 40-hour block with upfront payment at start of each period.
 
 ---
@@ -70,11 +71,10 @@ As a solo developer, never accept payment solely at project completion (100% on 
 
 | Milestone | Milestone / Payment Condition | Percentage | Deliverable Prerequisite |
 | :---: | :--- | :---: | :--- |
-| **Milestone 1 (DP)** | Contract Signing & Project Initiation | **40%** | Handover of agreed SOW & Project Charter |
-| **Milestone 2 (Alpha)** | Core Engine & Database Integration Complete | **25%** | Demo of backend functionality & basic UI on local/staging |
-| **Milestone 3 (Beta)** | Complete Integration & Internal UAT Passed | **20%** | App ready for client testing on Staging (SIT Pass) |
-| **Milestone 4 (Final)** | Production Go-Live & Formal Handover | **15%** | Client UAT Sign-off approved, ready for BAST handover |
-*Rule: Milestone percentages MUST sum to exactly 100%. Alternative 3-phase option for smaller projects: 50% DP, 30% Beta/UAT, 20% Final.*
+| **Milestone 1 (DP)** | Contract Signing & Project Initiation | **30%** | Handover of agreed SOW & Project Charter |
+| **Milestone 2 (Staging Demo)** | Core P0 Flows Working on Live Staging | **40%** | Demo of core P0 flows on staging before entering UAT |
+| **Milestone 3 (Final)** | UAT Pass & Pre-Handover Settlement | **30%** | UAT sign-off approved; paid prior to DNS pointing & BAST |
+*Rule: Milestone percentages MUST sum to exactly 100%. This is the standard **30/40/30** schedule (`SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`). Alternative 2-phase **50/50** schedule is permitted ONLY for Small Fast-Track client projects.*
 
 ---
 
@@ -99,23 +99,34 @@ Corporate clients often have multiple heads with conflicting directions.
 
 ## 3. Adaptation Based on Project Scale
 
-| Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large Scale & Enterprise |
-| :--- | :--- | :--- | :--- |
-| **Contract Format** | 50% DP Invoice + Scope Statement via Email | SOW Document & Cooperation Agreement (PKS) | Master Service Agreement (MSA) + Formal SOW |
-| **Legality** | Electronic signature (PDF signature) | Wet-ink signature with stamp duty / e-Meterai | Corporate legal review by client legal team |
-| **DP Terms** | Mandatory 50% upfront | Minimum 30–40% upfront | Minimum 20–30% upfront (aligned with corporate SOP) |
-| **NDA Clause** | Confidentiality clause within SOW suffices | Standard Non-Disclosure Agreement (NDA) | Formal Mutual NDA + strict PDP Law clauses |
+| Aspect | 🔵 Small Scale (Fast-Track Client) | 🟢 Medium Scale (B2B Client / Agency) | 🟡 Large Scale (Phased WBS) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Contract Format** | Simplified SOW (`SOW_SMB.md`) | Consolidated SOW (`SOW_CONTRACT_CONSOLIDATED`) | MSA + Phased SOW suite | Consulting Agreement (`CONSULTING_AGREEMENT.md`) |
+| **Legality** | Electronic signature (PDF / DocuSign) | e-Meterai (Rp 10,000) or wet-ink stamp | Corporate legal review + e-Meterai per SOW | Corporate procurement review + Net 30 terms |
+| **Payment Schedule** | 50/50 (50% DP / 50% Final BAST) | 30/40/30 (30% DP / 40% Staging / 30% BAST) | 30/40/30 per phased WBS package | Monthly advisory retainer / Net 30 invoicing |
+| **NDA Requirement** | Confidentiality clause in SOW suffices | Standard NDA (`contracts/NDA.md`) MANDATORY | Mutual NDA + UU PDP clauses MANDATORY | Corporate Mutual NDA + UU PDP Data Protection Addendum |
 
 ---
 
-### 🔴 Enterprise Scale: Governance & Compliance Templates
+### Legal Document Hierarchy (When Multiple Documents Apply)
+1. **Master Service Agreement (MSA)**: Governs enduring legal principles (IP ownership, limitation of liability, dispute resolution, governing law). Prevails on legal conflict unless SOW explicitly states override.
+2. **Statement of Work (SOW)**: Governs deliverables, milestones, payment schedules, and technical specifications for a specific phase.
+3. **Data Protection Addendum (DPA)**: Governs personal data processing, controller/processor roles, and breach notification pursuant to UU PDP No. 27/2022.
+4. **Non-Disclosure Agreement (NDA)**: Governs exchange of proprietary technical and business data during pre-sales and execution.
 
-**When**: Regulated/statutory context (banking, healthcare, government), mandatory SOC 2/ISO 27001, or enterprise-scale audit requirements
+---
 
-**Additional M03 Requirements** (beyond SOW/Charter):
+### 🔴 Enterprise Scale: Routed to Non-Solo Capacity Advisory (A-Series)
 
-**Compliance & Data Protection**:
-- `templates/03-governance/GDPR_COMPLIANCE_CHECKLIST.md` - Right to erasure, data portability, consent management (GDPR/PDP Law)
+> ⚠️ **SOLO CAPACITY LIMITATION ENFORCEMENT**:  
+> Projects classified as **Enterprise Scale** ($\ge 26$ P0 features, legacy core replacements, or strict regulatory statutory compliance) **EXCEED SOLO DEVELOPER CAPACITY**.  
+> Solo developers MUST NOT sign monolithic development SOWs or attempt single-handed implementation for Enterprise systems.  
+> Instead, the commercial contract for Enterprise is the **Consulting Agreement** (`templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md`), executed under **Phase A00 (Enterprise Advisory Series)**.
+
+**Governance & Compliance Templates for Enterprise Advisory (Phase A00–A04)**:
+
+**Compliance & Data Protection (UU PDP No. 27/2022)**:
+- `templates/03-governance/DATA_PROTECTION_ADDENDUM.md` - Controller-processor terms under UU PDP No. 27/2022
 - `templates/03-governance/DATA_CLASSIFICATION_POLICY.md` - Public/Internal/Confidential/Restricted data handling rules
 - `templates/08-maintenance-ops/SLA_SLO_DEFINITIONS.md` - Service levels (99.9% uptime, <200ms p95 latency, incident response SLA)
 
@@ -129,17 +140,7 @@ Corporate clients often have multiple heads with conflicting directions.
 - `templates/02-legal-commercial/FINANCIAL_TRACKING.md` - Budget tracking, burn rate monitoring, milestone forecasting
 - `templates/03-governance/RACI_MATRIX.md` - Responsible/Accountable/Consulted/Informed for major contract decisions
 
-**Pre-Sales (if RFP/Tender)**:
-- `templates/00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md` - Government/corporate tender response structure
-
-**Why These Matter**:
-- **GDPR/PDP Law**: Enterprise clients demand data protection compliance before contract signing
-- **SLA/SLO**: Banking/healthcare require contractual uptime guarantees (99.9%+)
-- **Risk Matrix**: Corporate governance requires risk register before project approval
-- **Stakeholder Register**: Enterprise projects have 10+ stakeholders beyond Single PIC (steering committee, legal, security, compliance)
-- **Escalation Matrix**: Clear escalation paths prevent project delays (know who to call for P0 incidents)
-
-**M03 Gate for Enterprise** = SOW signed + DP received + **Risk Register approved** + **RACI Matrix confirmed**
+**Advisory Gate for Enterprise** = Consulting Agreement signed + Retainer confirmed + **Risk Assessment Matrix approved** + **RACI Matrix confirmed** (handled via Phase A00, NOT a development SOW).
 
 ---
 
@@ -151,17 +152,17 @@ Corporate clients often have multiple heads with conflicting directions.
 1. **`docs/pm/SOW_CONTRACT.md`**: Consolidated commercial agreement document (Project Charter + SOW) binding objectives, Single PIC, scope, fees, payment milestones, and legal clauses.
 
 **Templates Available**:
-- **Small/Medium (SMB clients)**: `templates/02-legal-commercial/SOW_SMB.md` (simplified, no legal review needed, <Rp 100M)
+- **Small/Medium (SMB clients)**: `templates/02-legal-commercial/SOW_SMB.md` (simplified, no in-house legal department needed)
 - **Large/Enterprise**: `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md` (full contract with comprehensive clauses)
 
 **When to use SOW_SMB**:
-- Client is small-medium business (<50 employees)
-- Budget <Rp 100M
-- No legal department (client won't redline)
-- Straightforward project (no compliance requirements)
+- Client is a small-medium business (<50 employees, no in-house legal department)
+- Scope is straightforward (3–15 P0 features, low-sensitivity data)
+- Client will not redline complex indemnification clauses
+- Standard project without heavy statutory/regulatory mandates
 
 > 💡 **ADAPTATION FOR SELF-INITIATED PRODUCTS & SOLO SAAS (BYPASS RULE)**:
-> - **Module 03 is SKIPPED / BYPASSED for Solo SaaS, Portfolio, and Internal Solo Projects** without an external paying client, as declared in `SKILL.md` (line 104 & 110) and `SCALE_WORKFLOWS.md`.
+> - **Module 03 is SKIPPED / BYPASSED for Solo SaaS, Portfolio, and Internal Solo Projects** without an external paying client, as declared in `SKILL.md` and `SCALE_WORKFLOWS.md`.
 > - Do NOT fabricate fictitious client agreements, self-invoices, or fake down payment transfers with yourself.
 > - Project baselines (timeline, architecture, cash runway, and fixed infrastructure budgets) are tracked directly in `docs/pm/PROJECT_STATE.md` and `docs/pm/IDEA_BRIEF.md`.
 > - The commercial gate is recorded as **`WAIVED (Self-Initiated)`** in `PROJECT_STATE.md`.

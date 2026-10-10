@@ -215,6 +215,11 @@ if ($isLargeScale -and $Module -eq "M07") {
     $gate.Required += "docs/qa/SECURITY_AUDIT.md"
 }
 if ($isEnterprise) {
+    if ($Module -eq "M03") {
+        Write-Host "  [INFO] Enterprise scale detected: Risk Assessment Matrix and RACI Matrix are MANDATORY in M03." -ForegroundColor Cyan
+        $gate.Required += "docs/governance/RISK_ASSESSMENT_MATRIX.md"
+        $gate.Required += "docs/governance/RACI_MATRIX.md"
+    }
     if ($Module -eq "M02") {
         Write-Host "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY." -ForegroundColor Cyan
         $gate.Required += "docs/governance/RACI_MATRIX.md"
@@ -289,6 +294,14 @@ foreach ($file in $gate.Required) {
     if (-not $pathExists -and $file -eq "contracts/SOW_CONTRACT.md" -and (Test-Path "docs/pm/SOW_CONTRACT.md")) {
         $pathExists = $true
         $actualFile = "docs/pm/SOW_CONTRACT.md"
+    }
+    if (-not $pathExists -and $file -eq "contracts/SOW_CONTRACT.md" -and (Test-Path "contracts/SOW_SMB.md")) {
+        $pathExists = $true
+        $actualFile = "contracts/SOW_SMB.md"
+    }
+    if (-not $pathExists -and $file -eq "contracts/SOW_CONTRACT.md" -and (Test-Path "docs/pm/SOW_SMB.md")) {
+        $pathExists = $true
+        $actualFile = "docs/pm/SOW_SMB.md"
     }
     if (-not $pathExists -and $file -eq "contracts/BAST.md" -and (Test-Path "docs/pm/BAST.md")) {
         $pathExists = $true
@@ -581,7 +594,11 @@ if ($Module -eq "M00") {
         }
     }
 } elseif ($Module -eq "M03") {
-    $sowFile = if (Test-Path "contracts/SOW_CONTRACT.md") { "contracts/SOW_CONTRACT.md" } elseif (Test-Path "docs/pm/SOW_CONTRACT.md") { "docs/pm/SOW_CONTRACT.md" } else { $null }
+    $sowFile = if (Test-Path "contracts/SOW_CONTRACT.md") { "contracts/SOW_CONTRACT.md" } `
+               elseif (Test-Path "docs/pm/SOW_CONTRACT.md") { "docs/pm/SOW_CONTRACT.md" } `
+               elseif (Test-Path "contracts/SOW_SMB.md") { "contracts/SOW_SMB.md" } `
+               elseif (Test-Path "docs/pm/SOW_SMB.md") { "docs/pm/SOW_SMB.md" } `
+               else { $null }
     if ($sowFile) {
         $sowContent = Get-Content $sowFile -Raw
         $isSoloDelivery = $false
@@ -593,6 +610,16 @@ if ($Module -eq "M00") {
         if ($isSoloDelivery) {
             Write-Host "  [INFO] Solo / Portfolio / Internal delivery: Commercial SOW gate is WAIVED." -ForegroundColor Cyan
         } else {
+            # NDA check for Medium+ client delivery
+            if (-not $isSmallScale) {
+                $ndaExists = (Test-Path "contracts/NDA.md") -or (Test-Path "docs/pm/NDA.md")
+                if ($ndaExists) {
+                    Write-Host "  [OK] NDA verified (contracts/NDA.md)" -ForegroundColor Green
+                } else {
+                    Write-Host "  [ERROR] Medium+ client delivery: NDA is MANDATORY before client data access!" -ForegroundColor Red
+                    $missingRequired += "contracts/NDA.md"
+                }
+            }
             # 1. Reject placeholders
             if ($sowContent -match '\[\.\.\.\]|\[Numeric Amount\]|\[Account Number\]') {
                 Write-Host "  [ERROR] Unresolved template placeholders [...] detected in SOW contract!" -ForegroundColor Red

@@ -327,6 +327,8 @@ case "$GATE_MODULE" in
         echo "=== M03: Legal SOW & Charter Checklist ==="
         target_sow="contracts/SOW_CONTRACT.md"
         [ -f "$target_sow" ] || target_sow="docs/pm/SOW_CONTRACT.md"
+        [ -f "$target_sow" ] || target_sow="contracts/SOW_SMB.md"
+        [ -f "$target_sow" ] || target_sow="docs/pm/SOW_SMB.md"
         
         IS_SOLO=0
         # STRICT DELIVERY ROUTING: Only bypass if Delivery is explicitly solo, portfolio, or internal
@@ -342,8 +344,24 @@ case "$GATE_MODULE" in
             echo "  [INFO] Solo SaaS / Internal project detected: Commercial SOW gate is WAIVED."
             check_optional "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
         else
-            check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md" 1000
-            check_optional "contracts/NDA.md" "docs/pm/NDA.md"
+            # Accept standard SOW_CONTRACT or simplified SOW_SMB
+            if [ -f "contracts/SOW_SMB.md" ] || [ -f "docs/pm/SOW_SMB.md" ]; then
+                check_required "contracts/SOW_SMB.md" "docs/pm/SOW_SMB.md" 1000
+            else
+                check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md" 1000
+            fi
+
+            # NDA is mandatory for Medium+ client delivery; optional for Small client
+            is_small_client=0
+            if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+                is_small_client=1
+            fi
+            if [ $is_small_client -eq 1 ]; then
+                check_optional "contracts/NDA.md" "docs/pm/NDA.md"
+            else
+                echo "  [INFO] Medium+ client delivery: NDA is MANDATORY before client data access."
+                check_required "contracts/NDA.md" "docs/pm/NDA.md" 500
+            fi
             if [ -f "$target_sow" ]; then
                 # 1. Check unresolved placeholders [...]
                 if grep -q "\[\.\.\.\]\|\[Numeric Amount\]\|\[Account Number\]" "$target_sow"; then
@@ -391,10 +409,11 @@ case "$GATE_MODULE" in
                     GATE_FAILED=1
                 fi
 
-                # 7. Enterprise scale requires approved Risk Assessment Matrix
+                # 7. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix
                 if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
-                    echo "  [INFO] Enterprise scale detected: Risk Assessment Matrix is MANDATORY in M03."
+                    echo "  [INFO] Enterprise scale detected: Risk Assessment Matrix & RACI Matrix MANDATORY in M03."
                     check_required "docs/governance/RISK_ASSESSMENT_MATRIX.md" "docs/pm/RISK_REGISTER.md" 500
+                    check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md" 500
                 fi
             fi
             echo ""
