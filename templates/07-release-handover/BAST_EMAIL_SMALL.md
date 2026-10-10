@@ -215,13 +215,13 @@ Date: October 4, 2024
 ## Legal Notes
 
 **Why Email Format?**
-- Small projects (<Rp 50M) don't need formal BAST document
+- Small scale projects (3-7 P0 features, non-client solo/internal delivery) don't need a formal BAST document
 - Email approval is legally valid (electronic signature law)
 - Faster turnaround (no printing, scanning, mailing)
 - Easy to archive and reference
 
 **When to Use Formal BAST?**
-- Project value >Rp 50M
+- Client commercial delivery, or enterprise/statutory audit requirements
 - Government/corporate client requires it
 - Legal team mandates formal document
 - Multiple sign-off levels needed

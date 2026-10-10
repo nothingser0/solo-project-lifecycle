@@ -1293,7 +1293,7 @@ Before submitting `docs/specs/FSD.md`, the agent MUST verify:
 
 ### 🔴 Enterprise Scale: Architecture & Infrastructure Templates
 
-**When**: Budget >Rp 500M, 100K+ MAU, multi-region, SOC 2/ISO 27001 compliance
+**When**: Enterprise scale (100K+ MAU, multi-region, SOC 2/ISO 27001 compliance, or statutory audit constraints)
 
 **Architecture Decision Records**:
 - `templates/03-governance/ADR_TEMPLATE.md` - Document context, decision, consequences, alternatives

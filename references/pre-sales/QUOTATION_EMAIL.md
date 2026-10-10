@@ -156,8 +156,8 @@ Timeline = Hours / (Team Size × 40 hours/week)
 **T-Shirt Sizing**:
 - **Small**: Rp 20-50M, 1-3 months, 1-2 people
 - **Medium**: Rp 50-200M, 3-6 months, 3-6 people
-- **Large**: Rp 200-500M, 6-12 months, 6-12 people
-- **Enterprise**: >Rp 500M, 12-24 months, 12+ people
+- **Large**: 16-25 P0 features, 3-6 months, multi-tenant + legacy migration
+- **Enterprise**: >25 P0 features or statutory audit, 6-12+ months, governance boards
 
 ### Step 3: Fill Template
 - Replace all `[placeholders]`

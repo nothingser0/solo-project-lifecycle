@@ -363,7 +363,7 @@ Signature: _________________________________
 
 **Use Full SOW** if:
 - ❌ Enterprise client (>100 employees)
-- ❌ Budget >Rp 100M
+- ❌ Scope exceeds SMB limits (use full SOW_CONTRACT_CONSOLIDATED template)
 - ❌ Client has legal team (will redline)
 - ❌ Compliance requirements (ISO, SOC2, GDPR)
 

@@ -150,7 +150,7 @@ npx autocannon -c 50 -d 30 http://localhost:3000/api/health
 
 ### 🔴 Enterprise Scale: Security & Compliance Templates
 
-**When**: Budget >Rp 500M, Banking/Healthcare/Government, mandatory SOC 2/ISO 27001
+**When**: Regulated/statutory context (banking, healthcare, government), mandatory SOC 2/ISO 27001, or enterprise-scale audit requirements
 
 **Compliance Audit Preparation**:
 - `templates/03-governance/SOC2_ISO27001_COMPLIANCE.md` - Trust Service Criteria, evidence collection (6-12 month audit prep)

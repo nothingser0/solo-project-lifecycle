@@ -110,7 +110,7 @@ Corporate clients often have multiple heads with conflicting directions.
 
 ### 🔴 Enterprise Scale: Governance & Compliance Templates
 
-**When**: Budget >Rp 500M, Banking/Healthcare/Government clients, mandatory SOC 2/ISO 27001
+**When**: Regulated/statutory context (banking, healthcare, government), mandatory SOC 2/ISO 27001, or enterprise-scale audit requirements
 
 **Additional M03 Requirements** (beyond SOW/Charter):
 

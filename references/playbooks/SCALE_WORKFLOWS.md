@@ -279,15 +279,18 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
-## 🟡 SKALA BESAR (Vendor/Large Project)
+## 🟡 SKALA BESAR (Scale-Up / Multi-Tenant Platform)
 
-**Characteristics**:
-- 6-12 person team (PM, Scrum Master, Tech Lead, 4-6 devs, 2 QA, DevOps, Designer)
-- Budget: Rp 200-500M
-- Timeline: 6-12 bulan (24-48 minggu)
+**Characteristics (Engineering-Driven)**:
+- Fitur: **16–25 P0 Must-Have**
+- Blast radius: Tinggi (multi-cabang, mutasi finansial massal, multi-tenant hierarchy)
+- Integrasi: Multi-vendor, ETL migrasi data lama (M08 WAJIB)
+- SLA: **99.5%**
+- Tim: Solo dev + subkontrak spesialis (QA/security/DevOps) sesuai kebutuhan
+- Timeline: 3–6 bulan (24–48 minggu)
 - Client: Corporate, government tender, SOE
-- Compliance: PDP Law, ISO 27001 (optional)
-- Payment: 4 milestones (20-30-30-20%)
+- Compliance: UU PDP wajib; ISO 27001 direkomendasikan
+- Payment: 4 milestone (20-30-30-20%)
 
 **Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12**
 
@@ -329,13 +332,15 @@ M02 Discovery: "Does client have existing data?"
 
 ## 🔴 SKALA ENTERPRISE
 
-**Characteristics**:
-- 12+ person team (PM, Business Analyst, Tech Lead, 6-8 devs, 2-3 QA, Security Auditor, DevOps, UX Researcher, Product Analyst)
-- Budget: >Rp 500M
-- Timeline: 12-24 bulan (48-96 minggu)
+**Characteristics (Engineering-Driven)**:
+- Fitur: **>25 P0 Must-Have** atau batasan audit statutori (OJK/BI/SOC2/HIPAA)
+- Blast radius: Kritis (perbankan, rekam medis, audit permanen)
+- SLA: **99.9% (24/7)**
+- Tim: Tim khusus/multi-divisi + governance board (CAB, RACI)
+- Timeline: 6–12+ bulan (48–96 minggu)
 - Client: Banking (OJK), Healthcare (Kemenkes), Telco (Kominfo), Government (LKPP)
-- Compliance: **MANDATORY** - PDP Law, ISO 27001, SOC2, OJK regulations
-- Payment: 4 milestones (20-30-30-20% atau 30-30-30-10%)
+- Compliance: **MANDATORY** - UU PDP, ISO 27001, SOC2, regulasi OJK
+- Payment: 4 milestone (20-30-30-20% atau 30-30-30-10%)
 
 **Module Sequence**: **FULL M00 → M01 → M02 → M03 → M04 → M04B → M05 → M05B → M06 → M06B → M07 → M08 → M09 → M10 → M11 → M12 → M13**
 
@@ -666,7 +671,7 @@ Which do you prefer?"
 
 ## 🎯 Quick Decision Tree
 
-**Pre-Routing Note**: Enterprise projects (>Rp 500M, RFP/tender context) start at M00 (Product Discovery) before M01. For all other projects, complete M01 first, then route by scale:
+**Pre-Routing Note**: Enterprise projects (statutory/regulated, RFP/tender context) start at M00 (Product Discovery) before M01. For all other projects, complete M01 first, then route by scale:
 
 ```
 START: After completing M01 (Idea & Feasibility), route by scale:
@@ -696,7 +701,7 @@ END
 
 **Enterprise Path (Separate - Pre-M01)**:
 ```
-IF project context == RFP/tender/corporate (>Rp 500M):
+IF project context == RFP/tender/corporate/regulated (statutory audit constraints):
   → Start: M00 (Product Discovery) validates RFP requirements
   → M01 performs feasibility check (scale already known from RFP context)
   → Path: M00 → M01 → M02 → ... → M13 (all 14 modules)

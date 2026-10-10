@@ -1,6 +1,6 @@
 # Security Baseline Checklist (Small Scale)
 
-> **Target**: Solo MVP / Small projects (<Rp 50M, 1-3 months)  
+> **Target**: Solo MVP / Small scale (3-7 P0 features, <4 weeks, isolated DB, low blast radius)  
 > **Duration**: 1-2 hours  
 > **When**: After M06 (Development), before M09 (UAT)  
 > **Purpose**: Prevent common vulnerabilities without full security audit

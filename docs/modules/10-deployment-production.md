@@ -341,7 +341,7 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 
 ### 🔴 Enterprise Scale: Release Management & Deployment Templates
 
-**When**: Budget >Rp 500M, Banking/Healthcare/Government, mission-critical production systems
+**When**: Regulated/statutory context (banking, healthcare, government), mission-critical production systems, or enterprise-scale audit requirements
 
 **Pre-Deployment Gate**:
 - `templates/07-release-handover/RELEASE_APPROVAL_CHECKLIST.md` - 10-section go/no-go decision checklist

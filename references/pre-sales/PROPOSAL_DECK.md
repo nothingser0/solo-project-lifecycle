@@ -309,7 +309,7 @@ WhatsApp: [phone]
 ### "The price is too high"
 **Response**: "I understand. Let's look at the ROI - you're currently spending 15 hours/week on manual work. At Rp 50K/hour labor cost, that's Rp 3M/month. This system pays for itself in 2 years, plus you gain accuracy and speed."
 
-**Alternative**: "We can start with MVP (core features only) for Rp 50M, then add advanced features later."
+**Alternative**: "We can start with an MVP (core P0 features only), then add advanced features later via Change Request."
 
 ### "The timeline is too long"
 **Response**: "8 weeks ensures quality and proper testing. We can compress to 6 weeks if you can commit to 24-hour feedback turnaround. Faster than 6 weeks risks quality issues."

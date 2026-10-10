@@ -410,7 +410,7 @@ Upgrade when:
 - ✅ Raising funding or signing first client
 - ✅ Hiring second developer (need proper docs)
 - ✅ Compliance required (banking, healthcare)
-- ✅ Budget increases >Rp 50 million (~$3,150)
+- ✅ Scope exceeds 7 P0 features, adds payment/health data, or requires client contract gates
 
 Then read:
 - `docs/modules/02-discovery-scope.md` (scope protection)
