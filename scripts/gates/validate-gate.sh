@@ -453,12 +453,18 @@ case "$GATE_MODULE" in
                 echo "  ⚠️  docs/design/inspiration/notes.md (Warning: explicit winning benchmark selection not detected)"
             fi
         fi
-        check_required "docs/specs/SITEMAP.md" "" 2000
+        min_sitemap=2000
+        min_design_spec=2000
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            min_sitemap=1000       # M04-LITE: 3-5 routes only
+            min_design_spec=1000   # M04-LITE: 5-state matrix on primary screens only
+        fi
+        check_required "docs/specs/SITEMAP.md" "" $min_sitemap
         check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
         check_required "docs/specs/LOGO_DESIGN_BRIEF.md" "" 200
         check_required "docs/design/inspiration/notes.md" "" 200
         check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000
-        check_required "docs/specs/DESIGN_SPEC.md" "" 2000
+        check_required "docs/specs/DESIGN_SPEC.md" "" $min_design_spec
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="

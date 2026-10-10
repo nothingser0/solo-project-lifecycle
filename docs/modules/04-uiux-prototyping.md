@@ -21,7 +21,10 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
 
 > **Default workflow (2026):** Choose prototyping approach based on context. Markdown-first for solo MVP; interactive prototypes (v0/Stitch/Figma) when client needs visual sign-off.
 
-> **Universal Design Artifact Mandate (Semua Skala Wajib Sama)**: Tidak ada pengecualian skala dari Small hingga Enterprise. Setiap proyek WAJIB menghasilkan 6 artefak spesifikasi (`LOGO_DESIGN_BRIEF.md`, `SITEMAP.md`, `COMPONENT_REQUIREMENTS.md`, `notes.md`, `DESIGN.md`, `DESIGN_SPEC.md`), menyelaraskan palet dengan logo di `/assets/logo/`, serta menghasilkan prompt layar di `docs/design/prompts/` dan artefak render/output di `docs/design/screens/`.
+> **Design Artifact Mandate**:
+> - **Skala Small (M04-LITE)**: Menghasilkan 6 spesifikasi inti proporsional (ambang batas anti-stub 1000B untuk SITEMAP & DESIGN_SPEC), inisial logo monogram SVG ($\ge 50$B), 1 benchmark visual di `notes.md`, dan matriks 5-state difokuskan pada 1–3 layar data utama.
+> - **Skala Medium & Large**: Menghasilkan 6 spesifikasi lengkap ($\ge 2000$B untuk SITEMAP & DESIGN_SPEC), logo SVG ($\ge 200$B), seleksi benchmark pemenang di `notes.md`, dan matriks 5-state untuk seluruh layar.
+> - **Skala Enterprise (Non-Solo Capacity)**: Dialihkan ke **Seri A Advisory (Fase A02 Design System Architecture & Governance)**. Solo developer dilarang mendesain puluhan layar secara manual; keluaran berupa skema token desain dan arsitektur UI untuk tim pengembang klien.
 
 > **Output gate:** Module 04 produces design specifications and optional interactive prototypes. Production code is implemented in Module 06 based on these verified specifications.
 
@@ -377,7 +380,7 @@ Before completing Step 0 and proceeding to `docs/harness-root/DESIGN.md` generat
 ### Option A: Markdown-Only (FASTEST - Solo Projects)
 **Use when**:
 - Solo developer project (no client visual approval needed)
-- Budget <$5K USD (time = money)
+- Fast turnaround priority (rapid specification without GUI tools)
 - Simple UI (forms, tables, dashboards)
 
 **Deliverables**:
@@ -674,13 +677,13 @@ This module produces 6 authoritative design specification artifacts:
 ### Mandatory Files Verification (BLOCKING):
 - [ ] **`docs/specs/COMPONENT_REQUIREMENTS.md` exists** (≥1000 bytes, contains component inventory & interaction states)
 - [ ] **`docs/specs/LOGO_DESIGN_BRIEF.md` exists** (≥500 bytes, ≤2KB minimal brief)
-- [ ] **`docs/specs/SITEMAP.md` exists** (≥2000 bytes, contains screen inventory, user flows, and navigation structure)
+- [ ] **`docs/specs/SITEMAP.md` exists** (≥1000 bytes for Small / ≥2000 bytes for Medium+, contains screen inventory, user flows, and navigation structure)
 - [ ] **`docs/design/inspiration/notes.md` exists** (synthesizes 2–5 visual references, logo hex extraction, palette decisions)
 - [ ] **`docs/harness-root/DESIGN.md` exists** (staged, ≥1000 bytes, contains color palette + typography)
-- [ ] **`docs/specs/DESIGN_SPEC.md` exists** (≥2000 bytes, contains screen specs)
+- [ ] **`docs/specs/DESIGN_SPEC.md` exists** (≥1000 bytes for Small / ≥2000 bytes for Medium+, contains screen specs)
 - [ ] **`assets/logo/` exists** (contains `logo.svg` or `logo.png` referenced by DESIGN.md)
-- [ ] **Screen Prompts & Screens exist**: `docs/design/prompts/` dan `docs/design/screens/` terisi untuk seluruh layar di SITEMAP.md
-- [ ] **Screen count match**: SITEMAP.md total = DESIGN_SPEC.md screen inventory (±10% tolerance)
+- [ ] **Screen Prompts & Screens exist (Workflow-Dependent)**: `docs/design/prompts/` dan `docs/design/screens/` terisi jika mengeksekusi workflow AI render / visual generator
+- [ ] **Screen count match**: SITEMAP.md total rute selaras dengan wireflow di DESIGN_SPEC.md
 
 ### Strict Accessibility & Ergonomics Audit (BLOCKING - MATHEMATICALLY COMPUTED):
 

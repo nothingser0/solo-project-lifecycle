@@ -366,7 +366,7 @@ foreach ($file in $gate.Required) {
     if ($pathExists) {
         $minBytes = 200
         if ($file -match 'PRD\.md|FSD\.md|SITEMAP\.md|SCOPE_STATEMENT\.md|DESIGN_SPEC\.md') {
-            $minBytes = 2000
+            $minBytes = if ($isSmallScale -and ($file -match 'SITEMAP\.md|DESIGN_SPEC\.md')) { 1000 } else { 2000 }
         } elseif ($file -match 'IDEA_BRIEF\.md|COMPONENT_REQUIREMENTS\.md|DESIGN\.md|DEPLOYMENT_PROTOCOL\.md') {
             $minBytes = 1000
         } elseif ($file -match 'AGENTS\.md|CONTEXT\.md|TODO\.md|RUNBOOK_LOCAL\.md|VERIFY_LOCAL\.md|GO_LIVE_REPORT\.md') {
