@@ -142,6 +142,11 @@
 - **Mobile Keyboard Viewport Shift**: Forms ensure active input elements maintain minimum `96px` clearance above the virtual keyboard to prevent bottom nav overlay clipping.
 - **Interactive Target Geometry**: All clickable elements (buttons, segmented controls, table row actions) guarantee minimum `44px × 44px` physical tap area on viewport $<768$px.
 
+### 5.1.3 Behavioral UX & Cognitive Load Protocol (BJ Fogg & Nudge Standards)
+- **Sensible Defaults First**: Input forms and filter sets MUST NOT load in a completely blank or paralyzed state. Pre-fill sensible defaults (e.g., date filters default to *"Hari Ini / 30 Hari Terakhir"*, default payment to *"QRIS"*, quantities default to `1`).
+- **One Primary Action per Viewport**: Every distinct view, card container, or modal overlay MUST present exactly **1 high-contrast primary CTA**. Competing actions MUST be styled as secondary (outline), tertiary (ghost), or text links to prevent decision fatigue.
+- **Progress & Completion Visibility**: Multi-step user flows (checkout, setup wizard, onboarding) must visually indicate current progress (step counters, percentage bar) and provide instant visual reward upon completion (checkmarks, clear success summaries).
+
 ### 5.2 Conditional Domain Extensions
 *(Include only subsections relevant to project scope; skip or substitute for unrelated domains)*
 

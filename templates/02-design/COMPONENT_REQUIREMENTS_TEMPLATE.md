@@ -224,6 +224,32 @@ CTA Button: [ + Buat Faktur Baru ]
   - **Validation Failure**: *"Nomor WhatsApp harus diawali 08 atau 62 (contoh: 081234567890)."*
   - **Permission Failure**: *"Akun Anda (Staf Kasir) tidak memiliki izin menghapus transaksi. Hubungi Supervisor untuk otorisasi."*
 
+---
+
+## 7.4 Behavioral UX & Cognitive Load Reduction Patterns
+
+*Derived from BJ Fogg Behavior Model & Nudge Theory to eliminate decision fatigue and cognitive overhead:*
+
+### A. "Default Everything" (Zero-Friction Sensible Defaults)
+*Users should never face an empty canvas or blank form state where sensible defaults exist:*
+1. **Date Filters**: Pre-select *"Hari Ini"* (for operations/POS) or *"30 Hari Terakhir"* (for analytics), never blank.
+2. **Payment Method**: Pre-select the lowest-friction method (e.g., *"QRIS"* in Indonesia, or previous payment method used).
+3. **Quantity Fields**: Default to `1`, never `0` or empty.
+4. **Currency Entry**: Default to active local currency (`IDR / Rp`) with auto-focused numeric keypads (`inputmode="numeric"`).
+
+### B. "One Primary Action per View" (Clear Decision Hierarchy)
+*To prevent choice overload (Hick's Law):*
+- Every screen, card, or modal dialog MUST contain **EXACTLY ONE Primary Button** (solid high-contrast background).
+- All alternative actions MUST be visual tiers below:
+  - *Secondary Actions*: Outline / Ghost button (e.g., *"Batal"*, *"Simpan Draf"*).
+  - *Destructive Actions*: Muted red outline with two-step confirmation dialog.
+  - *Tertiary Actions*: Plain text link.
+
+### C. Progress Visibility & Immediate Feedback (Nir Eyal Hook Reward)
+1. **Multi-Step Wizards**: Display clear progress steps (e.g., *"Langkah 2 dari 3: Konfirmasi Alamat"*) with completed steps visually checked.
+2. **Instant Micro-Feedback**: Inline field validations trigger immediately on `blur`; successful actions trigger instant toast notifications (<100ms) before network background completion.
+3. **Make Progress Visible**: In long processes (imports, uploads, audits), show real percentage progress bars (`Progress` component), never endless spinning wheels without time estimates.
+
 ### 7.2 Strict Unified Z-Index Hierarchy
 *To prevent modal dropdown collisions, combobox clipping, and sticky bar bleed-through:*
 
