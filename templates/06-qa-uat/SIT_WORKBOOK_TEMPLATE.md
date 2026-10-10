@@ -103,6 +103,16 @@ Testing Tool: `k6` / `autocannon`
 
 ---
 
+### 4b. Automated Test Coverage (Large / Enterprise scale mandatory)
+
+Report the output of `pnpm test:coverage` (or `npm run coverage`):
+- **Line Coverage**: [e.g.: 74%] (Large: $\ge 70\%$ | Enterprise: $\ge 80\%$)
+- **Branch Coverage**: [e.g.: 63%] (Large: $\ge 60\%$ | Enterprise: $\ge 70\%$)
+
+> Small / Medium scale: no strict threshold — report actual numbers for transparency.
+
+---
+
 ### 5. Gate Recommendation
 
 Based on all technical test results, third-party system integrations, security audits, and load testing above:

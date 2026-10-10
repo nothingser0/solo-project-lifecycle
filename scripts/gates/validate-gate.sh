@@ -892,6 +892,34 @@ case "$GATE_MODULE" in
                 echo "  ❌ SIT_WORKBOOK.md missing staging environment URL!"
                 GATE_FAILED=1
             fi
+            # Reject any failed scenario: an explicit FAIL cell or a non-zero Failed-column count.
+            if echo "$sit_content" | grep -qE "\|[[:space:]]*\**FAIL\**[[:space:]]*\|" || echo "$sit_content" | grep -qE "\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|"; then
+                echo "  ❌ SIT_WORKBOOK.md contains FAILED test scenario(s)! 100% of SIT scenarios must PASS before Client UAT."
+                GATE_FAILED=1
+            else
+                echo "  ✅ SIT_WORKBOOK.md shows zero failed SIT scenarios"
+            fi
+            # Coverage threshold for Large / Enterprise (module 07 §6).
+            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                    cov_min=80
+                else
+                    cov_min=70
+                fi
+                cov_line=$(echo "$sit_content" | grep -iE "line[[:space:]]*coverage" | grep -oE "[0-9]+([.][0-9]+)?%" | head -1 | tr -d '%')
+                if [ -n "$cov_line" ]; then
+                    cov_int=${cov_line%%.*}
+                    if [ "${cov_int:-0}" -ge "$cov_min" ]; then
+                        echo "  ✅ SIT_WORKBOOK.md line coverage ${cov_int}% >= ${cov_min}% (required)"
+                    else
+                        echo "  ❌ SIT_WORKBOOK.md line coverage ${cov_int}% < ${cov_min}% required for this scale!"
+                        GATE_FAILED=1
+                    fi
+                else
+                    echo "  ❌ SIT_WORKBOOK.md missing 'Line Coverage: N%' report (>= ${cov_min}% required for this scale)!"
+                    GATE_FAILED=1
+                fi
+            fi
         fi
         if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."

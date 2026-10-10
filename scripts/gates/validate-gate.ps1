@@ -1173,6 +1173,30 @@ if ($Module -eq "M07" -and -not $isSmallScale) {
             Write-Host "  [ERROR] SIT_WORKBOOK.md missing staging environment URL!" -ForegroundColor Red
             $missingRequired += "SIT_WORKBOOK.md (missing staging URL)"
         }
+        # Reject any failed scenario: an explicit FAIL cell or a non-zero Failed-column count.
+        if (($sitContent -match '\|\s*\**FAIL\**\s*\|') -or ($sitContent -match '\|\s*[0-9]+\s*\|\s*[0-9]+\s*\|\s*[1-9][0-9]*\s*\|')) {
+            Write-Host "  [ERROR] SIT_WORKBOOK.md contains FAILED test scenario(s)! 100% of SIT scenarios must PASS before Client UAT." -ForegroundColor Red
+            $missingRequired += "SIT_WORKBOOK.md (failed test scenario present)"
+        } else {
+            Write-Host "  [OK] SIT_WORKBOOK.md shows zero failed SIT scenarios" -ForegroundColor Green
+        }
+        # Coverage threshold for Large / Enterprise (module 07 §6).
+        if ($isLargeScale) {
+            $covMin = if ($isEnterprise) { 80 } else { 70 }
+            $covMatch = [regex]::Match($sitContent, '(?i)line\s*coverage[^\d]*([0-9]+)')
+            if ($covMatch.Success) {
+                $covVal = [int]$covMatch.Groups[1].Value
+                if ($covVal -ge $covMin) {
+                    Write-Host "  [OK] SIT_WORKBOOK.md line coverage ${covVal}% >= ${covMin}% (required)" -ForegroundColor Green
+                } else {
+                    Write-Host "  [ERROR] SIT_WORKBOOK.md line coverage ${covVal}% < ${covMin}% required for this scale!" -ForegroundColor Red
+                    $missingRequired += "SIT_WORKBOOK.md (line coverage ${covVal}% < ${covMin}%)"
+                }
+            } else {
+                Write-Host "  [ERROR] SIT_WORKBOOK.md missing 'Line Coverage: N%' report (>= ${covMin}% required for this scale)!" -ForegroundColor Red
+                $missingRequired += "SIT_WORKBOOK.md (missing line coverage report)"
+            }
+        }
     }
     # Content verification (BLOCKER): zero-Critical attestation required.
     $secFile = if (Test-Path "docs/qa/SECURITY_AUDIT.md") { "docs/qa/SECURITY_AUDIT.md" } elseif (Test-Path "docs/qa/SECURITY_AUDIT_REPORT.md") { "docs/qa/SECURITY_AUDIT_REPORT.md" } else { $null }
