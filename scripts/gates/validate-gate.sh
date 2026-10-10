@@ -584,6 +584,47 @@ case "$GATE_MODULE" in
                 echo "  ❌ DESIGN_SPEC.md missing 5-state matrix coverage (found only $state_count/5 states)!"
                 GATE_FAILED=1
             fi
+
+            # 5. Typography & Spacing sections in DESIGN.md (BLOCKER)
+            if [ -f "$design_file" ]; then
+                if grep -qiE "Typography" "$design_file" && grep -qiE "Spacing" "$design_file"; then
+                    echo "  ✅ DESIGN.md Typography & Spacing sections verified"
+                else
+                    echo "  ❌ DESIGN.md missing required 'Typography' and/or 'Spacing' sections!"
+                    GATE_FAILED=1
+                fi
+            fi
+
+            # 6. Prototyping Workflow enforcement (B/C/D require physical screen/prompt output)
+            wf=$(grep -iE "^Prototyping-Workflow:\s*[ABCD]" "docs/specs/DESIGN_SPEC.md" | grep -oiE "[ABCD]" | head -1 | tr '[:lower:]' '[:upper:]')
+            if [ "$wf" = "B" ] || [ "$wf" = "C" ] || [ "$wf" = "D" ]; then
+                echo "  [INFO] Prototyping-Workflow: $wf (visual/AI/design-tool) — per-screen output is MANDATORY."
+                prompt_files=$(find docs/design/prompts -name "PROMPT.md" 2>/dev/null | wc -l | tr -d ' ')
+                screen_files=$(find docs/design/screens -mindepth 2 -type f 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${prompt_files:-0}" -ge 1 ] && [ "${screen_files:-0}" -ge 1 ]; then
+                    echo "  ✅ Per-screen outputs present (prompts: $prompt_files, screens: $screen_files)"
+                else
+                    echo "  ❌ Workflow $wf selected but per-screen outputs missing! Create docs/design/prompts/scr-xx/PROMPT.md and docs/design/screens/scr-xx/ for every screen."
+                    GATE_FAILED=1
+                fi
+            fi
+
+            # 7. Screen count match: SITEMAP routes vs DESIGN_SPEC screen rows (±10%)
+            if [ -f "docs/specs/SITEMAP.md" ]; then
+                sitemap_screens=$(grep -oE "SCR-[0-9]+" "docs/specs/SITEMAP.md" | sort -u | wc -l | tr -d ' ')
+                spec_screens=$(grep -oE "SCR-[0-9]+" "docs/specs/DESIGN_SPEC.md" | sort -u | wc -l | tr -d ' ')
+                if [ "${sitemap_screens:-0}" -ge 1 ]; then
+                    diff=$(( sitemap_screens - spec_screens ))
+                    [ "$diff" -lt 0 ] && diff=$(( -diff ))
+                    tolerance=$(( sitemap_screens / 10 ))
+                    if [ "$diff" -le "$tolerance" ]; then
+                        echo "  ✅ Screen count match verified (SITEMAP $sitemap_screens vs DESIGN_SPEC $spec_screens, tolerance ±$tolerance)"
+                    else
+                        echo "  ❌ Screen count mismatch: SITEMAP $sitemap_screens vs DESIGN_SPEC $spec_screens (exceeds ±10% tolerance)!"
+                        GATE_FAILED=1
+                    fi
+                fi
+            fi
         fi
         ;;
     M05)

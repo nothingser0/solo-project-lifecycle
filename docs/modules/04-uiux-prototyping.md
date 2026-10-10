@@ -86,12 +86,14 @@ This module translates `SCOPE_STATEMENT.md` into 6 authoritative design specific
   • Mandatory Inclusion of 5 States: Default, Loading Skeleton, Empty, Error, Success
                                 │
                                 ▼
-[ STEP 4: Screen Prompts & Screen Output Generation (MANDATORY ALL SCALES) ]
+[ STEP 4: Screen Prompts & Screen Output Generation (WORKFLOW-DEPENDENT) ]
+  • REQUIRED when Prototyping-Workflow = B / C / D (visual builder, AI prototype, design tool)
+  • SKIPPED when Prototyping-Workflow = A (Markdown-only specification)
   • Generate structured per-screen prompts for ALL screens in SITEMAP.md using `templates/02-design/SCREEN_PROMPT_TEMPLATE.md`
   • Store prompts in: `docs/design/prompts/[screen-id-lowercase]/PROMPT.md`
   • Generate/render screen code or prototype components based on prompt, DESIGN.md, and SITEMAP.md
   • Store generated screen outputs in: `docs/design/screens/[screen-id-lowercase]/`
-  • OUTPUT: docs/design/prompts/ & docs/design/screens/ populated for all in-scope screens
+  • OUTPUT (B/C/D only): docs/design/prompts/ & docs/design/screens/ populated for all in-scope screens
                                 │
                                 ▼
                                 │

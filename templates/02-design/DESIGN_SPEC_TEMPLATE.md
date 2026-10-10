@@ -11,6 +11,7 @@
 - **Specification Version**: 1.0.0
 - **Design Status**: [DRAFT / IN_REVIEW / FROZEN]
 - **Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
+- **Prototyping Workflow**: [A (Markdown-only) / B (Visual Builder) / C (AI Prototype) / D (Design Tool)]
 - **Approval Date**: [YYYY-MM-DD]
 
 ---
@@ -168,3 +169,13 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 - [ ] **3. Data Privacy & Integrity**: Sensitive fields (cost prices, expected opname stock, personal identifiers) are protected by role-based DOM omission.
 - [ ] **4. Mathematical Error Contrast**: Form error text achieves verified $\ge 4.5:1$ contrast against light background surfaces.
 - [ ] **5. Focus Not Obscured Enforced**: Container styles incorporate `scroll-padding-bottom` (minimum 96px) to guarantee input focus visibility above mobile sticky bars.
+
+---
+
+## Machine Validation Summary (M04 Gate)
+
+```text
+Prototyping-Workflow: [A|B|C|D]
+```
+
+*(A = Markdown-only: `docs/design/prompts/` & `docs/design/screens/` are OPTIONAL. B/C/D = Visual Builder / AI Prototype / Design Tool: the gate REQUIRES populated `docs/design/prompts/scr-xx/PROMPT.md` and `docs/design/screens/scr-xx/` output folders — the module CANNOT be closed until those files physically exist.)*

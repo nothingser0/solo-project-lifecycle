@@ -913,6 +913,50 @@ if ($Module -eq "M00") {
             Write-Host "  [ERROR] DESIGN_SPEC.md missing 5-state matrix coverage (found only $stateCount/5 states)!" -ForegroundColor Red
             $missingRequired += "docs/specs/DESIGN_SPEC.md (5-state matrix coverage)"
         }
+
+        # Typography & Spacing sections in DESIGN.md (BLOCKER)
+        if ($designFile -and (Test-Path $designFile)) {
+            $designContent2 = Get-Content $designFile -Raw
+            if ($designContent2 -match '(?i)Typography' -and $designContent2 -match '(?i)Spacing') {
+                Write-Host "  [OK] DESIGN.md Typography & Spacing sections verified" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] DESIGN.md missing required 'Typography' and/or 'Spacing' sections!" -ForegroundColor Red
+                $missingRequired += "DESIGN.md (Typography/Spacing sections)"
+            }
+        }
+
+        # Prototyping Workflow enforcement (B/C/D require physical screen/prompt output)
+        if ($specContent -match '(?im)^Prototyping-Workflow:\s*([ABCD])') {
+            $wf = $matches[1].ToUpper()
+            if ($wf -in @("B", "C", "D")) {
+                Write-Host "  [INFO] Prototyping-Workflow: $wf (visual/AI/design-tool) - per-screen output is MANDATORY." -ForegroundColor Cyan
+                $promptFiles = @(Get-ChildItem -Path "docs/design/prompts" -Filter "PROMPT.md" -Recurse -ErrorAction SilentlyContinue).Count
+                $screenFiles = @(Get-ChildItem -Path "docs/design/screens" -File -Recurse -ErrorAction SilentlyContinue).Count
+                if ($promptFiles -ge 1 -and $screenFiles -ge 1) {
+                    Write-Host "  [OK] Per-screen outputs present (prompts: $promptFiles, screens: $screenFiles)" -ForegroundColor Green
+                } else {
+                    Write-Host "  [ERROR] Workflow $wf selected but per-screen outputs missing! Create docs/design/prompts/scr-xx/PROMPT.md and docs/design/screens/scr-xx/ for every screen." -ForegroundColor Red
+                    $missingRequired += "Per-screen outputs for workflow $wf"
+                }
+            }
+        }
+
+        # Screen count match: SITEMAP routes vs DESIGN_SPEC screen rows (+/-10%)
+        if (Test-Path "docs/specs/SITEMAP.md") {
+            $sitemapContent = Get-Content "docs/specs/SITEMAP.md" -Raw
+            $sitemapScreens = ([regex]::Matches($sitemapContent, "SCR-[0-9]+") | ForEach-Object { $_.Value } | Sort-Object -Unique).Count
+            $specScreens = ([regex]::Matches($specContent, "SCR-[0-9]+") | ForEach-Object { $_.Value } | Sort-Object -Unique).Count
+            if ($sitemapScreens -ge 1) {
+                $diff = [math]::Abs($sitemapScreens - $specScreens)
+                $tolerance = [math]::Floor($sitemapScreens / 10)
+                if ($diff -le $tolerance) {
+                    Write-Host "  [OK] Screen count match verified (SITEMAP $sitemapScreens vs DESIGN_SPEC $specScreens, tolerance +/-$tolerance)" -ForegroundColor Green
+                } else {
+                    Write-Host "  [ERROR] Screen count mismatch: SITEMAP $sitemapScreens vs DESIGN_SPEC $specScreens (exceeds +/-10% tolerance)!" -ForegroundColor Red
+                    $missingRequired += "Screen count match (SITEMAP vs DESIGN_SPEC)"
+                }
+            }
+        }
     }
 }
 if ($Module -eq "M08") {
