@@ -880,7 +880,7 @@ case "$GATE_MODULE" in
             elif echo "$sit_content" | grep -qiE "NOT EXECUTED|NOT PASSED|NOT TESTED|Status[[:space:]]*:[[:space:]]*FAIL|Testing Status[[:space:]]*:[[:space:]]*FAIL"; then
                 echo "  ❌ SIT_WORKBOOK.md reports a FAILED / NOT EXECUTED status! SIT must PASS before Client UAT."
                 GATE_FAILED=1
-            elif echo "$sit_content" | grep -qiE "SIT PASS|READY FOR UAT|Testing Status[^:]*:[[:space:]]*PASS|PASSED \(SIT PASS\)"; then
+            elif echo "$sit_content" | grep -qiE "SIT PASS|READY FOR (CLIENT )?UAT|Testing Status[^:]*:[[:space:]]*PASS|PASSED \(SIT PASS\)"; then
                 echo "  ✅ SIT_WORKBOOK.md attests SIT PASS (ready for UAT)"
             else
                 echo "  ❌ SIT_WORKBOOK.md missing explicit PASS attestation ('SIT PASS' / 'READY FOR UAT')!"

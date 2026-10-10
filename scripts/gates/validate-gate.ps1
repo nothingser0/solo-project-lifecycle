@@ -1161,7 +1161,7 @@ if ($Module -eq "M07" -and -not $isSmallScale) {
         } elseif ($sitContent -match '(?i)NOT EXECUTED|NOT PASSED|NOT TESTED|Status\s*:\s*FAIL|Testing Status\s*:\s*FAIL') {
             Write-Host "  [ERROR] SIT_WORKBOOK.md reports a FAILED / NOT EXECUTED status! SIT must PASS before Client UAT." -ForegroundColor Red
             $missingRequired += "SIT_WORKBOOK.md (reports FAILED / NOT EXECUTED)"
-        } elseif ($sitContent -match '(?i)SIT PASS|READY FOR UAT|Testing Status[^:]*:\s*PASS|PASSED \(SIT PASS\)') {
+        } elseif ($sitContent -match '(?i)SIT PASS|READY FOR (CLIENT )?UAT|Testing Status[^:]*:\s*PASS|PASSED \(SIT PASS\)') {
             Write-Host "  [OK] SIT_WORKBOOK.md attests SIT PASS (ready for UAT)" -ForegroundColor Green
         } else {
             Write-Host "  [ERROR] SIT_WORKBOOK.md missing explicit PASS attestation ('SIT PASS' / 'READY FOR UAT')!" -ForegroundColor Red
