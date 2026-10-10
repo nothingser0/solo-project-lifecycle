@@ -42,14 +42,19 @@
 > Skala Kecil berasumsi *greenfield* (data kosong). Jika proyek membutuhkan migrasi data lama (ETL relasional), proyek **otomatis naik kelas ke Skala Besar** via High-Water Mark rule dan wajib menjalankan M08 penuh.
 
 **Alur 6 Langkah Inti**:
-1. **Intake Gate** (5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md`) $ightarrow$ Klasifikasi skala otomatis.
+1. **Intake Gate** (5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md`) $
+ightarrow$ Klasifikasi skala otomatis.
 2. **M04-LITE** (Logo inisial SVG $\ge 50$B boleh, 1 benchmark visual, token anti-slop di `DESIGN.md`).
 3. **M05** (Dokumen terpadu `PROJECT_LITE.md` mencakup skema, API, dan Riskiest Assumption Test).
    🛑 **STOP 1**: Tinjau desain & spek sebelum coding.
-4. **M06** (Sprint 0 deploy hello-world staging $ightarrow$ build atomik $ightarrow$ lint & `tsc --noEmit` $ightarrow$ `SECURITY_CHECKLIST_SMALL.md`).
+4. **M06** (Sprint 0 deploy hello-world staging $
+ightarrow$ build atomik $
+ightarrow$ lint & `tsc --noEmit` $
+ightarrow$ `SECURITY_CHECKLIST_SMALL.md`).
 5. **M09-LITE** (Uji orang lain: minimal 1 penguji eksternal tercatat di `UAT_SIGNOFF_SMALL.md`).
    🛑 **STOP 2**: Verifikasi fungsi lokal & approval deploy.
-6. **M10** (Deploy production, verifikasi HTTP 200, anti-Friday deploy) $ightarrow$ Operasional mandiri via `RUNBOOK_OPS.md` (M12).
+6. **M10** (Deploy production, verifikasi HTTP 200, anti-Friday deploy) $
+ightarrow$ Operasional mandiri via `RUNBOOK_OPS.md` (M12).
 
 *(Tambahan hanya jika ada klien: **M03 SOW singkat** sebelum desain, dan **M11 serah terima singkat** setelah deploy).*
 
@@ -218,268 +223,59 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
-## 🟢 SKALA MENENGAH (Agency Project)
+## 🟢 SKALA MENENGAH (Medium / Mid-Tier / Agency)
 
 **Characteristics**:
-- 3-6 person team (PM, Tech Lead, 2-3 devs, QA)
-- Budget: Rp 50-200M
-- Timeline: 3-6 bulan (12-24 minggu)
-- Client: SME, startup Series A/B
-- Payment: 3 milestones (30-30-40%)
-
-**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11**
-
-**Skipped Modules**:
-- ❌ **M00** - Product Discovery (client has validated idea)
-- ❌ **M08** - Data Migration (greenfield project OR client data clean)
-- ❌ **M12** - Warranty (included in retainer contract)
-- ❌ **M13** - Product Ops (client handles post-launch)
-
-**Note**: 10 modules executed (M01 + 9 scale-specific), 4 modules skipped.
+- 1 Solo Developer + 1 Client Single PIC (or small team 2–3 devs)
+- Timeline: 1–3 bulan
+- Fitur: 8–15 P0 Must-Have (terkunci formal di `SCOPE_STATEMENT.md`)
+- Integrasi eksternal: Webhook Payment Gateway, WhatsApp API, transactional email
+- Model pengiriman: Client Commercial (Software House/Freelance) atau Solo SaaS Mandiri
 
 ---
 
-### Real Case Timeline (Agency)
+### Alur 8 Fase Tangkas (Client Commercial 30/40/30)
 
-#### **Week 0: Kick-off & Discovery (3-5 hari)**
+```text
+[ FASE 1: INTAKE & REGULASI ]
+  • Intake 5 pertanyaan + evaluasi sektor (medis/keuangan)
+  • Tentukan Delivery: client / solo
 
-**Project Manager**:
-- Kick-off meeting dengan client (2-3 jam)
-- Requirements gathering: fitur, user roles, critical flows
-- Project Brief (3-5 halaman):
-  - Background & objective
-  - Feature list (must/should/nice-to-have)
-  - Timeline & milestones
-  - Assumptions & risks
-- Setup project tracking (Jira/Linear)
+[ FASE 2: COMMERCIAL LOCK (M03) ] ──► 🛑 STOP 1 (DP 30% Cair)
+  • SOW termin 30/40/30, Single PIC, batas revisi 2x, deemed acceptance 7 hari
+  • Akun pihak ketiga atas nama klien, CR framework aktif
+  • Invoice termin 1 + e-Meterai / NDA
 
-**Tech Lead**:
-- Technical feasibility review
-- Stack decision (Next.js? Laravel? React Native?)
-- High-level architecture (monolith vs microservices)
-- Estimasi timeline per feature
-- Technical Brief (2-3 halaman):
-  - Tech stack
-  - Deployment plan
-  - Third-party integrations
-  - Database choice
+[ FASE 3: DESIGN & SPEC (M04 + M05) ] ──► 🛑 STOP 2 (Design Freeze & Tech Spec Signoff)
+  • M04 spesifikasi risiko (layar kritis 5-state penuh, layar statis ringkas)
+  • M05 PRD + FSD + Traceability Matrix + Skema DDL + Rencana Rollback DB
+  • Scope terkunci mati (CR log aktif)
 
-**Designer** (jika ada):
-- User flow sketches
-- Low-fidelity wireframes (Figma)
-- Design system reference (Shadcn? Material? Custom?)
+[ FASE 4: SPRINT BUILD & DEMO (M06) ] ──► 🛑 STOP 3 (Termin 2: 40% Cair Pasca Demo Staging)
+  • Sprint 0: scaffold + staging setup + dummy data seeder realistis
+  • Sprint eksekusi: TODO.md ber-Definition of Done per sprint
+  • Build, lint, tsc --noEmit, test otomatis
+  • DEMO STAGING MILESTONE ke Klien Single PIC ──► Klien bayar Termin 2 (40%)
 
-**Output**:
-- `docs/pm/IDEA_BRIEF.md`
-- `docs/pm/TECH_BRIEF.md`
-- Wireframes (Figma link)
-- Jira/Linear board dengan epic/story
-- SOW signed + 30% down payment
+[ FASE 5: UAT BISNIS & REMEDIASI (M09) ] ──► 🛑 STOP 4 (UAT Signoff Formal)
+  • Pengujian skenario bisnis oleh Klien Single PIC di staging
+  • Aturan bug: S1/S2 wajib 0; bug S3/S4 dicatat untuk masa garansi (tidak menahan UAT)
+  • UAT Signoff Report ditandatangani / Deemed approval 7 hari
 
-**Timeline**: 3-5 hari
+[ FASE 6: RILIS TERKONTROL (M10) ]
+  • Deploy ke production environment / staging akhir dev (preview domain)
+  • Probe curl HTTP 200, tes backup & uji restore nyata
+  • Hypercare 1-2 minggu dimulai
 
----
+[ FASE 7: BAST & HANDOVER LEVERAGE (M11) ] ──► 🛑 STOP 5 (Pelunasan 30% Terakhir)
+  • Klien transfer sisa pelunasan 30%
+  • TTD BAST (Berita Acara Serah Terima) fisik/digital
+  • BARU pindahkan DNS ke domain klien, transfer akun hosting, rotasi kredensial root
 
-#### **Week 1-2: M02 Discovery + M03 Legal (1-2 minggu)**
-
-**M02 - Discovery**:
-- Stakeholder mapping (Power/Interest matrix)
-- Targeted discovery interview (business objectives, user personas, pain points, integrations, compliance)
-- MoSCoW prioritization (26-40 features untuk agency scale)
-- Scope boundary locking (in/out scope, client dependencies, SLA)
-- Output: `SCOPE_STATEMENT.md`, `STAKEHOLDER_MAP.md`
-
-**M03 - Legal SOW**:
-- Payment structure: 30-30-40% (DP, Alpha, Final)
-- Contract model: Fixed-price milestone
-- Legal clauses: IP rights, liability cap, CR protocol, Single PIC rule
-- DPA (Data Processing Agreement) jika handle PII
-- Output: `SOW_CONTRACT.md` (signed), `PROJECT_CHARTER.md`
-- **GATE (BLOCKING)**: DP funds received → proceed to design
-
----
-
-#### **Week 3-4: M04 Design & Prototyping (2 minggu)**
-
-**Designer**:
-- High-fidelity mockups (key screens: login, dashboard, 2-3 main features)
-- Design system setup (colors, typography, components)
-- Client review & revision (1-2 rounds)
-- Output: Figma mockups (10-20 screens), interactive prototype
-
-**Tech Lead + Senior Dev**:
-- Database schema design (ERD)
-- API contract design (10-30 endpoints, OpenAPI optional)
-- Output: `DESIGN_SYSTEM.md`, `COMPONENT_REQUIREMENTS.md`
-- **GATE**: Design freeze signed by client
-
----
-
-#### **Week 5-6: M05 Architecture (1-2 minggu)**
-
-**Tech Lead**:
-- ARCHITECTURE.md:
-  - Directory structure
-  - Data flow
-  - Auth strategy
-  - File upload strategy
-  - Error handling pattern
-- Setup repo:
-  - Scaffold project (create-next-app, laravel new)
-  - CI/CD pipeline (GitHub Actions → staging)
-  - Staging environment
-  - `.env.example`
-  - `README.md` (setup instructions)
-- Output: `PRD.md`, `FSD.md`, staging URL live (blank app)
-- **GATE**: Stack approved → ready to code
-
----
-
-#### **Week 7-14: M06 Development (2-4 sprints, 4-8 minggu)**
-
-**Sprint Structure** (2-week sprints):
-
-**Sprint Planning** (awal sprint, 2 jam):
-- PM + Tech Lead breakdown tasks
-- Devs pick tasks sesuai capacity
-- Estimasi effort (story points atau jam)
-
-**Daily Standups** (async di Slack atau sync 15 menit):
-- What I did yesterday
-- What I'll do today
-- Blockers
-
-**Development**:
-- Backend dev: API implementation
-- Frontend dev: UI implementation
-- Code review: minimal 1 senior approve sebelum merge
-- Git workflow:
-  - `main` = production (protected)
-  - `staging` = testing environment (auto-deploy)
-  - Feature branches: `feat/user-auth`, `feat/inventory-crud`
-  - Commit convention: `feat:`, `fix:`, `refactor:`
-
-**Testing** (continuous):
-- Dev testing: manual testing setiap feature selesai
-- QA testing (jika ada QA): test case document + bug tracking
-- Staging deploy: setiap merge ke staging branch
-- Client demo: end of sprint (1-2 jam)
-
-**Output per sprint**:
-- Working features di staging
-- Bug list (Jira/Linear)
-- Sprint report (velocity, burndown)
-
-**Timeline**: 4-8 minggu (2-4 sprints)
-
----
-
-#### **Week 15-16: M07 QA & SIT (1-2 minggu)**
-
-**Internal QA**:
-- Regression testing (semua feature)
-- Security basic check:
-  - SQL injection test (manual atau Burp Suite)
-  - XSS test
-  - Auth bypass test
-  - CORS check
-- Performance check:
-  - Lighthouse score
-  - API response time (<500ms target)
-  - Database N+1 query
-- Bug fixing sprint
-
-**Output**: `docs/qa/SIT_WORKBOOK.md`, bug list prioritized
-
----
-
-#### **Week 17-18: M09 UAT (2-3 minggu)**
-
-**UAT Setup**:
-- UAT environment (isolated dari staging)
-- Test user accounts (per role: admin, manager, staff)
-- UAT guide document (20-30 halaman dengan screenshot)
-- Training session (1-2 jam)
-
-**UAT Execution**:
-- Client test against acceptance criteria
-- Bug submission via Jira/Linear
-- P0/P1 bugs wajib fix sebelum deploy
-- P2/P3 masuk post-launch backlog
-- Sign-off formal: Email/dokumen approval
-
-**Defect Triage Matrix**:
-- S1 (Critical): Blocking feature, data loss → Fix immediately
-- S2 (High): Major feature broken, workaround exists → Fix before go-live
-- S3 (Medium): Minor bug, cosmetic → Fix post-launch or defer
-- CR (Change Request): New feature → Formal CR protocol (additional cost)
-
-**Output**: `UAT_WORKBOOK.md`, `UAT_SIGNOFF_REPORT.md` (signed by Client PIC)
-**GATE (BLOCKING)**: UAT sign-off received → proceed to deploy
-
----
-
-#### **Week 19: M10 Deployment (3-5 hari)**
-
-**DevOps/Tech Lead**:
-- Production environment setup:
-  - Server (AWS, DigitalOcean, Railway, Vercel)
-  - Database (production instance, backup setup)
-  - Domain + SSL
-  - Environment variables
-  - CDN jika perlu (Cloudflare)
-- Deploy production
-- Smoke testing (test 5-10 critical flows)
-- Monitoring setup (Sentry, LogRocket, atau simple error logging)
-
-**PM**:
-- Handover Document (5-10 halaman):
-  - Credentials (server, database, domain, third-party APIs)
-  - Deployment guide
-  - Common troubleshooting
-  - Warranty terms (30-90 hari gratis bug fix)
-- Training session dengan client (1-2 jam):
-  - Admin panel walkthrough
-  - How to manage content/users
-  - How to contact support
-- Invoice final payment (40% remaining)
-
-**Output**: Production URL live, Handover doc, Client training done
-**GATE**: Production smoke test passes → handover
-
----
-
-#### **Week 20: M11 Handover (1 minggu)**
-
-**Documentation Delivery**:
-- `USER_MANUAL.md` (20+ pages)
-- `ADMIN_MANUAL.md` (user management, system config)
-- `RUNBOOK_PRODUCTION.md` (deployment SOP)
-- `API_DOCUMENTATION.md` (Swagger export)
-
-**Source Code Handover**:
-- Git repository transfer
-- Ownership confirmation
-
-**Credential Handover** (encrypted):
-- Bitwarden shared vault
-- Credentials: DB password, SSH keys, API keys, SSL cert, admin panel
-
-**Output**: All docs delivered, source code transferred
-**GATE**: Final payment (40%) received
-
----
-
-### Total Timeline: **18-20 minggu (4.5-5 bulan)**
-
-**Payment Structure**:
-- Milestone 1 (DP): 30% upfront (contract signing)
-- Milestone 2 (Alpha): 30% (backend + basic UI staging demo)
-- Milestone 3 (Final): 40% (UAT sign-off, production live)
-
-**Post-Launch**:
-- Warranty period: 30-90 hari gratis bug fix
-- Support: Bug fixes (gratis), new features (billable CR)
+[ FASE 8: WARRANTY & RETROSPEKTIF (M12) ]
+  • Garansi 30-60 hari aktif (hanya perbaikan bug FSD, tertulis di BAST)
+  • Retrospektif solo dev & penutupan time tracking
+```
 
 ---
 

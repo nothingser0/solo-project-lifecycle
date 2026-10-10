@@ -187,23 +187,28 @@ case "$GATE_MODULE" in
         check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
             check_optional "contracts/NDA.md" "docs/pm/NDA.md"
             if [ -f "$target_sow" ]; then
-                if grep -qiE "Termin|Milestone.*Payment|Down Payment|DP" "$target_sow"; then
-                echo "  ✅ Payment terms defined"
-            else
+                if grep -qiE "Termin|Milestone.*Payment|Down Payment|DP|30/40/30|50/50" "$target_sow"; then
+                    echo "  ✅ Payment terms & milestone schedule defined"
+                else
                     echo "  ❌ Payment terms not clearly defined!"
                     GATE_FAILED=1
-            fi
-                if grep -qiE "\[x\]\s*(DP|Down Payment|50%|Cleared|Received)" "$target_sow"; then
+                fi
+                if grep -qiE "\[x\]\s*(DP|Down Payment|30%|40%|50%|Cleared|Received)" "$target_sow"; then
                     echo "  ✅ Down payment (DP) confirmation verified ([x] cleared)"
                 else
                     echo "  ⚠️  Down payment (DP) not marked [x] as received/cleared in SOW!"
-            fi
+                fi
                 if grep -qi "Single PIC" "$target_sow"; then
-                echo "  ✅ Single PIC clause present"
+                    echo "  ✅ Single PIC clause present"
                 else
                     echo "  ❌ Single PIC clause missing!"
                     GATE_FAILED=1
-            fi
+                fi
+                if grep -qiE "Deemed Acceptance|Klien Diam" "$target_sow"; then
+                    echo "  ✅ Deemed acceptance clause verified (Anti-ghosting protection)"
+                else
+                    echo "  ⚠️  Deemed acceptance clause (7-day feedback limit) not explicitly found in SOW"
+                fi
                 if grep -qiE "Limitation of Liability|Liability Cap" "$target_sow"; then
                     echo "  ✅ Limitation of liability clause present"
                 else

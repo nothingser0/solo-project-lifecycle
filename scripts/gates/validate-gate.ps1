@@ -437,10 +437,13 @@ if ($Module -eq "M00") {
             } else {
                 Write-Host "  [ERROR] Payment terms not clearly defined!" -ForegroundColor Red
             }
-            if ($sowContent -match '\[x\]\s*(DP|Down Payment|50%|Cleared|Received)') {
+            if ($sowContent -match '\[x\]\s*(DP|Down Payment|30%|40%|50%|Cleared|Received)') {
                 Write-Host "  [OK] Down payment (DP) confirmation verified ([x] cleared)" -ForegroundColor Green
             } else {
                 Write-Host "  [WARNING] Down payment (DP) not marked [x] as received/cleared in SOW!" -ForegroundColor Yellow
+            }
+            if ($sowContent -match '(?i)Deemed Acceptance|Klien Diam') {
+                Write-Host "  [OK] Deemed acceptance clause verified (Anti-ghosting protection)" -ForegroundColor Green
             }
             if ($sowContent -match '(?i)Single PIC') {
                 Write-Host "  [OK] Single PIC clause present" -ForegroundColor Green

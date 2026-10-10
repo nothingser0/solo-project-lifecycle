@@ -35,7 +35,11 @@ To prevent conflicting directions and ensure solo developer execution efficiency
   1. The sole party authorized to provide formal approval for PRD, FSD, and UI/UX design changes.
   2. The sole party authorized to sign UAT test sheets and the Official Acceptance Report (BAST).
   3. Instructions or change requests from other client staff are **NOT RECOGNIZED** until confirmed in writing by the PIC above.
-- **Client Response SLA**: The Client PIC is required to provide written feedback or approval within a maximum of **3 (three) business days**. Response delays automatically shift the system release target without delay penalties for the developer.
+- **Client Response SLA**: The Client PIC is required to provide written feedback or approval within a maximum of **3 (three) business days**. Response delays automatically shift the system release target day-for-day without delay penalties for the developer.
+- **Deemed Acceptance (Klausul Klien Diam)**: If the Client fails to provide written feedback, change requests, or defect reports within **7 (seven) calendar days** following a milestone demo submission or UAT delivery, the respective milestone shall be **LEGALLY DEEMED APPROVED AND ACCEPTED IN FULL (DEEMED ACCEPTED)**. The associated milestone invoice shall become immediately due and payable.
+- **Revision Limits**:
+  - UI/UX Design (M04): Maximum **2 (two) rounds** of minor visual revisions. Fundamental direction changes post-Design Freeze require a paid Change Request.
+  - User Acceptance Testing (M09): Maximum **2 (two) test cycles**. UAT approval may NOT be withheld due to low-severity cosmetic defects (S3/S4) which are deferred to warranty.
 
 ---
 
@@ -101,18 +105,15 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
    - **Tax Regulatory Clause**: Applicable taxes (PPN 11% under UU HPP No. 7/2021, and PPh 23 if corporate client) follow statutory tax regulations in force upon invoice issuance.
 2. **Payment Milestones (Must sum to exactly 100%)**:
    
-   *Standard 4-Phase Schedule (Recommended for Medium/Large Projects)*:
-   - **Milestone 1 (Down Payment / DP 40%)**: Amounting to Rp [Amount], payable upon contract signing as a prerequisite to commencing work.
-   - **Milestone 2 (Alpha Delivery 25%)**: Amounting to Rp [Amount], payable after core backend engine functionality and basic interfaces are verified in local/staging environments.
-   - **Milestone 3 (Beta Delivery & SIT 20%)**: Amounting to Rp [Amount], payable after all modules are integrated and ready for User Acceptance Testing (UAT).
-   - **Milestone 4 (Final Settlement 15%)**: Amounting to Rp [Amount], payable within 7 (seven) business days after UAT Sign-off is approved, prior to source code repository and BAST handover.
-   *(Total: 40% + 25% + 20% + 15% = 100%)*
+   *Standard 3-Phase Schedule (Recommended for Medium Scale 30/40/30)*:
+   - **Milestone 1 (Down Payment / DP 30%)**: Rp [Amount], payable upon contract signing as strict prerequisite to commencing design & architecture.
+   - **Milestone 2 (Mid-Point Staging Demo 40%)**: Rp [Amount], payable immediately upon successful live staging demonstration of core P0 flows (M06) before entering final UAT.
+   - **Milestone 3 (Final Settlement 30%)**: Rp [Amount], payable after UAT pass and prior to DNS production pointing, repository transfer, and BAST handover (M11).
+   *(Total: 30% + 40% + 30% = 100%)*
 
-   *Alternative 3-Phase Schedule (For Small / Accelerated Projects)*:
-   - **Milestone 1 (Down Payment / DP 50%)**: Rp [Amount], upon signing.
-   - **Milestone 2 (Beta / Staging 30%)**: Rp [Amount], upon SIT approval.
-   - **Milestone 3 (Final Settlement 20%)**: Rp [Amount], upon UAT signoff prior to BAST.
-   *(Total: 50% + 30% + 20% = 100%)*
+   *Alternative 2-Phase Schedule (For Small Fast-Track 50/50)*:
+   - **Milestone 1 (Down Payment 50%)**: Rp [Amount], upon signing before design.
+   - **Milestone 2 (Final Settlement 50%)**: Rp [Amount], upon UAT approval prior to BAST handover.
 3. **Official Payment Account**:
    - Bank: [Bank Name, e.g., Bank Central Asia]
    - Account Number: [Account Number]
@@ -142,6 +143,21 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 3. Change request work will only be executed after the CR sheet is approved and paid by the Client.
 
 ---
+
+### 5.1 Third-Party Subscriptions & Infrastructure Costs
+1. All recurring costs for third-party services—including but not limited to domain registration, cloud hosting/VPS (AWS/Vercel/DigitalOcean), transactional email (Resend/SendGrid), WhatsApp Gateway API (Fonnte/Wablas), database services, and payment gateway transaction fees—are **the sole financial responsibility of the Client**.
+2. All third-party accounts and subscriptions **MUST be registered under the Client corporate name and billed directly to the Client credit card**. The Developer shall never front or absorb third-party operational costs.
+
+### 5.2 Project Suspension, Kill Fee & Termination
+1. **Late Payment Penalty**: Invoices overdue by more than 7 (seven) calendar days will incur a late interest charge of **1% per calendar week**.
+2. **Project Pause**: The Developer reserves the right to suspend development and staging server access if client dependency submission or payment is overdue by more than 10 calendar days. Resuming a paused project requires an administrative restart fee of 5% of total contract value.
+3. **Client Termination & Kill Fee**: Should the Client terminate this agreement without Developer breach:
+   - The 30% Down Payment is strictly non-refundable.
+   - Work completed beyond the latest paid milestone will be billed prorata based on completed TODO.md sprint tasks.
+
+### 5.3 Developer Portfolio & Legal Review Disclaimer
+1. **Portfolio Rights**: The Developer retains the irrevocable right to showcase screenshots, sanitized architecture case studies, and non-confidential project descriptions in professional portfolios and marketing materials unless expressly prohibited via a signed separate NDA.
+2. **Legal Review Disclaimer**: This document is an operational engineering contract drafted by an independent technical consultant. Both parties acknowledge that independent legal counsel review is recommended.
 
 ### 6. Intellectual Property Rights
 
