@@ -1150,6 +1150,48 @@ if ($Module -eq "M06") {
         }
     }
 }
+if ($Module -eq "M07" -and -not $isSmallScale) {
+    # Content verification (BLOCKER): workbook must attest a real PASS, not FAILED / NOT EXECUTED.
+    $sitFile = if (Test-Path "docs/qa/SIT_WORKBOOK.md") { "docs/qa/SIT_WORKBOOK.md" } else { $null }
+    if ($sitFile) {
+        $sitContent = Get-Content $sitFile -Raw
+        if ($sitContent -match '\[Your Name\]|\[Application Name\]|\[client-domain\]|\[e\.g\.|\[git-hash\]|\[YYYY-MM-DD\]|\[Total\]|\[ID\]') {
+            Write-Host "  [ERROR] SIT_WORKBOOK.md still contains unresolved template placeholders ([...])! Fill in real execution results." -ForegroundColor Red
+            $missingRequired += "SIT_WORKBOOK.md (unresolved template placeholders)"
+        } elseif ($sitContent -match '(?i)NOT EXECUTED|NOT PASSED|NOT TESTED|Status\s*:\s*FAIL|Testing Status\s*:\s*FAIL') {
+            Write-Host "  [ERROR] SIT_WORKBOOK.md reports a FAILED / NOT EXECUTED status! SIT must PASS before Client UAT." -ForegroundColor Red
+            $missingRequired += "SIT_WORKBOOK.md (reports FAILED / NOT EXECUTED)"
+        } elseif ($sitContent -match '(?i)SIT PASS|READY FOR UAT|Testing Status[^:]*:\s*PASS|PASSED \(SIT PASS\)') {
+            Write-Host "  [OK] SIT_WORKBOOK.md attests SIT PASS (ready for UAT)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] SIT_WORKBOOK.md missing explicit PASS attestation ('SIT PASS' / 'READY FOR UAT')!" -ForegroundColor Red
+            $missingRequired += "SIT_WORKBOOK.md (missing PASS attestation)"
+        }
+        if ($sitContent -match '(?i)https?://\S+') {
+            Write-Host "  [OK] SIT_WORKBOOK.md references a staging/environment URL" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] SIT_WORKBOOK.md missing staging environment URL!" -ForegroundColor Red
+            $missingRequired += "SIT_WORKBOOK.md (missing staging URL)"
+        }
+    }
+    # Content verification (BLOCKER): zero-Critical attestation required.
+    $secFile = if (Test-Path "docs/qa/SECURITY_AUDIT.md") { "docs/qa/SECURITY_AUDIT.md" } elseif (Test-Path "docs/qa/SECURITY_AUDIT_REPORT.md") { "docs/qa/SECURITY_AUDIT_REPORT.md" } else { $null }
+    if ($secFile) {
+        $secContent = Get-Content $secFile -Raw
+        if ($secContent -match '\[Your Name\]|\[Application Name\]|\[client-domain\]|\[YYYY-MM-DD\]|\[Patched / Monitored\]') {
+            Write-Host "  [ERROR] $secFile still contains unresolved template placeholders ([...])! Fill in real audit results." -ForegroundColor Red
+            $missingRequired += "$secFile (unresolved template placeholders)"
+        } elseif (($secContent -match '(?im)\[x\][^A-Za-z]*REJECTED') -or ($secContent -match '\|\s*Critical\s*\|\s*[1-9][0-9]*\s*\|')) {
+            Write-Host "  [ERROR] $secFile reports unresolved Critical vulnerabilities! Zero Critical required before go-live." -ForegroundColor Red
+            $missingRequired += "$secFile (unresolved Critical vulnerabilities)"
+        } elseif ($secContent -match '(?im)\[x\][^A-Za-z]*(SECURITY PASS|MEETS SECURITY STANDARDS)|Free of Critical|Zero Critical|0 Critical') {
+            Write-Host "  [OK] $secFile attests SECURITY PASS (zero Critical vulnerabilities)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] $secFile missing zero-Critical attestation ('SECURITY PASS' / 'Free of Critical')!" -ForegroundColor Red
+            $missingRequired += "$secFile (missing zero-Critical attestation)"
+        }
+    }
+}
 if ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
     if ($reconFile) {
