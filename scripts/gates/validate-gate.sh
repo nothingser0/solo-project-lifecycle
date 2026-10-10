@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # validate-gate.sh - Gate checkpoint validation for solo-project-lifecycle
-# Usage: ./scripts/validate-gate.sh <MODULE_ID>
+# Usage: ./scripts/gates/validate-gate.sh <MODULE_ID>
 
 set -e
 
@@ -163,6 +163,7 @@ case "$GATE_MODULE" in
         IS_SOLO=0
         grep -qiE "bypass|waived|solo saas|self-initiated" "$target_sow" 2>/dev/null && IS_SOLO=1
         ([ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]) && IS_SOLO=1
+        grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null && IS_SOLO=1
         grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null && IS_SOLO=1
         if [ $IS_SOLO -eq 1 ]; then
             echo "  [INFO] Solo SaaS / Internal project detected: Commercial SOW gate is WAIVED."
@@ -263,12 +264,18 @@ case "$GATE_MODULE" in
         ;;
     M07)
         echo "=== M07: Quality Assurance & SIT Gate Checklist ==="
-        check_required "docs/qa/SIT_WORKBOOK.md"
-        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
-            echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
-            check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small Scale detected: SECURITY_CHECKLIST_SMALL.md is required."
+            check_required "docs/qa/SECURITY_CHECKLIST_SMALL.md" "SECURITY_CHECKLIST_SMALL.md" 500
+            check_optional "docs/qa/SIT_WORKBOOK.md"
         else
-        check_optional "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+            check_required "docs/qa/SIT_WORKBOOK.md"
+            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
+                check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+            else
+                check_optional "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+            fi
         fi
         ;;
     M08)
@@ -288,7 +295,7 @@ case "$GATE_MODULE" in
         ;;
     M09)
         echo "=== M09: Validation Gate (UAT Sign-Off) Checklist ==="
-        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Solo SaaS / Internal project detected: M09 Client UAT is WAIVED (Self-testing)."
             check_optional "docs/pm/UAT_SIGNOFF_REPORT.md" "docs/qa/UAT_SIGNOFF.md"
         else
@@ -319,7 +326,7 @@ case "$GATE_MODULE" in
         ;;
     M11)
         echo "=== M11: Handover & BAST Gate Checklist ==="
-        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Solo SaaS / Internal project detected: M11 Client BAST Handover is WAIVED."
             check_optional "docs/pm/BAST.md" "contracts/BAST.md"
         else
@@ -333,7 +340,12 @@ case "$GATE_MODULE" in
         ;;
     M12)
         echo "=== M12: Warranty SLA Retainer Gate Checklist ==="
-        check_required "docs/pm/WARRANTY_POLICY.md"
+        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Solo/Internal project detected: RUNBOOK_OPS.md accepted in place of WARRANTY_POLICY.md"
+            check_required "docs/pm/RUNBOOK_OPS.md" "docs/pm/WARRANTY_POLICY.md" 500
+        else
+            check_required "docs/pm/WARRANTY_POLICY.md" "" 500
+        fi
         check_optional "docs/pm/SLA_RETAINER_CONTRACT.md" "contracts/SLA_RETAINER.md"
         check_optional "docs/pm/INCIDENT_RESPONSE.md" "docs/INCIDENT_RESPONSE.md"
         ;;

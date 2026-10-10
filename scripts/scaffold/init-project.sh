@@ -40,10 +40,16 @@ cp "$TEMPLATES/02-design/SCREEN_PROMPT_TEMPLATE.md" "$TARGET_DIR/docs/design/pro
 case "$SCALE" in
     small|open-source)
         echo "Configuring for Small / Open-Source Fast-Track MVP..."
+        mkdir -p "$TARGET_DIR/assets/logo"
+        mkdir -p "$TARGET_DIR/docs/qa"
         cp "$TEMPLATES/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "$TARGET_DIR/PROJECT_LITE.md"
+        cp "$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md"
         cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
+        cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"
+        cp "$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md" "$TARGET_DIR/docs/specs/DESIGN_SPEC.md"
         cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
         cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
+        cp "$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md" "$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md" 2>/dev/null || true
         ;;
     solo-saas|independent)
         echo "Configuring for Independent / Self-Initiated Product..."

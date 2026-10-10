@@ -1,6 +1,6 @@
 # Gate Validation Script (PowerShell)
 # Validates module completion before proceeding to next phase
-# Usage: .\scripts\validate-gate.ps1 -Module "M03"
+# Usage: .\scripts\gates\validate-gate.ps1 -Module "M03"
 
 param(
     [Parameter(Mandatory=$true)]
@@ -206,7 +206,10 @@ if ($isSoloSaaS) {
     }
 }
 
-if ($isLargeScale -and $Module -eq "M07") {
+if ($Module -eq "M07" -and $isSmallScale) {
+    Write-Host "  [INFO] Small Scale detected: SECURITY_CHECKLIST_SMALL.md is required." -ForegroundColor Cyan
+    $gate.Required = @("docs/qa/SECURITY_CHECKLIST_SMALL.md")
+} elseif ($isLargeScale -and $Module -eq "M07") {
     Write-Host "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/qa/SECURITY_AUDIT.md"
 }
@@ -307,6 +310,10 @@ foreach ($file in $gate.Required) {
     if (-not $pathExists -and $file -eq "docs/pm/GO_LIVE_REPORT.md" -and (Test-Path "docs/GO_LIVE_REPORT.md")) {
         $pathExists = $true
         $actualFile = "docs/GO_LIVE_REPORT.md"
+    }
+    if (-not $pathExists -and $file -eq "docs/pm/WARRANTY_POLICY.md" -and (Test-Path "docs/pm/RUNBOOK_OPS.md")) {
+        $pathExists = $true
+        $actualFile = "docs/pm/RUNBOOK_OPS.md"
     }
     if ($pathExists) {
         $minBytes = 200
