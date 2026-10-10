@@ -244,6 +244,15 @@ if (Test-Path "docs/pm/PROJECT_STATE.md") {
 if ($Module -eq "M05" -and $isSmallScale) {
     Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
     $gate.Required = @("PROJECT_LITE.md")
+    if (Test-Path "PROJECT_LITE.md") {
+        $plContent = Get-Content "PROJECT_LITE.md" -Raw
+        if ($plContent -match "(?i)TBD|maybe|tentative|if time permits") {
+            Write-Host "  [ERROR] Ambiguous terms (TBD/maybe/tentative) detected in PROJECT_LITE.md Must-Have features!" -ForegroundColor Red
+            $missingRequired += "Ambiguous terms in PROJECT_LITE.md"
+        } else {
+            Write-Host "  [OK] Zero ambiguous terms in PROJECT_LITE.md Must-Have features" -ForegroundColor Green
+        }
+    }
 }
 foreach ($file in $gate.Required) {
     $actualFile = $file
@@ -444,9 +453,19 @@ if ($Module -eq "M00") {
         }
     }
 } elseif ($Module -eq "M04") {
-    $logoExists = (Test-Path "assets/logo/logo.svg") -or (Test-Path "assets/logo/logo.png") -or (Test-Path "assets/logo/logo.webp")
-    if ($logoExists) {
-        Write-Host "  [OK] assets/logo/ (Brand logo asset verified)" -ForegroundColor Green
+    $minLogo = if ($isSmallScale) { 50 } else { 200 }
+    $logoFile = $null
+    foreach ($l in @("assets/logo/logo.svg", "assets/logo/logo.png", "assets/logo/logo.webp")) {
+        if (Test-Path $l) { $logoFile = $l; break }
+    }
+    if ($logoFile) {
+        $lsize = (Get-Item $logoFile).Length
+        if ($lsize -ge $minLogo) {
+            Write-Host "  [OK] $logoFile (${lsize}B >= ${minLogo}B minimum)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] $logoFile (TOO SMALL: ${lsize}B < ${minLogo}B minimum)" -ForegroundColor Red
+            $missingRequired += "assets/logo/ (logo file too small)"
+        }
     } else {
         Write-Host "  [ERROR] assets/logo/ (MISSING: logo.svg / logo.png required before DESIGN.md can be generated)" -ForegroundColor Red
         $missingRequired += "assets/logo/logo.svg (or logo.png)"

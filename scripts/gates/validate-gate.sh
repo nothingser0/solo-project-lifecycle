@@ -218,8 +218,22 @@ case "$GATE_MODULE" in
         echo "=== M04: UI/UX Prototyping Gate Checklist ==="
         # Universal: All scales MUST have components, design inspiration, logo, design tokens, and screen specs
         # 1. Strict Prerequisite: Logo asset must exist in assets/logo/ (logo.svg or logo.png)
-        if [ -f "assets/logo/logo.svg" ] || [ -f "assets/logo/logo.png" ] || [ -f "assets/logo/logo.webp" ]; then
-            [ -f "assets/logo/logo.svg" ] && echo "  ✅ assets/logo/logo.svg (Logo asset verified)" || echo "  ✅ assets/logo/logo.png (Logo asset verified)"
+        local min_logo=200
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            min_logo=50 # M04-LITE: initial placeholder SVG allowed (min 50B)
+        fi
+        local found_logo=""
+        for l in "assets/logo/logo.svg" "assets/logo/logo.png" "assets/logo/logo.webp"; do
+            if [ -f "$l" ]; then found_logo="$l"; break; fi
+        done
+        if [ -n "$found_logo" ]; then
+            local lsize=$(wc -c < "$found_logo" 2>/dev/null || echo 0)
+            if [ "$lsize" -ge "$min_logo" ]; then
+                echo "  ✅ $found_logo (${lsize}B >= ${min_logo}B minimum)"
+            else
+                echo "  ❌ $found_logo (TOO SMALL: ${lsize}B < ${min_logo}B minimum required)"
+                GATE_FAILED=1
+            fi
         else
             echo "  ❌ assets/logo/ (MISSING: logo.svg / logo.png required before DESIGN.md can be generated)"
             GATE_FAILED=1
@@ -244,7 +258,15 @@ case "$GATE_MODULE" in
         echo "=== M05: Architecture & Specs Gate Checklist ==="
         if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
             echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
-            check_required "PROJECT_LITE.md"
+            check_required "PROJECT_LITE.md" "" 1000
+            if [ -f "PROJECT_LITE.md" ]; then
+                if grep -iE "^\s*-\s*Feature|^\s*[0-9]+\.\s*\*\*\[Feature" "PROJECT_LITE.md" | grep -qiE "TBD|maybe|tentative|TBA|if time permits"; then
+                    echo "  ❌ Ambiguous terms (TBD/maybe/tentative) detected in PROJECT_LITE.md Must-Have features!"
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Zero ambiguous terms in PROJECT_LITE.md Must-Have features"
+                fi
+            fi
             check_optional "docs/specs/PRD.md"
             check_optional "docs/specs/FSD.md"
         else
@@ -333,6 +355,21 @@ case "$GATE_MODULE" in
         echo "=== M10: Deployment Production Gate Checklist ==="
         check_required "docs/DEPLOYMENT_PROTOCOL.md" "docs/pm/DEPLOYMENT_PROTOCOL.md" 1000
         check_required "docs/pm/GO_LIVE_REPORT.md" "docs/GO_LIVE_REPORT.md" 500
+        # Check HTTP status 200 if URL present in GO_LIVE_REPORT.md
+        live_report="docs/pm/GO_LIVE_REPORT.md"
+        [ -f "$live_report" ] || live_report="docs/GO_LIVE_REPORT.md"
+        if [ -f "$live_report" ]; then
+            prod_url=$(grep -iE "Production URL|Live URL|URL Live" "$live_report" | grep -oE "https?://[^ ]+" | head -1 || echo "")
+            if [ -n "$prod_url" ] && command -v curl >/dev/null 2>&1; then
+                echo "  [INFO] Probing Production URL: $prod_url"
+                http_code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 "$prod_url" 2>/dev/null || echo "000")
+                if [ "$http_code" = "200" ] || [ "$http_code" = "301" ] || [ "$http_code" = "302" ]; then
+                    echo "  ✅ Production URL responded with HTTP $http_code (Verified LIVE)"
+                else
+                    echo "  ⚠️  Production URL probe returned HTTP $http_code (Check deployment connectivity)"
+                fi
+            fi
+        fi
         if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
             echo "  [INFO] Enterprise scale detected: CAB Approval is MANDATORY."
             check_required "docs/governance/CAB_APPROVAL.md" "docs/pm/CAB_APPROVAL.md"

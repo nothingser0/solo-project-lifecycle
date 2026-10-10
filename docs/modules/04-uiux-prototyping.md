@@ -343,6 +343,19 @@ Before completing Step 0 and proceeding to `docs/harness-root/DESIGN.md` generat
 
 ---
 
+### 0.4. M04-LITE: Fast-Track UI/UX for Small Scale (<4 Weeks)
+
+> **When to use**: Automatically activated when `Scale: small` in `docs/pm/PROJECT_STATE.md` or executing via `PROJECT_LITE.md`.
+> **Core Principle**: Eliminates design paralysis while preserving strict anti-slop tokens and WCAG 2.2 AA accessibility.
+
+**M04-LITE Pragmatic Rules**:
+1. **Logo Placeholder Allowed**: Tidak wajib mendesain logo kompleks. Cukup buat placeholder inisial SVG sederhana di `assets/logo/logo.svg` (misal monogram teks 1-2 huruf dengan warna aksen brand). Minimal ukuran file $\ge 50$ byte.
+2. **1 Visual Benchmark Cukup**: Tidak wajib mengumpulkan 5 screenshot. Cukup pilih **1 web/dashboard acuan nyata** (misal Linear, Vercel, TailwindUI, Stripe) dan catat alasan serta ekstrak warnanya di `docs/design/inspiration/notes.md`.
+3. **5-State Matrix Penuh Hanya untuk Layar Utama**: Layar sekunder (static about/terms) cukup state default. Matriks 5-state (Idle, Loading Skeleton, Empty, Error, Success) hanya diwajibkan untuk 1–3 layar data utama.
+4. **Deliverables Tetap Lengkap**: Tetap menghasilkan 6 berkas inti agar tidak ada utang arsitektur, namun isinya proporsional dan ringkas (1–2 halaman per dokumen).
+
+---
+
 ### Step 0.5: Visual Reference Gathering & Benchmark Selection (MANDATORY BEFORE DESIGN.MD)
 
 1. **Scaffold Inspiration Space**: Ensure `docs/design/inspiration/` exists.

@@ -29,32 +29,29 @@
 
 ---
 
-## 🔵 SKALA KECIL (Solo MVP)
+## 🔵 SKALA KECIL (Fast-Track MVP / Solo Project)
 
 **Characteristics**:
-- Solo dev or 2-person team
-- Budget <Rp 50M
-- Timeline: 1-3 bulan
-- No legal complexity (internal project, prototype)
-- Lightweight acceptance testing (self-sign-off in M09)
+- Solo developer / 1 developer + 1 stakeholder
+- Timeline: <4 minggu (<1 bulan)
+- Fitur: 3–7 P0 Must-Have (scope terkunci)
+- Database terisolasi, low blast radius (tanpa mutasi finansial rumit / rekam medis)
+- Jalur pengiriman default: Solo / Portfolio / Internal Tool
 
-**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07-LITE → [M08-LITE*] → M09 → M10 → M11**
+> ⚖️ **LEGACY DATA RE-CLASSIFICATION RULE**:
+> Skala Kecil berasumsi *greenfield* (data kosong). Jika proyek membutuhkan migrasi data lama (ETL relasional), proyek **otomatis naik kelas ke Skala Besar** via High-Water Mark rule dan wajib menjalankan M08 penuh.
 
-**Note**: *M08-LITE only if client has existing data to migrate (discovered in M02)
+**Alur 6 Langkah Inti**:
+1. **Intake Gate** (5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md`) $ightarrow$ Klasifikasi skala otomatis.
+2. **M04-LITE** (Logo inisial SVG $\ge 50$B boleh, 1 benchmark visual, token anti-slop di `DESIGN.md`).
+3. **M05** (Dokumen terpadu `PROJECT_LITE.md` mencakup skema, API, dan Riskiest Assumption Test).
+   🛑 **STOP 1**: Tinjau desain & spek sebelum coding.
+4. **M06** (Sprint 0 deploy hello-world staging $ightarrow$ build atomik $ightarrow$ lint & `tsc --noEmit` $ightarrow$ `SECURITY_CHECKLIST_SMALL.md`).
+5. **M09-LITE** (Uji orang lain: minimal 1 penguji eksternal tercatat di `UAT_SIGNOFF_SMALL.md`).
+   🛑 **STOP 2**: Verifikasi fungsi lokal & approval deploy.
+6. **M10** (Deploy production, verifikasi HTTP 200, anti-Friday deploy) $ightarrow$ Operasional mandiri via `RUNBOOK_OPS.md` (M12).
 
-**Skipped Modules**:
-- ❌ **M00** - Product Discovery (skip: idea validated already)
-- ⚠️ **M08** - Full Data Migration (skip if greenfield, use M08-LITE if data exists)
-- ❌ **M12** - Warranty Period module (skip: 30-day warranty attached in M11 handover instead)
-- ❌ **M13** - Product Ops (skip: no analytics team)
-
-**Required Modules** (executed for Small Scale):
-- ✅ **M07-LITE** - Security Baseline Checklist (mandatory: SECURITY_CHECKLIST_SMALL.md)
-
-**Module Count**: 
-- Base: 10 modules (M01, M02, M03, M04, M05, M06, M07-LITE, M09, M10, M11)
-- +1 if data migration needed: M08-LITE (conditional)
-- Full modules skipped: M00, M12 (warranty in M11), M13
+*(Tambahan hanya jika ada klien: **M03 SOW singkat** sebelum desain, dan **M11 serah terima singkat** setelah deploy).*
 
 ---
 
