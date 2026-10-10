@@ -1039,10 +1039,29 @@ case "$GATE_MODULE" in
             [ -f "$target_uat" ] || target_uat="docs/qa/UAT_SIGNOFF.md"
             [ -f "$target_uat" ] || target_uat="docs/qa/UAT_SIGNOFF_SMALL.md"
             [ -f "$target_uat" ] || target_uat="docs/pm/UAT_SIGNOFF_SMALL.md"
-            if grep -q "APPROVED\|PASSED\|Accepted" "$target_uat"; then
-                echo "  ✅ UAT approved status detected"
+            # 1. Reject unresolved template placeholders [...]
+            if grep -qE "\[Application Name\]|\[Client Company|\[Client PIC|\[Your Name\]|\[YYYY-MM-DD\]|\[git-hash\]" "$target_uat"; then
+                echo "  ❌ $target_uat still contains unresolved template placeholders ([...])! Fill in actual UAT outcomes."
+                GATE_FAILED=1
+            fi
+            # 2. Reject explicit failure / rejection status (BLOCKER)
+            if grep -qiE "REJECTED|DISAPPROVED|NOT APPROVED|FAILED[[:space:]]*BY[[:space:]]*CLIENT|Status[[:space:]]*:[[:space:]]*REJECT" "$target_uat"; then
+                echo "  ❌ $target_uat reports REJECTED / NOT APPROVED status! Client UAT must pass before Production Go-Live."
+                GATE_FAILED=1
+            elif grep -qiE "APPROVED|PASSED|ACCEPTED|UAT PASS|Production Release Authorization" "$target_uat"; then
+                echo "  ✅ UAT approved status verified in $target_uat"
             else
-                echo "  ⚠️  UAT approved status not clearly found"
+                echo "  ❌ $target_uat missing explicit approval attestation ('APPROVED' / 'PASSED' / 'UAT PASS')!"
+                GATE_FAILED=1
+            fi
+            # 3. Verify Client Single PIC Sign-off: reject blank signature lines (______ or empty signature cell)
+            if grep -qiE "Client Single PIC|Approved by Client" "$target_uat"; then
+                if grep -qiE "Name[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*\|[[:space:]]*$" "$target_uat"; then
+                    echo "  ❌ $target_uat has unfulfilled blank signature lines (______ / unassigned Client Single PIC)!"
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Client Single PIC UAT signature recorded"
+                fi
             fi
         fi
         echo ""

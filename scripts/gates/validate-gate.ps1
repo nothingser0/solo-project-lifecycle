@@ -1256,6 +1256,40 @@ if ($Module -eq "M08") {
         Write-Host "  [INFO] Data migration plan verified. Run reconciliation after seeding." -ForegroundColor Cyan
     }
 }
+if ($Module -eq "M09" -and -not $isSoloSaaS) {
+    $uatTarget = if (Test-Path "docs/pm/UAT_SIGNOFF_REPORT.md") { "docs/pm/UAT_SIGNOFF_REPORT.md" } `
+                 elseif (Test-Path "docs/qa/UAT_SIGNOFF.md") { "docs/qa/UAT_SIGNOFF.md" } `
+                 elseif (Test-Path "docs/qa/UAT_SIGNOFF_SMALL.md") { "docs/qa/UAT_SIGNOFF_SMALL.md" } `
+                 elseif (Test-Path "docs/pm/UAT_SIGNOFF_SMALL.md") { "docs/pm/UAT_SIGNOFF_SMALL.md" } `
+                 else { $null }
+    if ($uatTarget) {
+        $uatContent = Get-Content $uatTarget -Raw
+        # 1. Reject unresolved template placeholders [...]
+        if ($uatContent -match '\[Application Name\]|\[Client Company|\[Client PIC|\[Your Name\]|\[YYYY-MM-DD\]|\[git-hash\]') {
+            Write-Host "  [ERROR] $uatTarget still contains unresolved template placeholders ([...])! Fill in actual UAT outcomes." -ForegroundColor Red
+            $missingRequired += "$uatTarget (unresolved template placeholders)"
+        }
+        # 2. Reject explicit failure / rejection status (BLOCKER)
+        if ($uatContent -match '(?i)REJECTED|DISAPPROVED|NOT APPROVED|FAILED\s*BY\s*CLIENT|Status\s*:\s*REJECT') {
+            Write-Host "  [ERROR] $uatTarget reports REJECTED / NOT APPROVED status! Client UAT must pass before Production Go-Live." -ForegroundColor Red
+            $missingRequired += "$uatTarget (reports REJECTED / NOT APPROVED)"
+        } elseif ($uatContent -match '(?i)APPROVED|PASSED|ACCEPTED|UAT PASS|Production Release Authorization') {
+            Write-Host "  [OK] UAT approved status verified in $uatTarget" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] $uatTarget missing explicit approval attestation ('APPROVED' / 'PASSED' / 'UAT PASS')!" -ForegroundColor Red
+            $missingRequired += "$uatTarget (missing approval attestation)"
+        }
+        # 3. Verify Client Single PIC Sign-off: reject blank signature lines (______ or empty signature cell)
+        if ($uatContent -match '(?i)Client Single PIC|Approved by Client') {
+            if ($uatContent -match '(?im)Name\s*:\s*_{3,}|Signature\s*:\s*_{3,}|Signature\s*:\s*\|\s*$') {
+                Write-Host "  [ERROR] $uatTarget has unfulfilled blank signature lines (______ / unassigned Client Single PIC)!" -ForegroundColor Red
+                $missingRequired += "$uatTarget (unfulfilled blank signature lines)"
+            } else {
+                Write-Host "  [OK] Client Single PIC UAT signature recorded" -ForegroundColor Green
+            }
+        }
+    }
+}
 
 # Check optional files
 if ($gate.Optional.Count -gt 0) {
