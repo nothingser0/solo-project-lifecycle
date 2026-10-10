@@ -277,10 +277,14 @@ phase_dev_harness() {
     echo "7. .env.example (Environment variables)"
     echo "8. RUNBOOK_LOCAL.md (Local setup guide)"
     echo "9. VERIFY_LOCAL.md (Verification checklist)"
-    echo "10. Copy all 9 harness files at once"
-    echo "11. Back to main menu"
+    echo "10. LEARNINGS.md (Cross-session engineering lessons ledger)"
+    echo "11. SEED_DATA spec (Deterministic dev/test fixtures)"
+    echo "12. CHANGELOG.md (Keep-a-Changelog release history)"
+    echo "13. CI pipeline (.github/workflows/ci.yml)"
+    echo "14. Copy all harness files at once"
+    echo "15. Back to main menu"
     echo ""
-    choice=$(get_choice "Select template (1-11): " 1)
+    choice=$(get_choice "Select template (1-15): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md" ;;
@@ -292,7 +296,11 @@ phase_dev_harness() {
         7) copy_template "$TEMPLATES_DIR/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example" ;;
         8) copy_template "$TEMPLATES_DIR/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md" ;;
         9) copy_template "$TEMPLATES_DIR/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md" ;;
-        10)
+        10) copy_template "$TEMPLATES_DIR/04-dev-execution/LEARNINGS_TEMPLATE.md" "LEARNINGS.md" ;;
+        11) copy_template "$TEMPLATES_DIR/04-dev-execution/SEED_DATA_TEMPLATE.md" "docs/specs/SEED_DATA.md" ;;
+        12) copy_template "$TEMPLATES_DIR/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md" ;;
+        13) copy_template "$TEMPLATES_DIR/04-dev-execution/PROJECT_CI_TEMPLATE.yml" ".github/workflows/ci.yml" ;;
+        14)
             copy_template "$TEMPLATES_DIR/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/CONTEXT_TEMPLATE.md" "CONTEXT.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/ARCHITECTURE_TEMPLATE.md" "ARCHITECTURE.md"
@@ -302,9 +310,11 @@ phase_dev_harness() {
             copy_template "$TEMPLATES_DIR/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example"
             copy_template "$TEMPLATES_DIR/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md"
-            echo -e "${GREEN}✅ All 9 harness files copied${NC}"
+            copy_template "$TEMPLATES_DIR/04-dev-execution/LEARNINGS_TEMPLATE.md" "LEARNINGS.md"
+            copy_template "$TEMPLATES_DIR/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md"
+            echo -e "${GREEN}✅ All harness files copied${NC}"
             ;;
-        11) return ;;
+        15) return ;;
         *) echo "Invalid choice" ;;
     esac
 }

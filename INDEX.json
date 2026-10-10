@@ -991,8 +991,16 @@
       "cataloged": true
     },
     {
+      "path": "templates/04-dev-execution/LEARNINGS_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/04-dev-execution/PERFORMANCE_PROFILING_GUIDE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/PROJECT_CI_TEMPLATE.yml",
+      "cataloged": false
     },
     {
       "path": "templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md",
@@ -1001,6 +1009,10 @@
     {
       "path": "templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/SEED_DATA_TEMPLATE.md",
+      "cataloged": false
     },
     {
       "path": "templates/04-dev-execution/SPRINT_PLANNING.md",
@@ -1322,6 +1334,10 @@
       "modules": [
         "M11"
       ]
+    },
+    {
+      "path": "templates/07-release-handover/CHANGELOG_TEMPLATE.md",
+      "cataloged": false
     },
     {
       "path": "templates/07-release-handover/CREDENTIALS_VAULT.md",

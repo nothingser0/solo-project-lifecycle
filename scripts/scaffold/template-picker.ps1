@@ -246,11 +246,15 @@ function Show-DevelopmentMenu {
     Write-Host "  7. .env.example (Environment variables)"
     Write-Host "  8. RUNBOOK_LOCAL.md (Local setup guide)"
     Write-Host "  9. VERIFY_LOCAL.md (Verification checklist)"
-    Write-Host "  10. Copy all 9 harness files at once"
-    Write-Host "  11. Back to main menu"
+    Write-Host "  10. LEARNINGS.md (Cross-session engineering lessons ledger)"
+    Write-Host "  11. SEED_DATA spec (Deterministic dev/test fixtures)"
+    Write-Host "  12. CHANGELOG.md (Keep-a-Changelog release history)"
+    Write-Host "  13. CI pipeline (.github/workflows/ci.yml)"
+    Write-Host "  14. Copy all harness files at once"
+    Write-Host "  15. Back to main menu"
     Write-Host ""
 
-    $choice = Read-Host "Select template (1-11)"
+    $choice = Read-Host "Select template (1-15)"
     
     switch ($choice) {
         "1" { Copy-Template "$TemplatesDir/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md" }
@@ -262,7 +266,11 @@ function Show-DevelopmentMenu {
         "7" { Copy-Template "$TemplatesDir/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example" }
         "8" { Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md" }
         "9" { Copy-Template "$TemplatesDir/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md" }
-        "10" {
+        "10" { Copy-Template "$TemplatesDir/04-dev-execution/LEARNINGS_TEMPLATE.md" "LEARNINGS.md" }
+        "11" { Copy-Template "$TemplatesDir/04-dev-execution/SEED_DATA_TEMPLATE.md" "docs/specs/SEED_DATA.md" }
+        "12" { Copy-Template "$TemplatesDir/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md" }
+        "13" { Copy-Template "$TemplatesDir/04-dev-execution/PROJECT_CI_TEMPLATE.yml" ".github/workflows/ci.yml" }
+        "14" {
             Copy-Template "$TemplatesDir/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md"
             Copy-Template "$TemplatesDir/04-dev-execution/CONTEXT_TEMPLATE.md" "CONTEXT.md"
             Copy-Template "$TemplatesDir/04-dev-execution/TODO_TEMPLATE.md" "TODO.md"
@@ -272,9 +280,11 @@ function Show-DevelopmentMenu {
             Copy-Template "$TemplatesDir/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" ".env.example"
             Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "RUNBOOK_LOCAL.md"
             Copy-Template "$TemplatesDir/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md"
-            Write-Host "[OK] All 9 harness files copied" -ForegroundColor Green
+            Copy-Template "$TemplatesDir/04-dev-execution/LEARNINGS_TEMPLATE.md" "LEARNINGS.md"
+            Copy-Template "$TemplatesDir/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md"
+            Write-Host "[OK] All harness files copied" -ForegroundColor Green
         }
-        "11" { return }
+        "15" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
     }
 }
