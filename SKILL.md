@@ -170,15 +170,17 @@ Scale classification is driven by **engineering risk profile and operational loa
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
 - Example: Custom bespoke business portal, e-commerce, internal company tool, academic software deliverable
 
-**Large Scale (Scale-Up / Multi-Tenant Platform)**:
-- **Criteria**: 16–25 P0 Must-Haves, legacy data migration (ETL), multi-tenant branch/role hierarchy, high financial/data blast radius, 99.5% SLA, 3–6 months.
-- Path: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13
+**Large Scale (Scale-Up / Multi-Tenant Platform — Solo Capacity Boundary)**:
+- **Criteria**: 16–25 P0 Must-Haves, legacy data migration (ETL), multi-tenant branch/role hierarchy, high financial/data blast radius, 99.5% SLA.
+- ⛔ **SOLO CAPACITY RULE (OPSI A)**: Exceeds realistic solo developer capacity. Mandatory decision: (A) SPLIT into phased Medium projects, (B) SUBCONTRACT specialists (QA/pentester/DevOps), or (C) BID-NO-BID (Readiness Package only).
+- **Path (if Subcontracted/Client)**: M00 (bid/no-bid) → M01 → M02 → **M03 (MSA+SOW)** → M04 → M05 → M06 (ETL paralel) → M07 (pentest+remediasi) → **M09 (UAT risiko)** → M10 (pilot) → **M11 (BAST & pelunasan sebelum DNS)** → M12 (garansi pasca-BAST)
 - All templates + compliance/scale docs
-- Example: Enterprise platform, multi-tenant SaaS, regulated industry apps
+- Example: Multi-tenant logistics, retail chain ERP, regional microfinance portal
 
-**Enterprise Scale (Regulated / Mission-Critical)**:
-- **Criteria**: >25 P0 Must-Haves or statutory audit constraints (OJK/BI/SOC2/HIPAA), permanent audit trail, multi-stakeholder governance boards, 99.9% uptime SLA, 6–12+ months.
-- Path: Full M00 → M13 + Enterprise governance extensions (M02 RACI, M05 ADR/Audit Trail, M10 CAB approval).
+**Enterprise Scale (Regulated / Mission-Critical — Governance Advisory Only)**:
+- **Criteria**: >25 P0 Must-Haves or statutory audit constraints (OJK/BI/SOC2/HIPAA), permanent audit trail, multi-stakeholder governance boards, 99.9% uptime SLA.
+- ⛔ **NON-SOLO CAPACITY**: Strictly prohibited for single-developer coding. Solo role is restricted to Lead Architect / Technical Advisory.
+- **Path (Readiness & Governance Package)**: Full M00 → M13 documents generated as technical and architectural specifications for corporate engineering teams (RACI, ADR, CAB Protocol, FSD, Audit Trail Requirements). Coding is executed by a multi-disciplinary enterprise vendor/team.
 
 ---
 

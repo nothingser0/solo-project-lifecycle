@@ -279,76 +279,102 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
-## 🟡 SKALA BESAR (Scale-Up / Multi-Tenant Platform)
+## 🟡 SKALA BESAR (Batas Kapasitas Solo — Solo Capacity Boundary)
 
-**Characteristics (Engineering-Driven)**:
-- Fitur: **16–25 P0 Must-Have**
-- Blast radius: Tinggi (multi-cabang, mutasi finansial massal, multi-tenant hierarchy)
-- Integrasi: Multi-vendor, ETL migrasi data lama (M08 WAJIB)
-- SLA: **99.5%**
-- Tim: Solo dev + subkontrak spesialis (QA/security/DevOps) sesuai kebutuhan
-- Timeline: 3–6 bulan (24–48 minggu)
-- Client: Corporate, government tender, SOE
-- Compliance: UU PDP wajib; ISO 27001 direkomendasikan
-- Payment: 4 milestone (20-30-30-20%)
+> ⛔ **SOLO CAPACITY LIMIT (OPSI A)**:
+> Skala Besar (**16–25 fitur P0**, multi-cabang, migrasi ETL, pentest pihak ketiga, UAT 100+ kasus) **berada di luar kapasitas fisik satu developer solo**.
+> Menjanjikan 16–25 fitur P0 dalam 8–9 bulan untuk satu orang adalah anti-pola yang hampir pasti berujung *burnout*, keterlambatan, atau kegagalan rilis.
 
-**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12**
+### Aturan Eksekusi Wajib (Pilih Salah Satu SEBELUM Koding):
 
-**Skipped Modules**:
-- ❌ **M00** - Product Discovery (RFP already defines product)
-- ❌ **M13** - Product Ops (client internal analytics team)
-
-**Note**: 12 modules executed (M01 + 11 scale-specific), 2 modules skipped.
-
----
-
-### Real Case Timeline (Vendor Scale)
-
-*(See user-provided Week 0-9 breakdown for detailed workflow)*
-
-**Key Differences from Agency Scale**:
-
-1. **Pre-Sales (Week 1-2)**: RFP response, budget estimation, risk assessment
-2. **Legal Contracts (Week 3)**: SOW + MSA + DPA + NDA (2-3 negotiation rounds)
-3. **Design Phase (Week 4-6)**: User research, competitor benchmarking, prototype interaktif
-4. **Architecture (Week 7-8)**: C4 model, Infrastructure design (AWS/GCP), Security design (RBAC, encryption)
-5. **Development (Week 9-24)**: 8-16 minggu dengan 2-week sprints, daily standups, sprint reviews
-6. **QA/Security (Week 25-28)**: Third-party penetration test (mandatory), load testing (10K users)
-7. **Data Migration (Week 29-30)**: ETL scripts, reconciliation, client data sign-off
-8. **UAT (Week 31-33)**: 2-3 minggu dengan formal UAT workbook (100+ test cases)
-9. **Deployment (Week 34)**: CAB approval, blue-green deployment, war room 24 jam
-10. **Handover (Week 35-36)**: 4 training sessions (end-user, admin, technical ops, executive)
-11. **Warranty (Month 4-6)**: 90 hari warranty, SLA response/resolution times
-
-**Payment Structure (4 Milestones)**:
-- Milestone 1 (DP): 20-30% (contract signing)
-- Milestone 2 (Alpha): 25-30% (backend + basic UI staging demo)
-- Milestone 3 (Beta): 20-25% (SIT passed, ready UAT)
-- Milestone 4 (Final): 10-20% (UAT sign-off, pre-BAST)
-
-**Total Timeline**: **32-36 minggu (8-9 bulan)**
+1. **(A) SPLIT (Pecah Bertahap — SANGAT DIREKOMENDASIKAN)**:
+   - Pecah proyek menjadi 2–3 proyek **Skala Menengah** independen:
+     - *Fase 1 (Bulan 1–2)*: Fondasi + 8–10 fitur P0 inti (MVP live).
+     - *Fase 2 (Bulan 3–4)*: Migrasi data + 6–8 fitur sekunder.
+     - *Fase 3 (Bulan 5–6)*: Integrasi multi-vendor + analitik.
+   - Tiap fase memiliki kontrak SOW, DP, demo staging, dan pelunasan sendiri.
+2. **(B) SUBCONTRACT (Subkontrak Spesialis)**:
+   - Solo dev bertindak sebagai **Lead Architect / PM**.
+   - Subkontrak: 1 QA/pentester bersertifikat (audit keamanan M07) + 1 frontend/backend dev per sprint.
+   - Anggaran klien harus mencakup biaya tim spesialis, bukan tarif solo.
+3. **(C) BID/NO-BID & READINESS PACKAGE ONLY**:
+   - Jika klien/RFP menuntut 1 orang mengerjakan semuanya: **TOLAK penawaran (NO-BID)**.
+   - Skill ini hanya menghasilkan **Readiness Package**: draf PRD/FSD, estimasi jam, pembagian fase, dan rekomendasi tim — **BUKAN eksekusi koding mandiri**.
 
 ---
 
-## 🔴 SKALA ENTERPRISE
+### Alur 11 Fase Terstruktur (Jika Subkontrak / Phased Split Dipilih)
 
-**Characteristics (Engineering-Driven)**:
-- Fitur: **>25 P0 Must-Have** atau batasan audit statutori (OJK/BI/SOC2/HIPAA)
-- Blast radius: Kritis (perbankan, rekam medis, audit permanen)
-- SLA: **99.9% (24/7)**
-- Tim: Tim khusus/multi-divisi + governance board (CAB, RACI)
-- Timeline: 6–12+ bulan (48–96 minggu)
-- Client: Banking (OJK), Healthcare (Kemenkes), Telco (Kominfo), Government (LKPP)
-- Compliance: **MANDATORY** - UU PDP, ISO 27001, SOC2, regulasi OJK
-- Payment: 4 milestone (20-30-30-20% atau 30-30-30-10%)
+```text
+[ FASE 1: PRE-SALES & BID/NO-BID (M00) ] ──► 🛑 STOP 1 (Keputusan Bid/No-Bid)
+  • Analisis RFP / kebutuhan: evaluasi kelayakan kapasitas, margin, risiko legal
+  • Keputusan formal: BID (dengan rencana phased/subkontrak) atau NO-BID (tolak sopan)
 
-**Module Sequence**: **FULL M00 → M01 → M02 → M03 → M04 → M04B → M05 → M05B → M06 → M06B → M07 → M08 → M09 → M10 → M11 → M12 → M13**
+[ FASE 2: LEGAL SUITE (M03) ] ──► 🛑 STOP 2 (DP 25-30% Cair)
+  • Dokumen bertingkat: MSA (induk) + SOW (pekerjaan) + DPA (UU PDP) + NDA
+  • Hierarki: MSA mengikat prinsip; SOW mengikat detail; jika bentrok, MSA menang kecuali SOW sebut override
+  • Batas revisi (2x per fase), deemed acceptance (7 hari), klausul pembatalan + kill fee
 
-**No Skipped Modules** - Full 14-module lifecycle required for regulatory compliance.
+[ FASE 3: DESAIN & PROTOTIPE (M04) ] ──► 🛑 STOP 3 (Design Freeze)
+  • Benchmark selektif + logo di assets/logo/
+  • Sitemap 25-50 layar, component inventory 3-tier
+  • Prototipe interaktif untuk validasi stakeholder klien
 
-**Module Count**: M00, M01, M02, M03, M04, M04B, M05, M05B, M06, M06B, M07, M08, M09, M10, M11, M12, M13 = 17 total steps (14 major modules + 3 sub-modules B)
+[ FASE 4: ARSITEKTUR & C4 (M05) ] ──► 🛑 STOP 4 (Tech Spec Sign-Off)
+  • PRD + FSD + C4 Model + skema DDL + Rencana Rollback DB (down migration SQL)
+  • Traceability Matrix lengkap: P0 -> FSD -> Test -> UAT
+  • Target SLA & estimasi biaya cloud bulanan (AWS/GCP/Supabase)
 
-> **Note**: M04B, M05B, M06B are **subsections within their parent module files** (`docs/modules/04-uiux-prototyping.md`, `05-architecture-specs.md`, `06-development-execution.md`), not separate module files. They represent Enterprise-specific extensions executed after the base module.
+[ FASE 5: DEV SPRINT + ETL PARALEL (M06) ] ──► 🛑 STOP 5 (Termin 2 Cair)
+  • Sprint 0: scaffold + IaC + staging setup + seeder data realistis
+  • Sprints 1-8: 2-week sprints, TODO.md ber-Definition of Done per sprint
+  • Laporan mingguan tertulis + demo staging bi-weekly (TIDAK ADA daily standup solo)
+  • M08 ETL dikembangkan PARALEL sejak sprint awal (dry-run 3-5x rekonsiliasi data)
+
+[ FASE 6: AUDIT KEAMANAN & REMEDIASI (M07) ] ──► 🛑 STOP 6 (Pentest & SIT Pass)
+  • Pentest pihak ketiga (biaya ditanggung Klien via kontrak M03)
+  • Load test berbasis profil pengguna puncak nyata (bukan angka 10K arbitrary)
+  • Jendela remediasi minimal 2 minggu + retest wajib
+
+[ FASE 7: UAT FORMAL BERBASIS RISIKO (M09) ] ──► 🛑 STOP 7 (UAT Approved)
+  • 100+ test case dikelompokkan prioritas risiko (P0 critical paths diuji duluan)
+  • Aturan bug: S1/S2 wajib 0; S3/S4 dicatat untuk garansi
+
+[ FASE 8: TRAINING PRA-DEPLOY ]
+  • Training 2-4 sesi DILAKUKAN SEBELUM GO-LIVE (bukan sesudah)
+  • User manual, admin guide, ops runbook siap
+
+[ FASE 9: PILOT BERTAHAP & RILIS (M10) ] ──► 🛑 STOP 8 (Go-Live Approval)
+  • Pilot bertahap: rilis ke 1 cabang / cohort percontohan
+  • Kriteria keluar pilot (error rate <0.1%, zero discrepancy 7 hari) terpenuhi -> rilis penuh
+  • Jendela deploy jam sepi + titik go/no-go + batas waktu rollback 30 menit (TIDAK ADA war room 24 jam solo)
+
+[ FASE 10: BAST, LEVERAGE HANDOVER & PELUNASAN (M11) ] ──► 🛑 STOP 9 (Final Settlement)
+  • Pelunasan final 100% diterima di rekening
+  • TTD BAST fisik/digital + serah terima repositori, IaC, rotasi kredensial
+  • BARU alihkan DNS utama ke domain klien
+
+[ FASE 11: WARRANTY & RETROSPEKTIF (M12) ]
+  • Garansi 90 hari aktif RELATIF TERHADAP TANGGAL BAST (bukan bulan kalender tetap)
+  • Transisi ke SLA Retainer bulanan atau sunset/handover ke tim klien
+  • Retrospektif proyek & arsip data lama
+```
+
+### Timeline Realistis Skala Besar (dengan Kontingensi 25%):
+- **Development & Spesifikasi**: 24–28 minggu
+- **Buffer Kontingensi (25%)**: 6–7 minggu
+- **Total Kalender Terjadwal**: **30–35 minggu (~7–8 bulan)**
+
+---
+
+## 🔴 SKALA ENTERPRISE (Mission-Critical / Multi-Stakeholder)
+
+> ⛔ **SOLO CAPACITY LIMIT**:
+> Skala Enterprise (**>25 fitur P0**, audit OJK/BI/HIPAA, dewan CAB, multi-divisi) **SECARA MUTLAK TIDAK BISA DIKERJAKAN SOLO**.
+> Untuk skala ini, peran solo consultant/architect adalah:
+> 1. **Technical Advisory / Lead Architect**: menyusun arsitektur C4, RTM, RFP response, dan security baseline.
+> 2. **Eksekusi Koding**: WAJIB diserahkan ke tim engineering korporasi atau konsorsium vendor.
+> Skill ini hanya menghasilkan **Readiness & Governance Package** (RACI, ADR, CAB Protocol, FSD, Audit Trail Requirements).
 
 ---
 

@@ -479,7 +479,11 @@ if ($Module -eq "M00") {
             Write-Host "  [OK] docs/design/inspiration/notes.md (Benchmark selection verified)" -ForegroundColor Green
         }
     }
-} elseif ($Module -eq "M08") {
+} elseif ($isLargeScale -and $Module -eq "M08") {
+    Write-Host "  [INFO] Large/Enterprise scale detected: Reconciliation Report is MANDATORY." -ForegroundColor Cyan
+    $gate.Required += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
+}
+if ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
     if ($reconFile) {
         $reconContent = Get-Content $reconFile -Raw

@@ -322,8 +322,14 @@ case "$GATE_MODULE" in
         ;;
     M08)
         echo "=== M08: Data Migration & Seeding Gate Checklist ==="
-        check_required "docs/pm/DATA_MIGRATION_PLAN.md"
-        check_optional "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
+        check_required "docs/pm/DATA_MIGRATION_PLAN.md" "" 1000
+        # For Large/Enterprise scale, reconciliation report is MANDATORY (zero-discrepancy audit)
+        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Large/Enterprise scale detected: MIGRATION_RECONCILIATION_REPORT.md is MANDATORY."
+            check_required "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" "" 500
+        else
+            check_optional "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
+        fi
         if [ -f "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" ]; then
             if grep -qiE "PASSED|RECONCILED|100%|SUCCESS|Zero Discrepancy" docs/pm/MIGRATION_RECONCILIATION_REPORT.md; then
                 echo "  ✅ Data migration reconciliation verified (Audit PASSED)"
