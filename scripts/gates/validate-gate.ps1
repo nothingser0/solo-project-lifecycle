@@ -334,10 +334,39 @@ if ($Module -eq "M00") {
     $userResearchFile = if (Test-Path "docs/pm/M00_LITE.md") { "docs/pm/M00_LITE.md" } elseif (Test-Path "docs/pm/USER_RESEARCH_REPORT.md") { "docs/pm/USER_RESEARCH_REPORT.md" } else { $null }
     if ($userResearchFile) {
         $content = Get-Content $userResearchFile -Raw
-        if ($content -match "PENDING_PRIMARY_RESEARCH") {
-            Write-Host "  [WARN] Gate status: PENDING_PRIMARY_RESEARCH (Real user validation required)" -ForegroundColor Yellow
-        } elseif ($content -match "PASS" -or $content -match "intent.*[3-9][0-9]%" -or $content -match "intent.*100%") {
-            Write-Host "  [OK] Market validation gate criteria verified" -ForegroundColor Green
+        # 1. Blocking decision check
+        if ($content -match '(?i)Gate-Decision:\s*PENDING|\[x\]\s*⏳\s*PENDING|PENDING_PRIMARY_RESEARCH') {
+            Write-Host "  [ERROR] Gate status: PENDING_PRIMARY_RESEARCH (Real human research pending; M00 cannot be closed)" -ForegroundColor Red
+            $missingRequired += "Gate-Decision: PASS (currently PENDING)"
+        } elseif ($content -match '(?i)Gate-Decision:\s*FAIL|^Gate-Decision:\s*PIVOT|\[x\]\s*❌\s*(PIVOT|STOP)') {
+            Write-Host "  [ERROR] Gate status: FAIL / PIVOT (Market validation kill criteria triggered)" -ForegroundColor Red
+            $missingRequired += "Gate-Decision: PASS (currently FAIL/PIVOT)"
+        } elseif ($content -match '(?i)Gate-Decision:\s*PASS|\[x\]\s*✅\s*PASS') {
+            Write-Host "  [OK] Gate decision verified: PASS" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] Explicit Gate-Decision (PASS|PENDING|FAIL) not declared!" -ForegroundColor Red
+            $missingRequired += "Gate-Decision: PASS"
+        }
+        # 2. Check unresolved placeholders
+        if ($content -match '\[\.\.\.\]|\[X\]/mo|\[Your Name\]') {
+            Write-Host "  [ERROR] Unresolved template placeholders [...] detected in $userResearchFile!" -ForegroundColor Red
+            $missingRequired += "Unresolved template placeholders [...]"
+        }
+        # 3. Check real interviews if M00_LITE
+        if ($userResearchFile -like "*M00_LITE*") {
+            $realMatches = [regex]::Matches($content, "✅ Real").Count
+            if ($realMatches -ge 3) {
+                Write-Host "  [OK] Real interviews verified: $realMatches (>= 3 minimum confirmed)" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Insufficient real interviews: $realMatches (< 3 confirmed with '✅ Real')" -ForegroundColor Red
+                $missingRequired += "Minimum 3 real interviews (✅ Real)"
+            }
+        }
+    }
+    if (Test-Path "docs/pm/COMPETITIVE_LANDSCAPE.md") {
+        $compContent = Get-Content "docs/pm/COMPETITIVE_LANDSCAPE.md" -Raw
+        if ($compContent -match '(?i)Test Date|Tanggal Uji|Onboarding Time|Waktu Onboarding') {
+            Write-Host "  [OK] Hands-on competitor testing evidence verified" -ForegroundColor Green
         }
     }
 } elseif ($Module -eq "M02") {

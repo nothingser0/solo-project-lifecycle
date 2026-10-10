@@ -88,7 +88,7 @@
 2. **Feasibility Kill**: Estimated MVP development timeline exceeds 6 weeks for 1 developer.
 3. **Regulatory Kill**: Business model legally mandates banking or direct lending capital licenses exceeding solo founder capacity.
 
-### Gate Decision:
-- [ ] **✅ PASS**: Validated (Waitlist $\ge 5\%$, $\ge 3$ interviews confirm core pain & WTP, architecture realistic) $\rightarrow$ Proceed to **M01 (Idea & Feasibility)**.
-- [ ] **⏳ PENDING_PRIMARY_RESEARCH**: Instruments ready, awaiting human user interview execution & live waitlist traffic.
-- [ ] **❌ PIVOT / STOP**: Kill criteria triggered $\rightarrow$ Reposition value proposition or terminate project.
+### Gate Decision (M00 Machine Validation Line):
+Gate-Decision: PENDING
+
+*(Options: PASS | PENDING | FAIL. Machine validator strictly rejects M00 until this line declares 'Gate-Decision: PASS', at least 3 interviews mark '✅ Real', and waitlist meets threshold).*

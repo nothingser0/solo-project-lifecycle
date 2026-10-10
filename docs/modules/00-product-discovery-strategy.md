@@ -39,8 +39,8 @@ This module is the **earliest gate** in the software development lifecycle for s
           │
           ▼
 [ STEP 3: User Research ]
-  • Interview Guide (10+ users, 30-45 min each)
-  • Survey Design (50+ respondents, quantitative validation)
+  • Interview Guide: 5–10 deep interviews (Full) or 5 interviews with ≥3 confirmed (Lite)
+  • Survey Design: 30+ respondents (Solo/Mid) or 50+ (Enterprise)
   • Persona Creation (Jobs-to-be-Done Framework)
   • User Journey Mapping
   • Pain Point Prioritization
@@ -60,7 +60,7 @@ This module is the **earliest gate** in the software development lifecycle for s
   • North Star Metric measurable
           │
           ▼
-[ OUTPUT: 4 PM Documents ] ──► Ready to Proceed to Module 01: Idea & Feasibility
+[ OUTPUT: 4 Core PM Documents (or 1 M00_LITE.md) ] ──► Ready to Proceed to Module 01: Idea & Feasibility
 ```
 
 ---
@@ -581,16 +581,19 @@ Pillar 3: Actionable Insights (not just data dumps)
 
 ## 4. Output Artifacts (Deliverables)
 
-The final deliverables of Module 00 are **4 PM documents** (or 1 document for **M00-lite**):
+The final deliverables of Module 00 depend on the project path:
 
-1. **`docs/pm/M00_LITE.md`** (For Solo SaaS / M00-lite path): Single consolidated document containing Assumption Register, 5 interview summaries, waitlist test results, and kill criteria. (Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
-2. **`docs/pm/MARKET_RESEARCH.md`**: TAM/SAM/SOM findings, industry trends, regulatory landscape.
+**A. For Solo SaaS / M00-lite Path (1 Consolidated Document)**:
+1. **`docs/pm/M00_LITE.md`**: Single consolidated document containing Assumption Register, 5 user interview summaries, waitlist test results, and kill criteria. (Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
+
+**B. For Full M00 Path (4 Distinct PM Documents)**:
+1. **`docs/pm/MARKET_RESEARCH.md`**: TAM/SAM/SOM findings, industry trends, regulatory landscape with explicit cited sources and verification dates.
    - Template: `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`
-3. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: 5-10 competitor analysis, feature matrix, SWOT, positioning map.
+2. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: 3–5 hands-on tested competitors with recorded test dates, onboarding times, friction notes, feature matrix, and SWOT.
    - Template: `templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md`
-4. **`docs/pm/USER_RESEARCH_REPORT.md`**: Interview/survey summaries, JTBD personas, user journey, pain matrix.
+3. **`docs/pm/USER_RESEARCH_REPORT.md`**: Interview/survey summaries (5–10 interviews, 30+ surveys), JTBD personas, user journey, pain matrix, and explicit `Gate-Decision: PASS|PENDING|FAIL`.
    - Template: `templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md`
-5. **`docs/pm/PRODUCT_STRATEGY.md`**: Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars.
+4. **`docs/pm/PRODUCT_STRATEGY.md`**: Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars.
    - Template: `templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md`
 
 > 📁 **ABSOLUTE FILE LOCATION RULE**:
@@ -612,7 +615,14 @@ After all four PM documents have been written:
    - [ ] Read and verify file `docs/pm/PRODUCT_STRATEGY.md` $\rightarrow$ Vision/Mission, North Star Metric, and Kill Criteria defined.
 
 3. **GATE PASS CRITERIA** (Market Validation):
-   - [ ] **Intent-to-Buy $\ge 30\%$ (or Waitlist conversion $\ge 5\%$)**: From real empirical sample. If primary research has not been executed, gate status is **`PENDING_PRIMARY_RESEARCH`**.
+   - [ ] **Structured Gate Decision**: Document MUST declare `Gate-Decision: PASS` (explicit line).
+   - [ ] **Intent-to-Buy $\ge 30\%$**: At least 30% of surveyed target users confirm intent to purchase at target price.
+   - [ ] **Waitlist Conversion $\ge 5\%$ (with price anchor)**:
+     - $\ge 5.0\%$: PASS.
+     - $2.0\% - 4.9\%$: AMBIGUOUS. One-time copy/value-prop optimization sprint permitted (max 7 days); if re-test remains $<5.0\%$, decision becomes FAIL/PIVOT.
+     - $< 2.0\%$: KILL / STOP immediately.
+   - [ ] **Real Empirical Sample**: For M00-lite, minimum 3 of 5 interviews verified as `✅ Real Interview`. Synthetic data strictly prohibited.
+   - [ ] **Competitor Hands-on Evidence**: `COMPETITIVE_LANDSCAPE.md` must record Test Date, Onboarding Time, and friction notes for each analyzed solution.
    - [ ] **Competitive Moat Identified**: At least 1 clear differentiator that competitors lack or cannot easily replicate (e.g., offline-first architecture, specific niche focus).
    - [ ] **North Star Metric Measurable**: NSM can be tracked with technical instrumentation (event logging, DB queries).
 

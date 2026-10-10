@@ -63,24 +63,58 @@ case "$GATE_MODULE" in
         echo "=== M00: Product Discovery & Strategy Gate Checklist ==="
         if [ -f "docs/pm/M00_LITE.md" ]; then
             echo "  [INFO] Detected M00-lite rapid validation path"
-            check_required "docs/pm/M00_LITE.md"
-            if grep -q "PENDING_PRIMARY_RESEARCH" "docs/pm/M00_LITE.md"; then
-                echo "  ⏳ Gate status: PENDING_PRIMARY_RESEARCH (Real user interviews & waitlist test pending)"
-            elif grep -q "PASS" "docs/pm/M00_LITE.md"; then
-                echo "  ✅ Gate status: PASS (Empirical validation verified)"
+            check_required "docs/pm/M00_LITE.md" "" 1000
+            # 1. Blocking decision check: must explicitly be Gate-Decision: PASS
+            if grep -qiE "^Gate-Decision:\s*PENDING|\[x\]\s*⏳\s*PENDING" "docs/pm/M00_LITE.md"; then
+                echo "  ❌ Gate status: PENDING_PRIMARY_RESEARCH (Real human research pending; M00 cannot be closed)"
+                GATE_FAILED=1
+            elif grep -qiE "^Gate-Decision:\s*FAIL|^Gate-Decision:\s*PIVOT|\[x\]\s*❌\s*(PIVOT|STOP)" "docs/pm/M00_LITE.md"; then
+                echo "  ❌ Gate status: FAIL / PIVOT (Market validation kill criteria triggered)"
+                GATE_FAILED=1
+            elif grep -qiE "^Gate-Decision:\s*PASS|\[x\]\s*✅\s*PASS" "docs/pm/M00_LITE.md"; then
+                echo "  ✅ Gate decision verified: PASS"
+            else
+                echo "  ❌ Explicit Gate-Decision (PASS|PENDING|FAIL) not declared!"
+                GATE_FAILED=1
+            fi
+            # 2. Check for unresolved template placeholders [...]
+            if grep -q "\[\.\.\.\]\|\[X\]/mo\|\[Your Name\]" "docs/pm/M00_LITE.md"; then
+                echo "  ❌ Unresolved template placeholders [...] detected in M00_LITE.md!"
+                GATE_FAILED=1
+            fi
+            # 3. Check real interview count (minimum 3 real interviews confirmed)
+            real_interviews=$(grep -c "✅ Real" "docs/pm/M00_LITE.md" 2>/dev/null || echo 0)
+            if [ "$real_interviews" -ge 3 ]; then
+                echo "  ✅ Real interviews verified: $real_interviews (>= 3 minimum confirmed)"
+            else
+                echo "  ❌ Insufficient real interviews: $real_interviews (< 3 confirmed with '✅ Real')"
+                GATE_FAILED=1
             fi
         else
-            check_required "docs/pm/MARKET_RESEARCH.md"
-            check_required "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/COMPETITOR_ANALYSIS.md"
-            check_required "docs/pm/USER_RESEARCH_REPORT.md"
-            check_required "docs/pm/PRODUCT_STRATEGY.md"
+            check_required "docs/pm/MARKET_RESEARCH.md" "" 1500
+            check_required "docs/pm/COMPETITIVE_LANDSCAPE.md" "docs/pm/COMPETITOR_ANALYSIS.md" 1500
+            check_required "docs/pm/USER_RESEARCH_REPORT.md" "" 1500
+            check_required "docs/pm/PRODUCT_STRATEGY.md" "" 1500
             if [ -f "docs/pm/USER_RESEARCH_REPORT.md" ]; then
-                if grep -q "PENDING_PRIMARY_RESEARCH" "docs/pm/USER_RESEARCH_REPORT.md"; then
-                    echo "  ⏳ Gate status: PENDING_PRIMARY_RESEARCH (Real user data pending; synthetic data prohibited)"
-                elif grep -qi "intent.*[3-9][0-9]%\|intent.*100%\|PASS" "docs/pm/USER_RESEARCH_REPORT.md"; then
-                    echo "  ✅ Market validation gate criteria: Intent-to-buy threshold verified"
+                if grep -qiE "^Gate-Decision:\s*PENDING|PENDING_PRIMARY_RESEARCH" "docs/pm/USER_RESEARCH_REPORT.md"; then
+                    echo "  ❌ Gate status: PENDING_PRIMARY_RESEARCH (Real user data pending; synthetic data prohibited)"
+                    GATE_FAILED=1
+                elif grep -qiE "^Gate-Decision:\s*FAIL" "docs/pm/USER_RESEARCH_REPORT.md"; then
+                    echo "  ❌ Gate status: FAIL (Market research thresholds not met)"
+                    GATE_FAILED=1
+                elif grep -qiE "^Gate-Decision:\s*PASS" "docs/pm/USER_RESEARCH_REPORT.md"; then
+                    echo "  ✅ Gate decision verified: PASS"
                 else
-                    echo "  ⚠️  Market validation: Intent-to-buy ≥30% not explicitly validated"
+                    echo "  ❌ Explicit Gate-Decision (PASS|PENDING|FAIL) not declared in USER_RESEARCH_REPORT.md!"
+                    GATE_FAILED=1
+                fi
+            fi
+            # Check competitor hands-on testing evidence
+            if [ -f "docs/pm/COMPETITIVE_LANDSCAPE.md" ]; then
+                if grep -qiE "Test Date|Tanggal Uji|Onboarding Time|Waktu Onboarding" "docs/pm/COMPETITIVE_LANDSCAPE.md"; then
+                    echo "  ✅ Hands-on competitor testing evidence verified"
+                else
+                    echo "  ⚠️  Hands-on competitor testing evidence (Test Date / Onboarding Time) not explicitly documented"
                 fi
             fi
         fi
