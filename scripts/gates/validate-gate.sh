@@ -991,6 +991,15 @@ case "$GATE_MODULE" in
                 echo "  ❌ Migration reconciliation report missing explicit PASSED/RECONCILED attestation!"
                 GATE_FAILED=1
             fi
+            # Verification of Client Single PIC Sign-off (M08 §6 exit criteria): signature must not be blank placeholder
+            if grep -qiE "Client Single PIC|Authorized by Client" "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"; then
+                if grep -qiE "Name[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*\|[[:space:]]*$" "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"; then
+                    echo "  ❌ docs/pm/MIGRATION_RECONCILIATION_REPORT.md sign-off sheet has unfulfilled blank signature lines (______ / unassigned PIC)!"
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Client Single PIC Data Sign-Off signature recorded"
+                fi
+            fi
         else
             echo "  [INFO] Data migration plan verified. Run reconciliation after seeding."
         fi

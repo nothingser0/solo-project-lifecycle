@@ -1243,6 +1243,15 @@ if ($Module -eq "M08") {
             Write-Host "  [ERROR] Migration reconciliation report missing explicit PASSED/RECONCILED attestation!" -ForegroundColor Red
             $missingRequired += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md (missing PASSED/RECONCILED attestation)"
         }
+        # Verification of Client Single PIC Sign-off (M08 §6 exit criteria): signature must not be blank placeholder
+        if ($reconContent -match '(?i)Client Single PIC|Authorized by Client') {
+            if ($reconContent -match '(?im)Name\s*:\s*_{3,}|Signature\s*:\s*_{3,}|Signature\s*:\s*\|\s*$') {
+                Write-Host "  [ERROR] docs/pm/MIGRATION_RECONCILIATION_REPORT.md sign-off sheet has unfulfilled blank signature lines (______ / unassigned PIC)!" -ForegroundColor Red
+                $missingRequired += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md (unfulfilled blank signature lines)"
+            } else {
+                Write-Host "  [OK] Client Single PIC Data Sign-Off signature recorded" -ForegroundColor Green
+            }
+        }
     } else {
         Write-Host "  [INFO] Data migration plan verified. Run reconciliation after seeding." -ForegroundColor Cyan
     }
