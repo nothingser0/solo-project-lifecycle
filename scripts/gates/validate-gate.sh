@@ -639,12 +639,38 @@ case "$GATE_MODULE" in
                 else
                     echo "  ✅ Zero ambiguous terms in PROJECT_LITE.md Must-Have features"
                 fi
+                # Check Section 5 Architecture contains DDL/tables and API routes
+                if grep -qiE "CREATE TABLE|model|table|database|schema" "PROJECT_LITE.md" && grep -qiE "/api|GET|POST|endpoints|routes" "PROJECT_LITE.md"; then
+                    echo "  ✅ Section 5 Architecture in PROJECT_LITE.md contains database schema and API contracts"
+                else
+                    echo "  ❌ Section 5 Architecture in PROJECT_LITE.md missing database schema or API endpoint definitions!"
+                    GATE_FAILED=1
+                fi
             fi
             check_optional "docs/specs/PRD.md"
             check_optional "docs/specs/FSD.md"
         else
         check_required "docs/specs/PRD.md" "" 2000
         check_required "docs/specs/FSD.md" "" 2000
+
+        # Content verification for PRD.md (Medium & Large scales)
+        if [ -f "docs/specs/PRD.md" ]; then
+            prd="docs/specs/PRD.md"
+            # 1. Traceability Matrix verification (REQ-xx / F-xx mapping)
+            if grep -qiE "REQ-[0-9]+" "$prd" && grep -qiE "F-[0-9]+" "$prd"; then
+                echo "  ✅ PRD.md functional traceability matrix verified (F-xx -> REQ-xx mapped)"
+            else
+                echo "  ❌ PRD.md missing functional traceability matrix (must map F-xx features to REQ-xx requirements)!"
+                GATE_FAILED=1
+            fi
+            # 2. BDD Acceptance Criteria (Given-When-Then format)
+            if grep -qiE "Given " "$prd" && grep -qiE "When " "$prd" && grep -qiE "Then " "$prd"; then
+                echo "  ✅ PRD.md BDD release acceptance scenarios verified (Given-When-Then format)"
+            else
+                echo "  ❌ PRD.md missing Given-When-Then BDD acceptance scenarios in Section 8!"
+                GATE_FAILED=1
+            fi
+        fi
 
         # Content verification for FSD.md (Medium & Large scales)
         if [ -f "docs/specs/FSD.md" ]; then
@@ -682,6 +708,16 @@ case "$GATE_MODULE" in
                     echo "  ✅ Idempotency protection schema verified in FSD.md (idempotency_keys table present)"
                 else
                     echo "  ❌ FSD.md missing idempotency_keys table for financial/mutation project!"
+                    GATE_FAILED=1
+                fi
+            fi
+
+            # 5. Multi-Tenant Row-Level Security (RLS) verification
+            if grep -qiE "multi-tenant|branch|cabang|tenant|organization" docs/pm/PROJECT_STATE.md 2>/dev/null || grep -qiE "org_id|tenant_id" "$fsd"; then
+                if grep -qiE "ROW LEVEL SECURITY|ENABLE ROW LEVEL SECURITY|rls" "$fsd"; then
+                    echo "  ✅ Multi-tenant isolation verified in FSD.md (Row-Level Security RLS present)"
+                else
+                    echo "  ❌ FSD.md missing Row-Level Security (RLS) policies for multi-tenant data isolation!"
                     GATE_FAILED=1
                 fi
             fi

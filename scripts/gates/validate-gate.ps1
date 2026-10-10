@@ -362,6 +362,12 @@ if ($Module -eq "M05" -and $isSmallScale) {
         } else {
             Write-Host "  [OK] Zero ambiguous terms in PROJECT_LITE.md Must-Have features" -ForegroundColor Green
         }
+        if ($plContent -match '(?i)CREATE TABLE|model|table|database|schema' -and $plContent -match '(?i)/api|GET|POST|endpoints|routes') {
+            Write-Host "  [OK] Section 5 Architecture in PROJECT_LITE.md contains database schema and API contracts" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] Section 5 Architecture in PROJECT_LITE.md missing database schema or API endpoint definitions!" -ForegroundColor Red
+            $missingRequired += "PROJECT_LITE.md (Section 5 database schema and API contracts)"
+        }
     }
 }
 foreach ($file in $gate.Required) {
@@ -960,6 +966,23 @@ if ($Module -eq "M00") {
     }
 }
 if ($Module -eq "M05" -and -not $isSmallScale) {
+    # Content verification for PRD.md
+    if (Test-Path "docs/specs/PRD.md") {
+        $prdContent = Get-Content "docs/specs/PRD.md" -Raw
+        if ($prdContent -match '(?i)REQ-[0-9]+' -and $prdContent -match '(?i)F-[0-9]+') {
+            Write-Host "  [OK] PRD.md functional traceability matrix verified (F-xx -> REQ-xx mapped)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] PRD.md missing functional traceability matrix (must map F-xx features to REQ-xx requirements)!" -ForegroundColor Red
+            $missingRequired += "PRD.md (functional traceability matrix F-xx -> REQ-xx)"
+        }
+        if ($prdContent -match '(?i)Given ' -and $prdContent -match '(?i)When ' -and $prdContent -match '(?i)Then ') {
+            Write-Host "  [OK] PRD.md BDD release acceptance scenarios verified (Given-When-Then format)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] PRD.md missing Given-When-Then BDD acceptance scenarios in Section 8!" -ForegroundColor Red
+            $missingRequired += "PRD.md (Given-When-Then BDD acceptance scenarios)"
+        }
+    }
+
     if (Test-Path "docs/specs/FSD.md") {
         $fsdContent = Get-Content "docs/specs/FSD.md" -Raw
 
@@ -997,6 +1020,14 @@ if ($Module -eq "M05" -and -not $isSmallScale) {
                 } else {
                     Write-Host "  [ERROR] FSD.md missing idempotency_keys table for financial/mutation project!" -ForegroundColor Red
                     $missingRequired += "FSD.md (idempotency_keys schema)"
+                }
+            }
+            if ($stContent -match '(?i)multi-tenant|branch|cabang|tenant|organization' -or $fsdContent -match '(?i)org_id|tenant_id') {
+                if ($fsdContent -match '(?i)ROW LEVEL SECURITY|ENABLE ROW LEVEL SECURITY|rls') {
+                    Write-Host "  [OK] Multi-tenant isolation verified in FSD.md (Row-Level Security RLS present)" -ForegroundColor Green
+                } else {
+                    Write-Host "  [ERROR] FSD.md missing Row-Level Security (RLS) policies for multi-tenant data isolation!" -ForegroundColor Red
+                    $missingRequired += "FSD.md (Row-Level Security RLS)"
                 }
             }
         }
