@@ -15,10 +15,10 @@ The objective is to conduct operational training for client staff within a meter
 [ INPUT: System Live in Production & GO_LIVE_REPORT.md from Module 10 ]
                                     │
                                     ▼
-[ STEP 1: Final Settlement Invoice Issuance (Milestone 4: 10% – 20%) ]
-  • Issue Final Invoice Based on Go-Live Report Proof
+[ STEP 1: Final Settlement Invoice Issuance (Milestone 3: 30% / atau 50% pada Small Fast-Track) ]
+  • Issue Final Settlement Invoice Based on Go-Live Verification Proof
   • Provide Payment Due Date According to SOW (Maximum 7 Business Days)
-  • **CRITICAL SEQUENCE**: 100% payment RECEIVED → THEN proceed to training
+  • **CRITICAL SEQUENCE**: 100% payment RECEIVED → THEN point official client DNS & proceed to training
                                     │
                                     ▼
 [ STEP 2: User Training (Client Training & Onboarding) ]
@@ -110,12 +110,12 @@ Sending server passwords, database master keys, or API secrets via WhatsApp chat
 
 ## 4. Adaptation by Project Scale
 
-| Handover Parameter | Small Scale (MVP / Freelance) | Mid-Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
-| :--- | :--- | :--- | :--- |
-| **Training Session** | 1 brief session via Google Meet | 2 structured sessions (Staff & Admin) | Multi-session per department + LMS Recording |
-| **User Guide** | 1-page Quickstart Guide Markdown | Formal `USER_MANUAL.md` document | Complete User Manual PDF + OpenAPI API Docs |
-| **Account Transfer** | Invite admin via Vercel/DB dashboard | Git repo transfer + Vault Credentials | Cloud Tenant Transfer (AWS Org) + BAA/DPA |
-| **BAST Document** | Simple format BAST via email | Official BAST with Rp 10,000 duty stamp | Formal corporate legal BAST + UAT Sign-off Report |
+| Handover Parameter | 🔵 Small Scale (Fast-Track Client) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (Multi-Department) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Training Session** | 1 brief session via Google Meet (optional) | 2 structured sessions (Staff & Admin) | Multi-session per department + LMS Recording | Pengawasan kurikulum onboarding vendor klien |
+| **User Guide** | 1-page Quickstart Guide Markdown | Formal `USER_MANUAL.md` document | Complete User Manual PDF + OpenAPI API Docs | Standar dokumentasi teknis enterprise |
+| **Account Transfer** | Invite admin via Vercel/DB dashboard | Git repo transfer + Vault Credentials | Cloud Tenant Transfer + Handover Protocol | Serah terima tata kelola & audit arsitektur |
+| **BAST Document** | `BAST_EMAIL_SMALL.md` / email BAST | Official BAST with Rp 10,000 duty stamp | BAST + Wajib `HANDOVER_PROTOCOL.md` | Advisory Handover Dossier (Fase A00) |
 
 ---
 
@@ -148,7 +148,7 @@ After handover completion and final payment clearance, conduct internal retrospe
 This module produces official closing documents:
 1. **`docs/USER_MANUAL.md`**: Operational guide for administrators and system users (using `templates/07-release-handover/USER_MANUAL_TEMPLATE.md`).
 2. **`docs/pm/HANDOVER_PROTOCOL.md`**: Technical handover report for Git repository ownership transfer, inventory of handed-over accounts, and authority delegation checklist (using `templates/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md`).
-3. **`docs/pm/BAST.md`**: Official Handover Certificate (BAST) with Rp 10,000 duty stamp transferring software license/ownership rights and activating the warranty period (using `templates/07-release-handover/BAST_TEMPLATE.md`).
+3. **`docs/pm/BAST.md`**: Official Handover Certificate (BAST) with Rp 10,000 duty stamp transferring software license/ownership rights and activating the warranty period (using `templates/07-release-handover/BAST_TEMPLATE.md`; for remote/small projects: `templates/07-release-handover/BAST_EMAIL_SMALL.md`).
 4. **Proof of 100% Payment Clearance**: Bank statement confirmation verifying receipt of the final milestone payment.
 
 ---

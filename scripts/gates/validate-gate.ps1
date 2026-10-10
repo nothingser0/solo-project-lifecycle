@@ -240,6 +240,10 @@ if ($isLargeScale -and $Module -eq "M10") {
     Write-Host "  [INFO] Large / Enterprise scale detected: Emergency Rollback Plan is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/ROLLBACK_PLAN.md"
 }
+if ($isLargeScale -and $Module -eq "M11") {
+    Write-Host "  [INFO] Large / Enterprise scale detected: Technical Handover Protocol is MANDATORY." -ForegroundColor Cyan
+    $gate.Required += "docs/pm/HANDOVER_PROTOCOL.md"
+}
 if ($isEnterprise) {
     if ($Module -eq "M03") {
         Write-Host "  [INFO] Enterprise scale detected: Risk Assessment Matrix and RACI Matrix are MANDATORY in M03." -ForegroundColor Cyan
@@ -326,13 +330,25 @@ foreach ($file in $gate.Required) {
         $pathExists = $true
         $actualFile = "docs/pm/BAST.md"
     }
-    if (-not $pathExists -and $file -eq "docs/DEPLOYMENT_PROTOCOL.md" -and (Test-Path "docs/pm/DEPLOYMENT_PROTOCOL.md")) {
+    if (-not $pathExists -and $file -eq "docs/pm/BAST.md" -and (Test-Path "contracts/BAST.md")) {
         $pathExists = $true
-        $actualFile = "docs/pm/DEPLOYMENT_PROTOCOL.md"
+        $actualFile = "contracts/BAST.md"
+    }
+    if (-not $pathExists -and ($file -eq "docs/pm/BAST.md" -or $file -eq "contracts/BAST.md") -and (Test-Path "docs/pm/BAST_EMAIL_SMALL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/pm/BAST_EMAIL_SMALL.md"
+    }
+    if (-not $pathExists -and ($file -eq "docs/pm/BAST.md" -or $file -eq "contracts/BAST.md") -and (Test-Path "contracts/BAST_EMAIL_SMALL.md")) {
+        $pathExists = $true
+        $actualFile = "contracts/BAST_EMAIL_SMALL.md"
     }
     if (-not $pathExists -and $file -eq "docs/governance/RACI_MATRIX.md" -and (Test-Path "docs/pm/RACI_MATRIX.md")) {
         $pathExists = $true
         $actualFile = "docs/pm/RACI_MATRIX.md"
+    }
+    if (-not $pathExists -and $file -eq "docs/DEPLOYMENT_PROTOCOL.md" -and (Test-Path "docs/pm/DEPLOYMENT_PROTOCOL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/pm/DEPLOYMENT_PROTOCOL.md"
     }
     if (-not $pathExists -and $file -eq "docs/governance/ADR.md" -and (Test-Path "docs/specs/ADR.md")) {
         $pathExists = $true

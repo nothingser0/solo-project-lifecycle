@@ -644,11 +644,36 @@ case "$GATE_MODULE" in
         ;;
     M11)
         echo "=== M11: Handover & BAST Gate Checklist ==="
-        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        is_m11_solo=0
+        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            is_m11_solo=1
+        elif grep -qiE "Delivery:\s*client" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            is_m11_solo=0 # Client delivery NEVER waives BAST handover regardless of scale
+        elif [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            is_m11_solo=1
+        fi
+
+        if [ $is_m11_solo -eq 1 ]; then
             echo "  [INFO] Solo SaaS / Internal project detected: M11 Client BAST Handover is WAIVED."
             check_optional "docs/pm/BAST.md" "contracts/BAST.md"
         else
-        check_required "docs/pm/BAST.md" "contracts/BAST.md"
+            # Accept standard BAST.md or lightweight BAST_EMAIL_SMALL.md
+            target_bast="docs/pm/BAST.md"
+            [ -f "$target_bast" ] || target_bast="contracts/BAST.md"
+            [ -f "$target_bast" ] || target_bast="docs/pm/BAST_EMAIL_SMALL.md"
+            [ -f "$target_bast" ] || target_bast="contracts/BAST_EMAIL_SMALL.md"
+
+            if [ -f "$target_bast" ]; then
+                check_required "$target_bast" "" 200
+            else
+                check_required "docs/pm/BAST.md" "contracts/BAST.md" 500
+            fi
+
+            # For Large scale, technical handover protocol is MANDATORY
+            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                echo "  [INFO] Large / Enterprise scale detected: Technical Handover Protocol is MANDATORY."
+                check_required "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md" 500
+            fi
         fi
         check_optional "docs/pm/GO_LIVE_REPORT.md"
         check_optional "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md"
