@@ -139,7 +139,7 @@ Feasibility-Decision: PENDING
 - Realistic Conversion Rate: Survey Pricing Commitment `[X]%` $\times [0.15, 0.25] =$ `[Y]%` (Midpoint: $\times 0.20$)
 - Modeled Customer Lifetime: `[12–18]` months (accounting for SMB annual churn)
 - Pre-Launch Estimated CAC: `Rp [X]` (Proxy: channel ad clicks / conversion or outreach cost)
-- Fixed Monthly Overhead (DB $25, VPS $20, domain/email $10, APM $15): `Rp [X] / month`
+- Fixed Monthly Overhead (Managed DB, VPS/Container, Domain, Telemetry): `Rp [X] / month`
 - Break-Even Subscribers: $\frac{\text{Fixed Overhead}}{\text{ARPU} \times \text{Gross Margin \%}} =$ `[Z]` active paying subscribers
 - Estimated LTV : CAC Ratio: `[X] : 1` (Target: $\ge 3:1$)
 

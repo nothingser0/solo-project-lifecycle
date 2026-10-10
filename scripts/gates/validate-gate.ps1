@@ -475,7 +475,7 @@ if ($Module -eq "M00") {
             $missingRequired += "Gate-Decision: PASS"
         }
         # 2. Check unresolved placeholders
-        if ($content -match '\[\.\.\.\]|\[X\]/mo|\[Your Name\]|\[Business Type\]|\[Current tool\]|\[Competitor A\]') {
+        if ($content -match '\[\.\.\.\]|\[X\]/mo|\[Your Name\]|\[Business Type\]|\[Current tool\]|\[Competitor A\]|\[Direct Comp|\[Adjacent Comp|\[Segment 1:|Rp \[X\]') {
             Write-Host "  [ERROR] Unresolved template placeholders [...] detected in $userResearchFile!" -ForegroundColor Red
             $missingRequired += "Unresolved template placeholders [...]"
         }

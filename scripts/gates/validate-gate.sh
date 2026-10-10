@@ -203,7 +203,7 @@ case "$GATE_MODULE" in
 
         if [ -f "$brief_file" ]; then
             # 1. Reject template placeholders [...]
-            if grep -q "\[\.\.\.\]\|\[Example:\|\[Your Name\]" "$brief_file"; then
+            if grep -q "\[\.\.\.\]\|\[Example:\|\[Your Name\]\|\[Direct Comp\|\[Adjacent Comp\|\[Segment 1:\|Rp \[X\]" "$brief_file"; then
                 echo "  ❌ Unresolved template placeholders [...] detected in $brief_file!"
                 GATE_FAILED=1
             fi
