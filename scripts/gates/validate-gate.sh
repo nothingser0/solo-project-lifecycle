@@ -155,8 +155,32 @@ case "$GATE_MODULE" in
         ;;
     M01)
         echo "=== M01: Idea Feasibility Gate Checklist ==="
-        check_required "docs/pm/IDEA_BRIEF.md" "docs/pm/FEASIBILITY_REPORT.md" 1000
-        check_required "docs/pm/PROJECT_STATE.md" "" 200
+        # 1. Automatic waiver for Small Scale (handled via Intake Gate + PROJECT_LITE.md)
+        is_m01_waived=0
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small Scale detected: M01 Idea Feasibility is WAIVED (Handled by Intake Gate & PROJECT_LITE)."
+            is_m01_waived=1
+        fi
+
+        if [ $is_m01_waived -eq 1 ]; then
+            check_optional "docs/pm/IDEA_BRIEF.md" "PROJECT_LITE.md"
+        else
+            check_required "docs/pm/IDEA_BRIEF.md" "docs/pm/FEASIBILITY_REPORT.md" 1000
+            check_required "docs/pm/PROJECT_STATE.md" "" 200
+
+            # 2. Execute Solo Capacity Classifier (High-Water Mark enforcement)
+            if [ -f "scripts/gates/classify-scale.sh" ]; then
+                echo "  [INFO] Running mechanical scale & solo capacity classifier..."
+                classify_output=$(bash scripts/gates/classify-scale.sh 2>&1) || classify_exit=$?
+                classify_exit=${classify_exit:-0}
+                if [ "$classify_exit" -eq 2 ]; then
+                    echo "  ❌ SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!"
+                    echo "$classify_output" | sed "s/^/    /"
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Solo capacity verified: Scope is executable within solo capacity"
+                fi
+            fi
 
         # Target file resolution
         brief_file="docs/pm/IDEA_BRIEF.md"
@@ -209,6 +233,7 @@ case "$GATE_MODULE" in
                 GATE_FAILED=1
             fi
         fi
+        fi # end of is_m01_waived else branch
         ;;
     M02)
         echo "=== M02: Discovery & Scope Gate Checklist ==="

@@ -387,12 +387,11 @@ Determine project category upfront using the **High-Water Mark Rule** across 5 E
 - Payment gate locations (DP, Alpha, Beta, Final)
 - Real-world workflow examples (Solo MVP, Agency, Vendor, Enterprise)
 
-**Quick Reference**:
-- **Small Scale (Fast-Track MVP)**: M04 → M05 → M06 → M10 → M12 (5 modules; M01 evaluated via `PROJECT_LITE.md`)
-- **Solo SaaS (Self-Initiated)**: M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13 (10 modules, skips client contract gates)
-- **Client Commercial Medium**: M01 → M02 → **M03** → M04 → M05 → M06 → M07 → **M09** → M10 → **M11** → M12 (adds SOW, UAT, BAST gates)
-- **Large Scale**: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13 (12 modules)
-- **Enterprise**: Full M00 → M13 (14 modules, no skips)
+**Quick Reference (Aligned with High-Water Mark & Opsi A)**:
+- **Small Scale (Fast-Track MVP)**: Intake → M04-LITE → M05 → M06 → M09-LITE → M10 → M12 (M01 formal di-waive; evaluasi kelayakan diringkas di Intake & `PROJECT_LITE.md`)
+- **Solo SaaS (Self-Initiated Medium)**: M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13 (10 modul, skip gate klien M03/M11)
+- **Client Commercial Medium (Agency)**: M01 → M02 → **M03 (SOW 30/40/30)** → M04 → M05 → M06 → **M07** → **M09 (UAT)** → M10 → **M11 (BAST)** → M12
+- **Beyond Solo Capacity (Large & Enterprise)**: Dialihkan otomatis ke **Seri A Advisory (A00–A04)**. Koding solo dilarang keras; hasil berupa Paket Kesiapan Arsitektur & Pengadaan Vendor.
 
 **Lifecycle Route Note**: For self-initiated SaaS and enterprise products, M00 or M00-lite executes first for market demand validation, followed by M01 for technical and unit economics feasibility. For fast-track internal tools or fixed-price client work with scope locked by contract, M01 is the entry point.
 

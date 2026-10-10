@@ -254,6 +254,10 @@ if (Test-Path "docs/pm/PROJECT_STATE.md") {
 } elseif (Test-Path "PROJECT_LITE.md") {
     $isSmallScale = $true
 }
+if ($Module -eq "M01" -and $isSmallScale) {
+    Write-Host "  [INFO] Small Scale detected: M01 Idea Feasibility is WAIVED (Handled by Intake Gate & PROJECT_LITE)." -ForegroundColor Cyan
+    $gate.Required = @()
+}
 if ($Module -eq "M05" -and $isSmallScale) {
     Write-Host "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)" -ForegroundColor Cyan
     $gate.Required = @("PROJECT_LITE.md")
@@ -416,6 +420,27 @@ if ($Module -eq "M00") {
         }
     }
 } elseif ($Module -eq "M01") {
+    $isM01Waived = $false
+    if (Test-Path "docs/pm/PROJECT_STATE.md") {
+        $stRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+        if ($stRaw -match "(?i)Scale:\s*small") { $isM01Waived = $true }
+    } elseif (Test-Path "PROJECT_LITE.md") {
+        $isM01Waived = $true
+    }
+
+    if ($isM01Waived) {
+        Write-Host "  [INFO] Small Scale detected: M01 Idea Feasibility is WAIVED (Handled by Intake Gate & PROJECT_LITE)." -ForegroundColor Cyan
+        $gate.Required = @()
+    } else {
+        # Execute classify-scale.ps1
+        if (Test-Path "scripts/gates/classify-scale.ps1") {
+            Write-Host "  [INFO] Running mechanical scale & solo capacity classifier..." -ForegroundColor Cyan
+            & .\scripts\gates\classify-scale.ps1
+            if ($LASTEXITCODE -eq 2) {
+                Write-Host "  [ERROR] SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!" -ForegroundColor Red
+                $missingRequired += "Solo capacity exceeded (Must split or route to A-Series Advisory)"
+            }
+        }
     $briefFile = if (Test-Path "docs/pm/IDEA_BRIEF.md") { "docs/pm/IDEA_BRIEF.md" } elseif (Test-Path "docs/pm/FEASIBILITY_REPORT.md") { "docs/pm/FEASIBILITY_REPORT.md" } else { $null }
     if ($briefFile) {
         $briefContent = Get-Content $briefFile -Raw
@@ -463,6 +488,7 @@ if ($Module -eq "M00") {
             $missingRequired += "Intake-Status: ANSWERED"
         }
     }
+    } # end of isM01Waived else
 } elseif ($Module -eq "M02") {
     if (Test-Path "docs/pm/SCOPE_STATEMENT.md") {
         $scopeContent = Get-Content "docs/pm/SCOPE_STATEMENT.md" -Raw
