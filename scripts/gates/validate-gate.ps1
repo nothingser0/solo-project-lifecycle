@@ -192,7 +192,11 @@ if (Test-Path "docs/pm/M00_LITE.md") {
     $isSoloSaaS = $true
 } elseif (Test-Path "docs/pm/PROJECT_STATE.md") {
     $stateContent = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
-    if ($stateContent -match '(?i)Scale:\s*(solo-saas|small|internal)') {
+    if ($stateContent -match '(?i)Delivery:\s*(solo|portfolio|internal)') {
+        $isSoloSaaS = $true
+    } elseif ($stateContent -match '(?i)Delivery:\s*client') {
+        $isSoloSaaS = $false
+    } elseif ($stateContent -match '(?i)Scale:\s*(solo-saas|internal)') {
         $isSoloSaaS = $true
     }
 }
@@ -337,6 +341,18 @@ foreach ($file in $gate.Required) {
     if (-not $pathExists -and $file -eq "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md" -and (Test-Path "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md")) {
         $pathExists = $true
         $actualFile = "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md"
+    }
+    if (-not $pathExists -and $file -eq "docs/pm/UAT_SIGNOFF_REPORT.md" -and (Test-Path "docs/qa/UAT_SIGNOFF.md")) {
+        $pathExists = $true
+        $actualFile = "docs/qa/UAT_SIGNOFF.md"
+    }
+    if (-not $pathExists -and $file -eq "docs/pm/UAT_SIGNOFF_REPORT.md" -and (Test-Path "docs/qa/UAT_SIGNOFF_SMALL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/qa/UAT_SIGNOFF_SMALL.md"
+    }
+    if (-not $pathExists -and $file -eq "docs/pm/UAT_SIGNOFF_REPORT.md" -and (Test-Path "docs/pm/UAT_SIGNOFF_SMALL.md")) {
+        $pathExists = $true
+        $actualFile = "docs/pm/UAT_SIGNOFF_SMALL.md"
     }
     if (-not $pathExists -and $file -eq "docs/pm/METRICS_BASELINE_REPORT.md" -and (Test-Path "docs/analytics/METRICS_BASELINE_REPORT.md")) {
         $pathExists = $true

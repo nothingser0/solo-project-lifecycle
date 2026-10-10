@@ -571,16 +571,37 @@ case "$GATE_MODULE" in
         ;;
     M09)
         echo "=== M09: Validation Gate (UAT Sign-Off) Checklist ==="
-        if [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null || grep -qiE "Scale:\s*(solo-saas|small|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        is_m09_solo=0
+        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            is_m09_solo=1
+        elif grep -qiE "Delivery:\s*client" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            is_m09_solo=0 # Client delivery NEVER waives UAT regardless of scale
+        elif [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            is_m09_solo=1
+        fi
+
+        if [ $is_m09_solo -eq 1 ]; then
             echo "  [INFO] Solo SaaS / Internal project detected: M09 Client UAT is WAIVED (Self-testing)."
             check_optional "docs/pm/UAT_SIGNOFF_REPORT.md" "docs/qa/UAT_SIGNOFF.md"
         else
-        check_required "docs/pm/UAT_SIGNOFF_REPORT.md" "docs/qa/UAT_SIGNOFF.md"
-        fi
-        check_optional "docs/qa/UAT_WORKBOOK.md"
-        if [ -f "docs/pm/UAT_SIGNOFF_REPORT.md" ] || [ -f "docs/qa/UAT_SIGNOFF.md" ]; then
+            # Accept standard UAT_SIGNOFF_REPORT or lightweight UAT_SIGNOFF_SMALL
             target_uat="docs/pm/UAT_SIGNOFF_REPORT.md"
             [ -f "$target_uat" ] || target_uat="docs/qa/UAT_SIGNOFF.md"
+            [ -f "$target_uat" ] || target_uat="docs/qa/UAT_SIGNOFF_SMALL.md"
+            [ -f "$target_uat" ] || target_uat="docs/pm/UAT_SIGNOFF_SMALL.md"
+
+            if [ -f "$target_uat" ]; then
+                check_required "$target_uat" "" 300
+            else
+                check_required "docs/pm/UAT_SIGNOFF_REPORT.md" "docs/qa/UAT_SIGNOFF.md" 500
+            fi
+        fi
+        check_optional "docs/qa/UAT_WORKBOOK.md"
+        if [ -f "docs/pm/UAT_SIGNOFF_REPORT.md" ] || [ -f "docs/qa/UAT_SIGNOFF.md" ] || [ -f "docs/qa/UAT_SIGNOFF_SMALL.md" ] || [ -f "docs/pm/UAT_SIGNOFF_SMALL.md" ]; then
+            target_uat="docs/pm/UAT_SIGNOFF_REPORT.md"
+            [ -f "$target_uat" ] || target_uat="docs/qa/UAT_SIGNOFF.md"
+            [ -f "$target_uat" ] || target_uat="docs/qa/UAT_SIGNOFF_SMALL.md"
+            [ -f "$target_uat" ] || target_uat="docs/pm/UAT_SIGNOFF_SMALL.md"
             if grep -q "APPROVED\|PASSED\|Accepted" "$target_uat"; then
                 echo "  ✅ UAT approved status detected"
             else

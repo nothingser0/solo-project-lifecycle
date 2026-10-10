@@ -112,20 +112,20 @@ Every issue reported by the client must be classified into 4 levels:
 
 ---
 
+**UAT Iteration Limit**: Maximum **2 (two) UAT cycles** per commercial contract (`SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md:42`).
+- Cosmetic defects (Severity 3/4) **MAY NOT block UAT sign-off** and are deferred to warranty.
+- If client remains silent without written defect reports for **7 calendar days**, the milestone is **DEEMED ACCEPTED** pursuant to contract Deemed Acceptance clause.
+
+---
+
 ## 5. Adaptation by Project Scale
 
-| UAT Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
-| :--- | :--- | :--- | :--- |
-| **Testing Duration** | 2–3 business days | 5–7 business days | 10–14 business days multi-division |
-| **UAT Participants** | Direct business owner (1 person) | Single PIC + 2 operational staff | Client QA team, Business Analyst, & End Users |
-| **Tracking Media** | Spreadsheet / Markdown UAT Checklist | Formal `UAT_DEFECT_LOG.md` document | Official issue tracker (Jira / Linear / Redmine) |
-| **Sign-Off** | Official email confirmation | Digitally signed UAT Sign-Off Report | Physical stamped/notarized UAT Minutes (BAST) |
-
-**UAT Iteration Limit**: Maximum 3 UAT cycles. If UAT fails 3 consecutive times:
-- Stop UAT process
-- Re-evaluate scope with client (possible scope reduction or timeline extension)  
-- Renegotiate contract if fundamental misalignment detected
-- Document lessons learned for future projects
+| UAT Aspect | 🔵 Small Scale (Fast-Track Client) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (Multi-Division) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **UAT Path** | **M09-LITE** (`UAT_SIGNOFF_SMALL.md`) | Wajib Penuh (`UAT_SIGNOFF_REPORT.md`) | Wajib Penuh + UAT Workbook Divisi | **Dialihkan ke Seri A (Fase A04/A00)** |
+| **Testing Duration** | 2–3 business days | 5–7 business days | 10–14 business days | Pengawasan jadwal pengujian vendor klien |
+| **UAT Participants** | Direct business owner / 1 tester eksternal | Single PIC + staf operasional | Client QA team & Business Analysts | Komite pengadaan & tim penilai enterprise |
+| **Sign-Off Document** | `docs/qa/UAT_SIGNOFF_SMALL.md` | `docs/pm/UAT_SIGNOFF_REPORT.md` | Signed UAT Report + Defect Matrix | Advisory Acceptance Recommendation (A04) |
 
 ---
 
@@ -135,8 +135,8 @@ Every issue reported by the client must be classified into 4 levels:
 > All scenario files, defect logs, and UAT Sign-Off reports MUST be stored in the **`docs/pm/`** folder.
 
 This module produces 2 sign-off documents:
-1. **`docs/pm/UAT_WORKBOOK.md`**: Combined test scenario workbook and defect tracking log for Client Single PIC (using `templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md`).
-2. **`docs/pm/UAT_SIGNOFF_REPORT.md`**: Official UAT Sign-Off Report signed by Client Single PIC certifying that all system functionality has been accepted (using `templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`).
+1. **`docs/pm/UAT_WORKBOOK.md`**: Combined test scenario workbook and defect tracking log for Client Single PIC (using `templates/06-qa-uat/UAT_WORKBOOK_TEMPLATE.md`; lightweight alternative: `UAT_WORKBOOK_SMALL.md`).
+2. **`docs/pm/UAT_SIGNOFF_REPORT.md`**: Official UAT Sign-Off Report signed by Client Single PIC certifying that all system functionality has been accepted (using `templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`; on Small scale, generated as `docs/qa/UAT_SIGNOFF_SMALL.md`).
 
 ---
 
