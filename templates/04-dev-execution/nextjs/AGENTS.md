@@ -56,6 +56,17 @@ To prevent AI generated bloat, low-quality code, and hallucinations:
 
 ---
 
+## 1.2 Domain Reasoning & Semantic Sanity (Think Before You Type)
+
+> Structurally valid code that is semantically nonsensical is a critical failure. Reason about the domain, not just the checklist.
+
+1. **Semantic Sanity Gate (STOP)**: Before creating any entity, field, page, or menu, ask *"Does this belong to THIS domain?"*. If it contradicts the domain (e.g., a *"Medicine List"* inside a *Motorcycle Rental* app, a *"Payroll"* section in a *Point of Sale*): **STOP AND ASK THE USER**. Never invent domain entities absent from `SCOPE_STATEMENT.md` / `FSD.md`.
+2. **Vocabulary Consistency**: Use the ubiquitous language from `CONTEXT.md` / `FSD.md` verbatim. A `Rental` is not an `Order`; a `Tenant` is not a `User`. Never rename domain concepts.
+3. **Logical Consistency**: Enforce legal state transitions only (an invoice cannot go `PAID → DRAFT`; a rental cannot be `RETURNED` before `ACTIVE`). No orphan features: every screen traces to an `F-xx`, every field has a reason.
+4. **Escalate, Never Guess Silently**: If specs contradict, a business rule would be violated, or you cannot justify a file/table/feature from the specs — STOP and ask. A blocked agent asking one clear question is correct; a confident agent shipping an out-of-domain feature is a failure.
+
+---
+
 ## 2. Official Documentation & Framework Version Rules
 
 **Always verify installed versions before writing code (`npm list next react @supabase/ssr zod`):**

@@ -76,3 +76,34 @@ npm run test:smoke
    - Work on feature branches: `feat/[feature-name]` or `fix/[bug-name]`.
    - Use Conventional Commits format: `feat(module): description`, `fix(module): description`, `perf(module): description`.
    - Always run `npm run type-check` before committing.
+
+---
+
+## 4. Domain Reasoning & Semantic Sanity (Think Before You Type)
+
+> An agent MUST reason about the *meaning* of the domain, not merely satisfy a checklist. Structurally valid code that is semantically nonsensical is a critical failure, not a pass.
+
+### 4.1 The Semantic Sanity Gate (STOP condition)
+Before creating any entity, field, page, or menu item, the agent MUST ask: **"Does this belong to THIS domain?"**
+- If a requested or generated artifact contradicts the domain (e.g., a *"Medicine List"* menu inside a *Motorcycle Rental* app; a *"Prescription"* field on a *Product* table; a *"Payroll"* section in a *Point of Sale* app): **STOP IMMEDIATELY AND ASK THE USER.**
+- NEVER invent domain entities that were not in `SCOPE_STATEMENT.md` / `FSD.md`. An out-of-domain feature is scope creep even if it "seems useful".
+- Report the conflict explicitly: *"Requested feature 'X' does not belong to domain 'Y'. Confirm before I proceed."*
+
+### 4.2 Domain Vocabulary Consistency
+- Use the ubiquitous language from `CONTEXT.md` / `FSD.md` verbatim. If the domain calls it `Motorcycle`, never rename it `Bike`, `Vehicle`, or `Item` in code.
+- Entity names, table names, route names, and UI labels MUST describe the same real-world concept.
+- A `Rental` is not an `Order`; a `Tenant` is not a `User`. Do not collapse distinct domain concepts into one.
+
+### 4.3 Logical Consistency Checks
+- **State transitions must be legal**: an invoice cannot go `PAID → DRAFT`; a rental cannot be `RETURNED` before it is `ACTIVE`. Enforce legal transitions; reject illegal ones.
+- **No orphan features**: every screen must trace to an `F-xx` feature in the scope; every field must have a reason to exist.
+- **Cause before effect**: a "return" screen requires the item to have been "rented"; a "payment" record requires an "invoice". Do not build a dependent flow whose prerequisite does not exist.
+
+### 4.4 When Something Feels Wrong, Escalate (Never Guess Silently)
+If any of the following is true, STOP and ask the user instead of proceeding:
+- The task references a domain entity, field, or screen that does not exist in the specs.
+- Two spec documents (`SCOPE`, `FSD`, `PRD`, `DESIGN_SPEC`) contradict each other.
+- The requested behavior would violate a real-world business rule (e.g., charging tax on a non-taxable item, allowing negative stock).
+- You are about to create a file, table, or feature whose purpose you cannot justify from the specs.
+
+> **Silent guessing is prohibited.** A blocked agent that asks one clear question is correct. A confident agent that ships an out-of-domain feature is a failure.
