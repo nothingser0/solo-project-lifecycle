@@ -281,10 +281,11 @@ phase_dev_harness() {
     echo "11. SEED_DATA spec (Deterministic dev/test fixtures)"
     echo "12. CHANGELOG.md (Keep-a-Changelog release history)"
     echo "13. CI pipeline (.github/workflows/ci.yml)"
-    echo "14. Copy all harness files at once"
-    echo "15. Back to main menu"
+    echo "14. RELEASE_WORKFLOW.md (Dev -> clean main release runbook)"
+    echo "15. Copy all harness files at once"
+    echo "16. Back to main menu"
     echo ""
-    choice=$(get_choice "Select template (1-15): " 1)
+    choice=$(get_choice "Select template (1-16): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md" ;;
@@ -300,7 +301,8 @@ phase_dev_harness() {
         11) copy_template "$TEMPLATES_DIR/04-dev-execution/SEED_DATA_TEMPLATE.md" "docs/specs/SEED_DATA.md" ;;
         12) copy_template "$TEMPLATES_DIR/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md" ;;
         13) copy_template "$TEMPLATES_DIR/04-dev-execution/PROJECT_CI_TEMPLATE.yml" ".github/workflows/ci.yml" ;;
-        14)
+        14) copy_template "$TEMPLATES_DIR/04-dev-execution/RELEASE_WORKFLOW.md" "RELEASE_WORKFLOW.md" ;;
+        15)
             copy_template "$TEMPLATES_DIR/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/CONTEXT_TEMPLATE.md" "CONTEXT.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/ARCHITECTURE_TEMPLATE.md" "ARCHITECTURE.md"
@@ -312,9 +314,10 @@ phase_dev_harness() {
             copy_template "$TEMPLATES_DIR/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md"
             copy_template "$TEMPLATES_DIR/04-dev-execution/LEARNINGS_TEMPLATE.md" "LEARNINGS.md"
             copy_template "$TEMPLATES_DIR/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md"
+            copy_template "$TEMPLATES_DIR/04-dev-execution/RELEASE_WORKFLOW.md" "RELEASE_WORKFLOW.md"
             echo -e "${GREEN}✅ All harness files copied${NC}"
             ;;
-        15) return ;;
+        16) return ;;
         *) echo "Invalid choice" ;;
     esac
 }

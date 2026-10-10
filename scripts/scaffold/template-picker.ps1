@@ -250,11 +250,12 @@ function Show-DevelopmentMenu {
     Write-Host "  11. SEED_DATA spec (Deterministic dev/test fixtures)"
     Write-Host "  12. CHANGELOG.md (Keep-a-Changelog release history)"
     Write-Host "  13. CI pipeline (.github/workflows/ci.yml)"
-    Write-Host "  14. Copy all harness files at once"
-    Write-Host "  15. Back to main menu"
+    Write-Host "  14. RELEASE_WORKFLOW.md (Dev -> clean main release runbook)"
+    Write-Host "  15. Copy all harness files at once"
+    Write-Host "  16. Back to main menu"
     Write-Host ""
 
-    $choice = Read-Host "Select template (1-15)"
+    $choice = Read-Host "Select template (1-16)"
     
     switch ($choice) {
         "1" { Copy-Template "$TemplatesDir/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md" }
@@ -270,7 +271,8 @@ function Show-DevelopmentMenu {
         "11" { Copy-Template "$TemplatesDir/04-dev-execution/SEED_DATA_TEMPLATE.md" "docs/specs/SEED_DATA.md" }
         "12" { Copy-Template "$TemplatesDir/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md" }
         "13" { Copy-Template "$TemplatesDir/04-dev-execution/PROJECT_CI_TEMPLATE.yml" ".github/workflows/ci.yml" }
-        "14" {
+        "14" { Copy-Template "$TemplatesDir/04-dev-execution/RELEASE_WORKFLOW.md" "RELEASE_WORKFLOW.md" }
+        "15" {
             Copy-Template "$TemplatesDir/04-dev-execution/AGENTS_TEMPLATE.md" "AGENTS.md"
             Copy-Template "$TemplatesDir/04-dev-execution/CONTEXT_TEMPLATE.md" "CONTEXT.md"
             Copy-Template "$TemplatesDir/04-dev-execution/TODO_TEMPLATE.md" "TODO.md"
@@ -282,9 +284,10 @@ function Show-DevelopmentMenu {
             Copy-Template "$TemplatesDir/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "VERIFY_LOCAL.md"
             Copy-Template "$TemplatesDir/04-dev-execution/LEARNINGS_TEMPLATE.md" "LEARNINGS.md"
             Copy-Template "$TemplatesDir/07-release-handover/CHANGELOG_TEMPLATE.md" "CHANGELOG.md"
+            Copy-Template "$TemplatesDir/04-dev-execution/RELEASE_WORKFLOW.md" "RELEASE_WORKFLOW.md"
             Write-Host "[OK] All harness files copied" -ForegroundColor Green
         }
-        "15" { return }
+        "16" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
     }
 }

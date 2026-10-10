@@ -137,17 +137,56 @@ This module is the tenth phase in the software project lifecycle for solo develo
    pg_dump -U postgres -d legal_vault_prod -F c -b -v -f "backup-pre-deploy-$(date +%Y%m%d).dump"
    ```
 
-### Step 2: Git Merge & Official Version Tagging
-1. Switch to branch `main` and merge code from `staging`:
-   ```bash
-   git checkout main
-   git merge --no-ff staging
-   ```
-2. Tag the official version release:
-   ```bash
-   git tag -a v1.0.0 -m "Release Production v1.0.0 - Go-Live"
-   git push origin main --tags
-   ```
+### Step 2: Clean Release Merge & Official Version Tagging
+
+> **Goal**: `main` must contain ONLY production code + client-facing specs — never the AI harness
+> (`AGENTS.md`, `TODO.md`, `docs/pm/`, `docs/qa/`, …) nor internal process documents.
+> Full runbook: `RELEASE_WORKFLOW.md` (root harness). Exclusions live in `scripts/release/release-exclude.txt`.
+
+**Why not `git merge --no-ff staging`?** A plain merge carries the harness from `dev` straight into
+`main`. `.gitignore` cannot remove files that are already tracked. Harness must be untracked
+(`git rm --cached`) on a temporary release branch BEFORE merging.
+
+**Automated (recommended)**:
+```bash
+./scripts/release/build-clean-release.sh v1.0.0          # Git Bash / macOS / Linux
+.\scripts\release\build-clean-release.ps1 -Version v1.0.0 # Windows PowerShell
+```
+
+**Manual**:
+```bash
+# 1. Build a release branch from dev
+git checkout dev
+git checkout -B release/v1.0.0
+
+# 2. Strip dev-only artifacts on the release branch (own commit)
+while IFS= read -r f; do
+  f="${f%$'\r'}"; [ -z "$f" ] && continue
+  case "$f" in \#*) continue ;; esac
+  git rm -r --cached --quiet "$f" 2>/dev/null || true
+done < scripts/release/release-exclude.txt
+git commit -m "chore(release): strip dev-only artifacts for v1.0.0"
+
+# 3. Squash-merge into main and commit one clean release commit
+git checkout main
+git merge --squash --allow-unrelated-histories release/v1.0.0
+git commit -m "release: v1.0.0"
+
+# 4. VERIFY (mandatory) — abort if any harness path is still tracked
+git ls-files | grep -iE "AGENTS|CONTEXT|TODO|LEARNINGS|docs/pm|docs/qa|scripts/release" \
+  && echo "❌ HARNESS PRESENT — DO NOT PUSH" || echo "✅ CLEAN"
+
+# 5. Delete release branch, push, tag
+git branch -D release/v1.0.0
+git push origin main
+git tag -a v1.0.0 -m "Release Production v1.0.0 - Go-Live"
+git push origin v1.0.0
+```
+
+> `--allow-unrelated-histories` is required when `main` was created as an orphan (no shared parent);
+> it is harmless otherwise. If a PR/review workflow is required instead of a direct push, keep the
+> release branch (`--keep-branch`) and open the PR — but note the harness will still appear in
+> `main`'s *history* via the old `dev` commits (the *tree* stays clean).
 
 ### Step 3: DNS & SSL Configuration
 

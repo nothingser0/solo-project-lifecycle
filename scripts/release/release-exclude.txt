@@ -15,6 +15,7 @@ TODO.md
 VERIFY_LOCAL.md
 RUNBOOK_LOCAL.md
 LEARNINGS.md
+RELEASE_WORKFLOW.md
 
 # --- Staging & internal process documents ---
 docs/harness-root/

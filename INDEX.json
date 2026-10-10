@@ -1007,6 +1007,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/04-dev-execution/RELEASE_WORKFLOW.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md",
       "cataloged": true
     },
