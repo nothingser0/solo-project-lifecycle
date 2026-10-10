@@ -1334,6 +1334,10 @@
       ]
     },
     {
+      "path": "templates/07-release-handover/GO_LIVE_REPORT_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/07-release-handover/HANDOVER_PROTOCOL_TEMPLATE.md",
       "cataloged": true,
       "modules": [

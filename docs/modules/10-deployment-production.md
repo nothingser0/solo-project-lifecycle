@@ -151,8 +151,14 @@ This module is the tenth phase in the software project lifecycle for solo develo
 
 ### Step 3: DNS & SSL Configuration
 
-1. Log into the client domain provider's DNS dashboard (Cloudflare, Niagahoster, Route53).
-2. Point DNS Records:
+> 🛡️ **LEVERAGE-SAFE COMMERCIAL HANDOVER RULE (`Delivery: client`)**:
+> - Under the standardized 30/40/30 contract (`03-legal-sow-charter.md:76` and `SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md:111`), **Milestone 3 (Final 30%) is payable prior to DNS production pointing and BAST handover**.
+> - In Module 10, the developer deploys to a **developer-controlled production/preview server** to execute PVT testing and produce `GO_LIVE_REPORT.md`.
+> - Pointing the Client's official primary domain (`app.client.com`) and transferring master cloud/repo credentials **MUST BE HELD AS COMMERCIAL LEVERAGE** until 100% final payment clears in Module 11 (`11-handover-bast.md:57-63`).
+> - For `Delivery: solo | internal | portfolio`, configure the primary production domain directly.
+
+1. Log into the domain provider's DNS dashboard (Cloudflare, Niagahoster, Route53).
+2. Point DNS Records (Staged / Production based on delivery model):
    - `Type A`: `@` → Production Server IP / Load Balancer.
    - `CNAME`: `app` or `www` → hosting domain (Vercel / Cloud Run).
 3. Verify DNS propagation using `dig` or `nslookup`.
@@ -330,62 +336,44 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 
 ## 5. Adaptation by Project Scale
 
-| Deployment Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
-| :--- | :--- | :--- | :--- |
-| **Infrastructure** | PaaS (Vercel / Railway / Render) | Managed Cloud Run / Docker VPS + Managed DB | Multi-region AWS/GCP, Kubernetes, Private VPC |
-| **Release Strategy** | Instant rolling restart (< 1 min) | Blue-Green Deployment / Container Swap | Phased Canary Deployment (10% $\to$ 50% $\to$ 100%) |
-| **Release Schedule** | Regular business hours (Tuesday morning) | Scheduled maintenance (Tuesday 10:00 WIB) | Scheduled night window with CAB approval |
-| **Monitoring** | Free Sentry + Uptime Kuma bot | Sentry + BetterStack log aggregation | Full APM (Datadog/New Relic) + PagerDuty SLA |
+| Deployment Aspect | 🔵 Small Scale (Fast-Track MVP) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (High-Availability) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Infrastructure** | PaaS (Vercel / Railway / Render) | Managed Cloud Run / Docker VPS + Managed DB | Multi-region AWS/GCP, Private VPC, Redis cluster | **Dialihkan ke Seri A (Fase A03/A00)** |
+| **Release Strategy** | Instant rolling restart (< 1 min) | Blue-Green Deployment / Container Swap | Phased Canary Deployment (10% $\to$ 50% $\to$ 100%) | Tata kelola arsitektur rilis vendor korporat |
+| **Release Schedule** | Regular business hours (Tuesday morning) | Scheduled maintenance (Tuesday 10:00 WIB) | Scheduled maintenance window with CAB RFC | Pengawasan komite CAB & arsitektur rilis korporat |
+| **Rollback Plan** | Git revert + automated instant rollback | Standby container swap / backup snapshot | Wajib `docs/pm/ROLLBACK_PLAN.md` (drill <15 min) | Disaster Recovery & Business Continuity Dossier |
 
 ---
 
-### 🔴 Enterprise Scale: Release Management & Deployment Templates
+### 🔴 Enterprise Scale: Routed to Non-Solo Capacity Advisory (Phase A03/A00)
 
-**When**: Regulated/statutory context (banking, healthcare, government), mission-critical production systems, or enterprise-scale audit requirements
+> ⚠️ **SOLO CAPACITY LIMITATION ENFORCEMENT**:  
+> Projects classified as **Enterprise Scale** ($\ge 26$ P0 features, legacy core migrations, or strict regulatory statutory mandates) **EXCEED SOLO DEVELOPER CAPACITY**.  
+> Solo developers MUST NOT execute high-blast-radius enterprise production cutovers single-handedly.  
+> Instead, the solo consultant executes **Phase A03/A00 Advisory Handover** to define Change Advisory Board (CAB) governance, review vendor deployment runbooks, and verify RFC compliance.
 
-**Pre-Deployment Gate**:
-- `templates/07-release-handover/RELEASE_APPROVAL_CHECKLIST.md` - 10-section go/no-go decision checklist
-  - **Sections**: Code quality, testing, security, performance, infrastructure, docs, data migration, business readiness, communication, rollback plan
-  - **Decision makers**: Tech Lead, QA Lead, Security Lead, DevOps Lead, Product Manager (all must sign off)
-  - **Why**: Enterprise deployments cannot fail (financial penalties, regulatory risks, brand damage)
-
-**Change Control**:
+**Change Control & CAB Governance**:
 - `templates/03-governance/CAB_PROCESS.md` - Change Advisory Board approval workflow
   - **RFC (Request for Change)**: Submit 3 business days before deployment
   - **CAB review**: Risk assessment, blast radius, rollback plan, maintenance window approval
   - **Why**: Banking/government require formal change control (audit trail, stakeholder approval)
 
-**Deployment Procedures**:
-- Blue-green deployment (zero-downtime cutover)
-- Canary deployment (10% → 50% → 100% traffic shift)
-- Database migrations tested 3x on staging
-- Off-peak maintenance window scheduled; go/no-go checklist ready
-- Rollback decision criteria defined (error rate >5%, latency >500ms p95)
-
-**Post-Deployment Monitoring**:
-- `templates/03-governance/ESCALATION_MATRIX.md` - P0-P4 incident escalation paths
-  - **P0 (Critical)**: System down, data loss → 15min response, Tech Lead + CTO notified
-  - **P1 (High)**: Major feature broken → 1hr response
-  - **Why**: Clear escalation prevents "who do I call?" delays during incidents
-
-**M10 Gate for Enterprise**:
-- ✅ Release approval checklist signed by all 5 decision makers
-- ✅ CAB RFC approved (if change control required)
-- ✅ Off-peak deployment window & escalation contacts ready
-- ✅ Rollback plan tested on staging
-- ✅ Monitoring dashboards configured (APM, error tracking, uptime)
-- ✅ Escalation contacts confirmed (PagerDuty rotations set)
+**Advisory Release Gate for Enterprise**:
+- CAB RFC documented and approved (`templates/03-governance/CAB_PROCESS.md`)
+- Disaster Recovery / Business Continuity Plan aligned (`templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md`)
+- Vendor deployment runbook reviewed with client DevOps leadership
 
 ---
 
 ## 6. Deliverables
 
 > 📁 **MANDATORY FILE LOCATION RULE**:
-> Runbooks and go-live reports MUST be stored in the **`docs/pm/`** or **`docs/pm/`** folder.
+> Runbooks and go-live reports MUST be stored in the **`docs/`** or **`docs/pm/`** folder.
 
-This module produces 2 execution documents:
-1. **`docs/pm/DEPLOYMENT_PROTOCOL.md`**: Combined deployment protocol guide and go-live report proving the system is active in Production (using `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`).
-2. **`docs/pm/ROLLBACK_PLAN.md`**: Emergency recovery procedures in case of fatal failure during go-live (using `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`).
+This module produces 3 authoritative execution documents:
+1. **`docs/pm/DEPLOYMENT_PROTOCOL.md`**: Deployment runbook, target topology, zero-downtime migration steps, and PVT checklists (using `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`).
+2. **`docs/pm/GO_LIVE_REPORT.md`**: Post-deployment verification test (PVT) proof, live endpoint status, and SSL rating attestation (using `templates/07-release-handover/GO_LIVE_REPORT_TEMPLATE.md`).
+3. **`docs/pm/ROLLBACK_PLAN.md`**: Emergency recovery procedures ensuring <15 minute restoration in case of cutover failure (using `templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md`; mandatory for Large Scale).
 
 ---
 
@@ -448,5 +436,6 @@ After the system is officially Live in Production and the PVT report is publishe
    - Real transaction verification test (PVT) results
    - Uptime monitoring status & Sentry error tracker
 4. **END YOUR RESPONSE (END TURN)** and ask user for confirmation:
-   > *"The system is officially running on the Production server (Live). Verification evidence is documented in `docs/pm/GO_LIVE_REPORT.md`. Are you ready to issue the final invoice and initiate the handover process (Module 11: Handover & BAST)?"*
+   > *(For Client Delivery)*: *"The system is verified production-ready on live infrastructure (PVT PASS). Verification evidence is documented in `docs/pm/GO_LIVE_REPORT.md`. Are you ready to issue the final 30% settlement invoice before official domain pointing and repository transfer in Module 11?"*  
+   > *(For Solo / Internal Delivery)*: *"The system is officially LIVE on the production server. Verification evidence is documented in `docs/pm/GO_LIVE_REPORT.md`. Are you ready to proceed to Module 12 (Operations & Runbook)?"*
 5. Wait for explicit approval response from user before advancing to Module 11.

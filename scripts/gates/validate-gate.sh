@@ -634,7 +634,13 @@ case "$GATE_MODULE" in
             echo "  [INFO] Enterprise scale detected: CAB Approval is MANDATORY."
             check_required "docs/governance/CAB_APPROVAL.md" "docs/pm/CAB_APPROVAL.md"
         fi
+        # For Large scale, emergency rollback plan is MANDATORY
+        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Large / Enterprise scale detected: Emergency Rollback Plan is MANDATORY."
+            check_required "docs/pm/ROLLBACK_PLAN.md" "docs/ROLLBACK_PLAN.md" 500
+        else
         check_optional "docs/ROLLBACK_PLAN.md" "docs/pm/ROLLBACK_PLAN.md"
+        fi
         ;;
     M11)
         echo "=== M11: Handover & BAST Gate Checklist ==="

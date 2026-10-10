@@ -236,6 +236,10 @@ if ($isLargeScale -and $Module -eq "M08") {
     Write-Host "  [INFO] Large/Enterprise scale detected: Reconciliation Report is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
 }
+if ($isLargeScale -and $Module -eq "M10") {
+    Write-Host "  [INFO] Large / Enterprise scale detected: Emergency Rollback Plan is MANDATORY." -ForegroundColor Cyan
+    $gate.Required += "docs/ROLLBACK_PLAN.md"
+}
 if ($isEnterprise) {
     if ($Module -eq "M03") {
         Write-Host "  [INFO] Enterprise scale detected: Risk Assessment Matrix and RACI Matrix are MANDATORY in M03." -ForegroundColor Cyan
@@ -381,6 +385,10 @@ foreach ($file in $gate.Required) {
     if (-not $pathExists -and $file -eq "docs/pm/GO_LIVE_REPORT.md" -and (Test-Path "docs/GO_LIVE_REPORT.md")) {
         $pathExists = $true
         $actualFile = "docs/GO_LIVE_REPORT.md"
+    }
+    if (-not $pathExists -and $file -eq "docs/ROLLBACK_PLAN.md" -and (Test-Path "docs/pm/ROLLBACK_PLAN.md")) {
+        $pathExists = $true
+        $actualFile = "docs/pm/ROLLBACK_PLAN.md"
     }
     if (-not $pathExists -and $file -eq "docs/pm/WARRANTY_POLICY.md" -and (Test-Path "docs/pm/RUNBOOK_OPS.md")) {
         $pathExists = $true
