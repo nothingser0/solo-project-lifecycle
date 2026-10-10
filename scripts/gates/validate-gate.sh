@@ -1145,6 +1145,35 @@ case "$GATE_MODULE" in
             else
                 check_required "docs/pm/BAST.md" "contracts/BAST.md" 500
             fi
+            # Content verification for BAST (BLOCKER)
+            if [ -f "$target_bast" ]; then
+                bast_content=$(cat "$target_bast" 2>/dev/null || true)
+                # 1. Reject unresolved template placeholders [...]
+                if echo "$bast_content" | grep -qE "\[PROJECT_CODE\]|\[Client PIC|\[Your Full Name\]|\[Your Name\]|\[CONTRACT_NUMBER\]|\[30 / 60 / 90\]"; then
+                    echo "  ❌ $target_bast still contains unresolved template placeholders ([...])! Fill in actual BAST legal terms."
+                    GATE_FAILED=1
+                fi
+                # 2. Reject unpaid / arrears status (BLOCKER: Article 2 requires 100% settlement before handover)
+                # Note: avoid matching legitimate negative phrase 'no outstanding arrears' / 'zero arrears'
+                if echo "$bast_content" | grep -qiE "UNPAID|BELUM LUNAS|OUTSTANDING PAYMENT|OWES[[:space:]]+[0-9]+|(has|have|with)[[:space:]]+arrears" || (echo "$bast_content" | grep -qiE "ARREARS" && ! echo "$bast_content" | grep -qiE "(no|zero|without)[[:space:]]+outstanding[[:space:]]+arrears|(no|zero)[[:space:]]+arrears"); then
+                    echo "  ❌ $target_bast indicates outstanding payment arrears! 100% financial settlement required before closing M11."
+                    GATE_FAILED=1
+                elif echo "$bast_content" | grep -qiE "settled all payment|100%|lunas|no outstanding arrears|Settlement of Financial"; then
+                    echo "  ✅ 100% payment settlement verified in $target_bast"
+                else
+                    echo "  ❌ $target_bast missing 100% payment settlement confirmation (Article 2)!"
+                    GATE_FAILED=1
+                fi
+                # 3. Reject unfulfilled blank signature lines (______ or unassigned PIC)
+                if echo "$bast_content" | grep -qiE "FIRST PARTY|Client PIC|Client Company"; then
+                    if echo "$bast_content" | grep -qiE "_{5,}"; then
+                        echo "  ❌ $target_bast has unfulfilled blank signature lines (______ / unassigned PIC)!"
+                        GATE_FAILED=1
+                    else
+                        echo "  ✅ BAST signed by both parties"
+                    fi
+                fi
+            fi
 
             # For Large scale, technical handover protocol is MANDATORY
             if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then

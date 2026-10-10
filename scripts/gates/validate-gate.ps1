@@ -1318,6 +1318,41 @@ if ($Module -eq "M10") {
         }
     }
 }
+if ($Module -eq "M11" -and -not $isSoloSaaS) {
+    $bastTarget = if (Test-Path "docs/pm/BAST.md") { "docs/pm/BAST.md" } `
+                  elseif (Test-Path "contracts/BAST.md") { "contracts/BAST.md" } `
+                  elseif (Test-Path "docs/pm/BAST_EMAIL_SMALL.md") { "docs/pm/BAST_EMAIL_SMALL.md" } `
+                  elseif (Test-Path "contracts/BAST_EMAIL_SMALL.md") { "contracts/BAST_EMAIL_SMALL.md" } `
+                  else { $null }
+    if ($bastTarget) {
+        $bastContent = Get-Content $bastTarget -Raw
+        # 1. Reject unresolved template placeholders [...]
+        if ($bastContent -match '\[PROJECT_CODE\]|\[Client PIC|\[Your Full Name\]|\[Your Name\]|\[CONTRACT_NUMBER\]|\[30 / 60 / 90\]') {
+            Write-Host "  [ERROR] $bastTarget still contains unresolved template placeholders ([...])! Fill in actual BAST legal terms." -ForegroundColor Red
+            $missingRequired += "$bastTarget (unresolved template placeholders)"
+        }
+        # 2. Reject unpaid / arrears status (BLOCKER: Article 2 requires 100% settlement before handover)
+        # Note: avoid matching legitimate negative phrase 'no outstanding arrears' / 'zero arrears'
+        if (($bastContent -match '(?i)UNPAID|BELUM LUNAS|OUTSTANDING PAYMENT|OWES\s+[0-9]+|(has|have|with)\s+arrears') -or (($bastContent -match '(?i)ARREARS') -and ($bastContent -notmatch '(?i)(no|zero|without)\s+outstanding\s+arrears|(no|zero)\s+arrears'))) {
+            Write-Host "  [ERROR] $bastTarget indicates outstanding payment arrears! 100% financial settlement required before closing M11." -ForegroundColor Red
+            $missingRequired += "$bastTarget (payment arrears / unpaid balance)"
+        } elseif ($bastContent -match '(?i)settled all payment|100%|lunas|no outstanding arrears|Settlement of Financial') {
+            Write-Host "  [OK] 100% payment settlement verified in $bastTarget" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] $bastTarget missing 100% payment settlement confirmation (Article 2)!" -ForegroundColor Red
+            $missingRequired += "$bastTarget (missing 100% payment settlement confirmation)"
+        }
+        # 3. Reject unfulfilled blank signature lines (______ or unassigned PIC)
+        if ($bastContent -match '(?i)FIRST PARTY|Client PIC|Client Company') {
+            if ($bastContent -match '_{5,}') {
+                Write-Host "  [ERROR] $bastTarget has unfulfilled blank signature lines (______ / unassigned PIC)!" -ForegroundColor Red
+                $missingRequired += "$bastTarget (unfulfilled blank signature lines)"
+            } else {
+                Write-Host "  [OK] BAST signed by both parties" -ForegroundColor Green
+            }
+        }
+    }
+}
 
 # Check optional files
 if ($gate.Optional.Count -gt 0) {
