@@ -611,13 +611,19 @@ CAU: $0.50/user ✅ (target: < $1)
 
 ## 4. Adaptation by Project Scale
 
-| Operations Parameter | Small Scale (MVP) | Mid-Scale (B2B SaaS) | Large Scale (Enterprise) |
-| :--- | :--- | :--- | :--- |
-| **Metrics Review Frequency** | Weekly (manual check) | Daily (automated dashboard) | Real-time (alerting system) |
-| **Cohort Analysis** | Monthly manual SQL query | Weekly Mixpanel/PostHog | Data warehouse + BI tool (Looker, Metabase) |
-| **NPS Survey** | 1x per quarter (manual email) | Automated trigger via Delighted | Enterprise NPS tool + CSAT tracking |
-| **Experiment Velocity** | 1–2 per month | 2–4 per month | 1–2 per week (dedicated growth team) |
-| **Scaling Threshold** | > 1,000 MAU or $5k MRR | > 10k MAU or $50k MRR | > 100k MAU or $500k MRR |
+| Operations Parameter | 🔵 Small / Client (Terminal) | 🟢 Mid-Scale (Solo SaaS) | 🟡 Large Scale (Scale-Up) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **M13 Status** | **M13 WAIVED** (Siklus berakhir di M11/M12) | **Wajib M13** (Continuous Loop) | **Wajib M13 + Backlog RICE** | **Dialihkan ke Seri A (Fase A00/A04)** |
+| **Metrics Review Frequency** | N/A (proyek terserah klien) | Weekly (manual check) | Daily (automated dashboard) | Real-time telemetry terkelola tim produk klien |
+| **Cohort Analysis** | N/A | Monthly manual SQL query | Weekly Mixpanel/PostHog | Data warehouse + BI tool korporat |
+| **Scaling Threshold** | N/A | > 1,000 MAU / DB conn saturation | > 10,000 MAU / p95 latency budget | Arsitektur telemetri produk korporat |
+| **Experiment Velocity** | N/A | 1–2 per month | 2–4 per month | Ditangani tim pertumbuhan enterprise |
+
+> ℹ️ **LIFECYCLE TERMINATION RULE**:
+> - **Small Scale**: Siklus hidup proyek selesai di **M12** (`RUNBOOK_OPS.md`). Tidak menjalankan M13.
+> - **Client / Freelance / Internal Delivery**: Siklus hidup selesai di **M11 (BAST) / M12 (Warranty)**. Tidak menjalankan M13.
+> - **Solo SaaS / Independent Products**: Menjalankan **M13 (Continuous Iteration Loop)** tanpa batas.
+> - **Enterprise (Non-Solo Capacity)**: Dialihkan ke **Seri A Advisory (Fase A00/A04)** untuk penyusunan arsitektur telemetri produk korporat.
 
 ---
 

@@ -707,8 +707,29 @@ case "$GATE_MODULE" in
         ;;
     M13)
         echo "=== M13: Product Operations & Iteration Gate Checklist ==="
-        check_required "docs/pm/METRICS_BASELINE_REPORT.md" "docs/analytics/METRICS_BASELINE_REPORT.md"
-        check_optional "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"
+        # M13 is a Continuous Product Loop for SELF-INITIATED products only.
+        # Small Scale terminates at M12; Client delivery terminates at M11/M12.
+        is_m13_waived=0
+        if grep -qiE "Delivery:\s*(client|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Client/Internal/Portfolio delivery detected: M13 Product Iteration is WAIVED (lifecycle ends at M11/M12)."
+            is_m13_waived=1
+        elif grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small Scale detected: M13 Product Iteration is WAIVED (Fast-Track ends at M12)."
+            is_m13_waived=1
+        fi
+
+        if [ $is_m13_waived -eq 1 ]; then
+            check_optional "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md"
+        else
+            check_required "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md"
+            # For Large scale, RICE-scored growth experiment backlog is MANDATORY
+            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                echo "  [INFO] Large / Enterprise scale detected: Growth Experiments Backlog is MANDATORY."
+                check_required "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" "" 500
+            else
+                check_optional "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"
+            fi
+        fi
         ;;
     *)
         echo "❌ Unknown gate: $GATE_MODULE"

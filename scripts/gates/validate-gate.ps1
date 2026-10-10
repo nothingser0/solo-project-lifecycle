@@ -248,6 +248,23 @@ if ($isLargeScale -and $Module -eq "M12") {
     Write-Host "  [INFO] Large / Enterprise scale detected: Incident Response Plan is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/pm/INCIDENT_RESPONSE.md"
 }
+if ($Module -eq "M13") {
+    # M13 applies only to Self-Initiated Products; Client/Internal/Portfolio & Small terminate at M11/M12
+    $isM13Waived = $false
+    if (Test-Path "docs/pm/PROJECT_STATE.md") {
+        $stRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+        if ($stRaw -match '(?i)Delivery:\s*(client|portfolio|internal)') { $isM13Waived = $true }
+    }
+    if ($isSmallScale) { $isM13Waived = $true }
+    if ($isM13Waived) {
+        Write-Host "  [INFO] Client / Internal / Small delivery: M13 Product Iteration is WAIVED (lifecycle ends at M11/M12)." -ForegroundColor Cyan
+        $gate.Required = @()
+    }
+}
+if ($isLargeScale -and $Module -eq "M13") {
+    Write-Host "  [INFO] Large / Enterprise scale detected: Growth Experiments Backlog is MANDATORY." -ForegroundColor Cyan
+    $gate.Required += "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"
+}
 if ($isEnterprise) {
     if ($Module -eq "M03") {
         Write-Host "  [INFO] Enterprise scale detected: Risk Assessment Matrix and RACI Matrix are MANDATORY in M03." -ForegroundColor Cyan
