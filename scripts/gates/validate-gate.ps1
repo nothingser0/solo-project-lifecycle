@@ -1048,6 +1048,40 @@ if ($Module -eq "M05" -and -not $isSmallScale) {
         }
     }
 }
+if ($Module -eq "M06") {
+    # Content verification for TODO.md
+    if (Test-Path "TODO.md") {
+        $todoContent = Get-Content "TODO.md" -Raw
+        $doneMatches = ([regex]::Matches($todoContent, '(?im)^\s*-\s*\[x\]')).Count
+        if ($doneMatches -ge 3) {
+            Write-Host "  [OK] Completed tasks verified in TODO.md ($doneMatches tasks marked '[x]')" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] TODO.md has insufficient completed tasks: found only $doneMatches marked '[x]' (minimum 3 completed tasks required)!" -ForegroundColor Red
+            $missingRequired += "TODO.md (>= 3 completed tasks marked '[x]')"
+        }
+    }
+    # Content verification for AGENTS.md
+    if (Test-Path "AGENTS.md") {
+        $agentsContent = Get-Content "AGENTS.md" -Raw
+        if ($agentsContent -match '(?i)typescript|strict|anti-slop|guidelines|verification|test|standards') {
+            Write-Host "  [OK] AGENTS.md technical quality and engineering guidelines verified" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] AGENTS.md missing technical guidelines / anti-slop engineering standards!" -ForegroundColor Red
+            $missingRequired += "AGENTS.md (technical guidelines / anti-slop)"
+        }
+    }
+    # Content verification for VERIFY_LOCAL.md
+    $verifyFile = if (Test-Path "VERIFY_LOCAL.md") { "VERIFY_LOCAL.md" } elseif (Test-Path "docs/VERIFY_LOCAL.md") { "docs/VERIFY_LOCAL.md" } elseif (Test-Path "docs/specs/VERIFY_LOCAL.md") { "docs/specs/VERIFY_LOCAL.md" } else { $null }
+    if ($verifyFile) {
+        $verifyContent = Get-Content $verifyFile -Raw
+        if ($verifyContent -match '(?i)LOCAL PASS|\[x\]\s*\*?PASS\*?|Exit code 0|Smoke Test PASS|All assertions passed') {
+            Write-Host "  [OK] VERIFY_LOCAL.md test execution proof verified (LOCAL PASS / assertions passed)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] VERIFY_LOCAL.md missing proof of test execution (requires 'LOCAL PASS', 'Exit code 0', or passing test assertions)!" -ForegroundColor Red
+            $missingRequired += "VERIFY_LOCAL.md (test execution proof: LOCAL PASS / assertions passed)"
+        }
+    }
+}
 if ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
     if ($reconFile) {

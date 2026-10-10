@@ -741,6 +741,29 @@ case "$GATE_MODULE" in
         check_required "AGENTS.md" "" 500
         check_required "CONTEXT.md" "" 500
         check_required "TODO.md" "" 500
+
+        # Content verification for TODO.md (BLOCKER: tasks must actually be completed)
+        if [ -f "TODO.md" ]; then
+            done_tasks=$(grep -cE "^\s*-\s*\[x\]" "TODO.md" 2>/dev/null || true)
+            done_tasks=$(echo "$done_tasks" | tr -d ' ')
+            if [ "${done_tasks:-0}" -ge 3 ]; then
+                echo "  ✅ Completed tasks verified in TODO.md ($done_tasks tasks marked '[x]')"
+            else
+                echo "  ❌ TODO.md has insufficient completed tasks: found only ${done_tasks:-0} marked '[x]' (minimum 3 completed tasks required)!"
+                GATE_FAILED=1
+            fi
+        fi
+
+        # Content verification for AGENTS.md (BLOCKER: quality / anti-slop guidelines)
+        if [ -f "AGENTS.md" ]; then
+            if grep -qiE "typescript|strict|anti-slop|guidelines|verification|test|standards" "AGENTS.md"; then
+                echo "  ✅ AGENTS.md technical quality and engineering guidelines verified"
+            else
+                echo "  ❌ AGENTS.md missing technical guidelines / anti-slop engineering standards!"
+                GATE_FAILED=1
+            fi
+        fi
+
         # Small scale absorbs M07 security (Opsi A): security checklist is part of M06 exit.
         if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
             echo "  [INFO] Small scale: SECURITY_CHECKLIST_SMALL.md absorbed into M06 (M07 folded)."
@@ -757,6 +780,16 @@ case "$GATE_MODULE" in
             if [ -f "$candidate" ]; then verify_path="$candidate"; break; fi
         done
         check_required "$verify_path" "" 500
+
+        # Content verification for VERIFY_LOCAL.md (BLOCKER: local test pass proof)
+        if [ -f "$verify_path" ]; then
+            if grep -qiE "LOCAL PASS|\[x\]\s*\*?PASS\*?|Exit code 0|Smoke Test PASS|All assertions passed" "$verify_path"; then
+                echo "  ✅ VERIFY_LOCAL.md test execution proof verified (LOCAL PASS / assertions passed)"
+            else
+                echo "  ❌ VERIFY_LOCAL.md missing proof of test execution (requires 'LOCAL PASS', 'Exit code 0', or passing test assertions)!"
+                GATE_FAILED=1
+            fi
+        fi
         check_optional "ARCHITECTURE.md"
         check_optional "CONVENTIONS.md"
         ;;
