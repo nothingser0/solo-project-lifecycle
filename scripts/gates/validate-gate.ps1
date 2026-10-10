@@ -1370,6 +1370,39 @@ if ($Module -eq "M12" -and -not $isSoloSaaS) {
         }
     }
 }
+if ($Module -eq "M13" -and -not $isM13Waived) {
+    $metricsTarget = if (Test-Path "docs/analytics/METRICS_BASELINE_REPORT.md") { "docs/analytics/METRICS_BASELINE_REPORT.md" } `
+                     elseif (Test-Path "docs/pm/METRICS_BASELINE_REPORT.md") { "docs/pm/METRICS_BASELINE_REPORT.md" } `
+                     else { $null }
+    if ($metricsTarget) {
+        $metricsContent = Get-Content $metricsTarget -Raw
+        # 1. Reject unresolved template placeholders [...]
+        if ($metricsContent -match '\[Product Name\]|\[Solo Developer Name\]|\[Start Date\]|\[number\]|\[X\]%|Rp \[amount\]') {
+            Write-Host "  [ERROR] $metricsTarget still contains unresolved template placeholders ([...])! Record actual baseline measurements." -ForegroundColor Red
+            $missingRequired += "$metricsTarget (unresolved template placeholders)"
+        }
+        # 2. Require core metrics baseline dimensions (Acquisition, Activation, Retention)
+        if (($metricsContent -match '(?i)Acquisition|Signups') -and ($metricsContent -match '(?i)Activation') -and ($metricsContent -match '(?i)Retention')) {
+            Write-Host "  [OK] Core metrics baseline dimensions verified (Acquisition, Activation, Retention)" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] $metricsTarget missing core metrics baseline pillars (Acquisition, Activation, Retention)!" -ForegroundColor Red
+            $missingRequired += "$metricsTarget (missing core metrics dimensions)"
+        }
+    }
+    if ($isLargeScale -and (Test-Path "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md")) {
+        $backlogContent = Get-Content "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" -Raw
+        if ($backlogContent -match '\[Product Name\]|\[YYYY-MM-DD\]|\[Feature Name\]|\[Brief description\]') {
+            Write-Host "  [ERROR] docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md still contains unresolved template placeholders ([...])!" -ForegroundColor Red
+            $missingRequired += "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md (unresolved template placeholders)"
+        }
+        if ($backlogContent -match '(?i)RICE\s*Score|Reach\s*×\s*Impact|RICE\s*Framework') {
+            Write-Host "  [OK] RICE scoring framework verified in Growth Experiments Backlog" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md missing RICE scoring framework!" -ForegroundColor Red
+            $missingRequired += "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md (missing RICE scoring)"
+        }
+    }
+}
 
 # Check optional files
 if ($gate.Optional.Count -gt 0) {

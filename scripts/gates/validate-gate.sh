@@ -1244,10 +1244,41 @@ case "$GATE_MODULE" in
             check_optional "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md"
         else
             check_required "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md"
+            # Content verification for METRICS_BASELINE_REPORT.md (BLOCKER)
+            metrics_target="docs/analytics/METRICS_BASELINE_REPORT.md"
+            [ -f "$metrics_target" ] || metrics_target="docs/pm/METRICS_BASELINE_REPORT.md"
+            if [ -f "$metrics_target" ]; then
+                metrics_content=$(cat "$metrics_target" 2>/dev/null || true)
+                # 1. Reject unresolved template placeholders [...]
+                if echo "$metrics_content" | grep -qE "\[Product Name\]|\[Solo Developer Name\]|\[Start Date\]|\[number\]|\[X\]%|Rp \[amount\]"; then
+                    echo "  ❌ $metrics_target still contains unresolved template placeholders ([...])! Record actual baseline measurements."
+                    GATE_FAILED=1
+                fi
+                # 2. Require core metrics baseline dimensions (Acquisition, Activation, Retention)
+                if echo "$metrics_content" | grep -qiE "Acquisition|Signups" && echo "$metrics_content" | grep -qiE "Activation" && echo "$metrics_content" | grep -qiE "Retention"; then
+                    echo "  ✅ Core metrics baseline dimensions verified (Acquisition, Activation, Retention)"
+                else
+                    echo "  ❌ $metrics_target missing core metrics baseline pillars (Acquisition, Activation, Retention)!"
+                    GATE_FAILED=1
+                fi
+            fi
             # For Large scale, RICE-scored growth experiment backlog is MANDATORY
             if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
                 echo "  [INFO] Large / Enterprise scale detected: Growth Experiments Backlog is MANDATORY."
                 check_required "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" "" 500
+                # Reject unresolved template placeholders in growth experiments backlog
+                if [ -f "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" ]; then
+                    if grep -qE "\[Product Name\]|\[YYYY-MM-DD\]|\[Feature Name\]|\[Brief description\]" "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"; then
+                        echo "  ❌ docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md still contains unresolved template placeholders ([...])!"
+                        GATE_FAILED=1
+                    fi
+                    if grep -qiE "RICE[[:space:]]*Score|Reach[[:space:]]*×[[:space:]]*Impact|RICE[[:space:]]*Framework" "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"; then
+                        echo "  ✅ RICE scoring framework verified in Growth Experiments Backlog"
+                    else
+                        echo "  ❌ docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md missing RICE scoring framework!"
+                        GATE_FAILED=1
+                    fi
+                fi
             else
                 check_optional "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"
             fi
