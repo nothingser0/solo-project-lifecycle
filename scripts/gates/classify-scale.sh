@@ -25,7 +25,7 @@ REASON="3-7 P0 features, isolated DB, best-effort SLA"
 
 P0_COUNT=0
 if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
-    P0_COUNT=$(grep -iE "\|.*(must|p0).*\|" "docs/pm/SCOPE_STATEMENT.md" | wc -l | tr -d ' ')
+    P0_COUNT=$(grep -iE "\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)" "docs/pm/SCOPE_STATEMENT.md" 2>/dev/null | wc -l | tr -d ' ')
 elif [ -f "PROJECT_LITE.md" ]; then
     P0_COUNT=$(grep -iE "^\s*-\s*Feature\s*[0-9]:" "PROJECT_LITE.md" | wc -l | tr -d ' ')
 fi

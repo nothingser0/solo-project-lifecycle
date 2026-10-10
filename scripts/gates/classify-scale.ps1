@@ -18,7 +18,7 @@ $reason = "3-7 P0 features, isolated DB, best-effort SLA"
 
 $p0Count = 0
 if (Test-Path "docs/pm/SCOPE_STATEMENT.md") {
-    $p0Count = (Select-String -Path "docs/pm/SCOPE_STATEMENT.md" -Pattern "\|.*(must|p0).*\|").Count
+    $p0Count = (Select-String -Path "docs/pm/SCOPE_STATEMENT.md" -Pattern '\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)').Count
 } elseif (Test-Path "PROJECT_LITE.md") {
     $p0Count = (Select-String -Path "PROJECT_LITE.md" -Pattern "^\s*-\s*Feature\s*[0-9]:").Count
 }
@@ -70,7 +70,7 @@ if ($tier -ge 3) {
     Write-Host ""
     Write-Host "   The skill STRICTLY PROHIBITS solo coding for Large/Enterprise scope." -ForegroundColor Red
     Write-Host "   Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY." -ForegroundColor Yellow
-    Write-Host "   Exit code: 2 (Non-solo capacity — route to A00-A04 Advisory)." -ForegroundColor Red
+    Write-Host "   Exit code: 2 (Non-solo capacity - route to A00-A04 Advisory)." -ForegroundColor Red
     exit 2
 }
 
