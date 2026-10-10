@@ -125,28 +125,52 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 ## Project scale
 
-**Classification by complexity** (drives module path):
+**Classification by Engineering Risk & Scope (High-Water Mark Rule)**:
+Scale classification is driven by **engineering risk profile and operational load**, NOT arbitrary currency/budget metrics.
 
-**Small / Fast-Track MVP (1–3 core flows / 3–7 Must-Have features, <4 weeks)**:
+### The 5 Engineering Dimensions:
+1. **P0 Must-Have Feature Count**: Scope boundary locked to Must-Have (P0) only (P1 Should-Have is excluded from scale calculation).
+2. **Blast Radius & Data Sensitivity**: Operational blast radius of bugs (cosmetic vs financial mutation vs health/regulated data).
+3. **Stakeholder & Approval Drag**: 1 solo founder vs 1 client PIC vs multi-tier corporate boards.
+4. **Target Availability & SLA**: Informal best-effort vs 99.0% vs 99.9% 24/7 uptime guarantee.
+5. **External Integrations & Webhooks**: Isolated DB vs asynchronous webhook settlement (Payment, logistics, banking).
+
+> ⚖️ **HIGH-WATER MARK RESOLUTION RULE (MANDATORY)**:
+> When dimensions diverge, **THE HIGHEST APPLICABLE TIER DETERMINES THE SCALE**.
+> Example: A project with only 3 P0 features (Small) that processes financial transactions with payment gateway webhooks (Medium/High blast radius) **MUST BE CLASSIFIED AS MEDIUM** and cannot bypass architecture or testing gates.
+
+---
+
+### 4 Scale Tiers:
+
+**Small / Fast-Track MVP**:
+- **Criteria**: 1–3 core flows, 3–7 P0 Must-Haves, isolated DB, low blast radius (no financial mutations/health data), 1 decision maker, best-effort availability, <4 weeks.
 - Path: M04 → M05 → M06 → M10 → M12 (5 core modules, skip 9 heavy modules)
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
 - Example: Landing page, portfolio site, simple CRUD app
 
-**Independent / Self-Initiated Product (SaaS, Desktop App, Open-Source Tool) (4–10 core features, 1-3 months)**:
+**Independent / Self-Initiated Product (Solo SaaS, Developer Tool)**:
+- **Criteria**: 8–15 P0 Must-Haves, subscription billing / payments, user data residency, 1 solo founder, 99.0% availability target, 1–3 months.
 - Path: **M00-lite** → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
 - Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` + Full PRD/FSD
 - Validates market/user demand via M00-lite, skips external client contract gates (M03, M11). Commercial model adapts to product (SaaS subscription, one-off download, or free open-source).
 - Example: Independent micro-SaaS, desktop tool (Tauri), open-source developer utility
 
-**Bespoke Freelance & Client Commercial (4–10 core features, 1-3 months)**:
+**Bespoke Freelance & Client Commercial (Agency / Mid-Tier)**:
+- **Criteria**: 8–15 P0 Must-Haves, external API/payment webhooks, fixed commercial contract with 1 Client Single PIC, 99.0% SLA, 1–3 months.
 - Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
 - Example: Custom bespoke business portal, e-commerce, internal company tool, academic software deliverable
 
-**Large Scale (>10 features / 16–25 Must-Have features, 3-6+ months)**:
+**Large Scale (Scale-Up / Multi-Tenant Platform)**:
+- **Criteria**: 16–25 P0 Must-Haves, legacy data migration (ETL), multi-tenant branch/role hierarchy, high financial/data blast radius, 99.5% SLA, 3–6 months.
 - Path: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13
 - All templates + compliance/scale docs
 - Example: Enterprise platform, multi-tenant SaaS, regulated industry apps
+
+**Enterprise Scale (Regulated / Mission-Critical)**:
+- **Criteria**: >25 P0 Must-Haves or statutory audit constraints (OJK/BI/SOC2/HIPAA), permanent audit trail, multi-stakeholder governance boards, 99.9% uptime SLA, 6–12+ months.
+- Path: Full M00 → M13 + Enterprise governance extensions (M02 RACI, M05 ADR/Audit Trail, M10 CAB approval).
 
 ---
 

@@ -100,10 +100,10 @@ Before proceeding with problem filtering, the agent **MUST** map the raw idea to
    - Identify if the system is a composite archetype (e.g., *POS + IMS* or *CRM + Invoicing Engine*).
 2. **Catalog Variation & Complexity Benchmark**:
    - Cross-reference with **`references/taxonomy/PROJECT_CATALOG_1000.md`** across the 4 verified implementation scales:
-     - **Small Scale (1–2 weeks)**: Focused utility, single-user/team, lightweight CRUD, minimal third-party dependencies (Catalog #1–250).
-     - **Medium Scale (3–6 weeks)**: Multi-role, external API integration (payment gateway, notification, map), business logic specific (Catalog #251–500).
-     - **Large Scale (8–12 weeks)**: Modular architecture, complex state/data sync, multi-tenant/multi-tier roles, statutory compliance (Catalog #501–750).
-     - **Enterprise Scale (3–6+ months)**: High-availability, mission-critical, multi-service, rigorous regulatory compliance (ISO/OJK/HIPAA/PDP), legacy integrations (Catalog #751–1000).
+     - **Small Scale (<4 weeks)**: Focused utility, 3–7 P0 Must-Haves, single-user/team, lightweight CRUD, isolated DB, low blast radius (Catalog #1–250).
+     - **Medium Scale (1–3 months)**: Multi-role RBAC, 8–15 P0 Must-Haves, external API/webhook integration (payment gateway, notifications), business logic specific (Catalog #251–500).
+     - **Large Scale (3–6 months)**: 16–25 P0 Must-Haves, modular architecture, legacy data migration (ETL), multi-tenant branch hierarchy, high blast radius (Catalog #501–750).
+     - **Enterprise Scale (6–12+ months)**: >25 P0 Must-Haves, high-availability (99.9% SLA), mission-critical audit trails, rigorous statutory compliance (ISO/OJK/HIPAA), legacy integrations (Catalog #751–1000).
 3. **Output in `IDEA_BRIEF.md` Header**:
    ```markdown
    - **Industry Archetype**: [Acronym] - [Full Archetype Name] (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)
@@ -359,22 +359,26 @@ Feasibility is not a one-time gate. The Idea Brief **MUST** define concrete metr
 
 ### Step 5: Scale Classification & Module Routing
 
-Determine project category upfront to establish the required weight of subsequent document formalities:
+Determine project category upfront using the **High-Water Mark Rule** across 5 Engineering Dimensions (P0 Count, Blast Radius, Stakeholders, SLA, External Integrations):
+
+> ⚖️ **HIGH-WATER MARK RESOLUTION RULE (MANDATORY)**:
+> Scope counting is strictly restricted to **Must-Have (P0) features only** (P1 Should-Have is excluded from scale calculation).
+> If any single engineering dimension reaches a higher tier (e.g., 3 P0 features but processes financial mutations with payment webhooks), **THE HIGHEST APPLICABLE TIER DETERMINES THE SCALE**.
 
 1. **Small Scale (MVP / Freelance Tool)**:
-   - *Indicators*: Single user or small team, 1–3 core features, timeline 2-4 weeks, no complex external integrations.
+   - *Engineering Indicators*: 3–7 P0 Must-Have features, 1–3 core user flows, isolated DB, zero financial/health blast radius, 1 decision maker, best-effort SLA, timeline <4 weeks.
    - *Next Steps*: Single-file specification via `PROJECT_LITE_TEMPLATE.md`, skips heavy specification overhead.
 2. **Solo SaaS (Self-Initiated Product)**:
-   - *Indicators*: Independent founder, 4–10 features, recurring billing, RBAC, timeline 1-3 months.
+   - *Engineering Indicators*: 8–15 P0 Must-Have features, subscription billing / payment webhooks, user data residency, 1 solo founder, 99.0% SLA target, timeline 1-3 months.
    - *Next Steps*: Mandatory market validation via `M00_LITE_TEMPLATE.md` prior to M01. Skips client-specific contract gates (M03 SOW, M11 BAST).
 3. **Medium Scale (Client Commercial Project)**:
-   - *Indicators*: Paid client engagement, 4–10 features, multi-tenant, fixed price / milestones, timeline 2-4 months.
+   - *Engineering Indicators*: 8–15 P0 Must-Have features, external API/payment webhooks, fixed commercial contract with 1 Client Single PIC, 99.0% SLA target, timeline 1-3 months.
    - *Next Steps*: Mandatory SOW contract + down payment gate (M03), client UAT (M09), and BAST handover (M11).
 4. **Large Scale (Scale-Up / Distributed Platform)**:
-   - *Indicators*: High transaction volume, legacy data migration, enterprise integrations, timeline 4-6+ months.
+   - *Engineering Indicators*: 16–25 P0 Must-Have features, high transaction volume, legacy data migration (M08), multi-tenant branch/role hierarchy, 99.5% SLA, timeline 3-6 months.
    - *Next Steps*: Mandatory full PRD, detailed FSD, data migration planning (M08), and disaster recovery specifications.
 5. **Enterprise / Industrial Scale (Corporate, Banking, State-Owned Enterprises)**:
-   - *Indicators*: Strict regulatory compliance (PDP Law, ISO 27001, SOC2), multiple client internal stakeholders, permanent audit trails, 99.9% uptime SLA, timeline 12-24 months.
+   - *Engineering Indicators*: >25 P0 Must-Have features or statutory audit constraints (OJK, BI, SOC2, HIPAA), multiple client internal governance stakeholders, permanent audit trails, 99.9% uptime SLA, timeline 6-12+ months.
    - *Next Steps*: Mandatory formal legal sign-off, signed Project Charter, bound Single PIC, comprehensive FSD, and RTM.
 
 **Module Routing**: After scale classification, refer to `references/playbooks/SCALE_WORKFLOWS.md` for:

@@ -4,16 +4,28 @@
 
 ---
 
-## 📊 Scale Classification (from M01)
+## 📊 Scale Classification (Engineering Risk & High-Water Mark)
 
-| Scale | Budget Range | Timeline | Team Size | Module Path |
-|:------|:-------------|:---------|:----------|:------------|
-| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 10 modules (M01 → M11 + M07-LITE, skip M00/M08/M12/M13) |
-| **Menengah (Agency)** | Rp 50-200M | 3-6 bulan | 3-6 orang | 10 modules (M01 + skip M00/M08/M12/M13) |
-| **Besar (Vendor)** | Rp 200-500M | 6-12 bulan | 6-12 orang | 12 modules (M01 + skip M00/M13) |
-| **Enterprise** | >Rp 500M | 12-24 bulan | 12+ orang | 14 modules (full M00-M13) |
+> ⚖️ **HIGH-WATER MARK RULE**: When dimensions diverge, **THE HIGHEST APPLICABLE TIER DETERMINES THE SCALE**.
+> P0 Must-Have features are counted exclusively (P1 Should-Have excluded). Any high blast radius or webhook requirement escalates the tier.
 
-**Note**: For Small/Medium/Large scales, M01 executes first to determine scale classification. For Enterprise scale, M00 (Product Discovery) executes before M01.
+| Scale | P0 Must-Have Features | Blast Radius & Data | External Integrations | SLA & Uptime | Governance / Team | Timeline |
+|:------|:----------------------|:--------------------|:----------------------|:-------------|:------------------|:---------|
+| **Kecil (Fast-Track MVP)** | **3–7 P0** | Rendah (tidak ada mutasi finansial/rekam medis) | DB terisolasi (tanpa webhook eksternal) | Best-effort | 1 founder / dev | <4 minggu |
+| **Menengah (Solo SaaS / Agency)** | **8–15 P0** | Sedang (transaksi langganan, billing pengguna) | Webhook Payment Gateway / SMS / Mailer | 99.0% SLA | 1 founder atau 1 Client PIC | 1–3 bulan |
+| **Besar (Platform / Scaled)** | **16–25 P0** | Tinggi (multi-cabang, mutasi finansial massal) | Integrasi multi-vendor, ETL migrasi DB | 99.5% SLA | Tim vendor / multi-divisi | 3–6 bulan |
+| **Enterprise (Mission-Critical)** | **>25 P0** | Kritis (perbankan, kesehatan, regulasi ketat) | Core banking, ERP legacy, SSO/SAML | 99.9% 24/7 SLA | Multi-stakeholder, CAB, audit berkala | 6–12+ bulan |
+
+---
+
+### Module Path by Scale:
+- **Kecil (Fast-Track MVP)**: `M04 → M05 → M06 → M10 → M12` (5 modul; M01 via `PROJECT_LITE.md`)
+- **Solo SaaS (Self-Initiated)**: `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13` (10 modul, skip gate klien M03/M11)
+- **Menengah (Client Commercial)**: `M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 → M12` (10 modul + gate legal)
+- **Besar (Platform)**: `M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13` (12 modul + M08 migrasi data)
+- **Enterprise**: Full `M00 → M13` (14 modul tanpa skip + ekstensi tata kelola RACI, ADR, CAB)
+
+---
 
 ---
 
