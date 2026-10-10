@@ -1,20 +1,22 @@
-# build-clean-release.ps1 - Build a clean release branch (Model B: squash merge)
+# build-clean-release.ps1 - Build a clean release (Model B: release-branch squash)
 # Usage:
-#   .\scripts\release\build-clean-release.ps1 -Version v1.0.1 [-Base dev] [-Target main]
+#   .\scripts\release\build-clean-release.ps1 -Version v1.0.1 [-Base dev] [-Target main] [-KeepBranch]
 #
-# What it does (Model B, squash merge, PR-friendly):
-#   1. Creates release/<version> branch from the base branch.
-#   2. Squash-merges it into the target branch (default: main) WITHOUT committing.
-#   3. Removes every path listed in scripts/release/release-exclude.txt from the index.
-#   4. Commits a single clean release commit.
-#   5. Verifies no excluded path remains tracked; aborts if any leaked.
-#   6. Prints the PR/push commands. Never pushes automatically.
+# Workflow (produces a main branch whose history contains ONLY code changes,
+# never any `git rm` of harness/docs):
+#   1. Create release/<version> from the dev base branch.
+#   2. Strip every path in release-exclude.txt ON THE RELEASE BRANCH (own commit).
+#   3. Squash-merge the release branch into the target branch (main) and commit.
+#   4. Verify the target tree tracks none of the excluded paths; abort if any leaked.
+#   5. Delete the release branch (unless -KeepBranch) and print push/tag steps.
+# Never pushes automatically.
 
 param(
     [Parameter(Mandatory = $true)]
     [string]$Version,
     [string]$Base = "dev",
-    [string]$Target = "main"
+    [string]$Target = "main",
+    [switch]$KeepBranch
 )
 
 $ErrorActionPreference = "Stop"
@@ -47,8 +49,14 @@ if ((git status --porcelain)) {
     exit 1
 }
 
+# Read exclusion list into an array up front (paths may be removed mid-run).
+$excludes = Get-Content $ExcludeFile |
+    Where-Object { $_ -and ($_ -notmatch '^\s*#') } |
+    ForEach-Object { $_.Trim() } |
+    Where-Object { $_ -ne "" }
+
 $ReleaseBranch = "release/$Version"
-Write-Host "=== Building clean release $Version (squash model) ===" -ForegroundColor Cyan
+Write-Host "=== Building clean release $Version (release-branch squash) ===" -ForegroundColor Cyan
 Write-Host "Base branch   : $Base"
 Write-Host "Target branch : $Target"
 Write-Host "Exclude list  : $ExcludeFile"
@@ -58,33 +66,28 @@ Write-Host "-----------------------------------------------------------"
 git checkout $Base
 git checkout -B $ReleaseBranch
 
-# 2. Squash-merge into target (no commit yet)
-git checkout $Target
-# --allow-unrelated-histories: tolerate a target branch that started as an orphan
-# (e.g. a clean 1-commit main with no shared ancestry with the dev base).
-git merge --squash --allow-unrelated-histories $ReleaseBranch
-
-# Parse exclusion list (skip blanks/comments)
-$excludes = Get-Content $ExcludeFile |
-    Where-Object { $_ -and ($_ -notmatch '^\s*#') } |
-    ForEach-Object { $_.Trim() } |
-    Where-Object { $_ -ne "" }
-
-# 3. Strip excluded paths from the index
+# 2. Strip excluded paths ON THE RELEASE BRANCH (so the target history stays clean)
 $stripped = 0
 foreach ($path in $excludes) {
     if (Test-Tracked $path) {
-        git rm -r --cached --quiet $path
-        Write-Host "  removed: $path"
+        git rm -r --quiet $path
+        Write-Host "  stripped: $path"
         $stripped++
     }
 }
-Write-Host "  stripped $stripped path(s) from index"
+Write-Host "  stripped $stripped path(s) on $ReleaseBranch"
 
-# 4. Commit single clean release commit
+if ($stripped -gt 0) {
+    git commit -m "chore(release): strip dev-only artifacts for $Version"
+}
+
+# 3. Squash-merge into target and commit one release commit
+git checkout $Target
+# --allow-unrelated-histories: tolerate an orphan target (clean 1-commit main).
+git merge --squash --allow-unrelated-histories $ReleaseBranch
 git commit -m "release: $Version"
 
-# 5. Verify nothing excluded leaked into the commit
+# 4. Verify target tracks none of the excluded paths
 $leaked = 0
 foreach ($path in $excludes) {
     if (Test-Tracked $path) {
@@ -94,8 +97,14 @@ foreach ($path in $excludes) {
 }
 
 if ($leaked -gt 0) {
-    Write-Host "[ERROR] Release aborted: $leaked excluded path(s) leaked." -ForegroundColor Red
+    Write-Host "[ERROR] Release aborted: $leaked excluded path(s) leaked onto $Target." -ForegroundColor Red
     exit 1
+}
+
+# 5. Delete release branch (unless requested to keep it)
+if (-not $KeepBranch) {
+    git branch -D $ReleaseBranch | Out-Null
+    Write-Host "  deleted branch $ReleaseBranch"
 }
 
 $short = git rev-parse --short HEAD
@@ -104,5 +113,9 @@ Write-Host "[OK] Clean release commit created on '$Target' ($short)" -Foreground
 Write-Host ""
 Write-Host "Next steps (run manually):"
 Write-Host "  git push origin $Target"
-Write-Host "  git push origin $ReleaseBranch"
-Write-Host "  # Optional PR: open PR from $ReleaseBranch into $Target"
+Write-Host "  git tag -a $Version -m `"Release $Version`""
+Write-Host "  git push origin $Version"
+if ($KeepBranch) {
+    Write-Host "  git push origin $ReleaseBranch"
+    Write-Host "  # Open PR: $ReleaseBranch -> $Target"
+}
