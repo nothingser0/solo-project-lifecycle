@@ -1,0 +1,29 @@
+# Files and folders that are AI/development-only and MUST be excluded from release branches.
+# One path per line. Blank lines and lines starting with '#' are ignored.
+# Used by scripts/release/build-clean-release.sh and .ps1
+
+# --- AI Agent Harness (root) ---
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.cursorrules
+.windsurfrules
+CONTEXT.md
+ARCHITECTURE.md
+CONVENTIONS.md
+TODO.md
+VERIFY_LOCAL.md
+RUNBOOK_LOCAL.md
+LEARNINGS.md
+
+# --- Staging & internal process documents ---
+docs/harness-root/
+docs/pm/
+docs/qa/
+
+# --- Scratch / process artifacts ---
+*.scratch.*
+rejected-rows.csv
+
+# --- Release tooling (dev-only, not a client deliverable) ---
+scripts/release/
