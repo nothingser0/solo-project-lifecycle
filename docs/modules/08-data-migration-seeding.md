@@ -104,13 +104,19 @@ Write a standalone execution script (e.g., `scripts/runtime/migrate-data.ts` or 
 
 ## 4. Adaptation by Project Scale
 
-| Data Migration Aspect | Small Scale (MVP / Freelance) | Medium Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
-| :--- | :--- | :--- | :--- |
-| **Data Volume** | < 1,000 rows of data | 1,000 – 100,000 rows of data | > 100,000 rows of data / Multi-database |
-| **Source Format** | Single Excel file / CSV | Multiple Excel files + legacy MySQL database | Oracle/SAP database, legacy API, distributed data |
-| **Execution Method** | Simple one-off TypeScript script | Structured ETL script with batching & logging | Modular ETL pipeline, tiered rollback plan |
-| **Staging PII Sanitization** | Replace with generic names & emails | Automated masking script for NIK & phone | Data Anonymization Engine per ISO/PDP audit |
-| **Sign-Off Formality** | Written confirmation via chat/email | Signed `RECONCILIATION_REPORT.md` sheet | Official notarized/stamped Data Migration Minutes (BAST) |
+| Data Migration Aspect | 🔵 Small Scale (Fast-Track MVP) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (Legacy Data Migration) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **M08 Status** | **M08 DI-SKIP / WAIVED** (Hanya data seeding awal) | **Kondisional** (Wajib jika ada data legacy klien) | **Wajib Penuh** (`DATA_MIGRATION_PLAN.md` & Rekonsiliasi) | **Dialihkan ke Seri A (Fase A02 Data Governance)** |
+| **Data Volume** | Zero legacy data (hanya dummy seed) | 1,000 – 100,000 baris data dari klien | > 100,000 baris data / database warisan | Database ERP korporat (dikelola data engineer klien) |
+| **Source Format** | N/A (kode seeder aplikasi) | Spreadsheet Excel / CSV terstruktur | Database relasional lama, dump SQL, multi-tabel | Sistem core legacy / data warehouse terdistribusi |
+| **Execution Method** | `prisma db seed` / `npm run seed` | Script ETL terstruktur dengan batching & logging | Pipeline ETL modular dengan dry-run & skema rollback | Data Migration Governance & Framework Rekonsiliasi |
+| **PII Sanitization** | N/A (data sintetis murni) | Script masking otomatis untuk NIK, no HP, & email | Engine anonimisasi data kepatuhan UU PDP No. 27/2022 | Audit privasi data korporat & kontrak pemrosesan data |
+| **Sign-Off Dokumen** | Di-waive | Lembar `MIGRATION_RECONCILIATION_REPORT.md` ditandatangani | Berita Acara Rekonsiliasi Data Resmi (BAST Data) | Rekomendasi audit migrasi & tanda tangan komite data |
+
+> ⚠️ **LEGACY DATA & PDP LAW GUARDRAILS**:
+> 1. **Legacy Data Escalation Rule**: Proyek skala kecil tidak menangani migrasi data warisan klien. Jika klien membawa basis data legacy, proyek **otomatis naik kelas (High-Water Mark) ke Skala Besar** (`SKILL.md:156`).
+> 2. **UU PDP Staging Prohibition**: Database dump produksi klien ber-PII **DILARANG KERAS di-restore langsung ke lingkungan Staging atau Lokal** tanpa proses masking/anonymization terlebih dahulu (UU PDP No. 27/2022 Pasal 35).
+> 3. **Enterprise Non-Solo Capacity**: Solo developer dilarang melakukan migrasi sistem enterprise mandiri. Proyek enterprise dialihkan ke **Seri A Advisory (Fase A02 Data Architecture & Governance)**.
 
 ---
 

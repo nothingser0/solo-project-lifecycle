@@ -539,6 +539,16 @@ case "$GATE_MODULE" in
         ;;
     M08)
         echo "=== M08: Data Migration & Seeding Gate Checklist ==="
+        # Automatic waiver for Small Scale (legacy data triggers re-classification to Large per SKILL.md)
+        is_m08_waived=0
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small Scale detected: M08 Data Migration is WAIVED (Legacy data triggers re-classification to Large)."
+            is_m08_waived=1
+        fi
+
+        if [ $is_m08_waived -eq 1 ]; then
+            check_optional "docs/pm/DATA_MIGRATION_PLAN.md"
+        else
         check_required "docs/pm/DATA_MIGRATION_PLAN.md" "" 1000
         # For Large/Enterprise scale, reconciliation report is MANDATORY (zero-discrepancy audit)
         if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
@@ -555,6 +565,7 @@ case "$GATE_MODULE" in
             fi
         else
             echo "  [INFO] Data migration plan verified. Run reconciliation after seeding."
+        fi
         fi
         echo ""
         ;;

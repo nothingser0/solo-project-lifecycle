@@ -220,9 +220,17 @@ if ($Module -eq "M07" -and $isSmallScale) {
     Write-Host "  [INFO] Small Scale detected: M07 QA & SIT is WAIVED (Security absorbed in M06, UAT in M09-LITE)." -ForegroundColor Cyan
     $gate.Required = @()
 }
+if ($Module -eq "M08" -and $isSmallScale) {
+    Write-Host "  [INFO] Small Scale detected: M08 Data Migration is WAIVED (Legacy data triggers re-classification to Large)." -ForegroundColor Cyan
+    $gate.Required = @()
+}
 if ($isLargeScale -and $Module -eq "M07" -and -not $isSmallScale) {
     Write-Host "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/qa/SECURITY_AUDIT.md"
+}
+if ($isLargeScale -and $Module -eq "M08") {
+    Write-Host "  [INFO] Large/Enterprise scale detected: Reconciliation Report is MANDATORY." -ForegroundColor Cyan
+    $gate.Required += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
 }
 if ($isEnterprise) {
     if ($Module -eq "M03") {
@@ -689,9 +697,6 @@ if ($Module -eq "M00") {
             Write-Host "  [OK] docs/design/inspiration/notes.md (Benchmark selection verified)" -ForegroundColor Green
         }
     }
-} elseif ($isLargeScale -and $Module -eq "M08") {
-    Write-Host "  [INFO] Large/Enterprise scale detected: Reconciliation Report is MANDATORY." -ForegroundColor Cyan
-    $gate.Required += "docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
 }
 if ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }
