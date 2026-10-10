@@ -206,27 +206,73 @@ case "$GATE_MODULE" in
             check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md"
         fi
         if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
-            # 1. Ambiguity detection on Must-Have rows
-            if grep -iE "\|.*(must|p0).*\|" "docs/pm/SCOPE_STATEMENT.md" | grep -qiE "TBD|maybe|if time permits|tentative|TBA"; then
+            scope="docs/pm/SCOPE_STATEMENT.md"
+
+            # 1. Reject unresolved template placeholders [...]
+            if grep -q "\[\.\.\.\]\|\[Feature [0-9]\|\[Application / System Name\]" "$scope"; then
+                echo "  ❌ Unresolved template placeholders [...] detected in SCOPE_STATEMENT.md!"
+                GATE_FAILED=1
+            fi
+
+            # 2. Ambiguity detection on Must-Have rows
+            if grep -iE "\|.*(must|p0).*\|" "$scope" | grep -qiE "TBD|maybe|if time permits|tentative|TBA"; then
                 echo "  ❌ Ambiguous terms (TBD/maybe/if time permits) detected in Must-Have scope rows!"
                 GATE_FAILED=1
             else
                 echo "  ✅ Zero ambiguous terms in Must-Have scope rows"
             fi
 
-            # 2. Confidence Legend check
-            if grep -q "✅" "docs/pm/SCOPE_STATEMENT.md" || grep -q "VERIFIED" "docs/pm/SCOPE_STATEMENT.md"; then
-                echo "  ✅ Data Confidence Legend / status markers present"
+            # 3. P0 feature count within scale limits (mechanical)
+            p0_count=$(grep -icE "\|.*(must|p0).*\|" "$scope" || true)
+            declared_scale=$(grep -iE "^\s*-?\s*Scale:" docs/pm/PROJECT_STATE.md 2>/dev/null | head -1 | grep -oiE "small|medium|large|enterprise|solo-saas" | head -1)
+            case "$declared_scale" in
+                small)      lo=3; hi=7 ;;
+                medium|solo-saas) lo=8; hi=15 ;;
+                large)      lo=16; hi=25 ;;
+                *)          lo=3; hi=25 ;;
+            esac
+            echo "  [INFO] Declared scale: ${declared_scale:-unknown}; P0 rows counted: $p0_count (expected $lo-$hi)"
+            if [ "$p0_count" -lt "$lo" ] || [ "$p0_count" -gt "$hi" ]; then
+                echo "  ❌ P0 Must-Have count ($p0_count) outside scale '$declared_scale' limits ($lo-$hi). Prune scope or re-classify scale."
+                GATE_FAILED=1
             else
-                echo "  ⚠️  Data Confidence Legend [✅ / 🔶 / ❓] not explicitly declared"
+                echo "  ✅ P0 Must-Have count within scale limits"
             fi
 
-            # 3. Out-of-Scope exclusions check
-            if grep -qi "out-of-scope" "docs/pm/SCOPE_STATEMENT.md"; then
-                echo "  ✅ Explicit Out-of-Scope boundaries defined"
+            # 4. Confidence Legend check (BLOCKER)
+            if grep -q "✅" "$scope" || grep -qi "VERIFIED" "$scope"; then
+                echo "  ✅ Data Confidence Legend / status markers present"
             else
-                echo "  ⚠️  Out-of-Scope boundary section missing"
+                echo "  ❌ Data Confidence Legend [✅ / 🔶 / ❓] not declared!"
+                GATE_FAILED=1
             fi
+
+            # 5. Out-of-Scope exclusions check (BLOCKER, require >= 3 concrete items)
+            if grep -qi "out-of-scope" "$scope"; then
+                oos_count=$(grep -cE "^\s*[0-9]+\.\s" "$scope" || true)
+                if [ "${oos_count:-0}" -ge 3 ]; then
+                    echo "  ✅ Explicit Out-of-Scope boundaries defined ($oos_count numbered exclusions)"
+                else
+                    echo "  ❌ Out-of-Scope section requires >= 3 explicit numbered exclusions (found: ${oos_count:-0})"
+                    GATE_FAILED=1
+                fi
+            else
+                echo "  ❌ Out-of-Scope boundary section missing!"
+                GATE_FAILED=1
+            fi
+
+            # 6. RBAC Zero Self-Approval guardrail
+            if grep -qiE "zero self-approval|no self-approval" "$scope"; then
+                echo "  ✅ RBAC Zero Self-Approval guardrail present"
+            else
+                echo "  ⚠️  RBAC Zero Self-Approval guardrail not explicitly stated"
+            fi
+        fi
+        # 7. Company/team projects require STAKEHOLDER_MAP, COMMUNICATION_PLAN, RACI
+        if grep -qiE "Delivery:\s*(client|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Company/client delivery: Stakeholder & Communication docs MANDATORY."
+            check_required "docs/pm/STAKEHOLDER_MAP.md" "" 500
+            check_required "docs/pm/COMMUNICATION_PLAN.md" "" 500
         fi
         ;;
     M03)

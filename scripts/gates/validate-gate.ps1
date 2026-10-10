@@ -454,18 +454,85 @@ if ($Module -eq "M00") {
     if (Test-Path "docs/pm/SCOPE_STATEMENT.md") {
         $scopeContent = Get-Content "docs/pm/SCOPE_STATEMENT.md" -Raw
         $scopeLines = Get-Content "docs/pm/SCOPE_STATEMENT.md"
+
+        # 1. Reject placeholders
+        if ($scopeContent -match '\[\.\.\.\]|\[Feature [0-9]|\[Application / System Name\]') {
+            Write-Host "  [ERROR] Unresolved template placeholders [...] detected in SCOPE_STATEMENT.md!" -ForegroundColor Red
+            $missingRequired += "Unresolved template placeholders [...]"
+        }
+
+        # 2. Ambiguity on Must-Have rows
         $mustLines = $scopeLines | Where-Object { $_ -match '\|.*(must|p0).*\|' }
         $hasAmbiguity = $mustLines | Where-Object { $_ -match 'TBD|maybe|if time permits|tentative|TBA' }
         if ($hasAmbiguity) {
-            Write-Host "  [ERROR] Ambiguous terms (TBD/maybe/if time permits) detected in Must-Have rows!" -ForegroundColor Red
+            Write-Host "  [ERROR] Ambiguous terms detected in Must-Have rows!" -ForegroundColor Red
+            $missingRequired += "Ambiguous terms in Must-Have rows"
         } else {
             Write-Host "  [OK] Zero ambiguous terms in Must-Have scope rows" -ForegroundColor Green
         }
-        if ($scopeContent -match '✅' -or $scopeContent -match 'VERIFIED') {
-            Write-Host "  [OK] Data Confidence Legend / status markers present" -ForegroundColor Green
+
+        # 3. P0 count within scale limits
+        $p0Count = $mustLines.Count
+        $declaredScale = ""
+        if (Test-Path "docs/pm/PROJECT_STATE.md") {
+            $stateRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+            if ($stateRaw -match "(?im)^\s*-?\s*Scale:\s*(\S+)") { $declaredScale = $Matches[1].ToLower() }
         }
-        if ($scopeContent -match 'out-of-scope') {
-            Write-Host "  [OK] Explicit Out-of-Scope boundaries defined" -ForegroundColor Green
+        $lo = 3; $hi = 25
+        switch -Regex ($declaredScale) {
+            '^small$' { $lo = 3; $hi = 7 }
+            '^(medium|solo-saas)$' { $lo = 8; $hi = 15 }
+            '^large$' { $lo = 16; $hi = 25 }
+        }
+        Write-Host "  [INFO] Declared scale: $declaredScale; P0 rows counted: $p0Count (expected $lo-$hi)"
+        if ($p0Count -lt $lo -or $p0Count -gt $hi) {
+            Write-Host "  [ERROR] P0 Must-Have count ($p0Count) outside scale '$declaredScale' limits ($lo-$hi)." -ForegroundColor Red
+            $missingRequired += "P0 count within scale limits"
+        } else {
+            Write-Host "  [OK] P0 Must-Have count within scale limits" -ForegroundColor Green
+        }
+
+        # 4. Confidence Legend (BLOCKER)
+        if ($scopeContent -match '✅' -or $scopeContent -match '(?i)VERIFIED') {
+            Write-Host "  [OK] Data Confidence Legend / status markers present" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] Data Confidence Legend [OK/ASSUMPTION/UNKNOWN] not declared!" -ForegroundColor Red
+            $missingRequired += "Data Confidence Legend"
+        }
+
+        # 5. Out-of-Scope exclusions (BLOCKER, >= 3)
+        if ($scopeContent -match '(?i)out-of-scope') {
+            $oosCount = ([regex]::Matches($scopeContent, '(?m)^\s*[0-9]+\.\s')).Count
+            if ($oosCount -ge 3) {
+                Write-Host "  [OK] Explicit Out-of-Scope boundaries defined ($oosCount exclusions)" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Out-of-Scope section requires >= 3 explicit exclusions (found: $oosCount)" -ForegroundColor Red
+                $missingRequired += "Out-of-Scope >= 3 exclusions"
+            }
+        } else {
+            Write-Host "  [ERROR] Out-of-Scope boundary section missing!" -ForegroundColor Red
+            $missingRequired += "Out-of-Scope section"
+        }
+
+        # 6. RBAC Zero Self-Approval guardrail
+        if ($scopeContent -match '(?i)zero self-approval|no self-approval') {
+            Write-Host "  [OK] RBAC Zero Self-Approval guardrail present" -ForegroundColor Green
+        } else {
+            Write-Host "  [WARN] RBAC Zero Self-Approval guardrail not explicitly stated" -ForegroundColor Yellow
+        }
+    }
+    if (Test-Path "docs/pm/PROJECT_STATE.md") {
+        $stRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+        if ($stRaw -match "(?i)Delivery:\s*(client|internal)") {
+            Write-Host "  [INFO] Company/client delivery: Stakeholder & Communication docs MANDATORY." -ForegroundColor Cyan
+            foreach ($req in @("docs/pm/STAKEHOLDER_MAP.md", "docs/pm/COMMUNICATION_PLAN.md")) {
+                if (Test-Path $req) {
+                    Write-Host "  [OK] $req" -ForegroundColor Green
+                } else {
+                    Write-Host "  [ERROR] $req (MISSING)" -ForegroundColor Red
+                    $missingRequired += $req
+                }
+            }
         }
     }
 } elseif ($Module -eq "M03") {
