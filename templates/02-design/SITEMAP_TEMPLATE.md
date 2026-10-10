@@ -22,7 +22,7 @@ Navigation depth: [X levels]
 
 | Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
 |:------|:----------|:----------|:--------|:---------------|:--------:|
-| `/` | Landing Page | SCR-01 | Homepage, value prop, CTA | Marketing (Header + Footer) | P0 |
+| `/` | Landing Page | SCR-01 | Homepage, value prop, CTA | Marketing Full OR Minimalist One-Page | P0 |
 | `/about` | About | SCR-02 | Company info | Marketing (Header + Footer) | P2 |
 | `/pricing` | Pricing | SCR-03 | Plans & pricing table | Marketing (Header + Footer) | P0 |
 | `/features` | Features | SCR-04 | Feature showcase | Marketing (Header + Footer) | P1 |
@@ -152,10 +152,12 @@ Navigation depth: [X levels]
 
 | Shell ID | Shell Name | Visible Components | Target Routes |
 | :--- | :--- | :--- | :--- |
+| **SHELL-MIN-LAND** | Minimalist One-Page | Hero Section + Floating/Compact CTA + Micro Footer (No multi-page links, single scroll) | Single-purpose utility `/`, tool waitlist, early micro-SaaS |
 | **SHELL-MKT** | Marketing Shell | Full Header + Full Footer | `/`, `/about`, `/pricing`, `/features`, `/contact` |
 | **SHELL-AUTH** | Standalone Auth | Centered Card + Minimal Logo (Zero Navbar, Zero Links, Zero Footer) | `/login`, `/register`, `/forgot-password`, `/reset-password` |
 | **SHELL-APP** | Application Dashboard | App Topbar + Collapsible Sidebar + Help Badge (Zero Public Marketing Navbar/Footer) | `/dashboard`, `/[resource]`, `/billing`, `/admin/*` |
 | **SHELL-OPS** | Fullscreen Terminal | High-density Header only (Zero Sidebar, Zero Marketing Navbar/Footer) | `/ops/workspace` (POS/Terminal) |
+| **SHELL-PRINT** | Clean Print Document | Raw Printable Canvas (Zero Header, Zero Footer, Zero Navigation, White BG) | `/invoices/:id/print`, `/receipts/:id/print` |
 | **SHELL-ERR** | Minimal Error | Centered Illustration + Primary Return Button | `/404`, `/403`, `/500`, `/maintenance` |
 
 ### Header (Marketing Shell — `/`, `/pricing`, dll.)
