@@ -102,21 +102,22 @@ Offer 3 package tiers:
    - All facilities of the Bronze Package.
    - Allocation of **15 Working hours / month** for minor feature additions, UI adjustments, or report format changes.
    - Responsive SLA response time < 4 hours on business days.
-3. **Gold Package (Enterprise SLA & Full Priority)**:
+3. **Gold Package (High-Priority Business SLA)**:
    - All facilities of the Silver Package.
-   - Allocation of **30 Working hours / month** for continuous development.
-   - On-call emergency weekend support (*On-Call Support*) if the system encounters a critical failure (*Severity 1*).
+   - Allocation of **20–30 Working hours / month** for scheduled maintenance and priority enhancements.
+   - Expedited business hours response (<2 hours for Severity 1 incidents during Monday–Friday 09:00–17:00 WIB).
+   - *Solo Dev Anti-Burnout Note*: Solo developers MUST NOT commit to 24/7/365 emergency weekend on-call without a rotating support team.
 
 ---
 
 ## 4. Adaptation by Project Scale
 
-| Post-Project Parameter | Small Scale (MVP / Freelance) | Mid-Scale (B2B SaaS / Agency) | Large & Enterprise Scale |
-| :--- | :--- | :--- | :--- |
-| **Warranty Duration** | 30 Calendar Days | 60 Calendar Days | 90 Calendar Days |
-| **Bug Response SLA** | Response within 1x24 hours on business days | Response within 4–8 hours on business days | Response within 1–2 hours with emergency escalation |
-| **Retainer Model** | Incidental repair option (*Hourly T&M*) | Silver Retainer Package (10–15 hours/month) | Formal Enterprise SLA Contract (Bilingual) |
-| **Retainer Invoicing** | Invoiced after hours are consumed | Invoiced upfront on the 1st of every month | Annual contract paid quarterly/annually |
+| Post-Project Parameter | 🔵 Small Scale (Fast-Track MVP) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (High-Priority Support) | 🔴 Enterprise (Non-Solo Capacity) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Operations Artifact** | `docs/pm/RUNBOOK_OPS.md` (Solo/Internal) | `WARRANTY_POLICY.md` (30–60 hari) | Wajib `WARRANTY_POLICY` + `INCIDENT_RESPONSE.md` | **Dialihkan ke Seri A (Fase A04/A00)** |
+| **Warranty Duration** | Di-waive untuk Solo; 30 hari untuk Client | 60 Calendar Days | 90 Calendar Days | Ditangani tim support vendor klien |
+| **Bug Response SLA** | Best-effort (Solo) / 24 jam (Client) | Response 4–8 jam pada hari kerja | Response 1–2 jam + SOP Incident Response | SLA korporat multi-tier terkelola |
+| **Retainer Model** | Pemeliharaan mandiri via Runbook | Paket Retainer Bulanan (10–15 jam/bulan) | Formal SLA Contract + `INCIDENT_RESPONSE.md` | Enterprise SLA & Governance Architecture |
 
 ---
 
@@ -126,9 +127,10 @@ Offer 3 package tiers:
 > All warranty policy documents, retainer contracts, and incident reports MUST be stored inside the **`docs/pm/`** folder.
 
 This module produces 3 maintenance governance documents:
-1. **`docs/pm/WARRANTY_POLICY.md`**: Official policy document defining warranty boundaries, service working hours, and covered bug definitions (using `templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md`).
-2. **`docs/pm/SLA_RETAINER_CONTRACT.md`**: Recurring monthly maintenance partnership contract (*Monthly Retainer Agreement*) (using `templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`).
-3. **`docs/pm/INCIDENT_RESPONSE.md`**: Standard operating procedure (SOP) for handling production emergency incidents for solo developers (using `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md`).
+1. **`docs/pm/WARRANTY_POLICY.md`**: Official policy document defining warranty boundaries, service working hours, and covered bug definitions (using `templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md`; for `Delivery: solo | internal`, replaced by **`docs/pm/RUNBOOK_OPS.md`**).
+2. **`docs/pm/RUNBOOK_OPS.md`**: Self-operated maintenance runbook for solo/internal products (backup schedules, recovery drills, and monitoring telemetry; from `templates/08-maintenance-ops/RUNBOOK_OPS.md`).
+3. **`docs/pm/SLA_RETAINER_CONTRACT.md`**: Recurring monthly maintenance partnership contract (*Monthly Retainer Agreement*) (using `templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`).
+4. **`docs/pm/INCIDENT_RESPONSE.md`**: Standard operating procedure (SOP) for handling production emergency incidents (using `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md`; mandatory on Large scale).
 
 ---
 
@@ -151,8 +153,8 @@ After all stages of Module 12 are completed:
 **MANDATORY BEFORE CLOSURE**:
 
 1. **Check output file existence** using one of the following methods:
-   - PowerShell: `Test-Path -LiteralPath "docs/pm/WARRANTY_POLICY.md"` → must return `True`
-   - Read and verify file `docs/pm/WARRANTY_POLICY.md` → must succeed without error
+   - For Client Delivery: `Test-Path -LiteralPath "docs/pm/WARRANTY_POLICY.md"` → must return `True`
+   - For Solo / Internal Delivery: `Test-Path -LiteralPath "docs/pm/RUNBOOK_OPS.md"` → must return `True`
 
 2. **IF FILE DOES NOT EXIST**:
    - ❌ **STOP IMMEDIATELY** - do not proceed to closure

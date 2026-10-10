@@ -244,6 +244,10 @@ if ($isLargeScale -and $Module -eq "M11") {
     Write-Host "  [INFO] Large / Enterprise scale detected: Technical Handover Protocol is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/pm/HANDOVER_PROTOCOL.md"
 }
+if ($isLargeScale -and $Module -eq "M12") {
+    Write-Host "  [INFO] Large / Enterprise scale detected: Incident Response Plan is MANDATORY." -ForegroundColor Cyan
+    $gate.Required += "docs/pm/INCIDENT_RESPONSE.md"
+}
 if ($isEnterprise) {
     if ($Module -eq "M03") {
         Write-Host "  [INFO] Enterprise scale detected: Risk Assessment Matrix and RACI Matrix are MANDATORY in M03." -ForegroundColor Cyan

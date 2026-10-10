@@ -683,14 +683,27 @@ case "$GATE_MODULE" in
         ;;
     M12)
         echo "=== M12: Warranty SLA Retainer Gate Checklist ==="
-        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        is_m12_solo=0
+        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            is_m12_solo=1
+        elif [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            is_m12_solo=1
+        fi
+
+        if [ $is_m12_solo -eq 1 ]; then
             echo "  [INFO] Solo/Internal project detected: RUNBOOK_OPS.md accepted in place of WARRANTY_POLICY.md"
             check_required "docs/pm/RUNBOOK_OPS.md" "docs/pm/WARRANTY_POLICY.md" 500
         else
             check_required "docs/pm/WARRANTY_POLICY.md" "" 500
         fi
         check_optional "docs/pm/SLA_RETAINER_CONTRACT.md" "contracts/SLA_RETAINER.md"
+        # For Large scale, emergency incident response plan is MANDATORY
+        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Large / Enterprise scale detected: Incident Response Plan is MANDATORY."
+            check_required "docs/pm/INCIDENT_RESPONSE.md" "docs/INCIDENT_RESPONSE.md" 500
+        else
         check_optional "docs/pm/INCIDENT_RESPONSE.md" "docs/INCIDENT_RESPONSE.md"
+        fi
         ;;
     M13)
         echo "=== M13: Product Operations & Iteration Gate Checklist ==="
