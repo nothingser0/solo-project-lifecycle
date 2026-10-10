@@ -149,20 +149,21 @@ Options:
 
 ---
 
-### Question 3: Deployment Budget (Monthly)
-**"What is the available monthly hosting budget?"**
+### Question 3: Deployment Topology (Hosting Model)
+**"Which hosting topology fits the operational constraints?"**
 
 Options:
-- [ ] $0 (free tier only - MVP/personal project)
-- [ ] $5-25 (small VPS - early startup)
-- [ ] $25-100 (managed PaaS - growing product)
-- [ ] $100-500 (enterprise managed - scale)
-- [ ] $500+ (enterprise cloud - compliance)
+- [ ] Serverless / Edge free-tier (cold starts, bandwidth limits)
+- [ ] Single VPS / container (full control, no cold starts)
+- [ ] Managed PaaS (auto-scale, zero-config, vendor lock-in)
+- [ ] Multi-node cluster with managed DB (high availability, IaC)
+- [ ] Regulated cloud region (compliance certifications, data residency)
 
-**Why this matters**: 
-- $0: Vercel Hobby + Supabase free (cold starts, bandwidth limits)
-- $50: DigitalOcean Droplet (full control, no cold starts)
-- $200: Vercel Pro + managed DB (auto-scale, zero-config)
+**Why this matters**:
+- Serverless free-tier: cold starts and bandwidth caps under burst traffic
+- Single VPS/container: predictable latency, manual patching burden
+- Managed PaaS: zero-ops but vendor lock-in and per-request pricing
+- Multi-node cluster: highest resilience, requires IaC and observability investment
 
 ---
 
@@ -272,6 +273,10 @@ This module produces 2 primary technical documents:
 1. **`docs/specs/PRD.md`**: Functional and non-functional product requirement document (using `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`).
 2. **`docs/specs/FSD.md`**: Functional technical specification document, database DDL schema, API contracts, and security architecture (using `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`).
 
+**Scale Routing**:
+- **Small (Fast-Track)**: NO `PRD.md` / `FSD.md`. Stack lock, DDL, and API list are written into **Section 5 of `PROJECT_LITE.md`**.
+- **Enterprise (Non-Solo Capacity)**: Routed to **A-Series Phase A02**. Solo coding is prohibited; deliverables are the architecture advisory package plus mandatory `docs/governance/ADR.md` and `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md`.
+
 > 💡 *Reference for architectural patterns & clean code FSD*: `references/playbooks/software-design-patterns.md`.
 
 ---
@@ -294,8 +299,13 @@ This module produces 2 primary technical documents:
 - [ ] **Module 04 handoff strategy documented** (conversion plan from design specs → chosen stack)
 
 ### Phase 5: File Verification (BLOCKING)
-- [ ] **`docs/specs/PRD.md` exists** (proportionate to scale: 3–5 pages for Small MVP, 10–20 pages for Medium; contains traceability matrix, domain logic defense or reasoned N/A, and BDD criteria)
-- [ ] **`docs/specs/FSD.md` exists** (proportionate to scale; contains verified DDL schema, security & access controls appropriate to architecture, atomic transactions for high-risk mutations or reasoned N/A, and API contracts)
+- **Small Scale (Fast-Track)**: `PRD.md` and `FSD.md` are **NOT produced**. Architecture, DDL, and API contracts are pinned in Section 5 of `PROJECT_LITE.md` ($\ge 1000$B). Gate verifies `PROJECT_LITE.md` and rejects ambiguous terms (`TBD`/`maybe`/`tentative`).
+- **Medium & Large**: 
+  - [ ] **`docs/specs/PRD.md` exists** ($\ge 2000$B; traceability matrix, domain logic defense or reasoned N/A, BDD criteria)
+  - [ ] **`docs/specs/FSD.md` exists** ($\ge 2000$B; verified DDL schema, security & access controls, atomic transactions for high-risk mutations, API contracts)
+  - [ ] **Multi-tenant isolation documented** (RLS / schema-per-tenant / DB-per-tenant) if the system serves multiple tenants
+  - [ ] **Idempotency strategy documented** (`idempotency_keys` table in DDL) for all POST mutations of financial/stock state
+- **Enterprise (Non-Solo Capacity)**: Architecture is routed to **A-Series Phase A02**. Additionally, `docs/governance/ADR.md` and `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md` are MANDATORY (templates: `templates/03-governance/ADR_TEMPLATE.md`, `templates/03-governance/AUDIT_TRAIL_REQUIREMENTS.md`).
 
 ### Phase 6: User Approval (BLOCKING)
 - [ ] **Technical Sign-Off obtained** from Client Single PIC or solo developer self-approval
@@ -340,7 +350,7 @@ Write-Host "✅ PHASE 0 PASSED: Questionnaire complete, Stack locked ($selectedS
 User Answers Summary:
 1. Team Expertise: JavaScript/TypeScript
 2. Database: PostgreSQL
-3. Budget: $0/month
+3. Hosting Topology: Serverless / Edge free-tier
 4. Scale: <100 users
 5. Data Model: Fixed schema
 6. DevOps: Zero-config
@@ -381,10 +391,20 @@ After stack is locked, agent proceeds to generate FSD sections based on the chos
 
 ```powershell
 # GATE CHECK - Module 05 File Verification
-$requiredFiles = @(
-    @{Path="docs/specs/PRD.md"; MinSize=3000},
-    @{Path="docs/specs/FSD.md"; MinSize=8000}
-)
+$state = if (Test-Path "docs/pm/PROJECT_STATE.md") { Get-Content "docs/pm/PROJECT_STATE.md" -Raw } else { "" }
+$isSmall = ($state -match "(?i)Scale:\s*small") -or ((Test-Path "PROJECT_LITE.md") -and -not (Test-Path "docs/pm/PROJECT_STATE.md"))
+
+if ($isSmall) {
+    # Fast-Track: architecture pinned inside PROJECT_LITE.md Section 5
+    $requiredFiles = @(
+        @{Path="PROJECT_LITE.md"; MinSize=1000}
+    )
+} else {
+    $requiredFiles = @(
+        @{Path="docs/specs/PRD.md"; MinSize=2000},
+        @{Path="docs/specs/FSD.md"; MinSize=2000}
+    )
+}
 
 $allPassed = $true
 
@@ -416,6 +436,14 @@ if (-not $allPassed) {
 ```python
 # Pseudo-code for agent verification
 def verify_fsd_content():
+    # Fast-Track Small Scale: no separate FSD.md; validate PROJECT_LITE.md Section 5 instead
+    if is_small_scale():
+        lite = read_file("PROJECT_LITE.md")
+        for section in ["Database", "API", "Stack"]:
+            if section not in lite:
+                raise GateError(f"PROJECT_LITE.md Section 5 missing: {section}")
+        return True
+
     fsd = read_file("docs/specs/FSD.md")
     
     # Check required sections
