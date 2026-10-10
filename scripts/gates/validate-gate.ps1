@@ -809,11 +809,13 @@ if ($Module -eq "M00") {
                 $missingRequired += "Payment terms not defined"
             }
             # 3. Down payment confirmation BLOCKER
-            if ($sowContent -match '\[x\]\s*(DP|Down Payment|30%|40%|50%|Cleared|Received)') {
-                Write-Host "  [OK] Down payment (DP) confirmation verified ([x] cleared)" -ForegroundColor Green
+            $dpLine = $sowContent -match '\[x\][^\n]*(DP|Down Payment|30%|40%|50%)'
+            $dpCleared = $sowContent -match '\[x\][^\n]*(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)'
+            if ($dpLine -and $dpCleared) {
+                Write-Host "  [OK] Down payment (DP) confirmation verified ([x] cleared & received in bank account)" -ForegroundColor Green
             } else {
-                Write-Host "  [ERROR] Down payment (DP) not marked [x] received in SOW!" -ForegroundColor Red
-                $missingRequired += "Down payment (DP) confirmation [x]"
+                Write-Host "  [ERROR] Down payment (DP) not confirmed! Requires '[x] DP ... Cleared/Received/Transferred' (discussion-only lines do NOT count)." -ForegroundColor Red
+                $missingRequired += "Down payment (DP) confirmation [x] with clearing status"
             }
             # 4. Single PIC BLOCKER
             if ($sowContent -match '(?i)Single PIC') {
@@ -835,6 +837,20 @@ if ($Module -eq "M00") {
             } else {
                 Write-Host "  [ERROR] Limitation of liability clause missing in SOW contract!" -ForegroundColor Red
                 $missingRequired += "Limitation of liability clause"
+            }
+            # 7. Revision Limits BLOCKER (solo dev anti infinite-revision trap)
+            if ($sowContent -match '(?i)Revision Limit|Maximum\s+[0-9]+\s+round|Maximum\s+[0-9]+\s+test cycle|[0-9]+\s+rounds\b|[0-9]+\s+cycles\b') {
+                Write-Host "  [OK] Revision limits clause present (design/UAT rounds capped)" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Revision limits clause missing! Cap design revisions & UAT cycles." -ForegroundColor Red
+                $missingRequired += "Revision limits clause"
+            }
+            # 8. Third-Party Account Ownership BLOCKER
+            if ($sowContent -match '(?i)Third-Party (Subscriptions|Accounts)|Client corporate name|registered under the Client|Client credit card|billed directly to the Client') {
+                Write-Host "  [OK] Third-party account ownership clause present (client-owned infrastructure)" -ForegroundColor Green
+            } else {
+                Write-Host "  [ERROR] Third-party account ownership clause missing! Cloud/hosting/gateway accounts MUST be registered under the Client." -ForegroundColor Red
+                $missingRequired += "Third-party account ownership clause"
             }
         }
     }

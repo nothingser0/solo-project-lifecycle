@@ -442,10 +442,12 @@ case "$GATE_MODULE" in
                 fi
 
                 # 3. Down payment confirmation is a HARD BLOCKER for client projects
-                if grep -qiE "\[x\]\s*(DP|Down Payment|30%|40%|50%|Cleared|Received)" "$target_sow"; then
-                    echo "  ✅ Down payment (DP) confirmation verified ([x] cleared)"
+                # Must be an explicit [x] DP line AND state a clearing/received/transfer status
+                if grep -qiE "\[x\][^\n]*(DP|Down Payment|30%|40%|50%)" "$target_sow" && \
+                   grep -qiE "\[x\][^\n]*(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)" "$target_sow"; then
+                    echo "  ✅ Down payment (DP) confirmation verified ([x] cleared & received in bank account)"
                 else
-                    echo "  ❌ Down payment (DP) not confirmed! Marked [x] received required before M04."
+                    echo "  ❌ Down payment (DP) not confirmed! Requires '[x] DP ... Cleared/Received/Transferred' (discussion-only or unchecked lines do NOT count)."
                     GATE_FAILED=1
                 fi
 
@@ -473,7 +475,23 @@ case "$GATE_MODULE" in
                     GATE_FAILED=1
                 fi
 
-                # 7. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix
+                # 7. Revision Limits clause is a HARD BLOCKER (solo dev anti infinite-revision trap)
+                if grep -qiE "Revision Limit|Maximum\s+[0-9]+\s+round|Maximum\s+[0-9]+\s+test cycle|[0-9]+\s+rounds\b|[0-9]+\s+cycles\b" "$target_sow"; then
+                    echo "  ✅ Revision limits clause present (design/UAT rounds capped)"
+                else
+                    echo "  ❌ Revision limits clause missing! Cap design revisions & UAT cycles to prevent infinite revision traps."
+                    GATE_FAILED=1
+                fi
+
+                # 8. Third-Party Account Ownership is a HARD BLOCKER (client-owned infrastructure)
+                if grep -qiE "Third-Party (Subscriptions|Accounts)|Client corporate name|registered under the Client|Client credit card|billed directly to the Client" "$target_sow"; then
+                    echo "  ✅ Third-party account ownership clause present (client-owned infrastructure)"
+                else
+                    echo "  ❌ Third-party account ownership clause missing! Cloud/hosting/gateway accounts MUST be registered under the Client."
+                    GATE_FAILED=1
+                fi
+
+                # 9. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix
                 if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
                     echo "  [INFO] Enterprise scale detected: Risk Assessment Matrix & RACI Matrix MANDATORY in M03."
                     check_required "docs/governance/RISK_ASSESSMENT_MATRIX.md" "docs/pm/RISK_REGISTER.md" 500

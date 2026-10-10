@@ -205,6 +205,14 @@ Client decision: Approved / Deferred to Phase 2
 - **Deemed Acceptance (Klausul Klien Diam)**: if the Client provides no written feedback within **7 calendar days** after milestone delivery, the milestone is deemed approved and its invoice becomes due.
 - Rejection must be in writing with specific issues
 
+**Revision Limits**:
+- UI/UX Design: Maximum **2 (two) rounds** of minor revisions. Fundamental direction changes after design freeze require a paid Change Request.
+- User Acceptance Testing (UAT): Maximum **2 (two) test cycles**. Low-severity cosmetic defects (S3/S4) do not block sign-off and are deferred to the warranty period.
+
+**Third-Party Subscriptions & Accounts**:
+- All third-party accounts (domain, cloud hosting, transactional email, WhatsApp gateway, payment gateway) MUST be registered under the Client corporate name and billed directly to the Client credit card.
+- The Developer shall never front or absorb third-party operational costs.
+
 ---
 
 ## 8.1 Gate Confirmation Log (M03 Exit)
