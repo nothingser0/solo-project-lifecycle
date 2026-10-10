@@ -80,8 +80,8 @@ This module is the sixth phase in the software project lifecycle for solo develo
   • Anti-Overkill Runtime Sanity Check (References: `references/stacks/STACK_SUPPORT_MATRIX.md`):
     - Small Projects: No Docker clusters, microservices, or complex state stores.
     - Medium Projects: Monolith first (Laravel Inertia / Next.js / SvelteKit) without distributed Kafka or Kubernetes.
-    - Large Projects: Go / FastAPI / NestJS modular service with single primary DB + Redis.
-    - Enterprise: Full compliance, strict DI, robust transaction audit log.
+    - Large Projects: Go / FastAPI / NestJS modular service with single primary DB + Redis (WBS-phased into Medium chunks).
+    - Enterprise (Non-Solo Capacity): Dialihkan ke Seri A Advisory (A03 Vendor Procurement & Governance; dilarang koding solo).
     - If agent detects architectural drift or unnecessary layers during scaffold/build, prune immediately.
                                     │
                                     ▼
@@ -169,21 +169,33 @@ This module is the sixth phase in the software project lifecycle for solo develo
       * Background job endpoints → Worker setup verified (e.g., POST /jobs/email → queue consumer)
                                     │
                                     ▼
-[ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ] ──► Ready to Enter Module 07: QA & SIT
+[ OUTPUT: Stack-Specific Codebase + RUNBOOK_LOCAL.md ]
+  • Small Scale: menyerap keamanan (SECURITY_CHECKLIST_SMALL.md) ──► Melompat ke Module 09-LITE (UAT)
+  • Medium / Large: ──► Ready to Enter Module 07: QA & SIT on Staging
 ```
 
 ---
 
 ## 2. STEP 0: Extract Tech Stack Decision (MANDATORY FIRST)
 
-**Agent MUST read FSD.md from Module 05 BEFORE scaffolding the project.**
+**Agent MUST read the locked stack decision BEFORE scaffolding the project (from `docs/specs/FSD.md` or `PROJECT_LITE.md`).**
 
 ### Verification Gate:
 
 ```powershell
 # GATE CHECK - Module 06 Phase 0
-# Verify FSD.md exists and contains locked stack decision
+# Verify locked stack decision exists
 
+$state = if (Test-Path "docs/pm/PROJECT_STATE.md") { Get-Content "docs/pm/PROJECT_STATE.md" -Raw } else { "" }
+$isSmall = ($state -match "(?i)Scale:\s*small") -or ((Test-Path "PROJECT_LITE.md") -and -not (Test-Path "docs/pm/PROJECT_STATE.md"))
+
+if ($isSmall) {
+    if (-not (Test-Path "PROJECT_LITE.md")) {
+        Write-Error "❌ GATE FAILED: PROJECT_LITE.md not found. Fast-Track Small Scale requires PROJECT_LITE.md."
+        exit 1
+    }
+    Write-Host "✅ PHASE 0 PASSED: Small Scale Fast-Track detected via PROJECT_LITE.md"
+} else {
 if (-not (Test-Path "docs/specs/FSD.md")) {
     Write-Error "❌ GATE FAILED: FSD.md not found."
     Write-Error "Module 06 requires FSD.md from Module 05. Run Module 05 first."
@@ -216,6 +228,7 @@ if ($fsdContent -notmatch "Module 04 Handoff Strategy") {
 }
 
 Write-Host "✅ FSD.md verification complete. Proceeding to scaffold..."
+}
 ```
 
 ---
@@ -877,7 +890,8 @@ Agent reads stack-specific templates from skill://, writes to staging:
 
 [GATE] Module 06 is declared **PASSED** if:
 - [ ] Git branching is structured (`main`, `staging`, `feat/*`) with clean commits.
-- [ ] 9 AI control files (Agent Harness) installed in project root.
+- [ ] 5 Core Harness files verified in project root: `AGENTS.md`, `CONTEXT.md`, `TODO.md`, `RUNBOOK_LOCAL.md`, `VERIFY_LOCAL.md` (≥500 bytes each).
+- [ ] **Small Scale Mandatory Exit Check**: `docs/qa/SECURITY_CHECKLIST_SMALL.md` verified (≥300 bytes; menyerap audit keamanan M07).
 - [ ] Design specs components extracted via MCP and connected to backend API.
 - [ ] Source code builds successfully without TypeScript compilation errors (`tsc --noEmit` exits 0).
 - [ ] Database migrations execute smoothly with search indexes in place.
@@ -889,17 +903,20 @@ Agent reads stack-specific templates from skill://, writes to staging:
 ## 🛑 PROTOCOL [GATE] EXIT & MANDATORY STOP
 
 After coding is complete and the `smoke-test` script passes 100%:
-1. **STRICTLY FORBIDDEN to proceed directly or invoke tools for Module 07 within the same turn!**
+1. **STRICTLY FORBIDDEN to proceed directly to the next module within the same turn!**
 2. **SELF-VERIFICATION (Self-Verification Checklist)**:
    - [ ] `terminal('pnpm run type-check')` → Exit code 0 (no TypeScript errors)
    - [ ] `terminal('pnpm run test:smoke')` → All assertions passed
    - [ ] `terminal('pnpm audit')` → No critical vulnerabilities
    - [ ] Read and verify file `VERIFY_LOCAL.md` → Documented test results exist
+   - [ ] *(Small Scale only)*: `docs/qa/SECURITY_CHECKLIST_SMALL.md` filled and checked
    - [ ] `terminal('git log -1')` → Latest commit exists on staging branch
 3. Display summary of local development results to the user:
    - Compilation and local smoke test results
    - Proof of functionality in `VERIFY_LOCAL.md`
-   - Readiness for Staging integration testing (Term 2 Alpha Release)
+   - Readiness for next phase:
+     - **Small Scale**: Proceed to **Module 09-LITE (UAT Sign-off)**, skipping M07 & M08.
+     - **Medium & Large**: Proceed to **Module 07 (Quality Assurance & SIT on Staging)**.
 4. **END YOUR TURN** and request confirmation from the user:
-   > *"All core features have been developed and verified locally (Smoke Test PASS). Is this development output approved before we initiate Module 07 (Quality Assurance & SIT on Staging)?"*
-5. Wait for explicit approval response from the user before proceeding to Module 07.
+   > *"All core features have been developed and verified locally (Smoke Test PASS). Is this development output approved before we initiate the next phase?"*
+5. Wait for explicit approval response from the user before proceeding.
