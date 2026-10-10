@@ -16,6 +16,32 @@ Total pages: [X screens/routes]
 Estimated implementation: [X days/weeks]  
 Navigation depth: [X levels]
 
+## 1.1 Page Content Anatomy & Minimum Section Standards
+
+> ⚠️ **ANTI-STUB CONTENT MANDATE (Mencegah Halaman Kosong/Pendek Tanpa Bobot)**:
+> AI Agent sering menghasilkan halaman yang "hanya 1 card pendek" atau landing page tanpa isi konkret. Setiap halaman yang didefinisikan dalam sitemap WAJIB merinci komponen konten minimal di bawah ini agar spesifikasi UI tidak menjadi stub/kopong:
+>
+> 1. **Public Landing (`/`)**: Wajib minimal 4 seksi konten nyata:
+>    - *Hero Section* (Heading, sub-headline nilai produk, primary CTA, visual mockup/preview UI).
+>    - *Problem & Social Proof* (3 kartu titik nyeri pengguna, statistik pembuktian, atau logo mitra/klien).
+>    - *Core Feature Showcase* (Minimal 3 blok demonstrasi fitur utama dengan tangkapan layar/diagram interaktif).
+>    - *Pricing / Value Anchor & Closing CTA* (Tabel komparasi paket atau penawaran nilai + tombol aksi penutup).
+> 2. **Dashboard Utuh (`/dashboard`)**: Dilarang hanya menampilkan salam *"Selamat Datang"*. Wajib memuat:
+>    - *Stat KPI Cards* (Minimal 3–4 metrik utama dengan perbandingan tren $+/-\%$).
+>    - *Primary Action Bar* (Tombol jalan pintas transaksi/pembuatan data baru).
+>    - *Recent Activity / Transaction Feed* (Tabel/daftar 5–10 transaksi mutasi terakhir dengan status badge).
+>    - *Pending Action / Approval Alert* (Pemberitahuan item yang membutuhkan perhatian segera).
+> 3. **Halaman Daftar Entitas (`/[resource]`)**: Wajib memuat:
+>    - *Toolbar*: Input pencarian live (debounce 300ms) + filter status dropdown + tombol tambah data.
+>    - *Data Grid / Table*: Kolom data terstruktur + status badge + menu aksi baris (Lihat, Edit, Arsipkan).
+>    - *Pagination & Summary*: Info *"Menampilkan X dari Y data"* + kontrol paginasi.
+> 4. **Halaman Detail Entitas (`/[resource]/:id`)**: Wajib memuat:
+>    - *Header Summary*: ID entitas, tanggal dibuat, status badge, action bar (Ubah, Cetak, Hapus).
+>    - *Field Grouping*: Informasi data dibagi ke 2–3 kartu bertema (Informasi Utama, Detail Finansial/Operasional).
+>    - *Audit History Timeline*: Riwayat perubahan data (siapa yang mengubah, kapan, dan status perubahan).
+>
+> *(Pengecualian*: Hanya halaman `SHELL-AUTH` (login/register) dan `SHELL-PRINT` (cetak struk) yang diizinkan memiliki layout minimalis satu fokus).*
+
 ---
 
 ## 2. Public Marketing Routes (Header & Footer Shell)

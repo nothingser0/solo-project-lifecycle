@@ -65,22 +65,25 @@
 ## 3. Exhaustive Screen Inventory (100% SITEMAP Coverage)
 
 > **ABSOLUTE COVERAGE RULE**: Every single route and modal screen identified in `SITEMAP.md` MUST be registered below with a unique `SCR-xx` ID, feature reference, and access permissions. Truncation or sampling is strictly prohibited.
+> 
+> 🛡️ **ANTI-STUB SCREEN SPECIFICATION MANDATE**:
+> Dilarang mendeskripsikan layar hanya dengan satu kalimat umum (misal: *"Tampilan dashboard menampilkan metrik"*). Setiap entri layar wajib mencantumkan **Anatomi Seksi & Komponen Nyata** (misal: Hero, 3 Kartu KPI, Filter Toolbar, Tabel Data 6 Kolom, Modal Konfirmasi) agar layar tidak ter-generate kosong atau terlalu pendek!
 
-| Screen ID | Route URL | Screen Name | Feature ID | UI Pattern Category | Primary Role Access |
-| :---: | :--- | :--- | :---: | :--- | :--- |
-| `SCR-001` | `/` | Public Landing Page | F-01 | Marketing & Hero Canvas | Public (Unauthenticated) |
-| `SCR-002` | `/login` | Authentication Portal | F-01 | Form & Auth Card | Public (Unauthenticated) |
-| `SCR-003` | `/dashboard` | Main Operational Dashboard | F-02 | Dashboard Grid & Metric Cards | All Authenticated Roles |
-| `SCR-004` | `/[primary-resource]` | Primary Resource Directory | F-03 | Data Table with Filters | Staff, Manager, Owner |
-| `SCR-005` | `/[primary-resource]/new` | Create Resource Form | F-03 | Single-Column Card Form | Staff, Manager, Owner |
-| `SCR-006` | `/[primary-resource]/:id` | Resource Detail & History | F-03 | Detail View & Audit Ledger | Staff, Manager, Owner |
-| `SCR-007` | `/[primary-resource]/:id/edit`| Edit Resource Form | F-03 | Form with Inline Validation | Manager, Owner |
-| `SCR-008` | `/[secondary-workflow]` | Operations Workflow View | F-04 | Specialized Interactive Canvas | Operator, Manager, Owner |
-| `SCR-009` | `/approvals/pending` | Review & Approval Queue | F-05 | Table with Two-Person Review | Manager, Owner (No self-approval)|
-| `SCR-010` | `/reports/[primary-report]` | Primary Financial/Audit Report | F-06 | Report Statement Viewer | Auditor, Owner |
-| `SCR-011` | `/settings/profile` | User Profile & Security Settings| F-07 | Tabbed Form & 2FA Setup | All Authenticated Roles |
-| `SCR-012` | `/settings/organization` | Organization Configuration | F-07 | Configuration Form | Owner Only |
-| `SCR-...` | `[All Other Sitemap Routes]` | [Exhaustive list of all sitemap pages] | ... | [Pattern category] | [Roles] |
+| Screen ID | Route URL | Screen Name | Feature ID | Required Section Anatomy (Anatomi Seksi Wajib) | Primary Role Access |
+| :--- : | :--- | :--- | :--- : | :--- | :--- |
+| `SCR-001` | `/` | Public Landing Page | F-01 | 1. Hero + CTA, 2. Problem/Pain Cards, 3. Feature Showcase, 4. Pricing Anchor | Public (Unauthenticated) |
+| `SCR-002` | `/login` | Authentication Portal | F-01 | 1. Logo Minimal, 2. Centered Card (Email/Pass + Remember), 3. Auth Help Links | Public (Unauthenticated) |
+| `SCR-003` | `/dashboard` | Main Operational Dashboard | F-02 | 1. Top KPI Summary (4 Cards), 2. Quick Action Bar, 3. Recent Activity Table, 4. Pending Approvals | All Authenticated Roles |
+| `SCR-004` | `/[primary-resource]` | Primary Resource Directory | F-03 | 1. Search & Filter Bar, 2. Data Table (Zebra, Status Badges), 3. Pagination Footer, 4. Bulk Actions | Staff, Manager, Owner |
+| `SCR-005` | `/[primary-resource]/new` | Create Resource Form | F-03 | 1. Form Stepper/Card, 2. Field Groups with Inline Validation, 3. Sticky Action Bar (Save/Cancel) | Staff, Manager, Owner |
+| `SCR-006` | `/[primary-resource]/:id` | Resource Detail & History | F-03 | 1. Header with Status & Actions, 2. Master Data Card, 3. Related Ledger, 4. Audit History Timeline | Staff, Manager, Owner |
+| `SCR-007` | `/[primary-resource]/:id/edit`| Edit Resource Form | F-03 | 1. Pre-populated Fields, 2. Unsaved Changes Warning, 3. Version Conflict Check, 4. Save/Discard | Manager, Owner |
+| `SCR-008` | `/[secondary-workflow]` | Operations Workflow View | F-04 | 1. Operational Mode Header, 2. Interactive Workspace Canvas, 3. Live Validation Toast | Operator, Manager, Owner |
+| `SCR-009` | `/approvals/pending` | Review & Approval Queue | F-05 | 1. Queue Counter Tabs, 2. Diff/Comparison Viewer, 3. Two-Person Sign-Off Modal (No Self-Approval) | Manager, Owner (No self-approval)|
+| `SCR-010` | `/reports/[primary-report]` | Primary Financial/Audit Report | F-06 | 1. Date Range & Parameter Filter, 2. Aggregated KPI Summary, 3. Detail Data Grid, 4. Export (PDF/CSV) | Auditor, Owner |
+| `SCR-011` | `/settings/profile` | User Profile & Security Settings| F-07 | 1. Personal Avatar & Info, 2. Credential/Password Change, 3. 2FA Authenticator Setup, 4. Active Sessions | All Authenticated Roles |
+| `SCR-012` | `/settings/organization` | Organization Configuration | F-07 | 1. Entity Profile & NPWP, 2. Team & RBAC Invites, 3. Billing & Invoices, 4. Webhook Keys | Owner Only |
+| `SCR-...` | `[All Other Sitemap Routes]` | [Exhaustive list of all sitemap pages] | ... | [Minimum 3-4 concrete functional sections per screen] | [Roles] |
 
 ---
 
