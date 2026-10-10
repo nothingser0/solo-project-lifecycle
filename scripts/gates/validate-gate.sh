@@ -802,6 +802,38 @@ case "$GATE_MODULE" in
                 GATE_FAILED=1
             fi
         fi
+
+        # Mechanical anti-slop source scan (BLOCKER): scan real source dirs only
+        scan_dirs=""
+        for d in "src" "app" "lib" "components" "pages" "server" "api"; do
+            [ -d "$d" ] && scan_dirs="$scan_dirs $d"
+        done
+        if [ -n "$scan_dirs" ]; then
+            # 1. Type-suppression escape hatches
+            ts_ignore=$(grep -rInE "//\s*@ts-(ignore|nocheck|expect-error)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${ts_ignore:-0}" -gt 0 ]; then
+                echo "  ❌ Anti-slop: found ${ts_ignore} type-suppression escape hatch(es) (@ts-ignore / @ts-nocheck / @ts-expect-error) in source!"
+                GATE_FAILED=1
+            else
+                echo "  ✅ Anti-slop: zero type-suppression escape hatches in source"
+            fi
+            # 2. Placeholder TODO stubs left in production code
+            todo_stub=$(grep -rInE "//\s*TODO:?\s*(Implement|Add (your )?logic|Fill|Complete|Fix later)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${todo_stub:-0}" -gt 0 ]; then
+                echo "  ❌ Anti-slop: found ${todo_stub} unresolved placeholder TODO stub(s) in source!"
+                GATE_FAILED=1
+            else
+                echo "  ✅ Anti-slop: zero placeholder TODO stubs in source"
+            fi
+            # 3. Hardcoded secret heuristics (assignment of a long literal to a secret-ish name)
+            hc_secret=$(grep -rinE "(api_?key|secret|password|passwd|token|private_?key)[[:space:]]*[:=][[:space:]]*[\"'][^\"']{16,}" $scan_dirs 2>/dev/null | grep -viE "process\.env|import\.meta\.env|example|placeholder|your[_-]|xxx|\*\*\*|<REPLACE" | wc -l | tr -d ' ')
+            if [ "${hc_secret:-0}" -gt 0 ]; then
+                echo "  ❌ Anti-slop: found ${hc_secret} possible hardcoded secret(s) in source! Use process.env."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Anti-slop: zero obvious hardcoded secrets in source"
+            fi
+        fi
         check_optional "ARCHITECTURE.md"
         check_optional "CONVENTIONS.md"
         ;;

@@ -1093,6 +1093,42 @@ if ($Module -eq "M06") {
             $missingRequired += "VERIFY_LOCAL.md (test execution proof: LOCAL PASS / assertions passed)"
         }
     }
+    # Mechanical anti-slop source scan (BLOCKER): scan real source dirs only
+    $scanDirs = @()
+    foreach ($d in @("src", "app", "lib", "components", "pages", "server", "api")) {
+        if (Test-Path $d) { $scanDirs += $d }
+    }
+    if ($scanDirs.Count -gt 0) {
+        $srcFiles = Get-ChildItem -Path $scanDirs -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @(".ts", ".tsx", ".js", ".jsx", ".vue", ".svelte", ".php", ".py", ".go", ".rb", ".java", ".cs") }
+        $tsIgnore = 0; $todoStub = 0; $hcSecret = 0
+        foreach ($f in $srcFiles) {
+            $text = Get-Content $f.FullName -Raw -ErrorAction SilentlyContinue
+            if ($text -match '(?m)//\s*@ts-(ignore|nocheck|expect-error)') { $tsIgnore++ }
+            if ($text -match '(?im)//\s*TODO:?\s*(Implement|Add (your )?logic|Fill|Complete|Fix later)') { $todoStub++ }
+            $lines = $text -split "`n"
+            foreach ($ln in $lines) {
+                if ($ln -match "(?i)(api[_-]?key|secret|password|passwd|token|private[_-]?key)\s*[:=]\s*[""'][A-Za-z0-9_\-]{16,}[""']" -and $ln -notmatch "(?i)process\.env|import\.meta\.env|example|placeholder|your[_-]|xxx|\*\*\*") { $hcSecret++ }
+            }
+        }
+        if ($tsIgnore -gt 0) {
+            Write-Host "  [ERROR] Anti-slop: found $tsIgnore file(s) with type-suppression escape hatches (@ts-ignore / @ts-nocheck / @ts-expect-error)!" -ForegroundColor Red
+            $missingRequired += "Anti-slop (type-suppression escape hatches)"
+        } else {
+            Write-Host "  [OK] Anti-slop: zero type-suppression escape hatches in source" -ForegroundColor Green
+        }
+        if ($todoStub -gt 0) {
+            Write-Host "  [ERROR] Anti-slop: found $todoStub file(s) with unresolved placeholder TODO stubs!" -ForegroundColor Red
+            $missingRequired += "Anti-slop (placeholder TODO stubs)"
+        } else {
+            Write-Host "  [OK] Anti-slop: zero placeholder TODO stubs in source" -ForegroundColor Green
+        }
+        if ($hcSecret -gt 0) {
+            Write-Host "  [ERROR] Anti-slop: found $hcSecret possible hardcoded secret(s)! Use process.env." -ForegroundColor Red
+            $missingRequired += "Anti-slop (hardcoded secrets)"
+        } else {
+            Write-Host "  [OK] Anti-slop: zero obvious hardcoded secrets in source" -ForegroundColor Green
+        }
+    }
 }
 if ($Module -eq "M08") {
     $reconFile = if (Test-Path "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") { "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" } else { $null }

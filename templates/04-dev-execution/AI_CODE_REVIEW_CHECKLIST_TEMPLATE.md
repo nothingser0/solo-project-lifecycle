@@ -378,6 +378,42 @@ pnpm build
 
 ---
 
+## Review Comment Prefix Protocol (Structured Feedback)
+
+> Adopted from the roadmap.sh Code Reviews standard. Every review comment MUST carry a severity prefix so the author (or AI agent) knows exactly what blocks merge vs what is optional:
+
+| Prefix | Meaning | Blocking? | Example |
+| :--- | :--- | :---: | :--- |
+| `[BLOCKER]` | Correctness, security, data-loss, or spec violation. MUST be fixed before merge. | ✅ Yes | `[BLOCKER] Raw SQL concatenation — SQL injection risk. Use parameterized query.` |
+| `[BUG]` | Logic error or edge-case failure confirmed by a test. | ✅ Yes | `[BUG] Off-by-one in pagination; page 2 skips row 21.` |
+| `[SECURITY]` | Vulnerability or missing validation. | ✅ Yes | `[SECURITY] Endpoint accepts unvalidated payload; add Zod parse.` |
+| `[PERF]` | N+1 query, unbounded memory, or inefficiency. | ⚠️ Usually | `[PERF] N+1 query in loop; eager-load relations.` |
+| `[SUGGESTION]` | Better approach, but current code is acceptable. | ❌ No | `[SUGGESTION] Extract this into a shared helper.` |
+| `[NIT]` | Cosmetic / style / naming preference. NOT critical. | ❌ No | `[NIT] Rename `d` to `discountAmount`.` |
+| `[QUESTION]` | Genuine clarification request, not a demand. | ❌ No | `[QUESTION] Why is this retry capped at 3?` |
+| `[PRAISE]` | Reinforce good practice (morale + learning). | ❌ No | `[PRAISE] Excellent idempotency guard here.` |
+
+### Review Philosophy Rules
+1. **Seek continuous improvement, not perfection**: Do not block a PR for `[NIT]`/`[SUGGESTION]` items. Only `[BLOCKER]`/`[BUG]`/`[SECURITY]` block merge.
+2. **Style guide is the authority**: Verify against the documented style guide, never personal preference.
+3. **No hanging PRs**: Resolve conflicting opinions within one business day; do not let a change sit due to disagreement.
+4. **Knowledge sharing**: Review code in unfamiliar areas to spread cross-functional understanding.
+
+---
+
+## Author Self-Review Protocol (BEFORE requesting review)
+
+> The author (human or AI agent) MUST complete this self-review and only then hand off to the reviewer. This mirrors roadmap.sh "Post Development (Author)" stage.
+
+- [ ] Re-read the full diff line-by-line before submitting.
+- [ ] Confirm the change is complete: tests written, docs updated, no `[BLOCKER]` left unaddressed.
+- [ ] Verify it runs in a local/dev environment (not just "compiles").
+- [ ] Confirm adherence to `AGENTS.md` and the project style guide.
+- [ ] Note any performance, security, or scalability concerns for the reviewer.
+- [ ] PR includes: clear title, description, screenshots (UI), config changes, and linked issue.
+
+---
+
 ## Actions Required (if REQUEST CHANGES)
 
 1. [Action item 1]
