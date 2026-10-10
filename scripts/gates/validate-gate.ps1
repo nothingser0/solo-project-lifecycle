@@ -564,13 +564,47 @@ if ($Module -eq "M00") {
             Write-Host "  [ERROR] Explicit Feasibility-Decision (GO | CONDITIONAL_GO | PIVOT | KILL) not declared!" -ForegroundColor Red
             $missingRequired += "Feasibility-Decision: GO"
         }
-        # 3. Dimension Floor Verification
-        if ($briefContent -match '(?i)Feasibility-Score-(Technical|Operational|Regulatory|Financial):\s*[0-2](\.[0-9]+)?') {
-            Write-Host "  [ERROR] Dimension Floor Failure: Individual dimension score < 3.0 detected!" -ForegroundColor Red
-            $missingRequired += "Dimension Floor (all individual dimensions >= 3.0)"
-        } else {
-            if ($briefContent -match '(?i)Feasibility-Score-(Technical|Operational|Regulatory|Financial):') {
-                Write-Host "  [OK] Dimension Floor verified: All individual dimensions >= 3.0" -ForegroundColor Green
+        # 3. Dimension Floor & Score Integrity (all 4 dimensions REQUIRED, numeric, range 1.0-5.0, each >= 3.0)
+        $dimOk = $true
+        $dimSum = 0.0
+        foreach ($dim in @("Technical", "Operational", "Regulatory", "Financial")) {
+            if ($briefContent -match "(?im)^Feasibility-Score-$dim`:\s*\[") {
+                Write-Host "  [ERROR] Feasibility-Score-$dim still holds an unedited placeholder!" -ForegroundColor Red
+                $dimOk = $false
+                $missingRequired += "Feasibility-Score-$dim (unedited placeholder)"
+                continue
+            }
+            if ($briefContent -match "(?im)^Feasibility-Score-$dim`:\s*([0-9]+(?:\.[0-9]+)?)") {
+                $dimVal = [double]$matches[1]
+                if ($dimVal -lt 1.0 -or $dimVal -gt 5.0) {
+                    Write-Host "  [ERROR] Feasibility-Score-$dim out of range: $dimVal (must be 1.0-5.0)" -ForegroundColor Red
+                    $dimOk = $false
+                    $missingRequired += "Feasibility-Score-$dim (out of range)"
+                    continue
+                }
+                if ($dimVal -lt 3.0) {
+                    Write-Host "  [ERROR] Dimension Floor Failure: $dim = $dimVal (< 3.0)" -ForegroundColor Red
+                    $dimOk = $false
+                    $missingRequired += "Dimension Floor ($dim < 3.0)"
+                    continue
+                }
+                $dimSum += $dimVal
+            } else {
+                Write-Host "  [ERROR] Missing numeric Feasibility-Score-$dim (all 4 dimensions required, 1.0-5.0)" -ForegroundColor Red
+                $dimOk = $false
+                $missingRequired += "Feasibility-Score-$dim (missing)"
+            }
+        }
+        if ($dimOk) {
+            $dimAvg = [math]::Round($dimSum / 4, 2)
+            Write-Host "  [OK] Dimension Floor verified: all 4 dimensions >= 3.0 (average $dimAvg)" -ForegroundColor Green
+            # 4. Decision/average consistency: average < 3.5 MUST be CONDITIONAL_GO, not GO
+            if ($briefContent -match '(?im)^Feasibility-Decision:\s*(CONDITIONAL_GO|GO)') {
+                $decision = $matches[1].ToUpper()
+                if ($decision -eq "GO" -and $dimAvg -lt 3.5) {
+                    Write-Host "  [ERROR] Decision mismatch: average $dimAvg < 3.5 requires 'CONDITIONAL_GO', not 'GO'" -ForegroundColor Red
+                    $missingRequired += "Decision consistency (average $dimAvg < 3.5 requires CONDITIONAL_GO)"
+                }
             }
         }
     }

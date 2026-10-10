@@ -97,23 +97,23 @@
 
 | Feasibility Dimension | Score (1–5) | Confidence | Solo Developer Analysis, Reality Checks & Mitigations |
 | :--- | :---: | :---: | :--- |
-| **1. Technical Feasibility** | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
-| **2. Bandwidth Feasibility (Solo Effort)** | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
-| **3. Regulatory & Legal Feasibility** | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
-| **4. Commercial Feasibility (Unit Economics)** | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
-| **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4)* |
+| **1. Technical Feasibility** (`Technical`) | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
+| **2. Bandwidth Feasibility — Solo Effort** (`Operational`) | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
+| **3. Regulatory & Legal Feasibility** (`Regulatory`) | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
+| **4. Commercial Feasibility — Unit Economics** (`Financial`) | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
+| **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4; `GO` requires average ≥ 3.5, else use `CONDITIONAL_GO`)* |
 
 ### Machine Validation Summary (M01 Feasibility Scores & Decision)
 
 ```text
-Feasibility-Score-Technical: [3.0 - 5.0]
-Feasibility-Score-Operational: [3.0 - 5.0]
-Feasibility-Score-Regulatory: [3.0 - 5.0]
-Feasibility-Score-Financial: [3.0 - 5.0]
+Feasibility-Score-Technical: [fill 1.0-5.0]
+Feasibility-Score-Operational: [fill 1.0-5.0]
+Feasibility-Score-Regulatory: [fill 1.0-5.0]
+Feasibility-Score-Financial: [fill 1.0-5.0]
 Feasibility-Decision: PENDING
 ```
 
-*(Options: GO | CONDITIONAL_GO | PIVOT | KILL. Machine validator strictly rejects M01 if any individual dimension < 3.0 or if Feasibility-Decision is KILL/PIVOT).*
+*(Key mapping: `Operational` = Bandwidth Feasibility, `Financial` = Commercial Feasibility. Options: GO | CONDITIONAL_GO | PIVOT | KILL. Machine validator strictly rejects M01 if any dimension is missing, out of the 1.0-5.0 range, < 3.0, if `GO` is declared with average < 3.5, or if Feasibility-Decision is KILL/PIVOT).*
 
 ---
 

@@ -222,13 +222,48 @@ case "$GATE_MODULE" in
                 GATE_FAILED=1
             fi
 
-            # 3. Dimension Floor Verification (Every individual dimension must be >= 3.0)
-            if grep -qiE "^Feasibility-Score-(Technical|Operational|Regulatory|Financial):\s*[0-2](\.[0-9]+)?" "$brief_file"; then
-                echo "  ❌ Dimension Floor Failure: Individual dimension score < 3.0 detected!"
-                GATE_FAILED=1
-            else
-                if grep -qiE "^Feasibility-Score-(Technical|Operational|Regulatory|Financial):" "$brief_file"; then
-                    echo "  ✅ Dimension Floor verified: All individual dimensions >= 3.0"
+            # 3. Dimension Floor & Score Integrity (all 4 dimensions REQUIRED, numeric, range 1.0-5.0, each >= 3.0)
+            dim_ok=1
+            dim_sum=0
+            for dim in Technical Operational Regulatory Financial; do
+                # Reject unedited placeholder form [3.0 - 5.0]
+                if grep -qiE "^Feasibility-Score-${dim}:\s*\[" "$brief_file"; then
+                    echo "  ❌ Feasibility-Score-${dim} still holds an unedited placeholder!"
+                    dim_ok=0
+                    GATE_FAILED=1
+                    continue
+                fi
+                dim_val=$(grep -iE "^Feasibility-Score-${dim}:\s*[0-9]" "$brief_file" | grep -oE "[0-9]+(\.[0-9]+)?" | head -1 || echo "")
+                if [ -z "$dim_val" ]; then
+                    echo "  ❌ Missing numeric Feasibility-Score-${dim} (all 4 dimensions required, 1.0-5.0)"
+                    dim_ok=0
+                    GATE_FAILED=1
+                    continue
+                fi
+                if [ "$(awk -v v="$dim_val" 'BEGIN { print (v >= 1.0 && v <= 5.0) ? 1 : 0 }')" -ne 1 ]; then
+                    echo "  ❌ Feasibility-Score-${dim} out of range: $dim_val (must be 1.0-5.0)"
+                    dim_ok=0
+                    GATE_FAILED=1
+                    continue
+                fi
+                if [ "$(awk -v v="$dim_val" 'BEGIN { print (v < 3.0) ? 1 : 0 }')" -eq 1 ]; then
+                    echo "  ❌ Dimension Floor Failure: ${dim} = $dim_val (< 3.0)"
+                    dim_ok=0
+                    GATE_FAILED=1
+                    continue
+                fi
+                dim_sum=$(awk -v a="$dim_sum" -v b="$dim_val" 'BEGIN { print a + b }')
+            done
+            if [ $dim_ok -eq 1 ]; then
+                dim_avg=$(awk -v s="$dim_sum" 'BEGIN { printf "%.2f", s / 4 }')
+                echo "  ✅ Dimension Floor verified: all 4 dimensions >= 3.0 (average $dim_avg)"
+                # 4. Decision/average consistency: average < 3.5 MUST be CONDITIONAL_GO, not GO
+                decision=$(grep -iE "^Feasibility-Decision:\s*(GO|CONDITIONAL_GO)" "$brief_file" | grep -oiE "CONDITIONAL_GO|GO" | head -1 | tr '[:lower:]' '[:upper:]')
+                if [ -n "$decision" ] && [ "$decision" = "GO" ]; then
+                    if [ "$(awk -v a="$dim_avg" 'BEGIN { print (a < 3.5) ? 1 : 0 }')" -eq 1 ]; then
+                        echo "  ❌ Decision mismatch: average $dim_avg < 3.5 requires 'CONDITIONAL_GO', not 'GO'"
+                        GATE_FAILED=1
+                    fi
                 fi
             fi
         fi
