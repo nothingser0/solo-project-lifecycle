@@ -568,15 +568,16 @@ Pillar 3: Actionable Insights (not just data dumps)
 
 ---
 
-## 3. Adaptation Based on Project Scale
+## 3. Adaptation Based on Project Scale & Delivery Model
 
-| Aspect | Solo Dev Product (Self-Initiated) | B2B SaaS Client | Enterprise Client |
+| Aspect | 🔵 Small (Fast-Track / Client) | 🟢 Solo SaaS (Medium Tier) | 🔴 Non-Solo Capacity (Enterprise / A-Series) |
 | :--- | :--- | :--- | :--- |
-| **Recommended Path** | **M00-lite** (1-page validation: Assumption Register + 5 interviews + waitlist) | Full M00 (Market, Competitors, 30+ Survey, Strategy) | Enterprise M00 (Commissioned research, compliance audit, multi-stakeholder) |
-| **Market Research Depth** | Quick TAM/SAM/SOM estimate (1-2 days) using secondary data | Formal industry research, conduct primary research (50+ survey respondents) | Commissioned report (partnership with market research consultancy), in-depth compliance audit |
-| **Competitive Analysis** | 3-5 primary competitors, baseline feature matrix | 5-10 competitors, full SWOT, detailed pricing benchmarking | 10+ competitors, Porter's Five Forces, IP/patent landscape analysis |
-| **User Research** | 5-10 interviews, 30+ survey respondents | 10-20 stakeholder interviews, 50-100 survey respondents, persona validation workshop | Multi-phase research (discovery → validation → usability testing), 30+ interviews, 200+ surveys, ethnographic study |
-| **Product Strategy** | 1-page Vision/Mission, simplified NSM | Formal Vision/Mission, NSM with metric breakdown, Value Prop Canvas | Formal business case, 3-year roadmap, strategic alignment with corporate OKRs |
+| **Recommended Path** | **M00 DI-SKIP** (Handled via Fast-Track Intake Gate) | **M00-lite** (1-page validation: Assumption Register + 5 interviews + waitlist) | **Dialihkan ke Seri A00** (Bid/No-Bid, Evaluasi Tender & Kontrak Konsultasi) |
+| **Deliverable** | Tidak ada dokumen M00 (`PROJECT_STATE.md` intake cukup) | 1 berkas konsolidasi (`docs/pm/M00_LITE.md`) | Paket Kesiapan Tender (`RFP_RESPONSE`, `CONSULTING_AGREEMENT`) |
+| **Market Research** | Di-waive (ide tervalidasi atau ditentukan klien) | Estimasi TAM/SAM/SOM ringkas (1–2 hari) dari data sekunder | Evaluasi kelayakan administratif tender & batas kewajiban legal |
+| **Competitive Analysis** | 1 benchmark visual di M04-LITE | 2 kompetitor langsung + 1 substitusi gratis/manual | Analisis Build-vs-Buy komponen komoditas di Fase A03 |
+| **User Research** | 1 penguji eksternal di M09-LITE | 5 wawancara pengguna (minimal 3 terverifikasi `✅ Real`) | Analisis kebutuhan multi-stakeholder korporasi di Fase A01 |
+| **Stopping Rule** | Selesai di Intake Gate | `Gate-Decision: PASS` + Waitlist $\ge 5\%$ | Keputusan Bid/No-Bid formal (Phase A00) |
 
 ---
 

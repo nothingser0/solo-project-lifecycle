@@ -65,7 +65,8 @@
 - **Total Unique Visitors**: [X] visitors (Minimum target: $\ge 100$)
 - **Total Waitlist / Email Signups**: [Y] signups
 - **Conversion Rate**: $\frac{Y}{X} \times 100\% = \mathbf{[Z]\%}$
-- **Gate Pass Benchmark**: $\ge 5\%$ waitlist conversion with explicit pricing stated on page.
+- **Waitlist-Conversion-Pct**: [angka persentase, e.g. 5.5]
+- **Gate Pass Benchmark**: $\ge 5.0\%$ waitlist conversion with explicit pricing stated on page ($2.0\% - 4.9\%$ = 1x iteration sprint; $<2.0\%$ = KILL).
 
 ---
 

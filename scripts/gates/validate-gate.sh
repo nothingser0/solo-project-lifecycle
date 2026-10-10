@@ -61,8 +61,20 @@ check_optional() {
 case "$GATE_MODULE" in
     M00)
         echo "=== M00: Product Discovery & Strategy Gate Checklist ==="
-        if [ -f "docs/pm/M00_LITE.md" ]; then
-            echo "  [INFO] Detected M00-lite rapid validation path"
+        # 1. Check if M00 is WAIVED by Scale (small) or Delivery (client/internal/portfolio)
+        is_m00_waived=0
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small Scale detected: M00 Product Discovery is WAIVED (Handled by Intake Gate)."
+            is_m00_waived=1
+        elif grep -qiE "Delivery:\s*(client|internal|portfolio)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Client / Internal / Portfolio delivery: M00 Product Discovery is WAIVED (Scope pre-defined)."
+            is_m00_waived=1
+        fi
+
+        if [ $is_m00_waived -eq 1 ]; then
+            check_optional "docs/pm/M00_LITE.md" "docs/pm/MARKET_RESEARCH.md"
+        elif [ -f "docs/pm/M00_LITE.md" ]; then
+            echo "  [INFO] Detected M00-lite rapid validation path (Solo SaaS)"
             check_required "docs/pm/M00_LITE.md" "" 1000
             # 1. Blocking decision check: must explicitly be Gate-Decision: PASS
             if grep -qiE "^Gate-Decision:\s*PENDING|\[x\]\s*⏳\s*PENDING" "docs/pm/M00_LITE.md"; then

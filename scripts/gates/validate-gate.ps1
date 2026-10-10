@@ -230,8 +230,21 @@ if ($isEnterprise) {
 
 # Check required files
 Write-Host "`nRequired files:" -ForegroundColor White
-if ($Module -eq "M00" -and (Test-Path "docs/pm/M00_LITE.md")) {
-    Write-Host "  [INFO] Detected M00-lite rapid validation path" -ForegroundColor Cyan
+$isM00Waived = $false
+if (Test-Path "docs/pm/PROJECT_STATE.md") {
+    $stRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+    if ($stRaw -match "(?i)Scale:\s*small" -or $stRaw -match "(?i)Delivery:\s*(client|internal|portfolio)") {
+        $isM00Waived = $true
+    }
+} elseif (Test-Path "PROJECT_LITE.md") {
+    $isM00Waived = $true
+}
+
+if ($Module -eq "M00" -and $isM00Waived) {
+    Write-Host "  [INFO] Small Scale or Client/Internal delivery: M00 Product Discovery is WAIVED." -ForegroundColor Cyan
+    $gate.Required = @()
+} elseif ($Module -eq "M00" -and (Test-Path "docs/pm/M00_LITE.md")) {
+    Write-Host "  [INFO] Detected M00-lite rapid validation path (Solo SaaS)" -ForegroundColor Cyan
     $gate.Required = @("docs/pm/M00_LITE.md")
 }
 $isSmallScale = $false
