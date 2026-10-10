@@ -60,6 +60,12 @@ switch ($Scale) {
         if (Test-Path (Join-Path $templates "06-qa-uat/SECURITY_CHECKLIST_SMALL.md")) {
             Copy-Item (Join-Path $templates "06-qa-uat/SECURITY_CHECKLIST_SMALL.md") (Join-Path $TargetDir "docs/qa/SECURITY_CHECKLIST_SMALL.md") -Force
         }
+        if (Test-Path (Join-Path $templates "06-qa-uat/UAT_SIGNOFF_SMALL.md")) {
+            Copy-Item (Join-Path $templates "06-qa-uat/UAT_SIGNOFF_SMALL.md") (Join-Path $TargetDir "docs/qa/UAT_SIGNOFF_SMALL.md") -Force
+        }
+        if (Test-Path (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md")) {
+            Copy-Item (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md") (Join-Path $TargetDir "docs/pm/RUNBOOK_OPS.md") -Force
+        }
     }
     { $_ -in "solo-saas", "independent" } {
         Write-Host "Configuring for Independent / Self-Initiated Product..."

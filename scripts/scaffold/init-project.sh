@@ -50,6 +50,8 @@ case "$SCALE" in
         cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
         cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
         cp "$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md" "$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md" 2>/dev/null || true
+        cp "$TEMPLATES/06-qa-uat/UAT_SIGNOFF_SMALL.md" "$TARGET_DIR/docs/qa/UAT_SIGNOFF_SMALL.md" 2>/dev/null || true
+        cp "$TEMPLATES/08-maintenance-ops/RUNBOOK_OPS.md" "$TARGET_DIR/docs/pm/RUNBOOK_OPS.md" 2>/dev/null || true
         ;;
     solo-saas|independent)
         echo "Configuring for Independent / Self-Initiated Product..."

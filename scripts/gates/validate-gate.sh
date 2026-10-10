@@ -123,6 +123,21 @@ case "$GATE_MODULE" in
         echo "=== M01: Idea Feasibility Gate Checklist ==="
         check_required "docs/pm/IDEA_BRIEF.md" "docs/pm/FEASIBILITY_REPORT.md" 1000
         check_required "docs/pm/PROJECT_STATE.md" "" 200
+        # Intake Gate: reject if mandatory intake fields are empty or UNKNOWN
+        if [ -f "docs/pm/PROJECT_STATE.md" ]; then
+            for field in "Delivery:" "Intake-Success-Metric:" "Intake-P0-Features:" "Intake-Time-Capacity:" "Intake-Sensitive-Data:"; do
+                if grep -qiE "^\s*-?\s*$field\s*(UNKNOWN|\[|$)" "docs/pm/PROJECT_STATE.md"; then
+                    echo "  ❌ Intake field incomplete or UNKNOWN: $field"
+                    GATE_FAILED=1
+                fi
+            done
+            if grep -qiE "^\s*-?\s*Intake-Status:\s*ANSWERED" "docs/pm/PROJECT_STATE.md"; then
+                echo "  ✅ Intake Gate: all 5 mandatory fields answered"
+            else
+                echo "  ❌ Intake Gate: Intake-Status not set to ANSWERED"
+                GATE_FAILED=1
+            fi
+        fi
         ;;
     M02)
         echo "=== M02: Discovery & Scope Gate Checklist ==="
@@ -248,6 +263,11 @@ case "$GATE_MODULE" in
         check_required "AGENTS.md" "" 500
         check_required "CONTEXT.md" "" 500
         check_required "TODO.md" "" 500
+        # Small scale absorbs M07 security (Opsi A): security checklist is part of M06 exit.
+        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            echo "  [INFO] Small scale: SECURITY_CHECKLIST_SMALL.md absorbed into M06 (M07 folded)."
+            check_required "docs/qa/SECURITY_CHECKLIST_SMALL.md" "SECURITY_CHECKLIST_SMALL.md" 300
+        fi
         # RUNBOOK_LOCAL.md / VERIFY_LOCAL.md are root harness files; resolve any accepted location.
         runbook_path="RUNBOOK_LOCAL.md"
         for candidate in "RUNBOOK_LOCAL.md" "docs/RUNBOOK_LOCAL.md" "docs/specs/RUNBOOK_LOCAL.md"; do
@@ -263,19 +283,14 @@ case "$GATE_MODULE" in
         check_optional "CONVENTIONS.md"
         ;;
     M07)
-        echo "=== M07: Quality Assurance & SIT Gate Checklist ==="
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
-            echo "  [INFO] Small Scale detected: SECURITY_CHECKLIST_SMALL.md is required."
-            check_required "docs/qa/SECURITY_CHECKLIST_SMALL.md" "SECURITY_CHECKLIST_SMALL.md" 500
-            check_optional "docs/qa/SIT_WORKBOOK.md"
+        echo "=== M07: Quality Assurance & SIT Gate Checklist (medium+ only) ==="
+        # NOTE: Small scale does NOT run M07; security is folded into M06.
+        check_required "docs/qa/SIT_WORKBOOK.md"
+        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
+            check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
         else
-            check_required "docs/qa/SIT_WORKBOOK.md"
-            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
-                echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
-                check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
-            else
-                check_optional "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
-            fi
+            check_optional "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
         fi
         ;;
     M08)

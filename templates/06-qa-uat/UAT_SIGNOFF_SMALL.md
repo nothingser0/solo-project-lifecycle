@@ -212,3 +212,29 @@ Date: Sep 30, 2024
 3. Client signs this `UAT_SIGNOFF_SMALL.md`
 4. Developer proceeds to M11 (sends `BAST_EMAIL_SMALL.md`)
 5. Client approves handover → Final payment → Warranty starts
+
+---
+
+## Solo / Portfolio Variant (Non-Client Delivery)
+
+> Use this section INSTEAD of Client Sign-Off when `Delivery: solo` or `portfolio` (no external client).
+> **Rule (M09-LITE)**: minimum **1 external tester** (a real person other than you) MUST be recorded. Self-approval alone is NOT accepted.
+
+**External Tester Name**: _________________________________
+**Relationship**: [colleague / friend / target-user proxy]
+**Test Date**: [YYYY-MM-DD]
+
+**Solo Test Summary**:
+- Total Test Cases: _____
+- Test Cases Passed: _____
+- Critical (S1) Bugs Remaining: _____ (must be 0)
+
+**Solo UAT Decision**:
+- [ ] **APPROVED** - Zero S1/S2 bugs, external tester confirmed core flow works
+- [ ] **REJECTED** - Critical issues remain, requires re-testing
+
+**Machine Validation Line** (required for M09-LITE gate):
+```
+UAT-Decision: PASS
+External-Tester: [Full Name]
+```

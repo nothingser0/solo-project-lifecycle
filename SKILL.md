@@ -145,7 +145,15 @@ Scale classification is driven by **engineering risk profile and operational loa
 
 **Small / Fast-Track MVP**:
 - **Criteria**: 1–3 core flows, 3–7 P0 Must-Haves, isolated DB, low blast radius (no financial mutations/health data), 1 decision maker, best-effort availability, <4 weeks.
-- Path: M04 → M05 → M06 → M10 → M12 (5 core modules, skip 9 heavy modules)
+- **Path**: **Intake → M04-LITE → M05 → [STOP 1] → M06 (incl. security) → M09-LITE → [STOP 2] → M10 → M12 (RUNBOOK_OPS.md)**
+  - *Client delivery only*: add **M03** (before M04-LITE) and **M11** (after M10).
+  - **Intake** (replaces M00/M01/M02 for small): 5 mandatory questions — project type, success metric, must-have features + explicit non-features, time capacity, login/sensitive data. Answers recorded as fields in `docs/pm/PROJECT_STATE.md`; agent STOPS until answered.
+  - **M04-LITE**: logo placeholder from initials allowed; 1 benchmark suffices; full 5-state matrix only for primary screens.
+  - **M06** absorbs M07: Sprint 0 deploys hello-world to staging; per-feature build + lint + `tsc --noEmit` + main-flow test + two-account check + `SECURITY_CHECKLIST_SMALL.md`.
+  - **M09-LITE**: minimum 1 external tester (name recorded) in `docs/qa/UAT_SIGNOFF_SMALL.md`.
+  - **M12-LITE**: `RUNBOOK_OPS.md` (rollback, backup, monitoring) replaces warranty doc for non-client delivery.
+  - **Stop points (2 only)**: after design+spec (STOP 1), and before deploy (STOP 2). Intake also halts until questions answered.
+  - **Legacy data rule**: existing/legacy data is NOT "small + M08"; it triggers **re-classification to Large** (High-Water Mark) and leaves the small path.
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
 - Example: Landing page, portfolio site, simple CRUD app
 
@@ -184,7 +192,7 @@ Scale classification is driven by **engineering risk profile and operational loa
 **If solo/portfolio**: Skip gates, use complexity path only
 
 **Examples**:
-- Solo portfolio (3 features): Small path → M04 → M05 → M06 → M10 → M12
+- Solo portfolio (3 features): Small path → Intake → M04-LITE → M05 → [STOP 1] → M06 (+security) → M09-LITE → [STOP 2] → M10 → M12
 - Solo SaaS (8 features): Solo SaaS path → M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
 - Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → **M07** → **M09** → M10 → **M11** → M12
 

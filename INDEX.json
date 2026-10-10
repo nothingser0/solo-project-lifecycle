@@ -1396,6 +1396,10 @@
       ]
     },
     {
+      "path": "templates/08-maintenance-ops/RUNBOOK_OPS.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md",
       "cataloged": true,
       "modules": [
@@ -1539,6 +1543,10 @@
     {
       "path": "templates/by-use-case/technical-specs/README.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/essentials/INTAKE_GATE.md",
+      "cataloged": false
     },
     {
       "path": "templates/essentials/PROJECT_STATE_TEMPLATE.md",

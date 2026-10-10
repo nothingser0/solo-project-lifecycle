@@ -206,10 +206,11 @@ if ($isSoloSaaS) {
     }
 }
 
-if ($Module -eq "M07" -and $isSmallScale) {
-    Write-Host "  [INFO] Small Scale detected: SECURITY_CHECKLIST_SMALL.md is required." -ForegroundColor Cyan
-    $gate.Required = @("docs/qa/SECURITY_CHECKLIST_SMALL.md")
-} elseif ($isLargeScale -and $Module -eq "M07") {
+if ($Module -eq "M06" -and $isSmallScale) {
+    Write-Host "  [INFO] Small scale: SECURITY_CHECKLIST_SMALL.md absorbed into M06 (M07 folded)." -ForegroundColor Cyan
+    $gate.Required += "docs/qa/SECURITY_CHECKLIST_SMALL.md"
+}
+if ($isLargeScale -and $Module -eq "M07") {
     Write-Host "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY." -ForegroundColor Cyan
     $gate.Required += "docs/qa/SECURITY_AUDIT.md"
 }
@@ -315,6 +316,10 @@ foreach ($file in $gate.Required) {
         $pathExists = $true
         $actualFile = "docs/pm/RUNBOOK_OPS.md"
     }
+    if (-not $pathExists -and $file -eq "docs/qa/SECURITY_CHECKLIST_SMALL.md" -and (Test-Path "SECURITY_CHECKLIST_SMALL.md")) {
+        $pathExists = $true
+        $actualFile = "SECURITY_CHECKLIST_SMALL.md"
+    }
     if ($pathExists) {
         $minBytes = 200
         if ($file -match 'PRD\.md|FSD\.md|SITEMAP\.md|SCOPE_STATEMENT\.md|DESIGN_SPEC\.md') {
@@ -374,6 +379,23 @@ if ($Module -eq "M00") {
         $compContent = Get-Content "docs/pm/COMPETITIVE_LANDSCAPE.md" -Raw
         if ($compContent -match '(?i)Test Date|Tanggal Uji|Onboarding Time|Waktu Onboarding') {
             Write-Host "  [OK] Hands-on competitor testing evidence verified" -ForegroundColor Green
+        }
+    }
+} elseif ($Module -eq "M01") {
+    if (Test-Path "docs/pm/PROJECT_STATE.md") {
+        $stateRaw = Get-Content "docs/pm/PROJECT_STATE.md" -Raw
+        $fields = @("Delivery:", "Intake-Success-Metric:", "Intake-P0-Features:", "Intake-Time-Capacity:", "Intake-Sensitive-Data:")
+        foreach ($f in $fields) {
+            if ($stateRaw -match "(?im)^\s*-?\s*$([regex]::Escape($f))\s*(UNKNOWN|\[|$)") {
+                Write-Host "  [ERROR] Intake field incomplete or UNKNOWN: $f" -ForegroundColor Red
+                $missingRequired += $f
+            }
+        }
+        if ($stateRaw -match "(?im)^\s*-?\s*Intake-Status:\s*ANSWERED") {
+            Write-Host "  [OK] Intake Gate: all 5 mandatory fields answered" -ForegroundColor Green
+        } else {
+            Write-Host "  [ERROR] Intake Gate: Intake-Status not set to ANSWERED" -ForegroundColor Red
+            $missingRequired += "Intake-Status: ANSWERED"
         }
     }
 } elseif ($Module -eq "M02") {
