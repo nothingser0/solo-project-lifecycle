@@ -11,6 +11,7 @@
 - **Specification Version**: 1.0.0
 - **Design Status**: [DRAFT / IN_REVIEW / FROZEN]
 - **Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
+- **Prototyping Workflow**: [A (Markdown-only) / B (Visual Builder) / C (AI Prototype) / D (Design Tool)]
 - **Approval Date**: [YYYY-MM-DD]
 
 ---
@@ -64,22 +65,25 @@
 ## 3. Exhaustive Screen Inventory (100% SITEMAP Coverage)
 
 > **ABSOLUTE COVERAGE RULE**: Every single route and modal screen identified in `SITEMAP.md` MUST be registered below with a unique `SCR-xx` ID, feature reference, and access permissions. Truncation or sampling is strictly prohibited.
+> 
+> 🛡️ **ANTI-STUB SCREEN SPECIFICATION MANDATE**:
+> Dilarang mendeskripsikan layar hanya dengan satu kalimat umum (misal: *"Tampilan dashboard menampilkan metrik"*). Setiap entri layar wajib mencantumkan **Anatomi Seksi & Komponen Nyata** (misal: Hero, 3 Kartu KPI, Filter Toolbar, Tabel Data 6 Kolom, Modal Konfirmasi) agar layar tidak ter-generate kosong atau terlalu pendek!
 
-| Screen ID | Route URL | Screen Name | Feature ID | UI Pattern Category | Primary Role Access |
-| :---: | :--- | :--- | :---: | :--- | :--- |
-| `SCR-001` | `/` | Public Landing Page | F-01 | Marketing & Hero Canvas | Public (Unauthenticated) |
-| `SCR-002` | `/login` | Authentication Portal | F-01 | Form & Auth Card | Public (Unauthenticated) |
-| `SCR-003` | `/dashboard` | Main Operational Dashboard | F-02 | Dashboard Grid & Metric Cards | All Authenticated Roles |
-| `SCR-004` | `/[primary-resource]` | Primary Resource Directory | F-03 | Data Table with Filters | Staff, Manager, Owner |
-| `SCR-005` | `/[primary-resource]/new` | Create Resource Form | F-03 | Single-Column Card Form | Staff, Manager, Owner |
-| `SCR-006` | `/[primary-resource]/:id` | Resource Detail & History | F-03 | Detail View & Audit Ledger | Staff, Manager, Owner |
-| `SCR-007` | `/[primary-resource]/:id/edit`| Edit Resource Form | F-03 | Form with Inline Validation | Manager, Owner |
-| `SCR-008` | `/[secondary-workflow]` | Operations Workflow View | F-04 | Specialized Interactive Canvas | Operator, Manager, Owner |
-| `SCR-009` | `/approvals/pending` | Review & Approval Queue | F-05 | Table with Two-Person Review | Manager, Owner (No self-approval)|
-| `SCR-010` | `/reports/[primary-report]` | Primary Financial/Audit Report | F-06 | Report Statement Viewer | Auditor, Owner |
-| `SCR-011` | `/settings/profile` | User Profile & Security Settings| F-07 | Tabbed Form & 2FA Setup | All Authenticated Roles |
-| `SCR-012` | `/settings/organization` | Organization Configuration | F-07 | Configuration Form | Owner Only |
-| `SCR-...` | `[All Other Sitemap Routes]` | [Exhaustive list of all sitemap pages] | ... | [Pattern category] | [Roles] |
+| Screen ID | Route URL | Screen Name | Feature ID | Required Section Anatomy (Anatomi Seksi Wajib) | Primary Role Access |
+| :--- : | :--- | :--- | :--- : | :--- | :--- |
+| `SCR-001` | `/` | Public Landing Page | F-01 | 1. Hero + CTA, 2. Problem/Pain Cards, 3. Feature Showcase, 4. Pricing Anchor | Public (Unauthenticated) |
+| `SCR-002` | `/login` | Authentication Portal | F-01 | 1. Logo Minimal, 2. Centered Card (Email/Pass + Remember), 3. Auth Help Links | Public (Unauthenticated) |
+| `SCR-003` | `/dashboard` | Main Operational Dashboard | F-02 | 1. Top KPI Summary (4 Cards), 2. Quick Action Bar, 3. Recent Activity Table, 4. Pending Approvals | All Authenticated Roles |
+| `SCR-004` | `/[primary-resource]` | Primary Resource Directory | F-03 | 1. Search & Filter Bar, 2. Data Table (Zebra, Status Badges), 3. Pagination Footer, 4. Bulk Actions | Staff, Manager, Owner |
+| `SCR-005` | `/[primary-resource]/new` | Create Resource Form | F-03 | 1. Form Stepper/Card, 2. Field Groups with Inline Validation, 3. Sticky Action Bar (Save/Cancel) | Staff, Manager, Owner |
+| `SCR-006` | `/[primary-resource]/:id` | Resource Detail & History | F-03 | 1. Header with Status & Actions, 2. Master Data Card, 3. Related Ledger, 4. Audit History Timeline | Staff, Manager, Owner |
+| `SCR-007` | `/[primary-resource]/:id/edit`| Edit Resource Form | F-03 | 1. Pre-populated Fields, 2. Unsaved Changes Warning, 3. Version Conflict Check, 4. Save/Discard | Manager, Owner |
+| `SCR-008` | `/[secondary-workflow]` | Operations Workflow View | F-04 | 1. Operational Mode Header, 2. Interactive Workspace Canvas, 3. Live Validation Toast | Operator, Manager, Owner |
+| `SCR-009` | `/approvals/pending` | Review & Approval Queue | F-05 | 1. Queue Counter Tabs, 2. Diff/Comparison Viewer, 3. Two-Person Sign-Off Modal (No Self-Approval) | Manager, Owner (No self-approval)|
+| `SCR-010` | `/reports/[primary-report]` | Primary Financial/Audit Report | F-06 | 1. Date Range & Parameter Filter, 2. Aggregated KPI Summary, 3. Detail Data Grid, 4. Export (PDF/CSV) | Auditor, Owner |
+| `SCR-011` | `/settings/profile` | User Profile & Security Settings| F-07 | 1. Personal Avatar & Info, 2. Credential/Password Change, 3. 2FA Authenticator Setup, 4. Active Sessions | All Authenticated Roles |
+| `SCR-012` | `/settings/organization` | Organization Configuration | F-07 | 1. Entity Profile & NPWP, 2. Team & RBAC Invites, 3. Billing & Invoices, 4. Webhook Keys | Owner Only |
+| `SCR-...` | `[All Other Sitemap Routes]` | [Exhaustive list of all sitemap pages] | ... | [Minimum 3-4 concrete functional sections per screen] | [Roles] |
 
 ---
 
@@ -123,6 +127,25 @@
 - **Double-Submit Prevention**: All submit buttons automatically debounce and enter a disabled loading state immediately upon initial click until server response completes.
 - **Idempotency Keys**: All financial, ledger, or state-changing mutations transmit a client-generated UUID in request headers to guarantee safe retries without duplicated records.
 - **CSV Formula Injection Neutralization**: All spreadsheet/CSV export generators prefix cells starting with `=, +, -, @` with a single quote (`'`).
+
+### 5.1.1 Form Validation & Error Feedback Standards
+- **Inline Validation on Blur**: Input field errors render immediately when the user leaves the field (`onBlur`), NEVER before the user finishes typing. Valid fields display no intrusive green ticks (keep interface clean).
+- **Pristine State Submission**: The submit button is ALWAYS enabled on page load. Clicking submit with empty inputs triggers validation on all fields simultaneously and auto-focuses the first invalid input with a smooth scroll.
+- **Destructive Action Safety Protocol**:
+  - Destructive actions (Void transaction, Delete account, Bulk archive) MUST NOT rely solely on simple `window.confirm()`.
+  - **Required Pattern**: Centered `ConfirmDialog` with:
+    1. Red destructive button explicitly stating the consequence (*"Hapus 12 Transaksi"*).
+    2. Specific confirmation text input for high-risk actions (e.g., typing *"HAPUS"* or the entity name).
+    3. Mandatory audit reason textarea for compliance and traceability.
+
+### 5.1.2 Mobile Ergonomics & Tap Target Defense
+- **Mobile Keyboard Viewport Shift**: Forms ensure active input elements maintain minimum `96px` clearance above the virtual keyboard to prevent bottom nav overlay clipping.
+- **Interactive Target Geometry**: All clickable elements (buttons, segmented controls, table row actions) guarantee minimum `44px × 44px` physical tap area on viewport $<768$px.
+
+### 5.1.3 Behavioral UX & Cognitive Load Protocol (BJ Fogg & Nudge Standards)
+- **Sensible Defaults First**: Input forms and filter sets MUST NOT load in a completely blank or paralyzed state. Pre-fill sensible defaults (e.g., date filters default to *"Hari Ini / 30 Hari Terakhir"*, default payment to *"QRIS"*, quantities default to `1`).
+- **One Primary Action per Viewport**: Every distinct view, card container, or modal overlay MUST present exactly **1 high-contrast primary CTA**. Competing actions MUST be styled as secondary (outline), tertiary (ghost), or text links to prevent decision fatigue.
+- **Progress & Completion Visibility**: Multi-step user flows (checkout, setup wizard, onboarding) must visually indicate current progress (step counters, percentage bar) and provide instant visual reward upon completion (checkmarks, clear success summaries).
 
 ### 5.2 Conditional Domain Extensions
 *(Include only subsections relevant to project scope; skip or substitute for unrelated domains)*
@@ -168,3 +191,13 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 - [ ] **3. Data Privacy & Integrity**: Sensitive fields (cost prices, expected opname stock, personal identifiers) are protected by role-based DOM omission.
 - [ ] **4. Mathematical Error Contrast**: Form error text achieves verified $\ge 4.5:1$ contrast against light background surfaces.
 - [ ] **5. Focus Not Obscured Enforced**: Container styles incorporate `scroll-padding-bottom` (minimum 96px) to guarantee input focus visibility above mobile sticky bars.
+
+---
+
+## Machine Validation Summary (M04 Gate)
+
+```text
+Prototyping-Workflow: [A|B|C|D]
+```
+
+*(A = Markdown-only: `docs/design/prompts/` & `docs/design/screens/` are OPTIONAL. B/C/D = Visual Builder / AI Prototype / Design Tool: the gate REQUIRES populated `docs/design/prompts/scr-xx/PROMPT.md` and `docs/design/screens/scr-xx/` output folders — the module CANNOT be closed until those files physically exist.)*

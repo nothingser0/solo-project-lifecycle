@@ -2,15 +2,15 @@
 
 > **Purpose**: Define how long to keep data and when to delete  
 > **When**: M05 Architecture (before collecting user data)  
-> **Target**: Enterprise projects with GDPR, HIPAA, or data privacy requirements
+> **Target**: Enterprise projects with UU PDP No. 27/2022 or sectoral retention requirements
 
 ---
 
 ## Why Data Retention Matters
 
 **Legal Requirements**:
-- GDPR: Can't keep data longer than necessary
-- HIPAA: Must keep health records 6 years
+- UU PDP / GDPR: Tidak boleh menyimpan data lebih lama dari tujuan pemrosesan
+- Kemenkes/UU PDP: Rekam medis disimpan sesuai Permenkes (umumnya >= 5 tahun)
 - Tax law: Keep financial records 7 years
 
 **Business Reasons**:
@@ -53,7 +53,7 @@
 | Data Type | Retention | Rationale | Deletion Method |
 |:----------|:----------|:----------|:----------------|
 | **Security logs** | 1 year | SOC 2, ISO 27001 | Archive to cold storage |
-| **Access logs (PII)** | 6 years | HIPAA (if applicable) | Cold storage |
+| **Access logs (PII)** | 6 years | UU PDP / sektoral | Cold storage |
 | **Application logs** | 90 days | Debugging | Rolling deletion |
 | **Error logs** | 90 days | Debugging | Rolling deletion |
 
@@ -248,7 +248,7 @@ echo "Data retention job complete: $(date)"
 
 ---
 
-## User Rights (GDPR)
+## User Rights (UU PDP No. 27/2022 & GDPR)
 
 ### Right to Erasure (Right to be Forgotten)
 

@@ -44,7 +44,14 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
    - Source: `docs/harness-root/*` and `docs/harness-root/.env.example`
    - Target: `./` (project root: `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./`)
    - Overwrites framework boilerplate (e.g., Next.js AGENTS.md)
-   - **Clean up staging**: Delete staging folder (`rm -rf docs/harness-root/`) immediately after copying to root to enforce a Single Source of Truth and prevent AI coding agent path drift. (Git history serves as immutable backup).
+
+> ⛔ **STRICT ORDERING (MANDATORY — NEVER REORDER)**: The 4 steps below MUST run in this exact sequence. Deleting `docs/harness-root/` BEFORE the copy succeeds destroys the only source of the 9 harness files and is **STRICTLY PROHIBITED**.
+> 1. **Scaffold finishes first**: framework CLI (`create-next-app`, `laravel new`, `django-admin startproject`, `go mod init`, etc.) MUST have completed in root.
+> 2. **Copy staging → root**: `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./`
+> 3. **Verify 9 files exist in root**: `ls -1 | grep -E '^(AGENTS|CONTEXT|ARCHITECTURE|DESIGN|CONVENTIONS|TODO|RUNBOOK_LOCAL|VERIFY_LOCAL)\.md$'; ls -1 .env.example` → must list all 9. Gate aborts if any missing.
+> 4. **Only then delete staging**: `rm -rf docs/harness-root/` (enforces Single Source of Truth; git history is the immutable backup).
+>
+> If scaffold has NOT run yet, keep `docs/harness-root/` intact. NEVER run step 4 unless step 3 passed.
 
 **File placement rules**:
 - **Framework repo**: READ templates only (skill:// paths)
@@ -73,6 +80,12 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 **Indonesia-first practical context**: The skill framework natively supports Indonesian commercial, legal, and regulatory standards (SOW/SPK, Down Payment/milestones, BAST handover, UU PDP No. 27/2022, e-Meterai, Komdigi Private PSE registration, PPN 11%/PKP taxation, OSS-RBA KBLI business classification, and QRIS/Midtrans/Xendit payment gateways).
 
 ## Core rules
+
+**Mandatory gate execution before declaration**: Agents MUST run the official gate validation script (`./scripts/gates/validate-gate.sh <MODULE>` or `.ps1`) and output the exact command output BEFORE declaring ANY module complete, presenting summaries, or stopping turn.
+  - Self-declared completion without running the validator script is STRICTLY PROHIBITED.
+  - If the script exits with code 1 (`Gate validation FAILED`), the module is INCOMPLETE. Do NOT declare completion, do NOT print pre-filled success checklists (`✅`), and do NOT ask for user approval to proceed. Fix the missing or undersized artifacts first, re-run the gate, and repeat until exit code 0.
+  - **Design Pre-Condition (M04)**: `DESIGN.md` CANNOT be drafted until (1) brand logo asset exists in `assets/logo/` (`logo.svg` / `logo.png`) and (2) primary benchmark selection ("paling OK") is recorded in `docs/design/inspiration/notes.md`. If either is missing, generation halts.
+  - *Why*: Prose checklists allow hallucinated completion. Exact machine validation (tokens, minimum file sizes, and non-empty artifacts) is the ONLY authoritative definition of done across all 14 modules.
 
 **Mandatory turn-stopping**: Stop after EVERY module completion. Present artifacts summary, request explicit approval before next module. User saying "fill it in first" applies ONLY to current module, NOT permission to chain-execute.
   - *Why*: Downstream engineering decisions (schema, APIs, code) directly depend on upstream scope and commercial locks. Chained execution without review accumulates cascading mistakes that cost $5\times$ more to refactor later.
@@ -112,28 +125,61 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 
 ## Project scale
 
-**Classification by complexity** (drives module path):
+**Classification by Engineering Risk & Scope (High-Water Mark Rule)**:
+Scale classification is driven by **engineering risk profile and operational load**, NOT arbitrary currency/budget metrics.
 
-**Small / Fast-Track MVP (1–3 core flows / 3–7 Must-Have features, <4 weeks)**:
-- Path: M04 → M05 → M06 → M10 → M12 (5 core modules, skip 9 heavy modules)
+### The 5 Engineering Dimensions:
+1. **P0 Must-Have Feature Count**: Scope boundary locked to Must-Have (P0) only (P1 Should-Have is excluded from scale calculation).
+2. **Blast Radius & Data Sensitivity**: Operational blast radius of bugs (cosmetic vs financial mutation vs health/regulated data).
+3. **Stakeholder & Approval Drag**: 1 solo founder vs 1 client PIC vs multi-tier corporate boards.
+4. **Target Availability & SLA**: Informal best-effort vs 99.0% vs 99.9% 24/7 uptime guarantee.
+5. **External Integrations & Webhooks**: Isolated DB vs asynchronous webhook settlement (Payment, logistics, banking).
+
+> ⚖️ **HIGH-WATER MARK RESOLUTION RULE (MANDATORY)**:
+> When dimensions diverge, **THE HIGHEST APPLICABLE TIER DETERMINES THE SCALE**.
+> Example: A project with only 3 P0 features (Small) that processes financial transactions with payment gateway webhooks (Medium/High blast radius) **MUST BE CLASSIFIED AS MEDIUM** and cannot bypass architecture or testing gates.
+
+---
+
+### 4 Scale Tiers:
+
+**Small / Fast-Track MVP**:
+- **Criteria**: 1–3 core flows, 3–7 P0 Must-Haves, isolated DB, low blast radius (no financial mutations/health data), 1 decision maker, best-effort availability, <4 weeks.
+- **Path**: **Intake → M04-LITE → M05 → [STOP 1] → M06 (incl. security) → M09-LITE → [STOP 2] → M10 → M12 (RUNBOOK_OPS.md)**
+  - *Client delivery only*: add **M03** (before M04-LITE) and **M11** (after M10).
+  - **Intake** (replaces M00/M01/M02 for small): 5 mandatory questions — project type, success metric, must-have features + explicit non-features, time capacity, login/sensitive data. Answers recorded as fields in `docs/pm/PROJECT_STATE.md`; agent STOPS until answered.
+  - **M04-LITE**: logo placeholder from initials allowed; 1 benchmark suffices; full 5-state matrix only for primary screens.
+  - **M06** absorbs M07: Sprint 0 deploys hello-world to staging; per-feature build + lint + `tsc --noEmit` + main-flow test + two-account check + `SECURITY_CHECKLIST_SMALL.md`.
+  - **M09-LITE**: minimum 1 external tester (name recorded) in `docs/qa/UAT_SIGNOFF_SMALL.md`.
+  - **M12-LITE**: `RUNBOOK_OPS.md` (rollback, backup, monitoring) replaces warranty doc for non-client delivery.
+  - **Stop points (2 only)**: after design+spec (STOP 1), and before deploy (STOP 2). Intake also halts until questions answered.
+  - **Legacy data rule**: existing/legacy data is NOT "small + M08"; it triggers **re-classification to Large** (High-Water Mark) and leaves the small path.
 - Template: `templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md`
 - Example: Landing page, portfolio site, simple CRUD app
 
-**Independent / Self-Initiated Product (SaaS, Desktop App, Open-Source Tool) (4–10 core features, 1-3 months)**:
+**Independent / Self-Initiated Product (Solo SaaS, Developer Tool)**:
+- **Criteria**: 8–15 P0 Must-Haves, subscription billing / payments, user data residency, 1 solo founder, 99.0% availability target, 1–3 months.
 - Path: **M00-lite** → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
 - Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` + Full PRD/FSD
 - Validates market/user demand via M00-lite, skips external client contract gates (M03, M11). Commercial model adapts to product (SaaS subscription, one-off download, or free open-source).
 - Example: Independent micro-SaaS, desktop tool (Tauri), open-source developer utility
 
-**Bespoke Freelance & Client Commercial (4–10 core features, 1-3 months)**:
-- Path: M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12
+**Bespoke Freelance & Client Commercial (Agency / Mid-Tier)**:
+- **Criteria**: 8–15 P0 Must-Haves, external API/payment webhooks, fixed commercial contract with 1 Client Single PIC, 99.0% SLA, 1–3 months.
+- Path: M01 → M02 → **M03** → M04 → M05 → M06 → **M07** → **M09** → M10 → **M11** → M12
 - Templates: Full PRD/FSD in `templates/03-architecture-specs/`
 - Example: Custom bespoke business portal, e-commerce, internal company tool, academic software deliverable
 
-**Large Scale (>10 features / 16–25 Must-Have features, 3-6+ months)**:
-- Path: M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13
-- All templates + compliance/scale docs
-- Example: Enterprise platform, multi-tenant SaaS, regulated industry apps
+**Beyond Solo Capacity: Large & Enterprise Scale (A-Series Advisory Lifecycle)**:
+- **Criteria**: >15 P0 Must-Haves, multi-branch, high financial/medical blast radius, or statutory compliance (OJK/BI/UU PDP/ISO 27001).
+- ⛔ **STRICT SOLO CODING PROHIBITION**: Single-developer implementation is strictly prohibited. The solo practitioner acts as **Lead Enterprise Architect / Technical Advisor**.
+- **Path (A00-A04 Architecture & Procurement Readiness Package)**:
+  - **A00**: Pre-Sales, Administrative Eligibility, Bid/No-Bid Decision & `CONSULTING_AGREEMENT.md` (Net 30, liability cap, anti-conflict pact).
+  - **A01**: Work Breakdown Structure (WBS) & Phasing (decomposes scope into autonomous Medium sub-projects; isolates legacy core banking/ERP spikes).
+  - **A02**: C4 Architecture Blueprint, Threat Modeling (STRIDE), Local Data Residency ADR (AWS Jakarta / on-premise), ATAM Quality Scenarios.
+  - **A03**: Vendor Procurement Specifications, Build-vs-Buy Analysis, Weighted Evaluation Matrix & Anti-Lock-In Exit Strategy.
+  - **A04**: Governance Handover (RACI, CAB Process, DR Plan for client team) & Architecture Conformance Review Retainer.
+- Example: Regional banking portal, multi-tenant hospital network, nationwide retail supply chain.
 
 ---
 
@@ -147,9 +193,12 @@ This is a **comprehensive skill toolkit**, not a single loadable skill file:
 **If solo/portfolio**: Skip gates, use complexity path only
 
 **Examples**:
-- Solo portfolio (3 features): Small path → M04 → M05 → M06 → M10 → M12
+- Solo portfolio (3 features): Small path → Intake → M04-LITE → M05 → [STOP 1] → M06 (+security) → M09-LITE → [STOP 2] → M10 → M12
 - Solo SaaS (8 features): Solo SaaS path → M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13
 - Client SaaS (8 features): Medium + gates → M01 → M02 → **M03** → M04 → M05 → M06 → **M07** → **M09** → M10 → **M11** → M12
+
+## Enterprise Advisory Series (Non-Solo Capacity)
+- **A00-A04**: `A00-enterprise-advisory-series.md` - Pure architecture, STRIDE threat modeling, WBS phasing, vendor procurement, and governance advisory.
 
 ## Module structure
 

@@ -191,4 +191,17 @@
 This document locks the baseline requirements for preparing the **Statement of Work (SOW), Contract Value, and Payment Milestone Schedule (Module 03)**.
 
 - Validated by Solo Developer: **[Your Name]** (Date: [YYYY-MM-DD])
+---
+
+## Machine Validation Summary (M02 Scope Lock)
+
+```text
+Scope-P0-Count: [number]
+Scope-Lock-Decision: PENDING
+```
+
+*(Options: LOCKED | PENDING. Machine validator rejects M02 if P0 count falls outside scale limits (Small 3-7, Medium 8-15, Large 16-25), if ambiguous terms exist in Must-Have rows, if Out-of-Scope has fewer than 3 explicit exclusions, or if the Data Confidence Legend is absent).*
+
+---
+
 - Validated by Client PIC: **[Client PIC Name]** (Date: [YYYY-MM-DD])

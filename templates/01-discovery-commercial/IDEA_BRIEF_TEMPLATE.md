@@ -97,18 +97,23 @@
 
 | Feasibility Dimension | Score (1–5) | Confidence | Solo Developer Analysis, Reality Checks & Mitigations |
 | :--- | :---: | :---: | :--- |
-| **1. Technical Feasibility** | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
-| **2. Bandwidth Feasibility (Solo Effort)** | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
-| **3. Regulatory & Legal Feasibility** | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
-| **4. Commercial Feasibility (Unit Economics)** | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
-| **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4)* |
+| **1. Technical Feasibility** (`Technical`) | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
+| **2. Bandwidth Feasibility — Solo Effort** (`Operational`) | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
+| **3. Regulatory & Legal Feasibility** (`Regulatory`) | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
+| **4. Commercial Feasibility — Unit Economics** (`Financial`) | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
+| **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4; `GO` requires average ≥ 3.5, else use `CONDITIONAL_GO`)* |
 
-### Gate Decision
-- [ ] **GO**: Average score $\ge 3.5 / 5.0$ AND **every individual dimension $\ge 3.0$**. Proceed to Module 02.
-- [ ] **CONDITIONAL GO**: Average score $3.0 - 3.49 / 5.0$ AND **every individual dimension $\ge 3.0$** with documented mitigation for any 3.0 score.
-- [ ] **PIVOT**: Average score $< 3.0 / 5.0$ OR **any single dimension $= 2.0$**. Scope/business model restructure required.
-- [ ] **KILL**: Average score $< 2.5 / 5.0$ OR **any single dimension $= 1.0$**. Critical single-point fatal blocker; terminate project.
-- [ ] **PROVISIONAL_PENDING_M00**: Scored provisionally; held pending primary research validation in Module 00.
+### Machine Validation Summary (M01 Feasibility Scores & Decision)
+
+```text
+Feasibility-Score-Technical: [fill 1.0-5.0]
+Feasibility-Score-Operational: [fill 1.0-5.0]
+Feasibility-Score-Regulatory: [fill 1.0-5.0]
+Feasibility-Score-Financial: [fill 1.0-5.0]
+Feasibility-Decision: PENDING
+```
+
+*(Key mapping: `Operational` = Bandwidth Feasibility, `Financial` = Commercial Feasibility. Options: GO | CONDITIONAL_GO | PIVOT | KILL. Machine validator strictly rejects M01 if any dimension is missing, out of the 1.0-5.0 range, < 3.0, if `GO` is declared with average < 3.5, or if Feasibility-Decision is KILL/PIVOT).*
 
 ---
 
@@ -134,7 +139,7 @@
 - Realistic Conversion Rate: Survey Pricing Commitment `[X]%` $\times [0.15, 0.25] =$ `[Y]%` (Midpoint: $\times 0.20$)
 - Modeled Customer Lifetime: `[12–18]` months (accounting for SMB annual churn)
 - Pre-Launch Estimated CAC: `Rp [X]` (Proxy: channel ad clicks / conversion or outreach cost)
-- Fixed Monthly Overhead (DB $25, VPS $20, domain/email $10, APM $15): `Rp [X] / month`
+- Fixed Monthly Overhead (Managed DB, VPS/Container, Domain, Telemetry): `Rp [X] / month`
 - Break-Even Subscribers: $\frac{\text{Fixed Overhead}}{\text{ARPU} \times \text{Gross Margin \%}} =$ `[Z]` active paying subscribers
 - Estimated LTV : CAC Ratio: `[X] : 1` (Target: $\ge 3:1$)
 

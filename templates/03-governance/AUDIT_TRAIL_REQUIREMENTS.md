@@ -2,7 +2,7 @@
 
 > **Purpose**: Define audit logging requirements for compliance  
 > **When**: M05 Architecture (before implementing audit logs)  
-> **Target**: Enterprise projects with SOC 2, ISO 27001, HIPAA, or PCI-DSS requirements
+> **Target**: Enterprise projects with ISO 27001, OJK/BI, Kemenkes, or PCI-DSS requirements
 
 ---
 
@@ -12,7 +12,7 @@
 
 **Purpose**:
 - Security monitoring (detect unauthorized access)
-- Compliance (SOC 2, ISO 27001, HIPAA, PCI-DSS)
+- Compliance (ISO 27001, OJK/BI, Kemenkes, UU PDP, PCI-DSS)
 - Forensics (investigate incidents)
 - Accountability (who did what, when)
 

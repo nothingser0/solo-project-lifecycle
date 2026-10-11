@@ -624,3 +624,11 @@ Low Impact
 **Approved By**:  
 **Name**: [Solo Dev / PM Lead]  
 **Date**: [YYYY-MM-DD]
+
+---
+
+## 7. Machine Validation Outcome
+
+Gate-Decision: PENDING
+
+*(Options: PASS | PENDING | FAIL. Machine validator strictly rejects M00 until this line declares Gate-Decision: PASS and Intent-to-buy >= 30%).*

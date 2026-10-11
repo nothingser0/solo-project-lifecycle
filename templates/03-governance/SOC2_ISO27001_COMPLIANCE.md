@@ -154,7 +154,7 @@
 - [ ] RTO/RPO defined (e.g., 4 hours / 1 hour)
 
 **A.18 - Compliance**
-- [ ] Legal requirements identified (GDPR, HIPAA, etc.)
+- [ ] Legal requirements identified (UU PDP No. 27/2022, sektoral OJK/BI/Kemenkes)
 - [ ] Compliance reviews (annual)
 - [ ] Data protection impact assessments (DPIA)
 - [ ] Records retention policy

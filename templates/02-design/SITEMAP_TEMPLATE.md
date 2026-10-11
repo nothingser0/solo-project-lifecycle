@@ -16,20 +16,55 @@ Total pages: [X screens/routes]
 Estimated implementation: [X days/weeks]  
 Navigation depth: [X levels]
 
+## 1.1 Page Content Anatomy & Minimum Section Standards
+
+> ⚠️ **ANTI-STUB CONTENT MANDATE (Mencegah Halaman Kosong/Pendek Tanpa Bobot)**:
+> AI Agent sering menghasilkan halaman yang "hanya 1 card pendek" atau landing page tanpa isi konkret. Setiap halaman yang didefinisikan dalam sitemap WAJIB merinci komponen konten minimal di bawah ini agar spesifikasi UI tidak menjadi stub/kopong:
+>
+> 1. **Public Landing (`/`)**: Wajib minimal 4 seksi konten nyata:
+>    - *Hero Section* (Heading, sub-headline nilai produk, primary CTA, visual mockup/preview UI).
+>    - *Problem & Social Proof* (3 kartu titik nyeri pengguna, statistik pembuktian, atau logo mitra/klien).
+>    - *Core Feature Showcase* (Minimal 3 blok demonstrasi fitur utama dengan tangkapan layar/diagram interaktif).
+>    - *Pricing / Value Anchor & Closing CTA* (Tabel komparasi paket atau penawaran nilai + tombol aksi penutup).
+> 2. **Dashboard Utuh (`/dashboard`)**: Dilarang hanya menampilkan salam *"Selamat Datang"*. Wajib memuat:
+>    - *Stat KPI Cards* (Minimal 3–4 metrik utama dengan perbandingan tren $+/-\%$).
+>    - *Primary Action Bar* (Tombol jalan pintas transaksi/pembuatan data baru).
+>    - *Recent Activity / Transaction Feed* (Tabel/daftar 5–10 transaksi mutasi terakhir dengan status badge).
+>    - *Pending Action / Approval Alert* (Pemberitahuan item yang membutuhkan perhatian segera).
+> 3. **Halaman Daftar Entitas (`/[resource]`)**: Wajib memuat:
+>    - *Toolbar*: Input pencarian live (debounce 300ms) + filter status dropdown + tombol tambah data.
+>    - *Data Grid / Table*: Kolom data terstruktur + status badge + menu aksi baris (Lihat, Edit, Arsipkan).
+>    - *Pagination & Summary*: Info *"Menampilkan X dari Y data"* + kontrol paginasi.
+> 4. **Halaman Detail Entitas (`/[resource]/:id`)**: Wajib memuat:
+>    - *Header Summary*: ID entitas, tanggal dibuat, status badge, action bar (Ubah, Cetak, Hapus).
+>    - *Field Grouping*: Informasi data dibagi ke 2–3 kartu bertema (Informasi Utama, Detail Finansial/Operasional).
+>    - *Audit History Timeline*: Riwayat perubahan data (siapa yang mengubah, kapan, dan status perubahan).
+>
+> *(Pengecualian*: Hanya halaman `SHELL-AUTH` (login/register) dan `SHELL-PRINT` (cetak struk) yang diizinkan memiliki layout minimalis satu fokus).*
+
 ---
 
-## 2. Public Routes (Unauthenticated)
+## 2. Public Marketing Routes (Header & Footer Shell)
 
-| Route | Page Name | Screen ID | Purpose | Priority |
-|:------|:----------|:----------|:--------|:--------:|
-| `/` | Landing Page | SCR-01 | Homepage, value prop, CTA | P0 |
-| `/about` | About | SCR-02 | Company info | P2 |
-| `/pricing` | Pricing | SCR-03 | Plans & pricing table | P0 |
-| `/features` | Features | SCR-04 | Feature showcase | P1 |
-| `/contact` | Contact | SCR-05 | Contact form | P2 |
-| `/login` | Login | SCR-06 | User authentication | P0 |
-| `/register` | Sign Up | SCR-07 | User registration | P0 |
-| `/forgot-password` | Password Reset | SCR-08 | Password recovery | P1 |
+| Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
+|:------|:----------|:----------|:--------|:---------------|:--------:|
+| `/` | Landing Page | SCR-01 | Homepage, value prop, CTA | Marketing Full OR Minimalist One-Page | P0 |
+| `/about` | About | SCR-02 | Company info | Marketing (Header + Footer) | P2 |
+| `/pricing` | Pricing | SCR-03 | Plans & pricing table | Marketing (Header + Footer) | P0 |
+| `/features` | Features | SCR-04 | Feature showcase | Marketing (Header + Footer) | P1 |
+| `/contact` | Contact | SCR-05 | Contact form | Marketing (Header + Footer) | P2 |
+
+---
+
+## 2.1 Auth Routes (Standalone Minimalist — ZERO Marketing Navbar & Footer)
+
+> 🛡️ **Distraction-Free Auth Rule**: Auth pages MUST NOT render the public marketing header, navigation links, or standard site footer. Render only a centered card with a minimal back-link and logo to maximize conversion and prevent auth drop-off.
+
+| Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
+|:------|:----------|:----------|:--------|:---------------|:--------:|
+| `/login` | Login | SCR-06 | User authentication | Standalone (Card + Minimal Logo only) | P0 |
+| `/register` | Sign Up | SCR-07 | User registration | Standalone (Card + Minimal Logo only) | P0 |
+| `/forgot-password` | Password Reset | SCR-08 | Password recovery | Standalone (Card + Minimal Logo only) | P1 |
 
 ---
 
@@ -137,9 +172,21 @@ Navigation depth: [X levels]
 
 ---
 
-## 9. Navigation Components
+## 9. Navigation Components & Layout Shell Matrix
 
-### Header (Public)
+### Layout Shell Taxonomy
+
+| Shell ID | Shell Name | Visible Components | Target Routes |
+| :--- | :--- | :--- | :--- |
+| **SHELL-MIN-LAND** | Minimalist One-Page | Hero Section + Floating/Compact CTA + Micro Footer (No multi-page links, single scroll) | Single-purpose utility `/`, tool waitlist, early micro-SaaS |
+| **SHELL-MKT** | Marketing Shell | Full Header + Full Footer | `/`, `/about`, `/pricing`, `/features`, `/contact` |
+| **SHELL-AUTH** | Standalone Auth | Centered Card + Minimal Logo (Zero Navbar, Zero Links, Zero Footer) | `/login`, `/register`, `/forgot-password`, `/reset-password` |
+| **SHELL-APP** | Application Dashboard | App Topbar + Collapsible Sidebar + Help Badge (Zero Public Marketing Navbar/Footer) | `/dashboard`, `/[resource]`, `/billing`, `/admin/*` |
+| **SHELL-OPS** | Fullscreen Terminal | High-density Header only (Zero Sidebar, Zero Marketing Navbar/Footer) | `/ops/workspace` (POS/Terminal) |
+| **SHELL-PRINT** | Clean Print Document | Raw Printable Canvas (Zero Header, Zero Footer, Zero Navigation, White BG) | `/invoices/:id/print`, `/receipts/:id/print` |
+| **SHELL-ERR** | Minimal Error | Centered Illustration + Primary Return Button | `/404`, `/403`, `/500`, `/maintenance` |
+
+### Header (Marketing Shell — `/`, `/pricing`, dll.)
 - Logo (links to `/`)
 - Features
 - Pricing
@@ -236,7 +283,7 @@ Navigation depth: [X levels]
 
 ---
 
-## 11. Implementation Checklist
+## 14. Implementation Checklist
 
 - [ ] All routes defined in routing config (Next.js app/, Laravel routes/, Django urls.py)
 - [ ] Navigation components built (Header, Sidebar, Footer)

@@ -48,10 +48,29 @@ Copy-Item (Join-Path $templates "02-design/SCREEN_PROMPT_TEMPLATE.md") (Join-Pat
 switch ($Scale) {
     { $_ -in "small", "open-source" } {
         Write-Host "Configuring for Small / Open-Source Fast-Track MVP..."
+        New-Item -ItemType Directory -Force -Path (Join-Path $TargetDir "assets/logo") | Out-Null
+        New-Item -ItemType Directory -Force -Path (Join-Path $TargetDir "docs/qa") | Out-Null
         Copy-Item (Join-Path $templates "03-architecture-specs/PROJECT_LITE_TEMPLATE.md") (Join-Path $TargetDir "PROJECT_LITE.md") -Force
+        Copy-Item (Join-Path $templates "02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/LOGO_DESIGN_BRIEF.md") -Force
         Copy-Item (Join-Path $templates "02-design/SITEMAP_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/SITEMAP.md") -Force
+        Copy-Item (Join-Path $templates "02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/COMPONENT_REQUIREMENTS.md") -Force
+        Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
+        if (Test-Path (Join-Path $templates "06-qa-uat/SECURITY_CHECKLIST_SMALL.md")) {
+            Copy-Item (Join-Path $templates "06-qa-uat/SECURITY_CHECKLIST_SMALL.md") (Join-Path $TargetDir "docs/qa/SECURITY_CHECKLIST_SMALL.md") -Force
+        }
+        if (Test-Path (Join-Path $templates "06-qa-uat/UAT_SIGNOFF_SMALL.md")) {
+            Copy-Item (Join-Path $templates "06-qa-uat/UAT_SIGNOFF_SMALL.md") (Join-Path $TargetDir "docs/qa/UAT_SIGNOFF_SMALL.md") -Force
+        }
+        if (Test-Path (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md")) {
+            Copy-Item (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md") (Join-Path $TargetDir "docs/pm/RUNBOOK_OPS.md") -Force
+        }
+        if ($Delivery -eq "client") {
+            $contractsDir = Join-Path $TargetDir "contracts"
+            if (-not (Test-Path $contractsDir)) { New-Item -ItemType Directory -Force -Path $contractsDir | Out-Null }
+            Copy-Item (Join-Path $templates "02-legal-commercial/SOW_SMB.md") (Join-Path $TargetDir "contracts/SOW_SMB.md") -Force
+        }
     }
     { $_ -in "solo-saas", "independent" } {
         Write-Host "Configuring for Independent / Self-Initiated Product..."
@@ -73,9 +92,14 @@ switch ($Scale) {
         if (-not (Test-Path $contractsDir)) { New-Item -ItemType Directory -Force -Path $contractsDir | Out-Null }
         Copy-Item (Join-Path $templates "01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/SCOPE_STATEMENT.md") -Force
+        Copy-Item (Join-Path $templates "01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/STAKEHOLDER_MAP.md") -Force
+        Copy-Item (Join-Path $templates "01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/COMMUNICATION_PLAN.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md") (Join-Path $TargetDir "contracts/SOW_CONTRACT.md") -Force
         Copy-Item (Join-Path $templates "02-legal-commercial/NDA_TEMPLATE.md") (Join-Path $TargetDir "contracts/NDA.md") -Force
-        Copy-Item (Join-Path $templates "02-design/SITEMAP_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/SITEMAP.md") -Force
+        $govDirM = Join-Path $TargetDir "docs/governance"
+        if (-not (Test-Path $govDirM)) { New-Item -ItemType Directory -Force -Path $govDirM | Out-Null }
+        Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
+        Copy-Item (Join-Path $templates "02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/LOGO_DESIGN_BRIEF.md") -Force
         Copy-Item (Join-Path $templates "02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/COMPONENT_REQUIREMENTS.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
@@ -100,7 +124,8 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/PRODUCT_STRATEGY.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/SCOPE_STATEMENT.md") -Force
-        Copy-Item (Join-Path $templates "01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md") (Join-Path $TargetDir "contracts/SOW_CONTRACT.md") -Force
+        Copy-Item (Join-Path $templates "00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md") (Join-Path $TargetDir "contracts/CONSULTING_AGREEMENT.md") -Force
+        Copy-Item (Join-Path $templates "00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/WBS_PHASING_PLAN.md") -Force
         Copy-Item (Join-Path $templates "02-legal-commercial/NDA_TEMPLATE.md") (Join-Path $TargetDir "contracts/NDA.md") -Force
         Copy-Item (Join-Path $templates "02-design/SITEMAP_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/SITEMAP.md") -Force
         Copy-Item (Join-Path $templates "02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/COMPONENT_REQUIREMENTS.md") -Force
@@ -132,6 +157,9 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/SCOPE_STATEMENT.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md") (Join-Path $TargetDir "contracts/SOW_CONTRACT.md") -Force
         Copy-Item (Join-Path $templates "02-legal-commercial/NDA_TEMPLATE.md") (Join-Path $TargetDir "contracts/NDA.md") -Force
+        $govDirL = Join-Path $TargetDir "docs/governance"
+        if (-not (Test-Path $govDirL)) { New-Item -ItemType Directory -Force -Path $govDirL | Out-Null }
+        Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
         Copy-Item (Join-Path $templates "02-design/SITEMAP_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/SITEMAP.md") -Force
         Copy-Item (Join-Path $templates "02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/COMPONENT_REQUIREMENTS.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force

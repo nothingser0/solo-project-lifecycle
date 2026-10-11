@@ -40,10 +40,22 @@ cp "$TEMPLATES/02-design/SCREEN_PROMPT_TEMPLATE.md" "$TARGET_DIR/docs/design/pro
 case "$SCALE" in
     small|open-source)
         echo "Configuring for Small / Open-Source Fast-Track MVP..."
+        mkdir -p "$TARGET_DIR/assets/logo"
+        mkdir -p "$TARGET_DIR/docs/qa"
         cp "$TEMPLATES/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "$TARGET_DIR/PROJECT_LITE.md"
+        cp "$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md"
         cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
+        cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"
+        cp "$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md" "$TARGET_DIR/docs/specs/DESIGN_SPEC.md"
         cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
         cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
+        cp "$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md" "$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md" 2>/dev/null || true
+        cp "$TEMPLATES/06-qa-uat/UAT_SIGNOFF_SMALL.md" "$TARGET_DIR/docs/qa/UAT_SIGNOFF_SMALL.md" 2>/dev/null || true
+        cp "$TEMPLATES/08-maintenance-ops/RUNBOOK_OPS.md" "$TARGET_DIR/docs/pm/RUNBOOK_OPS.md" 2>/dev/null || true
+        if [ "$DELIVERY" = "client" ]; then
+            mkdir -p "$TARGET_DIR/contracts"
+            cp "$TEMPLATES/02-legal-commercial/SOW_SMB.md" "$TARGET_DIR/contracts/SOW_SMB.md"
+        fi
         ;;
     solo-saas|independent)
         echo "Configuring for Independent / Self-Initiated Product..."
@@ -62,10 +74,17 @@ case "$SCALE" in
     medium|bespoke|freelance)
         echo "Configuring for Medium Bespoke / Client Commercial..."
         mkdir -p "$TARGET_DIR/contracts"
+        mkdir -p "$TARGET_DIR/assets/logo"
+        mkdir -p "$TARGET_DIR/docs/qa"
         cp "$TEMPLATES/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
         cp "$TEMPLATES/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md" "$TARGET_DIR/docs/pm/SCOPE_STATEMENT.md"
+        cp "$TEMPLATES/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md" "$TARGET_DIR/docs/pm/STAKEHOLDER_MAP.md"
+        cp "$TEMPLATES/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md" "$TARGET_DIR/docs/pm/COMMUNICATION_PLAN.md"
         cp "$TEMPLATES/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md" "$TARGET_DIR/contracts/SOW_CONTRACT.md"
         cp "$TEMPLATES/02-legal-commercial/NDA_TEMPLATE.md" "$TARGET_DIR/contracts/NDA.md"
+        mkdir -p "$TARGET_DIR/docs/governance"
+        cp "$TEMPLATES/03-governance/ADR_TEMPLATE.md" "$TARGET_DIR/docs/governance/ADR.md"
+        cp "$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md"
         cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
         cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"
         cp "$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md" "$TARGET_DIR/docs/specs/DESIGN_SPEC.md"
@@ -84,6 +103,8 @@ case "$SCALE" in
         cp "$TEMPLATES/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md" "$TARGET_DIR/docs/pm/SCOPE_STATEMENT.md"
         cp "$TEMPLATES/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md" "$TARGET_DIR/contracts/SOW_CONTRACT.md"
         cp "$TEMPLATES/02-legal-commercial/NDA_TEMPLATE.md" "$TARGET_DIR/contracts/NDA.md"
+        mkdir -p "$TARGET_DIR/docs/governance"
+        cp "$TEMPLATES/03-governance/ADR_TEMPLATE.md" "$TARGET_DIR/docs/governance/ADR.md"
         cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
         cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"
         cp "$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md" "$TARGET_DIR/docs/specs/DESIGN_SPEC.md"
@@ -108,7 +129,8 @@ case "$SCALE" in
         cp "$TEMPLATES/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md" "$TARGET_DIR/docs/pm/PRODUCT_STRATEGY.md"
         cp "$TEMPLATES/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
         cp "$TEMPLATES/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md" "$TARGET_DIR/docs/pm/SCOPE_STATEMENT.md"
-        cp "$TEMPLATES/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md" "$TARGET_DIR/contracts/SOW_CONTRACT.md"
+        cp "$TEMPLATES/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md" "$TARGET_DIR/contracts/CONSULTING_AGREEMENT.md"
+        cp "$TEMPLATES/00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md" "$TARGET_DIR/docs/pm/WBS_PHASING_PLAN.md"
         cp "$TEMPLATES/02-legal-commercial/NDA_TEMPLATE.md" "$TARGET_DIR/contracts/NDA.md"
         cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
         cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"

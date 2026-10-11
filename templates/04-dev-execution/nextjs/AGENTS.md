@@ -26,6 +26,47 @@
 
 ---
 
+## 1.1 Strict Anti-AI-Slop Code Directives (BANNED PATTERNS)
+
+To prevent AI generated bloat, low-quality code, and hallucinations:
+
+1. **BANNED: Redundant Explanatory Comments**:
+   - ❌ **FORBIDDEN**: Explaining obvious code (e.g., `// Increment counter` above `counter++`, or `// Import React` above imports).
+   - ❌ **FORBIDDEN**: Stub comments like `// TODO: Implement security here` or `// Add your logic`.
+   - ✅ **RULE**: Code must be self-documenting. ONLY comment non-obvious business logic, domain formulas, or deliberate workarounds with a `ponytail:` comment naming the upgrade path.
+
+2. **BANNED: Duplicated / Verbose Logic (DRY Violation)**:
+   - ❌ **FORBIDDEN**: Copy-pasting identical data fetching, auth checks, or validation routines across multiple endpoints.
+   - ✅ **RULE**: Extract reusable utility functions, custom hooks, or middleware. Functions > 50 lines must be justified or decomposed.
+
+3. **BANNED: Hallucinated Libraries & Deprecated APIs**:
+   - ❌ **FORBIDDEN**: Importing non-existent NPM packages or inventing APIs not in official documentation.
+   - ❌ **FORBIDDEN**: Using deprecated packages (e.g., `@supabase/auth-helpers-nextjs`, `bodyParser`, `request`).
+   - ✅ **RULE**: Verify package existence in `package.json` before importing. Use current dynamic APIs (e.g. `await cookies()`, `await headers()` in Next.js 15+).
+
+4. **BANNED: Silent Failures & Empty Catch Blocks**:
+   - ❌ **FORBIDDEN**: `try { ... } catch (e) {}` (eating errors silently without logging or rethrowing).
+   - ❌ **FORBIDDEN**: Returning fake static UUIDs (e.g., `'11111111-...'`) in production code.
+   - ✅ **RULE**: All errors must be explicitly logged, handled, or returned to the client as typed error responses.
+
+5. **BANNED: Insecure Input Handling & Hardcoded Secrets**:
+   - ❌ **FORBIDDEN**: Hardcoded API keys, tokens, database passwords in source code.
+   - ❌ **FORBIDDEN**: Raw SQL concatenation (SQL injection vulnerability).
+   - ✅ **RULE**: Validate 100% of external inputs with Zod schemas. Read secrets exclusively from `process.env`.
+
+---
+
+## 1.2 Domain Reasoning & Semantic Sanity (Think Before You Type)
+
+> Structurally valid code that is semantically nonsensical is a critical failure. Reason about the domain, not just the checklist.
+
+1. **Semantic Sanity Gate (STOP)**: Before creating any entity, field, page, or menu, ask *"Does this belong to THIS domain?"*. If it contradicts the domain (e.g., a *"Medicine List"* inside a *Motorcycle Rental* app, a *"Payroll"* section in a *Point of Sale*): **STOP AND ASK THE USER**. Never invent domain entities absent from `SCOPE_STATEMENT.md` / `FSD.md`.
+2. **Vocabulary Consistency**: Use the ubiquitous language from `CONTEXT.md` / `FSD.md` verbatim. A `Rental` is not an `Order`; a `Tenant` is not a `User`. Never rename domain concepts.
+3. **Logical Consistency**: Enforce legal state transitions only (an invoice cannot go `PAID → DRAFT`; a rental cannot be `RETURNED` before `ACTIVE`). No orphan features: every screen traces to an `F-xx`, every field has a reason.
+4. **Escalate, Never Guess Silently**: If specs contradict, a business rule would be violated, or you cannot justify a file/table/feature from the specs — STOP and ask. A blocked agent asking one clear question is correct; a confident agent shipping an out-of-domain feature is a failure.
+
+---
+
 ## 2. Official Documentation & Framework Version Rules
 
 **Always verify installed versions before writing code (`npm list next react @supabase/ssr zod`):**

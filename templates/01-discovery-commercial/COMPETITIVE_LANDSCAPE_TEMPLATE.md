@@ -42,11 +42,11 @@
 
 **Definition**: Products solving the same problem in the same way (identical product category).
 
-| Competitor Name | URL / Platform | Brief Description | Market Share Est. | HQ / Region |
-| :--- | :--- | :--- | :--- | :--- |
-| [Competitor A] | [website.com] | [1-sentence summary of their positioning] | [X%] or [Dominant/Major/Minor] | [Jakarta/SG/US] |
-| [Competitor B] | [website.com] | [1-sentence summary of their positioning] | [X%] | [Jakarta] |
-| [Competitor C] | [website.com] | [1-sentence summary of their positioning] | [X%] | [Bandung] |
+| Competitor Name | URL / Platform | Test Date | Onboarding Time | Friction Observed / Key Weakness | HQ / Region |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| [Competitor A] | [website.com] | [YYYY-MM-DD] | [X min] | [Hands-on tested friction note] | [Jakarta/SG/US] |
+| [Competitor B] | [website.com] | [YYYY-MM-DD] | [X min] | [Hands-on tested friction note] | [Jakarta] |
+| [Competitor C] | [website.com] | [YYYY-MM-DD] | [X min] | [Hands-on tested friction note] | [Bandung] |
 
 **Total Direct Competitors**: [X] companies
 

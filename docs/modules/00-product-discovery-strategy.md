@@ -12,9 +12,10 @@ This module is the **earliest gate** in the software development lifecycle for s
 - The project requires industry-grade Product Management (PM) standards.
 - There is a need for market validation, competitor analysis, and in-depth user research before writing code.
 
-**Lifecycle Path Guidelines**:
-- **Self-Initiated Product / Solo SaaS**: **DO NOT SKIP MARKET VALIDATION**. The #1 risk for solo SaaS is building something nobody pays for. Execute **M00-lite** (1-page rapid market validation: assumption register + 5 customer interviews + waitlist/landing page test; template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
-- **Fixed-Scope Client Projects / Internal Utilities**: Skip M00 and proceed directly to Module 01 or Module 04 since scope and commercial terms are already set by the client.
+**Lifecycle Path Guidelines (Bound to `Delivery:` in `docs/pm/PROJECT_STATE.md`)**:
+- **`Delivery: solo` (Self-Initiated Product / Solo SaaS)**: **MANDATORY — DO NOT SKIP MARKET VALIDATION**. The #1 risk for solo SaaS is building something nobody pays for. Execute **M00-lite** (1-page rapid market validation: assumption register + 5 customer interviews + waitlist test; template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
+- **`Delivery: client` (Client Commercial Project / Software House)**: **SKIPPED**. Problem scope, requirements, and commercial terms are already set by the client. Proceed directly to Module 01 (Feasibility) or Module 03 (SOW Contract).
+- **`Delivery: internal` / `portfolio`**: **SKIPPED**. Internal workflows or portfolio briefs are pre-determined. Proceed to Module 01 or Fast-Track Intake.
 
 ---
 
@@ -39,8 +40,8 @@ This module is the **earliest gate** in the software development lifecycle for s
           │
           ▼
 [ STEP 3: User Research ]
-  • Interview Guide (10+ users, 30-45 min each)
-  • Survey Design (50+ respondents, quantitative validation)
+  • Interview Guide: 5–10 deep interviews (Full) or 5 interviews with ≥3 confirmed (Lite)
+  • Survey Design: 30+ respondents (Solo/Mid) or 50+ (Enterprise)
   • Persona Creation (Jobs-to-be-Done Framework)
   • User Journey Mapping
   • Pain Point Prioritization
@@ -60,7 +61,7 @@ This module is the **earliest gate** in the software development lifecycle for s
   • North Star Metric measurable
           │
           ▼
-[ OUTPUT: 4 PM Documents ] ──► Ready to Proceed to Module 01: Idea & Feasibility
+[ OUTPUT: 4 Core PM Documents (or 1 M00_LITE.md) ] ──► Ready to Proceed to Module 01: Idea & Feasibility
 ```
 
 ---
@@ -567,30 +568,34 @@ Pillar 3: Actionable Insights (not just data dumps)
 
 ---
 
-## 3. Adaptation Based on Project Scale
+## 3. Adaptation Based on Project Scale & Delivery Model
 
-| Aspect | Solo Dev Product (Self-Initiated) | B2B SaaS Client | Enterprise Client |
+| Aspect | 🔵 Small (Fast-Track / Client) | 🟢 Solo SaaS (Medium Tier) | 🔴 Non-Solo Capacity (Enterprise / A-Series) |
 | :--- | :--- | :--- | :--- |
-| **Recommended Path** | **M00-lite** (1-page validation: Assumption Register + 5 interviews + waitlist) | Full M00 (Market, Competitors, 30+ Survey, Strategy) | Enterprise M00 (Commissioned research, compliance audit, multi-stakeholder) |
-| **Market Research Depth** | Quick TAM/SAM/SOM estimate (1-2 days) using secondary data | Formal industry research, conduct primary research (50+ survey respondents) | Commissioned report (partnership with market research consultancy), in-depth compliance audit |
-| **Competitive Analysis** | 3-5 primary competitors, baseline feature matrix | 5-10 competitors, full SWOT, detailed pricing benchmarking | 10+ competitors, Porter's Five Forces, IP/patent landscape analysis |
-| **User Research** | 5-10 interviews, 30+ survey respondents | 10-20 stakeholder interviews, 50-100 survey respondents, persona validation workshop | Multi-phase research (discovery → validation → usability testing), 30+ interviews, 200+ surveys, ethnographic study |
-| **Product Strategy** | 1-page Vision/Mission, simplified NSM | Formal Vision/Mission, NSM with metric breakdown, Value Prop Canvas | Formal business case, 3-year roadmap, strategic alignment with corporate OKRs |
+| **Recommended Path** | **M00 DI-SKIP** (Handled via Fast-Track Intake Gate) | **M00-lite** (1-page validation: Assumption Register + 5 interviews + waitlist) | **Dialihkan ke Seri A00** (Bid/No-Bid, Evaluasi Tender & Kontrak Konsultasi) |
+| **Deliverable** | Tidak ada dokumen M00 (`PROJECT_STATE.md` intake cukup) | 1 berkas konsolidasi (`docs/pm/M00_LITE.md`) | Paket Kesiapan Tender (`RFP_RESPONSE`, `CONSULTING_AGREEMENT`) |
+| **Market Research** | Di-waive (ide tervalidasi atau ditentukan klien) | Estimasi TAM/SAM/SOM ringkas (1–2 hari) dari data sekunder | Evaluasi kelayakan administratif tender & batas kewajiban legal |
+| **Competitive Analysis** | 1 benchmark visual di M04-LITE | 2 kompetitor langsung + 1 substitusi gratis/manual | Analisis Build-vs-Buy komponen komoditas di Fase A03 |
+| **User Research** | 1 penguji eksternal di M09-LITE | 5 wawancara pengguna (minimal 3 terverifikasi `✅ Real`) | Analisis kebutuhan multi-stakeholder korporasi di Fase A01 |
+| **Stopping Rule** | Selesai di Intake Gate | `Gate-Decision: PASS` + Waitlist $\ge 5\%$ | Keputusan Bid/No-Bid formal (Phase A00) |
 
 ---
 
 ## 4. Output Artifacts (Deliverables)
 
-The final deliverables of Module 00 are **4 PM documents** (or 1 document for **M00-lite**):
+The final deliverables of Module 00 depend on the project path:
 
-1. **`docs/pm/M00_LITE.md`** (For Solo SaaS / M00-lite path): Single consolidated document containing Assumption Register, 5 interview summaries, waitlist test results, and kill criteria. (Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
-2. **`docs/pm/MARKET_RESEARCH.md`**: TAM/SAM/SOM findings, industry trends, regulatory landscape.
+**A. For Solo SaaS / M00-lite Path (1 Consolidated Document)**:
+1. **`docs/pm/M00_LITE.md`**: Single consolidated document containing Assumption Register, 5 user interview summaries, waitlist test results, and kill criteria. (Template: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
+
+**B. For Full M00 Path (4 Distinct PM Documents)**:
+1. **`docs/pm/MARKET_RESEARCH.md`**: TAM/SAM/SOM findings, industry trends, regulatory landscape with explicit cited sources and verification dates.
    - Template: `templates/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md`
-3. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: 5-10 competitor analysis, feature matrix, SWOT, positioning map.
+2. **`docs/pm/COMPETITIVE_LANDSCAPE.md`**: 3–5 hands-on tested competitors with recorded test dates, onboarding times, friction notes, feature matrix, and SWOT.
    - Template: `templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md`
-4. **`docs/pm/USER_RESEARCH_REPORT.md`**: Interview/survey summaries, JTBD personas, user journey, pain matrix.
+3. **`docs/pm/USER_RESEARCH_REPORT.md`**: Interview/survey summaries (5–10 interviews, 30+ surveys), JTBD personas, user journey, pain matrix, and explicit `Gate-Decision: PASS|PENDING|FAIL`.
    - Template: `templates/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md`
-5. **`docs/pm/PRODUCT_STRATEGY.md`**: Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars.
+4. **`docs/pm/PRODUCT_STRATEGY.md`**: Vision/Mission, North Star Metric, Value Prop Canvas, Strategic Pillars.
    - Template: `templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md`
 
 > 📁 **ABSOLUTE FILE LOCATION RULE**:
@@ -612,7 +617,14 @@ After all four PM documents have been written:
    - [ ] Read and verify file `docs/pm/PRODUCT_STRATEGY.md` $\rightarrow$ Vision/Mission, North Star Metric, and Kill Criteria defined.
 
 3. **GATE PASS CRITERIA** (Market Validation):
-   - [ ] **Intent-to-Buy $\ge 30\%$ (or Waitlist conversion $\ge 5\%$)**: From real empirical sample. If primary research has not been executed, gate status is **`PENDING_PRIMARY_RESEARCH`**.
+   - [ ] **Structured Gate Decision**: Document MUST declare `Gate-Decision: PASS` (explicit line).
+   - [ ] **Intent-to-Buy $\ge 30\%$**: At least 30% of surveyed target users confirm intent to purchase at target price.
+   - [ ] **Waitlist Conversion $\ge 5\%$ (with price anchor)**:
+     - $\ge 5.0\%$: PASS.
+     - $2.0\% - 4.9\%$: AMBIGUOUS. One-time copy/value-prop optimization sprint permitted (max 7 days); if re-test remains $<5.0\%$, decision becomes FAIL/PIVOT.
+     - $< 2.0\%$: KILL / STOP immediately.
+   - [ ] **Real Empirical Sample**: For M00-lite, minimum 3 of 5 interviews verified as `✅ Real Interview`. Synthetic data strictly prohibited.
+   - [ ] **Competitor Hands-on Evidence**: `COMPETITIVE_LANDSCAPE.md` must record Test Date, Onboarding Time, and friction notes for each analyzed solution.
    - [ ] **Competitive Moat Identified**: At least 1 clear differentiator that competitors lack or cannot easily replicate (e.g., offline-first architecture, specific niche focus).
    - [ ] **North Star Metric Measurable**: NSM can be tracked with technical instrumentation (event logging, DB queries).
 

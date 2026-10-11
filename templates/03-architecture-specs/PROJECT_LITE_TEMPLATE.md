@@ -51,6 +51,18 @@
 
 ---
 
+
+---
+
+## 2.1 Riskiest Assumption Test (RAT) & Validation Razor
+
+*Identify the top 1–2 premises that would kill this small project if false. Test before building complex logic:*
+
+| ID | Core Hypothesis | Test Method (<1 Day) | Pass Threshold | Outcome / Evidence |
+|:---|:----------------|:---------------------|:---------------|:-------------------|
+| **ASM-01** | [e.g., Users will input data manually daily] | [5 user interviews / paper test] | $\ge 3$ of 5 confirm | [✅ PASS / ⏳ PENDING / ❌ FAIL] |
+| **ASM-02** | [e.g., Free tier Supabase / Vercel is sufficient] | [Architecture spike POC] | Zero paid addons needed | [✅ PASS / ⏳ PENDING / ❌ FAIL] |
+
 ## 3. Commercial Commitments (Client Project) OR Self-Runway (Solo Project)
 
 ### For Solo Portfolio / Personal Utility:

@@ -12,7 +12,7 @@
 - **Target User**: [e.g., Micro-retail store owners with 1–3 branches in metropolitan areas]
 - **Core Pain**: [e.g., Physical stock discrepancies vs Excel records averaging Rp 1–3M/month]
 - **Proposed Solution**: [e.g., Offline-first cashier & inventory app syncing automatically to Cloud/WhatsApp]
-- **Proposed Price Point**: Rp [X] / month (or $Y / month)
+- **Proposed Price Point**: Rp [X] / month
 - **Validation Lead**: [Your Name / Solo Dev]
 - **Date**: [YYYY-MM-DD]
 
@@ -45,14 +45,15 @@
 ## 4. Qualitative User Discovery (5 User Interviews)
 
 > ⚠️ **EVIDENCE RULE**: Data must originate from real user conversations. Never fabricate quotes.
+> State must explicitly be marked as `✅ Real` for verified customer conversations or `⏳ Pending` for planned ones.
 
 | Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
 |:--------------|:---------------------|:-----------------|:------------------------|:-------------------|:---------------:|
-| **INT-01** | [e.g., Grocery store, 2 staff] | Physical paper notebook | Monthly discrepancy ~Rp 800k | Willing to pay Rp 50k–100k/mo | [✅ Real / ⏳ Pending] |
-| **INT-02** | [e.g., Pet shop, 1 branch] | Excel on cashier laptop | Laptop freezes, corrupt spreadsheets | Willing to pay Rp 100k/mo | [✅ Real / ⏳ Pending] |
-| **INT-03** | [e.g., Boutique, 3 staff] | Commercial POS app X | Slow during offline, staff confusion | Willing to pay Rp 150k/mo if offline seamless | [✅ Real / ⏳ Pending] |
-| **INT-04** | [Business Type] | [Current tool] | [Friction] | [WTP] | [✅ Real / ⏳ Pending] |
-| **INT-05** | [Business Type] | [Current tool] | [Friction] | [WTP] | [✅ Real / ⏳ Pending] |
+| **INT-01** | [e.g., Grocery store, 2 staff] | Physical paper notebook | Monthly discrepancy ~Rp 800k | Willing to pay Rp 50k–100k/mo | ⏳ Pending |
+| **INT-02** | [e.g., Pet shop, 1 branch] | Excel on cashier laptop | Laptop freezes, corrupt spreadsheets | Willing to pay Rp 100k/mo | ⏳ Pending |
+| **INT-03** | [e.g., Boutique, 3 staff] | Commercial POS app X | Slow during offline, staff confusion | Willing to pay Rp 150k/mo if offline seamless | ⏳ Pending |
+| **INT-04** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
+| **INT-05** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
 
 ---
 
@@ -65,7 +66,8 @@
 - **Total Unique Visitors**: [X] visitors (Minimum target: $\ge 100$)
 - **Total Waitlist / Email Signups**: [Y] signups
 - **Conversion Rate**: $\frac{Y}{X} \times 100\% = \mathbf{[Z]\%}$
-- **Gate Pass Benchmark**: $\ge 5\%$ waitlist conversion with explicit pricing stated on page.
+- **Waitlist-Conversion-Pct**: [angka persentase, e.g. 5.5]
+- **Gate Pass Benchmark**: $\ge 5.0\%$ waitlist conversion with explicit pricing stated on page ($2.0\% - 4.9\%$ = 1x iteration sprint; $<2.0\%$ = KILL).
 
 ---
 
@@ -88,7 +90,7 @@
 2. **Feasibility Kill**: Estimated MVP development timeline exceeds 6 weeks for 1 developer.
 3. **Regulatory Kill**: Business model legally mandates banking or direct lending capital licenses exceeding solo founder capacity.
 
-### Gate Decision:
-- [ ] **✅ PASS**: Validated (Waitlist $\ge 5\%$, $\ge 3$ interviews confirm core pain & WTP, architecture realistic) $\rightarrow$ Proceed to **M01 (Idea & Feasibility)**.
-- [ ] **⏳ PENDING_PRIMARY_RESEARCH**: Instruments ready, awaiting human user interview execution & live waitlist traffic.
-- [ ] **❌ PIVOT / STOP**: Kill criteria triggered $\rightarrow$ Reposition value proposition or terminate project.
+### Gate Decision (M00 Machine Validation Line):
+Gate-Decision: PENDING
+
+*(Options: PASS | PENDING | FAIL. Machine validator strictly rejects M00 until this line declares 'Gate-Decision: PASS', at least 3 interviews mark '✅ Real', and waitlist meets threshold).*

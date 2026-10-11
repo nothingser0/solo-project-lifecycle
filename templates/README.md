@@ -31,6 +31,7 @@ templates/
 | File | Purpose | Stage / Gate |
 |---|---|---|
 | [`POC_PLAN_TEMPLATE.md`](./00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md) | Enterprise Proof-of-Concept scope, milestone success criteria, sandbox limits | Pre-engagement / M00 |
+| [`CONSULTING_AGREEMENT_TEMPLATE.md`](./00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md) | Enterprise advisory contract: Net 30, liability cap, anti-conflict, pure advisory scope | Module A00 |
 | [`RFP_RESPONSE_TEMPLATE.md`](./00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md) | Formal technical proposal response to enterprise Request for Proposals | Pre-engagement / M00 |
 
 ---
@@ -50,6 +51,7 @@ templates/
 | [`MOSCOW_MATRIX.md`](./01-discovery-commercial/MOSCOW_MATRIX.md) | MoSCoW feature prioritization breakdown (Must/Should/Could/Won't) | Module 02 |
 | [`BACKLOG_TEMPLATE.md`](./01-discovery-commercial/BACKLOG_TEMPLATE.md) | Feature backlog breakdown with user story points & RICE prioritization | Module 02 |
 | [`SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`](./01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md) | Legally binding SOW contract, milestone payments, Single PIC, liability cap | Module 03 [Gate 1] |
+| [`SOLO_SAAS_CHARTER_TEMPLATE.md`](./01-discovery-commercial/SOLO_SAAS_CHARTER_TEMPLATE.md) | Internal governance charter for self-initiated solo SaaS: runway budget, anti-creep razor, ambang gugur | Module 03 (Solo SaaS) |
 | [`COMMUNICATION_PLAN_TEMPLATE.md`](./01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md) | Stakeholder communication cadences, escalation paths, status reports | Module 02 |
 | [`OKR_TEMPLATE.md`](./01-discovery-commercial/OKR_TEMPLATE.md) | Objectives & Key Results tracking sheet for project deliverables | Module 01 |
 | [`RACI_MATRIX_TEMPLATE.md`](./01-discovery-commercial/RACI_MATRIX_TEMPLATE.md) | Role responsibility matrix (Responsible, Accountable, Consulted, Informed) | Module 02 |
@@ -171,7 +173,7 @@ Complete harness sets (AGENTS, ARCHITECTURE, CONVENTIONS, ENV_EXAMPLE) per frame
 - **`laravel/`**: Laravel 11–13+, Livewire / Inertia, Sanctum auth (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `ENV_EXAMPLE.md`)
 - **`django/`**: Django 5–6+, DRF, PostgreSQL, Celery (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `ENV_EXAMPLE.md`)
 - **`go/`**: Go 1.23+, Fiber / Echo, pgx, SQL migrations (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `ENV_EXAMPLE.md`)
-- **`rails/`**: Ruby on Rails 7+, ActiveRecord, RSpec
+- **`rails/`**: Ruby on Rails 7+, ActiveRecord, RSpec (`AGENTS.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `.env.example`)
 - **`remix/`**: Remix / React Router v7 full-stack web standards
 - **`mern/`**: Express.js + React + MongoDB Mongoose
 - **`aspnet/`**: ASP.NET Core Web API + Entity Framework

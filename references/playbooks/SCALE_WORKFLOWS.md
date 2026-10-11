@@ -4,45 +4,59 @@
 
 ---
 
-## 📊 Scale Classification (from M01)
+## 📊 Scale Classification (Engineering Risk & High-Water Mark)
 
-| Scale | Budget Range | Timeline | Team Size | Module Path |
-|:------|:-------------|:---------|:----------|:------------|
-| **Kecil (Solo MVP)** | <Rp 50M | 1-3 bulan | 1-2 orang | 10 modules (M01 → M11 + M07-LITE, skip M00/M08/M12/M13) |
-| **Menengah (Agency)** | Rp 50-200M | 3-6 bulan | 3-6 orang | 10 modules (M01 + skip M00/M08/M12/M13) |
-| **Besar (Vendor)** | Rp 200-500M | 6-12 bulan | 6-12 orang | 12 modules (M01 + skip M00/M13) |
-| **Enterprise** | >Rp 500M | 12-24 bulan | 12+ orang | 14 modules (full M00-M13) |
+> ⚖️ **HIGH-WATER MARK RULE**: When dimensions diverge, **THE HIGHEST APPLICABLE TIER DETERMINES THE SCALE**.
+> P0 Must-Have features are counted exclusively (P1 Should-Have excluded). Any high blast radius or webhook requirement escalates the tier.
 
-**Note**: For Small/Medium/Large scales, M01 executes first to determine scale classification. For Enterprise scale, M00 (Product Discovery) executes before M01.
+| Scale | P0 Must-Have Features | Blast Radius & Data | External Integrations | SLA & Uptime | Governance / Team | Timeline |
+|:------|:----------------------|:--------------------|:----------------------|:-------------|:------------------|:---------|
+| **Kecil (Fast-Track MVP)** | **3–7 P0** | Rendah (tidak ada mutasi finansial/rekam medis) | DB terisolasi (tanpa webhook eksternal) | Best-effort | 1 founder / dev | <4 minggu |
+| **Menengah (Solo SaaS / Agency)** | **8–15 P0** | Sedang (transaksi langganan, billing pengguna) | Webhook Payment Gateway / SMS / Mailer | 99.0% SLA | 1 founder atau 1 Client PIC | 1–3 bulan |
+| **Besar (Platform / Scaled)** | **16–25 P0** | Tinggi (multi-cabang, mutasi finansial massal) | Integrasi multi-vendor, ETL migrasi DB | 99.5% SLA | Tim vendor / multi-divisi | 3–6 bulan |
+| **Enterprise (Mission-Critical)** | **>25 P0** | Kritis (perbankan, kesehatan, regulasi ketat) | Core banking, ERP legacy, SSO/SAML | 99.9% 24/7 SLA | Multi-stakeholder, CAB, audit berkala | 6–12+ bulan |
 
 ---
 
-## 🔵 SKALA KECIL (Solo MVP)
+### Module Path by Scale:
+- **Kecil (Fast-Track MVP)**: `M04 → M05 → M06 → M10 → M12` (5 modul; M01 via `PROJECT_LITE.md`)
+- **Solo SaaS (Self-Initiated)**: `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13` (10 modul, skip gate klien M03/M11)
+- **Menengah (Client Commercial)**: `M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 → M12` (10 modul + gate legal)
+- **Besar (Platform)**: `M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13` (12 modul + M08 migrasi data)
+- **Enterprise**: Full `M00 → M13` (14 modul tanpa skip + ekstensi tata kelola RACI, ADR, CAB)
+
+---
+
+---
+
+## 🔵 SKALA KECIL (Fast-Track MVP / Solo Project)
 
 **Characteristics**:
-- Solo dev or 2-person team
-- Budget <Rp 50M
-- Timeline: 1-3 bulan
-- No legal complexity (internal project, prototype)
-- Lightweight acceptance testing (self-sign-off in M09)
+- Solo developer / 1 developer + 1 stakeholder
+- Timeline: <4 minggu (<1 bulan)
+- Fitur: 3–7 P0 Must-Have (scope terkunci)
+- Database terisolasi, low blast radius (tanpa mutasi finansial rumit / rekam medis)
+- Jalur pengiriman default: Solo / Portfolio / Internal Tool
 
-**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07-LITE → [M08-LITE*] → M09 → M10 → M11**
+> ⚖️ **LEGACY DATA RE-CLASSIFICATION RULE**:
+> Skala Kecil berasumsi *greenfield* (data kosong). Jika proyek membutuhkan migrasi data lama (ETL relasional), proyek **otomatis naik kelas ke Skala Besar** via High-Water Mark rule dan wajib menjalankan M08 penuh.
 
-**Note**: *M08-LITE only if client has existing data to migrate (discovered in M02)
+**Alur 6 Langkah Inti**:
+1. **Intake Gate** (5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md`) $
+ightarrow$ Klasifikasi skala otomatis.
+2. **M04-LITE** (Logo inisial SVG $\ge 50$B boleh, 1 benchmark visual, token anti-slop di `DESIGN.md`).
+3. **M05** (Dokumen terpadu `PROJECT_LITE.md` mencakup skema, API, dan Riskiest Assumption Test).
+   🛑 **STOP 1**: Tinjau desain & spek sebelum coding.
+4. **M06** (Sprint 0 deploy hello-world staging $
+ightarrow$ build atomik $
+ightarrow$ lint & `tsc --noEmit` $
+ightarrow$ `SECURITY_CHECKLIST_SMALL.md`).
+5. **M09-LITE** (Uji orang lain: minimal 1 penguji eksternal tercatat di `UAT_SIGNOFF_SMALL.md`).
+   🛑 **STOP 2**: Verifikasi fungsi lokal & approval deploy.
+6. **M10** (Deploy production, verifikasi HTTP 200, anti-Friday deploy) $
+ightarrow$ Operasional mandiri via `RUNBOOK_OPS.md` (M12).
 
-**Skipped Modules**:
-- ❌ **M00** - Product Discovery (skip: idea validated already)
-- ⚠️ **M08** - Full Data Migration (skip if greenfield, use M08-LITE if data exists)
-- ❌ **M12** - Warranty Period module (skip: 30-day warranty attached in M11 handover instead)
-- ❌ **M13** - Product Ops (skip: no analytics team)
-
-**Required Modules** (executed for Small Scale):
-- ✅ **M07-LITE** - Security Baseline Checklist (mandatory: SECURITY_CHECKLIST_SMALL.md)
-
-**Module Count**: 
-- Base: 10 modules (M01, M02, M03, M04, M05, M06, M07-LITE, M09, M10, M11)
-- +1 if data migration needed: M08-LITE (conditional)
-- Full modules skipped: M00, M12 (warranty in M11), M13
+*(Tambahan hanya jika ada klien: **M03 SOW singkat** sebelum desain, dan **M11 serah terima singkat** setelah deploy).*
 
 ---
 
@@ -209,336 +223,113 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
-## 🟢 SKALA MENENGAH (Agency Project)
+## 🟢 SKALA MENENGAH (Medium / Mid-Tier / Agency)
 
 **Characteristics**:
-- 3-6 person team (PM, Tech Lead, 2-3 devs, QA)
-- Budget: Rp 50-200M
-- Timeline: 3-6 bulan (12-24 minggu)
-- Client: SME, startup Series A/B
-- Payment: 3 milestones (30-30-40%)
-
-**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11**
-
-**Skipped Modules**:
-- ❌ **M00** - Product Discovery (client has validated idea)
-- ❌ **M08** - Data Migration (greenfield project OR client data clean)
-- ❌ **M12** - Warranty (included in retainer contract)
-- ❌ **M13** - Product Ops (client handles post-launch)
-
-**Note**: 10 modules executed (M01 + 9 scale-specific), 4 modules skipped.
+- 1 Solo Developer + 1 Client Single PIC (or small team 2–3 devs)
+- Timeline: 1–3 bulan
+- Fitur: 8–15 P0 Must-Have (terkunci formal di `SCOPE_STATEMENT.md`)
+- Integrasi eksternal: Webhook Payment Gateway, WhatsApp API, transactional email
+- Model pengiriman: Client Commercial (Software House/Freelance) atau Solo SaaS Mandiri
 
 ---
 
-### Real Case Timeline (Agency)
+### Alur 8 Fase Tangkas (Client Commercial 30/40/30)
 
-#### **Week 0: Kick-off & Discovery (3-5 hari)**
+```text
+[ FASE 1: INTAKE & REGULASI ]
+  • Intake 5 pertanyaan + evaluasi sektor (medis/keuangan)
+  • Tentukan Delivery: client / solo
 
-**Project Manager**:
-- Kick-off meeting dengan client (2-3 jam)
-- Requirements gathering: fitur, user roles, critical flows
-- Project Brief (3-5 halaman):
-  - Background & objective
-  - Feature list (must/should/nice-to-have)
-  - Timeline & milestones
-  - Assumptions & risks
-- Setup project tracking (Jira/Linear)
+[ FASE 2: COMMERCIAL LOCK (M03) ] ──► 🛑 STOP 1 (DP 30% Cair)
+  • SOW termin 30/40/30, Single PIC, batas revisi 2x, deemed acceptance 7 hari
+  • Akun pihak ketiga atas nama klien, CR framework aktif
+  • Invoice termin 1 + e-Meterai / NDA
 
-**Tech Lead**:
-- Technical feasibility review
-- Stack decision (Next.js? Laravel? React Native?)
-- High-level architecture (monolith vs microservices)
-- Estimasi timeline per feature
-- Technical Brief (2-3 halaman):
-  - Tech stack
-  - Deployment plan
-  - Third-party integrations
-  - Database choice
+[ FASE 3: DESIGN & SPEC (M04 + M05) ] ──► 🛑 STOP 2 (Design Freeze & Tech Spec Signoff)
+  • M04 spesifikasi risiko (layar kritis 5-state penuh, layar statis ringkas)
+  • M05 PRD + FSD + Traceability Matrix + Skema DDL + Rencana Rollback DB
+  • Scope terkunci mati (CR log aktif)
 
-**Designer** (jika ada):
-- User flow sketches
-- Low-fidelity wireframes (Figma)
-- Design system reference (Shadcn? Material? Custom?)
+[ FASE 4: SPRINT BUILD & DEMO (M06) ] ──► 🛑 STOP 3 (Termin 2: 40% Cair Pasca Demo Staging)
+  • Sprint 0: scaffold + staging setup + dummy data seeder realistis
+  • Sprint eksekusi: TODO.md ber-Definition of Done per sprint
+  • Build, lint, tsc --noEmit, test otomatis
+  • DEMO STAGING MILESTONE ke Klien Single PIC ──► Klien bayar Termin 2 (40%)
 
-**Output**:
-- `docs/pm/IDEA_BRIEF.md`
-- `docs/pm/TECH_BRIEF.md`
-- Wireframes (Figma link)
-- Jira/Linear board dengan epic/story
-- SOW signed + 30% down payment
+[ FASE 5: UAT BISNIS & REMEDIASI (M09) ] ──► 🛑 STOP 4 (UAT Signoff Formal)
+  • Pengujian skenario bisnis oleh Klien Single PIC di staging
+  • Aturan bug: S1/S2 wajib 0; bug S3/S4 dicatat untuk masa garansi (tidak menahan UAT)
+  • UAT Signoff Report ditandatangani / Deemed approval 7 hari
 
-**Timeline**: 3-5 hari
+[ FASE 6: RILIS TERKONTROL (M10) ]
+  • Deploy ke production environment / staging akhir dev (preview domain)
+  • Probe curl HTTP 200, tes backup & uji restore nyata
+  • Hypercare 1-2 minggu dimulai
 
----
+[ FASE 7: BAST & HANDOVER LEVERAGE (M11) ] ──► 🛑 STOP 5 (Pelunasan 30% Terakhir)
+  • Klien transfer sisa pelunasan 30%
+  • TTD BAST (Berita Acara Serah Terima) fisik/digital
+  • BARU pindahkan DNS ke domain klien, transfer akun hosting, rotasi kredensial root
 
-#### **Week 1-2: M02 Discovery + M03 Legal (1-2 minggu)**
-
-**M02 - Discovery**:
-- Stakeholder mapping (Power/Interest matrix)
-- Targeted discovery interview (business objectives, user personas, pain points, integrations, compliance)
-- MoSCoW prioritization (26-40 features untuk agency scale)
-- Scope boundary locking (in/out scope, client dependencies, SLA)
-- Output: `SCOPE_STATEMENT.md`, `STAKEHOLDER_MAP.md`
-
-**M03 - Legal SOW**:
-- Payment structure: 30-30-40% (DP, Alpha, Final)
-- Contract model: Fixed-price milestone
-- Legal clauses: IP rights, liability cap, CR protocol, Single PIC rule
-- DPA (Data Processing Agreement) jika handle PII
-- Output: `SOW_CONTRACT.md` (signed), `PROJECT_CHARTER.md`
-- **GATE (BLOCKING)**: DP funds received → proceed to design
+[ FASE 8: WARRANTY & RETROSPEKTIF (M12) ]
+  • Garansi 30-60 hari aktif (hanya perbaikan bug FSD, tertulis di BAST)
+  • Retrospektif solo dev & penutupan time tracking
+```
 
 ---
 
-#### **Week 3-4: M04 Design & Prototyping (2 minggu)**
+## 🟡🔴 SKALA DI LUAR KAPASITAS SOLO (Large & Enterprise — A-Series Advisory)
 
-**Designer**:
-- High-fidelity mockups (key screens: login, dashboard, 2-3 main features)
-- Design system setup (colors, typography, components)
-- Client review & revision (1-2 rounds)
-- Output: Figma mockups (10-20 screens), interactive prototype
-
-**Tech Lead + Senior Dev**:
-- Database schema design (ERD)
-- API contract design (10-30 endpoints, OpenAPI optional)
-- Output: `DESIGN_SYSTEM.md`, `COMPONENT_REQUIREMENTS.md`
-- **GATE**: Design freeze signed by client
+> ⛔ **STRICT SOLO CODING PROHIBITION**:
+> Proyek dengan **>15 fitur P0**, multi-cabang, mutasi finansial/rekam medis massal, atau regulasi statutori (OJK/BI/UU PDP/ISO 27001) **SECARA FISIK DAN HUKUM TIDAK BISA DIKERJAKAN SOLO**.
+> Menjanjikan koding mandiri untuk skala ini adalah anti-pola berbahaya. Skill ini mengalihkan mode solo developer menjadi **Lead Enterprise Architect / Technical Advisor**.
 
 ---
 
-#### **Week 5-6: M05 Architecture (1-2 minggu)**
+### Alur 5 Fase Advisory Korporat (Seri A00 – A04)
 
-**Tech Lead**:
-- ARCHITECTURE.md:
-  - Directory structure
-  - Data flow
-  - Auth strategy
-  - File upload strategy
-  - Error handling pattern
-- Setup repo:
-  - Scaffold project (create-next-app, laravel new)
-  - CI/CD pipeline (GitHub Actions → staging)
-  - Staging environment
-  - `.env.example`
-  - `README.md` (setup instructions)
-- Output: `PRD.md`, `FSD.md`, staging URL live (blank app)
-- **GATE**: Stack approved → ready to code
-
----
-
-#### **Week 7-14: M06 Development (2-4 sprints, 4-8 minggu)**
-
-**Sprint Structure** (2-week sprints):
-
-**Sprint Planning** (awal sprint, 2 jam):
-- PM + Tech Lead breakdown tasks
-- Devs pick tasks sesuai capacity
-- Estimasi effort (story points atau jam)
-
-**Daily Standups** (async di Slack atau sync 15 menit):
-- What I did yesterday
-- What I'll do today
-- Blockers
-
-**Development**:
-- Backend dev: API implementation
-- Frontend dev: UI implementation
-- Code review: minimal 1 senior approve sebelum merge
-- Git workflow:
-  - `main` = production (protected)
-  - `staging` = testing environment (auto-deploy)
-  - Feature branches: `feat/user-auth`, `feat/inventory-crud`
-  - Commit convention: `feat:`, `fix:`, `refactor:`
-
-**Testing** (continuous):
-- Dev testing: manual testing setiap feature selesai
-- QA testing (jika ada QA): test case document + bug tracking
-- Staging deploy: setiap merge ke staging branch
-- Client demo: end of sprint (1-2 jam)
-
-**Output per sprint**:
-- Working features di staging
-- Bug list (Jira/Linear)
-- Sprint report (velocity, burndown)
-
-**Timeline**: 4-8 minggu (2-4 sprints)
-
----
-
-#### **Week 15-16: M07 QA & SIT (1-2 minggu)**
-
-**Internal QA**:
-- Regression testing (semua feature)
-- Security basic check:
-  - SQL injection test (manual atau Burp Suite)
-  - XSS test
-  - Auth bypass test
-  - CORS check
-- Performance check:
-  - Lighthouse score
-  - API response time (<500ms target)
-  - Database N+1 query
-- Bug fixing sprint
-
-**Output**: `docs/qa/SIT_WORKBOOK.md`, bug list prioritized
-
----
-
-#### **Week 17-18: M09 UAT (2-3 minggu)**
-
-**UAT Setup**:
-- UAT environment (isolated dari staging)
-- Test user accounts (per role: admin, manager, staff)
-- UAT guide document (20-30 halaman dengan screenshot)
-- Training session (1-2 jam)
-
-**UAT Execution**:
-- Client test against acceptance criteria
-- Bug submission via Jira/Linear
-- P0/P1 bugs wajib fix sebelum deploy
-- P2/P3 masuk post-launch backlog
-- Sign-off formal: Email/dokumen approval
-
-**Defect Triage Matrix**:
-- S1 (Critical): Blocking feature, data loss → Fix immediately
-- S2 (High): Major feature broken, workaround exists → Fix before go-live
-- S3 (Medium): Minor bug, cosmetic → Fix post-launch or defer
-- CR (Change Request): New feature → Formal CR protocol (additional cost)
-
-**Output**: `UAT_WORKBOOK.md`, `UAT_SIGNOFF_REPORT.md` (signed by Client PIC)
-**GATE (BLOCKING)**: UAT sign-off received → proceed to deploy
-
----
-
-#### **Week 19: M10 Deployment (3-5 hari)**
-
-**DevOps/Tech Lead**:
-- Production environment setup:
-  - Server (AWS, DigitalOcean, Railway, Vercel)
-  - Database (production instance, backup setup)
-  - Domain + SSL
-  - Environment variables
-  - CDN jika perlu (Cloudflare)
-- Deploy production
-- Smoke testing (test 5-10 critical flows)
-- Monitoring setup (Sentry, LogRocket, atau simple error logging)
-
-**PM**:
-- Handover Document (5-10 halaman):
-  - Credentials (server, database, domain, third-party APIs)
-  - Deployment guide
-  - Common troubleshooting
-  - Warranty terms (30-90 hari gratis bug fix)
-- Training session dengan client (1-2 jam):
-  - Admin panel walkthrough
-  - How to manage content/users
-  - How to contact support
-- Invoice final payment (40% remaining)
-
-**Output**: Production URL live, Handover doc, Client training done
-**GATE**: Production smoke test passes → handover
-
----
-
-#### **Week 20: M11 Handover (1 minggu)**
-
-**Documentation Delivery**:
-- `USER_MANUAL.md` (20+ pages)
-- `ADMIN_MANUAL.md` (user management, system config)
-- `RUNBOOK_PRODUCTION.md` (deployment SOP)
-- `API_DOCUMENTATION.md` (Swagger export)
-
-**Source Code Handover**:
-- Git repository transfer
-- Ownership confirmation
-
-**Credential Handover** (encrypted):
-- Bitwarden shared vault
-- Credentials: DB password, SSH keys, API keys, SSL cert, admin panel
-
-**Output**: All docs delivered, source code transferred
-**GATE**: Final payment (40%) received
-
----
-
-### Total Timeline: **18-20 minggu (4.5-5 bulan)**
-
-**Payment Structure**:
-- Milestone 1 (DP): 30% upfront (contract signing)
-- Milestone 2 (Alpha): 30% (backend + basic UI staging demo)
-- Milestone 3 (Final): 40% (UAT sign-off, production live)
-
-**Post-Launch**:
-- Warranty period: 30-90 hari gratis bug fix
-- Support: Bug fixes (gratis), new features (billable CR)
-
----
-
-## 🟡 SKALA BESAR (Vendor/Large Project)
-
-**Characteristics**:
-- 6-12 person team (PM, Scrum Master, Tech Lead, 4-6 devs, 2 QA, DevOps, Designer)
-- Budget: Rp 200-500M
-- Timeline: 6-12 bulan (24-48 minggu)
-- Client: Corporate, government tender, SOE
-- Compliance: PDP Law, ISO 27001 (optional)
-- Payment: 4 milestones (20-30-30-20%)
-
-**Module Sequence**: **M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12**
-
-**Skipped Modules**:
-- ❌ **M00** - Product Discovery (RFP already defines product)
-- ❌ **M13** - Product Ops (client internal analytics team)
-
-**Note**: 12 modules executed (M01 + 11 scale-specific), 2 modules skipped.
-
----
-
-### Real Case Timeline (Vendor Scale)
-
-*(See user-provided Week 0-9 breakdown for detailed workflow)*
-
-**Key Differences from Agency Scale**:
-
-1. **Pre-Sales (Week 1-2)**: RFP response, budget estimation, risk assessment
-2. **Legal Contracts (Week 3)**: SOW + MSA + DPA + NDA (2-3 negotiation rounds)
-3. **Design Phase (Week 4-6)**: User research, competitor benchmarking, prototype interaktif
-4. **Architecture (Week 7-8)**: C4 model, Infrastructure design (AWS/GCP), Security design (RBAC, encryption)
-5. **Development (Week 9-24)**: 8-16 minggu dengan 2-week sprints, daily standups, sprint reviews
-6. **QA/Security (Week 25-28)**: Third-party penetration test (mandatory), load testing (10K users)
-7. **Data Migration (Week 29-30)**: ETL scripts, reconciliation, client data sign-off
-8. **UAT (Week 31-33)**: 2-3 minggu dengan formal UAT workbook (100+ test cases)
-9. **Deployment (Week 34)**: CAB approval, blue-green deployment, war room 24 jam
-10. **Handover (Week 35-36)**: 4 training sessions (end-user, admin, technical ops, executive)
-11. **Warranty (Month 4-6)**: 90 hari warranty, SLA response/resolution times
-
-**Payment Structure (4 Milestones)**:
-- Milestone 1 (DP): 20-30% (contract signing)
-- Milestone 2 (Alpha): 25-30% (backend + basic UI staging demo)
-- Milestone 3 (Beta): 20-25% (SIT passed, ready UAT)
-- Milestone 4 (Final): 10-20% (UAT sign-off, pre-BAST)
-
-**Total Timeline**: **32-36 minggu (8-9 bulan)**
-
----
-
-## 🔴 SKALA ENTERPRISE
-
-**Characteristics**:
-- 12+ person team (PM, Business Analyst, Tech Lead, 6-8 devs, 2-3 QA, Security Auditor, DevOps, UX Researcher, Product Analyst)
-- Budget: >Rp 500M
-- Timeline: 12-24 bulan (48-96 minggu)
-- Client: Banking (OJK), Healthcare (Kemenkes), Telco (Kominfo), Government (LKPP)
-- Compliance: **MANDATORY** - PDP Law, ISO 27001, SOC2, OJK regulations
-- Payment: 4 milestones (20-30-30-20% atau 30-30-30-10%)
-
-**Module Sequence**: **FULL M00 → M01 → M02 → M03 → M04 → M04B → M05 → M05B → M06 → M06B → M07 → M08 → M09 → M10 → M11 → M12 → M13**
-
-**No Skipped Modules** - Full 14-module lifecycle required for regulatory compliance.
-
-**Module Count**: M00, M01, M02, M03, M04, M04B, M05, M05B, M06, M06B, M07, M08, M09, M10, M11, M12, M13 = 17 total steps (14 major modules + 3 sub-modules B)
-
-> **Note**: M04B, M05B, M06B are **subsections within their parent module files** (`docs/modules/04-uiux-prototyping.md`, `05-architecture-specs.md`, `06-development-execution.md`), not separate module files. They represent Enterprise-specific extensions executed after the base module.
+```text
+[ TENDER / KESEMPATAN ENTERPRISE ]
+                │
+                ▼
+[ FASE A00: Bid/No-Bid, Evaluasi Kelayakan & Kontrak Konsultasi ] ──► 🛑 STOP 1 (Perjanjian Konsultasi)
+  • Uji kelayakan administratif tender (PT/CV, NPWP, sertifikasi, modal disetor)
+  • Matriks Bid/No-Bid (Kapasitas, margin risiko, larangan penawaran gratis tak terbatas)
+  • Kontrak: CONSULTING_AGREEMENT_TEMPLATE.md (Termin Net 30, limit liabilitas, pakta anti-konflik)
+                │
+                ▼
+[ FASE A01: WBS, Dekomposisi Domain & Isolasi Legacy ]
+  • Dekomposisi Scope: Memecah >15 P0 menjadi 2-3 paket Skala Menengah mandiri
+  • Uji Kelayakan Pecahan: Setiap paket wajib diuji lolos Scale: medium via classify-scale.sh
+  • Isolasi Legacy: Konektor core banking/ERP warisan dipisahkan menjadi paket spike khusus
+  • Output: WBS_PHASING_PLAN.md
+                │
+                ▼
+[ FASE A02: Arsitektur C4, STRIDE & Skenario Kualitas Terukur ] ──► 🛑 STOP 2 (Sign-Off Arsitektur)
+  • C4 Model (Context, Containers, Components) + ADR Suite
+  • Pemodelan Ancaman (STRIDE): Mitigasi konkret per container
+  • Skenario Kualitas ATAM: Latensi konkret, throughput TPS terukur, RPO <15m, RTO <1h
+  • Residensi Data Lokal: ADR penguncian region lokal (AWS Jakarta ap-southeast-3 / on-premise)
+  • Pemetaan Kepatuhan: UU PDP No. 27/2022, POJK Siber, PBI, Kemenkes SatuSehat
+  • Output: ENTERPRISE_ARCHITECTURE_BLUEPRINT.md, ADR_SUITE.md, THREAT_MODEL_STRIDE.md
+                │
+                ▼
+[ FASE A03: Pengadaan Vendor, Build-vs-Buy & Strategi Anti-Lock-In ]
+  • Penyusunan Spesifikasi Teknis Pengadaan (Lampiran Teknis RFP Korporat)
+  • Analisis Build-vs-Buy untuk komponen komoditas (Auth IAM, Payment Gateway, CMS)
+  • Matriks Evaluasi Vendor Terbobot (Objektif, tanpa konflik kepentingan advisor)
+  • Strategi Anti-Lock-In: Skema DDL terbuka dan skrip portabilitas data keluar
+  • Output: VENDOR_PROCUREMENT_SCHEDULE.md, VENDOR_COMPARISON_MATRIX.md
+                │
+                ▼
+[ FASE A04: Serah Terima Tata Kelola & Retainer Keselarasan Arsitektur ] ──► 🛑 STOP 3 (Sign-Off Final)
+  • RACI Matrix Korporat: Penanggung jawab keputusan multi-divisi
+  • Protokol CAB & Checklist Rilis: Template resmi yang diserahkan untuk dijalankan tim klien
+  • Cetak Biru Disaster Recovery: Topologi failover & protokol latihan restore berkala
+  • Retainer Keselarasan Arsitektur: Hak review arsitektur per sprint milestone vendor
+  • Output: GOVERNANCE_HANDOVER_PACK.md (Setara BAST Advisory)
+```
 
 ---
 
@@ -553,7 +344,7 @@ M02 Discovery: "Does client have existing data?"
 
 **Risk & Incident Management**:
 - `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` - Risk scoring (Probability × Impact), mitigation tracking
-- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, war room)
+- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, escalation playbook)
 - `templates/08-maintenance-ops/BACKUP_RESTORE_PROCEDURES.md` - Daily backups, quarterly restore tests, RTO/RPO
 - `templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md` - Business continuity (failover, data center redundancy)
 
@@ -861,7 +652,7 @@ Which do you prefer?"
 
 ## 🎯 Quick Decision Tree
 
-**Pre-Routing Note**: Enterprise projects (>Rp 500M, RFP/tender context) start at M00 (Product Discovery) before M01. For all other projects, complete M01 first, then route by scale:
+**Pre-Routing Note**: Enterprise projects (statutory/regulated, RFP/tender context) start at M00 (Product Discovery) before M01. For all other projects, complete M01 first, then route by scale:
 
 ```
 START: After completing M01 (Idea & Feasibility), route by scale:
@@ -891,7 +682,7 @@ END
 
 **Enterprise Path (Separate - Pre-M01)**:
 ```
-IF project context == RFP/tender/corporate (>Rp 500M):
+IF project context == RFP/tender/corporate/regulated (statutory audit constraints):
   → Start: M00 (Product Discovery) validates RFP requirements
   → M01 performs feasibility check (scale already known from RFP context)
   → Path: M00 → M01 → M02 → ... → M13 (all 14 modules)

@@ -10,8 +10,9 @@
 
 - **Project Name**: [Project Name]
 - **Current Active Module**: [e.g., M00 / M01 / M02 / M04 / M05 / M06]
-- **Lifecycle Path**: [Solo MVP / Solo SaaS / Client Commercial / Enterprise]
-- **Complexity Scale**: [Small (1-3 feats) / Medium (4-10 feats) / Large (>10 feats)]
+- **Scale**: [small | medium | large | enterprise]
+- **Delivery**: [solo | portfolio | client | internal]
+- **Lifecycle Path**: [Small Fast-Track / Solo SaaS / Client Commercial / Enterprise]
 - **Primary Tech Stack**: [e.g., Next.js 15 + Supabase + Tailwind CSS]
 - **Project Language**: [Indonesian / English]
 - **Last Active Session Date**: [YYYY-MM-DD]
