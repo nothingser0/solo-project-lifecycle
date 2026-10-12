@@ -213,6 +213,14 @@
       "cataloged": false
     },
     {
+      "path": "evals/scenarios/10_M05_HUMAN_INPUT_BOUNDARY.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/11_SOLO_SAAS_M03_GATE_WAIVER.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/README.md",
       "cataloged": true
     },
@@ -734,6 +742,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/03-governance/DATA_PROTECTION_ADDENDUM.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/03-governance/DATA_RETENTION_POLICY.md",
       "cataloged": true
     },
@@ -1175,7 +1187,7 @@
     },
     {
       "path": "templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md",

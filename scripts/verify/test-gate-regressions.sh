@@ -696,6 +696,54 @@ Gate-Decision: PENDING
 expect_m00 "research not yet run (PENDING)" FAIL "$WL_PENDING"
 
 echo ""
+echo "M03: the SHIPPED SOW template must be gate-ready once its blanks are filled."
+echo "Regressions: the template's non-bank placeholder form ('[Account Number]')"
+echo "tripped the unresolved-placeholder block even when the user filled the real"
+echo "fields, the consolidated SOW titled its sections ('Project Charter',"
+echo "'Compensation Value & Payment Milestone Schedule') so the heading matcher"
+echo "reported false MISSING headings, and the DP confirmation the runbook records"
+echo "was only accepted on the milestone line - so a contract filled exactly as the"
+echo "templates instruct FAILED M03 with no way to close the gate."
+echo ""
+
+# expect_m03_template <name> <EXPECTED> <template-rel> <fill-cmd-run-in-project-dir>
+expect_m03_template() {
+    local name="$1" want="$2" tpl="$3" fill="$4"
+    local dir="$WORK/m03"
+    rm -rf "$dir"; mkdir -p "$dir/contracts" "$dir/docs/pm"
+    printf '%b' '# PROJECT_STATE\n- **Scale**: Medium\n- Delivery: client\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    cp "$REPO/$tpl" "$dir/contracts/SOW_CONTRACT.md"
+    cp "$REPO/templates/02-legal-commercial/NDA_TEMPLATE.md" "$dir/contracts/NDA.md"
+    ( cd "$dir" && eval "$fill" )
+    local out got
+    out="$(cd "$dir" && bash "$GATE" M03 2>&1 || true)"
+    if echo "$out" | grep -qE "Gate validation PASSED"; then got="PASS"; else got="FAIL"; fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M03 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M03 -> $got, expected $want)"
+        echo "$out" | grep -E "❌" | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+# Legitimate fill: the user replaces the bank account blanks and ticks the DP line
+# (adding the receipt wording the template already carries on that same line).
+M03_FILL_DP_DONE='sed -i "s/Account Number: \[Account Number\]/Account Number: 1234567890 (BCA)/" contracts/SOW_CONTRACT.md
+sed -i "s/^- \[ \] DP (Milestone 1)/- [x] DP (Milestone 1)/" contracts/SOW_CONTRACT.md
+sed -i "s/^- \[ \] SOW signed by both parties/- [x] SOW signed by both parties/" contracts/SOW_CONTRACT.md
+sed -i "s/^- \[ \] NDA signed/- [x] NDA signed/" contracts/SOW_CONTRACT.md'
+
+expect_m03_template "shipped consolidated SOW, blanks filled + DP ticked" PASS \
+    "templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md" "$M03_FILL_DP_DONE"
+
+# Same template, real bank fields filled but the DP left PENDING: still blocked.
+M03_FILL_DP_PENDING='sed -i "s/Account Number: \[Account Number\]/Account Number: 1234567890 (BCA)/" contracts/SOW_CONTRACT.md'
+expect_m03_template "shipped consolidated SOW with DP still pending is blocked" FAIL \
+    "templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md" "$M03_FILL_DP_PENDING"
+
+echo ""
 echo "Path portability: every script must work from ANY cwd and on ANY device."
 echo "Regression: verify-all.sh and index-manifest.js resolved paths against the"
 echo "caller's cwd, so invoking them by absolute path from another directory"
