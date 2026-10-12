@@ -101,12 +101,12 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 ### 3. Compensation Value & Payment Milestone Schedule
 
-1. **Total Contract Value**: Rp [Numeric Amount] (*[Amount in words in Rupiah]*), exclusive of Value Added Tax (VAT/PPN) and third-party infrastructure subscription fees (servers, cloud storage, paid APIs).
+1. **Total Contract Value**: Rp [Amount] (*[Amount in words]*), exclusive of Value Added Tax (VAT/PPN) and third-party infrastructure subscription fees (servers, cloud storage, paid APIs).
    - **Tax Regulatory Clause**: Applicable taxes (PPN 11% under UU HPP No. 7/2021, and PPh 23 if corporate client) follow statutory tax regulations in force upon invoice issuance.
 2. **Payment Milestones (Must sum to exactly 100%)**:
    
    *Standard 3-Phase Schedule (Recommended for Medium Scale 30/40/30)*:
-   - **Milestone 1 (Down Payment / DP 30%)**: Rp [Amount], payable upon contract signing as strict prerequisite to commencing design & architecture.
+   - **Milestone 1 (Down Payment / DP 30%)**: Rp [Amount], payable upon contract signing as strict prerequisite to commencing design & architecture. The validated DP transfer is recorded on the Down Payment line of the **M03 Gate Confirmation Log** footer, which `scripts/gates/validate-gate.sh M03` reads — never a chat message.
    - **Milestone 2 (Mid-Point Staging Demo 40%)**: Rp [Amount], payable immediately upon successful live staging demonstration of core P0 flows (M06) before entering final UAT.
    - **Milestone 3 (Final Settlement 30%)**: Rp [Amount], payable after UAT pass and prior to DNS production pointing, repository transfer, and BAST handover (M11).
    *(Total: 30% + 40% + 30% = 100%)*
@@ -185,6 +185,27 @@ The Parties agree to maintain the confidentiality of business information, techn
 1. The Developer provides a bug fixing warranty period for **[30 / 60 / 90] calendar days** commencing from the signing of the BAST.
 2. The warranty applies exclusively to genuine errors/bugs where the system does not perform in accordance with agreed FSD/PRD documents.
 3. The warranty is void if source code is modified by third parties without the Developer's consent, or if issues arise from abrupt third-party API changes.
+
+---
+
+### 9.1 M03 Gate Confirmation Log
+
+> ⚠️ **M03 Commercial Gate prerequisite.** `scripts/gates/validate-gate.sh M03` verifies the
+> **M03 Gate Confirmation Log** below: the Down Payment line must be ticked **and** state a
+> cleared/received/transferred status. Verify only against a real bank statement or the
+> signed contract copy — never against a chat promise. On PASS, the human confirms with
+> `DP RECEIVED` / `SUDAH TRANSFER`, and the agent fills the date/amount/name and sets
+> `Gate-Decision: PASS` (M03 runbook STEP 3). Do not pre-fill.
+
+- [ ] SOW signed by both parties (dated copy filed)
+- [ ] NDA signed (mandatory for Medium+ client delivery, before client data access)
+- [ ] DPA / Data Protection Addendum signed (required when personal data is processed; write `N/A` when no personal data)
+- [ ] Part I Project Charter approved (baseline dates locked)
+- [ ] Single PIC officially designated with contact info
+- [ ] Revision limits + Deemed Acceptance + Limitation of Liability clauses accepted by Client
+- [ ] DP (Milestone 1) received in bank account — Date/Time: YYYY-MM-DD HH:MM WIB — Amount: Rp X — Confirmed By: NAME (tick this line once the transfer is verified; the receipt wording already sits on this same line)
+
+`Gate-Decision: PENDING`  <!-- set to PASS after the Down Payment line above is ticked; BYPASS applies only to Solo SaaS / internal -->
 
 ---
 

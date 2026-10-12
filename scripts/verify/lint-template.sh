@@ -157,6 +157,30 @@ case "$BASENAME" in
             echo "❌ Scope boundary missing"
             ERRORS=$((ERRORS + 1))
         fi
+
+        # M03 hard-blocker parity: validate-gate.sh M03 fails a SOW missing ANY of
+        # these clauses, so a shipped template lacking one can never pass its own
+        # gate. Catch it at lint time, before it reaches a project. Regression: the
+        # consolidated SOW titled its sections so the gate's heading matcher missed
+        # them; this lint pins the clause set independently of section titles.
+        # '<<' separates the regex (which itself uses '|') from its label.
+        while IFS= read -r pair; do
+            [ -n "$pair" ] || continue
+            pat="${pair%%<<*}"; label="${pair##*<<}"
+            if grep -iqE "$pat" "$TEMPLATE_FILE"; then
+                echo "✅ $label present"
+            else
+                echo "❌ $label missing (M03 gate hard blocker)"
+                ERRORS=$((ERRORS + 1))
+            fi
+        done <<'CLAUSES'
+Deemed Acceptance|Klien Diam<<Deemed Acceptance clause
+Limitation of Liability|Liability Cap<<Limitation of Liability clause
+Revision Limit|Maximum [0-9]+ (round|test cycle)<<Revision limits clause
+Third-Party (Subscriptions|Accounts)|Client corporate name|registered under the Client|billed directly to the Client<<Third-party account ownership clause
+Down Payment|30/40/30|50/50|Milestone.*Payment<<Payment terms & milestones
+Gate Confirmation Log<<M03 Gate Confirmation Log
+CLAUSES
         echo ""
         ;;
         
