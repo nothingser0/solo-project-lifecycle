@@ -16,43 +16,161 @@ get_field() {
         | tr -d '\r'
 }
 
-# Small-scale detection: declared Scale field, or the PROJECT_LITE fallback
-# (no PROJECT_STATE.md but a root PROJECT_LITE.md exists).
+# Small-scale detection: the declared Scale field, or the PROJECT_LITE fallback.
+# NOTE: the fallback only decides which WAIVER MESSAGE a project sees — it can
+# never produce a passing run, because PROJECT_STATE.md is mandatory for every
+# scale (it holds the Intake answers, and check_intake_gate fails without it).
+# PROJECT_LITE.md alone is not a substitute for PROJECT_STATE.md.
 is_small_scale() {
     [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "small" ] \
         && return 0
     [ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]
 }
 
-# Universal precondition: the 5 Intake answers must exist before ANY module work.
+# Universal precondition: the Intake answers must exist before ANY module work.
 # Small projects have M00/M01/M02 waived, so the intake gate is their ONLY
 # requirement — it must never be nested inside a scale-waiver branch.
+# Besides the 5 mandatory questions, the 3 escalation fields READ BY
+# classify-scale.sh (Integrations / Branch-Hierarchy / Compliance) are required:
+# an absent field is not "none", and while it is absent a payment webhook or a
+# multi-tenant hierarchy stays invisible and the project keeps its self-declared
+# "small" tier. "None" is a valid answer; blank/UNKNOWN/UNSET is not.
 # Returns 0 (pass) or 1 (fail, sets GATE_FAILED).
 check_intake_gate() {
     local state="docs/pm/PROJECT_STATE.md"
     if [ ! -f "$state" ]; then
-        if is_small_scale; then
-            echo "  ❌ Intake Gate: $state missing — record the 5 Intake answers (see templates/essentials/INTAKE_GATE.md) before any module work."
-            GATE_FAILED=1
-            return 1
-        fi
-        return 0 # non-Small: PROJECT_STATE is checked by the module itself
+        # Mandatory at EVERY scale. This used to return 0 for non-Small projects
+        # ("the module checks it itself"), but no module did: with the file absent,
+        # is_small_scale() could not read a Scale field, so a project with no
+        # PROJECT_STATE.md and no PROJECT_LITE.md skipped both the waiver and the
+        # intake check and every gate passed vacuously.
+        echo "  ❌ Intake Gate: $state missing — record the Intake answers (see templates/essentials/INTAKE_GATE.md) before any module work."
+        echo "     PROJECT_LITE.md is not a substitute: PROJECT_STATE.md is mandatory at every scale."
+        GATE_FAILED=1
+        return 1
     fi
     local bad=0
-    for field in "Delivery:" "Intake-Success-Metric:" "Intake-P0-Features:" "Intake-Time-Capacity:" "Intake-Sensitive-Data:"; do
-        if grep -qiE "^[[:space:]]*-?[[:space:]]*$field[[:space:]]*(UNKNOWN|\[|$)" "$state"; then
-            echo "  ❌ Intake field incomplete or UNKNOWN: $field"
+    local field label
+    for field in "Delivery:" "Intake-Success-Metric:" "Intake-P0-Features:" "Intake-Time-Capacity:" \
+                 "Intake-Sensitive-Data:" "Intake-Integrations:" "Intake-Branch-Hierarchy:" "Intake-Compliance:"; do
+        label="${field%:}"
+        # An ABSENT line must fail too. The first pattern alone only matched a
+        # present-but-empty line, so dropping the escalation fields from the state
+        # file was a way to make them "not applicable" and keep the small tier.
+        if ! grep -qiE "^[[:space:]]*-?[[:space:]]*$field[[:space:]]*[^[:space:]]" "$state"; then
+            echo "  ❌ Intake field missing or UNSET: $label"
+            bad=1
+        elif grep -qiE "^[[:space:]]*-?[[:space:]]*$field[[:space:]]*(UNKNOWN|\[)" "$state"; then
+            echo "  ❌ Intake field incomplete or UNKNOWN: $label"
             bad=1
         fi
     done
     if grep -qiE "^[[:space:]]*-?[[:space:]]*Intake-Status:[[:space:]]*ANSWERED" "$state"; then
-        [ "$bad" -eq 0 ] && echo "  ✅ Intake Gate: all 5 mandatory fields answered"
+        [ "$bad" -eq 0 ] && echo "  ✅ Intake Gate: all 8 mandatory fields answered"
     else
-        echo "  ❌ Intake Gate: Intake-Status not set to ANSWERED — ask the 5 Intake questions and END TURN."
+        echo "  ❌ Intake Gate: Intake-Status not set to ANSWERED — ask the Intake questions and END TURN."
         bad=1
     fi
     [ "$bad" -ne 0 ] && GATE_FAILED=1
     [ "$bad" -eq 0 ]
+}
+
+# Solo-capacity / High-Water-Mark classifier — runs for EVERY scale, including
+# projects that declare themselves Small. M01 used to call it from inside its
+# non-Small branch, so a self-declared "small" tier skipped the check the scale
+# router calls mandatory: 20 P0 features + sensitive data passed as "small".
+# Exit 2 = above solo capacity (blocking). ANY other non-zero exit is a
+# CLASSIFIER ERROR and also fails closed — previously only exit 2 counted as
+# failure, so a crashing classifier printed "✅ Solo capacity verified" and its
+# own error output was swallowed.
+# Returns 0 (verified) or 1 (sets GATE_FAILED).
+check_scale_feasibility() {
+    if [ ! -f "docs/pm/PROJECT_STATE.md" ]; then
+        return 0 # nothing to classify; check_intake_gate already reports the file
+    fi
+    local gate_dir="${SCRIPT_DIR:-scripts/gates}"
+    if [ ! -f "$gate_dir/classify-scale.sh" ]; then
+        echo "  ⚠️  classify-scale.sh not found next to the gate dispatcher ($gate_dir) — scale / High-Water-Mark check SKIPPED"
+        GATE_FAILED=1
+        return 1
+    fi
+    echo "  [INFO] Running mechanical scale & solo capacity classifier..."
+    local classify_output rc=0
+    classify_output="$(bash "$gate_dir/classify-scale.sh" 2>&1)" || rc=$?
+    if [ "$rc" -eq 0 ]; then
+        echo "  ✅ Solo capacity verified: Scope is executable within solo capacity"
+        # The classifier derives the tier from the structured Intake fields only; it
+        # never reads the human-declared `Scale:` line. So a project that declares
+        # "small" while its own answers say otherwise (payment webhook, sensitive
+        # data, 8+ P0) used to print the green line and keep the Small path, which
+        # waives M01/M02 and the whole document set. Compare the two explicitly.
+        local evaluated declared_s declared_n
+        evaluated=$(echo "$classify_output" | sed -n 's/^Evaluated Scale[[:space:]]*:[[:space:]]*//p' | head -1 | tr -d ' \r')
+        declared_s=$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]' | tr -d ' \r')
+        declared_n=$(echo "$declared_s" | grep -oiE "small|medium|large|enterprise" | head -1)
+        if [ -n "$evaluated" ] && [ -n "$declared_n" ] && [ "$evaluated" != "$declared_n" ]; then
+            echo "  ❌ Scale mismatch: declared 'Scale: $declared_s' but the Intake fields evaluate to '$evaluated'."
+            echo "     The HIGH-WATER MARK rule says the highest tier wins. Re-classify the project (and re-run the matching lifecycle path) or correct the Intake answers."
+            GATE_FAILED=1
+            return 1
+        fi
+        return 0
+    fi
+    if [ "$rc" -eq 2 ]; then
+        echo "  ❌ SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!"
+        echo "     The declared Scale does not override the classifier — the HIGH-WATER MARK wins."
+    else
+        echo "  ❌ Scale classifier ERROR (exit $rc): solo capacity could NOT be verified. Failing closed."
+    fi
+    echo "$classify_output" | sed 's/^/    /'
+    GATE_FAILED=1
+    return 1
+}
+
+# M01 brief resolution. Two filenames are accepted: IDEA_BRIEF.md (preferred) and
+# FEASIBILITY_REPORT.md (documented alias). When BOTH exist the gate must score the
+# more complete one — a leftover stub used to shadow a filled report, and the run
+# failed on the stub's contents with no hint that the real report was sitting next
+# to it. Sets BRIEF_FILE (empty when neither exists). Returns 0 when a usable
+# file was found and is not a stub.
+BRIEF_FILE=""
+check_feasibility_brief() {
+    local primary="docs/pm/IDEA_BRIEF.md"
+    local alias="docs/pm/FEASIBILITY_REPORT.md"
+    BRIEF_FILE=""
+    local primary_scores=0 alias_scores=0
+    if [ -f "$primary" ]; then
+        primary_scores=$(grep -ciE "^[[:space:]]*-?[[:space:]]*\**Feasibility-Score-" "$primary" 2>/dev/null) || primary_scores=0
+    fi
+    if [ -f "$alias" ]; then
+        alias_scores=$(grep -ciE "^[[:space:]]*-?[[:space:]]*\**Feasibility-Score-" "$alias" 2>/dev/null) || alias_scores=0
+    fi
+    if [ "$alias_scores" -gt "$primary_scores" ]; then
+        BRIEF_FILE="$alias"
+        if [ -f "$primary" ]; then
+            echo "  [INFO] Both briefs present — scoring $alias ($alias_scores score lines); the less complete $primary ($primary_scores) is ignored."
+        fi
+    elif [ -f "$primary" ]; then
+        BRIEF_FILE="$primary"
+    elif [ -f "$alias" ]; then
+        BRIEF_FILE="$alias"
+    fi
+
+    if [ -z "$BRIEF_FILE" ]; then
+        echo "  ❌ $primary (MISSING — copy templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md; FEASIBILITY_REPORT.md is an accepted alias)"
+        GATE_FAILED=1
+        return 1
+    fi
+    local size
+    size=$(wc -c < "$BRIEF_FILE" 2>/dev/null | tr -d ' ')
+    size="${size:-0}"
+    if [ "$size" -lt 40 ]; then
+        echo "  ❌ $BRIEF_FILE (STUB: ${size}B — file exists but empty/near-empty; fill real content)"
+        GATE_FAILED=1
+        return 1
+    fi
+    echo "  ✅ $BRIEF_FILE (${size}B)"
+    return 0
 }
 
 # M06 per-task human approval guard.

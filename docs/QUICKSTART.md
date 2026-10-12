@@ -76,7 +76,7 @@ Week 4: Deploy (2 days)
 
 ### Skip These Modules
 - ❌ M00 (Market Research) → Validate AFTER launch
-- ❌ M01 (Feasibility) → Just build it
+- ❌ M01 (Feasibility) → Just build it *(the 4D brief is waived; the solo-capacity/High-Water-Mark classifier still runs, so a `Scale: small` claim must match your Intake answers)*
 - ❌ M02 (Scope) → Keep it in your head or 1-page doc
 - ❌ M03 (Legal/SOW) → No client = no contract
 - ❌ Full DESIGN.md token system → Use Tailwind defaults (M04-LITE: 1 benchmark + tokens only)
@@ -89,7 +89,7 @@ Week 4: Deploy (2 days)
 - ❌ M13 (Operations & Growth) → Defer to post-launch
 
 ### Do These Only (Small-path modules)
-- ✅ Intake (5 questions → `docs/pm/PROJECT_STATE.md`)
+- ✅ Intake (8 questions — 5 core + 3 escalation → `docs/pm/PROJECT_STATE.md`; mandatory at every scale)
 - ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/variants/04_UIUX_LITE.md`)
 - ✅ M05 (Architecture) → 1 day specs (Section 5 of `PROJECT_LITE.md`)
 - ✅ M06 (Development + security checklist) → 10 days coding

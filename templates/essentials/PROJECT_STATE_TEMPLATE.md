@@ -18,6 +18,24 @@
 - **Last Active Session Date**: [YYYY-MM-DD]
 - **Session Operator**: [Solo Dev / AI Agent / Tech Lead]
 
+### 1.1 Intake Gate (mandatory at EVERY scale)
+
+> The 8 answers from `templates/essentials/INTAKE_GATE.md`. Every module's gate fails while any of these is missing, empty, or `UNKNOWN`.
+> The last three are the High-Water-Mark inputs read by `scripts/gates/classify-scale.sh` — answer `none` / `no` explicitly; a missing line is not "none".
+
+```
+- Delivery: [solo | portfolio | client | internal]
+- Intake-Success-Metric: [measured outcome]
+- Intake-P0-Features: [N] (list)
+- Intake-Non-Features: [explicit exclusions]
+- Intake-Time-Capacity: [X hrs/week x Y weeks = Z hrs]
+- Intake-Sensitive-Data: [yes | no]
+- Intake-Integrations: [none | comma-separated list]
+- Intake-Branch-Hierarchy: [no | yes]
+- Intake-Compliance: [none | OJK | BI | UU PDP | ISO 27001 | ...]
+- Intake-Status: [ANSWERED | UNKNOWN]
+```
+
 ---
 
 ## 2. Lifecycle Module Progress & Gate Status
@@ -42,7 +60,7 @@
 | Module ID | Module Name | Required Artifact | Gate Criteria | Gate Status | Completion Date |
 |:----------|:------------|:------------------|:--------------|:-----------:|:----------------|
 | **M00 / M00-lite** | Product Discovery & Strategy | `docs/pm/MARKET_RESEARCH.md` or `docs/pm/M00_LITE.md` | Intent-to-buy ≥ 30% / Waitlist validation | [Status] | [YYYY-MM-DD] |
-| **M01** | Idea & Feasibility | `docs/pm/IDEA_BRIEF.md` | Feasibility score ≥ 70/100, 0 fatal blockers | [Status] | [YYYY-MM-DD] |
+| **M01** | Idea & Feasibility | `docs/pm/IDEA_BRIEF.md` (alias: `FEASIBILITY_REPORT.md`) | 4 dimensions scored 1.0–5.0, each ≥ 3.0; `GO` needs avg ≥ 3.5 else `CONDITIONAL_GO` + mitigation; scale classifier clean | [Status] | [YYYY-MM-DD] |
 | **M02** | Discovery & Scope | `docs/pm/SCOPE_STATEMENT.md` | MoSCoW locked, RBAC defined, 0 ambiguous P0s | [Status] | [YYYY-MM-DD] |
 | **M03** | Legal SOW & Charter | `docs/pm/SOW_CONTRACT.md` (or `contracts/`) | Commercial Gate: DP received, Single PIC locked (WAIVED for Solo SaaS) | [Status] | [YYYY-MM-DD] |
 | **M04** | UI/UX & Information Architecture | `docs/specs/SITEMAP.md`, `DESIGN.md` | SITEMAP multi-role coverage, contrast ≥ 4.5:1 | [Status] | [YYYY-MM-DD] |

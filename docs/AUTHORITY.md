@@ -35,7 +35,13 @@
 ### M01 — Idea Feasibility
 | Agent | Human decides |
 |---|---|
-| 4D scorecard, risk register, roadmap, RICE, archetype classification | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:49`) |
+| 4D scorecard, risk register, roadmap, RICE, archetype classification, mitigation plan for a CONDITIONAL_GO | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:49`) |
+
+> ✅ **Gate-enforced**: the declared Scale never overrides the classifier — a project
+> declaring `Small` whose own Intake answers evaluate higher (payment webhook, sensitive
+> data, 8+ P0) fails the High-Water-Mark check. `PROVISIONAL_PENDING_M00` halts with exit 4
+> instead of being read as an undeclared decision, and a `CONDITIONAL_GO` must carry a
+> `Mitigation:` line.
 
 ### M02 — Discovery & Scope
 | Agent | Human only |
@@ -138,7 +144,8 @@
 
 | Check | Where | Status |
 | :--- | :--- | :--- |
-| 5 intake questions answered | `validate-gate.sh` M01/M02/M04/M05/M06 | ✅ script |
+| Intake file + 8 mandatory fields answered | `validate-gate.sh` every module | ✅ script |
+| Solo capacity / High-Water Mark | `validate-gate.sh` M01, M02 | ✅ script |
 | Per-task human approval | `validate-gate.sh` M06 | ✅ script |
 | Design Freeze signed | `validate-gate.sh` M04 | ✅ script |
 | 8 questionnaire answers recorded | `validate-gate.sh` M05 | ✅ script |

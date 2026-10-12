@@ -11,7 +11,7 @@ Sequential 14-module delivery framework for solo developers, covering initiation
 | ID | Module Name | Primary Artifacts | Gate Checkpoint | File |
 |---|---|---|---|---|
 | **M00** | Product Discovery & Strategy | `MARKET_RESEARCH.md`, `COMPETITIVE_LANDSCAPE.md` | Pre-flight validation | [`00_PRODUCT_DISCOVERY_STRATEGY.md`](./00_PRODUCT_DISCOVERY_STRATEGY.md) |
-| **M01** | Idea & Feasibility | `IDEA_BRIEF.md` (4D Scoring) | 3-Filter Triage | [`01_IDEA_FEASIBILITY.md`](./01_IDEA_FEASIBILITY.md) |
+| **M01** | Idea & Feasibility | `IDEA_BRIEF.md` (4D Scoring, 1.0–5.0) | Dimension Floor + scale classifier | [`01_IDEA_FEASIBILITY.md`](./01_IDEA_FEASIBILITY.md) |
 | **M02** | Discovery & Scope Definition | `SCOPE_STATEMENT.md` (MoSCoW, RBAC) | Scope Lock | [`02_DISCOVERY_SCOPE.md`](./02_DISCOVERY_SCOPE.md) |
 | **M03** | Legal SOW & Charter | `SOW_CONTRACT.md` | **Gate 1: Commercial (DP & SOW)** | [`03_LEGAL_SOW_CHARTER.md`](./03_LEGAL_SOW_CHARTER.md) |
 | **M04** | UI/UX Design & Prototyping | `DESIGN.md`, `DESIGN_SPEC.md` | Design Freeze | [`04_UIUX_PROTOTYPING.md`](./04_UIUX_PROTOTYPING.md) |

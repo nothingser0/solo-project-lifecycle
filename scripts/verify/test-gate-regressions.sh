@@ -44,7 +44,7 @@ expect_intake() {
     local out
     out="$(cd "$dir" && bash "$GATE" "$mod" 2>&1)"
     local got="ALLOWED"
-    if echo "$out" | grep -qE "Intake field incomplete|Intake-Status not set|Intake Gate:.*missing"; then
+    if echo "$out" | grep -qE "Intake field incomplete|Intake field missing|Intake-Status not set|Intake Gate:.*missing"; then
         got="BLOCKED"
     fi
     if [ "$got" = "$want" ]; then
@@ -56,9 +56,12 @@ expect_intake() {
     fi
 }
 
-INTAKE_UNKNOWN='- **Scale**: Small\n- Delivery: UNKNOWN\n- Intake-Success-Metric: UNKNOWN\n- Intake-P0-Features: UNKNOWN\n- Intake-Time-Capacity: UNKNOWN\n- Intake-Sensitive-Data: UNKNOWN\n- Intake-Status: UNKNOWN\n'
-INTAKE_ANSWERED='- **Scale**: Small\n- Delivery: solo\n- Intake-Success-Metric: 10 users can create a task\n- Intake-P0-Features: 3 (create, list, complete)\n- Intake-Time-Capacity: 10 hrs/week x 3 weeks = 30 hrs\n- Intake-Sensitive-Data: no\n- Intake-Status: ANSWERED\n'
-INTAKE_MEDIUM='- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 200 orders/day processed\n- Intake-P0-Features: 12 (catalog, orders, payments, admin)\n- Intake-Time-Capacity: 40 hrs/week x 12 weeks = 480 hrs\n- Intake-Sensitive-Data: no\n- Intake-Status: ANSWERED\n'
+# The 3 escalation fields (Integrations / Branch-Hierarchy / Compliance) are read
+# by classify-scale.sh and are mandatory: while they are absent a payment webhook
+# or multi-tenant hierarchy is invisible and a project keeps its declared tier.
+INTAKE_UNKNOWN='- **Scale**: Small\n- Delivery: UNKNOWN\n- Intake-Success-Metric: UNKNOWN\n- Intake-P0-Features: UNKNOWN\n- Intake-Time-Capacity: UNKNOWN\n- Intake-Sensitive-Data: UNKNOWN\n- Intake-Integrations: UNKNOWN\n- Intake-Branch-Hierarchy: UNKNOWN\n- Intake-Compliance: UNKNOWN\n- Intake-Status: UNKNOWN\n'
+INTAKE_ANSWERED='- **Scale**: Small\n- Delivery: solo\n- Intake-Success-Metric: 10 users can create a task\n- Intake-P0-Features: 3 (create, list, complete)\n- Intake-Time-Capacity: 10 hrs/week x 3 weeks = 30 hrs\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
+INTAKE_MEDIUM='- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 200 orders/day processed\n- Intake-P0-Features: 12 (catalog, orders, payments, admin)\n- Intake-Time-Capacity: 40 hrs/week x 12 weeks = 480 hrs\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
 
 echo -e "${BLUE}=== Gate Regression Tests ===${NC}"
 echo ""
@@ -528,6 +531,104 @@ expect_m00_interviews() {
 
 expect_m00_interviews "2 of 5 interviews verified (below floor)" BLOCKED 2
 expect_m00_interviews "3 of 5 interviews verified (at floor)" ALLOWED 3
+
+echo ""
+echo "M01: the declared Scale must never override the classifier, and the brief's"
+echo "decision must reconcile against its own numbers in BOTH directions."
+echo "Regressions: the solo-capacity classifier sat inside the non-Small branch, so"
+echo "declaring 'Scale: small' skipped the High-Water-Mark check entirely (20 P0"
+echo "features + sensitive data passed); a crashing classifier (exit != 2) printed"
+echo "'Solo capacity verified'; a leftover IDEA_BRIEF.md stub shadowed a filled"
+echo "FEASIBILITY_REPORT.md; 'CONDITIONAL_GO' spelled with an underscore was not"
+echo "recognised (only 'CONDITIONAL GO'); PROVISIONAL_PENDING_M00 was reported as"
+echo "'decision not declared'; and average >= 3.5 with a GO/ CONDITIONAL_GO verdict"
+echo "was never cross-checked."
+echo ""
+
+# expect_m01 <name> <EXPECTED> <state-content|EMPTY> <brief-content|EMPTY>
+# EXPECTED in PASS|FAIL|PROVISIONAL. Exit 0 = PASS, 1 = FAIL, 3 = RETEST, 4 = PROVISIONAL.
+expect_m01() {
+    local name="$1" want="$2" state="$3" brief="$4"
+    local dir="$WORK/m01"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    [ "$state" = "EMPTY" ] || printf '%b' "$state" > "$dir/docs/pm/PROJECT_STATE.md"
+    [ "$brief" = "EMPTY" ] || printf '%b' "$brief" > "$dir/docs/pm/IDEA_BRIEF.md"
+    local out code got
+    out="$(cd "$dir" && bash "$GATE" M01 2>&1)"; code=$?
+    case "$code" in
+        0) got="PASS" ;;
+        3) got="RETEST" ;;
+        4) got="PROVISIONAL" ;;
+        *) got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M01 -> $got, exit $code)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M01 -> $got, expected $want)"
+        echo "$out" | grep -E '❌|⚠️' | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+M01_OK='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\n'
+# Declared Small, but the structured fields say 20 P0 features + sensitive data.
+STATE_LIES_SMALL='- **Scale**: small\n- Delivery: solo\n- Intake-Success-Metric: m\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 5 hrs/week x 2 weeks\n- Intake-Sensitive-Data: yes\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
+expect_m01 "Self-declared Small, 20 P0 + sensitive data (classifier wins)" FAIL "$STATE_LIES_SMALL" "$M01_OK"
+
+# No PROJECT_STATE.md at all: the intake gate must fail for EVERY scale.
+expect_m01 "Medium intent, no PROJECT_STATE.md" FAIL "EMPTY" "$M01_OK"
+
+# PROVISIONAL is a legitimate halt state, not an undeclared decision.
+M01_PROV='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: PROVISIONAL_PENDING_M00\n'
+expect_m01 "PROVISIONAL_PENDING_M00 (no final GO)" PROVISIONAL "$INTAKE_MEDIUM" "$M01_PROV"
+
+# Fail-closed: average < 3.5 may not be declared GO.
+M01_LOW='# Brief\n\nFeasibility-Score-Technical: 3.5\nFeasibility-Score-Operational: 3.5\nFeasibility-Score-Regulatory: 3.0\nFeasibility-Score-Financial: 3.0\nFeasibility-Decision: GO\n'
+expect_m01 "average 3.25 declared GO (talked up)" FAIL "$INTAKE_MEDIUM" "$M01_LOW"
+
+# CONDITIONAL_GO must carry its mitigation plan, in either spelling.
+M01_COND_NOMIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\n'
+expect_m01 "CONDITIONAL_GO without a Mitigation line" FAIL "$INTAKE_MEDIUM" "$M01_COND_NOMIT"
+M01_COND_MIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\n\nMitigation: defer offline sync to Phase 2\n'
+expect_m01 "CONDITIONAL_GO with a Mitigation line" PASS "$INTAKE_MEDIUM" "$M01_COND_MIT"
+
+# Checkbox form: the scorecard declares the decision by ticking a row.
+M01_CHECKBOX='# Brief\n\n- [ ] **GO**\n- [x] **CONDITIONAL_GO**\n- [ ] **PIVOT**\n- [ ] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n\nMitigation: ship online-first MVP\n'
+expect_m01 "checkbox form: [x] **CONDITIONAL_GO**" PASS "$INTAKE_MEDIUM" "$M01_CHECKBOX"
+M01_UNTICKED='# Brief\n\n- [ ] **GO**\n- [ ] **CONDITIONAL_GO**\n- [x] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n'
+expect_m01 "checkbox form: [x] **KILL**" FAIL "$INTAKE_MEDIUM" "$M01_UNTICKED"
+
+# A leftover stub must not shadow the filled alias report.
+expect_m01_alias() {
+    local name="$1" want="$2"
+    local dir="$WORK/m01a"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'Feasibility-Score-Technical: 1.0\nstub stub stub\n' > "$dir/docs/pm/IDEA_BRIEF.md"
+    printf '%b' "$M01_OK" > "$dir/docs/pm/FEASIBILITY_REPORT.md"
+    local out code got
+    out="$(cd "$dir" && bash "$GATE" M01 2>&1)"; code=$?
+    [ "$code" -eq 0 ] && got="PASS" || got="FAIL"
+    if [ "$got" = "$want" ] && echo "$out" | grep -q "Both briefs present"; then
+        echo -e "  ${GREEN}✓${NC} $name  (M01 -> $got, alias preferred)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M01 -> $got, expected $want + alias notice)"
+        echo "$out" | grep -E '❌|\[INFO\]' | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m01_alias "stub IDEA_BRIEF.md + filled FEASIBILITY_REPORT.md" PASS
+
+# Intake escalation fields: absent is not "none".
+INTAKE_NO_ESCALATION='- **Scale**: Small\n- Delivery: solo\n- Intake-Success-Metric: 10 users can create a task\n- Intake-P0-Features: 3 (create, list, complete)\n- Intake-Time-Capacity: 10 hrs/week x 3 weeks = 30 hrs\n- Intake-Sensitive-Data: no\n- Intake-Status: ANSWERED\n'
+expect_intake "Small + ANSWERED but escalation fields absent" BLOCKED "$INTAKE_NO_ESCALATION" M01
+
+# A payment webhook declared in the escalation field must escalate the tier:
+# it puts the project at Medium, which the 'small' declared P0 count cannot satisfy.
+STATE_WEBHOOK='- **Scale**: small\n- Delivery: client\n- Intake-Success-Metric: m\n- Intake-P0-Features: 4 (a,b,c,d)\n- Intake-Time-Capacity: 10 hrs/week x 4 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: Midtrans payment webhook\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
+expect_m01 "Small + Midtrans webhook integration (escalates to Medium)" FAIL "$STATE_WEBHOOK" "$M01_OK"
 
 # The eval scenario expects a NOT-YET-RUN research state to be PENDING, not PASS.
 WL_PENDING='- **Total Unique Visitors**: 0

@@ -180,7 +180,7 @@ else
     # Output parity: every gate's behaviour must match the captured golden files.
     # This is what proves the dispatcher/module split changed nothing observable.
     if bash scripts/verify/test-gate-output.sh >/dev/null 2>&1; then
-        echo -e "  ${GREEN}✓${NC} gate output parity holds (21 checks vs golden, byte-for-byte)"
+        echo -e "  ${GREEN}✓${NC} gate output parity holds (19 gates + usage paths + M00 verdicts vs golden, byte-for-byte)"
     else
         echo -e "  ${RED}✗${NC} gate output parity FAILED (run: bash scripts/verify/test-gate-output.sh)"
         ERRORS=$((ERRORS + 1))

@@ -15,6 +15,12 @@ gate_M02() {
         is_m02_waived=1
     fi
 
+    # Solo-capacity / High-Water-Mark classifier. M02 is where P0 count is checked
+    # against the declared scale, so it must apply the same ground truth as M01:
+    # a project that declares "small" and prunes nothing would otherwise skip this
+    # check entirely (Small waives the scope checklist by design).
+    check_scale_feasibility || true
+
     if [ $is_m02_waived -eq 1 ]; then
         check_optional "docs/pm/SCOPE_STATEMENT.md" "PROJECT_LITE.md"
     else
