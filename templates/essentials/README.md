@@ -11,7 +11,8 @@
 | [`LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md`](./LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md) | Lean primitives + composites inventory | M04-LITE |
 | [`LITE_DESIGN_SPEC_TEMPLATE.md`](./LITE_DESIGN_SPEC_TEMPLATE.md) | 5-state matrix (primary screens only) | M04-LITE |
 | [`LITE_NOTES_TEMPLATE.md`](./LITE_NOTES_TEMPLATE.md) | Exactly 1 benchmark (not 3–5) | M04-LITE |
-| [`INTAKE_GATE.md`](./INTAKE_GATE.md) | 5 mandatory Intake questions | Small path entry |
+| [`INTAKE_GATE.md`](./INTAKE_GATE.md) | 9 mandatory Intake fields (6 core + 3 escalation) | Every scale (Small path entry) |
+| [`SOLO_CAPACITY_RISK_ACCEPTANCE.md`](./SOLO_CAPACITY_RISK_ACCEPTANCE.md) | Written acceptance of a capacity-only Large scope (human-signed) | Large, no non-delegable obligation |
 | [`PROJECT_STATE_TEMPLATE.md`](./PROJECT_STATE_TEMPLATE.md) | Lifecycle state & gate tracking | Universal |
 
 ---

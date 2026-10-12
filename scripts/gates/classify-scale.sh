@@ -3,7 +3,15 @@
 # v2: Structured-field parsing ONLY (no raw keyword grep over free text).
 # Reads: Intake-* fields, Scale/Delivery lines (anchored, bold-tolerant), SCOPE_STATEMENT/PROJECT_LITE.
 # Tiers: small 3-7 P0 | medium 8-15 | large 16-25 | enterprise >25.
-# Enforces the HIGH-WATER MARK RULE and the SOLO CAPACITY GATE (Large/Enterprise -> A00-A04 advisory).
+# Enforces the HIGH-WATER MARK RULE and the SOLO CAPACITY GATE, which has TWO
+# different predicates (the cause matters, not the tier number):
+#   NON-DELEGABLE  -> statutory compliance or legacy-core replacement. A licensed
+#                     third party is legally required, so no amount of solo
+#                     capacity substitutes. Hard block -> exit 2 (A00-A04).
+#   CAPACITY-ONLY  -> 16-25 P0 / multi-service with no non-delegable obligation.
+#                     That is a schedule/quality risk the human may accept in
+#                     writing (docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md) -> exit 5.
+# Exit codes: 0 solo-viable | 2 blocked | 5 capacity override accepted.
 
 set -e
 
@@ -40,6 +48,7 @@ SENSITIVE=$(get_field "Intake-Sensitive-Data" "$PROJECT_STATE")
 INTEGRATIONS=$(get_field "Intake-Integrations" "$PROJECT_STATE")
 BRANCH_HIER=$(get_field "Intake-Branch-Hierarchy" "$PROJECT_STATE")
 COMPLIANCE=$(get_field "Intake-Compliance" "$PROJECT_STATE")
+LEGACY_CORE=$(get_field "Intake-Legacy-Core" "$PROJECT_STATE")
 
 # P0 count: structured field first, else scope artifacts.
 P0_COUNT=0
@@ -115,15 +124,67 @@ echo "------------------------------------------------------"
 echo "Evaluated Scale   : $FINAL_SCALE"
 echo "Primary Rationale : $REASON"
 
-# --- SOLO CAPACITY GATE ---
+# --- SOLO CAPACITY GATE (two predicates; the cause decides, not the tier) ---
+ACCEPTANCE_FILE="docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md"
 if [ "$TIER" -ge 3 ]; then
+    # Predicate 1 — NON-DELEGABLE. Statutory compliance (OJK/BI/UU PDP/ISO/medical)
+    # and a legacy-core replacement both require a licensed third party: an audit
+    # certificate or vendor engagement nobody can self-issue. Declaring "I am ready
+    # to code solo" cannot substitute for a missing auditor, so this stays a hard
+    # block at every tier and NO override file can open it.
+    NON_DELEGABLE=""
+    if [ -n "$COMPLIANCE" ] && ! echo "$COMPLIANCE" | grep -qiE "^\s*(none|no|tidak ada|-)\s*$" 2>/dev/null; then
+        NON_DELEGABLE="statutory compliance ($COMPLIANCE) — requires licensed audit/counsel"
+    fi
+    if echo "$LEGACY_CORE" | grep -qiE "^\s*(yes|ya|true)" 2>/dev/null; then
+        NON_DELEGABLE="${NON_DELEGABLE:+$NON_DELEGABLE; }legacy-core replacement — requires vendor/legacy specialist"
+    fi
+
+    if [ -n "$NON_DELEGABLE" ]; then
+        echo "------------------------------------------------------"
+        echo "⛔ NON-DELEGABLE GATE: $FINAL_SCALE — the obligation cannot be discharged solo."
+        echo "   Reason: $NON_DELEGABLE"
+        echo "   MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04)."
+        echo "   Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY."
+        echo "   This block is NOT overridable by a risk-acceptance file: a signature"
+        echo "   cannot produce an audit certificate or a licensed vendor."
+        echo "   Exit code: 2 (non-delegable — route to A00-A04 Advisory)."
+        exit 2
+    fi
+
+    # Predicate 2 — CAPACITY-ONLY. 16-25 P0 / multi-service with no non-delegable
+    # obligation. This is a schedule and quality risk that runs in YOUR name, so the
+    # human may accept it in writing. The override must name a real person and date:
+    # a placeholder is not an acceptance.
+    if [ ! -f "$ACCEPTANCE_FILE" ]; then
+        echo "------------------------------------------------------"
+        echo "⛔ SOLO CAPACITY GATE: $FINAL_SCALE EXCEEDS SOLO DEVELOPER CAPACITY."
+        echo "   No non-delegable obligation was declared, so this is a CAPACITY risk —"
+        echo "   which the human may accept in writing. Required: $ACCEPTANCE_FILE"
+        echo "   Copy templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md and complete"
+        echo "   Accepted-By (a real human) + Accepted-On (YYYY-MM-DD)."
+        echo "   Exit code: 2 (blocked pending a written risk acceptance)."
+        exit 2
+    fi
+    acc_by=$(grep -m1 -iE "^[[:space:]]*-?[[:space:]]*\**Accepted-By\**:" "$ACCEPTANCE_FILE" 2>/dev/null | sed 's/.*:[[:space:]]*//' | tr -d '*\r')
+    acc_on=$(grep -m1 -iE "^[[:space:]]*-?[[:space:]]*\**Accepted-On\**:" "$ACCEPTANCE_FILE" 2>/dev/null | sed 's/.*:[[:space:]]*//' | tr -d '*\r')
+    if [ -z "$acc_by" ] || echo "$acc_by" | grep -qiE "^\[.*\]|\[.*\]|your name|<.*>|^tbd|^name$|_\{3,\}|^$" \
+        || ! echo "$acc_on" | grep -qE "[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
+        echo "------------------------------------------------------"
+        echo "⛔ SOLO CAPACITY GATE: risk-acceptance is incomplete or holds placeholders."
+        echo "   In $ACCEPTANCE_FILE: Accepted-By found: '${acc_by:-<empty>}', Accepted-On found: '${acc_on:-<empty>}'."
+        echo "   A real human name and a real date (YYYY-MM-DD) are required. The AI agent"
+        echo "   may draft this file but may never accept the risk on the human's behalf."
+        echo "   Exit code: 2 (blocked pending a valid risk acceptance)."
+        exit 2
+    fi
     echo "------------------------------------------------------"
-    echo "⛔ SOLO CAPACITY GATE: $FINAL_SCALE EXCEEDS SOLO DEVELOPER CAPACITY."
-    echo "   MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04)"
-    echo "   The skill STRICTLY PROHIBITS solo coding for Large/Enterprise scope."
-    echo "   Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY."
-    echo "   Exit code: 2 (Non-solo capacity — route to A00-A04 Advisory)."
-    exit 2
+    echo "⚠️  SOLO CAPACITY OVERRIDE: $FINAL_SCALE — capacity risk accepted in writing."
+    echo "   Accepted-By: $acc_by · Accepted-On: $acc_on"
+    echo "   Advisory (A00-A04) is still required for the governance layers; the coding"
+    echo "   itself proceeds solo under the recognised risk."
+    echo "   Exit code: 5 (override accepted — gate continues, override is recorded)."
+    exit 5
 fi
 
 echo "------------------------------------------------------"

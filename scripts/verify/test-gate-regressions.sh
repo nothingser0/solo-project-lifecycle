@@ -59,9 +59,9 @@ expect_intake() {
 # The 3 escalation fields (Integrations / Branch-Hierarchy / Compliance) are read
 # by classify-scale.sh and are mandatory: while they are absent a payment webhook
 # or multi-tenant hierarchy is invisible and a project keeps its declared tier.
-INTAKE_UNKNOWN='- **Scale**: Small\n- Delivery: UNKNOWN\n- Intake-Success-Metric: UNKNOWN\n- Intake-P0-Features: UNKNOWN\n- Intake-Time-Capacity: UNKNOWN\n- Intake-Sensitive-Data: UNKNOWN\n- Intake-Integrations: UNKNOWN\n- Intake-Branch-Hierarchy: UNKNOWN\n- Intake-Compliance: UNKNOWN\n- Intake-Status: UNKNOWN\n'
-INTAKE_ANSWERED='- **Scale**: Small\n- Delivery: solo\n- Intake-Success-Metric: 10 users can create a task\n- Intake-P0-Features: 3 (create, list, complete)\n- Intake-Time-Capacity: 10 hrs/week x 3 weeks = 30 hrs\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
-INTAKE_MEDIUM='- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 200 orders/day processed\n- Intake-P0-Features: 12 (catalog, orders, payments, admin)\n- Intake-Time-Capacity: 40 hrs/week x 12 weeks = 480 hrs\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
+INTAKE_UNKNOWN='- **Scale**: Small\n- Delivery: UNKNOWN\n- Intake-Success-Metric: UNKNOWN\n- Intake-P0-Features: UNKNOWN\n- Intake-Time-Capacity: UNKNOWN\n- Intake-Sensitive-Data: UNKNOWN\n- Intake-Integrations: UNKNOWN\n- Intake-Branch-Hierarchy: UNKNOWN\n- Intake-Compliance: UNKNOWN\n- Intake-Legacy-Core: no\n- Intake-Status: UNKNOWN\n'
+INTAKE_ANSWERED='- **Scale**: Small\n- Delivery: solo\n- Intake-Success-Metric: 10 users can create a task\n- Intake-P0-Features: 3 (create, list, complete)\n- Intake-Time-Capacity: 10 hrs/week x 3 weeks = 30 hrs\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
+INTAKE_MEDIUM='- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 200 orders/day processed\n- Intake-P0-Features: 12 (catalog, orders, payments, admin)\n- Intake-Time-Capacity: 40 hrs/week x 12 weeks = 480 hrs\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
 
 echo -e "${BLUE}=== Gate Regression Tests ===${NC}"
 echo ""
@@ -256,7 +256,7 @@ run_lock "M05 lock backed by all 8 answers" ALLOWED "$WORK/pl_8q.md"
 run_rls() {
     local name="$1" want="$2" branch="$3" fsextra="$4"
     local dir="$WORK/rls"
-    make_project "$dir" "- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 50 invoices/day\n- Intake-P0-Features: 10 (invoices, reports)\n- Intake-Time-Capacity: 40 hrs/week x 10 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: $branch\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n"
+    make_project "$dir" "- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 50 invoices/day\n- Intake-P0-Features: 10 (invoices, reports)\n- Intake-Time-Capacity: 40 hrs/week x 10 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: $branch\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n"
     mkdir -p "$dir/docs/specs"
     {
         printf -- '## 1. Document Metadata\n'
@@ -725,7 +725,7 @@ expect_m01() {
 
 M01_OK='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\n'
 # Declared Small, but the structured fields say 20 P0 features + sensitive data.
-STATE_LIES_SMALL='- **Scale**: small\n- Delivery: solo\n- Intake-Success-Metric: m\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 5 hrs/week x 2 weeks\n- Intake-Sensitive-Data: yes\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
+STATE_LIES_SMALL='- **Scale**: small\n- Delivery: solo\n- Intake-Success-Metric: m\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 5 hrs/week x 2 weeks\n- Intake-Sensitive-Data: yes\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
 expect_m01 "Self-declared Small, 20 P0 + sensitive data (classifier wins)" FAIL "$STATE_LIES_SMALL" "$M01_OK"
 
 # No PROJECT_STATE.md at all: the intake gate must fail for EVERY scale.
@@ -779,7 +779,7 @@ expect_intake "Small + ANSWERED but escalation fields absent" BLOCKED "$INTAKE_N
 
 # A payment webhook declared in the escalation field must escalate the tier:
 # it puts the project at Medium, which the 'small' declared P0 count cannot satisfy.
-STATE_WEBHOOK='- **Scale**: small\n- Delivery: client\n- Intake-Success-Metric: m\n- Intake-P0-Features: 4 (a,b,c,d)\n- Intake-Time-Capacity: 10 hrs/week x 4 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: Midtrans payment webhook\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n'
+STATE_WEBHOOK='- **Scale**: small\n- Delivery: client\n- Intake-Success-Metric: m\n- Intake-P0-Features: 4 (a,b,c,d)\n- Intake-Time-Capacity: 10 hrs/week x 4 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: Midtrans payment webhook\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
 expect_m01 "Small + Midtrans webhook integration (escalates to Medium)" FAIL "$STATE_WEBHOOK" "$M01_OK"
 
 # The eval scenario expects a NOT-YET-RUN research state to be PENDING, not PASS.
@@ -790,6 +790,56 @@ WL_PENDING='- **Total Unique Visitors**: 0
 Gate-Decision: PENDING
 '
 expect_m00 "research not yet run (PENDING)" FAIL "$WL_PENDING"
+
+echo ""
+echo "Solo Capacity Gate: the classifier has TWO predicates. A capacity risk (16-25 P0,"
+echo "no non-delegable obligation) may be accepted in writing by a named human; a"
+echo "non-delegable obligation (statutory compliance / legacy-core) never may."
+echo "Regression: the gate blocked both cases with one opaque exit 2 that no"
+echo "regression test covered, so the rule silently drifted from every other module."
+echo ""
+
+# expect_capacity <name> <want-exit> <state-fields> <acceptance-content|EMPTY>
+expect_capacity() {
+    local name="$1" want="$2" fields="$3" acc="$4"
+    local dir="$WORK/cap"
+    make_project "$dir" "$fields"
+    if [ "$acc" != "EMPTY" ]; then
+        printf '%b' "$acc" > "$dir/docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md"
+    fi
+    local code got
+    ( cd "$dir" && bash "$SCRIPT_DIR/../gates/classify-scale.sh" >/dev/null 2>&1 ); code=$?
+    case "$code" in
+        0) got="SOLO_VIABLE" ;;
+        2) got="BLOCKED" ;;
+        5) got="OVERRIDDEN" ;;
+        *) got="UNEXPECTED_$code" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (classifier -> $got, exit $code)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (classifier -> $got/exit $code, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+# 20 P0 with nothing non-delegable -> capacity risk, overridable (Large tier).
+CAP_LARGE='- **Scale**: large\n- Delivery: solo\n- Intake-Success-Metric: 500 orders/day\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 40 hrs/week x 20 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
+CAP_ACCEPTED='- Accepted-By: Zen\n- Accepted-On: 2026-10-12\n- Scope-Version: v1\n'
+CAP_PLACEHOLDER='- Accepted-By: [real human name]\n- Accepted-On: [YYYY-MM-DD]\n'
+# Same size, but a non-delegable statutory obligation.
+CAP_COMPLIANCE='- **Scale**: large\n- Delivery: client\n- Intake-Success-Metric: 500 loans/day\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 40 hrs/week x 20 weeks\n- Intake-Sensitive-Data: yes\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: OJK\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
+# Same size, but a legacy-core replacement.
+CAP_LEGACY='- **Scale**: large\n- Delivery: client\n- Intake-Success-Metric: ledger migration\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 40 hrs/week x 20 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: yes\n- Intake-Status: ANSWERED\n'
+
+expect_capacity "Large capacity-only, no acceptance file" BLOCKED "$CAP_LARGE" "EMPTY"
+expect_capacity "Large capacity-only, placeholder acceptance" BLOCKED "$CAP_LARGE" "$CAP_PLACEHOLDER"
+expect_capacity "Large capacity-only, named+dated acceptance" OVERRIDDEN "$CAP_LARGE" "$CAP_ACCEPTED"
+# The non-delegable block must hold EVEN WITH a complete acceptance file.
+expect_capacity "OJK compliance + valid acceptance (non-delegable)" BLOCKED "$CAP_COMPLIANCE" "$CAP_ACCEPTED"
+expect_capacity "Legacy-core + valid acceptance (non-delegable)" BLOCKED "$CAP_LEGACY" "$CAP_ACCEPTED"
+expect_capacity "Medium scope stays solo-viable (no override needed)" SOLO_VIABLE "$INTAKE_MEDIUM" "EMPTY"
 
 echo ""
 echo "M06 STEP 0 / STEP 2: the runbook's hard claims must be enforced, not prose."

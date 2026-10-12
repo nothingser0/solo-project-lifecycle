@@ -20,8 +20,8 @@
 
 ### 1.1 Intake Gate (mandatory at EVERY scale)
 
-> The 8 answers from `templates/essentials/INTAKE_GATE.md`. Every module's gate fails while any of these is missing, empty, or `UNKNOWN`.
-> The last three are the High-Water-Mark inputs read by `scripts/gates/classify-scale.sh` — answer `none` / `no` explicitly; a missing line is not "none".
+> The 9 answers from `templates/essentials/INTAKE_GATE.md`. Every module's gate fails while any of these is missing, empty, or `UNKNOWN`.
+> The last four are the High-Water-Mark inputs read by `scripts/gates/classify-scale.sh` — answer `none` / `no` explicitly; a missing line is not "none".
 
 ```
 - Delivery: [solo | portfolio | client | internal]
@@ -33,6 +33,7 @@
 - Intake-Integrations: [none | comma-separated list]
 - Intake-Branch-Hierarchy: [no | yes]
 - Intake-Compliance: [none | OJK | BI | UU PDP | ISO 27001 | ...]
+- Intake-Legacy-Core: [yes | no]
 - Intake-Status: [ANSWERED | UNKNOWN]
 ```
 

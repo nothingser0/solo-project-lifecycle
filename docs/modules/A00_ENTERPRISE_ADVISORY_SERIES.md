@@ -2,7 +2,7 @@
 
 > **Naming note**: `A00`–`A04` here are **Enterprise Advisory phases**, NOT OWASP Top 10 categories. If you see `A01`–`A10` labels like "Broken Access Control" or "Injection", that is the OWASP checklist in `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md` — a different namespace.
 
-> **Target**: Projects classified as **BEYOND_SOLO_CAPACITY** (Enterprise tier: >25 P0 features, statutory audit, multi-branch, core legacy integration).
+> **Target**: Projects classified **BEYOND_SOLO_CAPACITY** — >25 P0 features, or **any non-delegable obligation** (statutory audit OJK/BI/UU PDP/ISO, core legacy integration) at any size. A Large (16–25 P0) scope with no non-delegable obligation is *not* routed here by default: it may run solo under a signed `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`, with the advisory series still covering the governance layers.
 > **Premise**: Solo developer acts as **Lead Enterprise Architect / Technical Advisor**. Hands-on solo coding is strictly prohibited. The output is a verified **Enterprise Architecture & Procurement Readiness Package**.
 
 ---
@@ -20,7 +20,7 @@
                      │
                      ▼
 [ PHASE A01: Work Breakdown Structure & Phased Decomposition ]
-  • Scope Razor: Decompose >25 P0 features into autonomous Medium-scale sub-projects (Phases 1-3)
+  • Scope Razor: Decompose >25 P0 features into autonomous Medium-scale sub-projects (Phases 1-3) — each sub-package is coded solo under the recognised risk; a non-delegable obligation cannot be decomposed away
   • Legacy Integration Isolation: Isolate core banking/ERP legacy into a standalone spike
   • Verification: Every sub-package must pass classify-scale.sh as Scale: medium
   • Output: WBS_PHASING_PLAN.md

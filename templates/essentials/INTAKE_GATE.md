@@ -1,21 +1,22 @@
 # Intake Gate (Small Scale Entry)
 
-> **Purpose**: 8 mandatory questions BEFORE any project begins. For the Small path this replaces M00/M01/M02; at every scale it feeds the automated scale classifier.
+> **Purpose**: 9 mandatory questions BEFORE any project begins. For the Small path this replaces M00/M01/M02; at every scale it feeds the automated scale classifier.
 > **Location**: answers recorded as fields in `docs/pm/PROJECT_STATE.md`.
-> **Rule**: Agent MUST STOP and wait until all 8 are answered. Every module's gate rejects a missing / empty / `UNKNOWN` field.
+> **Rule**: Agent MUST STOP and wait until all 9 are answered. Every module's gate rejects a missing / empty / `UNKNOWN` field.
 >
 > ⚠️ **`docs/pm/PROJECT_STATE.md` is mandatory at EVERY scale** — it holds the Intake answers, so it is also the file the scale classifier reads.
 > `PROJECT_LITE.md` does NOT replace it; a Small project needs both.
 
 ---
 
-## The 5 Mandatory Core Questions
+## The 6 Mandatory Core Questions
 
 1. **Project Type** — `solo | portfolio | client | internal`
 2. **Success Metric** — the single measurable number that defines "done" (e.g., "10 users can create a task")
 3. **Must-Have Features & Explicit Non-Features** — the 3–7 P0 features AND at least 1 thing NOT built
 4. **Time Capacity** — hours per week × weeks available (drives scope pruning)
 5. **Login or Sensitive Data** — `yes | no` (yes → UU PDP applies from day one; also raises blast-radius tier)
+6. **Legacy Core Replacement** — `yes | no`: does the work replace or integrate a system whose data/behaviour a licensed vendor or the client's own team currently owns (core banking, ERP, hospital HIS)? `yes` → **non-delegable: advisory only (A00–A04), never solo coding**, at any size. A capacity risk-acceptance file cannot open this block.
 
 ---
 
@@ -43,6 +44,7 @@ Answer `none` / `no` explicitly when there is nothing to declare. Leaving the li
 - Intake-Integrations: [none | comma-separated list]
 - Intake-Branch-Hierarchy: [no | yes]
 - Intake-Compliance: [none | OJK | BI | UU PDP | ISO 27001 | ...]
+- Intake-Legacy-Core: [yes | no]
 - Intake-Status: [ANSWERED | UNKNOWN]
 ```
 

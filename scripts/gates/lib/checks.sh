@@ -52,7 +52,8 @@ check_intake_gate() {
     local bad=0
     local field label
     for field in "Delivery:" "Intake-Success-Metric:" "Intake-P0-Features:" "Intake-Time-Capacity:" \
-                 "Intake-Sensitive-Data:" "Intake-Integrations:" "Intake-Branch-Hierarchy:" "Intake-Compliance:"; do
+                 "Intake-Sensitive-Data:" "Intake-Integrations:" "Intake-Branch-Hierarchy:" \
+                 "Intake-Compliance:" "Intake-Legacy-Core:"; do
         label="${field%:}"
         # An ABSENT line must fail too. The first pattern alone only matched a
         # present-but-empty line, so dropping the escalation fields from the state
@@ -66,7 +67,7 @@ check_intake_gate() {
         fi
     done
     if grep -qiE "^[[:space:]]*-?[[:space:]]*Intake-Status:[[:space:]]*ANSWERED" "$state"; then
-        [ "$bad" -eq 0 ] && echo "  ✅ Intake Gate: all 8 mandatory fields answered"
+        [ "$bad" -eq 0 ] && echo "  ✅ Intake Gate: all 9 mandatory fields answered"
     else
         echo "  ❌ Intake Gate: Intake-Status not set to ANSWERED — ask the Intake questions and END TURN."
         bad=1
@@ -79,7 +80,10 @@ check_intake_gate() {
 # projects that declare themselves Small. M01 used to call it from inside its
 # non-Small branch, so a self-declared "small" tier skipped the check the scale
 # router calls mandatory: 20 P0 features + sensitive data passed as "small".
-# Exit 2 = above solo capacity (blocking). ANY other non-zero exit is a
+# Exit 0 = solo-viable. Exit 2 = blocked (non-delegable obligation, or a capacity
+# risk without a written acceptance). Exit 5 = the human accepted the CAPACITY risk
+# in writing (docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md) — the gate CONTINUES but the
+# override is surfaced, never silently green. ANY other non-zero exit is a
 # CLASSIFIER ERROR and also fails closed — previously only exit 2 counted as
 # failure, so a crashing classifier printed "✅ Solo capacity verified" and its
 # own error output was swallowed.
@@ -114,6 +118,25 @@ check_scale_feasibility() {
             GATE_FAILED=1
             return 1
         fi
+        return 0
+    fi
+    if [ "$rc" -eq 5 ]; then
+        # Capacity-only override, accepted in writing by a named human. The scale
+        # still must match the evaluated tier (a Large project cannot keep the Small
+        # path), so run the same declared-vs-evaluated comparison as the rc=0 branch.
+        echo "  ⚠️  SOLO CAPACITY OVERRIDE ACCEPTED (capacity-only): proceeding under a recorded risk acceptance."
+        echo "     Non-delegable obligations (statutory compliance / legacy-core) are still hard-blocked — none were declared."
+        local evaluated declared_s declared_n
+        evaluated=$(echo "$classify_output" | sed -n 's/^Evaluated Scale[[:space:]]*:[[:space:]]*//p' | head -1 | tr -d ' \r')
+        declared_s=$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]' | tr -d ' \r')
+        declared_n=$(echo "$declared_s" | grep -oiE "small|medium|large|enterprise" | head -1)
+        if [ -n "$evaluated" ] && [ -n "$declared_n" ] && [ "$evaluated" != "$declared_n" ]; then
+            echo "  ❌ Scale mismatch: declared 'Scale: $declared_s' but the Intake fields evaluate to '$evaluated'."
+            echo "     The override may accept the CAPACITY risk, never a wrong lifecycle path. Re-classify the project."
+            GATE_FAILED=1
+            return 1
+        fi
+        echo "$classify_output" | sed 's/^/    /'
         return 0
     fi
     if [ "$rc" -eq 2 ]; then

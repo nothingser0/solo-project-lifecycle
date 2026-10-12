@@ -19,9 +19,9 @@
 === M01: Idea Feasibility Gate Checklist ===
   [INFO] Running mechanical scale & solo capacity classifier...
   ✅ Solo capacity verified: Scope is executable within solo capacity
-  ✅ docs/pm/PROJECT_STATE.md (381B)
+  ✅ docs/pm/PROJECT_STATE.md (406B)
   ❌ docs/pm/IDEA_BRIEF.md (MISSING — copy templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md; FEASIBILITY_REPORT.md is an accepted alias)
-  ✅ Intake Gate: all 8 mandatory fields answered
+  ✅ Intake Gate: all 9 mandatory fields answered
 
 ============================================================
 ❌ Gate validation FAILED - missing mandatory artifacts
@@ -31,7 +31,7 @@
 🔍 Validating Gate: M02
 ============================================================
 === M02: Discovery & Scope Gate Checklist ===
-  ✅ Intake Gate: all 8 mandatory fields answered
+  ✅ Intake Gate: all 9 mandatory fields answered
   [INFO] Running mechanical scale & solo capacity classifier...
   ✅ Solo capacity verified: Scope is executable within solo capacity
   ✅ docs/pm/SCOPE_STATEMENT.md (1215B)
@@ -69,7 +69,7 @@
 🔍 Validating Gate: M04
 ============================================================
 === M04: UI/UX Prototyping Gate Checklist ===
-  ✅ Intake Gate: all 8 mandatory fields answered
+  ✅ Intake Gate: all 9 mandatory fields answered
   ❌ assets/logo/logo.svg (TOO SMALL: 120B < 200B minimum required)
   ✅ docs/design/inspiration/notes.md (Benchmark selection verified)
   ✅ docs/specs/SITEMAP.md (1117B)
@@ -95,7 +95,7 @@
 🔍 Validating Gate: M05
 ============================================================
 === M05: Architecture & Specs Gate Checklist ===
-  ✅ Intake Gate: all 8 mandatory fields answered
+  ✅ Intake Gate: all 9 mandatory fields answered
   ❌ docs/specs/PRD.md (MISSING)
   ❌ docs/specs/FSD.md (MISSING)
   [INFO] Medium+ scale detected: Architecture Decision Record (ADR) is MANDATORY.
@@ -114,7 +114,7 @@
 🔍 Validating Gate: M06
 ============================================================
 === M06: Development Execution Gate Checklist ===
-  ✅ Intake Gate: all 8 mandatory fields answered
+  ✅ Intake Gate: all 9 mandatory fields answered
   ✅ AGENTS.md (707B)
   ✅ TODO.md (126B)
   ✅ CONTEXT.md (611B)

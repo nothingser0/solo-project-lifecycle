@@ -1348,6 +1348,10 @@
     {
       "path": "templates/essentials/README.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md",
+      "cataloged": false
     }
   ]
 }
