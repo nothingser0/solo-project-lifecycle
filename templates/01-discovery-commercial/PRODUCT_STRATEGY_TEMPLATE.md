@@ -411,7 +411,7 @@ For solo technical founders who want to ship SaaS products fast, LaunchKit is an
 
 *Clear, measurable conditions under which the product or venture must be terminated or fundamentally pivoted:*
 
-1. **Market Validation Kill**: Survey intent-to-buy falls below **30%** across ≥ 30 qualified respondents, OR waitlist landing conversion drops below **2.0%** after 200 targeted visitors.
+1. **Market Validation Kill**: Survey intent-to-buy falls below **15%** across ≥ 30 qualified respondents AND waitlist landing conversion drops below **2.0%** after ≥ 100 targeted visitors. (Canonical bands: `docs/modules/00_PRODUCT_DISCOVERY_STRATEGY.md` §1b — a waitlist between 2.0% and 4.9% triggers `RETEST`, not a kill.)
 2. **Economic Kill**: Estimated CAC exceeds LTV / 3, or gross margins drop below **70%** after third-party API and infrastructure hosting costs.
 3. **Execution Kill**: Core architecture spike or POC cannot achieve MVP scope within 6 weeks for a solo developer.
 4. **Regulatory Kill**: Business model legally mandates banking or direct lending licenses exceeding solo entity capacity.

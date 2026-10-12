@@ -1,7 +1,16 @@
 #!/usr/bin/env pwsh
 # validate-gate.ps1 - Thin wrapper around validate-gate.sh (single source of gate logic).
-# v2.2: full PowerShell duplicate retired. Requires bash (Git for Windows, WSL, or Linux/macOS).
+# v2.3: full PowerShell duplicate retired. Requires a REAL bash -- resolution and
+# rationale live in lib/BashResolver.ps1.
+#
 # Usage: ./scripts/gates/validate-gate.ps1 <MODULE_ID>
+#
+# Gates are CWD-relative: they read docs/pm/... from the PROJECT directory. This
+# wrapper deliberately does NOT change directory -- v2.2 forced a cd to the framework
+# repo root, so validating a scaffolded project silently validated the framework's own
+# tree instead (every gate reported MISSING artifacts).
+#
+# Exit codes: 0 PASS - 1 FAILED - 3 RETEST (non-terminal verdict) - 2 no usable bash.
 
 param(
     [Parameter(Position = 0)]
@@ -10,6 +19,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptDir "lib\BashResolver.ps1")
 
 if ([string]::IsNullOrWhiteSpace($Module)) {
     Write-Host "Usage: validate-gate.ps1 <MODULE_ID>"
@@ -24,16 +34,12 @@ if (-not (Test-Path $bashScript)) {
     exit 1
 }
 
-# Locate bash (Git for Windows / WSL / native)
-$bashCmd = Get-Command bash -ErrorAction SilentlyContinue
+$bashCmd = Resolve-Bash
 if (-not $bashCmd) {
-    Write-Host "[ERROR] bash not found on PATH."
-    Write-Host "Gate logic lives only in validate-gate.sh now. Run it via Git Bash, WSL, or a Unix shell:"
-    Write-Host "  ./scripts/gates/validate-gate.sh $Module"
+    Write-BashMissingHelp -ScriptName "the gate validator" -UsageHint "./scripts/gates/validate-gate.sh $Module"
     exit 2
 }
 
-# Execute the bash gate from the current working directory (gates are CWD-relative)
-$repoRoot = (Get-Item (Join-Path $scriptDir "..\..\")).FullName
-& $bashCmd "-lc" "cd `"$repoRoot`" && ./scripts/gates/validate-gate.sh `"$Module`""
-exit $LASTEXITCODE
+# Run from the CALLER's directory: the gate reads the project being validated.
+Invoke-Bash -Bash $bashCmd -Script $bashScript -Arguments @($Module)
+exit $script:LastBashExitCode

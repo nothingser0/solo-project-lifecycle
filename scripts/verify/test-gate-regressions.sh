@@ -303,6 +303,242 @@ done
 check_required "M02 requires legal review before publishing legal text" "$REPO/docs/modules/02_DISCOVERY_SCOPE.md" "LEGAL-REVIEW"
 
 echo ""
+echo "M00-lite: the shipped template must PASS its own gate, and no under-evidenced"
+echo "report may pass. Regressions: the machine field was written bold by the template"
+echo "while the gate expected the bare form (template-faithful docs FAILED, de-formatted"
+echo "ones PASSED); a 1-visitor/1-signup page passed the 5% bar; the declared decision"
+echo "was never reconciled against the numbers; PASS needed no human attribution."
+echo ""
+
+# expect_m00 <name> <EXPECTED> <waitlist-line+extras>; EXPECTED in PASS|RETEST|FAIL
+expect_m00() {
+    local name="$1" want="$2" extras="$3"
+    local dir="$WORK/m00"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf '%b' '- **Scale**: Medium\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    {
+        printf '# M00-Lite: Rapid Market Validation\n\n'
+        printf '## 1. Project Metadata & Problem Pitch\n'
+        printf -- '- **Project Codename**: KasirKilat\n- **Target User**: Micro-retail owners\n'
+        printf -- '- **Core Pain**: Physical stock discrepancies vs Excel records\n'
+        printf -- '- **Proposed Solution**: Offline-first cashier app\n'
+        printf -- '- **Proposed Price Point**: Rp 99000 / month\n'
+        printf -- '- **Validation Lead**: Zen\n- **Date**: 2026-10-12\n\n'
+        printf '## 2. Riskiest Assumption Register (RAT)\n\n'
+        printf '| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |\n'
+        printf '|:---|:---|:---:|:---|:---|:---|:---:|\n'
+        printf '| **ASM-01** | Users lose money monthly | HIGH | 3/5 confirm loss | Deep interviews | <2 respondents | ✅ |\n'
+        printf '| **ASM-02** | Users will pay | HIGH | Waitlist with price anchor | Landing page | <2.0%% | ✅ |\n\n'
+        printf '## 3. Quick Competitor & Alternative Check\n\n'
+        printf '| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Unique Differentiator We Offer |\n'
+        printf '|:---|:---|:---|:---|:---|:---|\n'
+        printf '| Pesanan Toko | Direct SaaS | Rp 200k/mo | Brand | Offline broken | Offline-first |\n'
+        printf '| **SIAPIK / Excel** | Free / Govt | Rp 0 | Free | Manual | Auto sync |\n\n'
+        printf '## 4. Qualitative User Discovery (5 User Interviews)\n\n'
+        printf '| Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |\n'
+        printf '|:---|:---|:---|:---|:---|:---:|\n'
+        printf '| **INT-01** | Grocery, 2 staff | paper | Rp 800k loss | Rp 50k-100k/mo | ✅ Real |\n'
+        printf '| **INT-02** | Pet shop | Excel | Corrupt sheets | Rp 100k/mo | ✅ Real |\n'
+        printf '| **INT-03** | Boutique | POS app X | Slow offline | Rp 150k/mo | ✅ Real |\n'
+        printf '| **INT-04** | Warung | paper | Rp 500k loss | Rp 50k/mo | ⏳ Pending |\n'
+        printf '| **INT-05** | Minimarket | Excel | Rp 1.2M loss | Rp 100k/mo | ⏳ Pending |\n\n'
+        printf '## 5. Behavioral Intent Validation (Waitlist / Smoke Test)\n\n'
+        printf '%b' "$extras"
+        printf '\n## 6. Unit Economics & Solo Capacity Sanity Check\n\n'
+        printf -- '- **Target ARPU**: Rp 99000 / month\n\n'
+        printf '## 7. Kill Criteria & Gate Validation Outcome\n\n### Kill Criteria Triggers:\n'
+        printf '1. Market Kill: conversion < 2.0%% after >=100 visitors\n\n'
+    } > "$dir/docs/pm/M00_LITE.md"
+    local out code got
+    out="$(cd "$dir" && bash "$GATE" M00 2>&1)"; code=$?
+    case "$code" in
+        0) got="PASS" ;;
+        3) got="RETEST" ;;
+        *) got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M00 -> $got, exit $code)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M00 -> $got, expected $want)"
+        echo "$out" | grep -E '❌|⚠️' | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+# The template's own formatting: bullets, bold field names, trailing "%".
+WL_TEMPLATE='- **Landing Page URL / Platform**: https://kasirkilat.carrd.co
+- **Traffic Source**: merchant communities
+- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 9
+- **Conversion Rate**: (9 / 140) x 100% = 6.43%
+- **Waitlist-Conversion-Pct**: 6.4
+- **Gate Pass Benchmark**: >= 5.0% waitlist conversion
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "template-style bold fields at 6.4% + 140 visits" PASS "$WL_TEMPLATE"
+
+# Regression: the exact bug — a template-faithful document used to FAIL while a
+# de-formatted one PASSED. Both must now be equal.
+WL_BARE='Total Unique Visitors: 140
+Total Waitlist / Email Signups: 9
+Waitlist-Conversion-Pct: 6.4
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "same evidence, formatting stripped (parity with bold)" PASS "$WL_BARE"
+
+# Sample floor: a rate is not evidence below 100 targeted visits.
+WL_SMALL='- **Total Unique Visitors**: 1
+- **Total Waitlist / Email Signups**: 1
+- **Waitlist-Conversion-Pct**: 100
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "1 visitor / 1 signup = 100% (below visit floor)" FAIL "$WL_SMALL"
+
+# RETEST band must be representable and must NOT pass.
+WL_RETEST='- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 5
+- **Waitlist-Conversion-Pct**: 3.6
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: RETEST
+'
+expect_m00 "3.6% waitlist declared RETEST" RETEST "$WL_RETEST"
+
+# Inflating the decision on a RETEST-band number is the core anti-gaming check.
+WL_INFLATED='- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 5
+- **Waitlist-Conversion-Pct**: 3.6
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "3.6% but declared PASS (talked up)" FAIL "$WL_INFLATED"
+
+# KILL band.
+WL_KILL='- **Total Unique Visitors**: 200
+- **Total Waitlist / Email Signups**: 2
+- **Waitlist-Conversion-Pct**: 1.0
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: FAIL
+'
+expect_m00 "1.0% waitlist declared FAIL" FAIL "$WL_KILL"
+
+# Arithmetic the gate can check: signups cannot exceed visitors.
+WL_IMPOSSIBLE='- **Total Unique Visitors**: 120
+- **Total Waitlist / Email Signups**: 200
+- **Waitlist-Conversion-Pct**: 6.0
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "signups exceed visitors (impossible)" FAIL "$WL_IMPOSSIBLE"
+
+# Percent that contradicts signups/visitors.
+WL_MISMATCH='- **Total Unique Visitors**: 1000
+- **Total Waitlist / Email Signups**: 10
+- **Waitlist-Conversion-Pct**: 6.0
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "6.0% contradicts 10/1000 (=1.0%)" FAIL "$WL_MISMATCH"
+
+# Secondary signal rescues the RETEST band.
+WL_INTENT='- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 5
+- **Waitlist-Conversion-Pct**: 3.6
+- **Intent-to-Buy-Pct**: 34
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "3.6% waitlist but 34% intent-to-buy" PASS "$WL_INTENT"
+
+# PASS requires a named human validator with a real date.
+WL_NOATTR='- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 9
+- **Waitlist-Conversion-Pct**: 6.4
+
+Gate-Decision: PASS
+'
+expect_m00 "6.4% but no Validated-by attribution" FAIL "$WL_NOATTR"
+
+# Unresolved placeholders must not pass, even with good numbers.
+WL_PLACEHOLDER='- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 9
+- **Waitlist-Conversion-Pct**: 7.5
+- **Proposed Price Point**: Rp [X]/mo
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+expect_m00 "leftover [X]/mo placeholder" FAIL "$WL_PLACEHOLDER"
+
+# 3 verified interviews is the floor; 2 verified must not pass.
+expect_m00_interviews() {
+    local name="$1" want="$2" verified="$3"
+    local dir="$WORK/m00i"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf '%b' '- **Scale**: Medium\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    {
+        printf '# M00-Lite: Rapid Market Validation\n\n'
+        printf '## 2. Riskiest Assumption Register (RAT)\n\n'
+        printf '| **ASM-01** | Users lose money | HIGH | 3/5 | Interviews | <2 | ✅ |\n\n'
+        printf '## 3. Quick Competitor & Alternative Check\n\n| Competitor | Direct | Rp 200k | Brand | Offline | Ours |\n\n'
+        printf '## 4. Qualitative User Discovery (5 User Interviews)\n\n'
+        printf '| Respondent ID | Role | Current Solution | Friction | Willingness to Pay | Evidence Status |\n'
+        printf '|:---|:---|:---|:---|:---|:---:|\n'
+        printf '| **INT-01** | Grocery | paper | loss | Rp 50k | ✅ Real |\n'
+        printf '| **INT-02** | Pet shop | Excel | corrupt | Rp 100k | ✅ Real |\n'
+        printf '| **INT-03** | Boutique | POS X | slow | Rp 150k | %s |\n'
+        if [ "$verified" = "3" ]; then printf '| **INT-04** | Warung | paper | loss | Rp 50k | ✅ Real |\n'; else printf '| **INT-04** | Warung | paper | loss | Rp 50k | ⏳ Pending |\n'; fi
+        printf '\n## 5. Behavioral Intent Validation (Waitlist / Smoke Test)\n\n'
+        printf -- '- **Total Unique Visitors**: 140\n- **Total Waitlist / Email Signups**: 9\n- **Waitlist-Conversion-Pct**: 6.4\n'
+        printf '\nValidated-by: Zen on 2026-10-12\n\nGate-Decision: PASS\n'
+    } > "$dir/docs/pm/M00_LITE.md"
+    local out got
+    out="$(cd "$dir" && bash "$GATE" M00 2>&1 || true)"
+    if echo "$out" | grep -q "Insufficient real interviews"; then got="BLOCKED"; else got="ALLOWED"; fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M00 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M00 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m00_interviews "2 of 5 interviews verified (below floor)" BLOCKED 2
+expect_m00_interviews "3 of 5 interviews verified (at floor)" ALLOWED 3
+
+# The eval scenario expects a NOT-YET-RUN research state to be PENDING, not PASS.
+WL_PENDING='- **Total Unique Visitors**: 0
+- **Total Waitlist / Email Signups**: 0
+- **Waitlist-Conversion-Pct**: 0
+
+Gate-Decision: PENDING
+'
+expect_m00 "research not yet run (PENDING)" FAIL "$WL_PENDING"
+
+echo ""
 echo "Path portability: every script must work from ANY cwd and on ANY device."
 echo "Regression: verify-all.sh and index-manifest.js resolved paths against the"
 echo "caller's cwd, so invoking them by absolute path from another directory"

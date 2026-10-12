@@ -35,45 +35,11 @@ jobs:
         run: |
           ./scripts/scaffold/template-picker.sh --phase 8 --dry-run --dest /tmp
 
-      - name: Verify Gate Validation execution
+      - name: Verify Gate Validation execution (bash)
         run: |
           mkdir -p /tmp/mock-project/docs/pm
-          cat << 'EOF' > /tmp/mock-project/docs/pm/M00_LITE.md
-# M00-Lite: Rapid Market Validation (Solo SaaS & Self-Initiated)
-
-## 1. Project Metadata & Problem Pitch
-- **Project Codename**: MockApp
-- **Target User**: Independent creators and micro-retail store owners
-- **Core Pain**: Time lost tracking receipts and calculating manual reconciliations
-- **Proposed Solution**: Automated receipt scanning app with offline sync capability
-- **Proposed Price Point**: Rp 150000 / month
-- **Validation Lead**: Test Lead
-- **Date**: 2026-10-11
-
-## 2. Riskiest Assumption Register (RAT)
-| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |
-|:---|:---|:---:|:---|:---|:---|:---:|
-| **ASM-01** | Users lose measurable revenue each month | HIGH | 3/5 confirm loss | Deep interviews | <2 respondents | [x] |
-
-## 3. Quick Competitor & Alternative Check
-| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Unique Differentiator We Offer |
-|:---|:---|:---|:---|:---|:---|
-| Competitor X | Direct SaaS | Rp 200k/mo | Established brand | Offline sync broken | 100% offline first sync |
-
-## 4. Qualitative User Discovery
-| Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
-|:---|:---|:---|:---|:---|:---:|
-| **INT-01** | Boutique Owner | Paper Receipts | Missing tax deductions | Rp 100k/mo | ✅ Real |
-| **INT-02** | Freelancer | Spreadsheet | Formula breakage | Rp 100k/mo | ✅ Real |
-| **INT-03** | Agency Founder | SaaS Tool X | Overpriced seat model | Rp 150k/mo | ✅ Real |
-
-## 5. Behavioral Intent Validation
-- Total Unique Visitors: 120
-- Waitlist-Conversion-Pct: 7.5%
-
-## 7. Kill Criteria & Gate Validation Outcome
-Gate-Decision: PASS
-EOF
+          printf '%b' '- **Scale**: Medium\n- Delivery: solo\n' > /tmp/mock-project/docs/pm/PROJECT_STATE.md
+          cp scripts/verify/fixtures/m00-lite-pass.md /tmp/mock-project/docs/pm/M00_LITE.md
           (cd /tmp/mock-project && "$GITHUB_WORKSPACE/scripts/gates/validate-gate.sh" M00)
 
       - name: Verify SKILL.md frontmatter
@@ -147,47 +113,28 @@ EOF
         run: |
           $mockDir = Join-Path $env:TEMP "mock-project-pwsh"
           New-Item -ItemType Directory -Force -Path (Join-Path $mockDir "docs/pm") | Out-Null
-          $mockContent = @'
-# M00-Lite: Rapid Market Validation (Solo SaaS & Self-Initiated)
-
-## 1. Project Metadata & Problem Pitch
-- **Project Codename**: MockApp
-- **Target User**: Independent creators and micro-retail store owners
-- **Core Pain**: Time lost tracking receipts and calculating manual reconciliations
-- **Proposed Solution**: Automated receipt scanning app with offline sync capability
-- **Proposed Price Point**: Rp 150000 / month
-- **Validation Lead**: Test Lead
-- **Date**: 2026-10-11
-
-## 2. Riskiest Assumption Register (RAT)
-| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |
-|:---|:---|:---:|:---|:---|:---|:---:|
-| **ASM-01** | Users lose measurable revenue each month | HIGH | 3/5 confirm loss | Deep interviews | <2 respondents | [x] |
-
-## 3. Quick Competitor & Alternative Check
-| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Unique Differentiator We Offer |
-|:---|:---|:---|:---|:---|:---|
-| Competitor X | Direct SaaS | Rp 200k/mo | Established brand | Offline sync broken | 100% offline first sync |
-
-## 4. Qualitative User Discovery
-| Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
-|:---|:---|:---|:---|:---|:---:|
-| **INT-01** | Boutique Owner | Paper Receipts | Missing tax deductions | Rp 100k/mo | ✅ Real |
-| **INT-02** | Freelancer | Spreadsheet | Formula breakage | Rp 100k/mo | ✅ Real |
-| **INT-03** | Agency Founder | SaaS Tool X | Overpriced seat model | Rp 150k/mo | ✅ Real |
-
-## 5. Behavioral Intent Validation
-- Total Unique Visitors: 120
-- Waitlist-Conversion-Pct: 7.5%
-
-## 7. Kill Criteria & Gate Validation Outcome
-Gate-Decision: PASS
-'@
-          [System.IO.File]::WriteAllText((Join-Path $mockDir "docs/pm/M00_LITE.md"), $mockContent, [System.Text.Encoding]::UTF8)
+          # Projects record their scale/delivery in PROJECT_STATE.md; the wrapper must
+          # read the gate against THIS directory, not the framework repo.
+          [System.IO.File]::WriteAllText(
+            (Join-Path $mockDir "docs/pm/PROJECT_STATE.md"),
+            "- **Scale**: Medium`n- Delivery: solo`n",
+            [System.Text.Encoding]::UTF8)
+          Copy-Item "scripts/verify/fixtures/m00-lite-pass.md" `
+            (Join-Path $mockDir "docs/pm/M00_LITE.md") -Force
           Push-Location $mockDir
           try {
             & "$env:GITHUB_WORKSPACE\scripts\gates\validate-gate.ps1" -Module M00
-            if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) { throw "Gate validation failed" }
+            if ($LASTEXITCODE -ne 0) { throw "Gate validation failed with exit $LASTEXITCODE" }
           } finally {
             Pop-Location
           }
+
+      - name: Verify PowerShell wrappers (parse + caller-directory resolution)
+        shell: powershell
+        run: |
+          # Guards two Windows-only failure modes that `bash-validation` cannot see:
+          # 1. non-ASCII characters in a BOM-less .ps1 (PS 5.1 decodes it as ANSI and
+          #    the file stops parsing);
+          # 2. the wrapper changing directory to the framework repo, so a gate run
+          #    against a project validated the framework's own tree instead.
+          .\scripts\verify\test-ps1-wrappers.ps1

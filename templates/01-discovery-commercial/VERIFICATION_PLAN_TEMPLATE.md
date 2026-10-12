@@ -54,7 +54,7 @@ Before marking Gate 0 as ready for user execution, the following instruments mus
 ### 3.2 Gate Release Criteria (Moving from `PENDING` to `PASS`)
 The gate moves from `PENDING_PRIMARY_RESEARCH` to `PASS` **ONLY IF**:
 1. Minimum sample size is satisfied:
-   - Solo SaaS (M00-lite): ≥ 5 documented user interviews OR ≥ 5% waitlist conversion (≥ 100 visitors).
+   - Solo SaaS (M00-lite): ≥ 3 verified interviews (of 5 attempts) AND ≥ 100 targeted visits OR ≥ 5% waitlist conversion.
    - Medium B2B: ≥ 8 interviews + ≥ 30 survey respondents.
    - Enterprise: ≥ 15 interviews + ≥ 50 survey respondents.
 2. Verified intent-to-buy reaches ≥ 30% (or waitlist conversion ≥ 5%).

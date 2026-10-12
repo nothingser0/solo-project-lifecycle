@@ -22,6 +22,10 @@ MODULES_DIR="$SCRIPT_DIR/modules"
 # --- argument handling (before sourcing, so --help stays cheap) -----------------
 GATE_MODULE="${1:-}"
 GATE_FAILED=0
+# Modules may downgrade a failure to a non-terminal verdict (M00 RETEST band:
+# evidence is real but insufficient to close the gate). The module sets this;
+# the dispatcher owns the exit code so callers only read one convention.
+GATE_VERDICT=""
 
 if [ -z "$GATE_MODULE" ]; then
     echo "Usage: $0 <MODULE_ID>"
@@ -59,12 +63,20 @@ if ! command -v "gate_$GATE_MODULE" >/dev/null 2>&1; then
     exit 1
 fi
 
-"gate_$GATE_MODULE"
+# A module returning non-zero must not trip `set -e` before the verdict prints:
+# GATE_FAILED/GATE_VERDICT are the contract, not the function's return status.
+"gate_$GATE_MODULE" || true
 
 # --- verdict -------------------------------------------------------------------
 echo ""
 echo "============================================================"
-if [ $GATE_FAILED -eq 1 ]; then
+# RETEST is a non-terminal outcome: the gate is NOT passed and the lifecycle must
+# not chain onward, but the project is not killed either. Exit 3 lets callers
+# branch without parsing prose (0 = passed, 1 = failed, 3 = retest).
+if [ "$GATE_VERDICT" = "RETEST" ] && [ $GATE_FAILED -eq 0 ]; then
+    echo "⚠️  Gate validation NOT PASSED - RERUN after one optimisation sprint (exit 3)"
+    exit 3
+elif [ $GATE_FAILED -eq 1 ]; then
     echo "❌ Gate validation FAILED - missing mandatory artifacts"
     exit 1
 else

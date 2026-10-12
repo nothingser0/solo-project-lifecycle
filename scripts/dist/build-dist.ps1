@@ -16,7 +16,7 @@ New-Item -ItemType Directory -Force -Path $pkgDir | Out-Null
 
 Copy-Item (Join-Path $rootDir "SKILL.md") $pkgDir
 Copy-Item (Join-Path $rootDir "README.md") $pkgDir
-# docs/INDEX.json travels with the docs/ copy below — verify-all checks it in-package
+# docs/INDEX.json travels with the docs/ copy below -- verify-all checks it in-package
 foreach ($dir in @("docs", "templates", "patterns", "references", "scripts", "case-studies", "evals")) {
     $src = Join-Path $rootDir $dir
     if (Test-Path $src) {
@@ -28,7 +28,7 @@ foreach ($dir in @("docs", "templates", "patterns", "references", "scripts", "ca
 $zipPath = Join-Path $distDir "solo-project-lifecycle.zip"
 Write-Host "Creating ZIP bundle..."
 Compress-Archive -Path "$pkgDir\*" -DestinationPath $zipPath -Force
-Write-Host "✅ ZIP bundle created: dist\solo-project-lifecycle.zip" -ForegroundColor Green
+Write-Host "[OK] ZIP bundle created: dist\solo-project-lifecycle.zip" -ForegroundColor Green
 
 $allDist = Get-ChildItem -Path $pkgDir -Recurse -File
 $distBytes = ($allDist | Measure-Object -Property Length -Sum).Sum
@@ -39,4 +39,4 @@ Write-Host "Distribution Build Summary:"
 Write-Host "  * Package directory: dist\package\ (Root SKILL.md ready for skill install)"
 Write-Host "  * Total files      : $($allDist.Count)"
 Write-Host "  * Uncompressed size: $distMB MB"
-Write-Host "✅ Build completed successfully." -ForegroundColor Green
+Write-Host "[OK] Build completed successfully." -ForegroundColor Green

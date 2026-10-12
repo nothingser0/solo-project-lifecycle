@@ -31,6 +31,22 @@
 
 ---
 
+## 1b. Canonical Gate Bar (single source of truth)
+
+Quote this table; never restate it with different numbers (machine-enforced on `M00_LITE.md` §5).
+
+| Signal | PASS | RETEST | KILL |
+|---|---|---|---|
+| Waitlist conversion, ≥100 visits | ≥ 5.0% | 2.0–4.9% → one 7-day sprint, more visits, re-test | < 2.0% |
+| Survey intent-to-buy | ≥ 30% | 15–29% | < 15%, or < 30 respondents |
+| Refundable deposits | ≥ 5 | 1–4 | 0 |
+| Signed B2B LOIs | ≥ 2 | 1 | 0 |
+| Verified interviews (`✅ Real` rows) | ≥ 3 of 5 attempts | — | < 3 |
+
+Any PASS signal closes the gate; RETEST = best signal in RETEST; KILL = all in KILL.
+🔒 **Never talk a number up**: a 3.1% result is written 3.1% and declares `RETEST` (the gate
+fails on any mismatch with the §5 arithmetic). Research not yet run → `PENDING`, end turn.
+
 ## 2. Execution Rules (Condensed)
 
 ### Step 1 — Market Research (`docs/pm/MARKET_RESEARCH.md`)
@@ -46,14 +62,14 @@
 - **Evidence rule (non-negotiable)**: primary data from real humans only. No fabricated quotes/percentages. If research not yet run, mark `PENDING_PRIMARY_RESEARCH` and set Gate-Decision: PENDING. Pre-data personas are `Proto-Persona (Hipotesis)`.
 - 🧑 **HUMAN-ONLY — cannot be verified by any script**: conducting the 5–10 interviews, running the surveys/waitlist, and collecting the deposits or signed LOIs are the **human's** actions. The agent may draft instruments, summarise transcripts the human supplies, and fill the report — it must **not** invent responses, and it cannot tell whether the interviews actually happened. If the human has not run them, the agent records `PENDING_PRIMARY_RESEARCH` and **ends the turn**; it never proceeds on assumed research.
 - Confidence legend: ✅ VERIFIED / 🔶 ASSUMPTION / ❓ UNKNOWN.
-- Survey design: screener → pain severity (Likert) → Van Westendorp WTP → intent-to-buy. Gate bar: ≥30% intent-to-buy, or behavioral validation (waitlist ≥5% of ≥100 targeted visits, ≥5 refundable pre-order deposits, or ≥2 signed LOIs).
+- Survey design: screener → pain severity (Likert) → Van Westendorp WTP → intent-to-buy. Gate bar: see §1b (any one PASS signal closes the gate).
 - Output: anonymized interview summaries, survey charts, personas, journey map, pain Impact-Effort matrix.
 
 ### Step 4 — Product Strategy (`docs/pm/PRODUCT_STRATEGY.md`)
 - Vision (3–5 yr) / Mission (tactical, differentiated); **North Star Metric** with formula, rationale, target, breakdown tree — must be instrumentable (no vanity metrics like "registered users").
-- Value Proposition Canvas; 3–5 strategic pillars with initiatives and success criteria.
+- Value Proposition Canvas; 3–5 strategic pillars with success criteria.
 - Unit economics: target price, CAC, LTV, gateway fees, PPN 11% + PPh 0.5%, gross margin ≥70%.
-- **Kill criteria**: market kill (intent <30% AND waitlist <2%), economic kill (CAC > LTV/3), solo-feasibility kill (architecture beyond 1 dev).
+- **Kill criteria**: market kill (all signals in §1b's KILL column), economic kill (CAC > LTV/3), solo-feasibility kill (architecture beyond 1 dev).
 
 ---
 
@@ -63,7 +79,7 @@
 |---|---|---|---|
 | Path | M00 SKIPPED (Intake Gate) | M00-lite mandatory | Routed to A00 (Bid/No-Bid) |
 | Deliverable | `PROJECT_STATE.md` intake only | `docs/pm/M00_LITE.md` (1 page) | Tender-readiness pack |
-| Stopping rule | Intake Gate | `Gate-Decision: PASS` + waitlist ≥5% | Formal Bid/No-Bid |
+| Stopping rule | Intake Gate | `Gate-Decision: PASS` per §1b (exit 0) | Formal Bid/No-Bid |
 
 Full M00 path (4 documents) applies when the project requires industry-grade PM standards; M00-lite is the default for Solo SaaS.
 
@@ -72,33 +88,27 @@ Full M00 path (4 documents) applies when the project requires industry-grade PM 
 ## 4. Output Artifacts
 
 All documents live in **`docs/pm/`** (never project root):
-1. **Solo SaaS**: `docs/pm/M00_LITE.md` — consolidated assumption register, 5 interview summaries, waitlist results, kill criteria.
+1. **Solo SaaS**: `docs/pm/M00_LITE.md` — consolidated assumption register, 5 interview attempts (≥3 verified), waitlist results, `Validated-by:` attribution, kill criteria.
 2. **Full path**: `MARKET_RESEARCH.md`, `COMPETITIVE_LANDSCAPE.md`, `USER_RESEARCH_REPORT.md`, `PRODUCT_STRATEGY.md`.
 
 ---
 
 ## Gate Exit Protocol
 
-M00 is **not** a stop point: after artifacts pass the gate, chain directly into Module 01 in the same flow (SKILL.md rule 3 — stops are only the Client gates M03/M09/M11 and Small's two stops). Pause only on `Gate-Decision: PENDING` or `FAIL`.
+M00 is **not** a stop point: on exit 0, chain directly into Module 01 in the same flow (SKILL.md rule 3 — stops are only the Client gates M03/M09/M11 and Small's two stops). Pause on `PENDING`, `FAIL`, or exit 3 (`RETEST`).
 
 **Self-verification checklist**:
-- [ ] TAM/SAM/SOM realistic, sources cited with URLs + verification dates
-- [ ] 3–5 competitors tested hands-on (Test Date, Onboarding Time recorded); free alternatives checked
-- [ ] Primary research strictly empirical; `PENDING_PRIMARY_RESEARCH` if not yet executed
-- [ ] Explicit `Gate-Decision: PASS | PENDING | FAIL` declared
-- [ ] Intent-to-buy ≥30% (or waitlist ≥5%; 2.0–4.9% = one 7-day optimization sprint then re-test; <2.0% = KILL)
-- [ ] Competitive moat identified; North Star Metric instrumentable; kill criteria defined
+- [ ] TAM/SAM/SOM realistic; sources cited with URLs + verification dates
+- [ ] Competitors tested hands-on (Test Date, Onboarding Time); free alternatives checked
+- [ ] Research empirical (§1b bands); `Validated-by: <name> on <date>` present for PASS
+- [ ] Moat identified; North Star Metric instrumentable; kill criteria defined
 
-**Step 3 — Gate verification (MANDATORY)**:
-
-Execute the validator and paste its EXACT terminal output. Do NOT use pre-filled hardcoded ✅ checklists:
+**Step 3 — Gate verification (MANDATORY)**: run the validator and paste its EXACT output. Do NOT use pre-filled hardcoded ✅ checklists:
 
 ```
 [PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M00]
 ```
 
-**MANDATORY**: Execute `./scripts/gates/validate-gate.sh M00` (or `.ps1`). Exit 1 = incomplete; fix artifacts and re-run before declaring completion.
+Exit 1 = incomplete; exit 3 = RETEST (re-run after the optimisation sprint). Never edit a number, or the declared decision, to turn a failing run green.
 
-**Report & continue**: present the Product Discovery & Strategy Summary (market opportunity, competitive landscape, user validation, product strategy) and proceed:
-
-> *"Module 00 complete with [X]% intent-to-buy and North Star Metric '[NSM]' defined. Gate validation: [PASS/FAIL]. Continuing to Module 01 (Idea & Feasibility)."*
+**Report & continue** (exit 0 only): summarise market opportunity, competitive landscape, user validation and strategy, state the measured signal + North Star Metric, then proceed to M01.

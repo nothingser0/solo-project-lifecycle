@@ -6,6 +6,10 @@
 # observable. It runs every gate against a FIXED fixture and compares stdout+stderr
 # and the exit code against `scripts/verify/golden/`.
 #
+# Captured cases: the 19 module gates against one fixed incomplete fixture, the two
+# usage paths, and two dedicated M00-lite cases (PASS and the exit-3 RETEST verdict)
+# because the main fixture is client work, where M00 is waived.
+#
 # Usage:
 #   bash scripts/verify/test-gate-output.sh            # compare against golden
 #   bash scripts/verify/test-gate-output.sh --update   # regenerate golden (only
@@ -76,7 +80,7 @@ elif [ ! -f "$GOLDEN_FILE" ]; then
     exit 1
 fi
 
-echo -e "${BLUE}=== Gate Output Parity (19 gates + usage paths) ===${NC}"
+echo -e "${BLUE}=== Gate Output Parity (19 gates + usage paths + M00-lite verdicts) ===${NC}"
 echo "Fixture: fixed, deliberately incomplete (every gate reports something)."
 echo ""
 
@@ -137,6 +141,77 @@ compare "_noarg" "$W/_noarg.out" "$code"
 ( cd "$W/proj" && bash "$GATE" ZZZ >"$W/_invalid.out" 2>&1 ); code=$?
 compare "_invalid" "$W/_invalid.out" "$code"
 
+# M00-lite path. The main fixture is a Medium/client project, where M00 is WAIVED —
+# so the lite branch (the one with the strictest parsing) went entirely uncaptured.
+# That blind spot let a template/validator mismatch ship: the shipped template writes
+# its machine fields bold ("- **Waitlist-Conversion-Pct**: 6.4") while the gate
+# originally expected the bare form, so a template-faithful document FAILED its own
+# gate. This fixture pins the whole lite checklist, both verdicts and exit codes.
+mk_m00_fixture() {
+    local d="$1" wl="$2"
+    rm -rf "$d"; mkdir -p "$d/docs/pm"
+    printf '%b' '- **Scale**: Medium\n- Delivery: solo\n' > "$d/docs/pm/PROJECT_STATE.md"
+    {
+        printf '# M00-Lite: Rapid Market Validation\n\n'
+        printf '## 1. Project Metadata & Problem Pitch\n\n'
+        printf -- '- **Project Codename**: KasirKilat\n'
+        printf -- '- **Target User**: Micro-retail owners\n'
+        printf -- '- **Core Pain**: Physical stock discrepancies vs Excel records\n'
+        printf -- '- **Proposed Solution**: Offline-first cashier app\n'
+        printf -- '- **Proposed Price Point**: Rp 99000 / month\n'
+        printf -- '- **Validation Lead**: Zen\n- **Date**: 2026-10-12\n\n'
+        printf '## 2. Riskiest Assumption Register (RAT)\n\n'
+        printf '| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |\n'
+        printf '|:---|:---|:---:|:---|:---|:---|:---:|\n'
+        printf '| **ASM-01** | Users lose money monthly | HIGH | 3/5 confirm loss | Deep interviews | <2 respondents | ✅ |\n'
+        printf '| **ASM-02** | Users will pay | HIGH | Waitlist with price anchor | Landing page | <2.0%% | ✅ |\n\n'
+        printf '## 3. Quick Competitor & Alternative Check\n\n'
+        printf '| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Unique Differentiator We Offer |\n'
+        printf '|:---|:---|:---|:---|:---|:---|\n'
+        printf '| Pesanan Toko | Direct SaaS | Rp 200k/mo | Brand | Offline broken | Offline-first |\n'
+        printf '| **SIAPIK / Excel** | Free / Govt | Rp 0 | Free | Manual | Auto sync |\n\n'
+        printf '## 4. Qualitative User Discovery (5 User Interviews)\n\n'
+        printf '| Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |\n'
+        printf '|:---|:---|:---|:---|:---|:---:|\n'
+        printf '| **INT-01** | Grocery, 2 staff | paper | Rp 800k loss | Rp 50k-100k/mo | ✅ Real |\n'
+        printf '| **INT-02** | Pet shop | Excel | Corrupt sheets | Rp 100k/mo | ✅ Real |\n'
+        printf '| **INT-03** | Boutique | POS app X | Slow offline | Rp 150k/mo | ✅ Real |\n'
+        printf '| **INT-04** | Warung | paper | Rp 500k loss | Rp 50k/mo | ⏳ Pending |\n'
+        printf '| **INT-05** | Minimarket | Excel | Rp 1.2M loss | Rp 100k/mo | ⏳ Pending |\n\n'
+        printf '## 5. Behavioral Intent Validation (Waitlist / Smoke Test)\n\n'
+        printf '%b' "$wl"
+        printf '\n## 6. Unit Economics & Solo Capacity Sanity Check\n\n'
+        printf -- '- **Target ARPU**: Rp 99000 / month\n\n'
+        printf '## 7. Kill Criteria & Gate Validation Outcome\n\n'
+        printf '### Kill Criteria Triggers:\n'
+        printf '1. Market Kill: conversion < 2.0%% after >=100 visitors\n\n'
+    } > "$d/docs/pm/M00_LITE.md"
+}
+
+# Case A: PASS — the template's own bold formatting, full evidence, human attribution.
+mk_m00_fixture "$W/m00pass" '- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 9
+- **Waitlist-Conversion-Pct**: 6.4
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: PASS
+'
+( cd "$W/m00pass" && bash "$GATE" M00 >"$W/_m00-lite-pass.out" 2>&1 ); code=$?
+compare "_m00-lite-pass" "$W/_m00-lite-pass.out" "$code"
+
+# Case B: RETEST — exit 3 is a distinct, non-terminal verdict; the golden file pins it.
+mk_m00_fixture "$W/m00retest" '- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 5
+- **Waitlist-Conversion-Pct**: 3.6
+
+Validated-by: Zen on 2026-10-12
+
+Gate-Decision: RETEST
+'
+( cd "$W/m00retest" && bash "$GATE" M00 >"$W/_m00-lite-retest.out" 2>&1 ); code=$?
+compare "_m00-lite-retest" "$W/_m00-lite-retest.out" "$code"
+
 # In update mode, assemble the consolidated golden file from the captures above.
 # Normalisation already ran inside compare(), so no device paths reach the file.
 if [ "$UPDATE" -eq 1 ]; then
@@ -146,7 +221,7 @@ if [ "$UPDATE" -eq 1 ]; then
         echo "# Do not edit by hand. Each block: '${MARKER} <GATE> exit=<code>' then the exact"
         echo "# stdout+stderr that gate produced against the fixed fixture in the test script."
     } >> "$W/golden.new"
-    for name in $GATES _noarg _invalid; do
+    for name in $GATES _noarg _invalid _m00-lite-pass _m00-lite-retest; do
         [ -f "$W/$name.out" ] || continue
         rc="$(cat "$W/$name.code" 2>/dev/null || echo "?")"
         {

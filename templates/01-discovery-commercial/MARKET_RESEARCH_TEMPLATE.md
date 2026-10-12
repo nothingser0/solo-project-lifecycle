@@ -274,8 +274,8 @@ Innovators (2.5%) → Early Adopters (13.5%) → Early Majority (34%) → Late M
 
 ### 5.2 Kill Criteria
 *If any of the following conditions are met, the project MUST BE TERMINATED or PIVOTED:*
-1. **Market Kill**: Waitlist conversion < 2% after 200 targeted visits OR survey intent-to-buy < 30%.
-2. **Financial Kill**: Customer Acquisition Cost (CAC) exceeds LTV / 2 during initial marketing tests.
+1. **Market Kill**: Every signal is below band — waitlist conversion < 2.0% after ≥100 targeted visits AND survey intent-to-buy < 15%. (See `docs/modules/00_PRODUCT_DISCOVERY_STRATEGY.md` §1b for the canonical PASS/RETEST/KILL table: a rate between 2.0% and 4.9% is `RETEST`, not an automatic kill.)
+2. **Financial Kill**: Customer Acquisition Cost (CAC) exceeds LTV / 3 during initial marketing tests.
 3. **Regulatory Kill**: Business model legally mandates banking or direct lending capital licenses exceeding solo founder capacity.
 4. **Technical Feasibility Kill**: Core architecture demands complex multi-master distributed synchronization exceeding 1 developer's capacity.
 

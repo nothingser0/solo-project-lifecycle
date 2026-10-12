@@ -215,5 +215,5 @@ if ($Delivery) {
     }
 }
 
-Write-Host "✅ Project initialized successfully at: $TargetDir" -ForegroundColor Green
+Write-Host "[OK] Project initialized successfully at: $TargetDir" -ForegroundColor Green
 Write-Host "Next step: Open docs/pm/PROJECT_STATE.md and begin Phase 1."

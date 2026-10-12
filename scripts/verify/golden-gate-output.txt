@@ -292,3 +292,39 @@ Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
 ❌ Unknown gate: ZZZ
 Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
 ##### END GATE: _invalid
+
+##### GATE: _m00-lite-pass exit=0
+🔍 Validating Gate: M00
+============================================================
+=== M00: Product Discovery & Strategy Gate Checklist ===
+  [INFO] Detected M00-lite rapid validation path (Solo SaaS)
+  ✅ docs/pm/M00_LITE.md (2136B)
+  ✅ docs/pm/M00_LITE.md core section headings verified (4 headings present)
+  ✅ Gate decision declared: PASS
+  ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)
+  ✅ Targeted-visit floor met: 140 visitors (>= 100)
+  ✅ Waitlist conversion 6.4% is in the PASS band (>= 5.0%)
+  ✅ Human validation recorded (Validated-by: <name> on <date>)
+  ✅ Gate decision matches the evidence: PASS
+
+============================================================
+✅ Gate validation PASSED
+##### END GATE: _m00-lite-pass
+
+##### GATE: _m00-lite-retest exit=3
+🔍 Validating Gate: M00
+============================================================
+=== M00: Product Discovery & Strategy Gate Checklist ===
+  [INFO] Detected M00-lite rapid validation path (Solo SaaS)
+  ✅ docs/pm/M00_LITE.md (2138B)
+  ✅ docs/pm/M00_LITE.md core section headings verified (4 headings present)
+  ✅ Gate decision declared: RETEST
+  ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)
+  ✅ Targeted-visit floor met: 140 visitors (>= 100)
+  ⚠️  Waitlist conversion 3.6% is in the RETEST band (2.0-4.9%)
+  ✅ Gate decision matches the evidence: RETEST
+     RETEST: run one 7-day optimisation sprint, then re-test with more targeted visits.
+
+============================================================
+⚠️  Gate validation NOT PASSED - RERUN after one optimisation sprint (exit 3)
+##### END GATE: _m00-lite-retest
