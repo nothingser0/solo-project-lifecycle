@@ -286,11 +286,12 @@ if ($answeredQuestions -lt 8) {
     exit 1
 }
 
-**Not checked by the gate** (still M05 exit criteria, enforced by the human at sign-off): stack
-justification with rejected alternatives, AES-256-GCM/Argon2id/OWASP coverage, the Module 04
-handoff map, `≥10` endpoint depth, and version-registry freshness. These live in the PRD/FSD
-templates' exit checklists (§9 FSD, §9 PRD) and in §7/§8 of the FSD — the gate confirms the
-artifacts exist and hold their machine-checkable markers, not that the engineering is good.
+**Gate-enforced** (the machine-checkable markers): 8 real answers + a human `Stack-Locked-by:`,
+AES-256-GCM/Argon2id/OWASP/rate-limit coverage (+UU PDP on Medium+), the `Module 04 Handoff Strategy`
+section with `Compatibility Level: Level 1-4`, `≥10` endpoint headings, and a human sign-off with a real
+name + date. **Judged by the human at sign-off** (the gate cannot assess quality): stack-justification
+substance, whether the endpoint schemas are realistic, and version-registry freshness. The gate confirms
+the artifacts exist and hold their markers — not that the engineering is good.
 
 ### Downstream contract: M06 reads the FSD pinned block
 

@@ -1,11 +1,11 @@
 # Module 05: Architecture & Technical Specifications (PRD & FSD)
 
-> **Templates to copy**: `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`, `FSD_TECHNICAL_TEMPLATE.md` · Enterprise/Medium+: `templates/03-governance/ADR_TEMPLATE.md` (→ `docs/governance/ADR.md`), `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` (→ `docs/governance/RISK_ASSESSMENT_MATRIX.md`)
-> 📖 **Optional** (do NOT preload): `references/solo/SOLO_ARCHITECTURE_GUIDE.md` · `references/stacks/STACK_SUPPORT_MATRIX.md` · deep dive `deep-dives/05_ARCHITECTURE_SPECS.md` (full question bodies, rationale, verbose prompts)
+> **Templates**: `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`, `FSD_TECHNICAL_TEMPLATE.md` · Medium+: `templates/03-governance/ADR_TEMPLATE.md` (→ `docs/governance/ADR.md`)
+> 📖 **Optional** (do NOT preload): `references/solo/SOLO_ARCHITECTURE_GUIDE.md` · `references/stacks/STACK_SUPPORT_MATRIX.md` · deep dive `deep-dives/05_ARCHITECTURE_SPECS.md`
 > Conditional (open only if the project needs it): `patterns/compliance/UU_PDP_COMPLIANCE.md` (personal data), `patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md` (payment rails), `patterns/offline/OFFLINE_FIRST_SYNC.md` (offline operation)
 
-**Inputs**: `SCOPE_STATEMENT.md` (Module 02) + `DESIGN_SPEC.md` (Module 04). Small scale: unified `PROJECT_LITE.md`.
-**Outputs**: `docs/specs/PRD.md` + `docs/specs/FSD.md` → ready for Module 06. Small: everything pinned into **Section 5** of `PROJECT_LITE.md` + the human sign-off (Section 6).
+**Inputs**: `SCOPE_STATEMENT.md` (M02) + `DESIGN_SPEC.md` (M04); Small uses `PROJECT_LITE.md`.
+**Outputs**: `docs/specs/PRD.md` + `docs/specs/FSD.md` → ready for M06. Small: pinned into `PROJECT_LITE.md` §5 + human sign-off (§6).
 
 **Scale Routing**:
 - **Small (Fast-Track)**: NO `PRD.md`/`FSD.md` — stack lock, DDL, API list, security blueprint, Module 04 handoff pinned into **Section 5 of `PROJECT_LITE.md`**.
@@ -29,92 +29,73 @@ or Windows:
 .\scripts\verify\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
-> Stack list source of truth: `references/stacks/STACK_SUPPORT_MATRIX.md`. A stack marked
-> **PRODUCTION** there must be queryable by both scripts — if the one you locked is missing,
-> report the gap rather than inventing versions from memory (rule 7).
+> Stack list source of truth: `references/stacks/STACK_SUPPORT_MATRIX.md`. A **PRODUCTION** stack
+> there must be queryable by both scripts — if yours is missing, report the gap (rule 7).
 
-- Pin verified versions; if a bleeding-edge major breaks the ecosystem (Tailwind v4 config, Zod v4
-  resolver), pin the proven stable explicitly.
+- Pin the proven stable version; if a bleeding-edge major breaks the ecosystem (Tailwind v4, Zod v4), pin the stable one explicitly.
 - Transcribe agreed versions **verbatim** into the `Framework Versions (Pinned):` bullet block of
   `docs/specs/FSD.md` (M06 gate `verify-framework-version.sh` reads it).
-- **Machine-read — do not reformat**: keep the heading colon and the `- <Package>: <version>`
-  bullets, and delete lines for stacks you did not lock (a stale `- Django:` line in a Next.js
-  project fails the M06 comparison; so does a table or renamed heading).
+- **Machine-read — do not reformat**: keep the heading colon and the `- <Package>: <version>` bullets; delete stacks you did not lock (a stale `- Django:` line in a Next.js project fails M06, as does a table).
 
 ### STEP 1: Tech Stack Discovery Questionnaire (MANDATORY — BLOCKS FSD)
 
-Ask the 8 questions, END TURN, wait for answers (full option lists in deep dive):
+Ask the 8 questions, END TURN, wait (option lists in deep dive):
 **Team Expertise · Database Experience · Deployment Topology · Expected Scale (Year 1) · Data Model Characteristics · DevOps Complexity Tolerance · Critical Feature Priority · Compliance Requirements**
 
-Then generate **2–3 stack options** with cost/pros/cons comparison and **the user LOCKS the stack**. There is no default stack; changing after lock costs +2 weeks timeline.
+Then present **2–3 options** with cost/pros/cons and let **the user LOCK the stack**. No default; changing after lock costs +2 weeks.
 
 ### STEP 2: Tech Stack Justification
 
-Context-specific reasoning for the chosen stack; **alternatives rejected with reasons**; deployment topology aligned with budget & scale. Content must adapt to the chosen stack (PostgreSQL → SQL DDL, MongoDB → Mongoose, Laravel → Eloquent migrations, Django → ORM models — never AI-SLOP generic schemas; anti-patterns in deep dive).
+Reasoning for the chosen stack; **alternatives rejected with reasons**; topology aligned with budget & scale. Content must adapt to the stack (PostgreSQL → SQL DDL, MongoDB → Mongoose, Laravel → Eloquent migrations, Django → ORM — never AI-SLOP generic schemas; anti-patterns in deep dive).
 
 ### STEP 3: Database Schema Design (DDL)
 
-- Tables, primary/foreign keys, CHECK constraints, indexes — syntax per chosen DB.
-- Audit trail strategy: `created_at`, `updated_at`, `actor_id`, soft-delete.
-- Multi-tenant isolation (RLS / schema-per-tenant / DB-per-tenant) if applicable.
-- `idempotency_keys` table in DDL for all POST mutations of financial/stock state.
+- Tables, PK/FK, CHECK constraints, indexes — syntax per chosen DB.
+- Audit trail: `created_at`, `updated_at`, `actor_id`, soft-delete.
+- Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
+- `idempotency_keys` table for all POST mutations of financial/stock state.
 
-### STEP 4: API Endpoint Matrix (≥10 endpoints for Medium+; ≥5 is the hard gate floor)
+### STEP 4: API Endpoint Matrix (≥10 endpoints — gate-enforced)
 
-- HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; API style per stack (REST/GraphQL/tRPC).
-- **One heading per endpoint** (`#### POST /api/v1/...`) — the gate counts these and fails below 5.
-  ≥10 is the M05 exit criterion; 5 is the validator floor.
+- HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; style per stack (REST/GraphQL/tRPC).
+- **One heading per endpoint** (`#### POST /api/v1/...`) — the gate counts these headings and fails below 10.
 
 ### STEP 5: Security Blueprint + Module 04 Handoff (both gate-enforced)
 
-- **Security**: AES-256-GCM data-vault encryption (envelope encryption), Argon2id password hashing, OWASP Top 10, rate limiting, UU PDP (consent, deletion right, audit logs), framework-specific patterns. The gate requires these *recorded* (4 controls Small, +UU PDP Medium+).
-- **Handoff**: Module 04 prototype → chosen framework conversion; component mapping (React → Vue/Svelte/Blade); design-token extraction. The gate requires a section **named `Module 04 Handoff Strategy`** carrying a **`Compatibility Level: Level 1-4`** line — M06 STEP 0 parses those exact strings; level definitions in `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md` §2.1.
+- **Security**: record AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting (+ UU PDP on Medium+). Gate-enforced; `N/A — <reason>` accepted, blank not.
+- **Handoff**: prototype → chosen framework conversion (component map, token extraction). The gate requires a section **named `Module 04 Handoff Strategy`** carrying **`Compatibility Level: Level 1-4`** — M06 STEP 0 parses those exact strings; level table in `FSD_TECHNICAL_TEMPLATE.md` §2.1.
 
 ### STEP 6: Write Deliverables
 
-- `docs/specs/PRD.md` via `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md` (traceability matrix F-xx → REQ-xx, domain logic defense, BDD Given-When-Then criteria).
-- `docs/specs/FSD.md` via `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md` (DDL, API contracts, security & access controls, atomic transactions for high-risk mutations, Prototype Conversion Strategy section).
-- Transcribe pinned versions verbatim into FSD `Framework Versions (Pinned):`.
-- **Small scale**: pin all of Steps 1–5 into Section 5 of `PROJECT_LITE.md` instead (no TBD/maybe/tentative in Must-Have features).
+- `docs/specs/PRD.md` via `PRD_FINAL_TEMPLATE.md` (F-xx → REQ-xx traceability, BDD Given-When-Then criteria).
+- `docs/specs/FSD.md` via `FSD_TECHNICAL_TEMPLATE.md` (DDL, API contracts, access controls, atomic high-risk mutations, Prototype Conversion Strategy) + pinned versions verbatim.
+- **Small**: pin Steps 1–5 into `PROJECT_LITE.md` §5 instead (no TBD/maybe/tentative in Must-Have features).
 
 ### STEP 7: Technical Sign-Off
 
-Review with Client Single PIC — or, on solo projects, the **human user** self-approves (an AI agent is never a valid approver); sign off by writing the reviewer's real name and date into the sign-off block. The gate **fails** on residual `____` / `[YYYY-MM-DD]` / `[Your Name]` fields: the sign-off must be a real human entry, not the untouched template row (the same false-green the M04 Design Freeze guard closes). M05 is not a SKILL.md stop point: after sign-off (and gate pass) continue to M06 in the same flow for Small/Solo SaaS; on Client projects pause for explicit "FSD approved" / "Proceed to Module 06" before coding. If changes requested: revise, re-run gate.
+The **human** signs (Client Single PIC, or on solo work the developer); an AI agent is never a valid approver. The gate **fails** on residual `____` / `[YYYY-MM-DD]` / `[Your Name]` fields — a real name + date is required (same false-green the M04 Design Freeze guard closes). M05 is **not** a stop point: after sign-off, chain to M06 for Small/Solo SaaS; on Client work pause for explicit "Proceed to Module 06". Changes requested → revise and re-run.
 
 ---
 
 ## [GATE] Exit Criteria (condensed)
 
-<<<<<<< HEAD
-- [ ] 8-question questionnaire completed; 2–3 options presented; stack **LOCKED** (`Stack Decision LOCKED:` + `Stack-Locked-by:` naming the human). The 8 answers must be **real values** — the gate rejects residual `[answer]` placeholders
-- [ ] Versions verified via registry script and pinned verbatim in FSD `Framework Versions (Pinned):` (re-checked by M06's `verify-framework-version.sh`)
+- [ ] 8-question questionnaire completed, 2–3 options presented, stack **LOCKED** (`Stack Decision LOCKED:` + `Stack-Locked-by:` naming the human). Real values only — the gate rejects `[answer]` placeholders and a blank `Stack-Locked-by:`
+- [ ] Versions verified via registry script, pinned verbatim in `Framework Versions (Pinned):` (M06 `verify-framework-version.sh` reads it)
 - [ ] Stack justification with rejected alternatives
 - [ ] DDL present (tables, keys, CHECK, indexes, audit trail)
-- [ ] ≥10 API endpoints with request/response schemas; idempotency for financial POSTs *(gate-enforced on Medium+)*
-- [ ] Security blueprint complete *(gate-enforced)*; `Module 04 Handoff Strategy` + `Compatibility Level: Level 1-4` present *(gate-enforced; M06 STEP 0 depends on it)*
-- [ ] Substantive `PROJECT_LITE.md` (Small) or `PRD.md` + `FSD.md` (Medium+) — target ≥1000B / ≥2000B each; the script stub-checks size, so judge real substance, not padding
-- [ ] Multi-tenant isolation + idempotency strategy documented if applicable
-- [ ] Technical sign-off obtained — **human name + real date, no residual blank/placeholder fields** *(gate-enforced; AI is never a valid approver)*
-=======
-- [ ] 8-question questionnaire completed; 2–3 options presented; stack **LOCKED** (`Stack Decision LOCKED:` documented)
-- [ ] Versions verified via registry script and pinned verbatim in the FSD `Framework Versions (Pinned):` bullet block (parseable by `verify-framework-version.sh` at M06)
-- [ ] Stack justification with rejected alternatives
-- [ ] DDL present (tables, keys, CHECK, indexes, audit trail)
-- [ ] ≥10 API endpoint **headings** (`#### <VERB> /path`) with request/response schemas; idempotency for financial POSTs (gate floor: 5)
-- [ ] Security blueprint complete (AES-256-GCM, Argon2id, OWASP, rate limiting, UU PDP) — each control resolved or `N/A — <reason>`
-- [ ] Module 04 handoff strategy documented (screen → route → component map + compatibility level)
-- [ ] File sizes: Small → `PROJECT_LITE.md` ≥1000B; otherwise `PRD.md` + `FSD.md` ≥2000B each (targets only — see note below)
+- [ ] ≥10 API endpoint **headings** (`#### <VERB> /path`) with request/response schemas; idempotency for financial POSTs — **gate-enforced at ≥10**
+- [ ] Security blueprint complete (AES-256-GCM, Argon2id, OWASP, rate limiting; +UU PDP on Medium+) — each control resolved or `N/A — <reason>` *(gate-enforced)*
+- [ ] `Module 04 Handoff Strategy` + `Compatibility Level: Level 1-4` present *(gate-enforced; M06 STEP 0 depends on it)*
+- [ ] Substantive `PROJECT_LITE.md` (Small) or `PRD.md` + `FSD.md` (Medium+) — ≥1000B / ≥2000B targets; the script stub-checks size, so judge substance
 - [ ] Idempotency strategy if applicable. RLS required **only** when `Intake-Branch-Hierarchy` is yes/multi (or the DDL declares `org_id`/`tenant_id`); single-tenant passes with `N/A — single tenant`
-- [ ] Medium+ only: `docs/governance/ADR.md` present (M05 gate requires it); Enterprise additionally requires `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md`
-- [ ] Technical sign-off obtained
->>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
+- [ ] Medium+ only: `docs/governance/ADR.md` (gate-enforced); Enterprise adds `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md`
+- [ ] Technical sign-off obtained — **human name + real date, no residual blank/placeholder fields** *(gate-enforced; AI is never a valid approver)*
 
-> **Scale note**: size figures above are documented targets. `lib/checks.sh` treats `min_size` as
-> advisory (v2: stub-check only, `<40B` fails) — content checks are what reject.
+> **Scale note**: size figures are targets, not hard checks — `lib/checks.sh` stub-checks only (`<40B` fails); content checks are what reject.
 
 ### Gate Execution (MANDATORY — verbatim script output)
 
-Run the real validator; do NOT paste pre-filled hardcoded checklists:
+Run the real validator — never paste a pre-filled checklist:
 
 ```bash
 ./scripts/gates/validate-gate.sh M05
@@ -126,10 +107,6 @@ or Windows:
 .\scripts\gates\validate-gate.ps1 M05
 ```
 
-<<<<<<< HEAD
 If it exits FAILED: fix artifacts and re-run — never declare completion on failure. Only after `✅ Gate validation PASSED` present the handoff prompt (deep dive) and END TURN for approval.
 
-The live gate is the source of truth: `scripts/gates/modules/M05.sh` + the M05 helpers in `scripts/gates/lib/checks.sh`. The pseudo-code in the deep dive is an illustrative sketch of the same contract — when the two disagree, the script wins.
-=======
-If it exits FAILED: fix artifacts and re-run — never declare completion on failure. Only after `✅ Gate validation PASSED` present the handoff prompt (deep dive) and END TURN for approval. Full check-by-check breakdown: deep dive, "What `validate-gate.sh M05` actually checks".
->>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
+The live gate is the source of truth (`scripts/gates/modules/M05.sh` + the M05 helpers in `lib/checks.sh`). The deep dive's pseudo-code is illustrative — where they disagree, the script wins. Check-by-check breakdown: deep dive, "What `validate-gate.sh M05` actually checks".

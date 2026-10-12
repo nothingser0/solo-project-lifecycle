@@ -38,6 +38,25 @@ for script in scripts/*/*.sh scripts/*/*/*.sh templates/04-dev-execution/*.sh te
     fi
 done
 
+# 1b. Merge-conflict markers anywhere in the tree.
+# A conflict marker is never valid committed content, and one nested inside a bash
+# gate is worse than a lint error: it is a syntax error that silently disables the
+# WHOLE gate (every M05 check became unreachable, so a failing project would read
+# as "no missing artifacts"). The marker guard is the cheapest possible catch.
+echo ""
+echo "1b. Checking for merge-conflict markers..."
+CONFLICT_HITS="$(grep -rlE '^(<<<<<<< |=======$|>>>>>>> )' \
+    --include='*.sh' --include='*.ps1' --include='*.md' --include='*.js' --include='*.ts' \
+    --include='*.json' --include='*.yml' --include='*.yaml' --include='*.html' --include='*.css' \
+    . 2>/dev/null | grep -v '^\./\.git/' || true)"
+if [ -z "$CONFLICT_HITS" ]; then
+    echo -e "  ${GREEN}✓${NC} no merge-conflict markers in tracked content"
+else
+    echo -e "  ${RED}✗${NC} merge-conflict markers found (resolve before committing):"
+    echo "$CONFLICT_HITS" | sed 's/^/       /'
+    ERRORS=$((ERRORS + 1))
+fi
+
 # 2. Verify 14 Modules Presence (M00 - M13)
 echo ""
 echo "2. Checking 14 Lifecycle Modules (docs/modules/)..."

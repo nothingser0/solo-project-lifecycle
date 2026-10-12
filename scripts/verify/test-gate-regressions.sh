@@ -247,6 +247,97 @@ run_lock() {
 
 run_lock "M05 lock marker with zero questionnaire answers" BLOCKED "$WORK/pl_noq.md"
 run_lock "M05 lock backed by all 8 answers" ALLOWED "$WORK/pl_8q.md"
+
+# B1b. M05 RLS trigger. Regression: the check grepped free text over PROJECT_STATE.md
+# for "branch|tenant|organization", and the shipped template's own line
+# "- Intake-Branch-Hierarchy: [no | yes]" contains "branch" — so EVERY project,
+# including a genuinely single-tenant one, was told its FSD was missing RLS policies.
+# The trigger must come from the structured Intake field the classifier reads.
+run_rls() {
+    local name="$1" want="$2" branch="$3" fsextra="$4"
+    local dir="$WORK/rls"
+    make_project "$dir" "- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 50 invoices/day\n- Intake-P0-Features: 10 (invoices, reports)\n- Intake-Time-Capacity: 40 hrs/week x 10 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: $branch\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n"
+    mkdir -p "$dir/docs/specs"
+    {
+        printf -- '## 1. Document Metadata\n'
+        printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
+        printf -- 'Stack Decision LOCKED: FastAPI\nStack-Locked-by: Zen\n'
+        printf -- '### Framework Versions (Pinned):\n- FastAPI: 0.143.0\n'
+        printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
+        printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
+        printf -- '- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n'
+        printf -- '- Q8 Compliance Requirements: x\n'
+        printf -- '## 3. Relational Database Schema\nCREATE TABLE invoices (id uuid primary key, total bigint);\n'
+        printf -- '## 6. API Contract Specifications\n'
+        printf -- '#### GET /api/v1/invoices\n#### POST /api/v1/invoices\n#### PATCH /api/v1/invoices/:id\n'
+        printf -- '#### DELETE /api/v1/invoices/:id\n#### POST /api/v1/auth/login\n'
+        printf -- '#### GET /api/v1/invoices/:id\n#### POST /api/v1/invoices/:id/void\n'
+        printf -- '#### POST /api/v1/invoices/:id/pay\n#### POST /api/v1/invoices/:id/refund\n'
+        printf -- '#### POST /api/v1/reports/daily\n'
+        printf -- '## 7. Security Blueprint\nAES-256-GCM; Argon2id; OWASP Top 10; rate limiting.\n'
+        printf -- '## 8. Module 04 Handoff Strategy\n**Compatibility Level**: Level 2\n'
+        printf -- '**Approved by**: Zen\n**Approved on**: 2026-10-12\n**Approved by Client Single PIC**: Zen (Date: 2026-10-12)\n'
+        printf '%b' "$fsextra"
+    } > "$dir/docs/specs/FSD.md"
+    local out
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    local got="ALLOWED"
+    if echo "$out" | grep -q "missing Row-Level Security"; then
+        got="BLOCKED"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+run_rls "M05 single-tenant project is NOT asked for RLS" ALLOWED "no" ""
+run_rls "M05 multi-branch project IS asked for RLS" BLOCKED "yes" ""
+run_rls "M05 single-tenant but FSD declares org_id -> RLS required" BLOCKED "no" "\nCREATE TABLE users (org_id uuid not null);\n"
+
+# B1c. M05 endpoint counting. Regression: the old pattern required a bare "####" at
+# column 0, so a heading nested under a section (template-faithful) scored 0 and no
+# project could pass its own gate. The floor is 10 (M05 STEP 4 / exit criteria).
+run_endpoints() {
+    local name="$1" want="$2" body="$3"
+    local dir="$WORK/ep"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    mkdir -p "$dir/docs/specs"
+    {
+        printf -- '## 1. Document Metadata\n'
+        printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
+        printf -- 'Stack Decision LOCKED: Next.js\nStack-Locked-by: Zen\n'
+        printf -- '### Framework Versions (Pinned):\n- Next.js: 15.0.3\n'
+        printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
+        printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
+        printf -- '- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n'
+        printf -- '- Q8 Compliance Requirements: x\n'
+        printf -- '## 3. Relational Database Schema\nCREATE TABLE a (id uuid);\n'
+        printf '%b' "$body"
+    } > "$dir/docs/specs/FSD.md"
+    local out
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    local got="TOO_FEW"
+    if echo "$out" | grep -q "API endpoint contracts verified"; then
+        got="ENOUGH"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+# Indented headings (2 spaces) prove the leading-space tolerance in the pattern.
+TEN_HEADINGS='## 6. API\n  #### GET /api/v1/a\n#### POST /api/v1/a\n#### PATCH /api/v1/a/:id\n#### DELETE /api/v1/a/:id\n#### POST /api/v1/login\n#### GET /api/v1/b\n#### POST /api/v1/b\n#### PATCH /api/v1/b/:id\n#### DELETE /api/v1/b/:id\n#### POST /api/v1/b/approve\n'
+NINE_HEADINGS='## 6. API\n#### GET /api/v1/a\n#### POST /api/v1/a\n#### PATCH /api/v1/a/:id\n#### DELETE /api/v1/a/:id\n#### POST /api/v1/login\n#### GET /api/v1/b\n#### POST /api/v1/b\n#### PATCH /api/v1/b/:id\n#### DELETE /api/v1/b/:id\n'
+run_endpoints "M05 FSD with 10 endpoint headings (one indented) passes the floor" ENOUGH "$TEN_HEADINGS"
+run_endpoints "M05 FSD with 9 endpoint headings fails the floor" TOO_FEW "$NINE_HEADINGS"
 # B2. M05 deliverables that were never verified. The first case is the false-green
 # that motivated the guard: copy the RAW PROJECT_LITE_TEMPLATE.md, change ONLY the
 # lock line, and the old gate passed with "8 recorded questionnaire answers" because

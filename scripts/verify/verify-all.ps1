@@ -25,6 +25,23 @@ foreach ($s in $psScripts) {
     }
 }
 
+# 1b. Merge-conflict markers anywhere in the tree.
+# Mirrors verify-all.sh. A marker nested inside a bash gate is a syntax error that
+# silently disables that whole gate, so this is the cheapest possible catch.
+Write-Host ""
+Write-Host "1b. Checking for merge-conflict markers..."
+$conflictHits = Get-ChildItem -Path . -Recurse -File -Include *.sh,*.ps1,*.md,*.js,*.ts,*.json,*.yml,*.yaml |
+    Where-Object { $_.FullName -notmatch '[\\/]\.git[\\/]' } |
+    Select-String -Pattern '^(<<<<<<< |=======$|>>>>>>> )' -List |
+    Select-Object -ExpandProperty Path
+if (-not $conflictHits) {
+    Write-Host "  [OK] no merge-conflict markers in tracked content" -ForegroundColor Green
+} else {
+    Write-Host "  [FAIL] merge-conflict markers found (resolve before committing):" -ForegroundColor Red
+    $conflictHits | ForEach-Object { Write-Host "       $_" }
+    $errors++
+}
+
 # 2. Verify 14 Modules Presence (M00 - M13)
 Write-Host ""
 Write-Host "2. Checking 14 Lifecycle Modules (docs/modules/)..."

@@ -67,17 +67,13 @@ gate_M05() {
             GATE_FAILED=1
         fi
 
-<<<<<<< HEAD
-        # 3. API Endpoints contract verification. STEP 4 and the exit criteria both
-        #    promise an endpoint matrix of at least 10 (5 was enforced here while the
-        #    runbook and deep dive both said 10 — a promise the script did not keep).
-        ep_count=$(grep -iE "####\s*(GET|POST|PUT|PATCH|DELETE)|Route::(get|post|put|delete)|@(Get|Post|Put|Delete)Mapping|path:\s*/api" "$fsd" 2>/dev/null | wc -l || echo 0)
-=======
-        # 3. API Endpoints contract verification (Minimum 5 endpoints documented)
-        # Count endpoint HEADINGS (one per endpoint), not body lines: the template shows
-        # "Route: POST /api/..." inside a spec block, which the heading pattern misses.
+        # 3. API Endpoints contract verification (M05 STEP 4: minimum 10 endpoint headings).
+        #    Count endpoint HEADINGS (one per endpoint), not body lines: the FSD template
+        #    shows the verb+path in a heading, and the older pattern demanded a '####'
+        #    prefix with no leading-space tolerance, so a template-faithful FSD scored 0
+        #    and could never pass its own gate. The 10 floor matches STEP 4 / the exit
+        #    criteria / the deep dive (this file previously enforced only 5).
         ep_count=$(grep -icE "^\s*#{2,6}\s*(GET|POST|PUT|PATCH|DELETE)\s+/|Route::(get|post|put|delete)|@(Get|Post|Put|Delete)Mapping" "$fsd" 2>/dev/null || echo 0)
->>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
         ep_count=$(echo "$ep_count" | tr -d ' ')
         if [ "${ep_count:-0}" -ge 10 ]; then
             echo "  ✅ API endpoint contracts verified ($ep_count endpoints documented)"

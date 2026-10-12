@@ -594,8 +594,7 @@ placeholder rows before sign-off.*
 - [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
 - [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
 - [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
-- [ ] **7. Module 04 Handoff Strategy**: Section 2 records the compatibility level (1–4), the conversion plan from the frozen prototype, and a screen count that matches SITEMAP/DESIGN_SPEC. `validate-gate.sh M06` blocks coding without it.
-- [ ] **7. API Contract Completeness**: ≥5 endpoints documented as `#### <VERB> /path` headings, each with auth, request schema, and a success/error pair; `X-Idempotency-Key` shown on every financial/stock mutation.
+- [ ] **7. API Contract Completeness**: ≥10 endpoint headings documented as `#### <VERB> /path` (gate-enforced; M05 STEP 4), each with auth, request schema, and a success/error pair; `X-Idempotency-Key` shown on every financial/stock mutation.
 - [ ] **8. Security Blueprint (§7)**: Every control row resolved (implemented or `N/A — <reason>`); no blank rows. Password hashing, at-rest encryption, rate limiting, and audit logging each have an implementation reference.
 - [ ] **9. Module 04 Handoff (§8)**: Screen → route → component map covers 100% of `DESIGN_SPEC.md` screens; locked stack matches §2 verbatim; compatibility level recorded for M06 STEP 0.
 

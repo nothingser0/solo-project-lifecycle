@@ -165,6 +165,6 @@ Both REST and GraphQL APIs must return structured, RFC-7807 compliant error payl
 
 ## See Also
 
-- `patterns/api/rest-conventions.md` - Core HTTP status codes, method semantics, & pagination
-- `patterns/performance/n-plus-one-prevention.md` - DataLoader patterns for GraphQL & ORMs
-- `patterns/validation/zod-patterns.md` - Type-safe schema validation
+- `archive/patterns/api/rest-conventions.md` - Core HTTP status codes, method semantics, & pagination
+- `archive/patterns/performance/n-plus-one-prevention.md` - DataLoader patterns for GraphQL & ORMs
+- `archive/patterns/validation/zod-patterns.md` - Type-safe schema validation

@@ -15,11 +15,7 @@ Sequential 14-module delivery framework for solo developers, covering initiation
 | **M02** | Discovery & Scope Definition | `SCOPE_STATEMENT.md` (MoSCoW, RBAC) | Scope Lock | [`02_DISCOVERY_SCOPE.md`](./02_DISCOVERY_SCOPE.md) |
 | **M03** | Legal SOW & Charter | `SOW_CONTRACT.md` | **Gate 1: Commercial (DP & SOW)** | [`03_LEGAL_SOW_CHARTER.md`](./03_LEGAL_SOW_CHARTER.md) |
 | **M04** | UI/UX Design & Prototyping | `DESIGN.md`, `DESIGN_SPEC.md` | Design Freeze | [`04_UIUX_PROTOTYPING.md`](./04_UIUX_PROTOTYPING.md) |
-<<<<<<< HEAD
-| **M05** | Architecture & Specifications | `PRD.md`, `FSD.md` (+`SYSTEM_DESIGN_DOC.md`, `CAPACITY_PLANNING.md`, `DISASTER_RECOVERY_PLAN.md` at Large via M05B) | Tech Spec Sign-off (human; gate-enforced) | [`05_ARCHITECTURE_SPECS.md`](./05_ARCHITECTURE_SPECS.md) |
-=======
-| **M05** | Architecture & Specifications | `PRD.md` + `FSD.md` (Small: `PROJECT_LITE.md` §5); Medium+ also takes `docs/governance/ADR.md` | Tech Spec Sign-off (gate: ≥5 endpoint headings, `Stack Decision LOCKED:` + 8 answers, idempotency/RLS conditional on Intake) | [`05_ARCHITECTURE_SPECS.md`](./05_ARCHITECTURE_SPECS.md) |
->>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
+| **M05** | Architecture & Specifications | `PRD.md` + `FSD.md` (Small: `PROJECT_LITE.md` §5; Medium+ also `docs/governance/ADR.md`; Large/Enterprise add `SYSTEM_DESIGN_DOC.md`, `CAPACITY_PLANNING.md`, `DISASTER_RECOVERY_PLAN.md` via M05B) | Tech Spec Sign-off (human; gate-enforced: ≥10 endpoint headings, `Stack Decision LOCKED:` + 8 real answers + `Stack-Locked-by:`, security blueprint, `Module 04 Handoff Strategy`; idempotency/RLS conditional on Intake) | [`05_ARCHITECTURE_SPECS.md`](./05_ARCHITECTURE_SPECS.md) |
 | **M06** | Development Execution | 9 AI Harness Files (`AGENTS.md`, `TODO.md`, etc.) | Harness & Smoke Gate | [`06_DEVELOPMENT_EXECUTION.md`](./06_DEVELOPMENT_EXECUTION.md) |
 | **M07** | Quality Assurance & SIT | `SIT_WORKBOOK.md`, `SECURITY_AUDIT.md` | Sandbox Integration Pass | [`07_QUALITY_ASSURANCE_SIT.md`](./07_QUALITY_ASSURANCE_SIT.md) |
 | **M08** | Data Migration & Seeding | `DATA_MIGRATION_PLAN.md`, `RECONCILIATION_REPORT.md` | Data Hygiene Sign-off | [`08_DATA_MIGRATION_SEEDING.md`](./08_DATA_MIGRATION_SEEDING.md) |

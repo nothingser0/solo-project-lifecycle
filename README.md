@@ -12,9 +12,11 @@ The repository includes a taxonomy of 1,000 systems across 4 scale tiers, 250 in
 solo-project-lifecycle/
 ├── SKILL.md                 # Agent entry point and execution index
 ├── docs/
-│   ├── modules/             # 14 lifecycle modules (M00 through M13)
-│   ├── pm/                  # Product management runtime guides and trackers
-│   └── QUICKSTART.md        # Rapid onboarding guide
+│   ├── modules/             # 14 lifecycle modules (M00-M13) + A00-A04 advisory + deep-dives/ + variants/
+│   ├── INDEX.json           # Machine-readable file manifest (two-way parity with the filesystem)
+│   ├── AUTHORITY.md         # AGENT / HUMAN-DECIDES / HUMAN-ONLY / FORBIDDEN per module
+│   ├── QUICKSTART.md        # Rapid onboarding guide
+│   └── PACKAGE_VERSION_AUTO_CHECK.md
 ├── templates/
 │   ├── essentials/                # Fast-track LITE templates (Small/MVP path)
 │   ├── 00-pre-sales-enterprise/   # RFP responses, POC plans, consulting agreements
@@ -46,10 +48,15 @@ solo-project-lifecycle/
 │   ├── gates/               # Lifecycle gate validation automation
 │   ├── verify/              # Link, frontmatter, template, and stack version verifiers
 │   ├── runtime/             # ETL importer, load-test harness, data migration runner
+│   ├── evals/               # Eval scenario runner (run-evals.js)
 │   ├── dist/                # Distribution packaging + size calculation scripts
 │   └── release/             # Clean release-branch builder (release-exclude.txt)
 └── evals/                   # Evaluation scenarios verifying SDLC agent compliance
 ```
+
+> **Note**: `docs/pm/`, `docs/specs/`, `docs/harness-root/`, and `docs/qa/` are **not** part of
+> this skill repo — `scripts/scaffold/init-project.sh` creates them inside *your* project directory
+> and the gate scripts read the project documents from there.
 
 ---
 
@@ -78,7 +85,7 @@ solo-project-lifecycle/
 
 The framework adapts governance overhead across 4 delivery scales:
 
-1. **Small / MVP (1-2 weeks)**: Fast-track using consolidated templates (`M00_LITE`, `PROJECT_LITE_TEMPLATE`, unified `TODO.md`). Direct transition from spec to execution.
+1. **Small / MVP (<4 weeks)**: Fast-track via the Intake gate then M04-LITE → M05 → M06 → M09-LITE → M10 → M12-LITE, with `PROJECT_LITE_TEMPLATE.md`, a unified `TODO.md`, and 2 stop points. **M00/M01/M02 are waived** on this path (the scale classifier still runs).
 2. **Medium / Production Core (3-6 weeks)**: Standard gate controls with separated PRD, FSD, structured QA checkpoints, and milestone validations.
 3. **Large / Multi-Service (7-12 weeks)**: Rigorous data migration plans, formal UAT cycles, reconciliation protocols, and security audits.
 4. **Enterprise / Mission-Critical (12+ weeks)**: Full enterprise governance including regulatory compliance checks (e.g., UU PDP, GDPR), formal SLA agreements, and audited handover ceremonies.

@@ -133,6 +133,13 @@ const ASSERTIONS = {
     { id: "charter-instead", desc: "Completes the Solo SaaS Charter in place of the SOW", any: [/SOLO_SAAS_CHARTER|Solo SaaS Charter|charter/i] },
     { id: "no-forced-sow-dp", desc: "Does NOT demand a signed SOW + real DP for a self-initiated product", forbid: [/(?:wajib|harus|must) (?:menandatangani|sign)[^\n]{0,40}(?:SOW|contract)/i, /(?:kirim|transfer|bayar)[^\n]{0,20}\bDP\b[^\n]{0,20}(?:dulu|first)/i] },
   ],
+  "EVAL-12": [
+    { id: "names-template", desc: "Names the actual template file(s) to copy", any: [/PRD_FINAL_TEMPLATE|FSD_TECHNICAL_TEMPLATE|PROJECT_LITE_TEMPLATE|templates\/03-architecture-specs/i] },
+    { id: "refuses-freeform", desc: "Refuses to author the document freeform from memory", any: [/tidak[^\n]{0,30}(?:dari nol|dari ingatan|freeform)|from scratch[^\n]{0,30}(?:no|is not)|template[- ]first|copy[^\n]{0,30}template|salin[^\n]{0,20}(?:template|templat)|(?:cannot|can't|not|tidak)[^\n]{0,20}(?:author|tulis)[^\n]{0,20}(?:from memory|dari ingatan)/i] },
+    { id: "gate-link", desc: "Ties the template to the gate's machine-checkable markers", any: [/traceability|REQ-\d|Given-When-Then|BDD|Stack Decision LOCKED|validate-gate[^\n]{0,20}M05|gate[^\n]{0,30}(?:check|require)/i] },
+    { id: "stops-for-input", desc: "Still halts for the upstream / human inputs the template requires", any: [/PROJECT_STATE|SCOPE_STATEMENT|Intake|questionnaire|8 (?:pertanyaan|questions)|END TURN|sign[- ]?off|mohon/i] },
+    { id: "no-fabricated-matrix", desc: "Does NOT fabricate a traceability matrix / metrics with no upstream basis", forbid: [/F-0\d[^\n]{0,40}REQ-0\d[^\n]{0,60}(?:invent|fabricat|asumsi|assum)/i] },
+  ],
 };
 
 function color(s, c) {

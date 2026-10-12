@@ -1,10 +1,13 @@
 name: Framework Quality CI
 
 on:
+  # 'dev' is the active development branch. It was previously excluded, so the
+  # merge-conflict markers that broke scripts/gates/modules/M05.sh were committed
+  # and never validated by CI.
   push:
-    branches: [main, master, staging]
+    branches: [main, master, staging, dev]
   pull_request:
-    branches: [main, master, staging]
+    branches: [main, master, staging, dev]
   workflow_dispatch:
 
 jobs:

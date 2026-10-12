@@ -293,6 +293,6 @@ export async function seedDummyTransactions(count = 5000) {
 
 ## See Also
 
-- `patterns/database/supabase-migrations.md` - Schema migrations & RLS policies
+- `archive/patterns/database/supabase-migrations.md` - Schema migrations & RLS policies
 - `references/solo/SOLO_DEVELOPMENT_PATTERNS.md` - Backend transaction safety & locking
 - `docs/modules/08_DATA_MIGRATION_SEEDING.md` - Legacy data migration & ETL workflows

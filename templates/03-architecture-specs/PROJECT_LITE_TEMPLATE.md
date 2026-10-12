@@ -183,14 +183,15 @@ CREATE TABLE core_entities (
 
 ### Module 04 Handoff Strategy (STEP 5 — gate-checked; parsed by M06 STEP 0)
 
-**Compatibility Level**: Level [1 / 2 / 3 / 4] — pick ONE from the table in `FSD_TECHNICAL_TEMPLATE.md` §2.1:
+**Compatibility Level**: Level [1 / 2 / 3 / 4] — pick ONE. This is the same 1–4 scale as
+`FSD_TECHNICAL_TEMPLATE.md` §2.1 (do not invent a second mapping):
 
 | Level | Situation | Conversion Approach |
 | :--- | :--- | :--- |
-| **1 — Direct** | Prototype IS the stack (workflow C/E: Bolt/Lovable/Figma MCP output matches the locked framework) | Copy generated components in; adjust tokens |
-| **2 — Re-skin** | Same framework, different styling system | Rebuild markup on the frozen layout; map tokens |
-| **3 — Translate** | Different framework, same component model (e.g. React → Vue/Svelte) | Rewrite each component 1:1; keep class/state names |
-| **4 — Hybrid/Static** | Markup-only prototype (workflow A/B/D) or Blade + Inertia-style bridging | Rebuild each screen from the frozen spec; reuse design tokens only |
+| **1** | Markdown-only spec (Workflow A) | Rebuild each screen directly in the locked stack; no code to port |
+| **2** | Static HTML / click-dummy (Workflow B) | Translate markup into components; map tokens |
+| **3** | AI-generated prototype code, same framework (Workflow C) | Clean and wire the generated components; refactor to conventions |
+| **4** | Figma/designer handoff or hybrid (Workflow D/E) | Extract components from the design; rebuild on the frozen layout |
 
 **Conversion Plan**: 1. Extract [n] components from `COMPONENT_REQUIREMENTS.md` → 2. Map `DESIGN.md` tokens to [Tailwind/theme config] → 3. Rebuild screens in [framework], static first, then data-backed.
 **Estimated Conversion Time**: [X days]
@@ -201,35 +202,9 @@ CREATE TABLE core_entities (
   - `GET /api/v1/entities` (Fetch authenticated data list)
   - `POST /api/v1/entities` (Create new Zod-validated data)
 
-<<<<<<< HEAD
-> Medium/Large use `docs/specs/FSD.md` instead: a full endpoint matrix (**≥10 endpoints**, gate-enforced)
-> with request/response schemas and idempotency headers for financial POSTs.
-=======
-### Security Blueprint (Small — proportional, M05 STEP 5)
-
-> Small projects do not carry the full FSD §7 table. These five lines are the floor: every row is
-> answered, never left blank. `N/A — <reason>` is a valid answer; empty is not.
-
-- **Password hashing**: [Argon2id / bcrypt cost ≥12]
-- **Transport**: TLS (managed platform default) + `Secure`/`HttpOnly`/`SameSite` cookies
-- **Secrets**: `.env.local` locally, never committed; platform secret store in production
-- **Input handling**: parameterized queries only; no string-built SQL
-- **Personal data**: [none stored / what is stored + deletion path — UU PDP applies if any]
-
-### Module 04 Handoff Strategy (M05 STEP 5)
-
-- **Prototype workflow used in M04**: [A (Markdown-only) / B / C / D]
-- **Screen → route → component map** (covers every screen in `docs/specs/SITEMAP.md`):
-
-  | Screen ID | Route | Components |
-  | :--- | :--- | :--- |
-  | SCR-001 | `/` | [e.g., `Button`, `Card`] |
-  | SCR-002 | `/login` | [e.g., `FormField`, `Input`] |
-  | SCR-003 | `/[resource]` | [e.g., `DataTable`, `EmptyState`, `Toast`] |
-
-- **Tokens**: `DESIGN.md` palette/typography carried into [Tailwind theme / CSS variables]
-- **Compatibility level for M06 STEP 0**: [1–4 + one-line reason]
->>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
+> Medium/Large use `docs/specs/FSD.md` instead: a full endpoint matrix (**≥10 endpoint
+> headings**, gate-enforced) with request/response schemas and idempotency headers for
+> financial POSTs.
 
 ---
 

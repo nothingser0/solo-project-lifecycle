@@ -575,6 +575,6 @@ coverage/
 
 ## See Also
 
-- `patterns/security/authentication.md` - Secrets management
+- `archive/patterns/security/authentication.md` - Secrets management
 - M06 Development Execution - Git workflow integration
 - M10 Deployment Production - Release tagging

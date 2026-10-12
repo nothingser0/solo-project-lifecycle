@@ -637,6 +637,6 @@ await redis.setex('key', 3600, data);
 
 ## See Also
 
-- `patterns/performance/n-plus-one-prevention.md` - Optimize queries first
+- `archive/patterns/performance/n-plus-one-prevention.md` - Optimize queries first
 - M05B System Design Infrastructure - Redis setup
 - M06 Development Execution - Performance pillar

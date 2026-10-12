@@ -673,6 +673,6 @@ describe('Password hashing', () => {
 
 ## See Also
 
-- `patterns/validation/zod-patterns.md` - Request validation
+- `archive/patterns/validation/zod-patterns.md` - Request validation
 - `references/solo/SOLO_DEVELOPMENT_PATTERNS.md` - AES-256-GCM file encryption
 - M06 Development Execution - Security checklist

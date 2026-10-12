@@ -41,7 +41,7 @@
       "path": "docs/modules/05_ARCHITECTURE_SPECS.md",
       "cataloged": true,
       "modules": [
-        "M05"
+        "M04"
       ]
     },
     {
@@ -218,6 +218,10 @@
     },
     {
       "path": "evals/scenarios/11_SOLO_SAAS_M03_GATE_WAIVER.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/12_TEMPLATE_FIRST_DOCUMENT.md",
       "cataloged": false
     },
     {

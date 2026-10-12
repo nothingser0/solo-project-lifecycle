@@ -35,7 +35,7 @@
   - **Why**: Sanksi administratif UU PDP No. 27/2022 Pasal 57 untuk retensi data ilegal (denda hingga 2% pendapatan tahunan)
 
 **Advisory Gate for Enterprise (Phase A04)**:
-- Security Architecture Review completed (`references/advisory/STRIDE_THREAT_MODEL.md`)
+- Security Architecture Review completed (A02 STRIDE/C4 phase — `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md`)
 - Third-party penetration testing firm scoped & rules of engagement locked (`PENTEST_SCOPE_TEMPLATE.md`)
 - Incident response plan documented & reviewed with client steering committee
 - Audit readiness dossier handed over to enterprise compliance team

@@ -4,7 +4,7 @@
 # Why this exists: validate-gate.sh holds 19 gate branches in one 92KB file. It was
 # split into modules, and this test is what proves the split changed nothing
 # observable. It runs every gate against a FIXED fixture and compares stdout+stderr
-# and the exit code against `scripts/verify/golden/`.
+# and the exit code against `scripts/verify/golden-gate-output.txt`.
 #
 # Captured cases: the 19 module gates against one fixed incomplete fixture, the two
 # usage paths, and two dedicated M00-lite cases (PASS and the exit-3 RETEST verdict)
