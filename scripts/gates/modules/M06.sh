@@ -20,6 +20,50 @@ gate_M06() {
         check_required "CONTEXT.md" "" 500
     fi
 
+    # M06 STEP 0 (MANDATORY FIRST per the runbook): the FSD must carry the locked
+    # stack decision and the Module 04 handoff strategy BEFORE any coding. Only the
+    # deep-dive pseudo-code asserted this, so an agent could reach M06 with no locked
+    # stack and no conversion plan for the frozen prototype.
+    m06_spec=""
+    [ -f "docs/specs/FSD.md" ] && m06_spec="docs/specs/FSD.md"
+    [ -z "$m06_spec" ] && [ -f "PROJECT_LITE.md" ] && m06_spec="PROJECT_LITE.md"
+    if [ -n "$m06_spec" ]; then
+        if grep -qiE "Stack Decision LOCKED:" "$m06_spec"; then
+            echo "  ✅ STEP 0: locked stack decision present in $m06_spec"
+        else
+            echo "  ❌ STEP 0: $m06_spec has no 'Stack Decision LOCKED:' — M06 must not start without the M05 stack lock!"
+            GATE_FAILED=1
+        fi
+        # Small (PROJECT_LITE) has no handoff section; Medium+ FSD must define how the
+        # frozen M04 prototype converts to the chosen stack (compatibility level 1-4).
+        if [ "$m06_spec" = "docs/specs/FSD.md" ]; then
+            if grep -qiE "Module 04 Handoff|Handoff Strategy|Handoff-Compatibility|Compatibility Level" "$m06_spec"; then
+                echo "  ✅ STEP 0: Module 04 Handoff Strategy present in FSD.md"
+            else
+                echo "  ❌ STEP 0: FSD.md missing the 'Module 04 Handoff Strategy' section (prototype conversion plan, Level 1-4)!"
+                GATE_FAILED=1
+            fi
+        fi
+    fi
+
+    # M06 STEP 2 (STRICT ORDER): all 9 harness files must be in ROOT, not just the
+    # three the checklist used to spot-check (AGENTS/CONTEXT/TODO). The runbook
+    # promises "all 9 verified in root"; ARCHITECTURE/DESIGN/CONVENTIONS/.env.example/
+    # RUNBOOK_LOCAL/VERIFY_LOCAL were only ever printed as optional warnings.
+    if [ "$is_m06_small" -eq 0 ]; then
+        m06_harness_missing=""
+        for hf in AGENTS.md CONTEXT.md ARCHITECTURE.md DESIGN.md CONVENTIONS.md TODO.md .env.example; do
+            [ -f "$hf" ] || m06_harness_missing="$m06_harness_missing $hf"
+        done
+        if [ -n "$m06_harness_missing" ]; then
+            echo "  ❌ STEP 2: harness file(s) missing from project root:$m06_harness_missing"
+            echo "     Copy from docs/harness-root/ (or templates/04-dev-execution/<stack>/) BEFORE deleting staging."
+            GATE_FAILED=1
+        else
+            echo "  ✅ STEP 2: 9-file root harness complete (AGENTS/CONTEXT/ARCHITECTURE/DESIGN/CONVENTIONS/TODO/.env.example + RUNBOOK_LOCAL/VERIFY_LOCAL below)"
+        fi
+    fi
+
     # Content verification for TODO.md (BLOCKER: tasks must actually be completed)
     if [ -f "TODO.md" ]; then
         done_tasks=$(grep -cE "^\s*-\s*\[x\]" "TODO.md" 2>/dev/null || true)

@@ -3,15 +3,11 @@
 ## Contents
 
 - [Code Style Rules (per-stack AGENTS.md)](#code-style-rules-per-stack-agentsmd)
-- [Code Style Rules](#code-style-rules)
-- [Code Style Rules](#code-style-rules)
-- [Code Style Rules](#code-style-rules)
 - [Anti-Pattern Detection](#anti-pattern-detection)
 - [Database Migration Anti-Patterns](#database-migration-anti-patterns)
 - [Dependency Compatibility & Pre-Install Checks](#dependency-compatibility-pre-install-checks)
 - [Known Security Risks](#known-security-risks)
-- [9-File Harness: Staging & Template Examples](#9-file-harness-staging-template-examples)
-- [3. The 9 Root Harness Files in Root Repo (Universal Stack - The 9 Root Harness Files)](#3-the-9-root-harness-files-in-root-repo-universal-stack---the-9-root-harness-files)
+- [9-File Harness: Staging & Deployment](#9-file-harness-staging-deployment)
 - [Anti-AI-Slop Directives](#anti-ai-slop-directives)
 - [Phase-0 Gate Check & Extended Checklists](#phase-0-gate-check-extended-checklists)
 - [Example FSD.md Header](#example-fsdmd-header)
@@ -382,9 +378,7 @@ npm WARN deprecated next@15.0.3: CVE-2025-66478
 ```
 
 ---
-## 9-File Harness: Staging & Template Examples
-
-## 3. The 9 Root Harness Files in Root Repo (Universal Stack - The 9 Root Harness Files)
+## 9-File Harness: Staging & Deployment
 
 ⚠️ **CRITICAL: Harness File Staging & Deployment**
 
@@ -440,7 +434,7 @@ Templates contain placeholders that MUST be replaced with FSD endpoints, stack c
 
 *AI coding tool evaluation & selection guide: `references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md`*
 
-Before triggering AI agents to write code, place these 7 control files in the project root folder:
+Before triggering AI agents to write code, place these 9 control files in the project root folder:
 
 **Prerequisites**: Scaffold completed, deploying staged harness files to root.
 
@@ -553,6 +547,17 @@ if ($isSmall) {
 }
 ```
 
+### Enforcement map (which script checks what)
+
+| STEP | Claim in the runbook | Enforced by |
+|---|---|---|
+| 0 | FSD has `Stack Decision LOCKED:` + `Module 04 Handoff Strategy` | `validate-gate.sh M06` (blocking) and `M05` (producer side) |
+| 1 | Scaffold command strictly from FSD | `verify-framework-version.sh` scaffold-type guard |
+| 2 | All 9 harness files in root, not staged | `validate-gate.sh M06` |
+| 3 | Lockfile major.minor == FSD pinned versions | `verify-framework-version.sh` |
+| 5 | TODO covers 100% of FSD/PROJECT_LITE items; `M06-SETUP-03` pre-read | `validate-gate.sh M06` |
+| 6 | One task per turn; `[x]` carries a human approval line | `validate-gate.sh M06` (`check_task_approval`) |
+
 ### Scaffold Gate: Verify Scaffold Matches FSD (pseudo-code)
 
 ```python
@@ -656,6 +661,20 @@ Agent extracts: `frontend_framework` = "Laravel Blade + Inertia.js"; `backend_fr
 ```
 
 Agent extracts: `compatibility_level` = 4; `conversion_approach` = "Hybrid - Inertia.js"; `estimated_days` = 5-7.
+
+```markdown
+### Framework Versions (Pinned)
+- **Framework**: Next.js ^15.0.3 (App Router)
+- **Language / Runtime**: Node.js 22 LTS
+- **ORM / Driver**: Drizzle ORM
+```
+
+**M06 STEP 3 parses this section**, and both shapes are accepted:
+the **template form** above (stack name inside the value) and the **bare form**
+`- Next.js: 15.0.3`. `verify-framework-version.sh` compares major.minor against the
+lockfile and reports the Tailwind major. A FSD that follows the shipped
+`FSD_TECHNICAL_TEMPLATE.md` must never fail its own version gate — that regression is
+guarded by `scripts/verify/test-gate-regressions.sh`.
 
 ```sql
 -- FSD.md contains MySQL syntax (NOT PostgreSQL) -> use matching migration tool

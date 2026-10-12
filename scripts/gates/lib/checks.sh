@@ -184,13 +184,19 @@ check_task_approval() {
     local todo="TODO.md"
     [ -f "$todo" ] || return 0
 
+    # The task-id pattern must NOT require bold markers. It used to be
+    # /\[[^]]*\][ \t]*\*\*M06-/, so a task written without '**' ("- [x] M06-DB-01:
+    # Schema") was invisible to this guard: an agent could self-approve a whole
+    # sprint by simply omitting the bold, while the tick/pending counts in M06.sh
+    # (which are bold-agnostic) still saw the task as complete.
     local missing
     missing=$(awk '
-        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*\*M06-/ {
+        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*{0,2}M06-/ {
             if (cur_done && !cur_appr) print cur_id
             cur_id = $0
-            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*\*/, "", cur_id)
-            sub(/\*\*.*$/, "", cur_id)
+            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*/, "", cur_id)
+            sub(/\*+[ \t]*$/, "", cur_id)
+            sub(/^\*{0,2}/, "", cur_id)
             cur_done = ($0 ~ /\[x\]/)
             cur_appr = ($0 ~ /Approved|Disetujui/)
             next
@@ -208,7 +214,8 @@ check_task_approval() {
     fi
 
     local done_count
-    done_count=$(grep -cE "^\s*-\s*\[x\][^]]*\*\*M06-" "$todo" 2>/dev/null || true)
+    # Bold-agnostic: identical task-id shape to the awk block above.
+    done_count=$(grep -cE "^\s*-\s*\[x\][^]]*\*{0,2}M06-" "$todo" 2>/dev/null || true)
     echo "  ✅ Per-task human approval verified for ${done_count:-0} completed task(s)"
     return 0
 }

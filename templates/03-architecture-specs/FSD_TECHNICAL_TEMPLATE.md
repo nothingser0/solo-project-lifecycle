@@ -71,11 +71,34 @@ Stack-Locked-by: [name of the human who chose it — the AI agent presents optio
 - Q8 Compliance Requirements: [answer]
 
 ### Framework Versions (Pinned)
-*(Populate directly from `./scripts/check-package-versions.sh <stack>`)*
+*(Populate directly from `./scripts/verify/check-package-versions.sh <stack>` — see the live-version STEP 0 in `docs/modules/05_ARCHITECTURE_SPECS.md`)*
 - **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]
 - **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
 - **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
 - **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
+
+### Module 04 Handoff Strategy
+
+> **Why this section exists**: `validate-gate.sh M06` refuses to start coding without
+> it. It records how the **frozen** Module 04 prototype becomes real code, so no one
+> re-invents screens during development. The prototype is the UI source of truth.
+
+**Compatibility Level**: [Level 1 | Level 2 | Level 3 | Level 4]
+
+| Level | Meaning | Conversion effort |
+| :---: | :--- | :--- |
+| **1** | Markdown-only spec (Workflow A) — rebuilt directly in the chosen stack | Lowest: no code to port |
+| **2** | Static HTML/click-dummy (Workflow B) — markup translated to components | Low: markup → components |
+| **3** | AI-generated prototype code (Workflow C) — same framework, cleaned and wired | Medium: refactor to conventions |
+| **4** | Figma/designer handoff or hybrid (Workflow D/E) — components extracted from design | Highest: design → components |
+
+**Conversion Plan**:
+1. [Source artifact → target path, e.g. "Extract 12 components from `docs/design/screens/` → `src/components/`"]
+2. [Route mapping, e.g. "Create one route per SITEMAP screen (SCR-01…SCR-NN)"]
+3. [Rejected prototype code / stubs to delete, e.g. "Drop prototype mock data; bind to FSD endpoints"]
+
+**Estimated Conversion Time**: [N days]
+**Screen Coverage**: [SITEMAP route count] routes == [DESIGN_SPEC SCR count] frozen screens
 
 ---
 
@@ -466,6 +489,7 @@ GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMER
 - [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
 - [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
 - [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
+- [ ] **7. Module 04 Handoff Strategy**: Section 2 records the compatibility level (1–4), the conversion plan from the frozen prototype, and a screen count that matches SITEMAP/DESIGN_SPEC. `validate-gate.sh M06` blocks coding without it.
 
 ---
 

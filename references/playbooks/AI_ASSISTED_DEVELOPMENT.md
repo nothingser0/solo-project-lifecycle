@@ -1414,7 +1414,8 @@ Include:
 | Artifact | Location | Purpose |
 |----------|----------|---------|
 | **AI Prompt Library** | `docs/specs/AI_PROMPT_LIBRARY.md` | Reusable prompts for common tasks |
-| **AI Code Review Checklist** | `docs/specs/AI_CODE_REVIEW_CHECKLIST.md` | Pre-merge review gate |
+| **AI Review Log** | `AI_REVIEW_LOG.md` (root harness) | Pre-merge review gate — the log M06 §2/§7 names. Copy `templates/04-dev-execution/AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md` into it; one reviewed entry per changed file, with severity prefixes. |
+| **AI Code Review Checklist** | `docs/specs/AI_CODE_REVIEW_CHECKLIST.md` | Optional expanded checklist (same content, reference copy) |
 | **AI Tool Comparison** | `docs/dev/AI_TOOLS_COMPARISON.md` | When to use Cursor vs v0 vs Claude |
 | **AI Session Log** | `docs/dev/ai-sessions/YYYY-MM-DD.md` | What was generated, what worked/failed |
 

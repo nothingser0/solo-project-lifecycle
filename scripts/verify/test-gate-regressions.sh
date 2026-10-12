@@ -108,10 +108,16 @@ expect_approval() {
 TASKS_SELF='- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0\n- [x] **M06-BE-01: API**\n  - **Evidence**: tests pass\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: build exit 0\n'
 TASKS_APPROVED='- [x] **M06-DB-01: Schema**\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by zen\n- [x] **M06-BE-01: API**\n  - **Evidence**: pass | Approved: 2026-10-12 by zen\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: pass | Approved: 2026-10-12 by zen\n'
 TASKS_PARTIAL='- [x] **M06-DB-01: Schema**\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by zen\n- [x] **M06-BE-01: API**\n  - **Evidence**: tests pass\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: pass | Approved: 2026-10-12 by zen\n'
+# Same defect with the bold markers omitted. The tick/pending counts are
+# bold-agnostic, so the approval guard's own task-id pattern must be too.
+TASKS_UNBOLD_SELF='- [x] M06-DB-01: Schema\n  - **Evidence**: migrations exit 0\n- [x] M06-BE-01: API\n  - **Evidence**: tests pass\n- [x] M06-FE-01: Screens\n  - **Evidence**: build exit 0\n'
+TASKS_UNBOLD_APPROVED='- [x] M06-DB-01: Schema\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by zen\n- [x] M06-BE-01: API\n  - **Evidence**: pass | Approved: 2026-10-12 by zen\n- [x] M06-FE-01: Screens\n  - **Evidence**: pass | Approved: 2026-10-12 by zen\n'
 
 expect_approval "3 tasks [x], zero approvals (agent ran the sprint)" BLOCKED "$TASKS_SELF"
 expect_approval "3 tasks [x], all approved by human" ALLOWED "$TASKS_APPROVED"
 expect_approval "partial: one task self-approved" BLOCKED "$TASKS_PARTIAL"
+expect_approval "unbolded ids, zero approvals (guard bypass)" BLOCKED "$TASKS_UNBOLD_SELF"
+expect_approval "unbolded ids, all approved by human" ALLOWED "$TASKS_UNBOLD_APPROVED"
 
 echo ""
 echo "Actor attribution: the agent must never be a valid approver or self-deployer."
@@ -638,6 +644,127 @@ WL_PENDING='- **Total Unique Visitors**: 0
 Gate-Decision: PENDING
 '
 expect_m00 "research not yet run (PENDING)" FAIL "$WL_PENDING"
+
+echo ""
+echo "M06 STEP 0 / STEP 2: the runbook's hard claims must be enforced, not prose."
+echo "Regressions: the FSD lock + handoff section were checked only by deep-dive"
+echo ""
+
+# expect_m06_step <name> <BLOCKED|ALLOWED> <fsd-content|EMPTY> <harness-complete: yes|no>
+expect_m06_step() {
+    local name="$1" want="$2" fsd="$3" full="$4"
+    local dir="$WORK/m06s"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    # A complete TODO so ONLY the STEP 0 / STEP 2 lines can decide the outcome.
+    printf -- '- [x] **M06-SETUP-03: Specs Pre-Read**\n  - **Evidence**: read\n- [x] **M06-DB-01: Schema**\n  - **Evidence**: ok\n- [x] **M06-BE-01: API**\n  - **Evidence**: ok\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: ok\n' > "$dir/TODO.md"
+    printf 'anti-slop typescript strict verification standards\n' > "$dir/AGENTS.md"
+    mkdir -p "$dir/docs/specs"
+    [ "$fsd" = "EMPTY" ] || printf '%b' "$fsd" > "$dir/docs/specs/FSD.md"
+    if [ "$full" = "yes" ]; then
+        for f in CONTEXT ARCHITECTURE DESIGN CONVENTIONS; do printf 'x\n' > "$dir/$f.md"; done
+        printf 'x\n' > "$dir/.env.example"
+        printf 'x\n' > "$dir/RUNBOOK_LOCAL.md"
+        printf 'x\n' > "$dir/VERIFY_LOCAL.md"
+    fi
+    local out
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    local got="ALLOWED"
+    if echo "$out" | grep -qE "STEP 0: .*no 'Stack Decision LOCKED|STEP 0: FSD.md missing the 'Module 04 Handoff|STEP 2: harness file\(s\) missing"; then
+        got="BLOCKED"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 -> $got, expected $want)"
+        echo "$out" | grep -E '❌ STEP' | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+FSD_OK_LOCK='Stack Decision LOCKED: Next.js 15\n\n## Module 04 Handoff Strategy\nCompatibility Level: 2\n'
+FSD_NO_LOCK='## 2. Component Architecture\n\nORM / Driver: Drizzle\n'
+FSD_NO_HANDOFF='Stack Decision LOCKED: Next.js 15\n\n## 3. Database Schema\n'
+
+expect_m06_step "FSD with no locked stack" BLOCKED "$FSD_NO_LOCK" yes
+expect_m06_step "FSD with no Module 04 Handoff Strategy" BLOCKED "$FSD_NO_HANDOFF" yes
+expect_m06_step "FSD locked + handoff, only 3 of 9 harness files" BLOCKED "$FSD_OK_LOCK" no
+expect_m06_step "FSD locked + handoff, all 9 harness files" ALLOWED "$FSD_OK_LOCK" yes
+
+# Producer side: M05 must require the handoff section so M06 STEP 0 can read it.
+expect_m05_handoff() {
+    local name="$1" want="$2" with_handoff="$3"
+    local dir="$WORK/m05h"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    mkdir -p "$dir/docs/specs"
+    printf '### Stack Decision\nStack Decision LOCKED: Next.js\n\n- Q1 x\n- Q2 x\n- Q3 x\n- Q4 x\n- Q5 x\n- Q6 x\n- Q7 x\n- Q8 x\n' > "$dir/docs/specs/FSD.md"
+    [ "$with_handoff" = "yes" ] && printf '\n## Module 04 Handoff Strategy\nCompatibility Level: 3\n' >> "$dir/docs/specs/FSD.md"
+    local out
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    local got="ALLOWED"
+    if echo "$out" | grep -qE "missing the 'Module 04 Handoff Strategy'"; then
+        got="BLOCKED"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m05_handoff "M05 FSD without handoff section" BLOCKED no
+expect_m05_handoff "M05 FSD with handoff section" ALLOWED yes
+
+echo ""
+echo "M06 STEP 3: a template-faithful FSD must PASS its own version gate."
+echo "Regression: the version parser anchored on '^- <pkg>:' while the shipped"
+echo "FSD template writes '- **Framework**: Next.js ^15.0.3', so every project that"
+echo "followed the template failed STEP 3 with 'FSD missing Next.js: X.Y.Z'."
+echo ""
+
+VERSION_SH="$REPO/scripts/verify/verify-framework-version.sh"
+
+# expect_version <name> <EXPECTED: PASS|FAIL> <fsd-version-line> <resolved> <conflicting-manifest>
+expect_version() {
+    local name="$1" want="$2" fsdline="$3" resolved="$4" extra="$5"
+    local dir="$WORK/vt"
+    rm -rf "$dir"; mkdir -p "$dir/docs/specs" "$dir/bin"
+    printf '### Stack Decision (LOCKED)\nStack Decision LOCKED: Next.js 15\n\n### Framework Versions (Pinned)\n%b\n\n## 3. Database Schema\n' "$fsdline" > "$dir/docs/specs/FSD.md"
+    printf '{"dependencies":{"next":"^15.0.3"}}\n' > "$dir/package.json"
+    printf '{"packages":{"node_modules/next":{"version":"%s"}}}\n' "$resolved" > "$dir/package-lock.json"
+    [ -n "$extra" ] && printf '{}\n' > "$dir/$extra"
+    # Deterministic node shim: the gate only reads the lockfile through it.
+    cat > "$dir/bin/node" <<EOF
+#!/usr/bin/env bash
+case "\$*" in
+  *node_modules/next*) echo "$resolved" ;;
+  *node_modules/react*) echo "" ;;
+  *) exit 1 ;;
+esac
+EOF
+    chmod +x "$dir/bin/node"
+    local out code
+    out="$(cd "$dir" && PATH="$dir/bin:$PATH" bash "$VERSION_SH" 2>&1)"; code=$?
+    local got="FAIL"; [ "$code" -eq 0 ] && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (version gate -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (version gate -> $got, expected $want)"
+        echo "$out" | tail -4 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_version "template form ('- **Framework**: Next.js ^15.0.3') matches 15.0.3" PASS \
+    '- **Framework**: Next.js ^15.0.3 (App Router)' "15.0.3" ""
+expect_version "bare form ('- Next.js: 15.0.3') matches 15.0.3" PASS \
+    '- Next.js: 15.0.3' "15.0.3" ""
+expect_version "template form vs resolved 16.1.0 (drift)" FAIL \
+    '- **Framework**: Next.js ^15.0.3 (App Router)' "16.1.0" ""
+expect_version "FSD Next.js but composer.json present (wrong scaffold)" FAIL \
+    '- **Framework**: Next.js ^15.0.3 (App Router)' "15.0.3" "composer.json"
 
 echo ""
 echo "Path portability: every script must work from ANY cwd and on ANY device."
