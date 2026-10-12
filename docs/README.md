@@ -69,7 +69,7 @@ Modules live in `docs/modules/` — each is a compact runbook (≤~2k tokens) wi
 
 ## 5. Automation & Tooling
 
-- **Gate validation**: `./scripts/gates/validate-gate.sh <MODULE>` (bash; the `.ps1` twin is a thin wrapper that runs from your project directory and needs a real bash — Git for Windows or a WSL distro). Exit codes: `0` pass · `1` fail · `3` RETEST (M00's 2.0–4.9% waitlist band — not passed, re-test after one sprint).
+- **Gate validation**: `./scripts/gates/validate-gate.sh <MODULE>` (bash; the `.ps1` twin is a thin wrapper that runs from your project directory and needs a real bash — Git for Windows or a WSL distro). Exit codes: `0` pass · `1` fail · `3` RETEST (M00's 2.0–4.9% waitlist band — not passed, re-test after one sprint) · `4` PROVISIONAL_PENDING_M00 (M01's M00-research-not-done state — not passed).
 - **Scale classifier**: `./scripts/gates/classify-scale.sh docs/pm/PROJECT_STATE.md` (structured-field parsing).
 - **Scaffold**: `./scripts/scaffold/init-project.sh <dir> <scale>` (proportional per scale).
 - **Package version check**: `./scripts/verify/check-package-versions.sh <framework>` — see [`PACKAGE_VERSION_AUTO_CHECK.md`](./PACKAGE_VERSION_AUTO_CHECK.md).

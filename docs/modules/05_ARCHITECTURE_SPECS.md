@@ -5,10 +5,10 @@
 > Conditional (open only if the project needs it): `patterns/compliance/UU_PDP_COMPLIANCE.md` (personal data), `patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md` (payment rails), `patterns/offline/OFFLINE_FIRST_SYNC.md` (offline operation)
 
 **Inputs**: `SCOPE_STATEMENT.md` (Module 02) + `DESIGN_SPEC.md` (Module 04). Small scale: unified `PROJECT_LITE.md`.
-**Outputs**: `docs/specs/PRD.md` + `docs/specs/FSD.md` → ready for Module 06.
+**Outputs**: `docs/specs/PRD.md` + `docs/specs/FSD.md` → ready for Module 06. Small: everything pinned into **Section 5** of `PROJECT_LITE.md` + the human sign-off (Section 6).
 
 **Scale Routing**:
-- **Small (Fast-Track)**: NO `PRD.md`/`FSD.md` — stack lock, DDL, API list pinned into **Section 5 of `PROJECT_LITE.md`** (≥1000B).
+- **Small (Fast-Track)**: NO `PRD.md`/`FSD.md` — stack lock, DDL, API list, security blueprint, Module 04 handoff pinned into **Section 5 of `PROJECT_LITE.md`**.
 - **Enterprise**: routed to **A-Series Phase A02** + mandatory `docs/governance/ADR.md` and `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md`; solo coding prohibited.
 
 ---
@@ -54,10 +54,10 @@ Context-specific reasoning for the chosen stack; **alternatives rejected with re
 
 - HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; API style per stack (REST/GraphQL/tRPC).
 
-### STEP 5: Security Blueprint + Module 04 Handoff
+### STEP 5: Security Blueprint + Module 04 Handoff (both gate-enforced)
 
-- **Security**: AES-256-GCM data-vault encryption (envelope encryption), Argon2id password hashing, OWASP Top 10 protections, rate limiting, UU PDP compliance (consent, deletion right, audit logs), framework-specific patterns.
-- **Handoff**: conversion strategy Module 04 prototype → chosen framework; component mapping (React → Vue/Svelte/Blade); design-token extraction for reuse.
+- **Security**: AES-256-GCM data-vault encryption (envelope encryption), Argon2id password hashing, OWASP Top 10, rate limiting, UU PDP (consent, deletion right, audit logs), framework-specific patterns. The gate requires these *recorded* (4 controls Small, +UU PDP Medium+).
+- **Handoff**: Module 04 prototype → chosen framework conversion; component mapping (React → Vue/Svelte/Blade); design-token extraction. The gate requires a section **named `Module 04 Handoff Strategy`** carrying a **`Compatibility Level: Level 1-4`** line — M06 STEP 0 parses those exact strings; level definitions in `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md` §2.1.
 
 ### STEP 6: Write Deliverables
 
@@ -68,22 +68,21 @@ Context-specific reasoning for the chosen stack; **alternatives rejected with re
 
 ### STEP 7: Technical Sign-Off
 
-Review with Client Single PIC — or, on solo projects, the **human user** self-approves (the AI agent is never a valid approver); sign off. M05 is not a SKILL.md stop point: after sign-off (and gate pass) continue to M06 in the same flow for Small/Solo SaaS; on Client projects pause for explicit "FSD approved" / "Proceed to Module 06" before coding. If changes requested: revise, re-run gate.
+Review with Client Single PIC — or, on solo projects, the **human user** self-approves (an AI agent is never a valid approver); sign off by writing the reviewer's real name and date into the sign-off block. The gate **fails** on residual `____` / `[YYYY-MM-DD]` / `[Your Name]` fields: the sign-off must be a real human entry, not the untouched template row (the same false-green the M04 Design Freeze guard closes). M05 is not a SKILL.md stop point: after sign-off (and gate pass) continue to M06 in the same flow for Small/Solo SaaS; on Client projects pause for explicit "FSD approved" / "Proceed to Module 06" before coding. If changes requested: revise, re-run gate.
 
 ---
 
 ## [GATE] Exit Criteria (condensed)
 
-- [ ] 8-question questionnaire completed; 2–3 options presented; stack **LOCKED** (`Stack Decision LOCKED:` documented)
-- [ ] Versions verified via registry script and pinned verbatim in FSD
+- [ ] 8-question questionnaire completed; 2–3 options presented; stack **LOCKED** (`Stack Decision LOCKED:` + `Stack-Locked-by:` naming the human). The 8 answers must be **real values** — the gate rejects residual `[answer]` placeholders
+- [ ] Versions verified via registry script and pinned verbatim in FSD `Framework Versions (Pinned):` (re-checked by M06's `verify-framework-version.sh`)
 - [ ] Stack justification with rejected alternatives
 - [ ] DDL present (tables, keys, CHECK, indexes, audit trail)
-- [ ] ≥10 API endpoints with request/response schemas; idempotency for financial POSTs
-- [ ] Security blueprint complete (AES-256-GCM, Argon2id, OWASP, rate limiting, UU PDP)
-- [ ] Module 04 handoff strategy documented
-- [ ] File sizes: Small (3–7 P0) → `PROJECT_LITE.md` ≥1000B; otherwise `docs/specs/PRD.md` + `docs/specs/FSD.md` ≥2000B each
+- [ ] ≥10 API endpoints with request/response schemas; idempotency for financial POSTs *(gate-enforced on Medium+)*
+- [ ] Security blueprint complete *(gate-enforced)*; `Module 04 Handoff Strategy` + `Compatibility Level: Level 1-4` present *(gate-enforced; M06 STEP 0 depends on it)*
+- [ ] Substantive `PROJECT_LITE.md` (Small) or `PRD.md` + `FSD.md` (Medium+) — target ≥1000B / ≥2000B each; the script stub-checks size, so judge real substance, not padding
 - [ ] Multi-tenant isolation + idempotency strategy documented if applicable
-- [ ] Technical sign-off obtained
+- [ ] Technical sign-off obtained — **human name + real date, no residual blank/placeholder fields** *(gate-enforced; AI is never a valid approver)*
 
 ### Gate Execution (MANDATORY — verbatim script output)
 
@@ -99,4 +98,6 @@ or Windows:
 .\scripts\gates\validate-gate.ps1 M05
 ```
 
-If it exits FAILED: fix artifacts and re-run — never declare completion on failure. Only after `✅ Gate validation PASSED` present the handoff prompt (deep dive) and END TURN for approval. Script bodies (Phase 0 questionnaire check, file-size verification, content validation): deep dive, "Gate Script Bodies".
+If it exits FAILED: fix artifacts and re-run — never declare completion on failure. Only after `✅ Gate validation PASSED` present the handoff prompt (deep dive) and END TURN for approval.
+
+The live gate is the source of truth: `scripts/gates/modules/M05.sh` + the M05 helpers in `scripts/gates/lib/checks.sh`. The pseudo-code in the deep dive is an illustrative sketch of the same contract — when the two disagree, the script wins.

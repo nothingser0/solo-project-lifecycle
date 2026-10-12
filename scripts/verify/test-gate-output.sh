@@ -50,6 +50,9 @@ mk_fixture() {
 - Intake-P0-Features: 12 (catalog, orders, payments, admin, reports)
 - Intake-Time-Capacity: 40 hrs/week x 12 weeks = 480 hrs
 - Intake-Sensitive-Data: yes
+- Intake-Integrations: none
+- Intake-Branch-Hierarchy: no
+- Intake-Compliance: none
 - Intake-Status: ANSWERED
 EOF
     printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$d/PROJECT_LITE.md"

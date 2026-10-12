@@ -245,9 +245,11 @@ Scenario: Client submits mutation with network retry
 
 By signing below, the Lead Software Architect and Client PIC confirm that all functional requirements, security boundaries, and release acceptance criteria documented herein are approved for technical implementation in Module 06.
 
-| Approved by Client Single PIC | Validated by Lead Software Architect |
-| :--- | :--- |
-| **Name**: _________________________ | **Name**: _________________________ |
-| **Role**: _________________________ | **Role**: Lead Software Architect |
-| **Date**: [YYYY-MM-DD] | **Date**: [YYYY-MM-DD] |
-| **Signature**: _____________________ | **Signature**: _____________________ |
+> **The AI agent may never sign or self-approve** (docs/AUTHORITY.md). Client delivery completes the
+> *Client Single PIC* line; solo/self-initiated delivery completes the *Validated by Solo Developer*
+> line instead.
+
+**Approved by**: [Human reviewer name]
+**Approved on**: [YYYY-MM-DD]
+**Validated by Solo Developer**: [Developer / Lead Architect name] (Date: [YYYY-MM-DD])
+**Approved by Client Single PIC** (client delivery only): [Client PIC name] (Date: [YYYY-MM-DD])

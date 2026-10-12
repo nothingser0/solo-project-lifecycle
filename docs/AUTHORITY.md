@@ -35,15 +35,24 @@
 ### M01 — Idea Feasibility
 | Agent | Human decides |
 |---|---|
-| 4D scorecard, risk register, roadmap, RICE, archetype classification | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:49`) |
+| 4D scorecard, risk register, roadmap, RICE, archetype classification, mitigation plan for a CONDITIONAL_GO | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:49`) |
+
+> ✅ **Gate-enforced**: the declared Scale never overrides the classifier — a project
+> declaring `Small` whose own Intake answers evaluate higher (payment webhook, sensitive
+> data, 8+ P0) fails the High-Water-Mark check. `PROVISIONAL_PENDING_M00` halts with exit 4
+> instead of being read as an undeclared decision, and a `CONDITIONAL_GO` must carry a
+> `Mitigation:` line.
 
 ### M02 — Discovery & Scope
 | Agent | Human only |
 |---|---|
 | NSM, MoSCoW, permission tables, schema rules, effort formula | **Discovery Interview** (5 Pillars), 50–100 signups, **sandbox keys / email credentials / master data** |
 
-> ⚠️ Open item: `02:38-39` lets the agent draft Privacy Policy / ToS / tax disclaimers with
-> no counsel-review gate, unlike M03 and A00.
+> ✅ **Counsel-review marker defined**: the agent may draft the Privacy Policy / ToS / tax
+> disclaimers only as `LEGAL-REVIEW: PENDING` operational drafts (`02:40-46`). The human
+> flips it to `REVIEWED by <name> on <date>`; publishing legal text while `PENDING` is a
+> FROZEN-spec violation. `validate-gate.sh M02` enforces the marker whenever the scope
+> includes legal/tax text, and `test-gate-regressions.sh` pins the rule.
 
 ### M03 — Legal / SOW / DP 〔GATE〕
 | Agent | Human only |
@@ -60,9 +69,13 @@
 ### M05 — Architecture & Specs 〔STACK LOCK〕
 | Agent | Human decides |
 |---|---|
-| 2–3 stack options + cost/pros/cons, DDL, API matrix, PRD/FSD | **Answer the 8 questions** (`05:37`), **LOCK the stack** (`05:40`), FSD sign-off (`05:71`) |
+| 2–3 stack options + cost/pros/cons, DDL, API matrix, PRD/FSD, security blueprint | **Answer the 8 questions** (M05 STEP 1), **LOCK the stack** (M05 STEP 1), **technical sign-off** (M05 STEP 7) |
 
-> ✅ **Gate-enforced**: `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without the 8 recorded answers. Applies to **both** paths (Small previously skipped this check entirely).
+> ✅ **Gate-enforced** (all four, on **both** the Small and Medium+ paths): `validate-gate.sh M05` fails if
+> `Stack Decision LOCKED:` appears without 8 **real** answers and a human `Stack-Locked-by:`, if the
+> security blueprint controls are missing, if the `Module 04 Handoff Strategy` / `Compatibility Level`
+> are absent (M06 STEP 0 depends on them), or if the technical sign-off still holds blank/placeholder
+> fields. Small previously skipped these checks entirely.
 
 ### M06 — Development
 | Agent | Human |
@@ -138,10 +151,13 @@
 
 | Check | Where | Status |
 | :--- | :--- | :--- |
-| 5 intake questions answered | `validate-gate.sh` M01/M02/M04/M05/M06 | ✅ script |
+| Intake file + 8 mandatory fields answered | `validate-gate.sh` every module | ✅ script |
+| Solo capacity / High-Water Mark | `validate-gate.sh` M01, M02 | ✅ script |
 | Per-task human approval | `validate-gate.sh` M06 | ✅ script |
 | Design Freeze signed | `validate-gate.sh` M04 | ✅ script |
-| 8 questionnaire answers recorded | `validate-gate.sh` M05 | ✅ script |
+| 8 questionnaire answers recorded (real, not placeholders) + human `Stack-Locked-by` | `validate-gate.sh` M05 | ✅ script |
+| Security blueprint + Module 04 handoff recorded | `validate-gate.sh` M05 | ✅ script |
+| Technical spec sign-off named + dated | `validate-gate.sh` M05 | ✅ script |
 | Client inputs received | `validate-gate.sh` M08/M10 | ✅ script |
 | Blank signature lines rejected | `validate-gate.sh` M08/M09/M11 | ✅ script |
 | Real-phone pass performed | — | 🧑 prose only |

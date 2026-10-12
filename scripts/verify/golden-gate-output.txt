@@ -17,11 +17,11 @@
 🔍 Validating Gate: M01
 ============================================================
 === M01: Idea Feasibility Gate Checklist ===
-  ❌ docs/pm/IDEA_BRIEF.md (MISSING)
-  ✅ docs/pm/PROJECT_STATE.md (297B)
   [INFO] Running mechanical scale & solo capacity classifier...
   ✅ Solo capacity verified: Scope is executable within solo capacity
-  ✅ Intake Gate: all 5 mandatory fields answered
+  ✅ docs/pm/PROJECT_STATE.md (381B)
+  ❌ docs/pm/IDEA_BRIEF.md (MISSING — copy templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md; FEASIBILITY_REPORT.md is an accepted alias)
+  ✅ Intake Gate: all 8 mandatory fields answered
 
 ============================================================
 ❌ Gate validation FAILED - missing mandatory artifacts
@@ -31,12 +31,15 @@
 🔍 Validating Gate: M02
 ============================================================
 === M02: Discovery & Scope Gate Checklist ===
-  ✅ Intake Gate: all 5 mandatory fields answered
+  ✅ Intake Gate: all 8 mandatory fields answered
+  [INFO] Running mechanical scale & solo capacity classifier...
+  ✅ Solo capacity verified: Scope is executable within solo capacity
   ✅ docs/pm/SCOPE_STATEMENT.md (1215B)
   ✅ Zero ambiguous terms in Must-Have scope rows
   ❌ Explicit Scope-Lock-Decision (LOCKED | PENDING) not declared in SCOPE_STATEMENT.md!
-  [INFO] Declared scale: Medium; P0 feature rows (F-xx) counted: 0 (expected 3-25)
-  ❌ P0 Must-Have count (0) outside scale 'Medium' limits (3-25). Prune scope or re-classify scale.
+  [INFO] Declared scale: medium; P0 feature rows (F-xx) counted: 0 (expected 8-15)
+  ❌ P0 Must-Have count (0) outside scale 'medium' limits (8-15). Prune scope or re-classify scale.
+  ❌ Missing 'Scope-P0-Count:' machine field in SCOPE_STATEMENT.md!
   ❌ Data Confidence Legend [✅ / 🔶 / ❓] not declared!
   ❌ Out-of-Scope boundary section missing!
   ❌ RBAC Zero Self-Approval guardrail (no self-approval for mutations/approvals) missing in SCOPE_STATEMENT.md!
@@ -66,7 +69,7 @@
 🔍 Validating Gate: M04
 ============================================================
 === M04: UI/UX Prototyping Gate Checklist ===
-  ✅ Intake Gate: all 5 mandatory fields answered
+  ✅ Intake Gate: all 8 mandatory fields answered
   ❌ assets/logo/logo.svg (TOO SMALL: 120B < 200B minimum required)
   ✅ docs/design/inspiration/notes.md (Benchmark selection verified)
   ✅ docs/specs/SITEMAP.md (1117B)
@@ -92,14 +95,15 @@
 🔍 Validating Gate: M05
 ============================================================
 === M05: Architecture & Specs Gate Checklist ===
-  ✅ Intake Gate: all 5 mandatory fields answered
+  ✅ Intake Gate: all 8 mandatory fields answered
   ❌ docs/specs/PRD.md (MISSING)
   ❌ docs/specs/FSD.md (MISSING)
   [INFO] Medium+ scale detected: Architecture Decision Record (ADR) is MANDATORY.
   ❌ docs/governance/ADR.md (MISSING)
   [OK] PROJECT_LITE.md (optional)
   ✅ Locked tech stack decision documented in PROJECT_LITE.md
-  ❌ PROJECT_LITE.md declares 'Stack Decision LOCKED:' but records only 0/8 questionnaire answers.
+  ❌ PROJECT_LITE.md declares 'Stack Decision LOCKED:' but records only 0/8 real questionnaire answers.
+     Missing: Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8
      The 8 answers are the human's input (M05 STEP 1). Ask the questions, END TURN, and record all 8 before locking.
 
 ============================================================
@@ -110,7 +114,7 @@
 🔍 Validating Gate: M06
 ============================================================
 === M06: Development Execution Gate Checklist ===
-  ✅ Intake Gate: all 5 mandatory fields answered
+  ✅ Intake Gate: all 8 mandatory fields answered
   ✅ AGENTS.md (707B)
   ✅ TODO.md (126B)
   ✅ CONTEXT.md (611B)

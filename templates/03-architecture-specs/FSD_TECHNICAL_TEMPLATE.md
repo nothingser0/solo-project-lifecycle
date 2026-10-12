@@ -77,6 +77,37 @@ Stack-Locked-by: [name of the human who chose it — the AI agent presents optio
 - **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
 - **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
 
+### Security Blueprint (STEP 5 — gate-enforced)
+
+> `validate-gate.sh M05` requires all five controls below: AES-256-GCM, Argon2id, OWASP, rate
+> limiting, and the compliance tie-in (UU PDP/GDPR/consent) for Medium+ scale.
+
+- **Data at rest**: AES-256-GCM envelope encryption for [sensitive columns]; key management = [KMS / env-held data key + KEK].
+- **Password hashing**: Argon2id (`memory=64MB, iterations=3, parallelism=4`).
+- **Web hardening**: OWASP Top 10 — parameterized queries, output encoding, CSRF tokens, `HttpOnly`+`Secure`+`SameSite` cookies, generic error messages, dependency scanning in CI.
+- **Rate limiting**: [login 5/min per IP; mutating endpoints 60/min per user; idempotency keys for POST].
+- **Personal data / compliance**: [UU PDP consent capture, deletion right, immutable audit log] or `N/A (no personal data processed)`.
+
+### 2.1 Module 04 Handoff Strategy (STEP 5 — gate-enforced; parsed by M06 STEP 0)
+
+> M06 STEP 0 reads this section (verbatim name) to derive the prototype → code compatibility
+> level, and M06's own gate refuses to start without it. Choose exactly ONE level.
+
+**Compatibility Level**: Level [1 / 2 / 3 / 4]
+
+| Level | Situation | Conversion Approach |
+| :--- | :--- | :--- |
+| **1 — Direct** | Prototype IS the stack (workflow C/E: Bolt/Lovable/Figma MCP output matches the locked framework) | Copy generated components in; adjust tokens |
+| **2 — Re-skin** | Same framework, different styling system | Rebuild markup on the frozen layout; map tokens |
+| **3 — Translate** | Different framework, same component model (e.g. React → Vue/Svelte) | Rewrite each component 1:1; keep class/state names |
+| **4 — Hybrid/Static** | Markup-only prototype (workflow A/B/D) or Blade + Inertia-style bridging | Rebuild each screen from the frozen spec; reuse design tokens only |
+
+**Conversion Plan**:
+1. Extract [n] components from `COMPONENT_REQUIREMENTS.md` (source: M04 workflow [A–E]).
+2. Map `DESIGN.md` tokens → [Tailwind config / theme file].
+3. Rebuild screens in [framework] — static first, data-backed after DB + API.
+**Estimated Conversion Time**: [X days]
+
 ---
 
 ## 3. Relational Database Schema & DDL Integrity (SQL DDL)
@@ -471,9 +502,13 @@ GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMER
 
 ## 8. Technical Sign-Off Sheet
 
-| Validated by Lead Software Architect | Approved by Client PIC / Lead Stakeholder |
-| :--- | :--- |
-| **Name**: _________________________ | **Name**: _________________________ |
-| **Role**: Lead Software Architect | **Role**: Client Single PIC / Project Lead |
-| **Date**: [YYYY-MM-DD] | **Date**: [YYYY-MM-DD] |
-| **Signature**: _____________________ | **Signature**: _____________________ |
+> `validate-gate.sh M05` **requires** the three lines below to be filled with a real human name and
+> a real date (`Approved on: YYYY-MM-DD`). **The AI agent may never sign or self-approve**
+> (docs/AUTHORITY.md) — a human reviewer signs off. Solo/portfolio/internal delivery completes
+> the *Validated by Solo Developer* line; client delivery must also complete the *Client Single PIC*
+> line. Replace every bracketed placeholder with a real value before running the gate.
+
+**Approved by**: [Human reviewer name — whoever reviewed the technical specification]
+**Approved on**: [YYYY-MM-DD]
+**Validated by Solo Developer**: [Developer / Lead Architect name] (Date: [YYYY-MM-DD])
+**Approved by Client Single PIC** (client delivery only): [Client PIC name] (Date: [YYYY-MM-DD])

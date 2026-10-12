@@ -2,6 +2,7 @@
 
 ## Contents
 
+- [0. Archetype Shorthand](#0-archetype-shorthand)
 - [1. Technical Feasibility Rubric (full)](#1-technical-feasibility-rubric-full)
 - [2. Bandwidth Cross-Check (full procedure)](#2-bandwidth-cross-check-full-procedure)
 - [3. Commercial Feasibility — Delivery Model Details](#3-commercial-feasibility-delivery-model-details)
@@ -11,6 +12,21 @@
 
 
 Companion to [`../01_IDEA_FEASIBILITY.md`](../01_IDEA_FEASIBILITY.md). Reference links: `references/checklists/MODULE_01_ACTION_ITEMS_CHECKLIST.md`, `references/checklists/FEASIBILITY_CRITERIA.md`, `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`, `references/playbooks/SCALE_WORKFLOWS.md`.
+
+## 0. Archetype Shorthand
+
+Classification is written as `ACRONYM — long name`; extend freely (acronym + short description is enough):
+
+```
+ERP  Enterprise Resource Planning      POS  Point of Sale           LMS  Learning Management
+CRM  Customer Relationship Mgmt        IMS  Inventory Management     ATS  Applicant Tracking
+CMS  Content Management                WMS  Warehouse Management     HRIS Human Resource Info System
+SaaS Multi-tenant Subscription App     OMS  Order Management         TMS  Transportation Mgmt
+EIS  Executive Info Dashboard          FSM  Field Service Mgmt       DSS  Decision Support
+GRC  Governance/Risk/Compliance        PIM  Product Info Mgmt        DMS  Document Management
+```
+
+The 250-entry archetype catalog and the 1,000-project catalog live in `references/taxonomy/` — human reference only, never agent context (SKILL.md forbids default loading).
 
 ## 1. Technical Feasibility Rubric (full)
 

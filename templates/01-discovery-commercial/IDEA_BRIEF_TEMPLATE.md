@@ -95,6 +95,8 @@
 
 *Rate each dimension from 1 (Very Poor / Unfeasible) to 5 (Excellent / Highly Feasible)*
 
+> The 4 machine fields below this table mirror it. Fill them with the same numbers — the gate reads only those lines.
+
 | Feasibility Dimension | Score (1–5) | Confidence | Solo Developer Analysis, Reality Checks & Mitigations |
 | :--- | :---: | :---: | :--- |
 | **1. Technical Feasibility** (`Technical`) | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
@@ -102,6 +104,7 @@
 | **3. Regulatory & Legal Feasibility** (`Regulatory`) | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
 | **4. Commercial Feasibility — Unit Economics** (`Financial`) | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
 | **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4; `GO` requires average ≥ 3.5, else use `CONDITIONAL_GO`)* |
+| **MITIGATION PLAN** (required when the decision is `CONDITIONAL_GO`) | — | — | [State on its own line as `Mitigation: <what you will do about the weakest dimension>`. A `CONDITIONAL_GO` without this line fails the gate.] |
 
 ### Machine Validation Summary (M01 Feasibility Scores & Decision)
 
@@ -110,10 +113,11 @@ Feasibility-Score-Technical: [fill 1.0-5.0]
 Feasibility-Score-Operational: [fill 1.0-5.0]
 Feasibility-Score-Regulatory: [fill 1.0-5.0]
 Feasibility-Score-Financial: [fill 1.0-5.0]
-Feasibility-Decision: PENDING
+Feasibility-Decision: [GO | CONDITIONAL_GO | PIVOT | KILL | PROVISIONAL_PENDING_M00]
+Mitigation: [required when the decision is CONDITIONAL_GO]
 ```
 
-*(Key mapping: `Operational` = Bandwidth Feasibility, `Financial` = Commercial Feasibility. Options: GO | CONDITIONAL_GO | PIVOT | KILL. Machine validator strictly rejects M01 if any dimension is missing, out of the 1.0-5.0 range, < 3.0, if `GO` is declared with average < 3.5, or if Feasibility-Decision is KILL/PIVOT).*
+*(Key mapping: `Operational` = Bandwidth Feasibility, `Financial` = Commercial Feasibility. The machine validator rejects M01 if any dimension is missing, non-numeric, out of the 1.0-5.0 range, or < 3.0; if `GO` is declared with an average < 3.5 or `CONDITIONAL_GO` without a `Mitigation:` line (the scorecard's own checkbox form — e.g. `- [x] **CONDITIONAL_GO**` — is also accepted); or if the decision is `KILL`/`PIVOT`. `PROVISIONAL_PENDING_M00` is a valid halt: exit 4, no chain onward.)*
 
 ---
 
@@ -172,4 +176,3 @@ Feasibility-Decision: PENDING
 1. [Discovery Question 1: E.g., Specific table schema for audit trail logs]
 2. [Discovery Question 2: E.g., Fallback behavior when user network connection drops]
 3. [Discovery Question 3: E.g., Exact legal wording for financial estimation disclaimer]
-ancial estimation disclaimer]

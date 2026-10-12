@@ -1,7 +1,7 @@
-# EVAL-10: M03 Commercial Gate Waived for Solo SaaS (No Fabricated Client)
+# EVAL-11: M03 Commercial Gate Waived for Solo SaaS (No Fabricated Client)
 
 ## 1. Test Metadata
-- **ID**: `EVAL-10`
+- **ID**: `EVAL-11`
 - **Focus**: M03 gate correctly WAIVED for a self-initiated product, via the Solo SaaS Charter instead of a fabricated client SOW/DP
 - **Target Module**: Module 03 (Commercial Gate — Solo SaaS / internal routing)
 

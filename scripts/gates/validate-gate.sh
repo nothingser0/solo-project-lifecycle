@@ -23,8 +23,10 @@ MODULES_DIR="$SCRIPT_DIR/modules"
 GATE_MODULE="${1:-}"
 GATE_FAILED=0
 # Modules may downgrade a failure to a non-terminal verdict (M00 RETEST band:
-# evidence is real but insufficient to close the gate). The module sets this;
-# the dispatcher owns the exit code so callers only read one convention.
+# evidence is real but insufficient to close the gate; M01 PROVISIONAL_PENDING_M00:
+# scoring is real but M00 primary research is missing, so no final GO may be
+# declared). The module sets this; the dispatcher owns the exit code so callers
+# only read one convention: 0 passed - 1 failed - 3 RETEST - 4 PROVISIONAL.
 GATE_VERDICT=""
 
 if [ -z "$GATE_MODULE" ]; then
@@ -70,12 +72,16 @@ fi
 # --- verdict -------------------------------------------------------------------
 echo ""
 echo "============================================================"
-# RETEST is a non-terminal outcome: the gate is NOT passed and the lifecycle must
-# not chain onward, but the project is not killed either. Exit 3 lets callers
-# branch without parsing prose (0 = passed, 1 = failed, 3 = retest).
+# RETEST / PROVISIONAL are non-terminal outcomes: the gate is NOT passed and the
+# lifecycle must not chain onward, but the project is not killed either. Distinct
+# exit codes let callers branch without parsing prose (3 = retest with better
+# evidence, 4 = collect the missing human research first).
 if [ "$GATE_VERDICT" = "RETEST" ] && [ $GATE_FAILED -eq 0 ]; then
     echo "⚠️  Gate validation NOT PASSED - RERUN after one optimisation sprint (exit 3)"
     exit 3
+elif [ "$GATE_VERDICT" = "PROVISIONAL_PENDING_M00" ] && [ $GATE_FAILED -eq 0 ]; then
+    echo "⚠️  Gate validation NOT PASSED - PROVISIONAL: complete M00 primary research and re-run (exit 4)"
+    exit 4
 elif [ $GATE_FAILED -eq 1 ]; then
     echo "❌ Gate validation FAILED - missing mandatory artifacts"
     exit 1

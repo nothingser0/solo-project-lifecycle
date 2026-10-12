@@ -124,6 +124,10 @@
 
 ## 5. Lean Technical Blueprint
 
+> **Section 5 is the Small-path substitute for PRD/FSD.** `validate-gate.sh M05` verifies three
+> things here that M06 depends on: the locked stack backed by 8 real answers, the security
+> blueprint (STEP 5), and the Module 04 handoff strategy (STEP 5) — which M06 STEP 0 parses.
+
 - **Selected Tech Stack**: [Example: Next.js + PostgreSQL / Flutter + Supabase / FastAPI + SQLite]
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
@@ -169,16 +173,49 @@ CREATE TABLE core_entities (
 );
 ```
 
-- **Core API Routes**:
+### Security Blueprint (STEP 5 — all four required; gate-checked)
+
+- **Data at rest**: AES-256-GCM envelope encryption for [sensitive columns: e.g. `payload`, PII fields]; keys held outside the repo.
+- **Password hashing**: Argon2id (memory-hard; never MD5/SHA-1/bcrypt-cost<10).
+- **Web hardening**: OWASP Top 10 mitigations — input validation on every write path, output encoding, CSRF token, `HttpOnly`+`Secure`+`SameSite` cookies, no verbose error leakage.
+- **Rate limiting**: [login 5/min per IP, mutating endpoints 60/min per user].
+- **Personal data**: [UU PDP — consent capture, deletion right, audit log] or `N/A (no personal data)`.
+
+### Module 04 Handoff Strategy (STEP 5 — gate-checked; parsed by M06 STEP 0)
+
+**Compatibility Level**: Level [1 / 2 / 3 / 4] — pick ONE from the table in `FSD_TECHNICAL_TEMPLATE.md` §2.1:
+
+| Level | Situation | Conversion Approach |
+| :--- | :--- | :--- |
+| **1 — Direct** | Prototype IS the stack (workflow C/E: Bolt/Lovable/Figma MCP output matches the locked framework) | Copy generated components in; adjust tokens |
+| **2 — Re-skin** | Same framework, different styling system | Rebuild markup on the frozen layout; map tokens |
+| **3 — Translate** | Different framework, same component model (e.g. React → Vue/Svelte) | Rewrite each component 1:1; keep class/state names |
+| **4 — Hybrid/Static** | Markup-only prototype (workflow A/B/D) or Blade + Inertia-style bridging | Rebuild each screen from the frozen spec; reuse design tokens only |
+
+**Conversion Plan**: 1. Extract [n] components from `COMPONENT_REQUIREMENTS.md` → 2. Map `DESIGN.md` tokens to [Tailwind/theme config] → 3. Rebuild screens in [framework], static first, then data-backed.
+**Estimated Conversion Time**: [X days]
+
+### Core API Routes (STEP 4)
+
   - `POST /api/v1/auth/login` (Login & Set HttpOnly Cookie)
   - `GET /api/v1/entities` (Fetch authenticated data list)
   - `POST /api/v1/entities` (Create new Zod-validated data)
 
+> Medium/Large use `docs/specs/FSD.md` instead: a full endpoint matrix (**≥10 endpoints**, gate-enforced)
+> with request/response schemas and idempotency headers for financial POSTs.
+
 ---
 
-## 6. Summary Agreement of the Parties
+## 6. Technical Sign-Off & Summary Agreement of the Parties
+
+> `validate-gate.sh M05` **requires** the sign-off below to be filled with a real human name and a
+> real date before the gate passes. **The AI agent may never sign or self-approve** (docs/AUTHORITY.md);
+> a human reviewer does. Solo/portfolio/internal delivery completes the *Validated by Solo Developer*
+> line; client delivery must also complete the *Client Single PIC* line.
+
+**Approved by**: [Human reviewer name — the person who reviewed the architecture]
+**Approved on**: [YYYY-MM-DD]
+**Validated by Solo Developer**: [Developer name] (Date: [YYYY-MM-DD])
+**Approved by Client Single PIC** (client delivery only): [Client PIC name] (Date: [YYYY-MM-DD])
 
 By approving this document (via signature or written email confirmation), work officially commences once the 50% Down Payment (DP) is received by the Developer.
-
-- Approved by Client Single PIC: **[Client PIC Name]** (Date: [YYYY-MM-DD])
-- Validated by Solo Developer: **[Your Name]** (Date: [YYYY-MM-DD])
