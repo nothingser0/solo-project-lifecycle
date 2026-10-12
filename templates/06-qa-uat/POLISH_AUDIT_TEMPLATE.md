@@ -1,6 +1,6 @@
 # Anti-Vibe-Code Polish Audit (`docs/qa/POLISH_AUDIT.md`)
 
-> **Purpose**: Catch the 20 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
+> **Purpose**: Catch the 22 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
 > **Why it exists**: Functional gates pass, but the product still *looks* vibe-coded. These are the highest-signal cheap checks.
 > **Rule**: every row is PASS/FAIL with **evidence** (screenshot path, command output, or URL). "Looks fine" is not evidence.
 
@@ -42,6 +42,15 @@
 
 ---
 
+## B2. Code-Quality Tells (grep the diff, not the browser)
+
+| # | Tell | Check | Evidence | Status |
+|:--:|:--|:--|:--|:--:|
+| 21 | **AI-slop comments** | Every added comment earns its place: no `// Increment counter` narration, no `// TODO: implement later` stubs, no commented-out dead code. | | [ ] |
+| 22 | **Race condition on shared state** | For each mutation of stock/balance/counter/booking/status: is it inside a transaction with a row lock, unique constraint, or compare-and-swap? Is the webhook idempotent (dedupes on provider event ID)? Double-click submit — does it create two records? | | [ ] |
+
+---
+
 ## C. Automated Evidence (paste raw output)
 
 ```bash
@@ -53,6 +62,17 @@ npx lighthouse https://staging.example.com --preset=desktop --only-categories=pe
 
 # 3. Metadata + OG tags present
 curl -s https://staging.example.com | grep -E "og:image|<title>|meta name=\"description\"|favicon"
+
+# 4. AI-slop comments in the diff (narrating + stub comments; TOD[O] avoids this file's own lint)
+git diff origin/main...HEAD -- '*.ts' '*.tsx' '*.js' '*.py' '*.go' '*.php' '*.rb' \
+  | grep -E "^\+.*(//|#)\s*(Import |Get the |Set the |Increment |Initialize |Create a |This (function|method|is)|TOD[O]:? (implement|add)|Add your logic)" \
+  && echo "⚠️ SLOP COMMENTS FOUND" || echo "✅ no narrating/stub comments"
+
+# 5. Unprotected read-modify-write (transaction-aware: tracks BEGIN/COMMIT + FOR UPDATE state)
+awk '/UPDATE .*(stock|balance|qty|quantity|count|version)/ { if (!lock) print FILENAME":"FNR": "$0 } \
+     { if (/FOR UPDATE|version =|BEGIN/) lock=1; if (/COMMIT|ROLLBACK/) lock=0 }' \
+     $(find . -name "*.sql" -o -name "*.ts" -o -name "*.py" -o -name "*.php" | grep -v node_modules)
+# No output = every mutation sits inside a locked transaction. Any printed line = investigate.
 ```
 
 **Lighthouse budget (record actual)**: Performance ≥ 85 · Best Practices ≥ 95 · SEO ≥ 95 · no console errors.
@@ -62,8 +82,9 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 
 ## D. Verdict
 
-- **Tells found**: [X] / 20
-- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 — anything causing a broken experience or leaked placeholder.
+- **Tells found**: [X] / 22
+- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder) **+ 22 (unprotected race condition — data corruption risk)**.
+- **Non-blocking but logged**: 21 (slop comments) and the remaining polish rows.
 - **Non-blocking polish (fix before M10 or log as post-launch)**: the remainder.
 
 **Conclusion**: [ ] READY (0 blocking tells) · [ ] NOT READY ([X] blocking tells open)
@@ -72,4 +93,4 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 
 ---
 
-> **Re-run requirement**: rows 1–20 MUST be re-verified on the **production domain** during M10 PVT. Staging-only verification is insufficient — CDN, minification, and env differences surface new tells (especially 5, 11, 15).
+> **Re-run requirement**: rows 1–22 MUST be re-verified on the **production domain** during M10 PVT. Staging-only verification is insufficient — CDN, minification, and env differences surface new tells (especially 5, 11, 15).

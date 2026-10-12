@@ -1,5 +1,23 @@
 # Data Assets Management: Regulations, Calculations, Reference Data & Seed Data
 
+## Contents
+
+- [1. Data Asset Categories](#1-data-asset-categories)
+- [2. Regulations & Legal Data (Versioned, Auditable)](#2-regulations-legal-data-versioned-auditable)
+- [3. Business Rules & Calculations (Code as Documentation)](#3-business-rules-calculations-code-as-documentation)
+- [4. Reference Data (Static Lookups)](#4-reference-data-static-lookups)
+- [5. Seed Data (Dev/Staging Only)](#5-seed-data-devstaging-only)
+- [6. Content Data (Blog, Docs, FAQs)](#6-content-data-blog-docs-faqs)
+- [3 Freelancer Tax Schemes](#3-freelancer-tax-schemes)
+- [Automated Calculator](#automated-calculator)
+- [7. Data Validation & Schema](#7-data-validation-schema)
+- [8. Documentation & Audit Trail](#8-documentation-audit-trail)
+- [PPh 21 Rates](#pph-21-rates)
+- [PTKP Values](#ptkp-values)
+- [Change Log](#change-log)
+- [9. Checklist: Data Assets (FreePajak Example)](#9-checklist-data-assets-freepajak-example)
+
+
 Guide for managing non-visual data: regulations, business rules, static references, seed data, and content data with a focus on maintainability, versioning, and source of truth.
 
 ---

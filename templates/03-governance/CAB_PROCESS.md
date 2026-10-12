@@ -113,7 +113,7 @@
 
 **Example**:
 ```
-Deploy user profile redesign to production. New UI includes 
+Deploy user profile redesign to production. New UI includes
 avatar upload, bio field, and privacy settings.
 ```
 
@@ -389,7 +389,7 @@ Defer until January (after holiday traffic).
 - Failed changes (required rollback)
 - Average time to approval
 
-**Goal**: 
+**Goal**:
 - Approval rate >80% (shows good quality RFCs)
 - Failed changes <5% (shows good risk assessment)
 

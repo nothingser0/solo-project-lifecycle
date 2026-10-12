@@ -570,7 +570,6 @@ Common errors:
 - [API Status](https://status.example.com)
 - [GitHub Issues](https://github.com/yourcompany/api/issues)
 - [Email](mailto:api-support@example.com)
-```
 
 ---
 

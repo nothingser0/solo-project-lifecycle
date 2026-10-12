@@ -340,7 +340,7 @@ Low Price
 **Against Competitor A (Expensive Incumbent)**:
 > "Enterprise-grade capabilities at small business pricing. Rp 99k/month vs their Rp 500k/month."
 
-**Against Competitor B (Basic Startup)**: 
+**Against Competitor B (Basic Startup)**:
 > "More capable: includes advanced workflows and API access designed to scale with your business."
 
 **Against Excel / Manual Workflows (Substitute)**:

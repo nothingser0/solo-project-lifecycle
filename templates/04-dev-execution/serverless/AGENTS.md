@@ -29,6 +29,23 @@
 3. Use environment variables for configuration
 4. Set appropriate timeout and memory limits
 
+## Anti-AI-Slop Directives (ENFORCED)
+1. **BANNED: Redundant Explanatory Comments** — do not narrate obvious code.
+   - ❌ `// Increment counter`  |  `// Import React`
+   - ❌ Stub comments: `// TODO: implement this later`  |  `// Add your logic here`
+   - ✅ Comment ONLY non-obvious business logic, domain formulas, or deliberate workarounds.
+   - ✅ Never leave commented-out dead code — delete it (git remembers).
+2. **BANNED: Silent Failures** — no empty catch/except blocks; log, rethrow, or return a typed error.
+3. **BANNED: Dead Code & Unused Imports** — remove unused variables, imports, and unreachable branches.
+4. **RACE CONDITIONS (MANDATORY for any shared-state mutation)** — protect every read-modify-write on inventory, balances, counters, booking slots, or status transitions:
+   - Use a DB transaction + row lock (SELECT ... FOR UPDATE), or a unique constraint / idempotency key.
+   - Never "check then act" across two separate queries without a lock or constraint.
+   - Webhooks and payment callbacks MUST be idempotent (dedupe on provider event ID).
+   - Frontend: disable the submit button while pending + use an idempotency key to prevent double-submit.
+5. **BANNED: Hallucinated APIs/Packages** — verify every import exists before using it.
+
+---
+
 ## Code Style Rules
 1. **Stateless**: No shared state between invocations
 2. **Idempotent**: Same input = same output (handle retries)

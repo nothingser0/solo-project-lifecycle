@@ -27,12 +27,12 @@
 
 | Endpoint | Method | Test Scenario | Expected Status Code | Test Result |
 | :--- | :---: | :--- | :---: | :---: |
-| `/api/v1/auth/login` | `POST` | Valid credentials $\to$ HttpOnly cookie set | `200 OK` | PASS |
-| `/api/v1/auth/login` | `POST` | Invalid password $\to$ Specific error message | `401 Unauthorized` | PASS |
+| `/api/v1/auth/login` | `POST` | Valid credentials → HttpOnly cookie set | `200 OK` | PASS |
+| `/api/v1/auth/login` | `POST` | Invalid password → Specific error message | `401 Unauthorized` | PASS |
 | `/api/v1/documents` | `POST` | Valid payload + new Idempotency key | `201 Created` | PASS |
-| `/api/v1/documents` | `POST` | Duplicate idempotency key re-sent $\to$ Rejected | `409 Conflict` | PASS |
-| `/api/v1/documents/:id` | `GET` | Fetch document data $\to$ Presigned URL issued | `200 OK` | PASS |
-| `/api/v1/sign/:token` | `POST` | Digital signature $\to$ Status updated to `SIGNED` | `200 OK` | PASS |
+| `/api/v1/documents` | `POST` | Duplicate idempotency key re-sent → Rejected | `409 Conflict` | PASS |
+| `/api/v1/documents/:id` | `GET` | Fetch document data → Presigned URL issued | `200 OK` | PASS |
+| `/api/v1/sign/:token` | `POST` | Digital signature → Status updated to `SIGNED` | `200 OK` | PASS |
 
 ---
 

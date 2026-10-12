@@ -1,5 +1,18 @@
 # Tech Stack Support Matrix
 
+## Contents
+
+- [Currently Supported (Full M06 Support)](#currently-supported-full-m06-support)
+- [Official 2026 Verified Ecosystem Releases (October 2026 Baseline)](#official-2026-verified-ecosystem-releases-october-2026-baseline)
+- [Anti-Overkill Stack Selection Matrix (By Project Scale)](#anti-overkill-stack-selection-matrix-by-project-scale)
+- [Version Resolution Protocol](#version-resolution-protocol)
+- [Roadmap: Additional Stacks](#roadmap-additional-stacks)
+- [Recommendation for New Projects](#recommendation-for-new-projects)
+- [Framework Versions (Pinned):](#framework-versions-pinned)
+- [Adding New Stack Support](#adding-new-stack-support)
+- [Implementation Status](#implementation-status)
+
+
 **Last Updated**: 2026-10-08  
 **Benchmark Standards**: Modern 17 Tech Domains (October 2026 Official Stable Releases)
 
@@ -13,15 +26,16 @@ Stacks with complete scaffold, AI harness templates in `templates/04-dev-executi
 | **Laravel** | `composer create-project laravel/laravel` | `laravel/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Packagist API: `repo.packagist.org/p2/laravel/framework.json` → composer.lock | **PRODUCTION** |
 | **Django** | `django-admin startproject` | `django/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | PyPI API: `pypi.org/pypi/django/json` → requirements.txt | **PRODUCTION** |
 | **Go** | `go mod init` | `go/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Go API & Proxy: `go.dev/dl` + `proxy.golang.org` → go.mod | **PRODUCTION** |
+| **FastAPI** | `fastapi dev` / `uvicorn app.main:app` | `fastapi/` (AGENTS, ARCHITECTURE, CONVENTIONS) | PyPI API: `pypi.org/pypi/fastapi/json` → requirements.txt | **PRODUCTION** |
 | **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS, .env.example) | RubyGems API: `rubygems.org/api/v1/gems/rails.json` → Gemfile.lock | **ROADMAP / BETA** |
 | **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | npm Registry: `npm view @remix-run/dev version` → lockfile | **ROADMAP / BETA** |
 | **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | npm Registry: `npm view express version` → package-lock.json | **ROADMAP / BETA** |
 | **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | NuGet API: `api.nuget.org` → .csproj target | **ROADMAP / BETA** |
 | **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | Maven Central / `start.spring.io` → pom.xml / build.gradle | **ROADMAP / BETA** |
-| **JAMstack / Astro**| `npm create astro@latest` | `astro/`, `jamstack/` (AGENTS, README) | npm Registry: `npm view astro version` → package-lock.json | **ROADMAP / BETA** |
+| **JAMstack** | `npm create astro@latest` | `jamstack/` (AGENTS) · `astro/` (README only — scaffold pending) | npm Registry: `npm view astro version` → package-lock.json | **ROADMAP / BETA** |
 | **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | npm Registry: `npm view serverless version` → template.yaml | **ROADMAP / BETA** |
 | **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | Pub.dev API: `pub.dev/api/packages/flutter_lints` → pubspec.lock | **ROADMAP / BETA** |
-| **SvelteKit** | `npm create svelte@latest` | `sveltekit/` (README) | npm Registry: `npm view @sveltejs/kit version` → package-lock.json | **ROADMAP / PLANNED** |
+| **SvelteKit** | `npm create svelte@latest` | `sveltekit/` (AGENTS, ARCHITECTURE, CONVENTIONS, README) | npm Registry: `npm view @sveltejs/kit version` → package-lock.json | **ROADMAP / BETA** |
 | **Nuxt** | `npx nuxi@latest init` | `nuxt/` (README) | npm Registry: `npm view nuxt version` → package-lock.json | **ROADMAP / PLANNED** |
 
 ---
@@ -321,8 +335,8 @@ bundle exec rspec && bundle audit
 
 ## Implementation Status
 
-**Current Coverage**: 14 stacks tracked (4 Production, 8 Beta / Roadmap, 2 Planned)
-**Tracked Stacks**: Next.js, Laravel, Django, Go, Rails, Remix, MERN, ASP.NET Core, Spring Boot, JAMstack, Serverless, Flutter, SvelteKit, Nuxt.
+**Current Coverage**: 16 stacks tracked (5 Production, 9 Beta / Roadmap, 2 Planned — `astro/` and `nuxt/` are README-only stubs)
+**Tracked Stacks**: Next.js, Laravel, Django, Go, FastAPI, Rails, Remix, MERN, ASP.NET Core, Spring Boot, JAMstack, Serverless, Flutter, SvelteKit, Astro, Nuxt.
 **Maintenance Strategy**: Continuous real-time package checking via M05 version gates.
 
 **Expansion Strategy**: Demand-driven

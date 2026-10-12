@@ -51,7 +51,7 @@ rejected-rows.csv
 # DEPENDENCIES & BUILD OUTPUTS
 # ==============================================================================
 node_modules/
-dist/
+/dist/
 build/
 out/
 .next/

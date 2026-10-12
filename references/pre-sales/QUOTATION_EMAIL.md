@@ -1,7 +1,7 @@
 # Quotation Email Template (Pre-Sales)
 
 > **Purpose**: Quick ballpark estimate after discovery call  
-> **When**: Within 24 hours of discovery call (M00.5)  
+> **When**: Within 24 hours of discovery call (Pre-Sales)  
 > **Format**: Email (not formal proposal yet)  
 > **Target**: Medium/Large projects
 
@@ -40,7 +40,7 @@ Thanks for the discovery call earlier today! Here's a ballpark estimate based on
 **Project Scale**: [Medium / Large]  
 **Estimated Budget**: Rp [X] - [Y]  
 **Estimated Timeline**: [Z] weeks  
-**Team Size**: [1-2 devs / 3-6 team]
+**Team Size**: [1 dev (solo) / 1-2 (with freelancer)]
 
 ### What's Included
 - ✅ [Feature 1 from discovery]
@@ -154,8 +154,8 @@ Timeline = Hours / (Team Size × 40 hours/week)
 ```
 
 **T-Shirt Sizing**:
-- **Small**: Rp 20-50M, 1-3 months, 1-2 people
-- **Medium**: Rp 50-200M, 3-6 months, 3-6 people
+- **Small**: Rp 20-50M, <4 weeks, 1 dev (solo)
+- **Medium**: Rp 50-200M, 1-3 months, 1 dev (solo) + freelancer support
 - **Large**: 16-25 P0 features, 3-6 months, multi-tenant + legacy migration
 - **Enterprise**: >25 P0 features or statutory audit, 6-12+ months, governance boards
 
@@ -191,7 +191,7 @@ Project Overview
 What I Understood:
 - You need: Simple accounting app for small businesses (invoicing, expenses, reports)
 - Goal: Replace manual Excel process, save 10 hours/week
-- Timeline: Launch by December (8 weeks)
+- Timeline: Launch within 8 weeks
 - Users: 50-100 small business owners
 
 ---
@@ -303,9 +303,9 @@ janedeveloper.com
 ```
 Hi [Name],
 
-Thanks for reaching out. Based on our discussion, this project requires 
-[X timeline/budget] to do properly. If that doesn't align with your current 
-plans, I recommend [alternative: freelancer platform for smaller budget / 
+Thanks for reaching out. Based on our discussion, this project requires
+[X timeline/budget] to do properly. If that doesn't align with your current
+plans, I recommend [alternative: freelancer platform for smaller budget /
 starting with MVP].
 
 Happy to revisit if your timeline/budget changes!

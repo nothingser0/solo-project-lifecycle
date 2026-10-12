@@ -20,7 +20,7 @@
 5. **STRICT PROHIBITION of Agent Git Commits & Pushes**:
    - AI agents and automated harnesses **MUST NEVER** execute `git commit` or `git push`. Only the human engineer may review and commit code.
 6. **Mandatory Documentation & Specs Pre-Read**:
-   - Before creating database migrations, Server Actions, or UI pages, you **MUST** read `docs/specs/FSD.md`, `docs/specs/PRD.md`, `docs/specs/DESIGN.md`, and official tech documentation (e.g., Supabase Auth/RLS, Next.js Server Components).
+   - Before creating database migrations, Server Actions, or UI pages, you **MUST** read `docs/specs/FSD.md`, `docs/specs/PRD.md`, `DESIGN.md`, and official tech documentation (e.g., Supabase Auth/RLS, Next.js Server Components).
 7. **Mandatory Design Assets & Inspiration Usage**:
    - Inspect `docs/design/inspiration/`, `docs/specs/LOGO_DESIGN_BRIEF.md`, and screen design prompts before building UI. Generic monochromatic AI slop without visual identity, logo, or styled UI patterns is strictly forbidden.
 
@@ -53,6 +53,12 @@ To prevent AI generated bloat, low-quality code, and hallucinations:
    - ❌ **FORBIDDEN**: Hardcoded API keys, tokens, database passwords in source code.
    - ❌ **FORBIDDEN**: Raw SQL concatenation (SQL injection vulnerability).
    - ✅ **RULE**: Validate 100% of external inputs with Zod schemas. Read secrets exclusively from `process.env`.
+
+6. **BANNED: Unprotected Read-Modify-Write (Race Conditions)**:
+   - ❌ **FORBIDDEN**: Check-then-act across two queries (read stock → compute → write, no lock).
+   - ❌ **FORBIDDEN**: Non-idempotent webhook/callback handlers (Stripe/Midtrans/Xendit retries will double-apply).
+   - ✅ **RULE**: Any mutation of inventory, balances, counters, booking slots, or status transitions MUST use a DB transaction with a row lock (`SELECT ... FOR UPDATE` via a stored procedure/RPC), a unique constraint, or compare-and-swap (`UPDATE ... WHERE version = N`).
+   - ✅ **RULE**: Webhooks dedupe on the provider's event ID (unique index). Frontend disables submit while pending and sends an idempotency key.
 
 ---
 
@@ -126,7 +132,7 @@ To prevent AI generated bloat, low-quality code, and hallucinations:
 - Prevent double-submit: Debounce submit handlers and guard against keyboard repeat (`event.repeat`).
 
 ### 4.3 Mobile & Touch Ergonomics
-- Interactive tap targets (buttons, steppers, table action icons) **MUST meet minimum $\ge 44\text{px} \times 44\text{px}$** (`h-11`).
+- Interactive tap targets (buttons, steppers, table action icons) **MUST meet minimum ≥ 44px × 44px** (`h-11`).
 - Never rely exclusively on desktop keyboard shortcuts (`F2`, `F4`); always provide accessible on-screen touch actions for mobile and tablet users.
 - Form inputs on mobile must specify `text-base` (`16px`) to prevent iOS Safari auto-zoom viewport distortion.
 
@@ -148,7 +154,7 @@ To prevent AI generated bloat, low-quality code, and hallucinations:
 ### 5.2 Form & Notification UX Protocols
 - **Anti-Disabled Pristine Button Rule**: Form submit buttons MUST NOT be `disabled` in pristine/untouched state. Clicking submit executes client-side validation, smooth-scrolls, and auto-focuses the first invalid field.
 - **Calibrated Toast Dismissal**:
-  - Success & Info notifications: Auto-dismiss allowed after $\ge 4000\text{ms}$ with hover/focus pause.
+  - Success & Info notifications: Auto-dismiss allowed after ≥ 4000ms with hover/focus pause.
   - Error & Offline Warning notifications: **STRICTLY FORBIDDEN to auto-dismiss**. Must remain visible until user dismisses or condition resolves.
 
 ### 5.3 Spreadsheet Export Formula Injection Neutralization

@@ -1,12 +1,11 @@
 # Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)
 
-> - `references/playbooks/ai-assisted-development.md` (Pre-merge AI review protocol)
-> - `templates/06-qa-uat/BUG_REPORT.md` (Standardized defect reporting format)
-> - `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` (Large/Enterprise third-party pentest scoping)
+> **Templates to copy**: `templates/06-qa-uat/BUG_REPORT.md` · `SIT_WORKBOOK_TEMPLATE.md` · `POLISH_AUDIT_TEMPLATE.md`
+> 📖 **Optional refs** (do NOT preload): `references/playbooks/AI_ASSISTED_DEVELOPMENT.md` (pre-merge review: inline checklist below) · `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` (Large/Enterprise only)
 
-This module validates reliability, third-party integration integrity (*System Integration Testing* / SIT), performance resilience, and security in the **Staging** environment before client UAT (Module 09). Verbose SIT walkthrough & Enterprise A04 advisory: `deep-dives/07-quality-assurance-sit.md`.
+This module validates reliability, third-party integration integrity (*System Integration Testing* / SIT), performance resilience, and security in the **Staging** environment before client UAT (Module 09). Verbose SIT walkthrough & Enterprise A04 advisory: `deep-dives/07_QUALITY_ASSURANCE_SIT.md`.
 
-**Scale routing (one line)**: Small: M07 waived → `SECURITY_CHECKLIST_SMALL.md` in M06, go M09-LITE · Medium/Large: full M07 below · Enterprise: not solo capacity → Phase A04 advisory (`deep-dives/07-quality-assurance-sit.md`).
+**Scale routing (one line)**: Small: M07 waived → `SECURITY_CHECKLIST_SMALL.md` in M06, go M09-LITE · Medium/Large: full M07 below · Enterprise: not solo capacity → Phase A04 advisory (`deep-dives/07_QUALITY_ASSURANCE_SIT.md`).
 
 **Input**: staging branch from M06 + `FSD.md`.
 
@@ -18,7 +17,12 @@ pnpm run test        # Vitest / Jest / Pytest / Go test — exit code 0
 ```
 - Unit: pure business logic, calculations, AES-256 crypto utilities, Zod schemas.
 - Integration: API endpoints (status codes, DB isolation), third-party sandbox clients.
-- Pre-merge AI review per `references/playbooks/ai-assisted-development.md`.
+- **Pre-merge AI review (inline — no need to open the playbook)**:
+  1. Diff scope: every changed file traces to a task in `TODO.md`; zero drive-by edits.
+  2. Hallucination scan: no invented APIs/imports (verify each new import exists); no `@ts-ignore`/`as any`/empty catch.
+  3. Security: no secrets in diff, inputs validated at boundaries (Zod), auth checks on every new route.
+  4. Tests: new logic has a test; existing tests still pass locally.
+  5. Revert-ability: one logical change per commit; commit message states the why.
 - Pyramid: ~70% unit/contract, ~25% API integration/SIT, ~5% critical-path E2E smoke (login → create → PDF → sign → `SIGNED`). No brittle UI/CSS tests.
 - Pass criteria: 100% tests pass, exit 0.
 
@@ -52,9 +56,17 @@ Thresholds: ~50 VUs, average latency ≤200 ms, zero 500 errors (no DB connectio
 ### Step 6 — Compile SIT Workbook
 Build `docs/qa/SIT_WORKBOOK.md` from `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`: test plan, per-integration sandbox evidence (payment/vault/email), audit & load results, defect log, sign-off conclusion **READY FOR CLIENT UAT**.
 
+### Step 7 — Anti-Vibe-Code Polish Audit (run on the DEPLOYED staging URL)
+Tests pass ≠ looks finished. Build `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` and check all 22 tells **on the live staging URL, on a real phone**: horizontal scroll, favicon, meta description, custom 404, image weight, stock hero, loading states, spacing scale, default Tailwind blue, copyright year, OG preview image, broken links, page title, leftover placeholder text, console errors, hover/focus states, empty states, font count, form error messages, dead buttons.
+- Run on **Slow 4G + 375px viewport** — desktop devtools hides most of these.
+- Every row needs evidence (screenshot path, command output, or URL). "Looks fine" is not evidence.
+- **Blocking tells** (1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20, **22 = unprotected race condition**) must be fixed before sign-off; the rest (incl. 21 slop comments) are logged as polish.
+- Re-verify all 22 on the production domain during M10 PVT (CDN/env differences surface new tells).
+
 ## Outputs
 1. **`docs/qa/SIT_WORKBOOK.md`** — SIT plan + pass evidence, conclusion: READY FOR CLIENT UAT (prerequisite for M09 UAT).
 2. **`docs/qa/SECURITY_AUDIT.md`** — dependency audit results, OWASP/header status, secret-scan and encryption verification (also accepted as `docs/qa/SECURITY_AUDIT_REPORT.md`).
+3. **`docs/qa/POLISH_AUDIT.md`** — 22-tell anti-vibe-code + code-quality audit with per-row evidence; conclusion READY / NOT READY.
 
 ## Gate Exit Criteria [GATE]
 - [ ] All unit + integration tests pass (exit 0).
@@ -62,6 +74,7 @@ Build `docs/qa/SIT_WORKBOOK.md` from `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.
 - [ ] Security audit clean: `pnpm audit` zero High/Critical, secret scan clean, OWASP + security headers verified.
 - [ ] Load test: ≤200 ms avg latency, zero 500s.
 - [ ] Staging deployed and stable; smoke test passes.
+- [ ] `docs/qa/POLISH_AUDIT.md` published: 0 blocking tells open (favicon, 404, OG image, console errors, placeholder text, dead buttons, etc.).
 - [ ] `docs/qa/SIT_WORKBOOK.md` published with **READY FOR CLIENT UAT**.
 
 **Coverage (one line)**: Large ≥70% line / ≥60% branch, Enterprise ≥80% / ≥70% (`pnpm test:coverage`), Small/Medium pragmatic coverage of critical paths only.

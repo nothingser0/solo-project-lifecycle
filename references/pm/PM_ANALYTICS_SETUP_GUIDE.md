@@ -8,7 +8,7 @@ Tactical guide for solo developers and PMs who need data-driven decision making 
 
 **Core Principles**:
 1. **Track Less, Learn More**: 10 well-understood core events > 100 random events
-2. **Free Tier First**: Use free tiers until PMF is reached (Mixpanel's 100K events/month is sufficient for 500 MAU)
+2. **Free Tier First**: Use free tiers until PMF is reached (Mixpanel's 100K events/month is sufficient for ~625 MAU)
 3. **Privacy by Default**: GDPR/UU PDP compliance is not optional; it is mandatory from day one
 4. **Dashboard as Compass**: North Star Metric must be visible within 3 seconds
 5. **No Vendor Lock-In**: Wrapper abstraction (`lib/analytics.ts`) for easy platform migration
@@ -167,7 +167,7 @@ track('error_api_failure', { endpoint: '/api/documents', status_code: 500 })
 | Track everything "just in case" | Drowns signal in noise, expensive | Start with 5 core events, add only when needed |
 | Inconsistent naming (camelCase + snake_case) | Breaks filtering, hard to maintain | Enforce `verb_noun` via runtime validation |
 | No user properties | Can't segment cohorts, limited insights | Set user traits on signup: `plan_type`, `signup_date` |
-| Skip GDPR consent | Legal risk (UU PDP fines up to Rp 6M) | Consent banner before any tracking |
+| Skip GDPR consent | Legal risk (UU PDP fines up to Rp 6 billion) | Consent banner before any tracking |
 | Analytics in 50+ files | Hard to debug, circular dependencies | Centralize in `lib/analytics.ts` |
 | Ignore statistical significance | False conclusions from A/B tests | Minimum 385 users/variant, 7 days runtime |
 | Use production token in dev | Pollutes production data | Separate tokens: dev/staging/prod |

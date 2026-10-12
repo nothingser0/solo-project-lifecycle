@@ -5,7 +5,7 @@
 ## Folder Structure
 
 ```
-prototype-output/
+docs/design/screens/
 ├── SCR-01-landing/
 │   ├── screen.html            # Generated HTML
 │   ├── components/            # Extracted components
@@ -22,9 +22,9 @@ prototype-output/
 
 ## Workflow
 
-1. **Generate via MCP**: Use `prototype_generate_screen_from_text` with prompts from `prompt-input/`
+1. **Generate via MCP**: Use `prototype_generate_screen_from_text` with prompts from `docs/design/prompts/`
 2. **Export HTML**: Use `prototype_get_screen` to retrieve generated HTML
-3. **Save to folder**: `prototype-output/SCR-XX-[screen-name]/screen.html`
+3. **Save to folder**: `docs/design/screens/scr-xx/screen.html`
 4. **Extract components**: Break HTML into reusable React/Vue components
 5. **Take screenshot**: Visual reference for design review
 6. **Review**: Check against DESIGN_SPEC.md requirements (5 states, responsive, accessibility)
@@ -62,12 +62,12 @@ const screen = await tool.prototype_get_screen({
 });
 
 // Save HTML
-fs.writeFileSync('prototype-output/SCR-01-landing/screen.html', screen.html);
+fs.writeFileSync('docs/design/screens/SCR-01-landing/screen.html', screen.html);
 
 // Take screenshot (use Playwright/Puppeteer)
-await page.screenshot({ 
-  path: 'prototype-output/SCR-01-landing/screenshot.png',
-  fullPage: true 
+await page.screenshot({
+  path: 'docs/design/screens/SCR-01-landing/screenshot.png',
+  fullPage: true
 });
 ```
 

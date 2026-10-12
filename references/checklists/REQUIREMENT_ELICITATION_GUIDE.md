@@ -56,8 +56,8 @@ When a client introduces new feature requests during discovery interviews withou
 
 ### Technique 3: Uncovering Root Problems with the "5 Whys"
 Clients frequently ask for the wrong technical solution to their underlying problem (e.g., *"We need native iOS and Android mobile apps"*).
-- *Ask*: *"Why do you need mobile apps?"* $\to$ *"So couriers can update delivery statuses on the go."*
-- *Ask*: *"Why do couriers need the app store?"* $\to$ *"So they can access it on inexpensive Android phones."*
+- *Ask*: *"Why do you need mobile apps?"* → *"So couriers can update delivery statuses on the go."*
+- *Ask*: *"Why do couriers need the app store?"* → *"So they can access it on inexpensive Android phones."*
 - *Solo Dev Conclusion*: The true requirement is a lightweight, **Mobile-Responsive Web App / PWA** accessible via phone browsers, avoiding two separate native codebases and duplicate maintenance overhead.
 
 ---

@@ -313,6 +313,21 @@ pnpm build
 - [ ] **Fits project patterns**: Code matches existing codebase style
   - Check: Compare with similar features, ensure consistency
 
+- [ ] **No AI-slop comments**: No comments narrating obvious code
+  - ❌ `// Increment counter` above `counter++` · `// Import React` above imports · `// Get the user` above `getUser()`
+  - ❌ Stub comments left behind: `// TODO: implement this later` · `// Add your logic here`
+  - ❌ Commented-out dead code (delete it — git remembers)
+  - ✅ Legitimate: non-obvious business logic, domain formulas, deliberate workarounds, "why not what"
+  - Check: read every added comment and ask "does this restate the code?" If yes, delete it.
+
+- [ ] **No race conditions on shared-state mutations**: every read-modify-write is protected
+  - Applies to: inventory/stock, balances, counters, booking slots, status transitions, sequence numbers
+  - ❌ **Check-then-act across two queries** (`SELECT` stock → compute → `UPDATE` with no lock)
+  - ✅ DB transaction + row lock (`SELECT ... FOR UPDATE` / `select_for_update()` / `lockForUpdate()`), OR a DB unique constraint, OR a compare-and-swap (`UPDATE ... WHERE version = N`)
+  - ✅ Webhooks/payment callbacks idempotent — dedupe on provider event ID, unique index on it
+  - ✅ Frontend: submit button disabled while pending + idempotency key (prevents double-submit)
+  - Check: for each mutation, ask "what happens if two requests hit this at the same millisecond?"
+
 **AI Review Notes**: [AI mistakes caught, patterns to avoid]
 
 ---
@@ -337,8 +352,9 @@ pnpm build
 
 ## 8. Documentation Review
 
-- [ ] **Code comments**: Complex logic documented inline
-  - Check: Non-obvious code has explanatory comments
+- [ ] **Code comments**: Complex logic documented inline — and nothing else
+  - Check: Non-obvious code has explanatory comments; **no comment merely restates the line below it**
+  - ❌ Narrating comments, stub comments, commented-out code (see §6.2)
   
 - [ ] **API documentation**: New endpoints documented (if public API)
   - Check: API docs updated with new routes

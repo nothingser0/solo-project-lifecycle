@@ -55,10 +55,10 @@ Bridge `docs/harness-root/DESIGN.md` tokens into Figma Variables and Dev Mode.
    - `colors/zinc/50` through `colors/zinc/950`
    - `colors/brand/primary` (`#0891B2`)
 2. **Semantic Tokens Collection**:
-   - `background/default` $\rightarrow$ binds to `colors/zinc/50` (Light) / `colors/zinc/950` (Dark)
-   - `foreground/default` $\rightarrow$ binds to `colors/zinc/900` (Light) / `colors/zinc/50` (Dark)
-   - `border/input` $\rightarrow$ binds to `colors/zinc/200`
-   - `interactive/primary` $\rightarrow$ binds to `colors/brand/primary`
+   - `background/default` → binds to `colors/zinc/50` (Light) / `colors/zinc/950` (Dark)
+   - `foreground/default` → binds to `colors/zinc/900` (Light) / `colors/zinc/50` (Dark)
+   - `border/input` → binds to `colors/zinc/200`
+   - `interactive/primary` → binds to `colors/brand/primary`
 
 ### 3.2 Figma MCP Remote Integration (2026 Standard)
 In Claude Desktop / Cursor / Windsurf, configure the official remote Figma MCP:

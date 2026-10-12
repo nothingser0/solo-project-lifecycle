@@ -1,6 +1,16 @@
 # M01 Deep Dive: Idea & Feasibility — Extended Material
 
-Companion to [`../01-idea-feasibility.md`](../01-idea-feasibility.md). Reference links: `references/checklists/MODULE_01_ACTION_ITEMS_CHECKLIST.md`, `references/checklists/FEASIBILITY_CRITERIA.md`, `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`, `references/playbooks/SCALE_WORKFLOWS.md`.
+## Contents
+
+- [1. Technical Feasibility Rubric (full)](#1-technical-feasibility-rubric-full)
+- [2. Bandwidth Cross-Check (full procedure)](#2-bandwidth-cross-check-full-procedure)
+- [3. Commercial Feasibility — Delivery Model Details](#3-commercial-feasibility-delivery-model-details)
+- [4. Root-Cause Examples per Domain](#4-root-cause-examples-per-domain)
+- [5. Timeline Estimation & Backlog Details](#5-timeline-estimation-backlog-details)
+- [6. OKR, Risk & Resource Details](#6-okr-risk-resource-details)
+
+
+Companion to [`../01_IDEA_FEASIBILITY.md`](../01_IDEA_FEASIBILITY.md). Reference links: `references/checklists/MODULE_01_ACTION_ITEMS_CHECKLIST.md`, `references/checklists/FEASIBILITY_CRITERIA.md`, `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md`, `references/playbooks/SCALE_WORKFLOWS.md`.
 
 ## 1. Technical Feasibility Rubric (full)
 

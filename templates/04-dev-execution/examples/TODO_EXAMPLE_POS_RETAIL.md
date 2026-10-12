@@ -1,7 +1,7 @@
 # TODO.md — Engineering Execution Plan & Automated Quality Gates
 
 > **Role & Purpose**: Sequential atomic task list for AI Coding Agents (Cursor / Claude Code / Windsurf / Codex CLI).
-> **Execution Rule**: Execute one task $\rightarrow$ run automated verification $\rightarrow$ record evidence $\rightarrow$ check `[x]` $\rightarrow$ advance to next task.
+> **Execution Rule**: Execute one task → run automated verification → record evidence → check `[x]` → advance to next task.
 > **Integrity Mandate**: Zero unverified tasks. Zero hallucinated features outside In-Scope. Zero bypassed TypeScript compiler errors.
 > **Scale & Domain Adaptability**: Adaptable across all software categories (CRM, CMS, HRIS, E-Commerce, Retail/POS, Fintech, Developer Tools) and all 4 scales:
 > - **Small (MVP / Internal)**: Core database, UI shell, essential CRUD, and smoke tests (mark billing, webhooks, offline queues N/A).
@@ -29,11 +29,11 @@ Every atomic task in `TODO.md` MUST specify these 8 core fields to prevent AI ha
 - **Module Exit Gate Criteria**: 100% of tasks marked `[x]` (zero `[ ]` or `[!]` remaining), `pnpm tsc --noEmit` exit 0, smoke tests passing, zero `@ts-ignore`, and `validate-gate.sh M06` passed.
 
 ### Execution Paradigm: Standard Full-Stack Architecture
-$$\text{Sprint 0 (Setup)} \longrightarrow \text{Sprint 1 (Database)} \longrightarrow \text{Sprint 2 (Backend)} \longrightarrow \text{Sprint 3 (Frontend)} \longrightarrow \text{Sprint 4 (Integrasi)} \longrightarrow \text{Sprint 5 (Testing)} \longrightarrow \text{Sprint 6 (Gate)}$$
+**Sprint 0 (Setup)** → **Sprint 1 (Database)** → **Sprint 2 (Backend)** → **Sprint 3 (Frontend)** → **Sprint 4 (Integrasi)** → **Sprint 5 (Testing)** → **Sprint 6 (Gate)**
 
 1. **Database First**: Skema DDL, foreign key index, RLS policies, dan Stored Procedure atomik. Database adalah sumber kebenaran tunggal (*single source of truth*).
 2. **Backend APIs / Actions**: Endpoint tervalidasi Zod, auth verification (`getUser()`), dan route protection middleware. Diuji langsung ke database.
-3. **Frontend Implementation**: Konversi desain layar ke kode stack; jika belum ada screen per layar, buat langsung dari `DESIGN.md` + logo dan inspirasi visual di `docs/design/inspiration/`. Ergonomi tombol $\ge 44\text{px}$, input $16\text{px}$.
+3. **Frontend Implementation**: Konversi desain layar ke kode stack; jika belum ada screen per layar, buat langsung dari `DESIGN.md` + logo dan inspirasi visual di `docs/design/inspiration/`. Ergonomi tombol ≥ 44px, input 16px.
 4. **Integrasi Frontend ➔ Backend (Wire-Up)**: Form dan tombol kasir langsung memanggil backend nyata. **Larangan keras dummy UUID (`11111111-...`) dan larangan `catch {}` kosong**.
 5. **Testing & QA**: SIT rumus bisnis (WAC, PPh 0,5%) dan E2E browser automation (Playwright).
 6. **Hard Release Gate**: `npm run build` exit code 0. AI agent dilarang keras `git commit` / `git push` mandiri.
@@ -69,7 +69,7 @@ $$\text{Sprint 0 (Setup)} \longrightarrow \text{Sprint 1 (Database)} \longrighta
 
 - [ ] **M06-SETUP-03: Mandatory Documentation & Specs Pre-Read Sign-Off (ALL SCALES)**
   - **Wajib dibaca utuh SEBELUM menulis baris kode pertama.** Dokumen wajib dibaca bersifat adaptif terhadap skala:
-    - **Semua skala**: `AGENTS.md` (aturan koding & anti-slop), `CONTEXT.md` (konteks bisnis & batas out-of-scope), `docs/specs/DESIGN.md` (token visual), `docs/specs/SITEMAP.md` (peta rute & Screen ID `SCR-xx`), `docs/specs/DESIGN_SPEC.md` (wireflow & matriks 5-state).
+    - **Semua skala**: `AGENTS.md` (aturan koding & anti-slop), `CONTEXT.md` (konteks bisnis & batas out-of-scope), `DESIGN.md` (token visual), `docs/specs/SITEMAP.md` (peta rute & Screen ID `SCR-xx`), `docs/specs/DESIGN_SPEC.md` (wireflow & matriks 5-state).
     - **Skala Kecil (Fast-Track)**: `PROJECT_LITE.md` (Seksi 5 arsitektur: skema database & daftar API) sebagai pengganti FSD/PRD.
     - **Skala Medium / Large / Enterprise**: `docs/specs/FSD.md` (DDL, RLS, API, idempotency) dan `docs/specs/PRD.md` (traceability `F-xx→REQ-xx` & skenario BDD).
   - Pahami kontrak data, hak akses role (RBAC), aturan mutasi atomik, dan batas *Out-of-Scope*.
@@ -181,10 +181,10 @@ $$\text{Sprint 0 (Setup)} \longrightarrow \text{Sprint 1 (Database)} \longrighta
 
 - [ ] **M06-FE-04: Operational Execution Workspace / Terminal Kasir (SCR-005)**
   - Split layout: katalog barang di kiri, keranjang transaksi aktif di kanan/bawah.
-  - Target sentuh tombol kasir wajib $\ge 44\text{px} \times 44\text{px}$ (`h-11 min-w-11`).
+  - Target sentuh tombol kasir wajib ≥ 44px × 44px (`h-11 min-w-11`).
   - Tombol `Enter` terikat ke pencarian item/barcode; tombol checkout/bayar terikat ke tombol terpisah atau shortcut fungsi (`F4`).
   - **Verify**: Ukur ukuran tombol kasir di inspector elemen browser.
-  - **Expected**: Seluruh tombol interaktif memenuhi batas minimal $\ge 44\text{px}$.
+  - **Expected**: Seluruh tombol interaktif memenuhi batas minimal ≥ 44px.
   - **Evidence**: Screenshot box model inspector.
 
 - [ ] **M06-FE-05: Resource Catalog & Input Masking (SCR-006, SCR-007)**
@@ -236,7 +236,7 @@ $$\text{Sprint 0 (Setup)} \longrightarrow \text{Sprint 1 (Database)} \longrighta
   - **Evidence**: Output ringkasan test runner di terminal.
 
 - [ ] **M06-TEST-02: End-to-End User Journey Automation (Playwright)**
-  - Jalankan pengujian Playwright untuk alur kritis: Registrasi Akun $\rightarrow$ Onboarding $\rightarrow$ Tambah Barang $\rightarrow$ Transaksi POS Kasir $\rightarrow$ Cetak Struk.
+  - Jalankan pengujian Playwright untuk alur kritis: Registrasi Akun → Onboarding → Tambah Barang → Transaksi POS Kasir → Cetak Struk.
   - **Verify**: Jalankan Playwright headless test.
   - **Expected**: Seluruh user journey sukses dari awal hingga akhir; zero hydration mismatch, zero unhandled exception di console browser.
   - **Evidence**: Rekaman video test atau laporan Playwright pass.

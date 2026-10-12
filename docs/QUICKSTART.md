@@ -79,9 +79,9 @@ Week 4: Deploy (2 days)
 - ❌ M01 (Feasibility) → Just build it
 - ❌ M02 (Scope) → Keep it in your head or 1-page doc
 - ❌ M03 (Legal/SOW) → No client = no contract
-- ❌ M04 section 8 (Design System Foundation) → Use Tailwind defaults
-- ❌ M05 section 6 (System Design & Infrastructure) → Single server is fine
-- ❌ M06 section 6A (Analytics Setup) → Add post-launch
+- ❌ Full DESIGN.md token system → Use Tailwind defaults (M04-LITE: 1 benchmark + tokens only)
+- ❌ Full architecture topology (M05 STEP 3-4) → Single server is fine
+- ❌ Analytics instrumentation → Add post-launch (M13)
 - ❌ M07 (QA/SIT) → Manual testing only
 - ❌ M08 (Data Migration) → No legacy data
 - ❌ M09 full (UAT) → light M09-LITE: 1 recorded tester (self-tester for solo)
@@ -90,7 +90,7 @@ Week 4: Deploy (2 days)
 
 ### Do These Only (Small-path modules)
 - ✅ Intake (5 questions → `docs/pm/PROJECT_STATE.md`)
-- ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/04-uiux-LITE.md`)
+- ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/04_UIUX_LITE.md`)
 - ✅ M05 (Architecture) → 1 day specs (Section 5 of `PROJECT_LITE.md`)
 - ✅ M06 (Development + security checklist) → 10 days coding
 - ✅ M09-LITE (1 recorded tester in `docs/qa/UAT_SIGNOFF_SMALL.md`; self-tester for solo)
@@ -362,11 +362,11 @@ vercel --prod
 
 **When MVP proves traction** (>10 active users, >50% retention):
 1. Read full framework `docs/README.md`
-2. Add proper monitoring (M06 section 6A - Analytics)
+2. Add proper monitoring + analytics (M13)
 3. Write tests for critical paths (M07)
 4. Refactor code (remove copy-paste)
 5. Add admin panel
-6. Scale infrastructure (M05 section 6 - System Design)
+6. Scale infrastructure (M13 scaling signals)
 
 **When MVP fails** (<5 users, <20% retention):
 - Pivot or kill
@@ -423,10 +423,10 @@ Upgrade when:
 - ✅ Scope exceeds 7 P0 features, adds payment/health data, or requires client contract gates
 
 Then read:
-- `docs/modules/02-discovery-scope.md` (scope protection)
-- `docs/modules/03-legal-sow-charter.md` (contracts)
-- `docs/modules/05-architecture-specs.md` section 6 (scaling & infrastructure)
-- `docs/modules/07-quality-assurance-sit.md` (testing)
+- `docs/modules/02_DISCOVERY_SCOPE.md` (scope protection)
+- `docs/modules/03_LEGAL_SOW_CHARTER.md` (contracts)
+- `docs/modules/05_ARCHITECTURE_SPECS.md` section 6 (scaling & infrastructure)
+- `docs/modules/07_QUALITY_ASSURANCE_SIT.md` (testing)
 
 ---
 

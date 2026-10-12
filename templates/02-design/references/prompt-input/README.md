@@ -44,7 +44,7 @@ STRICT RULES:
 Create one file per screen:
 
 ```
-prompt-input/
+prompts/
 ├── SCR-01-landing.txt          # Landing page
 ├── SCR-02-login.txt            # Login screen
 ├── SCR-03-dashboard.txt        # Main dashboard
@@ -66,7 +66,7 @@ Always include these constraints to prevent generic AI output:
 
 ```typescript
 // Example: Generate screen from prompt file
-const prompt = fs.readFileSync('prompt-input/SCR-01-landing.txt', 'utf-8');
+const prompt = fs.readFileSync('prompts/SCR-01-landing.txt', 'utf-8');
 await tool.prototype_generate_screen_from_text({
   projectId: 'projects/[PROJECT_ID]',
   screenId: 'SCR-01',

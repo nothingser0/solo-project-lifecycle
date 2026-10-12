@@ -40,7 +40,7 @@
 ## 4. Kill & Pivot Thresholds (Ambang Gugur)
 - **Week 4 Milestone**: Functional prototype with live auth and core loop deployed on staging. If missing, prune secondary features.
 - **Week 8 Milestone**: Billing enabled and 5 customer discovery users onboarded.
-- **Kill Threshold**: If zero paying users or $<10$% weekly retention after 60 days post-launch, freeze infrastructure costs and archive.
+- **Kill Threshold**: If zero paying users or < 10% weekly retention after 60 days post-launch, freeze infrastructure costs and archive.
 
 ---
 

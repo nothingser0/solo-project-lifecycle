@@ -34,7 +34,6 @@ mkdir -p "$TARGET_DIR/docs/harness-root"
 
 # Universal: Project State tracker
 cp "$TEMPLATES/essentials/PROJECT_STATE_TEMPLATE.md" "$TARGET_DIR/docs/pm/PROJECT_STATE.md"
-cp "$TEMPLATES/02-design/references/inspiration-template/notes-template.md" "$TARGET_DIR/docs/design/inspiration/notes.md"
 cp "$TEMPLATES/02-design/SCREEN_PROMPT_TEMPLATE.md" "$TARGET_DIR/docs/design/prompts/SCREEN_PROMPT_TEMPLATE.md"
 
 case "$SCALE" in
@@ -42,6 +41,8 @@ case "$SCALE" in
         echo "Configuring for Small / Open-Source Fast-Track MVP..."
         mkdir -p "$TARGET_DIR/assets/logo"
         mkdir -p "$TARGET_DIR/docs/qa"
+        # Small path: 1-benchmark LITE notes (not the 3-5 screenshot full template)
+        cp "$TEMPLATES/essentials/LITE_NOTES_TEMPLATE.md" "$TARGET_DIR/docs/design/inspiration/notes.md"
         # A1: Small scaffold = Intake + state + lite spec + root harness stubs ONLY.
         # Design/component specs are copied at M04 entry (commands printed below),
         # not dumped as empty templates up front.
@@ -54,11 +55,12 @@ case "$SCALE" in
             cp "$TEMPLATES/02-legal-commercial/SOW_SMB.md" "$TARGET_DIR/contracts/SOW_SMB.md"
         fi
         echo ""
-        echo "Deferred to M04 entry (run when you reach Module 04):"
+        echo "Deferred to M04-LITE entry (run when you reach Module 04)."
+        echo "Small path uses LITE spec bodies (~8KB total), not the 64KB full set:"
+        echo "  cp \"$TEMPLATES/essentials/LITE_SITEMAP_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/SITEMAP.md\""
+        echo "  cp \"$TEMPLATES/essentials/LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md\""
+        echo "  cp \"$TEMPLATES/essentials/LITE_DESIGN_SPEC_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/DESIGN_SPEC.md\""
         echo "  cp \"$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md\""
-        echo "  cp \"$TEMPLATES/02-design/SITEMAP_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/SITEMAP.md\""
-        echo "  cp \"$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md\""
-        echo "  cp \"$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/DESIGN_SPEC.md\""
         echo "  cp \"$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md\" \"$TARGET_DIR/DESIGN.md\""
         echo "Deferred to M06/M09/M10 (create when reached):"
         echo "  cp \"$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md\" \"$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md\""
@@ -67,6 +69,7 @@ case "$SCALE" in
         ;;
     solo-saas|independent)
         echo "Configuring for Independent / Self-Initiated Product..."
+        cp "$TEMPLATES/02-design/references/inspiration-template/NOTES_TEMPLATE.md" "$TARGET_DIR/docs/design/inspiration/notes.md"
         cp "$TEMPLATES/01-discovery-commercial/M00_LITE_TEMPLATE.md" "$TARGET_DIR/docs/pm/M00_LITE.md"
         cp "$TEMPLATES/01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md" "$TARGET_DIR/docs/pm/INTERVIEW_GUIDE.md"
         cp "$TEMPLATES/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
@@ -83,6 +86,7 @@ case "$SCALE" in
         ;;
     medium|bespoke|freelance)
         echo "Configuring for Medium Bespoke / Client Commercial..."
+        cp "$TEMPLATES/02-design/references/inspiration-template/NOTES_TEMPLATE.md" "$TARGET_DIR/docs/design/inspiration/notes.md"
         mkdir -p "$TARGET_DIR/contracts"
         mkdir -p "$TARGET_DIR/assets/logo"
         mkdir -p "$TARGET_DIR/docs/qa"
@@ -94,17 +98,21 @@ case "$SCALE" in
         cp "$TEMPLATES/02-legal-commercial/NDA_TEMPLATE.md" "$TARGET_DIR/contracts/NDA.md"
         mkdir -p "$TARGET_DIR/docs/governance"
         cp "$TEMPLATES/03-governance/ADR_TEMPLATE.md" "$TARGET_DIR/docs/governance/ADR.md"
-        cp "$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md"
-        cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
-        cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"
-        cp "$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md" "$TARGET_DIR/docs/specs/DESIGN_SPEC.md"
-        cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
-        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
+        # Design specs deferred to M04 entry (avoids ~65KB of empty template bodies at init)
+        echo ""
+        echo "Deferred to M04 entry (run when you reach Module 04):"
+        echo "  cp \"$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md\""
+        echo "  cp \"$TEMPLATES/02-design/SITEMAP_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/SITEMAP.md\""
+        echo "  cp \"$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md\""
+        echo "  cp \"$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/DESIGN_SPEC.md\""
+        echo "  cp \"$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md\" \"$TARGET_DIR/DESIGN.md\""
+        echo "Deferred to M05/M06 (create when reached): PRD_FINAL_TEMPLATE.md, FSD_TECHNICAL_TEMPLATE.md, TODO_TEMPLATE.md"
         ;;
     large)
         echo "Configuring for Large Scale..."
         mkdir -p "$TARGET_DIR/contracts"
         mkdir -p "$TARGET_DIR/docs/qa"
+        cp "$TEMPLATES/02-design/references/inspiration-template/NOTES_TEMPLATE.md" "$TARGET_DIR/docs/design/inspiration/notes.md"
         cp "$TEMPLATES/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md" "$TARGET_DIR/docs/pm/MARKET_RESEARCH.md"
         cp "$TEMPLATES/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md" "$TARGET_DIR/docs/pm/COMPETITIVE_LANDSCAPE.md"
         cp "$TEMPLATES/01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md" "$TARGET_DIR/docs/pm/USER_RESEARCH_REPORT.md"
@@ -131,6 +139,7 @@ case "$SCALE" in
         mkdir -p "$TARGET_DIR/docs/qa"
         mkdir -p "$TARGET_DIR/docs/governance"
         mkdir -p "$TARGET_DIR/docs/ops"
+        cp "$TEMPLATES/02-design/references/inspiration-template/NOTES_TEMPLATE.md" "$TARGET_DIR/docs/design/inspiration/notes.md"
         cp "$TEMPLATES/00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md" "$TARGET_DIR/docs/pm/RFP_RESPONSE.md"
         cp "$TEMPLATES/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md" "$TARGET_DIR/docs/pm/POC_PLAN.md"
         cp "$TEMPLATES/01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md" "$TARGET_DIR/docs/pm/MARKET_RESEARCH.md"

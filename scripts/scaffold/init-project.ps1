@@ -42,7 +42,6 @@ foreach ($d in $dirs) {
 
 # Universal: Project State tracker
 Copy-Item (Join-Path $templates "essentials/PROJECT_STATE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/PROJECT_STATE.md") -Force
-Copy-Item (Join-Path $templates "02-design/references/inspiration-template/notes-template.md") (Join-Path $TargetDir "docs/design/inspiration/notes.md") -Force
 Copy-Item (Join-Path $templates "02-design/SCREEN_PROMPT_TEMPLATE.md") (Join-Path $TargetDir "docs/design/prompts/SCREEN_PROMPT_TEMPLATE.md") -Force
 
 switch ($Scale) {
@@ -50,6 +49,8 @@ switch ($Scale) {
         Write-Host "Configuring for Small / Open-Source Fast-Track MVP..."
         New-Item -ItemType Directory -Force -Path (Join-Path $TargetDir "assets/logo") | Out-Null
         New-Item -ItemType Directory -Force -Path (Join-Path $TargetDir "docs/qa") | Out-Null
+        # Small path: 1-benchmark LITE notes (not the 3-5 screenshot full template)
+        Copy-Item (Join-Path $templates "essentials/LITE_NOTES_TEMPLATE.md") (Join-Path $TargetDir "docs/design/inspiration/notes.md") -Force
         # A1: Small scaffold = Intake + state + lite spec + root harness stubs ONLY.
         Copy-Item (Join-Path $templates "03-architecture-specs/PROJECT_LITE_TEMPLATE.md") (Join-Path $TargetDir "PROJECT_LITE.md") -Force
         Copy-Item (Join-Path $templates "essentials/INTAKE_GATE.md") (Join-Path $TargetDir "docs/pm/INTAKE_GATE.md") -Force
@@ -61,16 +62,18 @@ switch ($Scale) {
             Copy-Item (Join-Path $templates "02-legal-commercial/SOW_SMB.md") (Join-Path $TargetDir "contracts/SOW_SMB.md") -Force
         }
         Write-Host ""
-        Write-Host "Deferred to M04 entry (run when you reach Module 04):"
+        Write-Host "Deferred to M04-LITE entry (run when you reach Module 04)."
+        Write-Host "Small path uses LITE spec bodies (~8KB total), not the 64KB full set:"
+        Write-Host "  copy essentials/LITE_SITEMAP_TEMPLATE.md -> docs/specs/SITEMAP.md"
+        Write-Host "  copy essentials/LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md -> docs/specs/COMPONENT_REQUIREMENTS.md"
+        Write-Host "  copy essentials/LITE_DESIGN_SPEC_TEMPLATE.md -> docs/specs/DESIGN_SPEC.md"
         Write-Host "  copy 02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md -> docs/specs/LOGO_DESIGN_BRIEF.md"
-        Write-Host "  copy 02-design/SITEMAP_TEMPLATE.md -> docs/specs/SITEMAP.md"
-        Write-Host "  copy 02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md -> docs/specs/COMPONENT_REQUIREMENTS.md"
-        Write-Host "  copy 02-design/DESIGN_SPEC_TEMPLATE.md -> docs/specs/DESIGN_SPEC.md"
         Write-Host "  copy 02-design/DESIGN_MD_TEMPLATE.md -> DESIGN.md"
         Write-Host "Deferred to M06/M09/M10 (create when reached): SECURITY_CHECKLIST_SMALL.md, UAT_SIGNOFF_SMALL.md, RUNBOOK_OPS.md"
     }
     { $_ -in "solo-saas", "independent" } {
         Write-Host "Configuring for Independent / Self-Initiated Product..."
+        Copy-Item (Join-Path $templates "02-design/references/inspiration-template/NOTES_TEMPLATE.md") (Join-Path $TargetDir "docs/design/inspiration/notes.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/M00_LITE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/M00_LITE.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/INTERVIEW_GUIDE.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/IDEA_BRIEF.md") -Force
@@ -96,11 +99,16 @@ switch ($Scale) {
         $govDirM = Join-Path $TargetDir "docs/governance"
         if (-not (Test-Path $govDirM)) { New-Item -ItemType Directory -Force -Path $govDirM | Out-Null }
         Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
-        Copy-Item (Join-Path $templates "02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/LOGO_DESIGN_BRIEF.md") -Force
-        Copy-Item (Join-Path $templates "02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/COMPONENT_REQUIREMENTS.md") -Force
-        Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
-        Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
-        Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
+        Copy-Item (Join-Path $templates "02-design/references/inspiration-template/NOTES_TEMPLATE.md") (Join-Path $TargetDir "docs/design/inspiration/notes.md") -Force
+        # Design specs deferred to M04 entry (avoids ~65KB of empty template bodies at init)
+        Write-Host ""
+        Write-Host "Deferred to M04 entry (run when you reach Module 04):"
+        Write-Host "  copy 02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md -> docs/specs/LOGO_DESIGN_BRIEF.md"
+        Write-Host "  copy 02-design/SITEMAP_TEMPLATE.md -> docs/specs/SITEMAP.md"
+        Write-Host "  copy 02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md -> docs/specs/COMPONENT_REQUIREMENTS.md"
+        Write-Host "  copy 02-design/DESIGN_SPEC_TEMPLATE.md -> docs/specs/DESIGN_SPEC.md"
+        Write-Host "  copy 02-design/DESIGN_MD_TEMPLATE.md -> DESIGN.md"
+        Write-Host "Deferred to M05/M06 (create when reached): PRD_FINAL_TEMPLATE.md, FSD_TECHNICAL_TEMPLATE.md, TODO_TEMPLATE.md"
     }
     "enterprise" {
         Write-Host "Configuring for Enterprise Scale (Mission-Critical / Regulated)..."
@@ -109,6 +117,7 @@ switch ($Scale) {
         $qaDir = Join-Path $TargetDir "docs/qa"
         if (-not (Test-Path $qaDir)) { New-Item -ItemType Directory -Force -Path $qaDir | Out-Null }
         $govDir = Join-Path $TargetDir "docs/governance"
+        Copy-Item (Join-Path $templates "02-design/references/inspiration-template/NOTES_TEMPLATE.md") (Join-Path $TargetDir "docs/design/inspiration/notes.md") -Force
         if (-not (Test-Path $govDir)) { New-Item -ItemType Directory -Force -Path $govDir | Out-Null }
         $opsDir = Join-Path $TargetDir "docs/ops"
         if (-not (Test-Path $opsDir)) { New-Item -ItemType Directory -Force -Path $opsDir | Out-Null }
@@ -140,12 +149,13 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "03-governance/DATA_CLASSIFICATION_POLICY.md") (Join-Path $TargetDir "docs/governance/DATA_CLASSIFICATION_POLICY.md") -Force
         Copy-Item (Join-Path $templates "08-maintenance-ops/DISASTER_RECOVERY_PLAN.md") (Join-Path $TargetDir "docs/ops/DISASTER_RECOVERY_PLAN.md") -Force
     }
-    Default {
+    "large" {
         Write-Host "Configuring for Large Scale..."
         $contractsDir = Join-Path $TargetDir "contracts"
         if (-not (Test-Path $contractsDir)) { New-Item -ItemType Directory -Force -Path $contractsDir | Out-Null }
         $qaDir = Join-Path $TargetDir "docs/qa"
         if (-not (Test-Path $qaDir)) { New-Item -ItemType Directory -Force -Path $qaDir | Out-Null }
+        Copy-Item (Join-Path $templates "02-design/references/inspiration-template/NOTES_TEMPLATE.md") (Join-Path $TargetDir "docs/design/inspiration/notes.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/MARKET_RESEARCH_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/MARKET_RESEARCH.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/COMPETITIVE_LANDSCAPE.md") -Force
         Copy-Item (Join-Path $templates "01-discovery-commercial/USER_RESEARCH_REPORT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/USER_RESEARCH_REPORT.md") -Force
@@ -166,6 +176,10 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") -Force
         Copy-Item (Join-Path $templates "06-qa-uat/SIT_WORKBOOK_TEMPLATE.md") (Join-Path $TargetDir "docs/qa/SIT_WORKBOOK.md") -Force
         Copy-Item (Join-Path $templates "06-qa-uat/SECURITY_AUDIT_TEMPLATE.md") (Join-Path $TargetDir "docs/qa/SECURITY_AUDIT.md") -Force
+    }
+    Default {
+        Write-Host "Invalid scale: $Scale (options: small | solo-saas | independent | open-source | medium | bespoke | freelance | large | enterprise)" -ForegroundColor Red
+        exit 1
     }
 }
 

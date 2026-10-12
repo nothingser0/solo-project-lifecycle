@@ -6,7 +6,7 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 
 ## Real Project Case Studies
 
-### 1. [MVP SaaS: Inventory Management](./01-mvp-saas-inventory.md)
+### 1. [MVP SaaS: Inventory Management](./01_MVP_SAAS_INVENTORY.md)
 **Scale**: Small (4 weeks)  
 **Type**: Self-funded MVP  
 **Stack**: Laravel 11 + Livewire + MySQL  
@@ -21,7 +21,7 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 
 ---
 
-### 2. [E-commerce Fashion MVP](./02-ecommerce-fashion-mvp.md)
+### 2. [E-commerce Fashion MVP](./02_ECOMMERCE_FASHION_MVP.md)
 **Scale**: Small (3 weeks / 21 working days)
 **Type**: Client commercial project
 **Stack**: Next.js 15 + Prisma + PostgreSQL + Midtrans
@@ -34,7 +34,7 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 
 ---
 
-### 3. [CRM for Real Estate (Internal Tool)](./03-crm-real-estate-internal.md)
+### 3. [CRM for Real Estate (Internal Tool)](./03_CRM_REAL_ESTATE_INTERNAL.md)
 **Scale**: Small-Medium (4 weeks / 28 working days)
 **Type**: Internal commercial agency tool
 **Stack**: Laravel 11 + MySQL + Livewire + Filament Admin
@@ -51,7 +51,7 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 
 > **Note**: These are educational examples created to demonstrate framework usage patterns. They do not represent real projects and contain no actual client data, business outcomes, or performance metrics.
 
-### 4. [Medium-Scale B2B SaaS Platform](./04-medium-b2b-saas-worked-example.md)
+### 4. [Medium-Scale B2B SaaS Platform](./04_MEDIUM_B2B_SAAS_WORKED_EXAMPLE.md)
 **Scale**: Medium (12 weeks)  
 **Type**: Hypothetical worked example  
 **Scenario**: Multi-tenant project management SaaS for marketing agencies  
@@ -75,7 +75,7 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 
 ---
 
-### 5. [Large-Scale Multi-System Integration](./05-large-system-integration-worked-example.md)
+### 5. [Large-Scale Multi-System Integration](./05_LARGE_SYSTEM_INTEGRATION_WORKED_EXAMPLE.md)
 **Scale**: Large (25 weeks)  
 **Type**: Hypothetical worked example  
 **Scenario**: Hospital legacy system integration with billing, EHR, and government reporting  
@@ -94,7 +94,7 @@ Real-world implementations and hypothetical examples demonstrating framework usa
 
 **Key Takeaways**:
 - M00 Research critical for regulatory landscape
-- M05B System Design (retry logic, encryption) prevents data loss
+- M05B extension (system design: retry logic, encryption) prevents data loss
 - Phased migration catches validation issues early
 - Third-party compliance audit before go-live
 
@@ -122,7 +122,7 @@ M04 (Design) → M05 (Specs) → M06 (Code) → M10 (Deploy)
 **When to add**:
 - M01 Feasibility (4 hours) if validating new market
 - M07 Testing (1 day) to catch critical bugs
-- M06 Section 6A Analytics (2 hours) to avoid losing baseline data
+- Analytics instrumentation (2 hours, M13) to avoid losing baseline data
 
 **Skip safely**:
 - M00 (validate post-launch)
@@ -155,12 +155,12 @@ M01-M03 → M04-M05 → M06 → M07 → M09 → M10-M11
 ### Large Scale (Comprehensive)
 **Full process**:
 ```
-M00 → M01-M03 → M04-M05B → M06 → M07-M08 → M09 → M10-M11 → M12 → M13
+M00 → M01-M03 → M04 + M05/M05B → M06 → M07-M08 → M09 → M10-M11 → M12 → M13
 ```
 
 **Do not skip**:
 - ✅ M00 Research (regulatory/compliance requirements)
-- ✅ M05B System Design (retry logic, error handling, scalability)
+- ✅ M05B extension (system design: retry logic, error handling, scalability)
 - ✅ M08 Migration (phased approach, validation, rollback)
 - ✅ M12 Warranty (6-12 month support critical)
 

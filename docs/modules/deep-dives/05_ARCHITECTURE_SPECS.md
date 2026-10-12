@@ -1,8 +1,26 @@
 # Module 05 Deep Dive: Tech Stack Discovery Questionnaire & Extended Prose
 
-> Companion to the runbook [`docs/modules/05-architecture-specs.md`](../05-architecture-specs.md).
+## Contents
+
+- [Module Purpose (Full Context)](#module-purpose-full-context)
+- [Question 1: Team Expertise](#question-1-team-expertise)
+- [Question 2: Database Experience](#question-2-database-experience)
+- [Question 3: Deployment Topology (Hosting Model)](#question-3-deployment-topology-hosting-model)
+- [Question 4: Expected Scale (Year 1 Target)](#question-4-expected-scale-year-1-target)
+- [Question 5: Data Model Characteristics](#question-5-data-model-characteristics)
+- [Question 6: DevOps Complexity Tolerance](#question-6-devops-complexity-tolerance)
+- [Question 7: Critical Feature Priority](#question-7-critical-feature-priority)
+- [Question 8: Compliance Requirements](#question-8-compliance-requirements)
+- [Registry Version Check: Rationale & Output (Extended)](#registry-version-check-rationale-output-extended)
+- [FSD Content Adaptation by Stack (Extended Prose)](#fsd-content-adaptation-by-stack-extended-prose)
+- [Verbose Agent Prompt Example: Tech Stack Discovery Complete](#verbose-agent-prompt-example-tech-stack-discovery-complete)
+- [Verbose Gate Handoff Prompt (after Module 05 Gate PASSED)](#verbose-gate-handoff-prompt-after-module-05-gate-passed)
+- [Universal Registry Sources Table (moved from runbook)](#universal-registry-sources-table-moved-from-runbook)
+- [Gate Script Bodies (moved from runbook)](#gate-script-bodies-moved-from-runbook)
+
+
+> Companion to the runbook [`docs/modules/05_ARCHITECTURE_SPECS.md`](../05_ARCHITECTURE_SPECS.md).
 > This file holds the VERBATIM detailed bodies of Questions 1–8 of the Tech Stack Discovery Questionnaire (full option lists + 'Why this matters' paragraphs), plus other long-form prose removed from the runbook for brevity.
-> Extended stack comparisons and system-design material: [`references/technical/ARCHITECTURE_SPECS_DEEP_DIVE.md`](../../../references/technical/ARCHITECTURE_SPECS_DEEP_DIVE.md)
 
 ---
 
@@ -157,7 +175,7 @@ Options:
 
 **Output provides**:
 - Current stable versions directly from upstream registries.
-- Deprecation warnings (e.g., `@supabase/auth-helpers-nextjs` $\rightarrow$ `@supabase/ssr`).
+- Deprecation warnings (e.g., `@supabase/auth-helpers-nextjs` → `@supabase/ssr`).
 - Compatibility analysis & breaking change warnings (e.g., Zod v4 vs react-hook-form, Tailwind v4 PostCSS breaking changes).
 - Recommended scaffold commands and exact pinned version definitions.
 

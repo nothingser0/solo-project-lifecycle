@@ -23,9 +23,9 @@ if (Test-Path $versionScript) {
 @"
 # Functional Specification Document (FSD) - Technical Specifications
 
-**Project**: $ProjectName  
-**Stack**: $Framework  
-**Date**: $date  
+**Project**: $ProjectName
+**Stack**: $Framework
+**Date**: $date
 **Status**: DRAFT (Generated from Lifecycle Harness)
 
 ---
@@ -42,6 +42,8 @@ $versionHints
 ---
 
 ## 2. Database Schema & Data Models
+
+> **Example schema (JS/Supabase-shaped).** Adapt DDL, auth model, and RLS to your locked stack before freezing — Laravel uses Eloquent migrations, Django uses ORM models, Go uses sqlc/GORM.
 
 ```sql
 -- Extension initialization

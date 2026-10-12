@@ -246,15 +246,15 @@
 High Influence
     │
     │  [Project Sponsor]      [Client PIC]
-    │  [Tech Lead]            
-    │  
+    │  [Tech Lead]
+    │
     │  ─────────────────────────────────────
-    │  
+    │
     │  [VP Engineering]        [Junior Dev]
     │                          [Customer Success]
-    │  
+    │
     │  [Finance]               [End Users]
-    │  
+    │
     └──────────────────────────────────────────> High Interest
    Low Interest
 ```

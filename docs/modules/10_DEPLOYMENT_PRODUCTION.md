@@ -1,8 +1,7 @@
 # Module 10: Deployment & Production Go-Live (Official Launch to Production Environment)
 
-> - `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md`, `ROLLBACK_PLAN_TEMPLATE.md`
-> - `patterns/deployment/ci-cd-pipeline.md` (CI/CD, blue-green/rolling/canary, secrets)
-> - `deep-dives/10-deployment-production.md` (full ENV checklist & scripts, manual clean-release git procedure, DNS/SSL steps, 3 data-migration options with SQL, mobile workflow, enterprise CAB routing)
+> **Templates to copy**: `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md` · `ROLLBACK_PLAN_TEMPLATE.md` · `GO_LIVE_REPORT_TEMPLATE.md`
+> 📖 **Optional** (do NOT preload): `deep-dives/10_DEPLOYMENT_PRODUCTION.md` (full ENV checklist & scripts, manual clean-release git procedure, DNS/SSL steps, migration options with SQL, mobile workflow, enterprise CAB routing)
 
 Promotes UAT-passed code from `staging` to `main`, configures production infra (DNS, SSL TLS 1.3, production DB), runs zero-downtime migrations + observability, and verifies until officially **LIVE ON PRODUCTION**.
 
@@ -36,6 +35,7 @@ Promotes UAT-passed code from `staging` to `main`, configures production infra (
 5. **Schema migration**: `pnpm db:migrate` against prod — **additive only**; `DROP COLUMN`/`TRUNCATE` prohibited.
 6. **Observability**: Sentry DSN active; uptime monitor on `/api/health`; alert bots (Telegram/WhatsApp).
 7. **PVT**: login flow; create 1 document → PDF in prod bucket; 1 real low-nominal payment (e.g. Rp 10.000 QRIS) for the prod webhook; compile into **`GO_LIVE_REPORT.md`**.
+8. **Polish re-check on the production domain**: re-run rows 1–22 of `docs/qa/POLISH_AUDIT.md` (or `POLISH_AUDIT_TEMPLATE.md` for Small) against the live domain — favicon, OG preview image, page title, console errors, image weight, plus rows 21–22 (slop comments, race conditions) against the deployed build. CDN/minification/env differences surface new tells that staging hid. Record the delta in `GO_LIVE_REPORT.md`.
 
 ## 4. Mobile (Android/iOS) — Summary
 

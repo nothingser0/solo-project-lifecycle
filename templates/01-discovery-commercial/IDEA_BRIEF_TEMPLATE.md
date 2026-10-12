@@ -81,13 +81,13 @@
 
 ### 3.5 MVP Razor & Root Cause Validation Gate (MANDATORY)
 - **Root Cause Breakdown (80/20 Analysis)**:
-  - Primary Root Causes ($\approx 80\%$): [Dominant bottleneck: e.g., Retail: unrecorded shrinkage; CRM: unassigned leads; CMS: manual review delay]
-  - Secondary Root Causes ($\approx 20\%$): [Secondary friction: e.g., sync latency, notification formatting, cosmetic UI]
-- **Solution-Problem Alignment**: Does MVP Razor solve $\ge 70\%$ of the primary root cause? `[YES / NO]`
+  - Primary Root Causes (≈ 80%): [Dominant bottleneck: e.g., Retail: unrecorded shrinkage; CRM: unassigned leads; CMS: manual review delay]
+  - Secondary Root Causes (≈ 20%): [Secondary friction: e.g., sync latency, notification formatting, cosmetic UI]
+- **Solution-Problem Alignment**: Does MVP Razor solve ≥ 70% of the primary root cause? `[YES / NO]`
   - *Mitigation if NO*: [Reframe MVP Razor to address dominant cause]
 - **Target Segment Feasibility**:
-  - [Segment 1: e.g., Primary Persona matching MVP scope] $\rightarrow$ Fits MVP model: `[YES]`
-  - [Segment 2: e.g., Adjacent Persona requiring unbuilt complex feature] $\rightarrow$ `[NO - DROPPED FROM MVP OR UPGRADE FEATURE]`
+  - [Segment 1: e.g., Primary Persona matching MVP scope] → Fits MVP model: `[YES]`
+  - [Segment 2: e.g., Adjacent Persona requiring unbuilt complex feature] → `[NO - DROPPED FROM MVP OR UPGRADE FEATURE]`
 
 ---
 
@@ -122,10 +122,10 @@ Feasibility-Decision: PENDING
 ### 5.1 Bandwidth Epic Breakdown Audit
 - Total Must-Have Features: `[X]` features
 - Raw Development Epic Sum: `[X]` weeks (CRUD: 3-5 days/feature, Complex: 1.5-2 weeks/feature)
-- Buffered Development Weeks ($+20\%$): `[X]` weeks
+- Buffered Development Weeks (+20%): `[X]` weeks
 - Non-Development Overhead (Small: 1w, Medium: 3-4w, Large: 6-7w): `[X]` weeks
 - **Total Calculated Weeks**: `[X]` weeks (vs Initial Timeline Claim: `[Y]` weeks)
-- Variance: `[Z]%` (Must be $\le 20\%$ or timeline claim must be adjusted)
+- Variance: `[Z]%` (Must be ≤ 20% or timeline claim must be adjusted)
 
 ### 5.2 Legal Compliance Checklist (UU PDP No. 27/2022)
 - [ ] **Privacy Policy (Kebijakan Privasi)** planned (data collection, retention, deletion rights)
@@ -135,13 +135,13 @@ Feasibility-Decision: PENDING
 
 ### 5.3 Unit Economics Modeling
 - Price / Subscription Tier: `Rp [X] / month`
-- Modeled COGS ($10\%–20\%$ ARPU): `Rp [X] / month` (server, gateway 2%, SMS/WhatsApp, monitoring)
-- Realistic Conversion Rate: Survey Pricing Commitment `[X]%` $\times [0.15, 0.25] =$ `[Y]%` (Midpoint: $\times 0.20$)
+- Modeled COGS (10%–20% ARPU): `Rp [X] / month` (server, gateway 2%, SMS/WhatsApp, monitoring)
+- Realistic Conversion Rate: Survey Pricing Commitment `[X]%` × [0.15, 0.25] = `[Y]%` (Midpoint: × 0.20)
 - Modeled Customer Lifetime: `[12–18]` months (accounting for SMB annual churn)
 - Pre-Launch Estimated CAC: `Rp [X]` (Proxy: channel ad clicks / conversion or outreach cost)
 - Fixed Monthly Overhead (Managed DB, VPS/Container, Domain, Telemetry): `Rp [X] / month`
-- Break-Even Subscribers: $\frac{\text{Fixed Overhead}}{\text{ARPU} \times \text{Gross Margin \%}} =$ `[Z]` active paying subscribers
-- Estimated LTV : CAC Ratio: `[X] : 1` (Target: $\ge 3:1$)
+- Break-Even Subscribers: (Fixed Overhead / (ARPU × Gross Margin %)) = `[Z]` active paying subscribers
+- Estimated LTV : CAC Ratio: `[X] : 1` (Target: ≥ 3:1)
 
 ---
 
@@ -150,13 +150,13 @@ Feasibility-Decision: PENDING
 *Explicit thresholds reviewed at M06 Week 4 and Week 8:*
 
 - **Kill Criteria (Halt Project)**:
-  - Week 4 progress check: Working features $<30\%$ of planned milestone scope.
-  - Beta testing: $\ge 50\%$ of closed-beta users reject product value.
+  - Week 4 progress check: Working features <30% of planned milestone scope.
+  - Beta testing: ≥ 50% of closed-beta users reject product value.
   - Infrastructure cost: Unit hosting and third-party API COGS exceeds **50% of ARPU** (healthy baseline is 10-20%).
 - **Pivot Criteria (Restructure Scope)**:
-  - Beta churn $>50\%$ in 30 days $\rightarrow$ Prune scope to single core interaction loop.
-  - Timeline slip $>30\%$ $\rightarrow$ Freeze secondary features, ship online-only MVP.
-  - Data sync conflict issues $\rightarrow$ Pivot to online-first PWA with optimistic UI.
+  - Beta churn >50% in 30 days → Prune scope to single core interaction loop.
+  - Timeline slip >30% → Freeze secondary features, ship online-only MVP.
+  - Data sync conflict issues → Pivot to online-first PWA with optimistic UI.
 
 ---
 
@@ -172,3 +172,4 @@ Feasibility-Decision: PENDING
 1. [Discovery Question 1: E.g., Specific table schema for audit trail logs]
 2. [Discovery Question 2: E.g., Fallback behavior when user network connection drops]
 3. [Discovery Question 3: E.g., Exact legal wording for financial estimation disclaimer]
+ancial estimation disclaimer]

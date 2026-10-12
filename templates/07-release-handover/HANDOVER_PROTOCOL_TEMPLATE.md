@@ -73,7 +73,7 @@ Upon completion of the root account handover process above:
 
 **Handover Email Template**: For small projects, use `templates/07-release-handover/BAST_EMAIL_SMALL.md` format with warranty policy attached.
 
-**Critical Reminder**: 
+**Critical Reminder**:
 - Do NOT send handover email without WARRANTY_POLICY attachment
 - Client's acknowledgment of warranty terms prevents post-launch disputes
 - Save client's acknowledgment email as PDF for legal records

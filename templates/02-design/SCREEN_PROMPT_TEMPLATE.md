@@ -25,26 +25,26 @@
 - **Color Palette & Semantic Triad**:
   - Background Canvas: `bg-background` (`#FFFFFF` in Light / `#09090B` in Dark)
   - Card & Container Surface: `bg-card border border-border` (`#E4E4E7` subtle passive divider)
-  - Interactive Form Borders: `border-input` (strict $\ge 3.0:1$ non-text contrast against card background)
-  - Text Hierarchy: `text-foreground` (primary high contrast $\ge 7:1$) / `text-muted-foreground` (secondary $\ge 4.5:1$)
+  - Interactive Form Borders: `border-input` (strict ≥ 3.0:1 non-text contrast against card background)
+  - Text Hierarchy: `text-foreground` (primary high contrast ≥ 7:1) / `text-muted-foreground` (secondary ≥ 4.5:1)
   - Status Indicators: Use semantic triads: `--success`, `--warning`, `--destructive`, `--info`.
   - Transaction Convention: Normal business expenses/deductions use neutral badges with arithmetic signs (`-Rp` or `-$`), NEVER destructive red styling.
 - **Form Ergonomics & Anti-Zoom**:
   - All form inputs (`<input>`, `<select>`, `<textarea>`) MUST specify `text-base` (`16px`) universally across all viewports to prevent iOS Safari auto-zoom.
   - Submit Buttons: Anti-disabled pristine state (button remains enabled in pristine state; clicking triggers validation with auto-focus to first invalid field).
 - **Touch Targets**:
-  - All interactive tap targets (buttons, steppers, icon triggers) MUST meet minimum $\ge 44\text{px} \times 44\text{px}$ (`h-11 min-w-11`).
+  - All interactive tap targets (buttons, steppers, icon triggers) MUST meet minimum ≥ 44px × 44px (`h-11 min-w-11`).
 - **Visual Anti-Slop Directives**:
-  - NO purple/neon gradients, NO glassmorphism backdrop blur, NO drop shadows $> \text{shadow-md}$.
+  - NO purple/neon gradients, NO glassmorphism backdrop blur, NO drop shadows > shadow-md.
 
 ---
 
 ## 3. Layout Structure & Responsive Breakpoints
 
 ### 3.1 Adaptive Layout Structure
-- **Desktop & Tablet ($\ge 768\text{px}$)**:
+- **Desktop & Tablet (≥ 768px)**:
   - [Describe desktop layout: e.g. Fixed sidebar 240–260px, sticky topbar 64px, dual-panel split canvas, or centered grid max-w-7xl]
-- **Mobile Viewports ($< 768\text{px}$)**:
+- **Mobile Viewports (< 768px)**:
   - Sticky top header (56px) + bottom navigation bar (64px).
   - Data tables MUST reflow into stacked cards with key-value pairs (prevent unstyled horizontal scrollbars).
 
@@ -56,5 +56,5 @@
 1. **Idle / Default**: Full rendered interface populated with realistic domain data (locale-appropriate entities, zero "Product A" placeholders).
 2. **Loading Skeleton**: Structural skeleton blocks (`animate-pulse bg-zinc-200 dark:bg-zinc-800`) matching exact card/table row geometry.
 3. **Empty State**: Centered illustration / icon, descriptive empty explanation, and primary action button (CTA).
-4. **Inline Field Errors**: Descriptive $\ge 13$px red error messages (`text-destructive`) programmatically linked via `aria-describedby`.
+4. **Inline Field Errors**: Descriptive ≥ 13px red error messages (`text-destructive`) programmatically linked via `aria-describedby`.
 5. **Success Feedback**: Immediate visual confirmation toast or status badge transition.

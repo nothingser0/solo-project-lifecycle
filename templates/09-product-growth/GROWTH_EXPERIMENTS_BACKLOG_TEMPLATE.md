@@ -45,7 +45,7 @@ will result in 15% increase in feature adoption rate
 for new users in their first 7 days
 because users trust features validated by peers (Nielsen Norman Group social proof study).
 
-We will measure success by tracking "feature_used" event for Day 1-7 cohort, 
+We will measure success by tracking "feature_used" event for Day 1-7 cohort,
 target: control 30% → treatment 35%+ (relative lift ≥15%).
 ```
 

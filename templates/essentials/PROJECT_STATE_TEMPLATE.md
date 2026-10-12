@@ -33,7 +33,7 @@
 **Primary Research Staging & Readiness**:
 - **Interview Guide**: Staged at `docs/pm/USER_RESEARCH_REPORT.md` (Target: [5 / 10 / 15] interviews)
 - **Survey Instrument**: Staged at `[Link Tally/Google Forms / PENDING]` (Target: [30 / 50] responses)
-- **Behavioral Smoke Test**: Staged at `[Waitlist URL / PENDING]` (Target: $\ge 5\%$ conversion)
+- **Behavioral Smoke Test**: Staged at `[Waitlist URL / PENDING]` (Target: ≥ 5% conversion)
 - **Requirement Matrix**: Linked to `docs/pm/REQUIREMENT_MATRIX.md`
 - **Verification Plan**: Linked to `docs/pm/VERIFICATION_PLAN.md`
 
@@ -41,11 +41,11 @@
 
 | Module ID | Module Name | Required Artifact | Gate Criteria | Gate Status | Completion Date |
 |:----------|:------------|:------------------|:--------------|:-----------:|:----------------|
-| **M00 / M00-lite** | Product Discovery & Strategy | `docs/pm/MARKET_RESEARCH.md` or `docs/pm/M00_LITE.md` | Intent-to-buy $\ge 30\%$ / Waitlist validation | [Status] | [YYYY-MM-DD] |
-| **M01** | Idea & Feasibility | `docs/pm/IDEA_BRIEF.md` | Feasibility score $\ge 70/100$, 0 fatal blockers | [Status] | [YYYY-MM-DD] |
+| **M00 / M00-lite** | Product Discovery & Strategy | `docs/pm/MARKET_RESEARCH.md` or `docs/pm/M00_LITE.md` | Intent-to-buy ≥ 30% / Waitlist validation | [Status] | [YYYY-MM-DD] |
+| **M01** | Idea & Feasibility | `docs/pm/IDEA_BRIEF.md` | Feasibility score ≥ 70/100, 0 fatal blockers | [Status] | [YYYY-MM-DD] |
 | **M02** | Discovery & Scope | `docs/pm/SCOPE_STATEMENT.md` | MoSCoW locked, RBAC defined, 0 ambiguous P0s | [Status] | [YYYY-MM-DD] |
 | **M03** | Legal SOW & Charter | `docs/pm/SOW_CONTRACT.md` (or `contracts/`) | Commercial Gate: DP received, Single PIC locked (WAIVED for Solo SaaS) | [Status] | [YYYY-MM-DD] |
-| **M04** | UI/UX & Information Architecture | `docs/specs/SITEMAP.md`, `DESIGN.md` | SITEMAP multi-role coverage, contrast $\ge 4.5:1$ | [Status] | [YYYY-MM-DD] |
+| **M04** | UI/UX & Information Architecture | `docs/specs/SITEMAP.md`, `DESIGN.md` | SITEMAP multi-role coverage, contrast ≥ 4.5:1 | [Status] | [YYYY-MM-DD] |
 | **M05** | Architecture Specs & PRD/FSD | `docs/specs/PRD.md`, `docs/specs/FSD.md` | Schema, APIs, lockfile versions pinned | [Status] | [YYYY-MM-DD] |
 | **M06** | Development Execution | Root harness files deployed, `TODO.md` | 100% TODO completed, unit tests pass | [Status] | [YYYY-MM-DD] |
 | **M07** | Quality Assurance (SIT/Security) | `docs/qa/SIT_REPORT.md` | P0/P1 bugs = 0, security audit clean | [Status] | [YYYY-MM-DD] |

@@ -20,7 +20,7 @@
 - **Project Background**: [Explain the background and project urgency for the client]
 - **Measurable Goals**:
   - [Goal 1: Example: 100% paperless administrative workflow automation]
-  - [Goal 2: Example: Order processing cycle time reduced by $\ge 50\%$]
+  - [Goal 2: Example: Order processing cycle time reduced by ≥ 50%]
 
 ---
 

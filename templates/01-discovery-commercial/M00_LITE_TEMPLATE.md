@@ -63,11 +63,11 @@
 
 - **Landing Page URL / Platform**: [Link Carrd / Vercel / Google Form]
 - **Traffic Source**: [Direct merchant communities / LinkedIn / Twitter / Google search ads]
-- **Total Unique Visitors**: [X] visitors (Minimum target: $\ge 100$)
+- **Total Unique Visitors**: [X] visitors (Minimum target: ≥ 100)
 - **Total Waitlist / Email Signups**: [Y] signups
-- **Conversion Rate**: $\frac{Y}{X} \times 100\% = \mathbf{[Z]\%}$
+- **Conversion Rate**: (Y / X) × 100% = [Z]%
 - **Waitlist-Conversion-Pct**: [angka persentase, e.g. 5.5]
-- **Gate Pass Benchmark**: $\ge 5.0\%$ waitlist conversion with explicit pricing stated on page ($2.0\% - 4.9\%$ = 1x iteration sprint; $<2.0\%$ = KILL).
+- **Gate Pass Benchmark**: ≥ 5.0% waitlist conversion with explicit pricing stated on page (2.0% - 4.9% = 1x iteration sprint; <2.0% = KILL).
 
 ---
 
@@ -75,7 +75,7 @@
 
 - **Target ARPU**: Rp [X] / month
 - **Estimated CAC**: Rp [Y] / customer (Test ads / organic outreach time)
-- **Gross Margin Target**: $\ge 75\%$ after infrastructure hosting and Payment Gateway processing fees
+- **Gross Margin Target**: ≥ 75% after infrastructure hosting and Payment Gateway processing fees
 - **Solo Dev Feasibility**:
   - [ ] Tech stack uses proven "Boring Tech" (Next.js / Laravel / Supabase / Postgres)
   - [ ] Zero unmanageable operational dependencies (no self-hosted websocket cluster without managed provider)
@@ -86,7 +86,7 @@
 ## 7. Kill Criteria & Gate Validation Outcome
 
 ### Kill Criteria Triggers:
-1. **Market Kill**: Waitlist conversion $< 2\%$ after 200 targeted visitors OR $< 3$ of 5 interview respondents demonstrate intent to pay.
+1. **Market Kill**: Waitlist conversion < 2% after 200 targeted visitors OR < 3 of 5 interview respondents demonstrate intent to pay.
 2. **Feasibility Kill**: Estimated MVP development timeline exceeds 6 weeks for 1 developer.
 3. **Regulatory Kill**: Business model legally mandates banking or direct lending capital licenses exceeding solo founder capacity.
 

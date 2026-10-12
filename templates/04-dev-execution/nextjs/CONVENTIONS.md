@@ -96,16 +96,16 @@ export async function updateResourceAction(
 
 1. **Universal 16px Input Font Size (iOS Anti-Zoom Rule)**:
    - Form inputs (`<input>`, `<select>`, `<textarea>`) **MUST BE AT LEAST `16px` (`text-base`) across ALL viewports**.
-   - ❌ **Prohibited**: Using `text-base md:text-sm` (causes iOS Safari on iPad viewports $\ge 768\text{px}$ to zoom and break the viewport).
+   - ❌ **Prohibited**: Using `text-base md:text-sm` (causes iOS Safari on iPad viewports ≥ 768px to zoom and break the viewport).
    - ✅ **Correct**: `className="text-base h-11 w-full rounded-md border border-border-input ..."`
 2. **Anti-Disabled Pristine Button Rule**:
    - Form submission buttons MUST NOT be `disabled` while the form is untouched/pristine.
    - Clicking submit on an incomplete form triggers inline validation, smooth-scrolls, and auto-focuses the first invalid field.
 3. **Touch Target Sizing**:
-   - Primary interactive touch targets on mobile and tablet interfaces **MUST meet minimum $\ge 44\text{px} \times 44\text{px}$** (`h-11 min-w-11`).
-   - *Accessibility Reference*: While WCAG 2.2 Level AA establishes 24px minimum (SC 2.5.8), $44\text{px}$ is our internal ergonomics standard (aligned with WCAG AAA / Apple HIG) to ensure error-free operation on touch terminals.
+   - Primary interactive touch targets on mobile and tablet interfaces **MUST meet minimum ≥ 44px × 44px** (`h-11 min-w-11`).
+   - *Accessibility Reference*: While WCAG 2.2 Level AA establishes 24px minimum (SC 2.5.8), 44px is our internal ergonomics standard (aligned with WCAG AAA / Apple HIG) to ensure error-free operation on touch terminals.
 4. **Calibrated Notification Toast Behavior**:
-   - Success & Informational toasts: Auto-dismiss permitted after $\ge 4000\text{ms}$, with timer pause on hover or keyboard focus.
+   - Success & Informational toasts: Auto-dismiss permitted after ≥ 4000ms, with timer pause on hover or keyboard focus.
    - Error & System Warning toasts: **STRICTLY FORBIDDEN to auto-dismiss**. They must remain visible until the user explicitly clicks dismiss.
 
 ---

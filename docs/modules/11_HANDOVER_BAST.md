@@ -1,7 +1,7 @@
 # Module 11: [HANDOVER GATE] Final Settlement, Training, BAST, & Repository Handover
 
-> - `templates/07-release-handover/BAST_EMAIL_SMALL.md` (remote/small), `TRAINING_PLAN.md`
-> - `deep-dives/11-handover-bast.md` (training quota details, credential inventory, Git transfer steps, BAST signing, retrospective)
+> **Templates to copy**: `templates/07-release-handover/BAST_EMAIL_SMALL.md` (remote/small) · `BAST_TEMPLATE.md` · `TRAINING_PLAN.md` · `USER_MANUAL_TEMPLATE.md` (Medium+ → `docs/USER_MANUAL.md`)
+> 📖 **Optional** (do NOT preload): `deep-dives/11_HANDOVER_BAST.md` (training quota details, credential inventory, Git transfer steps, BAST signing, retrospective)
 
 **CLOSURE & HANDOVER GATE**: TRANSFERRING GIT REPO OWNERSHIP, SERVER ROOT CREDENTIALS, AND SIGNING THE BAST ARE PROHIBITED BEFORE THE FINAL SETTLEMENT (100%) HAS CLEARED AND IS CONFIRMED IN THE DEVELOPER'S BANK ACCOUNT. Execute metered training, hand over `USER_MANUAL.md`, transfer repo securely, and sign the **Berita Acara Serah Terima (BAST)** that starts the Warranty Period (M12).
 

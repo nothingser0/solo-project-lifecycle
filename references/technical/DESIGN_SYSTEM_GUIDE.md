@@ -1,5 +1,27 @@
 # Design System Guide (Comprehensive Reference)
 
+## Contents
+
+- [Table of Contents](#table-of-contents)
+- [1. Introduction: Why Design Systems Matter](#1-introduction-why-design-systems-matter)
+- [2. Strategic Decision Trees](#2-strategic-decision-trees)
+- [3. Token Architecture Deep Dive](#3-token-architecture-deep-dive)
+- [4. Component Library Patterns](#4-component-library-patterns)
+- [5. Tooling Ecosystem](#5-tooling-ecosystem)
+- [6. Adoption & Migration Strategies](#6-adoption-migration-strategies)
+- [7. Governance Models](#7-governance-models)
+- [Problem Statement](#problem-statement)
+- [Proposed Solution](#proposed-solution)
+- [Alternatives Considered](#alternatives-considered)
+- [Accessibility Review](#accessibility-review)
+- [Breaking Changes](#breaking-changes)
+- [Implementation Plan](#implementation-plan)
+- [8. Measuring Success](#8-measuring-success)
+- [9. Common Pitfalls & Rescue Strategies](#9-common-pitfalls-rescue-strategies)
+- [10. Case Studies](#10-case-studies)
+- [Conclusion: The 80/20 of Design Systems](#conclusion-the-8020-of-design-systems)
+
+
 **Last Updated**: 2026-09-27  
 **Target Audience**: Solo developers, small teams, design system practitioners  
 **Skill Level**: Intermediate to Advanced
@@ -244,9 +266,9 @@ Common ratios:
 
 **Anti-pattern** (Prop explosion):
 ```tsx
-<Card 
-  title="Document" 
-  subtitle="Draft" 
+<Card
+  title="Document"
+  subtitle="Draft"
   showAvatar={true}
   avatarUrl="/user.jpg"
   showFooter={true}
@@ -323,7 +345,7 @@ Design component with a11y checklist → Build with ARIA → Test with screen re
 
 **Bad** (Combinatorial explosion):
 ```tsx
-<Button 
+<Button
   isPrimary={true}
   isLarge={false}
   hasIcon={true}
@@ -334,7 +356,7 @@ Problem: 2^4 = 16 prop combinations to test.
 
 **Good** (Enum variants):
 ```tsx
-<Button 
+<Button
   variant="primary"     // enum: primary | secondary | outline
   size="md"             // enum: sm | md | lg
   leftIcon={<Icon />}   // optional
@@ -658,8 +680,8 @@ Design System Council (5-7 members)
 ```markdown
 # RFC 0001: [Component Name]
 
-**Author**: [Your Name]  
-**Date**: 2026-09-27  
+**Author**: [Your Name]
+**Date**: 2026-09-27
 **Status**: Draft / Review / Approved / Rejected
 
 ## Problem Statement

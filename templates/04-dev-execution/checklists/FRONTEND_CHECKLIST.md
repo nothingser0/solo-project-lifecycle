@@ -11,7 +11,7 @@
 
 ### Design Tokens Sync
 - [ ] **Design Tokens Sync**:
-  - [ ] Map color tokens from `DESIGN_SYSTEM.md` to Tailwind config / CSS variables (Zinc palette, accent primary).
+  - [ ] Map color tokens from `DESIGN.md` to Tailwind config / CSS variables (Zinc palette, accent primary).
   - [ ] Configure Inter font family, typography scale (text-xs to text-4xl), and default border radius (rounded-md).
 
 ### Primitive Components (UI Atoms)
@@ -67,6 +67,13 @@
 - [ ] **Defensive Error Pages**:
   - [ ] `not-found.tsx`: User-friendly 404 page with return to dashboard button.
   - [ ] `error.tsx`: Global Error Boundary with reset / retry button.
+
+### Metadata & Shareability (anti-vibe-code)
+- [ ] **Favicon & app icons**: `favicon.ico` + `icon.png` in place (no framework default, no blank tab).
+- [ ] **Per-route titles**: every route sets a specific `<title>` (`Dashboard — Acme`), never `Create Next App` / `Vite + React`.
+- [ ] **Meta description**: unique per route, 120–160 chars.
+- [ ] **Open Graph / Twitter card**: `og:title`, `og:description`, `og:image` (1200×630) so shared links render a preview card.
+- [ ] **Copyright year**: footer uses the current year or a `© 2024–2026` range — never a stale single year or `[Year]`.
 
 ---
 
@@ -160,14 +167,25 @@ Before merging to staging:
 - [ ] Loading states prevent duplicate submissions
 - [ ] Empty states guide users to next action
 - [ ] Mobile responsive (tested at 375px, 768px, 1024px)
+- [ ] No horizontal scroll at 375px (`scrollWidth <= innerWidth` on every route)
 - [ ] Focus indicators visible on all interactive elements
+- [ ] Hover states present on all interactive elements (buttons, links, cards)
 - [ ] No console errors in browser DevTools
+- [ ] No leftover placeholder text (lorem ipsum, `Product A`, `[Your Company]`, `test@example.com`)
+- [ ] No dead buttons or `href="#"` links — every control does something
+- [ ] Images compressed (no file > 300 KB; WebP/AVIF; explicit width/height)
+- [ ] Spacing values all come from the scale (no arbitrary `[13px]` one-offs)
+- [ ] Primary color is the brand token, not default Tailwind `blue-500`/`indigo-600`
+- [ ] ≤ 2 font families loaded
+
+> Full 22-tell audit with evidence: `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` → run on the **deployed URL** in M07 Step 7 (or M06 for Small), re-verified on production in M10.
 
 ---
 
 **See Also**:
-- `templates/04-dev-execution/checklists/backend-checklist.md` - Backend API tasks
-- `templates/04-dev-execution/checklists/integration-checklist.md` - Third-party integrations
-- `patterns/validation/zod-patterns.md` - Form validation schemas
-- `references/stacks/nextjs-quickstart.md` - Next.js specific setup
+- `templates/04-dev-execution/checklists/BACKEND_CHECKLIST.md` - Backend API tasks
+- `templates/04-dev-execution/checklists/INTEGRATION_CHECKLIST.md` - Third-party integrations
+- `references/stacks/NEXTJS_QUICKSTART.md` - Next.js specific setup
 - M06 Development Execution - Core module documentation
+
+> Generic engineering patterns (validation, auth, caching) were archived to `archive/patterns/` — implement from stack knowledge or consult the archive on demand.

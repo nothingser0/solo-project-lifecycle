@@ -29,7 +29,7 @@ A regional hospital needs to integrate their legacy patient management system (b
 - ✅ M03 (Legal & SOW) - 3 days (with compliance addendum)
 - ✅ M04 (UI/UX Prototyping) - 7 days
 - ✅ M05 (Architecture & Specs) - 7 days (system design critical)
-- ✅ M05B (Detailed System Design) - 5 days (integration architecture)
+- ✅ M05B extension (detailed system design) - 5 days (integration architecture)
 - ✅ M06 (Development Execution) - 60 days (12 weeks)
 - ✅ M07 (Quality Assurance) - 7 days (extended SIT)
 - ✅ M08 (Data Migration) - 10 days (critical phase)
@@ -272,7 +272,7 @@ patient_cache (
 
 ---
 
-### Days 28-32: M05B - Detailed System Design
+### Days 28-32: M05B extension - Detailed System Design
 
 **Error Handling Strategy**:
 
@@ -355,7 +355,7 @@ function decryptPatientData(encrypted: Buffer): PatientRecord {
 
 ## Phase 3: Development (60 Days)
 
-### Weeks 3-5: Legacy API Wrapper (M06 Section 3A)
+### Weeks 3-5: Legacy API Wrapper (M06 STEP 6 - DB)
 
 **Days 33-47**: Build read-only API around legacy SQL Server
 
@@ -397,7 +397,7 @@ export async function GET(req: Request, { params }) {
 
 ---
 
-### Weeks 6-10: Integration Layer (M06 Section 3B)
+### Weeks 6-10: Integration Layer (M06 STEP 6 - API)
 
 **Days 48-75**: Build job queue for syncing
 
@@ -437,7 +437,7 @@ cron.schedule('*/10 * * * *', async () => {
   const lastSync = await getSyncState('legacy', 'ehr');
   
   const changedPatients = await legacyDB.query(`
-    SELECT * FROM Patients 
+    SELECT * FROM Patients
     WHERE updated_at > @lastSync
     ORDER BY updated_at ASC
     LIMIT 1000
@@ -454,7 +454,7 @@ cron.schedule('*/10 * * * *', async () => {
 
 ---
 
-### Weeks 11-12: Admin Dashboard (M06 Section 4)
+### Weeks 11-12: Admin Dashboard (M06 STEP 6 - UI)
 
 **Days 76-82**: React Admin UI
 
@@ -626,7 +626,7 @@ node scripts/import-batches.js --workers=5 --batches=./batches/
 
 ### Critical Success Factors
 1. **M00 Research**: Regulatory requirements discovered early (avoided rework)
-2. **M05B System Design**: Retry/error handling prevented data loss
+2. **M05B extension (System Design)**: Retry/error handling prevented data loss
 3. **M08 Phased Migration**: Test migration caught validation issues early
 4. **Blue-Green Deployment**: 4-hour cutover window achieved (zero data loss)
 
@@ -648,7 +648,7 @@ node scripts/import-batches.js --workers=5 --batches=./batches/
 
 ```
 Week 1-3:   Planning (M00-M03)
-Week 4-5:   Design (M04) + Architecture (M05-M05B)
+Week 4-5:   Design (M04) + Architecture (M05 + M05B extension)
 Week 6-17:  Development (M06) [12 weeks]
 Week 18-19: QA (M07) + Data Migration (M08)
 Week 20-22: UAT (M09)

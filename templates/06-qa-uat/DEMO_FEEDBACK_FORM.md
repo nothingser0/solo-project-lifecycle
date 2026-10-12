@@ -324,7 +324,7 @@ Features: Invoice creation, Email sending, Status tracking
 OVERALL IMPRESSION:
 Satisfaction: ⭐⭐⭐⭐ (4/5) - Satisfied
 
-Comments: "Great progress! Invoice creation works smoothly. 
+Comments: "Great progress! Invoice creation works smoothly.
 Email feature is exactly what we need. Minor tweaks needed."
 
 ---

@@ -8,8 +8,8 @@
 
 The Rollback procedure **MUST BE EXECUTED IMMEDIATELY** if any of the following conditions occur post-release:
 1. Database migration script fails mid-execution causing data corruption.
-2. Request error rate (*500 Error Rate*) $> 5\%$ within the first 15 minutes.
-3. System response latency (*p95 Latency*) spikes above $2,000\text{ ms}$ (2 seconds).
+2. Request error rate (*500 Error Rate*) > 5% within the first 15 minutes.
+3. System response latency (*p95 Latency*) spikes above 2,000 ms (2 seconds).
 4. Core transactional flows (e.g., payment or document encryption) suffer total failure.
 
 ---
@@ -18,7 +18,7 @@ The Rollback procedure **MUST BE EXECUTED IMMEDIATELY** if any of the following 
 
 ### Step 1: Revert Application Code to Previous Stable Version
 If using Vercel / Railway / Cloud Run:
-- Open cloud hosting dashboard $\to$ Select previous stable deployment $\to$ Click **"Rollback / Promote to Production"** (Execution time: $< 1\text{ minute}$).
+- Open cloud hosting dashboard → Select previous stable deployment → Click **"Rollback / Promote to Production"** (Execution time: < 1 minute).
 
 If using Git & manual Docker:
 ```bash
@@ -38,7 +38,7 @@ pg_restore -U postgres -d [database_name]_prod -c "backup-pre-deploy-[DATE].dump
 ```
 
 ### Step 3: Post-Rollback System Verification
-- Open `https://app.client.com/api/health` $\to$ Confirm `200 OK` response.
+- Open `https://app.client.com/api/health` → Confirm `200 OK` response.
 - Verify users can log in again using the previous stable version.
 
 ---

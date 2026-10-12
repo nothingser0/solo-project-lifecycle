@@ -17,7 +17,7 @@
 
 3. **Extract common patterns** across all references
 
-4. **AI reads this file** to generate DESIGN_SYSTEM.md matching your references
+4. **AI reads this file** to generate DESIGN.md matching your references
 
 ---
 
@@ -42,12 +42,12 @@
 **Focus**: [What to extract]
 
 **Observations**:
-- **Colors**: 
-- **Typography**: 
-- **Spacing**: 
-- **Borders**: 
-- **Shadows**: 
-- **Layout**: 
+- **Colors**:
+- **Typography**:
+- **Spacing**:
+- **Borders**:
+- **Shadows**:
+- **Layout**:
 
 ---
 
@@ -56,12 +56,12 @@
 **Focus**: [What to extract]
 
 **Observations**:
-- **Colors**: 
-- **Typography**: 
-- **Spacing**: 
-- **Borders**: 
-- **Shadows**: 
-- **Layout**: 
+- **Colors**:
+- **Typography**:
+- **Spacing**:
+- **Borders**:
+- **Shadows**:
+- **Layout**:
 
 ---
 
@@ -450,7 +450,7 @@ Based on references:
 
 ## Implementation Checklist
 
-Before generating DESIGN_SYSTEM.md:
+Before generating DESIGN.md:
 
 - [ ] All screenshots analyzed (3-5 minimum)
 - [ ] Common patterns extracted (colors, typography, spacing, shadows)
@@ -459,15 +459,15 @@ Before generating DESIGN_SYSTEM.md:
 - [ ] Component examples provided (Button, Card, Input minimum)
 - [ ] Anti-patterns documented
 - [ ] Accessibility validated (contrast ratios checked)
-- [ ] Ready for DESIGN_SYSTEM.md generation
+- [ ] Ready for DESIGN.md generation
 
 ---
 
 ## Next Steps
 
-1. **Save this file** as `notes.md` in `references/design/inspiration/`
-2. **AI reads this file** to generate `DESIGN_SYSTEM.md`
-3. **Review generated DESIGN_SYSTEM.md** against original references
+1. **Save this file** as `notes.md` in `docs/design/inspiration/`
+2. **AI reads this file** to generate `DESIGN.md`
+3. **Review generated DESIGN.md** against original references
 4. **Adjust if needed** (iterate on notes.md, regenerate)
 
 ---

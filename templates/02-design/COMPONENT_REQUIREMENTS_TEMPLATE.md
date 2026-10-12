@@ -38,13 +38,13 @@
   - [Pattern 2, e.g., Quick SKU/Barcode search with autofocus]
   - [Pattern 3, e.g., Modal confirmation for payment execution]
 - **User Interaction Sequence**:
-  1. User triggers action $\rightarrow$ System provides immediate visual/tactile feedback.
-  2. User inputs data $\rightarrow$ System performs inline validation on blur.
-  3. User submits $\rightarrow$ Primary button enters loading state, action executes, success toast/modal fires.
+  1. User triggers action → System provides immediate visual/tactile feedback.
+  2. User inputs data → System performs inline validation on blur.
+  3. User submits → Primary button enters loading state, action executes, success toast/modal fires.
 - **Edge Cases & Domain Scenarios**:
-  - **Empty State**: [e.g., Cart is empty $\rightarrow$ show illustration + "Scan barcode or tap product to start"]
-  - **Error State (Screen-Level)**: [e.g., Network/API failure $\rightarrow$ show alert card with retry CTA]
-  - **Domain Exception Mitigation**: [e.g., If system stock reaches 0 but physical goods exist on shelf $\rightarrow$ provide warning badge with supervisor override rather than rigidly blocking cashier queue]
+  - **Empty State**: [e.g., Cart is empty → show illustration + "Scan barcode or tap product to start"]
+  - **Error State (Screen-Level)**: [e.g., Network/API failure → show alert card with retry CTA]
+  - **Domain Exception Mitigation**: [e.g., If system stock reaches 0 but physical goods exist on shelf → provide warning badge with supervisor override rather than rigidly blocking cashier queue]
 - **Key Components Used**:
   - `Button`, `Input`, `SearchInput`, `Card`, `Table`, `Modal`, `Toast`, `Badge`, `PermissionGate`, `SupervisorOverrideModal` (Names must match Section 3 exactly)
 
@@ -139,7 +139,7 @@
 
 ### 5.2 Timing Adjustable (WCAG 2.2.1)
 - **Error Toasts & Offline Alerts**: **STRICTLY FORBIDDEN to auto-dismiss**. They must remain visible until the user explicitly dismisses them or the error condition is resolved.
-- **Success & Informational Toasts**: Allowed to auto-dismiss after $\ge 5000\text{ms}$, with timer pause on hover or keyboard focus.
+- **Success & Informational Toasts**: Allowed to auto-dismiss after ≥ 5000ms, with timer pause on hover or keyboard focus.
 
 ### 5.3 Focus Not Obscured (WCAG 2.4.11)
 - Sticky top bars (`z-10`) and fixed bottom checkout bars (`z-20`) must not obscure focused inputs.
@@ -153,7 +153,7 @@
 
 ### 5.4 Form Error Text Readability
 - Error message text associated with input fields (`aria-describedby`) **MUST be at least 13px** (`text-xs md:text-sm`).
-- Error text color **MUST achieve $\ge 4.5:1$** contrast against background (e.g., `#B91C1C` / `#991B1B` on white = 5.6:1+).
+- Error text color **MUST achieve ≥ 4.5:1** contrast against background (e.g., `#B91C1C` / `#991B1B` on white = 5.6:1+).
 - Every error state pairs color with an alert icon and explicit text explanation.
 
 ---
@@ -184,7 +184,7 @@
 
 *To prevent broken layouts on touch and mobile screens (<768px):*
 
-| Component | Desktop Behavior ($\ge 768\text{px}$) | Mobile Behavior ($< 768\text{px}$) | Anti-Pattern to Avoid |
+| Component | Desktop Behavior (≥ 768px) | Mobile Behavior (< 768px) | Anti-Pattern to Avoid |
 | :--- | :--- | :--- | :--- |
 | **Data Table** | Multi-column table with horizontal scroll fallback | Reflows into **Stacked Cards** (Key-Value pairs with primary action button) | ❌ Unstyled horizontal scrollbars on mobile viewport |
 | **Modal / Dialog** | Centered floating dialog window (`z-50 max-w-lg`) | Converts to **Bottom Sheet / Drawer** swipeable to close | ❌ Tiny centered popup with unreachable "X" button on mobile |
@@ -297,4 +297,4 @@ Display persistent in-app disclaimers:
 - [ ] **4. Non-Dismissing Errors**: Error toasts and offline reconnection alerts are configured without auto-dismiss (manual close required).
 - [ ] **5. Numeric Input Optimization**: All monetary/currency inputs use `inputmode="numeric"` and NEVER `type="number"`.
 - [ ] **6. Z-Index Layer Integrity**: Modal dropdowns/comboboxes (`--z-modal-dropdown: 55`) are layered higher than the dialog itself (`--z-modal-dialog: 50`).
-- [ ] **7. Accessible Error Typography**: All form error text is minimum 13px with $\ge 4.5:1$ contrast against the card background.
+- [ ] **7. Accessible Error Typography**: All form error text is minimum 13px with ≥ 4.5:1 contrast against the card background.

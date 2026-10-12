@@ -113,7 +113,7 @@
 ### Daily Standup (15 minutes)
 **Attendees**: Core team (devs, QA, DevOps)  
 **Time**: 10:00 AM local time  
-**Format**: 
+**Format**:
 - What I did yesterday
 - What I'm doing today
 - Blockers
@@ -378,7 +378,7 @@ Team,
 
 Bad news first: We're tracking 15% over budget ($75k).
 
-Root cause: Unexpected complexity in payment integration 
+Root cause: Unexpected complexity in payment integration
 (legacy system compatibility issues).
 
 Mitigation options:

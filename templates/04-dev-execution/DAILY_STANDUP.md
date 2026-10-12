@@ -406,7 +406,7 @@ Post by 9:30 AM every workday:
 
 Use emojis:
 🔴 Critical blocker
-🟡 Important blocker  
+🟡 Important blocker
 🟢 Low priority blocker
 🎉 Feature completed
 ```
@@ -451,7 +451,7 @@ Please post your update in thread below ⬇️
 
 ---
 
-## Standup Checklist
+## Standup Checklist (Quick Reference)
 
 Daily:
 - [ ] Post/attend by 9:30 AM

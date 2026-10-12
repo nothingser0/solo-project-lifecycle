@@ -204,8 +204,8 @@ export function Example() {
   }
   
   return (
-    <Button 
-      variant="primary" 
+    <Button
+      variant="primary"
       isLoading={isLoading}
       onClick={handleSubmit}
     >

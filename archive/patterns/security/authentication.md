@@ -199,7 +199,7 @@ export async function POST(req: NextRequest) {
   });
 
   // Set HttpOnly cookies
-  const response = NextResponse.json({ 
+  const response = NextResponse.json({
     user: { id: user.id, email: user.email, role: user.role }
   });
   

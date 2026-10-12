@@ -1,10 +1,11 @@
 # Module 04: UI/UX Design & Prototyping
 
-> **References**: `references/solo/SOLO_UIUX_GUIDE.md` · **Templates**: `templates/02-design/` (SITEMAP, COMPONENT_REQUIREMENTS, DESIGN_SPEC, SCREEN_PROMPT) · **Deep dive**: [`deep-dives/04-uiux-prototyping.md`](deep-dives/04-uiux-prototyping.md) — full A–E workflows, Figma MCP, root causes, Decision Matrix, examples; enterprise tokens: `references/technical/UIUX_PROTOTYPING_DEEP_DIVE.md`.
+> **Templates to copy**: `templates/02-design/` (SITEMAP, COMPONENT_REQUIREMENTS, DESIGN_SPEC, SCREEN_PROMPT) · `templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md` (benchmark notes → `docs/design/inspiration/notes.md`)
+> 📖 **Optional** (do NOT preload): `references/solo/SOLO_UIUX_GUIDE.md` · deep dive [`deep-dives/04_UIUX_PROTOTYPING.md`](deep-dives/04_UIUX_PROTOTYPING.md) — full A–E workflows, Figma MCP, root causes, Decision Matrix.
 
 This module translates `SCOPE_STATEMENT.md` (+ valid SOW, or M03 waived for Solo SaaS) into 6 authoritative design artifacts that serve as the UI source of truth: `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/design/inspiration/notes.md`, `docs/harness-root/DESIGN.md` (staged; deployed to root in M06), and `docs/specs/DESIGN_SPEC.md`.
 
-**Scale calibration** (from `docs/pm/PROJECT_STATE.md` / `PROJECT_LITE.md`): **Small (M04-LITE)** — run the standalone LITE runbook [`04-uiux-LITE.md`](04-uiux-LITE.md) instead of this one. **Medium/Large** — full artifacts ≥2000B, logo ≥200B, 5-state matrix on all screens. **Enterprise** (non-solo capacity) — redirect to Seri A Advisory (Fase A02).
+**Scale calibration** (from `docs/pm/PROJECT_STATE.md` / `PROJECT_LITE.md`): **Small (M04-LITE)** — run the standalone LITE runbook [`04_UIUX_LITE.md`](04_UIUX_LITE.md) instead of this one. **Medium/Large** — full artifacts ≥2000B, logo ≥200B, 5-state matrix on all screens. **Enterprise** (non-solo capacity) — redirect to Seri A Advisory (Fase A02).
 
 ## 1. Execution Cycle (Steps 0A–5)
 

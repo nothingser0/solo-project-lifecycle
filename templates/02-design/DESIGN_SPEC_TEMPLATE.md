@@ -19,11 +19,11 @@
 ## 1. Layout Architecture & Role-Based Navigation (RBAC)
 
 ### 1.1 Adaptive Viewport Layouts
-- **Desktop Architecture ($\ge 768\text{px}$)**:
-  - Sidebar: Fixed 240px–260px width, sticky height `h-screen`, active item highlighted with primary accent border (`border-l-4`). Collapses to 64px icon rail on viewports $<1280\text{px}$ if density requires.
+- **Desktop Architecture (≥ 768px)**:
+  - Sidebar: Fixed 240px–260px width, sticky height `h-screen`, active item highlighted with primary accent border (`border-l-4`). Collapses to 64px icon rail on viewports <1280px if density requires.
   - Topbar: Height 56px–64px (`h-14` / `h-16`), sticky `z-10`, containing location/tenant switcher dropdown (if multi-tenant), notification bell badge, and user profile avatar.
   - Main Canvas: Dynamic width, `min-h-[calc(100vh-64px)]`, background `--background` (`#FFFFFF` or warm neutral canvas `#F7F6F2`), padding 16px–24px.
-- **Mobile Architecture ($< 768\text{px}$)**:
+- **Mobile Architecture (< 768px)**:
   - Sticky Top Header: Height 56px (`h-14`), brand logo + notifications or quick back button.
   - Sticky Bottom Navigation Bar: Height 64px (`h-16`), sticky `z-20`, max 5 navigation slots.
   - Virtual Keyboard Safety: Bottom nav bar auto-hides when virtual keyboard opens to prevent viewport clipping.
@@ -46,16 +46,16 @@
 
 | Design Token | Example Light Hex | Example Dark Hex | Background Surface | Target Standard | Measured Light Ratio | Measured Dark Ratio | Project Audit Status |
 | :--- | :---: | :---: | :--- | :---: | :---: | :---: | :---: |
-| `--foreground` (Primary Text) | `#18181B` | `#F4F4F5` | `--background` (`#FFF` / `#09090B`) | $\ge 7.0 : 1$ | [e.g., 17.72:1] | [e.g., 18.10:1] | [Verified / Pending] |
-| `--muted-foreground` (Secondary)| `#71717A` | `#A1A1AA` | `--background` (`#FFF` / `#09090B`) | $\ge 4.5 : 1$ | [e.g., 4.83:1] | [e.g., 7.76:1] | [Verified / Pending] |
-| `--text-placeholder` | `#71717A` | `#A1A1AA` | `--input-bg` (`#FFF` / `#18181B`) | $\ge 4.5 : 1$ | [e.g., 4.83:1] | [e.g., 6.91:1] | [Verified / Pending] |
-| `--border-input` (Interactive) | `#71717A` | `#71717A` | `--card` / `--background` | $\ge 3.0 : 1$ | [e.g., 4.83:1] | [e.g., 3.67:1] | [Verified / Pending] |
-| `--destructive` (Error Text) | `#991B1B` | `#FCA5A5` | `--destructive` bg (`#FEE2E2` / `#450A0A`) | $\ge 4.5 : 1$ | [e.g., 6.80:1] | [e.g., 8.51:1] | [Verified / Pending] |
-| `--success` (Success Text) | `#065F46` | `#86EFAC` | `--success` bg (`#D1FAE5` / `#052E16`) | $\ge 4.5 : 1$ | [e.g., 6.78:1] | [e.g., 10.62:1] | [Verified / Pending] |
-| `--warning` (Warning Text) | `#92400E` | `#FDE047` | `--warning` bg (`#FEF3C7` / `#422006`) | $\ge 4.5 : 1$ | [e.g., 6.37:1] | [e.g., 11.06:1] | [Verified / Pending] |
+| `--foreground` (Primary Text) | `#18181B` | `#F4F4F5` | `--background` (`#FFF` / `#09090B`) | ≥ 7.0 : 1 | [e.g., 17.72:1] | [e.g., 18.10:1] | [Verified / Pending] |
+| `--muted-foreground` (Secondary)| `#71717A` | `#A1A1AA` | `--background` (`#FFF` / `#09090B`) | ≥ 4.5 : 1 | [e.g., 4.83:1] | [e.g., 7.76:1] | [Verified / Pending] |
+| `--text-placeholder` | `#71717A` | `#A1A1AA` | `--input-bg` (`#FFF` / `#18181B`) | ≥ 4.5 : 1 | [e.g., 4.83:1] | [e.g., 6.91:1] | [Verified / Pending] |
+| `--border-input` (Interactive) | `#71717A` | `#71717A` | `--card` / `--background` | ≥ 3.0 : 1 | [e.g., 4.83:1] | [e.g., 3.67:1] | [Verified / Pending] |
+| `--destructive` (Error Text) | `#991B1B` | `#FCA5A5` | `--destructive` bg (`#FEE2E2` / `#450A0A`) | ≥ 4.5 : 1 | [e.g., 6.80:1] | [e.g., 8.51:1] | [Verified / Pending] |
+| `--success` (Success Text) | `#065F46` | `#86EFAC` | `--success` bg (`#D1FAE5` / `#052E16`) | ≥ 4.5 : 1 | [e.g., 6.78:1] | [e.g., 10.62:1] | [Verified / Pending] |
+| `--warning` (Warning Text) | `#92400E` | `#FDE047` | `--warning` bg (`#FEF3C7` / `#422006`) | ≥ 4.5 : 1 | [e.g., 6.37:1] | [e.g., 11.06:1] | [Verified / Pending] |
 
 ### 2.1 Ergonomics & Touch Target Standards
-- **Touch Target Compliance (WCAG 2.5.5 & SC 2.5.8)**: All primary tap targets on mobile/touch interfaces are $\ge 44\text{px} \times 44\text{px}$ (`h-11 min-w-11`). Secondary desktop elements strictly meet minimum 24px target size.
+- **Touch Target Compliance (WCAG 2.5.5 & SC 2.5.8)**: All primary tap targets on mobile/touch interfaces are ≥ 44px × 44px (`h-11 min-w-11`). Secondary desktop elements strictly meet minimum 24px target size.
 - **Focus Not Obscured (WCAG 2.4.11)**: Containers declare `scroll-padding-top: 80px` and `scroll-padding-bottom: 96px` to prevent sticky topbars or bottom docks from obscuring active keyboard focus rings.
 - **Redundant Entry (WCAG 3.3.7)**: Re-entering identical customer, billing, or party data is populated automatically or selectable via dropdown.
 - **Accessible Authentication (WCAG 3.3.8)**: Password managers and copy-paste are fully supported on authentication inputs; no cognitive function puzzles required.
@@ -65,7 +65,7 @@
 ## 3. Exhaustive Screen Inventory (100% SITEMAP Coverage)
 
 > **ABSOLUTE COVERAGE RULE**: Every single route and modal screen identified in `SITEMAP.md` MUST be registered below with a unique `SCR-xx` ID, feature reference, and access permissions. Truncation or sampling is strictly prohibited.
-> 
+>
 > 🛡️ **ANTI-STUB SCREEN SPECIFICATION MANDATE**:
 > Dilarang mendeskripsikan layar hanya dengan satu kalimat umum (misal: *"Tampilan dashboard menampilkan metrik"*). Setiap entri layar wajib mencantumkan **Anatomi Seksi & Komponen Nyata** (misal: Hero, 3 Kartu KPI, Filter Toolbar, Tabel Data 6 Kolom, Modal Konfirmasi) agar layar tidak ter-generate kosong atau terlalu pendek!
 
@@ -102,7 +102,7 @@
 1. **Pristine State (Anti-Disabled)**: Submit button is ENABLED. Inputs render empty or with initial values. User clicks submit to discover form expectations.
 2. **Validating State**: Client-side validation evaluates fields on blur. Inputs show spinner icon if checking unique constraints asynchronously.
 3. **Submitting State**: Submit button displays spinning loader (*"Menyimpan..."*), all form inputs enter read-only disabled state to prevent race conditions.
-4. **Inline Field Errors**: Red error text (`text-destructive text-xs md:text-sm`, $\ge 13$px, $\ge 4.5:1$ contrast) renders directly beneath invalid inputs with `aria-describedby` linkage. Submit button refocuses the first invalid field.
+4. **Inline Field Errors**: Red error text (`text-destructive text-xs md:text-sm`, ≥ 13px, ≥ 4.5:1 contrast) renders directly beneath invalid inputs with `aria-describedby` linkage. Submit button refocuses the first invalid field.
 5. **Success State**: Form resets or redirects to entity detail view with confirmation toast.
 
 ### 4.3 Pattern: Document Details & Ledgers (e.g., Detail Views, Statements, Invoices)
@@ -140,7 +140,7 @@
 
 ### 5.1.2 Mobile Ergonomics & Tap Target Defense
 - **Mobile Keyboard Viewport Shift**: Forms ensure active input elements maintain minimum `96px` clearance above the virtual keyboard to prevent bottom nav overlay clipping.
-- **Interactive Target Geometry**: All clickable elements (buttons, segmented controls, table row actions) guarantee minimum `44px × 44px` physical tap area on viewport $<768$px.
+- **Interactive Target Geometry**: All clickable elements (buttons, segmented controls, table row actions) guarantee minimum `44px × 44px` physical tap area on viewport < 768px.
 
 ### 5.1.3 Behavioral UX & Cognitive Load Protocol (BJ Fogg & Nudge Standards)
 - **Sensible Defaults First**: Input forms and filter sets MUST NOT load in a completely blank or paralyzed state. Pre-fill sensible defaults (e.g., date filters default to *"Hari Ini / 30 Hari Terakhir"*, default payment to *"QRIS"*, quantities default to `1`).
@@ -189,7 +189,7 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 - [ ] **1. Exhaustive Coverage**: 100% of routes from `SITEMAP.md` are documented in Section 3 with unique Screen IDs (`SCR-xx`) and mapped to functional features (`F-xx`).
 - [ ] **2. Interaction Shortcut Safety**: Form and execution screens do not bind destructive or checkout actions to common text entry keys (`Enter` reserved for search/add).
 - [ ] **3. Data Privacy & Integrity**: Sensitive fields (cost prices, expected opname stock, personal identifiers) are protected by role-based DOM omission.
-- [ ] **4. Mathematical Error Contrast**: Form error text achieves verified $\ge 4.5:1$ contrast against light background surfaces.
+- [ ] **4. Mathematical Error Contrast**: Form error text achieves verified ≥ 4.5:1 contrast against light background surfaces.
 - [ ] **5. Focus Not Obscured Enforced**: Container styles incorporate `scroll-padding-bottom` (minimum 96px) to guarantee input focus visibility above mobile sticky bars.
 
 ---

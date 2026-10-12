@@ -2,7 +2,7 @@
 
 > **Purpose**: Qualify leads and gather requirements during initial sales call  
 > **Duration**: 30-60 minutes  
-> **When**: Before sending proposal (M00.5 Pre-Sales)  
+> **When**: Before sending proposal (Pre-Sales)  
 > **Target**: Medium/Large projects (Agency/Vendor sales)
 
 ---
@@ -201,7 +201,7 @@ Score each criterion:
 
 Within 24 hours:
 - [ ] Send follow-up email summarizing discussion
-- [ ] Attach ballpark estimate (T-shirt sizing: S/M/L/XL)
+- [ ] Attach ballpark estimate (sizing: Small/Medium/Large/Enterprise)
 - [ ] Schedule proposal presentation call (if qualified)
 - [ ] Update CRM with notes and BANT score
 
@@ -218,7 +218,7 @@ Goal: [success criteria]
 Timeline: [target date]
 Budget range: [if discussed]
 
-Based on our discussion, this project falls into [Scale] category, 
+Based on our discussion, this project falls into [Scale] category,
 typically Rp X - Y and Z weeks timeline.
 
 Next steps:
@@ -258,11 +258,12 @@ _________________________________
 
 ## Integration with Workflow
 
-**Pre-Sales Flow (M00.5)**:
+**Pre-Sales Flow**:
+0. **Ballpark quotation first** → `QUOTATION_EMAIL.md` (within 24h of discovery)
 1. **Lead inquiry** → Schedule discovery call
 2. **Run discovery call** → Use this checklist
 3. **Score BANT** → Qualify lead
-4. **If qualified** → Send proposal (use `PROPOSAL_DECK.md`)
+4. **If qualified** → Send quotation (`QUOTATION_EMAIL.md`), then formal proposal (`PROPOSAL_DECK.md`)
 5. **If not qualified** → Polite decline or nurture for later
 
-**After qualification** → Proceed to M02 (Discovery & Scope)
+**After qualification** → Proceed to M01 (Idea & Feasibility) → M02 (Discovery & Scope) → M03 (SOW + DP gate)

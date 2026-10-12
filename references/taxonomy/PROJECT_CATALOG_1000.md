@@ -1,5 +1,14 @@
 # Taksonomi Lengkap 1.000 Sistem & Pembagian Skala Implementasi (Portfolio zeenn)
 
+## Contents
+
+- [🟢 Skala Kecil (250 Sistem | Estimasi 1-2 minggu)](#-skala-kecil-250-sistem-estimasi-1-2-minggu)
+- [🟡 Skala Menengah (300 Sistem | Estimasi 3-6 minggu)](#-skala-menengah-300-sistem-estimasi-3-6-minggu)
+- [🟠 Skala Besar (250 Sistem | Estimasi 8-12 minggu)](#-skala-besar-250-sistem-estimasi-8-12-minggu)
+- [🔴 Skala Enterprise (200 Sistem | Estimasi 3-6+ bulan / Tim Besar)](#-skala-enterprise-200-sistem-estimasi-3-6-bulan-tim-besar)
+- [📊 Rangkuman Statistik Taksonomi](#-rangkuman-statistik-taksonomi)
+
+
 **Update Terakhir:** 2026-10-08  
 **Total Sistem Unik:** 1,000 Sistem (Deduplicated, 0 Redundansi, Terverifikasi Penuh)
 

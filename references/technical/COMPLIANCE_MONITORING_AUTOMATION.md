@@ -70,7 +70,7 @@ async function auditConsentCompliance() {
     FROM users u
     WHERE NOT EXISTS (
       SELECT 1 FROM consent_logs c
-      WHERE c.user_id = u.id 
+      WHERE c.user_id = u.id
         AND c.consent_type = 'data_processing'
         AND c.granted = true
     )
@@ -116,7 +116,7 @@ async function enforceRetentionPolicy() {
   // Anonymize old order data (keep aggregate stats)
   await prisma.$executeRaw`
     UPDATE orders
-    SET user_id = NULL, 
+    SET user_id = NULL,
         shipping_address = 'REDACTED',
         email = 'deleted@example.com'
     WHERE created_at < NOW() - INTERVAL '3 years'
@@ -153,7 +153,7 @@ export async function POST(request: Request) {
     body: 'Your data will be deleted in 30 days. Log in to cancel.',
   });
   
-  return Response.json({ 
+  return Response.json({
     message: 'Deletion scheduled for 30 days from now',
     cancelable: true,
   });
@@ -261,7 +261,7 @@ async function detectSecurityAnomalies() {
   // Anomaly 3: Unauthorized database access (check audit logs)
   const suspiciousQueries = await prisma.$queryRaw`
     SELECT COUNT(*) FROM audit_logs
-    WHERE action = 'SELECT' 
+    WHERE action = 'SELECT'
       AND table_name = 'users'
       AND timestamp > NOW() - INTERVAL '1 hour'
       AND user_id NOT IN (SELECT id FROM admins)
@@ -592,4 +592,4 @@ async function checkDPAExpirations() {
 
 **Created**: 2026-10-02  
 **Version**: 1.0  
-**Integration**: Add to M13 ongoing operations, M06 Section 6A analytics setup
+**Integration**: Add to M13 ongoing operations and analytics setup

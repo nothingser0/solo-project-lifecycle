@@ -21,7 +21,7 @@ The framework repo is **read-only**. Project documents are written into the user
 | **Small / MVP** | 3–7 P0 features, no financial mutations, 1 decision maker, <4 weeks | Intake (5 questions, record in `docs/pm/PROJECT_STATE.md`, halt until answered) → M04-LITE → M05 → [STOP] → M06+security → M09-LITE → [STOP] → M10 → M12-LITE (`RUNBOOK_OPS.md`) | 2 stops |
 | **Solo SaaS** | 8–15 P0, billing, 1 founder | M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13 | free chaining |
 | **Client (Medium)** | 8–15 P0, API/payment webhooks, contract, 99% SLA | M01 → M02 → **M03 SOW+DP [GATE]** → M04 → M05 → M06 → M07 → **M09 UAT [GATE]** → M10 → **M11 BAST+final payment [GATE]** → M12 | stop at gates only |
-| **Enterprise** | >15 P0, regulated (OJK/UU PDP/ISO), legacy | ⛔ no solo coding — act as advisor: A00–A04 in `docs/modules/A00-enterprise-advisory-series.md` | per phase |
+| **Enterprise** | >15 P0, regulated (OJK/UU PDP/ISO), legacy | ⛔ no solo coding — act as advisor: A00–A04 in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md` | per phase |
 
 High-water mark: if any single dimension is higher (e.g., 3 features but payment webhooks), classify at the highest tier. Legacy data = NOT "Small + M08"; reclassify upward.
 
@@ -29,10 +29,10 @@ High-water mark: if any single dimension is higher (e.g., 3 features but payment
 
 ## File map (load only what's relevant)
 
-- Modules M00–M13, A-series: `docs/modules/NN-*.md` — each is a compact runbook (≤~1.5k tokens): inputs → steps → outputs → gate criteria. Extended material lives in `docs/modules/deep-dives/`; open it only when a step requires depth.
+- Modules M00–M13, A-series: `docs/modules/NN_*.md` — each is a compact runbook (≤~2k tokens): inputs → steps → outputs → gate criteria. Extended material lives in `docs/modules/deep-dives/`; open it only when a step requires depth.
 - Templates: `templates/` — fast-track: `templates/essentials/`
 - References: `references/` (stacks, solo patterns, checklists) — load when entering the related phase
-- Code patterns: `patterns/` (payments, compliance, validation, security, etc.)
+- Code patterns: `patterns/` (Indonesia-specific: payment gateways, UU PDP, i18n/IDR, offline-first) — load only when the project needs that concern
 - Case studies: `case-studies/` — for timeline/budget estimates
 
 **Never load**: `INDEX.json`, `references/taxonomy/PROJECT_CATALOG_1000.md` — human-facing catalogs, too large for agent context.

@@ -1,11 +1,22 @@
-# Essential Templates (8 Core Production Templates)
+# Essential Templates (Fast-Track Index)
 
-**Purpose**: The 8 most frequently used templates across all project types for 80% of solo projects.
-**Location**: Stored directly in `templates/essentials/` for rapid 30-second access without navigating phase subdirectories.
+**Purpose**: Fast-track index for the templates that cover 80% of solo projects, plus the Small-path LITE bodies stored directly in this directory.
+**Layout**: The table below mixes files physically stored here with links into phase subdirectories (marked by `../` paths). Only files with local paths are physically in `templates/essentials/`.
+
+## LITE bodies (physically stored here — Small path, M04-LITE)
+
+| File | Purpose | Used by |
+|:---|:---|:---|
+| [`LITE_SITEMAP_TEMPLATE.md`](./LITE_SITEMAP_TEMPLATE.md) | One-page screen inventory | M04-LITE |
+| [`LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md`](./LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md) | Lean primitives + composites inventory | M04-LITE |
+| [`LITE_DESIGN_SPEC_TEMPLATE.md`](./LITE_DESIGN_SPEC_TEMPLATE.md) | 5-state matrix (primary screens only) | M04-LITE |
+| [`LITE_NOTES_TEMPLATE.md`](./LITE_NOTES_TEMPLATE.md) | Exactly 1 benchmark (not 3–5) | M04-LITE |
+| [`INTAKE_GATE.md`](./INTAKE_GATE.md) | 5 mandatory Intake questions | Small path entry |
+| [`PROJECT_STATE_TEMPLATE.md`](./PROJECT_STATE_TEMPLATE.md) | Lifecycle state & gate tracking | Universal |
 
 ---
 
-## The 8 Core Production Templates
+## Core Production Templates (mixed: local + linked)
 
 | # | Template | Purpose | Primary Lifecycle Phase |
 |:---:|:---|:---|:---|

@@ -24,7 +24,7 @@
 4. Transactional email delivery integration (SMTP / Resend).
 
 #### Out-of-Scope
-- Extreme load testing $> 10,000$ concurrent users (exceeding agreed capacity).
+- Extreme load testing > 10,000 concurrent users (exceeding agreed capacity).
 - Physical hardware testing of client office network.
 
 ---
@@ -39,7 +39,7 @@
 | **SIT-04** | Presigned URL | Retrieve document download link | URL accessible and expires after 15 minutes | PASS / FAIL |
 | **SIT-05** | E-Sign API | Execute digital signature via token | Signature recorded, document status `SIGNED` | PASS / FAIL |
 | **SIT-06** | Email Sandbox | Send signer link notification | Email delivered to recipient inbox with proper formatting | PASS / FAIL |
-| **SIT-07** | Payment Webhook | Send successful transaction webhook payload | Order status automatically transitions from `PENDING` $\to$ `PAID` | PASS / FAIL |
+| **SIT-07** | Payment Webhook | Send successful transaction webhook payload | Order status automatically transitions from `PENDING` → `PAID` | PASS / FAIL |
 | **SIT-08** | Idempotency | Send duplicate checkout request (double-click) | Second request rejected with `409 Conflict`, no duplicate records created | PASS / FAIL |
 
 ---
@@ -87,7 +87,7 @@
    - *Evidence*: Bank transfer and QRIS payment simulations successfully triggered webhooks to the staging server; order status transitioned automatically to `PAID` without manual intervention.
 3. **Transactional Email (Resend / SMTP)**:
    - *Status*: **PASS**
-   - *Evidence*: Document signing link emails arrived in recipient inboxes in $< 5\text{ seconds}$ with active signature action button.
+   - *Evidence*: Document signing link emails arrived in recipient inboxes in < 5 seconds with active signature action button.
 
 ---
 
@@ -97,7 +97,7 @@ Testing Tool: `k6` / `autocannon`
 - **Concurrent Users**: 50 Virtual Users
 - **Test Duration**: 30 Seconds
 - **Total Requests Processed**: [e.g.: 4,850 requests]
-- **Average Response Time (Latency p95)**: **142 ms** (Target threshold: $\le 200\text{ ms}$)
+- **Average Response Time (Latency p95)**: **142 ms** (Target threshold: ≤ 200 ms)
 - **Error Rate**: **0.00%** (Zero failed requests)
 - **Database Status**: Connection pool load stable, zero connection timeouts occurred.
 
@@ -106,8 +106,8 @@ Testing Tool: `k6` / `autocannon`
 ### 4b. Automated Test Coverage (Large / Enterprise scale mandatory)
 
 Report the output of `pnpm test:coverage` (or `npm run coverage`):
-- **Line Coverage**: [e.g.: 74%] (Large: $\ge 70\%$ | Enterprise: $\ge 80\%$)
-- **Branch Coverage**: [e.g.: 63%] (Large: $\ge 60\%$ | Enterprise: $\ge 70\%$)
+- **Line Coverage**: [e.g.: 74%] (Large: ≥ 70% | Enterprise: ≥ 80%)
+- **Branch Coverage**: [e.g.: 63%] (Large: ≥ 60% | Enterprise: ≥ 70%)
 
 > Small / Medium scale: no strict threshold — report actual numbers for transparency.
 

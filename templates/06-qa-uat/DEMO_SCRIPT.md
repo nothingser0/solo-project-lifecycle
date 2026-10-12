@@ -12,7 +12,7 @@
 **Demo Number**: Demo #___  
 **Sprint**: Sprint #___  
 **Date**: [YYYY-MM-DD]  
-**Attendees**: 
+**Attendees**:
 - Client: _________________________________
 - Team: _________________________________
 
@@ -178,21 +178,21 @@ Thanks for your time!"
 ### Scenario 1: Staging is Down
 **Backup Plan**: Screen recording
 ```
-"Looks like staging is having issues. Let me show you 
+"Looks like staging is having issues. Let me show you
 a screen recording I prepared earlier..."
 ```
 
 ### Scenario 2: Feature Breaks During Demo
 **Recovery**:
 ```
-"This is a staging environment bug. Let me show you 
+"This is a staging environment bug. Let me show you
 the screen recording of it working correctly..."
 ```
 
 ### Scenario 3: Client Hates It
 **Stay Calm**:
 ```
-"I appreciate the honest feedback. Let me understand 
+"I appreciate the honest feedback. Let me understand
 what specifically doesn't work for you...
 [Take notes]
 We can adjust this next sprint."
@@ -237,7 +237,7 @@ Thanks for joining the demo today! Here's a summary:
 
 WHAT WE SHOWED:
 - ✅ [Feature 1]: [Brief description]
-- ✅ [Feature 2]: [Brief description]  
+- ✅ [Feature 2]: [Brief description]
 - ✅ [Feature 3]: [Brief description]
 
 DEMO RECORDING:
@@ -314,8 +314,8 @@ Demo Flow:
 
 Script:
 "First, creating an invoice. As an admin, you click 'New Invoice'.
-You enter client details here, add line items - watch how it 
-calculates the total automatically. When you save, it appears 
+You enter client details here, add line items - watch how it
+calculates the total automatically. When you save, it appears
 in your invoice list with a unique ID."
 
 Highlight: "Notice the auto-calculation - no manual math errors."
@@ -365,8 +365,8 @@ Q&A (3 min):
 
 [John asks: "Can we add discounts?"]
 
-Answer: "Great question. Discounts aren't in this sprint, 
-but we can add it next sprint. Would you want percentage 
+Answer: "Great question. Discounts aren't in this sprint,
+but we can add it next sprint. Would you want percentage
 or fixed amount discounts?"
 
 [John: "Percentage discount, 10-20% typical"]

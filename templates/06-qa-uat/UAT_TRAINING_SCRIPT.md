@@ -45,7 +45,7 @@
 ```
 Good morning everyone! Thanks for joining this UAT training session.
 
-I'm [Your Name], the developer working on [Project Name]. 
+I'm [Your Name], the developer working on [Project Name].
 
 Today we'll cover:
 1. What UAT is and why your testing is critical

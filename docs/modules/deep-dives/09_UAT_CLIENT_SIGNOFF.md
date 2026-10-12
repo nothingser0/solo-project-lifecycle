@@ -1,6 +1,14 @@
 # Module 09 Deep Dive: UAT Preparation Resources & Client Protection Scripts
 
-> Companion to `docs/modules/09-uat-client-signoff.md` (runbook). This file holds the detailed execution guidance; the runbook keeps a condensed summary.
+## Contents
+
+- [UAT Preparation Resources](#uat-preparation-resources)
+- [Solo Developer Protection Scripts During UAT (Full Text)](#solo-developer-protection-scripts-during-uat-full-text)
+- [UAT Iteration Limit & Deemed Acceptance (Full Clause)](#uat-iteration-limit-deemed-acceptance-full-clause)
+- [Defect Severity Matrix (Full Definitions)](#defect-severity-matrix-full-definitions)
+
+
+> Companion to `docs/modules/09_UAT_CLIENT_SIGNOFF.md` (runbook). This file holds the detailed execution guidance; the runbook keeps a condensed summary.
 
 ## UAT Preparation Resources
 

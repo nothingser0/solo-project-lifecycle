@@ -126,7 +126,7 @@
 ### Power Users Definition
 **Criteria**: Users with ≥10 events/week for 4 consecutive weeks
 
-**Dashboard Widget**: 
+**Dashboard Widget**:
 - Count of power users
 - Power user retention rate
 - Feature usage comparison (power users vs. average)

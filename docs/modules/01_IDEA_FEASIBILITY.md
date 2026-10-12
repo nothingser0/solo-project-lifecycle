@@ -1,6 +1,9 @@
 # Module 01: Idea & Feasibility (Idea Screening & Feasibility Testing)
 
-> - `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`; `references/checklists/FEASIBILITY_CRITERIA.md`
+> **Template to copy**: `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md`
+> 📖 **Optional ref**: `references/checklists/FEASIBILITY_CRITERIA.md` (do NOT preload)
+
+> **Feasibility scoring (inline — no need to open FEASIBILITY_CRITERIA)**: score 0–25 per dimension, ≥70/100 total to pass. Dimensions: **Market** (real pain, reachable users) · **Technical** (solo-buildable in capacity, boring stack) · **Economic** (WTP ≥ cost to serve) · **Operational** (maintainable by one person). Any dimension below its floor = CONDITIONAL GO at best; 0 fatal blockers required.
 
 **Purpose**: first gate — turn a raw idea into a **Validated Idea Brief** with scale boundaries before heavy documents or code. Entry point for client fixed-scope/Small fast-track; follows M00 otherwise.
 
@@ -14,7 +17,17 @@
 - **Provisional Gate Rule**: if M00 is `PENDING_PRIMARY_RESEARCH`, score provisionally but hold gate as `PROVISIONAL_PENDING_M00` — no final GO.
 
 ### Step 1 — 3-Filter Triage
-- **Classification**: archetype acronym + scale tier, recorded in the `IDEA_BRIEF.md` header. (Optional deep-dive: archetype shorthand per `references/taxonomy/SYSTEM_ARCHETYPES_250.md`; catalog lookup per `references/taxonomy/PROJECT_CATALOG_1000.md` — load only when the runbook alone cannot name the archetype; both are large files, SKILL.md forbids default loading.)
+- **Classification**: archetype acronym + scale tier, recorded in the `IDEA_BRIEF.md` header. Use the shorthand below; do NOT load the full catalogs (`references/taxonomy/` is human reference only — SKILL.md forbids default loading).
+
+**Common archetype shorthand** (extend freely; acronym + short description is enough):
+```
+ERP  Enterprise Resource Planning      POS  Point of Sale           LMS  Learning Management
+CRM  Customer Relationship Mgmt        IMS  Inventory Management     ATS  Applicant Tracking
+CMS  Content Management                WMS  Warehouse Management     HRIS Human Resource Info System
+SaaS Multi-tenant Subscription App     OMS  Order Management         TMS  Transportation Mgmt
+EIS  Executive Info Dashboard          FSM  Field Service Mgmt       DSS  Decision Support
+GRC  Governance/Risk/Compliance        PIM  Product Info Mgmt        DMS  Document Management
+```
 - **Problem filter**: who, how often, measurable loss today? Don't build if a sheet solves 80%.
 - **Data quality standards**: disclose sample size & split (N, interviews vs survey), recruitment bias, question formulation (only pricing-commitment questions count as WTP), loss-verification sample.
 - **Competitor benchmark** (skip if inheriting M00): 5–7 competitors across direct/adjacent/manual; pricing, feature matrix (5–8), moat, weaknesses, offline audit, market boundary. If ≥2 competitors already provide a claimed-unique feature, the claim is FALSE — reframe it.

@@ -26,7 +26,7 @@
 ## 2. Leverage-Safe Handover & DNS Status
 
 > **Commercial Leverage Rule**:  
-> For `Delivery: client` projects, full DNS pointing to the client's official root domain and master cloud ownership transfer occur **ONLY after 100% final settlement and signed BAST in Module 11** (`11-handover-bast.md:57-63`).
+> For `Delivery: client` projects, full DNS pointing to the client's official root domain and master cloud ownership transfer occur **ONLY after 100% final settlement and signed BAST in Module 11** (`11_HANDOVER_BAST.md:57-63`).
 
 - [x] **Deployment Mode**: [Preview / Staging Cutover / Direct Production]
 - [x] **DNS Pointing**: [Pointed to Production / Staged on Developer-Controlled URL pending M11 Final Settlement]

@@ -1,5 +1,8 @@
 # Product Backlog: [Product Name]
 
+> ⚠️ **ILLUSTRATIVE EXAMPLE ONLY** — figures, names, and scenarios below are a formatting sample, NOT real data for your project. Replace them or delete the sample rows before use.
+
+
 **Project**: [Project Name]  
 **Owner**: [PIC Name]  
 **Sprint/Cycle**: [Sprint Number] ([Start Date] – [End Date])  

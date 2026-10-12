@@ -29,7 +29,7 @@
 ## 2. Core Non-Leading Principles (The Mom Test Protocol)
 
 1. **Ask About the Past, Never the Future**:
-   - ❌ *Leading*: "Would you use an app that automatically syncs stock to the cloud?" $\rightarrow$ Everyone politely says "yes".
+   - ❌ *Leading*: "Would you use an app that automatically syncs stock to the cloud?" → Everyone politely says "yes".
    - ✅ *Behavioral*: "How did you update your stock balance yesterday? When was the last time records didn't match physical stock? What did you do?"
 2. **Seek Concrete Quantified Losses**:
    - ❌ *Vague*: "Is stock discrepancy a big problem for you?"

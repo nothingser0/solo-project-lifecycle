@@ -1,6 +1,17 @@
 # Module 13 Deep Dive: Metrics SQL, NPS Automation, Cohort Analysis, RICE & Scaling Signals
 
-> Companion to `docs/modules/13-product-operations-iteration.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
+## Contents
+
+- [Step 1 (Detail): Metrics Baseline Collection](#step-1-detail-metrics-baseline-collection)
+- [Step 2 (Detail): Feedback Loop Automation](#step-2-detail-feedback-loop-automation)
+- [Step 3 (Detail): Cohort Analysis](#step-3-detail-cohort-analysis)
+- [Step 4 (Detail): RICE Prioritization](#step-4-detail-rice-prioritization)
+- [Step 5 (Detail): Growth Experiments Backlog](#step-5-detail-growth-experiments-backlog)
+- [Step 6 (Detail): Product Health Monitoring](#step-6-detail-product-health-monitoring)
+- [Step 7 (Detail): Scaling Considerations](#step-7-detail-scaling-considerations)
+
+
+> Companion to `docs/modules/13_PRODUCT_OPERATIONS_ITERATION.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
 
 ## Step 1 (Detail): Metrics Baseline Collection
 

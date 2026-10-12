@@ -159,8 +159,8 @@ Before merging to staging:
 ---
 
 **See Also**:
-- `templates/04-dev-execution/checklists/backend-checklist.md` - Backend development
-- `templates/04-dev-execution/checklists/frontend-checklist.md` - Frontend development
-- `patterns/security/authentication.md` - Auth patterns
-- `patterns/performance/caching-strategies.md` - Performance optimization
+- `templates/04-dev-execution/checklists/BACKEND_CHECKLIST.md` - Backend development
+- `templates/04-dev-execution/checklists/FRONTEND_CHECKLIST.md` - Frontend development
 - M06 Development Execution - Core module documentation
+
+> Generic engineering patterns (validation, auth, caching) were archived to `archive/patterns/` — implement from stack knowledge or consult the archive on demand.

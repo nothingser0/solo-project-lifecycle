@@ -1,6 +1,13 @@
 # Module 12 Deep Dive: Warranty Boundaries, Hotfix Flow & Retainer Package Tiers
 
-> Companion to `docs/modules/12-warranty-sla-retainer.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
+## Contents
+
+- [Step 1 (Detail): Warranty Policy Socialization (`WARRANTY_POLICY.md`)](#step-1-detail-warranty-policy-socialization-warrantypolicymd)
+- [Step 2 (Detail): Incident Triage & Hotfix Execution](#step-2-detail-incident-triage-hotfix-execution)
+- [Step 3 (Detail): Negotiating Transition to Monthly Retainer (14 Days Before Warranty Expires)](#step-3-detail-negotiating-transition-to-monthly-retainer-14-days-before-warranty-expires)
+
+
+> Companion to `docs/modules/12_WARRANTY_SLA_RETAINER.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
 
 ## Step 1 (Detail): Warranty Policy Socialization (`WARRANTY_POLICY.md`)
 1. Concurrently with the handover of the BAST (Module 11), deliver the **`WARRANTY_POLICY.md`** document to the Client Single PIC.

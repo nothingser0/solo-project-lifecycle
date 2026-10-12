@@ -1,7 +1,6 @@
 # Module 03: [COMMERCIAL GATE] Legal SOW, DP, & Single PIC Agreement
 
-> - `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md` (Medium/Large)
-> - `templates/02-legal-commercial/SOW_SMB.md`; `CHANGE_REQUEST_TEMPLATE.md`
+> **Templates to copy**: `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md` (Medium/Large) · `templates/02-legal-commercial/SOW_SMB.md` · `CHANGE_REQUEST_TEMPLATE.md`
 
 > ⚠️ **LEGAL DISCLAIMER**: General SDLC guidance, NOT legal advice. AI-drafted contracts are operational drafts **requiring professional legal review before signature**.
 

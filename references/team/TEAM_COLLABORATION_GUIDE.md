@@ -27,7 +27,7 @@ In multi-person teams or multi-agent swarms, assign explicit ownership over life
 
 ## 2. Four Stage Handoff Protocols
 
-### Handoff 1: PM $\rightarrow$ Product Designer (M02 $\rightarrow$ M04)
+### Handoff 1: PM → Product Designer (M02 → M04)
 - **Prerequisite Gate**: `SCOPE_STATEMENT.md` marked `APPROVED`.
 - **Handoff Package**:
   1. Feature inventory with strict MoSCoW prioritization (Must vs Should).
@@ -35,7 +35,7 @@ In multi-person teams or multi-agent swarms, assign explicit ownership over life
   3. Real data context and domain statutory rules (e.g., PP 55/2022 jo. PP 20/2026).
 - **Designer Acceptance Criteria**: Designer confirms zero ambiguous features before drafting wireflows.
 
-### Handoff 2: Designer $\rightarrow$ Engineering Team (M04 $\rightarrow$ M05/M06)
+### Handoff 2: Designer → Engineering Team (M04 → M05/M06)
 - **Prerequisite Gate**: `DESIGN_SPEC.md` signed as **Design Freeze**.
 - **Handoff Package**:
   1. `docs/harness-root/DESIGN.md` containing semantic tokens, palette, typography scale, and 240px sidebar layout.
@@ -43,7 +43,7 @@ In multi-person teams or multi-agent swarms, assign explicit ownership over life
   3. Interactive prototype or Figma inspect link.
 - **Engineering Acceptance Criteria**: Tech Lead verifies WCAG 2.2 AA contrast compliance and zero missing states (default, loading, error, empty, success).
 
-### Handoff 3: Engineering $\rightarrow$ QA Team (M06 $\rightarrow$ M07)
+### Handoff 3: Engineering → QA Team (M06 → M07)
 - **Prerequisite Gate**: Local test suite passing, type-check exit code 0, staging build green.
 - **Handoff Package**:
   1. Deployed staging URL.
@@ -51,7 +51,7 @@ In multi-person teams or multi-agent swarms, assign explicit ownership over life
   3. Changelog and updated API contracts in `FSD.md`.
 - **QA Acceptance Criteria**: Staging smoke test passes 5 primary user loops without 500 server errors.
 
-### Handoff 4: QA & PM $\rightarrow$ Client Stakeholder (M07 $\rightarrow$ M09/M11)
+### Handoff 4: QA & PM → Client Stakeholder (M07 → M09/M11)
 - **Prerequisite Gate**: SIT pass, zero P0/P1 bugs outstanding, security audit clean.
 - **Handoff Package**:
   1. UAT Test Workbook with step-by-step user test scenarios.

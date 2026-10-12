@@ -55,9 +55,9 @@
 
 **Onboarding Funnel** (This Week):
 ```
-Signups (100%) 
+Signups (100%)
   ↓ -[X]%
-Email Verified ([X]%) 
+Email Verified ([X]%)
   ↓ -[X]%
 Profile Setup ([X]%)
   ↓ -[X]%
@@ -259,7 +259,7 @@ First Core Action ([X]%) ← Activation
 ### 2.6 NPS & Qualitative Feedback
 
 **NPS Score** (This Month):
-- Promoters (9-10): [X]% 
+- Promoters (9-10): [X]%
 - Passives (7-8): [X]%
 - Detractors (0-6): [X]%
 - **NPS**: [X] (Promoters % - Detractors %)
@@ -426,7 +426,7 @@ First Core Action ([X]%) ← Activation
 - Performance: Sentry Performance API
 - Revenue: Stripe API
 
-**Refresh Frequency**: 
+**Refresh Frequency**:
 - Real-time: Performance, uptime
 - Daily: User activity, signups
 - Weekly: Cohort retention, NPS

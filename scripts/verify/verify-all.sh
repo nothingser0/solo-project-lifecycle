@@ -8,6 +8,7 @@ set -e
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
@@ -33,20 +34,20 @@ done
 echo ""
 echo "2. Checking 14 Lifecycle Modules (docs/modules/)..."
 MODULES=(
-    "00-product-discovery-strategy.md"
-    "01-idea-feasibility.md"
-    "02-discovery-scope.md"
-    "03-legal-sow-charter.md"
-    "04-uiux-prototyping.md"
-    "05-architecture-specs.md"
-    "06-development-execution.md"
-    "07-quality-assurance-sit.md"
-    "08-data-migration-seeding.md"
-    "09-uat-client-signoff.md"
-    "10-deployment-production.md"
-    "11-handover-bast.md"
-    "12-warranty-sla-retainer.md"
-    "13-product-operations-iteration.md"
+    "00_PRODUCT_DISCOVERY_STRATEGY.md"
+    "01_IDEA_FEASIBILITY.md"
+    "02_DISCOVERY_SCOPE.md"
+    "03_LEGAL_SOW_CHARTER.md"
+    "04_UIUX_PROTOTYPING.md"
+    "05_ARCHITECTURE_SPECS.md"
+    "06_DEVELOPMENT_EXECUTION.md"
+    "07_QUALITY_ASSURANCE_SIT.md"
+    "08_DATA_MIGRATION_SEEDING.md"
+    "09_UAT_CLIENT_SIGNOFF.md"
+    "10_DEPLOYMENT_PRODUCTION.md"
+    "11_HANDOVER_BAST.md"
+    "12_WARRANTY_SLA_RETAINER.md"
+    "13_PRODUCT_OPERATIONS_ITERATION.md"
 )
 
 for mod in "${MODULES[@]}"; do
@@ -71,6 +72,7 @@ KEY_FILES=(
     "references/README.md"
     "scripts/README.md"
     "case-studies/README.md"
+    "evals/README.md"
 )
 
 for kf in "${KEY_FILES[@]}"; do
@@ -86,11 +88,11 @@ done
 echo ""
 echo "4. Checking Case Studies..."
 CASE_STUDIES=(
-    "01-mvp-saas-inventory.md"
-    "02-ecommerce-fashion-mvp.md"
-    "03-crm-real-estate-internal.md"
-    "04-medium-b2b-saas-worked-example.md"
-    "05-large-system-integration-worked-example.md"
+    "01_MVP_SAAS_INVENTORY.md"
+    "02_ECOMMERCE_FASHION_MVP.md"
+    "03_CRM_REAL_ESTATE_INTERNAL.md"
+    "04_MEDIUM_B2B_SAAS_WORKED_EXAMPLE.md"
+    "05_LARGE_SYSTEM_INTEGRATION_WORKED_EXAMPLE.md"
 )
 for cs in "${CASE_STUDIES[@]}"; do
     if [ -f "case-studies/$cs" ]; then
@@ -101,27 +103,14 @@ for cs in "${CASE_STUDIES[@]}"; do
     fi
 done
 
-# 5. Verify Patterns Presence (17 Patterns)
+# 5. Verify Patterns Presence (4 active Indonesia/domain-specific + archived generics)
 echo ""
 echo "5. Checking Patterns..."
 PATTERNS=(
-    "patterns/api/graphql-and-versioning.md"
-    "patterns/api/rest-conventions.md"
-    "patterns/database/seeding-and-transactions.md"
-    "patterns/database/supabase-migrations.md"
-    "patterns/deployment/ci-cd-pipeline.md"
-    "patterns/error-handling/error-boundaries.md"
-    "patterns/git-workflow/branching-strategy.md"
-    "patterns/performance/caching-strategies.md"
-    "patterns/performance/n-plus-one-prevention.md"
-    "patterns/security/authentication.md"
-    "patterns/testing/test-pyramid.md"
-    "patterns/validation/zod-patterns.md"
-    "patterns/payments/indonesia-payment-gateways.md"
-    "patterns/compliance/uu-pdp-compliance.md"
-    "patterns/offline/offline-first-sync.md"
-    "patterns/observability/logging-monitoring.md"
-    "patterns/localization/i18n-indonesia.md"
+    "patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md"
+    "patterns/compliance/UU_PDP_COMPLIANCE.md"
+    "patterns/offline/OFFLINE_FIRST_SYNC.md"
+    "patterns/localization/I18N_INDONESIA.md"
 )
 for pat in "${PATTERNS[@]}"; do
     if [ -f "$pat" ]; then
@@ -131,9 +120,55 @@ for pat in "${PATTERNS[@]}"; do
         ERRORS=$((ERRORS + 1))
     fi
 done
+# Archived generic patterns (present under archive/patterns/ for recovery; not loaded by agents)
+ARCHIVED_PATTERNS=(
+    "archive/patterns/validation/zod-patterns.md"
+    "archive/patterns/security/authentication.md"
+    "archive/patterns/testing/test-pyramid.md"
+    "archive/patterns/deployment/ci-cd-pipeline.md"
+)
+for pat in "${ARCHIVED_PATTERNS[@]}"; do
+    if [ ! -f "$pat" ]; then
+        echo -e "  ${RED}✗${NC} Archived pattern missing: $pat"
+        ERRORS=$((ERRORS + 1))
+    fi
+done
+echo -e "  ${GREEN}✓${NC} archived generic patterns present under archive/patterns/"
 
-# 6. Verify Markdown Links and Frontmatter
-echo "6. Checking Markdown Links and SKILL.md Frontmatter..."
+# 6. Runbook token budget (SKILL.md promises "≤~2k tokens" per runbook)
+# Warning-only: catches silent bloat that would defeat on-demand loading.
+echo ""
+echo "6. Checking Runbook Token Budget (≤~2k each)..."
+BUDGET_WARN=0
+for rb in docs/modules/*.md; do
+    [ "$(basename "$rb")" = "README.md" ] && continue
+    rb_bytes=$(wc -c < "$rb")
+    rb_tok=$((rb_bytes / 4))
+    if [ "$rb_tok" -gt 2000 ]; then
+        echo -e "  ${YELLOW}⚠${NC} $rb ~${rb_tok} tokens (>2000) — move detail to docs/modules/deep-dives/"
+        BUDGET_WARN=$((BUDGET_WARN + 1))
+    fi
+done
+if [ $BUDGET_WARN -eq 0 ]; then
+    echo -e "  ${GREEN}✓${NC} all runbooks within the ~2k token budget"
+else
+    echo -e "  ${YELLOW}⚠${NC} $BUDGET_WARN runbook(s) over budget (non-blocking)"
+fi
+
+# 7. Eval scenario catalog integrity (structural; does not run an agent)
+echo ""
+echo "7. Checking Eval Scenario Catalog..."
+if command -v node >/dev/null 2>&1; then
+    if node scripts/evals/run-evals.js --validate >/dev/null 2>&1; then
+        echo -e "  ${GREEN}✓${NC} eval scenarios valid (8 scenarios, all with automated assertions)"
+    else
+        echo -e "  ${RED}✗${NC} eval catalog invalid (run: node scripts/evals/run-evals.js --validate)"
+        ERRORS=$((ERRORS + 1))
+    fi
+fi
+
+# 8. Verify Markdown Links and Frontmatter
+echo "8. Checking Markdown Links and SKILL.md Frontmatter..."
 if command -v node >/dev/null 2>&1; then
     if node scripts/verify/verify-skill-frontmatter.js >/dev/null 2>&1; then
         echo -e "  ${GREEN}✓${NC} SKILL.md frontmatter valid"

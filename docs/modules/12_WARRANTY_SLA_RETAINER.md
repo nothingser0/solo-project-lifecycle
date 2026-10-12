@@ -1,7 +1,7 @@
 # Module 12: Warranty Period & Transition to Monthly Retainer / SLA Support
 
-> - `templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md` (30-day simplified warranty for MVP/small tier)
-> - `deep-dives/12-warranty-sla-retainer.md` (policy socialization details, hotfix git flow, proposal cron, full Bronze/Silver/Gold definitions)
+> **Templates to copy**: `templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md` (30-day simplified, MVP/small) · `WARRANTY_POLICY_TEMPLATE.md` · `SLA_RETAINER_CONTRACT_TEMPLATE.md`
+> 📖 **Optional** (do NOT preload): `deep-dives/12_WARRANTY_SLA_RETAINER.md` (policy socialization details, hotfix git flow, proposal cron, full Bronze/Silver/Gold definitions)
 
 Culminating phase: manage the bug-fix warranty metered, establish SLAs, handle production incidents, and convert one-off projects into recurring revenue (**Monthly Retainer / SLA Contract**).
 

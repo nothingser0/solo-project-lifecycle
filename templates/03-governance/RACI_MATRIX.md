@@ -81,7 +81,7 @@
 | Budget approval | A | R | I | I | I | I | I | I | C |
 | SOW signing | A | R | I | I | I | I | R | I | A |
 
-**Key**: 
+**Key**:
 - Sponsor Accountable for budget/charter (owns project success)
 - PM Responsible for coordination (does the work)
 - Client Responsible for requirements input

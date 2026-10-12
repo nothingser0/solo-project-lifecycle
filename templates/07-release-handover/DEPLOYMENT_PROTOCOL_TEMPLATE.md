@@ -64,7 +64,7 @@ curl -Iv https://app.client.com
 - [ ] **Build Android App Bundle**: `flutter build appbundle --release` or `cd android && ./gradlew bundleRelease` (produces `.aab` file).
 - [ ] **Google Play Console**: Upload `.aab` to *Production* track (or run *Staged Rollout 20%*).
 - [ ] **iOS Archive**: `flutter build ipa --release` or archive via Xcode with *Distribution Certificate* & *Provisioning Profile*.
-- [ ] **Apple App Store Connect**: Upload `.ipa` via Transporter/Xcode $\to$ Submit for Review.
+- [ ] **Apple App Store Connect**: Upload `.ipa` via Transporter/Xcode → Submit for Review.
 - [ ] **Force-Update Check**: Endpoint `/api/v1/app/version-check` returns minimum version `1.0.0`.
 
 ---
@@ -111,7 +111,7 @@ Real transaction tests executed directly on public domain:
 - [x] **PVT-02 (Document Creation)**: New draft document successfully inputted, rendered to official PDF, and securely stored in encrypted vault.
 - [x] **PVT-03 (Digital Signature)**: Digital signature link opened on mobile device and signed successfully.
 - [x] **PVT-04 (Real Transaction)**: Real payment transaction test successfully debited and updated order status instantly.
-- [x] **PVT-05 (Observability)**: Uptime monitoring active with average latency of **125 ms** (target $< 200\text{ ms}$).
+- [x] **PVT-05 (Observability)**: Uptime monitoring active with average latency of **125 ms** (target < 200 ms).
 
 ---
 

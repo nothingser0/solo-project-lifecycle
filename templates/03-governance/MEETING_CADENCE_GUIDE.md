@@ -30,7 +30,7 @@
 
 **Time**: 10:00 AM local time (same time every day)
 
-**Format**: 
+**Format**:
 - Stand up (keeps it short)
 - Round-robin (each person 1-2 minutes)
 
@@ -41,10 +41,10 @@
 
 **Example**:
 ```
-John: Yesterday finished payment API. Today starting webhook integration. 
+John: Yesterday finished payment API. Today starting webhook integration.
 No blockers.
 
-Sarah: Yesterday wrote frontend tests. Today fixing flaky tests. 
+Sarah: Yesterday wrote frontend tests. Today fixing flaky tests.
 Blocked: Need staging environment access.
 
 Mike: Yesterday code review. Today deploying to staging. No blockers.

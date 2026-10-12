@@ -1,7 +1,7 @@
 # Module 09: [VALIDATION GATE] UAT & Client Sign-Off on Staging
 
-> - `templates/06-qa-uat/UAT_WORKBOOK_SMALL.md`, `UAT_SIGNOFF_SMALL.md` (Small/Fast-track)
-> - `deep-dives/09-uat-client-signoff.md` (training/demo/feedback templates, full client-protection scripts, full severity matrix & deemed-acceptance clause)
+> **Templates to copy**: `templates/06-qa-uat/UAT_WORKBOOK_SMALL.md` · `UAT_SIGNOFF_SMALL.md` (Small/Fast-track) · `UAT_WORKBOOK_TEMPLATE.md` (Medium+)
+> 📖 **Optional** (do NOT preload): `deep-dives/09_UAT_CLIENT_SIGNOFF.md` (training/demo/feedback templates, full client-protection scripts, full severity matrix, deemed-acceptance clause)
 
 **BLOCKING VALIDATION GATE**: DEPLOYMENT TO PRODUCTION OR PRIMARY-DOMAIN POINTING IS PROHIBITED BEFORE THIS GATE PASSES. The Client Single PIC tests on Staging against `PRD.md` acceptance criteria; defects are triaged, scope creep deflected, and the **UAT Sign-Off Report (Berita Acara UAT)** is signed.
 

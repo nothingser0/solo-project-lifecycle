@@ -78,8 +78,10 @@ async function executeImport() {
     batchCount++;
   }
 
-  console.log(`[SUCCESS] Imported ${rowCount} records into table "${targetTable}" across ${batchCount} batches.`);
-  console.log('Integrity check: PASS');
+  // No database driver is wired into this starter script: rows are parsed and batched
+  // but NOT persisted. Wire your DB client (pg / knex / prisma) into the batch-write block above.
+  console.log(`[PARSED] ${rowCount} records for table "${targetTable}" across ${batchCount} batches — NOT persisted (starter stub).`);
+  console.log('[ACTION REQUIRED] Implement the batch write with your DB driver before production use.');
 }
 
 executeImport().catch((err) => {

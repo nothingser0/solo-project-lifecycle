@@ -191,7 +191,7 @@ Browser: Chrome 119, Windows 11
 ### Example Decision Tree
 
 **Client reports**: "Dashboard is slow"
-1. Was it slow during UAT? 
+1. Was it slow during UAT?
    - **No** → Bug (covered)
    - **Yes** → Baseline performance (not covered unless 2x worse)
 

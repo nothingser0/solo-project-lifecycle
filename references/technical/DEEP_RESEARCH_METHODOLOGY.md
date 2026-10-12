@@ -1,5 +1,44 @@
 # Deep Research Methodology: Regulatory, Competitor & Domain Analysis
 
+## Contents
+
+- [Table of Contents](#table-of-contents)
+- [1. When to Do Deep Research](#1-when-to-do-deep-research)
+- [2. Regulatory & Compliance Research](#2-regulatory-compliance-research)
+- [Primary Regulations](#primary-regulations)
+- [Progressive PPh OP Rates (Article 17 HPP Law)](#progressive-pph-op-rates-article-17-hpp-law)
+- [Regulatory Change History](#regulatory-change-history)
+- [Compliance Checklist — FreePajak](#compliance-checklist-freepajak)
+- [Executive Summary](#executive-summary)
+- [1. [Regulation Category 1]](#1-regulation-category-1)
+- [2. [Regulation Category 2]](#2-regulation-category-2)
+- [Appendix A: Primary Source Links](#appendix-a-primary-source-links)
+- [Appendix B: Change Log](#appendix-b-change-log)
+- [Appendix C: Compliance Checklist](#appendix-c-compliance-checklist)
+- [3. Competitor Deep-Dive Analysis](#3-competitor-deep-dive-analysis)
+- [Competitor List](#competitor-list)
+- [Feature Comparison Matrix](#feature-comparison-matrix)
+- [Gap Analysis](#gap-analysis)
+- [Competitor Positioning](#competitor-positioning)
+- [Executive Summary](#executive-summary)
+- [1. [Competitor Name 1]](#1-competitor-name-1)
+- [2. [Competitor Name 2]](#2-competitor-name-2)
+- [Feature Comparison Matrix](#feature-comparison-matrix)
+- [Gap Analysis](#gap-analysis)
+- [Positioning Map](#positioning-map)
+- [Our Positioning & Differentiator](#our-positioning-differentiator)
+- [Recommendations](#recommendations)
+- [4. Domain Knowledge Acquisition](#4-domain-knowledge-acquisition)
+- [Tax Glossary](#tax-glossary)
+- [5. Research Deliverables Structure](#5-research-deliverables-structure)
+- [6. Validation & Citation Standards](#6-validation-citation-standards)
+- [References](#references)
+- [7. When Research is "Done"](#7-when-research-is-done)
+- [8. Tools & Resources](#8-tools-resources)
+- [9. Common Pitfalls & How to Avoid](#9-common-pitfalls-how-to-avoid)
+- [10. Case Study: FreePajak Research (Real Example)](#10-case-study-freepajak-research-real-example)
+
+
 Comprehensive guide for deep research before development — regulation/compliance, competitor analysis, and domain-specific knowledge acquisition.
 
 **Last Updated**: 2026-09-29  
@@ -139,8 +178,8 @@ Site-specific search (more accurate than Google):
 | 4 | 500 juta - 5 miliar | 30% | 94 juta + (PKP - 500 jt) × 30% |
 | 5 | > 5 miliar | 35% | 1.444 juta + (PKP - 5 M) × 35% |
 
-**Source**: Law No. 7/2021 Article 17 paragraph (1) letter a  
-**Effective**: 1 January 2022  
+**Source**: Law No. 7/2021 Article 17 paragraph (1) letter a
+**Effective**: 1 January 2022
 **Last Updated**: 28 September 2026 (no changes since 2022)
 ```
 
@@ -205,8 +244,8 @@ Site-specific search (more accurate than Google):
 ```markdown
 # Regulatory Research [Domain] [Year]
 
-**Reference Document for**: [Project Name]  
-**Research Date**: [Date]  
+**Reference Document for**: [Project Name]
+**Research Date**: [Date]
 **Status**: VALIDATED / IN REVIEW / DRAFT
 
 ---
@@ -221,8 +260,8 @@ Site-specific search (more accurate than Google):
 ### 1.1 [Subtopic]
 [Detailed explanation with tables, formulas, examples]
 
-**Source**: [UU/PP/PMK citation with URL]  
-**Effective Date**: [Date]  
+**Source**: [UU/PP/PMK citation with URL]
+**Effective Date**: [Date]
 **Last Verified**: [Date]
 
 ## 2. [Regulation Category 2]
@@ -411,8 +450,8 @@ unlike [competitor/alternative] which [competitor weakness].
 ```markdown
 # In-Depth Competitor Analysis: [Project Name]
 
-**Project**: [Name]  
-**Research Date**: [Date]  
+**Project**: [Name]
+**Research Date**: [Date]
 **Target User**: [User segment]
 
 ---
@@ -574,11 +613,11 @@ Example axes:
 ```markdown
 # [Document Title]
 
-**Reference Document for**: [Project Name]  
-**Research Date**: [YYYY-MM-DD]  
-**Status**: DRAFT | IN REVIEW | VALIDATED  
-**Researcher**: [Name]  
-**Last Updated**: [YYYY-MM-DD]  
+**Reference Document for**: [Project Name]
+**Research Date**: [YYYY-MM-DD]
+**Status**: DRAFT | IN REVIEW | VALIDATED
+**Researcher**: [Name]
+**Last Updated**: [YYYY-MM-DD]
 
 ---
 
@@ -638,18 +677,18 @@ Non-employee PPh 21 is calculated using 50% Norma[^1], then progressive rates wi
 ## References
 
 ### Primary Sources
-1. Law No. 7 of 2021 (HPP Law) — Progressive PPh OP rates  
+1. Law No. 7 of 2021 (HPP Law) — Progressive PPh OP rates
    https://peraturan.bpk.go.id/Details/195158/uu-no-7-tahun-2021
    
-2. PMK No. 168/PMK.010/2023 — PPh 21 employee & non-employee  
+2. PMK No. 168/PMK.010/2023 — PPh 21 employee & non-employee
    https://jdih.kemenkeu.go.id/fulltext/2023/168~PMK.010~2023Per.pdf
 
 ### Secondary Sources
-3. Ortax (2026). "Freelancer PPh 21 Guide 2026"  
+3. Ortax (2026). "Freelancer PPh 21 Guide 2026"
    https://ortax.org/pajak-freelance-2026
 
 ### Competitor Analysis
-4. KlikPajak pricing page (accessed 2026-09-28)  
+4. KlikPajak pricing page (accessed 2026-09-28)
    https://klikpajak.id/pricing
 ```
 

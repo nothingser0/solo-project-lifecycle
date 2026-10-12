@@ -20,9 +20,9 @@ fi
 cat <<EOF
 # Functional Specification Document (FSD) - Technical Specifications
 
-**Project**: $PROJECT_NAME  
-**Stack**: $FRAMEWORK  
-**Date**: $DATE  
+**Project**: $PROJECT_NAME
+**Stack**: $FRAMEWORK
+**Date**: $DATE
 **Status**: DRAFT (Generated from Lifecycle Harness)
 
 ---
@@ -39,6 +39,8 @@ $VERSION_HINTS
 ---
 
 ## 2. Database Schema & Data Models
+
+> **Example schema (JS/Supabase-shaped).** Adapt DDL, auth model, and RLS to your locked stack before freezing — Laravel uses Eloquent migrations, Django uses ORM models, Go uses sqlc/GORM.
 
 \`\`\`sql
 -- Extension initialization

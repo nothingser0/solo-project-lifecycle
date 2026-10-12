@@ -1,8 +1,8 @@
 # Module 05: Architecture & Technical Specifications (PRD & FSD)
 
-> Deep dive (full question bodies, registry rationale, adaptation prose, verbose prompts): `docs/modules/deep-dives/05-architecture-specs.md`
-> References: `references/solo/SOLO_ARCHITECTURE_GUIDE.md`, `references/stacks/STACK_SUPPORT_MATRIX.md`, `references/technical/ARCHITECTURE_SPECS_DEEP_DIVE.md`
-> Templates: `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`, `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`
+> **Templates to copy**: `templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md`, `FSD_TECHNICAL_TEMPLATE.md` · Enterprise/Medium+: `templates/03-governance/ADR_TEMPLATE.md` (→ `docs/governance/ADR.md`), `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` (→ `docs/governance/RISK_ASSESSMENT_MATRIX.md`)
+> 📖 **Optional** (do NOT preload): `references/solo/SOLO_ARCHITECTURE_GUIDE.md` · `references/stacks/STACK_SUPPORT_MATRIX.md` · deep dive `deep-dives/05_ARCHITECTURE_SPECS.md` (full question bodies, rationale, verbose prompts)
+> Conditional (open only if the project needs it): `patterns/compliance/UU_PDP_COMPLIANCE.md` (personal data), `patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md` (payment rails), `patterns/offline/OFFLINE_FIRST_SYNC.md` (offline operation)
 
 **Inputs**: `SCOPE_STATEMENT.md` (Module 02) + `DESIGN_SPEC.md` (Module 04). Small scale: unified `PROJECT_LITE.md`.
 **Outputs**: `docs/specs/PRD.md` + `docs/specs/FSD.md` → ready for Module 06.

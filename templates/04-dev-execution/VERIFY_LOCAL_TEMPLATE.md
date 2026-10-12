@@ -28,12 +28,12 @@
 
 | Endpoint | Method | Test Scenario | Expected Status Code | Test Result |
 | :--- | :---: | :--- | :---: | :---: |
-| `/api/v1/auth/login` | `POST` | Valid credentials $\to$ HttpOnly cookie / token set | `200 OK` | [ ] PASS |
-| `/api/v1/auth/login` | `POST` | Invalid credentials $\to$ Specific error message | `401 Unauthorized` | [ ] PASS |
+| `/api/v1/auth/login` | `POST` | Valid credentials → HttpOnly cookie / token set | `200 OK` | [ ] PASS |
+| `/api/v1/auth/login` | `POST` | Invalid credentials → Specific error message | `401 Unauthorized` | [ ] PASS |
 | `/api/v1/[resource]` | `POST` | Valid payload + new Idempotency key | `201 Created` | [ ] PASS |
-| `/api/v1/[resource]` | `POST` | Duplicate idempotency key re-sent $\to$ Cached response | `200 OK / 409` | [ ] PASS |
-| `/api/v1/[resource]/:id` | `GET` | Fetch resource data $\to$ Scoped by tenant | `200 OK` | [ ] PASS |
-| `/api/v1/[action]` | `POST` | Atomic mutation $\to$ Status updated | `200 OK` | [ ] PASS |
+| `/api/v1/[resource]` | `POST` | Duplicate idempotency key re-sent → Cached response | `200 OK / 409` | [ ] PASS |
+| `/api/v1/[resource]/:id` | `GET` | Fetch resource data → Scoped by tenant | `200 OK` | [ ] PASS |
+| `/api/v1/[action]` | `POST` | Atomic mutation → Status updated | `200 OK` | [ ] PASS |
 
 ---
 
@@ -112,7 +112,7 @@ npm run dev
 ### 5.3 Critical Security Checks (Security Sanity)
 - [ ] **Encrypted Storage**: Sensitive files in S3/R2 are confirmed binary encrypted at rest.
 - [ ] **Presigned URLs**: Download links expire automatically and return `403 Forbidden` after 15 minutes.
-- [ ] **Password Protection**: Password hashes in database confirmed using Argon2id / bcrypt ($\ge 12$ rounds).
+- [ ] **Password Protection**: Password hashes in database confirmed using Argon2id / bcrypt (≥ 12 rounds).
 - [ ] **Rate Limiting**: Auth & checkout endpoints rate-limited against brute-force attacks.
 
 ---

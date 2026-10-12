@@ -463,7 +463,7 @@ Best,
 | Dashlane | Yes (50 passwords) | $4.99/month | Personal use |
 | Google Password Manager | Yes | N/A | Personal, NOT for sharing |
 
-**Recommendation**: 
+**Recommendation**:
 - Professional projects: 1Password
 - Budget projects: Bitwarden Free
 - Personal use only: Google Password Manager

@@ -45,12 +45,12 @@
 
 **Executive Summary Template**:
 ```markdown
-**Status**: 🟢 Green / 🟡 Yellow / 🔴 Red  
-**Progress**: [X]% complete (Week [Y] of [Z])  
-**Budget**: $[X] spent / $[Y] total ([Z]% utilization)  
-**Key Wins**: [1-2 highlights]  
-**Risks**: [Top 1-2 risks with mitigation]  
-**Asks**: [Explicit decision/approval needed]  
+**Status**: 🟢 Green / 🟡 Yellow / 🔴 Red
+**Progress**: [X]% complete (Week [Y] of [Z])
+**Budget**: $[X] spent / $[Y] total ([Z]% utilization)
+**Key Wins**: [1-2 highlights]
+**Risks**: [Top 1-2 risks with mitigation]
+**Asks**: [Explicit decision/approval needed]
 **Next Milestone**: [What's shipping next + date]
 ```
 
@@ -176,8 +176,8 @@
 **Subject**: [Project Name] - Week [X] Status Report 🟢
 
 ```markdown
-**Status**: 🟢 Green (on track)  
-**Progress**: 45% complete (Week 5 of 10)  
+**Status**: 🟢 Green (on track)
+**Progress**: 45% complete (Week 5 of 10)
 **Budget**: $18K spent / $40K total (45% utilized, on track)
 
 **This Week's Wins**:
@@ -219,9 +219,9 @@
 ```markdown
 ## Executive Summary: [Month] Progress
 
-**Overall Status**: 🟢 Green  
-**Timeline**: On track for [Launch Date]  
-**Budget**: [X]% utilized, [Y]% remaining buffer  
+**Overall Status**: 🟢 Green
+**Timeline**: On track for [Launch Date]
+**Budget**: [X]% utilized, [Y]% remaining buffer
 **Key Metric**: [E.g., "40% feature completion, 0 P0 bugs"]
 
 ---
@@ -280,7 +280,7 @@
 
 ---
 
-**Prepared By**: [Your Name]  
+**Prepared By**: [Your Name]
 **Next Review**: [Date]
 ```
 

@@ -33,7 +33,7 @@
 
 ### 2.1 Total Addressable Market (TAM)
 
-> ⚠️ **VANITY TAM WARNING**: Unfiltered top-down TAM (e.g. 64M MSMEs $\times$ software price = Rp 76.8T) is a vanity metric that misleads founders. Real software viability depends on the bottom-up SAM funnel below.
+> ⚠️ **VANITY TAM WARNING**: Unfiltered top-down TAM (e.g. 64M MSMEs × software price = Rp 76.8T) is a vanity metric that misleads founders. Real software viability depends on the bottom-up SAM funnel below.
 
 **Calculation Method**:
 ```
@@ -55,7 +55,6 @@ vanity_tam_idr = total_indonesian_msmes * annual_arpu  # IDR 76.8 trillion
 target_vertical_units = total_indonesian_msmes * 0.15  # [ASM-MKT-02] Retail & service with cashier (~9.6M)
 digital_equipped_units = target_vertical_units * 0.12  # [ASM-MKT-03] Have PC/Smartphone & data (~1.15M)
 active_software_budgeters = digital_equipped_units * 0.08 # [ASM-MKT-04] Actively pay for software (~92,000)
-```
 # Or in USD
 TAM_usd = 64_000_000 * (100 / 15_000)  # $100/month
 TAM_usd = $5.1 billion
@@ -267,16 +266,16 @@ Innovators (2.5%) → Early Adopters (13.5%) → Early Majority (34%) → Late M
 
 ### 5.1 Unit Economics Model
 - **Target Subscription Price**: Rp [X] / month (or Rp [Y] / year)
-- **Estimated Blended CAC**: Rp [A] (Target: CAC $\le \frac{1}{3} \times \text{LTV}$)
-- **Target Customer Lifespan**: [Z] months $\rightarrow$ **Estimated LTV**: Rp [LTV]
+- **Estimated Blended CAC**: Rp [A] (Target: CAC ≤ (1 / 3) × LTV)
+- **Target Customer Lifespan**: [Z] months → **Estimated LTV**: Rp [LTV]
 - **Payment Gateway Fee**: QRIS (0.7%), Virtual Account (Rp 2.000–4.000/tx), Kartu Kredit (2.9% + Rp 2.000)
 - **Statutory Tax**: PPN 11% (UU HPP)
-- **Gross Margin**: Target $\ge 70\%$ (after server hosting + payment fee)
+- **Gross Margin**: Target ≥ 70% (after server hosting + payment fee)
 
 ### 5.2 Kill Criteria
 *If any of the following conditions are met, the project MUST BE TERMINATED or PIVOTED:*
-1. **Market Kill**: Waitlist conversion $< 2\%$ after 200 targeted visits OR survey intent-to-buy $< 30\%$.
-2. **Financial Kill**: Customer Acquisition Cost (CAC) exceeds $\text{LTV} / 2$ during initial marketing tests.
+1. **Market Kill**: Waitlist conversion < 2% after 200 targeted visits OR survey intent-to-buy < 30%.
+2. **Financial Kill**: Customer Acquisition Cost (CAC) exceeds LTV / 2 during initial marketing tests.
 3. **Regulatory Kill**: Business model legally mandates banking or direct lending capital licenses exceeding solo founder capacity.
 4. **Technical Feasibility Kill**: Core architecture demands complex multi-master distributed synchronization exceeding 1 developer's capacity.
 

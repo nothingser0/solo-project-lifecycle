@@ -42,7 +42,7 @@
   3. Fill in party names, compensation amount, and effective date fields.
   4. Click **"Generate Document Preview"** button.
 - **Expected Result**:
-  - Document PDF preview is displayed on browser screen within $< 5\text{ seconds}$.
+  - Document PDF preview is displayed on browser screen within < 5 seconds.
   - Form data entered is accurately rendered within document clauses.
   - Document status is recorded as `DRAFT`.
 - **Client Test Result**: [ ] **PASS** / [ ] **FAIL**

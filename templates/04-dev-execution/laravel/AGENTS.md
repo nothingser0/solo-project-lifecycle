@@ -8,36 +8,20 @@
 
 ---
 
-## CRITICAL: Read Official Documentation First
-
-**BEFORE implementing any feature, check official docs for current syntax:**
-
-- **Framework Docs**: Check version-specific pages for current API
-- **ORM Docs**: Database query syntax, migrations, relationships
-- **Validation Docs**: Input validation, form handling
-
-**Why**: Framework syntax changes between versions. This project uses specific versions locked in FSD.md.
-
-**When uncertain about syntax:**
-1. Read official docs for installed version
-2. Check migration guides for breaking changes
-3. Verify with tests before committing
-
 ## CRITICAL: Read Project Design Specifications
 
 **BEFORE implementing any UI component, read project design docs in docs/ folder:**
 
-- **docs/specs/DESIGN_SYSTEM.md**: Design tokens, screen specifications, component styles
+- **docs/specs/DESIGN_SPEC.md**: Per-screen 5-state specifications (SCR-XX)
 - **docs/specs/SITEMAP.md**: Route structure with Screen IDs (SCR-XX)
-- **docs/design/prototype-output/**: Generated screen components (if using Interactive Prototype)
-- **DESIGN.md** (root): Simplified tokens reference (copied from docs/)
+- **DESIGN.md** (root, staged at `docs/harness-root/DESIGN.md`): design tokens (colors, typography, z-index)
 
 **Why**: Generic styles ≠ project design. Must match brand identity.
 
 **For each screen/component:**
 1. Find screen ID in docs/specs/SITEMAP.md (e.g., SCR-09 Dashboard)
-2. Read corresponding section in docs/specs/DESIGN_SYSTEM.md
-3. Check docs/design/prototype-output/SCR-09/ if available
+2. Read corresponding screen section in docs/specs/DESIGN_SPEC.md
+3. Check docs/design/screens/scr-09/ (or docs/design/prompts/scr-09/) if available
 4. Extract design tokens from DESIGN.md (root)
 5. Implement exactly as specified
 
@@ -114,6 +98,23 @@ feat: add user profile endpoint
 fix: resolve token validation bug
 refactor: extract payment service
 ```
+
+## Anti-AI-Slop Directives (ENFORCED)
+1. **BANNED: Redundant Explanatory Comments** — do not narrate obvious code.
+   - ❌ `// Increment counter`  |  `// Import Request`
+   - ❌ Stub comments: `// TODO: implement this later`  |  `// Add your logic here`
+   - ✅ Comment ONLY non-obvious business logic, domain formulas, or deliberate workarounds.
+   - ✅ Never leave commented-out dead code — delete it (git remembers).
+2. **BANNED: Silent Failures** — no empty catch/except blocks; log, rethrow, or return a typed error.
+3. **BANNED: Dead Code & Unused Imports** — remove unused variables, imports, and unreachable branches.
+4. **RACE CONDITIONS (MANDATORY for any shared-state mutation)** — protect every read-modify-write on inventory, balances, counters, booking slots, or status transitions:
+   - Use a DB transaction + row lock (lockForUpdate()), or a unique constraint / idempotency key.
+   - Never "check then act" across two separate queries without a lock or constraint.
+   - Webhooks and payment callbacks MUST be idempotent (dedupe on provider event ID).
+   - Frontend: disable the submit button while pending + use an idempotency key to prevent double-submit.
+5. **BANNED: Hallucinated APIs/Packages** — verify every import exists before using it.
+
+---
 
 ## Anti-Patterns (NEVER)
 - ❌ No raw SQL queries (use Eloquent)

@@ -117,7 +117,7 @@ Status: Investigating
    - Disable failing third-party integration
    - Use cached data or fallback
 
-**Time Limit**: 
+**Time Limit**:
 - SEV-1: Mitigation within 1 hour or escalate to executive team
 - SEV-2: Mitigation within 4 hours
 
@@ -218,7 +218,7 @@ Database connection pool limit (100) too low for traffic spike (2,000 concurrent
 **Status Page Update**:
 ```
 [Oct 4, 02:20 UTC] Investigating
-We are aware of API errors affecting all users. 
+We are aware of API errors affecting all users.
 We are investigating the issue.
 
 [Oct 4, 02:45 UTC] Identified
@@ -237,12 +237,12 @@ Subject: Service Incident - Oct 4, 2024
 
 Dear Customers,
 
-On October 4, 2024 at 02:15 UTC, we experienced a service outage 
-lasting 35 minutes. During this time, the API returned errors and 
+On October 4, 2024 at 02:15 UTC, we experienced a service outage
+lasting 35 minutes. During this time, the API returned errors and
 users could not access the system.
 
 What happened:
-A traffic spike during our flash sale exceeded our database 
+A traffic spike during our flash sale exceeded our database
 connection pool capacity, causing API errors.
 
 What we've done:
@@ -250,7 +250,7 @@ What we've done:
 - Added monitoring to prevent recurrence
 - Implemented auto-scaling for future traffic spikes
 
-We apologize for the inconvenience. If you were affected and have 
+We apologize for the inconvenience. If you were affected and have
 questions, please contact support@yourcompany.com.
 
 Sincerely,

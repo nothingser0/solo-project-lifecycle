@@ -1,5 +1,16 @@
 # UI Component & Animation Library Reference
 
+## Contents
+
+- [Table of Contents](#table-of-contents)
+- [1. Complex UI Components](#1-complex-ui-components)
+- [2. Animation Libraries](#2-animation-libraries)
+- [3. Design Style Guides](#3-design-style-guides)
+- [4. Integration Patterns](#4-integration-patterns)
+- [5. Component Decision Matrix](#5-component-decision-matrix)
+- [6. Resources](#6-resources)
+
+
 Comprehensive catalog of production-ready components, animation libraries, and design style implementations for modern web apps.
 
 **Last Updated**: 2026-09-29  
@@ -766,7 +777,7 @@ export function HeroSection() {
 }
 ```
 
-**When to use**: 
+**When to use**:
 - ✅ 3D product configurators (e.g., tax bracket visualization in 3D)
 - ✅ Immersive hero sections
 - ✅ Data visualization (3D charts, networks)
@@ -996,14 +1007,14 @@ export function TodoList({ todos }) {
 .neomorphic-card {
   background: #E0E5EC;
   border-radius: 20px;
-  box-shadow: 
+  box-shadow:
     9px 9px 16px rgba(163, 177, 198, 0.6),
     -9px -9px 16px rgba(255, 255, 255, 0.5);
 }
 
 .neomorphic-button {
   background: #E0E5EC;
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 6px rgba(163, 177, 198, 0.4),
     inset -3px -3px 6px rgba(255, 255, 255, 0.8);
 }

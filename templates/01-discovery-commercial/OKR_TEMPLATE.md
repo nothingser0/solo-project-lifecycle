@@ -1,5 +1,8 @@
 # OKR (Objectives & Key Results): Q[X] 2026
 
+> ⚠️ **ILLUSTRATIVE EXAMPLE ONLY** — figures, names, and scenarios below are a formatting sample, NOT real data for your project. Replace them or delete the sample rows before use.
+
+
 **Project**: [Product Name]  
 **Period**: Q[X] 2026 ([Month] – [Month])  
 **Owner**: [PIC / Solo Dev Name]  

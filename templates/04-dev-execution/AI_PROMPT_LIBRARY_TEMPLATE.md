@@ -238,7 +238,7 @@ Logic to extract:
 Hook signature:
 Hook name: use[FeatureName]
 Parameters: [input params]
-Return value: { 
+Return value: {
   data: [type],
   loading: boolean,
   error: Error | null,

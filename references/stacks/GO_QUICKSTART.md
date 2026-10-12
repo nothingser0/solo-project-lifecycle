@@ -610,5 +610,5 @@ Check `DATABASE_URL` in `.env` and ensure PostgreSQL is running.
 - [Go Docs](https://go.dev/doc/)
 - [Fiber Docs](https://docs.gofiber.io/)
 - [GORM Docs](https://gorm.io/)
-- `patterns/validation/` - Validation patterns
-- `patterns/security/` - Security best practices
+
+> Generic engineering patterns (validation, auth, caching) were archived to `archive/patterns/` — implement from stack knowledge or consult the archive on demand.

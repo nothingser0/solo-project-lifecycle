@@ -28,6 +28,8 @@ Command Executed: `pnpm audit --audit-level=high`
 
 ## 3. OWASP Top 10 Verification Checklist
 
+> **Naming note**: `A01`–`A10` here are **OWASP Top 10 categories** (e.g. `A01:2021 Broken Access Control`), NOT the Enterprise Advisory phases `A00`–`A04` in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md`. Same letters, unrelated namespaces.
+
 | Vulnerability Category | Defense Mechanism Tested | Test Status | Technical Evidence |
 | :--- | :--- | :---: | :--- |
 | **A01: Broken Access Control** | IDOR verification: User A restricted from accessing User B's documents | [x] PASS | Isolated query with filter `WHERE creator_id = user.id` |

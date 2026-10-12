@@ -156,7 +156,7 @@ upload_assets           - Upload images to Figma file
 
 ### M04: UI/UX Design (Extract Design System)
 
-**Scenario**: Generate DESIGN_SYSTEM.md from Figma file.
+**Scenario**: Generate DESIGN.md from Figma file.
 
 ```bash
 # User provides Figma link
@@ -166,8 +166,8 @@ User: "Extract design system from https://figma.com/file/ABC123DEF/Design-System
 AI: get_design_context(nodeId from URL)
     → Extracts colors, typography, spacing, components
     
-# Auto-generates DESIGN_SYSTEM.md
-docs/specs/DESIGN_SYSTEM.md:
+# Auto-generates DESIGN.md
+DESIGN.md (staged at docs/harness-root/, deployed to root in M06):
   - Color palette (from Figma variables)
   - Typography scale (from text styles)
   - Spacing system (from layout)
@@ -176,8 +176,8 @@ docs/specs/DESIGN_SYSTEM.md:
 
 **Prompt example**:
 ```
-"Extract the design system from https://figma.com/file/ABC123/... 
-and generate DESIGN_SYSTEM.md with colors, typography, and components"
+"Extract the design system from https://figma.com/file/ABC123/...
+and generate DESIGN.md with colors, typography, and components"
 ```
 
 ### M04: Document Screens
@@ -235,11 +235,11 @@ export function LoginForm() {
 User: "Check if design system has changed since last commit"
 
 AI: get_variable_defs(file="ABC123", nodeId="root")
-    → Compares with DESIGN_SYSTEM.md metadata
+    → Compares with DESIGN.md metadata
     → Detects primary color changed: #3B82F6 → #2563EB
     
 # Updates files
-- DESIGN_SYSTEM.md: Update primary color
+- DESIGN.md: Update primary color
 - tailwind.config.ts: Update primary-600 value
 - Commit: "design: sync primary color from Figma"
 ```
@@ -321,7 +321,7 @@ https://figma.com/file/{fileKey}/{fileName}?node-id={nodeId}
 
 ### Error: "Authentication failed"
 **Cause**: OAuth not completed or expired.
-**Fix**: 
+**Fix**:
 1. Re-run authentication flow
 2. Check MCP client has Figma server enabled
 3. Restart MCP client

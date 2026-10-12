@@ -72,7 +72,7 @@
 
 **Category**: Technical
 
-**Description**: 
+**Description**:
 Migration from MySQL to PostgreSQL may fail, causing data loss or corruption.
 
 ---
@@ -207,7 +207,7 @@ Migration from MySQL to PostgreSQL may fail, causing data loss or corruption.
 ### 1. Avoid (Eliminate the Risk)
 **When**: High impact, controllable risk
 
-**Example**: 
+**Example**:
 - Risk: Database migration failure
 - Avoid: Don't migrate, stay on current database
 - Pro: No risk

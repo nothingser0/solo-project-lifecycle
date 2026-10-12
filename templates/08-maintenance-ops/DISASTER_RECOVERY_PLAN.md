@@ -384,8 +384,8 @@ Updates: Every 15 minutes
 **Status Page**:
 ```
 [Oct 4, 03:00 UTC] Major Outage
-We are experiencing a complete service outage due to AWS 
-region failure. We have activated our disaster recovery 
+We are experiencing a complete service outage due to AWS
+region failure. We have activated our disaster recovery
 plan and are failing over to a secondary region.
 
 ETA: 30 minutes
@@ -399,11 +399,11 @@ Subject: Service Restored - Disaster Recovery Update
 
 Dear Customers,
 
-On October 4, 2024 at 03:00 UTC, we experienced a complete 
+On October 4, 2024 at 03:00 UTC, we experienced a complete
 service outage due to an AWS us-east-1 region failure.
 
-Our disaster recovery plan was immediately activated, and 
-we successfully failed over to our secondary region (us-west-2) 
+Our disaster recovery plan was immediately activated, and
+we successfully failed over to our secondary region (us-west-2)
 within 25 minutes.
 
 Timeline:

@@ -46,7 +46,7 @@ A freelance developer is contracted to build a project management SaaS for small
 # Project Idea: AgencyFlow
 
 ## Elevator Pitch
-Project management tool specifically for marketing agencies managing client campaigns, 
+Project management tool specifically for marketing agencies managing client campaigns,
 with built-in time tracking, asset library, and client approval workflows.
 
 ## Core User Loop
@@ -258,7 +258,7 @@ time_entries (
 CREATE POLICY "workspace_access" ON workspaces
   FOR SELECT USING (
     id IN (
-      SELECT workspace_id FROM workspace_members 
+      SELECT workspace_id FROM workspace_members
       WHERE user_id = auth.uid()
     )
   );
@@ -309,7 +309,7 @@ CREATE POLICY "task_access" ON tasks
 
 ## Phase 3: Development (35 Days)
 
-### Weeks 1-2: Backend Foundation (M06 Section 3)
+### Weeks 1-2: Backend Foundation (M06 STEP 6 - DB)
 
 **Days 13-19**: Database setup, auth, RLS policies
 - Supabase project created
@@ -325,7 +325,7 @@ CREATE POLICY "task_access" ON tasks
 
 ---
 
-### Weeks 3-4: Frontend UI (M06 Section 4)
+### Weeks 3-4: Frontend UI (M06 STEP 6 - UI)
 
 **Days 27-33**: Dashboard + Kanban
 - Dashboard layout (sidebar + main content)
@@ -341,7 +341,7 @@ CREATE POLICY "task_access" ON tasks
 
 ---
 
-### Weeks 5-6: Payment Integration (M06 Section 5)
+### Weeks 5-6: Payment Integration (M06 STEP 6 - API)
 
 **Days 41-47**: Stripe Integration
 - Pricing page (3 tiers: Free, Pro $29/mo, Agency $99/mo)
@@ -356,7 +356,7 @@ CREATE POLICY "task_access" ON tasks
 
 ---
 
-### Week 7: Polish & Testing (M06 Section 9)
+### Week 7: Polish & Testing (M06 STEP 7 - Tests)
 
 **Days 55-61**: Final touches
 - Loading states (skeleton screens)

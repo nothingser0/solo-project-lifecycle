@@ -1,5 +1,25 @@
 # PM Communication Guide: Business Communication Skills for Solo Developers
 
+## Contents
+
+- [1. Foundation: Communication is the Best Scope Defense](#1-foundation-communication-is-the-best-scope-defense)
+- [2. Executive Summary Writing (Top-Down Communication)](#2-executive-summary-writing-top-down-communication)
+- [3. RAG Status (Red-Amber-Green) System](#3-rag-status-red-amber-green-system)
+- [4. Status Report Format (Weekly Update)](#4-status-report-format-weekly-update)
+- [5. Risk Communication (Early Warning System)](#5-risk-communication-early-warning-system)
+- [6. Scope Creep Defense Scripts](#6-scope-creep-defense-scripts)
+- [7. Handling Difficult Stakeholders](#7-handling-difficult-stakeholders)
+- [8. Email vs Slack vs Call (Choosing the Right Channel)](#8-email-vs-slack-vs-call-choosing-the-right-channel)
+- [9. Meeting Facilitation Skills](#9-meeting-facilitation-skills)
+- [10. Negotiation & Conflict Resolution](#10-negotiation-conflict-resolution)
+- [11. Cultural & Personality Adaptation](#11-cultural-personality-adaptation)
+- [12. Common Communication Mistakes (Anti-Patterns)](#12-common-communication-mistakes-anti-patterns)
+- [13. Templates Quick Reference](#13-templates-quick-reference)
+- [14. Checklist: Communication Hygiene](#14-checklist-communication-hygiene)
+- [15. Resources & Further Reading](#15-resources-further-reading)
+- [Appendix: Communication Style Adapters](#appendix-communication-style-adapters)
+
+
 **Audience**: Solo developers dealing with business stakeholders, clients, or internal teams  
 **Goal**: Master professional communication to build trust, manage expectations, and protect project scope  
 **Last Updated**: 2026-09-27
@@ -24,8 +44,8 @@
 ```markdown
 ## [Project Name] - Status Update [Date]
 
-**Status**: 🟢 Green / 🟡 Yellow / 🔴 Red  
-**Progress**: [X]% complete (Week [Y] of [Z])  
+**Status**: 🟢 Green / 🟡 Yellow / 🔴 Red
+**Progress**: [X]% complete (Week [Y] of [Z])
 **Budget**: $[Spent] / $[Total] ([Z]% utilized)
 
 ---
@@ -36,18 +56,18 @@
 3. [Risk mitigated successfully]
 
 ### Risks & Mitigation (Top 2)
-1. **Risk**: [Description]  
-   **Impact**: [High/Medium/Low] - [Business consequence]  
+1. **Risk**: [Description]
+   **Impact**: [High/Medium/Low] - [Business consequence]
    **Mitigation**: [Action taken + ETA]
 
-2. **Risk**: [Description]  
-   **Impact**: [High/Medium/Low]  
+2. **Risk**: [Description]
+   **Impact**: [High/Medium/Low]
    **Mitigation**: [Action taken + ETA]
 
 ### Blockers (If Any)
-- **Blocker**: [Description]  
-  **Owner**: [Who needs to act]  
-  **Needed By**: [Deadline]  
+- **Blocker**: [Description]
+  **Owner**: [Who needs to act]
+  **Needed By**: [Deadline]
   **Consequence if Unresolved**: [Impact]
 
 ### Next Milestone
@@ -290,7 +310,7 @@
    **Demo Link**: https://staging.example.com/checkout (credentials: demo/demo123)
    ```
 
-2. **Set Update Schedule**: 
+2. **Set Update Schedule**:
    > "To keep things efficient, I will send updates at 09:00 and 17:00 daily. If any urgent blockers arise, I will notify you immediately. This way we can stay synchronized without interruptions during coding. Sound good?"
 
 3. **Over-Document**:
@@ -727,4 +747,4 @@ After Every Meeting:
 **End of PM Communication Guide**
 
 **Last Updated**: 2026-09-27  
-**Maintained By**: Solo Project Development Skill (Module 02)
+**Maintained By**: Solo Project Lifecycle Skill (Module 02)

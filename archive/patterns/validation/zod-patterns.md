@@ -105,7 +105,7 @@ const ALLOWED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
 export const FileUploadSchema = z.object({
   file: z.custom<File>()
     .refine(file => file.size <= MAX_FILE_SIZE, 'Maximum file size is 5MB')
-    .refine(file => ALLOWED_FILE_TYPES.includes(file.type), 
+    .refine(file => ALLOWED_FILE_TYPES.includes(file.type),
       'File format must be PDF, JPEG, or PNG'),
   description: z.string().max(500).optional(),
 });
@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { 
+        {
           error: 'Validation failed',
           details: error.errors.map(e => ({
             field: e.path.join('.'),
@@ -557,5 +557,5 @@ const validatedData = LoginSchema.parse({ email, password });
 ## See Also
 
 - `patterns/security/authentication.md` - JWT & password hashing
-- `templates/04-dev-execution/checklists/frontend-checklist.md` - Frontend form validation checklist
+- `templates/04-dev-execution/checklists/FRONTEND_CHECKLIST.md` - Frontend form validation checklist
 - M06 Development Execution - Zod integration checklist

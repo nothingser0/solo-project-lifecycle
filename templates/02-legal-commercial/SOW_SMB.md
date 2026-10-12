@@ -432,8 +432,8 @@ SOW Number: SOW-2024-012
 1. PROJECT OVERVIEW
 
 Objective:
-Build a web-based inventory management system to track product stock 
-levels, generate low-stock alerts, and provide daily inventory reports 
+Build a web-based inventory management system to track product stock
+levels, generate low-stock alerts, and provide daily inventory reports
 for ABC Retail's 8-person team managing 500 SKUs.
 
 Success Criteria:

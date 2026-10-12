@@ -17,9 +17,9 @@
 ### Data Confidence Legend
 | Icon | Level | Meaning | Rule |
 |:--:|:--|:--|:--|
-| ✅ | **VERIFIED** | Validated via client sign-off, live empirical user data, or formal statutory text |
-| 🔶 | **ASSUMPTION** | Working operational hypothesis; must be confirmed before scope freeze |
-| ❓ | **UNKNOWN** | Open requirement or technical uncertainty; blocks sprint scheduling |
+| ✅ | **VERIFIED** | Validated via client sign-off, live empirical user data, or formal statutory text | May be built without further confirmation |
+| 🔶 | **ASSUMPTION** | Working operational hypothesis; must be confirmed before scope freeze | Confirm with client before M06 |
+| ❓ | **UNKNOWN** | Open requirement or technical uncertainty; blocks sprint scheduling | Resolve or move Out-of-Scope |
 
 ### Change Control & Scope Freeze Protocol
 - **Scope Freeze Rule**: Once this document is marked `APPROVED` (for SOW signing) or `FROZEN` (for M06 development), zero features may be added without a formal Change Request (CR).
@@ -31,9 +31,9 @@
 
 ### 2.1 Core Problem & 80/20 Root Cause Breakdown
 - **Stated Problem Metric**: [Quantified business pain: e.g., Retail: stock discrepancy 10-15%; CRM: lost lead response rate 25%; CMS: article review bottleneck 4 days; HRIS: manual payroll discrepancy 12%]
-- **Primary Root Causes ($\approx 80\%$)**: [Primary operational bottlenecks: e.g., manual untracked paper entry, unassigned follow-ups, untracked editorial revisions]
-- **Secondary Root Causes ($\approx 20\%$)**: [Secondary friction points: e.g., notification delays, multi-branch coordination]
-- **Problem-Solution Fit Rule**: Every Must-Have (P0) feature must directly address the primary $80\%$ root causes.
+- **Primary Root Causes (≈ 80%)**: [Primary operational bottlenecks: e.g., manual untracked paper entry, unassigned follow-ups, untracked editorial revisions]
+- **Secondary Root Causes (≈ 20%)**: [Secondary friction points: e.g., notification delays, multi-branch coordination]
+- **Problem-Solution Fit Rule**: Every Must-Have (P0) feature must directly address the primary 80% root causes.
 
 ### 2.2 Realistic Business Growth Ramp
 - **Year 1 Customer Target**: [e.g., 50–100 paying organizations (not fantasy 500 in Month 1)]
@@ -133,7 +133,7 @@
 5. **Out-of-Scope User Segments**: Segments requiring unbuilt features (e.g., Cafes requiring Bill of Materials) are formally excluded from MVP scope.
 
 ### 5.3 Tax Calculation Disclaimers (PP 55/2022 jo. PP 20/2026)
-- Regulatory basis: **PP 55/2022 jo. PP 20/2026** (enacted 22 April 2026). The time limit for the 0.5% PPh Final facility is permanently eliminated, but the facility is **strictly restricted** to **Wajib Pajak Orang Pribadi (WP OP)**, **PT Perorangan**, and **Koperasi** with gross turnover $\le$ Rp 4.8 billion/year.
+- Regulatory basis: **PP 55/2022 jo. PP 20/2026** (enacted 22 April 2026). The time limit for the 0.5% PPh Final facility is permanently eliminated, but the facility is **strictly restricted** to **Wajib Pajak Orang Pribadi (WP OP)**, **PT Perorangan**, and **Koperasi** with gross turnover ≤ Rp 4.8 billion/year.
 - Non-Eligibility: The 0.5% facility is **no longer eligible** for CV, Firma, PT Non-Perorangan, or BUMDes.
 - Threshold: The **Rp 500.000.000/year non-taxable gross turnover threshold** applies strictly to individual taxpayers (WP OP).
 - Mandatory In-App Disclaimer: *"Perhitungan pajak bersifat estimasi operasional dan tidak menggantikan pelaporan resmi pada DJP. PPN tidak diperhitungkan (non-PKP)."*
@@ -156,8 +156,8 @@
 - **Column-Level Security**: Application layer filters out `buy_price` for Kasir queries.
 
 ### 6.2 Architecture Realism
-- **Offline / Connectivity**: Online-only MVP with reconnection retry guards (offline sync deferred if locations $<3$).
-- **Performance Budgets**: TTI $<5$ seconds on 3G; initial JS bundle $<200$ KB gzipped; API p95 $<500$ ms.
+- **Offline / Connectivity**: Online-only MVP with reconnection retry guards (offline sync deferred if locations < 3).
+- **Performance Budgets**: TTI < 5 seconds on 3G; initial JS bundle < 200 KB gzipped; API p95 < 500 ms.
 - **PDF Engine**: Client-side rendering via `@react-pdf/renderer` (avoids serverless Puppeteer timeout limits).
 - **Tech Stack Locking**: Minor versions pinned (e.g., Next.js 15.0.x, React 19.0.x, Dexie 4.0.x).
 

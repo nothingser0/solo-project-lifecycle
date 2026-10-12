@@ -490,7 +490,7 @@ Check `proxy.ts` `matcher` config
 
 ## Next Steps
 
-1. **Auth**: Implement full auth flow (see `patterns/security/authentication.md`)
+1. **Auth**: Implement full auth flow (see `archive/patterns/security/authentication.md`)
 2. **File uploads**: Add S3/R2 integration
 3. **Email**: Add Resend for transactional emails
 4. **Payment**: Integrate Stripe/Midtrans
@@ -504,5 +504,5 @@ Check `proxy.ts` `matcher` config
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Prisma Docs](https://www.prisma.io/docs)
 - [shadcn/ui](https://ui.shadcn.com)
-- `patterns/validation/zod-patterns.md` - Validation schemas
-- `patterns/security/authentication.md` - JWT auth
+
+> Generic engineering patterns (validation, auth, caching) were archived to `archive/patterns/` — implement from stack knowledge or consult the archive on demand.

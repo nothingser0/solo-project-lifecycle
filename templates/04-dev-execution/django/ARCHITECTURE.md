@@ -27,9 +27,10 @@ docs/
 │   ├── PRD.md                # Product requirements
 │   ├── FSD.md                # Functional specification
 │   ├── SITEMAP.md            # Screen inventory with IDs
-│   └── DESIGN_SYSTEM.md      # Design tokens & component specs
+│   └── DESIGN_SPEC.md        # Per-screen 5-state specifications
 ├── design/                   # Design artifacts (optional)
-│   ├── prototype-output/        # Generated screens from Interactive Prototype (if used)
+│   ├── screens/                 # Generated screens (workflows B/C/D; if used)
+│   ├── prompts/                 # Per-screen generation prompts (scr-xx/)
 │   │   ├── SCR-01/           # Landing page components
 │   │   ├── SCR-06/           # Login screen components
 │   │   └── ...               # One folder per Screen ID

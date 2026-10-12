@@ -27,13 +27,13 @@ The overall business scope contains **[Total P0 Features > 15]** Must-Have capab
 - **Scope**: Foundational user authentication, RBAC hierarchy, core transaction ledger.
 - **P0 Feature Count**: [8–10 features]
 - **Target Architecture**: Modular Monolith (Single primary DB, isolated schema).
-- **Scale Verification**: Verified via `./scripts/gates/classify-scale.sh` $\to$ **Scale: medium**.
+- **Scale Verification**: Verified via `./scripts/gates/classify-scale.sh` → **Scale: medium**.
 
 ### Phase 2: Ecosystem Integrations & Partner Gateway
 - **Scope**: External webhooks, partner APIs, operational reporting, analytics pipeline.
 - **P0 Feature Count**: [6–8 features]
 - **Target Architecture**: Async event queue buffer, idempotent webhook consumers.
-- **Scale Verification**: Verified via `./scripts/gates/classify-scale.sh` $\to$ **Scale: medium**.
+- **Scale Verification**: Verified via `./scripts/gates/classify-scale.sh` → **Scale: medium**.
 
 ### Phase 3: Legacy Bridge & Core ERP/Banking Synchronization
 - **Scope**: Bi-directional ETL connectors, reconciliation audit engine, legacy mainframe adapters.

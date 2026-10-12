@@ -59,17 +59,16 @@ User.where(email: 'test@example.com') # ✅ Valid
 
 **BEFORE implementing any UI component, read project design docs in docs/ folder:**
 
-- **docs/specs/DESIGN_SYSTEM.md**: Design tokens, screen specifications, component styles
+- **docs/specs/DESIGN_SPEC.md**: Per-screen 5-state specifications (SCR-XX)
 - **docs/specs/SITEMAP.md**: Route structure with Screen IDs (SCR-XX)
-- **docs/design/prototype-output/**: Generated screen components (if using Interactive Prototype)
-- **DESIGN.md** (root): Simplified tokens reference (copied from docs/)
+- **DESIGN.md** (root, staged at `docs/harness-root/DESIGN.md`): design tokens (colors, typography, z-index)
 
 **Why**: Generic Tailwind/Bootstrap ≠ project design. Must match brand identity.
 
 **For each screen/component:**
 1. Find screen ID in docs/specs/SITEMAP.md (e.g., SCR-09 Dashboard)
-2. Read corresponding section in docs/specs/DESIGN_SYSTEM.md
-3. Check docs/design/prototype-output/SCR-09/ if available
+2. Read corresponding screen section in docs/specs/DESIGN_SPEC.md
+3. Check docs/design/screens/scr-09/ (or docs/design/prompts/scr-09/) if available
 4. Extract design tokens from DESIGN.md (root):
    - Primary brand color (not generic neutral)
    - Shadow style (flat border vs heavy shadow)
@@ -78,7 +77,24 @@ User.where(email: 'test@example.com') # ✅ Valid
 
 **Anti-Pattern:**
 ❌ `class="btn btn-primary"` (generic Bootstrap)
-✅ `class="bg-primary-600 text-white px-4 py-2 rounded"` (brand primary from docs/specs/DESIGN_SYSTEM.md)
+✅ `class="bg-primary-600 text-white px-4 py-2 rounded"` (brand primary from DESIGN.md)
+
+---
+
+## Anti-AI-Slop Directives (ENFORCED)
+1. **BANNED: Redundant Explanatory Comments** — do not narrate obvious code.
+   - ❌ `// Increment counter`  |  `// Import the model`
+   - ❌ Stub comments: `// TODO: implement this later`  |  `// Add your logic here`
+   - ✅ Comment ONLY non-obvious business logic, domain formulas, or deliberate workarounds.
+   - ✅ Never leave commented-out dead code — delete it (git remembers).
+2. **BANNED: Silent Failures** — no empty catch/except blocks; log, rethrow, or return a typed error.
+3. **BANNED: Dead Code & Unused Imports** — remove unused variables, imports, and unreachable branches.
+4. **RACE CONDITIONS (MANDATORY for any shared-state mutation)** — protect every read-modify-write on inventory, balances, counters, booking slots, or status transitions:
+   - Use a DB transaction + row lock (with_lock / lock!), or a unique constraint / idempotency key.
+   - Never "check then act" across two separate queries without a lock or constraint.
+   - Webhooks and payment callbacks MUST be idempotent (dedupe on provider event ID).
+   - Frontend: disable the submit button while pending + use an idempotency key to prevent double-submit.
+5. **BANNED: Hallucinated APIs/Packages** — verify every import exists before using it.
 
 ---
 

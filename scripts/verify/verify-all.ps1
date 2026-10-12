@@ -29,20 +29,20 @@ foreach ($s in $psScripts) {
 Write-Host ""
 Write-Host "2. Checking 14 Lifecycle Modules (docs/modules/)..."
 $modules = @(
-    "00-product-discovery-strategy.md",
-    "01-idea-feasibility.md",
-    "02-discovery-scope.md",
-    "03-legal-sow-charter.md",
-    "04-uiux-prototyping.md",
-    "05-architecture-specs.md",
-    "06-development-execution.md",
-    "07-quality-assurance-sit.md",
-    "08-data-migration-seeding.md",
-    "09-uat-client-signoff.md",
-    "10-deployment-production.md",
-    "11-handover-bast.md",
-    "12-warranty-sla-retainer.md",
-    "13-product-operations-iteration.md"
+    "00_PRODUCT_DISCOVERY_STRATEGY.md",
+    "01_IDEA_FEASIBILITY.md",
+    "02_DISCOVERY_SCOPE.md",
+    "03_LEGAL_SOW_CHARTER.md",
+    "04_UIUX_PROTOTYPING.md",
+    "05_ARCHITECTURE_SPECS.md",
+    "06_DEVELOPMENT_EXECUTION.md",
+    "07_QUALITY_ASSURANCE_SIT.md",
+    "08_DATA_MIGRATION_SEEDING.md",
+    "09_UAT_CLIENT_SIGNOFF.md",
+    "10_DEPLOYMENT_PRODUCTION.md",
+    "11_HANDOVER_BAST.md",
+    "12_WARRANTY_SLA_RETAINER.md",
+    "13_PRODUCT_OPERATIONS_ITERATION.md"
 )
 
 foreach ($m in $modules) {
@@ -67,7 +67,8 @@ $keyFiles = @(
     "patterns/README.md",
     "references/README.md",
     "scripts/README.md",
-    "case-studies/README.md"
+    "case-studies/README.md",
+    "evals/README.md"
 )
 
 foreach ($kf in $keyFiles) {
@@ -83,11 +84,11 @@ foreach ($kf in $keyFiles) {
 Write-Host ""
 Write-Host "4. Checking Case Studies..."
 $caseStudies = @(
-    "01-mvp-saas-inventory.md",
-    "02-ecommerce-fashion-mvp.md",
-    "03-crm-real-estate-internal.md",
-    "04-medium-b2b-saas-worked-example.md",
-    "05-large-system-integration-worked-example.md"
+    "01_MVP_SAAS_INVENTORY.md",
+    "02_ECOMMERCE_FASHION_MVP.md",
+    "03_CRM_REAL_ESTATE_INTERNAL.md",
+    "04_MEDIUM_B2B_SAAS_WORKED_EXAMPLE.md",
+    "05_LARGE_SYSTEM_INTEGRATION_WORKED_EXAMPLE.md"
 )
 
 foreach ($cs in $caseStudies) {
@@ -100,27 +101,14 @@ foreach ($cs in $caseStudies) {
     }
 }
 
-# 5. Verify Patterns Presence (17 Patterns)
+# 5. Verify Patterns Presence (4 active Indonesia/domain-specific + archived generics)
 Write-Host ""
 Write-Host "5. Checking Patterns..."
 $patterns = @(
-    "patterns/api/graphql-and-versioning.md",
-    "patterns/api/rest-conventions.md",
-    "patterns/database/seeding-and-transactions.md",
-    "patterns/database/supabase-migrations.md",
-    "patterns/deployment/ci-cd-pipeline.md",
-    "patterns/error-handling/error-boundaries.md",
-    "patterns/git-workflow/branching-strategy.md",
-    "patterns/performance/caching-strategies.md",
-    "patterns/performance/n-plus-one-prevention.md",
-    "patterns/security/authentication.md",
-    "patterns/testing/test-pyramid.md",
-    "patterns/validation/zod-patterns.md",
-    "patterns/payments/indonesia-payment-gateways.md",
-    "patterns/compliance/uu-pdp-compliance.md",
-    "patterns/offline/offline-first-sync.md",
-    "patterns/observability/logging-monitoring.md",
-    "patterns/localization/i18n-indonesia.md"
+    "patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md",
+    "patterns/compliance/UU_PDP_COMPLIANCE.md",
+    "patterns/offline/OFFLINE_FIRST_SYNC.md",
+    "patterns/localization/I18N_INDONESIA.md"
 )
 
 foreach ($pat in $patterns) {
@@ -131,6 +119,20 @@ foreach ($pat in $patterns) {
         $errors++
     }
 }
+# Archived generic patterns (present under archive/patterns/ for recovery; not loaded by agents)
+$archivedPatterns = @(
+    "archive/patterns/validation/zod-patterns.md",
+    "archive/patterns/security/authentication.md",
+    "archive/patterns/testing/test-pyramid.md",
+    "archive/patterns/deployment/ci-cd-pipeline.md"
+)
+foreach ($pat in $archivedPatterns) {
+    if (-not (Test-Path $pat)) {
+        Write-Host "  [FAIL] Archived pattern missing: $pat" -ForegroundColor Red
+        $errors++
+    }
+}
+Write-Host "  [OK] archived generic patterns present under archive/patterns/" -ForegroundColor Green
 
 # 6. Verify Markdown Links and Frontmatter
 Write-Host ""
@@ -148,6 +150,13 @@ if (Get-Command node -ErrorAction SilentlyContinue) {
         Write-Host "  [OK] Internal Markdown links valid (0 broken)" -ForegroundColor Green
     } else {
         Write-Host "  [FAIL] Broken markdown links found" -ForegroundColor Red
+        $errors++
+    }
+    $idxRes = node scripts/verify/index-manifest.js --check 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "  [OK] INDEX.json manifest in two-way parity with filesystem" -ForegroundColor Green
+    } else {
+        Write-Host "  [FAIL] INDEX.json manifest out of sync (run: node scripts/verify/index-manifest.js)" -ForegroundColor Red
         $errors++
     }
 }

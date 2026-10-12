@@ -1,13 +1,13 @@
 # Module 07 Deep Dive: Enterprise Advisory (A04) & SIT Sandbox Walkthrough
 
-> Split from `docs/modules/07-quality-assurance-sit.md` (light split). Content below is verbatim from the original module.
+> Split from `docs/modules/07_QUALITY_ASSURANCE_SIT.md` (light split). Content below is verbatim from the original module.
 
 ---
 
 ### 🔴 Enterprise Scale: Routed to Non-Solo Capacity Advisory (Phase A04)
 
 > ⚠️ **SOLO CAPACITY LIMITATION ENFORCEMENT**:  
-> Projects classified as **Enterprise Scale** ($\ge 26$ P0 features, legacy core migrations, or strict regulatory statutory mandates) **EXCEED SOLO DEVELOPER CAPACITY**.  
+> Projects classified as **Enterprise Scale** (≥ 26 P0 features, legacy core migrations, or strict regulatory statutory mandates) **EXCEED SOLO DEVELOPER CAPACITY**.  
 > Solo developers MUST NOT perform enterprise-scale manual QA, multi-tenant penetration testing, or independent SOC 2 audits single-handedly.  
 > Instead, the solo consultant executes **Phase A04 (Security Review, Threat Modeling, & Audit Readiness)** to produce security governance specifications, review vendor test reports, and coordinate certified third-party audit firms.
 

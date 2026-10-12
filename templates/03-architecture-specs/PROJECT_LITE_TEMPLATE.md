@@ -60,7 +60,7 @@
 
 | ID | Core Hypothesis | Test Method (<1 Day) | Pass Threshold | Outcome / Evidence |
 |:---|:----------------|:---------------------|:---------------|:-------------------|
-| **ASM-01** | [e.g., Users will input data manually daily] | [5 user interviews / paper test] | $\ge 3$ of 5 confirm | [✅ PASS / ⏳ PENDING / ❌ FAIL] |
+| **ASM-01** | [e.g., Users will input data manually daily] | [5 user interviews / paper test] | ≥ 3 of 5 confirm | [✅ PASS / ⏳ PENDING / ❌ FAIL] |
 | **ASM-02** | [e.g., Free tier Supabase / Vercel is sufficient] | [Architecture spike POC] | Zero paid addons needed | [✅ PASS / ⏳ PENDING / ❌ FAIL] |
 
 ## 3. Commercial Commitments (Client Project) OR Self-Runway (Solo Project)
@@ -115,9 +115,9 @@
 - **Component Storage**: Save exported AI UI components into `docs/design/screens/`.
 
 ### 4.4 Design Freeze & Anti-Slop Sign-Off
-- **Mobile Input Ergonomics**: All form inputs are $\ge 16$px (`text-base`) to prevent iOS Safari auto-zoom.
-- **Touch Targets**: All buttons and interactive triggers meet $\ge 44\text{px} \times 44\text{px}$.
-- **Contrast Ratio**: Text contrast $\ge 4.5:1$ against canvas background (WCAG 2.2 AA).
+- **Mobile Input Ergonomics**: All form inputs are ≥ 16px (`text-base`) to prevent iOS Safari auto-zoom.
+- **Touch Targets**: All buttons and interactive triggers meet ≥ 44px × 44px.
+- **Contrast Ratio**: Text contrast ≥ 4.5:1 against canvas background (WCAG 2.2 AA).
 - **Design Freeze Status**: `[FROZEN / APPROVED]` (UI layout locked; zero structural rework during coding).
 
 ---

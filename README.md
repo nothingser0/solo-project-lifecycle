@@ -14,24 +14,40 @@ solo-project-lifecycle/
 ├── docs/
 │   ├── modules/             # 14 lifecycle modules (M00 through M13)
 │   ├── pm/                  # Product management runtime guides and trackers
-│   └── quickstart.md        # Rapid onboarding guide
+│   └── QUICKSTART.md        # Rapid onboarding guide
 ├── templates/
+│   ├── essentials/                # Fast-track LITE templates (Small/MVP path)
+│   ├── 00-pre-sales-enterprise/   # RFP responses, POC plans, consulting agreements
 │   ├── 01-discovery-commercial/   # Market research, briefs, SOWs, and charters
 │   ├── 02-design/                 # Design prompts, sitemaps, component specs
+│   ├── 02-legal-commercial/       # NDA, change requests, financial tracking
 │   ├── 03-architecture-specs/     # PRD, FSD, and lite specification templates
+│   ├── 03-governance/             # ADRs, compliance, incident response, RACI
 │   ├── 04-dev-execution/          # Agent harnesses, conventions, stack baselines
 │   ├── 05-data-migration/         # Migration plans and data reconciliation
 │   ├── 06-qa-uat/                 # Test plans, test cases, and UAT signoff forms
-│   └── 07-release-handover/       # Handover protocols, BAST, credentials vault
+│   ├── 07-release-handover/       # Handover protocols, BAST, credentials vault
+│   ├── 08-maintenance-ops/        # SLA/SLO, backup, warranty, runbooks
+│   ├── 09-product-growth/         # Analytics, A/B tests, growth experiments
+│   └── by-use-case/               # Per-use-case template bundles
 ├── references/
+│   ├── checklists/          # Feasibility criteria, module evaluation checklists
 │   ├── taxonomy/            # 1,000 system catalog and 250 software archetypes
+│   ├── playbooks/           # Scale workflows, AI-assisted development, design patterns
+│   ├── pm/                  # Prioritization, analytics, communication, testing guides
+│   ├── pre-sales/           # Discovery call checklists, proposals, quotations
+│   ├── solo/                # Solo architecture, patterns, standards, UI/UX guides
 │   ├── stacks/              # Framework matrix and stack quickstarts (Next.js, Laravel, Go, Django)
-│   └── playbooks/           # Scale workflows (Small, Medium, Large, Enterprise)
-├── patterns/                # Battle-tested implementation patterns (Auth, DB, Payments, PDP, Offline)
+│   ├── technical/           # Deep research, design systems, APM, compliance guides
+│   └── team/                # Team collaboration and agency handoff
+├── patterns/                # Indonesia-specific patterns (Payments, UU PDP, i18n/IDR, Offline-first)
 ├── scripts/
 │   ├── scaffold/            # Project init and template picker scripts (Bash/PowerShell)
 │   ├── gates/               # Lifecycle gate validation automation
-│   └── verify/              # Link, frontmatter, template, and stack version verifiers
+│   ├── verify/              # Link, frontmatter, template, and stack version verifiers
+│   ├── runtime/             # ETL importer, load-test harness, data migration runner
+│   ├── dist/                # Distribution packaging + size calculation scripts
+│   └── release/             # Clean release-branch builder (release-exclude.txt)
 └── evals/                   # Evaluation scenarios verifying SDLC agent compliance
 ```
 
@@ -81,12 +97,13 @@ The `scripts/` directory provides cross-platform Bash and PowerShell utilities:
 - **Project Scaffolding**:
   ```bash
   # Initialize a structured project workspace
-  ./scripts/scaffold/init-project.sh --name "my-app" --scale "medium" --track "saas"
+  ./scripts/scaffold/init-project.sh ~/projects/my-app medium
+  # Usage: init-project.sh <TARGET_DIR> [small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise] [ARCHETYPE] [DELIVERY]
   ```
 - **Gate Validation**:
   ```bash
   # Validate module readiness and required artifact presence
-  ./scripts/gates/validate-gate.sh --module "M05"
+  ./scripts/gates/validate-gate.sh M05
   ```
 - **Verification Suite**:
   ```bash
@@ -98,8 +115,8 @@ The `scripts/` directory provides cross-platform Bash and PowerShell utilities:
 
 ## Getting Started
 
-1. Consult `docs/quickstart.md` for a 10-minute setup walkthrough.
-2. Choose a reference stack from `references/stacks/` (Next.js, Laravel, Go, Django, Rails, SvelteKit, FastAPI).
+1. Consult `docs/QUICKSTART.md` for a 10-minute setup walkthrough.
+2. Read the stack quickstart for Next.js, Laravel, Go, or Django in `references/stacks/`; for any other stack (FastAPI, Rails, SvelteKit, …) start from `templates/04-dev-execution/<stack>/AGENTS.md` and `references/stacks/STACK_SUPPORT_MATRIX.md`.
 3. Review `references/taxonomy/SYSTEM_ARCHETYPES_250.md` to map standard features for your target system category.
 4. Scaffold project governance and harness files using the `scripts/scaffold/` utilities.
 

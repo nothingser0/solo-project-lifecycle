@@ -7,17 +7,17 @@
 ## 📁 Folder Structure
 
 ```
-references/design/
+docs/design/
 ├── inspiration/                    ← USER FILLS THIS
 │   ├── screenshot-1-dashboard.png
 │   ├── screenshot-2-forms.png
 │   ├── screenshot-3-buttons.png
-│   └── notes.md                    ← ANALYSIS (use notes-template.md)
+│   └── notes.md                    ← ANALYSIS (use NOTES_TEMPLATE.md)
 │
-├── prompt-input/                   ← Prompts for Interactive Prototype
+├── prompts/                   ← Prompts for Interactive Prototype
 │   └── README.md
 │
-└── prototype-output/                  ← Results from prototype
+└── screens/                  ← Results from prototype
     └── README.md
 ```
 
@@ -30,11 +30,11 @@ references/design/
 Save 3-5 screenshots of designs you want to emulate:
 
 ```bash
-references/design/inspiration/
+docs/design/inspiration/
 ├── linear-dashboard.png        # Example: Linear.app dashboard
 ├── stripe-landing.png          # Example: Stripe.com landing page
 ├── vercel-buttons.png          # Example: Vercel.com button styles
-└── notes.md                    # Analysis (copy from notes-template.md)
+└── notes.md                    # Analysis (copy from NOTES_TEMPLATE.md)
 ```
 
 **What to capture:**
@@ -48,11 +48,11 @@ references/design/inspiration/
 
 ### Step 2: Analyze References
 
-Copy `inspiration-template/notes-template.md` to `inspiration/notes.md`:
+Copy `templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md` to `docs/design/inspiration/notes.md` in your project:
 
 ```bash
-cp references/design/inspiration-template/notes-template.md \
-   references/design/inspiration/notes.md
+cp templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md \
+   docs/design/inspiration/notes.md
 ```
 
 Then fill in the template:
@@ -84,14 +84,14 @@ Style: Flat Design (minimal shadows, 1px borders)
 
 **Upload to Prototype:**
 
-1. Generate `DESIGN_SYSTEM.md` from `notes.md` analysis
+1. Generate `DESIGN.md` from `notes.md` analysis
 2. Open https://v0.dev in browser
 3. Create new project
-4. Upload `DESIGN_SYSTEM.md` (drag and drop file)
+4. Upload `DESIGN.md` (drag and drop file)
 5. Upload screenshots from `inspiration/` (drag multiple PNG files)
 6. Use Prototype visual builder to create screens
 7. Export generated screens
-8. Save results to `prototype-output/`
+8. Save results to `docs/design/screens/` in your project
 
 ---
 
@@ -102,18 +102,18 @@ Style: Flat Design (minimal shadows, 1px borders)
 ```
 M04 Step 0 - AI agent workflow:
 
-1. Read file: references/design/inspiration/notes.md
+1. Read file: docs/design/inspiration/notes.md
    Extract from analysis: colors, typography, spacing, shadows, style
 
-2. Read files: references/design/inspiration/*.png
+2. Read files: docs/design/inspiration/*.png
    Visual confirmation: patterns match notes.md analysis
 
-3. Generate file: docs/specs/DESIGN_SYSTEM.md
+3. Generate file: DESIGN.md (staged at docs/harness-root/DESIGN.md)
    Content: colors, typography, spacing from extracted patterns
    Format: Matches reference aesthetic
 
 4. Generate components: Button, Card, Input, etc.
-   Read: DESIGN_SYSTEM.md specification
+   Read: DESIGN.md specification
    Read: reference screenshots for visual guidance
    Output: components matching reference style
 ```
@@ -121,7 +121,7 @@ M04 Step 0 - AI agent workflow:
 AI automatically:
 1. Reads `notes.md` (extracted patterns)
 2. Views screenshots (visual confirmation)
-3. Generates `DESIGN_SYSTEM.md` matching references
+3. Generates `DESIGN.md` matching references
 4. Generates components following extracted style
 
 No executable code - AI agent interprets these instructions.
@@ -135,7 +135,7 @@ No executable code - AI agent interprets these instructions.
 ```markdown
 ## Design Style Decision
 
-Reference Sources (saved in references/design/inspiration/):
+Reference Sources (saved in docs/design/inspiration/):
 - screenshot-1-dashboard.png - Linear.app dashboard
 - screenshot-2-forms.png - Stripe.com form styling
 - screenshot-3-buttons.png - Vercel.com button states
@@ -146,15 +146,15 @@ Extracted Style: Flat Design (see notes.md analysis)
 - Inter 400/600 typography
 - Zinc neutral palette + #5E6AD2 accent
 
-For detailed implementation → DESIGN_SYSTEM.md (generated from references)
+For detailed implementation → DESIGN.md (generated from references)
 ```
 
-### In `DESIGN_SYSTEM.md`:
+### In `DESIGN.md`:
 
 ```markdown
 ## 0. Design Style Choice
 
-Source: references/design/inspiration/notes.md
+Source: docs/design/inspiration/notes.md
 
 Reference Screenshots:
 1. Linear.app dashboard - Flat design, minimal shadows
@@ -250,11 +250,11 @@ From each screenshot, analyze:
 
 ## 📋 Checklist
 
-Before proceeding to DESIGN_SYSTEM.md generation:
+Before proceeding to DESIGN.md generation:
 
 - [ ] 3-5 reference screenshots saved to `inspiration/`
 - [ ] Screenshots show consistent aesthetic (not conflicting styles)
-- [ ] `notes.md` created from `notes-template.md`
+- [ ] `notes.md` created from `NOTES_TEMPLATE.md`
 - [ ] Each screenshot analyzed (colors, typography, spacing, shadows)
 - [ ] Common patterns extracted across all references
 - [ ] Style classification determined (Flat/Glass/Brutal/Minimal/Material)
@@ -265,11 +265,11 @@ Before proceeding to DESIGN_SYSTEM.md generation:
 
 ## 🔗 Related Templates
 
-- `inspiration-template/notes-template.md` - Copy this to `inspiration/notes.md` to start analysis
+- `templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md` - Copy this to `docs/design/inspiration/notes.md` to start analysis
 - `COMPONENT_REQUIREMENTS_TEMPLATE.md` - Links to design references
 - `DESIGN_MD_TEMPLATE.md` - Generated from reference analysis
-- `prompt-input/README.md` - Interactive Prototype prompt guidelines
-- `prototype-output/README.md` - Store Prototype generation results
+- `templates/02-design/references/prompt-input/README.md` - Interactive Prototype prompt guidelines (copy prompts into your project at `docs/design/prompts/`)
+- `templates/02-design/references/prototype-output/README.md` - Prototype generation results (outputs land in your project at `docs/design/screens/`)
 
 ---
 
@@ -295,4 +295,4 @@ Before proceeding to DESIGN_SYSTEM.md generation:
 
 ---
 
-**Next**: Fill `inspiration/` folder → Analyze in `notes.md` → Generate `DESIGN_SYSTEM.md`
+**Next**: Fill `inspiration/` folder → Analyze in `notes.md` → Generate `DESIGN.md`

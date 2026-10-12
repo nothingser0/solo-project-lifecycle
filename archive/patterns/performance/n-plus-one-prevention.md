@@ -35,7 +35,7 @@ for (const user of users) {
 }
 ```
 
-**Result**: 
+**Result**:
 - 100 users = 101 queries (1 + 100)
 - 1000 users = 1001 queries (1 + 1000)
 
@@ -153,7 +153,7 @@ const results = await Promise.all(
 ```typescript
 // Complex case: Multiple relationships + aggregates
 const result = await prisma.$queryRaw`
-  SELECT 
+  SELECT
     u.id,
     u.name,
     COUNT(DISTINCT p.id) as post_count,

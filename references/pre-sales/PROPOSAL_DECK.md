@@ -2,7 +2,7 @@
 
 > **Purpose**: Formal project proposal after quotation acceptance  
 > **Format**: 10-slide deck (PDF or Google Slides)  
-> **When**: After client shows interest in ballpark quotation (M00.5)  
+> **When**: After client shows interest in ballpark quotation (Pre-Sales)  
 > **Target**: Medium/Large projects
 
 ---
@@ -38,7 +38,7 @@ Confidential
 ```
 Problem: Manual invoice processing takes 15 hours/week
 Solution: Automated invoicing system with email delivery
-Timeline: 8 weeks, Launch: December 15, 2024
+Timeline: 8 weeks, Launch: 8 weeks from kickoff
 Investment: Rp 80M
 Outcome: Reduce invoice time to <1 hour/week (93% time savings)
 ```
@@ -195,8 +195,8 @@ Users → Web App → API Server → Database
 
 **Team**:
 - [Your Name] - Lead Developer (X years experience)
-- [Designer Name] - UI/UX Designer
-- [QA Name] - QA Engineer (if applicable)
+- [Designer Name] - UI/UX Designer (subcontracted, if applicable)
+- [QA Name] - QA Engineer (subcontracted, if applicable)
 
 ---
 
@@ -355,12 +355,12 @@ I'm confident our approach stands up to comparison."
 
 ## Integration with Workflow
 
-**Pre-Sales Flow (M00.5)**:
+**Pre-Sales Flow**:
 1. Lead inquiry
 2. Discovery call → `DISCOVERY_CALL_CHECKLIST.md`
 3. Ballpark quotation → `QUOTATION_EMAIL.md`
 4. **Formal proposal** → This deck
-5. Contract + DP → Start M02 (Discovery & Scope)
+5. Contract + DP → Start M01 (Idea & Feasibility) → M02 (Scope) → M03 (SOW)
 
 **Conversion Funnel**:
 - 10 discovery calls
@@ -386,7 +386,7 @@ Before sending:
 
 ## Sample File Naming
 
-`Proposal_TataBuku_JaneDeveloper_2024-10-04.pdf`
+`Proposal_TataBuku_JaneDeveloper_2026-10-12.pdf`
 
 Format: `Proposal_[ProjectName]_[YourName]_[Date].pdf`
 

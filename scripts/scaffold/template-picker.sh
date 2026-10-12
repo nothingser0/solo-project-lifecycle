@@ -420,7 +420,7 @@ mvp_fasttrack() {
     echo "3. Build in 2-4 weeks"
     echo "4. Deploy using DEPLOY.md checklist"
     echo ""
-    echo "Read: docs/quickstart.md for detailed guide"
+    echo "Read: docs/QUICKSTART.md for detailed guide"
     echo ""
     if [ -z "$PHASE_ARG" ]; then
         read -p "Press Enter to continue..."

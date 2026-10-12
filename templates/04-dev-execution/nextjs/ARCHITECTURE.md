@@ -143,7 +143,7 @@ To prevent database deadlocks under high-concurrency traffic (e.g. multiple oper
 ### 4.2 Offline Terminal Sequencing & Conflict Resolution (Conditional)
 *(Applicable if local-first or disconnected field operations are in scope; mark N/A for online-only apps)*
 - **Offline Invoice / Document Sequencing**:
-  $$\text{Invoice No} = \text{[BRANCH-CODE]}-\text{[DEVICE-UUID-SHORT]}-\text{[YYYYMMDD]}-\text{[SEQ]}$$
+  $Invoice No = [BRANCH-CODE]-[DEVICE-UUID-SHORT]-[YYYYMMDD]-[SEQ]$
   *Example*: `JKT01-IPAD02-20261005-000142`
   Guarantees zero numbering collisions when multiple disconnected devices sync upon reconnection.
 - **Offline Conflict Policy**:
@@ -205,13 +205,13 @@ export async function POST(req: Request) {
 
 | Performance / Engineering Dimension | Production Target Budget | Measurement & Verification Method |
 | :--- | :--- | :--- |
-| **Checkout / Mutation Latency** | **$p95 \le 250\text{ ms}$** under normal operational load | Server Action timing logs / Datadog APM |
-| **API Endpoint Response Time** | **$p95 \le 500\text{ ms}$** (accounting for SG/ID cloud latency) | Next.js Route Handler metrics |
-| **Database Concurrency Capacity** | **$\ge 50$ parallel transactions/tenant** without deadlock | k6 load tests running against staging pooler |
-| **Client JS Initial Bundle Budget** | **$\le 250\text{ KB}$ gzipped** (first load JS per route) | `@next/bundle-analyzer` build audit |
-| **Mobile Time to Interactive (3G)** | **$\le 5.0\text{ seconds}$** on simulated 3G network | Chrome Lighthouse Mobile audit |
-| **Disaster Recovery RPO** | **$< 1\text{ hour}$** (maximum data loss window) | Automated daily WAL backups & point-in-time recovery |
-| **Disaster Recovery RTO** | **$< 4\text{ hours}$** (maximum time to restore full service) | Staging disaster recovery dry run |
+| **Checkout / Mutation Latency** | **p95 ≤ 250 ms** under normal operational load | Server Action timing logs / Datadog APM |
+| **API Endpoint Response Time** | **p95 ≤ 500 ms** (accounting for SG/ID cloud latency) | Next.js Route Handler metrics |
+| **Database Concurrency Capacity** | **≥ 50 parallel transactions/tenant** without deadlock | k6 load tests running against staging pooler |
+| **Client JS Initial Bundle Budget** | **≤ 250 KB gzipped** (first load JS per route) | `@next/bundle-analyzer` build audit |
+| **Mobile Time to Interactive (3G)** | **≤ 5.0 seconds** on simulated 3G network | Chrome Lighthouse Mobile audit |
+| **Disaster Recovery RPO** | **< 1 hour** (maximum data loss window) | Automated daily WAL backups & point-in-time recovery |
+| **Disaster Recovery RTO** | **< 4 hours** (maximum time to restore full service) | Staging disaster recovery dry run |
 
 ---
 
@@ -223,4 +223,4 @@ export async function POST(req: Request) {
 - [ ] **2. iOS Safari Offline Mitigation**: Disconnected sync strategy includes `online`, `visibilitychange`, and manual trigger fallbacks.
 - [ ] **3. Collision-Free Device Sequencing**: Multi-device offline identifiers use isolated branch and device prefixes.
 - [ ] **4. Webhook Security & Bypass**: Webhook endpoints are excluded from session guards and verify cryptographic payload signatures.
-- [ ] **5. Measurable NFR Budgets**: Latency ($p95 \le 250$ms), bundle budget ($\le 250$KB gzipped), and RPO/RTO metrics are explicitly defined.
+- [ ] **5. Measurable NFR Budgets**: Latency (p95 ≤ 250ms), bundle budget (≤ 250KB gzipped), and RPO/RTO metrics are explicitly defined.

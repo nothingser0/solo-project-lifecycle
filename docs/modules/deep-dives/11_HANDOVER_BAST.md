@@ -1,6 +1,15 @@
 # Module 11 Deep Dive: Handover — Training Quota, Credential Vault, Repo Transfer & BAST Signing
 
-> Companion to `docs/modules/11-handover-bast.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
+## Contents
+
+- [Step 1 (Detail): User Training Session (Training Quota Management)](#step-1-detail-user-training-session-training-quota-management)
+- [Step 2 (Detail): Credential Handover Protocol (Zero Plaintext Sharing)](#step-2-detail-credential-handover-protocol-zero-plaintext-sharing)
+- [Step 3 (Detail): Git Repository Ownership Transfer](#step-3-detail-git-repository-ownership-transfer)
+- [Step 4 (Detail): Formal BAST Signing](#step-4-detail-formal-bast-signing)
+- [Post-Project Retrospective (Optional — Internal Only)](#post-project-retrospective-optional-internal-only)
+
+
+> Companion to `docs/modules/11_HANDOVER_BAST.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
 
 ## Step 1 (Detail): User Training Session (Training Quota Management)
 To prevent the solo developer from being turned into an indefinite free operational helpdesk:

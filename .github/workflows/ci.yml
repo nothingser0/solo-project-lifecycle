@@ -96,6 +96,10 @@ EOF
         run: |
           ./scripts/verify/lint-template.sh templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md
 
+      - name: Validate eval scenario catalog
+        run: |
+          node scripts/evals/run-evals.js --validate
+
   powershell-validation:
     name: PowerShell Scripts Tokenization & Execution
     runs-on: windows-latest

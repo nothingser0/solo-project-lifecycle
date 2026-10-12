@@ -106,7 +106,6 @@
     }
     ```
 
-
 ### Rate Limiting
 - [ ] **Rate Limiting Middleware**:
   - [ ] Apply IP & User ID-based rate limiting (in-memory sliding window / Redis).
@@ -200,7 +199,7 @@
 ### Concurrency & Anti-Deadlock (`tests/db/concurrency.test.ts`)
 - [ ] Simulate 20–50 parallel mutations with `Promise.allSettled()`.
 - [ ] Zero database deadlock errors (`40P01 deadlock_detected`).
-- [ ] Deterministic global lock order: `organizations` $\to$ `locations` $\to$ `domain_entities ORDER BY id ASC`.
+- [ ] Deterministic global lock order: `organizations` → `locations` → `domain_entities ORDER BY id ASC`.
 - [ ] In-place and movement ledger quantities reconcile cleanly.
 
 ## Verification Checklist
@@ -225,8 +224,8 @@ Before merging to staging:
 ---
 
 **See Also**:
-- `templates/04-dev-execution/checklists/frontend-checklist.md` - Frontend development tasks
-- `templates/04-dev-execution/checklists/integration-checklist.md` - Third-party integrations
-- `patterns/security/authentication.md` - Auth implementation patterns
-- `patterns/validation/zod-patterns.md` - Validation schemas
+- `templates/04-dev-execution/checklists/FRONTEND_CHECKLIST.md` - Frontend development tasks
+- `templates/04-dev-execution/checklists/INTEGRATION_CHECKLIST.md` - Third-party integrations
 - M06 Development Execution - Core module documentation
+
+> Generic engineering patterns (validation, auth, caching) were archived to `archive/patterns/` — implement from stack knowledge or consult the archive on demand.

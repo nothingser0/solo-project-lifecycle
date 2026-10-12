@@ -41,7 +41,7 @@
 
 | Req ID | Tied Assumption ID | Required Human Evidence | Risk to Architecture if False | Fallback / Pivot Action |
 |:-------|:-------------------|:------------------------|:------------------------------|:------------------------|
-| **REQ-01** | `ASM-01` | $\ge 3$ merchants confirm >Rp 1M/mo loss | High: Over-engineering cashier sync if stock loss is negligible | Downgrade to simple manual spreadsheet import |
+| **REQ-01** | `ASM-01` | ≥ 3 merchants confirm >Rp 1M/mo loss | High: Over-engineering cashier sync if stock loss is negligible | Downgrade to simple manual spreadsheet import |
 | **REQ-02** | `ASM-03` | On-site testing of cellular dead zones | Medium: Complexity of offline conflict resolution | Standard online web app with service worker caching |
 | **REQ-03** | `ASM-02` | Willingness-to-pay confirmation from owners | High: Owners refuse to pay recurring subscription | Pivot to one-time software license or freemium |
 

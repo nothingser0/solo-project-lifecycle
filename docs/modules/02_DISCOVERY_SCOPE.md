@@ -1,7 +1,7 @@
 # Module 02: Discovery & Scope Definition
 
-> - `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md`
-> - `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md`
+> **Template to copy**: `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md` · client/Medium+: `templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md` (→ `docs/pm/STAKEHOLDER_MAP.md`)
+> 📖 **Optional ref**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` (do NOT preload)
 
 **Purpose**: extract real requirements, define technical boundaries, and lock **In/Out-of-Scope** into `SCOPE_STATEMENT.md` **before** contracts or design.
 

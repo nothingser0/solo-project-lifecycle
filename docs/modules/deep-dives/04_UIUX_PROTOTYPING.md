@@ -1,6 +1,14 @@
 # Module 04 Deep Dive: UI/UX Design & Prototyping
 
-> Companion to [`docs/modules/04-uiux-prototyping.md`](../04-uiux-prototyping.md). This file contains the detailed Step 0 process, the full prototyping option workflows (A–E including Figma MCP), and the root-cause analysis of design failure. The runbook holds the condensed execution path, gate criteria, and stop protocol.
+## Contents
+
+- [Root Causes of Design Failure (Why Step 0 Exists)](#root-causes-of-design-failure-why-step-0-exists)
+- [Step 0 Process](#step-0-process)
+- [Prototyping Approach Selection (STEP 2) — Full Option Details](#prototyping-approach-selection-step-2-full-option-details)
+- [Content Moved From the Runbook (Condensed M04 Rewrite)](#content-moved-from-the-runbook-condensed-m04-rewrite)
+
+
+> Companion to [`docs/modules/04_UIUX_PROTOTYPING.md`](../04_UIUX_PROTOTYPING.md). This file contains the detailed Step 0 process, the full prototyping option workflows (A–E including Figma MCP), and the root-cause analysis of design failure. The runbook holds the condensed execution path, gate criteria, and stop protocol.
 
 ---
 
@@ -159,7 +167,7 @@ Group all components into three definitive tiers. Every component named in Step 
    - *Enforcement*: Users must be able to click submit to understand expectations; clicking triggers validation, scrolls smoothly, and auto-focuses the first invalid field.
 2. **Timing Adjustable (WCAG 2.2.1)**:
    - Error toasts and offline reconnection alerts **MUST NOT auto-dismiss**. They require explicit user dismissal or error condition resolution.
-   - Success/info toasts may auto-dismiss after $\ge 5000\text{ms}$ with pause on hover/focus.
+   - Success/info toasts may auto-dismiss after ≥ 5000ms with pause on hover/focus.
 3. **Focus Not Obscured (WCAG 2.4.11)**:
    - Containers with sticky navigation (`z-10`) or fixed checkout docks (`z-20`) must specify CSS `scroll-padding`:
      ```css
@@ -169,7 +177,7 @@ Group all components into three definitive tiers. Every component named in Step 
      }
 ```
 4. **Accessible Error Typography**:
-   - All form error messages (`aria-describedby`) must be at least `13px` (`text-xs md:text-sm`) with $\ge 4.5:1$ contrast against the background.
+   - All form error messages (`aria-describedby`) must be at least `13px` (`text-xs md:text-sm`) with ≥ 4.5:1 contrast against the background.
 
 **Technical Specifications & Unified Z-Index Hierarchy:**
 - Font package: Use `next/font/google`. Deprecated `@next/font/google` is **strictly prohibited**.

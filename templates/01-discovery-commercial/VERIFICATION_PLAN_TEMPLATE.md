@@ -27,8 +27,8 @@ Verification in this lifecycle framework operates across three distinct tiers:
 
 | Gate ID | Lifecycle Module | Verification Criteria | Evidence Required | Verification Method | Evaluation Status |
 |:--------|:-----------------|:----------------------|:------------------|:--------------------|:-----------------:|
-| **Gate 0** | M00 / M00-lite (Discovery) | Market need validated, intent-to-buy $\ge 30\%$ or waitlist $\ge 5\%$ | User interview transcripts, survey dataset, waitlist metrics | Human empirical review | `PENDING_PRIMARY_RESEARCH` |
-| **Gate 1** | M01 (Feasibility) | 4D Feasibility $\ge 3.5/5.0$, zero fatal regulatory blockers | `IDEA_BRIEF.md`, technical spike | Architecture & compliance audit | `PENDING` |
+| **Gate 0** | M00 / M00-lite (Discovery) | Market need validated, intent-to-buy ≥ 30% or waitlist ≥ 5% | User interview transcripts, survey dataset, waitlist metrics | Human empirical review | `PENDING_PRIMARY_RESEARCH` |
+| **Gate 1** | M01 (Feasibility) | 4D Feasibility ≥ 3.5/5.0, zero fatal regulatory blockers | `IDEA_BRIEF.md`, technical spike | Architecture & compliance audit | `PENDING` |
 | **Gate 2** | M02 (Scope Lock) | P0/P1 boundaries locked, RBAC matrix complete | `SCOPE_STATEMENT.md` | Stakeholder review | `PENDING` |
 | **Gate 3** | M03 (Commercial) | Signed SOW/contract, down payment received | Bank transfer confirmation, signed SOW | Financial audit | `WAIVED` (if solo SaaS) |
 | **Gate 4** | M04 (Design & IA) | Multi-role Sitemap complete, WCAG 2.2 AA contrast verified | `SITEMAP.md`, `DESIGN.md` | Contrast checker, screen inventory | `PENDING` |
@@ -54,15 +54,15 @@ Before marking Gate 0 as ready for user execution, the following instruments mus
 ### 3.2 Gate Release Criteria (Moving from `PENDING` to `PASS`)
 The gate moves from `PENDING_PRIMARY_RESEARCH` to `PASS` **ONLY IF**:
 1. Minimum sample size is satisfied:
-   - Solo SaaS (M00-lite): $\ge 5$ documented user interviews OR $\ge 5\%$ waitlist conversion ($\ge 100$ visitors).
-   - Medium B2B: $\ge 8$ interviews + $\ge 30$ survey respondents.
-   - Enterprise: $\ge 15$ interviews + $\ge 50$ survey respondents.
-2. Verified intent-to-buy reaches $\ge 30\%$ (or waitlist conversion $\ge 5\%$).
+   - Solo SaaS (M00-lite): ≥ 5 documented user interviews OR ≥ 5% waitlist conversion (≥ 100 visitors).
+   - Medium B2B: ≥ 8 interviews + ≥ 30 survey respondents.
+   - Enterprise: ≥ 15 interviews + ≥ 50 survey respondents.
+2. Verified intent-to-buy reaches ≥ 30% (or waitlist conversion ≥ 5%).
 3. Zero fatal regulatory blockers identified in the target jurisdiction.
 
 ### 3.3 Kill Criteria Action (Moving from `PENDING` to `KILL`)
 If research yields:
-- Intent-to-buy $< 30\%$ AND waitlist conversion $< 2\%$ after 200 visits.
+- Intent-to-buy < 30% AND waitlist conversion < 2% after 200 visits.
 - Immediate action: **HALT DEVELOPMENT**. Present pivot options to user.
 
 ---

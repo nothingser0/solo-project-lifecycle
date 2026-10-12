@@ -76,7 +76,7 @@ _________________________________
 
 **Screenshot**: [Attach or paste URL]  
 **Video**: [Loom link or attachment]  
-**Console Errors**: 
+**Console Errors**:
 ```
 [Paste console errors here]
 ```

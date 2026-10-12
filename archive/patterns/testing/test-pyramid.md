@@ -74,16 +74,16 @@ describe('POST /api/users', () => {
     expect(res.body.data.email).toBe('test@example.com');
 
     // Verify in database
-    const user = await db.user.findUnique({ 
-      where: { email: 'test@example.com' } 
+    const user = await db.user.findUnique({
+      where: { email: 'test@example.com' }
     });
     expect(user).not.toBeNull();
   });
 
   it('returns 422 for duplicate email', async () => {
     // Create first user
-    await db.user.create({ 
-      data: { email: 'test@example.com', name: 'First' } 
+    await db.user.create({
+      data: { email: 'test@example.com', name: 'First' }
     });
 
     // Try duplicate
@@ -570,7 +570,7 @@ export class OrderService {
 // tests/unit/order.service.test.ts (Unit)
 describe('OrderService', () => {
   it('calculates total correctly', async () => {
-    const mockDB = { 
+    const mockDB = {
       user: { findUnique: vi.fn().mockResolvedValue({ id: '1', email: 'test@example.com' }) },
       order: { create: vi.fn().mockResolvedValue({ id: '1', total: 150 }) }
     };
@@ -578,7 +578,7 @@ describe('OrderService', () => {
     
     const service = new OrderService(mockDB, mockEmail);
     const order = await service.createOrder('1', [
-      { price: 100 }, 
+      { price: 100 },
       { price: 50 }
     ]);
 
@@ -589,8 +589,8 @@ describe('OrderService', () => {
 // tests/integration/order.api.test.ts (Integration)
 describe('POST /api/orders', () => {
   it('creates order and sends email', async () => {
-    const user = await db.user.create({ 
-      data: { email: 'test@example.com', name: 'Test' } 
+    const user = await db.user.create({
+      data: { email: 'test@example.com', name: 'Test' }
     });
 
     const res = await request(app)
@@ -602,8 +602,8 @@ describe('POST /api/orders', () => {
     expect(res.body.data.total).toBeGreaterThan(0);
 
     // Verify in database
-    const order = await db.order.findFirst({ 
-      where: { userId: user.id } 
+    const order = await db.order.findFirst({
+      where: { userId: user.id }
     });
     expect(order).not.toBeNull();
   });

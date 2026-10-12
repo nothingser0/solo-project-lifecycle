@@ -100,9 +100,9 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
 <img src="/hero.jpg" alt="Hero" />
 
 // After: Lazy load + WebP
-<img 
-  src="/hero.webp" 
-  alt="Hero" 
+<img
+  src="/hero.webp"
+  alt="Hero"
   loading="lazy"
   width="800"
   height="600"
@@ -203,10 +203,10 @@ Fix: Optimize query, add indexes
 
 ```sql
 -- Slow query
-EXPLAIN ANALYZE 
-SELECT orders.*, users.name 
-FROM orders 
-JOIN users ON orders.user_id = users.id 
+EXPLAIN ANALYZE
+SELECT orders.*, users.name
+FROM orders
+JOIN users ON orders.user_id = users.id
 WHERE orders.status = 'pending'
 ORDER BY orders.created_at DESC;
 
@@ -408,11 +408,11 @@ app.get('/stream', (req, res) => {
 import Image from 'next/image';
 
 // Automatic WebP, lazy loading, responsive sizes
-<Image 
-  src="/hero.jpg" 
-  alt="Hero" 
-  width={800} 
-  height={600} 
+<Image
+  src="/hero.jpg"
+  alt="Hero"
+  width={800}
+  height={600}
   priority // Only for above-fold images
 />
 ```

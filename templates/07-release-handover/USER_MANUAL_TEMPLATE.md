@@ -43,7 +43,7 @@
 ## 4. Administrator Guide (Management Features)
 
 ### 4.1 Adding New User Accounts
-1. Navigate to **"Settings"** $\to$ **"User Management"**.
+1. Navigate to **"Settings"** → **"User Management"**.
 2. Click the **"Add User"** button.
 3. Enter name, email, and select role (*Role*):
    - **Staff**: Can only create and view own document drafts.

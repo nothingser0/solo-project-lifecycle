@@ -35,7 +35,7 @@
 
 ### Duration (Latency)
 - **Metric**: P50, P95, P99 response time
-- **Target**: 
+- **Target**:
   - P50 <200ms (median user experience)
   - P95 <500ms (95% users satisfied)
   - P99 <1000ms (catch outliers)
@@ -59,7 +59,7 @@ ALTER DATABASE yourdb SET log_min_duration_statement = 100; -- Log queries >100m
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
 -- Top 10 slowest queries (by total time)
-SELECT 
+SELECT
   calls,
   total_exec_time / 1000 AS total_seconds,
   mean_exec_time / 1000 AS mean_ms,
@@ -82,16 +82,16 @@ LIMIT 10;
 **Step 1: Identify slow query from logs**
 ```sql
 -- Example slow query
-SELECT * FROM orders 
-WHERE user_id = 123 AND status = 'pending' 
+SELECT * FROM orders
+WHERE user_id = 123 AND status = 'pending'
 ORDER BY created_at DESC;
 ```
 
 **Step 2: Run EXPLAIN ANALYZE**
 ```sql
-EXPLAIN (ANALYZE, BUFFERS) 
-SELECT * FROM orders 
-WHERE user_id = 123 AND status = 'pending' 
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM orders
+WHERE user_id = 123 AND status = 'pending'
 ORDER BY created_at DESC;
 ```
 
@@ -103,7 +103,7 @@ ORDER BY created_at DESC;
 **Step 3: Add covering index**
 ```sql
 -- Before: Sequential scan on 1M rows
-CREATE INDEX idx_orders_user_status_created 
+CREATE INDEX idx_orders_user_status_created
 ON orders(user_id, status, created_at DESC);
 
 -- After: Index scan on 50 rows (20,000× faster)
@@ -121,19 +121,19 @@ ON orders(user_id, status, created_at DESC);
 
 ```sql
 -- Find unused indexes (candidates for removal)
-SELECT 
+SELECT
   schemaname,
   tablename,
   indexname,
   idx_scan,
   pg_size_pretty(pg_relation_size(indexrelid)) AS size
 FROM pg_stat_user_indexes
-WHERE idx_scan = 0 
+WHERE idx_scan = 0
   AND indexrelname NOT LIKE '%_pkey'
 ORDER BY pg_relation_size(indexrelid) DESC;
 
 -- Find missing indexes (high seq scans)
-SELECT 
+SELECT
   schemaname,
   tablename,
   seq_scan,
@@ -312,7 +312,7 @@ CREATE TABLE web_vitals (
 );
 
 -- Analyze P75 LCP by page
-SELECT 
+SELECT
   page_url,
   PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY value) AS p75_lcp
 FROM web_vitals
@@ -486,10 +486,10 @@ Time: 2026-10-02 10:23 UTC
 ```markdown
 ## Incident: Slow Order Creation (2026-10-02)
 
-**Impact**: 200 users affected, 5-minute degradation  
-**Root Cause**: Missing index on orders(user_id, status)  
-**Detection**: Sentry alert P95 >1000ms  
-**Resolution**: Added composite index, latency back to <200ms  
+**Impact**: 200 users affected, 5-minute degradation
+**Root Cause**: Missing index on orders(user_id, status)
+**Detection**: Sentry alert P95 >1000ms
+**Resolution**: Added composite index, latency back to <200ms
 
 **Action Items**:
 - [ ] Add index creation to migration checklist

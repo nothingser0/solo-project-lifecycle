@@ -64,9 +64,9 @@ export function formatIndonesianDate(
 ## 3. Statutory Tax Calculation & Rounding (PPN & PPh)
 
 1. **PPN (Pajak Pertambahan Nilai) 11%**:
-   - Calculated as: $\text{DPP} \times 0.11$.
+   - Calculated as: DPP × 0.11.
    - Rounding: Standard mathematical rounding (`Math.round`) to the nearest integer Rupiah.
 2. **PPh Final 0.5% (PP 55/2022 jo. PP 20/2026)**:
-   - Permanent facility for qualifying Wajib Pajak Orang Pribadi (WP OP), PT Perorangan, and Koperasi with annual turnover $\le$ Rp 4.8B (no longer eligible for CV, Firma, PT non-perorangan).
+   - Permanent facility for qualifying Wajib Pajak Orang Pribadi (WP OP), PT Perorangan, and Koperasi with annual turnover ≤ Rp 4.8B (no longer eligible for CV, Firma, PT non-perorangan).
    - Non-taxable turnover threshold of Rp 500.000.000/year applies strictly to individual taxpayers (WP OP).
    - Invoices must clearly separate DPP (Dasar Pengenaan Pajak), PPN 11%, and Total Tagihan.

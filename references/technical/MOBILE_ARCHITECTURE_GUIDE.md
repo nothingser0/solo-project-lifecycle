@@ -178,7 +178,7 @@ async function registerForPushNotificationsAsync() {
 // AppDelegate.swift
 import UserNotifications
 
-func application(_ application: UIApplication, 
+func application(_ application: UIApplication,
                  didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
   UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
     if granted {
@@ -190,7 +190,7 @@ func application(_ application: UIApplication,
   return true
 }
 
-func application(_ application: UIApplication, 
+func application(_ application: UIApplication,
                  didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
   let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
   // Send token to backend
@@ -374,11 +374,11 @@ Host at: `https://yourapp.com/.well-known/assetlinks.json`
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data 
+    <data
       android:scheme="https"
       android:host="yourapp.com"
       android:pathPrefix="/orders" />
-    <data 
+    <data
       android:scheme="https"
       android:host="yourapp.com"
       android:pathPrefix="/products" />

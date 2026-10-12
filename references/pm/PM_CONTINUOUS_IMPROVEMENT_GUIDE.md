@@ -1,24 +1,24 @@
 # Product Management: Continuous Improvement Guide
 
+## Contents
+
+- [1. Build-Measure-Learn Cycle](#1-build-measure-learn-cycle)
+- [2. Growth Experiment Backlog Prioritization](#2-growth-experiment-backlog-prioritization)
+- [3. Feedback Collection Systems](#3-feedback-collection-systems)
+- [4. Cohort Analysis & Retention Tracking](#4-cohort-analysis-retention-tracking)
+- [5. Churn Prediction & Prevention](#5-churn-prediction-prevention)
+- [6. Feature Adoption Tracking](#6-feature-adoption-tracking)
+- [7. Quarterly Roadmap Refresh](#7-quarterly-roadmap-refresh)
+- [8. Product Health Metrics Dashboard](#8-product-health-metrics-dashboard)
+- [9. Tools & Stack Recommendations](#9-tools-stack-recommendations)
+- [Summary Checklist](#summary-checklist)
+
+
 **Purpose:** Post-launch product iteration tactics, growth experiments, and feedback loops for solo product managers.
 
 **When to Use:** After M10 (Deployment) or M13 (Product Operations) — when the product is live and generating real user data.
 
 **Context:** Solo PM mode. You're the Single PIC for product health, growth experiments, and iterative improvement. This guide covers Build-Measure-Learn cycles, feedback collection, cohort analysis, churn prevention, and quarterly roadmap refresh tactics.
-
----
-
-## Table of Contents
-
-1. [Build-Measure-Learn Cycle](#1-build-measure-learn-cycle)
-2. [Growth Experiment Backlog Prioritization](#2-growth-experiment-backlog-prioritization)
-3. [Feedback Collection Systems](#3-feedback-collection-systems)
-4. [Cohort Analysis & Retention Tracking](#4-cohort-analysis--retention-tracking)
-5. [Churn Prediction & Prevention](#5-churn-prediction--prevention)
-6. [Feature Adoption Tracking](#6-feature-adoption-tracking)
-7. [Quarterly Roadmap Refresh](#7-quarterly-roadmap-refresh)
-8. [Product Health Metrics Dashboard](#8-product-health-metrics-dashboard)
-9. [Tools & Stack Recommendations](#9-tools--stack-recommendations)
 
 ---
 
@@ -327,7 +327,7 @@ function FeedbackWidget() {
 ```sql
 -- Cohort retention (PostgreSQL)
 WITH cohorts AS (
-  SELECT 
+  SELECT
     user_id,
     DATE_TRUNC('week', created_at) AS cohort_week,
     created_at
@@ -491,7 +491,7 @@ analytics.track('Feature Activated', {
 });
 
 // Query adoption (3+ uses in 30 days)
-SELECT 
+SELECT
   user_id,
   COUNT(*) AS usage_count
 FROM events
@@ -618,7 +618,7 @@ HAVING COUNT(*) >= 3;
 
 **Query: MRR Growth**
 ```sql
-SELECT 
+SELECT
   DATE_TRUNC('month', subscription_start) AS month,
   SUM(monthly_price) AS mrr
 FROM subscriptions
@@ -697,4 +697,4 @@ ORDER BY month;
 4. Create growth experiment backlog (start with ICE scoring)
 5. Schedule first 3 user interviews
 
-**Questions?** Reference the [Product Operations module (M13)](../../docs/modules/13-product-operations-iteration.md) for more context.
+**Questions?** Reference the [Product Operations module (M13)](../../docs/modules/13_PRODUCT_OPERATIONS_ITERATION.md) for more context.

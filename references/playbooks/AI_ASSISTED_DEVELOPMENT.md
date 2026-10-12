@@ -1,16 +1,37 @@
 
-# Module 06C: AI-Assisted Development & Vibe Coding Workflow
+# AI-Assisted Development & Vibe Coding Workflow (M06 Companion)
+
+## Contents
+
+- [1. When to Use This Playbook](#1-when-to-use-this-playbook)
+- [2. AI Product Creation Cycle (Problem → Solution → Code)](#2-ai-product-creation-cycle-problem-solution-code)
+- [Essential Context (Always Include)](#essential-context-always-include)
+- [Optional Context (Include When Relevant)](#optional-context-include-when-relevant)
+- [Never Include (Wastes Context Window)](#never-include-wastes-context-window)
+- [3. Product Development Cycle with AI](#3-product-development-cycle-with-ai)
+- [Weekly AI-Assisted Development Metrics](#weekly-ai-assisted-development-metrics)
+- [4. AI Tool Comparison Matrix](#4-ai-tool-comparison-matrix)
+- [5. AI Code Review Protocol (Mandatory Gates)](#5-ai-code-review-protocol-mandatory-gates)
+- [6. Prompt Library (20+ Reusable Templates)](#6-prompt-library-20-reusable-templates)
+- [7. Anti-Patterns & Red Flags](#7-anti-patterns-red-flags)
+- [8. Integration with Other Modules](#8-integration-with-other-modules)
+- [9. Output Artifacts (Deliverables)](#9-output-artifacts-deliverables)
+- [10. Solo Developer AI-Assisted Development Principles](#10-solo-developer-ai-assisted-development-principles)
+- [11. When NOT to Use AI](#11-when-not-to-use-ai)
+- [12. Maintenance & Skill Development](#12-maintenance-skill-development)
+- [AI-Assisted Dev Weekly Review](#ai-assisted-dev-weekly-review)
+
 
 This module is a practical guide for solo developers using **AI coding agents** (Cursor, Windsurf, Claude Code, GitHub Copilot, v0.dev) as their primary coding partner. Its goal is to maximize iteration speed without sacrificing code quality, providing clear review protocols for critical areas (auth, payment, data privacy), prompt engineering strategies, and anti-patterns in AI code generation.
 
 ---
 
-## 1. When to Use Module 06C
+## 1. When to Use This Playbook
 
 ```text
 [ TIMING & TRIGGER ]
 
-Pre-Coding Phase:     ──► Load M06C before starting M06 (Development Execution)
+Pre-Coding Phase:     ──► Load this playbook before starting M06 (Development Execution)
 Mid-Development:      ──► When AI prompts produce code smells or recurring bugs
 Refactoring Phase:    ──► When re-architecting an existing codebase with AI
 Code Review:          ──► Before merging to staging, running the AI Code Review Protocol is mandatory
@@ -139,7 +160,7 @@ src/
 
 ```text
 ❌ BAD (Multi-Concern Prompt):
-"Create a user profile page with edit form, avatar upload, password change, 
+"Create a user profile page with edit form, avatar upload, password change,
 account deletion, and email notification settings"
 
 ✅ GOOD (Atomic Prompts):
@@ -249,7 +270,7 @@ pnpm test:affected          # Run tests for changed files
 
 ```text
 STEP 1: Describe UI in natural language
-"Create a dashboard card showing MRR with sparkline chart, 
+"Create a dashboard card showing MRR with sparkline chart,
 percentage change badge, and last updated timestamp"
 
 STEP 2: Review generated code (React + Tailwind)
@@ -258,7 +279,7 @@ STEP 2: Review generated code (React + Tailwind)
 - Ensure design token compliance
 
 STEP 3: Iterate with refinement prompt
-"Make the sparkline chart use recharts instead of canvas, 
+"Make the sparkline chart use recharts instead of canvas,
 add loading skeleton state"
 
 STEP 4: Copy to codebase
@@ -293,7 +314,7 @@ AI Prompt: "Create FileUploader component with drag-drop"
 Result: Basic structure, no validation
 
 ITERATION 2: Add business logic
-AI Prompt: "Add file type validation (PDF/DOCX only, max 10MB), 
+AI Prompt: "Add file type validation (PDF/DOCX only, max 10MB),
 show error toast on invalid file"
 Result: Validation works, but UI feedback unclear
 
@@ -336,8 +357,8 @@ Use Tailwind responsive prefixes: sm:, md:, lg:"
 ```text
 CURSOR COMPOSER WORKFLOW:
 1. Select multiple files to modify (Cmd+Shift+L)
-2. Describe change across files: "Add user role field to User model, 
-   update Prisma schema, add role column to users table migration, 
+2. Describe change across files: "Add user role field to User model,
+   update Prisma schema, add role column to users table migration,
    update user API response type"
 3. Review diff for each file before accepting
 4. Accept changes file-by-file (not all-at-once)
@@ -426,7 +447,7 @@ DETECT THESE IN AI OUTPUT (reject immediately):
 ```bash
 # Run after every AI code generation session
 pnpm audit                           # Dependency vulnerabilities
-pnpm dlx @next/lint                  # Next.js security rules
+pnpm exec next lint                  # Next.js lint rules (incl. security)
 pnpm dlx eslint-plugin-security .    # Common security issues
 ```
 
@@ -456,7 +477,7 @@ users.forEach(user => console.log(user.name, user.posts.length))
 <button onClick={handleDelete}>🗑️</button>
 
 // Fix manually (accessible):
-<button 
+<button
   onClick={handleDelete}
   aria-label="Delete item"
   className="focus:ring-2 focus:ring-blue-500"
@@ -500,7 +521,7 @@ SCENARIO: Writing API route handler
    const body = await request.json()
    
 3. Accept, type next line:
-   const validated = 
+   const validated =
    
 4. Hit Tab, AI suggests:
    const validated = userSchema.parse(body)
@@ -1371,7 +1392,7 @@ Include:
 | **M04 (UI/UX)** | v0.dev generates components from DESIGN.md tokens |
 | **M05 (Architecture)** | AI drafts FSD from business requirements |
 | **M06 (Development)** | Main usage: AI writes code from TODO.md tasks |
-| **M06 Section 6A (Analytics)** | AI generates event tracking code |
+| **M06 (Analytics instrumentation)** | AI generates event tracking code |
 | **M07 (QA/SIT)** | AI generates test cases from requirements |
 | **M09 (UAT)** | AI creates UAT scenarios from user stories |
 | **M10 (Deployment)** | AI generates CI/CD pipelines |
@@ -1404,7 +1425,7 @@ Include:
 
 ---
 
-## 10. Prinsip AI-Assisted Development Solo Developer
+## 10. Solo Developer AI-Assisted Development Principles
 
 1. **AI as Copilot, Not Autopilot**: Review every change, understand every line before accepting.
 
@@ -1500,4 +1521,4 @@ GOAL: Stay sharp if AI unavailable or hallucinates
 
 ---
 
-**Next Step After M06C**: Return to **Module 06 (Development Execution)** main workflow, using AI tools to accelerate code generation while following the review protocols defined here.
+**Next Step**: Return to **Module 06 (Development Execution)** main workflow, using AI tools to accelerate code generation while following the review protocols defined here.

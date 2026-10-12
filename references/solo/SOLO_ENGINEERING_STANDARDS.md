@@ -104,7 +104,7 @@ Add indexes to:
 ### 3.3 Visual Asset Optimization
 - Do not load large uncompressed PNG/JPEG images.
 - Use **WebP / AVIF** automatically via Next.js `<Image />` component.
-- Apply **Font Subsetting** (loading only required Latin characters) to reduce font file size to $< 30\text{ KB}$.
+- Apply **Font Subsetting** (loading only required Latin characters) to reduce font file size to < 30 KB.
 
 ---
 

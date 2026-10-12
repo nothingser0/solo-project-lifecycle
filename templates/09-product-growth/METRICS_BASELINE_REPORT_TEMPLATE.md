@@ -227,7 +227,7 @@ Key Actions per Segment:
 
 NPS Score: [X] (Promoters % - Detractors %)
 
-**Benchmark**: 
+**Benchmark**:
 - < 0: Needs urgent improvement
 - 0-30: Good
 - 30-50: Great

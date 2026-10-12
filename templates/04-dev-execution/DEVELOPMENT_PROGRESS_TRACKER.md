@@ -99,7 +99,7 @@
 ## 4. Frontend Development Progress Checklist
 
 ### 4.1 Component Library & Design System Setup
-- [ ] **FE-01**: Synchronize design tokens with `DESIGN_SYSTEM.md` (Zinc/neutral colors, Inter font, border radius) `[Status: TODO]`
+- [ ] **FE-01**: Synchronize design tokens with `DESIGN.md` (Zinc/neutral colors, Inter font, border radius) `[Status: TODO]`
 - [ ] **FE-02**: Install atomic primitive components (Button, Input, Select, Checkbox, Textarea, Badge, Avatar) `[Status: TODO]`
 - [ ] **FE-03**: Install feedback components (Alert, Modal/Dialog, Toast sonner/toast, Drawer, Popover) `[Status: TODO]`
 - [ ] **FE-04**: Install navigation components (Navbar, Collapsible Sidebar, Breadcrumbs, Tab navigation) `[Status: TODO]`

@@ -20,7 +20,7 @@
 - [ ] Orders/transactions
 - [ ] Other: ___________
 
-**Decision**: 
+**Decision**:
 - If <100 rows → Manual entry acceptable
 - If 100-1000 rows → Script migration
 - If >1000 rows → Consider data migration tool
@@ -41,8 +41,8 @@ Map old fields to new schema:
 **Example transformation**:
 ```javascript
 // Old: "081234567890" → New: "+6281234567890"
-const newPhone = oldPhone.startsWith('0') 
-  ? '+62' + oldPhone.slice(1) 
+const newPhone = oldPhone.startsWith('0')
+  ? '+62' + oldPhone.slice(1)
   : oldPhone;
 ```
 

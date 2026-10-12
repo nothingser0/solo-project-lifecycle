@@ -1,6 +1,16 @@
 # M02 Deep Dive: Discovery & Scope — Extended Material
 
-Companion to [`../02-discovery-scope.md`](../02-discovery-scope.md). Reference links: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md`, `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md`, `references/pm/PM_COMMUNICATION_GUIDE.md`.
+## Contents
+
+- [1. Business Metrics Ramp Table (Full)](#1-business-metrics-ramp-table-full)
+- [2. RBAC Matrix (Full Example — Retail/Accounting Archetype)](#2-rbac-matrix-full-example-retailaccounting-archetype)
+- [3. SQL Schema Patterns (Full)](#3-sql-schema-patterns-full)
+- [4. Architecture Decision Matrices (Full)](#4-architecture-decision-matrices-full)
+- [5. Legal Templates (Full)](#5-legal-templates-full)
+- [6. Stakeholder & Timeline Details](#6-stakeholder-timeline-details)
+
+
+Companion to [`../02_DISCOVERY_SCOPE.md`](../02_DISCOVERY_SCOPE.md). Reference links: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md`, `references/checklists/REQUIREMENT_ELICITATION_GUIDE.md`, `references/pm/PM_COMMUNICATION_GUIDE.md`.
 
 ## 1. Business Metrics Ramp Table (Full)
 

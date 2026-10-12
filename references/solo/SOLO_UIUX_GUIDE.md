@@ -42,7 +42,7 @@ Mature software design is characterized by **readability and interaction clarity
 2. **Text Contrast Compliance (WCAG 2.1 AA)**:
    - Do not use washed-out gray text on white backgrounds that causes eye fatigue.
    - Regular body text contrast ratio to background must be at least **4.5 : 1**.
-   - Large text contrast ratio (headings $> 18\text{px}$ bold) must be at least **3.0 : 1**.
+   - Large text contrast ratio (headings > 18px bold) must be at least **3.0 : 1**.
 3. **Experience Lifesavers: Empty States & Skeleton Loaders**:
    - Never leave a screen completely blank when a new user first signs up.
    - Always provide concise illustrations, guiding copy, and a Call-to-Action button (*"No documents created yet. Click the button below to create your first document."*).

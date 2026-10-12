@@ -179,22 +179,22 @@ Customer contract should be:
 
 **Transmission**: Encrypted channels + additional controls (tokenization, data masking)
 
-**Storage**: 
+**Storage**:
 - Encrypted at rest (AES-256)
 - Encrypted in transit (TLS 1.3)
 - Tokenization (replace sensitive data with tokens)
 
-**Access Control**: 
+**Access Control**:
 - Multi-factor authentication required
 - Minimum privilege principle
 - Time-limited access
 
-**Audit Logging**: 
+**Audit Logging**:
 - Immutable logs (cannot be deleted/modified)
 - Real-time alerting for access
 - Quarterly access reviews
 
-**Disposal**: 
+**Disposal**:
 - Secure deletion (overwrite multiple times)
 - Certificate of destruction
 

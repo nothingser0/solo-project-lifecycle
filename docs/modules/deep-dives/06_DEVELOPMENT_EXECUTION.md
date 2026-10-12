@@ -1,6 +1,24 @@
 # Module 06 Deep Dive: Development Execution (Extended Examples)
 
-> Verbatim extended examples extracted from `docs/modules/06-development-execution.md` (runbook). Read the runbook first; consult this file for full details.
+## Contents
+
+- [Code Style Rules (per-stack AGENTS.md)](#code-style-rules-per-stack-agentsmd)
+- [Code Style Rules](#code-style-rules)
+- [Code Style Rules](#code-style-rules)
+- [Code Style Rules](#code-style-rules)
+- [Anti-Pattern Detection](#anti-pattern-detection)
+- [Database Migration Anti-Patterns](#database-migration-anti-patterns)
+- [Dependency Compatibility & Pre-Install Checks](#dependency-compatibility-pre-install-checks)
+- [Known Security Risks](#known-security-risks)
+- [9-File Harness: Staging & Template Examples](#9-file-harness-staging-template-examples)
+- [3. The 9 Root Harness Files in Root Repo (Universal Stack - The 9 Root Harness Files)](#3-the-9-root-harness-files-in-root-repo-universal-stack---the-9-root-harness-files)
+- [Anti-AI-Slop Directives](#anti-ai-slop-directives)
+- [Phase-0 Gate Check & Extended Checklists](#phase-0-gate-check-extended-checklists)
+- [Example FSD.md Header](#example-fsdmd-header)
+- [Module 04 Handoff Strategy](#module-04-handoff-strategy)
+
+
+> Verbatim extended examples extracted from `docs/modules/06_DEVELOPMENT_EXECUTION.md` (runbook). Read the runbook first; consult this file for full details.
 
 ## Code Style Rules (per-stack AGENTS.md)
 
@@ -486,12 +504,16 @@ Agent reads stack-specific templates from skill://, writes to staging:
 ## Anti-AI-Slop Directives
 
 ### Anti-AI-Slop Code Directives (Enforced across all AGENTS.md)
-Every stack-specific `AGENTS.md` strictly bans these 5 common AI coding defects:
-1. **Banned: Redundant & Obvious Comments**: No commenting what the code clearly does (e.g., `// Add 1 to x` above `x += 1`). No leaving `// TODO: Implement later` stubs in production files.
-2. **Banned: Verbose & Duplicated Logic**: No copy-pasting the same logic 5 times. Must extract shared helpers, custom hooks, or service layers.
-3. **Banned: Hallucinated Libraries**: No importing uninstalled or fictitious packages. Verify all dependencies against `package.json` before importing.
-4. **Banned: Silent Failures & Empty Catch**: No `try { ... } catch {}` that swallows errors. All failures must be logged or surfaced cleanly.
-5. **Banned: Hardcoded Secrets & Unvalidated Inputs**: 100% of external inputs must be validated via Zod/schemas; zero raw SQL string concatenation; zero hardcoded API keys.
+Every stack-specific `AGENTS.md` strictly bans these AI coding defects:
+1. **Banned: Redundant & Obvious Comments**: No commenting what the code clearly does (e.g., `// Add 1 to x` above `x += 1`). No leaving `// TODO: Implement later` stubs in production files. No commented-out dead code.
+2. **Banned: Silent Failures**: No `try { ... } catch {}` that swallows errors. All failures must be logged, rethrown, or surfaced as a typed error.
+3. **Banned: Dead Code & Unused Imports**: No unreachable branches, unused variables, or orphaned imports.
+4. **Race Conditions (Mandatory)**: Any read-modify-write on shared state (stock, balances, counters, booking slots, status transitions) must be atomic — DB transaction + row lock, unique constraint, or compare-and-swap. Webhooks/payment callbacks must be idempotent. Never check-then-act across two queries.
+5. **Banned: Hallucinated Libraries & APIs**: No importing uninstalled or fictitious packages. Verify all dependencies exist before importing.
+
+Related bans (security-focused, in every stack file): hardcoded secrets, unvalidated inputs, and raw SQL string concatenation.
+
+> **Verification**: `validate-gate.sh M06` mechanically scans source for type-suppression escape hatches, placeholder TODO stubs, hardcoded secrets, narrating comments, and unlocked read-modify-write statements.
 
 ---
 

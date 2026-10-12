@@ -37,7 +37,7 @@
 | 1 | `No_Induk` | Text | `legacy_id` | `VARCHAR(50)` | Keep as audit reference |
 | 2 | `Nama Lengkap` | Text | `full_name` | `VARCHAR(150)` | Trim leading/trailing whitespace, Title Case |
 | 3 | `Alamat Email` | Text | `email` | `VARCHAR(255)` | Lowercase, RFC 5322 regex validation |
-| 4 | `Jabatan / Peran` | Text | `role` | `VARCHAR(30)` | Map: "Staff" $\to$ `staff`, "Head" $\to$ `manager` |
+| 4 | `Jabatan / Peran` | Text | `role` | `VARCHAR(30)` | Map: "Staff" → `staff`, "Head" → `manager` |
 | 5 | - | - | `id` | `UUID` | Auto-generate UUIDv7 |
 | 6 | - | - | `password_hash` | `VARCHAR(255)` | Temporary default password hash (Argon2id) |
 

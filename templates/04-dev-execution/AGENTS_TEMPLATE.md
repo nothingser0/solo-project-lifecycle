@@ -13,7 +13,7 @@ You are a Senior Software Engineer responsible for building this system determin
 3. **Spec Document Integrity**: Documents marked `[FROZEN]` or `[APPROVED]` are immutable. If specifications contradict, STOP AND ASK THE USER. Never alter frozen specifications unilaterally.
 4. **Zero Type Suppressions**: Using `// @ts-ignore`, `// @ts-nocheck`, `// @ts-expect-error`, or `as any` to silence compilers is STRICTLY PROHIBITED.
 5. **STRICT PROHIBITION of Agent Git Commits & Pushes**: AI agents and automated harnesses MUST NEVER run `git commit` or `git push`. All commit and push operations are exclusively reserved for the human developer.
-6. **Mandatory Documentation & Specs Pre-Read**: Before writing schema, server actions, or frontend components, agents MUST read the relevant documentation: `docs/specs/FSD.md`, `docs/specs/PRD.md`, `docs/specs/DESIGN.md`, and official tech stack docs (e.g., Supabase Auth/RLS, Next.js App Router).
+6. **Mandatory Documentation & Specs Pre-Read**: Before writing schema, server actions, or frontend components, agents MUST read the relevant documentation: `docs/specs/FSD.md`, `docs/specs/PRD.md`, `DESIGN.md`, and official tech stack docs (e.g., Supabase Auth/RLS, Next.js App Router).
 7. **Mandatory Design Assets & Inspiration Usage (Frontend-First)**: If specific screen designs exist, convert them directly to stack code. If screen designs do not exist, code the UI directly referencing `DESIGN.md`, logo briefs, and `docs/design/inspiration/`. Generic monochrome boilerplate is strictly prohibited.
 8. **Backend Concrete Verification (Zero Mocking in Production Paths)**: Every backend action/endpoint must be verified against actual database state. Dummy UUIDs (e.g., `11111111-...`), fake success responses, and empty `catch {}` blocks are strictly forbidden.
 
@@ -71,7 +71,7 @@ npm run test:smoke
    - Bare `console.log()` calls in production API handlers are PROHIBITED. Use structured JSON logging.
    - Using `DELETE FROM` on transactional/legal documents is PROHIBITED. Use soft deletes (`deleted_at`).
    - Multi-table mutations must be wrapped in atomic transactions (`db.$transaction` or stored procedures) with deterministic lock ordering (e.g., `ORDER BY id ASC`) to prevent deadlocks.
-   - Error notifications must not auto-dismiss; success notifications allow auto-dismiss after $\ge 4000$ms.
+   - Error notifications must not auto-dismiss; success notifications allow auto-dismiss after ≥ 4000ms.
 8. **Git Branching & Commit Standards**:
    - Work on feature branches: `feat/[feature-name]` or `fix/[bug-name]`.
    - Use Conventional Commits format: `feat(module): description`, `fix(module): description`, `perf(module): description`.

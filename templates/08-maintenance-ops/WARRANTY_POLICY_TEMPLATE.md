@@ -41,9 +41,9 @@ The warranty is legally **INAPPLICABLE** under the following conditions:
 
 | Issue Classification | Issue Definition | Initial Response Time | Resolution Target |
 | :--- | :--- | :---: | :---: |
-| **Severity 1 (Critical)** | Entire system down (*down*), payment transactions failing completely, data corruption | **$< 2$ Business Hours** | **$< 24$ Business Hours** |
-| **Severity 2 (Major)** | Core feature impaired but a workaround exists | **$< 8$ Business Hours** | **$< 48$ Business Hours** |
-| **Severity 3 (Minor)** | Minor typo (*typo*), slight cosmetic visual misalignment | **$< 24$ Business Hours** | Scheduled in weekly maintenance release |
+| **Severity 1 (Critical)** | Entire system down (*down*), payment transactions failing completely, data corruption | **< 2 Business Hours** | **< 24 Business Hours** |
+| **Severity 2 (Major)** | Core feature impaired but a workaround exists | **< 8 Business Hours** | **< 48 Business Hours** |
+| **Severity 3 (Minor)** | Minor typo (*typo*), slight cosmetic visual misalignment | **< 24 Business Hours** | Scheduled in weekly maintenance release |
 
 ---
 

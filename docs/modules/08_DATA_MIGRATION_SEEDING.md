@@ -1,6 +1,7 @@
 # Module 08: Data Migration & Seeding
 
-> Deep dive: `deep-dives/08-data-migration-seeding.md` (audit examples, mapping matrix, ETL details, reconciliation, scale table, gate protocol). Also: `references/technical/DATA_ASSETS_MANAGEMENT.md`, `templates/05-data-migration/DATA_MIGRATION_LITE.md`.
+> **Templates to copy**: `templates/05-data-migration/DATA_MIGRATION_LITE.md` · `DATA_MIGRATION_PLAN_TEMPLATE.md`
+> 📖 **Optional** (do NOT preload): `references/technical/DATA_ASSETS_MANAGEMENT.md` · deep dive `deep-dives/08_DATA_MIGRATION_SEEDING.md` (audit examples, mapping matrix, ETL details, reconciliation).
 
 Transfers client legacy data (CSV/Excel/SQL) into the new FSD schema — **Staging only, PII masked** — before UAT in Module 09. Production import happens in M10 (ETL re-run, staging dump, or manual CSV).
 

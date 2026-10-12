@@ -1,9 +1,12 @@
 # Module 06: Development Execution (Coding & 3 Pillars)
 
-Coding via **AI Coding Agents** with an **Agent Harness**, Git branching, 3 pillars: **Security, Performance, Resource Efficiency**.
-**Inputs**: `docs/specs/FSD.md` (LOCKED stack) + `PRD.md` + frozen prototype. Small: `PROJECT_LITE.md`.
-**Refs**: `references/solo/SOLO_DEVELOPMENT_PATTERNS.md` (+`SOLO_ENGINEERING_STANDARDS.md`), `DEV_EXECUTION_DEEP_DIVE.md`, `references/playbooks/ai-assisted-development.md`, stack quickstarts, `STACK_SUPPORT_MATRIX.md`.
-Deep dives: [#code-style](deep-dives/06-development-execution.md#code-style-rules-per-stack-agentsmd) · [#dependencies](deep-dives/06-development-execution.md#dependency-compatibility--pre-install-checks) · [#harness](deep-dives/06-development-execution.md#9-file-harness-staging--template-examples) · [#gate-checks](deep-dives/06-development-execution.md#phase-0-gate-check-and-extended-checklists)
+Coding via **AI Coding Agents** with an **Agent Harness** + Git branching; 3 pillars: **Security, Performance, Resource Efficiency**.
+**Inputs**: `docs/specs/FSD.md` (LOCKED stack) + `PRD.md` + frozen prototype; Small: `PROJECT_LITE.md`.
+> **Templates to copy**: `templates/04-dev-execution/{TODO,RUNBOOK_LOCAL,VERIFY_LOCAL}_TEMPLATE.md` · pre-merge: `checklists/{FRONTEND,BACKEND,INTEGRATION}_CHECKLIST.md`
+📖 **Optional** (do NOT preload; open only when a step names one): `references/solo/{SOLO_DEVELOPMENT_PATTERNS,SOLO_ENGINEERING_STANDARDS}.md` · `references/playbooks/AI_ASSISTED_DEVELOPMENT.md` · stack quickstarts · `STACK_SUPPORT_MATRIX.md` · conditional: `patterns/localization/I18N_INDONESIA.md`, `patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md`.
+
+> **Pre-merge AI review (inline)**: (1) every changed file traces to a TODO task; (2) no invented imports/APIs — verify each exists; (3) no secrets, no `@ts-ignore`/`as any`/empty catch; (4) new logic tested; (5) one logical change per commit.
+Deep dive [`deep-dives/06_DEVELOPMENT_EXECUTION.md`](deep-dives/06_DEVELOPMENT_EXECUTION.md) — open by section when a step needs depth (code style, dependencies, harness staging, gate-check scripts).
 
 ## 1. Execution Steps
 **STEP 0 — Locked stack decision (MANDATORY FIRST; gate-check exists).** Parse FSD `Stack Decision LOCKED:` + `Module 04 Handoff Strategy` → compatibility level (1-4). Small: verify `PROJECT_LITE.md`. Must match M05 approval. **Never assume Next.js.**
@@ -39,6 +42,7 @@ Optional: `./scripts/scaffold/template-picker.sh --phase 4 --dest .`
 **STEP 6 — Implement per TODO (DB → API → prototype).**
 - **DB**: stack ORM migrations; pooling; FK-column indexes; reversible; seed data; Sprint 1 gate.
 - **API**: endpoints per FSD, Zod/schema validation + 3 pillars — Security: encryption, HttpOnly cookies, parameterized queries; Performance: N+1 prevention, caching, indexing; Resources: pooling, streaming, memory.
+- **Concurrency & comment hygiene**: read-modify-write on stock/balance/counter/status MUST be atomic (tx + row lock, unique constraint, or CAS); webhooks idempotent. No comments that restate code, no stub comments, no commented-out code. Details: deep dive.
 - **Prototype**: per FSD `Module 04 Handoff Strategy` (Levels 1-4); check framework docs; **UI 100% identical to frozen prototype**; static screens first (Sprint 3), data-backed after DB+API.
 - **5 UI states** per screen (idle/loading/success/error/empty).
 - **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in RUNBOOK_LOCAL.md; jobs → worker verified.
@@ -58,6 +62,7 @@ Source code (clean, active `staging` branch) · **`RUNBOOK_LOCAL.md`** · **`VER
 - [ ] Smoke test 100%.
 - [ ] Migrations reversible; indexes in place; VERIFY_LOCAL.md has pass proof.
 - [ ] Small: `docs/qa/SECURITY_CHECKLIST_SMALL.md` filled (≥300 bytes; absorbs M07 security).
+- [ ] **Small only** (no M07): `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` — 0 blocking tells (favicon, 404, meta description, OG image, console errors, leftover placeholder text, dead buttons). Medium+ covers this in M07 Step 7.
 - [ ] **Verbatim**: `./scripts/gates/validate-gate.sh M06` (or `.ps1 M06`) — exit 1 = fix and re-run.
 
 ## 4. Gate Exit & Routing

@@ -44,9 +44,9 @@ The Developer commits to the following response and resolution times during offi
 
 | Severity Level | Disruption Criteria | Initial Response Time | Target Resolution Time |
 | :---: | :--- | :---: | :---: |
-| **Severity 1 (Critical)** | Entire application down or database inaccessible | **$< 1$ Hour** (24/7 on-call for Gold tier) | **$< 12$ Hours** |
-| **Severity 2 (Major)** | Core features impaired but system remains partially operational | **$< 4$ Business Hours** | **$< 24$ Business Hours** |
-| **Severity 3 (Minor)** | Cosmetic defects, minor copy adjustments, or consultation inquiries | **$< 8$ Business Hours** | Scheduled in standard backlog |
+| **Severity 1 (Critical)** | Entire application down or database inaccessible | **< 1 Hour** (24/7 on-call for Gold tier) | **< 12 Hours** |
+| **Severity 2 (Major)** | Core features impaired but system remains partially operational | **< 4 Business Hours** | **< 24 Business Hours** |
+| **Severity 3 (Minor)** | Cosmetic defects, minor copy adjustments, or consultation inquiries | **< 8 Business Hours** | Scheduled in standard backlog |
 
 ---
 

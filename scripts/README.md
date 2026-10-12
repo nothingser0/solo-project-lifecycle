@@ -2,7 +2,7 @@
 
 Automation, verification, scaffold, and template tooling for the **solo-project-lifecycle** framework.
 
-Scripts are categorized into 5 functional modules. Each tool is available in both **Bash** (macOS/Linux/WSL) and **PowerShell** (Windows) implementations.
+Scripts are categorized into 6 functional modules. Each tool is available in both **Bash** (macOS/Linux/WSL) and **PowerShell** (Windows) implementations.
 
 ---
 
@@ -14,6 +14,7 @@ scripts/
 ├── scaffold/   - Deterministic project setup, template pickers, and FSD generation
 ├── verify/     - Static analysis, link integrity, frontmatter, and package version checkers
 ├── runtime/    - Production batch ETL, data migration, and load test scripts
+├── release/    - Clean-release builder (strips dev-only files from release branches)
 └── dist/       - Framework distribution bundling and size calculation tools
 ```
 
@@ -79,12 +80,20 @@ Data engineering and performance load testing scripts:
 | Tool | Description |
 |:---|:---|
 | [`scripts/runtime/etl-import.js`](./runtime/etl-import.js) | Node.js production batch database importer |
-| [`scripts/runtime/migrate-data.ts`](./runtime/migrate-data.ts) | Streaming batch ETL and data reconciliation script (Zod, 500-row chunks) |
+| [`scripts/runtime/migrate-data.ts`](./runtime/migrate-data.ts) | Streaming batch ETL with reconciliation report (extracted vs loaded + rejected), 500-row default chunks |
 | [`scripts/runtime/load-test.js`](./runtime/load-test.js) | Universal k6 load testing script with p95 < 200ms latency thresholds |
 
 ---
 
-## 5. Packaging & Distribution (`scripts/dist/`)
+## 5. Clean Release Builder (`scripts/release/`)
+
+| Tool (Bash) | Tool (PowerShell) | Description |
+|:---|:---|:---|
+| [`scripts/release/build-clean-release.sh`](./release/build-clean-release.sh) | [`scripts/release/build-clean-release.ps1`](./release/build-clean-release.ps1) | Builds a release branch with dev-only paths stripped (see `release-exclude.txt`); never pushes automatically |
+
+---
+
+## 6. Packaging & Distribution (`scripts/dist/`)
 
 Tools for calculating framework metrics and building skill installation packages:
 

@@ -20,8 +20,8 @@
 | `--muted-foreground` | `#71717A` | Secondary text, captions, hints | `#FFFFFF` | **4.83 : 1** | PASS (WCAG AA) |
 | `--text-placeholder`| `#71717A` | Input field placeholder text | `#FFFFFF` | **4.83 : 1** | PASS (WCAG AA) |
 | `--border` (Subtle)| `#E4E4E7` | 1px passive container divider | `#FFFFFF` | 1.30 : 1 | Passive Boundary |
-| `--input` (Border) | `#71717A` | Interactive form & button border| `#FFFFFF` | **4.83 : 1** | PASS (WCAG 1.4.11 $\ge 3:1$) |
-| `--primary` | `#[BRAND_HEX]`| Primary brand accent / CTA | `#FFFFFF` | $\ge 4.5 : 1$ | PASS (WCAG AA) |
+| `--input` (Border) | `#71717A` | Interactive form & button border| `#FFFFFF` | **4.83 : 1** | PASS (WCAG 1.4.11 ≥ 3:1) |
+| `--primary` | `#[BRAND_HEX]`| Primary brand accent / CTA | `#FFFFFF` | ≥ 4.5 : 1 | PASS (WCAG AA) |
 
 ### 1.2 Dark Mode Color Tokens (Base Surface: `#09090B` / Canvas: `#121214`)
 
@@ -33,8 +33,8 @@
 | `--muted-foreground` | `#A1A1AA` | Dark mode secondary text | `#09090B` | **7.76 : 1** | PASS (WCAG AAA) |
 | `--text-placeholder`| `#A1A1AA` | Dark mode input placeholder | `#18181B` | **6.91 : 1** | PASS (WCAG AA) |
 | `--border` (Subtle)| `#27272A` | Passive container divider | `#09090B` | 1.25 : 1 | Passive Boundary |
-| `--input` (Border) | `#71717A` | Interactive form border | `#18181B` | **3.67 : 1** | PASS (WCAG 1.4.11 $\ge 3:1$) |
-| `--primary` | `#[BRAND_DARK]`| Primary brand accent / CTA | `#09090B` | $\ge 4.5 : 1$ | PASS (WCAG AA) |
+| `--input` (Border) | `#71717A` | Interactive form border | `#18181B` | **3.67 : 1** | PASS (WCAG 1.4.11 ≥ 3:1) |
+| `--primary` | `#[BRAND_DARK]`| Primary brand accent / CTA | `#09090B` | ≥ 4.5 : 1 | PASS (WCAG AA) |
 
 ---
 
@@ -63,7 +63,7 @@
 
 ### 3.2 Form Input Anti-Zoom Rule (iOS & iPad Safari)
 - All form inputs (`<input>`, `<select>`, `<textarea>`) **MUST BE AT LEAST `16px` (`text-base`) across ALL viewports**.
-- **PROHIBITED**: Applying `text-base md:text-sm` to inputs. This triggers automatic viewport zoom on iPads and touch screens $\ge 768\text{px}$, distorting layout shells.
+- **PROHIBITED**: Applying `text-base md:text-sm` to inputs. This triggers automatic viewport zoom on iPads and touch screens ≥ 768px, distorting layout shells.
 - **Inputmode Differentiation**:
   - Currency / Integer inputs: Use `inputmode="numeric"` with live dot/comma thousands formatting. NEVER use `<input type="number">`.
   - Fractional quantities (Kg/Liter): Use `inputmode="decimal"`.
@@ -73,14 +73,14 @@
 ## 4. Touch Ergonomics & Specialized Hardware Geometry
 
 ### 4.1 Touch Targets (Comfort & AAA Standard)
-- Primary tap targets on touch and mobile devices **MUST be $\ge 44\text{px} \times 44\text{px}$** (`h-11 min-w-11`).
-- *Note*: While WCAG 2.2 Level AA establishes 24px minimum (SC 2.5.8), $44\text{px}$ is our internal ergonomics baseline to prevent mis-taps on tablet/touch terminals.
-- Numeric Keypads (if applicable): Keypad buttons must meet minimum **$56\text{px} \times 56\text{px}$**.
+- Primary tap targets on touch and mobile devices **MUST be ≥ 44px × 44px** (`h-11 min-w-11`).
+- *Note*: While WCAG 2.2 Level AA establishes 24px minimum (SC 2.5.8), 44px is our internal ergonomics baseline to prevent mis-taps on tablet/touch terminals.
+- Numeric Keypads (if applicable): Keypad buttons must meet minimum **56px × 56px**.
 
 ### 4.2 Hardware & POS Formatting (Conditional Extensions)
 *(Applicable to retail, field POS, or hardware integrations; mark N/A for standard web apps)*
 - **Thermal Receipt Typography**:
-  - Maximum printable width: **$48\text{mm}$** (on 58mm paper) or **$72\text{mm}$** (on 80mm paper).
+  - Maximum printable width: **48mm** (on 58mm paper) or **72mm** (on 80mm paper).
   - Divider lines: `border-t border-dashed border-black` with zero horizontal margins.
   - Font size: `11px`, line-height `1.25`, pure monochrome black text on white background.
 - **Offline / Sync Visual Badges**:
@@ -212,8 +212,8 @@
 
 *Before finalizing `DESIGN.md`, verify:*
 
-- [ ] **1. Accurate Contrast Labeling**: Secondary text and placeholder ratios are honestly labeled as WCAG AA ($\ge 4.5:1$) without false AAA claims.
+- [ ] **1. Accurate Contrast Labeling**: Secondary text and placeholder ratios are honestly labeled as WCAG AA (≥ 4.5:1) without false AAA claims.
 - [ ] **2. Complete Triad Status Tokens**: Every semantic state (`success`, `warning`, `destructive`, `info`) defines text, border, and background variables in both light and dark CSS blocks.
-- [ ] **3. Border Separation**: Subtle container boundaries (`--border`) and high-contrast interactive borders (`--input`, $\ge 3:1$) maintain separate token definitions.
+- [ ] **3. Border Separation**: Subtle container boundaries (`--border`) and high-contrast interactive borders (`--input`, ≥ 3:1) maintain separate token definitions.
 - [ ] **4. Universal 16px Inputs**: All form inputs specify `text-base` (16px) universally without `md:text-sm` responsive overrides to prevent iOS/iPad auto-zoom.
 - [ ] **5. Unified Stacking Scale**: All z-index contexts are declared via CSS variables from canvas (`0`) to modal dropdowns (`55`) and toasts (`60`).

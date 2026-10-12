@@ -108,7 +108,7 @@ CREATE TABLE entity_activity_logs (
 ### 4.2 Isolated Offline Sequencing (Conditional: Local-First / Field Ops)
 *(Applicable if offline operation is in scope; mark N/A if online-only)*
 - Prevent identifier collisions across disconnected devices:
-  $$\text{Identifier} = \text{[NODE-ID]}-\text{[DEVICE-ID]}-\text{[YYYYMMDD]}-\text{[6-DIGIT-SEQ]}$$
+  Identifier = [NODE-ID]-[DEVICE-ID]-[YYYYMMDD]-[6-DIGIT-SEQ]
 - Terminals increment sequential numbers in local IndexedDB without cross-device locking.
 
 ### 4.3 Hardware Scanner & Keyboard Shortcut Mitigation (Conditional: POS / Barcode Hardware)
@@ -128,17 +128,17 @@ CREATE TABLE entity_activity_logs (
 ### 5.1 Retail / Inventory: Two-Phase Blind Count Opname
 *(For projects tracking physical goods/warehouse balances; mark N/A if not applicable)*
 - **Phase 1 (Blind Physical Count)**: Staff physical count interface physically omits system expected stock and variance columns from DOM and API responses to eliminate confirmation bias. Staff input physical quantities only.
-- **Phase 2 (Variance Review)**: Supervisors review variance accounting for in-flight transactions during the active count. Any discrepancy requires an explanatory note of $\ge 10$ characters, with escalation to Owner for variances exceeding defined thresholds ($>Rp 1\text{M}$ or $>10\%$).
+- **Phase 2 (Variance Review)**: Supervisors review variance accounting for in-flight transactions during the active count. Any discrepancy requires an explanatory note of ≥ 10 characters, with escalation to Owner for variances exceeding defined thresholds (>Rp 1M or >10%).
 
 ### 5.2 CRM / Sales Pipeline: Deal Stage Gates & Lead Integrity
 *(For CRM / pipeline management projects; mark N/A if not applicable)*
-- **Stage Transition Validation**: Deals cannot transition to "Won" without mandatory fields (deal value $>0$, signed contract attachment, close date).
+- **Stage Transition Validation**: Deals cannot transition to "Won" without mandatory fields (deal value > 0, signed contract attachment, close date).
 - **Orphan Prevention**: Deleting a company or account does NOT hard-delete associated contacts or activities (enforce re-assignment or soft-delete).
 - **Lead Duplicate Guard**: Matching rules on domain name and normalized phone prevent duplicate lead ingestion.
 
 ### 5.3 CMS / Publishing: Content Lifecycle & Slug Collisions
 *(For CMS / editorial publishing platforms; mark N/A if not applicable)*
-- **Editorial State Machine**: Strict lifecycle enforcement: `Draft` $\rightarrow$ `In Review` $\rightarrow$ `Scheduled` $\rightarrow$ `Published` $\rightarrow$ `Archived`.
+- **Editorial State Machine**: Strict lifecycle enforcement: `Draft` → `In Review` → `Scheduled` → `Published` → `Archived`.
 - **Slug Immortality**: Changing article titles generates permanent HTTP 301 redirects from old URL slugs to prevent SEO broken links.
 - **Concurrent Edit Lock**: Collaborative editing implements optimistic locking (`version` column) or heartbeat locks to prevent author overwrite collisions.
 

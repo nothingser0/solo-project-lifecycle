@@ -378,7 +378,7 @@ function Show-UseCaseMenu {
     $choice = Read-Host "Select use-case (1-6)"
     
     switch ($choice) {
-        "1" { 
+        "1" {
             Write-Host ""
             Write-Host "MVP Fast-Track templates:" -ForegroundColor Yellow
             Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
@@ -387,7 +387,7 @@ function Show-UseCaseMenu {
             Write-Host "[OK] MVP Fast-Track complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/mvp-fast-track/README.md for workflow" -ForegroundColor Gray
         }
-        "2" { 
+        "2" {
             Write-Host ""
             Write-Host "Client Commercial templates:" -ForegroundColor Yellow
             Copy-Template "$TemplatesDir/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md" "docs/pm/SCOPE_STATEMENT.md"
@@ -398,7 +398,7 @@ function Show-UseCaseMenu {
             Write-Host "[OK] Client Commercial complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/client-commercial/README.md for workflow" -ForegroundColor Gray
         }
-        "3" { 
+        "3" {
             Write-Host ""
             Write-Host "Technical Specs templates:" -ForegroundColor Yellow
             Copy-Template "$TemplatesDir/03-architecture-specs/PRD_FINAL_TEMPLATE.md" "docs/specs/PRD.md"
@@ -407,7 +407,7 @@ function Show-UseCaseMenu {
             Write-Host "[OK] Technical Specs complete" -ForegroundColor Green
             Write-Host "See templates/by-use-case/technical-specs/README.md for workflow" -ForegroundColor Gray
         }
-        "4" { 
+        "4" {
             Write-Host ""
             Write-Host "Operations templates:" -ForegroundColor Yellow
             Copy-Template "$TemplatesDir/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "docs/RUNBOOK_LOCAL.md"
@@ -482,12 +482,12 @@ while ($true) {
         "6" { Show-QAMenu }
         "7" { Show-DeploymentMenu }
         "8" { Show-MaintenanceMenu }
-        "9" { 
+        "9" {
             Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md"
             Write-Host "[OK] PROJECT_LITE.md copied (MVP all-in-one spec)" -ForegroundColor Green
         }
         "10" { Show-UseCaseMenu }
-        "0" { 
+        "0" {
             Write-Host ""
             Write-Host "Goodbye!" -ForegroundColor Cyan
             exit 0

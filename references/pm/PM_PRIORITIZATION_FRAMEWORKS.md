@@ -1,5 +1,21 @@
 # PM Prioritization Frameworks (Prioritization Frameworks for Solo Devs)
 
+## Contents
+
+- [1. RICE Score (Recommended for Solo Devs)](#1-rice-score-recommended-for-solo-devs)
+- [2. MoSCoW Prioritization (Must/Should/Could/Won't)](#2-moscow-prioritization-mustshouldcouldwont)
+- [3. Value vs Effort Matrix (2×2 Grid)](#3-value-vs-effort-matrix-22-grid)
+- [4. Kano Model (User Satisfaction vs Feature Presence)](#4-kano-model-user-satisfaction-vs-feature-presence)
+- [5. ICE Score (Simplified RICE)](#5-ice-score-simplified-rice)
+- [6. Weighted Scoring Model (Custom Criteria)](#6-weighted-scoring-model-custom-criteria)
+- [7. Prioritization Anti-Patterns (What NOT to Do)](#7-prioritization-anti-patterns-what-not-to-do)
+- [8. Practical Prioritization Workflow (Solo Dev)](#8-practical-prioritization-workflow-solo-dev)
+- [9. Tools for Prioritization](#9-tools-for-prioritization)
+- [10. RICE Scoring Spreadsheet Template](#10-rice-scoring-spreadsheet-template)
+- [11. When to Re-Prioritize (Triggers)](#11-when-to-re-prioritize-triggers)
+- [12. Summary Cheat Sheet](#12-summary-cheat-sheet)
+
+
 **Purpose**: Systematic methods for deciding which features to build first, ensuring limited solo developer resources are utilized optimally.
 
 **Last Updated**: 2026-09-27
@@ -112,8 +128,11 @@
 
 #### Prioritization Result:
 1. **Password Reset (640)** ← Build first
-2. **Dark Mode (48)** ← Build second
-3. **AI Suggestions (25)** ← Defer to later (high effort, low confidence)
+2. **Export to PDF (240)** ← Build second
+3. **Email Notifications (200)** ← Build third
+4. **Dark Mode (48)** ← Later (low reach, low impact)
+5. **Social Login (32)** ← Later
+6. **AI Suggestions (25)** ← Defer (high effort, low confidence)
 
 ---
 

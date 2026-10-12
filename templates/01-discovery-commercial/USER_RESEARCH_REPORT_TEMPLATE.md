@@ -1,5 +1,9 @@
 # User Research Report
 
+> ⚠️ **MASTER NOTICE — ALL NAMES, FIGURES, AND SCENARIOS ARE ILLUSTRATIVE EXAMPLES.**
+> This is a blank template. Every persona name ("Budi"), percentage, price, and scenario below is a formatting sample — NOT research data. Replace them with your own results, or delete the sample content. Nothing here constitutes a passed gate.
+
+
 **Research Date**: [YYYY-MM-DD] to [YYYY-MM-DD]  
 **Created By**: [Team Name / Solo Dev]  
 **Document Version**: 1.0  
@@ -34,12 +38,12 @@
 3. **[Finding 3]**: [Third key insight]
 
 **Intent-to-Buy Validation**:
-- **Stated Intent (Survey)**: [X]% respondents selected "Definitely buy" or "Probably buy" (Threshold: $\ge 30\%$)
+- **Stated Intent (Survey)**: [X]% respondents selected "Definitely buy" or "Probably buy" (Threshold: ≥ 30%)
 - **Behavioral Intent (Cheap Test)**: [Waitlist conversion rate % / LOI signed / Pre-orders]
-- **Gate Status**: 
-  - [ ] **✅ PASS**: Validated with $\ge 30\%$ intent-to-buy from real sample + behavioral proof
+- **Gate Status**:
+  - [ ] **✅ PASS**: Validated with ≥ 30% intent-to-buy from real sample + behavioral proof
   - [ ] **⏳ PENDING_PRIMARY_RESEARCH**: Instruments prepared; awaiting human research execution
-  - [ ] **❌ FAIL**: Real data collected but intent-to-buy $< 30\%$ $\rightarrow$ Trigger Pivot / Stop
+  - [ ] **❌ FAIL**: Real data collected but intent-to-buy < 30% → Trigger Pivot / Stop
 
 **Recommendation**:
 - [ ] **Proceed to Product Strategy**: Validated problem, clear user needs, sufficient intent-to-buy.
@@ -62,28 +66,28 @@
 
 ## 3. Research Methodology & Multi-Stakeholder Groups
 
-### 2.1 Sample Size & Demographics
+### 3.1 Sample Size & Demographics
 
 Qualitative Research (Interviews):
-- **Total Interviews Completed**: [X] people (Target: $\ge 10$ for standard, $\ge 5$ for M00-lite)
+- **Total Interviews Completed**: [X] people (Target: ≥ 10 for standard, ≥ 5 for M00-lite)
 - **Duration per Interview**: [Y] minutes average
 - **Interview Method**: [Zoom video call / Phone / In-person / Async written]
 - **Incentive**: [Voucher Rp X / Free early access / None]
 
 **Target Stakeholder Groups (Multi-Stakeholder Coverage)**:
-1. **Group A: End-Users / Daily Operators** (e.g., Cashiers, inventory staff, branch clerks) $\rightarrow$ Focus on operational friction, daily errors, and usability barriers.
-2. **Group B: Economic Buyers / Decision Makers** (e.g., Business owners, Directors, Finance managers) $\rightarrow$ Focus on ROI, willingness-to-pay, procurement authority, and pain point severity.
-3. **Group C: Ecosystem Enablers & Regulators** (e.g., Banks, tax consultants, auditors, industry associations) $\rightarrow$ Focus on compliance, integration requirements, and legal liabilities.
+1. **Group A: End-Users / Daily Operators** (e.g., Cashiers, inventory staff, branch clerks) → Focus on operational friction, daily errors, and usability barriers.
+2. **Group B: Economic Buyers / Decision Makers** (e.g., Business owners, Directors, Finance managers) → Focus on ROI, willingness-to-pay, procurement authority, and pain point severity.
+3. **Group C: Ecosystem Enablers & Regulators** (e.g., Banks, tax consultants, auditors, industry associations) → Focus on compliance, integration requirements, and legal liabilities.
 
 Quantitative Research (Survey):
-- **Total Respondents**: [X] people (Target: $\ge 50$ for standard, $\ge 30$ for medium)
+- **Total Respondents**: [X] people (Target: ≥ 50 for standard, ≥ 30 for medium)
 - **Survey Platform**: [Google Forms / Typeform / Tally]
 - **Response Rate**: [X]% (if email blast list used)
 - **Survey Duration**: [Median X minutes to complete]
 
 ---
 
-### 2.2 Respondent Demographics
+### 3.2 Respondent Demographics
 
 **Geographic Distribution**:
 | Region | Count | Percentage |
@@ -122,9 +126,9 @@ Quantitative Research (Survey):
 
 ---
 
-## 3. Qualitative Insights (Interview Findings)
+## 4. Qualitative Insights (Interview Findings)
 
-### 3.1 Interview Summary Table
+### 4.1 Interview Summary Table
 
 | ID | Role/Title | Company/Context | Current Solution | Top Pain Point | WTP Range | Intent |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -138,7 +142,7 @@ Quantitative Research (Survey):
 
 ---
 
-### 3.2 Synthesized Themes (Affinity Mapping)
+### 4.2 Synthesized Themes (Affinity Mapping)
 
 **Theme 1: [Theme Name, e.g., "Data Accuracy & Trust Issues"]**
 - **Frequency**: [X]/[Total] respondents mentioned this theme
@@ -172,7 +176,7 @@ Quantitative Research (Survey):
 
 ---
 
-### 3.3 Jobs-to-be-Done Analysis
+### 4.3 Jobs-to-be-Done Analysis
 
 **Framework**: When [situation], I want to [motivation], so that I can [outcome].
 
@@ -196,9 +200,11 @@ Quantitative Research (Survey):
 
 ---
 
-### 3.4 Pain Point Severity Ranking
+### 4.4 Pain Point Severity Ranking
 
 **Method**: Respondents rank pain points from 1 (not bothersome) to 5 (extremely severe).
+
+> ⚠️ **ILLUSTRATIVE EXAMPLE ONLY** — the numbers below are a formatting sample, NOT research results. Replace every row with your real data or leave the table empty until interviews run. Do not let example figures flow into your report.
 
 | Pain Point | Avg. Severity (1-5) | Frequency (% mention) | Impact × Frequency Score |
 | :--- | :---: | :---: | :---: |
@@ -215,9 +221,11 @@ Quantitative Research (Survey):
 
 ---
 
-## 4. Quantitative Insights (Survey Results)
+## 5. Quantitative Insights (Survey Results)
 
-### 4.1 Screener & Qualification
+> ⚠️ **ALL FIGURES IN SECTION 5 ARE ILLUSTRATIVE EXAMPLES** — every percentage, chart, and price point below is a formatting sample, NOT real survey data. Replace with your own results before drawing conclusions. Pre-filled numbers must never be treated as passed gates.
+
+### 5.1 Screener & Qualification
 
 **Q: Do you currently manage [specific task/problem]?**
 - Yes: [X]% → Proceed to full survey
@@ -233,7 +241,7 @@ Quantitative Research (Survey):
 
 ---
 
-### 4.2 Pain Point Severity Distribution
+### 5.2 Pain Point Severity Distribution
 
 **Q: How severely do the following issues disrupt your work? (1 = Not a problem, 5 = Extremely disruptive)**
 
@@ -243,7 +251,7 @@ Rating Distribution:
 1 (Not a problem):        ▓▓░░░░░░░░ 10%
 2 (Minor problem):        ▓▓▓░░░░░░░ 15%
 3 (Moderate problem):     ▓▓▓▓▓░░░░░ 25%
-4 (Major problem):        ▓▓▓▓▓▓▓░░░ 35% 
+4 (Major problem):        ▓▓▓▓▓▓▓░░░ 35%
 5 (Extremely disruptive): ▓▓▓▓░░░░░░ 15%
 
 Average: 3.4 / 5.0
@@ -255,7 +263,7 @@ Median: 4
 
 ---
 
-### 4.3 Current Solution Usage
+### 5.3 Current Solution Usage
 
 **Q: What do you currently use to handle [problem]?**
 
@@ -267,11 +275,13 @@ Median: 4
 | Pen & paper | 15% ▓▓▓░░░░░░░ |
 | No system used | 10% ▓▓░░░░░░░░ |
 
-**Insight**: 70% of respondents use manual/non-software solutions → massive opportunity to convert them.
+**Insight**: [Your conclusion — computed from YOUR response distribution above]
 
 ---
 
-### 4.4 Willingness to Pay (Van Westendorp Analysis)
+### 5.4 Willingness to Pay (Van Westendorp Analysis)
+
+> ⚠️ **ILLUSTRATIVE EXAMPLE ONLY** — the chart and price points below are a formatting sample, NOT survey results. Replace with your own Van Westendorp responses before drawing any pricing conclusion.
 
 **Q: At what price would you consider the product to be...**
 
@@ -294,22 +304,24 @@ Optimal Price Point (OPP): Rp 150k - Rp 200k
 - **Expensive but Acceptable**: Rp 200k - Rp 300k
 - **Too Expensive (won't buy)**: >Rp 350k
 
-**Recommendation**: Launch pricing at **Rp 99k - Rp 149k/month** to maximize adoption in early stages.
+**Recommendation**: [Your pricing recommendation — computed from YOUR Van Westendorp data; the figure above is an example, not a result]
 
 ---
 
-### 4.5 Intent-to-Buy
+### 5.5 Intent-to-Buy
 
 **Q: If this software were available today at Rp [X]/month, would you:**
 
+> ⚠️ **ILLUSTRATIVE EXAMPLE ONLY** — the response distribution below is a formatting sample, NOT survey results. Replace every row with your real survey data, then compute the total yourself. A template with example numbers still in it must NOT be treated as a passed gate.
+
 | Response | Percentage | Count |
 | :--- | :--- | :--- |
-| Definitely buy (Strong Intent) | 25% ▓▓▓▓▓░░░░░ | [X] |
-| Probably buy (Moderate Intent) | 35% ▓▓▓▓▓▓▓░░░ | [Y] |
-| Need to discuss with team first | 20% ▓▓▓▓░░░░░░ | [Z] |
-| Not interested | 20% ▓▓▓▓░░░░░░ | [W] |
+| Definitely buy (Strong Intent) | [X]% | [X] |
+| Probably buy (Moderate Intent) | [Y]% | [Y] |
+| Need to discuss with team first | [Z]% | [Z] |
+| Not interested | [W]% | [W] |
 
-**Total Intent-to-Buy (Definitely + Probably)**: **60%** ✅ **PASS GATE** (≥30%)
+**Total Intent-to-Buy (Definitely + Probably)**: **[X+Y]%** — Gate status: `PENDING_PRIMARY_RESEARCH` (passes only when ≥30% from real respondents; do not pre-fill PASS)
 
 **Early Adopter Pool Estimate**:
 ```python
@@ -324,14 +336,17 @@ moderate_intent = 35% * 50 = 18 people
 expected_paying_customers_from_survey = (12 * 0.5) + (18 * 0.2) = 6 + 3.6 = 9-10 customers
 
 # If we can reach 1,000 people with a similar profile:
+# ILLUSTRATIVE EXAMPLE — replace numbers with your own research inputs
 potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195 customers
 ```
 
 ---
 
-### 4.6 Feature Prioritization (Kano Model)
+### 5.6 Feature Prioritization (Kano Model)
 
 **Q: If feature [X] is present, how satisfied are you? If it is absent, how dissatisfied are you?**
+
+> ⚠️ **ILLUSTRATIVE EXAMPLE ONLY** — percentages below are a formatting sample, not survey results. Replace with your real Kano survey data.
 
 | Feature | Must-Have | Performance | Delighter | Indifferent |
 | :--- | :---: | :---: | :---: | :---: |
@@ -350,9 +365,9 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 
 ---
 
-## 5. Persona Creation (Jobs-to-be-Done Framework)
+## 6. Persona Creation (Jobs-to-be-Done Framework)
 
-> ℹ️ **STATUS NOTE**: Until empirical user interviews are conducted, all entries below represent **`Proto-Persona (Hypothesis)`**. Only upgrade status to `Validated Persona` after linking direct quotes and validated sample demographics.
+> ℹ️ **STATUS NOTE**: Until empirical user interviews are conducted, all entries below represent **`Proto-Persona (Hypothesis)`** — the "Budi" name and details are an illustrative example, not research data. Replace them with your own personas or leave empty. Only upgrade status to `Validated Persona` after linking direct quotes and validated sample demographics.
 
 ### Proto-Persona 1: [Persona Name, e.g., "Budi — SME Retail Operations Manager"]
 **Validation Status**: [ 🔶 Proto-Persona (Hypothesis) / ✅ Validated Persona ]  
@@ -413,8 +428,8 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 ---
 
 **Willingness to Pay**: Rp 200k - Rp 500k/month
-- **Rationale**: Saving 4 hours/week = 16 hours/month. With Budi's salary at Rp 15M/month (~Rp 94k/hour), time savings value = Rp 1.5M/month. Plus reducing stock discrepancy losses of Rp 5-10M/month.
-- **Budget Approval**: Budi can self-approve up to Rp 500k/month. Higher amounts require owner approval.
+- **Rationale**: Saving 4 hours/week = 16 hours/month. With [Persona 1]'s salary at [Rp X]/month (~Rp 94k/hour), time savings value = Rp 1.5M/month. Plus reducing stock discrepancy losses of Rp 5-10M/month.
+- **Budget Approval**: [Persona 1] can self-approve up to [Rp X]/month. Higher amounts require owner approval.
 
 ---
 
@@ -450,13 +465,16 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 
 ---
 
-## 6. User Journey Mapping
+## 7. User Journey Mapping
 
-### Journey Map: Persona 1 (Budi - Operations Manager)
+> ℹ️ **EXAMPLE NARRATIVE**: the journey below follows the §6 proto-persona ("Budi" is an example persona name). Replace with your own persona once interviews are done.
+
+
+### Journey Map: Persona 1 ([Role from §6])
 
 **Stage 1: Awareness (Trigger)**
-- **Scenario**: Owner complains about stock discrepancies again, threatening to deduct Budi's bonus if unresolved.
-- **Touchpoint**: Budi searches Google for "how to fix store inventory discrepancies" → finds blog post → mentions inventory software → begins research.
+- **Scenario**: Owner [raises the recurring pain] again, [consequence for the persona].
+- **Touchpoint**: [Persona 1] searches for a solution ([real search phrasing]) → finds content → begins research.
 - **Emotion**: 😰 Stressed, desperate to find a solution.
 - **Pain**: Doesn't know where to start, overwhelmed by software options, afraid of making the wrong choice.
 - **Opportunity**: SEO content marketing (blog/video "5 Ways to Eliminate Stock Discrepancies"), retargeting ads.
@@ -464,11 +482,11 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 ---
 
 **Stage 2: Consideration (Research)**
-- **Scenario**: Budi compares 3-4 software tools (visits websites, reads reviews, asks in WA groups).
+- **Scenario**: [Persona 1] compares 3-4 software tools (visits websites, reads reviews, asks in WA groups).
 - **Touchpoint**: Website landing page, pricing page, comparison chart, video testimonials, Facebook retail community groups.
 - **Emotion**: 🤔 Skeptical, overwhelmed by choices.
 - **Pain**: "All software claims to be great, but which one is truly right for an SME like mine?" "Does the pricing match the features?"
-- **Opportunity**: 
+- **Opportunity**:
   - Social proof (case studies of similar local SMEs, video testimonials from store owners).
   - Credit card-free trial (removes barrier).
   - Transparent comparison table (vs Competitors A, B, C).
@@ -476,10 +494,10 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 ---
 
 **Stage 3: Purchase/Signup (Conversion)**
-- **Scenario**: Budi decides to try the free trial, clicking "Start 14-Day Free Trial".
+- **Scenario**: [Persona 1] decides to try the free trial, clicking "Start 14-Day Free Trial".
 - **Touchpoint**: Signup form, onboarding wizard, setup assistance.
 - **Emotion**: 😬 Anxious (worried about complexity, afraid of wasting trial time).
-- **Pain**: 
+- **Pain**:
   - Signup form too long (requests excessive information).
   - Unclear onboarding (stuck on step 2, unsure what to do next).
   - Excel data import fails (format mismatch, cryptic error messages).
@@ -491,10 +509,10 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 ---
 
 **Stage 4: Onboarding/First Use (Aha Moment)**
-- **Scenario**: Budi successfully imports data, invites 2 branch staff to test recording transactions, and sees the dashboard update in real time.
+- **Scenario**: [Persona 1] successfully imports data, invites 2 branch staff to test recording transactions, and sees the dashboard update in real time.
 - **Touchpoint**: Dashboard, first transaction, first report generated.
 - **Emotion**: 🤩 Delighted ("Wow, it really is real-time! Branch staff said it's so easy!").
-- **Pain**: 
+- **Pain**:
   - Unsure which features to use first (too many options, overwhelming).
   - Branch staff complain that UI is confusing (too many menus, complex English).
 - **Opportunity**:
@@ -502,15 +520,15 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
   - Celebrate first milestone (confetti animation, "Congratulations! First transaction recorded!").
   - In-app video tutorials (embedded 2-3 minute videos).
 
-**Aha Moment Definition**: Budi sees dashboard update in real time after branch staff records a transaction, and successfully generates a sales report in <30 seconds (vs 4 hours manually in Excel).
+**Aha Moment Definition**: [Persona 1] sees dashboard update in real time after branch staff records a transaction, and successfully generates a sales report in <30 seconds (vs 4 hours manually in Excel).
 
 ---
 
 **Stage 5: Retention (Habitual Use)**
-- **Scenario**: Budi and team use the software daily; it has become their default workflow.
+- **Scenario**: [Persona 1] and team use the software daily; it has become their default workflow.
 - **Touchpoint**: Daily dashboard check, weekly report generation, monthly billing reminder.
 - **Emotion**: 😌 Relieved (life is easier, owner is satisfied).
-- **Pain**: 
+- **Pain**:
   - Churn risk if bugs disrupt core workflow (e.g., sync failure, report error).
   - Churn risk if competitors offer lower prices or more features.
   - Churn risk if owner cuts budget (recession, store closures).
@@ -522,18 +540,18 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 ---
 
 **Stage 6: Advocacy (Word-of-Mouth)**
-- **Scenario**: Budi recommends the software to fellow ops managers in WhatsApp groups.
+- **Scenario**: [Persona 1] recommends the software to peers in WhatsApp groups.
 - **Touchpoint**: Referral program, testimonial request, case study interview.
 - **Emotion**: 😊 Proud (proud of using software that solves the problem, eager to share).
 - **Pain**: No incentive to refer (why promote it for free?).
 - **Opportunity**:
   - Referral program (refer 3 friends, get 1 month free or 20% discount).
   - Gamification (top referrer leaderboard, "Community Champion" badge).
-  - Featured case study (published on blog/social media, boosting Budi's industry credibility).
+  - Featured case study (published on blog/social media, boosting [Persona 1]'s industry credibility).
 
 ---
 
-## 7. Pain Point Prioritization (Impact-Effort Matrix)
+## 8. Pain Point Prioritization (Impact-Effort Matrix)
 
 **Methodology**: Plot pain points based on **Impact to User** (severity of problem) vs **Effort to Solve** (implementation complexity).
 
@@ -543,7 +561,7 @@ High Impact
     │  [1] Stock discrepancy  [2] Manual admin 4 hrs/wk
     │      (financial loss)       (time waste)
     │
-    │  
+    │
 ────┼────────────────────────────────────────────► Effort to Solve
     │                                               (Low → High)
     │  [3] Slow setup         [4] No native mobile app
@@ -580,7 +598,7 @@ Low Impact
 
 ---
 
-## 8. Research Limitations & Biases
+## 9. Research Limitations & Biases
 
 **Known Limitations**:
 1. **Sample Size**: [X] interviews and [Y] surveys are not representative of the entire target market. Generalize with caution.
@@ -595,21 +613,21 @@ Low Impact
 
 ---
 
-## 9. Next Steps & Recommendations
+## 10. Next Steps & Recommendations
 
 **For Product Development**:
-1. **MVP Feature Prioritization**: Focus on solving Pain #1 (stock discrepancies) and Pain #2 (manual admin time waste) first.
+1. **MVP Feature Prioritization**: Focus on [Top Pain #1 from §8] and [Top Pain #2 from §8] first.
 2. **UX Requirements**: Onboarding must be <15 minutes, intuitive localization, offline-first architecture.
-3. **Pricing Strategy**: Launch at Rp 99k-149k/month (sweet spot from WTP analysis).
+3. **Pricing Strategy**: Launch at [price point from your §5.4 WTP analysis].
 
 **For Go-to-Market**:
-1. **Target Segment**: SME retail with 5-20 employees, Greater Jakarta, currently using Excel/manual systems.
-2. **Messaging**: "Stop wasting 4 hours/week compiling Excel. Rp 99k/month, 15-minute setup, easy for any staff member."
+1. **Target Segment**: [segment from your §6 personas — industry, size, geography, current tooling]
+2. **Messaging**: "[Your value proposition — pain, price, effort to adopt]"
 3. **Channels**: SEO content (pain point blogs), retail owner WhatsApp/Telegram communities, referral program.
 
 **For Further Research**:
 - [ ] Prototype usability testing (5-10 users, moderated task-based testing)
-- [ ] Pricing experiment A/B test (Rp 99k vs Rp 149k conversion rate)
+- [ ] Pricing experiment A/B test ([price A] vs [price B] conversion rate)
 - [ ] Expand geographic coverage (research users outside major urban hubs)
 
 ---
@@ -627,7 +645,7 @@ Low Impact
 
 ---
 
-## 7. Machine Validation Outcome
+## 11. Machine Validation Outcome
 
 Gate-Decision: PENDING
 

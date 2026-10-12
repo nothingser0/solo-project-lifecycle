@@ -100,8 +100,8 @@
 **Example**:
 ```sql
 -- Instead of DELETE, anonymize
-UPDATE users 
-SET 
+UPDATE users
+SET
   email = CONCAT('deleted_user_', id, '@example.com'),
   name = 'Deleted User',
   phone = NULL,
@@ -123,12 +123,12 @@ WHERE id = 12345;
 **Example**:
 ```sql
 -- Mark records under legal hold
-UPDATE customers 
+UPDATE customers
 SET legal_hold = TRUE, legal_hold_reason = 'Lawsuit case #2024-001'
 WHERE id = 12345;
 
 -- Skip deletion for legal hold records
-DELETE FROM customers 
+DELETE FROM customers
 WHERE deleted_at < NOW() - INTERVAL '30 days'
   AND legal_hold = FALSE;
 ```
@@ -145,8 +145,8 @@ WHERE deleted_at < NOW() - INTERVAL '30 days'
 
 **Example**:
 ```sql
-UPDATE users 
-SET deleted_at = NOW() 
+UPDATE users
+SET deleted_at = NOW()
 WHERE id = 12345;
 
 -- Query excludes soft-deleted
@@ -178,8 +178,8 @@ DELETE FROM users WHERE deleted_at < NOW() - INTERVAL '30 days';
 
 **Example**:
 ```sql
-UPDATE users 
-SET 
+UPDATE users
+SET
   email = CONCAT('anon_', id, '@example.com'),
   name = 'Anonymous User',
   ip_address = NULL
@@ -215,15 +215,15 @@ WHERE last_login < NOW() - INTERVAL '7 years';
 
 # Delete soft-deleted users after 30 days
 psql -d production <<SQL
-DELETE FROM users 
+DELETE FROM users
 WHERE deleted_at < NOW() - INTERVAL '30 days'
   AND legal_hold = FALSE;
 SQL
 
 # Anonymize inactive users after 7 years
 psql -d production <<SQL
-UPDATE users 
-SET 
+UPDATE users
+SET
   email = CONCAT('inactive_', id, '@example.com'),
   name = 'Inactive User',
   phone = NULL
@@ -233,7 +233,7 @@ SQL
 
 # Delete old logs
 psql -d production <<SQL
-DELETE FROM audit_log 
+DELETE FROM audit_log
 WHERE timestamp < NOW() - INTERVAL '1 year';
 SQL
 

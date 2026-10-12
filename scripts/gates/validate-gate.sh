@@ -231,9 +231,10 @@ case "$GATE_MODULE" in
             check_required "docs/pm/PROJECT_STATE.md" "" 200
 
             # 2. Execute Solo Capacity Classifier (High-Water Mark enforcement)
-            if [ -f "scripts/gates/classify-scale.sh" ]; then
+            # F1b: resolve via SCRIPT_DIR — the gate runs from the PROJECT dir, where scripts/ does not exist.
+            if [ -f "$SCRIPT_DIR/classify-scale.sh" ]; then
                 echo "  [INFO] Running mechanical scale & solo capacity classifier..."
-                classify_output=$(bash scripts/gates/classify-scale.sh 2>&1) || classify_exit=$?
+                classify_output=$(bash "$SCRIPT_DIR/classify-scale.sh" 2>&1) || classify_exit=$?
                 classify_exit=${classify_exit:-0}
                 if [ "$classify_exit" -eq 2 ]; then
                     echo "  ❌ SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!"
@@ -887,6 +888,22 @@ case "$GATE_MODULE" in
         if [ "$is_m06_small" -eq 1 ]; then
             echo "  [INFO] Small scale: SECURITY_CHECKLIST_SMALL.md absorbed into M06 (M07 folded)."
             check_required "docs/qa/SECURITY_CHECKLIST_SMALL.md" "SECURITY_CHECKLIST_SMALL.md" 300
+            # Small has no M07: anti-vibe-code polish audit is enforced here instead.
+            if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
+            polish_small=$(cat "docs/qa/POLISH_AUDIT.md" 2>/dev/null || true)
+            if echo "$polish_small" | grep -qiE "NOT READY"; then
+                echo "  ❌ POLISH_AUDIT.md reports NOT READY (blocking tells still open)!"
+                GATE_FAILED=1
+            elif echo "$polish_small" | grep -qiE "READY \(0 blocking tells\)|0 blocking"; then
+                echo "  ✅ POLISH_AUDIT.md attests 0 blocking tells (ready)"
+            else
+                echo "  ❌ POLISH_AUDIT.md missing explicit READY attestation (0 blocking tells)!"
+                GATE_FAILED=1
+            fi
+            else
+            echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: Small path has no M07 — run the 22-tell audit here)"
+            GATE_FAILED=1
+            fi
         fi
         # B1: RUNBOOK_LOCAL.md / VERIFY_LOCAL.md required only for Medium+ (not Small).
         if [ "$is_m06_small" -eq 0 ]; then
@@ -942,6 +959,23 @@ case "$GATE_MODULE" in
             else
                 echo "  ✅ Anti-slop: zero obvious hardcoded secrets in source"
             fi
+            # 4. Narrating / stub comments (ADVISORY — row 21 of POLISH_AUDIT; subjective, so non-blocking)
+            slop_cmt=$(grep -rInE "(//|#)[[:space:]]*(Increment|Import|Get the|Set the|Initialize|Create a|This (function|method|class) (is|will)|Add your logic|Loop through|Return the result)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${slop_cmt:-0}" -gt 0 ]; then
+                echo "  ⚠️  Anti-slop advisory: ${slop_cmt} comment(s) that may merely restate the code (row 21 of POLISH_AUDIT). Review and delete if redundant."
+            else
+                echo "  ✅ Anti-slop: no narrating/stub comments detected in source"
+            fi
+            # 5. Unlocked read-modify-write on shared state (ADVISORY — row 22 of POLISH_AUDIT; must be attested there)
+            rmw_files=$(find $scan_dirs -type f \( -name "*.sql" -o -name "*.ts" -o -name "*.js" -o -name "*.py" -o -name "*.php" -o -name "*.rb" -o -name "*.go" \) 2>/dev/null | head -400)
+            if [ -n "$rmw_files" ]; then
+                unlocked=$(awk '/UPDATE .*(stock|balance|qty|quantity|count|version)/ { if (!lock) print FILENAME":"FNR } { if (/FOR UPDATE|version =|BEGIN/) lock=1; if (/COMMIT|ROLLBACK/) lock=0 }' $rmw_files 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${unlocked:-0}" -gt 0 ]; then
+                    echo "  ⚠️  Anti-slop advisory: ${unlocked} UPDATE on shared state outside a locked transaction (row 22 of POLISH_AUDIT). Verify each has a row lock, unique constraint, or compare-and-swap."
+                else
+                    echo "  ✅ Anti-slop: no unlocked read-modify-write detected on shared state"
+                fi
+            fi
         fi
         check_optional "ARCHITECTURE.md"
         check_optional "CONVENTIONS.md"
@@ -959,6 +993,22 @@ case "$GATE_MODULE" in
             check_optional "docs/qa/SIT_WORKBOOK.md"
         else
         check_required "docs/qa/SIT_WORKBOOK.md"
+        # Anti-vibe-code polish audit (medium+): 22 tells must be checked on the deployed URL.
+        if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
+            polish_content=$(cat "docs/qa/POLISH_AUDIT.md" 2>/dev/null || true)
+            if echo "$polish_content" | grep -qiE "NOT READY"; then
+                echo "  ❌ POLISH_AUDIT.md reports NOT READY (blocking tells still open)!"
+                GATE_FAILED=1
+            elif echo "$polish_content" | grep -qiE "READY \(0 blocking tells\)|READY FOR (CLIENT )?UAT|0 blocking"; then
+                echo "  ✅ POLISH_AUDIT.md attests 0 blocking tells (ready)"
+            else
+                echo "  ❌ POLISH_AUDIT.md missing explicit READY attestation (0 blocking tells)!"
+                GATE_FAILED=1
+            fi
+        else
+            echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 22-tell anti-vibe-code audit on the deployed URL)"
+            GATE_FAILED=1
+        fi
         # Content verification (BLOCKER): workbook must attest a real PASS, not FAILED / NOT EXECUTED.
         if [ -f "docs/qa/SIT_WORKBOOK.md" ]; then
             sit_content=$(cat "docs/qa/SIT_WORKBOOK.md" 2>/dev/null || true)

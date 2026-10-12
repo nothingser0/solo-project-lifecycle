@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of all 43 engineering guides, checklists, playbooks, stack quickstarts, and pre-sales references in the `references/` directory.
+Comprehensive index of all 40 engineering guides, checklists, playbooks, stack quickstarts, and pre-sales references in the `references/` directory.
 
 ---
 
@@ -10,12 +10,12 @@ Comprehensive index of all 43 engineering guides, checklists, playbooks, stack q
 references/
 ├── checklists/          (4 files)  - Feasibility criteria, evaluation checklists, elicitation guides
 ├── taxonomy/            (2 files)  - 250 industry software archetypes, 1,000 project catalog
-├── playbooks/           (3 files)  - AI-assisted development, design patterns, scale workflows
+├── playbooks/           (2 files)  - AI-assisted development, scale workflows
 ├── pm/                  (7 files)  - Prioritization, analytics, communication, testing, tooling
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
-├── technical/          (13 files)  - Deep research, design systems, APM, compliance, animation, deep-dives
+├── technical/          (10 files)  - Deep research, design systems, APM, compliance, animation, tooling comparison
 └── team/                (1 file)   - Team collaboration, agency handoff, multi-agent coordination
 ```
 
@@ -46,8 +46,7 @@ references/
 | File | Purpose | Referenced In |
 |---|---|---|
 | [`SCALE_WORKFLOWS.md`](./playbooks/SCALE_WORKFLOWS.md) | Tiered execution workflows across Small (MVP), Medium, Large, and Enterprise scales | Module 00–13 |
-| [`ai-assisted-development.md`](./playbooks/ai-assisted-development.md) | Prompt engineering patterns, multi-file AI orchestration, pre-merge review protocol | Module 06, 07 |
-| [`software-design-patterns.md`](./playbooks/software-design-patterns.md) | Clean code principles, SOLID, Repository/Service layer patterns, anti-pattern detection | Module 05, 06 |
+| [`AI_ASSISTED_DEVELOPMENT.md`](./playbooks/AI_ASSISTED_DEVELOPMENT.md) | Prompt engineering patterns, multi-file AI orchestration, pre-merge review protocol | Module 06, 07 |
 
 ---
 
@@ -92,10 +91,10 @@ references/
 |---|---|---|
 | [`STACK_DECISION_METRICS.md`](./stacks/STACK_DECISION_METRICS.md) | Build time, incremental compile, cold start benchmarks across major web frameworks | Module 05 |
 | [`STACK_SUPPORT_MATRIX.md`](./stacks/STACK_SUPPORT_MATRIX.md) | Supported language & framework evaluation matrix, tooling maturity, verification gates | Module 05 |
-| [`django-quickstart.md`](./stacks/django-quickstart.md) | Django (v5–v6+) + Python 3.12+ + PostgreSQL 16+ + Celery setup & live version verification guide | Module 06 |
-| [`go-quickstart.md`](./stacks/go-quickstart.md) | Go (v1.23–v1.27+) + Fiber/Echo/Chi + PostgreSQL 16+ setup & live version verification guide | Module 06 |
-| [`laravel-quickstart.md`](./stacks/laravel-quickstart.md) | Laravel (v11–v13+) + PHP 8.3+ + MySQL/PostgreSQL + Livewire/Inertia setup & live version verification guide | Module 06 |
-| [`nextjs-quickstart.md`](./stacks/nextjs-quickstart.md) | Next.js (v15–v16+) + React 19+ + TypeScript + Prisma/Supabase setup & live version verification guide | Module 06 |
+| [`DJANGO_QUICKSTART.md`](./stacks/DJANGO_QUICKSTART.md) | Django (v5–v6+) + Python 3.12+ + PostgreSQL 16+ + Celery setup & live version verification guide | Module 06 |
+| [`GO_QUICKSTART.md`](./stacks/GO_QUICKSTART.md) | Go (v1.23–v1.27+) + Fiber/Echo/Chi + PostgreSQL 16+ setup & live version verification guide | Module 06 |
+| [`LARAVEL_QUICKSTART.md`](./stacks/LARAVEL_QUICKSTART.md) | Laravel (v11–v13+) + PHP 8.3+ + MySQL/PostgreSQL + Livewire/Inertia setup & live version verification guide | Module 06 |
+| [`NEXTJS_QUICKSTART.md`](./stacks/NEXTJS_QUICKSTART.md) | Next.js (v15–v16+) + React 19+ + TypeScript + Prisma/Supabase setup & live version verification guide | Module 06 |
 
 ---
 
@@ -113,9 +112,6 @@ references/
 | [`FIGMA_MCP_SETUP.md`](./technical/FIGMA_MCP_SETUP.md) | Figma MCP server installation, live design synchronization, token extraction workflows | Module 04 |
 | [`MOBILE_ARCHITECTURE_GUIDE.md`](./technical/MOBILE_ARCHITECTURE_GUIDE.md) | Mobile viewport responsiveness, touch ergonomics, PWA configuration, cross-platform layouts | Module 04 |
 | [`UI_COMPONENT_ANIMATION_LIBRARY.md`](./technical/UI_COMPONENT_ANIMATION_LIBRARY.md) | Production micro-interaction animation patterns, Framer Motion/CSS transitions | Module 04 |
-| [`UIUX_PROTOTYPING_DEEP_DIVE.md`](./technical/UIUX_PROTOTYPING_DEEP_DIVE.md) | Full 44-screen TataBuku sitemap, prototyping options tutorial, local MCP workflows, M04B design system | Module 04 |
-| [`ARCHITECTURE_SPECS_DEEP_DIVE.md`](./technical/ARCHITECTURE_SPECS_DEEP_DIVE.md) | Universal stack evaluation rubrics, Astro/Remix/Laravel comparisons, prototype conversion, M05B enterprise system design | Module 05 |
-| [`DEV_EXECUTION_DEEP_DIVE.md`](./technical/DEV_EXECUTION_DEEP_DIVE.md) | Framework-specific ORM/DDL code styles (Prisma/Eloquent/Django), Sprints 0–6 execution, M06B product instrumentation | Module 06 |
 
 ---
 

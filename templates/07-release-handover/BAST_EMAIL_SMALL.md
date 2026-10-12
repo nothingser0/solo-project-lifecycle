@@ -252,7 +252,7 @@ For formal BAST, use `templates/07-release-handover/BAST_TEMPLATE.md`
 **Response**: "Feature X was not in original scope. I can quote it as a Change Request, or we proceed with handover and add it later. What do you prefer?"
 
 **Client ignores email for 1 week**
-**Action**: 
+**Action**:
 1. WhatsApp: "Hi, just following up on handover email sent [date]. Let me know if you need clarification."
 2. If still no reply after 2 weeks: Schedule call to walk through deliverables
 3. If client is ghosting: Send formal reminder (registered mail if needed)

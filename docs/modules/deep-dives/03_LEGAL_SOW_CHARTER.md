@@ -1,6 +1,15 @@
 # M03 Deep Dive: Legal SOW & Charter — Extended Material
 
-Companion to [`../03-legal-sow-charter.md`](../03-legal-sow-charter.md). Reference links: `references/pre-sales/QUOTATION_EMAIL.md`, `templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md`, `MEETING_CADENCE_GUIDE.md`, `VENDOR_COMPARISON_MATRIX.md`, `templates/02-legal-commercial/FINANCIAL_TRACKING.md`.
+## Contents
+
+- [1. Enterprise Advisory Gate (Phase A00) — Full Detail](#1-enterprise-advisory-gate-phase-a00-full-detail)
+- [2. Legal Document Hierarchy (Full)](#2-legal-document-hierarchy-full)
+- [3. Clause Drafting Notes (Operational Drafts)](#3-clause-drafting-notes-operational-drafts)
+- [4. Payment & Leverage Detail](#4-payment-leverage-detail)
+- [5. Commercial Estimation Inputs](#5-commercial-estimation-inputs)
+
+
+Companion to [`../03_LEGAL_SOW_CHARTER.md`](../03_LEGAL_SOW_CHARTER.md). Reference links: `references/pre-sales/QUOTATION_EMAIL.md`, `templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md`, `MEETING_CADENCE_GUIDE.md`, `VENDOR_COMPARISON_MATRIX.md`, `templates/02-legal-commercial/FINANCIAL_TRACKING.md`.
 
 > ⚠️ All AI-drafted legal content is an operational engineering draft requiring professional legal review before signature.
 

@@ -2,7 +2,7 @@
 
 ## 1. Test Metadata
 - **ID**: `EVAL-07`
-- **Focus**: Cross-Document Consistency (Scope $\rightarrow$ PRD/FSD $\rightarrow$ Database Schema $\rightarrow$ Code)
+- **Focus**: Cross-Document Consistency (Scope → PRD/FSD → Database Schema → Code)
 - **Target Module**: Module 05 (Architecture Specs) & Module 06 (Development)
 
 ---

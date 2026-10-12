@@ -10,14 +10,14 @@
 ## 2. Injected User Prompt
 
 ```text
-Halo, saya solo developer mau bikin produk micro-SaaS untuk otomasi WhatsApp invoice UMKM (rencana 6 fitur). Ini produk saya sendiri, bukan untuk klien. Alur modulnya bagaimana?
+Halo, saya solo developer mau bikin produk micro-SaaS untuk otomasi WhatsApp invoice UMKM (rencana 8 fitur). Ini produk saya sendiri, bukan untuk klien. Alur modulnya bagaimana?
 ```
 
 ---
 
 ## 3. Expected Agent Behavior
 
-1. **Selects Solo SaaS Path**: Identifies project as self-initiated product (Medium complexity, 6 features). Recommends the Solo SaaS path:
+1. **Selects Solo SaaS Path**: Identifies project as self-initiated product (Solo SaaS band: 8–15 P0, 8 features). Recommends the Solo SaaS path:
    `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13`.
 2. **Waives Client-Only Gates**: Explicitly notes that M03 (SOW contract & down payment) and M11 (BAST & final invoice) are omitted because there is no external client.
 3. **Does Not Skip Market Validation**: Does not advise skipping M00 entirely; recommends **M00-lite** (`templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`) to validate willingness to pay before coding.

@@ -1,6 +1,17 @@
 # Module 10 Deep Dive: Production Deployment — ENV Verification, Clean Release, Data Migration Options & Mobile Workflows
 
-> Companion to `docs/modules/10-deployment-production.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
+## Contents
+
+- [Step 1 (Detail): Verify Production Environment Variables](#step-1-detail-verify-production-environment-variables)
+- [Step 2 (Detail): Clean Release Merge — Manual Procedure](#step-2-detail-clean-release-merge-manual-procedure)
+- [Step 3 (Detail): Leverage-Safe Commercial Handover Rule (Delivery: client)](#step-3-detail-leverage-safe-commercial-handover-rule-delivery-client)
+- [Step 4 (Detail): Import Verified Client Real Data — 3 Options](#step-4-detail-import-verified-client-real-data-3-options)
+- [Step 5 (Detail): Schema Migration](#step-5-detail-schema-migration)
+- [Section 4 (Full): Mobile App Deployment Specific Workflow (Android & iOS)](#section-4-full-mobile-app-deployment-specific-workflow-android-ios)
+- [Enterprise Scale Advisory (A03/A00)](#enterprise-scale-advisory-a03a00)
+
+
+> Companion to `docs/modules/10_DEPLOYMENT_PRODUCTION.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
 
 ## Step 1 (Detail): Verify Production Environment Variables
 
@@ -113,7 +124,7 @@ git push origin v1.0.0
 
 ## Step 3 (Detail): Leverage-Safe Commercial Handover Rule (Delivery: client)
 
-> 🛡️ Under the standardized 30/40/30 contract (`03-legal-sow-charter.md` and `SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`), **Milestone 3 (Final 30%) is payable prior to DNS production pointing and BAST handover**.
+> 🛡️ Under the standardized 30/40/30 contract (`03_LEGAL_SOW_CHARTER.md` and `SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`), **Milestone 3 (Final 30%) is payable prior to DNS production pointing and BAST handover**.
 > - In Module 10, the developer deploys to a **developer-controlled production/preview server** to execute PVT testing and produce `GO_LIVE_REPORT.md`.
 > - Pointing the Client's official primary domain (`app.client.com`) and transferring master cloud/repo credentials **MUST BE HELD AS COMMERCIAL LEVERAGE** until 100% final payment clears in Module 11.
 > - For `Delivery: solo | internal | portfolio`, configure the primary production domain directly.

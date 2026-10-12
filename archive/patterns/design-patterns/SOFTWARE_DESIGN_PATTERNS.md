@@ -1,5 +1,20 @@
 
-# Module 05C: Software Design Patterns & Clean Code Principles
+# Software Design Patterns & Clean Code Principles (M05 Reference)
+
+## Contents
+
+- [1. Clean Code Principles](#1-clean-code-principles)
+- [2. Programming Paradigms](#2-programming-paradigms)
+- [3. Object-Oriented Programming: SOLID Principles](#3-object-oriented-programming-solid-principles)
+- [4. Design Principles](#4-design-principles)
+- [5. Design Patterns (Gang of Four + Modern)](#5-design-patterns-gang-of-four-modern)
+- [6. Architectural Principles](#6-architectural-principles)
+- [7. Architectural Styles](#7-architectural-styles)
+- [8. Architectural Patterns](#8-architectural-patterns)
+- [9. Enterprise Patterns](#9-enterprise-patterns)
+- [10. AI Code Review Application](#10-ai-code-review-application)
+- [Summary](#summary)
+
 
 **Trigger**: Use when evaluating the quality of AI-generated code, performing code reviews, refactoring, or designing component architecture. Required for medium-to-large projects requiring long-term maintainability.
 
@@ -669,7 +684,7 @@ interface User {
   email: string;
   name: string;
 }
-// ponytail: add avatar when profile feature ships (M06 sprint 3)
+// ponytail: add avatar when profile feature ships (when the profile feature ships)
 ```
 
 ### 4.3 Separation of Concerns
@@ -2100,6 +2115,8 @@ for user in users:
 ```
 
 #### Dependency Injection Container
+
+> Note: §4.6 covers the IoC *principle*; this entry covers the concrete container *implementation* pattern.
 
 **Intent**: Centralized management of object creation and dependencies.
 

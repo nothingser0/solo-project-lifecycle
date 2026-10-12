@@ -70,11 +70,11 @@
 
 1. **Universal 16px Input Font Size (iOS Anti-Zoom Rule)**:
    - Form inputs (`<input>`, `<select>`, `<textarea>`) MUST be at least `16px` (`text-base`) across all viewports.
-   - Never override with `md:text-sm`, which triggers auto-zoom on touch tablets and iPads ($\ge 768$px).
+   - Never override with `md:text-sm`, which triggers auto-zoom on touch tablets and iPads (≥ 768px).
 2. **Anti-Disabled Pristine Button Rule**:
    - Form submit buttons remain enabled in pristine/untouched state (validation triggers on click with auto-focus to first invalid field).
 3. **Calibrated Notification Toast Behavior**:
-   - Success notifications: Auto-dismiss permitted after $\ge 4000$ms with pause on hover/focus.
+   - Success notifications: Auto-dismiss permitted after ≥ 4000ms with pause on hover/focus.
    - Error and offline alert notifications: STRICTLY FORBIDDEN to auto-dismiss (manual dismissal required).
 4. **Safe Spreadsheet Export Sanitization**:
    - When exporting tabular data to CSV or Excel, escape formula triggers without breaking pure negative numbers:

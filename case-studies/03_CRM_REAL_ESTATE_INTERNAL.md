@@ -396,7 +396,7 @@ foreach ($leads as $index => $lead) {
 }
 ```
 
-**Data Validation**: 
+**Data Validation**:
 - 520 leads imported
 - 18 duplicates removed (same phone number)
 - Final count: 502 unique leads

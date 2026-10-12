@@ -27,7 +27,7 @@ Navigation depth: [X levels]
 >    - *Core Feature Showcase* (Minimal 3 blok demonstrasi fitur utama dengan tangkapan layar/diagram interaktif).
 >    - *Pricing / Value Anchor & Closing CTA* (Tabel komparasi paket atau penawaran nilai + tombol aksi penutup).
 > 2. **Dashboard Utuh (`/dashboard`)**: Dilarang hanya menampilkan salam *"Selamat Datang"*. Wajib memuat:
->    - *Stat KPI Cards* (Minimal 3–4 metrik utama dengan perbandingan tren $+/-\%$).
+>    - *Stat KPI Cards* (Minimal 3–4 metrik utama dengan perbandingan tren +/-%).
 >    - *Primary Action Bar* (Tombol jalan pintas transaksi/pembuatan data baru).
 >    - *Recent Activity / Transaction Feed* (Tabel/daftar 5–10 transaksi mutasi terakhir dengan status badge).
 >    - *Pending Action / Approval Alert* (Pemberitahuan item yang membutuhkan perhatian segera).
@@ -298,7 +298,7 @@ Navigation depth: [X levels]
 
 ---
 
-## 12. Priority Legend
+## 15. Priority Legend
 
 - **P0**: Must-have for MVP (launch blocker)
 - **P1**: Important but not launch blocker

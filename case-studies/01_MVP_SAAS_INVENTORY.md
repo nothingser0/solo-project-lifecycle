@@ -42,9 +42,9 @@
 - ❌ M00 (Market Research) → Validated via founder's domain expertise
 - ❌ M01 (Feasibility) → Just built it
 - ❌ M02-M03 (Scope/SOW) → No client, solo project
-- ❌ M04 Section 8 (Design System) → Used Tailwind defaults
-- ❌ M05 Section 6 (System Design) → Single DigitalOcean Droplet
-- ❌ M06 Section 6A (Analytics) → Added Mixpanel post-launch (week 6)
+- ❌ Full DESIGN.md token system → Used Tailwind defaults
+- ❌ Full architecture topology → Single DigitalOcean Droplet
+- ❌ Analytics instrumentation → Added Mixpanel post-launch (week 6)
 - ❌ M07-M09 (QA/UAT) → Manual testing only
 - ❌ M11-M12 (Handover/Warranty) → Self-maintained
 
@@ -238,7 +238,7 @@ forge deploy stokku-prod
 
 **Break-even**: Not yet (need 160 paying users @ Rp 50K = Rp 8 million MRR to match founder's freelance income)
 
-**Runway decision (Month 4)**: 
+**Runway decision (Month 4)**:
 - Option A: Grow to 160 users (4-6 months more grind) → full-time founder
 - Option B: Keep as side-project (Rp 1-2 million/month passive income)
 - **Founder chose Option B**: Continue freelance, grow Stokku organically
@@ -255,13 +255,13 @@ forge deploy stokku-prod
 
 ### Do Differently
 1. ❌ **Add M01 Feasibility** (4 hours of scoring would validate market size earlier)
-2. ❌ **Add M06 Section 6A Analytics from Day 1** (lost 6 weeks of data)
+2. ❌ **Add analytics from Day 1** (lost 6 weeks of data)
 3. ❌ **Spend 2 days on M07 Testing** (3 critical bugs cost 1 week of firefighting)
 4. ❌ **Pricing too low**: Rp 50K/month → break-even requires 160 users (impossible solo). Should be Rp 150K/month → requires 53 users (achievable)
 
 ### Framework Verdict
 - **MVP fast-track works**: 4 weeks launch, no scope creep
-- **BUT**: Should still do M01 Feasibility (4 hours) + M06 Section 6A Analytics (2 hours setup) + M07 Smoke Testing (1 day)
+- **BUT**: Should still do M01 Feasibility (4 hours) + analytics setup (2 hours) + M07 Smoke Testing (1 day)
 - **Adjusted MVP**: Fast-track + 3 critical modules = 4.5 weeks (still faster than full framework)
 
 ---
@@ -340,15 +340,15 @@ Based on this case study, recommend **MVP Fast-Track Plus**:
 - ✅ M04 UI/UX (1 day) → Design tokens
 - ✅ M05 Architecture (1 day) → DB schema, tech stack
 - ✅ M06 Development (12 days) → Coding
-- ✅ M06 Section 6A Analytics (2 hours setup) → Do not lose baseline data
+- ✅ Analytics setup (2 hours) → Do not lose baseline data
 - ✅ M07 Smoke Testing (1 day) → Catch critical bugs
 - ✅ M10 Deployment (1 day) → Launch
 
 **Skip Modules** (save 2 weeks):
 - ❌ M00 Market Research (validate post-launch)
 - ❌ M02-M03 Scope/SOW (solo project)
-- ❌ M04 Section 8 Design System (use defaults)
-- ❌ M05 Section 6 System Design (single server fine)
+- ❌ Full DESIGN.md token system (use defaults)
+- ❌ Full architecture topology (single server fine)
 - ❌ M08-M09 Data Migration/UAT (no legacy, no client)
 - ❌ M11-M12 Handover/Warranty (self-maintained)
 

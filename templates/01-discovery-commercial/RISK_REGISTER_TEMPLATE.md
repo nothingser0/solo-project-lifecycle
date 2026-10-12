@@ -1,5 +1,8 @@
 # Risk Register: [Product Name]
 
+> ⚠️ **ILLUSTRATIVE EXAMPLE ONLY** — figures, names, and scenarios below are a formatting sample, NOT real data for your project. Replace them or delete the sample rows before use.
+
+
 **Project**: [Project Name]  
 **Owner**: [PIC Name]  
 **Last Updated**: YYYY-MM-DD  

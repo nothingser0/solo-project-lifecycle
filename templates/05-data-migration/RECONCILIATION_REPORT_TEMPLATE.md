@@ -15,7 +15,7 @@
 
 ## 2. Quantitative Data Reconciliation Table
 
-| Data Entity / Table | Total Source Rows ($N_{\text{src}}$) | Successfully Imported ($N_{\text{imp}}$) | Failed / Rejected ($N_{\text{rej}}$) | Duplicates Ignored | Success Rate |
+| Data Entity / Table | Total Source Rows (N_{src}) | Successfully Imported (N_{imp}) | Failed / Rejected (N_{rej}) | Duplicates Ignored | Success Rate |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Users (`users`)** | 450 | 442 | 8 | 0 | **98.2%** |
 | **Documents (`documents`)**| 1,200 | 1,185 | 15 | 0 | **98.8%** |

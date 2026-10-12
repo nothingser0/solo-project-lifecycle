@@ -1,6 +1,17 @@
 # Module 08 Deep Dive: Data Migration & Seeding — Step-by-Step Execution
 
-> Companion to `docs/modules/08-data-migration-seeding.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
+## Contents
+
+- [Step 1: Source Data Audit](#step-1-source-data-audit)
+- [Step 2: Migration Plan Document Preparation (Mapping Matrix)](#step-2-migration-plan-document-preparation-mapping-matrix)
+- [Step 3: Writing the Automated ETL Script (Batch Loading)](#step-3-writing-the-automated-etl-script-batch-loading)
+- [Step 4: Reconciliation & Rejected Row Handling](#step-4-reconciliation-rejected-row-handling)
+- [Step 5: Data Sign-Off with Client](#step-5-data-sign-off-with-client)
+- [Appendix: Project Scale Adaptation (moved from runbook)](#appendix-project-scale-adaptation-moved-from-runbook)
+- [Appendix: Gate Step 0 — File Existence Verification (moved from runbook)](#appendix-gate-step-0-file-existence-verification-moved-from-runbook)
+
+
+> Companion to `docs/modules/08_DATA_MIGRATION_SEEDING.md` (runbook). This file holds the detailed execution steps; the runbook keeps a condensed summary.
 
 ## Step 1: Source Data Audit
 1. Request the client to provide data in a structured digital format (CSV, Excel `.xlsx`, or SQL Dump).

@@ -376,7 +376,7 @@ protected $policies = [
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <a href="{{ route('documents.create') }}" 
+                    <a href="{{ route('documents.create') }}"
                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Create Document
                     </a>
@@ -396,11 +396,11 @@ protected $policies = [
                                     <td>{{ $document->created_at->format('Y-m-d') }}</td>
                                     <td>
                                         <a href="{{ route('documents.edit', $document) }}">Edit</a>
-                                        <form action="{{ route('documents.destroy', $document) }}" 
+                                        <form action="{{ route('documents.destroy', $document) }}"
                                               method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" 
+                                            <button type="submit"
                                                     onclick="return confirm('Are you sure?')">
                                                 Delete
                                             </button>
@@ -798,5 +798,5 @@ DB::select('SELECT * FROM documents WHERE user_id = ?', [$userId]);
 - [Laravel Documentation](https://laravel.com/docs)
 - [Laravel Breeze](https://laravel.com/docs/11.x/starter-kits#laravel-breeze)
 - [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum)
-- `patterns/validation/` - Validation patterns (adapt to Laravel)
-- `patterns/security/authentication.md` - Auth concepts
+
+> Generic engineering patterns (validation, auth, caching) were archived to `archive/patterns/` — implement from stack knowledge or consult the archive on demand.

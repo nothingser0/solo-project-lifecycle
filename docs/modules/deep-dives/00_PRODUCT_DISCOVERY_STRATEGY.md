@@ -1,6 +1,16 @@
 # M00 Deep Dive: Product Discovery & Strategy — Extended Material
 
-Companion to [`../00-product-discovery-strategy.md`](../00-product-discovery-strategy.md). Reference links: `references/technical/DEEP_RESEARCH_METHODOLOGY.md`, `references/taxonomy/SYSTEM_ARCHETYPES_250.md`, `references/taxonomy/PROJECT_CATALOG_1000.md`, `references/pre-sales/DISCOVERY_CALL_CHECKLIST.md`, `PROPOSAL_DECK.md`, `templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md`.
+## Contents
+
+- [1. TAM/SAM/SOM Worked Example (Accounting SaaS, Indonesian MSMEs)](#1-tamsamsom-worked-example-accounting-saas-indonesian-msmes)
+- [2. Regulatory Landscape Checklist (Indonesia)](#2-regulatory-landscape-checklist-indonesia)
+- [3. Competitor Testing Protocol](#3-competitor-testing-protocol)
+- [4. User Research Instruments](#4-user-research-instruments)
+- [5. Product Strategy Details](#5-product-strategy-details)
+- [6. Unit Economics & Kill Criteria](#6-unit-economics-kill-criteria)
+
+
+Companion to [`../00_PRODUCT_DISCOVERY_STRATEGY.md`](../00_PRODUCT_DISCOVERY_STRATEGY.md). Reference links: `references/technical/DEEP_RESEARCH_METHODOLOGY.md`, `references/pre-sales/DISCOVERY_CALL_CHECKLIST.md`, `PROPOSAL_DECK.md`, `templates/00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md`.
 
 ## 1. TAM/SAM/SOM Worked Example (Accounting SaaS, Indonesian MSMEs)
 

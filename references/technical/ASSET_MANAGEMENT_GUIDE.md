@@ -1,5 +1,19 @@
 # Asset Management Guide: Images, SVG, WebP, Fonts & Static Files
 
+## Contents
+
+- [1. Asset Types & Use Cases](#1-asset-types-use-cases)
+- [2. Required Assets Checklist (Pre-Launch)](#2-required-assets-checklist-pre-launch)
+- [Asset Checklist](#asset-checklist)
+- [2. Image Optimization Strategy](#2-image-optimization-strategy)
+- [3. SVG Optimization](#3-svg-optimization)
+- [4. Font Management](#4-font-management)
+- [5. Asset Storage & Delivery](#5-asset-storage-delivery)
+- [6. Performance Checklist](#6-performance-checklist)
+- [7. Accessibility Requirements](#7-accessibility-requirements)
+- [8. Troubleshooting](#8-troubleshooting)
+
+
 Comprehensive guide for managing frontend assets (images, icons, fonts, video) with a focus on performance, accessibility, and maintainability.
 
 ---

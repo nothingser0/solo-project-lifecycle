@@ -52,19 +52,19 @@
   - If thermal printer runs out of paper or disconnects, the transaction record is ALREADY locked in database; receipt dialog provides a "Reprint Receipt" button without re-executing balance mutations.
 - **Transaction Cancellation (Void Protocol)**:
   - Cashier (ROL-03) CANNOT void completed sales independently.
-  - Void requires Manager (ROL-02) or Owner (ROL-01) authorization, with a mandatory reason note ($\ge 10$ chars).
+  - Void requires Manager (ROL-02) or Owner (ROL-01) authorization, with a mandatory reason note (≥ 10 chars).
   - The system creates a formal **reversal movement entry** in `inventory_movements` to restore stock, preserving full audit history.
 - **Two-Phase Blind Count Opname & In-Flight Reconciliation**:
   - Staff physical count screens omit expected system quantities 100% to eliminate confirmation bias.
   - Reconciliation formula accounting for in-flight sales during active count:
-    $$\text{Net Variance} = \text{Physical Count} - (\text{Snapshot Stock} - \text{In-Flight Sales} + \text{In-Flight Purchases})$$
+    **Net Variance** = Physical Count − (Snapshot Stock − In-Flight Sales + In-Flight Purchases)
 
 #### B. CRM / Sales Pipeline Scope:
 - **Deal Stage Transition Gates**: Deals cannot be marked "Won" without attached signed agreement and verified deal amount.
 - **Orphan Record Guard**: Deleting companies/accounts requires re-assigning associated contacts and open tasks.
 
 #### C. CMS / Editorial Scope:
-- **Publishing State Machine**: `Draft` $\rightarrow$ `In Review` $\rightarrow$ `Scheduled` $\rightarrow$ `Published`.
+- **Publishing State Machine**: `Draft` → `In Review` → `Scheduled` → `Published`.
 - **Slug Immortality**: Title edits automatically generate permanent HTTP 301 redirects from old URLs.
 
 #### D. Other Domains / Scrapers / Internal Tools:

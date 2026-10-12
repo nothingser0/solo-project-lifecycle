@@ -74,11 +74,11 @@ function encryptFile(string $filePath, string $masterKey): string {
     $data = file_get_contents($filePath);
     
     $encrypted = openssl_encrypt(
-        $data, 
-        'aes-256-gcm', 
-        hex2bin($masterKey), 
-        OPENSSL_RAW_DATA, 
-        $iv, 
+        $data,
+        'aes-256-gcm',
+        hex2bin($masterKey),
+        OPENSSL_RAW_DATA,
+        $iv,
         $tag
     );
     

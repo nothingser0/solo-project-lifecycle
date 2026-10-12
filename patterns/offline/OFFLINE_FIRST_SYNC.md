@@ -30,7 +30,7 @@
 
 ```typescript
 export interface QueuedMutation {
-  id: string; // UUIDv7 (time-sortable)
+  id: string; // UUID v4 (crypto.randomUUID; time-ordering handled by clientTimestamp)
   entity: 'order' | 'inventory_item' | 'customer';
   action: 'CREATE' | 'UPDATE' | 'DELETE';
   payload: Record<string, unknown>;

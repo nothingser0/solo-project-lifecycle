@@ -448,5 +448,5 @@ Check `.env` file and ensure PostgreSQL is running.
 - [Django Docs](https://docs.djangoproject.com/)
 - [DRF Docs](https://www.django-rest-framework.org/)
 - [Celery Docs](https://docs.celeryq.dev/)
-- `patterns/validation/` - Validation patterns
-- `patterns/security/` - Security best practices
+
+> Generic engineering patterns (validation, auth, caching) were archived to `archive/patterns/` — implement from stack knowledge or consult the archive on demand.

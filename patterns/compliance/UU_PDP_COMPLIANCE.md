@@ -14,7 +14,7 @@
    - Users have the right to request deletion or anonymization of their personal data.
    - Exception: Statutory record-keeping laws (e.g. UU Ketentuan Umum Perpajakan mandates keeping financial/transaction records for 5–10 years). In financial systems, personal identifiers are **anonymized/pseudonymized** while ledger transactions are preserved.
 3. **Mandatory Breach Notification within 72 Hours (Pasal 46)**:
-   - Data controllers must notify Komdigi (Kementerian Komunikasi dan Digital) and affected data subjects within **$3 \times 24$ hours (72 hours)** of discovering a data breach.
+   - Data controllers must notify Komdigi (Kementerian Komunikasi dan Digital) and affected data subjects within **72 hours** of discovering a data breach.
 
 ---
 

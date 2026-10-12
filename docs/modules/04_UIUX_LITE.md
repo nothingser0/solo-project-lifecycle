@@ -1,6 +1,6 @@
 # Module 04-LITE: UI/UX for Small (Fast-Track)
 
-> Template source: `templates/02-design/DESIGN_MD_TEMPLATE.md` · Full runbook (Medium+): [`04-uiux-prototyping.md`](04-uiux-prototyping.md)
+> Template source: `templates/02-design/DESIGN_MD_TEMPLATE.md` · Full runbook (Medium+): [`04_UIUX_PROTOTYPING.md`](04_UIUX_PROTOTYPING.md)
 
 **Purpose**: proportional design pass for the Small path. Produces the same 6 artifact names as full M04, sized down — never skipped.
 
