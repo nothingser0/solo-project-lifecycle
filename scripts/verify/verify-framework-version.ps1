@@ -21,17 +21,51 @@ if (Test-Path $FSD_FILE) {
 
 function Extract-FsdVersion {
     param($Package)
-    
+
+    # The pinned-version section is written in two accepted shapes and BOTH must
+    # parse, because the shipped templates use the first one:
+    #   - **Framework**: Next.js ^15.0.3 (App Router)   <- FSD_TECHNICAL_TEMPLATE.md
+    #   - Next.js: 15.0.3                               <- bare form
+    # The old body anchored on "^- <pkg>:" only, so a template-faithful FSD (stack
+    # name in the VALUE) failed its own gate and M06 STEP 3 could never pass.
+    # Take the section body, keep lines naming the package, pull the first version.
     $fsdContent = Get-Content $TARGET_FILE -Raw
-    $versionsSection = ($fsdContent -split 'Framework Versions \(Pinned\):')[1]
+    $versionsSection = ($fsdContent -split 'Framework Versions \(Pinned\)')[1]
     if ($versionsSection) {
-        $versionsSection = ($versionsSection -split "`n`n")[0]
-        $line = $versionsSection -split "`n" | Where-Object { $_ -match "^- ${Package}:" } | Select-Object -First 1
-        if ($line) {
-            return ($line -split ": ")[1].Trim()
+        $body = ($versionsSection -split "(?m)^#{2,6}\s")[0]
+        $line = $body -split "`n" | Where-Object { $_ -imatch [regex]::Escape($Package) } | Select-Object -First 1
+        if ($line -and ($line -match 'v?[0-9]+(\.[0-9]+)+')) {
+            return $Matches[0].TrimStart('v')
         }
     }
     return $null
+}
+
+# Scaffold-type guard + Tailwind major detection (parity with the .sh twin).
+function Assert-ScaffoldType {
+    param($Want, $Manifest, $WrongManifest, $WrongLabel)
+    if (-not (Test-Path $Manifest)) {
+        Write-Host "[ERROR] FSD declares $Want, but $Manifest is missing - wrong or absent scaffold." -ForegroundColor Red
+        exit 1
+    }
+    if ($WrongManifest -and (Test-Path $WrongManifest)) {
+        Write-Host "[ERROR] FSD declares $Want, but the repo looks like $WrongLabel (conflicting manifest present)." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "[OK] scaffold manifest matches the locked stack ($Want)" -ForegroundColor Green
+}
+
+function Test-Tailwind {
+    if (-not (Test-Path "package.json")) { return }
+    $pkg = Get-Content "package.json" -Raw
+    if ($pkg -match '"tailwindcss"\s*:\s*"\D*([0-9]+)') {
+        $tw = [int]$Matches[1]
+        if ($tw -ge 4) {
+            Write-Host "[INFO] Tailwind v4 detected - CSS-first config (no tailwind.config.js). AGENTS.md / CONVENTIONS.md must use v4 syntax." -ForegroundColor Yellow
+        } else {
+            Write-Host "[OK] Tailwind v$tw detected (JS config expected)" -ForegroundColor Green
+        }
+    }
 }
 
 $fsdContent = Get-Content $TARGET_FILE -Raw
@@ -43,6 +77,8 @@ Write-Host ""
 
 switch ($stack) {
     { $_ -in "Next.js", "Nextjs", "next.js" } {
+        Assert-ScaffoldType "Next.js" "package.json" "composer.json" "Laravel/PHP"
+        Test-Tailwind
         $fsdNext = Extract-FsdVersion "Next.js"
         if (-not $fsdNext) { $fsdNext = Extract-FsdVersion "next" }
         $fsdReact = Extract-FsdVersion "React"
@@ -115,6 +151,7 @@ switch ($stack) {
     }
     
     "Laravel" {
+        Assert-ScaffoldType "Laravel" "composer.json" "manage.py" "Django/Python"
         $fsdLaravel = Extract-FsdVersion "Laravel"
         if (-not $fsdLaravel) { $fsdLaravel = Extract-FsdVersion "laravel/framework" }
         
@@ -155,6 +192,7 @@ switch ($stack) {
     }
     
     "Django" {
+        Assert-ScaffoldType "Django" "manage.py" "composer.json" "Laravel/PHP"
         $fsdDjango = Extract-FsdVersion "Django"
         
         if (-not $fsdDjango) {
@@ -193,6 +231,7 @@ switch ($stack) {
     }
     
     "Go" {
+        Assert-ScaffoldType "Go" "go.mod" "package.json" "a JS framework"
         $fsdGo = Extract-FsdVersion "Go"
         
         if (-not $fsdGo) {

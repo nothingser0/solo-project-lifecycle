@@ -70,56 +70,36 @@ Stack-Locked-by: [name of the human who chose it — the AI agent presents optio
 - Q7 Critical Feature Priority: [answer]
 - Q8 Compliance Requirements: [answer]
 
-### Framework Versions (Pinned):
+### Framework Versions (Pinned)
+*(Populate directly from `./scripts/verify/check-package-versions.sh <stack>` — see the live-version STEP 0 in `docs/modules/05_ARCHITECTURE_SPECS.md`)*
+- **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]
+- **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
+- **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
+- **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
 
-> Populate from `./scripts/verify/check-package-versions.sh <stack>` (or `.ps1 -Framework <stack>`).
->
-> **Machine-read — do not reformat.** M06 STEP 3 runs `./scripts/verify/verify-framework-version.sh`,
-> which greps this block for `- <Package>: <version>` lines and compares **major.minor** against the
-> project lockfile (`package-lock.json` / `pnpm-lock.yaml` / `composer.lock` / `requirements.txt` / `go.mod`).
-> Keep the heading colon, keep this block a bullet list (never a table), and **delete every stack line
-> you did not lock** — a leftover `- Django:` line in a Next.js project contradicts the lockfile and
-> fails the comparison.
 
-- Next.js: [x.y.z — delete this line unless Next.js is the locked stack]
-- React: [x.y.z — delete this line unless Next.js is the locked stack]
-- Laravel: [x.y — delete this line unless Laravel is the locked stack]
-- Django: [x.y.z — delete this line unless Django is the locked stack]
-- Go: [x.y — delete this line unless Go is the locked stack]
-- Language / Runtime: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
-- Database Engine: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
-- ORM / Driver: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
+### Module 04 Handoff Strategy
 
-### Security Blueprint (STEP 5 — gate-enforced)
+> **Why this section exists**: `validate-gate.sh M06` refuses to start coding without
+> it. It records how the **frozen** Module 04 prototype becomes real code, so no one
+> re-invents screens during development. The prototype is the UI source of truth.
 
-> `validate-gate.sh M05` requires all five controls below: AES-256-GCM, Argon2id, OWASP, rate
-> limiting, and the compliance tie-in (UU PDP/GDPR/consent) for Medium+ scale.
+**Compatibility Level**: [Level 1 | Level 2 | Level 3 | Level 4]
 
-- **Data at rest**: AES-256-GCM envelope encryption for [sensitive columns]; key management = [KMS / env-held data key + KEK].
-- **Password hashing**: Argon2id (`memory=64MB, iterations=3, parallelism=4`).
-- **Web hardening**: OWASP Top 10 — parameterized queries, output encoding, CSRF tokens, `HttpOnly`+`Secure`+`SameSite` cookies, generic error messages, dependency scanning in CI.
-- **Rate limiting**: [login 5/min per IP; mutating endpoints 60/min per user; idempotency keys for POST].
-- **Personal data / compliance**: [UU PDP consent capture, deletion right, immutable audit log] or `N/A (no personal data processed)`.
-
-### 2.1 Module 04 Handoff Strategy (STEP 5 — gate-enforced; parsed by M06 STEP 0)
-
-> M06 STEP 0 reads this section (verbatim name) to derive the prototype → code compatibility
-> level, and M06's own gate refuses to start without it. Choose exactly ONE level.
-
-**Compatibility Level**: Level [1 / 2 / 3 / 4]
-
-| Level | Situation | Conversion Approach |
-| :--- | :--- | :--- |
-| **1 — Direct** | Prototype IS the stack (workflow C/E: Bolt/Lovable/Figma MCP output matches the locked framework) | Copy generated components in; adjust tokens |
-| **2 — Re-skin** | Same framework, different styling system | Rebuild markup on the frozen layout; map tokens |
-| **3 — Translate** | Different framework, same component model (e.g. React → Vue/Svelte) | Rewrite each component 1:1; keep class/state names |
-| **4 — Hybrid/Static** | Markup-only prototype (workflow A/B/D) or Blade + Inertia-style bridging | Rebuild each screen from the frozen spec; reuse design tokens only |
+| Level | Meaning | Conversion effort |
+| :---: | :--- | :--- |
+| **1** | Markdown-only spec (Workflow A) — rebuilt directly in the chosen stack | Lowest: no code to port |
+| **2** | Static HTML/click-dummy (Workflow B) — markup translated to components | Low: markup → components |
+| **3** | AI-generated prototype code (Workflow C) — same framework, cleaned and wired | Medium: refactor to conventions |
+| **4** | Figma/designer handoff or hybrid (Workflow D/E) — components extracted from design | Highest: design → components |
 
 **Conversion Plan**:
-1. Extract [n] components from `COMPONENT_REQUIREMENTS.md` (source: M04 workflow [A–E]).
-2. Map `DESIGN.md` tokens → [Tailwind config / theme file].
-3. Rebuild screens in [framework] — static first, data-backed after DB + API.
-**Estimated Conversion Time**: [X days]
+1. [Source artifact → target path, e.g. "Extract 12 components from `docs/design/screens/` → `src/components/`"]
+2. [Route mapping, e.g. "Create one route per SITEMAP screen (SCR-01…SCR-NN)"]
+3. [Rejected prototype code / stubs to delete, e.g. "Drop prototype mock data; bind to FSD endpoints"]
+
+**Estimated Conversion Time**: [N days]
+**Screen Coverage**: [SITEMAP route count] routes == [DESIGN_SPEC SCR count] frozen screens
 
 ---
 
@@ -614,16 +594,15 @@ placeholder rows before sign-off.*
 - [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
 - [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
 - [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
+- [ ] **7. Module 04 Handoff Strategy**: Section 2 records the compatibility level (1–4), the conversion plan from the frozen prototype, and a screen count that matches SITEMAP/DESIGN_SPEC. `validate-gate.sh M06` blocks coding without it.
 - [ ] **7. API Contract Completeness**: ≥5 endpoints documented as `#### <VERB> /path` headings, each with auth, request schema, and a success/error pair; `X-Idempotency-Key` shown on every financial/stock mutation.
 - [ ] **8. Security Blueprint (§7)**: Every control row resolved (implemented or `N/A — <reason>`); no blank rows. Password hashing, at-rest encryption, rate limiting, and audit logging each have an implementation reference.
 - [ ] **9. Module 04 Handoff (§8)**: Screen → route → component map covers 100% of `DESIGN_SPEC.md` screens; locked stack matches §2 verbatim; compatibility level recorded for M06 STEP 0.
-- [ ] **10. Pinned Versions Parseable (§2)**: `Framework Versions (Pinned):` block still a bullet list with the heading colon intact, and every line present corresponds to the locked stack (stale lines from other stacks deleted).
+
 
 ---
 
 ## 10. Technical Sign-Off Sheet
-
-<<<<<<< HEAD
 > `validate-gate.sh M05` **requires** the three lines below to be filled with a real human name and
 > a real date (`Approved on: YYYY-MM-DD`). **The AI agent may never sign or self-approve**
 > (docs/AUTHORITY.md) — a human reviewer signs off. Solo/portfolio/internal delivery completes
@@ -634,14 +613,4 @@ placeholder rows before sign-off.*
 **Approved on**: [YYYY-MM-DD]
 **Validated by Solo Developer**: [Developer / Lead Architect name] (Date: [YYYY-MM-DD])
 **Approved by Client Single PIC** (client delivery only): [Client PIC name] (Date: [YYYY-MM-DD])
-=======
-| Validated by Lead Software Architect | Approved by Client PIC / Lead Stakeholder |
-| :--- | :--- |
-| **Name**: [architect name] | **Name**: [PIC name] |
-| **Role**: Lead Software Architect | **Role**: Client Single PIC / Project Lead |
-| **Date**: [YYYY-MM-DD] | **Date**: [YYYY-MM-DD] |
-| **Signature**: [name typed, or "Approved via email on YYYY-MM-DD"] | **Signature**: [name typed, or "Approved via email on YYYY-MM-DD"] |
 
-> The AI agent may prepare this sheet but may never sign it. On solo projects the human user
-> self-approves; on client projects the Client Single PIC approves.
->>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)

@@ -154,6 +154,10 @@
 | Intake file + 8 mandatory fields answered | `validate-gate.sh` every module | ✅ script |
 | Solo capacity / High-Water Mark | `validate-gate.sh` M01, M02 | ✅ script |
 | Per-task human approval | `validate-gate.sh` M06 | ✅ script |
+| M06 output artifacts present (`AI_REVIEW_LOG.md`, `DEVELOPMENT_PROGRESS_TRACKER.md`, `RUNBOOK_LOCAL.md`, `VERIFY_LOCAL.md`) | `validate-gate.sh` M06 + `TODO.md` tasks `M06-GATE-03/04` | 🧑 prose only (checklist + template); only RUNBOOK/VERIFY_LOCAL are hard-checked |
+| Locked stack + Module 04 Handoff present before coding | `verify-framework-version.sh` + `validate-gate.sh` M06/M05 | ✅ script |
+| Scaffold framework type matches FSD (no wrong-framework scaffold) | `verify-framework-version.sh` | ✅ script |
+| 9-file root harness complete (Medium+) | `validate-gate.sh` M06 | ✅ script |
 | Design Freeze signed | `validate-gate.sh` M04 | ✅ script |
 | 8 questionnaire answers recorded (real, not placeholders) + human `Stack-Locked-by` | `validate-gate.sh` M05 | ✅ script |
 | Security blueprint + Module 04 handoff recorded | `validate-gate.sh` M05 | ✅ script |

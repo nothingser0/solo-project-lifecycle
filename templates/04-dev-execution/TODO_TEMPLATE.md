@@ -59,6 +59,8 @@ For each task:
 
 **Module exit gate**: 100% tasks `[x]` (zero `[ ]`/`[~]`/`[!]`), build + typecheck exit 0, smoke tests pass, zero `@ts-ignore`, `validate-gate.sh M06` passed. Every `[x]` must trace to a **human approval** recorded in the task's `Evidence` — tasks the agent self-approved do not count.
 
+**M06 output artifacts** (Module 06 §2): source code on `staging` · `RUNBOOK_LOCAL.md` · `VERIFY_LOCAL.md` · `AI_REVIEW_LOG.md` (M06-GATE-03) · `DEVELOPMENT_PROGRESS_TRACKER.md` (M06-GATE-04).
+
 ---
 
 ## Sprint 0: Environment Setup & Specs Pre-Read (MANDATORY FIRST)
@@ -145,3 +147,17 @@ For each task:
   - **Action**: AI agents/harness MUST NOT run `git commit` or `git push`. Hand changes to the human developer with `RUNBOOK_LOCAL.md` instructions.
   - **Verify**: `git status` clean, ready for human review.
   - **Expected**: Verification report delivered; no agent commits.
+
+- [ ] **M06-GATE-03: AI Pre-Merge Review Log**
+  - **Files**: `AI_REVIEW_LOG.md` (from `templates/04-dev-execution/AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md`)
+  - **Action**: Run the 5-point inline pre-merge review for EVERY changed file and record it: (1) file traces to a TODO task; (2) no invented imports/APIs — each verified to exist; (3) no secrets, no `@ts-ignore`/`as any`/empty catch; (4) new logic has a test; (5) one logical change per commit. Log each finding with a severity prefix (`[BLOCKER]` / `[BUG]` / `[SECURITY]` / `[PERF]` / `[SUGGESTION]`).
+  - **Out of Scope**: No merge — the human merges to `staging` and tags Alpha.
+  - **Verify**: `test -s AI_REVIEW_LOG.md` (non-empty) and zero unresolved `[BLOCKER]`/`[SECURITY]` entries.
+  - **Expected**: `AI_REVIEW_LOG.md` exists with one reviewed entry per changed file; zero open blockers.
+
+- [ ] **M06-GATE-04: Progress Tracker Hand-Off**
+  - **Files**: `DEVELOPMENT_PROGRESS_TRACKER.md` (from `templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md`)
+  - **Action**: Copy the tracker into the project, fill the locked-stack metadata (stack, DB engine, ORM, storage, gateway, monitoring) and the component/integration status rows so the human has a single progress view for M07.
+  - **Out of Scope**: No new features; tracking only.
+  - **Verify**: Tracker metadata matches `AGENTS.md`/FSD lock; no `[Project Name]` placeholders left.
+  - **Expected**: Tracker reflects the completed sprint set; placeholders resolved.

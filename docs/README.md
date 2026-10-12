@@ -74,4 +74,4 @@ Modules live in `docs/modules/` — each is a compact runbook (≤~2k tokens) wi
 - **Scaffold**: `./scripts/scaffold/init-project.sh <dir> <scale>` (proportional per scale).
 - **Package version check**: `./scripts/verify/check-package-versions.sh <framework>` — see [`PACKAGE_VERSION_AUTO_CHECK.md`](./PACKAGE_VERSION_AUTO_CHECK.md).
 - **Integrity suite**: `./scripts/verify/verify-all.sh` (also runs in CI).
-- **Evals**: `evals/` — 8 behavioral scenarios (gate stopping, anti-hallucination, classifier, token budget).
+- **Evals**: `evals/` — 9 behavioral scenarios (gate stopping, anti-hallucination, classifier, secret sanitization, per-task human verification, token budget).

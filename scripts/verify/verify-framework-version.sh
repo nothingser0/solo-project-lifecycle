@@ -25,21 +25,91 @@ else
     exit 1
 fi
 
-# Extract FSD versions from "Framework Versions (Pinned):" section
+# Extract a pinned version from the "Framework Versions (Pinned)" section.
+#
+# The section is written in TWO accepted shapes and both must parse, because the
+# shipped templates use the first one:
+#   - **Framework**: Next.js ^15.0.3 (App Router)      <- FSD_TECHNICAL_TEMPLATE.md
+#   - **Language / Runtime**: Node.js 22 LTS
+#   - Next.js: 15.0.3                                  <- bare form
+# The old implementation only matched "^- <pkg>:", so a template-faithful FSD
+# (where the stack name lives in the VALUE, not the key) failed its own gate with
+# "FSD missing 'Next.js: X.Y.Z'" and M06 STEP 3 could never pass.
+# Strategy: take the section body, keep lines mentioning the package name, then
+# pull the first version-looking token from them.
 extract_fsd_version() {
     local package=$1
-    grep -A 20 "Framework Versions (Pinned):" "$TARGET_FILE" | grep -i "^- $package:" | sed 's/.*: //' | tr -d ' '
+    # Body = from the pinned-version heading to the next markdown heading.
+    awk '
+        /Framework Versions \(Pinned\)/ { inb = 1; next }
+        inb && /^#{2,6}[[:space:]]/ { exit }
+        inb { print }
+    ' "$TARGET_FILE" \
+    | grep -i -- "$package" \
+    | grep -oiE 'v?[0-9]+(\.[0-9]+)+' \
+    | head -1 \
+    | tr -d ' '
 }
 
-# Extract stack
+# Extract stack (tolerates the bare and the bold/questionnaire forms).
 STACK_LINE=$(grep -i "Stack Decision LOCKED:" "$TARGET_FILE" | head -1)
-STACK=$(echo "$STACK_LINE" | sed 's/.*LOCKED:\s*//' | xargs | cut -d' ' -f1)
+STACK=$(echo "$STACK_LINE" | sed 's/.*LOCKED:[[:space:]]*//' | sed 's/[*`]//g' | xargs | cut -d' ' -f1)
+STACK_LC=$(echo "$STACK" | tr '[:upper:]' '[:lower:]')
 
 echo "📋 FSD Stack: $STACK"
 echo ""
 
+# A missing tool used to kill the script silently: 'set -e' plus
+# `V=$(node -p ...)` when node is not installed exits 127 with NO output, so the
+# developer saw an empty run and no diagnosis. Name the missing prerequisite.
+require_cmd() {
+    local cmd=$1 why=$2
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo -e "${RED}❌ Required tool '$cmd' not found in PATH ($why).${NC}"
+        echo "   Install it, or run this gate on a machine that has it."
+        exit 1
+    fi
+}
+
+# Scaffold-type guard: FSD-declared framework vs what is actually in the repo.
+# An agent that scaffolded the wrong framework used to be caught only by prose in
+# the deep dive; the version comparison then compared against the wrong lockfile.
+scaffold_type_check() {
+    local want=$1 missing=$2 wrong=$3
+    if [ ! -f "$missing" ]; then
+        echo -e "${RED}❌ FSD declares $want, but $missing is missing — wrong or absent scaffold.${NC}"
+        echo "   Re-scaffold with the FSD-locked command before continuing."
+        exit 1
+    fi
+    if [ -n "$wrong" ]; then
+        echo -e "${RED}❌ FSD declares $want, but the repo looks like $wrong (conflicting manifest present).${NC}"
+        echo "   Re-scaffold with the FSD-locked command before continuing."
+        exit 1
+    fi
+    echo -e "${GREEN}✓${NC} scaffold manifest matches the locked stack ($want)"
+}
+
+# Tailwind major-version detection (v3 vs v4 changes config syntax: v4 is
+# CSS-first and has no tailwind.config.js). M06 STEP 3 requires this signal, but
+# it was never implemented — harness files could embed v3 syntax on a v4 project.
+tailwind_check() {
+    [ -f package.json ] || return 0
+    local tw
+    tw=$(grep -oE '"tailwindcss"[[:space:]]*:[[:space:]]*"[^"]+"' package.json 2>/dev/null \
+        | grep -oE '[0-9]+' | head -1) || true
+    [ -n "${tw:-}" ] || return 0
+    if [ "$tw" -ge 4 ] 2>/dev/null; then
+        echo -e "${YELLOW}ℹ️  Tailwind v4 detected — CSS-first config (no tailwind.config.js).${NC}"
+        echo "   AGENTS.md / CONVENTIONS.md must reference v4 syntax."
+    else
+        echo -e "${GREEN}✓${NC} Tailwind v$tw detected (JS config expected)"
+    fi
+}
+
 case "$STACK" in
     Next.js|Nextjs|next.js)
+        scaffold_type_check "Next.js" "package.json" "$([ -f composer.json ] && echo 'Laravel/PHP' || ([ -f manage.py ] && echo 'Django/Python' || true))"
+        tailwind_check
         FSD_NEXT=$(extract_fsd_version "Next.js" || extract_fsd_version "next")
         FSD_REACT=$(extract_fsd_version "React" || extract_fsd_version "react")
         
@@ -48,6 +118,7 @@ case "$STACK" in
             exit 1
         fi
         
+        require_cmd node "needed to read package-lock.json"
         # Get resolved from lockfile
         if [[ -f "package-lock.json" ]]; then
             RESOLVED_NEXT=$(node -p "require('./package-lock.json').packages['node_modules/next']?.version || ''" 2>/dev/null)
@@ -99,6 +170,7 @@ case "$STACK" in
         ;;
         
     Laravel)
+        scaffold_type_check "Laravel" "composer.json" "$([ -f manage.py ] && echo 'Django/Python' || true)"
         FSD_LARAVEL=$(extract_fsd_version "Laravel" || extract_fsd_version "laravel/framework")
         
         if [[ -z "$FSD_LARAVEL" ]]; then
@@ -106,6 +178,7 @@ case "$STACK" in
             exit 1
         fi
         
+        require_cmd php "needed to read composer.lock"
         if [[ ! -f "composer.lock" ]]; then
             echo -e "${RED}❌ No composer.lock found${NC}"
             exit 1
@@ -134,6 +207,7 @@ case "$STACK" in
         ;;
         
     Django)
+        scaffold_type_check "Django" "manage.py" "$([ -f composer.json ] && echo 'Laravel/PHP' || true)"
         FSD_DJANGO=$(extract_fsd_version "Django")
         
         if [[ -z "$FSD_DJANGO" ]]; then
@@ -169,6 +243,7 @@ case "$STACK" in
         ;;
         
     Go)
+        scaffold_type_check "Go" "go.mod" "$([ -f package.json ] && echo 'a JS framework' || true)"
         FSD_GO=$(extract_fsd_version "Go")
         
         if [[ -z "$FSD_GO" ]]; then

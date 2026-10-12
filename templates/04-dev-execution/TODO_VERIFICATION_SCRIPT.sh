@@ -74,9 +74,12 @@ while IFS= read -r line; do
         PHASE_COMPLETE=0
     fi
     
-    # Check for checklist items
-    # Match: - [ ] or - [x] or - [X]
-    if echo "$line" | grep -qE '^\s*-\s+\[([ xX])\]'; then
+    # Check for checklist items.
+    # The task states are the four declared in the task template: [ ] pending,
+    # [~] in progress, [!] blocked, [x] done. The old pattern only recognised
+    # ' ' and 'x', so a TODO full of [~]/[!] was not counted at all — its
+    # 'completion %' was computed over a silently smaller denominator.
+    if echo "$line" | grep -qE '^\s*-\s+\[([ xX~!])\]'; then
         TOTAL_ITEMS=$((TOTAL_ITEMS + 1))
         PHASE_TOTAL=$((PHASE_TOTAL + 1))
         
@@ -162,9 +165,17 @@ if [[ $INCOMPLETE_ITEMS -gt 0 ]]; then
             CURRENT_PHASE="$phase"
         fi
         
-        # Display incomplete items
-        if echo "$line" | grep -qE '^\s*-\s+\[ \]'; then
-            task=$(echo "$line" | sed -E 's/^\s*-\s+\[ \]\s*//')
+        # Display incomplete items — every unfinished state, tagged so a blocked
+        # task is not mistaken for one that simply has not started.
+        if echo "$line" | grep -qE '^\s*-\s+\[[ ~!]\]'; then
+            state=$(echo "$line" | sed -E 's/^\s*-\s+\[([ ~!])\].*/\1/')
+            case "$state" in
+                '~') marker="(in progress)" ;;
+                '!') marker="(BLOCKED)" ;;
+                *)   marker="" ;;
+            esac
+            task=$(echo "$line" | sed -E 's/^\s*-\s+\[[ ~!]\]\s*//')
+            [ -n "$marker" ] && task="$task $marker"
             if [[ -n "$CURRENT_PHASE" ]]; then
                 echo -e "  ${RED}✗${NC} ${YELLOW}$CURRENT_PHASE${NC}"
                 echo -e "    $task"
@@ -186,7 +197,9 @@ echo ""
 # Gate thresholds
 GATE_M04=20  # Design complete
 GATE_M05=40  # Architecture complete
-GATE_M06=70  # Development complete
+# M06 requires 100%: the exit gate is "zero [ ] / [~] / [!] remaining"
+# (TODO_TEMPLATE.md + validate-gate.sh M06). A 70% bar contradicted both.
+GATE_M06=100 # Development complete (zero pending/blocked tasks)
 GATE_M09=90  # UAT complete
 GATE_M10=95  # Production deploy
 GATE_M11=100 # Handover complete

@@ -32,7 +32,7 @@ Verification in this lifecycle framework operates across three distinct tiers:
 | **Gate 2** | M02 (Scope Lock) | P0/P1 boundaries locked, RBAC matrix complete | `SCOPE_STATEMENT.md` | Stakeholder review | `PENDING` |
 | **Gate 3** | M03 (Commercial) | Signed SOW/contract, down payment received | Bank transfer confirmation, signed SOW | Financial audit | `WAIVED` (if solo SaaS) |
 | **Gate 4** | M04 (Design & IA) | Multi-role Sitemap complete, WCAG 2.2 AA contrast verified | `SITEMAP.md`, `DESIGN.md` | Contrast checker, screen inventory | `PENDING` |
-| **Gate 5** | M05 (Specs) | Pinned package versions, database schema, API contracts | `PRD.md`, `FSD.md` | `./scripts/gates/validate-gate.sh M05` (versions via `./scripts/verify/check-package-versions.sh`, re-checked at M06 by `./scripts/verify/verify-framework-version.sh`) | `PENDING` |
+| **Gate 5** | M05 (Specs) | Pinned package versions, database schema, API contracts | `PRD.md`, `FSD.md` | `./scripts/verify/check-package-versions.sh` | `PENDING` |
 | **Gate 6** | M06 (Harness & Code) | 100% TODO items complete, type-check 0 errors | `VERIFY_LOCAL.md`, test logs | `pnpm run test:smoke` | `PENDING` |
 | **Gate 7** | M07 (SIT & Security) | 0 critical vulnerabilities, end-to-end integration PASS | `SIT_WORKBOOK.md`, audit log | Automated security scan | `PENDING` |
 | **Gate 8** | M09 (Client UAT) | Formal acceptance by client or target beta users | Signed UAT signoff, zero P0 bugs | Demonstration & testing | `PENDING` |

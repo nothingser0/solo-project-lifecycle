@@ -114,6 +114,17 @@ gate_M05() {
         else
             echo "  ✅ Single-tenant declared (Intake-Branch-Hierarchy: ${intake_branch:-no}) — RLS not required"
         fi
+
+        # 6. Module 04 Handoff Strategy (BLOCKER). M06 STEP 0 parses this section to
+        #    derive the prototype compatibility level; without it the agent reaches
+        #    coding with no agreed way to turn the frozen prototype into components.
+        if grep -qiE "Module 04 Handoff|Handoff Strategy|Handoff-Compatibility|Compatibility Level" "$fsd"; then
+            echo "  ✅ FSD.md records the Module 04 Handoff Strategy (prototype conversion plan)"
+        else
+            echo "  ❌ FSD.md missing the 'Module 04 Handoff Strategy' section (Level 1-4 + conversion plan)!"
+            echo "     M06 STEP 0 reads it to know how the frozen prototype becomes code."
+            GATE_FAILED=1
+        fi
     fi
 
     # Architecture Decision Record is MANDATORY for Medium+ (justify architectural style choices)

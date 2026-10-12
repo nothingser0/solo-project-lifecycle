@@ -87,7 +87,7 @@
 | `SCOPE_STATEMENT.md` (Features) | `PRD.md` & `FSD.md` | Exact parity in feature numbering (F-01..F-NN) and acceptance criteria | [OK / Drift Detected] | [YYYY-MM-DD] |
 | `FSD.md` (Data Models) | Database Schema / Migrations | Table names, relations, enum variants, and indexes match FSD exactly | [OK / Drift Detected] | [YYYY-MM-DD] |
 | `PRD.md` & `FSD.md` | `docs/harness-root/TODO.md` | 100% of P0/P1 features are mapped into sprint tasks in TODO.md | [OK / Drift Detected] | [YYYY-MM-DD] |
-| `FSD.md` (Pinned Versions) | `package.json` / Lockfile | Pinned packages match `./scripts/verify/verify-framework-version.sh` (M06 STEP 3) and the registry output of `./scripts/verify/check-package-versions.sh` | [OK / Drift Detected] | [YYYY-MM-DD] |
+| `FSD.md` (Pinned Versions) | `package.json` / Lockfile | Pinned packages match auto-check script output (`./scripts/verify/check-package-versions.sh`) | [OK / Drift Detected] | [YYYY-MM-DD] |
 
 ---
 
