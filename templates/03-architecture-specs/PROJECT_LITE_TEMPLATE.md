@@ -201,8 +201,35 @@ CREATE TABLE core_entities (
   - `GET /api/v1/entities` (Fetch authenticated data list)
   - `POST /api/v1/entities` (Create new Zod-validated data)
 
+<<<<<<< HEAD
 > Medium/Large use `docs/specs/FSD.md` instead: a full endpoint matrix (**≥10 endpoints**, gate-enforced)
 > with request/response schemas and idempotency headers for financial POSTs.
+=======
+### Security Blueprint (Small — proportional, M05 STEP 5)
+
+> Small projects do not carry the full FSD §7 table. These five lines are the floor: every row is
+> answered, never left blank. `N/A — <reason>` is a valid answer; empty is not.
+
+- **Password hashing**: [Argon2id / bcrypt cost ≥12]
+- **Transport**: TLS (managed platform default) + `Secure`/`HttpOnly`/`SameSite` cookies
+- **Secrets**: `.env.local` locally, never committed; platform secret store in production
+- **Input handling**: parameterized queries only; no string-built SQL
+- **Personal data**: [none stored / what is stored + deletion path — UU PDP applies if any]
+
+### Module 04 Handoff Strategy (M05 STEP 5)
+
+- **Prototype workflow used in M04**: [A (Markdown-only) / B / C / D]
+- **Screen → route → component map** (covers every screen in `docs/specs/SITEMAP.md`):
+
+  | Screen ID | Route | Components |
+  | :--- | :--- | :--- |
+  | SCR-001 | `/` | [e.g., `Button`, `Card`] |
+  | SCR-002 | `/login` | [e.g., `FormField`, `Input`] |
+  | SCR-003 | `/[resource]` | [e.g., `DataTable`, `EmptyState`, `Toast`] |
+
+- **Tokens**: `DESIGN.md` palette/typography carried into [Tailwind theme / CSS variables]
+- **Compatibility level for M06 STEP 0**: [1–4 + one-line reason]
+>>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
 
 ---
 

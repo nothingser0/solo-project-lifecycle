@@ -226,8 +226,149 @@ switch ($stack) {
         Write-Host "[OK] go $resolved matches FSD" -ForegroundColor Green
     }
     
+    { $_ -in "FastAPI", "fastapi", "Python" } {
+        $fsdFastapi = Extract-FsdVersion "FastAPI"
+        
+        if (-not $fsdFastapi) {
+            Write-Host "[ERROR] FSD missing 'FastAPI: X.Y.Z'" -ForegroundColor Red
+            exit 1
+        }
+        
+        if (-not (Test-Path "requirements.txt")) {
+            Write-Host "[ERROR] No requirements.txt found" -ForegroundColor Red
+            exit 1
+        }
+        
+        $resolved = (Get-Content "requirements.txt" | Select-String "^(?i)fastapi==" | Select-Object -First 1)
+        if ($resolved) { $resolved = ($resolved.ToString() -split "==")[1].Trim() }
+        
+        if (-not $resolved) {
+            Write-Host "[ERROR] fastapi not pinned in requirements.txt (expected 'fastapi==X.Y.Z')" -ForegroundColor Red
+            exit 1
+        }
+        
+        $fsdMM = ($fsdFastapi -split '\.')[0..1] -join '.'
+        $resolvedMM = ($resolved -split '\.')[0..1] -join '.'
+        if ($resolvedMM -ne $fsdMM) {
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
+            Write-Host "FSD:      fastapi==$fsdFastapi"
+            Write-Host "Resolved: fastapi==$resolved"
+            Write-Host "Fix: pip install fastapi==$fsdFastapi" -ForegroundColor Gray
+            exit 1
+        }
+
+        Write-Host "[OK] fastapi==$resolved matches FSD" -ForegroundColor Green
+    }
+    
+    { $_ -in "SvelteKit", "Svelte", "sveltekit" } {
+        $fsdKit = Extract-FsdVersion "@sveltejs/kit"
+        if (-not $fsdKit) { $fsdKit = Extract-FsdVersion "SvelteKit" }
+        
+        if (-not $fsdKit) {
+            Write-Host "[ERROR] FSD missing '@sveltejs/kit: X.Y.Z'" -ForegroundColor Red
+            exit 1
+        }
+        
+        if (-not (Test-Path "package-lock.json")) {
+            Write-Host "[ERROR] No package-lock.json found" -ForegroundColor Red
+            exit 1
+        }
+        
+        $lockData = Get-Content "package-lock.json" -Raw | ConvertFrom-Json
+        $resolved = $lockData.packages.'node_modules/@sveltejs/kit'.version
+        
+        if (-not $resolved) {
+            Write-Host "[ERROR] @sveltejs/kit not resolved in package-lock.json" -ForegroundColor Red
+            exit 1
+        }
+        
+        $fsdMM = ($fsdKit -split '\.')[0..1] -join '.'
+        $resolvedMM = ($resolved -split '\.')[0..1] -join '.'
+        if ($resolvedMM -ne $fsdMM) {
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
+            Write-Host "FSD:      @sveltejs/kit@$fsdKit"
+            Write-Host "Resolved: @sveltejs/kit@$resolved"
+            Write-Host "Fix: npm install @sveltejs/kit@$fsdKit" -ForegroundColor Gray
+            exit 1
+        }
+
+        Write-Host "[OK] @sveltejs/kit@$resolved matches FSD" -ForegroundColor Green
+    }
+    
+    { $_ -in "Nuxt", "nuxt" } {
+        $fsdNuxt = Extract-FsdVersion "Nuxt"
+        
+        if (-not $fsdNuxt) {
+            Write-Host "[ERROR] FSD missing 'Nuxt: X.Y.Z'" -ForegroundColor Red
+            exit 1
+        }
+        
+        if (-not (Test-Path "package-lock.json")) {
+            Write-Host "[ERROR] No package-lock.json found" -ForegroundColor Red
+            exit 1
+        }
+        
+        $lockData = Get-Content "package-lock.json" -Raw | ConvertFrom-Json
+        $resolved = $lockData.packages.'node_modules/nuxt'.version
+        
+        if (-not $resolved) {
+            Write-Host "[ERROR] nuxt not resolved in package-lock.json" -ForegroundColor Red
+            exit 1
+        }
+        
+        $fsdMM = ($fsdNuxt -split '\.')[0..1] -join '.'
+        $resolvedMM = ($resolved -split '\.')[0..1] -join '.'
+        if ($resolvedMM -ne $fsdMM) {
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
+            Write-Host "FSD:      nuxt@$fsdNuxt"
+            Write-Host "Resolved: nuxt@$resolved"
+            Write-Host "Fix: npm install nuxt@$fsdNuxt" -ForegroundColor Gray
+            exit 1
+        }
+
+        Write-Host "[OK] nuxt@$resolved matches FSD" -ForegroundColor Green
+    }
+    
+    { $_ -in "Rails", "rails", "Ruby" } {
+        $fsdRails = Extract-FsdVersion "Rails"
+        if (-not $fsdRails) { $fsdRails = Extract-FsdVersion "rails" }
+        
+        if (-not $fsdRails) {
+            Write-Host "[ERROR] FSD missing 'Rails: X.Y'" -ForegroundColor Red
+            exit 1
+        }
+        
+        if (-not (Test-Path "Gemfile.lock")) {
+            Write-Host "[ERROR] No Gemfile.lock found" -ForegroundColor Red
+            exit 1
+        }
+        
+        $railsLine = Get-Content "Gemfile.lock" | Select-String "^    rails \(" | Select-Object -First 1
+        if ($railsLine) { $resolved = ($railsLine.ToString() -replace '^    rails \(', '') -replace '\)', '' }
+        
+        if (-not $resolved) {
+            Write-Host "[ERROR] rails not resolved in Gemfile.lock" -ForegroundColor Red
+            exit 1
+        }
+        
+        $fsdMM = ($fsdRails -replace '^v', '' -split '\.')[0..1] -join '.'
+        $resolvedMM = ($resolved -split '\.')[0..1] -join '.'
+        if ($resolvedMM -ne $fsdMM) {
+            Write-Host "[ERROR] VERSION MISMATCH" -ForegroundColor Red
+            Write-Host "FSD:      rails $fsdRails"
+            Write-Host "Resolved: rails $resolved"
+            exit 1
+        }
+
+        Write-Host "[OK] rails $resolved matches FSD" -ForegroundColor Green
+    }
+    
     default {
-        Write-Host "[ERROR] Unknown stack: $stack" -ForegroundColor Red
+        Write-Host "[ERROR] No lockfile comparator for stack: $stack" -ForegroundColor Red
+        Write-Host "        Comparators exist for: Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails." -ForegroundColor Gray
+        Write-Host "        The pin is UNVERIFIED - do not report M06 STEP 3 as passed." -ForegroundColor Gray
+        Write-Host "        Action: verify by hand against the lockfile, record the result in the FSD" -ForegroundColor Gray
+        Write-Host "        'Framework Versions (Pinned):' block, and add the comparator here (bash + ps1)." -ForegroundColor Gray
         exit 1
     }
 }

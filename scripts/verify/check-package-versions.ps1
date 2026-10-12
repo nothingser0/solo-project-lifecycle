@@ -82,6 +82,7 @@ $frameworkMap = @{
     "php"        = "laravel"
     "django"     = "django"
     "python"     = "django"
+    "fastapi"    = "fastapi"
     "go"         = "go"
     "golang"     = "go"
     "rails"      = "rails"
@@ -245,6 +246,43 @@ switch ($target) {
         Write-Host "API Framework: Django REST Framework ^$drfVer" -ForegroundColor White
         Write-Host "Database Driver: psycopg ^$psycopgVer" -ForegroundColor White
         Write-Host "Architecture: App-per-domain / Django Service Layer" -ForegroundColor White
+    }
+
+    "fastapi" {
+        Write-Host "Framework: FastAPI Ecosystem (PyPI JSON API)" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "Querying PyPI API for fastapi..." -NoNewline
+
+        $fastapiVer = Query-RegistryJson "https://pypi.org/pypi/fastapi/json" { param($d) $d.info.version }
+        $pyReq = Query-RegistryJson "https://pypi.org/pypi/fastapi/json" { param($d) $d.info.requires_python }
+        $pydanticVer = Query-RegistryJson "https://pypi.org/pypi/pydantic/json" { param($d) $d.info.version }
+        $sqlalchemyVer = Query-RegistryJson "https://pypi.org/pypi/sqlalchemy/json" { param($d) $d.info.version }
+        $alembicVer = Query-RegistryJson "https://pypi.org/pypi/alembic/json" { param($d) $d.info.version }
+        $psycopgVer = Query-RegistryJson "https://pypi.org/pypi/psycopg/json" { param($d) $d.info.version }
+
+        Write-Host " v$fastapiVer" -ForegroundColor Green
+        Write-Host "FastAPI:                 v$fastapiVer (Requires Python: $pyReq)" -ForegroundColor White
+        Write-Host "Pydantic:                v$pydanticVer" -ForegroundColor White
+        Write-Host "SQLAlchemy:              v$sqlalchemyVer" -ForegroundColor White
+        Write-Host "Alembic:                 v$alembicVer" -ForegroundColor White
+        Write-Host "Psycopg (PostgreSQL):    v$psycopgVer" -ForegroundColor White
+
+        Write-Host ""
+        Write-Host "=== Compatibility Analysis ===" -ForegroundColor Cyan
+        Write-Host "Query resolved directly from PyPI API (no local python/pip CLI required)" -ForegroundColor Green
+        Write-Host "Python Requirement: $pyReq" -ForegroundColor Green
+        Write-Host "FastAPI minor releases occasionally tighten Pydantic v2 behaviour - pin both." -ForegroundColor Yellow
+
+        Write-Host ""
+        Write-Host "=== Recommended Pinned Versions (for FSD.md) ===" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "Framework: FastAPI ^$fastapiVer" -ForegroundColor White
+        Write-Host "Python Runtime: $pyReq" -ForegroundColor White
+        Write-Host "Validation: pydantic ^$pydanticVer" -ForegroundColor White
+        Write-Host "ORM: SQLAlchemy ^$sqlalchemyVer" -ForegroundColor White
+        Write-Host "Migrations: alembic ^$alembicVer" -ForegroundColor White
+        Write-Host "Database Driver: psycopg ^$psycopgVer" -ForegroundColor White
+        Write-Host "Architecture: Router-per-domain / dependency-injected service layer" -ForegroundColor White
     }
 
     "go" {
@@ -447,7 +485,7 @@ switch ($target) {
 
     default {
         Write-Host "Error: Unsupported framework '$Framework'." -ForegroundColor Red
-        Write-Host "Supported frameworks: nextjs, laravel, django, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt" -ForegroundColor White
+        Write-Host "Supported frameworks: nextjs, laravel, django, fastapi, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt" -ForegroundColor White
         exit 1
     }
 }

@@ -259,12 +259,13 @@ Next Steps:
 
 ## Gate Script Bodies (moved from runbook)
 
-> ⚠️ **The executable gate is `scripts/gates/modules/M05.sh` + the M05 helpers in
-> `scripts/gates/lib/checks.sh`** (`check_stack_questionnaire`, `check_security_blueprint`,
-> `check_handoff_strategy`, `check_tech_signoff`). The PowerShell/Python below illustrates the
-> *same contract* in readable form for humans; where they disagree, the shell script wins.
-> Behaviour is locked by `scripts/verify/test-gate-regressions.sh` (behavioural cases) and
-> `scripts/verify/golden-gate-output.txt` (byte-for-byte output parity).
+
+⚠️ **The executable gate is `scripts/gates/modules/M05.sh` + the M05 helpers in
+scripts/gates/lib/checks.sh`** (`check_stack_questionnaire`, `check_security_blueprint`,
+`check_handoff_strategy`, `check_tech_signoff`). The PowerShell/Python below illustrates the
+*same contract* in readable form for humans; where they disagree, the shell script wins.
+Behaviour is locked by `scripts/verify/test-gate-regressions.sh` (behavioural cases) and
+`scripts/verify/golden-gate-output.txt` (byte-for-byte output parity).
 
 ### Gate Check — Module 05 Phase 0 (PowerShell)
 
@@ -275,8 +276,7 @@ counts Q1–Q8 individually and rejects placeholder answers.*
 # GATE CHECK - Module 05 Phase 0
 # Verify questionnaire answered before FSD generation
 
-$questionnaireComplete = $false
-$stackLocked = $false
+Ordered by where it appears in `scripts/gates/modules/M05.sh`:
 
 # Agent must track user answers in memory or temp file
 # Check if all 8 questions answered (placeholders like "[answer]" do NOT count)
@@ -286,15 +286,13 @@ if ($answeredQuestions -lt 8) {
     exit 1
 }
 
-# Check if stack selected
-if (-not $selectedStack) {
-    Write-Error "❌ PHASE 0 GATE FAILED: User has not selected a stack from options."
-    Write-Error "Present 2-3 options → user MUST select → then proceed to FSD."
-    exit 1
-}
+**Not checked by the gate** (still M05 exit criteria, enforced by the human at sign-off): stack
+justification with rejected alternatives, AES-256-GCM/Argon2id/OWASP coverage, the Module 04
+handoff map, `≥10` endpoint depth, and version-registry freshness. These live in the PRD/FSD
+templates' exit checklists (§9 FSD, §9 PRD) and in §7/§8 of the FSD — the gate confirms the
+artifacts exist and hold their machine-checkable markers, not that the engineering is good.
 
-Write-Host "✅ PHASE 0 PASSED: Questionnaire complete, Stack locked ($selectedStack)"
-```
+### Downstream contract: M06 reads the FSD pinned block
 
 ### Gate Check — Module 05 File & Content Verification (PowerShell)
 
@@ -303,111 +301,9 @@ blueprint controls, the `Module 04 Handoff Strategy` section with `Compatibility
 and a human technical sign-off with no residual blank/placeholder fields. The size threshold in the
 live script is a stub-check (≥40B); `MinSize` here shows the runbook's *target* sizes.*
 
-```powershell
-# GATE CHECK - Module 05 File Verification
-$state = if (Test-Path "docs/pm/PROJECT_STATE.md") { Get-Content "docs/pm/PROJECT_STATE.md" -Raw } else { "" }
-$isSmall = ($state -match "(?i)Scale:\s*small") -or ((Test-Path "PROJECT_LITE.md") -and -not (Test-Path "docs/pm/PROJECT_STATE.md"))
-
-if ($isSmall) {
-    # Fast-Track: architecture pinned inside PROJECT_LITE.md Section 5
-    $requiredFiles = @(
-        @{Path="PROJECT_LITE.md"; MinSize=1000}
-    )
-} else {
-    $requiredFiles = @(
-        @{Path="docs/specs/PRD.md"; MinSize=2000},
-        @{Path="docs/specs/FSD.md"; MinSize=2000}
-    )
-}
-
-$allPassed = $true
-
-foreach ($file in $requiredFiles) {
-    if (-not (Test-Path $file.Path)) {
-        Write-Error "❌ GATE FAILED: File $($file.Path) not found."
-        $allPassed = $false
-    } else {
-        $size = (Get-Item $file.Path).Length
-        if ($size -lt $file.MinSize) {
-            Write-Error "❌ GATE FAILED: File $($file.Path) is too small ($size bytes < $($file.MinSize) minimum)."
-            $allPassed = $false
-        } else {
-            Write-Host "✅ $($file.Path) verified ($size bytes)"
-        }
-    }
-}
-
-if (-not $allPassed) {
-    Write-Error "`n🛑 MODULE 05 GATE FAILED: Missing or incomplete files."
-    exit 1
-}
-```
-
-### Content Validation (Python pseudo-code)
-
-*Mirrors the live checks. Section names are the ones the real gate matches, and every check below
-applies to BOTH paths (the stack lock, security blueprint, handoff and sign-off are not Small-only).*
-
-```python
-# Pseudo-code for agent verification
-def verify_fsd_content():
-    # Fast-Track Small Scale: no separate FSD.md; validate PROJECT_LITE.md Section 5 instead
-    if is_small_scale():
-        lite = read_file("PROJECT_LITE.md")
-        if not (has_db_schema(lite) and has_api_routes(lite)):
-            raise GateError("PROJECT_LITE.md Section 5 missing database schema or API endpoints")
-        # then fall through to the SHARED checks below — they are not Medium-only
-
-    doc = read_file("PROJECT_LITE.md") if is_small_scale() else read_file("docs/specs/FSD.md")
-
-    if not is_small_scale():
-        # Section headings the real gate matches (from FSD_TECHNICAL_TEMPLATE.md)
-        check_sections("docs/specs/FSD.md",
-                       "Document Metadata", "Component Architecture", "Relational Database Schema")
-
-        # API endpoint count — STEP 4 and the exit criteria both say >= 10
-        endpoint_count = count_api_rows("docs/specs/FSD.md")
-        if endpoint_count < 10:
-            raise GateError(f"FSD.md only contains {endpoint_count} endpoints (minimum 10)")
-
-    # Verify tech stack locked (BOTH paths)
-    if "Stack Decision LOCKED:" not in doc:
-        raise GateError(f"{doc} missing locked stack decision documentation")
-
-    # The 8 answers must be REAL, not the template's "- Q1 ... [answer]" placeholders,
-    # and Stack-Locked-by must name a human (the agent may not choose the stack).
-    for q in range(1, 9):
-        value = answer_of(doc, q)
-        if is_blank(value) or is_placeholder(value):
-            raise GateError(f"{doc} Q{q} is missing or still a placeholder")
-    if not names_a_human(locker_of(doc)):
-        raise GateError(f"{doc} 'Stack-Locked-by:' names no human")
-
-    # Security blueprint (STEP 5): 4 controls Small, 5 Medium+
-    need = 4 if is_small_scale() else 5
-    if count_security_controls(doc) < need:
-        raise GateError(f"{doc} security blueprint incomplete (<{need} controls)")
-
-    # Module 04 handoff (STEP 5) — M06 STEP 0 parses these exact strings
-    if ("Module 04 Handoff Strategy" not in doc) and ("Prototype Conversion Strategy" not in doc):
-        raise GateError(f"{doc} missing Module 04 handoff strategy")
-    if not re.search(r"Compatibility[- ]Level\**:?\s*\**Level\s*[1-4]", doc):
-        raise GateError(f"{doc} missing 'Compatibility Level: Level 1-4'")
-
-    # Technical sign-off (STEP 7) — HUMAN-ONLY; the template ships blank rows
-    if has_blank_signoff_fields(doc):
-        raise GateError(f"{doc} still holds blank/placeholder sign-off fields")
-    if not names_a_human(approver_of(doc)) or not has_real_date(doc):
-        raise GateError(f"{doc} missing a named approver and a real approval date")
-
-    return True
-```
-
-### Module 04 Handoff Compatibility Levels (definitions)
-
-The exact level definitions live with the template that ships them to projects:
-[`templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md` §2.1](../../../templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md).
-Summary: **Level 1 Direct** (prototype *is* the stack) · **Level 2 Re-skin** (same framework, new
-styling system) · **Level 3 Translate** (different framework, same component model) · **Level 4
-Hybrid/Static** (markup-only prototype or bridge like Blade + Inertia). M06 STEP 0 reads the level
-to decide whether generated prototype code can be copied in or must be rebuilt.
+1. The heading must keep its trailing colon and stay a bullet block (the parser splits on the
+   literal `Framework Versions (Pinned):` and then on a blank line).
+2. Delete lines for stacks you did not lock. The template ships `Next.js/Laravel/Django/Go` example
+   lines on purpose, because a leftover one is read as a declared pin and fails against the
+   lockfile of a different stack.
+The parser exists in both `.sh` and `.ps1`; keep them in sync when adding a stack.

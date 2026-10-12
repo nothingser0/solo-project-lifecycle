@@ -200,8 +200,153 @@ case "$STACK" in
         echo "✅ go $RESOLVED matches FSD"
         ;;
         
+    FastAPI|fastapi|Python)
+        FSD_FASTAPI=$(extract_fsd_version "FastAPI")
+        
+        if [[ -z "$FSD_FASTAPI" ]]; then
+            echo -e "${RED}❌ FSD missing 'FastAPI: X.Y.Z'${NC}"
+            exit 1
+        fi
+        
+        if [[ ! -f "requirements.txt" ]]; then
+            echo -e "${RED}❌ No requirements.txt found${NC}"
+            exit 1
+        fi
+        
+        RESOLVED=$(grep -i "^fastapi==" requirements.txt | cut -d= -f3)
+        
+        if [[ -z "$RESOLVED" ]]; then
+            echo -e "${RED}❌ fastapi not pinned in requirements.txt (expected 'fastapi==X.Y.Z')${NC}"
+            exit 1
+        fi
+        
+        FSD_MM=$(echo "$FSD_FASTAPI" | cut -d. -f1-2)
+        RESOLVED_MM=$(echo "$RESOLVED" | cut -d. -f1-2)
+        
+        if [[ "$RESOLVED_MM" != "$FSD_MM" ]]; then
+            echo -e "${RED}❌ VERSION MISMATCH${NC}"
+            echo "FSD:      fastapi==$FSD_FASTAPI"
+            echo "Resolved: fastapi==$RESOLVED"
+            echo ""
+            echo "Fix: pip install fastapi==$FSD_FASTAPI"
+            exit 1
+        fi
+        
+        echo "✅ fastapi==$RESOLVED matches FSD"
+        ;;
+        
+    SvelteKit|Svelte|sveltekit)
+        FSD_KIT=$(extract_fsd_version "@sveltejs/kit" || extract_fsd_version "SvelteKit")
+        
+        if [[ -z "$FSD_KIT" ]]; then
+            echo -e "${RED}❌ FSD missing '@sveltejs/kit: X.Y.Z'${NC}"
+            exit 1
+        fi
+        
+        if [[ ! -f "package-lock.json" ]]; then
+            echo -e "${RED}❌ No package-lock.json found${NC}"
+            exit 1
+        fi
+        
+        RESOLVED=$(node -p "require('./package-lock.json').packages['node_modules/@sveltejs/kit']?.version || ''" 2>/dev/null)
+        
+        if [[ -z "$RESOLVED" ]]; then
+            echo -e "${RED}❌ @sveltejs/kit not resolved in package-lock.json${NC}"
+            exit 1
+        fi
+        
+        FSD_MM=$(echo "$FSD_KIT" | cut -d. -f1-2)
+        RESOLVED_MM=$(echo "$RESOLVED" | cut -d. -f1-2)
+        
+        if [[ "$RESOLVED_MM" != "$FSD_MM" ]]; then
+            echo -e "${RED}❌ VERSION MISMATCH${NC}"
+            echo "FSD:      @sveltejs/kit@$FSD_KIT"
+            echo "Resolved: @sveltejs/kit@$RESOLVED"
+            echo ""
+            echo "Fix: npm install @sveltejs/kit@$FSD_KIT"
+            exit 1
+        fi
+        
+        echo "✅ @sveltejs/kit@$RESOLVED matches FSD"
+        ;;
+        
+    Nuxt|nuxt)
+        FSD_NUXT=$(extract_fsd_version "Nuxt")
+        
+        if [[ -z "$FSD_NUXT" ]]; then
+            echo -e "${RED}❌ FSD missing 'Nuxt: X.Y.Z'${NC}"
+            exit 1
+        fi
+        
+        if [[ ! -f "package-lock.json" ]]; then
+            echo -e "${RED}❌ No package-lock.json found${NC}"
+            exit 1
+        fi
+        
+        RESOLVED=$(node -p "require('./package-lock.json').packages['node_modules/nuxt']?.version || ''" 2>/dev/null)
+        
+        if [[ -z "$RESOLVED" ]]; then
+            echo -e "${RED}❌ nuxt not resolved in package-lock.json${NC}"
+            exit 1
+        fi
+        
+        FSD_MM=$(echo "$FSD_NUXT" | cut -d. -f1-2)
+        RESOLVED_MM=$(echo "$RESOLVED" | cut -d. -f1-2)
+        
+        if [[ "$RESOLVED_MM" != "$FSD_MM" ]]; then
+            echo -e "${RED}❌ VERSION MISMATCH${NC}"
+            echo "FSD:      nuxt@$FSD_NUXT"
+            echo "Resolved: nuxt@$RESOLVED"
+            echo ""
+            echo "Fix: npm install nuxt@$FSD_NUXT"
+            exit 1
+        fi
+        
+        echo "✅ nuxt@$RESOLVED matches FSD"
+        ;;
+        
+    Rails|rails|Ruby)
+        FSD_RAILS=$(extract_fsd_version "Rails" || extract_fsd_version "rails")
+        
+        if [[ -z "$FSD_RAILS" ]]; then
+            echo -e "${RED}❌ FSD missing 'Rails: X.Y'${NC}"
+            exit 1
+        fi
+        
+        if [[ ! -f "Gemfile.lock" ]]; then
+            echo -e "${RED}❌ No Gemfile.lock found${NC}"
+            exit 1
+        fi
+        
+        RESOLVED=$(awk '/^    rails \(/ { gsub(/[()]/, "", $2); print $2; exit }' Gemfile.lock)
+        
+        if [[ -z "$RESOLVED" ]]; then
+            echo -e "${RED}❌ rails not resolved in Gemfile.lock${NC}"
+            exit 1
+        fi
+        
+        FSD_MM=$(echo "$FSD_RAILS" | sed 's/^v//' | cut -d. -f1-2)
+        RESOLVED_MM=$(echo "$RESOLVED" | cut -d. -f1-2)
+        
+        if [[ "$RESOLVED_MM" != "$FSD_MM" ]]; then
+            echo -e "${RED}❌ VERSION MISMATCH${NC}"
+            echo "FSD:      rails $FSD_RAILS"
+            echo "Resolved: rails $RESOLVED"
+            echo ""
+            echo "Fix: bundle update rails --conservative"
+            exit 1
+        fi
+        
+        echo "✅ rails $RESOLVED matches FSD"
+        ;;
+        
     *)
-        echo -e "${RED}❌ Unknown stack: $STACK${NC}"
+        echo -e "${RED}❌ No lockfile comparator for stack: $STACK${NC}"
+        echo "   Comparators exist for: Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails."
+        echo "   Your stack is locked in the FSD, but this gate cannot read its lockfile, so the pin"
+        echo "   is UNVERIFIED — do not report M06 STEP 3 as passed."
+        echo "   Action: verify the pin by hand against the lockfile, record the result in the FSD"
+        echo "   'Framework Versions (Pinned):' block, and add the comparator here (bash + ps1)."
         exit 1
         ;;
 esac
