@@ -13,6 +13,17 @@
 - **Release Date & Time**: [YYYY-MM-DD] at [09:00 - 11:00 UTC/WIB]
 - **Release Engineer**: [Your Name]
 
+### Production Access Inputs (gate-enforced)
+
+> `validate-gate.sh M10` fails until this records that production access was actually
+> handed over. The AI agent must not hold, request, or use production credentials.
+
+Inputs-Received: [access handed over] from [client PIC name] on [YYYY-MM-DD]
+- Production credentials: [held by the human — never pasted in chat or committed]
+- DNS / domain access: [who controls it]
+- Payment provider live keys: [who holds them]
+- Production deploy executed by: [human name — never an AI agent]
+
 ---
 
 ### 2. Pre-Launch Checklist (Pre-Flight Sanity)

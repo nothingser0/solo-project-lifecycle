@@ -60,6 +60,7 @@ Build `docs/qa/SIT_WORKBOOK.md` from `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.
 Tests pass ≠ looks finished. Build `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` and check all 22 tells **on the live staging URL, on a real phone**: horizontal scroll, favicon, meta description, custom 404, image weight, stock hero, loading states, spacing scale, default Tailwind blue, copyright year, OG preview image, broken links, page title, leftover placeholder text, console errors, hover/focus states, empty states, font count, form error messages, dead buttons.
 - Run on **Slow 4G + 375px viewport** — desktop devtools hides most of these.
 - Every row needs evidence (screenshot path, command output, or URL). "Looks fine" is not evidence.
+- 🧑 **HUMAN-ONLY — cannot be verified by any script**: the **real-phone** pass. The agent can run the emulated viewport checks and gather every other row, but "on a real phone" means the human holds the device. Record it as `Real-device pass: pending <name>` and **end the turn** — the agent must not mark the row passing on emulation alone.
 - **Blocking tells** (1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20, **22 = unprotected race condition**) must be fixed before sign-off; the rest (incl. 21 slop comments) are logged as polish.
 - Re-verify all 22 on the production domain during M10 PVT (CDN/env differences surface new tells).
 

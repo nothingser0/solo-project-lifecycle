@@ -90,7 +90,7 @@ Week 4: Deploy (2 days)
 
 ### Do These Only (Small-path modules)
 - ✅ Intake (5 questions → `docs/pm/PROJECT_STATE.md`)
-- ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/04_UIUX_LITE.md`)
+- ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/variants/04_UIUX_LITE.md`)
 - ✅ M05 (Architecture) → 1 day specs (Section 5 of `PROJECT_LITE.md`)
 - ✅ M06 (Development + security checklist) → 10 days coding
 - ✅ M09-LITE (1 recorded tester in `docs/qa/UAT_SIGNOFF_SMALL.md`; self-tester for solo)

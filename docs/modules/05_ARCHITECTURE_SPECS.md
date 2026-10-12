@@ -68,7 +68,7 @@ Context-specific reasoning for the chosen stack; **alternatives rejected with re
 
 ### STEP 7: Technical Sign-Off
 
-Review with Client Single PIC (or solo self-approval); sign off. M05 is not a SKILL.md stop point: after sign-off (and gate pass) continue to M06 in the same flow for Small/Solo SaaS; on Client projects pause for explicit "FSD approved" / "Proceed to Module 06" before coding. If changes requested: revise, re-run gate.
+Review with Client Single PIC — or, on solo projects, the **human user** self-approves (the AI agent is never a valid approver); sign off. M05 is not a SKILL.md stop point: after sign-off (and gate pass) continue to M06 in the same flow for Small/Solo SaaS; on Client projects pause for explicit "FSD approved" / "Proceed to Module 06" before coding. If changes requested: revise, re-run gate.
 
 ---
 

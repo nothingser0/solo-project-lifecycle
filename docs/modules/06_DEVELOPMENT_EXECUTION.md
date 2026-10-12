@@ -37,17 +37,17 @@ Optional: `./scripts/scaffold/template-picker.sh --phase 4 --dest .`
 **STEP 4 — Pre-install dependency checks (BEFORE installing).**
 `npm info <pkg> peerDependencies` → `npm view <pkg> deprecated` → `npm view <pkg> version` → pin `pnpm add <pkg>@<compatible-version>`. Known pairs, deprecated replacements, font rule, matrices: deep dive. Deprecated: do NOT install. Spec-locked CVEs: document/escalate.
 
-**STEP 5 — Generate TODO.md** via `templates/04-dev-execution/TODO_TEMPLATE.md`. Read PRD/FSD/SITEMAP (or PROJECT_LITE.md). 100% coverage: 1 task per FSD/PROJECT_LITE **table/screen/endpoint/feature**. IDs `M06-{SETUP|DB|BE|FE|QA}-xx`; mandatory `M06-SETUP-03` specs pre-read (gate-checked). Each task: **Verify** {stack cmd}, **Expected** {criteria}, **Evidence** {output/screenshot/query}. Human validates coverage; commit before coding; `[x]` only after Verify.
+**STEP 5 — Generate TODO.md** via `templates/04-dev-execution/TODO_TEMPLATE.md`. Read PRD/FSD/SITEMAP (or PROJECT_LITE.md). 100% coverage: 1 task per FSD/PROJECT_LITE **table/screen/endpoint/feature**. IDs `M06-{SETUP|DB|BE|FE|QA}-xx`; mandatory `M06-SETUP-03` specs pre-read (gate-checked). Each task: **Verify** {stack cmd}, **Expected** {criteria}, **Evidence** {output/query}. 🛑 **END TURN after writing TODO.md** — present task count; wait for user confirmation BEFORE coding.
 
-**STEP 6 — Implement per TODO (DB → API → prototype).**
-- **DB**: stack ORM migrations; pooling; FK-column indexes; reversible; seed data; Sprint 1 gate.
+**STEP 6 — Implement per TODO (DB → API → prototype).** **One task per turn**: implement → run `Verify` → report Evidence → 🛑 **END TURN**. Human approves before `[x]` and the next task; the `Approved: <date> by <name>` line is **gate-enforced** (M06 fails on self-ticked tasks). Never a whole sprint; batch only when the user names task IDs.
+- **DB**: stack ORM migrations; pooling; FK-column indexes; reversible; seed data.
 - **API**: endpoints per FSD, Zod/schema validation + 3 pillars — Security: encryption, HttpOnly cookies, parameterized queries; Performance: N+1 prevention, caching, indexing; Resources: pooling, streaming, memory.
-- **Concurrency & comment hygiene**: read-modify-write on stock/balance/counter/status MUST be atomic (tx + row lock, unique constraint, or CAS); webhooks idempotent. No comments that restate code, no stub comments, no commented-out code. Details: deep dive.
-- **Prototype**: per FSD `Module 04 Handoff Strategy` (Levels 1-4); check framework docs; **UI 100% identical to frozen prototype**; static screens first (Sprint 3), data-backed after DB+API.
+- **Concurrency & comment hygiene**: read-modify-write on stock/balance/counter/status MUST be atomic (tx + row lock, unique constraint, or CAS); webhooks idempotent. No comments that restate code, no stubs, no commented-out code. Details: deep dive.
+- **Prototype**: per FSD `Module 04 Handoff Strategy` (Levels 1-4); **UI 100% identical to frozen prototype**; static screens first (Sprint 3), data-backed after DB+API.
 - **5 UI states** per screen (idle/loading/success/error/empty).
 - **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in RUNBOOK_LOCAL.md; jobs → worker verified.
 
-**STEP 7 — Tests & Git.** Stack tests (`npm run test:smoke` / `php artisan test` / `python manage.py test` / `go test ./...`); `tsc --noEmit`; `pnpm audit`. AI pre-merge review → `AI_REVIEW_LOG.md`. Merge to `staging`; tag Alpha.
+**STEP 7 — Tests & Git.** Stack smoke/unit tests + `tsc --noEmit` + `pnpm audit`. AI pre-merge review → `AI_REVIEW_LOG.md`. **Human merges to `staging` and tags Alpha** — agent must not commit/merge/tag.
 
 **STEP 8 — RUNBOOK_LOCAL.md + VERIFY_LOCAL.md** from `templates/04-dev-execution/{RUNBOOK_LOCAL,VERIFY_LOCAL}_TEMPLATE.md` (placeholders → FSD endpoints + stack commands). Smoke test 100%.
 
@@ -58,11 +58,11 @@ Source code (clean, active `staging` branch) · **`RUNBOOK_LOCAL.md`** · **`VER
 - [ ] Version match: lockfile major.minor exact vs FSD; Tailwind v3/v4 detected.
 - [ ] 9 harness files verified in root (or Small: root `AGENTS.md` + `TODO.md`).
 - [ ] Dependencies resolved; no unmet peers; no deprecated packages.
-- [ ] Per-stack verification (chosen by the FSD `Stack Decision LOCKED:` field): Next.js → `pnpm build` + `pnpm tsc --noEmit` + `pnpm audit`; Laravel → `php artisan test`; Django → `pytest`; Go → `go test ./...`. All exit 0 (or documented spec-locked risk).
+- [ ] Per-stack verification (FSD `Stack Decision LOCKED:`): Next.js → `pnpm build` + `tsc --noEmit` + `pnpm audit`; Laravel → `php artisan test`; Django → `pytest`; Go → `go test ./...`. Exit 0 (or documented spec-locked risk).
 - [ ] Smoke test 100%.
 - [ ] Migrations reversible; indexes in place; VERIFY_LOCAL.md has pass proof.
 - [ ] Small: `docs/qa/SECURITY_CHECKLIST_SMALL.md` filled (≥300 bytes; absorbs M07 security).
-- [ ] **Small only** (no M07): `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` — 0 blocking tells (favicon, 404, meta description, OG image, console errors, leftover placeholder text, dead buttons). Medium+ covers this in M07 Step 7.
+- [ ] **Small only** (no M07): `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` — 0 blocking tells (favicon, 404, meta, OG, console errors, placeholder text, dead buttons). Medium+ covers in M07 Step 7.
 - [ ] **Verbatim**: `./scripts/gates/validate-gate.sh M06` (or `.ps1 M06`) — exit 1 = fix and re-run.
 
 ## 4. Gate Exit & Routing

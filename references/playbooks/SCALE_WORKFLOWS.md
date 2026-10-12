@@ -74,7 +74,7 @@
 
 **Intake Gate (hari 1)**: 5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md` → klasifikasi skala.
 
-**M04-LITE (hari 1-2)**: logo placeholder (monogram SVG ≥50B), 1 benchmark, 5-state matrix pada 1-3 layar utama — runbook: `docs/modules/04_UIUX_LITE.md`.
+**M04-LITE (hari 1-2)**: logo placeholder (monogram SVG ≥50B), 1 benchmark, 5-state matrix pada 1-3 layar utama — runbook: `docs/modules/variants/04_UIUX_LITE.md`.
 
 ---
 

@@ -1,5 +1,16 @@
 # AI Agent Guidelines - Flutter Project
 
+## 0. Execution Protocol — One Task Per Turn (NON-NEGOTIABLE)
+
+- **`TODO.md` is the queue.** Work its task list **one task at a time**.
+- **Per task**: implement ONLY that task → run that task's `Verify` command → paste the raw output → report task ID + files touched + result → 🛑 **END TURN**.
+- **Do NOT** start the next task, open a new sprint, or batch task IDs — unless the human names the specific task IDs to run in one instruction.
+- **`[x]` is the human's mark, never yours.** Only after the human confirms may you record `Approved: <date> by <name>` in that task's `Evidence`.
+- **If a spec, schema, or requirement is missing, STOP and ask** — never invent it to keep the queue moving.
+- **Never run `git commit`, `git push`, or `git tag`** — hand the change to the human for review and commit.
+
+---
+
 ## CRITICAL: Read Official Documentation First
 
 **BEFORE implementing any feature, check official docs for current syntax:**

@@ -127,6 +127,21 @@
 - **Selected Tech Stack**: [Example: Next.js + PostgreSQL / Flutter + Supabase / FastAPI + SQLite]
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
+Stack-Locked-by: [name of the human who chose it — the AI agent may not choose]
+
+### Tech Stack Discovery Answers (8 — human input, gate-enforced)
+
+> `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without these 8 answers
+> recorded. The agent asks; the human answers. Record each answer verbatim.
+
+- Q1 Team Expertise: [answer]
+- Q2 Database Experience: [answer]
+- Q3 Deployment Topology: [answer]
+- Q4 Expected Scale (Year 1): [answer]
+- Q5 Data Model Characteristics: [answer]
+- Q6 DevOps Complexity Tolerance: [answer]
+- Q7 Critical Feature Priority: [answer]
+- Q8 Compliance Requirements: [answer]
 
 ## Framework Versions (Pinned):
 - [Package/Framework Name]: [x.y.z]

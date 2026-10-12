@@ -1,5 +1,15 @@
 # AI Agent Guidelines - Go Project
 
+## 0. Execution Protocol — One Task Per Turn (NON-NEGOTIABLE)
+
+- **`TODO.md` is the queue.** Work its task list **one task at a time**.
+- **Per task**: implement ONLY that task → run that task's `Verify` command → paste the raw output → report task ID + files touched + result → 🛑 **END TURN**.
+- **Do NOT** start the next task, open a new sprint, or batch task IDs — unless the human names the specific task IDs to run in one instruction.
+- **`[x]` is the human's mark, never yours.** Only after the human confirms may you record `Approved: <date> by <name>` in that task's `Evidence`.
+- **If a spec, schema, or requirement is missing, STOP and ask** — never invent it to keep the queue moving.
+
+---
+
 ## 1. Absolute Agent Safety Directives (NON-NEGOTIABLE)
 1. **NO Destructive Git Operations**: Running `git push --force` or `git push --force-with-lease` is STRICTLY PROHIBITED.
 2. **NO Destructive Database Operations in Shared / Deployed Environments**: Running database reset scripts or issuing raw `DROP TABLE` / `DROP DATABASE` queries against shared, staging, or production environments is STRICTLY PROHIBITED. On local disposable test databases, execute resets only when explicitly instructed.

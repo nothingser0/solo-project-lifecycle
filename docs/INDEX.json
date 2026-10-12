@@ -31,10 +31,6 @@
       ]
     },
     {
-      "path": "docs/modules/04_UIUX_LITE.md",
-      "cataloged": false
-    },
-    {
       "path": "docs/modules/04_UIUX_PROTOTYPING.md",
       "cataloged": true,
       "modules": [
@@ -169,6 +165,14 @@
       "cataloged": true
     },
     {
+      "path": "docs/modules/variants/04_UIUX_LITE.md",
+      "cataloged": false
+    },
+    {
+      "path": "docs/modules/variants/README.md",
+      "cataloged": true
+    },
+    {
       "path": "evals/README.md",
       "cataloged": true
     },
@@ -202,6 +206,10 @@
     },
     {
       "path": "evals/scenarios/08_YAGNI_ANTI_OVER_SPECIFICATION.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/09_TODO_TASK_HUMAN_VERIFICATION.md",
       "cataloged": false
     },
     {
@@ -519,11 +527,11 @@
     },
     {
       "path": "templates/01-discovery-commercial/BACKLOG_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md",
@@ -535,7 +543,7 @@
     },
     {
       "path": "templates/01-discovery-commercial/INTERVIEW_GUIDE_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/M00_LITE_TEMPLATE.md",
@@ -547,11 +555,11 @@
     },
     {
       "path": "templates/01-discovery-commercial/MOSCOW_MATRIX.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/OKR_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md",
@@ -559,15 +567,15 @@
     },
     {
       "path": "templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/RISK_REGISTER_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md",
@@ -575,7 +583,7 @@
     },
     {
       "path": "templates/01-discovery-commercial/SOLO_SAAS_CHARTER_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md",
@@ -591,15 +599,15 @@
     },
     {
       "path": "templates/01-discovery-commercial/VERIFICATION_PLAN_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/AB_TEST_HYPOTHESIS_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/COMPONENT_API_SPEC_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md",
@@ -607,7 +615,7 @@
     },
     {
       "path": "templates/02-design/COMPONENT_RFC_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/DESIGN_MD_TEMPLATE.md",
@@ -619,11 +627,11 @@
     },
     {
       "path": "templates/02-design/DESIGN_SYSTEM_AUDIT_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/DESIGN_TOKENS_SPEC_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md",
@@ -639,7 +647,7 @@
     },
     {
       "path": "templates/02-design/USABILITY_TEST_PLAN_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/references/README.md",
@@ -647,7 +655,7 @@
     },
     {
       "path": "templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-design/references/prompt-input/README.md",
@@ -663,7 +671,7 @@
     },
     {
       "path": "templates/02-legal-commercial/FINANCIAL_TRACKING.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/02-legal-commercial/NDA_TEMPLATE.md",
@@ -675,19 +683,19 @@
     },
     {
       "path": "templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-architecture-specs/CODE_REVIEW_PATTERN_CHECKLIST_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-architecture-specs/DESIGN_PATTERN_DECISION_TREE_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md",
@@ -707,7 +715,7 @@
     },
     {
       "path": "templates/03-governance/ADR_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/AUDIT_TRAIL_REQUIREMENTS.md",
@@ -723,31 +731,31 @@
     },
     {
       "path": "templates/03-governance/DATA_CLASSIFICATION_POLICY.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/DATA_RETENTION_POLICY.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/ESCALATION_MATRIX.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/GDPR_COMPLIANCE_CHECKLIST.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/INCIDENT_RESPONSE_PLAN.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/MEETING_CADENCE_GUIDE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/RACI_MATRIX.md",
@@ -755,15 +763,15 @@
     },
     {
       "path": "templates/03-governance/RISK_ASSESSMENT_MATRIX.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/SOC2_ISO27001_COMPLIANCE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/STAKEHOLDER_REGISTER.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/03-governance/VENDOR_COMPARISON_MATRIX.md",
@@ -775,15 +783,15 @@
     },
     {
       "path": "templates/04-dev-execution/AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/AI_PROMPT_LIBRARY_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/API_DOCUMENTATION_GUIDE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/ARCHITECTURE_TEMPLATE.md",
@@ -799,7 +807,7 @@
     },
     {
       "path": "templates/04-dev-execution/DAILY_STANDUP.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md",
@@ -811,15 +819,15 @@
     },
     {
       "path": "templates/04-dev-execution/IAC_GUIDE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/LEARNINGS_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/PERFORMANCE_PROFILING_GUIDE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/PROJECT_CI_TEMPLATE.yml",
@@ -827,11 +835,11 @@
     },
     {
       "path": "templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/RELEASE_WORKFLOW.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md",
@@ -839,15 +847,15 @@
     },
     {
       "path": "templates/04-dev-execution/SEED_DATA_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/SPRINT_PLANNING.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/SPRINT_RETRO.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/TODO_TEMPLATE.md",
@@ -863,6 +871,10 @@
     },
     {
       "path": "templates/04-dev-execution/aspnet/AGENTS.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/astro/AGENTS.md",
       "cataloged": true
     },
     {
@@ -895,7 +907,7 @@
     },
     {
       "path": "templates/04-dev-execution/django/ENV_EXAMPLE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/examples/TODO_EXAMPLE_POS_RETAIL.md",
@@ -931,7 +943,7 @@
     },
     {
       "path": "templates/04-dev-execution/go/ENV_EXAMPLE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/jamstack/AGENTS.md",
@@ -951,7 +963,7 @@
     },
     {
       "path": "templates/04-dev-execution/laravel/ENV_EXAMPLE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/mern/AGENTS.md",
@@ -971,7 +983,11 @@
     },
     {
       "path": "templates/04-dev-execution/nextjs/ENV_EXAMPLE.md",
-      "cataloged": false
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/nuxt/AGENTS.md",
+      "cataloged": true
     },
     {
       "path": "templates/04-dev-execution/nuxt/README.md",
@@ -1055,15 +1071,15 @@
     },
     {
       "path": "templates/06-qa-uat/DEMO_FEEDBACK_FORM.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/06-qa-uat/DEMO_SCRIPT.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/06-qa-uat/FEEDBACK_MATRIX.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md",
@@ -1071,7 +1087,7 @@
     },
     {
       "path": "templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md",
@@ -1095,7 +1111,7 @@
     },
     {
       "path": "templates/06-qa-uat/UAT_TRAINING_SCRIPT.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/06-qa-uat/UAT_WORKBOOK_SMALL.md",
@@ -1115,11 +1131,11 @@
     },
     {
       "path": "templates/07-release-handover/CHANGELOG_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/07-release-handover/CREDENTIALS_VAULT.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md",
@@ -1135,7 +1151,7 @@
     },
     {
       "path": "templates/07-release-handover/RELEASE_APPROVAL_CHECKLIST.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/07-release-handover/ROLLBACK_PLAN_TEMPLATE.md",
@@ -1147,15 +1163,15 @@
     },
     {
       "path": "templates/07-release-handover/USER_MANUAL_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/08-maintenance-ops/BACKUP_RESTORE_PROCEDURES.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/08-maintenance-ops/CAPACITY_PLANNING_GUIDE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md",
@@ -1166,8 +1182,12 @@
       "cataloged": true
     },
     {
+      "path": "templates/08-maintenance-ops/PROJECT_CLOSURE_REPORT_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/08-maintenance-ops/PROJECT_RETROSPECTIVE_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/08-maintenance-ops/RUNBOOK_OPS.md",
@@ -1179,7 +1199,7 @@
     },
     {
       "path": "templates/08-maintenance-ops/SLA_SLO_DEFINITIONS.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md",
@@ -1195,15 +1215,15 @@
     },
     {
       "path": "templates/09-product-growth/ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md",
@@ -1215,7 +1235,7 @@
     },
     {
       "path": "templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "templates/README.md",

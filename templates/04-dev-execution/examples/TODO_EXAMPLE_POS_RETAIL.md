@@ -1,7 +1,7 @@
 # TODO.md — Engineering Execution Plan & Automated Quality Gates
 
-> **Role & Purpose**: Sequential atomic task list for AI Coding Agents (Cursor / Claude Code / Windsurf / Codex CLI).
-> **Execution Rule**: Execute one task → run automated verification → record evidence → check `[x]` → advance to next task.
+> **Role & Purpose**: Sequential atomic task list for AI Coding Agents (Cursor / Claude Code / Windsurf / Codex CLI) working **under human per-task review**.
+> **Execution Rule**: Implement ONE task → run automated verification → report evidence → 🛑 **STOP for human approval**. The human marks `[x]` and authorizes the next task. Never run a whole sprint in one turn.
 > **Integrity Mandate**: Zero unverified tasks. Zero hallucinated features outside In-Scope. Zero bypassed TypeScript compiler errors.
 > **Scale & Domain Adaptability**: Adaptable across all software categories (CRM, CMS, HRIS, E-Commerce, Retail/POS, Fintech, Developer Tools) and all 4 scales:
 > - **Small (MVP / Internal)**: Core database, UI shell, essential CRUD, and smoke tests (mark billing, webhooks, offline queues N/A).

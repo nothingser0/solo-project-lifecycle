@@ -44,6 +44,7 @@
 
 ### Step 3 — User Research (`docs/pm/USER_RESEARCH_REPORT.md`)
 - **Evidence rule (non-negotiable)**: primary data from real humans only. No fabricated quotes/percentages. If research not yet run, mark `PENDING_PRIMARY_RESEARCH` and set Gate-Decision: PENDING. Pre-data personas are `Proto-Persona (Hipotesis)`.
+- 🧑 **HUMAN-ONLY — cannot be verified by any script**: conducting the 5–10 interviews, running the surveys/waitlist, and collecting the deposits or signed LOIs are the **human's** actions. The agent may draft instruments, summarise transcripts the human supplies, and fill the report — it must **not** invent responses, and it cannot tell whether the interviews actually happened. If the human has not run them, the agent records `PENDING_PRIMARY_RESEARCH` and **ends the turn**; it never proceeds on assumed research.
 - Confidence legend: ✅ VERIFIED / 🔶 ASSUMPTION / ❓ UNKNOWN.
 - Survey design: screener → pain severity (Likert) → Van Westendorp WTP → intent-to-buy. Gate bar: ≥30% intent-to-buy, or behavioral validation (waitlist ≥5% of ≥100 targeted visits, ≥5 refundable pre-order deposits, or ≥2 signed LOIs).
 - Output: anonymized interview summaries, survey charts, personas, journey map, pain Impact-Effort matrix.

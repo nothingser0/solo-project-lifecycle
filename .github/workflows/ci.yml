@@ -100,6 +100,14 @@ EOF
         run: |
           node scripts/evals/run-evals.js --validate
 
+      - name: Gate behavioral regression tests
+        run: |
+          bash scripts/verify/test-gate-regressions.sh
+
+      - name: Gate output parity (byte-for-byte vs golden)
+        run: |
+          bash scripts/verify/test-gate-output.sh
+
   powershell-validation:
     name: PowerShell Scripts Tokenization & Execution
     runs-on: windows-latest

@@ -51,7 +51,7 @@ Modules live in `docs/modules/` — each is a compact runbook (≤~2k tokens) wi
 | M01 | Idea & Feasibility (`01_IDEA_FEASIBILITY.md`) | — |
 | M02 | Discovery & Scope (`02_DISCOVERY_SCOPE.md`) | — |
 | M03 | Legal SOW & Charter (`03_LEGAL_SOW_CHARTER.md`) | **[GATE 1]** Commercial (client) |
-| M04 | UI/UX & Prototyping (`04_UIUX_PROTOTYPING.md`, LITE: `04_UIUX_LITE.md`) | — |
+| M04 | UI/UX & Prototyping (`04_UIUX_PROTOTYPING.md`, LITE: `variants/04_UIUX_LITE.md`) | — |
 | M05 | Architecture & Specs (`05_ARCHITECTURE_SPECS.md`) | — |
 | M06 | Development Execution (`06_DEVELOPMENT_EXECUTION.md`) | — |
 | M07 | QA & SIT (`07_QUALITY_ASSURANCE_SIT.md`) | — |
@@ -63,7 +63,7 @@ Modules live in `docs/modules/` — each is a compact runbook (≤~2k tokens) wi
 | M13 | Product Operations (`13_PRODUCT_OPERATIONS_ITERATION.md`) | — |
 | A00–A04 | Enterprise Advisory (`A00_ENTERPRISE_ADVISORY_SERIES.md`) | advisory only |
 
-**Progressive loading**: load ONE module file when entering its phase. Never preload all modules. Human-reference catalogs (`INDEX.json`, `references/taxonomy/`) must not be loaded by agents.
+**Progressive loading**: load ONE module file when entering its phase. Never preload all modules. Human-reference catalogs (`docs/INDEX.json`, `references/taxonomy/`) must not be loaded by agents.
 
 ---
 

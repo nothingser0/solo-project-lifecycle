@@ -18,10 +18,9 @@ mkdir -p "$DIST_PACKAGE"
 # Copy root metadata and core files
 cp "$ROOT_DIR/SKILL.md" "$DIST_PACKAGE/"
 cp "$ROOT_DIR/README.md" "$DIST_PACKAGE/"
-# INDEX.json is required by verify-all.sh (index-manifest.js --check) inside the installed package
-[ -f "$ROOT_DIR/INDEX.json" ] && cp "$ROOT_DIR/INDEX.json" "$DIST_PACKAGE/"
 
 # Copy core skill directories
+# (docs/INDEX.json rides along with the docs/ copy below — verify-all.sh checks it in-package)
 for dir in docs templates patterns references scripts case-studies evals; do
     if [ -d "$ROOT_DIR/$dir" ]; then
         echo "Copying $dir/..."

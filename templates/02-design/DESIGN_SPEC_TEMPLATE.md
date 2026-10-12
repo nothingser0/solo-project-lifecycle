@@ -173,12 +173,18 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 2. Development in Module 05 & Module 06 will strictly implement the specifications detailed above.
 3. Any revisions to screen flows, addition of unmapped pages, or restructuring of components will be processed under the formal *Change Request (CR)* procedure.
 
+**Gate-enforced fields** (`validate-gate.sh M04` fails without these — the AI agent may not fill them in):
+
+- Approved by: [name of Client PIC or the human user — never the AI agent]
+- Approved on: [YYYY-MM-DD]
+
 | Approved by Client PIC / Lead Stakeholder | Validated by Solo Engineer |
 | :--- | :--- |
-| **Name**: _________________________ | **Name**: _________________________ |
-| **Role**: _________________________ | **Role**: Solo Software Engineer |
+| **Name**: `Approved by: …` is the field the gate reads | **Name**: [engineer name] |
+| **Role**: [Client PIC / Product Owner / Founder] | **Role**: Solo Software Engineer |
 | **Date**: [YYYY-MM-DD] | **Date**: [YYYY-MM-DD] |
-| **Signature**: _____________________ | **Signature**: _____________________ |
+
+⚠️ Remove every `_____` blank line above before declaring M04 complete — the gate rejects residual placeholder signatures.
 
 ---
 

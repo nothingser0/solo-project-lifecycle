@@ -41,7 +41,7 @@ templates/
 | `05-data-migration/` | M08 | `DATA_MIGRATION_PLAN_TEMPLATE.md`, `DATA_MIGRATION_LITE.md`, `RECONCILIATION_REPORT_TEMPLATE.md` |
 | `06-qa-uat/` | M07/M09 | `SIT_WORKBOOK_TEMPLATE.md`, `SECURITY_CHECKLIST_SMALL.md`, `UAT_SIGNOFF_SMALL.md`, `UAT_WORKBOOK_TEMPLATE.md` |
 | `07-release-handover/` | M10/M11 | `DEPLOYMENT_PROTOCOL_TEMPLATE.md`, `ROLLBACK_PLAN_TEMPLATE.md`, `GO_LIVE_REPORT_TEMPLATE.md`, `BAST_TEMPLATE.md`, `HANDOVER_PROTOCOL_TEMPLATE.md` |
-| `08-maintenance-ops/` | M12 | `WARRANTY_POLICY_TEMPLATE.md`, `SLA_RETAINER_CONTRACT_TEMPLATE.md`, `RUNBOOK_OPS.md`, `INCIDENT_RESPONSE_TEMPLATE.md` |
+| `08-maintenance-ops/` | M11/M12 | `WARRANTY_POLICY_TEMPLATE.md`, `SLA_RETAINER_CONTRACT_TEMPLATE.md`, `RUNBOOK_OPS.md`, `INCIDENT_RESPONSE_TEMPLATE.md`, `PROJECT_CLOSURE_REPORT_TEMPLATE.md` (client-facing, M11), `PROJECT_RETROSPECTIVE_TEMPLATE.md` (internal, M11) |
 | `09-product-growth/` | M13 | `METRICS_BASELINE_REPORT_TEMPLATE.md`, `GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`, `AB_TEST_REPORT_TEMPLATE.md` |
 | `by-use-case/` | — | Index READMEs per workflow + `examples/legal-vault/` worked example |
 | `essentials/` | Small path | `INTAKE_GATE.md`, `PROJECT_STATE_TEMPLATE.md`, `LITE_*.md` bodies, fast-track index |
@@ -64,4 +64,4 @@ The quick map above lists only the most-used templates. Everything else lives he
 | `09-product-growth/` | `ANALYTICS_IMPLEMENTATION_PLAN_TEMPLATE.md`, `DASHBOARD_SPEC_TEMPLATE.md`, `EVENT_TAXONOMY_TEMPLATE.md`, `PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md` |
 | `00-pre-sales-enterprise/` | `RFP_RESPONSE_TEMPLATE.md`, `POC_PLAN_TEMPLATE.md`, `CONSULTING_AGREEMENT_TEMPLATE.md`, `WBS_PHASING_TEMPLATE.md` |
 
-For a machine-readable inventory, see `INDEX.json` (human reference only — **never load it into agent context**; it is large and adds no execution value).
+For a machine-readable inventory, see `docs/INDEX.json` (human reference only — **never load it into agent context**; it is large and adds no execution value).

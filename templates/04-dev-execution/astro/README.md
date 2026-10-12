@@ -1,12 +1,13 @@
-# Astro Stack Templates - Coming Soon
+# Astro Stack Templates
 
-> **Status**: Planned for future release  
-> **Priority**: Low  
-> **Expected**: Q2 2027
+> **Status**: `AGENTS.md` available; the remaining files are still planned.
 
-## What Will Be Included
+## Included
 
-- `AGENTS.md` - AI harness for Astro development
+- `AGENTS.md` — AI harness for Astro development (execution protocol, islands rules, anti-slop, security)
+
+## Still Planned
+
 - `ARCHITECTURE.md` - Astro islands architecture
 - `CONVENTIONS.md` - Astro coding standards
 - `ENV_EXAMPLE.md` - Environment configuration template
@@ -28,9 +29,4 @@
 
 ## Current Workaround
 
-Use generic templates from `templates/04-dev-execution/`.
-
----
-
-**Created**: 2026-10-03  
-**Status**: Placeholder
+Use generic templates from `templates/04-dev-execution/` for the remaining files.

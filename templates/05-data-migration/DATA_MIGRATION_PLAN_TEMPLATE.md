@@ -11,6 +11,16 @@
 - **Plan Date**: [YYYY-MM-DD]
 - **Execution Target**: Staging & Production Environments
 
+### Client-Supplied Inputs (gate-enforced)
+
+> `validate-gate.sh M08` fails until this records that the client actually handed over
+> the source data and credentials. Never simulate, sample, or invent them.
+
+Inputs-Received: [what was received] from [client PIC name] on [YYYY-MM-DD]
+- Source data: [file name / export / DB dump — or "not yet received"]
+- Sandbox credentials: [received / not yet received]
+- Master data (reference tables): [received / not yet received]
+
 ---
 
 ## 2. Data Hygiene Boundary

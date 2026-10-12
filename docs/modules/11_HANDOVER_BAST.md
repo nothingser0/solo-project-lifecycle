@@ -42,9 +42,11 @@ Small → 1 optional Meet session, quickstart guide, `BAST_EMAIL_SMALL.md`. Medi
 
 1–2 h after final payment using `templates/08-maintenance-ops/PROJECT_RETROSPECTIVE_TEMPLATE.md` (went well / went wrong / lessons / process improvements). Recommended every project.
 
+**Client-facing closure report** (separate artifact): `templates/08-maintenance-ops/PROJECT_CLOSURE_REPORT_TEMPLATE.md` — objectives vs results, deliverables handover, known limitations, warranty terms, and sign-off. The retrospective is **for you**; the closure report is **for the client**. Deliver both after settlement.
+
 ## 6. Deliverables
 
-`docs/USER_MANUAL.md` (or root); **`docs/pm/HANDOVER_PROTOCOL.md`** (transfer report + account inventory); **`docs/pm/BAST.md`** (stamped certificate activating warranty; Small: `BAST_EMAIL_SMALL.md`); bank-statement proof of 100% settlement.
+`docs/USER_MANUAL.md` (or root); **`docs/pm/HANDOVER_PROTOCOL.md`** (transfer report + account inventory); **`docs/pm/BAST.md`** (stamped certificate activating warranty; Small: `BAST_EMAIL_SMALL.md`); **`docs/pm/PROJECT_CLOSURE_REPORT.md`** (client-facing end-of-project report); bank-statement proof of 100% settlement.
 
 ## 7. [GATE] Exit Criteria
 

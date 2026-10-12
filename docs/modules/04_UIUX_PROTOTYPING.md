@@ -5,7 +5,7 @@
 
 This module translates `SCOPE_STATEMENT.md` (+ valid SOW, or M03 waived for Solo SaaS) into 6 authoritative design artifacts that serve as the UI source of truth: `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/design/inspiration/notes.md`, `docs/harness-root/DESIGN.md` (staged; deployed to root in M06), and `docs/specs/DESIGN_SPEC.md`.
 
-**Scale calibration** (from `docs/pm/PROJECT_STATE.md` / `PROJECT_LITE.md`): **Small (M04-LITE)** — run the standalone LITE runbook [`04_UIUX_LITE.md`](04_UIUX_LITE.md) instead of this one. **Medium/Large** — full artifacts ≥2000B, logo ≥200B, 5-state matrix on all screens. **Enterprise** (non-solo capacity) — redirect to Seri A Advisory (Fase A02).
+**Scale calibration** (from `docs/pm/PROJECT_STATE.md` / `PROJECT_LITE.md`): **Small (M04-LITE)** — run the standalone LITE runbook [`variants/04_UIUX_LITE.md`](variants/04_UIUX_LITE.md) instead of this one. **Medium/Large** — full artifacts ≥2000B, logo ≥200B, 5-state matrix on all screens. **Enterprise** (non-solo capacity) — redirect to Seri A Advisory (Fase A02).
 
 ## 1. Execution Cycle (Steps 0A–5)
 
@@ -20,7 +20,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
  ▼ 2. Choose prototyping workflow (one-line each, details in deep dive): A Markdown-only (solo MVP) | B v0/Stitch/click-dummy (client visual demo) | C AI prototype v0/Bolt/Lovable (code output) | D Figma/Penpot Dev Mode (designer handoff) | E Figma MCP live sync (active designer)
  ▼ 3. DESIGN_SPEC.md (DESIGN_SPEC_TEMPLATE.md) — every in-scope screen (SCR-01..SCR-NN) with 5-state matrix: Default, Loading Skeleton, Empty, Error, Success
  ▼ 4. (B/C/D only; SKIPPED for A) — prompts via SCREEN_PROMPT_TEMPLATE.md → docs/design/prompts/scr-xx/PROMPT.md; rendered outputs → docs/design/screens/scr-xx/
- ▼ 5. Walkthrough + Design Freeze — walkthrough demo (client PIC or solo self-review); sign Design Freeze Sign-Off in DESIGN_SPEC.md
+ ▼ 5. Walkthrough + Design Freeze — walkthrough demo (client PIC, or the **human user** self-reviews on solo projects — never the AI agent); sign Design Freeze Sign-Off in DESIGN_SPEC.md
 OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 ```
 
@@ -55,7 +55,7 @@ Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbid
 - [ ] **Anti-slop: zero gradients, zero glassmorphism/backdrop-blur, shadows ≤4px, non-color state indicators, 16px mobile inputs, ≥44px touch targets, z-index scale defined.**
 
 ### Design Freeze Sign-Off (BLOCKING, in DESIGN_SPEC.md)
-- [ ] Approver name (Client PIC or solo self-approval) + date (YYYY-MM-DD) + signature placeholder ("Approved via [email/chat]").
+- [ ] Approver name (Client PIC, or the **human user** on solo projects) + date (YYYY-MM-DD) + signature placeholder ("Approved via [email/chat]"). The AI agent is never a valid approver.
 
 Optional: user testing (client projects): ≥2 iterations × 5+ users, SUS ≥70; prototype URL / Figma link.
 

@@ -1,8 +1,32 @@
 # TODO.md — Engineering Execution Plan & Automated Quality Gates
 
-> **Role**: Sequential atomic task list for AI coding agents. Execute one task → run `Verify` → record `Evidence` → check `[x]` → next.
+> **Role**: Sequential atomic task list. The **agent implements ONE task, runs `Verify`, reports `Evidence`, and STOPS**. The **human confirms before the next task starts**. `[x]` is the human's mark, not the agent's.
 > **Integrity**: Zero unverified tasks. Zero features outside In-Scope. Zero suppressed compiler errors.
 > **Full worked example** (POS/retail, 7 sprints): `templates/04-dev-execution/examples/TODO_EXAMPLE_POS_RETAIL.md`
+
+## Execution protocol (task-by-task, human-verified)
+
+```
+For each task:
+  1. Agent implements ONLY this task (no lookahead, no bundling).
+  2. Agent runs the task's `Verify` command and pastes raw output.
+  3. Agent reports: task ID · files touched · Verify output · blockers.
+  4. 🛑 Agent ENDS TURN. It does NOT start the next task.
+  5. Human reviews, runs the app / checks the diff, then either:
+       - approves  → agent marks `- [x]` and proceeds to the next task, OR
+       - rejects   → agent fixes and re-reports (task stays `- [~]`).
+```
+
+**Approval marker (gate-enforced)**: when the human approves a task, append the line below to that task's **Evidence**. `validate-gate.sh M06` **fails** on any `[x]` task whose block lacks it — an agent that ticks its own boxes cannot pass the gate.
+
+```
+**Evidence**: <raw command output> | Approved: 2026-10-12 by <name>
+```
+*(accepted spellings: `Approved:`, `Approved by`, `Disetujui`)*
+
+**Batch mode (opt-in only)**: the human may authorize a contiguous run of named task IDs (e.g. "run M06-DB-01…04 without stopping"). Without that explicit instruction, **one task per turn is the default at every scale** — including autopilot, which chains *modules*, never individual tasks.
+
+**Never**: implement a whole sprint in one turn, mark `[x]` without human approval, or continue past a failing `Verify`.
 
 ## Scale adaptation
 
@@ -33,7 +57,7 @@
 | `M06-TEST-xx` | `PRD.md` acceptance criteria | `tests/db`, `tests/sit`, `tests/e2e` |
 | `M06-GATE-xx` | Release protocols | Verified build, git handoff log |
 
-**Module exit gate**: 100% tasks `[x]` (zero `[ ]`/`[~]`/`[!]`), build + typecheck exit 0, smoke tests pass, zero `@ts-ignore`, `validate-gate.sh M06` passed.
+**Module exit gate**: 100% tasks `[x]` (zero `[ ]`/`[~]`/`[!]`), build + typecheck exit 0, smoke tests pass, zero `@ts-ignore`, `validate-gate.sh M06` passed. Every `[x]` must trace to a **human approval** recorded in the task's `Evidence` — tasks the agent self-approved do not count.
 
 ---
 

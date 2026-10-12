@@ -16,10 +16,7 @@ New-Item -ItemType Directory -Force -Path $pkgDir | Out-Null
 
 Copy-Item (Join-Path $rootDir "SKILL.md") $pkgDir
 Copy-Item (Join-Path $rootDir "README.md") $pkgDir
-# INDEX.json is required by verify-all (index-manifest.js --check) inside the installed package
-$indexJson = Join-Path $rootDir "INDEX.json"
-if (Test-Path $indexJson) { Copy-Item $indexJson $pkgDir }
-
+# docs/INDEX.json travels with the docs/ copy below — verify-all checks it in-package
 foreach ($dir in @("docs", "templates", "patterns", "references", "scripts", "case-studies", "evals")) {
     $src = Join-Path $rootDir $dir
     if (Test-Path $src) {

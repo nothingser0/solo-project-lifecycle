@@ -37,6 +37,13 @@
 - Civil-law principle: everything not explicitly In-Scope is outside the developer's responsibility. Exclusions (≥3): legacy digitization, third-party licensing, local hardware/network faults, formal legal/tax counsel.
 - Tax disclaimers citing regulations (PP 55/2022 jo. PP 20/2026 PPh UMKM; PP 58/2023 & PMK 168/2023 PPh 21 TER + BPJS) plus the general estimation disclaimer.
 - UU PDP 27/2022: Privacy Policy (region, retention, sub-processors), ToS, Sentry PII scrubbing, CSV injection sanitization.
+- ⚠️ **LEGAL REVIEW REQUIRED**: the agent may **draft** the Privacy Policy, ToS, and tax disclaimers as operational templates, but they are **not legal advice** and must carry the marker below until a qualified professional reviews them. Same rule as M03 and A00. The agent must never present drafted legal text as final or advice.
+
+  ```text
+  LEGAL-REVIEW: PENDING — DRAFT TEKNIS, WAJIB DITINJAU OLEH LEGAL COUNSEL / PAKAR PAJAK SEBELUM DIPUBLIKASIKAN
+  ```
+
+  The human flips the marker to `LEGAL-REVIEW: REVIEWED by <name> on <YYYY-MM-DD>` after review. Publishing legal text (privacy policy live on the domain, terms accepted at signup, tax figures in marketing) before that is a **FROZEN-spec violation**.
 
 ### Step 6 — Client Dependency SLA
 Register inputs: sandbox keys, email credentials, master data CSV/Excel, ≤3-business-day approvals. Clause: delay ≥3 business days extends launch equally, without liability.

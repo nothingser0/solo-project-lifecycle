@@ -1,6 +1,8 @@
 # DEVELOPMENT_PROGRESS_TRACKER.md
 
 > Progress tracker for coding execution, component implementation status, third-party integrations, and code review checkpoints for solo developers & AI coding agents (Cursor / Claude Code / Windsurf / Codex CLI).
+>
+> **Execution protocol**: tasks advance **one per turn** (see `TODO.md`). The agent implements → runs `Verify` → reports Evidence → stops. The human checks the row below and confirms before the next task begins. A row may only be marked done with human sign-off recorded.
 
 ---
 

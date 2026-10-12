@@ -1,14 +1,13 @@
-# Nuxt Stack Templates - Coming Soon
+# Nuxt Stack Templates
 
-> **Status**: Planned for future release  
-> **Priority**: Medium  
-> **Expected**: Q1 2027
+> **Status**: `AGENTS.md` available; the remaining files are still planned.
 
-## What Will Be Included
+## Included
 
-When complete, this directory will contain:
+- `AGENTS.md` — AI harness for Nuxt development (execution protocol, Nitro/server rules, anti-slop, security)
 
-- `AGENTS.md` - AI harness for Nuxt development
+## Still Planned
+
 - `ARCHITECTURE.md` - Nuxt 3 + Vue 3 architecture
 - `CONVENTIONS.md` - Vue/Nuxt coding standards
 - `ENV_EXAMPLE.md` - Environment configuration template
@@ -30,9 +29,4 @@ When complete, this directory will contain:
 
 ## Current Workaround
 
-Use generic templates from `templates/04-dev-execution/` and customize for Nuxt conventions.
-
----
-
-**Created**: 2026-10-03  
-**Status**: Placeholder
+Use generic templates from `templates/04-dev-execution/` for the remaining files.

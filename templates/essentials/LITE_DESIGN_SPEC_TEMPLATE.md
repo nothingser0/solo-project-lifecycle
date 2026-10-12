@@ -27,6 +27,8 @@
 
 ## Design Freeze
 
-- Approved by: [name] (solo self-approval allowed)
-- Date: [YYYY-MM-DD]
+**Gate-enforced** (`validate-gate.sh M04` fails without these — the AI agent may not fill them in):
+
+- Approved by: [name] — solo projects: the human user self-approves; an AI agent may not
+- Approved on: [YYYY-MM-DD]
 - Scope frozen: changes after this line require a CR or documented scope note.

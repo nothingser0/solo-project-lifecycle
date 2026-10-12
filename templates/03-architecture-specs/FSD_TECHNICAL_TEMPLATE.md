@@ -53,6 +53,23 @@
                           └── Encrypted Assets & Presigned URLs
 ```
 
+### Stack Decision (LOCKED — human decision, gate-enforced)
+
+Stack Decision LOCKED: [chosen stack]
+Stack-Locked-by: [name of the human who chose it — the AI agent presents options but may not choose]
+
+> `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without the 8
+> recorded questionnaire answers below. The agent asks; the human answers.
+
+- Q1 Team Expertise: [answer]
+- Q2 Database Experience: [answer]
+- Q3 Deployment Topology: [answer]
+- Q4 Expected Scale (Year 1): [answer]
+- Q5 Data Model Characteristics: [answer]
+- Q6 DevOps Complexity Tolerance: [answer]
+- Q7 Critical Feature Priority: [answer]
+- Q8 Compliance Requirements: [answer]
+
 ### Framework Versions (Pinned)
 *(Populate directly from `./scripts/check-package-versions.sh <stack>`)*
 - **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]

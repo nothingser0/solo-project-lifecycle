@@ -6,6 +6,14 @@
 
 set -e
 
+# Resolve the repo root from THIS script, then work from there.
+# Without this, every relative path below (scripts/*, docs/modules/*, SKILL.md)
+# resolved against the caller's cwd — so invoking the script by absolute path
+# from any other directory reported the entire repo as "missing".
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$ROOT_DIR"
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -19,7 +27,7 @@ ERRORS=0
 
 # 1. Verify Shell Scripts Syntax
 echo "1. Checking bash scripts syntax..."
-for script in scripts/*/*.sh templates/04-dev-execution/*.sh templates/04-dev-execution/scripts/*.sh; do
+for script in scripts/*/*.sh scripts/*/*/*.sh templates/04-dev-execution/*.sh templates/04-dev-execution/scripts/*.sh; do
     if [ -f "$script" ]; then
         if bash -n "$script" 2>/dev/null; then
             echo -e "  ${GREEN}✓${NC} $script"
@@ -155,9 +163,33 @@ else
     echo -e "  ${YELLOW}⚠${NC} $BUDGET_WARN runbook(s) over budget (non-blocking)"
 fi
 
-# 7. Eval scenario catalog integrity (structural; does not run an agent)
+# 7. Gate behavioral regression tests + output parity
 echo ""
-echo "7. Checking Eval Scenario Catalog..."
+echo "7. Checking Gate Behavioral Regressions..."
+# Skipped when invoked FROM the regression suite (it re-runs this script to prove
+# cwd-independence); without this guard the two would recurse forever.
+if [ "${GATE_REGRESSIONS_RUNNING:-0}" = "1" ]; then
+    echo -e "  ${YELLOW}⚠${NC} skipped (nested run from the regression suite)"
+else
+    if bash scripts/verify/test-gate-regressions.sh >/dev/null 2>&1; then
+        echo -e "  ${GREEN}✓${NC} gate regression tests pass (intake gate enforced on every reachable module)"
+    else
+        echo -e "  ${RED}✗${NC} gate regression tests FAILED (run: bash scripts/verify/test-gate-regressions.sh)"
+        ERRORS=$((ERRORS + 1))
+    fi
+    # Output parity: every gate's behaviour must match the captured golden files.
+    # This is what proves the dispatcher/module split changed nothing observable.
+    if bash scripts/verify/test-gate-output.sh >/dev/null 2>&1; then
+        echo -e "  ${GREEN}✓${NC} gate output parity holds (21 checks vs golden, byte-for-byte)"
+    else
+        echo -e "  ${RED}✗${NC} gate output parity FAILED (run: bash scripts/verify/test-gate-output.sh)"
+        ERRORS=$((ERRORS + 1))
+    fi
+fi
+
+# 8. Eval scenario catalog integrity (structural; does not run an agent)
+echo ""
+echo "8. Checking Eval Scenario Catalog..."
 if command -v node >/dev/null 2>&1; then
     if node scripts/evals/run-evals.js --validate >/dev/null 2>&1; then
         echo -e "  ${GREEN}✓${NC} eval scenarios valid (8 scenarios, all with automated assertions)"
@@ -167,8 +199,8 @@ if command -v node >/dev/null 2>&1; then
     fi
 fi
 
-# 8. Verify Markdown Links and Frontmatter
-echo "8. Checking Markdown Links and SKILL.md Frontmatter..."
+# 9. Verify Markdown Links and Frontmatter
+echo "9. Checking Markdown Links and SKILL.md Frontmatter..."
 if command -v node >/dev/null 2>&1; then
     if node scripts/verify/verify-skill-frontmatter.js >/dev/null 2>&1; then
         echo -e "  ${GREEN}✓${NC} SKILL.md frontmatter valid"

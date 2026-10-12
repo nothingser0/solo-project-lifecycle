@@ -1,0 +1,294 @@
+# Golden gate output — captured by scripts/verify/test-gate-output.sh --update
+# Do not edit by hand. Each block: '##### GATE: <GATE> exit=<code>' then the exact
+# stdout+stderr that gate produced against the fixed fixture in the test script.
+
+##### GATE: M00 exit=0
+🔍 Validating Gate: M00
+============================================================
+=== M00: Product Discovery & Strategy Gate Checklist ===
+  [INFO] Client / Internal / Portfolio delivery: M00 Product Discovery is WAIVED (Scope pre-defined).
+  ⚠️  docs/pm/M00_LITE.md (optional, not found)
+
+============================================================
+✅ Gate validation PASSED
+##### END GATE: M00
+
+##### GATE: M01 exit=1
+🔍 Validating Gate: M01
+============================================================
+=== M01: Idea Feasibility Gate Checklist ===
+  ❌ docs/pm/IDEA_BRIEF.md (MISSING)
+  ✅ docs/pm/PROJECT_STATE.md (297B)
+  [INFO] Running mechanical scale & solo capacity classifier...
+  ✅ Solo capacity verified: Scope is executable within solo capacity
+  ✅ Intake Gate: all 5 mandatory fields answered
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M01
+
+##### GATE: M02 exit=1
+🔍 Validating Gate: M02
+============================================================
+=== M02: Discovery & Scope Gate Checklist ===
+  ✅ Intake Gate: all 5 mandatory fields answered
+  ✅ docs/pm/SCOPE_STATEMENT.md (1215B)
+  ✅ Zero ambiguous terms in Must-Have scope rows
+  ❌ Explicit Scope-Lock-Decision (LOCKED | PENDING) not declared in SCOPE_STATEMENT.md!
+  [INFO] Declared scale: Medium; P0 feature rows (F-xx) counted: 0 (expected 3-25)
+  ❌ P0 Must-Have count (0) outside scale 'Medium' limits (3-25). Prune scope or re-classify scale.
+  ❌ Data Confidence Legend [✅ / 🔶 / ❓] not declared!
+  ❌ Out-of-Scope boundary section missing!
+  ❌ RBAC Zero Self-Approval guardrail (no self-approval for mutations/approvals) missing in SCOPE_STATEMENT.md!
+  [INFO] Company/client delivery: Stakeholder & Communication docs MANDATORY.
+  ❌ docs/pm/STAKEHOLDER_MAP.md (MISSING)
+  ❌ docs/pm/COMMUNICATION_PLAN.md (MISSING)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M02
+
+##### GATE: M03 exit=1
+🔍 Validating Gate: M03
+============================================================
+=== M03: Legal SOW & Charter Checklist ===
+  ❌ contracts/SOW_CONTRACT.md (MISSING)
+  [INFO] Medium+ client delivery: NDA is MANDATORY before client data access.
+  ❌ contracts/NDA.md (MISSING)
+
+⚠️  DO NOT proceed to M04 until DP confirmed in bank account (or bypassed for Solo SaaS)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M03
+
+##### GATE: M04 exit=1
+🔍 Validating Gate: M04
+============================================================
+=== M04: UI/UX Prototyping Gate Checklist ===
+  ✅ Intake Gate: all 5 mandatory fields answered
+  ❌ assets/logo/logo.svg (TOO SMALL: 120B < 200B minimum required)
+  ✅ docs/design/inspiration/notes.md (Benchmark selection verified)
+  ✅ docs/specs/SITEMAP.md (1117B)
+  ✅ docs/specs/COMPONENT_REQUIREMENTS.md (1126B)
+  ✅ docs/specs/LOGO_DESIGN_BRIEF.md (348B)
+  ✅ docs/design/inspiration/notes.md (51B)
+  ✅ DESIGN.md (1256B)
+  ✅ docs/specs/DESIGN_SPEC.md (1278B)
+  ✅ DESIGN.md accessibility & contrast ratios verified
+  ✅ DESIGN.md z-index layering scale verified
+  ✅ DESIGN_SPEC.md 5-state matrix markers verified (4/5 states detected)
+  ✅ DESIGN.md Typography & Spacing sections verified
+  ✅ Screen count match verified (SITEMAP 2 vs DESIGN_SPEC 2, tolerance ±0)
+  ❌ DESIGN_SPEC.md still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Name]). The human signs the Design Freeze before M06.
+  ❌ DESIGN_SPEC.md missing a named Design Freeze approver ('Approved by: <name>').
+  ❌ DESIGN_SPEC.md missing a real Design Freeze date ('Approved on: YYYY-MM-DD').
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M04
+
+##### GATE: M05 exit=1
+🔍 Validating Gate: M05
+============================================================
+=== M05: Architecture & Specs Gate Checklist ===
+  ✅ Intake Gate: all 5 mandatory fields answered
+  ❌ docs/specs/PRD.md (MISSING)
+  ❌ docs/specs/FSD.md (MISSING)
+  [INFO] Medium+ scale detected: Architecture Decision Record (ADR) is MANDATORY.
+  ❌ docs/governance/ADR.md (MISSING)
+  [OK] PROJECT_LITE.md (optional)
+  ✅ Locked tech stack decision documented in PROJECT_LITE.md
+  ❌ PROJECT_LITE.md declares 'Stack Decision LOCKED:' but records only 0/8 questionnaire answers.
+     The 8 answers are the human's input (M05 STEP 1). Ask the questions, END TURN, and record all 8 before locking.
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M05
+
+##### GATE: M06 exit=1
+🔍 Validating Gate: M06
+============================================================
+=== M06: Development Execution Gate Checklist ===
+  ✅ Intake Gate: all 5 mandatory fields answered
+  ✅ AGENTS.md (707B)
+  ✅ TODO.md (126B)
+  ✅ CONTEXT.md (611B)
+  ❌ TODO.md has insufficient completed tasks: found only 1 marked '[x]' (minimum 3 completed tasks required)!
+  ❌ TODO.md has 2 unfinished/blocked task(s) marked '[ ]', '[~]', or '[!]'! All sprint tasks must be completed ([x]) before closing Module 06.
+  ❌ TODO.md: completed task(s) missing a human approval line in their Evidence.
+     Add e.g. 'Approved: <date> by <name>' to each block below, or un-tick them:
+       - M06-DB-01: Schema
+  ✅ Full-stack atomic task categories verified in TODO.md (DB, BE, FE)
+  ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-03)!
+  ✅ AGENTS.md technical quality and engineering guidelines verified
+  ❌ RUNBOOK_LOCAL.md (MISSING)
+  ❌ VERIFY_LOCAL.md (MISSING)
+  ✅ Anti-slop: zero type-suppression escape hatches in source
+  ✅ Anti-slop: zero placeholder TODO stubs in source
+  ✅ Anti-slop: zero obvious hardcoded secrets in source
+  ✅ Anti-slop: no narrating/stub comments detected in source
+  ⚠️  ARCHITECTURE.md (optional, not found)
+  ⚠️  CONVENTIONS.md (optional, not found)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M06
+
+##### GATE: M07 exit=1
+🔍 Validating Gate: M07
+============================================================
+=== M07: Quality Assurance & SIT Gate Checklist (medium+ only) ===
+  ❌ docs/qa/SIT_WORKBOOK.md (MISSING)
+  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 22-tell anti-vibe-code audit on the deployed URL)
+  ⚠️  docs/qa/SECURITY_AUDIT.md (optional, not found)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M07
+
+##### GATE: M08 exit=1
+🔍 Validating Gate: M08
+============================================================
+=== M08: Data Migration & Seeding Gate Checklist ===
+  ❌ docs/pm/DATA_MIGRATION_PLAN.md (STUB: 34B — file exists but empty/near-empty; fill real content)
+  ❌ M08 Data Migration: no record that the client-supplied inputs were actually received.
+     Add 'Inputs-Received: <what> from <client PIC> on <YYYY-MM-DD>' to docs/pm/DATA_MIGRATION_PLAN.md
+     Source data / credentials come from the client — never invent or simulate them.
+  ⚠️  docs/pm/MIGRATION_RECONCILIATION_REPORT.md (optional, not found)
+  [INFO] Data migration plan verified. Run reconciliation after seeding.
+
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M08
+
+##### GATE: M09 exit=1
+🔍 Validating Gate: M09
+============================================================
+=== M09: Validation Gate (UAT Sign-Off) Checklist ===
+  ❌ docs/pm/UAT_SIGNOFF_REPORT.md (MISSING)
+  ⚠️  docs/qa/UAT_WORKBOOK.md (optional, not found)
+
+⚠️  DO NOT deploy to production until UAT signed
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M09
+
+##### GATE: M10 exit=1
+🔍 Validating Gate: M10
+============================================================
+=== M10: Deployment Production Gate Checklist ===
+  ❌ docs/DEPLOYMENT_PROTOCOL.md (MISSING)
+  ❌ docs/pm/GO_LIVE_REPORT.md (MISSING)
+  ⚠️  docs/ROLLBACK_PLAN.md (optional, not found)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M10
+
+##### GATE: M11 exit=1
+🔍 Validating Gate: M11
+============================================================
+=== M11: Handover & BAST Gate Checklist ===
+  ❌ docs/pm/BAST.md (MISSING)
+  ⚠️  docs/pm/GO_LIVE_REPORT.md (optional, not found)
+  ⚠️  docs/pm/HANDOVER_PROTOCOL.md (optional, not found)
+  ⚠️  docs/USER_MANUAL.md (optional, not found)
+
+⚠️  DO NOT transfer repo/credentials until 100% payment confirmed
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M11
+
+##### GATE: M12 exit=1
+🔍 Validating Gate: M12
+============================================================
+=== M12: Warranty SLA Retainer Gate Checklist ===
+  ❌ docs/pm/WARRANTY_POLICY.md (MISSING)
+  ⚠️  docs/pm/SLA_RETAINER_CONTRACT.md (optional, not found)
+  ⚠️  docs/pm/INCIDENT_RESPONSE.md (optional, not found)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: M12
+
+##### GATE: M13 exit=0
+🔍 Validating Gate: M13
+============================================================
+=== M13: Product Operations & Iteration Gate Checklist ===
+  [INFO] Client/Internal/Portfolio delivery detected: M13 Product Iteration is WAIVED (lifecycle ends at M11/M12).
+  ⚠️  docs/analytics/METRICS_BASELINE_REPORT.md (optional, not found)
+
+============================================================
+✅ Gate validation PASSED
+##### END GATE: M13
+
+##### GATE: A00 exit=1
+🔍 Validating Gate: A00
+============================================================
+=== A00: Bid/No-Bid & Commercial Clearance Checklist ===
+  ❌ contracts/CONSULTING_AGREEMENT.md (MISSING)
+  ⚠️  docs/pm/RFP_RESPONSE.md (optional, not found)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: A00
+
+##### GATE: A01 exit=1
+🔍 Validating Gate: A01
+============================================================
+=== A01: WBS Phasing & Domain Decomposition Checklist ===
+  ❌ docs/pm/WBS_PHASING_PLAN.md (MISSING)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: A01
+
+##### GATE: A02 exit=1
+🔍 Validating Gate: A02
+============================================================
+=== A02: C4 Enterprise Architecture & STRIDE Threat Modeling Checklist ===
+  ❌ docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md (MISSING)
+  ❌ docs/security/THREAT_MODEL_STRIDE.md (MISSING)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: A02
+
+##### GATE: A03 exit=1
+🔍 Validating Gate: A03
+============================================================
+=== A03: Vendor Procurement & Build-vs-Buy Evaluation Checklist ===
+  ❌ docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md (MISSING)
+  ❌ docs/governance/VENDOR_COMPARISON_MATRIX.md (MISSING)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: A03
+
+##### GATE: A04 exit=1
+🔍 Validating Gate: A04
+============================================================
+=== A04: Governance Handover & Architecture Conformance Retainer Checklist ===
+  ❌ docs/governance/GOVERNANCE_HANDOVER_PACK.md (MISSING)
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: A04
+
+##### GATE: _noarg exit=1
+Usage: <REPO>/scripts/gates/validate-gate.sh <MODULE_ID>
+Example: <REPO>/scripts/gates/validate-gate.sh M03
+
+Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
+##### END GATE: _noarg
+
+##### GATE: _invalid exit=1
+🔍 Validating Gate: ZZZ
+============================================================
+❌ Unknown gate: ZZZ
+Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
+##### END GATE: _invalid

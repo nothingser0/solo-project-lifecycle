@@ -3,8 +3,8 @@
  * Index Manifest Generator & Two-Way Completeness Checker
  *
  * Modes:
- *   node scripts/verify/index-manifest.js          -> regenerate INDEX.json from filesystem
- *   node scripts/verify/index-manifest.js --check   -> verify INDEX.json <-> filesystem parity
+ *   node scripts/verify/index-manifest.js          -> regenerate docs/INDEX.json from filesystem
+ *   node scripts/verify/index-manifest.js --check   -> verify docs/INDEX.json <-> filesystem parity
  *
  * Why: the framework is large; agents route via an index instead of reading everything.
  * Prose indexes drift (files added but unlisted). This makes completeness machine-checkable:
@@ -15,8 +15,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = process.cwd();
-const MANIFEST = path.join(ROOT, 'INDEX.json');
+// Resolve the repo root from THIS file, not from the caller's cwd.
+// Using process.cwd() made the script fail whenever it was invoked from anywhere
+// other than the repo root (e.g. `node /path/to/scripts/verify/index-manifest.js --check`).
+const ROOT = path.resolve(__dirname, '..', '..');
+// The manifest lives with the other human-facing reference docs, not in the repo
+// root — the root is reserved for SKILL.md and project-level metadata.
+const MANIFEST = path.join(ROOT, 'docs', 'INDEX.json');
 
 // Directories whose files must be fully indexed.
 const TRACKED_DIRS = ['templates', 'references', 'patterns', 'docs/modules', 'evals'];
