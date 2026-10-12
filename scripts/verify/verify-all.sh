@@ -180,7 +180,8 @@ else
     # Output parity: every gate's behaviour must match the captured golden files.
     # This is what proves the dispatcher/module split changed nothing observable.
     if bash scripts/verify/test-gate-output.sh >/dev/null 2>&1; then
-        echo -e "  ${GREEN}✓${NC} gate output parity holds (19 gates + usage paths + M00 verdicts vs golden, byte-for-byte)"
+        GOLDEN_COUNT=$(grep -c "^##### GATE:" scripts/verify/golden-gate-output.txt 2>/dev/null || echo "?")
+        echo -e "  ${GREEN}✓${NC} gate output parity holds (${GOLDEN_COUNT} checks vs golden, byte-for-byte)"
     else
         echo -e "  ${RED}✗${NC} gate output parity FAILED (run: bash scripts/verify/test-gate-output.sh)"
         ERRORS=$((ERRORS + 1))
@@ -191,8 +192,11 @@ fi
 echo ""
 echo "8. Checking Eval Scenario Catalog..."
 if command -v node >/dev/null 2>&1; then
+    # Count from the runner rather than hardcoding it — the number went stale the
+    # moment EVAL-09/EVAL-10 were added.
     if node scripts/evals/run-evals.js --validate >/dev/null 2>&1; then
-        echo -e "  ${GREEN}✓${NC} eval scenarios valid (8 scenarios, all with automated assertions)"
+        EVAL_COUNT=$(ls evals/scenarios/*.md 2>/dev/null | wc -l | tr -d ' ')
+        echo -e "  ${GREEN}✓${NC} eval scenarios valid (${EVAL_COUNT} scenarios, all with automated assertions)"
     else
         echo -e "  ${RED}✗${NC} eval catalog invalid (run: node scripts/evals/run-evals.js --validate)"
         ERRORS=$((ERRORS + 1))

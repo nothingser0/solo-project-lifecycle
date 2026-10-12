@@ -45,6 +45,8 @@ Document name, title, email, phone of **1 absolute decision maker** client-side.
 | Payment | 50/50 | 30/40/30 | 30/40/30 per pkg | Retainer / Net 30 |
 | NDA | Clause suffices | **MANDATORY** | Mutual NDA + UU PDP | Mutual NDA + DPA |
 
+**Delivery routing (the gate reads only this field)**: `solo` / `portfolio` / `internal` in `docs/pm/PROJECT_STATE.md` → gate **WAIVED** (record `WAIVED (Self-Initiated)`; complete the Solo SaaS Charter — no SOW, no DP, never a fabricated client). `client` → **always enforced**. Undeclared → fail-closed.
+
 Hierarchy on conflict: **MSA** (enduring principles) > **SOW** (deliverables, milestones, payments) > **DPA** (UU PDP roles, breach notice) > **NDA**.
 
 **Enterprise routing**: >25 P0 features (Enterprise tier; Large 16–25 P0 stays solo-viable), legacy core replacement, or statutory compliance exceeds solo capacity — do NOT sign a development SOW. Use the Consulting Agreement under Phase A00 with Risk Assessment Matrix and RACI Matrix approved.
@@ -53,8 +55,14 @@ Hierarchy on conflict: **MSA** (enduring principles) > **SOW** (deliverables, mi
 
 ## 3. Output Artifacts
 
-All in **`docs/pm/`**:
-1. **`docs/pm/SOW_CONTRACT.md`**: consolidated agreement (Part I: Project Charter with baseline dates + SOW: scope, fees, milestones, Single PIC, legal clauses). Template: `SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md` (Medium/Large) or `SOW_SMB.md` (SMB <50 employees).
+Written to **`contracts/`** or **`docs/pm/`** (gate accepts either path per file). Exact template paths: deep-dive §5.
+
+1. **`SOW_CONTRACT.md`** — Charter (Part I, baseline dates) + SOW (scope, fees, milestones, Single PIC, clauses). Its **M03 Gate Confirmation Log** footer carries the DP receipt (STEP 3).
+2. **`NDA.md`** — mandatory Medium+ before client data access; optional Small.
+3. **`DATA_PROTECTION_ADDENDUM.md`** — when personal data is processed (UU PDP 27/2022).
+4. **`change-requests/CR-*.md`** + **`FINANCIAL_TRACKING.md`** — one CR sheet per approved change; burn tracked from day one.
+5. **`SOLO_SAAS_CHARTER.md`** — Solo SaaS / internal only, in place of the SOW.
+6. **`PROJECT_STATE.md`** — updated `M03` row + the `Delivery` field that routes the gate.
 
 ---
 
@@ -71,7 +79,7 @@ PASSED if and only if:
 ## 🛑 [GATE] EXIT & MANDATORY STOP PROTOCOL
 
 ### STEP 0 — File Existence Check (BLOCKING)
-`test -f docs/pm/SOW_CONTRACT.md` must succeed. If missing: **STOP IMMEDIATELY** — no validation, no summary, no DP prompt. Report `CRITICAL ERROR: SOW_CONTRACT.md file was not created. Module 03 FAILED - cannot proceed to Module 04.` and END TURN.
+For client delivery, one of `contracts/SOW_CONTRACT.md`, `docs/pm/SOW_CONTRACT.md`, `contracts/SOW_SMB.md`, or `docs/pm/SOW_SMB.md` must exist. If none: **STOP IMMEDIATELY** — no validation, no summary, no DP prompt. Report `CRITICAL ERROR: SOW_CONTRACT.md file was not created. Module 03 FAILED - cannot proceed to Module 04.` and END TURN. (Solo SaaS / internal: skip STEP 0–1; the charter replaces the SOW and the gate is `WAIVED`.)
 
 ### STEP 1 — Content Validation & DP Confirmation
 1. No Module 04 (design) work until this [GATE] passes — DP confirmed or BYPASS recorded (contractual stop, SKILL.md rule 3).

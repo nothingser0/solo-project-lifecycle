@@ -72,3 +72,20 @@ Governance & compliance templates for A00–A04:
 - T&M/retainer: bill monthly or per 40-hour block, paid upfront per period; Large-scale phased deliverables map to per-package 30/40/30 schedules.
 - Cross-check contract value against M01 Model A math: Net Profit Margin ≥ healthy band and Real Hourly Yield ≥ Rp 100,000–250,000/jam before signing.
 - Track milestone status/burn in `templates/02-legal-commercial/FINANCIAL_TRACKING.md` from day one.
+
+## 6. Output Artifacts & Template Paths
+
+Every artifact lands in `contracts/` **or** `docs/pm/` (the gate accepts either path per file).
+
+| Artifact | When required | Template to copy |
+| :--- | :--- | :--- |
+| `SOW_CONTRACT.md` (Part I Charter + SOW) | Medium / Large client | `templates/01-discovery-commercial/SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md` |
+| `SOW_SMB.md` | SMB client <50 employees | `templates/02-legal-commercial/SOW_SMB.md` |
+| `NDA.md` | Medium+ before client data access (optional Small) | `templates/02-legal-commercial/NDA_TEMPLATE.md` |
+| `DATA_PROTECTION_ADDENDUM.md` | whenever personal data is processed | `templates/03-governance/DATA_PROTECTION_ADDENDUM.md` |
+| `SOLO_SAAS_CHARTER.md` | Solo SaaS / internal only, in place of the SOW | `templates/01-discovery-commercial/SOLO_SAAS_CHARTER_TEMPLATE.md` |
+| `change-requests/CR-[YY]-[NNN].md` | one per approved change | `templates/02-legal-commercial/CHANGE_REQUEST_TEMPLATE.md` |
+| `FINANCIAL_TRACKING.md` | from day one | `templates/02-legal-commercial/FINANCIAL_TRACKING.md` |
+| `PROJECT_STATE.md` (M03 row + `Delivery` field) | always | `templates/essentials/PROJECT_STATE_TEMPLATE.md` |
+
+**DP recording rule**: both SOW templates carry an **M03 Gate Confirmation Log** footer. Tick its Down Payment line and fill the date/amount/name; the receipt wording must sit on that same line. `scripts/gates/validate-gate.sh M03` reads that line — never a chat message — and `scripts/verify/lint-template.sh` fails any SOW template that drops one of the M03 hard-blocker clauses, so a shipped template can never regress into one that cannot pass its own gate.

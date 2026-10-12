@@ -283,6 +283,45 @@ Architecture: App-per-domain / Django Service Layer
 EOF
         ;;
 
+    fastapi)
+        echo -e "${CYAN}Framework: FastAPI Ecosystem (PyPI JSON API)${NC}"
+        echo ""
+        echo -n "Querying PyPI API for fastapi..." >&2
+
+        fastapi_ver=$(fetch_json "https://pypi.org/pypi/fastapi/json" "d['info']['version']")
+        fastapi_python_req=$(fetch_json "https://pypi.org/pypi/fastapi/json" "d['info'].get('requires_python', 'N/A')")
+        pydantic_ver=$(fetch_json "https://pypi.org/pypi/pydantic/json" "d['info']['version']")
+        sqlalchemy_ver=$(fetch_json "https://pypi.org/pypi/sqlalchemy/json" "d['info']['version']")
+        alembic_ver=$(fetch_json "https://pypi.org/pypi/alembic/json" "d['info']['version']")
+        psycopg_ver=$(fetch_json "https://pypi.org/pypi/psycopg/json" "d['info']['version']")
+
+        echo -e " ${GREEN}v$fastapi_ver${NC}" >&2
+        echo -e "FastAPI:                 ${GREEN}v$fastapi_ver${NC} (Requires Python: ${CYAN}$fastapi_python_req${NC})"
+        echo -e "Pydantic:                ${GREEN}v$pydantic_ver${NC}"
+        echo -e "SQLAlchemy:              ${GREEN}v$sqlalchemy_ver${NC}"
+        echo -e "Alembic:                 ${GREEN}v$alembic_ver${NC}"
+        echo -e "Psycopg (PostgreSQL):    ${GREEN}v$psycopg_ver${NC}"
+
+        echo ""
+        echo -e "${CYAN}=== Compatibility Analysis ===${NC}"
+        echo -e "${GREEN}✓ Query resolved directly from PyPI API (no local python/pip CLI required)${NC}"
+        echo -e "${GREEN}✓ Python Requirement: $fastapi_python_req${NC}"
+        echo -e "${YELLOW}! FastAPI minor releases occasionally tighten Pydantic v2 behaviour — pin both.${NC}"
+
+        echo ""
+        echo -e "${CYAN}=== Recommended Pinned Versions (for FSD.md) ===${NC}"
+        echo ""
+        cat <<EOF
+Framework: FastAPI ^$fastapi_ver
+Python Runtime: $fastapi_python_req
+Validation: pydantic ^$pydantic_ver
+ORM: SQLAlchemy ^$sqlalchemy_ver
+Migrations: alembic ^$alembic_ver
+Database Driver: psycopg ^$psycopg_ver
+Architecture: Router-per-domain / dependency-injected service layer
+EOF
+        ;;
+
     go|golang)
         echo -e "${CYAN}Framework: Go Ecosystem (Official go.dev & Module Proxy)${NC}"
         echo ""
@@ -511,7 +550,7 @@ EOF
 
     *)
         echo -e "${RED}Error: Unsupported framework '$FRAMEWORK'.${NC}"
-        echo "Supported frameworks: nextjs, laravel, django, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt"
+        echo "Supported frameworks: nextjs, laravel, django, fastapi, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt"
         exit 1
         ;;
 esac

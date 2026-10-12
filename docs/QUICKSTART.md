@@ -91,7 +91,7 @@ Week 4: Deploy (2 days)
 ### Do These Only (Small-path modules)
 - ✅ Intake (8 questions — 5 core + 3 escalation → `docs/pm/PROJECT_STATE.md`; mandatory at every scale)
 - ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/variants/04_UIUX_LITE.md`)
-- ✅ M05 (Architecture) → 1 day specs (Section 5 of `PROJECT_LITE.md`)
+- ✅ M05 (Architecture) → 1 day specs (Section 5 of `PROJECT_LITE.md`: stack lock + DDL + API list + security blueprint + Module 04 handoff), then the **human** writes the sign-off in Section 6 — the gate rejects placeholder answers and blank sign-off rows, and an AI agent may never sign
 - ✅ M06 (Development + security checklist) → 10 days coding
 - ✅ M09-LITE (1 recorded tester in `docs/qa/UAT_SIGNOFF_SMALL.md`; self-tester for solo)
 - ✅ M10 (Deployment) → 1 day launch

@@ -24,6 +24,8 @@ gate_M03() {
         IS_SOLO=0 # Client delivery NEVER bypasses SOW regardless of scale
     else
         IS_SOLO=0 # Undeclared delivery: gate is enforced (fail-closed)
+        echo "  [INFO] Delivery not declared in docs/pm/PROJECT_STATE.md — the SOW gate is enforced fail-closed."
+        echo "         Client work MUST pass this gate; Solo SaaS / product / internal work records 'Delivery: solo | internal | portfolio' to WAIVE it."
     fi
 
     if [ $IS_SOLO -eq 1 ]; then
@@ -49,12 +51,17 @@ gate_M03() {
             check_required "contracts/NDA.md" "docs/pm/NDA.md" 500
         fi
         if [ -f "$target_sow" ]; then
-            # A2: core section headings must be present (SOW_SMB vs consolidated SOW layout)
-            if grep -qiE "^#{1,6}[[:space:]]*.*Statement of Work" "$target_sow" 2>/dev/null; then
-                check_sections "$target_sow" "Project Overview" "Scope of Work" "Payment Terms" "Change Request"
-            else
-                check_sections "$target_sow" "Identification of Parties" "Scope of Work" "Compensation" "Change Request"
-            fi
+            # A2: core section headings must be present (SOW_SMB vs consolidated SOW layout).
+            # Heading-only routing kept the two layouts from cross-triggering. Every
+            # entry is an ALTERNATION so either layout's own wording satisfies it: the
+            # consolidated SOW titles its sections "Project Charter", "Compensation
+            # Value & Payment Milestone Schedule" and "Change Request (CR) Procedure",
+            # so a single-string matcher reported false MISSING headings.
+            check_sections "$target_sow" \
+                "Project Overview|Project Charter" \
+                "Scope of Work" \
+                "Payment Terms|Compensation" \
+                "Change Request"
             # 1. Check unresolved placeholders [...]
             if grep -q "\[\.\.\.\]\|\[Numeric Amount\]\|\[Account Number\]" "$target_sow"; then
                 echo "  ❌ Unresolved template placeholders [...] detected in SOW contract!"
@@ -71,8 +78,14 @@ gate_M03() {
 
             # 3. Down payment confirmation is a HARD BLOCKER for client projects
             # Must be an explicit [x] DP line AND state a clearing/received/transfer status
-            if grep -qiE "\[x\][^\n]*(DP|Down Payment|30%|40%|50%)" "$target_sow" && \
-               grep -qiE "\[x\][^\n]*(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)" "$target_sow"; then
+            # M1 (the DP line) must be ticked AND the receipt status must appear on the
+            # same line: grep already matches line-by-line, so '.*' is the correct
+            # same-line wildcard. Do NOT use '[^\n]*' — in POSIX ERE that is a negated
+            # class of the LETTER n, so 'DP received in bank account' failed purely
+            # because 'bank' contains an n. (Latent since the gate was written; the
+            # status word had to precede every n-containing word to pass.)
+            if grep -qiE "\[x\].*(DP|Down Payment|30%|40%|50%|Milestone 1)" "$target_sow" && \
+               grep -qiE "\[x\].*(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)" "$target_sow"; then
                 echo "  ✅ Down payment (DP) confirmation verified ([x] cleared & received in bank account)"
             else
                 echo "  ❌ Down payment (DP) not confirmed! Requires '[x] DP ... Cleared/Received/Transferred' (discussion-only or unchecked lines do NOT count)."

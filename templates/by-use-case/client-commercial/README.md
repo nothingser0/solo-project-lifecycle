@@ -176,7 +176,7 @@ Before signing SOW_CONTRACT.md:
 - [ ] **Governing law**: Indonesian law (for Indonesian clients)
 - [ ] **Dispute resolution**: Mediation before litigation
 
-**Note**: Templates reviewed by Indonesian contract law standards. For high-value contracts (>Rp 100M), consult lawyer (see `audit/LEGAL_REVIEW_TODO.md`).
+**Note**: Templates reviewed by Indonesian contract law standards. For high-value contracts (>Rp 100M), consult a lawyer, and pair the SOW with `templates/03-governance/DATA_PROTECTION_ADDENDUM.md` whenever personal data is processed.
 
 ---
 

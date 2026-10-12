@@ -67,13 +67,22 @@ gate_M05() {
             GATE_FAILED=1
         fi
 
-        # 3. API Endpoints contract verification (Minimum 5 endpoints documented)
+<<<<<<< HEAD
+        # 3. API Endpoints contract verification. STEP 4 and the exit criteria both
+        #    promise an endpoint matrix of at least 10 (5 was enforced here while the
+        #    runbook and deep dive both said 10 — a promise the script did not keep).
         ep_count=$(grep -iE "####\s*(GET|POST|PUT|PATCH|DELETE)|Route::(get|post|put|delete)|@(Get|Post|Put|Delete)Mapping|path:\s*/api" "$fsd" 2>/dev/null | wc -l || echo 0)
+=======
+        # 3. API Endpoints contract verification (Minimum 5 endpoints documented)
+        # Count endpoint HEADINGS (one per endpoint), not body lines: the template shows
+        # "Route: POST /api/..." inside a spec block, which the heading pattern misses.
+        ep_count=$(grep -icE "^\s*#{2,6}\s*(GET|POST|PUT|PATCH|DELETE)\s+/|Route::(get|post|put|delete)|@(Get|Post|Put|Delete)Mapping" "$fsd" 2>/dev/null || echo 0)
+>>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
         ep_count=$(echo "$ep_count" | tr -d ' ')
-        if [ "${ep_count:-0}" -ge 5 ]; then
+        if [ "${ep_count:-0}" -ge 10 ]; then
             echo "  ✅ API endpoint contracts verified ($ep_count endpoints documented)"
         else
-            echo "  ❌ FSD.md insufficient API endpoint contracts: found only ${ep_count:-0} endpoints (minimum 5 required)!"
+            echo "  ❌ FSD.md insufficient API endpoint contracts: found only ${ep_count:-0} endpoints (minimum 10 required by M05 STEP 4)!"
             GATE_FAILED=1
         fi
 
@@ -88,14 +97,22 @@ gate_M05() {
             fi
         fi
 
-        # 5. Multi-Tenant Row-Level Security (RLS) verification
-        if grep -qiE "multi-tenant|branch|cabang|tenant|organization" docs/pm/PROJECT_STATE.md 2>/dev/null || grep -qiE "org_id|tenant_id" "$fsd"; then
+        # 5. Multi-Tenant Row-Level Security (RLS) verification.
+        # Trigger on the STRUCTURED Intake field (the same signal classify-scale.sh uses),
+        # never on free-text search over PROJECT_STATE.md: that file's template ships the
+        # literal line "- Intake-Branch-Hierarchy: [no | yes]", which contains "branch" and
+        # so matched every project — including a genuinely single-tenant one — demanding RLS.
+        intake_branch="$(get_field Intake-Branch-Hierarchy docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if echo "$intake_branch" | grep -qE "^\s*(yes|ya|true|multi)" 2>/dev/null \
+            || grep -qE "org_id|tenant_id" "$fsd" 2>/dev/null; then
             if grep -qiE "ROW LEVEL SECURITY|ENABLE ROW LEVEL SECURITY|rls" "$fsd"; then
                 echo "  ✅ Multi-tenant isolation verified in FSD.md (Row-Level Security RLS present)"
             else
                 echo "  ❌ FSD.md missing Row-Level Security (RLS) policies for multi-tenant data isolation!"
                 GATE_FAILED=1
             fi
+        else
+            echo "  ✅ Single-tenant declared (Intake-Branch-Hierarchy: ${intake_branch:-no}) — RLS not required"
         fi
 
         # 6. Module 04 Handoff Strategy (BLOCKER). M06 STEP 0 parses this section to
@@ -143,4 +160,12 @@ gate_M05() {
     # 7. Stack lock must be backed by the 8 recorded questionnaire answers (human input).
     # '|| true' keeps the checklist running under 'set -e' so ALL failures print.
     check_stack_questionnaire || true
+
+    # 8. Deliverables M05 STEP 5 and STEP 7 promise but nothing verified: the
+    #    security blueprint, the Module 04 handoff that M06 STEP 0 depends on,
+    #    and the human technical sign-off the templates ship blank. All three run
+    #    for BOTH paths — a false-green here propagates into M06 unreviewed.
+    check_security_blueprint || true
+    check_handoff_strategy || true
+    check_tech_signoff || true
 }

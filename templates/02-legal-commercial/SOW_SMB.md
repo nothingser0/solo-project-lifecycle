@@ -162,10 +162,13 @@ generate low-stock alerts, and provide daily inventory reports.
 
 **If client requests changes outside scope**:
 
-1. Client submits written change request (email)
-2. Vendor provides cost + timeline impact estimate (within 2 business days)
+> Every change request is logged on the formal CR sheet (`templates/02-legal-commercial/CHANGE_REQUEST_TEMPLATE.md`
+> → `contracts/change-requests/CR-[YY]-[NNN].md`) — never negotiated ad-hoc over chat.
+
+1. Client Single PIC submits a written change request (CR sheet / email)
+2. Vendor provides cost + timeline impact estimate (within 2 business days), using `Fee = Estimated Hours × Hourly Rate`
 3. Client approves or rejects estimate
-4. If approved: Update SOW addendum, adjust timeline/payment
+4. If approved: CR sheet is signed and the SOW addendum updates scope + timeline/payment
 5. If rejected: Proceed with original scope
 
 **Example**:
@@ -220,8 +223,11 @@ Client decision: Approved / Deferred to Phase 2
 > Mark `[x]` ONLY after verifying against the actual bank statement / signed copy. Do NOT pre-fill.
 
 - [ ] SOW signed by both parties (dated copy filed)
-- [ ] DP received in bank account — Date: [YYYY-MM-DD] | Amount: Rp [Amount]
-- [ ] NDA signed (required when Client data is sensitive / commercial)
+- [ ] Part I Project Charter approved (baseline dates locked)
+- [ ] Single PIC officially designated with contact info
+- [ ] NDA signed (required when Client data is sensitive / commercial; mandatory for Medium+)
+- [ ] DPA / Data Protection Addendum signed (required when personal data is processed)
+- [ ] DP (Milestone 1) received in bank account — Date/Time: [YYYY-MM-DD HH:MM WIB] | Amount: Rp [Amount] | Confirmed By: [Name]
 
 `Gate-Decision: PENDING`
 

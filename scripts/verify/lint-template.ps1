@@ -117,16 +117,35 @@ if ($filename -match "PRD|FSD|DESIGN_SPEC") {
     }
 }
 
-if ($filename -match "SOW_CONTRACT") {
+if ($filename -match "SOW_CONTRACT|SOW_SMB") {
     # Check for monetary values
     if ($content -notmatch '(?:Rp|IDR|\$|USD|EUR)\s*[\d,\.]+') {
         $issues += "No monetary values found (required in contract, e.g. Rp, $, USD, EUR)"
     }
     
-    # Check for signatures section
+     # Check for signatures section
     if ($content -notmatch 'Tanda Tangan|Signature') {
         $issues += "No signature section found"
     }
+
+    # M03 hard-blocker parity (mirror of lint-template.sh): validate-gate.sh M03
+    # fails a SOW missing any of these clauses, so a shipped template lacking one
+    # can never pass its own gate. Surface it at lint time instead.
+    $m03Clauses = @(
+        @{ P = 'Single PIC'; L = 'Single PIC clause' },
+        @{ P = 'Deemed Acceptance|Klien Diam'; L = 'Deemed Acceptance clause' },
+        @{ P = 'Limitation of Liability|Liability Cap'; L = 'Limitation of Liability clause' },
+        @{ P = 'Revision Limit|Maximum \d+ (round|test cycle)'; L = 'Revision limits clause' },
+        @{ P = 'Third-Party (Subscriptions|Accounts)|Client corporate name|registered under the Client|billed directly to the Client'; L = 'Third-party account ownership clause' },
+        @{ P = 'Down Payment|30/40/30|50/50|Milestone.*Payment'; L = 'Payment terms & milestones' },
+        @{ P = 'Gate Confirmation Log'; L = 'M03 Gate Confirmation Log' }
+    )
+    foreach ($c in $m03Clauses) {
+        if ($content -notmatch $c.P) {
+            $issues += "Missing M03 hard-blocker clause: $($c.L)"
+    }
+    }
+
 }
 
 if ($filename -match "BAST") {
