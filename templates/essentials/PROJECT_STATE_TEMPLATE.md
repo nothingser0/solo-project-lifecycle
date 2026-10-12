@@ -64,7 +64,7 @@
 | **M02** | Discovery & Scope | `docs/pm/SCOPE_STATEMENT.md` | MoSCoW locked, RBAC defined, 0 ambiguous P0s | [Status] | [YYYY-MM-DD] |
 | **M03** | Legal SOW & Charter | `docs/pm/SOW_CONTRACT.md` (or `contracts/`) | Commercial Gate: DP received, Single PIC locked (WAIVED for Solo SaaS) | [Status] | [YYYY-MM-DD] |
 | **M04** | UI/UX & Information Architecture | `docs/specs/SITEMAP.md`, `DESIGN.md` | SITEMAP multi-role coverage, contrast ≥ 4.5:1 | [Status] | [YYYY-MM-DD] |
-| **M05** | Architecture Specs & PRD/FSD | `docs/specs/PRD.md`, `docs/specs/FSD.md` | Schema, APIs, lockfile versions pinned | [Status] | [YYYY-MM-DD] |
+| **M05** | Architecture Specs & PRD/FSD | `docs/specs/PRD.md`, `docs/specs/FSD.md` (Small: `PROJECT_LITE.md` §5); Medium+ also `docs/governance/ADR.md` | `Stack Decision LOCKED:` + 8 answers, DDL present, ≥5 endpoint headings, idempotency_keys iff sensitive data, RLS iff multi-branch | [Status] | [YYYY-MM-DD] |
 | **M06** | Development Execution | Root harness files deployed, `TODO.md` | 100% TODO completed, unit tests pass | [Status] | [YYYY-MM-DD] |
 | **M07** | Quality Assurance (SIT/Security) | `docs/qa/SIT_REPORT.md` | P0/P1 bugs = 0, security audit clean | [Status] | [YYYY-MM-DD] |
 | **M08** | Data Migration & Seeding | `docs/data/RECONCILIATION_REPORT.md` | Row counts match, data hash verified | [Status] | [YYYY-MM-DD] |
@@ -87,7 +87,7 @@
 | `SCOPE_STATEMENT.md` (Features) | `PRD.md` & `FSD.md` | Exact parity in feature numbering (F-01..F-NN) and acceptance criteria | [OK / Drift Detected] | [YYYY-MM-DD] |
 | `FSD.md` (Data Models) | Database Schema / Migrations | Table names, relations, enum variants, and indexes match FSD exactly | [OK / Drift Detected] | [YYYY-MM-DD] |
 | `PRD.md` & `FSD.md` | `docs/harness-root/TODO.md` | 100% of P0/P1 features are mapped into sprint tasks in TODO.md | [OK / Drift Detected] | [YYYY-MM-DD] |
-| `FSD.md` (Pinned Versions) | `package.json` / Lockfile | Pinned packages match auto-check script output (`./scripts/check-package-versions.sh`) | [OK / Drift Detected] | [YYYY-MM-DD] |
+| `FSD.md` (Pinned Versions) | `package.json` / Lockfile | Pinned packages match `./scripts/verify/verify-framework-version.sh` (M06 STEP 3) and the registry output of `./scripts/verify/check-package-versions.sh` | [OK / Drift Detected] | [YYYY-MM-DD] |
 
 ---
 

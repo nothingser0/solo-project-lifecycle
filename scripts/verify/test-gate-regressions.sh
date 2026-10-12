@@ -242,6 +242,7 @@ run_lock() {
 run_lock "M05 lock marker with zero questionnaire answers" BLOCKED "$WORK/pl_noq.md"
 run_lock "M05 lock backed by all 8 answers" ALLOWED "$WORK/pl_8q.md"
 
+<<<<<<< HEAD
 # B2. M05 deliverables that were never verified. The first case is the false-green
 # that motivated the guard: copy the RAW PROJECT_LITE_TEMPLATE.md, change ONLY the
 # lock line, and the old gate passed with "8 recorded questionnaire answers" because
@@ -258,6 +259,37 @@ expect_m05() {
     out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
     local got="ALLOWED"
     if echo "$out" | grep -qE "$pattern"; then
+=======
+# B2. M05 RLS trigger. Regression: the check grepped free text over PROJECT_STATE.md
+# for "branch|tenant|organization", and the shipped template's own line
+# "- Intake-Branch-Hierarchy: [no | yes]" contains "branch" — so EVERY project,
+# including a single-tenant one, was told its FSD was missing RLS policies.
+# The trigger must come from the structured Intake field the classifier reads.
+run_rls() {
+    local name="$1" want="$2" branch="$3" fsextra="$4"
+    local dir="$WORK/rls"
+    make_project "$dir" "- **Scale**: Medium\n- Delivery: client\n- Intake-Success-Metric: 50 invoices/day\n- Intake-P0-Features: 10 (invoices, reports)\n- Intake-Time-Capacity: 40 hrs/week x 10 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: $branch\n- Intake-Compliance: none\n- Intake-Status: ANSWERED\n"
+    mkdir -p "$dir/docs/specs"
+    {
+        printf -- '## 1. Document Metadata\n'
+        printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
+        printf -- 'Stack Decision LOCKED: FastAPI\nStack-Locked-by: Zen\n'
+        printf -- '### Framework Versions (Pinned):\n- FastAPI: 0.143.0\n'
+        printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
+        printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
+        printf -- '- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n'
+        printf -- '- Q8 Compliance Requirements: x\n'
+        printf -- '## 3. Relational Database Schema\nCREATE TABLE invoices (id uuid primary key, total bigint);\n'
+        printf -- '## 6. API Contract Specifications\n'
+        printf -- '#### GET /api/v1/invoices\n#### POST /api/v1/invoices\n#### PATCH /api/v1/invoices/:id\n'
+        printf -- '#### DELETE /api/v1/invoices/:id\n#### POST /api/v1/auth/login\n'
+        printf '%b' "$fsextra"
+    } > "$dir/docs/specs/FSD.md"
+    local out
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    local got="ALLOWED"
+    if echo "$out" | grep -q "missing Row-Level Security"; then
+>>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
         got="BLOCKED"
     fi
     if [ "$got" = "$want" ]; then
@@ -269,6 +301,7 @@ expect_m05() {
     fi
 }
 
+<<<<<<< HEAD
 # A filled answer block + the Small-path artefacts the gate now requires.
 ANSWERED_Q8='- Q1 Team Expertise: TypeScript\n- Q2 Database Experience: PostgreSQL\n- Q3 Deployment Topology: PaaS\n- Q4 Expected Scale (Year 1): under 100 users\n- Q5 Data Model Characteristics: fixed schema\n- Q6 DevOps Complexity Tolerance: zero-config\n- Q7 Critical Feature Priority: speed\n- Q8 Compliance Requirements: UU PDP light\n'
 SECURITY_OK='AES-256-GCM envelope encryption; Argon2id hashing; OWASP Top 10; rate limiting 60/min.\n'
@@ -297,6 +330,51 @@ expect_m05 "M05 lock line but no security blueprint" BLOCKED "security blueprint
 expect_m05 "M05 lock line but no Module 04 handoff" BLOCKED "missing the 'Module 04 Handoff Strategy'" build_no_handoff
 expect_m05 "M05 blank/placeholder sign-off fields" BLOCKED "blank/placeholder sign-off fields" build_blank_signoff
 expect_m05 "M05 complete Small-path artifact set" ALLOWED "Gate validation FAILED" build_all_ok
+=======
+run_rls "M05 single-tenant project is NOT asked for RLS" ALLOWED "no" ""
+run_rls "M05 multi-branch project IS asked for RLS" BLOCKED "yes" ""
+run_rls "M05 single-tenant but FSD declares org_id -> RLS required" BLOCKED "no" "\nCREATE TABLE users (org_id uuid not null);\n"
+
+# B3. M05 endpoint counting. Regression: the pattern matched only "#### GET"
+# headings, so the shipped FSD template (which shows "Route: POST /api/..." inside a
+# spec block) scored 0 endpoints and no template-faithful FSD could ever pass.
+run_endpoints() {
+    local name="$1" want="$2" body="$3"
+    local dir="$WORK/ep"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    mkdir -p "$dir/docs/specs"
+    {
+        printf -- '## 1. Document Metadata\n'
+        printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
+        printf -- 'Stack Decision LOCKED: Next.js\nStack-Locked-by: Zen\n'
+        printf -- '### Framework Versions (Pinned):\n- Next.js: 15.0.3\n'
+        printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
+        printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
+        printf -- '- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n'
+        printf -- '- Q8 Compliance Requirements: x\n'
+        printf -- '## 3. Relational Database Schema\nCREATE TABLE a (id uuid);\n'
+        printf '%b' "$body"
+    } > "$dir/docs/specs/FSD.md"
+    local out
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    local got="TOO_FEW"
+    if echo "$out" | grep -q "API endpoint contracts verified"; then
+        got="ENOUGH"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+FIVE_HEADINGS='## 6. API\n#### GET /api/v1/a\n#### POST /api/v1/a\n#### PATCH /api/v1/a/:id\n#### DELETE /api/v1/a/:id\n#### POST /api/v1/login\n'
+FOUR_HEADINGS='## 6. API\n#### GET /api/v1/a\n#### POST /api/v1/a\n#### PATCH /api/v1/a/:id\n#### DELETE /api/v1/a/:id\n'
+run_endpoints "M05 FSD with 5 endpoint headings passes the floor" ENOUGH "$FIVE_HEADINGS"
+run_endpoints "M05 FSD with 4 endpoint headings fails the floor" TOO_FEW "$FOUR_HEADINGS"
+>>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
 
 # C. Client input receipt (M08). Medium scale: M08 is WAIVED for Small, so a Small
 # fixture would pass vacuously and the guard would go untested.

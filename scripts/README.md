@@ -67,8 +67,8 @@ Sanity checks, link validators, and ecosystem compatibility tools:
 | [`scripts/verify/verify-all.sh`](./verify/verify-all.sh) | [`scripts/verify/verify-all.ps1`](./verify/verify-all.ps1) | Comprehensive repository integrity checker (scripts, modules, patterns, links) |
 | [`scripts/verify/verify-links.js`](./verify/verify-links.js) | — | Scans all Markdown files for broken local relative links (0 broken links) |
 | [`scripts/verify/verify-skill-frontmatter.js`](./verify/verify-skill-frontmatter.js) | — | Validates SKILL.md YAML frontmatter against agent specifications |
-| [`scripts/verify/check-package-versions.sh`](./verify/check-package-versions.sh) | [`scripts/verify/check-package-versions.ps1`](./verify/check-package-versions.ps1) | Real-time registry queries (npm, composer, PyPI, Go) across 14 stacks |
-| [`scripts/verify/verify-framework-version.sh`](./verify/verify-framework-version.sh) | [`scripts/verify/verify-framework-version.ps1`](./verify/verify-framework-version.ps1) | Validates installed project lockfiles against versions pinned in FSD.md |
+| [`scripts/verify/check-package-versions.sh`](./verify/check-package-versions.sh) | [`scripts/verify/check-package-versions.ps1`](./verify/check-package-versions.ps1) | Real-time registry queries (npm, Packagist, PyPI, Go proxy, RubyGems, NuGet, Maven) across 15 stacks, incl. FastAPI |
+| [`scripts/verify/verify-framework-version.sh`](./verify/verify-framework-version.sh) | [`scripts/verify/verify-framework-version.ps1`](./verify/verify-framework-version.ps1) | Validates installed project lockfiles against versions pinned in FSD.md `Framework Versions (Pinned):` — comparators for Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails; any other stack exits 1 as UNVERIFIED rather than passing silently |
 | [`scripts/verify/lint-template.sh`](./verify/lint-template.sh) | [`scripts/verify/lint-template.ps1`](./verify/lint-template.ps1) | Lints filled project documents and raw template structures |
 
 ---

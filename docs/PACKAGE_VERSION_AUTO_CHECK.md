@@ -214,11 +214,26 @@ jobs:
         run: gh issue create --title "Package versions outdated"
 ```
 
-### 3. Interactive Mode
+### 3. Writing the Output Into the FSD
+
+There is **no `--interactive` flag**. The script prints the pinned block on stdout and never edits
+your documents — the agent transcribes it (SKILL.md rule 2, template-first):
+
 ```bash
-./scripts/verify/check-package-versions.sh nextjs --interactive
-# Prompts: "Update FSD.md with these versions? [y/n]"
+# 1. Capture the recommended block
+./scripts/verify/check-package-versions.sh nextjs | tee /tmp/versions.txt
+
+# 2. Paste the "=== Recommended Pinned Versions (for FSD.md) ===" block into
+#    docs/specs/FSD.md, keeping the heading "### Framework Versions (Pinned):" a bullet list
+#    (verify-framework-version.sh parses it at M06 STEP 3).
+
+# 3. Confirm the pin actually landed
+./scripts/verify/verify-framework-version.sh
 ```
+
+The script requires network access to the official registry. When the registry is unreachable it
+exits non-zero rather than guessing — record the pin as unverified and re-run rather than pasting a
+version from memory.
 
 ---
 

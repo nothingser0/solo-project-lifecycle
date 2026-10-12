@@ -20,17 +20,26 @@
 Run real-time version check against official registries (never trust training-data versions):
 
 ```bash
-./scripts/verify/check-package-versions.sh <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+./scripts/verify/check-package-versions.sh <nextjs|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
 or Windows:
 
 ```powershell
-.\scripts\verify\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+.\scripts\verify\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
-- Pin verified versions; if a bleeding-edge major has ecosystem breakage (e.g., Tailwind v4 config changes, Zod v4 resolver incompatibility), pin the proven stable version explicitly.
-- All agreed versions MUST be transcribed **verbatim** into the `Framework Versions (Pinned):` section of `docs/specs/FSD.md` so the Module 06 gate (`verify-framework-version.sh`) passes.
+> Stack list source of truth: `references/stacks/STACK_SUPPORT_MATRIX.md`. A stack marked
+> **PRODUCTION** there must be queryable by both scripts — if the one you locked is missing,
+> report the gap rather than inventing versions from memory (rule 7).
+
+- Pin verified versions; if a bleeding-edge major breaks the ecosystem (Tailwind v4 config, Zod v4
+  resolver), pin the proven stable explicitly.
+- Transcribe agreed versions **verbatim** into the `Framework Versions (Pinned):` bullet block of
+  `docs/specs/FSD.md` (M06 gate `verify-framework-version.sh` reads it).
+- **Machine-read — do not reformat**: keep the heading colon and the `- <Package>: <version>`
+  bullets, and delete lines for stacks you did not lock (a stale `- Django:` line in a Next.js
+  project fails the M06 comparison; so does a table or renamed heading).
 
 ### STEP 1: Tech Stack Discovery Questionnaire (MANDATORY — BLOCKS FSD)
 
@@ -50,9 +59,11 @@ Context-specific reasoning for the chosen stack; **alternatives rejected with re
 - Multi-tenant isolation (RLS / schema-per-tenant / DB-per-tenant) if applicable.
 - `idempotency_keys` table in DDL for all POST mutations of financial/stock state.
 
-### STEP 4: API Endpoint Matrix (≥10 endpoints)
+### STEP 4: API Endpoint Matrix (≥10 endpoints for Medium+; ≥5 is the hard gate floor)
 
 - HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; API style per stack (REST/GraphQL/tRPC).
+- **One heading per endpoint** (`#### POST /api/v1/...`) — the gate counts these and fails below 5.
+  ≥10 is the M05 exit criterion; 5 is the validator floor.
 
 ### STEP 5: Security Blueprint + Module 04 Handoff (both gate-enforced)
 
@@ -74,6 +85,7 @@ Review with Client Single PIC — or, on solo projects, the **human user** self-
 
 ## [GATE] Exit Criteria (condensed)
 
+<<<<<<< HEAD
 - [ ] 8-question questionnaire completed; 2–3 options presented; stack **LOCKED** (`Stack Decision LOCKED:` + `Stack-Locked-by:` naming the human). The 8 answers must be **real values** — the gate rejects residual `[answer]` placeholders
 - [ ] Versions verified via registry script and pinned verbatim in FSD `Framework Versions (Pinned):` (re-checked by M06's `verify-framework-version.sh`)
 - [ ] Stack justification with rejected alternatives
@@ -83,6 +95,22 @@ Review with Client Single PIC — or, on solo projects, the **human user** self-
 - [ ] Substantive `PROJECT_LITE.md` (Small) or `PRD.md` + `FSD.md` (Medium+) — target ≥1000B / ≥2000B each; the script stub-checks size, so judge real substance, not padding
 - [ ] Multi-tenant isolation + idempotency strategy documented if applicable
 - [ ] Technical sign-off obtained — **human name + real date, no residual blank/placeholder fields** *(gate-enforced; AI is never a valid approver)*
+=======
+- [ ] 8-question questionnaire completed; 2–3 options presented; stack **LOCKED** (`Stack Decision LOCKED:` documented)
+- [ ] Versions verified via registry script and pinned verbatim in the FSD `Framework Versions (Pinned):` bullet block (parseable by `verify-framework-version.sh` at M06)
+- [ ] Stack justification with rejected alternatives
+- [ ] DDL present (tables, keys, CHECK, indexes, audit trail)
+- [ ] ≥10 API endpoint **headings** (`#### <VERB> /path`) with request/response schemas; idempotency for financial POSTs (gate floor: 5)
+- [ ] Security blueprint complete (AES-256-GCM, Argon2id, OWASP, rate limiting, UU PDP) — each control resolved or `N/A — <reason>`
+- [ ] Module 04 handoff strategy documented (screen → route → component map + compatibility level)
+- [ ] File sizes: Small → `PROJECT_LITE.md` ≥1000B; otherwise `PRD.md` + `FSD.md` ≥2000B each (targets only — see note below)
+- [ ] Idempotency strategy if applicable. RLS required **only** when `Intake-Branch-Hierarchy` is yes/multi (or the DDL declares `org_id`/`tenant_id`); single-tenant passes with `N/A — single tenant`
+- [ ] Medium+ only: `docs/governance/ADR.md` present (M05 gate requires it); Enterprise additionally requires `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md`
+- [ ] Technical sign-off obtained
+>>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
+
+> **Scale note**: size figures above are documented targets. `lib/checks.sh` treats `min_size` as
+> advisory (v2: stub-check only, `<40B` fails) — content checks are what reject.
 
 ### Gate Execution (MANDATORY — verbatim script output)
 
@@ -98,6 +126,10 @@ or Windows:
 .\scripts\gates\validate-gate.ps1 M05
 ```
 
+<<<<<<< HEAD
 If it exits FAILED: fix artifacts and re-run — never declare completion on failure. Only after `✅ Gate validation PASSED` present the handoff prompt (deep dive) and END TURN for approval.
 
 The live gate is the source of truth: `scripts/gates/modules/M05.sh` + the M05 helpers in `scripts/gates/lib/checks.sh`. The pseudo-code in the deep dive is an illustrative sketch of the same contract — when the two disagree, the script wins.
+=======
+If it exits FAILED: fix artifacts and re-run — never declare completion on failure. Only after `✅ Gate validation PASSED` present the handoff prompt (deep dive) and END TURN for approval. Full check-by-check breakdown: deep dive, "What `validate-gate.sh M05` actually checks".
+>>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)

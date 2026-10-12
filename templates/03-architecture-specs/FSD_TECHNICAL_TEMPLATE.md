@@ -70,12 +70,25 @@ Stack-Locked-by: [name of the human who chose it — the AI agent presents optio
 - Q7 Critical Feature Priority: [answer]
 - Q8 Compliance Requirements: [answer]
 
-### Framework Versions (Pinned)
-*(Populate directly from `./scripts/check-package-versions.sh <stack>`)*
-- **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]
-- **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
-- **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
-- **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
+### Framework Versions (Pinned):
+
+> Populate from `./scripts/verify/check-package-versions.sh <stack>` (or `.ps1 -Framework <stack>`).
+>
+> **Machine-read — do not reformat.** M06 STEP 3 runs `./scripts/verify/verify-framework-version.sh`,
+> which greps this block for `- <Package>: <version>` lines and compares **major.minor** against the
+> project lockfile (`package-lock.json` / `pnpm-lock.yaml` / `composer.lock` / `requirements.txt` / `go.mod`).
+> Keep the heading colon, keep this block a bullet list (never a table), and **delete every stack line
+> you did not lock** — a leftover `- Django:` line in a Next.js project contradicts the lockfile and
+> fails the comparison.
+
+- Next.js: [x.y.z — delete this line unless Next.js is the locked stack]
+- React: [x.y.z — delete this line unless Next.js is the locked stack]
+- Laravel: [x.y — delete this line unless Laravel is the locked stack]
+- Django: [x.y.z — delete this line unless Django is the locked stack]
+- Go: [x.y — delete this line unless Go is the locked stack]
+- Language / Runtime: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
+- Database Engine: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
+- ORM / Driver: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
 
 ### Security Blueprint (STEP 5 — gate-enforced)
 
@@ -464,9 +477,19 @@ GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMER
 
 ## 6. API Contract Specifications (REST / JSON API)
 
-### 6.1 Standard Endpoint Specification
-- **Route**: `POST /api/v1/[resource]/mutate`
-- **Authentication**: Bearer JWT (`Role-scoped access`)
+> **Machine-read — do not reformat.** `validate-gate.sh M05` counts `#### <VERB>` headings in this
+> section and requires at least 5. The M05 runbook targets ≈10 for Medium+. One heading per real
+> endpoint: never split an endpoint across two headings, never add an endpoint the scope does not
+> ask for (SKILL.md rule 5, YAGNI).
+
+### 6.1 Endpoint Contract Template
+
+Copy this block once per endpoint. Every endpoint MUST state auth, request schema, and the
+success/error pair — an endpoint without an error contract is not a specification.
+
+#### POST /api/v1/[resource]/mutate
+
+- **Auth**: Bearer JWT (`Role-scoped access`)
 - **Headers**:
   ```http
   Authorization: Bearer <TOKEN>
@@ -484,10 +507,104 @@ GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMER
 - **Standardized Response Format**:
   - Success: `{"status": "SUCCESS", "data": { ... }}`
   - Error: `{"status": "ERROR", "error": {"code": "RESOURCE_LOCKED", "message": "Descriptive error"}}`
+- **Idempotency**: `X-Idempotency-Key` required (writes to financial/stock state) — see §3 `idempotency_keys`.
+
+### 6.2 Endpoint Matrix
+
+*Fill one row per in-scope endpoint, then expand each below using the §6.1 block. Delete the
+placeholder rows before sign-off.*
+
+| # | Endpoint | Auth | Idempotent | Source Feature |
+| :-: | :--- | :--- | :---: | :--- |
+| 1 | `POST /api/v1/auth/login` | Public | n/a | F-01 |
+| 2 | `GET /api/v1/[resource]` | Bearer JWT | n/a | F-02 |
+| 3 | `POST /api/v1/[resource]` | Bearer JWT | yes | F-02 |
+| 4 | `PATCH /api/v1/[resource]/:id` | Bearer JWT | yes | F-03 |
+| 5 | `DELETE /api/v1/[resource]/:id` | Bearer JWT (admin) | n/a | F-03 |
+
+### 6.3 Concrete Endpoint Contracts
+
+#### POST /api/v1/auth/login
+- **Auth**: Public
+- **Request**: `{"email": "user@example.com", "password": "..."}`
+- **Success**: `200` + HttpOnly session cookie (never a token in the response body)
+- **Error**: `401 {"status": "ERROR", "error": {"code": "INVALID_CREDENTIALS"}}`
+
+#### GET /api/v1/[resource]
+- **Auth**: Bearer JWT
+- **Query**: `status`, `q`, `page`, `limit`
+- **Success**: `200 {"status": "SUCCESS", "data": [...], "meta": {"page": 1, "total": 42}}`
+- **Error**: `403` on missing role scope; `500` → container-level error card with retry
+
+#### POST /api/v1/[resource]
+- **Auth**: Bearer JWT
+- **Headers**: `X-Idempotency-Key` required
+- **Request**: `{...}` (validated server-side; mirror the DDL CHECK constraints)
+- **Success**: `201 {"status": "SUCCESS", "data": {...}}`
+- **Error**: `422` field-level validation (`{"errors": {"field": "message"}}`); `409` on duplicate key
+
+#### PATCH /api/v1/[resource]/:id
+- **Auth**: Bearer JWT
+- **Request**: partial `{...}`
+- **Success**: `200 {"status": "SUCCESS", "data": {...}}`
+- **Error**: `404` unknown id; `409` concurrent-modification conflict
+
+#### DELETE /api/v1/[resource]/:id
+- **Auth**: Bearer JWT (admin role)
+- **Behaviour**: soft delete (`deleted_at`), never a hard row removal on audited tables
+- **Success**: `200 {"status": "SUCCESS", "data": {"id": "..."}}`
+- **Error**: `403` on insufficient role; `409` when dependent rows exist
 
 ---
 
-## 7. Automated Quality Validation Checklist (FSD Exit Gate)
+## 7. Security Blueprint
+
+> M05 STEP 5 requires this section. Every control below is either implemented, or explicitly marked
+> `N/A — <reason>`. A blank row is not `N/A`.
+
+| Control | Decision for this project | Implementation reference |
+| :--- | :--- | :--- |
+| Data-at-rest encryption | AES-256-GCM envelope encryption for PII/sensitive columns | [key-management ADR] |
+| Password hashing | Argon2id (or bcrypt cost ≥12 where Argon2id is unavailable) | application auth layer |
+| Transport | TLS 1.3 terminating at [edge/proxy]; HSTS enabled | deployment config |
+| OWASP Top 10 | [Which items are in scope and how each is mitigated — or `N/A — <reason>`] | [mechanism: query parameterization, output encoding, CSRF token, …] |
+| Rate limiting | [per-IP + per-account limits on auth and mutation routes] | [middleware / gateway] |
+| Session/token policy | HttpOnly + Secure + SameSite cookies; rotation on privilege change | auth layer |
+| Secrets management | `.env.local` locally (never committed); [provider] secret store in production | `.env.example` contract |
+| Audit logging | Who/what/when on every state mutation; append-only (§3 audit tables) | §3 DDL |
+| UU PDP / GDPR | Consent capture, deletion right, retention window — or `N/A — <reason>` | [`patterns/compliance/UU_PDP_COMPLIANCE.md`](../../patterns/compliance/UU_PDP_COMPLIANCE.md) |
+| Idempotency (write safety) | `X-Idempotency-Key` on every financial/stock mutation | §3 `idempotency_keys` |
+
+---
+
+## 8. Module 04 Handoff Strategy (Prototype Conversion)
+
+> M05 STEP 5 requires this section. It is the bridge from the frozen Module 04 design artifacts to
+> the locked stack — and the reason M06 STEP 0 can parse a compatibility level.
+
+- **Locked stack**: same value as `Stack Decision LOCKED:` in §2 (must match verbatim).
+- **Source artifacts**: `docs/specs/DESIGN_SPEC.md` (screens + 5-state matrix),
+  `docs/harness-root/DESIGN.md` (tokens), `docs/specs/COMPONENT_REQUIREMENTS.md` (inventory).
+- **Screen → route → component map**:
+
+  | Screen ID | Route | Target components | Conversion notes |
+  | :--- | :--- | :--- | :--- |
+  | SCR-001 | `/` | [e.g., `app/page.tsx` + `Card`, `Button`] | [token → class mapping] |
+  | SCR-002 | `/login` | [e.g., `FormField`, `Input`, `Button`] | [validation parity with §6] |
+  | SCR-003 | `/[resource]` | [e.g., `Table`, `EmptyState`, `Toast`] | [5-state matrix → loading/error/empty branches] |
+
+- **Design-token transfer**: [How `DESIGN.md` tokens land in code — Tailwind theme, CSS custom
+  properties, or framework equivalent], including the anti-slop constraints (no gradients,
+  shadows ≤4px, WCAG ratios preserved).
+- **Component mapping**: [React → Vue / Svelte / Blade / Jetpack Compose, or `N/A — prototype
+  already produced framework-native components`]. One row per primitive that changes shape.
+- **Prototype workflow used in M04**: [A | B | C | D | E] — determines whether screens exist as
+  Markdown specs only or as rendered artifacts under `docs/design/screens/`.
+- **Compatibility level for M06 STEP 0**: [1–4, with the one-line reason M06 reads].
+
+---
+
+## 9. Automated Quality Validation Checklist (FSD Exit Gate)
 
 *Before completing `docs/specs/FSD.md`, verify:*
 
@@ -497,11 +614,16 @@ GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMER
 - [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
 - [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
 - [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
+- [ ] **7. API Contract Completeness**: ≥5 endpoints documented as `#### <VERB> /path` headings, each with auth, request schema, and a success/error pair; `X-Idempotency-Key` shown on every financial/stock mutation.
+- [ ] **8. Security Blueprint (§7)**: Every control row resolved (implemented or `N/A — <reason>`); no blank rows. Password hashing, at-rest encryption, rate limiting, and audit logging each have an implementation reference.
+- [ ] **9. Module 04 Handoff (§8)**: Screen → route → component map covers 100% of `DESIGN_SPEC.md` screens; locked stack matches §2 verbatim; compatibility level recorded for M06 STEP 0.
+- [ ] **10. Pinned Versions Parseable (§2)**: `Framework Versions (Pinned):` block still a bullet list with the heading colon intact, and every line present corresponds to the locked stack (stale lines from other stacks deleted).
 
 ---
 
-## 8. Technical Sign-Off Sheet
+## 10. Technical Sign-Off Sheet
 
+<<<<<<< HEAD
 > `validate-gate.sh M05` **requires** the three lines below to be filled with a real human name and
 > a real date (`Approved on: YYYY-MM-DD`). **The AI agent may never sign or self-approve**
 > (docs/AUTHORITY.md) — a human reviewer signs off. Solo/portfolio/internal delivery completes
@@ -512,3 +634,14 @@ GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMER
 **Approved on**: [YYYY-MM-DD]
 **Validated by Solo Developer**: [Developer / Lead Architect name] (Date: [YYYY-MM-DD])
 **Approved by Client Single PIC** (client delivery only): [Client PIC name] (Date: [YYYY-MM-DD])
+=======
+| Validated by Lead Software Architect | Approved by Client PIC / Lead Stakeholder |
+| :--- | :--- |
+| **Name**: [architect name] | **Name**: [PIC name] |
+| **Role**: Lead Software Architect | **Role**: Client Single PIC / Project Lead |
+| **Date**: [YYYY-MM-DD] | **Date**: [YYYY-MM-DD] |
+| **Signature**: [name typed, or "Approved via email on YYYY-MM-DD"] | **Signature**: [name typed, or "Approved via email on YYYY-MM-DD"] |
+
+> The AI agent may prepare this sheet but may never sign it. On solo projects the human user
+> self-approves; on client projects the Client Single PIC approves.
+>>>>>>> 026a538 (fix(m05): stop false RLS failures and count endpoint headings)
