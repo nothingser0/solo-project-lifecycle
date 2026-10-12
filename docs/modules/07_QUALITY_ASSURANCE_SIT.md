@@ -5,7 +5,7 @@
 
 This module validates reliability, third-party integration integrity (*System Integration Testing* / SIT), performance resilience, and security in the **Staging** environment before client UAT (Module 09). Verbose SIT walkthrough & Enterprise A04 advisory: `deep-dives/07_QUALITY_ASSURANCE_SIT.md`.
 
-**Scale routing (one line)**: Small: M07 waived → `SECURITY_CHECKLIST_SMALL.md` in M06, go M09-LITE · Medium/Large: full M07 below · Enterprise: not solo capacity → Phase A04 advisory (`deep-dives/07_QUALITY_ASSURANCE_SIT.md`).
+**Scale routing (one line)**: Small: M07 waived → `SECURITY_CHECKLIST_SMALL.md` in M06, go M09-LITE · Medium/Large: full M07 below (a capacity-only Large runs solo under a signed risk acceptance) · Enterprise / non-delegable: Phase A04 advisory (`deep-dives/07_QUALITY_ASSURANCE_SIT.md`).
 
 **Input**: staging branch from M06 + `FSD.md`.
 

@@ -5,7 +5,8 @@
 - [📊 Scale Classification (Engineering Risk & High-Water Mark)](#-scale-classification-engineering-risk-high-water-mark)
 - [🔵 SKALA KECIL (Fast-Track MVP / Solo Project)](#-skala-kecil-fast-track-mvp-solo-project)
 - [🟢 SKALA MENENGAH (Medium / Mid-Tier / Agency)](#-skala-menengah-medium-mid-tier-agency)
-- [🟡🔴 SKALA DI LUAR KAPASITAS SOLO (Large & Enterprise — A-Series Advisory)](#-skala-di-luar-kapasitas-solo-large-enterprise-a-series-advisory)
+- [🟡 Kapasitas Besar (Large: solo + advisor, wajib risk-acceptance)](#-kapasitas-besar-large--solo--advisor)
+- [🔴 NON-DELEGABLE (Enterprise / kewajiban berlisensi — A-Series Advisory)](#-non-delegable-enterprise--kewajiban-berlisensi--a-series-advisory)
 - [📋 Module Routing Table](#-module-routing-table)
 - [🚨 Payment Gate Enforcement](#-payment-gate-enforcement)
 - [🔄 Warranty Boundary Defense Scripts](#-warranty-boundary-defense-scripts)
@@ -177,11 +178,28 @@
 
 ---
 
-## 🟡🔴 SKALA DI LUAR KAPASITAS SOLO (Large & Enterprise — A-Series Advisory)
+## 🟡 Kapasitas Besar (Large) — solo + advisor
 
-> ⛔ **STRICT SOLO CODING PROHIBITION**:
-> Proyek dengan **>25 fitur P0 (Enterprise)**, multi-cabang, mutasi finansial/rekam medis massal, atau regulasi statutori (OJK/BI/UU PDP/ISO 27001) **SECARA FISIK DAN HUKUM TIDAK BISA DIKERJAKAN SOLO** (Skala Besar 16–25 P0 maupun Enterprise >25 P0 — konsisten dengan SOLO CAPACITY GATE di `scripts/gates/classify-scale.sh`, exit 2).
-> Menjanjikan koding mandiri untuk skala ini adalah anti-pola berbahaya. Skill ini mengalihkan mode solo developer menjadi **Lead Enterprise Architect / Technical Advisor**.
+> **Kapasitas, bukan larangan.** Skala Besar **16–25 P0 tanpa kewajiban non-delegable** boleh
+> dikerjakan solo. Ini risiko *jadwal/kualitas* yang berjalan atas namamu sendiri, jadi keputusan
+> ada di tangan manusia — tapi harus **diterima secara tertulis** di
+> `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md` (nama manusia + tanggal asli).
+> `classify-scale.sh` lalu mengembalikan **exit 5**: gate berlanjut, dan override-nya **selalu
+> ditampilkan** — tidak pernah hijau bersih. Tanpa berkas itu → **exit 2** (diblokir).
+> Advisor (A00–A04) tetap wajib untuk lapisan tata kelola; kodingnya berjalan solo.
+
+---
+
+## 🔴 NON-DELEGABLE (Enterprise / kewajiban berlisensi) — A-Series Advisory
+
+> ⛔ **BLOKIR KERAS — tidak bisa di-override**:
+> Proyek dengan **>25 fitur P0**, atau **kewajiban non-delegable apa pun pada skala berapa pun** —
+> regulasi statutori (OJK/BI/UU PDP/ISO 27001), penggantian core legacy, atau multi-cabang dengan
+> mutasi finansial massal — **tidak dapat diselesaikan solo**, karena hasilnya adalah sertifikat
+> audit atau keterlibatan vendor berlisensi yang tak bisa diterbitkan sendiri.
+> Berkas risk-acceptance **tidak membuka** blokir ini: tanda tangan tidak bisa memproduksi auditor.
+> `classify-scale.sh` mengembalikan **exit 2** dan mode solo dialihkan menjadi
+> **Lead Enterprise Architect / Technical Advisor**.
 
 ---
 
@@ -571,11 +589,15 @@ ELSE IF scale == "Menengah":
   → Gates: M03 DP gate, M09 UAT gate, M11 final payment gate
 
 ELSE IF scale == "Besar":
+  → Prasyarat: TIDAK ADA kewajiban non-delegable, dan `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`
+    ditandatangani manusia (classify-scale.sh → exit 5). Jika ada kewajiban non-delegable
+    (regulasi statutori / core legacy) → JANGAN lewat cabang ini; lompat ke jalur Enterprise.
   → Path: M02 → M03(SOW+MSA) → M04 → M05 → M06 → M07(pentest) → M08(migration) → M09(UAT) → M10(CAB) → M11(training+BAST) → M12(warranty)
   → Total lifecycle: M01 + 11 scale-specific = 12 modules
   → Timeline: 3–6 bulan (kalender 32–36 minggu dengan paralelisasi vendor)
   → Payment: 20-30-30-20% (4 milestones)
   → Gates: M03 DP gate, M07 pentest gate, M09 UAT gate, M11 final payment gate
+  → Override: tercatat di keluaran gate (exit 5) — tidak pernah hijau bersih
 
 END
 ```

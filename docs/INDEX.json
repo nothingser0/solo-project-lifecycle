@@ -225,6 +225,10 @@
       "cataloged": false
     },
     {
+      "path": "evals/scenarios/13_SOLO_CAPACITY_RISK_ACCEPTANCE.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/README.md",
       "cataloged": true
     },

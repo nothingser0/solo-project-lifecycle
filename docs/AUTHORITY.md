@@ -28,14 +28,14 @@
 ### M00 — Product Discovery
 | Agent | Human decides | Human only |
 |---|---|---|
-| Market/competitor research, TAM/SAM/SOM **with cited sources**, unit economics, GTM draft | — | **5–10 real user interviews** (`00:47`), 30–50 surveys, waitlist, **refundable deposits / signed LOIs** |
+| Market/competitor research, TAM/SAM/SOM **with cited sources**, unit economics, GTM draft | — | **5–10 real user interviews** (`00:63`), 30–50 surveys, waitlist, **refundable deposits / signed LOIs** |
 
 > 🧑 Marked `HUMAN-ONLY` inline: the agent cannot verify interviews happened. It records `PENDING_PRIMARY_RESEARCH` and ends the turn.
 
 ### M01 — Idea Feasibility
 | Agent | Human decides |
 |---|---|
-| 4D scorecard, risk register, roadmap, RICE, archetype classification, mitigation plan for a CONDITIONAL_GO | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:49`) |
+| 4D scorecard, risk register, roadmap, RICE, archetype classification, mitigation plan for a CONDITIONAL_GO | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:37`) |
 
 > ✅ **Gate-enforced**: the declared Scale never overrides the classifier — a project
 > declaring `Small` whose own Intake answers evaluate higher (payment webhook, sensitive
@@ -57,7 +57,7 @@
 ### M03 — Legal / SOW / DP 〔GATE〕
 | Agent | Human only |
 |---|---|
-| SOW **draft**, payment-matching logic, CR sheet | **Contract signature** (`03:65`), **DP received in bank** (`03:67`), professional legal review (`03:5`) |
+| SOW **draft**, payment-matching logic, CR sheet | **Contract signature** (`03:75`), **DP received in bank** (`03:75`), professional legal review (`03:5`) |
 
 ### M04 — UI/UX & Prototype
 | Agent | Human decides | Human only |
@@ -87,7 +87,7 @@
 ### M07 — QA & SIT
 | Agent | Human only |
 |---|---|
-| Tests, OWASP, load test, SIT workbook, polish audit rows | **Approval to proceed** (`07:90`), **real-phone pass** (`07:63`), third-party pentest (`07:44`) |
+| Tests, OWASP, load test, SIT workbook, polish audit rows | **Approval to proceed** (`07:91`), **real-phone pass** (`07:63`), third-party pentest (`07:44`) |
 
 > 🧑 Marked `HUMAN-ONLY` inline: the real-device pass.
 
@@ -106,7 +106,7 @@
 ### M10 — Deployment
 | Agent | Human only |
 |---|---|
-| Build, snapshot, verification, protocol documents | **🚫 The deploy itself** (`10:14` "no agent auto-deploy"), Go/No-Go, DNS pointing, **real Rp-10.000 production payment** (`10:37`), invoice (`10:79`) |
+| Build, snapshot, verification, protocol documents | **🚫 The deploy itself** (`10:14` "no agent auto-deploy"), Go/No-Go, DNS pointing, **real Rp-10.000 production payment** (`10:37`), invoice (`10:80`) |
 
 > ✅ **Gate-enforced**: `Inputs-Received:` record for production access.
 

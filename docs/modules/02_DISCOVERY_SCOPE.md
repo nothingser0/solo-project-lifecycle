@@ -21,7 +21,7 @@
 - Must-Haves **collectively** resolve ≥70% of root causes; every Must maps to a primary bottleneck (zero vanity P0s). Secondary-friction features demote to Should/Won't.
 - Segment audit: if MVP excludes a capability a persona needs for core value (e.g., BOM for cafes), **drop the segment or upgrade the feature**.
 - Dependency contradiction: deferred expense tracking ⇒ "Gross Profit (Laba Kotor)" only.
-- MoSCoW P0 limits: Small 3–7 · Medium 8–15 · Large 16–25 · >25 → A-Series advisory.
+- MoSCoW P0 limits: Small 3–7 · Medium 8–15 · Large 16–25 (solo allowed with a signed `SOLO-CAPACITY-RISK-ACCEPTANCE.md`; a non-delegable obligation routes to A-Series) · >25 → A-Series advisory.
 - **Mandatory SaaS revenue P0s** (except internal tools): billing & subscription (gateway, plans, trial, grace, expiry middleware); offboarding & data deletion (30-day grace + export, day-90 purge per UU PDP); receipt printing (`window.print()`, 58/80mm); admin panel (`/admin`, overrides).
 
 ### Step 3 — RBAC Matrix & Approval Tree
@@ -56,9 +56,9 @@ Register inputs: sandbox keys, email credentials, master data CSV/Excel, ≤3-bu
 
 ## 2. Scale Adaptation
 
-| Aspect | Small | Medium | Large/Enterprise |
-|---|---|---|---|
-| Path | SKIPPED (`PROJECT_LITE.md`) | Full M02 mandatory | A01 (WBS) |
+| Aspect | Small | Medium | Large | Enterprise |
+|---|---|---|---|---|
+| Path | SKIPPED (`PROJECT_LITE.md`) | Full M02 mandatory | Full M02, solo under a signed risk acceptance | A01 (WBS) — non-delegable |
 | RBAC | 1–2 roles | 3–5 roles + matrix | Corporate catalog |
 | Stakeholder docs | Waived | MAP + PLAN (client/internal) | Corporate RACI |
 

@@ -30,8 +30,8 @@ is_small_scale() {
 # Universal precondition: the Intake answers must exist before ANY module work.
 # Small projects have M00/M01/M02 waived, so the intake gate is their ONLY
 # requirement — it must never be nested inside a scale-waiver branch.
-# Besides the 5 mandatory questions, the 3 escalation fields READ BY
-# classify-scale.sh (Integrations / Branch-Hierarchy / Compliance) are required:
+# Besides the 6 core questions, the 4 escalation fields READ BY
+# classify-scale.sh (Integrations / Branch-Hierarchy / Compliance / Legacy-Core) are required:
 # an absent field is not "none", and while it is absent a payment webhook or a
 # multi-tenant hierarchy stays invisible and the project keeps its self-declared
 # "small" tier. "None" is a valid answer; blank/UNKNOWN/UNSET is not.

@@ -67,7 +67,7 @@ echo -e "${BLUE}=== Gate Regression Tests ===${NC}"
 echo ""
 echo "Intake gate must block EVERY reachable module for Small projects."
 echo "Regression: the check was once nested inside the scale-waiver branch,"
-echo "so Small silently bypassed all 5 mandatory intake questions."
+echo "so Small silently bypassed every mandatory intake question."
 echo ""
 
 for mod in M01 M02 M04 M05 M06; do
