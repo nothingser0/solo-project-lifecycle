@@ -35,8 +35,9 @@
   ✅ docs/pm/SCOPE_STATEMENT.md (1215B)
   ✅ Zero ambiguous terms in Must-Have scope rows
   ❌ Explicit Scope-Lock-Decision (LOCKED | PENDING) not declared in SCOPE_STATEMENT.md!
-  [INFO] Declared scale: Medium; P0 feature rows (F-xx) counted: 0 (expected 3-25)
-  ❌ P0 Must-Have count (0) outside scale 'Medium' limits (3-25). Prune scope or re-classify scale.
+  [INFO] Declared scale: medium; P0 feature rows (F-xx) counted: 0 (expected 8-15)
+  ❌ P0 Must-Have count (0) outside scale 'medium' limits (8-15). Prune scope or re-classify scale.
+  ❌ Missing 'Scope-P0-Count:' machine field in SCOPE_STATEMENT.md!
   ❌ Data Confidence Legend [✅ / 🔶 / ❓] not declared!
   ❌ Out-of-Scope boundary section missing!
   ❌ RBAC Zero Self-Approval guardrail (no self-approval for mutations/approvals) missing in SCOPE_STATEMENT.md!

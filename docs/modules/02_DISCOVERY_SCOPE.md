@@ -67,7 +67,7 @@ Register inputs: sandbox keys, email credentials, master data CSV/Excel, ≤3-bu
 ## 3. Output Artifacts
 
 All in **`docs/pm/`**:
-1. **`docs/pm/SCOPE_STATEMENT.md`** (mandatory): objectives, MoSCoW, stories, RBAC, In/Out-of-Scope, dependencies, SLA. ≥2000B for Medium.
+1. **`docs/pm/SCOPE_STATEMENT.md`** (mandatory): objectives, MoSCoW, stories, RBAC, In/Out-of-Scope, dependencies, SLA. Stub-checked only (<40B fails) — quality is judged by the §Gate Exit Protocol checklist, not byte count.
 2. **`STAKEHOLDER_MAP.md`**, **`COMMUNICATION_PLAN.md`**, **`RACI_MATRIX.md`** — client/internal; 1-page for solo.
 3. Conditional: `RISK_REGISTER.md`, `REQUIREMENT_MATRIX.md`, `BACKLOG.md`, `OKR.md`.
 
@@ -86,7 +86,8 @@ All in **`docs/pm/`**:
    - [ ] Must-Haves resolve ≥70% of root causes; personas need zero out-of-scope features
    - [ ] Multi-tenant schema (`org_id` + RLS via `public.user_roles`); financial precision (`DECIMAL`, `unit_cost` snapshot, append-only movements)
    - [ ] RBAC tree with zero self-approval; revenue features (billing + offboarding) in P0
-   - [ ] Legal compliance planned (Privacy Policy, ToS, tax disclaimers, PII scrubbing)
+   - [ ] Legal compliance planned (Privacy Policy, ToS, tax disclaimers, PII scrubbing); legal/tax text carries a `LEGAL-REVIEW:` marker
+   - [ ] `Scope-P0-Count` is a real number matching counted Must rows; `Scope-Lock-Decision` is `LOCKED`
    - [ ] Timeline: epic sum + 20% buffer; CR freeze = QA − 2 wks; ≥3 Out-of-Scope exclusions; confidence legend (✅/🔶/❓); dependencies with SLA
 3. Present scope summary: P0 features, Out-of-Scope list, client dependencies.
 

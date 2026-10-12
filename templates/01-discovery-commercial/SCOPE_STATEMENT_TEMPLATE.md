@@ -144,6 +144,14 @@
 - [ ] **PII Scrubbing**: Error tracking (Sentry) configured to strip customer names, emails, and financial amounts.
 - [ ] **CSV Injection Prevention**: All spreadsheet exports prepend `'` to formula triggers (`=`, `+`, `-`, `@`, `\t`, `\r`, `\n`, `|`).
 
+> ⚠️ **LEGAL REVIEW REQUIRED**: the Privacy Policy, ToS, and the tax disclaimers in §5.3 are **operational drafts, not legal advice**. Keep the marker below until a qualified professional reviews them; publishing legal text (privacy policy live, terms accepted at signup, tax figures in marketing) while it is still `PENDING` is a **FROZEN-spec violation** and the M02 gate will reject it.
+
+```text
+LEGAL-REVIEW: PENDING — DRAFT TEKNIS, WAJIB DITINJAU OLEH LEGAL COUNSEL / PAKAR PAJAK SEBELUM DIPUBLIKASIKAN
+```
+
+*(The human flips this to `LEGAL-REVIEW: REVIEWED by <name> on <YYYY-MM-DD>` after review.)*
+
 ---
 
 ## 6. Technical Architecture & Database Schema Constraints
@@ -200,7 +208,7 @@ Scope-P0-Count: [number]
 Scope-Lock-Decision: PENDING
 ```
 
-*(Options: LOCKED | PENDING. Machine validator rejects M02 if P0 count falls outside scale limits (Small 3-7, Medium 8-15, Large 16-25), if ambiguous terms exist in Must-Have rows, if Out-of-Scope has fewer than 3 explicit exclusions, or if the Data Confidence Legend is absent).*
+*(`Scope-P0-Count` must be a real number that equals the counted `| **F-xx** | ... (Must|P0)` rows — the validator rejects the `[number]` placeholder and any mismatch. `Scope-Lock-Decision`: LOCKED | PENDING. The M02 gate also rejects: P0 count outside scale limits (Small 3-7, Medium 8-15, Large 16-25), ambiguous terms in Must-Have rows, fewer than 3 numbered Out-of-Scope exclusions, a missing Data Confidence Legend, a missing RBAC zero self-approval guardrail, and legal/tax text published without a `LEGAL-REVIEW` marker).*
 
 ---
 

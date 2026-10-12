@@ -21,7 +21,8 @@ The framework repo is **read-only**. Project documents are written into the user
 | **Small / MVP** | 3–7 P0 features, no financial mutations, 1 decision maker, <4 weeks | Intake (5 questions, record in `docs/pm/PROJECT_STATE.md`, halt until answered) → M04-LITE → M05 → [STOP] → M06+security → M09-LITE → [STOP] → M10 → M12-LITE (`RUNBOOK_OPS.md`) | 2 stops |
 | **Solo SaaS** | 8–15 P0, billing, 1 founder | M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13 | M05 stack lock + M07 |
 | **Client (Medium)** | 8–15 P0, API/payment webhooks, contract, 99% SLA | M01 → M02 → **M03 SOW+DP [GATE]** → M04 → M05 → M06 → M07 → **M09 UAT [GATE]** → M10 → **M11 BAST+final payment [GATE]** → M12 | gates M03/M09/M11 + M05 stack lock, M07, M08 |
-| **Enterprise** | >15 P0, regulated (OJK/UU PDP/ISO), legacy | ⛔ no solo coding — act as advisor: A00–A04 in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md` | per phase |
+| **Large** | 16–25 P0, multi-service, data migration | ⛔ no solo coding — act as advisor: A00–A04 in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md` | per phase |
+| **Enterprise** | >25 P0, regulated (OJK/UU PDP/ISO), legacy | ⛔ no solo coding — act as advisor: A00–A04 in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md` | per phase |
 
 High-water mark: if any single dimension is higher (e.g., 3 features but payment webhooks), classify at the highest tier. Legacy data = NOT "Small + M08"; reclassify upward.
 
