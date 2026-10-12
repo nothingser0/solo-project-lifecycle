@@ -227,7 +227,7 @@ run_lock() {
     local out
     out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
     local got="ALLOWED"
-    if echo "$out" | grep -qE "records only [0-9]+/8 questionnaire"; then
+    if echo "$out" | grep -qE "records only [0-9]+/8 .*questionnaire"; then
         got="BLOCKED"
     fi
     if [ "$got" = "$want" ]; then
@@ -241,6 +241,62 @@ run_lock() {
 
 run_lock "M05 lock marker with zero questionnaire answers" BLOCKED "$WORK/pl_noq.md"
 run_lock "M05 lock backed by all 8 answers" ALLOWED "$WORK/pl_8q.md"
+
+# B2. M05 deliverables that were never verified. The first case is the false-green
+# that motivated the guard: copy the RAW PROJECT_LITE_TEMPLATE.md, change ONLY the
+# lock line, and the old gate passed with "8 recorded questionnaire answers" because
+# the template ships 8 literal "- Q1 ... [answer]" lines. Placeholders are not answers.
+#
+# expect_m05 <name> <BLOCKED|ALLOWED> <regex-that-marks-the-failure> <build-fn>
+expect_m05() {
+    local name="$1" want="$2" pattern="$3" build="$4"
+    local dir="$WORK/m05_$build"
+    make_project "$dir" "$INTAKE_ANSWERED"
+    mkdir -p "$dir/docs/specs" "$dir/docs/governance"
+    "$build" "$dir"
+    local out
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    local got="ALLOWED"
+    if echo "$out" | grep -qE "$pattern"; then
+        got="BLOCKED"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+# A filled answer block + the Small-path artefacts the gate now requires.
+ANSWERED_Q8='- Q1 Team Expertise: TypeScript\n- Q2 Database Experience: PostgreSQL\n- Q3 Deployment Topology: PaaS\n- Q4 Expected Scale (Year 1): under 100 users\n- Q5 Data Model Characteristics: fixed schema\n- Q6 DevOps Complexity Tolerance: zero-config\n- Q7 Critical Feature Priority: speed\n- Q8 Compliance Requirements: UU PDP light\n'
+SECURITY_OK='AES-256-GCM envelope encryption; Argon2id hashing; OWASP Top 10; rate limiting 60/min.\n'
+HANDOFF_OK='### Module 04 Handoff Strategy\n**Compatibility Level**: Level 3\n**Conversion Plan**: rebuild 6 components.\n'
+SIGNOFF_OK='**Approved by**: Zen\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: Zen (Date: 2026-10-12)\n'
+
+build_raw_template() { # the false-green: raw template with only the lock line edited
+    sed 's|^Stack Decision LOCKED: \[Next.js / Laravel / Django / Go / SvelteKit / FastAPI\]|Stack Decision LOCKED: Next.js|' \
+        "$REPO/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" > "$1/PROJECT_LITE.md"
+}
+build_no_security() {
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Zen\n'; printf '%b' "$ANSWERED_Q8$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+}
+build_no_handoff() {
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Zen\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+}
+build_blank_signoff() {
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Zen\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: _________________________\n**Approved on**: [YYYY-MM-DD]\n'; } > "$1/PROJECT_LITE.md"
+}
+build_all_ok() {
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Zen\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+}
+
+expect_m05 "M05 raw PROJECT_LITE template, only the lock line edited (placeholder answers)" BLOCKED "records only [0-9]+/8 real questionnaire" build_raw_template
+expect_m05 "M05 lock line but no security blueprint" BLOCKED "security blueprint incomplete" build_no_security
+expect_m05 "M05 lock line but no Module 04 handoff" BLOCKED "missing the 'Module 04 Handoff Strategy'" build_no_handoff
+expect_m05 "M05 blank/placeholder sign-off fields" BLOCKED "blank/placeholder sign-off fields" build_blank_signoff
+expect_m05 "M05 complete Small-path artifact set" ALLOWED "Gate validation FAILED" build_all_ok
 
 # C. Client input receipt (M08). Medium scale: M08 is WAIVED for Small, so a Small
 # fixture would pass vacuously and the guard would go untested.

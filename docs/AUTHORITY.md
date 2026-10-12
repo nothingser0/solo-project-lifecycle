@@ -69,9 +69,13 @@
 ### M05 — Architecture & Specs 〔STACK LOCK〕
 | Agent | Human decides |
 |---|---|
-| 2–3 stack options + cost/pros/cons, DDL, API matrix, PRD/FSD | **Answer the 8 questions** (`05:37`), **LOCK the stack** (`05:40`), FSD sign-off (`05:71`) |
+| 2–3 stack options + cost/pros/cons, DDL, API matrix, PRD/FSD, security blueprint | **Answer the 8 questions** (M05 STEP 1), **LOCK the stack** (M05 STEP 1), **technical sign-off** (M05 STEP 7) |
 
-> ✅ **Gate-enforced**: `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without the 8 recorded answers. Applies to **both** paths (Small previously skipped this check entirely).
+> ✅ **Gate-enforced** (all four, on **both** the Small and Medium+ paths): `validate-gate.sh M05` fails if
+> `Stack Decision LOCKED:` appears without 8 **real** answers and a human `Stack-Locked-by:`, if the
+> security blueprint controls are missing, if the `Module 04 Handoff Strategy` / `Compatibility Level`
+> are absent (M06 STEP 0 depends on them), or if the technical sign-off still holds blank/placeholder
+> fields. Small previously skipped these checks entirely.
 
 ### M06 — Development
 | Agent | Human |
@@ -151,7 +155,9 @@
 | Solo capacity / High-Water Mark | `validate-gate.sh` M01, M02 | ✅ script |
 | Per-task human approval | `validate-gate.sh` M06 | ✅ script |
 | Design Freeze signed | `validate-gate.sh` M04 | ✅ script |
-| 8 questionnaire answers recorded | `validate-gate.sh` M05 | ✅ script |
+| 8 questionnaire answers recorded (real, not placeholders) + human `Stack-Locked-by` | `validate-gate.sh` M05 | ✅ script |
+| Security blueprint + Module 04 handoff recorded | `validate-gate.sh` M05 | ✅ script |
+| Technical spec sign-off named + dated | `validate-gate.sh` M05 | ✅ script |
 | Client inputs received | `validate-gate.sh` M08/M10 | ✅ script |
 | Blank signature lines rejected | `validate-gate.sh` M08/M09/M11 | ✅ script |
 | Real-phone pass performed | — | 🧑 prose only |

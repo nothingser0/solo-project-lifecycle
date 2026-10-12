@@ -102,7 +102,8 @@
   ❌ docs/governance/ADR.md (MISSING)
   [OK] PROJECT_LITE.md (optional)
   ✅ Locked tech stack decision documented in PROJECT_LITE.md
-  ❌ PROJECT_LITE.md declares 'Stack Decision LOCKED:' but records only 0/8 questionnaire answers.
+  ❌ PROJECT_LITE.md declares 'Stack Decision LOCKED:' but records only 0/8 real questionnaire answers.
+     Missing: Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8
      The 8 answers are the human's input (M05 STEP 1). Ask the questions, END TURN, and record all 8 before locking.
 
 ============================================================

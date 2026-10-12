@@ -256,6 +256,10 @@ check_design_freeze() {
 # agent can write itself after inventing a stack. The 8 questionnaire answers are
 # the human's input, so at least the recorded answers must be present and the
 # marker must not appear without them.
+# Second regression (found by copying the raw PROJECT_LITE_TEMPLATE.md and
+# changing ONLY the lock line): the template ships 8 literal `- Q1 ... [answer]`
+# lines, so the count matched 8 and a completely unfilled document passed with
+# "8 recorded questionnaire answers". A placeholder is not an answer.
 # Returns 1 (and sets GATE_FAILED) when the lock is unsupported by answers.
 check_stack_questionnaire() {
     local target=""
@@ -270,26 +274,199 @@ check_stack_questionnaire() {
         return 0 # the dedicated lock check already reports this
     fi
 
-    # Answers must be recorded as a questionnaire block, not just a bare marker.
-    local answered
-    answered=$(grep -ciE "^\s*[-*]?\s*\**\s*(Q[1-8]\b|Question [1-8]\b|Tech-Stack-Q[1-8]\b)" "$target" 2>/dev/null || true)
-    answered="${answered:-0}"
+    # Q1..Q8 are counted individually so a partially filled block names the gap.
+    local q answered=0 missing="" placeholder="" value
+    for q in 1 2 3 4 5 6 7 8; do
+        value=$(grep -iE "^\s*[-*]?\s*\**\s*(Q${q}\b|Question ${q}\b|Tech-Stack-Q${q}\b)" "$target" 2>/dev/null \
+            | head -1 | sed 's/^[^:]*:[[:space:]]*//' | tr -d '\r')
+        if [ -z "$value" ]; then
+            missing="${missing} Q${q}"
+            continue
+        fi
+        # A template placeholder is not an answer: [answer], <value>, TBD, ___ , UNKNOWN.
+        if echo "$value" | grep -qiE "^\[.*\]$|^<.*>$|^(tbd|tba|unknown|unset|n/?a|xxx+|-+)$|_\{3,\}|\[answer\]|\[your .*\]|\[\.\.\.\]"; then
+            placeholder="${placeholder} Q${q}"
+            continue
+        fi
+        answered=$((answered + 1))
+    done
 
     if [ "$answered" -lt 8 ]; then
-        echo "  ❌ $target declares 'Stack Decision LOCKED:' but records only ${answered}/8 questionnaire answers."
+        echo "  ❌ $target declares 'Stack Decision LOCKED:' but records only ${answered}/8 real questionnaire answers."
+        [ -n "$missing" ] && echo "     Missing:${missing}"
+        [ -n "$placeholder" ] && echo "     Still a template placeholder (not a human answer):${placeholder}"
         echo "     The 8 answers are the human's input (M05 STEP 1). Ask the questions, END TURN, and record all 8 before locking."
         GATE_FAILED=1
         return 1
     fi
 
-    # An approver line must name the human who locked the stack.
-    if grep -qiE "Stack[- ]Lock(ed)?[- ]?by:?\**[[:space:]]*[A-Za-z]" "$target" 2>/dev/null; then
+    # The lock must name the human who chose the stack — not a blank, not a placeholder.
+    local locker
+    locker=$(grep -iE "Stack[- ]Lock(ed)?[- ]?by" "$target" 2>/dev/null | head -1 \
+        | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r')
+    if echo "$locker" | grep -qE "^[[:space:]]*[A-Za-z][A-Za-z.'-]*" && \
+       ! echo "$locker" | grep -qiE "^\[.*\]|your name|the human|<.*>|^tbd|^name$"; then
         echo "  ✅ Stack lock supported by 8 recorded answers + named approver"
     else
-        echo "  ✅ Stack lock supported by $answered recorded questionnaire answers"
-        echo "     [INFO] Add 'Stack-Locked-by: <name>' to record who chose the stack."
+        echo "  ❌ $target names no human in 'Stack-Locked-by:' (found: '${locker:-<empty>}')."
+        echo "     The AI agent may present options but may never choose the stack — record the human's name."
+        GATE_FAILED=1
+        return 1
     fi
     return 0
+}
+
+# M05 Module 04 handoff guard.
+# M06 STEP 0 parses `Module 04 Handoff Strategy` + a Level 1-4 to decide how the
+# frozen M04 prototype converts into the chosen framework, and M06's own gate
+# refuses to start without it. Nothing in M05 required that section and the FSD
+# template never shipped one, so every project reached M06 with the handoff
+# missing — an artifact M05's exit criteria claimed to verify. It is produced
+# here, where the stack is locked. Section name matches M06 verbatim.
+# Returns 1 (and sets GATE_FAILED) when the section or its Level is absent.
+check_handoff_strategy() {
+    local fsd="docs/specs/FSD.md"
+    local lite="PROJECT_LITE.md"
+    local target=""
+    if is_small_scale && [ -f "$lite" ]; then
+        target="$lite"
+    elif [ -f "$fsd" ]; then
+        target="$fsd"
+    fi
+    [ -n "$target" ] || return 0 # missing artifact is reported by check_required
+
+    local bad=0
+    if grep -qiE "Module 04 Handoff Strategy|Prototype Conversion Strategy" "$target" 2>/dev/null; then
+        echo "  ✅ Module 04 handoff strategy documented in $target"
+    else
+        echo "  ❌ $target missing the 'Module 04 Handoff Strategy' section — M06 STEP 0 cannot be completed without it."
+        echo "     Document the prototype → framework conversion plan (see FSD_TECHNICAL_TEMPLATE.md §2.1)."
+        bad=1
+    fi
+
+    if grep -qiE "Compatibility[- ]Level\**:?[[:space:]]*\**Level[[:space:]]*[1-4]\b" "$target" 2>/dev/null; then
+        echo "  ✅ Module 04 handoff compatibility level recorded (Level 1-4)"
+    else
+        echo "  ❌ $target missing 'Compatibility Level: Level 1-4' (level definitions: FSD template §2.1)."
+        bad=1
+    fi
+
+    [ "$bad" -ne 0 ] && GATE_FAILED=1
+    [ "$bad" -eq 0 ]
+}
+
+# M05 security blueprint guard.
+# M05 STEP 5 makes the security blueprint a deliverable (AES-256-GCM envelope
+# encryption, Argon2id hashing, OWASP Top 10, rate limiting, UU PDP) and M06
+# inherits it as the baseline its anti-slop audit is measured against. Nothing
+# checked it, so a project could be told its architecture was signed off without
+# a single control recorded. Counted by distinct control; Medium+ also needs the
+# compliance tie-in.
+# Returns 1 (and sets GATE_FAILED) when the blueprint is absent/incomplete.
+check_security_blueprint() {
+    local fsd="docs/specs/FSD.md"
+    local lite="PROJECT_LITE.md"
+    local target=""
+    if is_small_scale && [ -f "$lite" ]; then
+        target="$lite"
+    elif [ -f "$fsd" ]; then
+        target="$fsd"
+    fi
+    [ -n "$target" ] || return 0 # missing artifact is reported by check_required
+
+    local need=4 hit=0 have="" kw
+    for kw in "AES-256|AES.?256|aes-256-gcm" "Argon2id|Argon2|bcrypt|scrypt" "OWASP" "rate.?limit"; do
+        if grep -qiE "$kw" "$target" 2>/dev/null; then
+            hit=$((hit + 1)); have="${have} $(echo "$kw" | cut -d'|' -f1)"
+        fi
+    done
+    if ! is_small_scale; then
+        need=5
+        if grep -qiE "UU PDP|UU_PDP|GDPR|consent" "$target" 2>/dev/null; then
+            hit=$((hit + 1)); have="${have} UU-PDP"
+        fi
+    fi
+
+    if [ "$hit" -ge "$need" ]; then
+        echo "  ✅ Security blueprint recorded in $target (${hit} controls:$have)"
+    else
+        echo "  ❌ $target security blueprint incomplete (${hit}/${need} controls found:$have)."
+        echo "     M05 STEP 5 requires: AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting$([ "$need" -eq 5 ] && echo ", UU PDP consent/deletion/audit")."
+        GATE_FAILED=1
+        return 1
+    fi
+    return 0
+}
+
+# M05 human technical sign-off guard.
+# Same failure mode the M04 Design Freeze guard was written for: the PRD/FSD
+# templates ship `| **Name**: ________ |` / `[YYYY-MM-DD]` rows and M05 STEP 7 is
+# a HUMAN-ONLY step (docs/AUTHORITY.md). The gate accepted the untouched
+# template, so an agent could declare "Tech Spec Sign-off" on its own blank sheet
+# without the human ever reviewing it. Delivery-routed: solo/portfolio/internal
+# need the developer's validation; client work needs the Client Single PIC too.
+# Returns 1 (and sets GATE_FAILED) when the sign-off is blank/placeholder/unnamed.
+check_tech_signoff() {
+    local doc="" label=""
+    if is_small_scale; then
+        doc="PROJECT_LITE.md"; label="PROJECT_LITE.md"
+    else
+        doc="docs/specs/FSD.md"; label="FSD.md"
+        [ -f "$doc" ] || { doc="docs/specs/PRD.md"; label="PRD.md"; }
+    fi
+    [ -f "$doc" ] || return 0 # existence is enforced by check_required
+
+    local bad=0
+
+    # 1. Residual blank SIGN-OFF fields only. Scoped to signature lines so unrelated
+    #    metadata placeholders (e.g. 'Target Release: [YYYY-MM-DD]', 'Lead Software
+    #    Architect: [Your Name]') do not trip it.
+    if grep -iE "approved|validated|approver|signature|client pic|sign-off" "$doc" 2>/dev/null \
+        | grep -qE "_{3,}|\[YYYY-MM-DD\]|\[Your Name\]|\[Client PIC Name\]|\[name\]|\[Name\]|<name>"; then
+        echo "  ❌ $label still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Your Name]). M05 STEP 7 is a HUMAN-ONLY step."
+        bad=1
+    fi
+
+    # 2. The approver must be a named human, not a role placeholder.
+    if grep -qiE "^\s*[-*|]?\s*\**\s*(Approved by|Validated by|Approver)[^*:]{0,40}\**:?[[:space:]]*[A-Za-z]" "$doc" 2>/dev/null; then
+        echo "  ✅ $label technical sign-off records a named approver"
+    else
+        echo "  ❌ $label missing a named technical approver (e.g. 'Approved by: <name>')."
+        bad=1
+    fi
+
+    # 3. A real approval date.
+    if grep -qE "(Approved on|Approval Date|Date)\**:?[[:space:]]*[0-9]{4}-[0-9]{2}-[0-9]{2}" "$doc" 2>/dev/null; then
+        echo "  ✅ $label technical sign-off records a real date"
+    else
+        echo "  ❌ $label missing a real sign-off date ('Approved on: YYYY-MM-DD')."
+        bad=1
+    fi
+
+    # 4. Delivery-routed second signature.
+    local delivery
+    delivery=$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')
+    case "$delivery" in
+        solo|portfolio|internal)
+            if grep -qiE "Validated by (the )?(Solo Developer|Developer|Human)|Developer Sign-Off" "$doc" 2>/dev/null; then
+                echo "  ✅ $label developer self-validation recorded ($delivery delivery)"
+            else
+                echo "  ❌ $label missing the developer's validation line ('Validated by Solo Developer: <name>')."
+                bad=1
+            fi
+            ;;
+        client)
+            if grep -qiE "Client Single PIC|Approved by Client|Client PIC" "$doc" 2>/dev/null; then
+                echo "  ✅ $label Client Single PIC sign-off verified"
+            else
+                echo "  ❌ $label missing the Client Single PIC sign-off row (client delivery)."
+                bad=1
+            fi
+            ;;
+    esac
+
+    [ "$bad" -ne 0 ] && GATE_FAILED=1
+    [ "$bad" -eq 0 ]
 }
 
 # M08/M10 client-input receipt guard.

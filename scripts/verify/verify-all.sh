@@ -191,8 +191,11 @@ fi
 echo ""
 echo "8. Checking Eval Scenario Catalog..."
 if command -v node >/dev/null 2>&1; then
+    # Count from the runner rather than hardcoding it — the number went stale the
+    # moment EVAL-09/EVAL-10 were added.
     if node scripts/evals/run-evals.js --validate >/dev/null 2>&1; then
-        echo -e "  ${GREEN}✓${NC} eval scenarios valid (8 scenarios, all with automated assertions)"
+        eval_count=$(ls evals/scenarios/*.md 2>/dev/null | wc -l | tr -d ' ')
+        echo -e "  ${GREEN}✓${NC} eval scenarios valid (${eval_count} scenarios, all with automated assertions)"
     else
         echo -e "  ${RED}✗${NC} eval catalog invalid (run: node scripts/evals/run-evals.js --validate)"
         ERRORS=$((ERRORS + 1))

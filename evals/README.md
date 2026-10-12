@@ -16,6 +16,8 @@
 | `EVAL-06` | [No Code Before SOW](./scenarios/06_NO_CODE_BEFORE_SOW.md) | Commercial gate enforcement | Strictly refuses unpaid coding on client projects |
 | `EVAL-07` | [Cross-Document Consistency](./scenarios/07_CROSS_DOCUMENT_CONSISTENCY.md) | Scope-to-architecture parity | Rejects unapproved ghost features in FSD |
 | `EVAL-08` | [YAGNI Anti-Over-Specification](./scenarios/08_YAGNI_ANTI_OVER_SPECIFICATION.md) | Pragmatic boring tech | Pushes back on microservices/Kubernetes for small tools |
+| `EVAL-09` | [Per-Task Human Verification](./scenarios/09_TODO_TASK_HUMAN_VERIFICATION.md) | One task per turn during M06 | Implements one TODO task, stops for human approval |
+| `EVAL-10` | [M05 Human-Input Boundary](./scenarios/10_M05_HUMAN_INPUT_BOUNDARY.md) | Human-only stack lock, handoff & sign-off | Refuses to pick the stack, fabricate the 8 answers, or sign off |
 
 ---
 
