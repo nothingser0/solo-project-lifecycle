@@ -48,8 +48,11 @@
 |---|---|
 | NSM, MoSCoW, permission tables, schema rules, effort formula | **Discovery Interview** (5 Pillars), 50–100 signups, **sandbox keys / email credentials / master data** |
 
-> ⚠️ Open item: `02:38-39` lets the agent draft Privacy Policy / ToS / tax disclaimers with
-> no counsel-review gate, unlike M03 and A00.
+> ✅ **Counsel-review marker defined**: the agent may draft the Privacy Policy / ToS / tax
+> disclaimers only as `LEGAL-REVIEW: PENDING` operational drafts (`02:40-46`). The human
+> flips it to `REVIEWED by <name> on <date>`; publishing legal text while `PENDING` is a
+> FROZEN-spec violation. `validate-gate.sh M02` enforces the marker whenever the scope
+> includes legal/tax text, and `test-gate-regressions.sh` pins the rule.
 
 ### M03 — Legal / SOW / DP 〔GATE〕
 | Agent | Human only |

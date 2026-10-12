@@ -60,12 +60,22 @@ gate_M02() {
         # 4. P0 feature count within scale limits (strictly count | **F-xx** | rows)
         p0_count=$(grep -iE "\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)" "$scope" 2>/dev/null | wc -l || true)
         p0_count=$(echo "$p0_count" | tr -d ' ')
-        declared_scale=$(get_field Scale docs/pm/PROJECT_STATE.md | grep -oiE "small|medium|large|enterprise|solo-saas" | head -1)
+        # Lowercased like every other gate (M05/M07/M08/M10/M12/M13): `grep -o`
+        # preserves input case, so without the tr a "Scale: Medium" project fell
+        # through to the `*` fallback and the 8-15 / 16-25 bands were never enforced.
+        # Spaces are folded to hyphens so "Solo SaaS" matches the solo-saas band.
+        declared_scale=$(get_field Scale docs/pm/PROJECT_STATE.md \
+            | grep -oiE "small|medium|large|enterprise|solo[ -]?saas" | head -1 \
+            | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
         case "$declared_scale" in
-            small)      lo=3; hi=7 ;;
+            small)      lo=3;  hi=7 ;;
             medium|solo-saas) lo=8; hi=15 ;;
             large)      lo=16; hi=25 ;;
-            *)          lo=3; hi=25 ;;
+            # Enterprise (>25 P0) is out of solo capacity and routed to the A-Series
+            # advisory (classify-scale.sh exit 2); M02 keeps the wide band rather
+            # than inventing an upper limit it cannot validate.
+            enterprise) lo=3;  hi=25 ;;
+            *)          lo=3;  hi=25 ;;
         esac
         echo "  [INFO] Declared scale: ${declared_scale:-unknown}; P0 feature rows (F-xx) counted: $p0_count (expected $lo-$hi)"
         if [ "$p0_count" -lt "$lo" ] || [ "$p0_count" -gt "$hi" ]; then
@@ -73,6 +83,24 @@ gate_M02() {
             GATE_FAILED=1
         else
             echo "  ✅ P0 Must-Have count within scale limits"
+        fi
+
+        # 4b. Machine-field reconciliation: the declared `Scope-P0-Count` must be a
+        # real number (the template ships the `[number]` placeholder, which the
+        # [Feature N] regex above never caught) and must agree with the counted rows.
+        declared_p0=$(grep -iE "^Scope-P0-Count:" "$scope" 2>/dev/null | head -1 \
+            | sed 's/^[^:]*:[[:space:]]*//' | tr -d ' \r')
+        if [ -z "$declared_p0" ]; then
+            echo "  ❌ Missing 'Scope-P0-Count:' machine field in SCOPE_STATEMENT.md!"
+            GATE_FAILED=1
+        elif ! echo "$declared_p0" | grep -qE "^[0-9]+$"; then
+            echo "  ❌ Scope-P0-Count is not a number ('$declared_p0') — replace the [number] placeholder."
+            GATE_FAILED=1
+        elif [ "$declared_p0" -ne "$p0_count" ]; then
+            echo "  ❌ Scope-P0-Count ($declared_p0) disagrees with counted Must-Have rows ($p0_count)."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Scope-P0-Count ($declared_p0) reconciles with counted Must-Have rows"
         fi
 
         # 5. Confidence Legend check (BLOCKER)
@@ -104,6 +132,21 @@ gate_M02() {
         else
             echo "  ❌ RBAC Zero Self-Approval guardrail (no self-approval for mutations/approvals) missing in SCOPE_STATEMENT.md!"
             GATE_FAILED=1
+        fi
+
+        # 8. Legal-text review marker (STEP 5). The agent may DRAFT the Privacy Policy,
+        # ToS and tax disclaimers, but they are operational drafts, never legal advice:
+        # publishing them unreviewed is a FROZEN-spec violation. Guarded to documents
+        # that actually contain legal/tax text, so a scope statement without a legal
+        # section is unaffected. The PENDING -> REVIEWED flip is the human's action.
+        if grep -qiE "UU PDP|Privacy Policy|In-App Disclaimer|tidak menggantikan|Terms of Service" "$scope"; then
+            if grep -qiE "LEGAL-REVIEW:" "$scope"; then
+                echo "  ✅ Legal-text review marker present (LEGAL-REVIEW: ...)"
+            else
+                echo "  ❌ SCOPE_STATEMENT.md includes legal/tax text without a LEGAL-REVIEW marker!"
+                echo "     Add 'LEGAL-REVIEW: PENDING — DRAFT TEKNIS, WAJIB DITINJAU ...' and keep it until counsel/pajak review."
+                GATE_FAILED=1
+            fi
         fi
     fi
     # 7. Company/team projects require STAKEHOLDER_MAP, COMMUNICATION_PLAN, RACI
