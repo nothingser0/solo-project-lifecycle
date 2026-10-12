@@ -154,7 +154,7 @@ Success metric: [METRIC + threshold].
 
 ## 4. Completed Experiments (Learning Repository)
 
-### Experiment #XXX: [Experiment Name] ✅ Win
+### Experiment #N: [Experiment Name] ✅ Win
 
 **Run Date**: [Start] – [End] ([X] days)  
 **Result**: 🎉 **Treatment Won** (shipped to 100%)
@@ -180,7 +180,7 @@ Success metric: [METRIC + threshold].
 
 ---
 
-### Experiment #XXX: [Experiment Name] ❌ Loss
+### Experiment #N: [Experiment Name] ❌ Loss
 
 **Run Date**: [Start] – [End] ([X] days)  
 **Result**: 💡 **Control Won** (treatment killed)
@@ -204,7 +204,7 @@ Success metric: [METRIC + threshold].
 
 ---
 
-### Experiment #XXX: [Experiment Name] 🤷 Neutral
+### Experiment #N: [Experiment Name] 🤷 Neutral
 
 **Run Date**: [Start] – [End]  
 **Result**: 🤷 **No Significant Difference** (killed due to no impact)
@@ -293,7 +293,7 @@ Use online calculator: [https://www.evanmiller.org/ab-testing/sample-size.html](
 
 ### A/B Test Template
 ```markdown
-### Experiment #XXX: [Name]
+### Experiment #N: [Name]
 **Hypothesis**: We believe [change] will result in [impact] for [segment] because [rationale].
 **Primary Metric**: [metric + threshold]
 **Design**: 50/50 split, 2 weeks, 95% confidence

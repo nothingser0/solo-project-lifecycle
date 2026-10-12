@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # classify-scale.sh - Deterministic Engineering Scale Classifier + Solo Capacity Gate
-# Evaluates P0 count, blast radius, integrations, branches, and estimated hours.
-# Enforces the HIGH-WATER MARK RULE (highest applicable tier determines project scale).
-# Enforces the SOLO CAPACITY GATE (Large/Enterprise exceed a single solo developer's realistic capacity).
+# v2: Structured-field parsing ONLY (no raw keyword grep over free text).
+# Reads: Intake-* fields, Scale/Delivery lines (anchored, bold-tolerant), SCOPE_STATEMENT/PROJECT_LITE.
+# Tiers: small 3-7 P0 | medium 8-15 | large 16-25 | enterprise >25.
+# Enforces the HIGH-WATER MARK RULE and the SOLO CAPACITY GATE (Large/Enterprise -> A00-A04 advisory).
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_STATE="${1:-docs/pm/PROJECT_STATE.md}"
-# Realistic solo productive hours per week (NOT 40; meetings/context-switching/overhead excluded)
 SOLO_HOURS_PER_WEEK="${SOLO_HOURS_PER_WEEK:-28}"
 
 if [ ! -f "$PROJECT_STATE" ]; then
@@ -16,6 +17,14 @@ if [ ! -f "$PROJECT_STATE" ]; then
     exit 1
 fi
 
+# Anchored field reader: strips "- ", bold **, whitespace. Reads ONLY the first matching line.
+get_field() {
+    local name="$1" file="$2"
+    grep -m1 -E "^[[:space:]]*-?[[:space:]]*(\*\*)?${name}[[:space:]]*:(\*\*)?" "$file" 2>/dev/null \
+        | sed -E "s/^[[:space:]]*-?[[:space:]]*(\*\*)?${name}[[:space:]]*:(\*\*)?[[:space:]]*//; s/[[:space:]]*$//; s/^\*\*//; s/\*\*$//" \
+        | head -1
+}
+
 echo "=== Engineering Scale Classifier (High-Water Mark + Solo Capacity) ==="
 echo "Target: $PROJECT_STATE"
 echo "Assumed solo productive hours/week: $SOLO_HOURS_PER_WEEK"
@@ -23,56 +32,75 @@ echo "Assumed solo productive hours/week: $SOLO_HOURS_PER_WEEK"
 TIER=1
 REASON="3-7 P0 features, isolated DB, best-effort SLA"
 
+# --- Structured fields only (free text is NEVER scanned) ---
+DELIVERY=$(get_field "Delivery" "$PROJECT_STATE")
+P0_FIELD=$(get_field "Intake-P0-Features" "$PROJECT_STATE")
+NON_FEATURES=$(get_field "Intake-Non-Features" "$PROJECT_STATE")
+SENSITIVE=$(get_field "Intake-Sensitive-Data" "$PROJECT_STATE")
+INTEGRATIONS=$(get_field "Intake-Integrations" "$PROJECT_STATE")
+BRANCH_HIER=$(get_field "Intake-Branch-Hierarchy" "$PROJECT_STATE")
+COMPLIANCE=$(get_field "Intake-Compliance" "$PROJECT_STATE")
+
+# P0 count: structured field first, else scope artifacts.
 P0_COUNT=0
-if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
-    P0_COUNT=$(grep -iE "\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)" "docs/pm/SCOPE_STATEMENT.md" 2>/dev/null | wc -l | tr -d ' ')
-elif [ -f "PROJECT_LITE.md" ]; then
-    P0_COUNT=$(grep -iE "^\s*-\s*Feature\s*[0-9]:" "PROJECT_LITE.md" | wc -l | tr -d ' ')
+if [ -n "$P0_FIELD" ]; then
+    P0_COUNT=$(echo "$P0_FIELD" | grep -oE "[0-9]+" | head -1)
+fi
+if [ -z "$P0_COUNT" ] || [ "$P0_COUNT" -eq 0 ] 2>/dev/null; then
+    if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
+        P0_COUNT=$(grep -icE "\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)" "docs/pm/SCOPE_STATEMENT.md" 2>/dev/null | tr -d ' ')
+    elif [ -f "PROJECT_LITE.md" ]; then
+        # Matches PROJECT_LITE format: "1. **[Feature 1]**: ..."
+        P0_COUNT=$(grep -cE "^[[:space:]]*[0-9]+\.[[:space:]]*\*\*\[?Feature" "PROJECT_LITE.md" 2>/dev/null | tr -d ' ')
+    fi
+fi
+[ -z "$P0_COUNT" ] && P0_COUNT=0
+
+# Integrations: count only from the structured Intake-Integrations field,
+# minus anything explicitly excluded in Intake-Non-Features (negation-safe).
+INTEGRATION_COUNT=0
+if [ -n "$INTEGRATIONS" ] && ! echo "$INTEGRATIONS" | grep -qiE "^\s*(none|no|tidak ada|-)\s*$"; then
+    INTEGRATION_COUNT=$(echo "$INTEGRATIONS" | tr ',' '\n' | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')
+    if [ -n "$NON_FEATURES" ]; then
+        NON_COUNT=$(echo "$NON_FEATURES" | grep -ioE "midtrans|xendit|stripe|fonnte|wablas|twilio|sendgrid|resend|whatsapp|payment gateway|webhook" 2>/dev/null | sort -u | wc -l | tr -d ' ')
+        INTEGRATION_COUNT=$(( INTEGRATION_COUNT > NON_COUNT ? INTEGRATION_COUNT - NON_COUNT : 0 ))
+    fi
 fi
 
-INTEGRATION_COUNT=$(grep -ioE "midtrans|xendit|stripe|fonnte|wablas|twilio|sendgrid|resend|whatsapp|payment gateway|webhook" "$PROJECT_STATE" 2>/dev/null | sort -u | wc -l | tr -d ' ')
-BRANCH_COUNT=$(grep -ioE "cabang|branch|multi-tenant|multi-cabang" "$PROJECT_STATE" 2>/dev/null | wc -l | tr -d ' ')
-
-echo "Detected P0 Must-Have Count : $P0_COUNT"
+echo "Delivery (structured)        : ${DELIVERY:-[not declared]}"
+echo "Detected P0 Must-Have Count  : $P0_COUNT"
 echo "Detected Distinct Integrations: $INTEGRATION_COUNT"
-echo "Detected Branch/Tenant Hints : $BRANCH_COUNT"
 
 if [ "$P0_COUNT" -gt 25 ]; then
-    TIER=4
-    REASON=">25 P0 features (Enterprise scope)"
+    TIER=4; REASON=">25 P0 features (Enterprise scope)"
 elif [ "$P0_COUNT" -ge 16 ] && [ $TIER -lt 3 ]; then
-    TIER=3
-    REASON="16-25 P0 features (Large Scale platform)"
+    TIER=3; REASON="16-25 P0 features (Large Scale platform)"
 elif [ "$P0_COUNT" -ge 8 ] && [ $TIER -lt 2 ]; then
-    TIER=2
-    REASON="8-15 P0 features (Medium Scale)"
+    TIER=2; REASON="8-15 P0 features (Medium Scale)"
 fi
 
-if grep -qiE "financial|rekening|saldo|pembayaran|payment|rekam medis|health|pasien|banking" "$PROJECT_STATE" 2>/dev/null; then
+# Sensitive data: structured yes/no only (no free-text matching).
+if echo "$SENSITIVE" | grep -qiE "^\s*(yes|ya|true)" 2>/dev/null; then
     if [ $TIER -lt 2 ]; then
-        TIER=2
-        REASON="High-Water Mark: Financial/sensitive data mutation elevates tier to Medium"
+        TIER=2; REASON="High-Water Mark: Sensitive data (UU PDP applies) elevates tier to Medium"
     fi
 fi
 
 if [ "$INTEGRATION_COUNT" -ge 1 ] && [ $TIER -lt 2 ]; then
-    TIER=2
-    REASON="High-Water Mark: External integration/webhook elevates tier to Medium"
+    TIER=2; REASON="High-Water Mark: External integration/webhook elevates tier to Medium"
 fi
-
 if [ "$INTEGRATION_COUNT" -ge 4 ] && [ $TIER -lt 3 ]; then
-    TIER=3
-    REASON="High-Water Mark: 4+ distinct integrations (multi-vendor) elevate tier to Large"
+    TIER=3; REASON="High-Water Mark: 4+ distinct integrations (multi-vendor) elevate tier to Large"
 fi
 
-if [ "$BRANCH_COUNT" -ge 2 ] && [ $TIER -lt 3 ]; then
-    TIER=3
-    REASON="High-Water Mark: Multi-branch/multi-tenant hierarchy elevates tier to Large"
+if echo "$BRANCH_HIER" | grep -qiE "^\s*(yes|ya|true|multi)" 2>/dev/null; then
+    if [ $TIER -lt 3 ]; then
+        TIER=3; REASON="High-Water Mark: Multi-branch/multi-tenant hierarchy elevates tier to Large"
+    fi
 fi
 
-if grep -qiE "ojk|bank indonesia|hipaa|soc2|pci-dss" "$PROJECT_STATE" 2>/dev/null; then
-    TIER=4
-    REASON="High-Water Mark: Statutory compliance (OJK/BI/HIPAA) elevates tier to Enterprise"
+if [ -n "$COMPLIANCE" ] && ! echo "$COMPLIANCE" | grep -qiE "^\s*(none|no|tidak ada|-)\s*$" 2>/dev/null; then
+    TIER=4; REASON="High-Water Mark: Statutory compliance ($COMPLIANCE) elevates tier to Enterprise"
 fi
 
 FINAL_SCALE="small"
@@ -87,20 +115,11 @@ echo "------------------------------------------------------"
 echo "Evaluated Scale   : $FINAL_SCALE"
 echo "Primary Rationale : $REASON"
 
-# --- SOLO CAPACITY GATE (Opsi A) ---
+# --- SOLO CAPACITY GATE ---
 if [ "$TIER" -ge 3 ]; then
     echo "------------------------------------------------------"
     echo "⛔ SOLO CAPACITY GATE: $FINAL_SCALE EXCEEDS SOLO DEVELOPER CAPACITY."
-    echo "   A single developer cannot realistically deliver 16+ P0 features + pentest +"
-    echo "   data migration + 100+ UAT cases within a safe timeline at $SOLO_HOURS_PER_WEEK hrs/week."
-    echo ""
     echo "   MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04)"
-    echo "     - A00: Pre-Sales, Administrative Eligibility, Bid/No-Bid & Consulting Agreement"
-    echo "     - A01: WBS Decomposition into autonomous Medium sub-projects & Legacy Isolation"
-    echo "     - A02: C4 Blueprint, STRIDE Threat Modeling, ATAM Quality Scenarios, Data Residency"
-    echo "     - A03: Vendor Procurement Specifications & Build-vs-Buy Evaluation"
-    echo "     - A04: Governance Handover Pack (RACI, CAB, DR Plan) & Conformance Retainer"
-    echo ""
     echo "   The skill STRICTLY PROHIBITS solo coding for Large/Enterprise scope."
     echo "   Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY."
     echo "   Exit code: 2 (Non-solo capacity — route to A00-A04 Advisory)."

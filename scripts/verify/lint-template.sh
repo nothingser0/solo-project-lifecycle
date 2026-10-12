@@ -33,10 +33,15 @@ if [[ "$TEMPLATE_FILE" == *"templates/"* ]] || [[ "$TEMPLATE_FILE" == *"_TEMPLAT
     IS_RAW_TEMPLATE=1
 fi
 
+# inline-code spans stripped: examples like `// TODO: x` are documentation, not placeholders
+CLEAN_SCAN=$(mktemp)
+sed 's/`[^`]*`//g' "$TEMPLATE_FILE" > "$CLEAN_SCAN"
+trap 'rm -f "$CLEAN_SCAN"' EXIT
+
 if [ $IS_RAW_TEMPLATE -eq 1 ]; then
-    PLACEHOLDERS=$(grep -n "\[FILL\|PLACEHOLDER\|TODO:\|FIXME:\|XXX:\|<INSERT\|<DESCRIBE\|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+    PLACEHOLDERS=$(grep -n "\[FILL\|PLACEHOLDER\|TODO:\|FIXME:\|XXX:\|<INSERT\|<DESCRIBE\|<LIST" "$CLEAN_SCAN" 2>/dev/null || true)
 else
-    PLACEHOLDERS=$(grep -nE "\[(FILL|Nama|isi|Your|Client|Company|Project|YYYY|Amount|[0-9]+%|[XYZ])[^]]*\]|PLACEHOLDER|TODO:|FIXME:|XXX:|<INSERT|<DESCRIBE|<LIST" "$TEMPLATE_FILE" 2>/dev/null || true)
+    PLACEHOLDERS=$(grep -nE "\[(FILL|Nama|isi|Your|Client|Company|Project|YYYY|Amount|[0-9]+%|[XYZ])[^]]*\]|PLACEHOLDER|TODO:|FIXME:|XXX:|<INSERT|<DESCRIBE|<LIST" "$CLEAN_SCAN" 2>/dev/null || true)
 fi
 
 if [ -n "$PLACEHOLDERS" ]; then

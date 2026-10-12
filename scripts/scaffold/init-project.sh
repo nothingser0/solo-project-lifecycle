@@ -42,20 +42,28 @@ case "$SCALE" in
         echo "Configuring for Small / Open-Source Fast-Track MVP..."
         mkdir -p "$TARGET_DIR/assets/logo"
         mkdir -p "$TARGET_DIR/docs/qa"
+        # A1: Small scaffold = Intake + state + lite spec + root harness stubs ONLY.
+        # Design/component specs are copied at M04 entry (commands printed below),
+        # not dumped as empty templates up front.
+        cp "$TEMPLATES/essentials/INTAKE_GATE.md" "$TARGET_DIR/docs/pm/INTAKE_GATE.md"
         cp "$TEMPLATES/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "$TARGET_DIR/PROJECT_LITE.md"
-        cp "$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md" "$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md"
-        cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
-        cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"
-        cp "$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md" "$TARGET_DIR/docs/specs/DESIGN_SPEC.md"
-        cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
-        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
-        cp "$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md" "$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md" 2>/dev/null || true
-        cp "$TEMPLATES/06-qa-uat/UAT_SIGNOFF_SMALL.md" "$TARGET_DIR/docs/qa/UAT_SIGNOFF_SMALL.md" 2>/dev/null || true
-        cp "$TEMPLATES/08-maintenance-ops/RUNBOOK_OPS.md" "$TARGET_DIR/docs/pm/RUNBOOK_OPS.md" 2>/dev/null || true
+        cp "$TEMPLATES/04-dev-execution/AGENTS_TEMPLATE.md" "$TARGET_DIR/AGENTS.md"
+        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/TODO.md"
         if [ "$DELIVERY" = "client" ]; then
             mkdir -p "$TARGET_DIR/contracts"
             cp "$TEMPLATES/02-legal-commercial/SOW_SMB.md" "$TARGET_DIR/contracts/SOW_SMB.md"
         fi
+        echo ""
+        echo "Deferred to M04 entry (run when you reach Module 04):"
+        echo "  cp \"$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md\""
+        echo "  cp \"$TEMPLATES/02-design/SITEMAP_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/SITEMAP.md\""
+        echo "  cp \"$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md\""
+        echo "  cp \"$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/DESIGN_SPEC.md\""
+        echo "  cp \"$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md\" \"$TARGET_DIR/DESIGN.md\""
+        echo "Deferred to M06/M09/M10 (create when reached):"
+        echo "  cp \"$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md\" \"$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md\""
+        echo "  cp \"$TEMPLATES/06-qa-uat/UAT_SIGNOFF_SMALL.md\" \"$TARGET_DIR/docs/qa/UAT_SIGNOFF_SMALL.md\""
+        echo "  cp \"$TEMPLATES/08-maintenance-ops/RUNBOOK_OPS.md\" \"$TARGET_DIR/docs/pm/RUNBOOK_OPS.md\""
         ;;
     solo-saas|independent)
         echo "Configuring for Independent / Self-Initiated Product..."
@@ -65,11 +73,13 @@ case "$SCALE" in
         cp "$TEMPLATES/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md" "$TARGET_DIR/docs/pm/SCOPE_STATEMENT.md"
         cp "$TEMPLATES/01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md" "$TARGET_DIR/docs/pm/REQUIREMENT_MATRIX.md"
         cp "$TEMPLATES/01-discovery-commercial/VERIFICATION_PLAN_TEMPLATE.md" "$TARGET_DIR/docs/pm/VERIFICATION_PLAN.md"
-        cp "$TEMPLATES/02-design/SITEMAP_TEMPLATE.md" "$TARGET_DIR/docs/specs/SITEMAP.md"
-        cp "$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md" "$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md"
-        cp "$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md" "$TARGET_DIR/docs/specs/DESIGN_SPEC.md"
-        cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
-        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
+        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/TODO.md"
+        echo ""
+        echo "Deferred to M04 entry (run when you reach Module 04):"
+        echo "  cp \"$TEMPLATES/02-design/SITEMAP_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/SITEMAP.md\""
+        echo "  cp \"$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md\""
+        echo "  cp \"$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/DESIGN_SPEC.md\""
+        echo "  cp \"$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md\" \"$TARGET_DIR/DESIGN.md\""
         ;;
     medium|bespoke|freelance)
         echo "Configuring for Medium Bespoke / Client Commercial..."

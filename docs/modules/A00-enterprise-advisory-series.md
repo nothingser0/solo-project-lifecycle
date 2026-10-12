@@ -1,6 +1,6 @@
 # Enterprise Advisory Series (A00 - A04): Non-Solo Capacity Lifecycle
 
-> **Target**: Projects classified as **BEYOND_SOLO_CAPACITY** (>15 P0 features, statutory audit, multi-branch, core legacy integration).
+> **Target**: Projects classified as **BEYOND_SOLO_CAPACITY** (Enterprise tier: >25 P0 features, statutory audit, multi-branch, core legacy integration).
 > **Premise**: Solo developer acts as **Lead Enterprise Architect / Technical Advisor**. Hands-on solo coding is strictly prohibited. The output is a verified **Enterprise Architecture & Procurement Readiness Package**.
 
 ---
@@ -9,44 +9,37 @@
 
 ```text
 [ CLIENT RFP / ENTERPRISE OPPORTUNITY ]
-                     │
-                     ▼
-[ PHASE A00: Bid/No-Bid & Commercial Clearance ] ──► 🛑 STOP 1 (Advisory Agreement Signed)
-  • Administrative eligibility check (PT/CV, NPWP, legal tender requirements)
-  • Bid/No-Bid decision matrix (Capacity, margin, risk boundaries)
-  • Output: CONSULTING_AGREEMENT.md (Net 30, liability cap, anti-conflict pact)
-                     │
-                     ▼
+                     â”‚
+                     â–¼
+[ PHASE A00: Bid/No-Bid & Commercial Clearance ] â”€â”€â–º ðŸ›‘ STOP 1 (Advisory Agreement Signed)
+  â€¢ Administrative eligibility check (PT/CV, NPWP, legal tender requirements)
+  â€¢ Bid/No-Bid decision matrix (Capacity, margin, risk boundaries)
+  â€¢ Output: CONSULTING_AGREEMENT.md (Net 30, liability cap, anti-conflict pact)
+                     â”‚
+                     â–¼
 [ PHASE A01: Work Breakdown Structure & Phased Decomposition ]
-  • Scope Razor: Decompose >15 P0 features into autonomous Medium-scale sub-projects (Phases 1-3)
-  • Legacy Integration Isolation: Isolate core banking/ERP legacy into a standalone spike
-  • Verification: Every sub-package must pass classify-scale.sh as Scale: medium
-  • Output: WBS_PHASING_PLAN.md
-                     │
-                     ▼
-[ PHASE A02: C4 Architecture, Threat Modeling & Quality Scenarios ] ──► 🛑 STOP 2 (Arch Sign-off)
-  • C4 Model (Context, Containers, Components) + ADR Suite
-  • Threat Modeling (STRIDE): Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation
-  • ATAM Quality Scenarios: Measurable latency, throughput (TPS), RPO (<15m), RTO (<1h)
-  • Data Residency: Explicit local region lock (e.g. AWS Jakarta ap-southeast-3) via ADR
-  • Security Controls Mapping: UU PDP No. 27/2022, POJK/BI regulations, ISO 27001 readiness
-  • Output: ENTERPRISE_ARCHITECTURE_BLUEPRINT.md, ADR_SUITE.md, THREAT_MODEL_STRIDE.md
-                     │
-                     ▼
+  â€¢ Scope Razor: Decompose >25 P0 features into autonomous Medium-scale sub-projects (Phases 1-3)
+  â€¢ Legacy Integration Isolation: Isolate core banking/ERP legacy into a standalone spike
+  â€¢ Verification: Every sub-package must pass classify-scale.sh as Scale: medium
+  â€¢ Output: WBS_PHASING_PLAN.md
+                     â”‚
+                     â–¼
+[ PHASE A02: C4 Architecture, Threat Modeling & Quality Scenarios ] â”€â”€â–º ðŸ›‘ STOP 2 (Arch Sign-off)
+  â€¢ C4 Model + ADR Suite; STRIDE per container; ATAM scenarios (latency, TPS, RPO <15m, RTO <1h)
+  â€¢ Data Residency: local region lock via ADR; Controls: UU PDP 27/2022, POJK/BI, ISO 27001
+  â€¢ Output: ENTERPRISE_ARCHITECTURE_BLUEPRINT.md, ADR_SUITE.md, THREAT_MODEL_STRIDE.md
+                     â”‚
+                     â–¼
 [ PHASE A03: Vendor Procurement & Build-vs-Buy Evaluation ]
-  • Technical specifications schedule for corporate RFP
-  • Build-vs-Buy analysis for commodity components (IAM, CMS, payment engine)
-  • Weighted Vendor Comparison Matrix (RFP Technical Evaluation Criteria)
-  • Vendor Lock-In Exit Strategy: Data portability, open DDL schemas, neutral export scripts
-  • Output: VENDOR_PROCUREMENT_SCHEDULE.md, VENDOR_COMPARISON_MATRIX.md
-                     │
-                     ▼
-[ PHASE A04: Governance Handover & Architecture Conformance Retainer ] ──► 🛑 STOP 3 (Final Sign-off)
-  • Corporate RACI Matrix: Multi-department decision ownership
-  • CAB Protocol Template: Change Advisory Board process for vendor releases
-  • Disaster Recovery Blueprint: Automated backup, failover topology, restore drill protocol
-  • Conformance Retainer: Architecture review SLA per vendor sprint milestone
-  • Output: GOVERNANCE_HANDOVER_PACK.md (Setara BAST Advisory)
+  â€¢ Corporate RFP tech spec; Build-vs-Buy (IAM, CMS, payment); weighted vendor matrix
+  â€¢ Lock-In Exit: data portability, open DDL, neutral export scripts
+  â€¢ Output: VENDOR_PROCUREMENT_SCHEDULE.md, VENDOR_COMPARISON_MATRIX.md
+                     â”‚
+                     â–¼
+[ PHASE A04: Governance Handover & Architecture Conformance Retainer ] â”€â”€â–º ðŸ›‘ STOP 3 (Final Sign-off)
+  â€¢ Corporate RACI; CAB protocol; DR blueprint (backup, failover, restore drills)
+  â€¢ Conformance Retainer: architecture review SLA per vendor sprint milestone
+  â€¢ Output: GOVERNANCE_HANDOVER_PACK.md (Setara BAST Advisory)
 ```
 
 ---
@@ -57,23 +50,19 @@
 1. **Administrative Feasibility**: Verify corporate entity readiness. If tender mandates specialized corporate capital guarantees beyond consultant status, execute **NO-BID** immediately before wasting hours.
 2. **Paid Discovery Principle**: Never write custom 40-page RFP responses or POC code for free. Bill as an upfront Technical Discovery / Advisory Engagement.
 3. **Draft Disclaimer**: Mark all regulatory compliance mappings as:
-   > *"DRAFT TEKNIS — WAJIB DITINJAU OLEH LEGAL COUNSEL / PAKAR KEPATUHAN TERSERTIFIKASI SEBELUM EKSEKUSI HUKUM."*
+   > *"DRAFT TEKNIS â€” WAJIB DITINJAU OLEH LEGAL COUNSEL / PAKAR KEPATUHAN TERSERTIFIKASI SEBELUM EKSEKUSI HUKUM."*
 
 ### Phase A01: Work Breakdown Structure (WBS) & Phasing
 1. **Decomposition Before Architecture**: Never model a monolith for 25 features. Split into:
-   - *Phase 1 (Core Backbone)*: 8–10 P0 features, basic RBAC, foundational ledger.
+   - *Phase 1 (Core Backbone)*: 8â€“10 P0 features, basic RBAC, foundational ledger.
    - *Phase 2 (Ecosystem Integrations)*: Secondary modules, reporting, branch synchronization.
    - *Phase 3 (Legacy Bridge & Advanced Automation)*: High-risk legacy connectors, ETL, automated reconciliation.
 2. **Gate Validation**: Run `./scripts/gates/classify-scale.sh` against each phase specification. Each phase **MUST resolve to `Scale: medium`**.
 
 ### Phase A02: C4 Modeling, STRIDE & Quality Scenarios
-1. **C4 Hierarchy**: Context (System boundaries) $
-ightarrow$ Containers (Web, API, DB, Queue) $
-ightarrow$ Components (Domain engines).
+1. **C4 Hierarchy**: Context → Containers (Web, API, DB, Queue) → Components (Domain engines).
 2. **STRIDE Threat Modeling**: Explicit mitigations per container (e.g., mTLS between services, KMS envelope encryption for PII, HMAC-SHA256 webhooks).
-3. **ATAM Scenarios**: No generic "SLA 99.9%". Define concrete stimulus-response pairs:
-   - *Scenario*: Ingestion spike of 1,000 TPS during morning batch peak.
-   - *Expected Response*: Queue buffer absorbs load, worker autoscales, API p95 $\le 400\text{ ms}$, zero messages dropped.
+3. **ATAM Scenarios**: No generic "SLA 99.9%" — concrete stimulus-response pairs (e.g., 1,000 TPS ingestion spike → queue buffer absorbs, workers autoscale, API p95 ≤ 400 ms, zero drops).
 4. **Data Residency**: Lock cloud deployment to Indonesian territory (PP 71/2019 & UU PDP) via explicit ADR entry.
 
 ### Phase A03: Vendor Procurement & Build-vs-Buy

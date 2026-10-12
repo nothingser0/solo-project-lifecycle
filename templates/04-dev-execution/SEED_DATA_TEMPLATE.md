@@ -47,7 +47,7 @@ async function main() {
     create: { id: '00000000-0000-0000-0000-0000000000bb', slug: 'org-b', name: 'Org B' },
   });
 
-  // TODO: seed users (owner + staff) per tenant, master data, and transactions across all statuses.
+  // Seed users (owner + staff) per tenant, master data, and transactions across all statuses.
   // Cover edge cases: zero value, max-length, unicode, past/future dates.
 }
 

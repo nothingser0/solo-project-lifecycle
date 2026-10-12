@@ -19,7 +19,7 @@ const ROOT = process.cwd();
 const MANIFEST = path.join(ROOT, 'INDEX.json');
 
 // Directories whose files must be fully indexed.
-const TRACKED_DIRS = ['templates', 'references', 'patterns', 'docs/modules'];
+const TRACKED_DIRS = ['templates', 'references', 'patterns', 'docs/modules', 'evals'];
 
 // README catalogs used to derive the owning module per file.
 const CATALOGS = [

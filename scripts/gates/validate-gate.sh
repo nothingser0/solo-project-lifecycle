@@ -4,6 +4,52 @@
 
 set -e
 
+# F1: resolve the script's own directory so self-references (e.g. classify-scale.sh)
+# work from ANY cwd, including a scaffolded project dir that has no scripts/ subtree.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# F2: structured field reader. Anchored to line start; tolerates optional "- " and
+# bold "**" markers. Echoes the value after "Field:"; empty output when absent.
+get_field() {
+    local name="$1"
+    local file="${2:-docs/pm/PROJECT_STATE.md}"
+    [ -f "$file" ] || return 0
+    grep -iE "^[[:space:]]*-?[[:space:]]*\**${name}\**[[:space:]]*:" "$file" 2>/dev/null \
+        | head -1 \
+        | sed "s/^[^:]*:[[:space:]]*//" \
+        | sed 's/\*\*//g' \
+        | tr -d '\r'
+}
+
+# Small-scale detection: declared Scale field, or the PROJECT_LITE fallback
+# (no PROJECT_STATE.md but a root PROJECT_LITE.md exists).
+is_small_scale() {
+    [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "small" ] \
+        && return 0
+    [ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]
+}
+
+# A2: content check — require core section headings from the matching template.
+check_sections() {
+    local file="$1"
+    shift
+    if [ ! -f "$file" ]; then
+        return 0 # existence is enforced by check_required; here we only verify content
+    fi
+    local h missing=0
+    for h in "$@"; do
+        if ! grep -qiE "^#{1,6}[[:space:]]*.*${h}" "$file" 2>/dev/null; then
+            echo "  ❌ $file missing core section heading matching '${h}'!"
+            missing=1
+        fi
+    done
+    if [ "$missing" -eq 0 ]; then
+        echo "  ✅ $file core section headings verified ($# headings present)"
+    else
+        GATE_FAILED=1
+    fi
+}
+
 GATE_MODULE="${1:-}"
 GATE_FAILED=0
 
@@ -21,7 +67,7 @@ echo "============================================================"
 check_required() {
     local file="$1"
     local alt="$2"
-    local min_size="${3:-200}" # Default min_size: 200 bytes (anti-stub)
+    local min_size="${3:-0}" # v2: size threshold ignored (padding incentive removed); stub-check only
     local target=""
     if [ -f "$file" ]; then
         target="$file"
@@ -34,11 +80,11 @@ check_required() {
         # Portable file size extraction
         size=$(wc -c < "$target" 2>/dev/null || stat -c%s "$target" 2>/dev/null || echo 0)
         size=$(echo "$size" | tr -d ' ')
-        if [ "$size" -lt "$min_size" ]; then
-            echo "  ❌ $target (TOO SMALL: ${size}B < ${min_size}B minimum required)"
+        if [ "$size" -lt 40 ]; then
+            echo "  ❌ $target (STUB: ${size}B — file exists but empty/near-empty; fill real content)"
             GATE_FAILED=1
         else
-            echo "  ✅ $target (${size}B >= ${min_size}B)"
+            echo "  ✅ $target (${size}B)"
         fi
     else
         echo "  ❌ $file (MISSING)"
@@ -63,10 +109,11 @@ case "$GATE_MODULE" in
         echo "=== M00: Product Discovery & Strategy Gate Checklist ==="
         # 1. Check if M00 is WAIVED by Scale (small) or Delivery (client/internal/portfolio)
         is_m00_waived=0
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             echo "  [INFO] Small Scale detected: M00 Product Discovery is WAIVED (Handled by Intake Gate)."
             is_m00_waived=1
-        elif grep -qiE "Delivery:\s*(client|internal|portfolio)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        elif [ -n "$(get_field Delivery docs/pm/PROJECT_STATE.md)" ] \
+            && [ "$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" != "solo" ]; then
             echo "  [INFO] Client / Internal / Portfolio delivery: M00 Product Discovery is WAIVED (Scope pre-defined)."
             is_m00_waived=1
         fi
@@ -172,7 +219,7 @@ case "$GATE_MODULE" in
         echo "=== M01: Idea Feasibility Gate Checklist ==="
         # 1. Automatic waiver for Small Scale (handled via Intake Gate + PROJECT_LITE.md)
         is_m01_waived=0
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             echo "  [INFO] Small Scale detected: M01 Idea Feasibility is WAIVED (Handled by Intake Gate & PROJECT_LITE)."
             is_m01_waived=1
         fi
@@ -289,7 +336,7 @@ case "$GATE_MODULE" in
         echo "=== M02: Discovery & Scope Gate Checklist ==="
         # 1. Automatic waiver for Small Scale (handled via Intake Gate + PROJECT_LITE.md)
         is_m02_waived=0
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             echo "  [INFO] Small Scale detected: M02 Discovery & Scope is WAIVED (Handled by Intake Gate & PROJECT_LITE)."
             is_m02_waived=1
         fi
@@ -298,7 +345,7 @@ case "$GATE_MODULE" in
             check_optional "docs/pm/SCOPE_STATEMENT.md" "PROJECT_LITE.md"
         else
             check_required "docs/pm/SCOPE_STATEMENT.md" "" 2000
-        if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
             echo "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY."
             check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md"
         fi
@@ -333,7 +380,7 @@ case "$GATE_MODULE" in
             # 4. P0 feature count within scale limits (strictly count | **F-xx** | rows)
             p0_count=$(grep -iE "\|\s*\*\*F-[0-9]+\*\*\s*\|.*(must|p0)" "$scope" 2>/dev/null | wc -l || true)
             p0_count=$(echo "$p0_count" | tr -d ' ')
-            declared_scale=$(grep -iE "^\s*-?\s*Scale:" docs/pm/PROJECT_STATE.md 2>/dev/null | head -1 | grep -oiE "small|medium|large|enterprise|solo-saas" | head -1)
+            declared_scale=$(get_field Scale docs/pm/PROJECT_STATE.md | grep -oiE "small|medium|large|enterprise|solo-saas" | head -1)
             case "$declared_scale" in
                 small)      lo=3; hi=7 ;;
                 medium|solo-saas) lo=8; hi=15 ;;
@@ -380,7 +427,8 @@ case "$GATE_MODULE" in
             fi
         fi
         # 7. Company/team projects require STAKEHOLDER_MAP, COMMUNICATION_PLAN, RACI
-        if grep -qiE "Delivery:\s*(client|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m02_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m02_delivery" = "client" ] || [ "$m02_delivery" = "internal" ]; then
             echo "  [INFO] Company/client delivery: Stakeholder & Communication docs MANDATORY."
             check_required "docs/pm/STAKEHOLDER_MAP.md" "" 500
             check_required "docs/pm/COMMUNICATION_PLAN.md" "" 500
@@ -395,13 +443,17 @@ case "$GATE_MODULE" in
         [ -f "$target_sow" ] || target_sow="docs/pm/SOW_SMB.md"
         
         IS_SOLO=0
-        # STRICT DELIVERY ROUTING: Only bypass if Delivery is explicitly solo, portfolio, or internal
-        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        # F4: STRICT DELIVERY ROUTING — read Delivery from ITS OWN field line only.
+        # A stray "Delivery: solo" in prose must NEVER waive a client project, and the
+        # M00_LITE.md-presence infer-solo fallback is REMOVED (missing SOW must FAIL
+        # for an undeclared delivery, not silently pass).
+        m03_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m03_delivery" = "solo" ] || [ "$m03_delivery" = "portfolio" ] || [ "$m03_delivery" = "internal" ]; then
             IS_SOLO=1
-        elif grep -qiE "Delivery:\s*client" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        elif [ "$m03_delivery" = "client" ]; then
             IS_SOLO=0 # Client delivery NEVER bypasses SOW regardless of scale
-        elif [ ! -f "$target_sow" ] && [ -f "docs/pm/M00_LITE.md" ]; then
-            IS_SOLO=1
+        else
+            IS_SOLO=0 # Undeclared delivery: gate is enforced (fail-closed)
         fi
 
         if [ $IS_SOLO -eq 1 ]; then
@@ -417,7 +469,7 @@ case "$GATE_MODULE" in
 
             # NDA is mandatory for Medium+ client delivery; optional for Small client
             is_small_client=0
-            if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+            if is_small_scale; then
                 is_small_client=1
             fi
             if [ $is_small_client -eq 1 ]; then
@@ -427,6 +479,12 @@ case "$GATE_MODULE" in
                 check_required "contracts/NDA.md" "docs/pm/NDA.md" 500
             fi
             if [ -f "$target_sow" ]; then
+                # A2: core section headings must be present (SOW_SMB vs consolidated SOW layout)
+                if grep -qiE "^#{1,6}[[:space:]]*.*Statement of Work" "$target_sow" 2>/dev/null; then
+                    check_sections "$target_sow" "Project Overview" "Scope of Work" "Payment Terms" "Change Request"
+                else
+                    check_sections "$target_sow" "Identification of Parties" "Scope of Work" "Compensation" "Change Request"
+                fi
                 # 1. Check unresolved placeholders [...]
                 if grep -q "\[\.\.\.\]\|\[Numeric Amount\]\|\[Account Number\]" "$target_sow"; then
                     echo "  ❌ Unresolved template placeholders [...] detected in SOW contract!"
@@ -492,7 +550,7 @@ case "$GATE_MODULE" in
                 fi
 
                 # 9. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix
-                if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+                if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
                     echo "  [INFO] Enterprise scale detected: Risk Assessment Matrix & RACI Matrix MANDATORY in M03."
                     check_required "docs/governance/RISK_ASSESSMENT_MATRIX.md" "docs/pm/RISK_REGISTER.md" 500
                     check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md" 500
@@ -507,7 +565,7 @@ case "$GATE_MODULE" in
         # Universal: All scales MUST have components, design inspiration, logo, design tokens, and screen specs
         # 1. Strict Prerequisite: Logo asset must exist in assets/logo/ (logo.svg or logo.png)
         min_logo=200
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             min_logo=50 # M04-LITE: initial placeholder SVG allowed (min 50B)
         fi
         found_logo=""
@@ -541,7 +599,7 @@ case "$GATE_MODULE" in
         fi
         min_sitemap=2000
         min_design_spec=2000
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             min_sitemap=1000       # M04-LITE: 3-5 routes only
             min_design_spec=1000   # M04-LITE: 5-state matrix on primary screens only
         fi
@@ -629,7 +687,7 @@ case "$GATE_MODULE" in
         ;;
     M05)
         echo "=== M05: Architecture & Specs Gate Checklist ==="
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
             check_required "PROJECT_LITE.md" "" 1000
             if [ -f "PROJECT_LITE.md" ]; then
@@ -656,6 +714,8 @@ case "$GATE_MODULE" in
         # Content verification for PRD.md (Medium & Large scales)
         if [ -f "docs/specs/PRD.md" ]; then
             prd="docs/specs/PRD.md"
+            # A2: core section headings must be present (from PRD_FINAL_TEMPLATE.md)
+            check_sections "$prd" "Document Metadata" "Functional Traceability Matrix"
             # 1. Traceability Matrix verification (REQ-xx / F-xx mapping)
             if grep -qiE "REQ-[0-9]+" "$prd" && grep -qiE "F-[0-9]+" "$prd"; then
                 echo "  ✅ PRD.md functional traceability matrix verified (F-xx -> REQ-xx mapped)"
@@ -675,6 +735,8 @@ case "$GATE_MODULE" in
         # Content verification for FSD.md (Medium & Large scales)
         if [ -f "docs/specs/FSD.md" ]; then
             fsd="docs/specs/FSD.md"
+            # A2: core section headings must be present (from FSD_TECHNICAL_TEMPLATE.md)
+            check_sections "$fsd" "Document Metadata" "Component Architecture" "Relational Database Schema"
 
             # 1. Stack Decision LOCKED verification (BLOCKER)
             if grep -qiE "Stack Decision LOCKED:" "$fsd"; then
@@ -703,7 +765,8 @@ case "$GATE_MODULE" in
             fi
 
             # 4. Idempotency Key table verification for financial/mutation systems
-            if grep -qiE "financial|pembayaran|payment|saldo|transaksi|checkout|order" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            intake_sensitive="$(get_field Intake-Sensitive-Data docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+            if [ "$intake_sensitive" = "yes" ]; then
                 if grep -qiE "idempotency_keys|idempotency" "$fsd"; then
                     echo "  ✅ Idempotency protection schema verified in FSD.md (idempotency_keys table present)"
                 else
@@ -724,12 +787,13 @@ case "$GATE_MODULE" in
         fi
 
         # Architecture Decision Record is MANDATORY for Medium+ (justify architectural style choices)
-        if grep -qiE "Scale:\s*(medium|large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m05_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m05_scale" = "medium" ] || [ "$m05_scale" = "large" ] || [ "$m05_scale" = "enterprise" ]; then
             echo "  [INFO] Medium+ scale detected: Architecture Decision Record (ADR) is MANDATORY."
             check_required "docs/governance/ADR.md" "docs/specs/ADR.md" 500
         fi
 
-        if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        if [ "$m05_scale" = "enterprise" ]; then
             echo "  [INFO] Enterprise scale detected: ADR and Audit Trail Specs are MANDATORY."
             check_required "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md" "docs/specs/AUDIT_TRAIL_REQUIREMENTS.md"
         fi
@@ -739,8 +803,16 @@ case "$GATE_MODULE" in
     M06)
         echo "=== M06: Development Execution Gate Checklist ==="
         check_required "AGENTS.md" "" 500
-        check_required "CONTEXT.md" "" 500
         check_required "TODO.md" "" 500
+        # B1: Small scale requires ONLY AGENTS.md + TODO.md at the root harness level.
+        # CONTEXT.md / RUNBOOK_LOCAL.md / VERIFY_LOCAL.md are Medium+ requirements.
+        is_m06_small=0
+        if is_small_scale; then
+            is_m06_small=1
+            echo "  [INFO] Small scale detected: minimal root harness (AGENTS.md + TODO.md only)."
+        else
+            check_required "CONTEXT.md" "" 500
+        fi
 
         # Content verification for TODO.md (BLOCKER: tasks must actually be completed)
         if [ -f "TODO.md" ]; then
@@ -761,17 +833,31 @@ case "$GATE_MODULE" in
             else
                 echo "  ✅ 100% Sprint completion verified: zero pending/blocked tasks in TODO.md"
             fi
-            # Verify core engineering categories are present in completed tasks
-            has_core_categories=1
-            for cat in "DB" "BE" "FE"; do
-                if ! grep -qiE "M06-${cat}-[0-9]+" "TODO.md"; then
-                    echo "  ❌ TODO.md missing core category tasks for 'M06-${cat}-xx'!"
-                    has_core_categories=0
-                    GATE_FAILED=1
+            # B1: DB/BE/FE task categories required ONLY when the project declares a
+            # database/backend (Intake field); pure frontend/CLI/utility projects skip.
+            intake_nonfeat="$(get_field Intake-Non-Features docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+            intake_p0="$(get_field Intake-P0-Features docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+            m06_needs_backend=0
+            if echo "$intake_nonfeat" | grep -qiE "database|backend|api|auth|login"; then
+                m06_needs_backend=0 # explicitly excluded as a Non-Feature
+            elif echo "$intake_p0" | grep -qiE "database|backend|api|auth|login|dashboard|crud" \
+                || echo "$intake_nonfeat" | grep -qiE "^$"; then
+                m06_needs_backend=1
+            fi
+            if [ "$is_m06_small" -eq 1 ] && [ "$m06_needs_backend" -eq 0 ]; then
+                echo "  [INFO] No declared database/backend (Intake): DB/BE/FE task categories skipped."
+            else
+                has_core_categories=1
+                for cat in "DB" "BE" "FE"; do
+                    if ! grep -qiE "M06-${cat}-[0-9]+" "TODO.md"; then
+                        echo "  ❌ TODO.md missing core category tasks for 'M06-${cat}-xx'!"
+                        has_core_categories=0
+                        GATE_FAILED=1
+                    fi
+                done
+                if [ $has_core_categories -eq 1 ]; then
+                    echo "  ✅ Full-stack atomic task categories verified in TODO.md (DB, BE, FE)"
                 fi
-            done
-            if [ $has_core_categories -eq 1 ]; then
-                echo "  ✅ Full-stack atomic task categories verified in TODO.md (DB, BE, FE)"
             fi
             # Mandatory specs pre-read task must exist and be completed
             if grep -qiE "M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off" "TODO.md"; then
@@ -798,21 +884,23 @@ case "$GATE_MODULE" in
         fi
 
         # Small scale absorbs M07 security (Opsi A): security checklist is part of M06 exit.
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if [ "$is_m06_small" -eq 1 ]; then
             echo "  [INFO] Small scale: SECURITY_CHECKLIST_SMALL.md absorbed into M06 (M07 folded)."
             check_required "docs/qa/SECURITY_CHECKLIST_SMALL.md" "SECURITY_CHECKLIST_SMALL.md" 300
         fi
-        # RUNBOOK_LOCAL.md / VERIFY_LOCAL.md are root harness files; resolve any accepted location.
-        runbook_path="RUNBOOK_LOCAL.md"
-        for candidate in "RUNBOOK_LOCAL.md" "docs/RUNBOOK_LOCAL.md" "docs/specs/RUNBOOK_LOCAL.md"; do
-            if [ -f "$candidate" ]; then runbook_path="$candidate"; break; fi
-        done
-        check_required "$runbook_path" "" 500
-        verify_path="VERIFY_LOCAL.md"
-        for candidate in "VERIFY_LOCAL.md" "docs/VERIFY_LOCAL.md" "docs/specs/VERIFY_LOCAL.md"; do
-            if [ -f "$candidate" ]; then verify_path="$candidate"; break; fi
-        done
-        check_required "$verify_path" "" 500
+        # B1: RUNBOOK_LOCAL.md / VERIFY_LOCAL.md required only for Medium+ (not Small).
+        if [ "$is_m06_small" -eq 0 ]; then
+            runbook_path="RUNBOOK_LOCAL.md"
+            for candidate in "RUNBOOK_LOCAL.md" "docs/RUNBOOK_LOCAL.md" "docs/specs/RUNBOOK_LOCAL.md"; do
+                if [ -f "$candidate" ]; then runbook_path="$candidate"; break; fi
+            done
+            check_required "$runbook_path" "" 500
+            verify_path="VERIFY_LOCAL.md"
+            for candidate in "VERIFY_LOCAL.md" "docs/VERIFY_LOCAL.md" "docs/specs/VERIFY_LOCAL.md"; do
+                if [ -f "$candidate" ]; then verify_path="$candidate"; break; fi
+            done
+            check_required "$verify_path" "" 500
+        fi
 
         # Content verification for VERIFY_LOCAL.md (BLOCKER: local test pass proof)
         if [ -f "$verify_path" ]; then
@@ -862,7 +950,7 @@ case "$GATE_MODULE" in
         echo "=== M07: Quality Assurance & SIT Gate Checklist (medium+ only) ==="
         # NOTE: Small scale does NOT run M07; security is folded into M06.
         is_m07_waived=0
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             echo "  [INFO] Small Scale detected: M07 QA & SIT is WAIVED (Security absorbed in M06, UAT in M09-LITE)."
             is_m07_waived=1
         fi
@@ -900,8 +988,9 @@ case "$GATE_MODULE" in
                 echo "  ✅ SIT_WORKBOOK.md shows zero failed SIT scenarios"
             fi
             # Coverage threshold for Large / Enterprise (module 07 §6).
-            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
-                if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            m07_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+            if [ "$m07_scale" = "large" ] || [ "$m07_scale" = "enterprise" ]; then
+                if [ "$m07_scale" = "enterprise" ]; then
                     cov_min=80
                 else
                     cov_min=70
@@ -921,7 +1010,7 @@ case "$GATE_MODULE" in
                 fi
             fi
         fi
-        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        if [ "${m07_scale:-}" = "large" ] || [ "${m07_scale:-}" = "enterprise" ]; then
             echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
             check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
             # Content verification (BLOCKER): zero-critical attestation required.
@@ -952,7 +1041,7 @@ case "$GATE_MODULE" in
         echo "=== M08: Data Migration & Seeding Gate Checklist ==="
         # Automatic waiver for Small Scale (legacy data triggers re-classification to Large per SKILL.md)
         is_m08_waived=0
-        if grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        if is_small_scale; then
             echo "  [INFO] Small Scale detected: M08 Data Migration is WAIVED (Legacy data triggers re-classification to Large)."
             is_m08_waived=1
         fi
@@ -969,7 +1058,8 @@ case "$GATE_MODULE" in
             fi
         fi
         # For Large/Enterprise scale, reconciliation report is MANDATORY (zero-discrepancy audit)
-        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m08_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m08_scale" = "large" ] || [ "$m08_scale" = "enterprise" ]; then
             echo "  [INFO] Large/Enterprise scale detected: MIGRATION_RECONCILIATION_REPORT.md is MANDATORY."
             check_required "docs/pm/MIGRATION_RECONCILIATION_REPORT.md" "" 500
         else
@@ -1009,12 +1099,13 @@ case "$GATE_MODULE" in
     M09)
         echo "=== M09: Validation Gate (UAT Sign-Off) Checklist ==="
         is_m09_solo=0
-        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m09_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m09_delivery" = "solo" ] || [ "$m09_delivery" = "portfolio" ] || [ "$m09_delivery" = "internal" ]; then
             is_m09_solo=1
-        elif grep -qiE "Delivery:\s*client" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        elif [ "$m09_delivery" = "client" ]; then
             is_m09_solo=0 # Client delivery NEVER waives UAT regardless of scale
-        elif [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
-            is_m09_solo=1
+        else
+            is_m09_solo=0 # F4: undeclared delivery fail-closed (M00_LITE fallback removed)
         fi
 
         if [ $is_m09_solo -eq 1 ]; then
@@ -1107,12 +1198,13 @@ case "$GATE_MODULE" in
                 fi
             fi
         fi
-        if grep -qiE "Scale:\s*enterprise" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
             echo "  [INFO] Enterprise scale detected: CAB Approval is MANDATORY."
             check_required "docs/governance/CAB_APPROVAL.md" "docs/pm/CAB_APPROVAL.md"
         fi
         # For Large scale, emergency rollback plan is MANDATORY
-        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m10_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m10_scale" = "large" ] || [ "$m10_scale" = "enterprise" ]; then
             echo "  [INFO] Large / Enterprise scale detected: Emergency Rollback Plan is MANDATORY."
             check_required "docs/pm/ROLLBACK_PLAN.md" "docs/ROLLBACK_PLAN.md" 500
         else
@@ -1122,12 +1214,13 @@ case "$GATE_MODULE" in
     M11)
         echo "=== M11: Handover & BAST Gate Checklist ==="
         is_m11_solo=0
-        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m11_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m11_delivery" = "solo" ] || [ "$m11_delivery" = "portfolio" ] || [ "$m11_delivery" = "internal" ]; then
             is_m11_solo=1
-        elif grep -qiE "Delivery:\s*client" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        elif [ "$m11_delivery" = "client" ]; then
             is_m11_solo=0 # Client delivery NEVER waives BAST handover regardless of scale
-        elif [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
-            is_m11_solo=1
+        else
+            is_m11_solo=0 # F4: undeclared delivery fail-closed (M00_LITE fallback removed)
         fi
 
         if [ $is_m11_solo -eq 1 ]; then
@@ -1176,7 +1269,8 @@ case "$GATE_MODULE" in
             fi
 
             # For Large scale, technical handover protocol is MANDATORY
-            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "large" ] \
+                || [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
                 echo "  [INFO] Large / Enterprise scale detected: Technical Handover Protocol is MANDATORY."
                 check_required "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md" 500
             fi
@@ -1190,9 +1284,9 @@ case "$GATE_MODULE" in
     M12)
         echo "=== M12: Warranty SLA Retainer Gate Checklist ==="
         is_m12_solo=0
-        if grep -qiE "Delivery:\s*(solo|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
-            is_m12_solo=1
-        elif [ -f "docs/pm/M00_LITE.md" ] || grep -qiE "Scale:\s*(solo-saas|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m12_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m12_delivery" = "solo" ] || [ "$m12_delivery" = "portfolio" ] || [ "$m12_delivery" = "internal" ] \
+            || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
             is_m12_solo=1
         fi
 
@@ -1220,7 +1314,8 @@ case "$GATE_MODULE" in
         fi
         check_optional "docs/pm/SLA_RETAINER_CONTRACT.md" "contracts/SLA_RETAINER.md"
         # For Large scale, emergency incident response plan is MANDATORY
-        if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m12_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m12_scale" = "large" ] || [ "$m12_scale" = "enterprise" ]; then
             echo "  [INFO] Large / Enterprise scale detected: Incident Response Plan is MANDATORY."
             check_required "docs/pm/INCIDENT_RESPONSE.md" "docs/INCIDENT_RESPONSE.md" 500
         else
@@ -1232,10 +1327,11 @@ case "$GATE_MODULE" in
         # M13 is a Continuous Product Loop for SELF-INITIATED products only.
         # Small Scale terminates at M12; Client delivery terminates at M11/M12.
         is_m13_waived=0
-        if grep -qiE "Delivery:\s*(client|portfolio|internal)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+        m13_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m13_delivery" = "client" ] || [ "$m13_delivery" = "portfolio" ] || [ "$m13_delivery" = "internal" ]; then
             echo "  [INFO] Client/Internal/Portfolio delivery detected: M13 Product Iteration is WAIVED (lifecycle ends at M11/M12)."
             is_m13_waived=1
-        elif grep -qiE "Scale:\s*small" docs/pm/PROJECT_STATE.md 2>/dev/null || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+        elif is_small_scale; then
             echo "  [INFO] Small Scale detected: M13 Product Iteration is WAIVED (Fast-Track ends at M12)."
             is_m13_waived=1
         fi
@@ -1263,7 +1359,8 @@ case "$GATE_MODULE" in
                 fi
             fi
             # For Large scale, RICE-scored growth experiment backlog is MANDATORY
-            if grep -qiE "Scale:\s*(large|enterprise)" docs/pm/PROJECT_STATE.md 2>/dev/null; then
+            m13_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+            if [ "$m13_scale" = "large" ] || [ "$m13_scale" = "enterprise" ]; then
                 echo "  [INFO] Large / Enterprise scale detected: Growth Experiments Backlog is MANDATORY."
                 check_required "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" "" 500
                 # Reject unresolved template placeholders in growth experiments backlog

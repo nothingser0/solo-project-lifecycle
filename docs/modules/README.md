@@ -1,6 +1,6 @@
 # Lifecycle Modules Catalog (M00 - M13)
 
-Sequential 14-module delivery framework for solo developers, covering initiation, specification, execution, handover, and ongoing operations.
+Sequential 14-module delivery framework for solo developers, covering initiation, specification, execution, handover, and ongoing operations. Each module file is a compact runbook (inputs → steps → outputs → gate criteria, target ≤~1.5k tokens); extended material lives in `deep-dives/` and is loaded only when a step requires depth.
 
 ---
 
@@ -28,6 +28,6 @@ Sequential 14-module delivery framework for solo developers, covering initiation
 
 ## Usage by Scale
 
-- **Small (MVP)**: Fast-track path `M04 → M05 → M06 → M10` (or single `PROJECT_LITE.md`).
-- **Medium**: `M01 → M02 → M04 → M05 → M06 → M07 → M09 → M10 → M11 → M12`.
+- **Small (MVP)**: Intake → `M04-LITE → M05 → [STOP] → M06 (+security) → M09-LITE → [STOP] → M10 → M12-LITE` (or single `PROJECT_LITE.md`).
+- **Medium (client)**: `M01 → M02 → M03 [GATE] → M04 → M05 → M06 → M07 → M09 [GATE] → M10 → M11 [GATE] → M12`.
 - **Large / Enterprise**: Full sequential pipeline `M00 → M13` including compliance, data migration, and recurring operations.

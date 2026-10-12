@@ -4,57 +4,52 @@
 
 ---
 
-## 📊 Scale Classification (Engineering Risk & High-Water Mark)
+## ðŸ“Š Scale Classification (Engineering Risk & High-Water Mark)
 
-> ⚖️ **HIGH-WATER MARK RULE**: When dimensions diverge, **THE HIGHEST APPLICABLE TIER DETERMINES THE SCALE**.
+> âš–ï¸ **HIGH-WATER MARK RULE**: When dimensions diverge, **THE HIGHEST APPLICABLE TIER DETERMINES THE SCALE**.
 > P0 Must-Have features are counted exclusively (P1 Should-Have excluded). Any high blast radius or webhook requirement escalates the tier.
 
 | Scale | P0 Must-Have Features | Blast Radius & Data | External Integrations | SLA & Uptime | Governance / Team | Timeline |
 |:------|:----------------------|:--------------------|:----------------------|:-------------|:------------------|:---------|
-| **Kecil (Fast-Track MVP)** | **3–7 P0** | Rendah (tidak ada mutasi finansial/rekam medis) | DB terisolasi (tanpa webhook eksternal) | Best-effort | 1 founder / dev | <4 minggu |
-| **Menengah (Solo SaaS / Agency)** | **8–15 P0** | Sedang (transaksi langganan, billing pengguna) | Webhook Payment Gateway / SMS / Mailer | 99.0% SLA | 1 founder atau 1 Client PIC | 1–3 bulan |
-| **Besar (Platform / Scaled)** | **16–25 P0** | Tinggi (multi-cabang, mutasi finansial massal) | Integrasi multi-vendor, ETL migrasi DB | 99.5% SLA | Tim vendor / multi-divisi | 3–6 bulan |
-| **Enterprise (Mission-Critical)** | **>25 P0** | Kritis (perbankan, kesehatan, regulasi ketat) | Core banking, ERP legacy, SSO/SAML | 99.9% 24/7 SLA | Multi-stakeholder, CAB, audit berkala | 6–12+ bulan |
+| **Kecil (Fast-Track MVP)** | **3â€“7 P0** | Rendah (tidak ada mutasi finansial/rekam medis) | DB terisolasi (tanpa webhook eksternal) | Best-effort | 1 founder / dev | <4 minggu |
+| **Menengah (Solo SaaS / Agency)** | **8â€“15 P0** | Sedang (transaksi langganan, billing pengguna) | Webhook Payment Gateway / SMS / Mailer | 99.0% SLA | 1 founder atau 1 Client PIC | 1â€“3 bulan |
+| **Besar (Platform / Scaled)** | **16â€“25 P0** | Tinggi (multi-cabang, mutasi finansial massal) | Integrasi multi-vendor, ETL migrasi DB | 99.5% SLA | Tim vendor / multi-divisi | 3â€“6 bulan |
+| **Enterprise (Mission-Critical)** | **>25 P0** | Kritis (perbankan, kesehatan, regulasi ketat) | Core banking, ERP legacy, SSO/SAML | 99.9% 24/7 SLA | Multi-stakeholder, CAB, audit berkala | 6â€“12+ bulan |
 
 ---
 
 ### Module Path by Scale:
-- **Kecil (Fast-Track MVP)**: `M04 → M05 → M06 → M10 → M12` (5 modul; M01 via `PROJECT_LITE.md`)
-- **Solo SaaS (Self-Initiated)**: `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13` (10 modul, skip gate klien M03/M11)
-- **Menengah (Client Commercial)**: `M01 → M02 → M03 → M04 → M05 → M06 → M07 → M09 → M10 → M11 → M12` (10 modul + gate legal)
-- **Besar (Platform)**: `M00 → M01 → M02 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M12 → M13` (12 modul + M08 migrasi data)
-- **Enterprise**: Full `M00 → M13` (14 modul tanpa skip + ekstensi tata kelola RACI, ADR, CAB)
+- **Kecil (Fast-Track MVP)**: `Intake â†’ M04-LITE â†’ M05 â†’ [STOP] â†’ M06 (+security) â†’ M09-LITE â†’ [STOP] â†’ M10 â†’ M12-LITE` (via `PROJECT_LITE.md`; durasi <4 minggu)
+- **Solo SaaS (Self-Initiated)**: `M00-lite â†’ M01 â†’ M02 â†’ M04 â†’ M05 â†’ M06 â†’ M07 â†’ M10 â†’ M12 â†’ M13` (10 modul, skip gate klien M03/M11)
+- **Menengah (Client Commercial)**: `M01 â†’ M02 â†’ M03 â†’ M04 â†’ M05 â†’ M06 â†’ M07 â†’ M09 â†’ M10 â†’ M11 â†’ M12` (10 modul + gate legal)
+- **Besar (Platform)**: `M00 â†’ M01 â†’ M02 â†’ M04 â†’ M05 â†’ M06 â†’ M07 â†’ M08 â†’ M09 â†’ M10 â†’ M12 â†’ M13` (12 modul + M08 migrasi data)
+- **Enterprise**: Full `M00 â†’ M13` (14 modul tanpa skip + ekstensi tata kelola RACI, ADR, CAB)
 
 ---
 
 ---
 
-## 🔵 SKALA KECIL (Fast-Track MVP / Solo Project)
+## ðŸ”µ SKALA KECIL (Fast-Track MVP / Solo Project)
 
 **Characteristics**:
 - Solo developer / 1 developer + 1 stakeholder
 - Timeline: <4 minggu (<1 bulan)
-- Fitur: 3–7 P0 Must-Have (scope terkunci)
+- Fitur: 3â€“7 P0 Must-Have (scope terkunci)
 - Database terisolasi, low blast radius (tanpa mutasi finansial rumit / rekam medis)
 - Jalur pengiriman default: Solo / Portfolio / Internal Tool
 
-> ⚖️ **LEGACY DATA RE-CLASSIFICATION RULE**:
+> âš–ï¸ **LEGACY DATA RE-CLASSIFICATION RULE**:
 > Skala Kecil berasumsi *greenfield* (data kosong). Jika proyek membutuhkan migrasi data lama (ETL relasional), proyek **otomatis naik kelas ke Skala Besar** via High-Water Mark rule dan wajib menjalankan M08 penuh.
 
 **Alur 6 Langkah Inti**:
-1. **Intake Gate** (5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md`) $
-ightarrow$ Klasifikasi skala otomatis.
+1. **Intake Gate** (5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md`) $\rightarrow$ Klasifikasi skala otomatis.
 2. **M04-LITE** (Logo inisial SVG $\ge 50$B boleh, 1 benchmark visual, token anti-slop di `DESIGN.md`).
 3. **M05** (Dokumen terpadu `PROJECT_LITE.md` mencakup skema, API, dan Riskiest Assumption Test).
-   🛑 **STOP 1**: Tinjau desain & spek sebelum coding.
-4. **M06** (Sprint 0 deploy hello-world staging $
-ightarrow$ build atomik $
-ightarrow$ lint & `tsc --noEmit` $
-ightarrow$ `SECURITY_CHECKLIST_SMALL.md`).
-5. **M09-LITE** (Uji orang lain: minimal 1 penguji eksternal tercatat di `UAT_SIGNOFF_SMALL.md`).
-   🛑 **STOP 2**: Verifikasi fungsi lokal & approval deploy.
-6. **M10** (Deploy production, verifikasi HTTP 200, anti-Friday deploy) $
-ightarrow$ Operasional mandiri via `RUNBOOK_OPS.md` (M12).
+   ðŸ›‘ **STOP 1**: Tinjau desain & spek sebelum coding.
+4. **M06** (Sprint 0 deploy hello-world staging $\rightarrow$ build atomik $\rightarrow$ lint & `tsc --noEmit` $\rightarrow$ `SECURITY_CHECKLIST_SMALL.md`).
+5. **M09-LITE** (minimal 1 penguji tercatat di `UAT_SIGNOFF_SMALL.md`; untuk `Delivery: solo|portfolio|internal` ini adalah 1 self-tester bernama â€” founder menguji sebagai end-user. Penguji eksternal direkomendasikan bila ada, tidak wajib).
+   ðŸ›‘ **STOP 2**: Verifikasi fungsi lokal & approval deploy.
+6. **M10** (Deploy production, verifikasi HTTP 200, anti-Friday deploy) $\rightarrow$ Operasional mandiri via `RUNBOOK_OPS.md` (M12).
 
 *(Tambahan hanya jika ada klien: **M03 SOW singkat** sebelum desain, dan **M11 serah terima singkat** setelah deploy).*
 
@@ -62,155 +57,45 @@ ightarrow$ Operasional mandiri via `RUNBOOK_OPS.md` (M12).
 
 ### Week-by-Week Breakdown (Solo MVP)
 
-#### **Week 1: M02 Discovery + M03 Legal Bypass**
+#### **Week 1: Intake + Specs (M04-LITE + M05)**
 
-**M02 - Discovery (2-3 hari)**:
-- Stakeholder interview (1 person: founder/PIC)
-- MoSCoW prioritization (must-have only, 3–7 features max for Small MVP)
-- Scope boundary (in/out scope, client dependencies)
-- Output: `docs/pm/SCOPE_STATEMENT.md`
+**Intake Gate (hari 1)**: 5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md` â†’ klasifikasi skala.
 
-**M03 - Legal (1 hari bypass)**:
-- Internal project: No SOW/DP needed
-- Create `docs/pm/IDEA_BRIEF.md` or `PROJECT_LITE.md` (1 page: scope, timeline, assumptions)
-- Single PIC designated (yourself or founder)
-- **Gate**: Brief approved → proceed immediately
+**M04-LITE (hari 1-2)**: logo placeholder (monogram SVG â‰¥50B), 1 benchmark, 5-state matrix pada 1-3 layar utama â€” runbook: `docs/modules/04-uiux-LITE.md`.
 
 ---
 
-#### **Week 2: M04 Design**
+**M05 (hari 2-3)**: stack lock + skema DB + API list dipin ke Section 5 `PROJECT_LITE.md`.
+ðŸ›‘ **STOP 1**: tinjau desain & spek sebelum coding.
 
-**M04 - UI/UX Design (5-7 hari)**:
-- Component discovery (10-20 components for MVP)
-- Design style decision (Flat Design recommended for speed)
-- Figma mockups (key screens only: landing, login, dashboard, 1-2 CRUD screens)
-- Asset requirements (Google Fonts, free icons like Lucide)
-- Output: `DESIGN_SYSTEM.md`, Figma prototype
-- **Gate**: Design freeze (no CR allowed after this point)
+#### **Week 2-3: M06 Build (+ security)**
 
----
-
-#### **Week 3: M05 Architecture**
-
-**M05 - Architecture & Specs (5-7 hari)**:
-- Tech stack selection (boring tech: Next.js + Supabase or Laravel + MySQL)
-- Database schema (5-10 tables max for MVP)
-- API contracts (10-20 endpoints)
-- PRD (RBAC matrix, features)
-- FSD (SQL DDL, API routes, security)
-- Output: `docs/specs/PRD.md`, `docs/specs/FSD.md`
-- **Gate**: Stack approved → proceed to coding
+**M06 - Coding (hari 4-14)**:
+- Scaffold + DB migrations + auth + core CRUD (3-7 P0)
+- Verifikasi per-stack (Next.js: `pnpm build` + `tsc --noEmit` + `pnpm audit`; Laravel: `artisan test`; Django: `pytest`; Go: `go test ./...`)
+- Security baseline: `docs/qa/SECURITY_CHECKLIST_SMALL.md` (absorbs M07)
+- Output: working app on staging URL
 
 ---
 
-#### **Week 4-8: M06 Development (4-5 minggu)**
+#### **Week 3.5: M09-LITE â†’ STOP 2**
 
-**M06 - Coding Execution**:
-- Week 4: Scaffold + DB migrations + seed data
-- Week 5: Auth system (login, register, JWT)
-- Week 6-7: Core CRUD features (backend API + frontend UI)
-- Week 8: Integration (wire UI → API, 5 states per screen)
-- Output: Working app on staging URL
-- **Gate**: All SITEMAP screens render + API smoke test passes
-
----
-
-#### **Week 8.5: M07-LITE Security Baseline (1-2 hours)**
-
-**M07-LITE - Security Checklist (NEW)**:
-- Template: `templates/06-qa-uat/SECURITY_CHECKLIST_SMALL.md`
-- Run 10-item security baseline (1-2 hours)
-- Critical checks:
-  1. Password hashing (bcrypt/argon2)
-  2. HTTPS enforced
-  3. SQL injection prevention (parameterized queries)
-  4. XSS protection (input sanitization)
-  5. CSRF tokens
-  6. Env vars for secrets (no hardcoded keys)
-  7. Rate limiting (login, API)
-  8. Error messages (no stack traces to users)
-  9. File upload validation
-  10. CORS configured
-- Output: Signed `SECURITY_CHECKLIST_SMALL.md`
-- **Gate**: No S1/S2 security issues → proceed to M09
-
-**Integration**:
-- Added to `TODO_TEMPLATE.md` Phase 7
-- Takes 1-2 hours (not days)
-- Prevents common vulnerabilities without full pentest
-
----
-
-#### **[Conditional] M08-LITE: Data Migration (2-3 days)**
-
-**M08-LITE - Lightweight Data Migration (NEW)**:
-- **When**: Only if client has existing data (Excel/CSV/old system)
-- **Discovered in**: M02 Discovery (question added to `SCOPE_STATEMENT_TEMPLATE.md`)
-- **Template**: `templates/05-data-migration/DATA_MIGRATION_LITE.md`
-- **Scope**: <1000 rows, simple column mapping
-
-**Process**:
-1. **Day 1**: Client exports data, dev analyzes schema
-2. **Day 2**: Write migration script (Python/Node), test on staging
-3. **Day 3**: Client verifies sample (10-20 rows), production import
-
-**Timeline Impact**: +2-3 days if applicable
-
-**Decision Tree**:
-```
-M02 Discovery: "Does client have existing data?"
-├─ NO → Skip M08-LITE, proceed directly to M09
-└─ YES → Add M08-LITE after M07-LITE (before M09)
-```
-
-**Gate**: Data reconciliation confirmed (old count = new count)
-
----
-
-#### **Week 9: M09 Client UAT (Solo Bypass)**
-
-**M09 - Lightweight Acceptance Testing (3-5 hari)**:
-- Solo MVP: Self-testing and self-sign-off
-- Template: `templates/06-qa-uat/UAT_WORKBOOK_SMALL.md` (15 test cases)
+**M09-LITE - Acceptance testing (1-2 hari)**:
+- 1 penguji tercatat (self-tester untuk solo; tester klien bila ada) di `docs/qa/UAT_SIGNOFF_SMALL.md`
 - Manual testing: Login, CRUD, validation, mobile, edge cases
-- Bug fixes (S1/S2 only, defer S3 to post-launch)
-- Output: `templates/06-qa-uat/UAT_SIGNOFF_SMALL.md` (self sign-off)
-- **Gate**: Self sign-off → ready to deploy
+- Bug fixes (S1/S2 only; S3 defer)
 
 ---
 
-#### **Week 10: M10 Deployment**
+#### **Week 4: M10 Deploy â†’ M12-LITE**
 
-**M10 - Production Deploy (2-3 hari)**:
-- Deploy to Vercel/Railway/DigitalOcean
-- DNS + SSL setup
-- Smoke test production (5-10 critical flows)
-- Output: Production URL live
-- **Gate**: Production smoke test passes
+**M10 - Production deploy (1 hari)**: deploy (Vercel/Railway/DO), DNS + SSL, smoke test produksi.
+
+**M12-LITE - Ops (hari terakhir)**: operasional mandiri via `templates/08-maintenance-ops/RUNBOOK_OPS.md` (backup, monitoring, hotfix flow).
 
 ---
 
-#### **Week 11: M11 Handover (Solo Bypass)**
-
-**M11 - Handover (2-3 hari)**:
-- Email BAST: Use `templates/07-release-handover/BAST_EMAIL_SMALL.md`
-- Write `README.md` (setup instructions)
-- Write `RUNBOOK_PRODUCTION.md` (deployment SOP)
-- Warranty policy: Attach `templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md` (30 days)
-- Output: Documentation complete
-- **Gate**: Documentation verified
-
-**Handover Package** (from `HANDOVER_PROTOCOL_TEMPLATE.md`):
-- [ ] BAST email sent (or skipped if internal project)
-- [ ] Warranty policy attached (30-day coverage)
-- [ ] Staging credentials sent
-- [ ] Production credentials sent (1Password/Bitwarden secure send)
-- [ ] Source code repo access granted
-- [ ] Admin guide provided
-
----
-
-### Total Timeline: **10-12 minggu (2.5-3 bulan)**
+### Total Timeline: **<4 minggu**
 
 **Payment Structure (if client work)**:
 - Milestone 1 (DP): 50% upfront (design + architecture done)
@@ -223,12 +108,12 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
-## 🟢 SKALA MENENGAH (Medium / Mid-Tier / Agency)
+## ðŸŸ¢ SKALA MENENGAH (Medium / Mid-Tier / Agency)
 
 **Characteristics**:
-- 1 Solo Developer + 1 Client Single PIC (or small team 2–3 devs)
-- Timeline: 1–3 bulan
-- Fitur: 8–15 P0 Must-Have (terkunci formal di `SCOPE_STATEMENT.md`)
+- 1 Solo Developer + 1 Client Single PIC (or small team 2â€“3 devs)
+- Timeline: 1â€“3 bulan
+- Fitur: 8â€“15 P0 Must-Have (terkunci formal di `SCOPE_STATEMENT.md`)
 - Integrasi eksternal: Webhook Payment Gateway, WhatsApp API, transactional email
 - Model pengiriman: Client Commercial (Software House/Freelance) atau Solo SaaS Mandiri
 
@@ -238,102 +123,102 @@ M02 Discovery: "Does client have existing data?"
 
 ```text
 [ FASE 1: INTAKE & REGULASI ]
-  • Intake 5 pertanyaan + evaluasi sektor (medis/keuangan)
-  • Tentukan Delivery: client / solo
+  â€¢ Intake 5 pertanyaan + evaluasi sektor (medis/keuangan)
+  â€¢ Tentukan Delivery: client / solo
 
-[ FASE 2: COMMERCIAL LOCK (M03) ] ──► 🛑 STOP 1 (DP 30% Cair)
-  • SOW termin 30/40/30, Single PIC, batas revisi 2x, deemed acceptance 7 hari
-  • Akun pihak ketiga atas nama klien, CR framework aktif
-  • Invoice termin 1 + e-Meterai / NDA
+[ FASE 2: COMMERCIAL LOCK (M03) ] â”€â”€â–º ðŸ›‘ STOP 1 (DP 30% Cair)
+  â€¢ SOW termin 30/40/30, Single PIC, batas revisi 2x, deemed acceptance 7 hari
+  â€¢ Akun pihak ketiga atas nama klien, CR framework aktif
+  â€¢ Invoice termin 1 + e-Meterai / NDA
 
-[ FASE 3: DESIGN & SPEC (M04 + M05) ] ──► 🛑 STOP 2 (Design Freeze & Tech Spec Signoff)
-  • M04 spesifikasi risiko (layar kritis 5-state penuh, layar statis ringkas)
-  • M05 PRD + FSD + Traceability Matrix + Skema DDL + Rencana Rollback DB
-  • Scope terkunci mati (CR log aktif)
+[ FASE 3: DESIGN & SPEC (M04 + M05) ] â”€â”€â–º ðŸ›‘ STOP 2 (Design Freeze & Tech Spec Signoff)
+  â€¢ M04 spesifikasi risiko (layar kritis 5-state penuh, layar statis ringkas)
+  â€¢ M05 PRD + FSD + Traceability Matrix + Skema DDL + Rencana Rollback DB
+  â€¢ Scope terkunci mati (CR log aktif)
 
-[ FASE 4: SPRINT BUILD & DEMO (M06) ] ──► 🛑 STOP 3 (Termin 2: 40% Cair Pasca Demo Staging)
-  • Sprint 0: scaffold + staging setup + dummy data seeder realistis
-  • Sprint eksekusi: TODO.md ber-Definition of Done per sprint
-  • Build, lint, tsc --noEmit, test otomatis
-  • DEMO STAGING MILESTONE ke Klien Single PIC ──► Klien bayar Termin 2 (40%)
+[ FASE 4: SPRINT BUILD & DEMO (M06) ] â”€â”€â–º ðŸ›‘ STOP 3 (Termin 2: 40% Cair Pasca Demo Staging)
+  â€¢ Sprint 0: scaffold + staging setup + dummy data seeder realistis
+  â€¢ Sprint eksekusi: TODO.md ber-Definition of Done per sprint
+  â€¢ Build, lint, tsc --noEmit, test otomatis
+  â€¢ DEMO STAGING MILESTONE ke Klien Single PIC â”€â”€â–º Klien bayar Termin 2 (40%)
 
-[ FASE 5: UAT BISNIS & REMEDIASI (M09) ] ──► 🛑 STOP 4 (UAT Signoff Formal)
-  • Pengujian skenario bisnis oleh Klien Single PIC di staging
-  • Aturan bug: S1/S2 wajib 0; bug S3/S4 dicatat untuk masa garansi (tidak menahan UAT)
-  • UAT Signoff Report ditandatangani / Deemed approval 7 hari
+[ FASE 5: UAT BISNIS & REMEDIASI (M09) ] â”€â”€â–º ðŸ›‘ STOP 4 (UAT Signoff Formal)
+  â€¢ Pengujian skenario bisnis oleh Klien Single PIC di staging
+  â€¢ Aturan bug: S1/S2 wajib 0; bug S3/S4 dicatat untuk masa garansi (tidak menahan UAT)
+  â€¢ UAT Signoff Report ditandatangani / Deemed approval 7 hari
 
 [ FASE 6: RILIS TERKONTROL (M10) ]
-  • Deploy ke production environment / staging akhir dev (preview domain)
-  • Probe curl HTTP 200, tes backup & uji restore nyata
-  • Hypercare 1-2 minggu dimulai
+  â€¢ Deploy ke production environment / staging akhir dev (preview domain)
+  â€¢ Probe curl HTTP 200, tes backup & uji restore nyata
+  â€¢ Hypercare 1-2 minggu dimulai
 
-[ FASE 7: BAST & HANDOVER LEVERAGE (M11) ] ──► 🛑 STOP 5 (Pelunasan 30% Terakhir)
-  • Klien transfer sisa pelunasan 30%
-  • TTD BAST (Berita Acara Serah Terima) fisik/digital
-  • BARU pindahkan DNS ke domain klien, transfer akun hosting, rotasi kredensial root
+[ FASE 7: BAST & HANDOVER LEVERAGE (M11) ] â”€â”€â–º ðŸ›‘ STOP 5 (Pelunasan 30% Terakhir)
+  â€¢ Klien transfer sisa pelunasan 30%
+  â€¢ TTD BAST (Berita Acara Serah Terima) fisik/digital
+  â€¢ BARU pindahkan DNS ke domain klien, transfer akun hosting, rotasi kredensial root
 
 [ FASE 8: WARRANTY & RETROSPEKTIF (M12) ]
-  • Garansi 30-60 hari aktif (hanya perbaikan bug FSD, tertulis di BAST)
-  • Retrospektif solo dev & penutupan time tracking
+  â€¢ Garansi 30-60 hari aktif (hanya perbaikan bug FSD, tertulis di BAST)
+  â€¢ Retrospektif solo dev & penutupan time tracking
 ```
 
 ---
 
-## 🟡🔴 SKALA DI LUAR KAPASITAS SOLO (Large & Enterprise — A-Series Advisory)
+## ðŸŸ¡ðŸ”´ SKALA DI LUAR KAPASITAS SOLO (Large & Enterprise â€” A-Series Advisory)
 
-> ⛔ **STRICT SOLO CODING PROHIBITION**:
-> Proyek dengan **>15 fitur P0**, multi-cabang, mutasi finansial/rekam medis massal, atau regulasi statutori (OJK/BI/UU PDP/ISO 27001) **SECARA FISIK DAN HUKUM TIDAK BISA DIKERJAKAN SOLO**.
+> â›” **STRICT SOLO CODING PROHIBITION**:
+> Proyek dengan **>25 fitur P0 (Enterprise)**, multi-cabang, mutasi finansial/rekam medis massal, atau regulasi statutori (OJK/BI/UU PDP/ISO 27001) **SECARA FISIK DAN HUKUM TIDAK BISA DIKERJAKAN SOLO** (Large 16–25 P0 masih solo-viable dengan mitigasi).
 > Menjanjikan koding mandiri untuk skala ini adalah anti-pola berbahaya. Skill ini mengalihkan mode solo developer menjadi **Lead Enterprise Architect / Technical Advisor**.
 
 ---
 
-### Alur 5 Fase Advisory Korporat (Seri A00 – A04)
+### Alur 5 Fase Advisory Korporat (Seri A00 â€“ A04)
 
 ```text
 [ TENDER / KESEMPATAN ENTERPRISE ]
-                │
-                ▼
-[ FASE A00: Bid/No-Bid, Evaluasi Kelayakan & Kontrak Konsultasi ] ──► 🛑 STOP 1 (Perjanjian Konsultasi)
-  • Uji kelayakan administratif tender (PT/CV, NPWP, sertifikasi, modal disetor)
-  • Matriks Bid/No-Bid (Kapasitas, margin risiko, larangan penawaran gratis tak terbatas)
-  • Kontrak: CONSULTING_AGREEMENT_TEMPLATE.md (Termin Net 30, limit liabilitas, pakta anti-konflik)
-                │
-                ▼
+                â”‚
+                â–¼
+[ FASE A00: Bid/No-Bid, Evaluasi Kelayakan & Kontrak Konsultasi ] â”€â”€â–º ðŸ›‘ STOP 1 (Perjanjian Konsultasi)
+  â€¢ Uji kelayakan administratif tender (PT/CV, NPWP, sertifikasi, modal disetor)
+  â€¢ Matriks Bid/No-Bid (Kapasitas, margin risiko, larangan penawaran gratis tak terbatas)
+  â€¢ Kontrak: CONSULTING_AGREEMENT_TEMPLATE.md (Termin Net 30, limit liabilitas, pakta anti-konflik)
+                â”‚
+                â–¼
 [ FASE A01: WBS, Dekomposisi Domain & Isolasi Legacy ]
-  • Dekomposisi Scope: Memecah >15 P0 menjadi 2-3 paket Skala Menengah mandiri
-  • Uji Kelayakan Pecahan: Setiap paket wajib diuji lolos Scale: medium via classify-scale.sh
-  • Isolasi Legacy: Konektor core banking/ERP warisan dipisahkan menjadi paket spike khusus
-  • Output: WBS_PHASING_PLAN.md
-                │
-                ▼
-[ FASE A02: Arsitektur C4, STRIDE & Skenario Kualitas Terukur ] ──► 🛑 STOP 2 (Sign-Off Arsitektur)
-  • C4 Model (Context, Containers, Components) + ADR Suite
-  • Pemodelan Ancaman (STRIDE): Mitigasi konkret per container
-  • Skenario Kualitas ATAM: Latensi konkret, throughput TPS terukur, RPO <15m, RTO <1h
-  • Residensi Data Lokal: ADR penguncian region lokal (AWS Jakarta ap-southeast-3 / on-premise)
-  • Pemetaan Kepatuhan: UU PDP No. 27/2022, POJK Siber, PBI, Kemenkes SatuSehat
-  • Output: ENTERPRISE_ARCHITECTURE_BLUEPRINT.md, ADR_SUITE.md, THREAT_MODEL_STRIDE.md
-                │
-                ▼
+  â€¢ Dekomposisi Scope: Memecah >25 P0 menjadi 2-3 paket Skala Menengah mandiri
+  â€¢ Uji Kelayakan Pecahan: Setiap paket wajib diuji lolos Scale: medium via classify-scale.sh
+  â€¢ Isolasi Legacy: Konektor core banking/ERP warisan dipisahkan menjadi paket spike khusus
+  â€¢ Output: WBS_PHASING_PLAN.md
+                â”‚
+                â–¼
+[ FASE A02: Arsitektur C4, STRIDE & Skenario Kualitas Terukur ] â”€â”€â–º ðŸ›‘ STOP 2 (Sign-Off Arsitektur)
+  â€¢ C4 Model (Context, Containers, Components) + ADR Suite
+  â€¢ Pemodelan Ancaman (STRIDE): Mitigasi konkret per container
+  â€¢ Skenario Kualitas ATAM: Latensi konkret, throughput TPS terukur, RPO <15m, RTO <1h
+  â€¢ Residensi Data Lokal: ADR penguncian region lokal (AWS Jakarta ap-southeast-3 / on-premise)
+  â€¢ Pemetaan Kepatuhan: UU PDP No. 27/2022, POJK Siber, PBI, Kemenkes SatuSehat
+  â€¢ Output: ENTERPRISE_ARCHITECTURE_BLUEPRINT.md, ADR_SUITE.md, THREAT_MODEL_STRIDE.md
+                â”‚
+                â–¼
 [ FASE A03: Pengadaan Vendor, Build-vs-Buy & Strategi Anti-Lock-In ]
-  • Penyusunan Spesifikasi Teknis Pengadaan (Lampiran Teknis RFP Korporat)
-  • Analisis Build-vs-Buy untuk komponen komoditas (Auth IAM, Payment Gateway, CMS)
-  • Matriks Evaluasi Vendor Terbobot (Objektif, tanpa konflik kepentingan advisor)
-  • Strategi Anti-Lock-In: Skema DDL terbuka dan skrip portabilitas data keluar
-  • Output: VENDOR_PROCUREMENT_SCHEDULE.md, VENDOR_COMPARISON_MATRIX.md
-                │
-                ▼
-[ FASE A04: Serah Terima Tata Kelola & Retainer Keselarasan Arsitektur ] ──► 🛑 STOP 3 (Sign-Off Final)
-  • RACI Matrix Korporat: Penanggung jawab keputusan multi-divisi
-  • Protokol CAB & Checklist Rilis: Template resmi yang diserahkan untuk dijalankan tim klien
-  • Cetak Biru Disaster Recovery: Topologi failover & protokol latihan restore berkala
-  • Retainer Keselarasan Arsitektur: Hak review arsitektur per sprint milestone vendor
-  • Output: GOVERNANCE_HANDOVER_PACK.md (Setara BAST Advisory)
+  â€¢ Penyusunan Spesifikasi Teknis Pengadaan (Lampiran Teknis RFP Korporat)
+  â€¢ Analisis Build-vs-Buy untuk komponen komoditas (Auth IAM, Payment Gateway, CMS)
+  â€¢ Matriks Evaluasi Vendor Terbobot (Objektif, tanpa konflik kepentingan advisor)
+  â€¢ Strategi Anti-Lock-In: Skema DDL terbuka dan skrip portabilitas data keluar
+  â€¢ Output: VENDOR_PROCUREMENT_SCHEDULE.md, VENDOR_COMPARISON_MATRIX.md
+                â”‚
+                â–¼
+[ FASE A04: Serah Terima Tata Kelola & Retainer Keselarasan Arsitektur ] â”€â”€â–º ðŸ›‘ STOP 3 (Sign-Off Final)
+  â€¢ RACI Matrix Korporat: Penanggung jawab keputusan multi-divisi
+  â€¢ Protokol CAB & Checklist Rilis: Template resmi yang diserahkan untuk dijalankan tim klien
+  â€¢ Cetak Biru Disaster Recovery: Topologi failover & protokol latihan restore berkala
+  â€¢ Retainer Keselarasan Arsitektur: Hak review arsitektur per sprint milestone vendor
+  â€¢ Output: GOVERNANCE_HANDOVER_PACK.md (Setara BAST Advisory)
 ```
 
 ---
 
-### 📋 Enterprise Governance & Compliance Templates
+### ðŸ“‹ Enterprise Governance & Compliance Templates
 
 **Compliance & Audit** (SOC 2, ISO 27001, GDPR):
 - `templates/03-governance/SOC2_ISO27001_COMPLIANCE.md` - Audit preparation (Trust Service Criteria, evidence collection)
@@ -343,7 +228,7 @@ M02 Discovery: "Does client have existing data?"
 - `templates/03-governance/GDPR_COMPLIANCE_CHECKLIST.md` - Right to erasure, data portability, consent management
 
 **Risk & Incident Management**:
-- `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` - Risk scoring (Probability × Impact), mitigation tracking
+- `templates/03-governance/RISK_ASSESSMENT_MATRIX.md` - Risk scoring (Probability Ã— Impact), mitigation tracking
 - `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, escalation playbook)
 - `templates/08-maintenance-ops/BACKUP_RESTORE_PROCEDURES.md` - Daily backups, quarterly restore tests, RTO/RPO
 - `templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md` - Business continuity (failover, data center redundancy)
@@ -351,7 +236,7 @@ M02 Discovery: "Does client have existing data?"
 **Architecture & Infrastructure**:
 - `templates/03-governance/ADR_TEMPLATE.md` - Architecture Decision Records (context, decision, consequences, tradeoffs)
 - `templates/04-dev-execution/IAC_GUIDE.md` - Infrastructure as Code (Terraform/Pulumi for AWS/GCP/Azure)
-- `templates/08-maintenance-ops/CAPACITY_PLANNING_GUIDE.md` - Scale projections (1K → 10K → 100K users)
+- `templates/08-maintenance-ops/CAPACITY_PLANNING_GUIDE.md` - Scale projections (1K â†’ 10K â†’ 100K users)
 - `templates/08-maintenance-ops/SLA_SLO_DEFINITIONS.md` - Service levels (99.9% uptime, <200ms p95 latency)
 
 **Stakeholder Collaboration**:
@@ -400,7 +285,7 @@ M02 Discovery: "Does client have existing data?"
 - Database scalability (master-slave replication, sharding)
 - Async workers (RabbitMQ, Kafka)
 - High availability (Multi-AZ, auto-scaling)
-- Capacity planning (1K → 10K → 100K MAU projections)
+- Capacity planning (1K â†’ 10K â†’ 100K MAU projections)
 - Output: `SYSTEM_DESIGN_DOC.md`, `CAPACITY_PLANNING.md`, `DISASTER_RECOVERY_PLAN.md`
 
 **M06B - Product Instrumentation & Analytics** (1 minggu):
@@ -488,36 +373,36 @@ M02 Discovery: "Does client have existing data?"
 
 ---
 
-## 📋 Module Routing Table
+## ðŸ“‹ Module Routing Table
 
 | Module | Kecil | Menengah | Besar | Enterprise | Notes |
 |:-------|:-----:|:--------:|:-----:|:----------:|:------|
-| **M00** Product Discovery | ❌ | ❌ | ❌ | ✅ | Enterprise only: TAM/SAM, competitive analysis |
-| **M01** Idea & Feasibility | ✅ | ✅ | ✅ | ✅ | Universal: 4-dimension feasibility check |
-| **M02** Discovery & Scope | ✅ | ✅ | ✅ | ✅ | Universal: MoSCoW prioritization |
-| **M03** Legal SOW | 🟡 | ✅ | ✅ | ✅ | Kecil: Bypass (internal), Menengah+: Mandatory |
-| **M04** UI/UX Design | ✅ | ✅ | ✅ | ✅ | Universal: Component discovery + mockups |
-| **M04B** Design System | ❌ | ❌ | 🟡 | ✅ | Besar: Optional, Enterprise: Mandatory |
-| **M05** Architecture | ✅ | ✅ | ✅ | ✅ | Universal: PRD + FSD |
-| **M05B** System Design | ❌ | ❌ | 🟡 | ✅ | Besar: Optional (10K+ users), Enterprise: Mandatory |
-| **M06** Development | ✅ | ✅ | ✅ | ✅ | Universal: Coding execution |
-| **M06B** Analytics | ❌ | ❌ | 🟡 | ✅ | Besar: Optional, Enterprise: Mandatory |
-| **M07** QA & Security | ✅ | ✅ | ✅ | ✅ | Universal: Kecil uses M07-LITE, Menengah+ uses full M07 |
-| **M08** Data Migration | ❌ | 🟡 | ✅ | ✅ | Kecil: Skip (greenfield), Menengah: If legacy data |
-| **M09** Client UAT | ✅ | ✅ | ✅ | ✅ | Universal: User acceptance testing |
-| **M10** Deployment | ✅ | ✅ | ✅ | ✅ | Universal: Production go-live |
-| **M11** Handover | ✅ | ✅ | ✅ | ✅ | Universal: BAST + credentials transfer |
-| **M12** Warranty | ❌ | 🟡 | ✅ | ✅ | Kecil: 30-day in M11 (not separate module), Menengah: Optional, Besar+: Mandatory |
-| **M13** Product Ops | ❌ | ❌ | ❌ | ✅ | Enterprise only: Analytics, growth experiments |
+| **M00** Product Discovery | âŒ | âŒ | âŒ | âœ… | Enterprise only: TAM/SAM, competitive analysis |
+| **M01** Idea & Feasibility | âœ… | âœ… | âœ… | âœ… | Universal: 4-dimension feasibility check |
+| **M02** Discovery & Scope | âœ… | âœ… | âœ… | âœ… | Universal: MoSCoW prioritization |
+| **M03** Legal SOW | ðŸŸ¡ | âœ… | âœ… | âœ… | Kecil: Bypass (internal), Menengah+: Mandatory |
+| **M04** UI/UX Design | âœ… | âœ… | âœ… | âœ… | Universal: Component discovery + mockups |
+| **M04B** Design System | âŒ | âŒ | ðŸŸ¡ | âœ… | Besar: Optional, Enterprise: Mandatory |
+| **M05** Architecture | âœ… | âœ… | âœ… | âœ… | Universal: PRD + FSD |
+| **M05B** System Design | âŒ | âŒ | ðŸŸ¡ | âœ… | Besar: Optional (10K+ users), Enterprise: Mandatory |
+| **M06** Development | âœ… | âœ… | âœ… | âœ… | Universal: Coding execution |
+| **M06B** Analytics | âŒ | âŒ | ðŸŸ¡ | âœ… | Besar: Optional, Enterprise: Mandatory |
+| **M07** QA & Security | âœ… | âœ… | âœ… | âœ… | Universal: Kecil uses M07-LITE, Menengah+ uses full M07 |
+| **M08** Data Migration | âŒ | ðŸŸ¡ | âœ… | âœ… | Kecil: Skip (greenfield), Menengah: If legacy data |
+| **M09** Client UAT | âœ… (LITE) | âœ… | âœ… | âœ… | Kecil: M09-LITE (`UAT_SIGNOFF_SMALL.md`, 1 penguji tercatat â€” self-tester untuk solo) |
+| **M10** Deployment | âœ… | âœ… | âœ… | âœ… | Universal: Production go-live |
+| **M11** Handover | âœ… | âœ… | âœ… | âœ… | Universal: BAST + credentials transfer |
+| **M12** Warranty | âœ… (LITE) | ðŸŸ¡ | âœ… | âœ… | Kecil: M12-LITE via `RUNBOOK_OPS.md`, Menengah: Optional, Besar+: Mandatory |
+| **M13** Product Ops | âŒ | âŒ | âŒ | âœ… | Enterprise only: Analytics, growth experiments |
 
 Legend:
-- ✅ = Mandatory
-- 🟡 = Optional (depends on project requirements)
-- ❌ = Skip
+- âœ… = Mandatory
+- ðŸŸ¡ = Optional (depends on project requirements)
+- âŒ = Skip
 
 ---
 
-## 🚨 Payment Gate Enforcement
+## ðŸš¨ Payment Gate Enforcement
 
 **CRITICAL: NO CODE before DP received (Menengah+ scale)**
 
@@ -527,11 +412,11 @@ Legend:
 ```
 IF scale >= "Menengah" AND client_type == "external":
   REQUIRE:
-    - ✅ SOW signed (wet-ink + materai)
-    - ✅ Project Charter approved by executives
-    - ✅ Single PIC designated with contact info
-    - ✅ DP funds received in bank account
-    - ✅ DPA signed (if handle PII)
+    - âœ… SOW signed (wet-ink + materai)
+    - âœ… Project Charter approved by executives
+    - âœ… Single PIC designated with contact info
+    - âœ… DP funds received in bank account
+    - âœ… DPA signed (if handle PII)
   
   IF gate NOT passed:
     STOP: NOT A SINGLE LINE OF CODE
@@ -541,9 +426,9 @@ IF scale >= "Menengah" AND client_type == "external":
 **M09 UAT Gate (BLOCKING)**:
 ```
 REQUIRE:
-  - ✅ UAT passed (all S1/S2 defects fixed, S3 documented)
-  - ✅ UAT sign-off signed by Client Single PIC
-  - ✅ Milestone payment received (if payment gated)
+  - âœ… UAT passed (all S1/S2 defects fixed, S3 documented)
+  - âœ… UAT sign-off signed by Client Single PIC (Scale: small + Delivery solo/portfolio/internal: 1 named self-tester recorded in UAT_SIGNOFF_SMALL.md instead)
+  - âœ… Milestone payment received (if payment gated)
 
 IF gate NOT passed:
   STOP: NO PRODUCTION DEPLOY
@@ -553,9 +438,9 @@ IF gate NOT passed:
 **M11 Handover Gate (BLOCKING)**:
 ```
 REQUIRE:
-  - ✅ BAST signed with wet-ink + stamp duty (Rp 10.000 materai)
-  - ✅ Final payment (Milestone 4) received in bank account
-  - ✅ All training sessions completed (attendance log signed)
+  - âœ… BAST signed with wet-ink + stamp duty (Rp 10.000 materai)
+  - âœ… Final payment (Milestone 4) received in bank account
+  - âœ… All training sessions completed (attendance log signed)
 
 IF gate NOT passed:
   STOP: NO CODE/CREDENTIALS TRANSFER
@@ -564,7 +449,7 @@ IF gate NOT passed:
 
 ---
 
-## 🔄 Warranty Boundary Defense Scripts
+## ðŸ”„ Warranty Boundary Defense Scripts
 
 **Common scope creep scenarios:**
 
@@ -607,8 +492,8 @@ Recommend: Option 1 (goodwill this time, future changes billable)."
 Client: "User can't see deleted items. This is a bug!"
 
 Analysis:
-- PRD Scope: User can delete items (✅ implemented)
-- PRD Scope: Soft delete with trash bin (❌ NOT in scope)
+- PRD Scope: User can delete items (âœ… implemented)
+- PRD Scope: Soft delete with trash bin (âŒ NOT in scope)
 
 Response:
 "Permanent delete is working as specified in PRD (Module 05).
@@ -626,31 +511,31 @@ Which do you prefer?"
 
 ---
 
-## 📖 Reference Documents per Scale
+## ðŸ“– Reference Documents per Scale
 
 | Document | Kecil | Menengah | Besar | Enterprise |
 |:---------|:-----:|:--------:|:-----:|:----------:|
-| **IDEA_BRIEF.md** (or PROJECT_LITE.md) | ✅ | ✅ | ✅ | ✅ |
-| **SCOPE_STATEMENT.md** | 🟡 (or PROJECT_LITE) | ✅ | ✅ | ✅ |
-| **SOW_CONTRACT.md** | ❌ | ✅ | ✅ | ✅ |
-| **PROJECT_CHARTER.md** | ❌ | 🟡 | ✅ | ✅ |
-| **DPA.md** (Data Processing Agreement) | ❌ | 🟡 | ✅ | ✅ |
-| **MARKET_RESEARCH.md** (or M00_LITE.md) | ❌ | ✅ (Solo SaaS) | ✅ | ✅ |
-| **SYSTEM_DESIGN_DOC.md** | ❌ | ❌ | 🟡 | ✅ |
-| **CAPACITY_PLANNING.md** | ❌ | ❌ | 🟡 | ✅ |
-| **SECURITY_AUDIT_REPORT.md** | ❌ | 🟡 | ✅ | ✅ |
-| **PENETRATION_TEST_REPORT.md** | ❌ | ❌ | ✅ | ✅ |
-| **DATA_MIGRATION_PLAN.md** | ❌ | 🟡 | ✅ | ✅ |
-| **UAT_WORKBOOK.md** | 🟡 | ✅ | ✅ | ✅ |
-| **BAST.md** (signed PDF) | ❌ | ✅ | ✅ | ✅ |
-| **WARRANTY_POLICY.md** | ✅ | 🟡 | ✅ | ✅ |
-| **SLA_RETAINER_CONTRACT.md** | ❌ | 🟡 | ✅ | ✅ |
+| **IDEA_BRIEF.md** (or PROJECT_LITE.md) | âœ… | âœ… | âœ… | âœ… |
+| **SCOPE_STATEMENT.md** | ðŸŸ¡ (or PROJECT_LITE) | âœ… | âœ… | âœ… |
+| **SOW_CONTRACT.md** | âŒ | âœ… | âœ… | âœ… |
+| **PROJECT_CHARTER.md** | âŒ | ðŸŸ¡ | âœ… | âœ… |
+| **DPA.md** (Data Processing Agreement) | âŒ | ðŸŸ¡ | âœ… | âœ… |
+| **MARKET_RESEARCH.md** (or M00_LITE.md) | âŒ | âœ… (Solo SaaS) | âœ… | âœ… |
+| **SYSTEM_DESIGN_DOC.md** | âŒ | âŒ | ðŸŸ¡ | âœ… |
+| **CAPACITY_PLANNING.md** | âŒ | âŒ | ðŸŸ¡ | âœ… |
+| **SECURITY_AUDIT_REPORT.md** | âŒ | ðŸŸ¡ | âœ… | âœ… |
+| **PENETRATION_TEST_REPORT.md** | âŒ | âŒ | âœ… | âœ… |
+| **DATA_MIGRATION_PLAN.md** | âŒ | ðŸŸ¡ | âœ… | âœ… |
+| **UAT_WORKBOOK.md** | ðŸŸ¡ | âœ… | âœ… | âœ… |
+| **BAST.md** (signed PDF) | âŒ | âœ… | âœ… | âœ… |
+| **WARRANTY_POLICY.md** | âœ… | ðŸŸ¡ | âœ… | âœ… |
+| **SLA_RETAINER_CONTRACT.md** | âŒ | ðŸŸ¡ | âœ… | âœ… |
 
 > **Note**: Small scale uses `WARRANTY_POLICY_SMALL.md` (30-day warranty included in M11 handover).
 
 ---
 
-## 🎯 Quick Decision Tree
+## ðŸŽ¯ Quick Decision Tree
 
 **Pre-Routing Note**: Enterprise projects (statutory/regulated, RFP/tender context) start at M00 (Product Discovery) before M01. For all other projects, complete M01 first, then route by scale:
 
@@ -658,24 +543,24 @@ Which do you prefer?"
 START: After completing M01 (Idea & Feasibility), route by scale:
 
 IF scale == "Kecil":
-  → Path: M02 → M03(bypass) → M04 → M05 → M06 → M09(self-test) → M10 → M11(bypass)
-  → Total lifecycle: M01 + 8 scale-specific = 9 modules
-  → Timeline: 10-12 minggu
-  → Payment: 50-50% (if external) or no payment (if internal)
+  â†’ Path: Intake â†’ M04-LITE â†’ M05 â†’ [STOP] â†’ M06 (+security) â†’ M09-LITE (1 penguji tercatat; self-tester untuk solo) â†’ [STOP] â†’ M10 â†’ M12-LITE
+  â†’ Total lifecycle: Intake + 8 steps via PROJECT_LITE.md
+  â†’ Timeline: <4 minggu
+  â†’ Payment: 50-50% (if external) or no payment (if internal)
 
 ELSE IF scale == "Menengah":
-  → Path: M02 → M03(SOW) → M04 → M05 → M06 → M07 → M09(formal UAT) → M10 → M11(BAST)
-  → Total lifecycle: M01 + 9 scale-specific = 10 modules
-  → Timeline: 18-20 minggu
-  → Payment: 30-30-40% (3 milestones)
-  → Gates: M03 DP gate, M09 UAT gate, M11 final payment gate
+  â†’ Path: M02 â†’ M03(SOW) â†’ M04 â†’ M05 â†’ M06 â†’ M07 â†’ M09(formal UAT) â†’ M10 â†’ M11(BAST)
+  â†’ Total lifecycle: M01 + 9 scale-specific = 10 modules
+  â†’ Timeline: 18-20 minggu
+  â†’ Payment: 30-30-40% (3 milestones)
+  â†’ Gates: M03 DP gate, M09 UAT gate, M11 final payment gate
 
 ELSE IF scale == "Besar":
-  → Path: M02 → M03(SOW+MSA) → M04 → M05 → M06 → M07(pentest) → M08(migration) → M09(UAT) → M10(CAB) → M11(training+BAST) → M12(warranty)
-  → Total lifecycle: M01 + 11 scale-specific = 12 modules
-  → Timeline: 32-36 minggu
-  → Payment: 20-30-30-20% (4 milestones)
-  → Gates: M03 DP gate, M07 pentest gate, M09 UAT gate, M11 final payment gate
+  â†’ Path: M02 â†’ M03(SOW+MSA) â†’ M04 â†’ M05 â†’ M06 â†’ M07(pentest) â†’ M08(migration) â†’ M09(UAT) â†’ M10(CAB) â†’ M11(training+BAST) â†’ M12(warranty)
+  â†’ Total lifecycle: M01 + 11 scale-specific = 12 modules
+  â†’ Timeline: 32-36 minggu
+  â†’ Payment: 20-30-30-20% (4 milestones)
+  â†’ Gates: M03 DP gate, M07 pentest gate, M09 UAT gate, M11 final payment gate
 
 END
 ```
@@ -683,13 +568,13 @@ END
 **Enterprise Path (Separate - Pre-M01)**:
 ```
 IF project context == RFP/tender/corporate/regulated (statutory audit constraints):
-  → Start: M00 (Product Discovery) validates RFP requirements
-  → M01 performs feasibility check (scale already known from RFP context)
-  → Path: M00 → M01 → M02 → ... → M13 (all 14 modules)
-  → Total lifecycle: 14 modules (M00 through M13)
-  → Timeline: 40-44 minggu + 3 bulan warranty + ongoing M13
-  → Payment: 20-30-30-20% (4 milestones)
-  → Gates: M00 feasibility gate, M03 DP gate, M04B design system gate, M05B capacity planning gate, M07 pentest gate, M09 UAT gate, M11 BAST gate
+  â†’ Start: M00 (Product Discovery) validates RFP requirements
+  â†’ M01 performs feasibility check (scale already known from RFP context)
+  â†’ Path: M00 â†’ M01 â†’ M02 â†’ ... â†’ M13 (all 14 modules)
+  â†’ Total lifecycle: 14 modules (M00 through M13)
+  â†’ Timeline: 40-44 minggu + 3 bulan warranty + ongoing M13
+  â†’ Payment: 20-30-30-20% (4 milestones)
+  â†’ Gates: M00 feasibility gate, M03 DP gate, M04B design system gate, M05B capacity planning gate, M07 pentest gate, M09 UAT gate, M11 BAST gate
 ```
 
 ---
@@ -697,7 +582,7 @@ IF project context == RFP/tender/corporate/regulated (statutory audit constraint
 **Next Steps**:
 1. User completes M01 feasibility check
 2. M01 outputs scale classification (Kecil/Menengah/Besar/Enterprise)
-3. Refer to this document → select module path
+3. Refer to this document â†’ select module path
 4. Execute modules in sequence
 5. Enforce payment gates (if external client)
 6. Defend warranty boundaries (bug vs CR)

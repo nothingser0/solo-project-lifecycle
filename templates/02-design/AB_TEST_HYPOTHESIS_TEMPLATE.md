@@ -169,5 +169,5 @@ Do NOT stop early unless:
 
 ## 8. Related Hypotheses (Iteration Chain)
 
-- **Previous Test**: [ABT-XXX: Description]
-- **Next Test**: [ABT-XXX: Description, if this test generates new questions]
+- **Previous Test**: [ABT-###: Description]
+- **Next Test**: [ABT-###: Description, if this test generates new questions]

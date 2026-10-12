@@ -269,3 +269,15 @@ For formal BAST, use `templates/07-release-handover/BAST_TEMPLATE.md`
 5. Send invoice for final payment
 6. Start 30-day warranty countdown
 7. Hand over complete → Move to M12 (if warranty work needed)
+
+---
+
+## Signature Block
+
+**Prepared by**: [Your Name] — [Role]
+**Date**: [YYYY-MM-DD]
+
+Regards,
+[Your Name]
+[Solo Developer / Studio Name]
+[Email] | [Phone]

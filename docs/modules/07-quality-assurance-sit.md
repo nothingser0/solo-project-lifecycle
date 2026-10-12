@@ -1,266 +1,77 @@
 # Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)
 
-> - `references/playbooks/ai-assisted-development.md` (Pre-merge AI review protocol, prompt engineering patterns, multi-file orchestration)
-> - `references/technical/COMPLIANCE_MONITORING_AUTOMATION.md` (Automated compliance auditing, continuous vulnerability scanning)
-> - `templates/06-qa-uat/BUG_REPORT.md` (Standardized defect reporting format with reproduction steps)
-> - `templates/06-qa-uat/DEMO_FEEDBACK_FORM.md` (Internal QA smoke demo feedback questionnaire)
+> - `references/playbooks/ai-assisted-development.md` (Pre-merge AI review protocol)
+> - `templates/06-qa-uat/BUG_REPORT.md` (Standardized defect reporting format)
+> - `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` (Large/Enterprise third-party pentest scoping)
 
-This module is the seventh phase in the software project lifecycle for solo developers. Its purpose is to validate reliability, third-party system integration integrity (*System Integration Testing* / SIT), performance resilience, and system security automatically in the **Staging** environment before handing over to the client for the UAT process (Module 09).
+This module validates reliability, third-party integration integrity (*System Integration Testing* / SIT), performance resilience, and security in the **Staging** environment before client UAT (Module 09). Verbose SIT walkthrough & Enterprise A04 advisory: `deep-dives/07-quality-assurance-sit.md`.
 
----
+**Scale routing (one line)**: Small: M07 waived → `SECURITY_CHECKLIST_SMALL.md` in M06, go M09-LITE · Medium/Large: full M07 below · Enterprise: not solo capacity → Phase A04 advisory (`deep-dives/07-quality-assurance-sit.md`).
 
-## 1. Execution Cycle of Module 07
+**Input**: staging branch from M06 + `FSD.md`.
 
-```text
-[ INPUT: Code Repository on staging Branch from Module 06 & FSD.md ]
-                                    │
-                                    ▼
-[ STEP 1: Automated Unit & API Contract Testing (Test Pyramid) ]
-  • Unit Test: Pure business logic, calculations, and cryptographic utilities
-  • Integration Test: Zod-validated API endpoints, response statuses, & DB isolation
-  • Pre-Merge AI Review: `references/playbooks/ai-assisted-development.md` protocol
-                                    │
-                                    ▼
-[ STEP 2: Third-Party System Integration Testing (SIT) ]
-  • SIT is conducted with dummy/seed data (NOT client real data)
-  • Payment Gateway Sandbox Validation (Success/Failure Webhook Simulation)
-  • Cloud Storage Validation (AES-256 Encrypted Upload & Presigned URL)
-  • Transactional Email Validation (SMTP / Resend delivery log)
-  • Client real data is imported in M08 after SIT passes
-                                    │
-                                    ▼
-[ STEP 3: Security Audit & Hardening (Security Gate) ]
-  • Dependency Vulnerability Audit (`pnpm audit --audit-level=high`)
-  • Secret Leak Scanning (Detection of accidentally committed API keys / tokens)
-  • OWASP Top 10 Verification Checklist (SQL Injection, XSS, CSRF, Broken Auth)
-                                    │
-                                    ▼
-[ STEP 4: Load & Concurrency Performance Testing (Load Testing) ]
-  • Load Testing Using k6 / Autocannon (e.g., 50–100 Concurrent Virtual Users)
-  • Verify API Latency ≤200 ms & Error Rate 0%
-                                    │
-                                    ▼
-[ STEP 5: Deployment to Staging Environment & SIT Sign-Off ]
-  • Deploy staging Branch to Client Staging Server (Vercel / VPS / Cloud Run)
-  • Prepare Test Results Report Document (SIT_WORKBOOK.md)
-                                    │
-                                    ▼
-[ OUTPUT: SIT_WORKBOOK.md & Staging Server Ready for UAT ] ──► Ready to Proceed to Module 08: Data Migration
-```
+## Steps
 
----
-
-## 2. Solo Developer QA Principles: "The Pragmatic Test Pyramid"
-
-Solo developers do not have a 5-person QA team. Writing hundreds of brittle UI tests that frequently fail simply due to CSS class changes is prohibited.
-
-### Efficient Test Pyramid for Solo Devs:
-1. **Bottom Layer (70% - Unit & Contract Tests)**:
-   - Test pure functions: calculation formulas, template text processing, AES-256 encryption/decryption, and Zod schema validations. Fast to run (< 5 seconds) and stable.
-2. **Middle Layer (25% - API Integration & SIT Tests)**:
-   - Test controller interactions with local database and third-party sandboxes (Payment, Email, S3).
-3. **Top Layer (5% - Critical Path E2E Smoke Test)**:
-   - Only test the single most critical flow (*Core Happy Path*): Login → Create document → Generate PDF → Sign → Status `SIGNED`.
-
----
-
-## 3. Step-by-Step Execution
-
-### Step 1: Automated Unit & Integration Testing
-Run tests using a fast test runner (Vitest / Jest / Pytest / Go test):
+### Step 1 — Unit & Integration Tests
 ```bash
-# Run all unit & integration tests
-pnpm run test # or vitest run
+pnpm run test        # Vitest / Jest / Pytest / Go test — exit code 0
 ```
-Pass Criteria: 100% tests pass without failure (`exit code 0`).
+- Unit: pure business logic, calculations, AES-256 crypto utilities, Zod schemas.
+- Integration: API endpoints (status codes, DB isolation), third-party sandbox clients.
+- Pre-merge AI review per `references/playbooks/ai-assisted-development.md`.
+- Pyramid: ~70% unit/contract, ~25% API integration/SIT, ~5% critical-path E2E smoke (login → create → PDF → sign → `SIGNED`). No brittle UI/CSS tests.
+- Pass criteria: 100% tests pass, exit 0.
 
-### Step 2: System Integration Testing (SIT)
-**IMPORTANT**: SIT is conducted with **dummy/seed data** in the Staging environment. Real client data is **NOT** imported until SIT passes (Module 08).
+### Step 2 — System Integration Testing (SIT, Staging)
+**Dummy/seed data only. Real client data is imported in M08 after SIT passes.**
+1. **Payment sandbox**: success + failed/expired webhook payloads → `PAID` / `CANCELLED` transitions, inventory lock.
+2. **Encrypted vault upload**: AES-256 encrypted upload to storage bucket + presigned URL download/decrypt within 15-minute expiry.
+3. **Transactional email**: OTP email arrives with correctly formatted template (SMTP / Resend delivery log).
 
-Test all integration points to third-party services in sandbox environments:
-1. **Payment Gateway Sandbox**:
-   - Fire a successful payment webhook payload → Ensure order status updates to `PAID` and inventory is locked.
-   - Fire an expired/failed payment webhook → Ensure status updates to `CANCELLED`.
-2. **Document Vault Storage**:
-   - Upload a document file → Ensure file is stored in the storage bucket in encrypted binary format.
-   - Retrieve presigned URL → Ensure file can be downloaded and decrypted completely within the 15-minute expiry limit.
-3. **Transactional Email**:
-   - Test OTP email delivery → Ensure it arrives in the tester's inbox with properly formatted template.
-
-### Step 3: Security Audit & Hardening
-1. **Dependency Audit**:
-   ```bash
-   pnpm audit --audit-level=high
-   ```
-   Must yield: `found 0 vulnerabilities`.
-2. **OWASP Vulnerability Checks**:
-   - Ensure all authenticated protected routes reject unauthenticated requests (`401 Unauthorized`).
-   - Ensure HTTP security headers are configured:
-     ```http
-     X-Content-Type-Options: nosniff
-     X-Frame-Options: DENY
-     Referrer-Policy: strict-origin-when-cross-origin
-     Content-Security-Policy: default-src 'self' ...
-     ```
-
-**Bug Classification Template**:  
-Use **`templates/06-qa-uat/BUG_TRIAGE_MATRIX.md`** (7.97 KB) for standardized severity/priority classification during SIT defect tracking:
-- **P0/Critical**: Blocker bugs (data loss, security breach, system crash)
-- **P1/High**: Major functionality broken, no workaround
-- **P2/Medium**: Minor bugs with workarounds available
-- **P3/Low**: Cosmetic issues, nice-to-have fixes
-
-**Penetration Testing (Large/Enterprise Only)**:  
-For Large/Enterprise scales requiring third-party security assessment, use **`templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md`** (13.65 KB) to define:
-- Testing scope and in-scope systems/endpoints
-- Out-of-scope assets and boundaries
-- Rules of engagement and testing methodology
-- Reporting format and success criteria
-- Timeline and deliverables
-
-### Step 4: Load & Concurrency Testing
-Use a simple load testing script (k6 or autocannon):
+### Step 3 — Security Audit & Bug Triage
 ```bash
-# Example simulation of 50 concurrent users for 30 seconds
-npx autocannon -c 50 -d 30 http://localhost:3000/api/health
+pnpm audit --audit-level=high   # must report zero High/Critical vulnerabilities
 ```
-- **Minimum Thresholds**:
-  - Average latency ≤200 ms.
-  - No database connection failures (*zero 500 server errors*).
+- Secret leak scan: no committed API keys/tokens/.env artifacts (git history included).
+- OWASP Top 10 checks: protected routes reject unauthenticated requests (401), SQLi/XSS/CSRF/broken auth.
+- Security headers present on all responses:
+  `X-Content-Type-Options: nosniff` · `X-Frame-Options: DENY` · `Referrer-Policy: strict-origin-when-cross-origin` · `Content-Security-Policy: default-src 'self' ...`
+- Bug triage via `templates/06-qa-uat/BUG_TRIAGE_MATRIX.md`: P0 blocker (data loss/security/crash) · P1 major, no workaround · P2 minor, workaround exists · P3 cosmetic. Fix P0/P1 before gate; log all in SIT workbook.
+- Large/Enterprise third-party pentest: scope via `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md`; results recorded in `docs/qa/SECURITY_AUDIT.md`.
 
-### Step 5: Deployment to Staging Server & SIT Workbook
-1. Push branch `staging` to remote: `git push origin staging`.
-2. CI/CD automatically builds and deploys to the staging domain: `https://staging.clientdomain.com`.
-3. Run a quick smoke test directly on the staging domain.
-4. Compile all test evidence into the **`SIT_WORKBOOK.md`** file.
+### Step 4 — Load Test
+```bash
+npx autocannon -c 50 -d 30 https://staging.clientdomain.com/api/health   # or k6
+```
+Thresholds: ~50 VUs, average latency ≤200 ms, zero 500 errors (no DB connection failures).
 
----
+### Step 5 — Deploy Staging & Smoke Test
+1. `git push origin staging` → CI/CD deploys to `https://staging.clientdomain.com`.
+2. Smoke test the staging URL: core happy path + health endpoint return expected results.
 
-## 4. Adaptation by Project Scale
+### Step 6 — Compile SIT Workbook
+Build `docs/qa/SIT_WORKBOOK.md` from `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`: test plan, per-integration sandbox evidence (payment/vault/email), audit & load results, defect log, sign-off conclusion **READY FOR CLIENT UAT**.
 
-| QA & SIT Aspect | 🔵 Small Scale (Fast-Track MVP) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (Complex Integrations) | 🔴 Enterprise (Non-Solo Capacity) |
-| :--- | :--- | :--- | :--- | :--- |
-| **M07 Status** | **M07 DI-SKIP / WAIVED** (Keamanan dilipat ke M06) | **Wajib M07 Penuh** di Staging Server | **Wajib M07 Penuh + Security Audit** | **Dialihkan ke Seri A (Fase A04)** |
-| **Testing Scope** | Tes unit lokal & verifikasi M06 | Unit tests + Sandbox API SIT + k6 load test | Full Test Pyramid, Pact contract test, load test | Pengawasan tata kelola audit pengembang vendor |
-| **Security Audit** | `SECURITY_CHECKLIST_SMALL.md` di M06 | SAST scan (Semgrep) + audit dependensi | Wajib `docs/qa/SECURITY_AUDIT.md` (Pentest pihak ke-3) | Threat Modeling STRIDE & Audit Readiness |
-| **Staging Environment** | Preview deployment per commit | Staging server terisolasi dengan data dummy | Mirror Production Staging dengan data sanitization | Staging korporat yang dikelola tim DevOps klien |
-| **Output Dokumen** | Langsung menuju **M09-LITE (UAT)** | `docs/qa/SIT_WORKBOOK.md` | `SIT_WORKBOOK.md` + `SECURITY_AUDIT.md` | Security & Compliance Advisory Dossier (A04) |
+## Outputs
+1. **`docs/qa/SIT_WORKBOOK.md`** — SIT plan + pass evidence, conclusion: READY FOR CLIENT UAT (prerequisite for M09 UAT).
+2. **`docs/qa/SECURITY_AUDIT.md`** — dependency audit results, OWASP/header status, secret-scan and encryption verification (also accepted as `docs/qa/SECURITY_AUDIT_REPORT.md`).
 
----
+## Gate Exit Criteria [GATE]
+- [ ] All unit + integration tests pass (exit 0).
+- [ ] SIT sandboxes proven (payment webhooks, encrypted vault + presigned URL, transactional email) on staging with seed data only.
+- [ ] Security audit clean: `pnpm audit` zero High/Critical, secret scan clean, OWASP + security headers verified.
+- [ ] Load test: ≤200 ms avg latency, zero 500s.
+- [ ] Staging deployed and stable; smoke test passes.
+- [ ] `docs/qa/SIT_WORKBOOK.md` published with **READY FOR CLIENT UAT**.
 
-### 🔴 Enterprise Scale: Routed to Non-Solo Capacity Advisory (Phase A04)
+**Coverage (one line)**: Large ≥70% line / ≥60% branch, Enterprise ≥80% / ≥70% (`pnpm test:coverage`), Small/Medium pragmatic coverage of critical paths only.
 
-> ⚠️ **SOLO CAPACITY LIMITATION ENFORCEMENT**:  
-> Projects classified as **Enterprise Scale** ($\ge 26$ P0 features, legacy core migrations, or strict regulatory statutory mandates) **EXCEED SOLO DEVELOPER CAPACITY**.  
-> Solo developers MUST NOT perform enterprise-scale manual QA, multi-tenant penetration testing, or independent SOC 2 audits single-handedly.  
-> Instead, the solo consultant executes **Phase A04 (Security Review, Threat Modeling, & Audit Readiness)** to produce security governance specifications, review vendor test reports, and coordinate certified third-party audit firms.
+**Verbatim gate check**:
+```bash
+./scripts/gates/validate-gate.sh M07
+```
+```powershell
+./scripts/gates/validate-gate.ps1 M07
+```
 
-**Compliance Audit Preparation**:
-- `templates/03-governance/SOC2_ISO27001_COMPLIANCE.md` - Trust Service Criteria, evidence collection (6-12 month audit prep)
-  - **Covers**: Security controls, access reviews, encryption, change management, monitoring
-  - **Evidence needed**: 6 months of logs, access review records, vulnerability scan reports, training completion
-  - **Why**: Enterprise clients require SOC 2 Type II before signing (or as contract milestone)
-
-**Incident Response Planning**:
-- `templates/03-governance/INCIDENT_RESPONSE_PLAN.md` - Security incident playbook (P0-P4 severity, escalation procedures)
-  - **Covers**: Detection, containment, eradication, recovery, post-mortem
-  - **Escalation contacts**: Tech Lead, Security Lead, Client PIC, Legal (for breach notification)
-  - **Why**: SOC 2 requires documented incident response procedures (tested quarterly)
-
-**Backup & Disaster Recovery**:
-- `templates/08-maintenance-ops/BACKUP_RESTORE_PROCEDURES.md` - Daily backups, quarterly restore tests
-  - **Covers**: Automated backup schedules, offsite storage, encryption, restore procedures
-  - **Testing**: Quarterly restore drill (prove backups work)
-  - **Why**: ISO 27001 requires tested backup procedures (not just "we have backups")
-
-**Data Retention & Compliance**:
-- `templates/03-governance/DATA_RETENTION_POLICY.md` - Retention periods (7yr financial, 1yr logs, 30 days deleted accounts)
-  - **Covers**: GDPR/PDP Law retention rules, automated deletion, legal holds
-  - **Why**: Sanksi administratif UU PDP No. 27/2022 Pasal 57 untuk retensi data ilegal (denda hingga 2% pendapatan tahunan)
-
-**Advisory Gate for Enterprise (Phase A04)**:
-- Security Architecture Review completed (`references/advisory/STRIDE_THREAT_MODEL.md`)
-- Third-party penetration testing firm scoped & rules of engagement locked (`PENTEST_SCOPE_TEMPLATE.md`)
-- Incident response plan documented & reviewed with client steering committee
-- Audit readiness dossier handed over to enterprise compliance team
-
----
-
-## 5. Deliverables
-
-This module produces 2 primary artifacts:
-1. **`docs/qa/SIT_WORKBOOK.md`**: Combined test plan and Staging SIT pass verification workbook serving as a prerequisite for opening the Client UAT session (using `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`).
-2. **`docs/qa/SECURITY_AUDIT.md`**: Library vulnerability audit results, OWASP security header status, and encryption verification (using `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`; also accepted as `docs/qa/SECURITY_AUDIT_REPORT.md`).
-
----
-
-## 6. Gate Exit Criteria [GATE]
-
-[GATE] Module 07 is declared **PASSED (PASS)** if:
-- [ ] All unit tests and integration tests pass 100% (`pnpm test` exit code 0).
-- [ ] **Test coverage meets minimum thresholds** (Large/Enterprise scale):
-  - **Large Scale**: ≥70% line coverage, ≥60% branch coverage
-  - **Enterprise Scale**: ≥80% line coverage, ≥70% branch coverage
-  - **Small/Medium Scale**: No strict threshold (pragmatic coverage of critical paths only)
-  - Check: `pnpm test:coverage` or `npm run coverage`
-- [ ] SIT with all third-party sandboxes (Payment, Vault S3/R2, Email) is proven successful.
-- [ ] Dependency audit `pnpm audit` is free of High/Critical category vulnerabilities.
-- [ ] Application has been successfully deployed and runs stably on the **Staging** server.
-- [ ] Document **`docs/qa/SIT_WORKBOOK.md`** has been published with the conclusion: **READY FOR CLIENT UAT**.
-
-**Test Coverage Rationale**:
-- Small/Medium: Pragmatic testing (unit + critical path E2E) without strict percentage targets
-- Large: Client expects quality assurance metrics, 70% coverage demonstrates thoroughness
-- Enterprise: Regulatory/compliance often requires ≥80% coverage for audit trail
-
----
-
-## 🛑 EXIT [GATE] PROTOCOL & MANDATORY STOP
-
-After the Staging server is active and the `SIT_WORKBOOK.md` document is published:
-
-### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
-
-**MANDATORY BEFORE CONTENT VALIDATION**:
-
-1. **Check output file existence** using one of the following methods:
-   - PowerShell: `Test-Path -LiteralPath "docs/qa/SIT_WORKBOOK.md"` → must return `True`
-   - Read and verify file `docs/qa/SIT_WORKBOOK.md` → must succeed without error
-
-2. **IF FILE DOES NOT EXIST**:
-   - ❌ **STOP IMMEDIATELY** - do not proceed to content validation
-   - ❌ **DO NOT display summary** to user
-   - ❌ **DO NOT request confirmation** to proceed to Module 08
-   - ✅ **REPORT ERROR** to user:
-     ```
-     CRITICAL ERROR: File SIT_WORKBOOK.md was not created.
-     Module 07 FAILED - cannot proceed to Module 08 (Data Migration).
-     
-     Possible causes:
-     - Write permission denied on docs/qa/ folder
-     - Path typo in tool call
-     - Disk full
-     
-     Please investigate this issue before proceeding.
-     ```
-   - ✅ **END TURN** and wait for user to fix issue
-
-3. **ONLY IF FILE EXISTS**: Proceed to content validation below
-
----
-
-### **STEP 1: CONTENT VALIDATION & TESTS**
-
-1. **STRICTLY PROHIBITED from proceeding directly or calling tools for Module 08/09 within the same turn!**
-2. **Verify test results**:
-   - [ ] Read and verify file `docs/qa/SIT_WORKBOOK.md` → Confirm all tests PASS
-   - [ ] Confirm staging URL accessible
-   - [ ] Confirm `pnpm audit` clean (zero critical vulnerabilities)
-   - [ ] Confirm sandbox integrations verified (Payment/Storage/Email)
-3. Present summary of Staging integration test results to user:
-   - Active Staging URL
-   - Pass status of third-party sandbox testing
-   - Dependency security audit & k6 load test results
-4. **END YOUR RESPONSE (END TURN)** and ask user for confirmation:
-   > *"The system has successfully passed integration testing (SIT Pass) and is active on the Staging server. Are these test results approved before we proceed to Module 08 (Data Migration)?"*
-5. Wait for explicit approval response from user before advancing to the next module.
+🛑 **STOP-and-wait**: After the gate passes and `SIT_WORKBOOK.md` is published, END the turn and wait for explicit client/user approval before proceeding to Module 08 (Data Migration).

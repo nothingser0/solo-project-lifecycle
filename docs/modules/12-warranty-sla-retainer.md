@@ -1,259 +1,91 @@
 # Module 12: Warranty Period & Transition to Monthly Retainer / SLA Support
 
-> - `templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md` (30-day simplified warranty policy for MVP & small-tier projects)
+> - `templates/08-maintenance-ops/WARRANTY_POLICY_SMALL.md` (30-day simplified warranty for MVP/small tier)
+> - `deep-dives/12-warranty-sla-retainer.md` (policy socialization details, hotfix git flow, proposal cron, full Bronze/Silver/Gold definitions)
 
-This module is the twelfth stage (culminating phase) in the software project lifecycle for solo developers. The objective is to manage the bug fix warranty period in a metered manner, establish Service Level Agreements (SLA), handle production emergency incidents, and convert one-off project relationships into predictable recurring revenue: **Monthly Maintenance Contracts (Monthly Retainer / SLA Contract)**.
+Culminating phase: manage the bug-fix warranty metered, establish SLAs, handle production incidents, and convert one-off projects into recurring revenue (**Monthly Retainer / SLA Contract**).
 
 ---
 
-## 1. Module 12 Execution Cycle
+## 1. Execution Cycle (Condensed)
 
 ```text
-[ INPUT: Valid Stamped BAST Document from Module 11 & System Live in Production ]
-                                    │
-                                    ▼
-[ STEP 1: Enforcement of Official Warranty Boundaries (Warranty Period) ]
-  • Start Date: Exactly when BAST is signed (Not when coding started)
-  • Duration: 30 Days (Small/MVP) / 60 Days (Mid-scale) / 90 Days (Large & Enterprise)
-  • Mandatory Scope: Pure bug fixes that violate FSD/PRD specifications
-                                    │
-                                    ▼
-[ STEP 2: Enforcement of SLA Response Matrix & Working Hours ]
-  • Standard Working Hours: Monday – Friday 09:00 – 17:00 WIB (Except Enterprise Retainer)
-  • Severity 1 Response (System Down): Response < 2 Hours, Resolution < 24 Hours
-  • Severity 2 Response (Major): Response < 8 Hours, Resolution < 48 Hours
-  • Severity 3 Response (Minor/Question): Next business day
-                                    │
-                                    ▼
-[ STEP 3: Production Emergency Incident Handling (Break-Glass SOP) ]
-  • Rapid Incident Triage via Sentry & Uptime Monitor
-  • Execute Fix on fix/* Branch ──► Hotfix Staging ──► Push Tag to main
-  • Concise Post-Mortem Documentation in Case of Downtime
-                                    │
-                                    ▼
-[ STEP 4: Transition to Monthly Retainer Contract (Recurring Revenue) ]
-  • Send Maintenance Package Proposal (Bronze / Silver / Gold) 14 Days Before Warranty Expires
-  • Negotiate & Sign Monthly SLA Retainer Contract
-  • Establish Preventive Maintenance Schedule (OS Updates, Patching, Backup Audits)
-                                    │
-                                    ▼
-[ OUTPUT: WARRANTY_POLICY.md Document & SLA_RETAINER_CONTRACT.md Contract ]
+[ INPUT: Stamped BAST (M11) + system LIVE in production ]
+  → STEP 1: Warranty boundaries — starts at BAST signing (not coding); 30/60/90 days (Small/Mid/Large);
+    scope = pure bug fixes violating FSD/PRD only
+  → STEP 2: SLA matrix & working hours — Mon–Fri 09:00–17:00 WIB;
+    Sev 1: respond <2 h / resolve <24 h; Sev 2: <8 h / <48 h; Sev 3: next business day
+  → STEP 3: Incident handling — Sentry/uptime triage → fix/* → hotfix staging → tag main;
+    post-mortem on downtime
+  → STEP 4: Retainer transition — Bronze/Silver/Gold proposal 14 days before warranty expiry;
+    sign SLA contract; preventive maintenance schedule
+  → OUTPUT: WARRANTY_POLICY.md & SLA_RETAINER_CONTRACT.md
 ```
 
----
+## 2. "Warranty vs Retainer" Boundary
 
-## 2. Solo Developer Protection Principles: "Warranty vs Retainer"
-
-Clients often assume that after purchasing software, the developer is obligated to maintain the system for free for life. The solo developer must strictly distinguish between these two concepts:
-
-| Parameter | Warranty Period | Maintenance Contract (Monthly Retainer) |
+| Parameter | Warranty | Monthly Retainer |
 | :--- | :--- | :--- |
-| **Cost Status** | **FREE** (Included in initial contract). | **PAID MONTHLY** (Routine upfront recurring fee). |
-| **Duration** | Limited (30 / 60 / 90 calendar days). | Ongoing (6 or 12-month agreement). |
-| **Scope of Work** | **STRICTLY PURE BUG FIXES ONLY**: Repairing functionality proven inconsistent with FSD/PRD. | Server monitoring, library/security version updates, regular DB backup verification, and minor feature development hourly quota. |
-| **New Features** | **STRICTLY PROHIBITED**: Must go through Change Request (CR). | Included in the monthly hours quota. |
-| **External Causes** | **VOID**: If server is modified by third parties or third-party APIs change format. | Handled using the monthly retainer hours allocation. |
+| **Cost** | FREE (in initial contract) | PAID monthly, upfront |
+| **Duration** | 30 / 60 / 90 calendar days | Ongoing (6–12 months) |
+| **Scope** | **Pure bug fixes vs FSD/PRD only** | Monitoring, updates, backup checks, minor-feature hours |
+| **New features** | **PROHIBITED** → CR | Included in monthly hours |
+| **External causes** | **VOID** (3rd-party server changes / API format changes) | Handled from retainer hours |
 
----
+## 3. Step-by-Step (detail in deep dive)
 
-## 3. Step-by-Step Execution
+1. **Policy socialization**: deliver `WARRANTY_POLICY.md` with the BAST (M11). Official channels only: bug reports via email / one coordination group; no personal-number messages outside working hours (except *Critical Down*).
+2. **Hotfix flow**: Sentry triage → `git checkout -b fix/*` from `main` → local `pnpm run test:smoke` → merge `staging` verify → merge `main`, tag `v1.0.1`, push `--tags`.
+3. **Retainer transition**: send proposal 14 days pre-expiry (cron: `0 9 * * * check_warranty_expiry_and_notify.sh`). Tiers — **Bronze**: monitoring, monthly patching, backup restore checks, 5 h consult; **Silver**: +15 h/month minor features, <4 h response business days; **Gold**: +20–30 h/month, <2 h Sev 1 response. *Anti-burnout rule: solo devs MUST NOT commit to 24/7/365 weekend on-call without a rotating team.*
 
-### Step 1: Warranty Policy Socialization (`WARRANTY_POLICY.md`)
-1. Concurrently with the handover of the BAST (Module 11), deliver the **`WARRANTY_POLICY.md`** document to the Client Single PIC.
-2. Affirm official communication channels:
-   - Bug reports must go through official email or a single technical coordination group.
-   - Sending bug messages to the solo developer's personal number outside working hours is strictly prohibited (unless the server is in *Critical Down* status).
+## 4. Scale & Waiver Rules
 
-### Step 2: Incident Triage & Hotfix Execution
-If the client reports an issue in production during the warranty period:
-1. Inspect the Sentry dashboard to view stack traces and error history.
-2. Create a fix branch from `main`:
-   ```bash
-   git checkout main
-   git checkout -b fix/issue-critical-payment
-   ```
-3. Code the fix, run local `pnpm run test:smoke`.
-4. Merge to `staging` for rapid verification, then merge to `main` and tag the hotfix:
-   ```bash
-   git checkout main
-   git merge --no-ff fix/issue-critical-payment
-   git tag -a v1.0.1 -m "hotfix: resolve payment webhook timeout"
-   git push origin main --tags
-   ```
+Small → `docs/pm/RUNBOOK_OPS.md` (Solo/Internal), 30-day warranty for clients, best-effort/24 h. Medium → `WARRANTY_POLICY.md` 60 days, 4–8 h response, 10–15 h retainer. Large → `WARRANTY_POLICY` + `INCIDENT_RESPONSE.md` mandatory, 90 days, 1–2 h response. Enterprise → A04/A00.
 
-### Step 3: Negotiating Transition to Monthly Retainer (14 Days Before Warranty Expires)
-Two weeks before the warranty period ends, send a routine maintenance proposal (*Retainer Proposal*).
+## 5. Deliverables (`docs/pm/`)
 
-**Reminder Automation**: Configure a calendar reminder or cron job to automatically send the proposal 14 days before the warranty expiration date:
-```bash
-# Example cron job: Send retainer proposal reminder
-# Add to crontab or use a service scheduler (Cron / GitHub Actions)
-0 9 * * * check_warranty_expiry_and_notify.sh
-```
-
-Offer 3 package tiers:
-
-1. **Bronze Package (Basic Maintenance & Security)**:
-   - 24/7 server monitoring (Uptime & Sentry).
-   - Monthly dependency security patching and database maintenance.
-   - Backup data integrity verification (*daily backup restore test*).
-   - Allocation: 5 Technical consultation hours / month.
-2. **Silver Package (Standard Maintenance & Optimization)**:
-   - All facilities of the Bronze Package.
-   - Allocation of **15 Working hours / month** for minor feature additions, UI adjustments, or report format changes.
-   - Responsive SLA response time < 4 hours on business days.
-3. **Gold Package (High-Priority Business SLA)**:
-   - All facilities of the Silver Package.
-   - Allocation of **20–30 Working hours / month** for scheduled maintenance and priority enhancements.
-   - Expedited business hours response (<2 hours for Severity 1 incidents during Monday–Friday 09:00–17:00 WIB).
-   - *Solo Dev Anti-Burnout Note*: Solo developers MUST NOT commit to 24/7/365 emergency weekend on-call without a rotating support team.
-
----
-
-## 4. Adaptation by Project Scale
-
-| Post-Project Parameter | 🔵 Small Scale (Fast-Track MVP) | 🟢 Medium Scale (B2B SaaS / Agency) | 🟡 Large Scale (High-Priority Support) | 🔴 Enterprise (Non-Solo Capacity) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Operations Artifact** | `docs/pm/RUNBOOK_OPS.md` (Solo/Internal) | `WARRANTY_POLICY.md` (30–60 hari) | Wajib `WARRANTY_POLICY` + `INCIDENT_RESPONSE.md` | **Dialihkan ke Seri A (Fase A04/A00)** |
-| **Warranty Duration** | Di-waive untuk Solo; 30 hari untuk Client | 60 Calendar Days | 90 Calendar Days | Ditangani tim support vendor klien |
-| **Bug Response SLA** | Best-effort (Solo) / 24 jam (Client) | Response 4–8 jam pada hari kerja | Response 1–2 jam + SOP Incident Response | SLA korporat multi-tier terkelola |
-| **Retainer Model** | Pemeliharaan mandiri via Runbook | Paket Retainer Bulanan (10–15 jam/bulan) | Formal SLA Contract + `INCIDENT_RESPONSE.md` | Enterprise SLA & Governance Architecture |
-
----
-
-## 5. Output Deliverables
-
-> 📁 **ABSOLUTE FILE LOCATION RULES**:
-> All warranty policy documents, retainer contracts, and incident reports MUST be stored inside the **`docs/pm/`** folder.
-
-This module produces 3 maintenance governance documents:
-1. **`docs/pm/WARRANTY_POLICY.md`**: Official policy document defining warranty boundaries, service working hours, and covered bug definitions (using `templates/08-maintenance-ops/WARRANTY_POLICY_TEMPLATE.md`; for `Delivery: solo | internal`, replaced by **`docs/pm/RUNBOOK_OPS.md`**).
-2. **`docs/pm/RUNBOOK_OPS.md`**: Self-operated maintenance runbook for solo/internal products (backup schedules, recovery drills, and monitoring telemetry; from `templates/08-maintenance-ops/RUNBOOK_OPS.md`).
-3. **`docs/pm/SLA_RETAINER_CONTRACT.md`**: Recurring monthly maintenance partnership contract (*Monthly Retainer Agreement*) (using `templates/08-maintenance-ops/SLA_RETAINER_CONTRACT_TEMPLATE.md`).
-4. **`docs/pm/INCIDENT_RESPONSE.md`**: Standard operating procedure (SOP) for handling production emergency incidents (using `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md`; mandatory on Large scale).
-
----
+1. **`WARRANTY_POLICY.md`** — boundaries, working hours, covered-bug definitions; must include Warranty Coverage + Exclusions and the Severity/SLA matrix (solo/internal: replaced by **`RUNBOOK_OPS.md`**).
+2. **`RUNBOOK_OPS.md`** — self-op runbook (backups, recovery drills, telemetry) for solo/internal products.
+3. **`SLA_RETAINER_CONTRACT.md`** — monthly retainer agreement.
+4. **`INCIDENT_RESPONSE.md`** — production incident SOP (mandatory Large scale).
 
 ## 6. [GATE] Exit Criteria
 
-[GATE] Module 12 is declared **SUCCESSFUL & PROJECT LIFECYCLE 100% COMPLETE** if:
-- [ ] The 30/60/90 calendar day warranty period has passed with no pending Severity 1 & 2 tickets unresolved.
-- [ ] Document `docs/pm/WARRANTY_POLICY.md` has been issued.
-- [ ] The client has signed the warranty sign-off sheet or officially signed the Monthly Retainer Contract (`docs/pm/SLA_RETAINER_CONTRACT.md`).
-- [ ] The system operates stably and autonomously on production servers with active automated monitoring.
+- [ ] 30/60/90-day warranty passed with no pending Severity 1 & 2 tickets.
+- [ ] `WARRANTY_POLICY.md` issued (or `RUNBOOK_OPS.md` for solo/internal).
+- [ ] Warranty sign-off signed or Monthly Retainer Contract (`SLA_RETAINER_CONTRACT.md`) signed.
+- [ ] System stable and autonomous on production with active monitoring.
 
 ---
 
 ## 🛑 LIFECYCLE COMPLETION PROTOCOL
 
-After all stages of Module 12 are completed:
+### STEP 0 — File Existence (BLOCKING)
+Client: `test -f docs/pm/WARRANTY_POLICY.md`. Solo/Internal: `test -f docs/pm/RUNBOOK_OPS.md`. Missing → **STOP**, report `CRITICAL ERROR: File WARRANTY_POLICY.md was not created. Module 12 INCOMPLETE - lifecycle cannot be closed.` END TURN.
 
-### **STEP 0: FILE EXISTENCE VERIFICATION (BLOCKING CHECK)**
+### STEP 1 — Content Validation
+Checklist: period/coverage/exclusions documented (no placeholders, SLA matrix present); no pending Sev 1/2 tickets; monitoring active. Then determine closure type:
 
-**MANDATORY BEFORE CLOSURE**:
+### STEP 2 — Closure Decision Matrix (MANDATORY)
 
-1. **Check output file existence** using one of the following methods:
-   - For Client Delivery: `Test-Path -LiteralPath "docs/pm/WARRANTY_POLICY.md"` → must return `True`
-   - For Solo / Internal Delivery: `Test-Path -LiteralPath "docs/pm/RUNBOOK_OPS.md"` → must return `True`
+| Closure Type | Condition | Action |
+| :--- | :--- | :--- |
+| **A. Client Project (Exit)** | Client maintains internally; assets handed over (M11); warranty expired | Lifecycle **100% COMPLETE**; offer optional retainer. END TURN. |
+| **B. In-House / Ongoing Service** | Self-owned product, or retainer signed with continued development | **TRANSITION TO M13** (baseline metrics, feedback loop, growth experiments, scaling) — ask approval first. |
+| **C. Retainer Maintenance-Only** | SLA for fixes & monitoring only; no features | Maintenance mode; lifecycle COMPLETE. END TURN. |
 
-2. **IF FILE DOES NOT EXIST**:
-   - ❌ **STOP IMMEDIATELY** - do not proceed to closure
-   - ❌ **DO NOT display congratulations** to user
-   - ✅ **REPORT ERROR** to user:
-     ```
-     CRITICAL ERROR: File WARRANTY_POLICY.md was not created.
-     Module 12 INCOMPLETE - lifecycle cannot be closed.
-     
-     Probable causes:
-     - Write permission denied on docs/pm/ folder
-     - Path typo in tool call
-     - Disk full
-     
-     Please investigate this issue before closure.
-     ```
-   - ✅ **END TURN** and wait for user to fix issue
+| Condition | → M13? | Reason |
+|---|---|---|
+| Client project, handover complete | ❌ | Client owns product |
+| Client project + retainer signed | ✅ | Ongoing ops needed |
+| In-house product (solo owner) | ✅ | Continuous growth |
+| SLA maintenance-only | ❌ | Reactive mode |
+| Warranty expired, no contract | ❌ | Project closed |
 
-3. **ONLY IF FILE EXISTS**: Proceed to closure below
+### STEP 3 — Gate Verification (MANDATORY)
 
----
+```
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M12]
+```
 
-### **STEP 1: LIFECYCLE CLOSURE**
-
-1. **Verify warranty policy**:
-   - [ ] Read and verify file `docs/pm/WARRANTY_POLICY.md` → Confirm warranty period, coverage, exclusions documented
-   - [ ] Confirm no pending Severity 1/2 tickets
-   - [ ] Confirm monitoring active and stable
-2. Display congratulations and project completion summary to user.
-3. **DECISION POINT**: Determine project closure type:
-
----
-
-### **STEP 2: PROJECT CLOSURE TYPE ASSESSMENT**
-
-**A. Client Project (Delivery & Exit)**
-- [ ] Client will maintain internally or hire in-house team
-- [ ] Source code and credentials already handed over (M11)
-- [ ] Warranty period expired
-
-**Action**: 
-> *"The [30/60/90 day] warranty period has expired. All deliverables have been handed over. This project is officially declared 100% COMPLETE. Thank you for your trust!*
-> 
-> *Optional: We offer a Monthly Retainer (Rp X/month) for ongoing support. Are you interested?"*
-
-**END TURN** - Lifecycle complete.
-
----
-
-**B. In-House Product / Ongoing Service**
-- [ ] Product is self-owned (not a client project)
-- [ ] Or: Client signed Monthly Retainer / SLA contract
-- [ ] Product will continue to be developed & operated
-
-**Action**: **TRANSITION TO MODULE 13** (Product Operations & Continuous Iteration)
-
-> *"The initial launch warranty period has concluded. The system is stable and monitoring is active.*
-> 
-> *For ongoing product operations, proceed to **Module 13: Product Operations & Continuous Iteration** for:*
-> - *30-day post-launch baseline metrics*
-> - *Continuous feedback loop & prioritization*
-> - *Growth experiments & A/B testing*
-> - *Scaling signal monitoring*
->
-> *Are you ready to start Module 13?"*
-
-**END TURN** - Wait for user approval before loading Module 13.
-
----
-
-**C. Retainer / SLA Maintenance Only (No Active Development)**
-- [ ] Client signed SLA contract for bug fixes & monitoring only
-- [ ] No new features or growth experiments planned
-- [ ] Maintenance mode (incident response only)
-
-**Action**:
-> *"SLA contract active. System in maintenance mode. Incident monitoring running.*
-> 
-> *If new features or growth optimization are needed in the future, we can activate Module 13 (Product Operations). For now, the development lifecycle is COMPLETE."*
-
-**END TURN** - Lifecycle complete (maintenance-only mode).
-
----
-
-### **Decision Matrix: When to Proceed to Module 13?**
-
-| Condition | Proceed to M13? | Reason |
-|-----------|----------------|---------|
-| Client project + handover complete | ❌ NO | Client owns product, exit relationship |
-| Client project + monthly retainer signed | ✅ YES | Ongoing ops & iteration needed |
-| In-house product (solo dev owner) | ✅ YES | Continuous improvement & growth |
-| SLA maintenance-only (no features) | ❌ NO | Reactive mode, no proactive ops |
-| Warranty expired + no ongoing contract | ❌ NO | Project closed |
-
----
-
-**Module 12 Gate Exit Criteria**:
-- [ ] Warranty policy documented
-- [ ] No Severity 1/2 pending tickets
-- [ ] Closure type determined (A/B/C)
-- [ ] If Type B: User approval to proceed to M13
-- [ ] If Type A/C: Final closure acknowledgment
+Execute `./scripts/gates/validate-gate.sh M12` (or `.ps1`). Exit 1 = incomplete; fix and re-run before declaring closure. Gate exit checklist: policy documented · no Sev 1/2 pending · closure type A/B/C determined · Type B needs user approval for M13 · Type A/C need final closure acknowledgment.

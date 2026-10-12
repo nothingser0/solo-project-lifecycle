@@ -1,6 +1,6 @@
-# Quick Start MVP Guide (2-4 Weeks)
+# Quick Start MVP Guide (<4 Weeks)
 
-> **Target**: Solo developers building simple MVPs (1-3 features, < Rp 20 million (~$1,250), < 4 weeks)  
+> **Target**: Solo developers building simple MVPs (3-7 P0 features max, < Rp 20 million (~$1,250), < 4 weeks)  
 > **Philosophy**: Ship working software fast, skip documentation overhead
 
 ---
@@ -58,7 +58,15 @@ rm -rf docs/harness-root/
 
 ---
 
-## The 5-Step MVP Path (Skip 9 Modules)
+## The Small-Path MVP Flow (Skip the Heavy Modules)
+
+This guide follows the canonical **Small path** (same as `SKILL.md` and `SCALE_WORKFLOWS.md`):
+
+```
+Intake → M04-LITE → M05 → [STOP] → M06 (+security) → M09-LITE → [STOP] → M10 → M12-LITE
+```
+
+Duration: **<4 weeks**. Both [STOP]s are the only pauses on this path.
 
 ```
 Week 1: Idea → Specs (2 days)
@@ -76,18 +84,20 @@ Week 4: Deploy (2 days)
 - ❌ M06 section 6A (Analytics Setup) → Add post-launch
 - ❌ M07 (QA/SIT) → Manual testing only
 - ❌ M08 (Data Migration) → No legacy data
-- ❌ M09 (UAT) → You are the user
+- ❌ M09 full (UAT) → light M09-LITE: 1 recorded tester (self-tester for solo)
 - ❌ M11 (BAST & Handover) → No external client handover
 - ❌ M13 (Operations & Growth) → Defer to post-launch
 
-### Do These Only
-- ✅ M04 (UI/UX) → 1 day design
-- ✅ M05 (Architecture) → 1 day specs
-- ✅ M06 (Development) → 10 days coding
+### Do These Only (Small-path modules)
+- ✅ Intake (5 questions → `docs/pm/PROJECT_STATE.md`)
+- ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/04-uiux-LITE.md`)
+- ✅ M05 (Architecture) → 1 day specs (Section 5 of `PROJECT_LITE.md`)
+- ✅ M06 (Development + security checklist) → 10 days coding
+- ✅ M09-LITE (1 recorded tester in `docs/qa/UAT_SIGNOFF_SMALL.md`; self-tester for solo)
 - ✅ M10 (Deployment) → 1 day launch
-- ✅ M12 (Warranty) → Self-maintain
+- ✅ M12-LITE (Ops) → Self-maintain via `templates/08-maintenance-ops/RUNBOOK_OPS.md`
 
-> 💡 **For Solo SaaS with Multiple Features (4-10 features)**:
+> 💡 **For Solo SaaS with Multiple Features (8-15 P0)**:
 > Do NOT skip market validation completely. Use the **Solo SaaS Path** defined in `SKILL.md`:
 > `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13`
 > (Validates demand with 5 user interviews and waitlist test via `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
@@ -446,4 +456,4 @@ A: You're building too many features. Cut scope to 3 max. If still >4 weeks, you
 Viable = works end-to-end, users can complete 1 core workflow.  
 Polish, features, scale = post-launch.
 
-**Ship in 2-4 weeks or don't ship at all.**
+**Ship in under 4 weeks or don't ship at all.**

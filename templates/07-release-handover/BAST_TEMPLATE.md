@@ -56,3 +56,7 @@ Thus this Project Handover & Acceptance Certificate (BAST) is executed in 2 (two
 | _____________________________ | _____________________________ |
 | **[Client PIC Name]** | **[Your Name]** |
 | [Client Official Title] | Independent Lead Software Engineer |
+
+Signature / Tanda Tangan
+
+Date / Tanggal: [Day] [Month] [Year]

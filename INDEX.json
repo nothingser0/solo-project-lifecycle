@@ -31,6 +31,10 @@
       ]
     },
     {
+      "path": "docs/modules/04-uiux-LITE.md",
+      "cataloged": false
+    },
+    {
       "path": "docs/modules/04-uiux-prototyping.md",
       "cataloged": true,
       "modules": [
@@ -107,6 +111,98 @@
     {
       "path": "docs/modules/README.md",
       "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/00-product-discovery-strategy.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/01-idea-feasibility.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/02-discovery-scope.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/03-legal-sow-charter.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/04-uiux-prototyping.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/05-architecture-specs.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/06-development-execution.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/07-quality-assurance-sit.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/08-data-migration-seeding.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/09-uat-client-signoff.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/10-deployment-production.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/11-handover-bast.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/12-warranty-sla-retainer.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/modules/deep-dives/13-product-operations-iteration.md",
+      "cataloged": true
+    },
+    {
+      "path": "evals/README.md",
+      "cataloged": true
+    },
+    {
+      "path": "evals/scenarios/01-gate-stopping.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/02-no-hallucinated-research.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/03-solo-saas-path.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/04-secret-sanitization.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/05-small-project-autopilot.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/06-no-code-before-sow.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/07-cross-document-consistency.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/08-yagni-anti-over-specification.md",
+      "cataloged": false
     },
     {
       "path": "patterns/README.md",
@@ -570,10 +666,6 @@
       "modules": [
         "M00"
       ]
-    },
-    {
-      "path": "templates/01-discovery-commercial/PROJECT_STATE_TEMPLATE.md",
-      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md",

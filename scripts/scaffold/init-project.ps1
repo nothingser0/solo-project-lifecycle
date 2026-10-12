@@ -50,27 +50,24 @@ switch ($Scale) {
         Write-Host "Configuring for Small / Open-Source Fast-Track MVP..."
         New-Item -ItemType Directory -Force -Path (Join-Path $TargetDir "assets/logo") | Out-Null
         New-Item -ItemType Directory -Force -Path (Join-Path $TargetDir "docs/qa") | Out-Null
+        # A1: Small scaffold = Intake + state + lite spec + root harness stubs ONLY.
         Copy-Item (Join-Path $templates "03-architecture-specs/PROJECT_LITE_TEMPLATE.md") (Join-Path $TargetDir "PROJECT_LITE.md") -Force
-        Copy-Item (Join-Path $templates "02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/LOGO_DESIGN_BRIEF.md") -Force
-        Copy-Item (Join-Path $templates "02-design/SITEMAP_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/SITEMAP.md") -Force
-        Copy-Item (Join-Path $templates "02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/COMPONENT_REQUIREMENTS.md") -Force
-        Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
-        Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
-        Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
-        if (Test-Path (Join-Path $templates "06-qa-uat/SECURITY_CHECKLIST_SMALL.md")) {
-            Copy-Item (Join-Path $templates "06-qa-uat/SECURITY_CHECKLIST_SMALL.md") (Join-Path $TargetDir "docs/qa/SECURITY_CHECKLIST_SMALL.md") -Force
-        }
-        if (Test-Path (Join-Path $templates "06-qa-uat/UAT_SIGNOFF_SMALL.md")) {
-            Copy-Item (Join-Path $templates "06-qa-uat/UAT_SIGNOFF_SMALL.md") (Join-Path $TargetDir "docs/qa/UAT_SIGNOFF_SMALL.md") -Force
-        }
-        if (Test-Path (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md")) {
-            Copy-Item (Join-Path $templates "08-maintenance-ops/RUNBOOK_OPS.md") (Join-Path $TargetDir "docs/pm/RUNBOOK_OPS.md") -Force
-        }
+        Copy-Item (Join-Path $templates "essentials/INTAKE_GATE.md") (Join-Path $TargetDir "docs/pm/INTAKE_GATE.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "AGENTS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "TODO.md") -Force
         if ($Delivery -eq "client") {
             $contractsDir = Join-Path $TargetDir "contracts"
             if (-not (Test-Path $contractsDir)) { New-Item -ItemType Directory -Force -Path $contractsDir | Out-Null }
             Copy-Item (Join-Path $templates "02-legal-commercial/SOW_SMB.md") (Join-Path $TargetDir "contracts/SOW_SMB.md") -Force
         }
+        Write-Host ""
+        Write-Host "Deferred to M04 entry (run when you reach Module 04):"
+        Write-Host "  copy 02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md -> docs/specs/LOGO_DESIGN_BRIEF.md"
+        Write-Host "  copy 02-design/SITEMAP_TEMPLATE.md -> docs/specs/SITEMAP.md"
+        Write-Host "  copy 02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md -> docs/specs/COMPONENT_REQUIREMENTS.md"
+        Write-Host "  copy 02-design/DESIGN_SPEC_TEMPLATE.md -> docs/specs/DESIGN_SPEC.md"
+        Write-Host "  copy 02-design/DESIGN_MD_TEMPLATE.md -> DESIGN.md"
+        Write-Host "Deferred to M06/M09/M10 (create when reached): SECURITY_CHECKLIST_SMALL.md, UAT_SIGNOFF_SMALL.md, RUNBOOK_OPS.md"
     }
     { $_ -in "solo-saas", "independent" } {
         Write-Host "Configuring for Independent / Self-Initiated Product..."

@@ -20,6 +20,10 @@ jobs:
         with:
           node-version: 22
 
+      - name: Full framework integrity check (verify-all)
+        run: |
+          bash scripts/verify/verify-all.sh
+
       - name: Syntax check Bash scripts (bash -n)
         run: |
           for script in scripts/*/*.sh templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh templates/04-dev-execution/scripts/check-dependencies.sh; do
@@ -34,8 +38,42 @@ jobs:
       - name: Verify Gate Validation execution
         run: |
           mkdir -p /tmp/mock-project/docs/pm
-          echo "# M00-Lite Mock" > /tmp/mock-project/docs/pm/M00_LITE.md
-          echo "PASS" >> /tmp/mock-project/docs/pm/M00_LITE.md
+          cat << 'EOF' > /tmp/mock-project/docs/pm/M00_LITE.md
+# M00-Lite: Rapid Market Validation (Solo SaaS & Self-Initiated)
+
+## 1. Project Metadata & Problem Pitch
+- **Project Codename**: MockApp
+- **Target User**: Independent creators and micro-retail store owners
+- **Core Pain**: Time lost tracking receipts and calculating manual reconciliations
+- **Proposed Solution**: Automated receipt scanning app with offline sync capability
+- **Proposed Price Point**: Rp 150000 / month
+- **Validation Lead**: Test Lead
+- **Date**: 2026-10-11
+
+## 2. Riskiest Assumption Register (RAT)
+| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |
+|:---|:---|:---:|:---|:---|:---|:---:|
+| **ASM-01** | Users lose measurable revenue each month | HIGH | 3/5 confirm loss | Deep interviews | <2 respondents | [x] |
+
+## 3. Quick Competitor & Alternative Check
+| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Unique Differentiator We Offer |
+|:---|:---|:---|:---|:---|:---|
+| Competitor X | Direct SaaS | Rp 200k/mo | Established brand | Offline sync broken | 100% offline first sync |
+
+## 4. Qualitative User Discovery
+| Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
+|:---|:---|:---|:---|:---|:---:|
+| **INT-01** | Boutique Owner | Paper Receipts | Missing tax deductions | Rp 100k/mo | ✅ Real |
+| **INT-02** | Freelancer | Spreadsheet | Formula breakage | Rp 100k/mo | ✅ Real |
+| **INT-03** | Agency Founder | SaaS Tool X | Overpriced seat model | Rp 150k/mo | ✅ Real |
+
+## 5. Behavioral Intent Validation
+- Total Unique Visitors: 120
+- Waitlist-Conversion-Pct: 7.5%
+
+## 7. Kill Criteria & Gate Validation Outcome
+Gate-Decision: PASS
+EOF
           (cd /tmp/mock-project && "$GITHUB_WORKSPACE/scripts/gates/validate-gate.sh" M00)
 
       - name: Verify SKILL.md frontmatter
@@ -97,7 +135,43 @@ jobs:
         run: |
           $mockDir = Join-Path $env:TEMP "mock-project-pwsh"
           New-Item -ItemType Directory -Force -Path (Join-Path $mockDir "docs/pm") | Out-Null
-          Set-Content -Path (Join-Path $mockDir "docs/pm/M00_LITE.md") -Value "# M00 Lite Mock`nPASS"
+          $mockContent = @'
+# M00-Lite: Rapid Market Validation (Solo SaaS & Self-Initiated)
+
+## 1. Project Metadata & Problem Pitch
+- **Project Codename**: MockApp
+- **Target User**: Independent creators and micro-retail store owners
+- **Core Pain**: Time lost tracking receipts and calculating manual reconciliations
+- **Proposed Solution**: Automated receipt scanning app with offline sync capability
+- **Proposed Price Point**: Rp 150000 / month
+- **Validation Lead**: Test Lead
+- **Date**: 2026-10-11
+
+## 2. Riskiest Assumption Register (RAT)
+| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |
+|:---|:---|:---:|:---|:---|:---|:---:|
+| **ASM-01** | Users lose measurable revenue each month | HIGH | 3/5 confirm loss | Deep interviews | <2 respondents | [x] |
+
+## 3. Quick Competitor & Alternative Check
+| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Unique Differentiator We Offer |
+|:---|:---|:---|:---|:---|:---|
+| Competitor X | Direct SaaS | Rp 200k/mo | Established brand | Offline sync broken | 100% offline first sync |
+
+## 4. Qualitative User Discovery
+| Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
+|:---|:---|:---|:---|:---|:---:|
+| **INT-01** | Boutique Owner | Paper Receipts | Missing tax deductions | Rp 100k/mo | ✅ Real |
+| **INT-02** | Freelancer | Spreadsheet | Formula breakage | Rp 100k/mo | ✅ Real |
+| **INT-03** | Agency Founder | SaaS Tool X | Overpriced seat model | Rp 150k/mo | ✅ Real |
+
+## 5. Behavioral Intent Validation
+- Total Unique Visitors: 120
+- Waitlist-Conversion-Pct: 7.5%
+
+## 7. Kill Criteria & Gate Validation Outcome
+Gate-Decision: PASS
+'@
+          [System.IO.File]::WriteAllText((Join-Path $mockDir "docs/pm/M00_LITE.md"), $mockContent, [System.Text.Encoding]::UTF8)
           Push-Location $mockDir
           try {
             & "$env:GITHUB_WORKSPACE\scripts\gates\validate-gate.ps1" -Module M00

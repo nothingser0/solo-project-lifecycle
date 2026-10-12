@@ -50,9 +50,11 @@ if ($isRawTemplate) {
     )
 }
 
+$scanContent = $content -replace '`[^`]*`', ''  # inline-code spans are documentation, not placeholders
+
 foreach ($pattern in $placeholders) {
-    if ($content -match $pattern) {
-        $matches = [regex]::Matches($content, $pattern)
+    if ($scanContent -match $pattern) {
+        $matches = [regex]::Matches($scanContent, $pattern)
         foreach ($match in $matches) {
             $issues += "Placeholder not replaced: $($match.Value)"
         }
@@ -128,9 +130,14 @@ if ($filename -match "SOW_CONTRACT") {
 }
 
 if ($filename -match "BAST") {
-    # Check for handover checklist
-    if ($content -notmatch '\[[ x]\]') {
-        $warnings += "No checkboxes found (expected in BAST)"
+    # Check for signature block (parity with lint-template.sh BAST checks)
+    if ($content -notmatch 'Signature|Tanda Tangan') {
+        $issues += "No signature block found (required in BAST)"
+    }
+
+    # Check for date field (parity with lint-template.sh BAST checks)
+    if ($content -notmatch 'Date:|Tanggal:') {
+        $warnings += "No date field found (expected in BAST)"
     }
 }
 
