@@ -46,7 +46,7 @@ For each task:
 8. **Status** — `- [ ]` pending | `- [~]` in progress | `- [!]` blocked (with reason) | `- [x]` completed (exit 0 + evidence)
 
 ## Task ID prefixes
-
+The framework defines exactly **7 closed task categories** across all project scales (Small, Medium, Large, Enterprise). Sub-categories are strictly expressed via sprint section headers and task titles rather than inventing new prefixes.
 | Prefix | Source | Output |
 | :--- | :--- | :--- |
 | `M06-SETUP-xx` | Environment, DB config, design assets | `.env.local`, DB connection, brand assets |

@@ -89,31 +89,17 @@ gate_M06() {
         # '|| true' keeps the checklist running so ALL failures print in one pass
         # (without it, 'set -e' aborts here and hides every later check).
         check_task_approval || true
-        # B1: DB/BE/FE task categories required ONLY when the project declares a
-        # database/backend (Intake field); pure frontend/CLI/utility projects skip.
-        intake_nonfeat="$(get_field Intake-Non-Features docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
-        intake_p0="$(get_field Intake-P0-Features docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
-        m06_needs_backend=0
-        if echo "$intake_nonfeat" | grep -qiE "database|backend|api|auth|login"; then
-            m06_needs_backend=0 # explicitly excluded as a Non-Feature
-        elif echo "$intake_p0" | grep -qiE "database|backend|api|auth|login|dashboard|crud" \
-            || echo "$intake_nonfeat" | grep -qiE "^$"; then
-            m06_needs_backend=1
-        fi
-        if [ "$is_m06_small" -eq 1 ] && [ "$m06_needs_backend" -eq 0 ]; then
-            echo "  [INFO] No declared database/backend (Intake): DB/BE/FE task categories skipped."
-        else
-            has_core_categories=1
-            for cat in "DB" "BE" "FE"; do
-                if ! grep -qiE "M06-${cat}-[0-9]+" "$target_todo"; then
-                    echo "  ❌ TODO.md missing core category tasks for 'M06-${cat}-xx'!"
-                    has_core_categories=0
-                    GATE_FAILED=1
-                fi
-            done
-            if [ $has_core_categories -eq 1 ]; then
-                echo "  ✅ Full-stack atomic task categories verified in TODO.md (DB, BE, FE)"
+        # Universal: Core atomic task categories (SETUP, DB, BE, FE) required across ALL scales.
+        has_core_categories=1
+        for cat in "SETUP" "DB" "BE" "FE"; do
+            if ! grep -qiE "M06-${cat}-[0-9]+" "$target_todo"; then
+                echo "  ❌ TODO.md missing core category tasks for 'M06-${cat}-xx'!"
+                has_core_categories=0
+                GATE_FAILED=1
             fi
+        done
+        if [ $has_core_categories -eq 1 ]; then
+            echo "  ✅ Atomic task categories verified across all scales in TODO.md (SETUP, DB, BE, FE)"
         fi
         # Mandatory specs pre-read task must exist and be completed
         if grep -qiE "M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off" "$target_todo"; then
