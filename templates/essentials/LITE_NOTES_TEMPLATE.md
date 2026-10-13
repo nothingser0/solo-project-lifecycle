@@ -1,9 +1,15 @@
 # Design Reference Notes — Small Path (LITE)
 
 > M04-LITE rule: **exactly 1 benchmark** (not 3-5). ≥200B. Full template for Medium+: `templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md`
+>
+> ⛔ **Precondition (not sizeable down)**: the human places ≥1 reference in `docs/design/inspiration/`
+> (screenshot, brand board, or `links.md` of URLs). This file is the agent's analysis — never the
+> reference itself. Until a human file exists: STOP AND ASK, and produce no logo, SITEMAP,
+> components, or `DESIGN.md`.
 
 ## Selected Benchmark ("paling OK")
 
+- **Reference file**: [EXACT filename the human placed, e.g. `reference-1-dashboard.png` or `links.md` — must exist in `docs/design/inspiration/`]
 - **Benchmark**: [e.g., Linear, Vercel, Stripe, TailwindUI]
 - **Why this one**: [1-2 sentences: clarity, data density, fit for target user]
 - **Source**: [URL or app name]

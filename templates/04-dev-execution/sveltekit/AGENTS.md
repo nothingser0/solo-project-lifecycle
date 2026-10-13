@@ -56,6 +56,12 @@
 3. **Database & Auth Integration**:
    - Auth guard in `src/hooks.server.ts` for session parsing and protection.
    - Protect routes before loading database queries. Never leak server secrets to client bundles.
+4. **Hydration-Free Rendering (SSR-Safe Components)**:
+   - Every component renders on the server first, then hydrates — its markup must be identical on both sides.
+   - Read `localStorage`/`window`/`matchMedia` in `onMount`, never in the component body or a `$derived`. Use `browser` from `$app/environment`, not `typeof window`.
+   - Never render `Date.now()`, `new Date()`, `Math.random()`, or bare `toLocaleString()`/`toLocaleDateString()`; format with an explicit locale **and** `timeZone` (`Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta' })`) or pass the server value down as a prop.
+   - A `+page.server.ts` load gets the data once for both sides — prefer it over a client fetch that repaints.
+   - Full ladder: `references/technical/HYDRATION_FREE_RENDERING.md`.
 
 ---
 

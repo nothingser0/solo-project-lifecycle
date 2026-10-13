@@ -2,6 +2,11 @@
 
 > Extract visual patterns from reference screenshots saved in this folder.
 > **Purpose**: Guide AI/Prototype to generate components matching reference style, not generic templates.
+>
+> ⛔ **Precondition**: this file analyses references the **human** placed in `docs/design/inspiration/`
+> (screenshot, brand board, or `links.md`). It is **not** a substitute for them. If the folder holds
+> no human-supplied file, STOP AND ASK — do not fill this template from imagination.
+> Every filename cited below MUST exist in that folder (the gate verifies this).
 
 ---
 
@@ -26,6 +31,9 @@
 ### Screenshot 1: [filename.png]
 **Source**: [Website/App name, URL if public]
 **Focus**: [What to extract: dashboard layout, color palette, typography]
+
+> `[filename.png]` = the EXACT filename the human saved (e.g. `reference-1-dashboard.png`).
+> A citation with no matching file is a fabricated benchmark and fails `validate-gate.sh M04`.
 
 **Observations**:
 - **Colors**: Primary #[HEX], Secondary #[HEX], Neutrals [gray scale]
@@ -87,6 +95,7 @@
 ## Extracted Common Patterns
 
 > Consolidate patterns seen across ALL screenshots (not outliers)
+> If the human supplied only `links.md`, analyse the linked products and cite `links.md` as the source.
 
 ### Colors
 

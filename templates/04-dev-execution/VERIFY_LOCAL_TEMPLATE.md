@@ -64,7 +64,10 @@
 | **Primary Resource Form**| [ ] PASS | [ ] PASS | N/A | [ ] PASS | [ ] PASS |
 | **[Feature Screen]** | [ ] PASS | [ ] PASS | N/A | [ ] PASS | [ ] PASS |
 
-### 4C. Hydration Error Check (Next.js SSR)
+### 4C. Hydration-Free Rendering Check (SSR frameworks)
+
+> Policy: **if the UI can be correct without hydration, it must be built that way.** Detailed ladder:
+> `references/technical/HYDRATION_FREE_RENDERING.md`. This section records the *evidence*, not an intention.
 
 **Run dev server and check browser console:**
 
@@ -79,18 +82,34 @@ npm run dev
 - [ ] No "Hydration failed" warnings in console
 - [ ] No "Text content did not match" errors
 - [ ] No "Extra attributes from server" warnings
+- [ ] Zero `suppressHydrationWarning` attributes added to silence a mismatch (grep the diff)
 
-**Common Hydration Sources (If Found):**
-- ❌ `Date.now()` or timestamps in SSR components
-- ❌ `Math.random()` values
-- ❌ Browser APIs (`window`, `document`) without `useEffect`
-- ❌ Conditional rendering based on `useEffect` state
-- ❌ Third-party scripts (analytics, chat widgets) injecting DOM
+**Non-deterministic render sources (must not run during the initial render):**
+- ❌ `Date.now()`, `new Date()`, `performance.now()` in render
+- ❌ `Math.random()`, `crypto.randomUUID()` in render
+- ❌ `toLocaleString()` / `toLocaleDateString()` / `Intl.*Format` without an explicit `locale` **and** `timeZone`
+- ❌ `localStorage` / `sessionStorage` / `window` / `matchMedia` read in render or in a `$derived`/`useMemo`
+- ❌ `typeof window` branches that change markup
+- ❌ Third-party scripts (analytics, chat widgets) injecting DOM before hydration
 
-**Resolution:**
-- Move dynamic values to client components (`'use client'`)
-- Use `useEffect` for browser-only code
-- Suppress hydration warnings only if unavoidable (e.g., timestamp display)
+**Client-component exemption register** (required — an unlisted `'use client'` island is an unexplained one):
+
+| File (leaf component) | Browser-only need | Why no server-side alternative | Evidence |
+| :--- | :--- | :--- | :--- |
+| `[components/…-toggle.tsx]` | `[localStorage theme read]` | `[theme cookie not readable in this route]` | `[console clean, 375px + desktop]` |
+
+**Verification evidence (paste raw):**
+- [ ] Console capture across all routes: `[path or pasted output]`
+- [ ] JS-disabled pass on the primary flows (login, list, detail): `[what still renders/submits]`
+- [ ] Grep for render-time non-determinism: `grep -rnE "Date\.now\(|Math\.random\(|toLocale(String|DateString)" [src/app]` → `[result]`
+
+**Resolution order** (do not skip to the last one):
+1. Server-render the value and pass it down as a prop.
+2. Make the formatter deterministic (explicit `locale` + `timeZone`).
+3. Isolate interactivity to the smallest leaf component.
+4. Read the value after mount (`useEffect`) with an explicit default render.
+5. Opt the block out of SSR (`next/dynamic` `{ ssr: false }`, a client-only island).
+6. `suppressHydrationWarning` — one known-unknowable node only, never a subtree.
 
 ---
 

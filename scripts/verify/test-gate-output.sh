@@ -62,7 +62,10 @@ EOF
     printf '# TODO\n\n- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0\n- [ ] **M06-BE-01: API**\n- [ ] **M06-FE-01: Screens**\n' > "$d/TODO.md"
     printf 'ICEBERG MODEL\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'a')" > "$d/docs/pm/SCOPE_STATEMENT.md"
     printf 'DESIGN\nContrast 7.0:1\nz-index scale\nTypography\nSpacing\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/DESIGN.md"
-    printf 'Selected Benchmark: Linear\npalette #111111 #ffffff\n' > "$d/docs/design/inspiration/notes.md"
+    # Human-supplied reference (the gate only checks existence, so a text stub is
+    # enough to keep the fixture binary-free) + notes.md citing it by filename.
+    printf 'placeholder for reference-1-dashboard.png\n' > "$d/docs/design/inspiration/reference-1-dashboard.png"
+    printf 'Selected Benchmark: Won by reference-1-dashboard.png\npalette #111111 #ffffff\n' > "$d/docs/design/inspiration/notes.md"
     printf 'SCR-003 SCR-004\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'c')" > "$d/docs/specs/SITEMAP.md"
     printf '# DESIGN_SPEC\n\nPrototyping-Workflow: A\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
     printf '# LOGO_DESIGN_BRIEF\nSelected benchmark: Linear\n%s\n' "$(head -c 300 /dev/zero | tr '\0' 'e')" > "$d/docs/specs/LOGO_DESIGN_BRIEF.md"

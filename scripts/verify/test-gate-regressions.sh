@@ -221,6 +221,45 @@ FREEZE_SIGNED='# DESIGN_SPEC\n\n## Design Freeze\n\n- Approved by: Zen (founder)
 expect_human_input "M04 freeze left as a blank template" BLOCKED M04 "docs/specs/DESIGN_SPEC.md" "$FREEZE_BLANK"
 expect_human_input "M04 freeze signed by a human" ALLOWED M04 "docs/specs/DESIGN_SPEC.md" "$FREEZE_SIGNED"
 
+# A2. Design inspiration (M04) — HUMAN-ONLY input.
+# Regression: the gate accepted notes.md alone, so the "reference" requirement was
+# satisfiable with a document the agent wrote itself. The guard now requires >=1
+# file in inspiration/ that the agent could not have authored, and notes.md must
+# cite a filename that actually exists (a benchmark with no file is fabricated).
+# expect_inspiration <name> <BLOCKED|ALLOWED> <"filename:content" ...>
+# The content is what makes each case meaningful: case "human screenshot + notes.md
+# citing it" passes ONLY because notes.md names the file that exists, and the
+# negative cases pass only because notes.md does (or does not) name a real file.
+expect_inspiration() {
+    local name="$1" want="$2"; shift 2
+    local dir="$WORK/insp"
+    make_project "$dir" "$INTAKE_ANSWERED"
+    mkdir -p "$dir/docs/design/inspiration"
+    local spec
+    for spec in "$@"; do
+        printf '%s\n' "${spec#*:}" > "$dir/docs/design/inspiration/${spec%%:*}"
+    done
+    local out
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    local got="ALLOWED"
+    if echo "$out" | grep -qE "no HUMAN-supplied reference|Design references: no|cites no filename present"; then
+        got="BLOCKED"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M04 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M04 -> $got, expected $want)"
+        echo "$out" | grep -E '❌ Design' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_inspiration "M04 inspiration folder empty (agent must stop and ask)" BLOCKED
+expect_inspiration "M04 only notes.md — and it cites its own fabricated benchmark" BLOCKED "notes.md:Selected Benchmark: Linear"
+expect_inspiration "M04 notes.md cites a file that does not exist" BLOCKED "notes.md:Linear reference-9-missing.png"
+expect_inspiration "M04 human screenshot + notes.md citing it" ALLOWED "notes.md" "reference-1-dashboard.png"
+
 # B. Stack questionnaire (M05) — the marker alone must not pass.
 printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$WORK/pl_noq.md"
 printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\nStack-Locked-by: Zen\n\n- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n- Q8 Compliance Requirements: x\n' > "$WORK/pl_8q.md"

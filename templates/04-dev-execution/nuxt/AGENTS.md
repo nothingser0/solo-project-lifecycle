@@ -43,6 +43,7 @@
 5. **Server Routes**: privileged logic lives in `server/api/**` or `server/utils/**`. Never import server-only modules into client components; guard with `import.meta.server` checks for shared code.
 6. **State**: Pinia stores for cross-page state; `useState` for lightweight SSR-safe shared state. Never keep auth/session in a plain module-level variable.
 7. **No Layout Drift**: one `layouts/default.vue`; never duplicate head/meta blocks per page — use `useHead`/`useSeoMeta`.
+8. **Hydration-Free Rendering**: the same component runs on server and client — its markup must not depend on where it runs. Never read `localStorage`/`window`/`matchMedia` in the component body or a `computed` (use `onMounted`, or a server-readable cookie). Never render `Date.now()`, `new Date()`, `Math.random()`, or bare `toLocaleString()`/`toLocaleDateString()`; format with an explicit locale **and** `timeZone` (`Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta' })`) or pass the server value down as a prop. `useAsyncData`/`useFetch` need a stable `key` so both sides cache the same payload. Use `<ClientOnly>` for a genuinely client-only block — not to hide a mismatch. Full ladder: `references/technical/HYDRATION_FREE_RENDERING.md`.
 
 ---
 

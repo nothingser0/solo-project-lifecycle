@@ -13,6 +13,10 @@
 - **Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
 - **Prototyping Workflow**: [A (Markdown-only) / B (Visual Builder) / C (AI Prototype) / D (Design Tool)]
 - **Approval Date**: [YYYY-MM-DD]
+- **Low-Fidelity Wireframes**: [Link to Excalidraw / Whimsical / Paper Sketches in docs/design/wireframes/]
+- **High-Fidelity Prototype**: [Link to Figma / Penpot / Deployed HTML Dummy]
+- **Usability Testing Session**: [Link / Reference to docs/design/usability-testing.md]
+
 
 ---
 
@@ -161,6 +165,25 @@
 #### C. Dual Printer Protocol (Hardware Scope)
 - *Failure Mode*: Desktop web relies on `window.print()`, but mobile/tablet Android POS setups use Bluetooth or RawBT protocols.
 - *Defense Protocol*: Receipt dialog provides desktop `@media print` 58mm/80mm fallback AND raw ESC/POS text / Android RawBT intent format.
+
+---
+
+---
+
+## 5.3 Usability Testing (UT) Validation Log
+
+*(Document findings from testing wireframes/prototypes with representative users before freezing specs)*
+
+| Test ID | Target Flow / Screen | Tester Role / Persona | Task Given | Result | Identified Friction & UI Iteration |
+| :---: | :--- | :--- | :--- | :---: | :--- |
+| **UT-01** | SCR-01 to SCR-03 (Onboarding) | New SMB Owner | Complete signup and create first project | PASS | Minor confusion on team invite; added "Skip for now" link |
+| **UT-02** | SCR-05 (Transaction Checkout) | Cashier / Operator | Perform barcode scan and cash payment | PASS | Primary button was too small on 7-inch tablet; increased tap target to 48px |
+| **UT-03** | SCR-08 (Monthly Export) | Finance Manager | Export date-filtered report to CSV | PASS | Added explicit loading skeleton and progress toast during CSV build |
+
+### Usability Testing Sign-off Criteria
+- **Completion Rate**: >= 90% across primary P0 flows.
+- **Single Ease Question (SEQ)**: Average score >= 5.5 / 7.
+- **Blocking Defects**: 0 critical task blockers open before design freeze.
 
 ---
 

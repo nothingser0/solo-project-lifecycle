@@ -480,7 +480,16 @@ npx prisma generate
 
 ### Hydration Errors
 
-Use `'use client'` for components with interactivity (forms, buttons)
+React re-rendered something that differs from the server HTML. `'use client'` is **not** the fix — it only moves the mismatch to the client and hides the cause. Fix the non-deterministic source instead:
+
+1. **Find it**: DevTools Console on every route (`Hydration failed`, `Text content did not match`, `Extra attributes from server`), then trace the offending subtree.
+2. **Deterministic formatting**: never call bare `toLocaleString()`/`toLocaleDateString()`; pass an explicit locale **and** timezone — `new Intl.NumberFormat('id-ID', { … })`, `new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta' })` — or format on the server and pass the string down.
+3. **Render-time non-determinism**: `Date.now()`, `new Date()`, `Math.random()`, `crypto.randomUUID()` must not run during render. Move them server-side, into a prop, or into `useEffect`.
+4. **Browser-only reads**: `localStorage`/`window`/`matchMedia` belong in `useEffect` (with an explicit default first render), or behind `next/dynamic` with `{ ssr: false }` — or replaced by a server-readable cookie, which is the better fix for theme/session UI.
+5. **`'use client'` as last resort**: only on the smallest leaf that truly needs interaction, and record it in `VERIFY_LOCAL.md` §4C. A page-level directive to "make it work" is prohibited.
+6. `suppressHydrationWarning` only for a single known-unknowable node — never to silence an undiagnosed subtree.
+
+Full decision ladder and per-stack notes: `references/technical/HYDRATION_FREE_RENDERING.md`.
 
 ### Middleware Not Working
 

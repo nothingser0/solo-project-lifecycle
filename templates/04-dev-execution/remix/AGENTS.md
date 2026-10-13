@@ -107,6 +107,7 @@ export const meta = () => [{ title: 'Page' }];
 3. **File Naming**: kebab-case for routes (`user-profile.tsx`), PascalCase for components.
 4. **Route Conventions**: File-based routing (app/routes/), nested routes via dot notation.
 5. **Progressive Enhancement**: Forms work without JavaScript (use `<Form>` from Remix).
+6. **Hydration-Free Rendering**: the loader output and the first client render must produce identical markup. Never compute `Date.now()`/`new Date()`/`Math.random()` or read `localStorage`/`window` during render — do it in the loader, or in `useEffect` with an explicit default render. Every formatter passes an explicit `locale` **and** `timeZone` (`Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta' })`); bare `toLocaleString()` diverges between server and browser. Never use `suppressHydrationWarning` to hide a mismatch you did not diagnose. Full ladder: `references/technical/HYDRATION_FREE_RENDERING.md`.
 
 ## Remix Patterns
 

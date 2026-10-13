@@ -57,7 +57,7 @@
 
 **Alur 6 Langkah Inti**:
 1. **Intake Gate** (5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md`) → Klasifikasi skala otomatis.
-2. **M04-LITE** (Logo inisial SVG ≥50B boleh, 1 benchmark visual, token anti-slop di `DESIGN.md`).
+2. **M04-LITE** (**Step 0.5: manusia menaruh referensi di `docs/design/inspiration/` — tidak bisa di-skip**, lalu logo inisial SVG ≥50B boleh, 1 benchmark visual, token anti-slop di `DESIGN.md`).
 3. **M05** (Dokumen terpadu `PROJECT_LITE.md` mencakup skema, API, dan Riskiest Assumption Test).
    🛑 **STOP 1**: Tinjau desain & spek sebelum coding.
 4. **M06** (Sprint 0 deploy hello-world staging → build atomik → lint & `tsc --noEmit` → `SECURITY_CHECKLIST_SMALL.md`).
@@ -75,7 +75,7 @@
 
 **Intake Gate (hari 1)**: 5 pertanyaan wajib di `docs/pm/PROJECT_STATE.md` → klasifikasi skala.
 
-**M04-LITE (hari 1-2)**: logo placeholder (monogram SVG ≥50B), 1 benchmark, 5-state matrix pada 1-3 layar utama — runbook: `docs/modules/variants/04_UIUX_LITE.md`.
+**M04-LITE (hari 1-2)**: **Step 0.5 dulu — manusia menaruh ≥1 referensi di `docs/design/inspiration/` (screenshot, brand board, atau `links.md` berisi URL).** Folder kosong → agent berhenti dan bertanya; tanpa itu logo, SITEMAP, components, dan `DESIGN.md` tidak boleh dibuat. Sesudahnya: logo placeholder (monogram SVG ≥50B), 1 benchmark, 5-state matrix pada 1-3 layar utama — runbook: `docs/modules/variants/04_UIUX_LITE.md`.
 
 ---
 

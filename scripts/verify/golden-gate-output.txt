@@ -71,11 +71,13 @@
 === M04: UI/UX Prototyping Gate Checklist ===
   ✅ Intake Gate: all 9 mandatory fields answered
   ❌ assets/logo/logo.svg (TOO SMALL: 120B < 200B minimum required)
+  ✅ Design references: 1 human-supplied reference file(s) present
+  ✅ notes.md cites a reference filename that exists in docs/design/inspiration/
   ✅ docs/design/inspiration/notes.md (Benchmark selection verified)
   ✅ docs/specs/SITEMAP.md (1117B)
   ✅ docs/specs/COMPONENT_REQUIREMENTS.md (1126B)
   ✅ docs/specs/LOGO_DESIGN_BRIEF.md (348B)
-  ✅ docs/design/inspiration/notes.md (51B)
+  ✅ docs/design/inspiration/notes.md (77B)
   ✅ DESIGN.md (1256B)
   ✅ docs/specs/DESIGN_SPEC.md (1278B)
   ✅ DESIGN.md accessibility & contrast ratios verified
@@ -131,6 +133,8 @@
   ✅ AGENTS.md technical quality and engineering guidelines verified
   ❌ RUNBOOK_LOCAL.md (MISSING)
   ❌ VERIFY_LOCAL.md (MISSING)
+  ✅ Design references: 1 human-supplied reference file(s) present
+  ✅ notes.md cites a reference filename that exists in docs/design/inspiration/
   ✅ Anti-slop: zero type-suppression escape hatches in source
   ✅ Anti-slop: zero placeholder TODO stubs in source
   ✅ Anti-slop: zero obvious hardcoded secrets in source

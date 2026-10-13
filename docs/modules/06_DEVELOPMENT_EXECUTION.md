@@ -37,6 +37,7 @@ Git: `main` → `staging` → `feat/*`.
 - **Concurrency & comment hygiene**: read-modify-write on stock/balance/counter/status MUST be atomic (tx + row lock, unique constraint, or CAS); webhooks idempotent. No comments that restate code, no stubs, no commented-out code. Details: deep dive.
 - **Prototype**: per FSD `Module 04 Handoff Strategy` (Levels 1-4); **UI 100% identical to frozen prototype**; static screens first (Sprint 3), data-backed after DB+API.
 - **5 UI states** per screen (idle/loading/success/error/empty).
+- **Hydration-free UI (SSR stacks)**: if a view is correct without hydration, it must be built that way. No `Date.now()`/`new Date()`/`Math.random()`/`localStorage`/bare `toLocaleString()` during the initial render; every date/number formatter passes an explicit `locale` + `timeZone`; `'use client'` only on the smallest leaf that needs interaction, each one recorded in `VERIFY_LOCAL.md` §4C. Ladder: `references/technical/HYDRATION_FREE_RENDERING.md`; console proof required per `VERIFY_LOCAL.md` §4C.
 - **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in RUNBOOK_LOCAL.md; jobs → worker verified.
 
 **STEP 7 — Tests & Git.** Stack smoke/unit tests + `tsc --noEmit` + `pnpm audit`. AI pre-merge review → `AI_REVIEW_LOG.md`. **Human merges to `staging` and tags Alpha** — agent must not commit/merge/tag.
@@ -52,6 +53,7 @@ Source code (on `staging`) · **`RUNBOOK_LOCAL.md`** · **`VERIFY_LOCAL.md`** ·
 - [ ] Dependencies resolved; no unmet peers; no deprecated packages.
 - [ ] Per-stack verification (Next.js `pnpm build`+`tsc --noEmit`+`pnpm audit` · Laravel `php artisan test` · Django `pytest` · Go `go test ./...`) — exit 0, or documented spec-locked CVE risk.
 - [ ] Smoke test 100%.
+- [ ] **Hydration discipline**: no render-time `Date.now()`/`new Date()`/`Math.random()`/`localStorage`/bare `toLocale*` in source; every `'use client'` island is listed with its justification in `VERIFY_LOCAL.md` §4C.
 - [ ] Migrations reversible; indexes in place; `VERIFY_LOCAL.md` has pass proof.
 - [ ] Small: `docs/qa/SECURITY_CHECKLIST_SMALL.md` filled (≥300 bytes; absorbs M07 security).
 - [ ] **Small only** (no M07): `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` — 0 blocking tells (favicon, 404, meta, OG, console errors, placeholder text, dead buttons). Medium+ covers in M07 Step 7.

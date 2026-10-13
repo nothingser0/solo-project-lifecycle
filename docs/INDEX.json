@@ -229,6 +229,10 @@
       "cataloged": false
     },
     {
+      "path": "evals/scenarios/14_DESIGN_REFERENCE_HUMAN_INPUT.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/README.md",
       "cataloged": true
     },
@@ -509,6 +513,13 @@
       "cataloged": true,
       "modules": [
         "M04"
+      ]
+    },
+    {
+      "path": "references/technical/HYDRATION_FREE_RENDERING.md",
+      "cataloged": true,
+      "modules": [
+        "M06"
       ]
     },
     {

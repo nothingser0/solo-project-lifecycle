@@ -80,6 +80,7 @@ Week 4: Deploy (2 days)
 - ❌ M02 (Scope) → Keep it in your head or 1-page doc
 - ❌ M03 (Legal/SOW) → No client = no contract
 - ❌ Full DESIGN.md token system → Use Tailwind defaults (M04-LITE: 1 benchmark + tokens only)
+- ⛔ **Not skippable at any scale**: place ≥1 design reference in `docs/design/inspiration/` **before** M04-LITE produces anything visual (logo, SITEMAP, components, `DESIGN.md`). No human reference → the agent stops and asks; it never invents one.
 - ❌ Full architecture topology (M05 STEP 3-4) → Single server is fine
 - ❌ Analytics instrumentation → Add post-launch (M13)
 - ❌ M07 (QA/SIT) → Manual testing only
@@ -90,7 +91,7 @@ Week 4: Deploy (2 days)
 
 ### Do These Only (Small-path modules)
 - ✅ Intake (9 fields — 6 core + 3 escalation → `docs/pm/PROJECT_STATE.md`; mandatory at every scale)
-- ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/variants/04_UIUX_LITE.md`)
+- ✅ M04-LITE (UI/UX) → 1 day design (`docs/modules/variants/04_UIUX_LITE.md`) — starts only after the human's reference lands in `docs/design/inspiration/`
 - ✅ M05 (Architecture) → 1 day specs (Section 5 of `PROJECT_LITE.md`: stack lock + DDL + API list + security blueprint + Module 04 handoff), then the **human** writes the sign-off in Section 6 — the gate rejects placeholder answers and blank sign-off rows, and an AI agent may never sign
 - ✅ M06 (Development + security checklist) → 10 days coding
 - ✅ M09-LITE (1 recorded tester in `docs/qa/UAT_SIGNOFF_SMALL.md`; self-tester for solo)
@@ -211,7 +212,7 @@ CREATE TABLE todos (
 
 **Skip**:
 - ❌ Figma mockups (waste 2 days)
-- ❌ Logo design (use text logo)
+- ❌ Logo design tooling (a monogram SVG is fine — but the human's reference is still required first)
 - ❌ Custom illustrations (use Lucide icons)
 - ❌ Responsive mobile design (desktop-first, mobile acceptable)
 

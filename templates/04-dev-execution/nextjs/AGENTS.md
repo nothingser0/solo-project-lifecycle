@@ -33,6 +33,13 @@
    - Before creating database migrations, Server Actions, or UI pages, you **MUST** read `docs/specs/FSD.md`, `docs/specs/PRD.md`, `DESIGN.md`, and official tech documentation (e.g., Supabase Auth/RLS, Next.js Server Components).
 7. **Mandatory Design Assets & Inspiration Usage**:
    - Inspect `docs/design/inspiration/`, `docs/specs/LOGO_DESIGN_BRIEF.md`, and screen design prompts before building UI. Generic monochromatic AI slop without visual identity, logo, or styled UI patterns is strictly forbidden.
+   - **The references must be the human's.** If `docs/design/inspiration/` holds no human-supplied file (anything except `notes.md`/`README.md`/`NOTES_TEMPLATE.md`/dotfiles), **STOP and ask** — do not create the logo, the component inventory, `DESIGN.md`, or screen prompts to "make progress". `notes.md` is your analysis, never the reference. Do not invent a benchmark that cites no existing file.
+
+8. **Hydration-Free Rendering (Server-First)**:
+   - Server-render by default: `Date.now()`, `Math.random()`, `localStorage`/`sessionStorage`, and locale/time formatting (`toLocaleString`, `toLocaleDateString`) MUST NOT run during the initial render of a hydrated component.
+   - Format currency/date on the **server** with a fixed locale + timezone (`Intl.NumberFormat('id-ID', { timeZone: 'Asia/Jakarta' })`), or inside `useEffect` after mount — never inline in JSX.
+   - `'use client'` is allowed **only** on leaf components that genuinely need browser interaction, and each one records its justification in `VERIFY_LOCAL.md` §4C. A page-level directive for state alone is not a justification.
+   - Rendering a user-specific or time-sensitive value that the server cannot know → read it in `useEffect` (with an explicit loading/default render), or use `next/dynamic` with `{ ssr: false }`. `suppressHydrationWarning` is a last resort for one known-unknowable node, never a fix for a whole subtree.
 
 ---
 

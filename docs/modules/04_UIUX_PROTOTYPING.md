@@ -5,17 +5,24 @@
 
 This module translates `SCOPE_STATEMENT.md` (+ valid SOW, or M03 waived for Solo SaaS) into 6 authoritative design artifacts that serve as the UI source of truth: `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/design/inspiration/notes.md`, `docs/harness-root/DESIGN.md` (staged; deployed to root in M06), and `docs/specs/DESIGN_SPEC.md`.
 
+**Step 0.5 is the module's front door (all scales).** No logo, no component inventory, no `DESIGN.md` — nothing visual — may be produced until the **human** has placed at least one reference in `docs/design/inspiration/`. An agent-authored `notes.md` is analysis output, never the reference itself; a benchmark with no corresponding reference file is fabrication. If the folder holds no human-supplied file: **STOP AND ASK, END TURN** (`⛔ STOP 0.5` below).
+
 **Scale calibration** (from `docs/pm/PROJECT_STATE.md` / `PROJECT_LITE.md`): **Small (M04-LITE)** — run the standalone LITE runbook [`variants/04_UIUX_LITE.md`](variants/04_UIUX_LITE.md) instead of this one. **Medium/Large** — full artifacts ≥2000B, logo ≥200B, 5-state matrix on all screens. **Enterprise** (non-solo capacity) — redirect to Seri A Advisory (Fase A02).
 
 ## 1. Execution Cycle (Steps 0A–5)
 
 ```text
 INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
+ ▼ 0.5 Inspiration Intake — FIRST, BLOCKING, EVERY SCALE
+       The human places >=1 reference in docs/design/inspiration/ (screenshot, brand board, or links.md of URLs).
+       ⛔ STOP 0.5: if that folder holds no human-supplied file → END TURN and ask. Do NOT create
+          LOGO_DESIGN_BRIEF.md, assets/logo/, SITEMAP.md, COMPONENT_REQUIREMENTS.md, or DESIGN.md first.
+       Then: scaffold docs/design/inspiration/, analyze 2–5 references, select exactly 1 primary benchmark,
+       cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md
+       ⛔ FORBIDDEN: inventing a reference; notes.md is agent output, never the reference
  ▼ 0A. LOGO_DESIGN_BRIEF.md — name/philosophy/vibe/seed colors (≤2KB) → docs/specs/LOGO_DESIGN_BRIEF.md; save logo to assets/logo/ (logo.svg | logo.png)
  ▼ 0B. SITEMAP.md — hierarchy, 3–5 critical flows, breadcrumbs, States/RBAC (SITEMAP_TEMPLATE.md) → docs/specs/SITEMAP.md
  ▼ 0C. COMPONENT_REQUIREMENTS.md (TEMPLATE) — features→UI patterns, 3-tier inventory (Primitives/Standard Composites/Domain Composites), 5-state matrix, WCAG 2.2 AA (prevents AI slop)
- ▼ 0.5 Inspiration & Benchmark (MANDATORY GATE BEFORE DESIGN.md) — scaffold docs/design/inspiration/, analyze 2–5 references, select exactly 1 primary benchmark, cross-check palette vs LOGO_DESIGN_BRIEF.md → docs/design/inspiration/notes.md
-       ⛔ FORBIDDEN: generating DESIGN.md before notes.md exists with the selected benchmark
  ▼ 1. DESIGN.md — from benchmark + logo: tokens, computed WCAG ratios, z-index scale → docs/harness-root/DESIGN.md (staged)
  ▼ 2. Choose prototyping workflow (one-line each, details in deep dive): A Markdown-only (solo MVP) | B v0/Stitch/click-dummy (client visual demo) | C AI prototype v0/Bolt/Lovable (code output) | D Figma/Penpot Dev Mode (designer handoff) | E Figma MCP live sync (active designer)
  ▼ 3. DESIGN_SPEC.md (DESIGN_SPEC_TEMPLATE.md) — every in-scope screen (SCR-01..SCR-NN) with 5-state matrix: Default, Loading Skeleton, Empty, Error, Success
@@ -32,6 +39,8 @@ OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 
 **Step 0C validation rules**: nomenclature parity (100% names in mapping exist in inventory) · Anti-Disabled Pristine (submit never disabled pristine; click triggers validation + autofocus) · Non-dismissing error/offline toasts · `inputmode="numeric"` for currency, never `type="number"` · Modal dropdown (55) above dialog (50) · Error text ≥13px, ≥4.5:1.
 
+**Step 0.5 acceptance (gate-enforced, every scale)**: `docs/design/inspiration/` contains ≥1 file that is not `notes.md`/`README.md`/`NOTES_TEMPLATE.md`/dotfile, and `notes.md` cites a filename that actually exists in that folder. `validate-gate.sh M04` fails without both; M06 re-checks it for projects that started before this rule existed.
+
 ## 2. Outputs
 `docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png) and, for B/C/D, `docs/design/prompts/scr-xx/PROMPT.md` + `docs/design/screens/scr-xx/`.
 Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbidden). DESIGN.md + DESIGN_SPEC.md mandatory regardless of prototype choice.
@@ -39,8 +48,9 @@ Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbid
 ## 3. Gate Exit Criteria [GATE] — BLOCKING Checklist
 
 ### Design Pre-Conditions
+- [ ] **DESIGN PRE-CONDITION (Step 0.5, every scale): `docs/design/inspiration/` holds ≥1 HUMAN-supplied reference file (not `notes.md`/`README.md`/`NOTES_TEMPLATE.md`/dotfile). No logo, components, SITEMAP, or DESIGN.md may be produced before it exists — the agent STOPs and asks.**
 - [ ] **DESIGN PRE-CONDITION: `assets/logo/` contains `logo.svg` or `logo.png` (≥50B Small-LITE / ≥200B Medium+), referenced by DESIGN.md.**
-- [ ] **DESIGN PRE-CONDITION: `docs/design/inspiration/notes.md` exists with selected benchmark (≥200B), logo hex extraction, palette decisions.**
+- [ ] **DESIGN PRE-CONDITION: `docs/design/inspiration/notes.md` exists with selected benchmark (≥200B), logo hex extraction, palette decisions, and cites a reference filename that exists in that folder.**
 
 ### Mandatory Files
 - [ ] `docs/specs/COMPONENT_REQUIREMENTS.md` exists (≥1000B; 3-tier inventory + interaction states).

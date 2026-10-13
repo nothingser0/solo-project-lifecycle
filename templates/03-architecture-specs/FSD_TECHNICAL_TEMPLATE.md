@@ -53,6 +53,83 @@
                           └── Encrypted Assets & Presigned URLs
 ```
 
+### 2.1 Data Flow Diagram (DFD / Data Architecture)
+
+```mermaid
+flowchart TD
+    User([Client / User Browser]) -->|HTTPS Request + Auth Bearer| API[API Gateway / Route Handlers]
+    API -->|1. Validate Schema & Idempotency| Val{Validation & Idempotency Check}
+    Val -->|Invalid / Duplicate| RespErr[Error / Cached Response]
+    Val -->|Valid| Service[Service Layer / Business Logic]
+    Service -->|2. Scoped Query with Tenant ID| DB[(PostgreSQL Database)]
+    DB -->|RLS & ACID Transaction| DB
+    DB -->|Query Result / Row Lock| Service
+    Service -->|3. Async Events / Cache Flush| Cache[(Redis Cache & Queue)]
+    Service -->|4. Response Data| API
+    API -->|JSON Payload| User
+```
+
+### 2.2 Entity Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    ORGANIZATIONS ||--o{ USERS : "has many"
+    ORGANIZATIONS ||--o{ AUDIT_LOGS : "records"
+    USERS ||--o{ AUDIT_LOGS : "performs"
+    
+    ORGANIZATIONS {
+        uuid id PK
+        string name
+        string slug UK
+        timestamp created_at
+    }
+    USERS {
+        uuid id PK
+        uuid org_id FK
+        string email UK
+        string role
+        timestamp created_at
+    }
+    AUDIT_LOGS {
+        uuid id PK
+        uuid org_id FK
+        uuid actor_id FK
+        string action
+        jsonb metadata
+        timestamp created_at
+    }
+```
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Client / User
+    participant API as API Handler / Controller
+    participant DB as Database (Postgres)
+    
+    User->>API: POST /api/checkout (Payload + Idempotency-Key)
+    API->>DB: Check idempotency_keys table
+    alt Already Processed
+        DB-->>API: Return cached status & payload
+        API-->>User: 200 OK (Cached Result)
+    else New Request
+        DB-->>API: Lock key in progress (Status: PROCESSING)
+        API->>DB: BEGIN Transaction
+        API->>DB: SELECT stock FROM products WHERE id = $id FOR UPDATE
+        Note over DB: Row locked until COMMIT/ROLLBACK
+        alt Stock Insufficient
+            API->>DB: ROLLBACK & release lock
+            API-->>User: 400 Bad Request (INSUFFICIENT_STOCK)
+        else Stock Available
+            API->>DB: UPDATE products SET stock = stock - qty
+            API->>DB: INSERT INTO orders & audit_logs
+            API->>DB: UPDATE idempotency_keys SET status = 'COMPLETED'
+            API->>DB: COMMIT Transaction
+            API-->>User: 201 Created (Order Placed)
+        end
+    end
+```
+
 ### Stack Decision (LOCKED — human decision, gate-enforced)
 
 Stack Decision LOCKED: [chosen stack]

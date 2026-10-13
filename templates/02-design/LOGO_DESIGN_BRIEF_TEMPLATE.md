@@ -29,10 +29,15 @@
 
 ## 4. User Responsibility
 
+⛔ **Blocked until Step 0.5 is satisfied**: this brief is written *from* the human's references in
+`docs/design/inspiration/`. If that folder holds no human-supplied file, the agent stops and asks —
+it does not draft this document, and it does not invent a reference to unblock itself.
+
 User handles logo generation and asset extraction:
-1. Generate logo using the prompt template with your own visual references.
-2. Extract primary and optional accent brand colors (hex codes) for `DESIGN.md`.
-3. Save SVG and PNG exports to `/assets/logo/`:
+1. Place your visual references in `docs/design/inspiration/` (screenshots, brand board, or `links.md`).
+2. Generate logo using the prompt template with your own visual references.
+3. Extract primary and optional accent brand colors (hex codes) for `DESIGN.md`.
+4. Save SVG and PNG exports to `/assets/logo/`:
    - `logo.svg`
    - `icon-512.png`
    - `icon-192.png`

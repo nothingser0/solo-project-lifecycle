@@ -281,6 +281,70 @@ check_design_freeze() {
     [ "$bad" -eq 0 ]
 }
 
+# Universal human design-reference guard (M04; retrofit guard in M06).
+# The framework requires a HUMAN-SUPPLIED visual reference before any design
+# artifact is produced (logo, components, DESIGN.md, screen prompts) at EVERY
+# scale. The gate used to accept notes.md alone — an agent-written analysis
+# document — so the "reference" requirement was satisfiable without a single
+# real reference existing (the shipped parity fixture proves exactly that: it
+# passed with notes.md as the only file in inspiration/).
+# Rules:
+#   1. docs/design/inspiration/ must contain >=1 file the agent could not have
+#      authored itself: any file EXCEPT notes.md, README.md, NOTES_TEMPLATE.md
+#      and dotfiles (.gitkeep) counts as the human's reference — a screenshot,
+#      a brand board, or links.md holding the reference URLs.
+#   2. notes.md must cite a filename that actually exists in that folder, so a
+#      benchmark written from imagination (no corresponding file) cannot pass.
+# Returns 1 (and sets GATE_FAILED) when the human reference is missing.
+check_design_inspiration() {
+    local dir="docs/design/inspiration"
+    local refs="" ref_count=0
+
+    refs="$(find "$dir" -maxdepth 1 -type f 2>/dev/null \
+        ! -name 'notes.md' ! -name 'README.md' ! -name 'NOTES_TEMPLATE.md' ! -name '.*' \
+        | sort || true)"
+    if [ -n "$refs" ]; then
+        ref_count=$(printf '%s\n' "$refs" | wc -l | tr -d ' ')
+    fi
+
+    if [ "${ref_count:-0}" -lt 1 ]; then
+        echo "  ❌ Design references: no HUMAN-supplied reference in $dir/"
+        echo "     Required BEFORE logo/components/DESIGN.md at every scale: the human places >=1"
+        echo "     reference file there (screenshot, brand board, or a links.md of URLs)."
+        echo "     notes.md is agent output — it is never the reference itself. STOP AND ASK."
+        GATE_FAILED=1
+        return 1
+    fi
+    echo "  ✅ Design references: ${ref_count} human-supplied reference file(s) present"
+
+    local notes="$dir/notes.md"
+    if [ ! -f "$notes" ]; then
+        echo "  ❌ $notes (MISSING: copy templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md)"
+        GATE_FAILED=1
+        return 1
+    fi
+
+    # notes.md must cite at least one reference file that is ACTUALLY present.
+    local cited=0 f base
+    while IFS= read -r f; do
+        [ -n "$f" ] || continue
+        base="$(basename "$f")"
+        if grep -qiF -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
+        base="${base%.*}"
+        if [ -n "$base" ] && grep -qiF -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
+    done < <(find "$dir" -maxdepth 1 -type f 2>/dev/null \
+        ! -name 'notes.md' ! -name 'README.md' ! -name 'NOTES_TEMPLATE.md' ! -name '.*')
+    if [ "$cited" -eq 1 ]; then
+        echo "  ✅ notes.md cites a reference filename that exists in $dir/"
+    else
+        echo "  ❌ notes.md cites no filename present in $dir/ — a benchmark without a real"
+        echo "     reference file is fabricated. Cite the human's file (e.g. 'reference-1-dashboard.png')."
+        GATE_FAILED=1
+        return 1
+    fi
+    return 0
+}
+
 # M05 Tech Stack Discovery questionnaire guard.
 # The gate only checked for the literal marker 'Stack Decision LOCKED:', which an
 # agent can write itself after inventing a stack. The 8 questionnaire answers are

@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of all 40 engineering guides, checklists, playbooks, stack quickstarts, and pre-sales references in the `references/` directory.
+Comprehensive index of all 41 engineering guides, checklists, playbooks, stack quickstarts, and pre-sales references in the `references/` directory.
 
 ---
 
@@ -15,7 +15,7 @@ references/
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
-├── technical/          (10 files)  - Deep research, design systems, APM, compliance, animation, tooling comparison
+├── technical/          (11 files)  - Deep research, design systems, APM, compliance, animation, hydration policy, tooling comparison
 └── team/                (1 file)   - Team collaboration, agency handoff, multi-agent coordination
 ```
 
@@ -110,6 +110,7 @@ references/
 | [`DEEP_RESEARCH_METHODOLOGY.md`](./technical/DEEP_RESEARCH_METHODOLOGY.md) | Domain knowledge acquisition, competitive intelligence gathering, regulatory research | Module 00 |
 | [`DESIGN_SYSTEM_GUIDE.md`](./technical/DESIGN_SYSTEM_GUIDE.md) | Design system token hierarchies, component architecture, Storybook integration | Module 04 |
 | [`FIGMA_MCP_SETUP.md`](./technical/FIGMA_MCP_SETUP.md) | Figma MCP server installation, live design synchronization, token extraction workflows | Module 04 |
+| [`HYDRATION_FREE_RENDERING.md`](./technical/HYDRATION_FREE_RENDERING.md) | Server-first rendering: no-hydration decision ladder, deterministic date/number formatting, per-stack notes (Next/Nuxt/SvelteKit/Remix/Astro/MERN) | Module 06, 07 |
 | [`MOBILE_ARCHITECTURE_GUIDE.md`](./technical/MOBILE_ARCHITECTURE_GUIDE.md) | Mobile viewport responsiveness, touch ergonomics, PWA configuration, cross-platform layouts | Module 04 |
 | [`UI_COMPONENT_ANIMATION_LIBRARY.md`](./technical/UI_COMPONENT_ANIMATION_LIBRARY.md) | Production micro-interaction animation patterns, Framer Motion/CSS transitions | Module 04 |
 

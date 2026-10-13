@@ -1,6 +1,7 @@
 # COMPONENT_REQUIREMENTS.md — Small Path (LITE)
 
 > Target: ≥1000B. Lean inventory: primitives + composites only. No component library spec.
+> ⛔ Produce only AFTER Step 0.5: a human-supplied reference exists in `docs/design/inspiration/`.
 
 ## Primitives
 

@@ -32,6 +32,14 @@
        | { status: "error"; message: string }
        | { status: "success"; data: T };
      ```
+4. **Hydration-Free First (Server-First Rendering)**:
+   - If a view is correct without hydration, it MUST NOT be hydrated. `'use client'` is an exception recorded per leaf component in `VERIFY_LOCAL.md` §4C, never the default.
+   - No non-deterministic value may be produced during the initial render: `Date.now()`, `new Date()`, `Math.random()`, `crypto.randomUUID()`.
+   - `localStorage` / `sessionStorage` / `window` / `matchMedia` are read **after** mount (`useEffect`) or, preferably, never — server-readable cookies/session replace them.
+   - Every date/number formatter passes an explicit `locale` **and** `timeZone` (`new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta' })`); bare `toLocaleString()` is PROHIBITED because server and client ICU builds disagree.
+   - Prefer server round-trips over client state for sorting, filtering, and pagination (URL search params).
+   - `suppressHydrationWarning` is permitted only for a single known-unknowable node — never to silence an undiagnosed mismatch or an entire subtree.
+   - Full decision ladder: `references/technical/HYDRATION_FREE_RENDERING.md`.
 
 ---
 

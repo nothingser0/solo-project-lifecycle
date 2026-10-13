@@ -195,3 +195,8 @@ fi
 
 echo "✅ Project initialized successfully at: $TARGET_DIR"
 echo "Next step: Open docs/pm/PROJECT_STATE.md and begin Phase 1."
+echo ""
+echo "⛔ Before Module 04 (any scale): place >=1 design reference in"
+echo "   docs/design/inspiration/ (screenshot, brand board, or links.md of URLs)."
+echo "   notes.md there is the analysis, not the reference — M04 stops until a"
+echo "   human-supplied file exists (validate-gate.sh M04/M06 enforce it)."

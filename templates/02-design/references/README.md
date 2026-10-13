@@ -1,6 +1,8 @@
 # Design References System
 
 > **Purpose**: Store and analyze design reference materials to guide component generation with specific aesthetic, not generic AI templates.
+>
+> ⛔ **HUMAN INPUT REQUIRED — the folder must not be empty.** At least one reference below is placed by the **human**, not the agent. Until one exists, the flow stops: no logo, no component inventory, no `SITEMAP.md`, no `DESIGN.md`, no screen prompts. `notes.md` is the agent's *analysis* of the references — it is never the reference itself, and a benchmark that cites no existing file is a fabricated one.
 
 ---
 
@@ -9,10 +11,10 @@
 ```
 docs/design/
 ├── inspiration/                    ← USER FILLS THIS
-│   ├── screenshot-1-dashboard.png
-│   ├── screenshot-2-forms.png
-│   ├── screenshot-3-buttons.png
-│   └── notes.md                    ← ANALYSIS (use NOTES_TEMPLATE.md)
+│   ├── screenshot-1-dashboard.png  ← human reference (required, ≥1)
+│   ├── screenshot-2-forms.png      ← human reference (optional)
+│   ├── links.md                    ← alternative to files: reference URLs
+│   └── notes.md                    ← AGENT OUTPUT (use NOTES_TEMPLATE.md)
 │
 ├── prompts/                   ← Prompts for Interactive Prototype
 │   └── README.md
@@ -36,6 +38,16 @@ docs/design/inspiration/
 ├── vercel-buttons.png          # Example: Vercel.com button styles
 └── notes.md                    # Analysis (copy from NOTES_TEMPLATE.md)
 ```
+
+**Can't capture screenshots right now?** A `links.md` file listing the reference URLs counts as the required human reference:
+
+```markdown
+# Reference links (human-provided)
+- https://linear.app — dashboard density, flat surfaces, 1px borders
+- https://stripe.com — form + checkout styling
+```
+
+Every URL must be one the **human** chose. The agent must not invent references, and must not proceed while the folder holds none.
 
 **What to capture:**
 - Dashboard layouts (spacing, card design)

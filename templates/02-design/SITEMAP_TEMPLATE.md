@@ -15,6 +15,24 @@
 Total pages: [X screens/routes]  
 Estimated implementation: [X days/weeks]  
 Navigation depth: [X levels]
+- **Low-Fi Wireframe Workspace**: [Excalidraw / Whimsical / Figma link]
+- **Information Architecture (IA) Hierarchy Diagram**:
+
+```mermaid
+graph TD
+    Root[Root Application Shell] --> Public[Public Routes]
+    Root --> Auth[Auth Shell]
+    Root --> App[Protected App / Dashboard]
+    
+    Public --> Home["/ (Landing Page - SCR-01)"]
+    Public --> Pricing["/pricing (SCR-03)"]
+    
+    Auth --> Login["/login (SCR-06)"]
+    
+    App --> Dashboard["/dashboard (SCR-07)"]
+    App --> ResourceList["/[resource] (List - SCR-08)"]
+    App --> ResourceDetail["/[resource]/:id (Detail - SCR-09)"]
+```
 
 ## 1.1 Page Content Anatomy & Minimum Section Standards
 

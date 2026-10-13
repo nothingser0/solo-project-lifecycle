@@ -1,6 +1,7 @@
 # SITEMAP.md — Small Path (LITE)
 
 > Target: ≥1000B. One page. Screens for a 3–7 feature MVP only.
+> ⛔ Produce only AFTER Step 0.5: a human-supplied reference exists in `docs/design/inspiration/`.
 
 ## Screen inventory
 

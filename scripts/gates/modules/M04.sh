@@ -31,16 +31,17 @@ gate_M04() {
         GATE_FAILED=1
     fi
 
-    # 2. Strict Prerequisite: Design inspiration notes MUST cite selected benchmark and logo alignment
-    if [ -f "docs/design/inspiration/notes.md" ]; then
-        if grep -qiE "Selected.*Benchmark|Winning Reference|Primary Benchmark|Paling OK" "docs/design/inspiration/notes.md"; then
-            echo "  ✅ docs/design/inspiration/notes.md (Benchmark selection verified)"
-        else
-            echo "  ❌ docs/design/inspiration/notes.md (Prerequisite missing: winning benchmark selection not documented!)"
-            GATE_FAILED=1
-        fi
+    # 2. Strict Prerequisite: a HUMAN-supplied design reference must exist, and
+    # notes.md must select a benchmark from it. '|| true' so a missing reference
+    # does not hide the remaining checks (the checklist must print in one pass).
+    # The reference requirement is scale-independent: it cannot be waived by
+    # choosing the LITE path, and the agent may never author the reference itself.
+    check_design_inspiration || true
+    if [ -f "docs/design/inspiration/notes.md" ] \
+        && grep -qiE "Selected.*Benchmark|Winning Reference|Primary Benchmark|Paling OK" "docs/design/inspiration/notes.md"; then
+        echo "  ✅ docs/design/inspiration/notes.md (Benchmark selection verified)"
     else
-        echo "  ❌ docs/design/inspiration/notes.md (MISSING)"
+        echo "  ❌ docs/design/inspiration/notes.md (Prerequisite missing: winning benchmark selection not documented!)"
         GATE_FAILED=1
     fi
     min_sitemap=2000

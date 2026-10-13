@@ -38,6 +38,7 @@
 
 1. **Type Safety**: TypeScript strict mode. Explicit prop interfaces for every component (`interface Props { … }`). No `any`, no `@ts-ignore`, no `as unknown as`.
 2. **Islands Over Hydration**: keep components static by default. Add a client directive *only* when interactivity is genuinely required, and pick the cheapest one (`client:visible` > `client:idle` > `client:load`).
+   - A hydrated island must be **deterministic**: no `Date.now()`, `new Date()`, `Math.random()`, `localStorage`, or bare `toLocaleString()` during its initial render — format with an explicit locale **and** `timeZone` (`Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta' })`), read storage in an effect, or pass the server value in as a prop. Never hydrate a component that only displays text. Full ladder: `references/technical/HYDRATION_FREE_RENDERING.md`.
 3. **Content Collections**: define schemas in `src/content/config.ts` with Zod. Query through `getCollection()` — never read content files with `fs` at runtime.
 4. **Server vs Client**: `src/pages` and endpoints run at build/SSR time. Never reference `window`/`document` outside a client directive or `is:inline` script.
 5. **Data Fetching**: fetch at build time (top-level await / `Astro.props`) for static routes. Use SSR adapters only when a route genuinely needs per-request data.

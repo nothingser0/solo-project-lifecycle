@@ -217,3 +217,8 @@ if ($Delivery) {
 
 Write-Host "[OK] Project initialized successfully at: $TargetDir" -ForegroundColor Green
 Write-Host "Next step: Open docs/pm/PROJECT_STATE.md and begin Phase 1."
+Write-Host ""
+Write-Host "Before Module 04 (any scale): place >=1 design reference in" -ForegroundColor Yellow
+Write-Host "  docs/design/inspiration/ (screenshot, brand board, or links.md of URLs)." -ForegroundColor Yellow
+Write-Host "  notes.md there is the analysis, not the reference - M04 stops until a" -ForegroundColor Yellow
+Write-Host "  human-supplied file exists (validate-gate.sh M04/M06 enforce it)." -ForegroundColor Yellow

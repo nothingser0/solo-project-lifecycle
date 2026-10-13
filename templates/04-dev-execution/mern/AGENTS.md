@@ -65,6 +65,7 @@
 3. **File Naming**: kebab-case for files, PascalCase for components
 4. **MongoDB**: Always use Mongoose (no raw MongoDB driver queries)
 5. **Error Handling**: Use express-async-handler or try/catch in routes
+6. **Hydration-Free Rendering (SSR-Safe React)**: when the app renders on the server, the first client render must match it exactly. Never compute `Date.now()`/`new Date()`/`Math.random()` or read `localStorage`/`window` during render — do it in `useEffect` with an explicit default render, or serve the value from the API. Every formatter passes an explicit `locale` **and** `timeZone` (`Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta' })`); bare `toLocaleString()` diverges between server and browser. Never import a browser-only module into the server bundle. Full ladder: `references/technical/HYDRATION_FREE_RENDERING.md`.
 
 ## Database (MongoDB + Mongoose)
 - **Schema**: Define with Mongoose schemas (validation, indexes, methods)

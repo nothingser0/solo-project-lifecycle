@@ -62,9 +62,9 @@
 ### M04 — UI/UX & Prototype
 | Agent | Human decides | Human only |
 |---|---|---|
-| Sitemap, component requirements, `DESIGN.md` tokens + WCAG, screen spec, AI prompts | Prototyping workflow A–E (`04:20`), design approval (`04:70`) | **Design Freeze sign-off** (`04:58`), real brand assets |
+| Sitemap, component requirements, `DESIGN.md` tokens + WCAG, screen spec, AI prompts | Prototyping workflow A–E (`04:27`), design approval | **Design Freeze sign-off** (`04:68`), real brand assets, and **Step 0.5: the reference material itself** (`04:16`) |
 
-> ✅ **Gate-enforced**: `validate-gate.sh M04` fails if the freeze has no named approver, no real date, or residual `_____` blank fields.
+> ✅ **Gate-enforced** (two independent blockers): (1) Step 0.5 — `docs/design/inspiration/` must hold ≥1 file the agent could not have authored (`notes.md`, `README.md`, `NOTES_TEMPLATE.md`, dotfiles excluded), and `notes.md` must cite a reference filename that exists there; the agent may not supply the reference itself. Nothing visual (logo, components, SITEMAP, `DESIGN.md`, screen prompts) may be produced before it — folder empty means STOP AND ASK, END TURN. `validate-gate.sh M06` re-checks the same rule for projects that began before it existed. (2) The freeze must carry a named approver and a real date, with no residual `_____` blank fields.
 
 ### M05 — Architecture & Specs 〔STACK LOCK〕
 | Agent | Human decides |

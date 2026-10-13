@@ -4,8 +4,6 @@
 > **Standard**: Zero naive sync assumptions, zero DOM-only security leaks, and mathematically verified domain logic across all project types (CRM, CMS, HRIS, E-commerce, Fintech, SaaS, Developer Tools).
 > **Output**: `docs/specs/PRD.md`
 
----
-
 ## 1. Document Metadata
 - **Product / System Name**: [System / Application Name]
 - **Client / Organization**: [Client Company / Organization]
@@ -43,6 +41,44 @@
 | **F-03** | `REQ-03` | [Domain 3, e.g. Workflow] | [State machine transitions, validation logic] | `SCR-004` |
 | **F-04** | `REQ-04` | [Domain 4, e.g. Integration] | [Async processing, webhook / third-party sync] | `JOB-001` (N/A No UI) |
 | **F-..** | `REQ-..` | ... | [All remaining in-scope features from SCOPE_STATEMENT] | `SCR-..` / `API-..` |
+
+### 2.1 User Stories & Acceptance Criteria Breakdown
+
+| Story ID | As a [Role] | I want to [Action / Capability] | So that [Business Value / Outcome] | Acceptance Criteria (Quick Check) |
+| :---: | :--- | :--- | :--- | :--- |
+| **US-01** | Registered User | Log in using email and magic link / password | I can access my workspace securely | Token issued, session persisted, rate limited to 5 attempts/min |
+| **US-02** | Team Admin | Invite new members with specific roles (Admin/Member) | I can collaborate with team members | Email invite sent, expiration 48h, RBAC enforced on join |
+| **US-03** | Operations Lead | Export transaction reports to CSV/PDF | I can perform monthly reconciliation | Filter applied, background export triggered, CSV sanitization active |
+
+### 2.2 Quarterly Product Roadmap & Release Phasing
+
+```mermaid
+gantt
+    title Product Phasing & Delivery Roadmap
+    dateFormat  YYYY-MM-DD
+    section Phase 1 (Alpha / P0 MVP)
+    Core Auth & Tenancy       :done, p1, 2026-10-01, 14d
+    Primary Domain Workflows  :active, p2, after p1, 21d
+    SIT & Smoke Gate          :crit, p3, after p2, 7d
+    section Phase 2 (Beta / P1 Enhancements)
+    Advanced Filters & Export :p4, after p3, 14d
+    Payment Gateway Integration:p5, after p4, 14d
+    Client UAT & Sign-off     :crit, p6, after p5, 7d
+    section Phase 3 (GA / V1.0)
+    Analytics & Operational KPI:p7, after p6, 14d
+    Go-Live & Production Handover:p8, after p7, 7d
+```
+
+### 2.3 Go-To-Market (GTM) Strategy & Product Analytics Baseline
+
+- **Release Strategy**: [Canary / Beta Staging / Phased Rollout to 10% users / Immediate Cutover]
+- **Target Launch Date**: [YYYY-MM-DD]
+- **North Star Metric**: [e.g., Weekly Active Transacting Teams (WATT)]
+- **Core Adoption KPIs**:
+  1. **Activation Rate**: [Target: >= 40% of signups complete onboard within 24h]
+  2. **Core Workflow Completion**: [Target: >= 75% created drafts successfully submitted]
+  3. **Crash-Free / Error Rate**: [Target: < 0.1% unhandled API 5xx errors]
+- **Analytics Tracking Tool**: [PostHog / Mixpanel / Plausible / Umami / Sentry Telemetry]
 
 ---
 

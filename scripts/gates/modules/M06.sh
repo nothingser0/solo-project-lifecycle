@@ -188,6 +188,14 @@ gate_M06() {
         [ -d "$d" ] && scan_dirs="$scan_dirs $d"
     done
     if [ -n "$scan_dirs" ]; then
+        # 0. Retrofit design-reference guard (BLOCKER for any project with UI):
+        # M04 requires HUMAN-supplied design references before design artifacts.
+        # A project that started coding before this rule existed would otherwise
+        # never be asked for them (M04 is already closed), so the requirement is
+        # re-checked here whenever UI source directories are present.
+        if [ -d "src" ] || [ -d "app" ] || [ -d "components" ] || [ -d "pages" ]; then
+            check_design_inspiration || true
+        fi
         # 1. Type-suppression escape hatches
         ts_ignore=$(grep -rInE "//\s*@ts-(ignore|nocheck|expect-error)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
         if [ "${ts_ignore:-0}" -gt 0 ]; then
@@ -219,7 +227,98 @@ gate_M06() {
         else
             echo "  ✅ Anti-slop: no narrating/stub comments detected in source"
         fi
-        # 5. Unlocked read-modify-write on shared state (ADVISORY — row 22 of POLISH_AUDIT; must be attested there)
+        # 5. Hydration discipline.
+        # Only a component that is ACTUALLY HYDRATED can mismatch, so the scan is
+        # hydration-model aware — the same pattern means opposite things per stack:
+        #   - Next.js App Router: a file declaring 'use client' hydrates; a file
+        #     without it is a Server Component (never hydrated → Date.now() there is
+        #     safe). Whether a directive-less file is imported under a client
+        #     boundary is unknowable by grep (no import graph), so it is ADVISORY.
+        #   - Astro: only an island with client:* hydrates; .astro pages do not.
+        #   - Nuxt / SvelteKit / Remix / MERN+SSR: every component hydrates.
+        # Within the hydrated set, a non-deterministic value with no defer hook
+        # (useEffect/onMount/$effect) means the call ran during render — that is the
+        # one case that can be stated as fact, so it is the only BLOCKER.
+        # NOTE: Intl.*Format is deliberately NOT flagged — an explicit locale +
+        # timeZone is the documented FIX; only bare toLocale* uses ambient locale.
+        is_next_app=0
+        for cfg in next.config.js next.config.mjs next.config.ts next.config.cjs; do
+            [ -f "$cfg" ] && is_next_app=1 && break
+        done
+        is_astro=0
+        for cfg in astro.config.mjs astro.config.ts astro.config.js; do
+            [ -f "$cfg" ] && is_astro=1 && break
+        done
+        ui_files=$(find $scan_dirs -type f \( -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" -o -name "*.svelte" -o -name "*.astro" \) 2>/dev/null \
+            ! -name "*.server.*" ! -path "*/server/*" ! -path "*/api/*" | head -400)
+        if [ -n "$ui_files" ]; then
+            nd_pat="Date\.now\(|new Date\(|Math\.random\(|localStorage|sessionStorage|toLocaleString\(|toLocaleDateString\(|toLocaleTimeString\("
+            hook_pat="useEffect|useLayoutEffect|onMount|onMounted|useMounted|\\\$effect|watchEffect|afterMount"
+            hydration_blockers=0
+            hydration_advisory=0
+            hydration_safe=0
+            while IFS= read -r uif; do
+                [ -f "$uif" ] || continue
+                grep -qE "$nd_pat" "$uif" 2>/dev/null || continue
+                # Does this particular file hydrate on the client?
+                hydrates=1
+                if [ "$is_next_app" -eq 1 ]; then
+                    grep -qE "['\"]use client['\"]" "$uif" 2>/dev/null || hydrates=0
+                elif [ "$is_astro" -eq 1 ]; then
+                    grep -qE "client:(load|idle|visible|media|only)" "$uif" 2>/dev/null || hydrates=0
+                fi
+                if [ "$hydrates" -eq 0 ]; then
+                    # Server Component / static Astro page: never hydrated, so a
+                    # render-time clock is correct static HTML, not a mismatch.
+                    hydration_safe=$((hydration_safe + 1))
+                    continue
+                fi
+                # A per-file exemption ('hydration-exempt: <reason>') is the human's
+                # explicit acceptance of ONE known-unknowable node; a stated reason is
+                # required, and it is still surfaced for review.
+                if grep -qE "hydration-exempt:?[[:space:]]*[A-Za-z]" "$uif" 2>/dev/null; then
+                    echo "  [INFO] Hydration exemption declared in $uif — reviewer must confirm it is a single node with a real reason."
+                elif grep -qE "$hook_pat" "$uif" 2>/dev/null; then
+                    hydration_advisory=$((hydration_advisory + 1))
+                else
+                    hydration_blockers=$((hydration_blockers + 1))
+                    echo "  ❌ Hydration: $uif is client-hydrated and renders a non-deterministic value"
+                    echo "     (Date.now/new Date/Math.random/localStorage/toLocale*) with no defer hook — server"
+                    echo "     and client HTML will differ. Format server-side with an explicit locale + timeZone,"
+                    echo "     pass the value in as a prop, or read it after mount."
+                    echo "     See references/technical/HYDRATION_FREE_RENDERING.md."
+                fi
+            done <<EOF
+$ui_files
+EOF
+            if [ "${hydration_blockers:-0}" -gt 0 ]; then
+                GATE_FAILED=1
+            else
+                echo "  ✅ Hydration: no render-time non-determinism in hydrated component(s)"
+            fi
+            if [ "${hydration_safe:-0}" -gt 0 ]; then
+                echo "  [INFO] Hydration: ${hydration_safe} server-only file(s) use a render-time value — correct (never hydrated)."
+            fi
+            if [ "${hydration_advisory:-0}" -gt 0 ]; then
+                echo "  ⚠️  Hydration advisory: ${hydration_advisory} hydrated component(s) use non-deterministic values AND a"
+                echo "     defer hook — confirm each call sits INSIDE the hook, not in render (VERIFY_LOCAL.md §4C)."
+            fi
+            # suppressHydrationWarning is a React attribute; Vue/Svelte/Astro have
+            # their own (or none), so only React source is checked here.
+            suppress_files=$(find $scan_dirs -type f \( -name "*.tsx" -o -name "*.jsx" \) 2>/dev/null \
+                | xargs grep -lE "suppressHydrationWarning" 2>/dev/null | head -50)
+            unexempt=0
+            for sf in $suppress_files; do
+                grep -qE "hydration-exempt" "$sf" 2>/dev/null || unexempt=$((unexempt + 1))
+            done
+            if [ "${unexempt:-0}" -gt 0 ]; then
+                echo "  ❌ Hydration: ${unexempt} file(s) use suppressHydrationWarning without a justification."
+                echo "     Fix the mismatch (deterministic format / post-mount read / client-only island). If one"
+                echo "     node is genuinely unknowable, add a 'hydration-exempt: <reason>' comment next to it."
+                GATE_FAILED=1
+            fi
+        fi
+        # 6. Unlocked read-modify-write on shared state (ADVISORY — row 22 of POLISH_AUDIT; must be attested there)
         rmw_files=$(find $scan_dirs -type f \( -name "*.sql" -o -name "*.ts" -o -name "*.js" -o -name "*.py" -o -name "*.php" -o -name "*.rb" -o -name "*.go" \) 2>/dev/null | head -400)
         if [ -n "$rmw_files" ]; then
             unlocked=$(awk '/UPDATE .*(stock|balance|qty|quantity|count|version)/ { if (!lock) print FILENAME":"FNR } { if (/FOR UPDATE|version =|BEGIN/) lock=1; if (/COMMIT|ROLLBACK/) lock=0 }' $rmw_files 2>/dev/null | wc -l | tr -d ' ')
