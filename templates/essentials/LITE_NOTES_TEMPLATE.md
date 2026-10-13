@@ -29,6 +29,16 @@
 - **Shadows**: [none / subtle 0 1px 2px ...]
 - **Layout**: max width [x]px, [sidebar/topbar] nav
 
+## Component Signature (Mirror from Reference — No AI Generic Defaults)
+
+*Capture the physical styling signature of the benchmark so implementation does not drift to generic AI slop:*
+
+- **Primary Button**: height [x]px, padding [x]px [y]px, font-weight [500/600], radius [x]px, border [none / 1px solid #hex], shadow [none / subtle]
+- **Secondary Button / Ghost**: background [#hex / transparent], border [1px solid #hex], text color [#hex]
+- **Cards / Containers**: padding [x]px, radius [x]px, border [1px solid #hex], background [#hex], shadow [none / 0 1px 2px]
+- **Input Fields**: height [x]px, padding-x [x]px, font-size 16px (iOS zoom safety), border [1px solid #hex], focus ring color [#hex]
+- **Table / List Row**: height [x]px, divider border [1px solid #hex], hover background [#hex]
+
 ## Logo alignment
 
 - **Logo core hex**: `#______` (from `docs/specs/LOGO_DESIGN_BRIEF.md` or `assets/logo/`)
@@ -36,4 +46,7 @@
 
 ## Anti-patterns (from benchmark comparison)
 
-- No gradients, no glassmorphism, shadows ≤4px, contrast ≥4.5:1 for all text.
+- **Zero Generic AI Slop**: No default Tailwind blue (`#3B82F6` / `blue-500`), no purple-to-blue gradient text, no fuzzy glassmorphism/backdrop-blur.
+- **No Floating Unstyled Modals**: Modals/drawers must have crisp border and dark backdrop overlay (`rgba(0,0,0,0.5)`).
+- **No Generic AI Copywriting**: Replace placeholder clichés ("Unlock powerful possibilities", "Next-gen experience") with real, concise action verbs and domain labels.
+- **Strict Ergonomics**: Shadows ≤4px, contrast ≥4.5:1 (normal text) and ≥7.0:1 (primary text), touch target minimum 44px × 44px.

@@ -1,6 +1,6 @@
 # Anti-Vibe-Code Polish Audit (`docs/qa/POLISH_AUDIT.md`)
 
-> **Purpose**: Catch the 22 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
+> **Purpose**: Catch the 25 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
 > **Why it exists**: Functional gates pass, but the product still *looks* vibe-coded. These are the highest-signal cheap checks.
 > **Rule**: every row is PASS/FAIL with **evidence** (screenshot path, command output, or URL). "Looks fine" is not evidence.
 
@@ -48,6 +48,9 @@
 |:--:|:--|:--|:--|:--:|
 | 21 | **AI-slop comments** | Every added comment earns its place: no `// Increment counter` narration, no `// TODO: implement later` stubs, no commented-out dead code. | | [ ] |
 | 22 | **Race condition on shared state** | For each mutation of stock/balance/counter/booking/status: is it inside a transaction with a row lock, unique constraint, or compare-and-swap? Is the webhook idempotent (dedupes on provider event ID)? Double-click submit — does it create two records? | | [ ] |
+| 23 | **Cliché eyebrow badge / AI pill** | No decorative capsule pills above H1 (`[ ✨ AI Powered ]`, `[ Next-Gen ]`, `[ Beta ]`) with thin glowing borders. Headline goes straight to clear domain capability. | | [ ] |
+| 24 | **Fabricated stats & testimonials** | Zero invented metrics ("10,000+ users", "99.9% uptime", "500M queries") and zero fake avatar testimonials. Real evidence only. | | [ ] |
+| 25 | **Purple-to-blue gradient text** | No generic `bg-gradient-to-r from-blue-600 to-purple-600` text clips. Typography styling uses solid contrast tokens from `DESIGN.md`. | | [ ] |
 
 ---
 
@@ -82,8 +85,8 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 
 ## D. Verdict
 
-- **Tells found**: [X] / 22
-- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder) **+ 22 (unprotected race condition — data corruption risk)**.
+- **Tells found**: [X] / 25
+- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder), **22 (unprotected race condition)**, and **23, 24, 25 (AI slop tells)**.
 - **Non-blocking but logged**: 21 (slop comments) and the remaining polish rows.
 - **Non-blocking polish (fix before M10 or log as post-launch)**: the remainder.
 
@@ -93,4 +96,4 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 
 ---
 
-> **Re-run requirement**: rows 1–22 MUST be re-verified on the **production domain** during M10 PVT. Staging-only verification is insufficient — CDN, minification, and env differences surface new tells (especially 5, 11, 15).
+> **Re-run requirement**: rows 1–25 MUST be re-verified on the **production domain** during M10 PVT. Staging-only verification is insufficient — CDN, minification, and env differences surface new tells (especially 5, 11, 15).

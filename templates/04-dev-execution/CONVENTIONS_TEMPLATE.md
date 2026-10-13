@@ -96,3 +96,22 @@
        return triggers.some(t => str.startsWith(t)) ? `'${str}` : str;
      }
      ```
+
+---
+
+## 6. Anti-Slop UI & The Craftsmanship Standard
+
+*Adopts core filter rules from the Anti-Slop standard to ensure designs feel human-crafted, intentional, and grounded in domain reality:*
+
+1. **The Purpose Test (No Technique Without Reason)**:
+   - Every visual decision (radius, border, badge, animation, shadow) must have an articulated purpose. If the only rationale is "it's the AI default" or "it looks modern", eliminate it.
+2. **Zero Default Tailwind Blue & AI Gradients**:
+   - Using unstyled Tailwind blue (`#3B82F6` / `blue-500`) or purple-to-blue text gradients (`bg-gradient-to-r from-blue-600 to-purple-600`) as primary brand styles is PROHIBITED. All accent colors must be defined in `DESIGN.md`.
+3. **No Cliché Decorative Pills (Eyebrow Badges)**:
+   - Do not place decorative badge capsules (`[ ✨ AI Powered ]`, `[ Beta 2.0 ]`, `[ New ]`) directly above page headlines unless conveying a critical system state.
+4. **Functional Completeness (No Dead Decoration)**:
+   - Every interactive element (button, link, tab, filter) MUST be wired to a real handler or route. Zero `href="#"`, zero dummy buttons, zero "Coming Soon" alerts on primary flows.
+5. **Evidence Over Fabricated Claims**:
+   - Never generate fake testimonials, fictional user stats ("10k+ active teams", "99.9% uptime"), or placeholder "Trusted By" logos unless provided by the user.
+6. **Mirror Component Signatures**:
+   - Buttons, cards, and input fields must inherit exact height, padding, and corner radius extracted from the human's visual benchmark in `notes.md` (no unprompted pill buttons or excessive rounded corners).

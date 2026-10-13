@@ -144,7 +144,7 @@ gate_M06() {
             GATE_FAILED=1
         fi
         else
-        echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: Small path has no M07 — run the 22-tell audit here)"
+        echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: Small path has no M07 — run the 25-tell audit here)"
         GATE_FAILED=1
         fi
     fi

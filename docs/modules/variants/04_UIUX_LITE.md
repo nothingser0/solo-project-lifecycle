@@ -24,7 +24,8 @@ The LITE path shrinks the artifacts; it never waives the input. **Before any art
 ## Anti-slop minimums (unchanged, computed not self-approved)
 
 - Contrast: primary text ≥7:1; secondary/status/placeholder ≥4.5:1; input borders ≥3:1.
-- Zero gradients, zero glassmorphism, shadows ≤4px, non-color state indicators, ≥44px touch targets.
+- Zero gradients, zero glassmorphism, shadows ≤4px, non-color state indicators, ≥44px touch targets, zero default Tailwind blue (`#3B82F6`).
+- Component signature match: Primary buttons, cards, and input fields must mirror exact radius, height, and border styling extracted from benchmark in `notes.md` (no generic AI defaults).
 
 ## Gate
 
