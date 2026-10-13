@@ -8,8 +8,8 @@
 gate_M06() {
     echo "=== M06: Development Execution Gate Checklist ==="
     check_intake_gate || true
-    check_required "AGENTS.md" "" 500
-    check_required "TODO.md" "" 500
+    check_required "AGENTS.md" "docs/harness-root/AGENTS.md" 500
+    check_required "TODO.md" "docs/harness-root/TODO.md" 500
     # B1: Small scale requires ONLY AGENTS.md + TODO.md at the root harness level.
     # CONTEXT.md / RUNBOOK_LOCAL.md / VERIFY_LOCAL.md are Medium+ requirements.
     is_m06_small=0
@@ -65,8 +65,10 @@ gate_M06() {
     fi
 
     # Content verification for TODO.md (BLOCKER: tasks must actually be completed)
-    if [ -f "TODO.md" ]; then
-        done_tasks=$(grep -cE "^\s*-\s*\[x\]" "TODO.md" 2>/dev/null || true)
+    target_todo="TODO.md"
+    [ -f "$target_todo" ] || target_todo="docs/harness-root/TODO.md"
+    if [ -f "$target_todo" ]; then
+        done_tasks=$(grep -cE "^\s*-\s*\[x\]" "$target_todo" 2>/dev/null || true)
         done_tasks=$(echo "$done_tasks" | tr -d ' ')
         if [ "${done_tasks:-0}" -ge 3 ]; then
             echo "  ✅ Completed tasks verified in TODO.md ($done_tasks tasks marked '[x]')"
@@ -75,7 +77,7 @@ gate_M06() {
             GATE_FAILED=1
         fi
         # Zero unfinished tasks allowed when declaring M06 complete (no [ ], [~], or [!] permitted)
-        pending_tasks=$(grep -cE "^\s*-\s*\[[ ~!]\]" "TODO.md" 2>/dev/null || true)
+        pending_tasks=$(grep -cE "^\s*-\s*\[[ ~!]\]" "$target_todo" 2>/dev/null || true)
         pending_tasks=$(echo "$pending_tasks" | tr -d ' ')
         if [ "${pending_tasks:-0}" -gt 0 ]; then
             echo "  ❌ TODO.md has ${pending_tasks} unfinished/blocked task(s) marked '[ ]', '[~]', or '[!]'! All sprint tasks must be completed ([x]) before closing Module 06."
@@ -103,7 +105,7 @@ gate_M06() {
         else
             has_core_categories=1
             for cat in "DB" "BE" "FE"; do
-                if ! grep -qiE "M06-${cat}-[0-9]+" "TODO.md"; then
+                if ! grep -qiE "M06-${cat}-[0-9]+" "$target_todo"; then
                     echo "  ❌ TODO.md missing core category tasks for 'M06-${cat}-xx'!"
                     has_core_categories=0
                     GATE_FAILED=1
@@ -114,8 +116,8 @@ gate_M06() {
             fi
         fi
         # Mandatory specs pre-read task must exist and be completed
-        if grep -qiE "M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off" "TODO.md"; then
-            if grep -iE "M06-SETUP-03|Pre-Read Sign-Off" "TODO.md" | grep -qE "^\s*-\s*\[x\]"; then
+        if grep -qiE "M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off" "$target_todo"; then
+            if grep -iE "M06-SETUP-03|Pre-Read Sign-Off" "$target_todo" | grep -qE "^\s*-\s*\[x\]"; then
                 echo "  ✅ Specs pre-read task verified (M06-SETUP-03 completed)"
             else
                 echo "  ❌ Specs pre-read task (M06-SETUP-03) present but NOT completed! Read AGENTS/CONTEXT/PROJECT_LITE/FSD/PRD before coding."
@@ -128,8 +130,10 @@ gate_M06() {
     fi
 
     # Content verification for AGENTS.md (BLOCKER: quality / anti-slop guidelines)
-    if [ -f "AGENTS.md" ]; then
-        if grep -qiE "typescript|strict|anti-slop|guidelines|verification|test|standards" "AGENTS.md"; then
+    target_agents="AGENTS.md"
+    [ -f "$target_agents" ] || target_agents="docs/harness-root/AGENTS.md"
+    if [ -f "$target_agents" ]; then
+        if grep -qiE "typescript|strict|anti-slop|guidelines|verification|test|standards" "$target_agents"; then
             echo "  ✅ AGENTS.md technical quality and engineering guidelines verified"
         else
             echo "  ❌ AGENTS.md missing technical guidelines / anti-slop engineering standards!"

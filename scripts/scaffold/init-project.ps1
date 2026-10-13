@@ -54,8 +54,8 @@ switch ($Scale) {
         # A1: Small scaffold = Intake + state + lite spec + root harness stubs ONLY.
         Copy-Item (Join-Path $templates "03-architecture-specs/PROJECT_LITE_TEMPLATE.md") (Join-Path $TargetDir "PROJECT_LITE.md") -Force
         Copy-Item (Join-Path $templates "essentials/INTAKE_GATE.md") (Join-Path $TargetDir "docs/pm/INTAKE_GATE.md") -Force
-        Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "AGENTS.md") -Force
-        Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "TODO.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/AGENTS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
         if ($Delivery -eq "client") {
             $contractsDir = Join-Path $TargetDir "contracts"
             if (-not (Test-Path $contractsDir)) { New-Item -ItemType Directory -Force -Path $contractsDir | Out-Null }
@@ -68,7 +68,7 @@ switch ($Scale) {
         Write-Host "  copy essentials/LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md -> docs/specs/COMPONENT_REQUIREMENTS.md"
         Write-Host "  copy essentials/LITE_DESIGN_SPEC_TEMPLATE.md -> docs/specs/DESIGN_SPEC.md"
         Write-Host "  copy 02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md -> docs/specs/LOGO_DESIGN_BRIEF.md"
-        Write-Host "  copy 02-design/DESIGN_MD_TEMPLATE.md -> DESIGN.md"
+        Write-Host "  copy 02-design/DESIGN_MD_TEMPLATE.md -> docs/harness-root/DESIGN.md"
         Write-Host "Deferred to M06/M09/M10 (create when reached): SECURITY_CHECKLIST_SMALL.md, UAT_SIGNOFF_SMALL.md, RUNBOOK_OPS.md"
     }
     { $_ -in "solo-saas", "independent" } {

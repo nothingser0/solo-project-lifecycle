@@ -48,8 +48,8 @@ case "$SCALE" in
         # not dumped as empty templates up front.
         cp "$TEMPLATES/essentials/INTAKE_GATE.md" "$TARGET_DIR/docs/pm/INTAKE_GATE.md"
         cp "$TEMPLATES/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "$TARGET_DIR/PROJECT_LITE.md"
-        cp "$TEMPLATES/04-dev-execution/AGENTS_TEMPLATE.md" "$TARGET_DIR/AGENTS.md"
-        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/TODO.md"
+        cp "$TEMPLATES/04-dev-execution/AGENTS_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/AGENTS.md"
+        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
         if [ "$DELIVERY" = "client" ]; then
             mkdir -p "$TARGET_DIR/contracts"
             cp "$TEMPLATES/02-legal-commercial/SOW_SMB.md" "$TARGET_DIR/contracts/SOW_SMB.md"
@@ -61,7 +61,7 @@ case "$SCALE" in
         echo "  cp \"$TEMPLATES/essentials/LITE_COMPONENT_REQUIREMENTS_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md\""
         echo "  cp \"$TEMPLATES/essentials/LITE_DESIGN_SPEC_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/DESIGN_SPEC.md\""
         echo "  cp \"$TEMPLATES/02-design/LOGO_DESIGN_BRIEF_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/LOGO_DESIGN_BRIEF.md\""
-        echo "  cp \"$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md\" \"$TARGET_DIR/DESIGN.md\""
+        echo "  cp \"$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md\" \"$TARGET_DIR/docs/harness-root/DESIGN.md\""
         echo "Deferred to M06/M09/M10 (create when reached):"
         echo "  cp \"$TEMPLATES/06-qa-uat/SECURITY_CHECKLIST_SMALL.md\" \"$TARGET_DIR/docs/qa/SECURITY_CHECKLIST_SMALL.md\""
         echo "  cp \"$TEMPLATES/06-qa-uat/UAT_SIGNOFF_SMALL.md\" \"$TARGET_DIR/docs/qa/UAT_SIGNOFF_SMALL.md\""

@@ -70,6 +70,11 @@ Sanity checks, link validators, and ecosystem compatibility tools:
 | [`scripts/verify/check-package-versions.sh`](./verify/check-package-versions.sh) | [`scripts/verify/check-package-versions.ps1`](./verify/check-package-versions.ps1) | Real-time registry queries (npm, Packagist, PyPI, Go proxy, RubyGems, NuGet, Maven) across 15 stacks, incl. FastAPI |
 | [`scripts/verify/verify-framework-version.sh`](./verify/verify-framework-version.sh) | [`scripts/verify/verify-framework-version.ps1`](./verify/verify-framework-version.ps1) | Validates installed project lockfiles against versions pinned in FSD.md `Framework Versions (Pinned):` — comparators for Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails; any other stack exits 1 as UNVERIFIED rather than passing silently |
 | [`scripts/verify/lint-template.sh`](./verify/lint-template.sh) | [`scripts/verify/lint-template.ps1`](./verify/lint-template.ps1) | Lints filled project documents and raw template structures |
+| [`scripts/verify/fixtures/m00-lite-pass.md`](./verify/fixtures/m00-lite-pass.md) | — | Test fixture for validating M00 gate behavior without executing full discovery cycles |
+
+### Archived Patterns Reference
+
+Historical architecture patterns and engineering guides are preserved in [`archive/patterns/README.md`](../archive/patterns/README.md).
 
 ---
 
