@@ -613,7 +613,7 @@ check_sections() {
 
 check_required() {
     local file="$1"
-    local alt="$2"
+    local alt="${2:-}"
     local min_size="${3:-0}" # v2: size threshold ignored (padding incentive removed); stub-check only
     local target=""
     if [ -f "$file" ]; then
