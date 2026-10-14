@@ -167,6 +167,9 @@
 ============================================================
 === M08: Data Migration & Seeding Gate Checklist ===
   ❌ docs/pm/DATA_MIGRATION_PLAN.md (STUB: 34B — file exists but empty/near-empty; fill real content)
+  ❌ docs/pm/DATA_MIGRATION_PLAN.md missing core section heading matching 'Data Hygiene'!
+  ❌ docs/pm/DATA_MIGRATION_PLAN.md missing core section heading matching 'Mapping Matrix'!
+  ❌ docs/pm/DATA_MIGRATION_PLAN.md missing core section heading matching 'Masking Protocol'!
   ❌ M08 Data Migration: no record that the client-supplied inputs were actually received.
      Add 'Inputs-Received: <what> from <client PIC> on <YYYY-MM-DD>' to docs/pm/DATA_MIGRATION_PLAN.md
      Source data / credentials come from the client — never invent or simulate them.

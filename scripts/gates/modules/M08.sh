@@ -23,20 +23,27 @@ gate_M08() {
     fi
 
     if [ $is_m08_waived -eq 1 ]; then
-        check_optional "docs/pm/DATA_MIGRATION_PLAN.md"
+        check_optional "docs/pm/DATA_MIGRATION_PLAN.md" "docs/pm/DATA_MIGRATION_LITE.md"
     else
-    check_required "docs/pm/DATA_MIGRATION_PLAN.md" "" 1000
-    # Content verification: reject raw template placeholders in DATA_MIGRATION_PLAN.md
-    if [ -f "docs/pm/DATA_MIGRATION_PLAN.md" ]; then
-        if grep -qE "\[Your Name\]|\[Application Name\]|\[Client Company|\[YYYY-MM-DD\]" "docs/pm/DATA_MIGRATION_PLAN.md"; then
-            echo "  ❌ docs/pm/DATA_MIGRATION_PLAN.md still contains unresolved template placeholders ([...])!"
-            GATE_FAILED=1
-        fi
-    fi
+        check_required "docs/pm/DATA_MIGRATION_PLAN.md" "docs/pm/DATA_MIGRATION_LITE.md" 1000
+        local plan_file="docs/pm/DATA_MIGRATION_PLAN.md"
+        [ -f "$plan_file" ] || plan_file="docs/pm/DATA_MIGRATION_LITE.md"
 
-    # Client handover: the source data + credentials are the client's inputs.
-    # '|| true' keeps the checklist running under 'set -e' so ALL failures print.
-    check_client_inputs "docs/pm/DATA_MIGRATION_PLAN.md" "M08 Data Migration" || true
+        # Content verification: reject raw template placeholders in data migration plan
+        if [ -f "$plan_file" ]; then
+            if grep -qE "\[Your Name\]|\[Application Name\]|\[Client Company|\[YYYY-MM-DD\]" "$plan_file"; then
+                echo "  ❌ $plan_file still contains unresolved template placeholders ([...])!"
+                GATE_FAILED=1
+            fi
+            # Section check for full migration plan
+            if [ "$plan_file" = "docs/pm/DATA_MIGRATION_PLAN.md" ]; then
+                check_sections "$plan_file" "Data Hygiene" "Mapping Matrix" "Masking Protocol" || true
+            fi
+        fi
+
+        # Client handover: the source data + credentials are the client's inputs.
+        # '|| true' keeps the checklist running under 'set -e' so ALL failures print.
+        check_client_inputs "$plan_file" "M08 Data Migration" || true
     # For Large/Enterprise scale, reconciliation report is MANDATORY (zero-discrepancy audit)
     m08_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
     if [ "$m08_scale" = "large" ] || [ "$m08_scale" = "enterprise" ]; then
