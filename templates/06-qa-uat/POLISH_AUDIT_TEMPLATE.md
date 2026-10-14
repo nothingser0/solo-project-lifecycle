@@ -1,6 +1,6 @@
 # Anti-Vibe-Code Polish Audit (`docs/qa/POLISH_AUDIT.md`)
 
-> **Purpose**: Catch the 25 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
+> **Purpose**: Catch the 32 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
 > **Why it exists**: Functional gates pass, but the product still *looks* vibe-coded. These are the highest-signal cheap checks.
 > **Rule**: every row is PASS/FAIL with **evidence** (screenshot path, command output, or URL). "Looks fine" is not evidence.
 
