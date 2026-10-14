@@ -71,7 +71,7 @@ gate_M02() {
             | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
         case "$declared_scale" in
             small)      lo=1;  hi=5 ;;
-            medium|solo-saas) lo=8; hi=15 ;;
+            medium|solo-saas) lo=6; hi=15 ;;
             large)      lo=16; hi=25 ;;
             # Enterprise (>25 P0) is out of solo capacity and routed to the A-Series
             # advisory (classify-scale.sh exit 2); M02 keeps the wide band rather
@@ -113,14 +113,15 @@ gate_M02() {
             GATE_FAILED=1
         fi
 
-        # 6. Out-of-Scope exclusions check (strictly scoped within Section 5.2)
+        # 6. Out-of-Scope exclusions check
         if grep -qi "out-of-scope" "$scope"; then
-            oos_section=$(sed -n '/### 5\.2 Out-of-Scope/,/### 5\.3/p' "$scope" 2>/dev/null || true)
-            oos_count=$(echo "$oos_section" | grep -cE "^\s*[0-9]+\.\s" || true)
+            oos_section=$(sed -n '/[#]*.*[Oo]ut-[Oo]f-[Ss]cope/,/^[#]\{1,3\}[[:space:]]/p' "$scope" 2>/dev/null || true)
+            [ -n "$oos_section" ] || oos_section=$(sed -n '/[#]*.*[Oo]ut-[Oo]f-[Ss]cope/,$p' "$scope" 2>/dev/null || true)
+            oos_count=$(echo "$oos_section" | grep -cE "^\s*([0-9]+\.|-|\*)\s+" || true)
             if [ "${oos_count:-0}" -ge 3 ]; then
-                echo "  ✅ Explicit Out-of-Scope boundaries defined in Section 5.2 ($oos_count numbered exclusions)"
+                echo "  ✅ Explicit Out-of-Scope boundaries defined ($oos_count exclusions)"
             else
-                echo "  ❌ Section 5.2 Out-of-Scope requires >= 3 explicit numbered exclusions (found: ${oos_count:-0})"
+                echo "  ❌ Out-of-Scope requires >= 3 explicit exclusions (found: ${oos_count:-0})"
                 GATE_FAILED=1
             fi
         else

@@ -21,7 +21,7 @@
 - Must-Haves **collectively** resolve ≥70% of root causes; every Must maps to a primary bottleneck (zero vanity P0s). Secondary-friction features demote to Should/Won't.
 - Segment audit: if MVP excludes a capability a persona needs for core value (e.g., BOM for cafes), **drop the segment or upgrade the feature**.
 - Dependency contradiction: deferred expense tracking ⇒ "Gross Profit (Laba Kotor)" only.
-- MoSCoW P0 limits: Small 1–5 · Medium 8–15 · Large 16–25 (solo allowed with a signed `SOLO-CAPACITY-RISK-ACCEPTANCE.md`; a non-delegable obligation routes to A-Series) · >25 → A-Series advisory.
+- MoSCoW P0 limits: Small 1–5 · Medium 6–15 · Large 16–25 (solo allowed with a signed `SOLO-CAPACITY-RISK-ACCEPTANCE.md`; a non-delegable obligation routes to A-Series) · >25 → A-Series advisory.
 - **Mandatory SaaS revenue P0s** (except internal tools): billing & basic subscription/access check. Thermal receipt printing and complex admin overrides demote to P1/P2 unless explicitly required by the core business model.
 
 ### Step 3 — RBAC Matrix & Approval Tree
