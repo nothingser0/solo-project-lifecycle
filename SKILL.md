@@ -18,7 +18,7 @@ The framework repo is **read-only**. Project documents are written into the user
 
 | Scale | Profile | Path | Stops |
 |---|---|---|---|
-| **Small / MVP** | 3–7 P0 features, no financial mutations, 1 decision maker, <4 weeks | Intake (9 fields — 6 core + 3 escalation; record in `docs/pm/PROJECT_STATE.md`, halt until answered) → M04-LITE → M05 → [STOP] → M06+security → M09-LITE → [STOP] → M10 → M12-LITE (`RUNBOOK_OPS.md`) — M01/M02 are WAIVED here, but the scale classifier still runs | 2 stops |
+| **Small / MVP** | 1–5 P0 features, no financial mutations, 1 decision maker, <4 weeks | Optional Pre-Intake Spike (`spike/`) → Intake (9 fields — 6 core + 3 escalation; record in `docs/pm/PROJECT_STATE.md`, halt until answered) → M04-LITE → M05 → [STOP] → M06+security → M09-LITE → [STOP] → M10 → M12-LITE (`RUNBOOK_OPS.md`) — M01/M02 are WAIVED here, but the scale classifier still runs | 2 stops |
 | **Solo SaaS** | 8–15 P0, billing, 1 founder | M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13 | M05 stack lock + M07 |
 | **Client (Medium)** | 8–15 P0, API/payment webhooks, contract, 99% SLA | M01 → M02 → **M03 SOW+DP [GATE]** → M04 → M05 → M06 → M07 → **M09 UAT [GATE]** → M10 → **M11 BAST+final payment [GATE]** → M12 | gates M03/M09/M11 + M05 stack lock, M07, M08 |
 | **Large** | 16–25 P0, multi-service, **no** non-delegable obligation | **Solo coding + advisor** — the capacity risk must be accepted in writing (`docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`, human-signed) → classifier exit **5**. A non-delegable answer (statutory compliance / legacy-core) re-routes to A00–A04. | per phase |

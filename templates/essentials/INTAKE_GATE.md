@@ -13,7 +13,7 @@
 
 1. **Project Type** — `solo | portfolio | client | internal`
 2. **Success Metric** — the single measurable number that defines "done" (e.g., "10 users can create a task")
-3. **Must-Have Features & Explicit Non-Features** — the 3–7 P0 features AND at least 1 thing NOT built
+3. **Must-Have Features & Explicit Non-Features** — the 1–5 P0 features (focused core loop) AND at least 1 thing NOT built
 4. **Time Capacity** — hours per week × weeks available (drives scope pruning)
 5. **Login or Sensitive Data** — `yes | no` (yes → UU PDP applies from day one; also raises blast-radius tier)
 6. **Legacy Core Replacement** — `yes | no`: does the work replace or integrate a system whose data/behaviour a licensed vendor or the client's own team currently owns (core banking, ERP, hospital HIS)? `yes` → **non-delegable: advisory only (A00–A04), never solo coding**, at any size. A capacity risk-acceptance file cannot open this block.

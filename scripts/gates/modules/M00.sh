@@ -57,6 +57,10 @@ m00_placeholders() {
 # --- gate_M00 ------------------------------------------------------
 gate_M00() {
     echo "=== M00: Product Discovery & Strategy Gate Checklist ==="
+    # 0. Check if an exploratory spike sandbox exists
+    if [ -d "spike" ] || [ -d "poc" ]; then
+        echo "  [INFO] Pre-intake technical spike sandbox detected (spike/ or poc/)."
+    fi
     # 1. Check if M00 is WAIVED by Scale (small) or Delivery (client/internal/portfolio)
     is_m00_waived=0
     if is_small_scale; then

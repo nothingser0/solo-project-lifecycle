@@ -2,7 +2,7 @@
 # classify-scale.sh - Deterministic Engineering Scale Classifier + Solo Capacity Gate
 # v2: Structured-field parsing ONLY (no raw keyword grep over free text).
 # Reads: Intake-* fields, Scale/Delivery lines (anchored, bold-tolerant), SCOPE_STATEMENT/PROJECT_LITE.
-# Tiers: small 3-7 P0 | medium 8-15 | large 16-25 | enterprise >25.
+# Tiers: small 1-5 P0 | medium 8-15 | large 16-25 | enterprise >25.
 # Enforces the HIGH-WATER MARK RULE and the SOLO CAPACITY GATE, which has TWO
 # different predicates (the cause matters, not the tier number):
 #   NON-DELEGABLE  -> statutory compliance or legacy-core replacement. A licensed
@@ -38,7 +38,7 @@ echo "Target: $PROJECT_STATE"
 echo "Assumed solo productive hours/week: $SOLO_HOURS_PER_WEEK"
 
 TIER=1
-REASON="3-7 P0 features, isolated DB, best-effort SLA"
+REASON="1-5 P0 features, isolated DB, best-effort SLA"
 
 # --- Structured fields only (free text is NEVER scanned) ---
 DELIVERY=$(get_field "Delivery" "$PROJECT_STATE")
