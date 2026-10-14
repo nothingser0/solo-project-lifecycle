@@ -29,14 +29,18 @@ gate_M03() {
     fi
 
     if [ $IS_SOLO -eq 1 ]; then
-        echo "  [INFO] Solo SaaS / Internal project detected: Commercial SOW gate is WAIVED."
+        echo "  [INFO] Solo SaaS / Internal / Portfolio project detected: Commercial SOW gate is WAIVED."
         check_optional "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
     else
         # Accept standard SOW_CONTRACT or simplified SOW_SMB
+        local sow_req_size=1000
+        if is_small_scale; then
+            sow_req_size=500  # Leaner threshold for SMB / Small client agreement
+        fi
         if [ -f "contracts/SOW_SMB.md" ] || [ -f "docs/pm/SOW_SMB.md" ]; then
-            check_required "contracts/SOW_SMB.md" "docs/pm/SOW_SMB.md" 1000
+            check_required "contracts/SOW_SMB.md" "docs/pm/SOW_SMB.md" $sow_req_size
         else
-            check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md" 1000
+            check_required "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md" $sow_req_size
         fi
 
         # NDA is mandatory for Medium+ client delivery; optional for Small client

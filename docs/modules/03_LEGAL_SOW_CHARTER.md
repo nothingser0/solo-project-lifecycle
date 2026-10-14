@@ -11,8 +11,8 @@
 ## 1. Execution Rules
 
 ### Step 1 — Contract Model
-- **Fixed-Price**: scope clear, budget inflexible. Add 20–30% contingency for reasonable revisions.
-- **T&M / Retainer**: dynamic roadmap or phased Large deliverables. Bill monthly or per 40-hour block, upfront per period.
+- **Authority Enforcement on DP**: AI agents are **STRICTLY FORBIDDEN** from asserting or ticking `[x] DP Cleared` autonomously (per `docs/AUTHORITY.md`). Only the human developer may tick the DP box after directly verifying their bank statement or payment settlement.
+- **Small Client Streamlining**: For Small Fast-Track client projects (< Rp 15M / ~$1,000), use `SOW_SMB.md` as a lightweight 1-2 page agreement focusing strictly on scope, 50/50 payment, single WhatsApp/email PIC, and revision boundaries.
 
 ### Step 2 — Payment Milestones (never 100% on delivery)
 | Milestone | Condition | % | Prerequisite |
