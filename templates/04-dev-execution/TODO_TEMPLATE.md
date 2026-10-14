@@ -69,8 +69,10 @@ The framework defines exactly **7 closed task categories** across all project sc
   - **Files**: `.env.local` (from `.env.example`)
   - **Action**: Fill DB credentials, JWT secret, API keys. Disable email confirmation for local auth to avoid rate limits.
   - **Out of Scope**: No application code.
-  - **Verify**: `npm run dev` boots clean and connects to DB.
+  - **Verify**: `npm run dev` (or stack equivalent: `php artisan serve` / `go run .`) boots clean and connects to DB.
   - **Expected**: No missing-variable errors.
+  - **Evidence**: `<command output>`
+    `Approved: [YYYY-MM-DD] by [Your Name]`
 
 - [ ] **M06-SETUP-02: Design Assets & Visual Identity Audit**
   - **Files**: `public/` or `src/assets/`, `docs/design/inspiration/`
@@ -88,12 +90,14 @@ The framework defines exactly **7 closed task categories** across all project sc
 ## Sprint 1: Database Foundation (skip if no DB — mark N/A)
 
 - [ ] **M06-DB-01: Relational Schema & FK Indexing**
-  - **Files**: `supabase/migrations/001_initial_schema.sql` (or Prisma/Drizzle equivalent)
+  - **Files**: `supabase/migrations/001_initial_schema.sql` (or Prisma/Drizzle/Laravel/Django/Go migrations)
   - **Depends**: `M06-SETUP-01`
   - **Action**: Define all FSD tables. Money as `BIGINT`/`NUMERIC(15,2)` (never float), fractional qty `NUMERIC(12,3)`. Explicit `CREATE INDEX` on every FK column + arithmetic CHECK constraints.
   - **Out of Scope**: No server actions, API routes, or UI.
-  - **Verify**: Run migration locally (`supabase db push` / `pnpm db:migrate`).
+  - **Verify**: Run migration locally (stack equivalent: `pnpm db:migrate` / `supabase db push` / `php artisan migrate` / `python manage.py migrate` / `goose up`).
   - **Expected**: Exit 0; all tables, indexes, constraints created.
+  - **Evidence**: `<command output>`
+    `Approved: [YYYY-MM-DD] by [Your Name]`
 
 *(Repeat the 8-element pattern for: RLS/access control, idempotent registration RPC, atomic mutation procedures, sensitive-data views, idempotency/audit tables. See example file for full DB tasks.)*
 
