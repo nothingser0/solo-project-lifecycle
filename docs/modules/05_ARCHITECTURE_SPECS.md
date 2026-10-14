@@ -33,6 +33,7 @@ or Windows:
 > there must be queryable by both scripts — if yours is missing, report the gap (rule 7).
 
 - Pin the proven stable version; if a bleeding-edge major breaks the ecosystem (Tailwind v4, Zod v4), pin the stable one explicitly.
+- **Breaking Changes & Documentation Sync**: The agent must inspect official release notes / migration guides for the chosen framework major version (via web search/docs check) and record the authoritative documentation URL and breaking change notes in `docs/specs/FSD.md` to prevent training-data deprecation errors in M06.
 - Transcribe agreed versions **verbatim** into the `Framework Versions (Pinned):` bullet block of
   `docs/specs/FSD.md` (M06 gate `verify-framework-version.sh` reads it).
 - **Machine-read — do not reformat**: keep the heading colon and the `- <Package>: <version>` bullets; delete stacks you did not lock (a stale `- Django:` line in a Next.js project fails M06, as does a table).
@@ -48,9 +49,10 @@ Then present **2–3 options** with cost/pros/cons and let **the user LOCK the s
 
 Reasoning for the chosen stack; **alternatives rejected with reasons**; topology aligned with budget & scale. Content must adapt to the stack (PostgreSQL → SQL DDL, MongoDB → Mongoose, Laravel → Eloquent migrations, Django → ORM — never AI-SLOP generic schemas; anti-patterns in deep dive).
 
-### STEP 3: Database Schema Design (DDL)
+### STEP 3: Database Schema Design (ERD & DDL)
 
-- Tables, PK/FK, CHECK constraints, indexes — syntax per chosen DB.
+- **Visual ERD (Mermaid)**: Wajib memuat diagram relasi visual `erDiagram` (Mermaid) yang menggambarkan kardinalitas (one-to-many, many-to-many) antar entitas inti.
+- **DDL & Performance Indexes**: Tables, PK/FK, CHECK constraints, composite indexes pada kolom query/foreign keys (`idx_*`) — syntax per chosen DB.
 - Audit trail: `created_at`, `updated_at`, `actor_id`, soft-delete.
 - Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
 - `idempotency_keys` table for all POST mutations of financial/stock state.

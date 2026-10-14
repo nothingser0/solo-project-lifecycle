@@ -60,11 +60,23 @@ gate_M05() {
         # A2: core section headings must be present (from FSD_TECHNICAL_TEMPLATE.md)
         check_sections "$fsd" "Document Metadata" "Component Architecture" "Relational Database Schema"
 
-        # 2. Database Schema DDL existence (BLOCKER)
+        # 2. Database Schema DDL & Visual ERD existence (BLOCKER)
         if grep -qiE "CREATE TABLE|mongoose\.Schema|models\.Model|Schema::create|model [A-Za-z]+ \{" "$fsd"; then
             echo "  ✅ Database schema definition verified in FSD.md (DDL / ORM models present)"
         else
             echo "  ❌ FSD.md missing explicit database schema definition (CREATE TABLE / ORM models)!"
+            GATE_FAILED=1
+        fi
+        if grep -qiE "erDiagram" "$fsd"; then
+            echo "  ✅ Visual Entity Relationship Diagram (Mermaid erDiagram) verified in FSD.md"
+        else
+            echo "  ❌ FSD.md missing Visual ERD! Include a mermaid erDiagram block in Section 2.2."
+            GATE_FAILED=1
+        fi
+        if grep -qiE "CREATE INDEX|idx_[A-Za-z0-9_]+|INDEX|uniqueIndex" "$fsd"; then
+            echo "  ✅ Database performance indexing verified in FSD.md (indexes present)"
+        else
+            echo "  ❌ FSD.md missing explicit performance indexes (e.g. CREATE INDEX idx_* on foreign keys / query columns)!"
             GATE_FAILED=1
         fi
 
