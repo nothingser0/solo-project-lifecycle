@@ -35,7 +35,7 @@ Promotes UAT-passed code from `staging` to `main`, configures production infra (
 5. **Schema migration**: `pnpm db:migrate` against prod — **additive only**; `DROP COLUMN`/`TRUNCATE` prohibited.
 6. **Observability**: Sentry DSN active; uptime monitor on `/api/health`; alert bots (Telegram/WhatsApp).
 7. **PVT**: login flow; create 1 document → PDF in prod bucket; 1 real low-nominal payment (e.g. Rp 10.000 QRIS) for the prod webhook; compile into **`GO_LIVE_REPORT.md`**.
-8. **Polish re-check on the production domain**: re-run rows 1–22 of `docs/qa/POLISH_AUDIT.md` (or `POLISH_AUDIT_TEMPLATE.md` for Small) against the live domain — favicon, OG preview image, page title, console errors, image weight, plus rows 21–22 (slop comments, race conditions) against the deployed build. CDN/minification/env differences surface new tells that staging hid. Record the delta in `GO_LIVE_REPORT.md`.
+8. **Polish re-check on the production domain**: re-run all 32 tells of `docs/qa/POLISH_AUDIT.md` (or `POLISH_AUDIT_TEMPLATE.md` for Small) against the live production domain — favicon, OG preview image, page title, console errors, image weight, media/3D CLS, database base64 bloat, FOUC theme flash, unbounded rate limits, plus rows 21–22 (slop comments, race conditions) against the deployed build. CDN/minification/env differences surface new tells that staging hid. Record the delta in `GO_LIVE_REPORT.md`.
 
 ## 4. Mobile (Android/iOS) — Summary
 

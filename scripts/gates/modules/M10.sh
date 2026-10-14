@@ -43,7 +43,7 @@ gate_M10() {
         prod_url=$(grep -iE "Production URL|Live URL|URL Live" "$live_report" | grep -oE "https?://[^ ]+" | head -1 || echo "")
         if [ -n "$prod_url" ] && command -v curl >/dev/null 2>&1; then
             echo "  [INFO] Probing Production URL: $prod_url"
-            http_code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 "$prod_url" 2>/dev/null || echo "000")
+            http_code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 --max-time 10 "$prod_url" 2>/dev/null || echo "000")
             if [ "$http_code" = "200" ] || [ "$http_code" = "301" ] || [ "$http_code" = "302" ]; then
                 echo "  ✅ Production URL responded with HTTP $http_code (Verified LIVE)"
             else
