@@ -72,32 +72,39 @@ gate_M00() {
         is_m00_waived=1
     fi
 
+    local validation_file=""
+    if [ -f "docs/pm/MARKET_VALIDATION.md" ]; then
+        validation_file="docs/pm/MARKET_VALIDATION.md"
+    elif [ -f "docs/pm/M00_LITE.md" ]; then
+        validation_file="docs/pm/M00_LITE.md"
+    fi
+
     if [ $is_m00_waived -eq 1 ]; then
         check_optional "docs/pm/M00_LITE.md" "docs/pm/MARKET_RESEARCH.md"
         return 0
     fi
 
-    if [ -f "docs/pm/M00_LITE.md" ]; then
+    if [ -n "$validation_file" ]; then
         echo "  [INFO] Detected M00-lite rapid validation path (Solo SaaS)"
-        check_required "docs/pm/M00_LITE.md" ""
-        check_sections "docs/pm/M00_LITE.md" \
+        check_required "$validation_file" ""
+        check_sections "$validation_file" \
             "Riskiest Assumption Register" "User Discovery" "Behavioral Intent" "Kill Criteria"
 
         # 1. Unresolved template placeholders (generic bracket scan + allowlist).
         local leftovers
-        leftovers=$(m00_placeholders "docs/pm/M00_LITE.md")
+        leftovers=$(m00_placeholders "$validation_file")
         if [ -n "$leftovers" ]; then
-            echo "  ❌ Unresolved template placeholders detected in M00_LITE.md:"
+            echo "  ❌ Unresolved template placeholders detected in $validation_file:"
             printf '%s\n' "$leftovers" | sed 's/^/       /'
             GATE_FAILED=1
         fi
 
         # 2. The gate decision must be explicit and terminal states are blocking.
         local declared=""
-        if m00_decision_is "PASS" "docs/pm/M00_LITE.md"; then declared="PASS"
-        elif m00_decision_is "RETEST" "docs/pm/M00_LITE.md"; then declared="RETEST"
-        elif m00_decision_is "PENDING" "docs/pm/M00_LITE.md"; then declared="PENDING"
-        elif m00_decision_is "FAIL" "docs/pm/M00_LITE.md"; then declared="FAIL"
+        if m00_decision_is "PASS" "$validation_file"; then declared="PASS"
+        elif m00_decision_is "RETEST" "$validation_file"; then declared="RETEST"
+        elif m00_decision_is "PENDING" "$validation_file"; then declared="PENDING"
+        elif m00_decision_is "FAIL" "$validation_file"; then declared="FAIL"
         fi
         if [ -z "$declared" ]; then
             echo "  ❌ Explicit Gate-Decision (PASS | RETEST | PENDING | FAIL) not declared!"
@@ -115,7 +122,7 @@ gate_M00() {
         # 3. Real interview count: the template records 5 attempts; at least 3 must
         # be confirmed from real conversations ("✅ Real"). Bold markers tolerated.
         local real_interviews
-        real_interviews=$(sed 's/\*//g' "docs/pm/M00_LITE.md" 2>/dev/null \
+        real_interviews=$(sed 's/\*//g' "$validation_file" 2>/dev/null \
             | grep -E "^[[:space:]]*\|[[:space:]]*INT-0[0-9][[:space:]]*\|" \
             | grep -cE '✅.*Real' || true)
         real_interviews=$(printf '%s' "$real_interviews" | tr -d ' ')
@@ -129,17 +136,17 @@ gate_M00() {
         # 4. Behavioural evidence: sample floor, arithmetic, then the band + floor
         # reconciliation against the declared decision.
         local visitors signups pct intent alt deposits loi strong band
-        visitors=$(m00_num_field "Total Unique Visitors" "docs/pm/M00_LITE.md")
-        signups=$(m00_num_field "Total Waitlist / Email Signups" "docs/pm/M00_LITE.md")
-        pct=$(m00_num_field "Waitlist-Conversion-Pct" "docs/pm/M00_LITE.md")
-        intent=$(m00_num_field "Intent-to-Buy-Pct" "docs/pm/M00_LITE.md")
-        alt=$(sed 's/\*//g' "docs/pm/M00_LITE.md" 2>/dev/null \
+        visitors=$(m00_num_field "Total Unique Visitors" "$validation_file")
+        signups=$(m00_num_field "Total Waitlist / Email Signups" "$validation_file")
+        pct=$(m00_num_field "Waitlist-Conversion-Pct" "$validation_file")
+        intent=$(m00_num_field "Intent-to-Buy-Pct" "$validation_file")
+        alt=$(sed 's/\*//g' "$validation_file" 2>/dev/null \
             | grep -iE "^[[:space:]]*-?[[:space:]]*Alternative-Proof[[:space:]]*:" | head -1 || true)
         deposits=$(printf '%s' "$alt" | grep -oE 'deposits:[0-9]+' | grep -oE '[0-9]+' || true)
         loi=$(printf '%s' "$alt" | grep -oE 'loi:[0-9]+' | grep -oE '[0-9]+' || true)
 
         if [ -z "$visitors" ]; then
-            echo "  ❌ Total Unique Visitors missing or still an unresolved placeholder in M00_LITE.md!"
+            echo "  ❌ Total Unique Visitors missing or still an unresolved placeholder in $validation_file!"
             GATE_FAILED=1
         elif [ "$(awk -v v="$visitors" 'BEGIN { print (v + 0 >= 100) ? 1 : 0 }')" != "1" ]; then
             echo "  ❌ Targeted-visit floor not met: $visitors visitors (< 100 minimum — a rate from a smaller sample is not evidence)"
@@ -151,7 +158,7 @@ gate_M00() {
         # Both halves of the rate are required: a document that omits the signup
         # count cannot be cross-checked, which is exactly how a rate gets invented.
         if [ -z "$signups" ]; then
-            echo "  ❌ Total Waitlist / Email Signups missing or still an unresolved placeholder in M00_LITE.md!"
+            echo "  ❌ Total Waitlist / Email Signups missing or still an unresolved placeholder in $validation_file!"
             GATE_FAILED=1
         fi
 
@@ -209,11 +216,11 @@ gate_M00() {
         # 5. Human attribution. The agent may fill the report but cannot run the
         # interviews, so a PASS must carry a named human validator + real date.
         if [ "$declared" = "PASS" ]; then
-            if sed 's/\*//g' "docs/pm/M00_LITE.md" 2>/dev/null \
+            if sed 's/\*//g' "$validation_file" 2>/dev/null \
                 | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z].*[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
                 echo "  ✅ Human validation recorded (Validated-by: <name> on <date>)"
             else
-                echo "  ❌ M00_LITE.md is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research."
+                echo "  ❌ $validation_file is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research."
                 GATE_FAILED=1
             fi
         fi

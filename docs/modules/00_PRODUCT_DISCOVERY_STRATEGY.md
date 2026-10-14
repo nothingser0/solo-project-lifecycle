@@ -8,7 +8,7 @@
 **Purpose**: earliest gate — validate market demand before committing to an idea. Mandatory before M01 when PM-grade validation is needed.
 
 **Routing (bound to `Delivery:` in `docs/pm/PROJECT_STATE.md`)**:
-- `solo` (Solo SaaS): **MANDATORY** M00-lite (assumption register + 5 interviews + waitlist test). #1 risk is building something nobody pays for.
+- `solo` (Solo SaaS): **MANDATORY** user validation (`docs/pm/MARKET_VALIDATION.md` or `M00_LITE.md`). Human interviews (>=3 verified) required.
 - `client`: **SKIPPED** — scope and terms are client-defined. Proceed to M01 or M03.
 - `internal` / `portfolio`: **SKIPPED**. Proceed to M01 or Fast-Track Intake.
 
@@ -88,7 +88,7 @@ Full M00 path (4 documents) applies when the project requires industry-grade PM 
 ## 4. Output Artifacts
 
 All documents live in **`docs/pm/`** (never project root):
-1. **Solo SaaS**: `docs/pm/M00_LITE.md` — consolidated assumption register, 5 interview attempts (≥3 verified), waitlist results, `Validated-by:` attribution, kill criteria.
+1. **Solo SaaS**: `docs/pm/MARKET_VALIDATION.md` (or `M00_LITE.md`) — consolidated assumption register, 5 interview attempts (≥3 verified), waitlist results, `Validated-by:` attribution, kill criteria.
 2. **Full path**: `MARKET_RESEARCH.md`, `COMPETITIVE_LANDSCAPE.md`, `USER_RESEARCH_REPORT.md`, `PRODUCT_STRATEGY.md`.
 
 ---
