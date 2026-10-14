@@ -65,12 +65,12 @@ The framework defines exactly **7 closed task categories** across all project sc
 
 ## Sprint 0: Environment Setup & Specs Pre-Read (MANDATORY FIRST)
 
-- [ ] **M06-SETUP-01: Local Environment & Secrets Staging**
-  - **Files**: `.env.local` (from `.env.example`)
-  - **Action**: Fill DB credentials, JWT secret, API keys. Disable email confirmation for local auth to avoid rate limits.
-  - **Out of Scope**: No application code.
-  - **Verify**: `npm run dev` (or stack equivalent: `php artisan serve` / `go run .`) boots clean and connects to DB.
-  - **Expected**: No missing-variable errors.
+- [ ] **M06-SETUP-01: Project Scaffolding & Local Environment Staging**
+  - **Files**: `package.json` (or stack equivalent), `.env.local` (from `.env.example`)
+  - **Action**: Run framework scaffold command locked in M05 (e.g. `pnpm create next-app@latest`). Copy root harness files from `docs/harness-root/` (`AGENTS.md`, `TODO.md`, `DESIGN.md`). Fill local DB credentials, secrets, API keys.
+  - **Out of Scope**: No custom business logic or UI application code.
+  - **Verify**: `npm run dev` (or stack equivalent: `php artisan serve` / `go run .`) boots clean and `./scripts/verify/verify-framework-version.sh` passes.
+  - **Expected**: Project running cleanly locally, lockfile matching M05 locked versions.
   - **Evidence**: `<command output>`
     `Approved: [YYYY-MM-DD] by [Your Name]`
 
