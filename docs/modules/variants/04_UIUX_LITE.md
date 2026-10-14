@@ -12,10 +12,10 @@ The LITE path shrinks the artifacts; it never waives the input. **Before any art
 - `notes.md` is the agent's analysis, **never** the reference. A benchmark that cites no existing file is fabrication.
 - Gate-enforced: `validate-gate.sh M04` (and `M06`, for projects that started before this rule) fails until a human-supplied file exists and `notes.md` cites it by filename.
 
-## Step 1.5 — Prototyping Workflow Choice (MANDATORY STOP)
+## Step 1.5 — Prototyping Workflow Choice & Polish Motion Specs (MANDATORY STOP)
 
-Visual preview is mandatory to eliminate AI slop. Before generating `DESIGN_SPEC.md`, ask the human:
-1. **Workflow A (AI Prototyping - RECOMMENDED)**: Export prompts for v0.dev / Bolt.new / Lovable, then place the exported HTML/code into `docs/design/screens/` (supporting state toggles: Default, Loading, Empty, Error) so the human can test actual user flows and edge cases directly in a browser before Design Freeze.
+Visual preview and interaction polish are mandatory to eliminate AI slop. Before generating `DESIGN_SPEC.md`, ask the human:
+1. **Workflow A (AI Prototyping - RECOMMENDED)**: Export prompts for v0.dev / Bolt.new / Lovable, then place the exported HTML/code into `docs/design/screens/` (supporting state toggles: Default, Loading, Empty, Error, Success). Include rich interactive polish: micro-interactions, hover states, smooth transitions, and optional 3D/canvas/parallax embed slots (e.g. Spline, Three.js, Framer Motion) so the human can test actual user flows and delight directly in a browser before Design Freeze.
 2. **Workflow B (Design Tool Export / Handoff)**: Figma / Penpot exported HTML/previews/assets placed into `docs/design/screens/`.
 🛑 **STOP AND ASK, END TURN** until the user explicitly selects Workflow A or B. Record the choice in `DESIGN_SPEC.md` (`Prototyping-Workflow: A` or `B`).
 

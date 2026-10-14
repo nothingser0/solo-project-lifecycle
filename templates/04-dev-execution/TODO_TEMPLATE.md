@@ -113,11 +113,19 @@ The framework defines exactly **7 closed task categories** across all project sc
 
 ## Sprint 3: Frontend
 
-- [ ] **M06-FE-01: Design Tokens & Strict TS Config**
-  - **Files**: `globals.css`, `tailwind.config.js`
-  - **Action**: Register CSS variables per `DESIGN.md` (surface base, status triad, z-index). Install brand font.
+- [ ] **M06-FE-01: Design Tokens, Typography & Strict TS Config**
+  - **Files**: `globals.css`, `tailwind.config.js` (or CSS-first Tailwind v4)
+  - **Action**: Register CSS variables per `DESIGN.md` (surface base, status triad, z-index scale). Install brand font.
   - **Verify**: `type-check` + DevTools color check.
-  - **Expected**: Exit 0; variables resolve.
+  - **Expected**: Exit 0; variables resolve cleanly.
+
+- [ ] **M06-FE-02: Interactive Polish & Motion Primitives**
+  - **Files**: `src/components/ui/*`, `src/styles/*`
+  - **Action**: Implement smooth hover/focus-visible states, subtle micro-interactions, spring transitions, and interactive canvas/3D slots (Framer Motion / Lucide / Spline / Three.js per M04 prototype).
+  - **Verify**: Run UI in browser, confirm zero layout shift and 60fps interaction smoothness.
+  - **Expected**: Delightful tactile feel, zero inert buttons, no jarring layout pops.
+  - **Evidence**: `<command output / DevTools audit>`
+    `Approved: [YYYY-MM-DD] by [Your Name]`
 
 *(Repeat for each SCR-xx screen: 5-state matrix — idle/loading/empty/error/success. Mobile: inputs 16px, touch targets ≥44px, monetary inputs `inputmode="numeric"` with live thousand separators.)*
 
