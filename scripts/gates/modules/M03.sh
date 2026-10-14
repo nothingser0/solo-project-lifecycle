@@ -31,6 +31,17 @@ gate_M03() {
     if [ $IS_SOLO -eq 1 ]; then
         echo "  [INFO] Solo SaaS / Internal / Portfolio project detected: Commercial SOW gate is WAIVED."
         check_optional "contracts/SOW_CONTRACT.md" "docs/pm/SOW_CONTRACT.md"
+        local charter="docs/pm/SOLO_SAAS_CHARTER.md"
+        [ -f "$charter" ] || charter="contracts/SOLO_SAAS_CHARTER.md"
+        if [ -f "$charter" ]; then
+            echo "  ✅ Solo SaaS Project Charter present ($charter)"
+            if grep -q "\[\.\.\.\]\|\[Your Name\]\|\[Product Codename\]" "$charter"; then
+                echo "  ❌ Unresolved template placeholders [...] detected in $charter!"
+                GATE_FAILED=1
+            fi
+        else
+            echo "  ℹ️  Optional: $charter recommended for founder runway budget & kill thresholds"
+        fi
     else
         # Accept standard SOW_CONTRACT or simplified SOW_SMB
         local sow_req_size=1000
@@ -53,6 +64,14 @@ gate_M03() {
         else
             echo "  [INFO] Medium+ client delivery: NDA is MANDATORY before client data access."
             check_required "contracts/NDA.md" "docs/pm/NDA.md" 500
+            local target_nda="contracts/NDA.md"
+            [ -f "$target_nda" ] || target_nda="docs/pm/NDA.md"
+            if [ -f "$target_nda" ]; then
+                if grep -q "\[\.\.\.\]\|\[Client Name\]\|\[Client Company Name\]" "$target_nda"; then
+                    echo "  ❌ Unresolved template placeholders [...] detected in NDA contract!"
+                    GATE_FAILED=1
+                fi
+            fi
         fi
         if [ -f "$target_sow" ]; then
             # A2: core section headings must be present (SOW_SMB vs consolidated SOW layout).
