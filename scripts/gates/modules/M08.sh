@@ -8,10 +8,18 @@
 gate_M08() {
     echo "=== M08: Data Migration & Seeding Gate Checklist ==="
     # Automatic waiver for Small Scale (legacy data triggers re-classification to Large per SKILL.md)
+    # or Greenfield projects explicitly declared in Intake (Legacy Data: None/No).
     is_m08_waived=0
     if is_small_scale; then
         echo "  [INFO] Small Scale detected: M08 Data Migration is WAIVED (Legacy data triggers re-classification to Large)."
         is_m08_waived=1
+    elif [ -f "docs/pm/PROJECT_STATE.md" ]; then
+        legacy_val="$(get_field "Intake-Legacy-Core" docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        [ -z "$legacy_val" ] && legacy_val="$(get_field "Legacy Data" docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$legacy_val" = "greenfield" ] || [ "$legacy_val" = "none" ]; then
+            echo "  [INFO] Greenfield project detected (no legacy data): M08 Data Migration is WAIVED."
+            is_m08_waived=1
+        fi
     fi
 
     if [ $is_m08_waived -eq 1 ]; then

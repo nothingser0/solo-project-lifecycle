@@ -17,7 +17,7 @@ Transfers client legacy data (CSV/Excel/SQL) into the new FSD schema — **Stagi
 5. **Reconcile** — Count `N_source` / `N_imported` / `N_rejected`; they must add up. Deliver `rejected-rows.csv` to the client's operations team to fix and resubmit.
 6. **Report & sign-off** — Produce `docs/pm/MIGRATION_RECONCILIATION_REPORT.md` via `templates/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md`; demonstrate sanitized staging data (real shape, masked PII — not Lorem Ipsum) and obtain the client Single PIC **Data Sign-Off**.
 
-**Scale routing (one line)**: Small = M08 waived, seed data only — legacy data from a Small client escalates the project to Large per the high-water mark; Enterprise → Series A Phase A02 (Data Governance).
+**Scale routing (one line)**: Small = M08 waived, seed data only · Greenfield (any scale, no legacy data) = M08 waived · Medium/Large with legacy data = full M08 below (legacy data from a Small client escalates to Large); Enterprise → Series A Phase A02 (Data Governance).
 
 ## Outputs
 
