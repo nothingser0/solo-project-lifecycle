@@ -40,6 +40,13 @@ gate_M10() {
             echo "  ❌ $live_report contains failed PVT test scenario(s)! 100% of production verification tests must PASS."
             GATE_FAILED=1
         fi
+        # 4. Reject blank lead engineer signature line
+        if echo "$report_content" | grep -qE "Lead Engineer:[[:space:]]*_{3,}"; then
+            echo "  ❌ $live_report contains blank Lead Engineer signature line (_____)! Must record real engineer sign-off."
+            GATE_FAILED=1
+        fi
+        # 5. Core section headings verification
+        check_sections "$live_report" "Release" "Post-Deployment Verification" "Observability" || true
         prod_url=$(grep -iE "Production URL|Live URL|URL Live" "$live_report" | grep -oE "https?://[^ ]+" | head -1 || echo "")
         if [ -n "$prod_url" ] && command -v curl >/dev/null 2>&1; then
             echo "  [INFO] Probing Production URL: $prod_url"
