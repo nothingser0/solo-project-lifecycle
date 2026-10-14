@@ -100,12 +100,12 @@ gate_M04() {
             fi
         fi
 
-        # 6. Prototyping Workflow enforcement (Visual prototypes MANDATORY: A/B/C)
-        wf=$(grep -iE "^Prototyping-Workflow:\s*[ABC]" "docs/specs/DESIGN_SPEC.md" | grep -oiE "[ABC]" | head -1 | tr '[:lower:]' '[:upper:]')
-        if [ "$wf" = "A" ] || [ "$wf" = "B" ] || [ "$wf" = "C" ]; then
+        # 6. Prototyping Workflow enforcement (Visual prototypes MANDATORY: A/B)
+        wf=$(grep -iE "^Prototyping-Workflow:\s*[AB]" "docs/specs/DESIGN_SPEC.md" | grep -oiE "[AB]" | head -1 | tr '[:lower:]' '[:upper:]')
+        if [ "$wf" = "A" ] || [ "$wf" = "B" ]; then
             echo "  [INFO] Prototyping-Workflow: $wf (visual preview mandatory)."
             # Allow flat files in docs/design/screens/*.html or nested subfolders docs/design/screens/scr-xx/
-            screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" \) 2>/dev/null | wc -l | tr -d ' ')
+            screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.svg" \) 2>/dev/null | wc -l | tr -d ' ')
             if [ "${screen_files:-0}" -ge 1 ]; then
                 echo "  ✅ Interactive screen preview outputs present (found $screen_files preview files)"
             else

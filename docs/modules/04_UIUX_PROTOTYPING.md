@@ -24,7 +24,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
  ▼ 0B. SITEMAP.md — hierarchy, 3–5 critical flows, breadcrumbs, States/RBAC (SITEMAP_TEMPLATE.md) → docs/specs/SITEMAP.md
  ▼ 0C. COMPONENT_REQUIREMENTS.md (TEMPLATE) — features→UI patterns, 3-tier inventory (Primitives/Standard Composites/Domain Composites), 5-state matrix, WCAG 2.2 AA (prevents AI slop)
  ▼ 1. DESIGN.md — from benchmark + logo: tokens, computed WCAG ratios, z-index scale → docs/harness-root/DESIGN.md (staged)
- ▼ 2. Choose prototyping workflow (visual mandatory): A HTML click-dummy (visual HTML demo) | B AI prototype v0/Bolt/Lovable (code output) | C Figma/Penpot manual design (designer handoff).
+ ▼ 2. Choose prototyping workflow (visual mandatory): A AI prototype code (v0/Bolt/Lovable export into `docs/design/screens/`) | B Design tool export/handoff (Figma/Penpot exported assets/previews into `docs/design/screens/`). (Pure text/markdown abolished).
  ▼ 3. DESIGN_SPEC.md (DESIGN_SPEC_TEMPLATE.md) — every in-scope screen (SCR-01..SCR-NN) with 5-state matrix: Default, Loading Skeleton, Empty, Error, Success
  ▼ 4. (B/C/D only; SKIPPED for A) — prompts via SCREEN_PROMPT_TEMPLATE.md → docs/design/prompts/scr-xx/PROMPT.md; rendered outputs → docs/design/screens/scr-xx/
  ▼ 5. Walkthrough + Design Freeze — walkthrough demo (client PIC, or the **human user** self-reviews on solo projects — never the AI agent); sign Design Freeze Sign-Off in DESIGN_SPEC.md

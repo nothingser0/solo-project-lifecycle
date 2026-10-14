@@ -165,9 +165,8 @@ Stack-Locked-by: [name of the human who chose it — the AI agent presents optio
 
 | Level | Meaning | Conversion effort |
 | :---: | :--- | :--- |
-| **1** | Static HTML / click-dummy (Workflow A) — markup translated to components | Low: markup → components |
-| **2** | AI-generated prototype code (Workflow B) — same framework, cleaned and wired | Medium: refactor to conventions |
-| **3** | Figma/designer handoff (Workflow C) — components extracted from design | Highest: design → components |
+| **1** | AI-generated prototype code (Workflow A) — v0/Bolt/Lovable export, cleaned and wired | Low: refactor to conventions |
+| **2** | Figma/designer export (Workflow B) — components/screens extracted from design tool | Medium: design → components |
 
 **Conversion Plan**:
 1. [Source artifact → target path, e.g. "Extract 12 components from `docs/design/screens/` → `src/components/`"]

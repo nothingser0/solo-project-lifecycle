@@ -226,7 +226,7 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 ## Machine Validation Summary (M04 Gate)
 
 ```text
-Prototyping-Workflow: [A|B|C]
+Prototyping-Workflow: [A|B]
 ```
 
-*(A = Visual HTML Click-Dummy in `docs/design/screens/`. B = AI Prototype v0/Lovable. C = Figma/Penpot manual design. Visual preview is mandatory to eliminate AI slop.)*
+*(A = AI Prototype Code via v0/Bolt/Lovable exported to `docs/design/screens/`. B = Design Tool / Figma export into `docs/design/screens/`. Visual preview is mandatory to eliminate AI slop.)*
