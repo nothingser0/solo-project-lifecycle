@@ -641,7 +641,7 @@ check_required() {
 
 check_optional() {
     local file="$1"
-    local alt="$2"
+    local alt="${2:-}"
     if [ -f "$file" ]; then
         echo "  [OK] $file (optional)"
     elif [ -n "$alt" ] && [ -f "$alt" ]; then

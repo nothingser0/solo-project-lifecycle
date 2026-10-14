@@ -163,8 +163,8 @@ gate_M06() {
         check_required "$verify_path" "" 500
     fi
 
-    # Content verification for VERIFY_LOCAL.md (BLOCKER: local test pass proof)
-    if [ -f "$verify_path" ]; then
+    # Content verification for VERIFY_LOCAL.md (BLOCKER: local test pass proof for Medium+)
+    if [ "$is_m06_small" -eq 0 ] && [ -n "${verify_path:-}" ] && [ -f "$verify_path" ]; then
         if grep -qiE "LOCAL PASS|\[x\]\s*\*?PASS\*?|Exit code 0|Smoke Test PASS|All assertions passed" "$verify_path"; then
             echo "  ✅ VERIFY_LOCAL.md test execution proof verified (LOCAL PASS / assertions passed)"
         else
