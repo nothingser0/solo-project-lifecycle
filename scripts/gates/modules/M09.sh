@@ -54,6 +54,15 @@ gate_M09() {
             echo "  ❌ $target_uat missing explicit approval attestation ('APPROVED' / 'PASSED' / 'UAT PASS')!"
             GATE_FAILED=1
         fi
+        # 2b. Reject unresolved Severity 1 & 2 defects in report
+        if grep -qiE "Sev(erity)?[[:space:]]*[12].*(Open|Unresolved|Pending)" "$target_uat"; then
+            echo "  ❌ $target_uat reports unresolved Severity 1 or 2 defects! All blockers must be RESOLVED before production."
+            GATE_FAILED=1
+        fi
+        # 2c. Verify core section headings for standard UAT report
+        if [ "$target_uat" = "docs/pm/UAT_SIGNOFF_REPORT.md" ] || [ "$target_uat" = "docs/qa/UAT_SIGNOFF.md" ]; then
+            check_sections "$target_uat" "Sign-Off Metadata" "Testing Summary" "Release Authorization" || true
+        fi
         # 3. Verify Client Single PIC Sign-off: reject blank signature lines (______ or empty signature cell)
         if grep -qiE "Client Single PIC|Approved by Client" "$target_uat"; then
             if grep -qiE "Name[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*\|[[:space:]]*$" "$target_uat"; then
