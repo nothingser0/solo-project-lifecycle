@@ -26,7 +26,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
  ▼ 1. DESIGN.md — from benchmark + logo: tokens, computed WCAG ratios, z-index scale → docs/harness-root/DESIGN.md (staged)
  ▼ 2. Choose prototyping workflow (visual mandatory): A AI prototype code (v0/Bolt/Lovable export into `docs/design/screens/`) | B Design tool export/handoff (Figma/Penpot exported assets/previews into `docs/design/screens/`). (Pure text/markdown abolished).
  ▼ 3. DESIGN_SPEC.md (DESIGN_SPEC_TEMPLATE.md) — every in-scope screen (SCR-01..SCR-NN) with 5-state matrix: Default, Loading Skeleton, Empty, Error, Success
- ▼ 4. (B/C/D only; SKIPPED for A) — prompts via SCREEN_PROMPT_TEMPLATE.md → docs/design/prompts/scr-xx/PROMPT.md; rendered outputs → docs/design/screens/scr-xx/
+ ▼ 4. (Workflow B only; SKIPPED for A) — prompts via SCREEN_PROMPT_TEMPLATE.md → docs/design/prompts/scr-xx/PROMPT.md; rendered outputs → docs/design/screens/scr-xx/
  ▼ 5. Walkthrough + Design Freeze — walkthrough demo (client PIC, or the **human user** self-reviews on solo projects — never the AI agent); sign Design Freeze Sign-Off in DESIGN_SPEC.md
 OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 ```
@@ -42,7 +42,7 @@ OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 **Step 0.5 acceptance (gate-enforced, every scale)**: `docs/design/inspiration/` contains ≥1 file that is not `notes.md`/`README.md`/`NOTES_TEMPLATE.md`/dotfile, and `notes.md` cites a filename that actually exists in that folder. `validate-gate.sh M04` fails without both; M06 re-checks it for projects that started before this rule existed.
 
 ## 2. Outputs
-`docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png) and, for B/C/D, `docs/design/prompts/scr-xx/PROMPT.md` + `docs/design/screens/scr-xx/`.
+`docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png) and, for Workflow B, `docs/design/prompts/scr-xx/PROMPT.md` + `docs/design/screens/scr-xx/`.
 Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbidden). DESIGN.md + DESIGN_SPEC.md mandatory regardless of prototype choice.
 
 ## 3. Gate Exit Criteria [GATE] — BLOCKING Checklist
@@ -58,7 +58,7 @@ Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbid
 - [ ] `docs/specs/SITEMAP.md` exists (≥1000B Small / ≥2000B Medium+; screen inventory, flows, navigation).
 - [ ] `docs/harness-root/DESIGN.md` exists, staged (≥1000B; palette + typography + z-index scale).
 - [ ] `docs/specs/DESIGN_SPEC.md` exists (≥1000B Small / ≥2000B Medium+; per-screen 5-state specs).
-- [ ] Screen prompts/screens exist iff workflow B/C/D; **screen count match**: SITEMAP total routes == DESIGN_SPEC wireflow screens.
+- [ ] Screen prompts/screens exist iff Workflow B selected; **screen count match**: SITEMAP total routes == DESIGN_SPEC wireflow screens.
 
 ### Accessibility & Anti-Slop (computed, not self-approved)
 - [ ] **WCAG contrast (DESIGN.md tokens, light & dark): primary text ≥7.0:1; secondary + placeholder + status ≥4.5:1; input borders ≥3:1.**
