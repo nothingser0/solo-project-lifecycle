@@ -20,6 +20,9 @@ if [[ -f "$FSD_FILE" ]]; then
 elif [[ -f "$LITE_FILE" ]]; then
     TARGET_FILE="$LITE_FILE"
     echo -e "${YELLOW}ℹ️  Fast-Track mode detected: Using PROJECT_LITE.md instead of FSD.md${NC}"
+elif [[ -f "docs/specs/PROJECT_LITE.md" ]]; then
+    TARGET_FILE="docs/specs/PROJECT_LITE.md"
+    echo -e "${YELLOW}ℹ️  Fast-Track mode detected: Using docs/specs/PROJECT_LITE.md instead of FSD.md${NC}"
 else
     echo -e "${RED}❌ Neither docs/specs/FSD.md nor PROJECT_LITE.md found${NC}"
     exit 1

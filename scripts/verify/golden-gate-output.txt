@@ -131,7 +131,7 @@
      Add e.g. 'Approved: <date> by <name>' to each block below, or un-tick them:
        - M06-DB-01: Schema
   ❌ TODO.md missing core category tasks for 'M06-SETUP-xx'!
-  ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-03)!
+  ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-xx Specs Pre-Read)!
   ✅ AGENTS.md technical quality and engineering guidelines verified
   ❌ RUNBOOK_LOCAL.md (MISSING)
   ❌ VERIFY_LOCAL.md (MISSING)

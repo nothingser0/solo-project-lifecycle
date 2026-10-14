@@ -102,15 +102,15 @@ gate_M06() {
             echo "  ✅ Atomic task categories verified across all scales in TODO.md (SETUP, DB, BE, FE)"
         fi
         # Mandatory specs pre-read task must exist and be completed
-        if grep -qiE "M06-SETUP-03|Specs Pre-Read|Pre-Read Sign-Off" "$target_todo"; then
-            if grep -iE "M06-SETUP-03|Pre-Read Sign-Off" "$target_todo" | grep -qE "^\s*-\s*\[x\]"; then
-                echo "  ✅ Specs pre-read task verified (M06-SETUP-03 completed)"
+        if grep -qiE "M06-SETUP-[0-9]+.*(Specs Pre-Read|Pre-Read|Read Specs)|Specs Pre-Read|Pre-Read Sign-Off" "$target_todo"; then
+            if grep -iE "M06-SETUP-[0-9]+.*(Specs Pre-Read|Pre-Read|Read Specs)|Specs Pre-Read|Pre-Read Sign-Off" "$target_todo" | grep -qE "^\s*-\s*\[x\]"; then
+                echo "  ✅ Specs pre-read task verified (Specs Pre-Read completed)"
             else
-                echo "  ❌ Specs pre-read task (M06-SETUP-03) present but NOT completed! Read AGENTS/CONTEXT/PROJECT_LITE/FSD/PRD before coding."
+                echo "  ❌ Specs pre-read task present but NOT completed! Read AGENTS/CONTEXT/PROJECT_LITE/FSD/PRD before coding."
                 GATE_FAILED=1
             fi
         else
-            echo "  ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-03)!"
+            echo "  ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-xx Specs Pre-Read)!"
             GATE_FAILED=1
         fi
     fi
