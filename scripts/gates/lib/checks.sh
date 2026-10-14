@@ -359,6 +359,8 @@ check_stack_questionnaire() {
     local target=""
     if [ -f "PROJECT_LITE.md" ]; then
         target="PROJECT_LITE.md"
+    elif [ -f "docs/specs/PROJECT_LITE.md" ]; then
+        target="docs/specs/PROJECT_LITE.md"
     elif [ -f "docs/specs/FSD.md" ]; then
         target="docs/specs/FSD.md"
     fi
@@ -421,6 +423,7 @@ check_stack_questionnaire() {
 check_handoff_strategy() {
     local fsd="docs/specs/FSD.md"
     local lite="PROJECT_LITE.md"
+    [ ! -f "$lite" ] && [ -f "docs/specs/PROJECT_LITE.md" ] && lite="docs/specs/PROJECT_LITE.md"
     local target=""
     if is_small_scale && [ -f "$lite" ]; then
         target="$lite"
@@ -460,6 +463,7 @@ check_handoff_strategy() {
 check_security_blueprint() {
     local fsd="docs/specs/FSD.md"
     local lite="PROJECT_LITE.md"
+    [ ! -f "$lite" ] && [ -f "docs/specs/PROJECT_LITE.md" ] && lite="docs/specs/PROJECT_LITE.md"
     local target=""
     if is_small_scale && [ -f "$lite" ]; then
         target="$lite"
@@ -504,6 +508,7 @@ check_tech_signoff() {
     local doc="" label=""
     if is_small_scale; then
         doc="PROJECT_LITE.md"; label="PROJECT_LITE.md"
+        [ ! -f "$doc" ] && [ -f "docs/specs/PROJECT_LITE.md" ] && { doc="docs/specs/PROJECT_LITE.md"; label="docs/specs/PROJECT_LITE.md"; }
     else
         doc="docs/specs/FSD.md"; label="FSD.md"
         [ -f "$doc" ] || { doc="docs/specs/PRD.md"; label="PRD.md"; }
