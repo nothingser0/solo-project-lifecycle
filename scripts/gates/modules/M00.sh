@@ -186,7 +186,7 @@ gate_M00() {
                 KILL)   echo "  ❌ Waitlist conversion $pct% is in the KILL band (< 2.0%)" ;;
             esac
         else
-            echo "  ❌ Waitlist-Conversion-Pct missing or still an unresolved placeholder in M00_LITE.md!"
+            echo "  ❌ Waitlist-Conversion-Pct missing or still an unresolved placeholder in $validation_file!"
             GATE_FAILED=1
         fi
 
@@ -217,7 +217,7 @@ gate_M00() {
         # interviews, so a PASS must carry a named human validator + real date.
         if [ "$declared" = "PASS" ]; then
             if sed 's/\*//g' "$validation_file" 2>/dev/null \
-                | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z].*[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
+                | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z0-9_].*[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
                 echo "  ✅ Human validation recorded (Validated-by: <name> on <date>)"
             else
                 echo "  ❌ $validation_file is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research."
@@ -274,7 +274,7 @@ gate_M00() {
                 echo "  ✅ Gate decision verified: PASS"
                 # Human attribution, same rule as the lite path.
                 if sed 's/\*//g' "docs/pm/USER_RESEARCH_REPORT.md" 2>/dev/null \
-                    | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z].*[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
+                    | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z0-9_].*[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
                     echo "  ✅ Human validation recorded (Validated-by: <name> on <date>)"
                 else
                     echo "  ❌ USER_RESEARCH_REPORT.md is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research."
