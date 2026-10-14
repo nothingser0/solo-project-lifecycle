@@ -18,7 +18,7 @@ gate_M07() {
         check_optional "docs/qa/SIT_WORKBOOK.md"
     else
     check_required "docs/qa/SIT_WORKBOOK.md"
-    # Anti-vibe-code polish audit (medium+): 22 tells must be checked on the deployed URL.
+    # Anti-vibe-code polish audit (medium+): 32 tells must be checked on the deployed URL.
     if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
         polish_content=$(cat "docs/qa/POLISH_AUDIT.md" 2>/dev/null || true)
         if echo "$polish_content" | grep -qiE "NOT READY"; then
@@ -49,10 +49,10 @@ gate_M07() {
             echo "  ❌ SIT_WORKBOOK.md missing explicit PASS attestation ('SIT PASS' / 'READY FOR UAT')!"
             GATE_FAILED=1
         fi
-        if echo "$sit_content" | grep -qiE "https?://[^[:space:]]+"; then
+        if echo "$sit_content" | grep -qiE "(staging[_-]url|environment[_-]url|target[_-]url|base[_-]url)[[:space:]]*:[[:space:]]*https?://|https?://[a-zA-Z0-9.-]*(staging|preview|vercel\.app|railway\.app|fly\.dev|pages\.dev|render\.com)"; then
             echo "  ✅ SIT_WORKBOOK.md references a staging/environment URL"
         else
-            echo "  ❌ SIT_WORKBOOK.md missing staging environment URL!"
+            echo "  ❌ SIT_WORKBOOK.md missing explicit staging environment URL (e.g. Staging-URL: https://...)!"
             GATE_FAILED=1
         fi
         # Reject any failed scenario: an explicit FAIL cell or a non-zero Failed-column count.

@@ -57,17 +57,17 @@ Thresholds: ~50 VUs, average latency ≤200 ms, zero 500 errors (no DB connectio
 Build `docs/qa/SIT_WORKBOOK.md` from `templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md`: test plan, per-integration sandbox evidence (payment/vault/email), audit & load results, defect log, sign-off conclusion **READY FOR CLIENT UAT**.
 
 ### Step 7 — Anti-Vibe-Code Polish Audit (run on the DEPLOYED staging URL)
-Tests pass ≠ looks finished. Build `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` and check all 25 tells **on the live staging URL, on a real phone**: horizontal scroll, favicon, meta description, custom 404, image weight, stock hero, loading states, spacing scale, default Tailwind blue, copyright year, OG preview image, broken links, page title, leftover placeholder text, console errors, hover/focus states, empty states, font count, form error messages, dead buttons, slop comments, race conditions, cliché eyebrow badges, fake stats, purple text gradients.
+Tests pass ≠ looks finished. Build `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` and check all 32 tells **on the live staging URL, on a real phone**: horizontal scroll, favicon, meta description, custom 404, image weight, stock hero, loading states, spacing scale, default Tailwind blue, copyright year, OG preview image, broken links, page title, leftover placeholder text, console errors, hover/focus states, empty states, font count, form error messages, dead buttons, slop comments, race conditions, cliché eyebrow badges, fake stats, purple text gradients, spec leaks, emoji icons, layout deviation, media/3D CLS, database base64 bloat, FOUC theme flash, unbounded rate limits.
 - Run on **Slow 4G + 375px viewport** — desktop devtools hides most of these.
 - Every row needs evidence (screenshot path, command output, or URL). "Looks fine" is not evidence.
 - 🧑 **HUMAN-ONLY — cannot be verified by any script**: the **real-phone** pass. The agent can run the emulated viewport checks and gather every other row, but "on a real phone" means the human holds the device. Record it as `Real-device pass: pending <name>` and **end the turn** — the agent must not mark the row passing on emulation alone.
-- **Blocking tells** (1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20, **22 = unprotected race condition**) must be fixed before sign-off; the rest (incl. 21 slop comments) are logged as polish.
-- Re-verify all 22 on the production domain during M10 PVT (CDN/env differences surface new tells).
+- **Blocking tells** (must be fixed before sign-off per `POLISH_AUDIT_TEMPLATE.md`).
+- Re-verify all tells on the production domain during M10 PVT (CDN/env differences surface new tells).
 
 ## Outputs
 1. **`docs/qa/SIT_WORKBOOK.md`** — SIT plan + pass evidence, conclusion: READY FOR CLIENT UAT (prerequisite for M09 UAT).
 2. **`docs/qa/SECURITY_AUDIT.md`** — dependency audit results, OWASP/header status, secret-scan and encryption verification (also accepted as `docs/qa/SECURITY_AUDIT_REPORT.md`).
-3. **`docs/qa/POLISH_AUDIT.md`** — 25-tell anti-vibe-code + code-quality audit with per-row evidence; conclusion READY / NOT READY.
+3. **`docs/qa/POLISH_AUDIT.md`** — 32-tell anti-vibe-code + code-quality audit with per-row evidence; conclusion READY / NOT READY.
 
 ## Gate Exit Criteria [GATE]
 - [ ] All unit + integration tests pass (exit 0).
