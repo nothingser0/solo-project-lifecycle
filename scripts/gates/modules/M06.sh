@@ -217,6 +217,24 @@ gate_M06() {
         else
             echo "  ✅ Anti-slop: no narrating/stub comments detected in source"
         fi
+        # 4b. Internal spec ID & slot leaks in UI/view layer (BLOCKER)
+        # Catches SCR-xx, [WASM Canvas slot], [slot], etc. leaking into user-facing markup/templates
+        spec_leaks=$(grep -rInE "(SCR-[0-9]{2,}|\[.*(slot|placeholder|canvas).*\])" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts)" | wc -l | tr -d ' ')
+        if [ "${spec_leaks:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${spec_leaks} internal spec identifier(s) / slot placeholder(s) leaking in source (e.g. SCR-xx, [slot])!"
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero internal spec identifiers / slot placeholders leaked in source"
+        fi
+        # 4c. Raw emoji in UI components (ADVISORY — row 26 of POLISH_AUDIT: prefer SVG icon library)
+        raw_emojis=$(grep -rInP "[\x{1F300}-\x{1FAD6}\x{1F600}-\x{1F64F}\x{2700}-\x{27BF}]" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json)" | wc -l | tr -d ' ')
+        if [ "${raw_emojis:-0}" -gt 0 ]; then
+            echo "  ⚠️  Anti-slop advisory: found ${raw_emojis} raw emoji character(s) in source. Use SVG icons (e.g. Lucide) instead of OS emoticons."
+        else
+            echo "  ✅ Anti-slop: zero raw emoticons detected in UI source"
+        fi
         # 5. Hydration discipline.
         # Only a component that is ACTUALLY HYDRATED can mismatch, so the scan is
         # hydration-model aware — the same pattern means opposite things per stack:
@@ -316,6 +334,14 @@ EOF
                 echo "  ⚠️  Anti-slop advisory: ${unlocked} UPDATE on shared state outside a locked transaction (row 22 of POLISH_AUDIT). Verify each has a row lock, unique constraint, or compare-and-swap."
             else
                 echo "  ✅ Anti-slop: no unlocked read-modify-write detected on shared state"
+            fi
+        fi
+        # 7. Design inspiration adherence verification
+        if [ -d "docs/design/inspiration" ] && [ "$(find docs/design/inspiration -type f 2>/dev/null | wc -l)" -gt 0 ]; then
+            if [ -f "DESIGN.md" ]; then
+                echo "  ✅ Visual inspiration: reference files present in docs/design/inspiration/ and DESIGN.md tracked"
+            else
+                echo "  ⚠️  Visual inspiration: inspiration files present but DESIGN.md missing at root"
             fi
         fi
     fi

@@ -51,6 +51,9 @@
 | 23 | **Cliché eyebrow badge / AI pill** | No decorative capsule pills above H1 (`[ ✨ AI Powered ]`, `[ Next-Gen ]`, `[ Beta ]`) with thin glowing borders. Headline goes straight to clear domain capability. | | [ ] |
 | 24 | **Fabricated stats & testimonials** | Zero invented metrics ("10,000+ users", "99.9% uptime", "500M queries") and zero fake avatar testimonials. Real evidence only. | | [ ] |
 | 25 | **Purple-to-blue gradient text** | No generic `bg-gradient-to-r from-blue-600 to-purple-600` text clips. Typography styling uses solid contrast tokens from `DESIGN.md`. | | [ ] |
+| 26 | **Leaked spec IDs & slot placeholders** | Zero internal spec IDs (`SCR-01`, `SCR-02`) or technical placeholder text (`[WASM Canvas slot]`, `[slot]`, `[placeholder]`) leaking into rendered UI. View layer contains customer-facing domain copy only. | | [ ] |
+| 27 | **Raw emoji / emoticons in place of icons** | Zero raw OS emoji used as action/nav icons. Standardized SVG icon system (e.g. Lucide React) used consistently. | | [ ] |
+| 28 | **Layout deviation from inspiration** | Rendered layout faithfully reflects spatial hierarchy, padding density, and navigation structure from `docs/design/inspiration/` and `DESIGN.md`. | | [ ] |
 
 ---
 
@@ -86,7 +89,7 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 ## D. Verdict
 
 - **Tells found**: [X] / 25
-- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder), **22 (unprotected race condition)**, and **23, 24, 25 (AI slop tells)**.
+- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder), **22 (unprotected race condition)**, **23, 24, 25 (AI slop tells)**, and **26, 27, 28 (spec leaks, emoji icons, layout deviation)**.
 - **Non-blocking but logged**: 21 (slop comments) and the remaining polish rows.
 - **Non-blocking polish (fix before M10 or log as post-launch)**: the remainder.
 

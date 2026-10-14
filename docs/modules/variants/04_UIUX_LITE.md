@@ -12,6 +12,13 @@ The LITE path shrinks the artifacts; it never waives the input. **Before any art
 - `notes.md` is the agent's analysis, **never** the reference. A benchmark that cites no existing file is fabrication.
 - Gate-enforced: `validate-gate.sh M04` (and `M06`, for projects that started before this rule) fails until a human-supplied file exists and `notes.md` cites it by filename.
 
+## Step 1.5 — Prototyping Workflow Choice (MANDATORY STOP)
+
+The agent must **NEVER silently default to Workflow A (Markdown-only)**. Before generating `DESIGN_SPEC.md`, ask the human:
+1. **Workflow A (Markdown-only)**: Text spec and state tables only (fastest, no visual previews).
+2. **Workflow B (Visual Screen Previews - RECOMMENDED)**: Renders HTML/CSS preview files per screen into `docs/design/screens/` so the human can open and review the actual look-and-feel in a browser before Design Freeze.
+🛑 **STOP AND ASK, END TURN** until the user explicitly selects Workflow A or B. Record the choice in `DESIGN_SPEC.md` (`Prototyping-Workflow: A` or `B`).
+
 ## Artifacts (all required, 1 page or less each)
 
 1. `docs/specs/LOGO_DESIGN_BRIEF.md` — name, vibe, seed colors. **Logo placeholder rule**: initials SVG at `assets/logo/logo.svg` is acceptable (monogram 1–2 letters, brand accent, ≥50B).

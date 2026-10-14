@@ -128,7 +128,7 @@
   ❌ TODO.md: completed task(s) missing a human approval line in their Evidence.
      Add e.g. 'Approved: <date> by <name>' to each block below, or un-tick them:
        - M06-DB-01: Schema
-  ✅ Full-stack atomic task categories verified in TODO.md (DB, BE, FE)
+  ❌ TODO.md missing core category tasks for 'M06-SETUP-xx'!
   ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-03)!
   ✅ AGENTS.md technical quality and engineering guidelines verified
   ❌ RUNBOOK_LOCAL.md (MISSING)
@@ -139,6 +139,9 @@
   ✅ Anti-slop: zero placeholder TODO stubs in source
   ✅ Anti-slop: zero obvious hardcoded secrets in source
   ✅ Anti-slop: no narrating/stub comments detected in source
+  ✅ Anti-slop: zero internal spec identifiers / slot placeholders leaked in source
+  ✅ Anti-slop: zero raw emoticons detected in UI source
+  ✅ Visual inspiration: reference files present in docs/design/inspiration/ and DESIGN.md tracked
   ⚠️  ARCHITECTURE.md (optional, not found)
   ⚠️  CONVENTIONS.md (optional, not found)
 
@@ -151,7 +154,7 @@
 ============================================================
 === M07: Quality Assurance & SIT Gate Checklist (medium+ only) ===
   ❌ docs/qa/SIT_WORKBOOK.md (MISSING)
-  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 22-tell anti-vibe-code audit on the deployed URL)
+  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 25-tell anti-vibe-code audit on the deployed URL)
   ⚠️  docs/qa/SECURITY_AUDIT.md (optional, not found)
 
 ============================================================

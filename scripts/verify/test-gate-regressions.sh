@@ -258,7 +258,7 @@ expect_inspiration() {
 expect_inspiration "M04 inspiration folder empty (agent must stop and ask)" BLOCKED
 expect_inspiration "M04 only notes.md — and it cites its own fabricated benchmark" BLOCKED "notes.md:Selected Benchmark: Linear"
 expect_inspiration "M04 notes.md cites a file that does not exist" BLOCKED "notes.md:Linear reference-9-missing.png"
-expect_inspiration "M04 human screenshot + notes.md citing it" ALLOWED "notes.md" "reference-1-dashboard.png"
+expect_inspiration "M04 human screenshot + notes.md citing it" ALLOWED "notes.md:reference-1-dashboard.png" "reference-1-dashboard.png:binary-data"
 
 # B. Stack questionnaire (M05) — the marker alone must not pass.
 printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$WORK/pl_noq.md"
