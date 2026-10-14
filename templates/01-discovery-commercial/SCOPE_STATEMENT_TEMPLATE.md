@@ -208,7 +208,7 @@ Scope-P0-Count: [number]
 Scope-Lock-Decision: PENDING
 ```
 
-*(`Scope-P0-Count` must be a real number that equals the counted `| **F-xx** | ... (Must|P0)` rows — the validator rejects the `[number]` placeholder and any mismatch. `Scope-Lock-Decision`: LOCKED | PENDING. The M02 gate also rejects: P0 count outside scale limits (Small 3-7, Medium 8-15, Large 16-25), ambiguous terms in Must-Have rows, fewer than 3 numbered Out-of-Scope exclusions, a missing Data Confidence Legend, a missing RBAC zero self-approval guardrail, and legal/tax text published without a `LEGAL-REVIEW` marker).*
+*(`Scope-P0-Count` must be a real number that equals the counted `| **F-xx** | ... (Must|P0)` rows — the validator rejects the `[number]` placeholder and any mismatch. `Scope-Lock-Decision`: LOCKED | PENDING. The M02 gate also rejects: P0 count outside scale limits (Small 1-5, Medium 6-15, Large 16-25), ambiguous terms in Must-Have rows, fewer than 3 numbered Out-of-Scope exclusions, a missing Data Confidence Legend, a missing RBAC zero self-approval guardrail, and legal/tax text published without a `LEGAL-REVIEW` marker).*
 
 ---
 
