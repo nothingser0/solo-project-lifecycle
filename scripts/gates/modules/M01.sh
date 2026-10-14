@@ -22,8 +22,10 @@ gate_M01() {
     check_scale_feasibility || true
 
     if [ $is_m01_waived -eq 1 ]; then
-        # Small path: neither brief is required, but confirm the lite spec exists.
-        check_optional "docs/pm/IDEA_BRIEF.md" "PROJECT_LITE.md"
+        # Small path: neither brief is required, but confirm the lite spec exists (root or docs/specs/).
+        local lite_target="PROJECT_LITE.md"
+        [ -f "$lite_target" ] || lite_target="docs/specs/PROJECT_LITE.md"
+        check_optional "docs/pm/IDEA_BRIEF.md" "$lite_target"
     else
         # PROJECT_STATE.md carries the scale decision and every Intake answer, so a
         # non-Small run must fail without it. check_intake_gate only fails on a

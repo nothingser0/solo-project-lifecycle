@@ -10,19 +10,20 @@ gate_M05() {
     check_intake_gate || true
     if is_small_scale; then
         echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
-        check_required "PROJECT_LITE.md" "" 1000
-        if [ -f "PROJECT_LITE.md" ]; then
-            if grep -iE "^\s*-\s*Feature|^\s*[0-9]+\.\s*\*\*\[Feature" "PROJECT_LITE.md" | grep -qiE "TBD|maybe|tentative|TBA|if time permits"; then
-                echo "  ❌ Ambiguous terms (TBD/maybe/tentative) detected in PROJECT_LITE.md Must-Have features!"
+        local lite="PROJECT_LITE.md"
+        [ -f "$lite" ] || lite="docs/specs/PROJECT_LITE.md"
+        check_required "$lite" "PROJECT_LITE.md" 1000
+        if [ -f "$lite" ]; then
+            if grep -iE "^\s*-\s*Feature|^\s*[0-9]+\.\s*\*\*\[Feature" "$lite" | grep -qiE "TBD|maybe|tentative|TBA|if time permits"; then
+                echo "  ❌ Ambiguous terms (TBD/maybe/tentative) detected in $lite Must-Have features!"
                 GATE_FAILED=1
             else
-                echo "  ✅ Zero ambiguous terms in PROJECT_LITE.md Must-Have features"
+                echo "  ✅ Zero ambiguous terms in $lite Must-Have features"
             fi
-            # Check Section 5 Architecture contains DDL/tables and API routes
-            if grep -qiE "CREATE TABLE|model|table|database|schema" "PROJECT_LITE.md" && grep -qiE "/api|GET|POST|endpoints|routes" "PROJECT_LITE.md"; then
-                echo "  ✅ Section 5 Architecture in PROJECT_LITE.md contains database schema and API contracts"
+            if grep -qiE "CREATE TABLE|model|table|database|schema" "$lite" && grep -qiE "/api|GET|POST|endpoints|routes" "$lite"; then
+                echo "  ✅ Section 5 Architecture in $lite contains database schema and API contracts"
             else
-                echo "  ❌ Section 5 Architecture in PROJECT_LITE.md missing database schema or API endpoint definitions!"
+                echo "  ❌ Section 5 Architecture in $lite missing database schema or API endpoint definitions!"
                 GATE_FAILED=1
             fi
         fi

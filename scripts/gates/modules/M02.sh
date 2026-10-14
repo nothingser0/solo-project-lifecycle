@@ -22,7 +22,9 @@ gate_M02() {
     check_scale_feasibility || true
 
     if [ $is_m02_waived -eq 1 ]; then
-        check_optional "docs/pm/SCOPE_STATEMENT.md" "PROJECT_LITE.md"
+        local lite_target="PROJECT_LITE.md"
+        [ -f "$lite_target" ] || lite_target="docs/specs/PROJECT_LITE.md"
+        check_optional "docs/pm/SCOPE_STATEMENT.md" "$lite_target"
     else
         check_required "docs/pm/SCOPE_STATEMENT.md" "" 2000
     if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
@@ -68,7 +70,7 @@ gate_M02() {
             | grep -oiE "small|medium|large|enterprise|solo[ -]?saas" | head -1 \
             | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
         case "$declared_scale" in
-            small)      lo=3;  hi=7 ;;
+            small)      lo=1;  hi=5 ;;
             medium|solo-saas) lo=8; hi=15 ;;
             large)      lo=16; hi=25 ;;
             # Enterprise (>25 P0) is out of solo capacity and routed to the A-Series
