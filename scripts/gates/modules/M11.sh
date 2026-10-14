@@ -60,6 +60,18 @@ gate_M11() {
                     echo "  ✅ BAST signed by both parties"
                 fi
             fi
+            # 4. Core section headings verification for formal BAST
+            if [ "$target_bast" = "docs/pm/BAST.md" ] || [ "$target_bast" = "contracts/BAST.md" ]; then
+                check_sections "$target_bast" "Article 1" "Article 2" "Article 3" || true
+            fi
+        fi
+
+        # User manual is mandatory for Medium+ client projects
+        m11_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
+        if [ "$m11_scale" = "medium" ] || [ "$m11_scale" = "large" ] || [ "$m11_scale" = "enterprise" ]; then
+            check_required "docs/USER_MANUAL.md" "docs/pm/USER_MANUAL.md" 500
+        else
+            check_optional "docs/USER_MANUAL.md" "docs/pm/USER_MANUAL.md"
         fi
 
         # For Large scale, technical handover protocol is MANDATORY
@@ -71,7 +83,6 @@ gate_M11() {
     fi
     check_optional "docs/pm/GO_LIVE_REPORT.md"
     check_optional "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md"
-    check_optional "docs/USER_MANUAL.md"
     echo ""
     echo "⚠️  DO NOT transfer repo/credentials until 100% payment confirmed"
 }
