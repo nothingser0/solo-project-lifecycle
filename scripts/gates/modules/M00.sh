@@ -88,7 +88,7 @@ gate_M00() {
         echo "  [INFO] Detected M00-lite rapid validation path (Solo SaaS)"
         check_required "$validation_file" ""
         check_sections "$validation_file" \
-            "Riskiest Assumption Register" "User Discovery" "Behavioral Intent" "Kill Criteria"
+            "Riskiest Assumption Register" "User Discovery" "Behavioral Intent" "Unit Economics" "Kill Criteria"
 
         # 1. Unresolved template placeholders (generic bracket scan + allowlist).
         local leftovers

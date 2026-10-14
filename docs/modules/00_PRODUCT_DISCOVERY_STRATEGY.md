@@ -63,7 +63,7 @@ fails on any mismatch with the §5 arithmetic). Research not yet run → `PENDIN
 - 🧑 **HUMAN-ONLY — cannot be verified by any script**: conducting the 5–10 interviews, running the surveys/waitlist, and collecting the deposits or signed LOIs are the **human's** actions. The agent may draft instruments, summarise transcripts the human supplies, and fill the report — it must **not** invent responses, and it cannot tell whether the interviews actually happened. If the human has not run them, the agent records `PENDING_PRIMARY_RESEARCH` and **ends the turn**; it never proceeds on assumed research.
 - Confidence legend: ✅ VERIFIED / 🔶 ASSUMPTION / ❓ UNKNOWN.
 - Survey design: screener → pain severity (Likert) → Van Westendorp WTP → intent-to-buy. Gate bar: see §1b (any one PASS signal closes the gate).
-- Output: anonymized interview summaries, survey charts, personas, journey map, pain Impact-Effort matrix.
+- Output: anonymized interview summaries with verbatim quotes and explicit nominal WTP, survey charts, personas, journey map, pain Impact-Effort matrix.
 
 ### Step 4 — Product Strategy (`docs/pm/PRODUCT_STRATEGY.md`)
 - Vision (3–5 yr) / Mission (tactical, differentiated); **North Star Metric** with formula, rationale, target, breakdown tree — must be instrumentable (no vanity metrics like "registered users").

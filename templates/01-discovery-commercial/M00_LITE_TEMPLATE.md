@@ -45,6 +45,9 @@
 ## 4. Qualitative User Discovery (5 User Interviews)
 
 > ⚠️ **EVIDENCE RULE**: Data must originate from real user conversations. Never fabricate quotes.
+> Requirements for `✅ Real` status:
+> 1. Verbatim quote detailing measurable past pain (not hypothetical interest).
+> 2. Specific stated Willingness-to-Pay (WTP) in nominal currency (e.g. "Rp 100k/mo"), not vague approval.
 > State must explicitly be marked as `✅ Real` for verified customer conversations or `⏳ Pending` for planned ones.
 
 | Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
