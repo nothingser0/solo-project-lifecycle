@@ -16,7 +16,7 @@ The LITE path shrinks the artifacts; it never waives the input. **Before any art
 
 The agent must **NEVER silently default to Workflow A (Markdown-only)**. Before generating `DESIGN_SPEC.md`, ask the human:
 1. **Workflow A (Markdown-only)**: Text spec and state tables only (fastest, no visual previews).
-2. **Workflow B (Visual Screen Previews - RECOMMENDED)**: Renders HTML/CSS preview files per screen into `docs/design/screens/` so the human can open and review the actual look-and-feel in a browser before Design Freeze.
+2. **Workflow B (Visual Screen Previews - RECOMMENDED)**: Places interactive HTML/CSS/component preview files per screen into `docs/design/screens/` (supporting state toggles: Default, Loading, Empty, Error) so the human can test actual user flows and edge cases directly in a browser before Design Freeze.
 🛑 **STOP AND ASK, END TURN** until the user explicitly selects Workflow A or B. Record the choice in `DESIGN_SPEC.md` (`Prototyping-Workflow: A` or `B`).
 
 ## Artifacts (all required, 1 page or less each)

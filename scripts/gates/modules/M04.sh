@@ -104,12 +104,12 @@ gate_M04() {
         wf=$(grep -iE "^Prototyping-Workflow:\s*[ABCD]" "docs/specs/DESIGN_SPEC.md" | grep -oiE "[ABCD]" | head -1 | tr '[:lower:]' '[:upper:]')
         if [ "$wf" = "B" ] || [ "$wf" = "C" ] || [ "$wf" = "D" ]; then
             echo "  [INFO] Prototyping-Workflow: $wf (visual/AI/design-tool) — per-screen output is MANDATORY."
-            prompt_files=$(find docs/design/prompts -name "PROMPT.md" 2>/dev/null | wc -l | tr -d ' ')
-            screen_files=$(find docs/design/screens -mindepth 2 -type f 2>/dev/null | wc -l | tr -d ' ')
-            if [ "${prompt_files:-0}" -ge 1 ] && [ "${screen_files:-0}" -ge 1 ]; then
-                echo "  ✅ Per-screen outputs present (prompts: $prompt_files, screens: $screen_files)"
+            # Allow flat files in docs/design/screens/*.html or nested subfolders docs/design/screens/scr-xx/
+            screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" \) 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${screen_files:-0}" -ge 1 ]; then
+                echo "  ✅ Interactive screen preview outputs present (found $screen_files preview files)"
             else
-                echo "  ❌ Workflow $wf selected but per-screen outputs missing! Create docs/design/prompts/scr-xx/PROMPT.md and docs/design/screens/scr-xx/ for every screen."
+                echo "  ❌ Workflow $wf selected but interactive screen previews missing! Place HTML/component prototypes in docs/design/screens/."
                 GATE_FAILED=1
             fi
         fi
