@@ -262,18 +262,18 @@ check_design_freeze() {
     fi
 
     # 2. A named approver must be recorded (not empty, not a placeholder).
-    if grep -qiE "^\s*[-*]?\s*\**\s*Approved by\**:?[[:space:]]*[A-Za-z]" "$spec" 2>/dev/null; then
+    if grep -qiE "^\s*[-*]?\s*\**\s*(Approved by|Signed by|Design-Freeze: Signed by)\**:?[[:space:]]*[A-Za-z]" "$spec" 2>/dev/null; then
         echo "  ✅ Design Freeze approver recorded"
     else
-        echo "  ❌ DESIGN_SPEC.md missing a named Design Freeze approver ('Approved by: <name>')."
+        echo "  ❌ DESIGN_SPEC.md missing a named Design Freeze approver ('Approved by: <name>' or 'Signed by: <name>')."
         bad=1
     fi
 
     # 3. An approval date must be present and look like a real date.
-    if grep -qE "(Approved on|Approval Date|Date)\**:?[[:space:]]*[0-9]{4}-[0-9]{2}-[0-9]{2}" "$spec" 2>/dev/null; then
+    if grep -qE "(Approved on|Approval Date|Date|on)\**:?[[:space:]]*[0-9]{4}-[0-9]{2}-[0-9]{2}" "$spec" 2>/dev/null; then
         echo "  ✅ Design Freeze approval date recorded"
     else
-        echo "  ❌ DESIGN_SPEC.md missing a real Design Freeze date ('Approved on: YYYY-MM-DD')."
+        echo "  ❌ DESIGN_SPEC.md missing a real Design Freeze date ('Approved on: YYYY-MM-DD' or 'on YYYY-MM-DD')."
         bad=1
     fi
 

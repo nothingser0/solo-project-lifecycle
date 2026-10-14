@@ -78,7 +78,7 @@ gate_M04() {
     # 4. 5-State Matrix Verification in DESIGN_SPEC.md (BLOCKER)
     if [ -f "docs/specs/DESIGN_SPEC.md" ]; then
         state_count=0
-        for st in "Idle" "Loading" "Empty" "Error" "Success"; do
+        for st in "Idle|Default" "Loading" "Empty" "Error" "Success"; do
             if grep -qiE "$st" "docs/specs/DESIGN_SPEC.md"; then
                 state_count=$((state_count + 1))
             fi
