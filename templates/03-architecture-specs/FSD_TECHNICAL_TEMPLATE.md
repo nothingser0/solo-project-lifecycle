@@ -133,10 +133,11 @@ sequenceDiagram
 ### Stack Decision (LOCKED — human decision, gate-enforced)
 
 Stack Decision LOCKED: [chosen stack]
-Stack-Locked-by: [name of the human who chose it — the AI agent presents options but may not choose]
+Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 
-> `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without the 8
-> recorded questionnaire answers below. The agent asks; the human answers.
+> ⚠️ **M05 GATE ENFORCEMENT**: `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without the 8
+> recorded questionnaire answers below, or if `Stack-Locked-by:` still contains brackets or template placeholders.
+> The agent asks the 8 questions; the human answers and locks the stack. Replace `[Human Name]` with the actual human name.
 
 - Q1 Team Expertise: [answer]
 - Q2 Database Experience: [answer]
