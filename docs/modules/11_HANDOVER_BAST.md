@@ -60,7 +60,7 @@ Small → 1 optional Meet session, quickstart guide, `BAST_EMAIL_SMALL.md`. Medi
 ## 🛑 [GATE] EXIT & MANDATORY STOP PROTOCOL
 
 ### STEP 0 — File Existence (BLOCKING)
-`test -f docs/pm/BAST.md` (Small accepts `docs/pm/BAST_EMAIL_SMALL.md`). Missing → **STOP**, report `CRITICAL ERROR: File BAST.md was not created. Module 11 FAILED - cannot proceed to Module 12 (Warranty & SLA).` END TURN.
+`test -f docs/pm/BAST.md` (Small accepts `docs/pm/BAST_EMAIL_SMALL.md`; Medium+ client delivery also requires `docs/USER_MANUAL.md`). Missing → **STOP**, report `CRITICAL ERROR: Mandatory handover file (BAST.md or USER_MANUAL.md) was not created. Module 11 FAILED - cannot proceed to Module 12 (Warranty & SLA).` END TURN.
 
 ### STEP 1 — Content & Payment Validation
 1. No Module 12 (warranty) kickoff until this [GATE] passes and the user approves — M11 is a contractual stop (SKILL.md rule 3); "No Pay, No Root" applies throughout.

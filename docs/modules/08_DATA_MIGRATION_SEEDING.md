@@ -21,7 +21,7 @@ Transfers client legacy data (CSV/Excel/SQL) into the new FSD schema — **Stagi
 
 ## Outputs
 
-1. `docs/pm/DATA_MIGRATION_PLAN.md`
+1. `docs/pm/DATA_MIGRATION_PLAN.md` (or `docs/pm/DATA_MIGRATION_LITE.md` for lightweight SMB migrations)
 2. `docs/pm/MIGRATION_RECONCILIATION_REPORT.md`
 3. Staging database populated with masked data, ready for UAT.
 
@@ -31,7 +31,7 @@ Transfers client legacy data (CSV/Excel/SQL) into the new FSD schema — **Stagi
 
 M08 is **PASS** when all of the following hold:
 
-- [ ] Column mapping (`docs/pm/DATA_MIGRATION_PLAN.md`) agreed with the client.
+- [ ] Column mapping (`docs/pm/DATA_MIGRATION_PLAN.md` or `DATA_MIGRATION_LITE.md`) agreed with the client.
 - [ ] ETL ran with **no foreign key integrity errors**.
 - [ ] PII masked on staging (UU PDP compliant).
 - [ ] `rejected-rows.csv` produced and handed over to the client.
