@@ -22,7 +22,7 @@ gate_M13() {
     if [ $is_m13_waived -eq 1 ]; then
         check_optional "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md"
     else
-        check_required "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md"
+        check_required "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md" 1000
         # Content verification for METRICS_BASELINE_REPORT.md (BLOCKER)
         metrics_target="docs/analytics/METRICS_BASELINE_REPORT.md"
         [ -f "$metrics_target" ] || metrics_target="docs/pm/METRICS_BASELINE_REPORT.md"
@@ -34,12 +34,7 @@ gate_M13() {
                 GATE_FAILED=1
             fi
             # 2. Require core metrics baseline dimensions (Acquisition, Activation, Retention)
-            if echo "$metrics_content" | grep -qiE "Acquisition|Signups" && echo "$metrics_content" | grep -qiE "Activation" && echo "$metrics_content" | grep -qiE "Retention"; then
-                echo "  ✅ Core metrics baseline dimensions verified (Acquisition, Activation, Retention)"
-            else
-                echo "  ❌ $metrics_target missing core metrics baseline pillars (Acquisition, Activation, Retention)!"
-                GATE_FAILED=1
-            fi
+            check_sections "$metrics_target" "Acquisition" "Activation" "Retention" || true
         fi
         # For Large scale, RICE-scored growth experiment backlog is MANDATORY
         m13_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
