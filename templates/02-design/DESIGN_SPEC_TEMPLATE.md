@@ -226,7 +226,7 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 ## Machine Validation Summary (M04 Gate)
 
 ```text
-Prototyping-Workflow: [A|B|C|D]
+Prototyping-Workflow: [A|B|C]
 ```
 
-*(A = Markdown-only: `docs/design/prompts/` & `docs/design/screens/` are OPTIONAL. B/C/D = Visual Builder / AI Prototype / Design Tool: the gate REQUIRES populated `docs/design/prompts/scr-xx/PROMPT.md` and `docs/design/screens/scr-xx/` output folders — the module CANNOT be closed until those files physically exist.)*
+*(A = Visual HTML Click-Dummy in `docs/design/screens/`. B = AI Prototype v0/Lovable. C = Figma/Penpot manual design. Visual preview is mandatory to eliminate AI slop.)*

@@ -100,10 +100,10 @@ gate_M04() {
             fi
         fi
 
-        # 6. Prototyping Workflow enforcement (B/C/D require physical screen/prompt output)
-        wf=$(grep -iE "^Prototyping-Workflow:\s*[ABCD]" "docs/specs/DESIGN_SPEC.md" | grep -oiE "[ABCD]" | head -1 | tr '[:lower:]' '[:upper:]')
-        if [ "$wf" = "B" ] || [ "$wf" = "C" ] || [ "$wf" = "D" ]; then
-            echo "  [INFO] Prototyping-Workflow: $wf (visual/AI/design-tool) — per-screen output is MANDATORY."
+        # 6. Prototyping Workflow enforcement (Visual prototypes MANDATORY: A/B/C)
+        wf=$(grep -iE "^Prototyping-Workflow:\s*[ABC]" "docs/specs/DESIGN_SPEC.md" | grep -oiE "[ABC]" | head -1 | tr '[:lower:]' '[:upper:]')
+        if [ "$wf" = "A" ] || [ "$wf" = "B" ] || [ "$wf" = "C" ]; then
+            echo "  [INFO] Prototyping-Workflow: $wf (visual preview mandatory)."
             # Allow flat files in docs/design/screens/*.html or nested subfolders docs/design/screens/scr-xx/
             screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" \) 2>/dev/null | wc -l | tr -d ' ')
             if [ "${screen_files:-0}" -ge 1 ]; then

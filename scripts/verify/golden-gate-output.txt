@@ -84,6 +84,8 @@
   ✅ DESIGN.md z-index layering scale verified
   ✅ DESIGN_SPEC.md 5-state matrix markers verified (4/5 states detected)
   ✅ DESIGN.md Typography & Spacing sections verified
+  [INFO] Prototyping-Workflow: A (visual preview mandatory).
+  ✅ Interactive screen preview outputs present (found 1 preview files)
   ✅ Screen count match verified (SITEMAP 2 vs DESIGN_SPEC 2, tolerance ±0)
   ❌ DESIGN_SPEC.md still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Name]). The human signs the Design Freeze before M06.
   ❌ DESIGN_SPEC.md missing a named Design Freeze approver ('Approved by: <name>').

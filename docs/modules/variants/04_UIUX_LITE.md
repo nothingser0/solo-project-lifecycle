@@ -15,10 +15,10 @@ The LITE path shrinks the artifacts; it never waives the input. **Before any art
 ## Step 1.5 — Prototyping Workflow Choice (MANDATORY STOP)
 
 Visual preview is mandatory to eliminate AI slop. Before generating `DESIGN_SPEC.md`, ask the human:
-1. **Workflow B (Visual Screen Previews - RECOMMENDED)**: Places interactive HTML/CSS/component preview files per screen into `docs/design/screens/` (supporting state toggles: Default, Loading, Empty, Error) so the human can test actual user flows and edge cases directly in a browser before Design Freeze.
-2. **Workflow C (AI Prototyping)**: Export prompts for v0.dev / Bolt.new / Lovable.
-3. **Workflow D (Design Tool)**: Figma or Penpot dev handoff.
-🛑 **STOP AND ASK, END TURN** until the user explicitly selects Workflow B, C, or D. Record the choice in `DESIGN_SPEC.md` (`Prototyping-Workflow: B`, `C`, or `D`). (Workflow A / text-only prototyping is abolished).
+1. **Workflow A (Visual HTML Previews - RECOMMENDED)**: Places interactive HTML/CSS/component preview files per screen into `docs/design/screens/` (supporting state toggles: Default, Loading, Empty, Error) so the human can test actual user flows and edge cases directly in a browser before Design Freeze.
+2. **Workflow B (AI Prototyping)**: Export prompts for v0.dev / Bolt.new / Lovable.
+3. **Workflow C (Design Tool)**: Figma or Penpot dev handoff.
+🛑 **STOP AND ASK, END TURN** until the user explicitly selects Workflow A, B, or C. Record the choice in `DESIGN_SPEC.md` (`Prototyping-Workflow: A`, `B`, or `C`).
 
 ## Artifacts (all required, 1 page or less each)
 

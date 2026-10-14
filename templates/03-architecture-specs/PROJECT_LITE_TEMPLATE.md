@@ -188,10 +188,9 @@ CREATE TABLE core_entities (
 
 | Level | Situation | Conversion Approach |
 | :--- | :--- | :--- |
-| **1** | Markdown-only spec (Workflow A) | Rebuild each screen directly in the locked stack; no code to port |
-| **2** | Static HTML / click-dummy (Workflow B) | Translate markup into components; map tokens |
-| **3** | AI-generated prototype code, same framework (Workflow C) | Clean and wire the generated components; refactor to conventions |
-| **4** | Figma/designer handoff or hybrid (Workflow D/E) | Extract components from the design; rebuild on the frozen layout |
+| **1** | Static HTML / click-dummy (Workflow A) | Translate markup into components; map tokens |
+| **2** | AI-generated prototype code, same framework (Workflow B) | Clean and wire the generated components; refactor to conventions |
+| **3** | Figma/designer handoff (Workflow C) | Extract components from the design; rebuild on the frozen layout |
 
 **Conversion Plan**: 1. Extract [n] components from `COMPONENT_REQUIREMENTS.md` → 2. Map `DESIGN.md` tokens to [Tailwind/theme config] → 3. Rebuild screens in [framework], static first, then data-backed.
 **Estimated Conversion Time**: [X days]
