@@ -68,6 +68,6 @@ gate_M10() {
         echo "  [INFO] Large / Enterprise scale detected: Emergency Rollback Plan is MANDATORY."
         check_required "docs/pm/ROLLBACK_PLAN.md" "docs/ROLLBACK_PLAN.md" 500
     else
-    check_optional "docs/ROLLBACK_PLAN.md" "docs/pm/ROLLBACK_PLAN.md"
+        check_optional "docs/ROLLBACK_PLAN.md" "docs/pm/ROLLBACK_PLAN.md"
     fi
 }

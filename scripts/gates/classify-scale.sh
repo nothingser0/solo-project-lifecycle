@@ -161,7 +161,7 @@ if [ "$TIER" -ge 3 ]; then
         echo "⛔ SOLO CAPACITY GATE: $FINAL_SCALE EXCEEDS SOLO DEVELOPER CAPACITY."
         echo "   No non-delegable obligation was declared, so this is a CAPACITY risk —"
         echo "   which the human may accept in writing. Required: $ACCEPTANCE_FILE"
-        echo "   Copy templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md and complete"
+        echo "   Copy templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md to $ACCEPTANCE_FILE and complete"
         echo "   Accepted-By (a real human) + Accepted-On (YYYY-MM-DD)."
         echo "   Exit code: 2 (blocked pending a written risk acceptance)."
         exit 2

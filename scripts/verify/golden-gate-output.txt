@@ -212,8 +212,8 @@
 === M11: Handover & BAST Gate Checklist ===
   ❌ docs/pm/BAST.md (MISSING)
   ❌ docs/USER_MANUAL.md (MISSING)
-  ⚠️  docs/pm/GO_LIVE_REPORT.md (optional, not found)
   ⚠️  docs/pm/HANDOVER_PROTOCOL.md (optional, not found)
+  ⚠️  docs/pm/GO_LIVE_REPORT.md (optional, not found)
 
 ⚠️  DO NOT transfer repo/credentials until 100% payment confirmed
 

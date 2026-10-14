@@ -79,10 +79,11 @@ gate_M11() {
             || [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
             echo "  [INFO] Large / Enterprise scale detected: Technical Handover Protocol is MANDATORY."
             check_required "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md" 500
+        else
+            check_optional "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md"
         fi
     fi
     check_optional "docs/pm/GO_LIVE_REPORT.md"
-    check_optional "docs/pm/HANDOVER_PROTOCOL.md" "docs/HANDOVER_PROTOCOL.md"
     echo ""
     echo "⚠️  DO NOT transfer repo/credentials until 100% payment confirmed"
 }
