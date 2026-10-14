@@ -49,17 +49,25 @@ Then present **2–3 options** with cost/pros/cons and let **the user LOCK the s
 
 Reasoning for the chosen stack; **alternatives rejected with reasons**; topology aligned with budget & scale. Content must adapt to the stack (PostgreSQL → SQL DDL, MongoDB → Mongoose, Laravel → Eloquent migrations, Django → ORM — never AI-SLOP generic schemas; anti-patterns in deep dive).
 
-### STEP 3: Database Schema Design (ERD & DDL)
+### STEP 3: Database Schema & Object Storage Design (ERD, DDL & Media Architecture)
 
 - **Visual ERD (Mermaid)**: Wajib memuat diagram relasi visual `erDiagram` (Mermaid) yang menggambarkan kardinalitas (one-to-many, many-to-many) antar entitas inti.
 - **DDL & Performance Indexes**: Tables, PK/FK, CHECK constraints, composite indexes pada kolom query/foreign keys (`idx_*`) — syntax per chosen DB.
+- **Object Storage & Media Architecture (Zero Base64 in DB)**:
+  - If project handles media uploads (images, avatars, documents, 3D models): define dedicated object storage buckets (e.g. S3, Supabase Storage, Cloudflare R2).
+  - Explicit size boundaries: max file upload limit (e.g. `MAX_UPLOAD_SIZE = 5MB` for images, `15MB` for 3D/canvas models).
+  - Explicit mime-type validation and CDN caching policy (`Cache-Control: public, max-age=31536000, immutable`).
+  - Storing raw base64 strings in relational database columns is strictly prohibited.
 - Audit trail: `created_at`, `updated_at`, `actor_id`, soft-delete.
 - Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
 - `idempotency_keys` table for all POST mutations of financial/stock state.
 
-### STEP 4: API Endpoint Matrix (≥10 endpoints — gate-enforced)
+### STEP 4: API Endpoint Matrix & Realtime Transport (≥10 endpoints — gate-enforced)
 
 - HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; style per stack (REST/GraphQL/tRPC).
+- **Realtime & Offline Transport Architecture** (if applicable: collaborative canvas, live chat, notifications):
+  - Explicit transport protocol: WebSocket / Supabase Realtime / Server-Sent Events (SSE). Polling loops (`setInterval`) are forbidden for realtime flows.
+  - Reconnection & state recovery strategy on network drop.
 - **One heading per endpoint** (`#### POST /api/v1/...`) — the gate counts these headings and fails below 10.
 
 ### STEP 5: Security Blueprint + Module 04 Handoff (both gate-enforced)

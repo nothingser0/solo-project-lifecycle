@@ -24,9 +24,10 @@ Visual preview and interaction polish are mandatory to eliminate AI slop. Before
 1. `docs/specs/LOGO_DESIGN_BRIEF.md` — name, vibe, seed colors. **Logo placeholder rule**: initials SVG at `assets/logo/logo.svg` is acceptable (monogram 1–2 letters, brand accent, ≥50B).
 2. `docs/specs/SITEMAP.md` — screen inventory + navigation (≥1000B).
 3. `docs/specs/COMPONENT_REQUIREMENTS.md` — lean inventory, primitives + composites only (≥1000B).
-4. `docs/design/inspiration/notes.md` — **exactly 1 benchmark** (e.g., Linear, Vercel, TailwindUI, Stripe) with reason + palette hexes (≥200B), citing the human's reference file from Step 0.5 by name.
-5. `docs/harness-root/DESIGN.md` — tokens: palette (computed WCAG ratios), typography, spacing, z-index scale (≥1000B).
-6. `docs/specs/DESIGN_SPEC.md` — **5-state matrix (Default, Loading, Empty, Error, Success) on primary screens only** (1–3 main data screens); secondary screens need Default state only. The **human user** signs the Design Freeze line (self-approval + date) — an AI agent may never sign or self-approve it.
+4. `assets/media/` (optional) — dedicated directory for custom illustrations, Lottie animations, Spline/3D models (.splinecode, .glb), or reference media.
+5. `docs/design/inspiration/notes.md` — **exactly 1 benchmark** (e.g., Linear, Vercel, TailwindUI, Stripe) with reason + palette hexes (≥200B), citing the human's reference file from Step 0.5 by name.
+6. `docs/harness-root/DESIGN.md` — tokens: palette (computed WCAG ratios), typography, spacing, z-index scale (≥1000B).
+7. `docs/specs/DESIGN_SPEC.md` — **5-state matrix (Default, Loading, Empty, Error, Success) on primary screens only** (1–3 main data screens); secondary screens need Default state only. The **human user** signs the Design Freeze line (self-approval + date) — an AI agent may never sign or self-approve it.
 
 ## Anti-slop minimums (unchanged, computed not self-approved)
 
