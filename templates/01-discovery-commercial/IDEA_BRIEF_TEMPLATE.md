@@ -100,7 +100,7 @@
 | Feasibility Dimension | Score (1–5) | Confidence | Solo Developer Analysis, Reality Checks & Mitigations |
 | :--- | :---: | :---: | :--- |
 | **1. Technical Feasibility** (`Technical`) | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
-| **2. Bandwidth Feasibility — Solo Effort** (`Operational`) | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
+| **2. Operational Feasibility — Solo Effort** (`Operational`) | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
 | **3. Regulatory & Legal Feasibility** (`Regulatory`) | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
 | **4. Commercial Feasibility — Unit Economics** (`Financial`) | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
 | **OVERALL AVERAGE SCORE** | **[ ] / 5** | — | *(Total score divided by 4; `GO` requires average ≥ 3.5, else use `CONDITIONAL_GO`)* |
@@ -125,15 +125,16 @@ Mitigation: [required when the decision is CONDITIONAL_GO]
 
 ### 5.1 Bandwidth Epic Breakdown Audit
 - Total Must-Have Features: `[X]` features
-- Raw Development Epic Sum: `[X]` weeks (CRUD: 3-5 days/feature, Complex: 1.5-2 weeks/feature)
+- Raw Development Epic Sum: `[X]` weeks (CRUD: 1-2 days/feature using modern component scaffolding, Complex: 1-1.5 weeks/feature)
 - Buffered Development Weeks (+20%): `[X]` weeks
 - Non-Development Overhead (Small: 1w, Medium: 3-4w, Large: 6-7w): `[X]` weeks
 - **Total Calculated Weeks**: `[X]` weeks (vs Initial Timeline Claim: `[Y]` weeks)
 - Variance: `[Z]%` (Must be ≤ 20% or timeline claim must be adjusted)
 
-### 5.2 Legal Compliance Checklist (UU PDP No. 27/2022)
+### 5.2 Legal Compliance Checklist (UU PDP No. 27/2022 & Solo Guardrails)
 - [ ] **Privacy Policy (Kebijakan Privasi)** planned (data collection, retention, deletion rights)
 - [ ] **Terms of Service (Syarat & Ketentuan)** planned (liability limits, dispute resolution)
+- [ ] **Payment Delegated**: Zero storage of raw cardholder / sensitive financial credentials (delegated to licensed gateway: Midtrans / Xendit / Stripe)
 - [ ] **Data Processing Agreement (DPA)** planned for third-party cloud processors (Supabase/AWS)
 - [ ] **Disclaimers**: Financial estimation / tax disclaimers formulated
 
