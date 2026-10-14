@@ -21,14 +21,16 @@ You are a Senior Software Engineer responsible for building this system determin
 
 ## 2. Tech Stack & Project Commands
 
-- **Framework**: Next.js (App Router) / Node.js
-- **Language**: TypeScript (Strict Mode)
+*(Adapt this section to the LOCKED tech stack from M05: Next.js / Laravel / Go / Django / etc. Default shown for Next.js stack):*
+
+- **Framework**: Next.js (App Router) / Node.js (or Laravel / Go / Django as locked in M05)
+- **Language**: TypeScript (Strict Mode) / PHP / Go / Python
 - **Styling**: Tailwind CSS + Shadcn UI / Interactive Prototype-based components
-- **Database & ORM**: PostgreSQL 16 + Prisma ORM / Drizzle ORM
-- **Data Validation**: Zod (Parse, don't validate)
+- **Database & ORM**: PostgreSQL 16 + Prisma ORM / Drizzle ORM (or Eloquent / GORM / Django ORM)
+- **Data Validation**: Zod (Parse, don't validate) / Form Requests / Pydantic
 - **File Storage**: S3-compatible (Cloudflare R2 / AWS S3) encrypted with AES-256-GCM
 
-### Essential Commands:
+### Essential Commands (example for Node/TypeScript stack):
 ```bash
 # Run local development server
 npm run dev
@@ -52,6 +54,10 @@ npm run test:smoke
 
 1. **Type Discipline**:
    - Using `any`, `@ts-ignore`, or `@ts-expect-error` is PROHIBITED. Enforce `strict: true` and `noUncheckedIndexedAccess: true` in `tsconfig.json`.
+1b. **No Invented Imports / APIs (Zero Hallucination)**:
+   - Before importing any 3rd-party library or symbol, you MUST verify it is declared in the project's dependency manifest (`package.json`, `go.mod`, `composer.json`, etc.) and the export actually exists in official documentation. Never hallucinate package APIs or invent uninstalled packages.
+1c. **No Lazy Truncation (Complete Code Output)**:
+   - NEVER output `// ... rest of the code` or `/* existing code remains unchanged */` when generating or editing files. Always preserve existing functionality and produce complete, valid source code without truncating needed functions.
 2. **Context Integrity**:
    - BEFORE creating new API endpoints or new database tables, you MUST read `ARCHITECTURE.md` and `CONTEXT.md`.
    - BEFORE creating or editing UI component styling, you MUST read `DESIGN.md`.
