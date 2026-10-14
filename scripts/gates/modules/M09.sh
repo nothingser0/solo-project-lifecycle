@@ -55,7 +55,8 @@ gate_M09() {
             GATE_FAILED=1
         fi
         # 2b. Reject unresolved Severity 1 & 2 defects in report
-        if grep -qiE "Sev(erity)?[[:space:]]*[12].*(Open|Unresolved|Pending)" "$target_uat"; then
+        # Catches lines where Sev 1 or 2 is explicitly open/unresolved (avoid matching '0 Open')
+        if grep -qiE "Sev(erity)?[[:space:]]*[12].*:[[:space:]]*[1-9][0-9]*[[:space:]]*(Open|Unresolved|Pending)|Sev(erity)?[[:space:]]*[12].*(Status:[[:space:]]*(Open|Unresolved))" "$target_uat"; then
             echo "  ❌ $target_uat reports unresolved Severity 1 or 2 defects! All blockers must be RESOLVED before production."
             GATE_FAILED=1
         fi
