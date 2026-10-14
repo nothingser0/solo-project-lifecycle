@@ -31,7 +31,7 @@ gate_M07() {
             GATE_FAILED=1
         fi
     else
-        echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 25-tell anti-vibe-code audit on the deployed URL)"
+        echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 32-tell anti-vibe-code audit on the deployed URL)"
         GATE_FAILED=1
     fi
     # Content verification (BLOCKER): workbook must attest a real PASS, not FAILED / NOT EXECUTED.

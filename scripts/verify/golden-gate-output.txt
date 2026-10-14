@@ -155,7 +155,7 @@
 ============================================================
 === M07: Quality Assurance & SIT Gate Checklist (medium+ only) ===
   ❌ docs/qa/SIT_WORKBOOK.md (MISSING)
-  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 25-tell anti-vibe-code audit on the deployed URL)
+  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 32-tell anti-vibe-code audit on the deployed URL)
   ⚠️  docs/qa/SECURITY_AUDIT.md (optional, not found)
 
 ============================================================
