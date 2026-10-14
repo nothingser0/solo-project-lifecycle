@@ -58,6 +58,8 @@ npm run test:smoke
    - Before importing any 3rd-party library or symbol, you MUST verify it is declared in the project's dependency manifest (`package.json`, `go.mod`, `composer.json`, etc.) and the export actually exists in official documentation. Never hallucinate package APIs or invent uninstalled packages.
 1c. **No Lazy Truncation (Complete Code Output)**:
    - NEVER output `// ... rest of the code` or `/* existing code remains unchanged */` when generating or editing files. Always preserve existing functionality and produce complete, valid source code without truncating needed functions.
+1d. **Native Platform First (Zero Redundant Dependencies)**:
+   - Prefer native platform APIs (`fetch`, Web APIs, standard libraries, CSS-native solutions) over pulling in redundant dependencies (e.g. avoid adding `lodash` or `axios` when native standard library suffices). Never install an external package for what 3 lines of native code can accomplish.
 2. **Context Integrity**:
    - BEFORE creating new API endpoints or new database tables, you MUST read `ARCHITECTURE.md` and `CONTEXT.md`.
    - BEFORE creating or editing UI component styling, you MUST read `DESIGN.md`.

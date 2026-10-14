@@ -205,6 +205,7 @@ check_feasibility_brief() {
 # Returns 1 (and sets GATE_FAILED) when a completed task lacks the marker.
 check_task_approval() {
     local todo="TODO.md"
+    [ -f "$todo" ] || todo="docs/harness-root/TODO.md"
     [ -f "$todo" ] || return 0
 
     # The task-id pattern must NOT require bold markers. It used to be

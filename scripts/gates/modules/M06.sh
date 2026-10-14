@@ -90,6 +90,7 @@ gate_M06() {
         # (without it, 'set -e' aborts here and hides every later check).
         check_task_approval || true
         # Universal: Core atomic task categories (SETUP, DB, BE, FE) required across ALL scales.
+        # Note: If project is client-only / pure-frontend / no-DB, tasks marked 'N/A' satisfy this requirement.
         has_core_categories=1
         for cat in "SETUP" "DB" "BE" "FE"; do
             if ! grep -qiE "M06-${cat}-[0-9]+" "$target_todo"; then
