@@ -17,6 +17,8 @@ You are a Senior Software Engineer responsible for building this system determin
 7. **Mandatory Design Assets & Interaction Polish (Frontend-First)**: If specific screen designs exist, convert them directly to stack code preserving all micro-interactions, smooth hover transitions, and interactive polish (including 3D/canvas slots like Spline/Three.js or Framer Motion when specified). If screen designs do not exist, code the UI directly referencing `DESIGN.md`, logo briefs, and `docs/design/inspiration/`. Generic monochrome boilerplate is strictly prohibited.
 8. **Backend Concrete Verification (Zero Mocking in Production Paths)**: Every backend action/endpoint must be verified against actual database state. Dummy UUIDs (e.g., `11111111-...`), fake success responses, and empty `catch {}` blocks are strictly forbidden.
 9. **Media & Storage Architecture (Zero Base64 in Database)**: When storing uploaded files, images, or documents, upload to dedicated object storage / CDN and store the resulting URL. Storing raw base64 data URLs in database columns is STRICTLY PROHIBITED. All 3D/canvas slots must use aspect-ratio containers to prevent Cumulative Layout Shift (CLS).
+10. **Git Hygiene & Secret Protection**: Ensure `.gitignore` is present at the project root and explicitly excludes `.env*`, build artifacts, and node_modules. NEVER stage or commit `.env` or `.env.local` files containing secrets.
+11. **Theme Discipline (Zero FOUC)**: If supporting Dark/Light theme switching, prevent Flash of Unstyled Content (FOUC) by utilizing server-rendered classes, `color-scheme` CSS meta, or synchronous inline theme detection scripts in the `<head>`.
 
 ---
 

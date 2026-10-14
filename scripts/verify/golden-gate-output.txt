@@ -140,6 +140,7 @@
   ✅ Anti-slop: zero type-suppression escape hatches in source
   ✅ Anti-slop: zero placeholder TODO stubs in source
   ✅ Anti-slop: zero obvious hardcoded secrets in source
+  ❌ Git hygiene: .gitignore is missing from project root! Create .gitignore to prevent leaking secrets/build artifacts.
   ✅ Anti-slop: no narrating/stub comments detected in source
   ✅ Anti-slop: zero internal spec identifiers / slot placeholders leaked in source
   ✅ Anti-slop: zero raw emoticons detected in UI source

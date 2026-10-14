@@ -211,6 +211,19 @@ gate_M06() {
         else
             echo "  ✅ Anti-slop: zero obvious hardcoded secrets in source"
         fi
+        # 3b. Gitignore & Secret Leak Guard (BLOCKER across all scales)
+        # Prevents committing .env, .env.local, or secrets to public repositories
+        if [ -f ".gitignore" ]; then
+            if grep -qE "^\s*\.env" ".gitignore"; then
+                echo "  ✅ Git hygiene: .gitignore exists and protects .env files"
+            else
+                echo "  ❌ Git hygiene: .gitignore found but does NOT ignore .env files (missing '.env*')!"
+                GATE_FAILED=1
+            fi
+        else
+            echo "  ❌ Git hygiene: .gitignore is missing from project root! Create .gitignore to prevent leaking secrets/build artifacts."
+            GATE_FAILED=1
+        fi
         # 4. Narrating / stub comments (ADVISORY — row 21 of POLISH_AUDIT; subjective, so non-blocking)
         slop_cmt=$(grep -rInE "(//|#)[[:space:]]*(Increment|Import|Get the|Set the|Initialize|Create a|This (function|method|class) (is|will)|Add your logic|Loop through|Return the result)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
         if [ "${slop_cmt:-0}" -gt 0 ]; then

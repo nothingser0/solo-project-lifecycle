@@ -58,6 +58,9 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
   - Explicit size boundaries: max file upload limit (e.g. `MAX_UPLOAD_SIZE = 5MB` for images, `15MB` for 3D/canvas models).
   - Explicit mime-type validation and CDN caching policy (`Cache-Control: public, max-age=31536000, immutable`).
   - Storing raw base64 strings in relational database columns is strictly prohibited.
+- **Cascade Soft-Delete & Data Retention Architecture**:
+  - For financial records, invoices, orders, and core entities: enforce soft-delete (`deleted_at TIMESTAMP WITH TIME ZONE`).
+  - Queries, views, or RLS policies MUST include automatic filtering for parent-child relationships (e.g. child records of a soft-deleted parent workspace/user are automatically excluded from active queries).
 - Audit trail: `created_at`, `updated_at`, `actor_id`, soft-delete.
 - Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
 - `idempotency_keys` table for all POST mutations of financial/stock state.
@@ -65,6 +68,8 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 ### STEP 4: API Endpoint Matrix & Realtime Transport (≥10 endpoints — gate-enforced)
 
 - HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; style per stack (REST/GraphQL/tRPC).
+- **Rate Limit & Cost Ceilings Guardrails**:
+  - Sensitive endpoints (Auth, OTP email, AI inference, file upload) MUST specify rate limit boundaries (e.g., max 5 requests/min per IP/user) to prevent billing shocks on third-party SaaS APIs.
 - **Realtime & Offline Transport Architecture** (if applicable: collaborative canvas, live chat, notifications):
   - Explicit transport protocol: WebSocket / Supabase Realtime / Server-Sent Events (SSE). Polling loops (`setInterval`) are forbidden for realtime flows.
   - Reconnection & state recovery strategy on network drop.

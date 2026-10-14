@@ -56,6 +56,8 @@
 | 28 | **Layout deviation from inspiration** | Rendered layout faithfully reflects spatial hierarchy, padding density, and navigation structure from `docs/design/inspiration/` and `DESIGN.md`. | | [ ] |
 | 29 | **Media & 3D layout shift (CLS)** | Image/media assets are modern formats (WebP/AVIF, <500KB). 3D/canvas slots have fixed aspect-ratio containers to prevent Cumulative Layout Shift. | | [ ] |
 | 30 | **Base64 bloat in database** | Uploaded media files use object storage/CDN URLs. Zero raw base64 data URLs stored in relational database columns. | | [ ] |
+| 31 | **Theme flashing (FOUC)** | Dark/Light mode toggle does not flash unstyled white background on page reload (inline `<script>` / `color-scheme` guard in `<head>`). | | [ ] |
+| 32 | **Unbounded rate limiting on auth/upload** | Auth login, OTP requests, and media uploads enforce visible rate limiting or cooldowns to protect against brute force and billing spikes. | | [ ] |
 
 ---
 
@@ -91,7 +93,7 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 ## D. Verdict
 
 - **Tells found**: [X] / 25
-- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder), **22 (unprotected race condition)**, **23, 24, 25 (AI slop tells)**, **26, 27, 28 (spec leaks, emoji icons, layout deviation)**, and **29, 30 (media/3D layout shift, database base64 bloat)**.
+- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder), **22 (unprotected race condition)**, **23, 24, 25 (AI slop tells)**, **26, 27, 28 (spec leaks, emoji icons, layout deviation)**, and **29, 30, 31, 32 (media/3D layout shift, database base64 bloat, FOUC theme flash, unbounded rate limits)**.
 - **Non-blocking but logged**: 21 (slop comments) and the remaining polish rows.
 - **Non-blocking polish (fix before M10 or log as post-launch)**: the remainder.
 
