@@ -155,7 +155,15 @@ gate_M03() {
                 GATE_FAILED=1
             fi
 
-            # 9. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix
+            # 9. IP Ownership clause (source code retention until 100% paid)
+            if grep -qiE "Intellectual Property|IP Ownership|Hak Cipta|property of the Developer until|ownership.*transfers.*upon.*full" "$target_sow"; then
+                echo "  ✅ Intellectual Property (IP) ownership retention clause present"
+            else
+                echo "  ❌ Intellectual Property (IP) clause missing! Developer retains IP until 100% milestone paid."
+                GATE_FAILED=1
+            fi
+
+            # 10. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix
             if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
                 echo "  [INFO] Enterprise scale detected: Risk Assessment Matrix & RACI Matrix MANDATORY in M03."
                 check_required "docs/governance/RISK_ASSESSMENT_MATRIX.md" "docs/pm/RISK_REGISTER.md" 500
