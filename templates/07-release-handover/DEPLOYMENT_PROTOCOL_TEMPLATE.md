@@ -82,10 +82,12 @@ curl -Iv https://app.client.com
 
 ### 4. Monitoring & Alert Bot Activation (Observability)
 
+- [ ] **Deep Health Check**: `/api/health` endpoint actively verifies live database query execution and cache connectivity (returns HTTP 503 if DB unreachable, HTTP 200 when healthy).
 - [ ] **Error Tracking**: Production Sentry DSN confirmed receiving test error events.
 - [ ] **Uptime Ping**: Uptime Kuma / BetterStack actively monitoring `https://app.client.com/api/health` endpoint every 60 seconds.
 - [ ] **Telegram/Slack/WA Alert**: Downtime notification bot connected to solo developer device.
-- [ ] **Auto-Backup**: Daily backup cron job at 02:00 confirmed active.
+- [ ] **Auto-Backup & Restoration Test**: Daily backup cron job at 02:00 confirmed active; sample backup dump verified restorable.
+- [ ] **DNS Cutover Pre-Requisite**: DNS TTL lowered to 300s (5m) prior to official domain point.
 
 ---
 

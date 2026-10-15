@@ -106,7 +106,7 @@
 ### M10 — Deployment
 | Agent | Human only |
 |---|---|
-| Build, snapshot, verification, protocol documents | **🚫 The deploy itself** (`10:14` "no agent auto-deploy"), Go/No-Go, DNS pointing, **real Rp-10.000 production payment** (`10:37`), invoice (`10:80`) |
+| Build, snapshot, verification, protocol documents | **🚫 The deploy itself** (`10:14` "no agent auto-deploy"), Go/No-Go, DNS pointing, **real Rp-10.000 production payment** (`10:37`), invoice (`10:82`) |
 
 > ✅ **Gate-enforced**: `Inputs-Received:` record for production access.
 

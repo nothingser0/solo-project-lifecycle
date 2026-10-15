@@ -25,6 +25,8 @@ Promotes UAT-passed code from `staging` to `main`, configures production infra (
 1. **No Friday Deployment**: prohibited Friday PM / weekends / holiday eves → reschedule Tuesday–Thursday 09:00–14:00; ideal **Tue/Wed 09:00–11:00**.
 2. **Zero sandbox keys in prod** — live accounts only (payment, SMTP, storage).
 3. **Rollback plan < 15 min** verified before deploy; no deployment before build + migrations + core tests exit 0 locally.
+4. **Pre-Cutover DNS TTL Reduction**: Lower DNS TTL to 300s (5 minutes) at least 24 hours prior to cutover to guarantee rapid IP propagation and rollback flexibility.
+5. **Deep Health Check Endpoint**: `/api/health` MUST be a deep probe verifying DB read/write connectivity, cache ping, and disk/memory limits (returning `503 Service Unavailable` if dependencies fail), never a shallow static string.
 
 ## 3. Step-by-Step (detail & commands in deep dive)
 
