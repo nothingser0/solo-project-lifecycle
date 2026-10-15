@@ -16,15 +16,10 @@ if [ -z "$TARGET_DIR" ]; then
 fi
 
 # Guard against unsafe path traversals
-case "$TARGET_DIR" in
-    *..*|/*|~*)
-        # Normalize or allow absolute / tilde paths, but prevent pure upward directory traversal escapes
-        if [[ "$TARGET_DIR" =~ \.\./\.\. ]]; then
-            echo "Error: Unsafe directory path '$TARGET_DIR' containing multiple parent traversals is rejected."
-            exit 1
-        fi
-        ;;
-esac
+if [[ "$TARGET_DIR" == *".."* ]]; then
+    echo "Error: Unsafe directory path '$TARGET_DIR' containing parent traversal (..) is rejected."
+    exit 1
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
