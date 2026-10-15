@@ -33,6 +33,11 @@ For each task:
 - **Small (MVP/Internal)**: core DB, UI shell, essential CRUD, smoke tests. Mark billing/webhooks/offline as N/A.
 - **Medium (B2B SaaS/Agency)**: multi-tenant RLS, state journals, mutation idempotency, automated QA.
 - **Large/Enterprise**: row-locking, audit vaults, load testing, disaster recovery.
+- **Enterprise WBS Phasing (A01)**: When project originates from enterprise WBS decomposition, `TODO.md` MUST scope only the currently active Phase (e.g. Phase 1 MVP). Multi-phase backlog dumping into a single TODO is strictly forbidden.
+
+## Database & Transaction Execution Guardrails
+- **Idempotent Seeding**: All database seed scripts (`seed.ts` / seeder classes) must use deterministic static UUIDs and UPSERT / `ON CONFLICT DO NOTHING` statements. Seeding must be re-runnable 10x without violating unique constraints or creating duplicate rows.
+- **Deadlock Prevention Order**: Any transaction acquiring row-level locks on multiple rows or tables must sort entities by primary key (`ORDER BY id ASC`) before locking to mathematically eliminate database deadlocks (`40P01`).
 
 ## Defect Triage Standard (Bug vs Change Request)
 - **Bug (Zero-Cost Correction)**: Behavior deviates from locked `PRD.md` / `FSD.md` / Acceptance Criteria $\rightarrow$ log as immediate bugfix in current sprint.
