@@ -375,4 +375,5 @@ EOF
         check_optional "ARCHITECTURE.md"
         check_optional "CONVENTIONS.md"
     fi
+    check_optional "AI_REVIEW_LOG.md" "docs/qa/AI_REVIEW_LOG.md"
 }

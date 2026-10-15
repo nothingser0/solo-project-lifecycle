@@ -150,6 +150,7 @@
   ✅ Anti-slop: zero internal spec identifiers / slot placeholders leaked in source
   ✅ Anti-slop: zero raw emoticons detected in UI source
   ✅ Visual inspiration: reference files present in docs/design/inspiration/ and DESIGN.md tracked
+  ⚠️  AI_REVIEW_LOG.md (optional, not found)
 
 ============================================================
 ❌ Gate validation FAILED - missing mandatory artifacts
