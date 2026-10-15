@@ -175,6 +175,9 @@
 
 ### 7.1 Modern Font Loading & Breakpoints
 - **Font Module**: Use `next/font/google` (Inter, JetBrains Mono). The deprecated package `@next/font/google` is **strictly prohibited**.
+- **Keyboard Accessibility & Focus Discipline**:
+  - `outline: none` without a visible replacement is strictly prohibited.
+  - All interactive elements (buttons, links, inputs, dialog triggers) MUST implement high-contrast `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary` styling to support rapid keyboard navigation.
 - **Standardized Responsive Breakpoints**:
   - `sm`: 640px (Mobile landscape / compact cards)
   - `md`: 768px (**Definitive switch point** between Mobile Bottom Navigation / Drawer and Desktop Sidebar / Two-Panel layouts)

@@ -38,7 +38,7 @@ OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 3. Full 5-state matrix only for 1–3 main data screens; secondary screens need default state only.
 4. All 6 deliverables still required, proportional and concise (1–2 pages per document).
 
-**Step 0C validation rules**: nomenclature parity (100% names in mapping exist in inventory) · Anti-Disabled Pristine (submit never disabled pristine; click triggers validation + autofocus) · Non-dismissing error/offline toasts · `inputmode="numeric"` for currency, never `type="number"` · Modal dropdown (55) above dialog (50) · Error text ≥13px, ≥4.5:1.
+**Step 0C validation rules**: nomenclature parity (100% names in mapping exist in inventory) · Anti-Disabled Pristine (submit never disabled pristine; click triggers validation + autofocus) · Non-dismissing error/offline toasts · `inputmode="numeric"` for currency, never `type="number"` · Modal dropdown (55) above dialog (50) · Error text ≥13px, ≥4.5:1 · **Mobile Table Card Reflow**: Data tables on viewports `<640px` MUST reflow into stacked key-value cards (never unconstrained horizontal scroll that hides action buttons) · **Focus-Visible Ring Discipline**: Never use `outline: none` without a high-contrast replacement; all interactive controls require explicit `focus-visible:ring-2` for keyboard accessibility.
 
 **Step 0.5 acceptance (gate-enforced, every scale)**: `docs/design/inspiration/` contains ≥1 file that is not `notes.md`/`README.md`/`NOTES_TEMPLATE.md`/dotfile, and `notes.md` cites a filename that actually exists in that folder. `validate-gate.sh M04` fails without both; M06 re-checks it for projects that started before this rule existed.
 
@@ -64,6 +64,7 @@ Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbid
 ### Accessibility & Anti-Slop (computed, not self-approved)
 - [ ] **WCAG contrast (DESIGN.md tokens, light & dark): primary text ≥7.0:1; secondary + placeholder + status ≥4.5:1; input borders ≥3:1.**
 - [ ] **Anti-slop: zero gradients, zero glassmorphism/backdrop-blur, shadows ≤4px, non-color state indicators, 16px mobile inputs, ≥44px touch targets, z-index scale defined, `prefers-reduced-motion` fallbacks on dynamic transitions, and `will-change` restricted to active animating states.**
+- [ ] **Keyboard & Mobile Polish: explicit `focus-visible:ring-2` on all interactive elements (zero unstyled `outline: none`); data tables reflow into stacked cards on mobile viewports `<640px`.**
 
 ### Design Freeze Sign-Off (BLOCKING, in DESIGN_SPEC.md)
 - [ ] Approver name (Client PIC, or the **human user** on solo projects) + date (YYYY-MM-DD) + signature placeholder ("Approved via [email/chat]"). The AI agent is never a valid approver.
