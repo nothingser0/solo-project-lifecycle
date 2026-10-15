@@ -34,7 +34,8 @@
   ✅ Intake Gate: all 9 mandatory fields answered
   [INFO] Running mechanical scale & solo capacity classifier...
   ✅ Solo capacity verified: Scope is executable within solo capacity
-  ✅ docs/pm/SCOPE_STATEMENT.md (1215B)
+  ✅ docs/pm/SCOPE_STATEMENT.md (1275B)
+  ✅ docs/pm/SCOPE_STATEMENT.md core section headings verified (2 headings present)
   ✅ Zero ambiguous terms in Must-Have scope rows
   ❌ Explicit Scope-Lock-Decision (LOCKED | PENDING) not declared in SCOPE_STATEMENT.md!
   [INFO] Declared scale: medium; P0 feature rows (F-xx) counted: 0 (expected 6-15)

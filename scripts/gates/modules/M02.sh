@@ -27,6 +27,7 @@ gate_M02() {
         check_optional "docs/pm/SCOPE_STATEMENT.md" "$lite_target"
     else
         check_required "docs/pm/SCOPE_STATEMENT.md" "" 2000
+    check_sections "docs/pm/SCOPE_STATEMENT.md" "User Stories" "Acceptance Criteria"
     if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
         echo "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY."
         check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md"
