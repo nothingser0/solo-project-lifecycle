@@ -18,6 +18,12 @@ gate_M07() {
         check_optional "docs/qa/SIT_WORKBOOK.md"
     else
     check_required "docs/qa/SIT_WORKBOOK.md"
+    check_sections "docs/qa/SIT_WORKBOOK.md" \
+        "PART I: SIT TEST PLAN" \
+        "PART II: SIT REPORT" \
+        "Third-Party Integration" \
+        "Load & Concurrency Test" \
+        "Sign-Off"
     # Anti-vibe-code polish audit (medium+): 32 tells must be checked on the deployed URL.
     if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
         polish_content=$(cat "docs/qa/POLISH_AUDIT.md" 2>/dev/null || true)
