@@ -1,85 +1,103 @@
 # Motion Design & Interactive Animation Taxonomy
 
-> **Standard Reference**: Technical specifications, implementations, and delivery formats for 60+ modern web, mobile, and digital motion design effects. Mapped to the `solo-project-lifecycle` framework (`docs/specs/COMPONENT_REQUIREMENTS.md` Section 3, `docs/design/inspiration/notes.md`, and `M06-FE-02`).
+> **Standard Reference**: Technical specifications, implementations, and delivery formats for 70+ modern web, mobile, digital, and spatial motion design effects. Mapped to the `solo-project-lifecycle` framework (`docs/specs/COMPONENT_REQUIREMENTS.md` Section 3, `docs/design/inspiration/notes.md`, and `M06-FE-02`).
 
 ---
 
-## 1. Complete Motion & Animation Taxonomy
-
-### 1.1 Web UI & Interaction Primitives (Code-First / CSS & Spring Physics)
-1. **Parallax Scrolling**: Multi-layer background/foreground moving at differing velocity ratios (`useScroll` + `useTransform`).
-2. **Hero Animation (Fly Animation)**: Staggered entrance of key headline, badges, and floating assets upon page mount.
-3. **Hover Effects**: Micro-elevation, gradient border shift, and scale-up on pointer hover (`whileHover={{ scale: 1.02 }}`).
-4. **Micro-Interactions**: Direct feedback for clicks, toggles, likes, and state changes (100–200ms).
-5. **Morphing**: Seamless SVG path interpolation (`d` attribute morphing via Flubber or GSAP MorphSVG).
-6. **Match Cut**: Visual transition where a component in screen A seamlessly morphs into a container in screen B (Framer Motion `layoutId`).
-7. **Wipe / Slide**: Directional screen curtain reveal (left-to-right, clip-path circle wipe).
-8. **Kinetic Typography**: Expressive, dynamic animated typography (variable font weight oscillation, kinetic letter shifts).
-9. **Liquid Motion**: Gooey, fluid organic blending transitions using SVG filters (`feGaussianBlur` + `feColorMatrix`).
-10. **Glitch Effect**: Intentional digital artifacting, RGB split displacement, and scanline flickering via CSS keyframes.
-11. **Staggered Animation (Sequential Reveal)**: Coordinated sequential entrance of lists or child nodes (`staggerChildren: 0.05`).
-12. **Skeleton / Shimmer Loading**: Continuous wave gradient passing across placeholder shapes (`background-position` sweep).
-13. **Pull-to-Refresh Animation**: Elastic over-drag trigger with circular spinner or custom SVG character deformation.
-14. **Overlay & Obscuration**: Dimmed or blurred backdrop canvas (`backdrop-blur-md` + opacity ease) isolating active dialogs.
-15. **Sticky / Magnetic Motion**: Interactive elements snapping or magnetically pulling toward cursor position within radius.
-16. **Dolly & Zoom**: Camera focal distance shift or container scale transformation during scroll.
-17. **Glassmorphism / Glossy Motion**: Realtime refraction and specular highlight sheen sweeping across frosted glass surfaces.
-18. **Mega Menu Transitions**: Height/width auto-interpolating navigation dropdown container adapting to varying sub-content.
-19. **Hero Animated Visual**: Ambient motion in the key visual container (mesh gradient drift, floating cards).
-20. **Scrollytelling (Scroll-Triggered Animation)**: Viewport-scrubbed narrative flow pinning elements while content unfolds.
-21. **Swipe-to-Action (Contextual Swiping)**: Horizontal swipe revealing delete/archive action drawers with spring threshold.
-22. **Bottom Sheet Slide-In**: Touch-draggable modal sliding up from screen bottom with snap-points.
-23. **Drag-and-Drop Feedback**: Card lift, tilt, shadow expansion, and placeholder gap opening during layout reordering.
-24. **Progress Indicators / Lottie Bar**: Segmented, circular, or bespoke animated completion bars.
-25. **Interruptible Animation**: Animations that dynamically cancel or reverse without visual jumping when user inputs collide.
-26. **Staggered Layout Reveal (Orchestration)**: Global orchestrator timing the sequence between navigation, hero, and sidebar.
-27. **Parenting / Spatial Anchoring**: Child elements inheriting translation, rotation, or scale offsets from a primary anchor.
-28. **Value Transition / Counter Easing**: Animated numeric roll/count-up (`requestAnimationFrame` easing) for dashboards.
-29. **Spring Physics (Elastic Motion)**: Natural oscillation governed by `stiffness`, `damping`, and `mass` parameters.
-30. **Card Flipping / Origami Fold**: 3D perspective fold (`rotateY(180deg)`) revealing card back or unfolded panel.
-31. **Bento Grid Expansion**: Dynamic layout morph where a compact bento tile smoothly expands into a full view container.
-32. **Infinite Horizontal Marquee**: Continuous seamless loop of partner logos or ticker text without stutter.
-33. **Contextual Edge Swiping**: Mobile navigation gesture triggering page transitions from viewport screen edges.
-34. **Pinch-to-Scale & Rotate**: Multi-touch gesture scaling and rotating images or canvas elements smoothly.
-35. **Sticker / Peel-Off Transition**: Interactive peeling corner effect revealing content underneath with realistic shadow gradient.
-36. **Ambient Background Motion / Aurora Drift**: Soft, slow-moving blurred gradient orbs floating in background canvas.
-37. **Masked Reveal / Mouse Spotlight**: Radial gradient mask following mouse coordinates revealing hidden layers or grid lines.
-38. **Idle Floating / Hover Levitation**: Gentle perpetual floating animation (`y: [0, -8, 0]`) simulating weightlessness.
-39. **CSS Keyframes**: Performant, declarative GPU-accelerated transforms (`transform`, `opacity`) without JS overhead.
-40. **Self-Drawing Lines (SVG Stroke Animation)**: SVG path tracing itself into view (`stroke-dasharray` and `stroke-dashoffset` interpolation).
+## 1. Animasi Berbasis Navigasi & Pengguliran (Scroll & Spatial)
+1. **Parallax Scrolling**: Perbedaan kecepatan gerak antara lapisan latar belakang dan latar depan untuk menciptakan kedalaman visual (`useScroll` + `useTransform`).
+2. **Scrollytelling (Scroll-Triggered Animation)**: Animasi yang berjalan secara progresif mengikuti pergerakan scroll pengguna untuk menceritakan produk.
+3. **Horizontal Scroll Section**: Manipulasi halaman di mana scroll vertikal diubah menjadi pergeseran konten secara horizontal menyamping.
+4. **Pinned Section / Sticky Scroll**: Efek mengunci posisi elemen visual utama sementara elemen teks di sebelahnya terus bergeser.
+5. **Dolly & Zoom Navigation**: Kamera virtual yang seolah bergerak maju menembus atau mendekati objek untuk masuk ke sub-menu yang lebih dalam.
+6. **Bento Grid Expansion**: Animasi tata letak di mana satu kotak bento meluas mengambil alih ruang di sekitarnya saat diklik.
+7. **Infinite Horizontal Marquee**: Teks atau barisan logo yang berjalan menyamping secara melingkar tanpa henti (seamless loop).
 
 ---
 
-### 1.2 Digital Motion Design & Narrative Assets (Runtimes, Engines, & Media)
-41. **WebGL / Custom Shaders**: Fragment & vertex shaders rendering generative fluid, noise, or water ripple physics.
-42. **Rive (State Machine Animation)**: Interactive vector motion reacting dynamically to runtime state inputs (cursor position, clicks, booleans).
-43. **Lottie (Bodymovin)**: Vector animation JSON exported from After Effects, ideal for illustrations and icons.
-44. **Cel Animation (Frame-by-Frame)**: Hand-drawn traditional animation sequences (rendered as APNG, WebP sequence, or spritesheet).
-45. **Rigging Animation**: Skeletal joint hierarchy animating 2D character meshes with inverse kinematics.
-46. **Isometric Motion**: 30-degree projected 3D perspective animation ideal for architectural, tech stack, and SaaS system visuals.
-47. **Explainer Animation**: Narrative scene sequences synchronizing voiceover, text reveals, and conceptual diagrams.
-48. **Logo Reveal / Brand Animation**: High-impact brand signature motion executed upon splash, onboarding, or hero mount.
-49. **Animated Infographics**: Data charts with self-drawing axes, growing bars, and pulsing data nodes.
-50. **2.5D Animation**: Layered flat 2D planes arranged in 3D perspective with virtual camera parallax.
-51. **3.5D / Hybrid Animation**: Fusion of 2D cel/vector illustration mapped over 3D geometry and volumetric lighting.
-52. **Character Motion Design**: Mascot and character micro-interactions conveying system emotion and user delight.
-53. **Cinemagraph**: High-resolution looping photograph where a minor, isolated portion exhibits seamless video motion.
-54. **Seamless Loops**: Flawless loop cycles with zero visual seams or cadence hiccups for backgrounds and waiting states.
-55. **Broadcasting Graphics (Lower Thirds & Bumpers)**: News/streamer-style title bars, floating notification badges, and scene stinger transitions.
-56. **Oddly Satisfying Simulation**: Mesmerizing physical simulations (falling dominoes, soft-body squish, perfect loop pendulum).
-57. **Collage / Mixed Media Motion**: Stop-motion style blending paper cutouts, vintage photography, vector shapes, and real textures.
-58. **Cloth & Soft-Body Physics**: Realtime or pre-baked textile waving, curtain swaying, and jelly deformation.
-59. **Particle Systems**: GPU-calculated ambient dust, floating stars, confetti explosions, or smoke emitters.
-60. **Depth Map 3D Photo**: 2D photograph converted into a 3D tilt scene using an AI-generated grayscale depth map.
+## 2. Animasi Transisi Halaman & Elemen (Transitions & Layout)
+8. **Hero Animation (Shared Element Transition / Fly Animation)**: Elemen visual (seperti foto produk/kartu) melesat dan membesar mulus dari katalog menuju detail page (Framer Motion `layoutId`).
+9. **FLIP Transition (First, Last, Invert, Play)**: Teknik kalkulasi bounding rect awal dan akhir objek untuk transisi layout 60fps tanpa layout thrashing.
+10. **Morphing States**: Perubahan bentuk satu komponen UI menjadi komponen lain secara organik (misalnya ikon menu hamburger ☰ berubah menjadi tanda silang ✕).
+11. **Fab Morphing (Floating Action Button)**: Tombol bulat mengambang yang melebar dan bertransformasi menjadi lembar form/menu penuh saat diklik.
+12. **Bottom Sheet Slide-In**: Panel menu atau opsi yang meluncur naik dari batas bawah layar dengan snap points.
+13. **Sidebar Collapse / Expand**: Animasi panel navigasi samping menyusut menjadi ikon ramping atau melebar untuk memaksimalkan ruang kerja.
+14. **Mega Menu Transitions**: Panel navigasi besar yang menginterpolasi tinggi/lebar secara dinamis mengikuti sub-menu yang disorot kursor.
+15. **Accordion Elastic Stretch**: Animasi membuka menu lipat dengan pegas elastis yang mendorong elemen di bawahnya.
+16. **Card Flipping / Origami Fold**: Komponen berputar 180 derajat (`rotateY(180deg)`) menampilkan informasi di bagian belakang dengan visual backface culling.
+17. **Staggered Reveal (Sequential Animation)**: Elemen menu atau daftar kartu yang muncul berurutan satu per satu dengan jeda milidetik (`staggerChildren: 0.05`).
+18. **Match Cut**: Elemen visual di scene A bertransformasi persis ke posisi geometri wadah baru di scene B.
+19. **Wipe / Slide**: Tirai transisi berarah (left-to-right, diagonal, circle clip-path) untuk perpindahan tampilan.
 
 ---
 
-## 2. Framework Implementation Mapping
+## 3. Respons Sentuhan, Gestur, & Kursor (Gestures & Feedback)
+20. **Hover States / Focus States**: Elevasi bayangan, pendaran warna border, atau skala instan (`whileHover={{ scale: 1.02 }}`).
+21. **Sticky / Magnetic Cursor**: Kursor tetikus tersedot secara magnetis atau membesar saat mendekati tombol radius interaksi.
+22. **Cursor Follower / Custom Trail**: Jejak partikel atau lingkaran fluida halus yang mengekor koordinat mouse.
+23. **Swipe-to-Action (Contextual Swiping)**: Menggeser baris item pada mobile untuk memunculkan aksi kontekstual (hapus/arsip) dengan ambang batas pegas.
+24. **Contextual Edge Swiping**: Gestur menarik pinggir layar untuk navigasi riwayat atau membuka drawer tersembunyi.
+25. **Pinch-to-Scale & Rotate**: Gestur multi-touch memperbesar, memperkecil, atau memutar objek kanvas secara langsung.
+26. **Drag-and-Drop Dropzone Glow**: Area target memancarkan cahaya, berdenyut, atau meluas ketika file diseret di atas layar.
+27. **Sticker / Peel-Off Transition**: Notifikasi atau label sudut layar yang bisa "dikupas" atau diseret lepas layaknya stiker fisik.
+28. **Haptic Sync Animation**: Animasi visual mikro yang ritmenya sinkron dengan motor getar haptic perangkat mobile.
+29. **3D Card Tilt / Gyroscope Effect**: Kartu miring secara interaktif mengikuti koordinat pointer (desktop) atau sensor kemiringan giroskop (mobile).
 
-| Category | Primary Runtime / Stack | Location in Framework |
-|:---|:---|:---|
-| **Web UI & Spring Physics** | Framer Motion, Tailwind CSS, Lucide | `src/components/ui/`, `TODO_TEMPLATE.md` (`M06-FE-02`) |
-| **Interactive Vector Motion** | Rive Runtime (`@rive-app/react-canvas`) | `assets/media/*.riv` |
-| **Vector Animation Clips** | Lottie React (`lottie-react` / dotLottie) | `assets/media/*.json`, `assets/media/*.lottie` |
-| **3D & WebGL Shaders** | Three.js, React Three Fiber, Spline | `assets/media/*.splinecode`, `assets/media/*.glb` |
-| **Video Loops & Cinemagraphs** | HTML5 `<video autoplay loop muted playsinline>` | `assets/media/*.mp4`, `assets/media/*.webm` |
+---
+
+## 4. Animasi Mikro & Status Sistem (Micro-interactions & Loading)
+30. **Micro-interactions**: Respon visual instan seperti switch mode siang/malam, tombol bookmark mekar, atau checkbox centang (100–200ms).
+31. **Skeleton / Shimmer Loading**: Gelombang gradasi abu-abu berdenyut lembut pada placeholder sebelum data asli selesai dimuat.
+32. **Progress Indicators / Lottie Bar**: Animasi sirkular atau baris linier yang menunjukkan status persentase tugas secara real-time.
+33. **Indeterminate vs Determinate Progress**: Perubahan mulus dari animasi garis tanpa ujung menjadi baris persentase linier terisi penuh.
+34. **Success Tick / Error Shake**: Ikon centang mekar saat berhasil, atau form bergetar ke kanan-kiri (horizontal shake) saat validasi gagal.
+35. **Contextual Trash Shrink**: Objek yang dihapus mengecil dan tersedot masuk ke dalam ikon tempat sampah.
+36. **Cart Gamification / Wobble**: Ikon keranjang belanja melompat atau bergetar ceria saat barang ditambahkan.
+37. **Voice Assistant Waveform**: Gelombang suara yang bergerak naik-turun merespons frekuensi audio pangguna.
+38. **Form Validation Border Draw**: Garis tepi outline input digambar memutari kotak secara instan saat validasi aktif.
+39. **Button Fill / Color Shift**: Tombol yang warnanya terisi penuh dari arah tertentu saat disorot kursor.
+
+---
+
+## 5. Logika Gerakan, Fisika, & Aksesibilitas (Core Architecture)
+40. **Easing (Ease-In / Ease-Out / Cubic Bezier)**: Percepatan dan perlambatan objek meniru hukum fisika inersia.
+41. **Spring Physics (Elastic Motion)**: Gerakan berbasis pegas alami (`stiffness`, `damping`, `mass`) tanpa batasan durasi kaku.
+42. **Interruptible Animation**: Animasi yang bisa dibatalkan atau dibalikkan arahnya seketika tanpa visual glitch saat pangguna menginterupsi.
+43. **Parenting / Spatial Anchoring**: Elemen anak otomatis mewarisi transformasi elemen induk secara proporsional.
+44. **Value Transition / Counter Easing**: Animasi perubahan angka digital bergulir cepat (rolling counter) pada metrik saldo atau statistik.
+45. **Obscuration & Dimming Layer**: Layar latar belakang tenggelam menjadi gelap atau buram (`backdrop-blur-md`) saat dialog muncul.
+46. **Ambient Background Motion / Aurora Drift**: Gradasi warna latar belakang yang bergeser membaur perlahan menyerupai aurora.
+47. **Self-Drawing Lines**: Outline ikon atau ilustrasi SVG yang digambar otomatis (`stroke-dashoffset`).
+48. **Masked Reveal / Mouse Spotlight**: Radial mask mengikuti kursor membuka lapisan tersembunyi atau grid latar belakang.
+49. **Idle Floating / Hover Levitation**: Gerakan melayang naik-turun halus (`y: [0, -8, 0]`) pada elemen kunci agar terkesan berbobot ringan.
+50. **Window Snapping / Docking Transition**: Animasi halus saat jendela aplikasi ditarik ke tepi layar untuk mode split screen.
+51. **Reduced-Motion Fallback (Accessibility)**: Otomatis mengganti gerakan dinamis dengan transisi cross-fade lembut jika pangguna mengaktifkan preferensi disabilitas gerak (`prefers-reduced-motion`).
+
+---
+
+## 6. AI, Spatial UI, & WebGL Shader Shifting (Next-Gen Interaction)
+52. **Streaming/Generative Text Ripple**: Teks AI mengalir kata-demi-kata disertai pendaran cahaya (glow ripple) pada ujung kata yang sedang diproduksi.
+53. **Intent-to-Action Shift (Command Palette Transition)**: Seluruh antarmuka menyusut ke latar belakang dan spotlight command AI membesar seketika.
+54. **Confidence Level Pulse**: Indikator lingkaran hasil AI yang berdenyut tenang saat akurasi tinggi dan berkedip cepat saat ambigu.
+55. **Reactive Margin Shifting**: Panel asisten AI meluncur dari tepi layar dan secara otomatis memampatkan lembar kerja utama tanpa menutupi konten.
+56. **Gaze-Cursor Hover (Eye-Tracking Response)**: Tombol spatial UI menonjol ke depan (elevation) hanya dengan ditatap mata pengguna.
+57. **Z-Axis Passthrough Depthing**: Jendela aplikasi spasial bergerak di sumbu Z di mana elemen latar berbaur dengan ruangan nyata pengguna.
+58. **Spatial Gravity Snap**: Jendela digital spasial memantul lembut dan menempel (snap) mengikuti permukaan meja atau dinding fisik.
+59. **Audio-Reactive Interface States**: Elemen UI berdenyut atau berubah ketebalannya dinamis mengikuti frekuensi mikrofon.
+60. **Ambient Light Adaptive Easing**: Kecepatan animasi melambat otomatis di ruangan gelap agar mata tidak lelah.
+61. **Thermal/Battery Throttling Fallback**: Penurunan frame rate otomatis (120Hz ke 60Hz) dan penyederhanaan gerak saat baterai kritis atau suhu perangkat tinggi.
+62. **Liquid Gooey / Blob Effect**: Dua elemen lingkaran WebGL menyatu liat seperti tetesan cairan sebelum terpisah.
+63. **Raymarching / SDF UI Transitions**: Transisi menggunakan Signed Distance Field mengubah ikon 2D menjadi geometri 3D presisi.
+64. **Displacement Map Mouse Trail**: Gerakan kursor menciptakan riak distorsi gelombang air di atas media visual.
+
+---
+
+## 7. Media Naratif & Runtimes (Developer Hand-off)
+65. **Lottie (JSON / dotLottie)**: Animasi vektor ringan hasil ekspor After Effects/Figma untuk ikon dan ilustrasi interaktif.
+66. **CSS Keyframes**: Transformasi GPU-accelerated murni (`transform`, `opacity`) berkinerja tinggi tanpa dependensi JS.
+67. **WebGL / Three.js / Canvas Shaders**: Rendering interaktif 3D dan partikel berbasis akselerasi kartu grafis browser.
+68. **Rive (State Machine)**: Animasi interaktif vektor dengan logika state bawaan yang bereaksi langsung terhadap data tanpa koding ulang.
+69. **Kinetic Typography**: Eksplorasi tipografi kinetik (animasi bobot font variabel dan transformasi ritmis).
+70. **Glitch Effect**: Efek distorsi digital, RGB split chromatic aberration, dan scanlines.
+71. **Cinemagraph & Seamless Loops**: Video loop tanpa jeda visual untuk latar belakang hero visual.
+72. **Cel / 2.5D / Isometric Motion**: Aset ilustrasi bergaya kartun frame-by-frame, proyeksi isometrik 30 derajat, atau multi-plane 2.5D.
