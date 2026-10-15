@@ -141,6 +141,15 @@ Mitigation: [required when the decision is CONDITIONAL_GO]
 | Transactional Notifications | Commodity | BUY / ADOPT | [Resend / Twilio / WA Gateway] | Off-the-shelf delivery avoids SMTP IP warmup overhead |
 | Core Business Calculation Engine | Core Differentiator | BUILD | [Custom In-House TypeScript Engine] | Primary intellectual property and market moat |
 
+### 5.1c External Platform Approval & Lead-Time Audit
+*Identify third-party approvals with ≥7 business days review lag to prevent launch blocking:*
+
+| External Platform / API | Verification Requirement | Estimated Lead-Time | Submission Target Milestone | Operational Fallback if Delayed |
+|---|---|---|---|---|
+| Payment Gateway (Midtrans/Xendit Live KYC) | Individual / Corporate NPWP + Bank Account | 3–7 business days | M01 / M02 | Manual bank transfer confirmation via WhatsApp |
+| WhatsApp Business API (Meta Cloud API) | Meta Business Verification + Legal Entity Docs | 14–21 business days | M01 / M02 | Transactional email notification via Resend |
+| Apple Developer Program (iOS App Store) | Apple Developer ID / D-U-N-S Number | 7–14 business days | M01 / M02 | Responsive PWA installed via Safari browser |
+
 ### 5.2 Legal Compliance Checklist (UU PDP No. 27/2022 & Solo Guardrails)
 - [ ] **Privacy Policy (Kebijakan Privasi)** planned (data collection, retention, deletion rights)
 - [ ] **Terms of Service (Syarat & Ketentuan)** planned (liability limits, dispute resolution)

@@ -35,7 +35,7 @@
 ### M01 — Idea Feasibility
 | Agent | Human decides |
 |---|---|
-| 4D scorecard, risk register, roadmap, RICE, archetype classification, mitigation plan for a CONDITIONAL_GO | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:39`) |
+| 4D scorecard, risk register, roadmap, RICE, archetype classification, mitigation plan for a CONDITIONAL_GO | **GO / CONDITIONAL_GO / PIVOT / KILL** (`01:40`) |
 
 > ✅ **Gate-enforced**: the declared Scale never overrides the classifier — a project
 > declaring `Small` whose own Intake answers evaluate higher (payment webhook, sensitive
