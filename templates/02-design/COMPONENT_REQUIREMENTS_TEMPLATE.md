@@ -291,7 +291,21 @@ Display persistent in-app disclaimers:
 
 ---
 
-## 9. Agent Validation Checklist (Step 0 Exit Gate)
+## 9. Next.js / Modern SSR Component Splitting Strategy (Server vs Client Map)
+
+*Strict boundary guidelines to prevent root-level `'use client'` performance degradation:*
+
+| Component Type | Archetype | Directives | Rationale |
+| :--- | :--- | :--- | :--- |
+| **Server Component (RSC)** | Layout shells, static text, data tables, detail views, SEO/OG blocks | Default (No directive) | Zero client bundle size; direct DB/fetch access without API waterfalls. |
+| **Client Component (Leaf)** | Modals, dropdowns, form inputs, interactive tabs, toast triggers | `'use client'` on leaf only | Push client state to the furthest edges of the component tree. |
+| **Mutation Form** | Checkout forms, settings forms, CRUD submit buttons | `'use client'` + `useActionState` | Manages `isSubmitting` pending states, optimistic updates, and input focus. |
+
+- **Golden Rule**: Never put `'use client'` at the page route level (`app/**/page.tsx`). Page routes must remain Server Components that fetch data and pass props down to interactive leaf components.
+
+---
+
+## 10. Agent Validation Checklist (Step 0 Exit Gate)
 
 *Before completing Step 0 and proceeding to `DESIGN.md`, the agent MUST verify:*
 

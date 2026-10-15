@@ -27,7 +27,7 @@ ERRORS=0
 
 # 1. Verify Shell Scripts Syntax
 echo "1. Checking bash scripts syntax..."
-for script in scripts/*/*.sh scripts/*/*/*.sh templates/04-dev-execution/*.sh templates/04-dev-execution/scripts/*.sh; do
+for script in scripts/*/*.sh scripts/*/*/*.sh templates/04-dev-execution/*.sh templates/04-dev-execution/scripts/*.sh templates/06-qa-uat/fixtures/*.sh; do
     if [ -f "$script" ]; then
         if bash -n "$script" 2>/dev/null; then
             echo -e "  ${GREEN}✓${NC} $script"

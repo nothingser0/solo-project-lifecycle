@@ -1177,6 +1177,18 @@
       "cataloged": true
     },
     {
+      "path": "templates/06-qa-uat/fixtures/midtrans-webhook-settlement.json",
+      "cataloged": false
+    },
+    {
+      "path": "templates/06-qa-uat/fixtures/test-webhook.sh",
+      "cataloged": false
+    },
+    {
+      "path": "templates/06-qa-uat/fixtures/xendit-webhook-paid.json",
+      "cataloged": false
+    },
+    {
       "path": "templates/07-release-handover/BAST_EMAIL_SMALL.md",
       "cataloged": false
     },
