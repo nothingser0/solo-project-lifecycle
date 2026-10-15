@@ -34,7 +34,11 @@ Not uptime/deploy speed — the **quality of product decisions from data**. Dev 
 2. **Feedback loop**: NPS = % Promoters − % Detractors, automated at Day 7/30/Quarterly; Canny/Fider widget; > 5 identical tickets → FAQ or UX fix.
 3. **Cohorts**: weekly signup cohorts; Power Users (top 10% → advisory board, beta, testimonials), At-Risk (inactive > 14 days consumer / > 7 days daily-tools → win-back), Churned (> 60 days or canceled). Signals: activity drop > 50%, activation milestone never reached.
 4. **RICE**: `(Reach × Impact × Confidence) / Effort` (Impact 0.25–3; Confidence 50/80/100%). ROI = (incremental revenue − cost)/cost → payback < 6 months. Mandatory opportunity-cost questions. Quadrants: Do First / Schedule / Delegate / Drop.
-5. **Experiments**: hypothesis — *"We believe [CHANGE] → [IMPACT] for [SEGMENT] because [RATIONALE]; measured by [METRIC & THRESHOLD]"*. Queue by lift × ease + North Star alignment. Velocity 2–4/month; log win/lose/neutral in `docs/experiments/`.
+5. **Experiments & Rollback Safety**:
+   - Hypothesis format: *"We believe [CHANGE] → [IMPACT] for [SEGMENT] because [RATIONALE]; measured by [METRIC & THRESHOLD]"*.
+   - **Feature Flag / Instant Kill Switch**: Production experiments MUST be gated behind dynamic feature flags (PostHog, LaunchDarkly, or DB-backed flags) with an instant kill switch to disable degraded variants in `< 5 minutes` without requiring a full code re-deployment.
+   - **Statistical Significance & Sample Size Guardrail**: A/B tests MUST declare minimum sample size and 95% statistical significance ($p < 0.05$) before calling a winner. Underpowered experiments (<100 conversions per variant) must not trigger sweeping architectural changes.
+   - Queue by lift × ease + North Star alignment; velocity 2–4/month; log win/lose/neutral in `docs/experiments/`.
 6. **Health cadence**: weekly 15-min (signups, activation, D7 retention, MRR vs churn, errors/latency); monthly OKR vs North Star; quarterly Double Down / Pivot / Kill (< 5% adoption after 3 months → deprecate); annual strategy refresh vs M00.
 7. **Scaling**: P95 > 500ms / query > 100ms / N+1 / CPU > 80% → indexing audit, Redis, CDN, scale out. DB > 1M rows unpartitioned, backup > 30 min → indexes/partitioning. `CAU = infra cost / MAU` (< $1 consumer, < $10 B2B). Overload (> 60 h/wk, tickets > 48 h unanswered) → VA/support, freelance dev, or co-founder.
 
@@ -56,7 +60,7 @@ Small → **M13 WAIVED** (ends M12). Client/Freelance/Internal → **WAIVED** (e
 - [ ] 30-day baseline documented (`METRICS_BASELINE_REPORT.md`).
 - [ ] Feedback loop active (NPS scheduled, widget live, tickets aggregated).
 - [ ] Cohort analysis executed ≥ 1x/month; backlog RICE-prioritized (`GROWTH_EXPERIMENTS_BACKLOG.md`).
-- [ ] ≥ 1 experiment launched with documented results; weekly review run ≥ 4 consecutive weeks.
+- [ ] ≥ 1 experiment launched with feature flag & instant kill switch; results documented with statistical significance ($p < 0.05$); weekly review run ≥ 4 consecutive weeks.
 - [ ] Scaling signals monitored (performance, cost, workload).
 
 ## 7. Module Integration
