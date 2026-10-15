@@ -99,3 +99,6 @@ export async function createOrderOfflineFirst(orderData: { id: string; total: nu
      ```
 3. **Supervisor Review Drawer (Domain Exceptions)**:
    - If stock decrement causes the database balance to drop below zero (due to concurrent purchases at another branch), the transaction is flagged for manager review rather than failing customer checkout silently.
+4. **Tombstone Records for Offline Deletions**:
+   - Never hard-delete records while devices operate offline. A hard-deleted row on the server will be resurrect-synced by an offline device uploading its stale cache.
+   - Use soft-deletes (`deleted_at TIMESTAMP NULL`) with tombstone status so sync engines can propagate the deletion explicitly to all connected local databases.
