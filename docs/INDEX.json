@@ -257,6 +257,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/security/EDGE_SECURITY_CLOUDFLARE.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/ui/MOTION_DESIGN_TAXONOMY.md",
       "cataloged": true
     },

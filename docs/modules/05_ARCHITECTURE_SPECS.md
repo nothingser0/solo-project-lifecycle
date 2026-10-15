@@ -86,7 +86,7 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 
 ### STEP 5: Security Blueprint + Module 04 Handoff (both gate-enforced)
 
-- **Security**: record AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting (+ UU PDP on Medium+). Gate-enforced; `N/A — <reason>` accepted, blank not.
+- **Security**: record AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting, and Edge DDoS/WAF protection via Cloudflare ([`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md)) (+ UU PDP on Medium+). Gate-enforced; `N/A — <reason>` accepted, blank not.
 - **Handoff**: prototype → chosen framework conversion (component map, token extraction). The gate requires a section **named `Module 04 Handoff Strategy`** carrying **`Compatibility Level: Level 1-4`** — M06 STEP 0 parses those exact strings; level table in `FSD_TECHNICAL_TEMPLATE.md` §2.1.
 
 ### STEP 6: Write Deliverables
