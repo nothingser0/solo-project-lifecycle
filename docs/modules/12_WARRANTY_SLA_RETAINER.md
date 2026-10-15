@@ -31,12 +31,15 @@ Culminating phase: manage the bug-fix warranty metered, establish SLAs, handle p
 | **Scope** | **Pure bug fixes vs FSD/PRD only** | Monitoring, updates, backup checks, minor-feature hours |
 | **New features** | **PROHIBITED** → CR | Included in monthly hours |
 | **External causes** | **VOID** (3rd-party server changes / API format changes) | Handled from retainer hours |
+| **Unauthorized changes** | **VOID** (Code/schema modified by client/3rd party terminates warranty immediately) | Billed at standard hourly recovery rate |
 
 ## 3. Step-by-Step (detail in deep dive)
 
 1. **Policy socialization**: deliver `WARRANTY_POLICY.md` with the BAST (M11). Official channels only: bug reports via email / one coordination group; no personal-number messages outside working hours (except *Critical Down*).
 2. **Hotfix flow**: Sentry triage → `git checkout -b fix/*` from `main` → local `pnpm run test:smoke` → merge `staging` verify → 🛑 **STOP: the human merges `main`, tags `v1.0.1`, and pushes `--tags`.** The agent prepares and verifies the fix on `fix/*`/`staging` but must not merge to `main` or tag — pushing to `main` is a production deploy, reserved to the human per M10 STEP 1 ("no agent auto-deploy").
-3. **Retainer transition**: send proposal 14 days pre-expiry (cron: `0 9 * * * check_warranty_expiry_and_notify.sh`). Tiers — **Bronze**: monitoring, monthly patching, backup restore checks, 5 h consult; **Silver**: +15 h/month minor features, <4 h response business days; **Gold**: +20–30 h/month, <2 h Sev 1 response. *Anti-burnout rule: solo devs MUST NOT commit to 24/7/365 weekend on-call without a rotating team.*
+3. **Retainer transition**: send proposal 14 days pre-expiry (cron: `0 9 * * * check_warranty_expiry_and_notify.sh`). Tiers — **Bronze**: monitoring, monthly patching, backup restore checks, 5 h consult; **Silver**: +15 h/month minor features, <4 h response business days; **Gold**: +20–30 h/month, <2 h Sev 1 response.
+   - **Retainer Commercial Guardrails**: Retainer fees are strictly pre-paid monthly (due on the 1st, service suspended if unpaid by the 7th). Unused monthly hours do not rollover (*use-it-or-lose-it*, max 20% exception only if specified) to protect solo bandwidth against infinite backlog hoarding.
+   - *Anti-burnout rule: solo devs MUST NOT commit to 24/7/365 weekend on-call without a rotating team.*
 
 ## 4. Scale & Waiver Rules
 

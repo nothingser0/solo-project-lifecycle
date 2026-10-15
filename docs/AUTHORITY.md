@@ -118,7 +118,7 @@
 ### M12 — Warranty / SLA
 | Agent | Human only |
 |---|---|
-| Triage, hotfix code on `fix/*`, post-mortem | Incident comms (`12:37`), warranty voidness, retainer tier, contract signature (`12:56`), **merge `main` + tag** (`12:38`) |
+| Triage, hotfix code on `fix/*`, post-mortem | Incident comms (`12:38`), warranty voidness, retainer tier, contract signature (`12:59`), **merge `main` + tag** (`12:39`) |
 
 ### M13 — Product Operations
 | Agent | Human only |
