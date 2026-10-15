@@ -30,7 +30,7 @@ function Extract-FsdVersion {
     # name in the VALUE) failed its own gate and M06 STEP 3 could never pass.
     # Take the section body, keep lines naming the package, pull the first version.
     $fsdContent = Get-Content $TARGET_FILE -Raw
-    $versionsSection = ($fsdContent -split 'Framework Versions \(Pinned\)')[1]
+    $versionsSection = ($fsdContent -split 'Framework Versions.*\(Pinned\)')[1]
     if ($versionsSection) {
         $body = ($versionsSection -split "(?m)^#{2,6}\s")[0]
         $line = $body -split "`n" | Where-Object { $_ -imatch [regex]::Escape($Package) } | Select-Object -First 1

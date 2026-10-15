@@ -44,7 +44,7 @@ extract_fsd_version() {
     local package=$1
     # Body = from the pinned-version heading to the next markdown heading.
     awk '
-        /Framework Versions \(Pinned\)/ { inb = 1; next }
+        /Framework Versions.*\(Pinned\)/ { inb = 1; next }
         inb && /^#{2,6}[[:space:]]/ { exit }
         inb { print }
     ' "$TARGET_FILE" \

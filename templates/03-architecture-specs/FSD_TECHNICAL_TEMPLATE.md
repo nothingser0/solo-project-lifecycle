@@ -148,12 +148,16 @@ Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 - Q7 Critical Feature Priority: [answer]
 - Q8 Compliance Requirements: [answer]
 
-### Framework Versions (Pinned)
+### Framework Versions & Ecosystem Libraries (Pinned)
 *(Populate directly from `./scripts/verify/check-package-versions.sh <stack>` — see the live-version STEP 0 in `docs/modules/05_ARCHITECTURE_SPECS.md`)*
 - **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]
 - **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
 - **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
 - **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
+- **Authentication & Session**: [e.g., Better Auth / Supabase Auth / Laravel Breeze / Laravel Sanctum / NextAuth / Lucia]
+- **Form & Schema Validation**: [e.g., Zod ^3.23.8 / Valibot / Laravel Form Requests / Pydantic]
+- **State Management & Query Cache**: [e.g., TanStack Query ^5.x / Zustand / Pinia / React Context]
+- **UI & Motion Component Suite**: [e.g., shadcn/ui + Radix UI + Lucide React + Framer Motion (per `patterns/ui/UI_COMPONENT_TAXONOMY.md` and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`)]
 
 
 ### Module 04 Handoff Strategy

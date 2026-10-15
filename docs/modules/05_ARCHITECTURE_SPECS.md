@@ -45,9 +45,16 @@ Ask the 8 questions, END TURN, wait (option lists in deep dive):
 
 Then present **2–3 options** with cost/pros/cons and let **the user LOCK the stack**. No default; changing after lock costs +2 weeks.
 
-### STEP 2: Tech Stack Justification
+### STEP 2: Tech Stack Justification & Ecosystem Libraries Locking
 
 Reasoning for the chosen stack; **alternatives rejected with reasons**; topology aligned with budget & scale. Content must adapt to the stack (PostgreSQL → SQL DDL, MongoDB → Mongoose, Laravel → Eloquent migrations, Django → ORM — never AI-SLOP generic schemas; anti-patterns in deep dive).
+
+- **Ecosystem Libraries & Auth Solution Locking**: In addition to the base framework, M05 MUST explicitly evaluate, select, and lock the companion ecosystem libraries to prevent dependency bloat, security holes, and runtime mismatches in M06:
+  - **Authentication & Session**: Next.js (Better Auth / Supabase Auth / Auth.js) vs Laravel (Breeze / Sanctum / Fortify) vs Django (allauth) vs Go/FastAPI (JWT / OAuth2).
+  - **Validation & Serialization**: Zod / Valibot (TS) vs Form Requests (Laravel) vs Pydantic (Python).
+  - **State Management & Data Fetching**: Zustand / TanStack Query (React) vs Pinia (Vue) vs Inertia / Livewire.
+  - **UI Primitives & Motion**: shadcn/ui + Radix UI + Lucide + Framer Motion (per `patterns/ui/UI_COMPONENT_TAXONOMY.md` and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`).
+  - **Access Control & Permissions**: Explicit RBAC / ReBAC model implementation (per `patterns/security/ACCESS_CONTROL_PATTERNS.md`).
 
 ### STEP 3: Database Schema & Object Storage Design (ERD, DDL & Media Architecture)
 
