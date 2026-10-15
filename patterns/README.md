@@ -8,5 +8,6 @@
 | UU PDP No. 27/2022 compliance | [`compliance/UU_PDP_COMPLIANCE.md`](./compliance/UU_PDP_COMPLIANCE.md) |
 | Rupiah/WIB localization, tax rounding | [`localization/I18N_INDONESIA.md`](./localization/I18N_INDONESIA.md) |
 | Offline-first sync & mutation queue | [`offline/OFFLINE_FIRST_SYNC.md`](./offline/OFFLINE_FIRST_SYNC.md) |
+| UI Component Taxonomy & Architecture (Modern UI System) | [`ui/UI_COMPONENT_TAXONOMY.md`](./ui/UI_COMPONENT_TAXONOMY.md) |
 
 Archived generic patterns remain available at `archive/patterns/` (git history intact) if a rare case needs them.
