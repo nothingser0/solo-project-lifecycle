@@ -25,6 +25,12 @@
 1. **Deflect features-as-bugs**: review agreed PRD/FSD; anything documented Out-of-Scope is `Passed UAT` — offer a formal CR form.
 2. **Deemed Acceptance**: window capped 5–7 business days; no testing/written defects within 10 business days of the Staging link = legally *Deemed Accepted*; production deploy + final invoice may proceed.
 3. **Iteration limit**: max **2 UAT cycles** per contract; Sev 3/4 cosmetic defects never block sign-off (deferred to warranty); 7 calendar days of client silence = **DEEMED ACCEPTED**.
+4. **Conditional Sign-Off with Punch List (Defect Containment)**:
+   - If non-critical defects (Sev 3 cosmetic / Sev 2 with operational workaround) remain at the end of the UAT window, the Client Single PIC MAY execute a **Conditional Sign-Off** containing an explicit **Punch List**.
+   - A Punch List binds the Developer to resolve listed minor items during the 30-day warranty period (M12) without blocking production deployment or milestone payment release.
+5. **Defect Verification Evidence & Repro Obligation**:
+   - Client defect submissions MUST include verifiable reproduction evidence (exact input payload, timestamp, screenshot, or video recording).
+   - Unreproducible defects ("it felt slow once", "something looked weird yesterday") do NOT block sign-off and cannot be logged as Severity 1 or 2.
 
 ## 3. Defect Severity Matrix
 

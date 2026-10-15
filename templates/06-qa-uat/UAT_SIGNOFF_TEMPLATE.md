@@ -39,7 +39,17 @@ By signing this Sign-Off Report, the **CLIENT** certifies and agrees that:
 
 ---
 
-## 4. Signatures of the Parties
+## 4. Punch List & Conditional Sign-Off (Warranty Transition)
+*Minor defects (Severity 3 cosmetic / Severity 2 with acceptable workaround) to be addressed during Module 12 Warranty without blocking production deployment or milestone payment:*
+
+| Punch Item # | Module / Screen | Defect Description | Severity (Sev 2/3) | Target Resolution Date (M12) |
+| :---: | :--- | :--- | :---: | :--- |
+| **PL-01** | [e.g. Settings] | Minor alignment offset on tablet view | Sev 3 | YYYY-MM-DD (Warranty Day 7) |
+| **PL-02** | [e.g. Export] | CSV download button tooltip typo | Sev 3 | YYYY-MM-DD (Warranty Day 14) |
+
+---
+
+## 5. Signatures of the Parties
 
 This document is executed in 2 (two) counterparts, each having equal legal validity for Client and Developer.
 
