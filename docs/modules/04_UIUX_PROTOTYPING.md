@@ -63,7 +63,7 @@ Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbid
 
 ### Accessibility & Anti-Slop (computed, not self-approved)
 - [ ] **WCAG contrast (DESIGN.md tokens, light & dark): primary text ≥7.0:1; secondary + placeholder + status ≥4.5:1; input borders ≥3:1.**
-- [ ] **Anti-slop: zero gradients, zero glassmorphism/backdrop-blur, shadows ≤4px, non-color state indicators, 16px mobile inputs, ≥44px touch targets, z-index scale defined.**
+- [ ] **Anti-slop: zero gradients, zero glassmorphism/backdrop-blur, shadows ≤4px, non-color state indicators, 16px mobile inputs, ≥44px touch targets, z-index scale defined, `prefers-reduced-motion` fallbacks on dynamic transitions, and `will-change` restricted to active animating states.**
 
 ### Design Freeze Sign-Off (BLOCKING, in DESIGN_SPEC.md)
 - [ ] Approver name (Client PIC, or the **human user** on solo projects) + date (YYYY-MM-DD) + signature placeholder ("Approved via [email/chat]"). The AI agent is never a valid approver.

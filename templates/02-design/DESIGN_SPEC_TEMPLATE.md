@@ -128,7 +128,8 @@
 *Document interaction wireflows and protective logic rules to prevent domain failures:*
 
 ### 5.1 General Interaction, Motion & Input Defense
-- **Motion & Interaction Directives**: All screen transitions and interactive feedback MUST reference patterns defined in `patterns/ui/MOTION_DESIGN_TAXONOMY.md` (e.g. Staggered reveal for lists, Spring physics for bottom sheets, Shimmer skeleton loaders, Parallax depth, and Reduced-Motion fallbacks).
+- **Motion & Interaction Directives**: All screen transitions and interactive feedback MUST reference patterns defined in `patterns/ui/MOTION_DESIGN_TAXONOMY.md` (e.g. Staggered reveal for lists, Spring physics for bottom sheets, Shimmer skeleton loaders, Parallax depth, Reduced-Motion fallbacks, and temporary `will-change: transform` GPU acceleration strictly during active animation to prevent mobile memory leaks).
+- **Reduced-Motion Compliance**: All animations must respect `prefers-reduced-motion: reduce` by replacing dynamic transforms/movement with instant or gentle opacity cross-fades.
 - **Double-Submit Prevention**: All submit buttons automatically debounce and enter a disabled loading state immediately upon initial click until server response completes.
 - **Idempotency Keys**: All financial, ledger, or state-changing mutations transmit a client-generated UUID in request headers to guarantee safe retries without duplicated records.
 - **CSV Formula Injection Neutralization**: All spreadsheet/CSV export generators prefix cells starting with `=, +, -, @` with a single quote (`'`).
