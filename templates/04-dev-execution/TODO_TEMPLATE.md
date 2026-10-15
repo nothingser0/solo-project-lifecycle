@@ -34,6 +34,10 @@ For each task:
 - **Medium (B2B SaaS/Agency)**: multi-tenant RLS, state journals, mutation idempotency, automated QA.
 - **Large/Enterprise**: row-locking, audit vaults, load testing, disaster recovery.
 
+## Defect Triage Standard (Bug vs Change Request)
+- **Bug (Zero-Cost Correction)**: Behavior deviates from locked `PRD.md` / `FSD.md` / Acceptance Criteria $\rightarrow$ log as immediate bugfix in current sprint.
+- **Change Request (CR - Scope Extension)**: Request introduces new inputs, alters agreed flows, or extends domain scope $\rightarrow$ do NOT implement in TODO; divert to `change-requests/CR-*.md`.
+
 ## Task architecture (8 mandatory elements)
 
 1. **Task ID** — `M06-DB-01`, `M06-BE-01`, `M06-FE-01` (used in commits/test logs)

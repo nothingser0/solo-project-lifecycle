@@ -39,8 +39,11 @@ Git: `main` → `staging` → `feat/*`.
 - **5 UI states** per screen (idle/loading/success/error/empty).
 - **Hydration-free UI (SSR stacks)**: if a view is correct without hydration, it must be built that way. No `Date.now()`/`new Date()`/`Math.random()`/`localStorage`/bare `toLocaleString()` during the initial render; every date/number formatter passes an explicit `locale` + `timeZone`; `'use client'` only on the smallest leaf that needs interaction, each one recorded in `VERIFY_LOCAL.md` §4C. Ladder: `references/technical/HYDRATION_FREE_RENDERING.md`; console proof required per `VERIFY_LOCAL.md` §4C.
 - **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in RUNBOOK_LOCAL.md; jobs → worker verified.
+- **Defect Triage Protocol (Bug vs CR Boundary)**:
+  - **Bug**: Functionality violates locked `PRD.md` / `FSD.md` / Acceptance Criteria $\rightarrow$ fixed immediately at zero cost.
+  - **Change Request (CR)**: Any modification of behavior or additional capability outside locked specs $\rightarrow$ diverted to `change-requests/CR-*.md` with fee & timeline impact; never implemented during sprint.
 
-**STEP 7 — Tests & Git.** Stack smoke/unit tests + `tsc --noEmit` + `pnpm audit`. AI pre-merge review → `AI_REVIEW_LOG.md`. **Human merges to `staging` and tags Alpha** — agent must not commit/merge/tag.
+**STEP 7 — Tests, CI Pipeline & Git.** Stack smoke/unit tests + `tsc --noEmit` + `pnpm audit`. Configure automated CI workflow (`.github/workflows/ci.yml`) enforcing linting, type-checking, and test suite on every PR. AI pre-merge review → `AI_REVIEW_LOG.md`. **Human merges to `staging` and tags Alpha** — agent must not commit/merge/tag.
 
 **STEP 8 — RUNBOOK_LOCAL.md + VERIFY_LOCAL.md** from `templates/04-dev-execution/{RUNBOOK_LOCAL,VERIFY_LOCAL}_TEMPLATE.md` (placeholders → FSD endpoints + stack commands). Smoke test 100%.
 
