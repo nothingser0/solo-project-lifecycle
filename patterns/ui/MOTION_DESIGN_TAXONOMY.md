@@ -95,9 +95,10 @@
 ## 7. Media Naratif & Runtimes (Developer Hand-off)
 65. **Lottie (JSON / dotLottie)**: Animasi vektor ringan hasil ekspor After Effects/Figma untuk ikon dan ilustrasi interaktif.
 66. **CSS Keyframes**: Transformasi GPU-accelerated murni (`transform`, `opacity`) berkinerja tinggi tanpa dependensi JS.
-67. **WebGL / Three.js / Canvas Shaders**: Rendering interaktif 3D dan partikel berbasis akselerasi kartu grafis browser.
-68. **Rive (State Machine)**: Animasi interaktif vektor dengan logika state bawaan yang bereaksi langsung terhadap data tanpa koding ulang.
-69. **Kinetic Typography**: Eksplorasi tipografi kinetik (animasi bobot font variabel dan transformasi ritmis).
-70. **Glitch Effect**: Efek distorsi digital, RGB split chromatic aberration, dan scanlines.
-71. **Cinemagraph & Seamless Loops**: Video loop tanpa jeda visual untuk latar belakang hero visual.
-72. **Cel / 2.5D / Isometric Motion**: Aset ilustrasi bergaya kartun frame-by-frame, proyeksi isometrik 30 derajat, atau multi-plane 2.5D.
+67. **Hardware Acceleration Guardrail (`will-change: transform`)**: Gunakan `will-change` secara hemat hanya pada elemen yang aktif beranimasi untuk memicu kompositing layer GPU terpisah tanpa memicu memory leak pada browser mobile.
+68. **WebGL / Three.js / Canvas Shaders**: Rendering interaktif 3D dan partikel berbasis akselerasi kartu grafis browser.
+69. **Rive (State Machine)**: Animasi interaktif vektor dengan logika state bawaan yang bereaksi langsung terhadap data tanpa koding ulang.
+70. **Kinetic Typography**: Eksplorasi tipografi kinetik (animasi bobot font variabel dan transformasi ritmis).
+71. **Glitch Effect**: Efek distorsi digital, RGB split chromatic aberration, dan scanlines.
+72. **Cinemagraph & Seamless Loops**: Video loop tanpa jeda visual untuk latar belakang hero visual.
+73. **Cel / 2.5D / Isometric Motion**: Aset ilustrasi bergaya kartun frame-by-frame, proyeksi isometrik 30 derajat, atau multi-plane 2.5D.

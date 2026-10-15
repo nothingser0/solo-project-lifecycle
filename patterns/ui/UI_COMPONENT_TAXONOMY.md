@@ -52,3 +52,13 @@
 - `AuthForm` (SignIn / SignUp): Complete authentication card with email validation, OAuth buttons, and error boundary.
 - `OnboardingWalkthrough`: Step-by-step guided tour modal/spotlight with progress dots and skip action.
 - `ProfileView`: User summary card with avatar upload, personal details, security settings, and audit badge.
+
+---
+
+## 2. Accessibility (a11y) & Screen-Reader Foundations
+
+For solo developers, accessibility cannot be an afterthought:
+1. **Interactive Elements**: All custom clickable items (custom divs/spans) MUST have `role="button"`, `tabIndex={0}`, and handle both `onKeyDown` (Enter/Space) and `onClick`. Prefer native `<button>` whenever possible.
+2. **Form Controls**: Every `<input>`, `<select>`, and `<textarea>` must be associated with an explicit `<label htmlFor="...">` or `aria-label`.
+3. **Modal Dialogs & Drawers**: Must trap keyboard focus inside the container while open, set `aria-modal="true"`, and close on `Escape`.
+4. **Color Contrast (WCAG 2.1 AA)**: Normal text must achieve a minimum contrast ratio of 4.5:1 against its background (3:1 for large text ≥18pt or bold ≥14pt).
