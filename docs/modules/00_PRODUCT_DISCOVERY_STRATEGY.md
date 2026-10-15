@@ -1,7 +1,7 @@
 # Module 00: Product Discovery & Strategy
 
 > **Templates to copy**: `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md` (Solo SaaS 1-page validation) · `MARKET_RESEARCH_TEMPLATE.md`, `COMPETITIVE_LANDSCAPE_TEMPLATE.md`, `USER_RESEARCH_REPORT_TEMPLATE.md`, `PRODUCT_STRATEGY_TEMPLATE.md` (Full path)
-> 📖 **Optional refs** (do NOT preload; open only when a step names one): `references/pre-sales/DISCOVERY_CALL_CHECKLIST.md` · `PROPOSAL_DECK.md` · `references/technical/DEEP_RESEARCH_METHODOLOGY.md`
+> 📖 **Patterns & References**: [`patterns/product/SOLO_DISCOVERY_PLAYBOOK.md`](../../patterns/product/SOLO_DISCOVERY_PLAYBOOK.md) (OST, RAT, 7 Powers Playbook) · `references/pre-sales/DISCOVERY_CALL_CHECKLIST.md` · `PROPOSAL_DECK.md` · `references/technical/DEEP_RESEARCH_METHODOLOGY.md`
 
 > **Research method (inline — no need to open DEEP_RESEARCH_METHODOLOGY)**: (1) pick 5–10 real target users, not friends; (2) ask about past behavior, never hypotheticals ("what did you do last time X happened?"); (3) capture exact quotes + willingness-to-pay signal; (4) tag each finding ✅ real / 🔶 assumption / ❓ unknown; (5) a finding counts only with a verbatim quote + respondent ID.
 

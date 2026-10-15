@@ -253,6 +253,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/product/SOLO_DISCOVERY_PLAYBOOK.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/security/ACCESS_CONTROL_PATTERNS.md",
       "cataloged": true
     },

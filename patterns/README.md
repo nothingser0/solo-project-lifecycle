@@ -10,6 +10,7 @@
 | Offline-first sync & mutation queue | [`offline/OFFLINE_FIRST_SYNC.md`](./offline/OFFLINE_FIRST_SYNC.md) |
 | Access Control Patterns (RBAC, ABAC, ReBAC & Postgres RLS) | [`security/ACCESS_CONTROL_PATTERNS.md`](./security/ACCESS_CONTROL_PATTERNS.md) |
 | Edge Security, DDoS & WAF Protection (Cloudflare Pattern) | [`security/EDGE_SECURITY_CLOUDFLARE.md`](./security/EDGE_SECURITY_CLOUDFLARE.md) |
+| Solo Product Discovery & Strategy Playbook (OST, RAT, 7 Powers) | [`product/SOLO_DISCOVERY_PLAYBOOK.md`](./product/SOLO_DISCOVERY_PLAYBOOK.md) |
 | UI Component Taxonomy & Architecture (Modern UI System) | [`ui/UI_COMPONENT_TAXONOMY.md`](./ui/UI_COMPONENT_TAXONOMY.md) |
 | Motion Design & Interactive Animation Taxonomy (60+ Effects) | [`ui/MOTION_DESIGN_TAXONOMY.md`](./ui/MOTION_DESIGN_TAXONOMY.md) |
 
