@@ -8,5 +8,14 @@
 gate_A00() {
     echo "=== A00: Bid/No-Bid & Commercial Clearance Checklist ==="
     check_required "contracts/CONSULTING_AGREEMENT.md" "docs/pm/CONSULTING_AGREEMENT.md" 1000
+    local target="contracts/CONSULTING_AGREEMENT.md"
+    [ -f "$target" ] || target="docs/pm/CONSULTING_AGREEMENT.md"
+    if [ -f "$target" ]; then
+        if grep -qE "\[Client Company|\[Your Name\]|\[PT / CV|\[YYYY-MM-DD\]" "$target"; then
+            echo "  ❌ $target still contains unresolved template placeholders ([...])!"
+            GATE_FAILED=1
+        fi
+        check_sections "$target" "Parties" "Advisory Deliverables" "Professional Fees" "Liability" || true
+    fi
     check_optional "docs/pm/RFP_RESPONSE.md"
 }
