@@ -42,24 +42,22 @@ CREATE INDEX idx_user_roles_lookup ON user_roles(user_id, org_id, role);
 ```
 
 ### Row Level Security (RLS) Policy Example
+
 ```sql
 -- Ensure cashiers can only read transactions, managers can approve, and zero cross-tenant leak
 ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
 
+-- High-performance direct JWT claim evaluation (O(1) index scan, avoids row-by-row subqueries on user_roles)
 CREATE POLICY "tenant_isolation_select" ON transactions
 FOR SELECT USING (
-    org_id IN (
-        SELECT org_id FROM user_roles WHERE user_id = auth.uid()
-    )
+    org_id = (auth.jwt() -> 'app_metadata' ->> 'org_id')::uuid
 );
 
+-- Role-based privilege checks via JWT custom claims or indexed cached function
 CREATE POLICY "manager_only_void_approval" ON transactions
 FOR UPDATE USING (
-    org_id IN (
-        SELECT org_id FROM user_roles 
-        WHERE user_id = auth.uid() 
-        AND role IN ('owner', 'manager')
-    )
+    org_id = (auth.jwt() -> 'app_metadata' ->> 'org_id')::uuid
+    AND (auth.jwt() -> 'app_metadata' ->> 'role') IN ('owner', 'manager')
 );
 ```
 
