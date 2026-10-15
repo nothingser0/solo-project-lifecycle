@@ -23,9 +23,9 @@
   → STEP 2: Competitive Analysis — 5–10 direct/indirect/substitute competitors,
     hands-on testing (install & use!), feature matrix, pricing benchmark, SWOT, 2x2 positioning
   → STEP 3: User Research — 5–10 interviews (≥3 verified for lite), 30–50+ surveys,
-    JTBD personas, journey map, pain prioritization
+    JTBD personas, journey map, pain prioritization, Opportunity Solution Tree (OST)
   → STEP 4: Product Strategy — vision/mission, North Star Metric, Value Prop Canvas,
-    3–5 strategic pillars, unit economics, kill criteria
+    Riskiest Assumption Test (RAT), 7 Powers Moat, 3–5 strategic pillars, unit economics, kill criteria
   → GATE: Market Validation Pass → outputs in docs/pm/
 ```
 
@@ -62,12 +62,15 @@ fails on any mismatch with the §5 arithmetic). Research not yet run → `PENDIN
 - **Evidence rule & The Mom Test protocol (non-negotiable)**: primary data from real humans only. Never ask hypothetical questions ("Would you buy X?"). Ask about concrete past actions ("How did you solve this last week? How much money/time did it cost?"). No fabricated quotes/percentages. If research not yet run, mark `PENDING_PRIMARY_RESEARCH` and set Gate-Decision: PENDING. Pre-data personas are `Proto-Persona (Hipotesis)`.
 - 🧑 **HUMAN-ONLY — cannot be verified by any script**: conducting the 5–10 interviews, running the surveys/waitlist, and collecting the deposits or signed LOIs are the **human's** actions. The agent may draft instruments, summarise transcripts the human supplies, and fill the report — it must **not** invent responses, and it cannot tell whether the interviews actually happened. If the human has not run them, the agent records `PENDING_PRIMARY_RESEARCH` and **ends the turn**; it never proceeds on assumed research.
 - Confidence legend: ✅ VERIFIED / 🔶 ASSUMPTION / ❓ UNKNOWN.
+- **Opportunity Solution Tree (OST)**: Map Desired Outcome → Discovered Opportunities (unmet user pains) → Candidate Solutions → Assumption Tests. Prevent single-solution lock-in before testing alternatives.
 - Survey design: screener → pain severity (Likert) → Van Westendorp WTP → intent-to-buy. Gate bar: see §1b (any one PASS signal closes the gate).
-- Output: anonymized interview summaries with verbatim quotes and explicit nominal WTP, survey charts, personas, journey map, pain Impact-Effort matrix.
+- Output: anonymized interview summaries with verbatim quotes and explicit nominal WTP, survey charts, personas, journey map, pain Impact-Effort matrix, OST diagram.
 
 ### Step 4 — Product Strategy (`docs/pm/PRODUCT_STRATEGY.md`)
 - Vision (3–5 yr) / Mission (tactical, differentiated); **North Star Metric** with formula, rationale, target, breakdown tree — must be instrumentable (no vanity metrics like "registered users").
 - Value Proposition Canvas; 3–5 strategic pillars with success criteria.
+- **Riskiest Assumption Test (RAT)**: Explicitly classify assumptions across Desirability, Feasibility, Viability, and Usability. Isolate the single lethal hypothesis that could invalidate the product and define a zero-to-low-code experiment (fake door, concierge, or manual workflow) before committing to full MVP builds.
+- **Moat & Defensibility (7 Powers)**: Identify at least one durable moat (Switching Costs, Network Effects, Counter-Positioning, Scale Economies, Process Power, Branding, or Cornered Resource) to protect against fast copycats.
 - Unit economics: target price, CAC, LTV, gateway fees, PPN 11% + PPh 0.5%, gross margin ≥70%.
 - **Kill criteria**: market kill (all signals in §1b's KILL column), economic kill (CAC > LTV/3), solo-feasibility kill (architecture beyond 1 dev).
 

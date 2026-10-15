@@ -160,18 +160,28 @@ For solo technical founders who want to ship SaaS products fast, LaunchKit is an
 | AWS + DIY | Total control | Weeks of setup, steep learning curve | We provide the same control in 1 command |
 | Vercel | Amazing DX for Next.js | Only frontend, no backend infra | We do full-stack: DB, queues, auth, API |
 
-### Moats & Defensibility
+### Moats & Defensibility (Hamilton Helmer 7 Powers Taxonomy)
 
-**What prevents competitors from copying us?**
+**What prevents competitors from copying us? (Classify under 7 Powers: Switching Costs, Network Effects, Counter-Positioning, Scale Economies, Process Power, Branding, Cornered Resource)**
 
-1. **[Moat Type]**: [Description]
-   - **Example**: **Community Network Effects** - Our template marketplace grows with every user contribution. Competitors start from zero.
+1. **[Power / Moat Type]**: [Description]
+   - **Example**: **Switching Costs** - User accounting ledger and tax history creates high inertia; export/migration to alternatives causes operational friction.
+   - **Example**: **Counter-Positioning** - Incumbent legacy software relies on high seat licenses; our flat micro-tier cannot be copied without cannibalizing their core revenue.
 
-2. **[Moat Type]**: [Description]
+2. **[Power / Moat Type]**: [Description]
    - **Example**: **Integration Ecosystem** - 50+ pre-configured integrations (Stripe, Auth0, Sentry). Takes years to replicate.
 
-3. **[Moat Type]**: [Description]
-   - **Example**: **Opinionated Defaults** - We've battle-tested these choices across 500+ production apps. Competitors guess.
+3. **[Power / Moat Type]**: [Description]
+   - **Example**: **Opinionated Defaults / Process Power** - We've battle-tested these choices across 500+ production apps. Competitors guess.
+
+### Riskiest Assumption Test (RAT) Framework
+
+Identify the single lethal hypothesis before committing engineering resources to MVP:
+
+| Assumption ID | Category (Desirability / Feasibility / Viability / Usability) | Hypothesis | Lethal Impact (What breaks if false?) | Cheap Validation Experiment (Fake Door / Concierge / Survey) | Success Metric | Status (PASS / FAIL / PENDING) |
+|---|---|---|---|---|---|---|
+| `RAT-01` | Desirability | Freelancers actively track tax obligations monthly | Product completely unused | Manual Google Sheets review with 10 freelancers | ≥ 6/10 use it weekly | PENDING |
+| `RAT-02` | Viability | Users will pay Rp 50.000/mo for automated PPh calculation | Zero revenue / fatal unit economics | Pre-order deposit link on landing page | ≥ 5 paid deposits | PENDING |
 
 ### Strategic Response to Threats
 

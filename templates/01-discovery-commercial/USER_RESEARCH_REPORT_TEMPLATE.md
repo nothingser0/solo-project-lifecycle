@@ -598,6 +598,28 @@ Low Impact
 
 ---
 
+## 8b. Opportunity Solution Tree (OST - Teresa Torres Continuous Discovery)
+
+Connect the Desired Business Outcome to Discovered Opportunities and Compare Candidate Solutions:
+
+```text
+[ Desired Outcome: e.g. Reduce Monthly Inventory Reconciliation Discrepancy by 80% ]
+  │
+  ├── Opportunity 1: Staff forgets to record incoming stock shipments immediately
+  │     ├── Solution 1A: Mobile QR-code scanner at receiving dock (PWA)
+  │     │     └── Assumption Test: Can warehouse staff scan 20 boxes in <2 minutes on 3G?
+  │     └── Solution 1B: Daily automated WhatsApp reminder prompt to branch supervisor
+  │           └── Assumption Test: Do supervisors reply to WA prompts within 1 hour?
+  │
+  └── Opportunity 2: Cashiers sell items before stock entry is recorded in system
+        ├── Solution 2A: Block negative inventory sales at POS checkout
+        │     └── Assumption Test: Does blocking sales cause long customer queues?
+        └── Solution 2B: Asynchronous reconciliation alert notifying manager of negative drift
+              └── Assumption Test: Do managers resolve alerts within same business day?
+```
+
+---
+
 ## 9. Research Limitations & Biases
 
 **Known Limitations**:
