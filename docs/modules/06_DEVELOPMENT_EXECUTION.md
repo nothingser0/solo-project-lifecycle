@@ -39,9 +39,11 @@ Git: `main` → `staging` → `feat/*`.
 - **Concurrency, Deadlock Prevention & Hygiene**:
   - Read-modify-write on stock/balance/counter/status MUST be atomic (tx + row lock, unique constraint, or CAS); webhooks idempotent.
   - **Deadlock Prevention Protocol**: Any transaction acquiring row-level locks on multiple records across tables or rows MUST acquire locks in a globally deterministic order (strictly `ORDER BY id ASC` or deterministic primary key sort) to mathematically prevent database deadlocks (PostgreSQL error `40P01`).
+  - **Graceful Shutdown Protocol**: Server entrypoints and background workers MUST intercept `SIGTERM` and `SIGINT` signals to reject new incoming traffic, drain in-flight jobs/requests, and cleanly close database pools within a 10s grace timeout (prevents corrupted transactions during deploys).
   - No comments that restate code, no stubs, no commented-out code. Details: deep dive.
 - **Prototype**: per FSD `Module 04 Handoff Strategy` (Levels 1-4); **UI 100% identical to frozen prototype**; static screens first (Sprint 3), data-backed after DB+API.
 - **5 UI states** per screen (idle/loading/success/error/empty).
+- **Error Boundaries & Unhandled Exception Defense**: Frontend MUST implement nested and root Error Boundaries (`error.tsx` in Next.js / boundary component) with reset action to eliminate White Screen of Death; Backend MUST catch unhandled rejections with structured logging.
 - **Hydration-free UI (SSR stacks)**: if a view is correct without hydration, it must be built that way. No `Date.now()`/`new Date()`/`Math.random()`/`localStorage`/bare `toLocaleString()` during the initial render; every date/number formatter passes an explicit `locale` + `timeZone`; `'use client'` only on the smallest leaf that needs interaction, each one recorded in `VERIFY_LOCAL.md` §4C. Ladder: `references/technical/HYDRATION_FREE_RENDERING.md`; console proof required per `VERIFY_LOCAL.md` §4C.
 - **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in RUNBOOK_LOCAL.md; jobs → worker verified.
 - **Defect Triage Protocol (Bug vs CR Boundary)**:

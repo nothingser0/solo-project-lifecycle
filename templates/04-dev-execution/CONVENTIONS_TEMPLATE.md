@@ -71,6 +71,9 @@
      export type ActionError = { code: string; message: string; fieldErrors?: Record<string, string[]> };
      export type ActionResult<T> = { success: true; data: T } | { success: false; error: ActionError };
      ```
+5. **Global Error Boundaries & Process Lifecycle**:
+   - **Frontend**: Implement root and route-level Error Boundaries (`error.tsx`) displaying user-friendly error fallbacks with recovery/retry buttons to prevent blank screen crashes.
+   - **Backend**: Catch `unhandledRejection` with structured logging. Implement graceful shutdown intercepting `SIGTERM` and `SIGINT` to cleanly close server connections and flush DB connection pools within a 10s grace timeout.
 
 ---
 
