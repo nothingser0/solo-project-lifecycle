@@ -21,11 +21,24 @@ const batchSize = batchIdx !== -1 && args[batchIdx + 1] ? parseInt(args[batchIdx
 
 const databaseUrl = process.env.DATABASE_URL || '';
 
+function maskDatabaseUrl(rawUrl) {
+  if (!rawUrl) return '[Local Mock Mode]';
+  try {
+    const parsed = new URL(rawUrl);
+    if (parsed.password) {
+      parsed.password = '***';
+    }
+    return parsed.toString();
+  } catch {
+    return rawUrl.replace(/:[^:@]+@/, ':***@');
+  }
+}
+
 console.log('=== Production ETL Importer ===');
 console.log(`Source File : ${sourceFile}`);
 console.log(`Target Table: ${targetTable}`);
 console.log(`Batch Size  : ${batchSize}`);
-console.log(`Database URL: ${databaseUrl ? databaseUrl.replace(/:[^:@]+@/, ':***@') : '[Local Mock Mode]'}`);
+console.log(`Database URL: ${maskDatabaseUrl(databaseUrl)}`);
 console.log('-------------------------------');
 
 async function executeImport() {

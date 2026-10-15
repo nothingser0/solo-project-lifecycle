@@ -134,7 +134,8 @@ gate_M06() {
         echo "  [INFO] Small scale: SECURITY_CHECKLIST_SMALL.md absorbed into M06 (M07 folded)."
         check_required "docs/qa/SECURITY_CHECKLIST_SMALL.md" "SECURITY_CHECKLIST_SMALL.md" 300
         # Small has no M07: anti-vibe-code polish audit is enforced here instead.
-        if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
+        local polish_small=""
+    if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
         polish_small=$(cat "docs/qa/POLISH_AUDIT.md" 2>/dev/null || true)
         if echo "$polish_small" | grep -qiE "NOT READY"; then
             echo "  ❌ POLISH_AUDIT.md reports NOT READY (blocking tells still open)!"

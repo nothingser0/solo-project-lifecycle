@@ -15,6 +15,17 @@ if [ -z "$TARGET_DIR" ]; then
     exit 1
 fi
 
+# Guard against unsafe path traversals
+case "$TARGET_DIR" in
+    *..*|/*|~*)
+        # Normalize or allow absolute / tilde paths, but prevent pure upward directory traversal escapes
+        if [[ "$TARGET_DIR" =~ \.\./\.\. ]]; then
+            echo "Error: Unsafe directory path '$TARGET_DIR' containing multiple parent traversals is rejected."
+            exit 1
+        fi
+        ;;
+esac
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 TEMPLATES="$ROOT_DIR/templates"
@@ -176,20 +187,20 @@ esac
 if [ -n "$ARCHETYPE" ] && [ -f "$TARGET_DIR/docs/pm/IDEA_BRIEF.md" ]; then
     echo "Applying Archetype metadata ($ARCHETYPE)..."
     if command -v sed >/dev/null 2>&1; then
-        sed -i "s/- \*\*Industry Archetype\*\*:.*/- \*\*Industry Archetype\*\*: $ARCHETYPE (from references\/taxonomy\/SYSTEM_ARCHETYPES_250.md)/g" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
+        sed -i "s|- \*\*Industry Archetype\*\*:.*|- \*\*Industry Archetype\*\*: $ARCHETYPE (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)|g" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
     fi
     if [ -f "$TARGET_DIR/PROJECT_LITE.md" ] && command -v sed >/dev/null 2>&1; then
-        sed -i "s/- \*\*Industry Archetype\*\*:.*/- \*\*Industry Archetype\*\*: $ARCHETYPE (from references\/taxonomy\/SYSTEM_ARCHETYPES_250.md)/g" "$TARGET_DIR/PROJECT_LITE.md"
+        sed -i "s|- \*\*Industry Archetype\*\*:.*|- \*\*Industry Archetype\*\*: $ARCHETYPE (from references/taxonomy/SYSTEM_ARCHETYPES_250.md)|g" "$TARGET_DIR/PROJECT_LITE.md"
     fi
 fi
 
 if [ -n "$DELIVERY" ]; then
     echo "Applying Delivery Model ($DELIVERY)..."
     if [ -f "$TARGET_DIR/docs/pm/IDEA_BRIEF.md" ] && command -v sed >/dev/null 2>&1; then
-        sed -i "s/- \*\*Delivery Model\*\*:.*/- \*\*Delivery Model\*\*: $DELIVERY/g" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
+        sed -i "s|- \*\*Delivery Model\*\*:.*|- \*\*Delivery Model\*\*: $DELIVERY|g" "$TARGET_DIR/docs/pm/IDEA_BRIEF.md"
     fi
     if [ -f "$TARGET_DIR/PROJECT_LITE.md" ] && command -v sed >/dev/null 2>&1; then
-        sed -i "s/- \*\*Delivery Model\*\*:.*/- \*\*Delivery Model\*\*: $DELIVERY/g" "$TARGET_DIR/PROJECT_LITE.md"
+        sed -i "s|- \*\*Delivery Model\*\*:.*|- \*\*Delivery Model\*\*: $DELIVERY|g" "$TARGET_DIR/PROJECT_LITE.md"
     fi
 fi
 
