@@ -42,9 +42,9 @@ solo-project-lifecycle/
 │   ├── stacks/              # Framework matrix and stack quickstarts (Next.js, Laravel, Go, Django)
 │   ├── technical/           # Deep research, design systems, APM, compliance guides
 │   └── team/                # Team collaboration and agency handoff
-├── patterns/                # Indonesia-specific patterns (Payments, UU PDP, i18n/IDR, Offline-first)
+├── patterns/                # Indonesia-specific & engineering patterns (Payments, UU PDP, i18n/IDR, Offline-first, Solo Architecture Guardrails)
 ├── scripts/
-│   ├── scaffold/            # Project init and template picker scripts (Bash/PowerShell)
+│   ├── scaffold/            # Project init, TODO generation, and template picker scripts (Bash/PowerShell)
 │   ├── gates/               # Lifecycle gate validation automation
 │   ├── verify/              # Link, frontmatter, template, and stack version verifiers
 │   ├── runtime/             # ETL importer, load-test harness, data migration runner
@@ -106,6 +106,9 @@ The `scripts/` directory provides cross-platform Bash and PowerShell utilities:
   # Initialize a structured project workspace
   ./scripts/scaffold/init-project.sh ~/projects/my-app medium
   # Usage: init-project.sh <TARGET_DIR> [small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise] [ARCHETYPE] [DELIVERY]
+
+  # Automatically scaffold Sprint TODO.md from FSD and Sitemap specifications
+  ./scripts/scaffold/generate-todo.sh TODO.md
   ```
 - **Gate Validation**:
   ```bash
@@ -126,6 +129,16 @@ The `scripts/` directory provides cross-platform Bash and PowerShell utilities:
 2. Read the stack quickstart for Next.js, Laravel, Go, or Django in `references/stacks/`; for any other stack (FastAPI, Rails, SvelteKit, …) start from `templates/04-dev-execution/<stack>/AGENTS.md` and `references/stacks/STACK_SUPPORT_MATRIX.md`.
 3. Review `references/taxonomy/SYSTEM_ARCHETYPES_250.md` to map standard features for your target system category.
 4. Scaffold project governance and harness files using the `scripts/scaffold/` utilities.
+
+---
+
+## AI Agent & Harness Compatibility
+
+The framework is **harness-agnostic** and operates entirely via native markdown specifications and zero-dependency shell scripts. It natively supports:
+
+- **CLI & Autonomous Agents**: Claude Code, Hermes Agent, Aider, OpenHands, Codex CLI.
+- **AI-Native IDEs**: Cursor (Composer/Agent mode with Figma MCP support), Windsurf (Cascade), VS Code + GitHub Copilot.
+- **Generative UI Workflows**: v0.dev, Bolt.new, and Lovable.dev (via `DESIGN_SPEC.md` prompt exports in Module 04).
 
 ---
 
