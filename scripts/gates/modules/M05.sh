@@ -60,6 +60,20 @@ gate_M05() {
         # A2: core section headings must be present (from FSD_TECHNICAL_TEMPLATE.md)
         check_sections "$fsd" "Document Metadata" "Component Architecture" "Relational Database Schema"
 
+        # 1b. Pinned Framework & Ecosystem Libraries check (Anti-Slop Guard)
+        if grep -qiE "Framework Versions.*\(Pinned\)" "$fsd"; then
+            if grep -qiE -- "-\s*\*\*(Authentication|Auth)\*\*:" "$fsd" && \
+               grep -qiE -- "-\s*\*\*(Form|Validation)\*\*:" "$fsd"; then
+                echo "  ✅ Pinned ecosystem libraries (Auth, Validation, Framework) verified in FSD.md"
+            else
+                echo "  ❌ FSD.md missing explicit ecosystem library pinning (Authentication, Validation) in Framework Versions block!"
+                GATE_FAILED=1
+            fi
+        else
+            echo "  ❌ FSD.md missing 'Framework Versions & Ecosystem Libraries (Pinned)' section!"
+            GATE_FAILED=1
+        fi
+
         # 2. Database Schema DDL & Visual ERD existence (BLOCKER)
         if grep -qiE "CREATE TABLE|mongoose\.Schema|models\.Model|Schema::create|model [A-Za-z]+ \{" "$fsd"; then
             echo "  ✅ Database schema definition verified in FSD.md (DDL / ORM models present)"
