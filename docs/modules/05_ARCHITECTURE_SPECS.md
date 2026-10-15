@@ -71,6 +71,8 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 - Audit trail: `created_at`, `updated_at`, `actor_id`, soft-delete.
 - Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
 - `idempotency_keys` table for all POST mutations of financial/stock state.
+- **In-Memory Caching Strategy**: Specify Redis / Keyv layer for high-throughput reads (e.g. session stores, catalog data, rate limit counters) with explicit TTLs and cache invalidation policies (never serve stale ledger balances).
+- **Disaster Recovery & Backup SLA (RPO & RTO)**: Define Recovery Point Objective (RPO ≤ 24h via daily WAL / snapshot) and Recovery Time Objective (RTO ≤ 2h cold recovery target on secondary host).
 
 ### STEP 4: API Endpoint Matrix & Realtime Transport (≥10 endpoints — gate-enforced)
 
