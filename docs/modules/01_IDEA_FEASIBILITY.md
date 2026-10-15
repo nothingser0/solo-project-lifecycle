@@ -32,6 +32,7 @@
 Score each dimension **1.0–5.0** with a confidence tag, written on its own line with the exact machine field name the gate reads: `Feasibility-Score-Technical` (solo-buildable, boring stack) · `Feasibility-Score-Operational` (bandwidth) · `Feasibility-Score-Regulatory` (UU PDP, licensing, disclaimers) · `Feasibility-Score-Financial` (WTP ≥ cost to serve, unit economics).
 Full per-dimension rubric — CRUD/offline caps, the epic-sum bandwidth formula, UU PDP duties, client-vs-SaaS unit economics: `deep-dives/01_IDEA_FEASIBILITY.md` §1–3. Load it when a score is not obvious; the two hard rules are:
 - **Offline mutation + real-time sync caps `Technical` at 3/5** — ship a deferral mitigation or lower the claim. Ledgers use append-only deltas (never LWW) with UUIDv7 ordering (never client wall-clock).
+- **Technical Spike / POC Protocol**: When validating novel APIs, third-party services, or unfamiliar libraries before scoring `Technical`, execute a time-boxed technical spike (1–2 days max) inside `spike/` to produce a throwaway proof of concept. Never assign a score ≥4/5 based on unverified assumptions or marketing claims.
 - **Timeline = epic sum × 1.2 + non-dev overhead** (Small +1 wk, Medium +3–4 wk, Large +6–7 wk); >20% mismatch → revise the timeline up, not the score.
 
 **Dimension Floor Decision** (declare the winner on a single line as `Feasibility-Decision: GO | CONDITIONAL_GO | PIVOT | KILL | PROVISIONAL_PENDING_M00`):

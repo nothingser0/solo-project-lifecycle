@@ -39,8 +39,9 @@
 
 ---
 
-### 3.1 Problem Statement & Research Methodology
+### 3.1 Problem Statement, HMW Framing & Research Methodology
 - **Primary Problem**: [Explain the user's biggest pain point today with concrete numbers]
+- **How Might We (HMW) Framing**: [Turn the pain point into an opportunity: "How might we [solve X] for [user Y] so that [benefit Z] without [friction W]?"]
 - **Current Workarounds / Alternatives**: [How do they solve this problem now? Example: Manual Excel, expensive notary services, Google Drive templates]
 - **Measurable Loss / Non-Resolution Impact**: [Quantified time or financial loss per month]
 - **Research Methodology Disclosure**:
