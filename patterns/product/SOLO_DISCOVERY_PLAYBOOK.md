@@ -61,6 +61,17 @@ A Minimum Viable Product (MVP) often takes weeks. A **Riskiest Assumption Test (
 
 ---
 
+## 3b. The "First 100 Users" Channel Validation
+
+Solo developers cannot rely on paid Google/Meta ads with low venture capital budgets. Before writing MVP code, validate at least one zero-to-low-cost distribution channel:
+
+1. **Niche Communities**: Active participation in targeted WhatsApp/Telegram groups, subreddits, or Discord servers where the target ICP asks for recommendations.
+2. **Direct Cold Outreach**: Identifying 30–50 verified ICP prospects (via LinkedIn, Instagram Business, or Google Maps directory) and initiating direct value conversations (not spam).
+3. **Programmatic / High-Intent SEO**: Ranking for long-tail, high-intent keywords that competitors ignore (e.g. "free PPh 21 calculator for Indonesian tech freelancers").
+4. **Strategic B2B Partnerships**: Integrating or co-marketing with an existing service that already serves your target audience.
+
+---
+
 ## 4. Hamilton Helmer's 7 Powers (Solo Developer Adaptation)
 
 Most startup ideas fail to survive because they have zero defensibility. Solo developers cannot out-spend incumbents on brand advertising or massive scale economies. You must deliberately engineer at least one of these solo-viable powers into your product architecture:

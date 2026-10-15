@@ -365,7 +365,20 @@ potential_customers = (1000 * 0.25 * 0.5) + (1000 * 0.35 * 0.2) = 125 + 70 = 195
 
 ---
 
-## 6. Persona Creation (Jobs-to-be-Done Framework)
+## 6. Ideal Customer Profile (ICP) & Persona Creation (JTBD Framework)
+
+### 6.1 Ideal Customer Profile (ICP) Qualification Criteria
+*Define the hard disqualification and qualification boundaries before conducting user interviews:*
+
+- **Target Segment**: [e.g. Independent E-commerce Sellers & Retail SME]
+- **Minimum Operational Trigger**: [e.g. Generates ≥ Rp 30M/month GMV, processes ≥ 20 orders/day]
+- **Current Workaround**: [e.g. Uses manual Google Sheets or WhatsApp group chats for stock coordination]
+- **Quantifiable Pain Leak**: [e.g. Experiences stock discrepancies or missed orders ≥ 2x per month, causing financial loss]
+- **Disqualification Criteria**: [e.g. Pre-revenue hobbyists, enterprise retail chains requiring on-premise ERP integration]
+
+---
+
+### 6.2 Personas
 
 > ℹ️ **STATUS NOTE**: Until empirical user interviews are conducted, all entries below represent **`Proto-Persona (Hypothesis)`** — the "Budi" name and details are an illustrative example, not research data. Replace them with your own personas or leave empty. Only upgrade status to `Validated Persona` after linking direct quotes and validated sample demographics.
 
