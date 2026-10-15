@@ -123,3 +123,17 @@ export async function processDataErasureRequest(userId: string) {
 - **Transit**: TLS 1.3 mandatory; HSTS headers enabled (`max-age=31536000`).
 - **At-Rest**: Sensitive PII fields (NIK, financial account numbers, health data) encrypted at application level using AES-256-GCM before database write.
 - **Audit Logging**: Zero raw passwords, tokens, or plaintext NIKs logged in stdout or monitoring tools (Sentry/Datadog).
+
+---
+
+## 5. Cross-Border Data Transfer Protocol (Pasal 56)
+
+When using cloud services, AI APIs (OpenAI/Anthropic), or serverless infrastructure hosted outside Indonesia (e.g. AWS Singapore, Vercel US, Supabase US/EU):
+
+1. **Hierarchy of Compliance (Pasal 56 Ayat 1–3)**:
+   - **Tingkat Perlindungan Setara**: Negara penerima wajib memiliki tingkat pelindungan data pribadi yang setara atau lebih tinggi dari UU PDP No. 27/2022.
+   - **Perjanjian Mengikat (Binding Agreement / DPA)**: Jika negara tujuan tidak memiliki standar setara, Pengendali Data wajib memiliki kontrak pengalihan data pribadi internasional (*Data Processing Addendum* / DPA berstandar internasional) yang mengikat pihak penerima.
+   - **Persetujuan Eksplisit (Explicit Consent)**: Jika poin 1 dan 2 tidak terpenuhi, Pengendali Data wajib mendapatkan persetujuan tertulis eksplisit dari Subjek Data setelah menginformasikan risiko transfer luar negeri.
+2. **Praktik Terbaik Solo Developer**:
+   - Cantumkan daftar sub-prosesor luar negeri (OpenAI, Resend, Supabase, Cloudflare) secara transparan pada Kebijakan Privasi (*Privacy Policy*).
+   - Pastikan data sensitif inti (NIK, nomor rekening, catatan medis) tidak dikirim mentah ke LLM eksternal tanpa pseudonimisasi/redaksi lokal terlebih dahulu.
