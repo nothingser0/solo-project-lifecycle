@@ -78,11 +78,13 @@ fails on any mismatch with the §5 arithmetic). Research not yet run → `PENDIN
 
 ## 3. Scale Adaptation
 
-| Aspect | Small (Fast-Track) | Solo SaaS (Medium) | Non-Solo (A-Series) |
+| Aspect | Small (Fast-Track) | Solo SaaS (Medium) | Enterprise / Non-Solo (A-Series) |
 |---|---|---|---|
-| Path | M00 SKIPPED (Intake Gate) | M00-lite mandatory | Routed to A00 (Bid/No-Bid) |
-| Deliverable | `PROJECT_STATE.md` intake only | `docs/pm/M00_LITE.md` (1 page) | Tender-readiness pack |
-| Stopping rule | Intake Gate | `Gate-Decision: PASS` per §1b (exit 0) | Formal Bid/No-Bid |
+| Path | M00 SKIPPED (Intake Gate) | M00-lite mandatory | Routed to A00 (Bid/No-Bid) & Paid Discovery |
+| Deliverable | `PROJECT_STATE.md` intake only | `docs/pm/M00_LITE.md` (1 page) | Paid Discovery Engagement Pack / Tender Pack |
+| Stopping rule | Intake Gate | `Gate-Decision: PASS` per §1b (exit 0) | Paid Discovery Invoice or Formal Bid/No-Bid |
+
+**Enterprise Discovery Rule (Anti-Unpaid Discovery Trap)**: For enterprise clients requiring extensive stakeholder discovery, architecture workshops, or compliance assessments, **never provide custom multi-week discovery for free**. Scope as an upfront **Paid Discovery Sprint** (Advisory Engagement under `A00_ENTERPRISE_ADVISORY_SERIES.md`) with a standalone invoice before committing deep architectural effort.
 
 Full M00 path (4 documents) applies when the project requires industry-grade PM standards; M00-lite is the default for Solo SaaS.
 
