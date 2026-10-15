@@ -150,6 +150,12 @@ Mitigation: [required when the decision is CONDITIONAL_GO]
 | WhatsApp Business API (Meta Cloud API) | Meta Business Verification + Legal Entity Docs | 14–21 business days | M01 / M02 | Transactional email notification via Resend |
 | Apple Developer Program (iOS App Store) | Apple Developer ID / D-U-N-S Number | 7–14 business days | M01 / M02 | Responsive PWA installed via Safari browser |
 
+### 5.1d Technical Spike & Sandbox POC Verification (If Novel/Unfamiliar Tech)
+*When evaluating unfamiliar libraries, novel third-party APIs, or complex sync protocols, document the spike outcome:*
+- **Spike Directory**: `spike/[spike-name]` or `poc/[poc-name]` (or `N/A - Standard Boring Stack`)
+- **Hypothesis Tested**: [e.g. Can Fabric.js handle 500 simultaneous vector shapes without frame drop on mobile?]
+- **Spike Outcome**: [PASSED / FAILED / DEFERRED] - [Summary of benchmark / latency proof]
+
 ### 5.2 Legal Compliance Checklist (UU PDP No. 27/2022 & Solo Guardrails)
 - [ ] **Privacy Policy (Kebijakan Privasi)** planned (data collection, retention, deletion rights)
 - [ ] **Terms of Service (Syarat & Ketentuan)** planned (liability limits, dispute resolution)
