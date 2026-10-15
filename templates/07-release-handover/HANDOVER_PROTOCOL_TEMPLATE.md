@@ -23,6 +23,7 @@
 | **Storage Vault** | Cloudflare R2 / AWS S3 | Bucket: `[project-name]-prod` | Bucket IAM Access Rights Transfer | [x] COMPLETED |
 | **Payment Gateway** | Midtrans / Stripe / Xendit | Merchant ID: `[MID_12345]` | LIVE Mode Transferred to Client Account | [x] COMPLETED |
 | **Email SMTP** | Resend / SendGrid | Domain: `clientdomain.com` | Email Dashboard Ownership Transfer | [x] COMPLETED |
+| **Cloud Billing** | AWS / Vercel / Supabase | Corporate Billing | Developer personal card removed; Client billing active | [x] COMPLETED |
 
 ---
 

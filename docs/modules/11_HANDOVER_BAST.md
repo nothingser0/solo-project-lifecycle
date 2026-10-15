@@ -30,8 +30,10 @@ Finance departments delay final payments once they control the repo/servers; the
 ## 3. Step-by-Step (detail in deep dive)
 
 1. **Training quota**: max **2 × 60-min sessions** (staff operations; super-admin management). Record sessions; deliver recordings + `USER_MANUAL.md` for self-service onboarding.
-2. **Credential handover (zero plaintext)**: never WhatsApp/plaintext email. Use Bitwarden Send / 1Password / Yopass (self-destructing links) + shared vault for the warranty period. Hand over: prod & staging admin logins, DB credentials, API keys (payment/email/storage), hosting/cloud, domain/DNS, Git access — inventory in `HANDOVER_PROTOCOL.md`. Client rotates all passwords within 7 days.
-3. **Git transfer**: GitHub/GitLab → "Transfer Ownership" → client organization; client PIC promoted to Owner; developer PATs removed from client CI/CD.
+2. **Credential handover & Billing Transfer (zero plaintext)**: never WhatsApp/plaintext email. Use Bitwarden Send / 1Password / Yopass (self-destructing links) + shared vault for the warranty period. Hand over: prod & staging admin logins, DB credentials, API keys (payment/email/storage), hosting/cloud, domain/DNS, Git access — inventory in `HANDOVER_PROTOCOL.md`.
+   - **Infrastructure Billing Ownership Transfer**: All cloud/infrastructure services (AWS/Vercel/Railway, Supabase, Cloudflare, Resend, Midtrans) MUST have payment methods transferred to the Client's corporate credit card/billing account. The Developer MUST remove personal credit cards before signing BAST to eliminate ongoing liability.
+   - Client rotates all passwords within 7 days.
+3. **Git transfer & Access Offboarding**: GitHub/GitLab → "Transfer Ownership" → client organization; client PIC promoted to Owner; developer personal PATs and personal SSH keys removed from client CI/CD and production servers. Retain only designated temporary contractor/read-only access needed for M12 warranty support.
 4. **BAST signing**: deliverables breakdown (source code, live URL, manual), acceptance sign-off, formal warranty start/end dates; Rp 10,000 meterai or e-Meterai; co-signed with Client Single PIC.
 
 ## 4. Scale & Waiver Rules
