@@ -33,6 +33,8 @@ Document name, title, email, phone of **1 absolute decision maker** client-side,
 4. **Deemed Acceptance**: no client feedback for 7 calendar days post-demo = milestone accepted (anti-ghosting).
 5. **Revision Limits**: cap design revisions and UAT cycles (max 2 UAT rounds per contract).
 6. **Third-Party Accounts**: hosting, WhatsApp APIs, gateway accounts registered under the **Client**, never on developer credit cards.
+7. **Project Suspension & Kill Fee**: Overdue dependency or payment >10 calendar days suspends development and staging access; resuming requires a 5% administrative restart fee. Client termination without Developer default renders DP strictly non-refundable and completed TODO tasks billable prorata.
+8. **Governing Law & Dispute Resolution (Jurisdiction)**: Disputes resolved via good-faith mutual deliberation (musyawarah) within 30 days. If unresolved, legal venue is bound strictly to the **District Court (Pengadilan Negeri) of the Developer's domicile**, shielding the solo engineer from out-of-town litigation costs.
 
 ---
 
@@ -86,8 +88,10 @@ For client delivery, one of `contracts/SOW_CONTRACT.md`, `docs/pm/SOW_CONTRACT.m
 2. Checklist:
    - [ ] Milestone structure documented (or BYPASS flag for internal)
    - [ ] Part I (Project Charter) present with baseline dates (or WAIVED for Solo SaaS)
-   - [ ] Single PIC identified with official contact info (client projects)
+   - [ ] Single PIC identified with official contact info and Back-up PIC (client projects)
    - [ ] Limitation of Liability clause present (cap = total fees received)
+   - [ ] Project Suspension & Kill Fee clause documented (overdue >10d pause, non-refundable DP)
+   - [ ] Governing law & developer domicile jurisdiction clause locked
 3. Present summary: go-live date, milestone schedule & DP amount (or internal flag), risk boundaries.
 
 ### STEP 2 — Gate Verification (MANDATORY)

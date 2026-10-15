@@ -190,7 +190,15 @@ The Parties agree to maintain the confidentiality of business information, techn
 
 ---
 
-### 9.1 M03 Gate Confirmation Log
+### 10. Governing Law & Dispute Resolution
+
+1. This agreement shall be governed by and construed in accordance with the laws of the Republic of Indonesia.
+2. Any dispute, controversy, or claim arising out of or relating to this contract, including its formation or breach, shall first be settled amicably through mutual consultation (*musyawarah*) within thirty (30) calendar days.
+3. In the event that amicable settlement cannot be reached, the Parties agree to submit to the exclusive jurisdiction and venue of the **District Court (Pengadilan Negeri) of the Developer's domicile**, or arbitration under the Indonesian National Board of Arbitration (BANI).
+
+---
+
+### 10.1 M03 Gate Confirmation Log
 
 > ⚠️ **M03 Commercial Gate prerequisite.** `scripts/gates/validate-gate.sh M03` verifies the
 > **M03 Gate Confirmation Log** below: the Down Payment line must be ticked **and** state a
