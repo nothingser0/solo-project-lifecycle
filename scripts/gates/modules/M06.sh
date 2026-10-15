@@ -10,12 +10,13 @@ gate_M06() {
     check_intake_gate || true
     check_required "AGENTS.md" "docs/harness-root/AGENTS.md" 500
     check_required "TODO.md" "docs/harness-root/TODO.md" 500
-    # B1: Small scale requires ONLY AGENTS.md + TODO.md at the root harness level.
+    # B1: Small scale requires AGENTS.md + TODO.md + DESIGN.md at the root harness level.
     # CONTEXT.md / RUNBOOK_LOCAL.md / VERIFY_LOCAL.md are Medium+ requirements.
     is_m06_small=0
     if is_small_scale; then
         is_m06_small=1
-        echo "  [INFO] Small scale detected: minimal root harness (AGENTS.md + TODO.md only)."
+        echo "  [INFO] Small scale detected: minimal root harness (AGENTS.md + TODO.md + DESIGN.md)."
+        check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 500
     else
         check_required "CONTEXT.md" "" 500
     fi
