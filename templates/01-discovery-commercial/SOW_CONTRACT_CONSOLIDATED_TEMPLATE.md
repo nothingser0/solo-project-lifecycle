@@ -31,6 +31,8 @@ To prevent conflicting directions and ensure solo developer execution efficiency
 - **Full Name of PIC**: [Client PIC Name]
 - **Official Title**: [Product Owner / IT Manager / Operations Director]
 - **Email & WhatsApp Contact**: [email@company.com / +628...]
+- **Designated Back-up PIC (Escalation Path)**: [Back-up PIC Name / Title / email / phone] — holds delegated approval authority strictly if Primary PIC is uncontactable for ≥5 consecutive business days.
+- **Designated Official Communication Channel**: [Formal Email / Designated Slack Connect / Notion / Linear] — casual verbal instructions, personal chat messages, or unofficial groups hold no legal or binding authority over project scope.
 - **Exclusive Authority of PIC**:
   1. The sole party authorized to provide formal approval for PRD, FSD, and UI/UX design changes.
   2. The sole party authorized to sign UAT test sheets and the Official Acceptance Report (BAST).

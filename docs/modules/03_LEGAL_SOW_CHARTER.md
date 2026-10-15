@@ -24,7 +24,7 @@
 Percentages must sum to exactly 100%. Standard = **30/40/30**; **50/50** only for Small fast-track client projects.
 
 ### Step 3 — Single PIC Rule
-Document name, title, email, phone of **1 absolute decision maker** client-side. All instructions, approvals, UAT results, and signatures are valid only from that PIC. Clause: *"Verbal instructions or written requests from client staff outside the designated Single PIC hold no binding authority over the developer."* Review SLA: max 3 business days.
+Document name, title, email, phone of **1 absolute decision maker** client-side, along with a **designated Back-up PIC** (escalation path if Primary PIC is uncontactable for ≥5 business days) and **1 official communication channel** (email/project tool). All instructions, approvals, UAT results, and signatures are valid only from that PIC via that channel. Clause: *"Verbal instructions, casual chat messages, or written requests from client staff outside the designated Single PIC and official channel hold no binding authority over the developer."* Review SLA: max 3 business days.
 
 ### Step 4 — Legal Protection Clauses
 1. **IP**: source code, credentials, licenses remain the Developer's property until 100% of milestones are paid.
