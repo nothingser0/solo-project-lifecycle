@@ -65,7 +65,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 403 });
     }
 
-    // 2. Idempotency Check (Prevent duplicate credit on network retries)
+    // 2. Idempotency & Concurrency Lock (Prevent duplicate credit on simultaneous network retries)
+    // Use an atomic upsert/insert on a unique gateway transaction record to lock processing.
+    const idempotencyKey = `midtrans_${transaction_id || id_or_transaction_id}`;
+    
     const existingOrder = await db.order.findUnique({
       where: { id: order_id },
       select: { status: true, paymentStatus: true },
@@ -76,7 +79,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (existingOrder.paymentStatus === 'PAID') {
-      // Already processed, return 200 immediately to acknowledge gateway
+      // Already settled, return 200 immediately to acknowledge gateway retry
       return NextResponse.json({ status: 'already_processed' }, { status: 200 });
     }
 
@@ -91,23 +94,25 @@ export async function POST(req: NextRequest) {
       newPaymentStatus = 'EXPIRED';
     }
 
-    // 4. Atomic Transactional Update
+    // 4. Atomic Transactional Update with Unique Webhook Log
     await db.$transaction(async (tx) => {
+      // Unique constraint on gatewayTransactionId prevents concurrent duplicate webhook execution
+      await tx.paymentLog.create({
+        data: {
+          idempotencyKey,
+          orderId: order_id,
+          gateway: 'MIDTRANS',
+          rawPayload: body,
+          status: newPaymentStatus,
+        },
+      });
+
       await tx.order.update({
         where: { id: order_id },
         data: {
           paymentStatus: newPaymentStatus,
           status: newPaymentStatus === 'PAID' ? 'PROCESSING' : existingOrder.status,
           paidAt: newPaymentStatus === 'PAID' ? new Date() : null,
-        },
-      });
-
-      await tx.paymentLog.create({
-        data: {
-          orderId: order_id,
-          gateway: 'MIDTRANS',
-          rawPayload: body,
-          status: newPaymentStatus,
         },
       });
     });

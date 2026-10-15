@@ -15,10 +15,41 @@
    - Exception: Statutory record-keeping laws (e.g. UU Ketentuan Umum Perpajakan mandates keeping financial/transaction records for 5–10 years). In financial systems, personal identifiers are **anonymized/pseudonymized** while ledger transactions are preserved.
 3. **Mandatory Breach Notification within 72 Hours (Pasal 46)**:
    - Data controllers must notify Komdigi (Kementerian Komunikasi dan Digital) and affected data subjects within **72 hours** of discovering a data breach.
+   - For solo developers, maintain an incident template (`BREACH_NOTIFICATION_TEMPLATE.md`) to avoid panic and ensure mandatory statutory fields (nature of breach, impacted records, remediation contact) are reported immediately.
 
 ---
 
-## 2. Consent Ledger Schema (Prisma Example)
+## 2. Statutory Breach Notification Format (Komdigi Pasal 46)
+
+When a security incident involving personal data occurs, copy and fill this statutory notification:
+
+```markdown
+# PEMBERITAHUAN KEGAGALAN PERLINDUNGAN DATA PRIBADI (UU PDP NO. 27/2022 PASAL 46)
+
+Kepada Yth:
+Direktorat Jenderal Pengendalian Aplikasi Informatika / Lembaga Pelindungan Data Pribadi
+Kementerian Komunikasi dan Digital Republik Indonesia (Komdigi)
+
+1. Identitas Pengendali Data:
+   - Nama Entitas / Penyelenggara: [Nama PT / Usaha / Aplikasi]
+   - Kontak Darurat Penanggung Jawab: [Email & No HP]
+2. Waktu & Kronologi Terjadinya Insiden:
+   - Tanggal & Waktu Terdeteksi: [YYYY-MM-DD HH:mm WIB]
+   - Penyebab Utama: [Credential Leak / SQL Injection / Misconfigured S3 Bucket / etc.]
+3. Jenis & Jumlah Data Pribadi yang Terdampak:
+   - Estimasi Jumlah Subjek Data: [Jumlah User]
+   - Kategori Data: [Nama, Email, Hash Password, No HP] (Tidak termasuk data kartu kredit / plain password)
+4. Langkah Penanganan yang Telah Diambil:
+   - [x] Isolasi server / rotasi secret keys & API tokens
+   - [x] Penutupan celah keamanan pada endpoint terdampak
+   - [x] Pemberitahuan tertulis kepada pengguna terdampak dalam waktu 72 jam
+5. Kontak Bantuan Subjek Data:
+   - Saluran Pengaduan Resmi: support@domain.com / +62...
+```
+
+---
+
+## 3. Consent Ledger Schema (Prisma Example)
 
 ```prisma
 model UserConsent {
