@@ -34,6 +34,7 @@ Visual preview and interaction polish are mandatory to eliminate AI slop. Before
 
 - Contrast: primary text ≥7:1; secondary/status/placeholder ≥4.5:1; input borders ≥3:1.
 - Zero gradients, zero glassmorphism, shadows ≤4px, non-color state indicators, ≥44px touch targets, zero default Tailwind blue (`#3B82F6`).
+- **Keyboard & Mobile Reflow**: High-contrast `focus-visible:ring-2` on all interactive controls (never `outline: none`); data tables on viewports `<640px` reflow into stacked key-value cards (never unconstrained horizontal scroll hiding action buttons).
 - Component signature match: Primary buttons, cards, and input fields must mirror exact radius, height, and border styling extracted from benchmark in `notes.md` (no generic AI defaults).
 
 ## Gate

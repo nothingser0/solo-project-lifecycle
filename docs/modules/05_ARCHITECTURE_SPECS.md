@@ -72,6 +72,7 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 - Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
 - `idempotency_keys` table for all POST mutations of financial/stock state.
 - **In-Memory Caching Strategy**: Specify Redis / Keyv layer for high-throughput reads (e.g. session stores, catalog data, rate limit counters) with explicit TTLs and cache invalidation policies (never serve stale ledger balances).
+- **Asynchronous Processing & Worker Queue Strategy**: Decouple resource-intensive tasks (PDF invoice compilation, transactional bulk emails, webhook processing, AI batch inference) from synchronous HTTP request cycles using a persistent queue architecture (e.g. BullMQ, Celery, Laravel Queue, pg-boss, or QStash/Inngest) to eliminate HTTP 504 gateway timeouts.
 - **Disaster Recovery & Backup SLA (RPO & RTO)**: Define Recovery Point Objective (RPO ≤ 24h via daily WAL / snapshot) and Recovery Time Objective (RTO ≤ 2h cold recovery target on secondary host).
 
 ### STEP 4: API Endpoint Matrix & Realtime Transport (≥10 endpoints — gate-enforced)
@@ -84,9 +85,10 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
   - Reconnection & state recovery strategy on network drop.
 - **One heading per endpoint** (`#### POST /api/v1/...`) — the gate counts these headings and fails below 10.
 
-### STEP 5: Security Blueprint + Module 04 Handoff (both gate-enforced)
+### STEP 5: Security Blueprint, Secrets Validation & Module 04 Handoff (gate-enforced)
 
 - **Security**: record AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting, and Edge DDoS/WAF protection via Cloudflare ([`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md)) (+ UU PDP on Medium+). Gate-enforced; `N/A — <reason>` accepted, blank not.
+- **Typed Environment Variables Schema (`.env.example`)**: Declare complete environment variable contract with runtime type-validation (Zod / `@t3-oss/env-nextjs` / Pydantic / config validators) to enforce fail-fast application startup if secrets are missing.
 - **Handoff**: prototype → chosen framework conversion (component map, token extraction). The gate requires a section **named `Module 04 Handoff Strategy`** carrying **`Compatibility Level: Level 1-4`** — M06 STEP 0 parses those exact strings; level table in `FSD_TECHNICAL_TEMPLATE.md` §2.1.
 
 ### STEP 6: Write Deliverables

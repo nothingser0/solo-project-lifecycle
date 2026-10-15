@@ -635,7 +635,9 @@ placeholder rows before sign-off.*
 | UU PDP / GDPR | Consent capture, deletion right, retention window — or `N/A — <reason>` | [`patterns/compliance/UU_PDP_COMPLIANCE.md`](../../patterns/compliance/UU_PDP_COMPLIANCE.md) |
 | Idempotency (write safety) | `X-Idempotency-Key` on every financial/stock mutation | §3 `idempotency_keys` |
 | In-Memory Caching (Read Scalability) | [Redis / Keyv cache layer, TTL policy, cache invalidation — or `N/A — low traffic CRUD`] | [cache middleware / client] |
+| Asynchronous Queue / Worker | [BullMQ / Celery / Laravel Queue / QStash for PDF, bulk email, webhook processing — or `N/A — synchronous CRUD`] | [queue worker config / service] |
 | Edge DDoS & WAF Protection | Cloudflare Proxy (Orange Cloud), WAF Managed Challenge, Edge Rate Limiting, Authenticated Origin Pulls | [`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md) |
+| Environment Secrets Validation | Typed `.env.example` schema with boot-time validation (Zod / @t3-oss/env-nextjs / Pydantic) | `src/env.ts` or config schema |
 | Disaster Recovery & Backup SLA | Target RPO ≤ 24h (WAL/daily snapshot); Target RTO ≤ 2h cold restore on secondary host | deployment & ops runbook |
 
 ---
