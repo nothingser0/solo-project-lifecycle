@@ -43,7 +43,7 @@ Git: `main` → `staging` → `feat/*`.
   - **Bug**: Functionality violates locked `PRD.md` / `FSD.md` / Acceptance Criteria $\rightarrow$ fixed immediately at zero cost.
   - **Change Request (CR)**: Any modification of behavior or additional capability outside locked specs $\rightarrow$ diverted to `change-requests/CR-*.md` with fee & timeline impact; never implemented during sprint.
 
-**STEP 7 — Tests, CI Pipeline & Git.** Stack smoke/unit tests + `tsc --noEmit` + `pnpm audit`. Configure automated CI workflow (`.github/workflows/ci.yml`) enforcing linting, type-checking, and test suite on every PR. AI pre-merge review → `AI_REVIEW_LOG.md`. **Human merges to `staging` and tags Alpha** — agent must not commit/merge/tag.
+**STEP 7 — Tests, CI Pipeline & Git.** Stack smoke/unit tests + `tsc --noEmit` + `pnpm audit`. Configure automated CI workflow (`.github/workflows/ci.yml` via `templates/04-dev-execution/PROJECT_CI_TEMPLATE.yml`) enforcing linting, type-checking, test suite, and Anti-AI-Slop scans (zero escape hatches / secrets) on every PR. AI pre-merge review → `AI_REVIEW_LOG.md`. **Human merges to `staging` and tags Alpha** — agent must not commit/merge/tag.
 
 **STEP 8 — RUNBOOK_LOCAL.md + VERIFY_LOCAL.md** from `templates/04-dev-execution/{RUNBOOK_LOCAL,VERIFY_LOCAL}_TEMPLATE.md` (placeholders → FSD endpoints + stack commands). Smoke test 100%.
 
