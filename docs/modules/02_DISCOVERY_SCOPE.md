@@ -15,6 +15,7 @@
 - Verify decision authority; dissect needs vs wants.
 - **Metrics ramp**: Month 1: 5–10 customers; Month 6: 50–75; Year-1 baseline 50–100 paying (Rp 5–10M MRR @ Rp 99k). D30 retention 30–40%; churn 30–50%/yr → lifetime 12–18 mo; never pair high churn with long LTV.
 - **Non-circular NSM**: ❌ "70% of WAU record ≥5 tx/wk" (circular). ✅ "70% of signups with ≥1 login in 30 days record ≥5 tx/wk."
+- **Guardrail Metrics**: pair the North Star Metric with operational guardrails that must NOT degrade (e.g., checkout API p95 latency ≤500ms, inventory discrepancy ≤0.5%, zero unhandled transaction exceptions).
 - **Pre-launch validation**: smoke landing page by Week 2; 50–100 signups before major investment, else reassess positioning.
 
 ### Step 2 — Problem-Solution Fit & MoSCoW

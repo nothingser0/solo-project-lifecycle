@@ -41,8 +41,12 @@
 - **Target D30 Retention**: [e.g., 30%–40% active after initial 30 days]
 - **Modeled Customer Lifetime**: [e.g., 12–18 months based on SMB churn rates]
 
-### 2.3 Non-Circular North Star Metric
+### 2.3 Non-Circular North Star Metric & Guardrails
 - **North Star Metric**: [e.g., Active Tenant Rate = 70% of monthly active signed-up organizations record ≥5 operational transactions per week]
+- **Operational Guardrail Metrics (Must NOT degrade)**:
+  - Guardrail 1 (Performance): [e.g., Critical action API p95 response time ≤ 500ms on 3G connections]
+  - Guardrail 2 (Integrity): [e.g., Inventory/financial discrepancy rate ≤ 0.1%]
+  - Guardrail 3 (Reliability): [e.g., Zero unhandled checkout exceptions or data corruption incidents]
 
 ---
 
@@ -98,22 +102,22 @@
 | **F-07** | [Integrations / Alert]| [Third-party webhooks, external notifications] | **P2 (Could)** | 3 days | Workflow enhancement | Phase 2 Backlog | 🔶 |
 | **F-08** | [Deferred Scope] | [Multi-currency, mobile native app, AI copilot] | **P3 (Won't)** | — | Non-essential scope | Excluded | ✅ |
 
-### 4.2 User Stories & Acceptance Criteria (INVEST Standard)
-*Document user stories for all P0 (Must) and P1 (Should) features:*
+### 4.2 User Stories & Acceptance Criteria (INVEST & Given-When-Then Standard)
+*Document user stories for all P0 (Must) and P1 (Should) features using strict Given-When-Then criteria for both happy paths and edge cases:*
 
 #### Feature F-01: [Feature Name, e.g., Role-Based Authentication & Session Management]
 - **User Story**: As a [role], I want to [action], so that [benefit].
 - **Acceptance Criteria**:
-  - [ ] Given [valid credentials], when user logs in, then JWT cookie is set with `HttpOnly`, `SameSite=Lax`, and user is redirected to role dashboard.
-  - [ ] Given [invalid role permissions], when user attempts accessing unauthorized route, then system redirects to `/403` and emits audit log.
-  - [ ] Edge Case: Password reset tokens expire strictly after 15 minutes.
+  - [ ] Given [valid credentials], when user logs in, then JWT cookie is set with `HttpOnly; Secure; SameSite=Lax`, and user is redirected to role dashboard.
+  - [ ] Given [invalid role permissions], when user attempts accessing unauthorized route, then system redirects to `/403` and emits structured audit log.
+  - [ ] Edge Case: Given [expired reset token >15m], when user submits new password, then system rejects request with `TOKEN_EXPIRED` and triggers re-verification.
 
 #### Feature F-02: [Feature Name, e.g., POS Checkout & Transaction Recording]
 - **User Story**: As a [role], I want to [action], so that [benefit].
 - **Acceptance Criteria**:
   - [ ] Given [scanned SKU], when product is added to cart, then system validates local stock balance and renders price formatted in IDR.
   - [ ] Given [completed transaction], when cashier submits payment, then stock balance decrements atomically and receipt data is emitted.
-  - [ ] Edge Case: Offline transaction queued in IndexedDB if internet connectivity drops.
+  - [ ] Edge Case: Given [offline network state], when transaction is completed, then payload is queued in local IndexedDB with unique UUIDv7 idempotency key.
 
 ---
 
