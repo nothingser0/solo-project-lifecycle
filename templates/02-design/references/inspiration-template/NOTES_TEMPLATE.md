@@ -268,6 +268,13 @@ Dropdown: [property] [duration] [easing]
 
 **Motion Principle**: [Minimal/functional or expressive/animated?]
 
+**Dynamic Effects & Motion Directives (Human-Specified)**:
+*(Critical when references are static screenshots without live URLs)*
+- **Hero & Key Visual Effects**: [e.g. Scroll parallax depth (background -50px, foreground -150px), looping video background, 3D Spline/Three.js interactive model]
+- **Scroll & Reveal Behaviors**: [e.g. Staggered headline text reveal, scroll-triggered bento grid entrance with spring physics]
+- **Micro-Interactions & Hover Physics**: [e.g. Card 3D tilt on mouse hover, button magnetic effect, spring pill tab switch]
+- **Media Asset Slot Requirements**: [e.g. `assets/media/hero.mp4`, `assets/media/robot.splinecode`, Lottie JSON files]
+
 ---
 
 ## Style Classification

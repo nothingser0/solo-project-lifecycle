@@ -4,10 +4,11 @@
 
 **Purpose**: proportional design pass for the Small path. Produces the same 6 artifact names as full M04, sized down — never skipped.
 
-## Step 0.5 — Inspiration Intake (BLOCKING, not sizeable down)
+## Step 0.5 — Inspiration Intake & Motion Directives (BLOCKING, not sizeable down)
 
-The LITE path shrinks the artifacts; it never waives the input. **Before any artifact below exists** (logo, SITEMAP, components, DESIGN.md), the **human** must place at least one reference in `docs/design/inspiration/` — a screenshot, a brand board, or a `links.md` listing reference URLs (Linear, Vercel, TailwindUI, Stripe or any product the human actually likes).
+The LITE path shrinks the artifacts; it never waives the input. **Before any artifact below exists** (logo, SITEMAP, components, DESIGN.md), the **human** must place at least one reference in `docs/design/inspiration/` — a screenshot, a brand board, short video clip, or a `links.md` listing reference URLs (Linear, Vercel, TailwindUI, Stripe or any product the human actually likes).
 
+- **Dynamic effects rule**: When providing static screenshots without live URLs, the human states the desired dynamic effects directly (e.g. parallax scroll, 3D canvas, video background, stagger text reveal, hover interactions) so the AI captures the intended feel.
 - ⛔ **STOP 0.5**: folder empty → END TURN and ask. Do not emit a placeholder logo, SITEMAP, component list, or `DESIGN.md` "while waiting".
 - `notes.md` is the agent's analysis, **never** the reference. A benchmark that cites no existing file is fabrication.
 - Gate-enforced: `validate-gate.sh M04` (and `M06`, for projects that started before this rule) fails until a human-supplied file exists and `notes.md` cites it by filename.

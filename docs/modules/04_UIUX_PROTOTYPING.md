@@ -13,12 +13,13 @@ This module translates `SCOPE_STATEMENT.md` (+ valid SOW, or M03 waived for Solo
 
 ```text
 INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
- ▼ 0.5 Inspiration Intake — FIRST, BLOCKING, EVERY SCALE
-       The human places >=1 reference in docs/design/inspiration/ (screenshot, brand board, or links.md of URLs).
+ ▼ 0.5 Inspiration Intake & Effect Cues — FIRST, BLOCKING, EVERY SCALE
+       The human places >=1 reference in docs/design/inspiration/ (screenshot, brand board, short video clip, or links.md of URLs).
+       Crucial: if providing static screenshots without live URLs, the human MUST specify desired dynamic effects directly (e.g. parallax scroll, 3D Spline canvas, video background, stagger text animation, hover micro-interactions).
        ⛔ STOP 0.5: if that folder holds no human-supplied file → END TURN and ask. Do NOT create
           LOGO_DESIGN_BRIEF.md, assets/logo/, SITEMAP.md, COMPONENT_REQUIREMENTS.md, or DESIGN.md first.
-       Then: scaffold docs/design/inspiration/, analyze 2–5 references, select exactly 1 primary benchmark,
-       cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md
+       Then: scaffold docs/design/inspiration/, analyze 2–5 references, capture human effect specifications,
+       select exactly 1 primary benchmark, cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md
        ⛔ FORBIDDEN: inventing a reference; notes.md is agent output, never the reference
  ▼ 0A. LOGO_DESIGN_BRIEF.md — name/philosophy/vibe/seed colors (≤2KB) → docs/specs/LOGO_DESIGN_BRIEF.md; save logo to assets/logo/ (logo.svg | logo.png)
  ▼ 0B. SITEMAP.md — hierarchy, 3–5 critical flows, breadcrumbs, States/RBAC (SITEMAP_TEMPLATE.md) → docs/specs/SITEMAP.md
