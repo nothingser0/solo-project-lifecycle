@@ -41,6 +41,8 @@
 | **SIT-06** | Email Sandbox | Send signer link notification | Email delivered to recipient inbox with proper formatting | PASS / FAIL |
 | **SIT-07** | Payment Webhook | Send successful transaction webhook payload | Order status automatically transitions from `PENDING` → `PAID` | PASS / FAIL |
 | **SIT-08** | Idempotency | Send duplicate checkout request (double-click) | Second request rejected with `409 Conflict`, no duplicate records created | PASS / FAIL |
+| **SIT-09** | Webhook Security | Test forged HMAC signature & replay delivery | Forged signature rejected with `401/403`; repeated delivery handled idempotently without duplicate credits | PASS / FAIL |
+| **SIT-10** | Auth & BOLA/IDOR | Attempt reading/updating another tenant/user ID | Endpoint rejects cross-tenant/cross-user access with `403 Forbidden` or `404 Not Found` | PASS / FAIL |
 
 ---
 

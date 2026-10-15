@@ -28,9 +28,12 @@ pnpm run test        # Vitest / Jest / Pytest / Go test — exit code 0
 
 ### Step 2 — System Integration Testing (SIT, Staging)
 **Dummy/seed data only. Real client data is imported in M08 after SIT passes.**
-1. **Payment sandbox**: success + failed/expired webhook payloads → `PAID` / `CANCELLED` transitions, inventory lock.
+1. **Payment & Webhook Integrity**:
+   - Verify success + failed/expired webhook payloads → `PAID` / `CANCELLED` transitions, inventory lock.
+   - **Webhook HMAC & Replay Defense**: Test missing signature (must return 401/403), invalid signature (must return 401/403), and repeated delivery of identical payload (must be idempotent: no duplicate credits, return 200 OK).
 2. **Encrypted vault upload**: AES-256 encrypted upload to storage bucket + presigned URL download/decrypt within 15-minute expiry.
 3. **Transactional email**: OTP email arrives with correctly formatted template (SMTP / Resend delivery log).
+4. **BOLA / IDOR Authorization Tests**: Explicitly test cross-tenant and cross-user data access (User A attempting to read/update User B's resource ID must strictly return `403 Forbidden` or `404 Not Found`).
 
 ### Step 3 — Security Audit & Bug Triage
 ```bash
@@ -71,7 +74,7 @@ Tests pass ≠ looks finished. Build `docs/qa/POLISH_AUDIT.md` from `templates/0
 
 ## Gate Exit Criteria [GATE]
 - [ ] All unit + integration tests pass (exit 0).
-- [ ] SIT sandboxes proven (payment webhooks, encrypted vault + presigned URL, transactional email) on staging with seed data only.
+- [ ] SIT sandboxes proven (payment webhook HMAC verification + replay defense, encrypted vault + presigned URL, transactional email, and IDOR/BOLA authorization checks) on staging with seed data only.
 - [ ] Security audit clean: `pnpm audit` zero High/Critical, secret scan clean, OWASP + security headers verified.
 - [ ] Load test: ≤200 ms avg latency, zero 500s.
 - [ ] Staging deployed and stable; smoke test passes.
