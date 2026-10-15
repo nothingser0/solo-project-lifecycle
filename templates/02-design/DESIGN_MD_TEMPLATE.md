@@ -91,7 +91,15 @@
 
 ---
 
-## 5. Complete Root CSS Variables (`src/app/globals.css`)
+## 5. Anti-Slop Rules & Design Defenses
+- **Zero Gradients**: No generic AI cyan/purple gradient backgrounds or decorative gradient text. Solid canvas and card tokens only.
+- **Zero Glassmorphism**: No `backdrop-blur` or semi-transparent floating glass panels that destroy text legibility and tank low-end GPU performance.
+- **Restrained Shadows**: Maximum shadow elevation is `4px` (`shadow-sm` / subtle drop shadow). No glowing or blown-out neon drop shadows.
+- **Mobile Touch Defense**: All interactive form inputs must maintain `16px` base font size on mobile viewports to prevent iOS Safari auto-zoom; all buttons must satisfy `min-h-[44px]` touch targets.
+
+---
+
+## 6. Complete Root CSS Variables (`src/app/globals.css`)
 
 ```css
 @tailwind base;

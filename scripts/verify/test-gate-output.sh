@@ -61,7 +61,7 @@ EOF
     printf '# CONTEXT\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'y')" > "$d/CONTEXT.md"
     printf '# TODO\n\n- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0\n- [ ] **M06-BE-01: API**\n- [ ] **M06-FE-01: Screens**\n' > "$d/TODO.md"
     printf '# SCOPE_STATEMENT\n\n## User Stories\n\n## Acceptance Criteria\n\nScale: Medium\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/docs/pm/SCOPE_STATEMENT.md"
-    printf 'DESIGN\nContrast 7.0:1\nz-index scale\nTypography\nSpacing\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/DESIGN.md"
+    printf 'DESIGN\nContrast 7.0:1\nz-index scale\nTypography\nSpacing\nAnti-Slop\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/DESIGN.md"
     # Human-supplied reference (the gate only checks existence, so a text stub is
     # enough to keep the fixture binary-free) + notes.md citing it by filename.
     printf 'placeholder for reference-1-dashboard.png\n' > "$d/docs/design/inspiration/reference-1-dashboard.png"

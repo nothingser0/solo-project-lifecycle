@@ -97,7 +97,15 @@ gate_M04() {
             if grep -qiE "Typography" "$design_file" && grep -qiE "Spacing" "$design_file"; then
                 echo "  ✅ DESIGN.md Typography & Spacing sections verified"
             else
-                echo "  ❌ DESIGN.md missing required 'Typography' and/or 'Spacing' sections!"
+                echo "  ❌ DESIGN.md missing Typography or Spacing sections!"
+                GATE_FAILED=1
+            fi
+
+            # 5b. Anti-Slop Design Defenses (BLOCKER)
+            if grep -qiE "Anti-Slop|Zero Gradients|Zero Glassmorphism|Restrained Shadows" "$design_file"; then
+                echo "  ✅ DESIGN.md Anti-Slop design defenses verified"
+            else
+                echo "  ❌ DESIGN.md missing Anti-Slop design rules (Zero Gradients, Zero Glassmorphism, Restrained Shadows)!"
                 GATE_FAILED=1
             fi
         fi
