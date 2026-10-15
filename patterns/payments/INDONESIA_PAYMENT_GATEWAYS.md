@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
       status_code,
       gross_amount,
       signature_key,
+      transaction_id,
       transaction_status,
       fraud_status,
     } = body;
@@ -67,7 +68,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Idempotency & Concurrency Lock (Prevent duplicate credit on simultaneous network retries)
     // Use an atomic upsert/insert on a unique gateway transaction record to lock processing.
-    const idempotencyKey = `midtrans_${transaction_id || id_or_transaction_id}`;
+    const idempotencyKey = `midtrans_${transaction_id || order_id}`;
     
     const existingOrder = await db.order.findUnique({
       where: { id: order_id },
