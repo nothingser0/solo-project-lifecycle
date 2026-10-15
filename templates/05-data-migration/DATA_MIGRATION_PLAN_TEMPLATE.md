@@ -66,7 +66,21 @@ To preserve personal data confidentiality in accordance with UU PDP No. 27/2022 
 
 ---
 
-## 5. Data Mapping Plan Approval Sheet
+## 5. Execution Protocol & Safety Controls
+
+- **Pre-Flight Dry Run Mode**:
+  - The migration script must support `--dry-run` flag to execute data validation, parse checking, and FK integrity verification without issuing `COMMIT`.
+  - Staging/Production logs must demonstrate a successful dry-run run prior to actual batch write execution.
+- **Rollback & Snapshot Protocol**:
+  - Point-in-time database snapshot/dump command: `pg_dump -Fc ... > pre_migration_backup.dump`
+  - Rollback execution command: `pg_restore --clean ... pre_migration_backup.dump`
+  - Maximum tolerable rollback execution window: `< 15 minutes`.
+
+---
+
+## 6. Data Mapping Plan Approval Sheet
+
+---
 
 This document serves as the authoritative reference for writing automated data migration scripts.
 
