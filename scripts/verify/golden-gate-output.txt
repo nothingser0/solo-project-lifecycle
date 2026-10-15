@@ -76,10 +76,12 @@
   ✅ docs/design/inspiration/notes.md (Benchmark selection verified)
   ✅ docs/specs/SITEMAP.md (1117B)
   ✅ docs/specs/COMPONENT_REQUIREMENTS.md (1126B)
+  ✅ docs/specs/COMPONENT_REQUIREMENTS.md core section headings verified (3 headings present)
   ✅ docs/specs/LOGO_DESIGN_BRIEF.md (348B)
   ✅ docs/design/inspiration/notes.md (77B)
   ✅ DESIGN.md (1256B)
-  ✅ docs/specs/DESIGN_SPEC.md (1278B)
+  ✅ docs/specs/DESIGN_SPEC.md (1341B)
+  ✅ docs/specs/DESIGN_SPEC.md core section headings verified (1 headings present)
   ✅ DESIGN.md accessibility & contrast ratios verified
   ✅ DESIGN.md z-index layering scale verified
   ✅ DESIGN_SPEC.md 5-state matrix markers verified (5/5 states detected)

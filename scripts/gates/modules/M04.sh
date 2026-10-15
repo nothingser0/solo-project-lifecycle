@@ -52,10 +52,12 @@ gate_M04() {
     fi
     check_required "docs/specs/SITEMAP.md" "" $min_sitemap
     check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
+    check_sections "docs/specs/COMPONENT_REQUIREMENTS.md" "Primitives|Atomic" "Composites" "WCAG|Accessibility"
     check_required "docs/specs/LOGO_DESIGN_BRIEF.md" "" 200
     check_required "docs/design/inspiration/notes.md" "" 200
     check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000
     check_required "docs/specs/DESIGN_SPEC.md" "" $min_design_spec
+    check_sections "docs/specs/DESIGN_SPEC.md" "Motion|Transition|Interaction"
 
     # 3. Accessibility & Contrast Verification in DESIGN.md (BLOCKER)
     design_file="DESIGN.md"

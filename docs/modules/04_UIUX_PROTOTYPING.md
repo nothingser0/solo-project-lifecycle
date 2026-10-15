@@ -43,7 +43,7 @@ OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 **Step 0.5 acceptance (gate-enforced, every scale)**: `docs/design/inspiration/` contains ≥1 file that is not `notes.md`/`README.md`/`NOTES_TEMPLATE.md`/dotfile, and `notes.md` cites a filename that actually exists in that folder. `validate-gate.sh M04` fails without both; M06 re-checks it for projects that started before this rule existed.
 
 ## 2. Outputs
-`docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png) and, for Workflow B, `docs/design/prompts/scr-xx/PROMPT.md` + `docs/design/screens/scr-xx/`.
+`docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png), `assets/media/` (dedicated directory for 3D models, video loops, Lottie JSON, and rich media assets), and, for Workflow B, `docs/design/prompts/scr-xx/PROMPT.md` + `docs/design/screens/scr-xx/`.
 Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbidden). DESIGN.md + DESIGN_SPEC.md mandatory regardless of prototype choice.
 
 ## 3. Gate Exit Criteria [GATE] — BLOCKING Checklist
@@ -54,11 +54,11 @@ Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbid
 - [ ] **DESIGN PRE-CONDITION: `docs/design/inspiration/notes.md` exists with selected benchmark (≥200B), logo hex extraction, palette decisions, and cites a reference filename that exists in that folder.**
 
 ### Mandatory Files
-- [ ] `docs/specs/COMPONENT_REQUIREMENTS.md` exists (≥1000B; 3-tier inventory + interaction states).
+- [ ] `docs/specs/COMPONENT_REQUIREMENTS.md` exists (≥1000B; 3-tier inventory Primitives/Composites + WCAG accessibility).
 - [ ] `docs/specs/LOGO_DESIGN_BRIEF.md` exists (≥500B and ≤2KB).
 - [ ] `docs/specs/SITEMAP.md` exists (≥1000B Small / ≥2000B Medium+; screen inventory, flows, navigation).
 - [ ] `docs/harness-root/DESIGN.md` exists, staged (≥1000B; palette + typography + z-index scale).
-- [ ] `docs/specs/DESIGN_SPEC.md` exists (≥1000B Small / ≥2000B Medium+; per-screen 5-state specs).
+- [ ] `docs/specs/DESIGN_SPEC.md` exists (≥1000B Small / ≥2000B Medium+; per-screen 5-state specs + motion/interaction directives).
 - [ ] Screen prompts/screens exist iff Workflow B selected; **screen count match**: SITEMAP total routes == DESIGN_SPEC wireflow screens.
 
 ### Accessibility & Anti-Slop (computed, not self-approved)

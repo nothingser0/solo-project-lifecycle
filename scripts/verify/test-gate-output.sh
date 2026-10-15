@@ -67,11 +67,11 @@ EOF
     printf 'placeholder for reference-1-dashboard.png\n' > "$d/docs/design/inspiration/reference-1-dashboard.png"
     printf 'Selected Benchmark: Won by reference-1-dashboard.png\npalette #111111 #ffffff\n' > "$d/docs/design/inspiration/notes.md"
     printf 'SCR-003 SCR-004\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'c')" > "$d/docs/specs/SITEMAP.md"
-    printf '# DESIGN_SPEC\n\nPrototyping-Workflow: A\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
+    printf '# DESIGN_SPEC\n\nPrototyping-Workflow: A\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Motion & Interaction\nSpring physics and smooth transitions\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
     mkdir -p "$d/docs/design/screens"
     touch "$d/docs/design/screens/SCR-003.html"
     printf '# LOGO_DESIGN_BRIEF\nSelected benchmark: Linear\n%s\n' "$(head -c 300 /dev/zero | tr '\0' 'e')" > "$d/docs/specs/LOGO_DESIGN_BRIEF.md"
-    printf '# COMPONENT_REQUIREMENTS\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'f')" > "$d/docs/specs/COMPONENT_REQUIREMENTS.md"
+    printf '# COMPONENT_REQUIREMENTS\n\n## Primitives (Atomic Components)\n\n## Composites (Standard & Domain)\n\n## WCAG 2.2 AA Accessibility\n%s\n' "$(head -c 1000 /dev/zero | tr '\0' 'f')" > "$d/docs/specs/COMPONENT_REQUIREMENTS.md"
     head -c 120 /dev/zero | tr '\0' 'z' > "$d/assets/logo/logo.svg"
     printf '# PLAN\n\nno handover recorded here\n' > "$d/docs/pm/DATA_MIGRATION_PLAN.md"
     ( cd "$d" && git init -q . && git config user.email t@t.co && git config user.name T )
