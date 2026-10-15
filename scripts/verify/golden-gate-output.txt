@@ -143,6 +143,7 @@
   ✅ notes.md cites a reference filename that exists in docs/design/inspiration/
   ✅ Anti-slop: zero type-suppression escape hatches in source
   ✅ Anti-slop: zero placeholder TODO stubs in source
+  ✅ Anti-slop: zero silent empty catch blocks in source
   ✅ Anti-slop: zero obvious hardcoded secrets in source
   ❌ Git hygiene: .gitignore is missing from project root! Create .gitignore to prevent leaking secrets/build artifacts.
   ✅ Anti-slop: no narrating/stub comments detected in source

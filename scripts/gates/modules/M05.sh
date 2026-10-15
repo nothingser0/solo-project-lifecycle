@@ -120,6 +120,14 @@ gate_M05() {
             fi
         fi
 
+        # 4b. Object Storage & Media Architecture (Zero Base64 in DB)
+        if grep -qiE "Object Storage|S3|R2|Supabase Storage|blob storage" "$fsd"; then
+            echo "  ✅ Media & Object Storage architecture verified in FSD.md (Zero Base64 policy)"
+        else
+            echo "  ❌ FSD.md missing explicit Object Storage architecture (S3/R2/Supabase Storage) for media assets (Zero Base64 in DB)!"
+            GATE_FAILED=1
+        fi
+
         # 5. Multi-Tenant Row-Level Security (RLS) verification.
         # Trigger on the STRUCTURED Intake field (the same signal classify-scale.sh uses),
         # never on free-text search over PROJECT_STATE.md: that file's template ships the

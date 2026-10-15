@@ -203,6 +203,16 @@ gate_M06() {
         else
             echo "  ✅ Anti-slop: zero placeholder TODO stubs in source"
         fi
+        # 2b. Empty catch blocks / silent error swallowing (BLOCKER)
+        # Prevents AI code from writing 'catch (e) {}' or 'catch {}' without handling/logging
+        empty_catch=$(grep -rInE "catch[[:space:]]*(\([a-zA-Z0-9_]*\))?[[:space:]]*\{[[:space:]]*\}" $scan_dirs 2>/dev/null | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules)" | wc -l | tr -d ' ')
+        if [ "${empty_catch:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${empty_catch} empty catch block(s) swallowing errors silently in source! Log or handle errors."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero silent empty catch blocks in source"
+        fi
+
         # 3. Hardcoded secret heuristics (assignment of a long literal to a secret-ish name)
         hc_secret=$(grep -rinE "(api_?key|secret|password|passwd|token|private_?key)[[:space:]]*[:=][[:space:]]*[\"'][^\"']{16,}" $scan_dirs 2>/dev/null | grep -viE "process\.env|import\.meta\.env|example|placeholder|your[_-]|xxx|\*\*\*|<REPLACE" | wc -l | tr -d ' ')
         if [ "${hc_secret:-0}" -gt 0 ]; then
