@@ -2,6 +2,7 @@
 
 > **Purpose**: Map `SCOPE_STATEMENT.md` features and `SITEMAP.md` routes to concrete UI interaction patterns, atomic primitives, and composite components BEFORE drafting `DESIGN.md`.
 > **Standard**: Strict WCAG 2.2 Level AA compliance, anti-slop nomenclature parity, and domain-grounded interaction states.
+> **Architecture Reference**: Aligns directly with `patterns/ui/UI_COMPONENT_TAXONOMY.md` (Primitives, Standard Composites, High-Interaction Organisms) and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`.
 > **Output**: `docs/specs/COMPONENT_REQUIREMENTS.md`
 
 ---
