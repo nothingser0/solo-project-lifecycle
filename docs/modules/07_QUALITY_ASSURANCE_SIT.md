@@ -34,6 +34,7 @@ pnpm run test        # Vitest / Jest / Pytest / Go test — exit code 0
 2. **Encrypted vault upload**: AES-256 encrypted upload to storage bucket + presigned URL download/decrypt within 15-minute expiry.
 3. **Transactional email**: OTP email arrives with correctly formatted template (SMTP / Resend delivery log).
 4. **BOLA / IDOR Authorization Tests**: Explicitly test cross-tenant and cross-user data access (User A attempting to read/update User B's resource ID must strictly return `403 Forbidden` or `404 Not Found`).
+5. **SIT Sandbox Teardown & Reset Protocol**: After running synthetic sandbox mutations (test orders, simulated payments, generated OTPs), execute a clean-state reset or re-seed script before entering Module 09 (Client UAT) so client stakeholders encounter clean demo accounts rather than distorted test transactions.
 
 ### Step 3 — Security Audit & Bug Triage
 ```bash

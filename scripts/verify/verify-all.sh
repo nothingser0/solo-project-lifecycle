@@ -138,6 +138,7 @@ PATTERNS=(
     "patterns/compliance/UU_PDP_COMPLIANCE.md"
     "patterns/offline/OFFLINE_FIRST_SYNC.md"
     "patterns/localization/I18N_INDONESIA.md"
+    "patterns/architecture/SOLO_ARCHITECTURE_GUARDRAILS.md"
 )
 for pat in "${PATTERNS[@]}"; do
     if [ -f "$pat" ]; then

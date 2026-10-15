@@ -35,7 +35,8 @@ Git: `main` → `staging` → `feat/*`.
 
 **STEP 6 — Implement per TODO (DB → API → prototype).** **One task per turn**: implement → run `Verify` → report Evidence → 🛑 **END TURN**. Human approves before `[x]` and the next task; `Approved: <date> by <name>` is **gate-enforced** (self-ticked tasks fail). Batch only when the user names task IDs.
 - **DB & Seed Idempotency**: stack ORM migrations; pooling; FK-column indexes; reversible; **all seeder scripts MUST be 100% idempotent** (using deterministic static UUIDs / UPSERT / `ON CONFLICT DO NOTHING`) so executing the seeder 10x never produces duplicate records or violates unique constraints.
-- **API**: endpoints per FSD, Zod/schema validation + 3 pillars — Security: encryption, HttpOnly cookies, parameterized queries; Performance: N+1 prevention, caching, indexing; Resources: pooling, streaming, memory.
+- **API**: endpoints per FSD, Zod/schema validation + 3 pillars — Security: encryption, HttpOnly cookies, parameterized queries; Performance: N+1 prevention, caching, indexing, bounded pagination (`limit <= 100`); Resources: connection pooling (PgBouncer/Supavisor), streaming, memory.
+- **Frontend Mutation Guardrails**: all mutating forms MUST bind to loading/submitting states (`disabled={isSubmitting}`) with visual indicators to prevent client-side double submits and duplicate records.
 - **Concurrency, Deadlock Prevention & Hygiene**:
   - Read-modify-write on stock/balance/counter/status MUST be atomic (tx + row lock, unique constraint, or CAS); webhooks idempotent.
   - **Deadlock Prevention Protocol**: Any transaction acquiring row-level locks on multiple records across tables or rows MUST acquire locks in a globally deterministic order (strictly `ORDER BY id ASC` or deterministic primary key sort) to mathematically prevent database deadlocks (PostgreSQL error `40P01`).

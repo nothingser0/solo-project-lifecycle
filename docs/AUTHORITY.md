@@ -62,7 +62,7 @@
 ### M04 — UI/UX & Prototype
 | Agent | Human decides | Human only |
 |---|---|---|
-| Sitemap, component requirements, `DESIGN.md` tokens + WCAG, screen spec, AI prompts | Prototyping workflow A–E (`04:27`), design approval | **Design Freeze sign-off** (`04:69`), real brand assets, and **Step 0.5: the reference material itself** (`04:16`) |
+| Sitemap, component requirements, `DESIGN.md` tokens + WCAG, screen spec, AI prompts | Prototyping workflow A–E (`04:27`), design approval | **Design Freeze sign-off** (`04:70`), real brand assets, and **Step 0.5: the reference material itself** (`04:16`) |
 
 > ✅ **Gate-enforced** (two independent blockers): (1) Step 0.5 — `docs/design/inspiration/` must hold ≥1 file the agent could not have authored (`notes.md`, `README.md`, `NOTES_TEMPLATE.md`, dotfiles excluded), and `notes.md` must cite a reference filename that exists there; the agent may not supply the reference itself. Nothing visual (logo, components, SITEMAP, `DESIGN.md`, screen prompts) may be produced before it — folder empty means STOP AND ASK, END TURN. `validate-gate.sh M06` re-checks the same rule for projects that began before it existed. (2) The freeze must carry a named approver and a real date, with no residual `_____` blank fields.
 
@@ -87,7 +87,7 @@
 ### M07 — QA & SIT
 | Agent | Human only |
 |---|---|
-| Tests, OWASP, load test, SIT workbook, polish audit rows | **Approval to proceed** (`07:91`), **real-phone pass** (`07:63`), third-party pentest (`07:44`) |
+| Tests, OWASP, load test, SIT workbook, polish audit rows | **Approval to proceed** (`07:95`), **real-phone pass** (`07:63`), third-party pentest (`07:44`) |
 
 > 🧑 Marked `HUMAN-ONLY` inline: the real-device pass.
 

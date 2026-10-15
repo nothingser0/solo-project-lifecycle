@@ -67,7 +67,11 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
   - Storing raw base64 strings in relational database columns is strictly prohibited.
 - **Cascade Soft-Delete & Data Retention Architecture**:
   - For financial records, invoices, orders, and core entities: enforce soft-delete (`deleted_at TIMESTAMP WITH TIME ZONE`).
+  - **Partial Unique Index Guardrail**: Any unique constraint on columns that can be soft-deleted (e.g. `email`, `slug`, `username`) MUST use a partial unique index (`CREATE UNIQUE INDEX uq_table_column_active ON table (column) WHERE deleted_at IS NULL;`) instead of an unqualified `UNIQUE` constraint, allowing re-registration/reuse after deletion.
   - Queries, views, or RLS policies MUST include automatic filtering for parent-child relationships (e.g. child records of a soft-deleted parent workspace/user are automatically excluded from active queries).
+- **Serverless Database Connection Pooling**:
+  - Serverless and edge runtimes (Next.js App Router, Cloudflare Workers, Vercel Functions) MUST route database queries through a connection pooler in transaction mode (e.g. PgBouncer / Supavisor on port `6543`, Prisma Accelerate, or Neon pooler).
+  - Direct connection strings (port `5432` session mode) are strictly reserved for local DDL migrations and CI scripts to prevent serverless connection exhaustion (`FATAL: remaining connection slots are reserved`).
 - Audit trail: `created_at`, `updated_at`, `actor_id`, soft-delete.
 - Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
 - `idempotency_keys` table for all POST mutations of financial/stock state.
@@ -78,6 +82,9 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 ### STEP 4: API Endpoint Matrix & Realtime Transport (≥10 endpoints — gate-enforced)
 
 - HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; style per stack (REST/GraphQL/tRPC).
+- **Mandatory Pagination & Hard Cap Limit**:
+  - Every collection/list endpoint MUST enforce bounded pagination (default: `limit=20`, hard maximum `MAX_LIMIT=100`). Unbounded queries (`SELECT * FROM table` without `LIMIT`) are strictly prohibited to prevent memory exhaustion (OOM).
+  - High-volume data feeds (activity feeds, transactions, chat history) MUST specify cursor-based pagination over deep offset pagination.
 - **Rate Limit & Cost Ceilings Guardrails**:
   - Sensitive endpoints (Auth, OTP email, AI inference, file upload) MUST specify rate limit boundaries (e.g., max 5 requests/min per IP/user) to prevent billing shocks on third-party SaaS APIs.
 - **Realtime & Offline Transport Architecture** (if applicable: collaborative canvas, live chat, notifications):
