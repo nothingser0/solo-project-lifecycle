@@ -59,7 +59,7 @@ fails on any mismatch with the §5 arithmetic). Research not yet run → `PENDIN
 - Deliver: competitor list by type, feature matrix, pricing benchmarks, SWOT for top 3, positioning map, identified moat.
 
 ### Step 3 — User Research (`docs/pm/USER_RESEARCH_REPORT.md`)
-- **Evidence rule (non-negotiable)**: primary data from real humans only. No fabricated quotes/percentages. If research not yet run, mark `PENDING_PRIMARY_RESEARCH` and set Gate-Decision: PENDING. Pre-data personas are `Proto-Persona (Hipotesis)`.
+- **Evidence rule & The Mom Test protocol (non-negotiable)**: primary data from real humans only. Never ask hypothetical questions ("Would you buy X?"). Ask about concrete past actions ("How did you solve this last week? How much money/time did it cost?"). No fabricated quotes/percentages. If research not yet run, mark `PENDING_PRIMARY_RESEARCH` and set Gate-Decision: PENDING. Pre-data personas are `Proto-Persona (Hipotesis)`.
 - 🧑 **HUMAN-ONLY — cannot be verified by any script**: conducting the 5–10 interviews, running the surveys/waitlist, and collecting the deposits or signed LOIs are the **human's** actions. The agent may draft instruments, summarise transcripts the human supplies, and fill the report — it must **not** invent responses, and it cannot tell whether the interviews actually happened. If the human has not run them, the agent records `PENDING_PRIMARY_RESEARCH` and **ends the turn**; it never proceeds on assumed research.
 - Confidence legend: ✅ VERIFIED / 🔶 ASSUMPTION / ❓ UNKNOWN.
 - Survey design: screener → pain severity (Likert) → Van Westendorp WTP → intent-to-buy. Gate bar: see §1b (any one PASS signal closes the gate).

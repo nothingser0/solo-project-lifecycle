@@ -44,7 +44,13 @@
 
 ## 4. Qualitative User Discovery (5 User Interviews)
 
-> ⚠️ **EVIDENCE RULE**: Data must originate from real user conversations. Never fabricate quotes.
+> ⚠️ **EVIDENCE RULE & THE MOM TEST PROTOCOL**: Data must originate from real user conversations. Never fabricate quotes.
+>
+> **The Mom Test Guardrails**:
+> - ❌ Never ask: *"Would you buy an app that does X?"* or *"Do you like this idea?"* (People will lie out of politeness).
+> - ✅ Ask about past behavior: *"How did you handle this problem last week?"*
+> - ✅ Ask about tangible cost: *"What did you pay or how many hours did you waste trying to fix it?"*
+>
 > Requirements for `✅ Real` status:
 > 1. Verbatim quote detailing measurable past pain (not hypothetical interest).
 > 2. Specific stated Willingness-to-Pay (WTP) in nominal currency (e.g. "Rp 100k/mo"), not vague approval.
