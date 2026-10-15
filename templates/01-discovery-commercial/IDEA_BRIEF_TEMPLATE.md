@@ -100,7 +100,7 @@
 
 | Feasibility Dimension | Score (1–5) | Confidence | Solo Developer Analysis, Reality Checks & Mitigations |
 | :--- | :---: | :---: | :--- |
-| **1. Technical Feasibility** (`Technical`) | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5.] |
+| **1. Technical Feasibility** (`Technical`) | [ ] / 5 | [✅/🔶/❓] | [CRUD vs Offline-write / async sync. Delta ledger vs LWW. Offline+Real-time capped at 3/5. Build vs Buy applied: non-core commodity utilities requiring >40h must adopt 3rd-party/libraries, not custom built.] |
 | **2. Operational Feasibility — Solo Effort** (`Operational`) | [ ] / 5 | [✅/🔶/❓] | [Epic sum + 20% buffer + scale-adjusted non-dev overhead matches timeline claim within 20%?] |
 | **3. Regulatory & Legal Feasibility** (`Regulatory`) | [ ] / 5 | [✅/🔶/❓] | [UU PDP compliance planned (Privacy Policy, ToS, DPA, Disclaimers). Zero unsubstantiated marketing claims.] |
 | **4. Commercial Feasibility — Unit Economics** (`Financial`) | [ ] / 5 | [✅/🔶/❓] | [Pricing commitment discounted 15-25%? COGS 10-20% ARPU? Break-even modeled? LTV:CAC ≥3:1?] |
@@ -131,6 +131,15 @@ Mitigation: [required when the decision is CONDITIONAL_GO]
 - Non-Development Overhead (Small: 1w, Medium: 3-4w, Large: 6-7w): `[X]` weeks
 - **Total Calculated Weeks**: `[X]` weeks (vs Initial Timeline Claim: `[Y]` weeks)
 - Variance: `[Z]%` (Must be ≤ 20% or timeline claim must be adjusted)
+
+### 5.1b Build vs Buy Triage Matrix (Commodity 40-Hour Rule)
+*Differentiate custom differentiators from off-the-shelf utilities:*
+
+| Component / Utility | Type (Core Differentiator vs Commodity) | Decision (BUILD / BUY-ADOPT) | Selected Tool / Library / Provider | Rationale (<40h solo effort or vendor cheaper than dev cost) |
+|---|---|---|---|---|
+| User Authentication & Sessions | Commodity | BUY / ADOPT | [Supabase Auth / Better-Auth / Lucia] | Building custom OAuth + session revocation exceeds 40h |
+| Transactional Notifications | Commodity | BUY / ADOPT | [Resend / Twilio / WA Gateway] | Off-the-shelf delivery avoids SMTP IP warmup overhead |
+| Core Business Calculation Engine | Core Differentiator | BUILD | [Custom In-House TypeScript Engine] | Primary intellectual property and market moat |
 
 ### 5.2 Legal Compliance Checklist (UU PDP No. 27/2022 & Solo Guardrails)
 - [ ] **Privacy Policy (Kebijakan Privasi)** planned (data collection, retention, deletion rights)
