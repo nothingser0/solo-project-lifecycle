@@ -376,4 +376,5 @@ EOF
         check_optional "CONVENTIONS.md"
     fi
     check_optional "AI_REVIEW_LOG.md" "docs/qa/AI_REVIEW_LOG.md"
+    check_optional "DEVELOPMENT_PROGRESS_TRACKER.md" "docs/pm/DEVELOPMENT_PROGRESS_TRACKER.md"
 }
