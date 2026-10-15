@@ -100,6 +100,7 @@
 
 ## 6. Unit Economics & Solo Capacity Sanity Check
 
+- **First 100 Users Acquisition Channel**: [Define 1 repeatable low-cost organic/direct distribution channel, e.g. direct outreach to 200 niche WhatsApp/FB community admins or programmatic SEO]
 - **Target ARPU**: Rp [X] / month
 - **Estimated CAC**: Rp [Y] / customer (Test ads / organic outreach time)
 - **Gross Margin Target**: ≥ 70% after infrastructure hosting and Payment Gateway processing fees
