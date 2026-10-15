@@ -18,8 +18,13 @@
 - **Guardrail Metrics**: pair the North Star Metric with operational guardrails that must NOT degrade (e.g., checkout API p95 latency ≤500ms, inventory discrepancy ≤0.5%, zero unhandled transaction exceptions).
 - **Pre-launch validation**: smoke landing page by Week 2; 50–100 signups before major investment, else reassess positioning.
 
-### Step 2 — Problem-Solution Fit & MoSCoW
+### Step 2 — Problem-Solution Fit, MoSCoW & Acceptance Criteria
 - Must-Haves **collectively** resolve ≥70% of root causes; every Must maps to a primary bottleneck (zero vanity P0s). Secondary-friction features demote to Should/Won't.
+- **Given-When-Then Acceptance Criteria**: Every P0 Must-Have User Story MUST include at least one concrete BDD scenario (`Given [initial context], When [action occurs], Then [expected outcome]`). Vague statements ("the system allows users to cancel orders") are invalid and block scope locking.
+- **Non-Functional Requirements (NFR) Baseline**: Explicitly define quantitative system boundaries:
+  - Max concurrent users target for MVP (e.g. 50–100 active sessions).
+  - Latency SLA target (API p95 ≤500ms, page TTI ≤3s on 4G).
+  - Supported platforms (e.g. Chrome/Safari evergreen versions; legacy browser optimization is explicitly Out-of-Scope).
 - Segment audit: if MVP excludes a capability a persona needs for core value (e.g., BOM for cafes), **drop the segment or upgrade the feature**.
 - Dependency contradiction: deferred expense tracking ⇒ "Gross Profit (Laba Kotor)" only.
 - MoSCoW P0 limits: Small 1–5 · Medium 6–15 · Large 16–25 (solo allowed with a signed `SOLO-CAPACITY-RISK-ACCEPTANCE.md`; a non-delegable obligation routes to A-Series) · >25 → A-Series advisory.
@@ -82,11 +87,12 @@ All in **`docs/pm/`**:
 ### STEP 1 — Content Validation
 1. Stop/continue is governed by SKILL.md rule 3 (M03 is a gate only for Client projects; Small and Solo SaaS chain onward).
 2. Checklist:
-   - [ ] All sections complete (Objectives, RBAC, MoSCoW, Stories, Boundaries, SLA)
+   - [ ] All sections complete (Objectives, RBAC, MoSCoW, Stories with Given-When-Then criteria, NFR baseline, Boundaries, SLA)
    - [ ] Must-Have count within scale limits; zero ambiguous terms (TBD/maybe/tentative) in Must rows
    - [ ] Must-Haves resolve ≥70% of root causes; personas need zero out-of-scope features
    - [ ] Multi-tenant schema (`org_id` + RLS via `public.user_roles`); financial precision (`DECIMAL`, `unit_cost` snapshot, append-only movements)
    - [ ] RBAC tree with zero self-approval; revenue features (billing + offboarding) in P0
+   - [ ] NFR baseline defined (max concurrent users, API p95 latency, platform/browser boundary)
    - [ ] Legal compliance planned (Privacy Policy, ToS, tax disclaimers, PII scrubbing); legal/tax text carries a `LEGAL-REVIEW:` marker
    - [ ] `Scope-P0-Count` is a real number matching counted Must rows; `Scope-Lock-Decision` is `LOCKED`
    - [ ] Timeline: epic sum + 20% buffer; CR freeze = QA − 2 wks; ≥3 Out-of-Scope exclusions; confidence legend (✅/🔶/❓); dependencies with SLA

@@ -121,6 +121,17 @@
 
 ---
 
+### 4.3 Non-Functional Requirements (NFR) Baseline SLA
+*Quantitative performance and platform boundaries disallowing open-ended optimization requests:*
+
+- **Target Concurrent Users**: [e.g. 50 active concurrent operational sessions for MVP]
+- **API Performance**: [e.g. p95 response time ≤ 500ms under benchmark load]
+- **Frontend Performance**: [e.g. Time-to-Interactive (TTI) ≤ 3.0s on 4G mobile, initial bundle ≤ 200KB gzipped]
+- **Platform & Browser Target**: [e.g. Evergreen modern browsers (Chrome/Edge/Safari/Firefox latest 2 major versions); legacy IE/pre-Chromium browsers are explicitly unsupported]
+- **Data Retention & Storage Ceiling**: [e.g. 5GB relational DB storage, 20GB media assets; capacity scaling beyond tier is client responsibility]
+
+---
+
 ## 5. Strict Scope Boundaries, Tax & Legal Compliance
 
 ### 5.1 In-Scope (Work DELIVERED by Developer)
