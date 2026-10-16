@@ -261,6 +261,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/qa/EXACT_BUILD_VERIFICATION_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/security/ACCESS_CONTROL_PATTERNS.md",
       "cataloged": true
     },
@@ -398,6 +402,14 @@
       "modules": [
         "M04"
       ]
+    },
+    {
+      "path": "references/pm/PRODUCT_SUNSET_AND_EOL_GUIDE.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md",
+      "cataloged": false
     },
     {
       "path": "references/pre-sales/DISCOVERY_CALL_CHECKLIST.md",
