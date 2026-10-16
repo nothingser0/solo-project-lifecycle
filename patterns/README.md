@@ -14,6 +14,8 @@
 | UI Component Taxonomy & Architecture (Modern UI System) | [`ui/UI_COMPONENT_TAXONOMY.md`](./ui/UI_COMPONENT_TAXONOMY.md) |
 | Motion Design & Interactive Animation Taxonomy (60+ Effects) | [`ui/MOTION_DESIGN_TAXONOMY.md`](./ui/MOTION_DESIGN_TAXONOMY.md) |
 | Scroll-Scrubbed Cinematic World Pattern (Apple-Style Fly-Through) | [`ui/SCROLL_SCRUBBED_WORLD_PATTERN.md`](./ui/SCROLL_SCRUBBED_WORLD_PATTERN.md) |
+| Indonesian Legal Hierarchy & Grounded AI Citation | [`compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md`](./compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md) |
+| Legal Data Modeling & PostgreSQL LTREE Architecture | [`architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md`](./architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
 | Exact-Build Verification & Closed-Loop QA (Artifact Pinning & 4-State Lifecycle) | [`qa/EXACT_BUILD_VERIFICATION_PATTERN.md`](./qa/EXACT_BUILD_VERIFICATION_PATTERN.md) |
 

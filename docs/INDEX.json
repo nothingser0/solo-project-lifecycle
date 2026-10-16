@@ -237,7 +237,15 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/SOLO_ARCHITECTURE_GUARDRAILS.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md",
       "cataloged": true
     },
     {
