@@ -15,6 +15,20 @@
 * **Sub-Headline (Supporting Copy)**:  
   `[2-3 sentences explaining how it works, for whom, and the primary benefit without generic buzzwords.]`
 
+### The 3 Anti-Slop Copywriting Reality Tests
+Before approving any tagline, hero headline, or value proposition, it MUST pass these 3 reality checks adapted from `enso.bot/research`:
+
+1. **The 11 PM Search Query Test**:
+   - Does this copy reflect the raw, emotional phrase the customer would type into a Google search box at 11:00 PM when frustrated?
+   - *Failure*: *"Empowering freelance financial agility through seamless digital synergy."*
+   - *Pass*: *"Cara hitung pajak freelance coding luar negeri tanpa kena denda kurleb."*
+2. **The Kitchen-Table Test**:
+   - Can you explain what this product does using the plain words you would use across a kitchen table to a non-technical friend?
+   - If the line requires marketing jargon ("leverage", "robust", "revolutionize") to sound valuable, the product value is not yet understood. Re-write in conversational plain language.
+3. **The Billboard Test**:
+   - Could this single headline survive alone on a highway billboard and be completely understood by a driver at 100 km/h in 3 seconds without supporting paragraphs?
+   - If the headline only makes sense when read alongside 3 sub-bullets, cut or sharpen the headline.
+
 ---
 
 ## 2. The 3 Value Pillars (Core Value Proposition)
