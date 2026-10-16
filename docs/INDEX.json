@@ -597,6 +597,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/01-discovery-commercial/B2B_COLD_OUTREACH_PLAYBOOK.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/01-discovery-commercial/BACKLOG_TEMPLATE.md",
       "cataloged": true
     },
@@ -611,6 +615,10 @@
     {
       "path": "templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/01-discovery-commercial/COMPETITIVE_ALTERNATIVE_PAGE_TEMPLATE.md",
+      "cataloged": false
     },
     {
       "path": "templates/01-discovery-commercial/COMPETITIVE_LANDSCAPE_TEMPLATE.md",
