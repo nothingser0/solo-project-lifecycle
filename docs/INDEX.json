@@ -309,6 +309,10 @@
       ]
     },
     {
+      "path": "references/design/BRAND_VOICE_GUIDE.md",
+      "cataloged": false
+    },
+    {
       "path": "references/design/LOGO_DESIGN_CRAFT_GUIDE.md",
       "cataloged": false
     },
@@ -587,6 +591,10 @@
     {
       "path": "templates/01-discovery-commercial/BACKLOG_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/01-discovery-commercial/BRAND_MESSAGING_HIERARCHY.md",
+      "cataloged": false
     },
     {
       "path": "templates/01-discovery-commercial/BUSINESS_PROCESS_FLOW_TEMPLATE.md",

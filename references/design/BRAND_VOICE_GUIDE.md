@@ -1,0 +1,56 @@
+# Brand Voice & Verbal Identity Guide
+
+> **Module**: M04 (UI/UX Design & Prototyping) & M06 (Development Execution)  
+> **Source**: Adapted from Strategic Brand Building & Verbal Identity frameworks.  
+> **Objective**: Standardize interface copy, tone of voice, error messages, and customer interactions to ensure consistent, human-centered brand perception.
+
+---
+
+## 1. The Tone Spectrum (The 4 Personality Sliders)
+
+Calibrate the brand's verbal personality across these 4 spectrums:
+
+| Spectrum | Current Calibration (1 to 5) | Operational Meaning |
+| :--- | :---: | :--- |
+| **Formal vs. Conversational** | `[ 1 2 (3) 4 5 ]` | Level 1 = Legal/Banking; Level 3 = Modern Professional; Level 5 = Casual Chat. |
+| **Direct vs. Expressive** | `[ 1 (2) 3 4 5 ]` | Level 1 = Extreme brevity/terse; Level 3 = Balanced; Level 5 = Storytelling. |
+| **Serious vs. Playful** | `[ 1 (2) 3 4 5 ]` | Level 1 = Solemn mission-critical; Level 2 = Calm & confident; Level 5 = Humorous. |
+| **Technical vs. Plainspoken**| `[ 1 2 (3) 4 5 ]` | Level 1 = Developer jargon; Level 3 = Industry-clear; Level 5 = Simplified for novices. |
+
+---
+
+## 2. Vocabulary & Grammar Rules (The Word Bank)
+
+### A. Preferred Vocabulary (Use These)
+* **Action-oriented verbs**: *"Deploy", "Export", "Connect", "Verify", "Launch"*.
+* **Transparent status indicators**: *"Settled", "Pending sync", "Authorized", "Live"*.
+* **Respectful clarity**: *"You've used 80% of storage", "Billing updates take effect on [Date]"*.
+
+### B. Forbidden Banned Vocabulary (Never Use)
+* ❌ **AI Slop**: *"Delve", "Leverage", "Revolutionize", "Robust", "Seamless", "Supercharge"*.
+* ❌ **Passive-Aggressive Blame**: *"You failed to fill...", "Invalid input provided by user"*.
+* ❌ **Dead-end Technical Codes**: *"Error code 0x80042109", "NullPointerException at line 42"*.
+
+---
+
+## 3. Humanized UI Error-State Translations
+
+Every error message in the application must follow the **Empathetic Triad**:  
+`[What happened in human terms] + [Why it happened without blaming user] + [Immediate clickable next step]`.
+
+| Raw Engineering Error | Broken Default Message | Humanized Brand Voice Replacement |
+| :--- | :--- | :--- |
+| **Network Timeout (504)** | *"Connection timed out."* | *"We couldn't reach the server. Your data is safe. [Check Connection & Retry]"* |
+| **Card Declined** | *"Transaction failed: Code 51."* | *"Your bank declined this charge. Please verify your card balance or [Try Another Payment Method]."* |
+| **Validation Failure** | *"Password invalid."* | *"Passwords require at least 8 characters and 1 number. [Show requirements]"* |
+| **Not Found (404)** | *"404 Not Found."* | *"This page moved or doesn't exist anymore. [Back to Dashboard]"* |
+| **Rate Limit (429)** | *"Too many requests."* | *"You've reached the request limit for this minute. Please wait 30 seconds or [Upgrade Plan]."* |
+
+---
+
+## 4. Microcopy Guidelines for Key UI Components
+
+1. **Primary Buttons**: Always use `[Verb] + [Noun]` (e.g., *"Create Project"*, *"Export Invoice"*), never generic *"Submit"* or *"OK"*.
+2. **Destructive Actions**: Clearly state the irreversible consequence: *"Delete Invoice #1042? This action cannot be undone."* Button label: *"Delete Invoice"*, never casual *"Yes"*.
+3. **Empty States**: Never display a blank table. Provide an encouraging illustration, 1 explanatory sentence, and 1 primary action button:  
+   * *"No invoices created yet. Generate your first client invoice in under 2 minutes. [Create Invoice]"*
