@@ -1321,6 +1321,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/09-product-growth/CHURN_PREVENTION_PLAYBOOK.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/09-product-growth/DASHBOARD_SPEC_TEMPLATE.md",
       "cataloged": true
     },
@@ -1341,8 +1345,16 @@
       "cataloged": true
     },
     {
+      "path": "templates/09-product-growth/ONBOARDING_ACTIVATION_PLAYBOOK.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/09-product-growth/PRODUCT_HEALTH_DASHBOARD_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/09-product-growth/SAAS_PRICING_MONETIZATION_GUIDE.md",
+      "cataloged": false
     },
     {
       "path": "templates/README.md",
