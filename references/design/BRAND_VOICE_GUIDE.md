@@ -48,9 +48,20 @@ Every error message in the application must follow the **Empathetic Triad**:
 
 ---
 
-## 4. Microcopy Guidelines for Key UI Components
+## 4. Microcopy & UX Writing Quality Standards
 
-1. **Primary Buttons**: Always use `[Verb] + [Noun]` (e.g., *"Create Project"*, *"Export Invoice"*), never generic *"Submit"* or *"OK"*.
-2. **Destructive Actions**: Clearly state the irreversible consequence: *"Delete Invoice #1042? This action cannot be undone."* Button label: *"Delete Invoice"*, never casual *"Yes"*.
-3. **Empty States**: Never display a blank table. Provide an encouraging illustration, 1 explanatory sentence, and 1 primary action button:  
-   * *"No invoices created yet. Generate your first client invoice in under 2 minutes. [Create Invoice]"*
+Adapted from Stripe's systematic UX content design framework:
+
+1. **Sentence Case Universal Standard**:
+   - Always use sentence case for buttons, headings, labels, and table headers (e.g. *"Create new invoice"*, not Title Case *"Create New Invoice"*). Sentence case is easier to scan and sounds more conversational.
+2. **Active Imperative Button Labels**:
+   - Use active verbs directly stating the exact task: *"Download report"*, *"Send invitation"*, *"Delete project"*. Avoid vague nouns (e.g., *"Processing"*, *"Account Deletion"*).
+3. **Front-Loaded Error Strings**:
+   - Place the critical noun or requirement at the beginning of the sentence so mobile users immediately grasp the fix:  
+     - ✅ *"Password must be at least 8 characters"*  
+     - ❌ *"There is a requirement that your password has 8 characters"*
+4. **Specific Destructive Verbs**:
+   - Use *"Delete"* when removing data permanently. Use *"Remove"* only when unlinking or detaching an item from a list (without destroying the underlying record).
+5. **Empty State Structure**:
+   - Follow the **Trio Architecture**: `[Contextual Title] + [1-sentence value explanation] + [1 primary call-to-action button]`.
+   - Example: *"No bank mutations imported yet. Upload your bank mutation CSV to automatically categorize tax deductions. [Import Mutation]"*

@@ -317,6 +317,10 @@
       "cataloged": false
     },
     {
+      "path": "references/design/UI_MOTION_GUIDELINES.md",
+      "cataloged": false
+    },
+    {
       "path": "references/playbooks/AI_ASSISTED_DEVELOPMENT.md",
       "cataloged": true,
       "modules": [
