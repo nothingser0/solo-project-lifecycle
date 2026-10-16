@@ -325,6 +325,14 @@
       "cataloged": false
     },
     {
+      "path": "references/growth/BEHAVIORAL_PSYCHOLOGY_FRAMEWORK.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/growth/ENGINEERING_AS_MARKETING_PLAYBOOK.md",
+      "cataloged": false
+    },
+    {
       "path": "references/playbooks/AI_ASSISTED_DEVELOPMENT.md",
       "cataloged": true,
       "modules": [
