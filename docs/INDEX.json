@@ -289,6 +289,14 @@
       "cataloged": true
     },
     {
+      "path": "references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md",
+      "cataloged": false
+    },
+    {
       "path": "references/checklists/FEASIBILITY_CRITERIA.md",
       "cataloged": true,
       "modules": [
