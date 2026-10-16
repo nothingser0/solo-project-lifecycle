@@ -1,7 +1,7 @@
 # Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)
 
 > **Templates to copy**: `templates/06-qa-uat/BUG_REPORT.md` · `SIT_WORKBOOK_TEMPLATE.md` · `POLISH_AUDIT_TEMPLATE.md`
-> 📖 **Optional refs** (do NOT preload): `references/playbooks/AI_ASSISTED_DEVELOPMENT.md` (pre-merge review: inline checklist below) · `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` (Large/Enterprise only)
+> 📖 **Optional refs** (do NOT preload): `references/playbooks/AI_ASSISTED_DEVELOPMENT.md` (pre-merge review: inline checklist below) · `patterns/qa/EXACT_BUILD_VERIFICATION_PATTERN.md` (exact-build pinning & 4-state lifecycle) · `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` (Large/Enterprise only)
 
 This module validates reliability, third-party integration integrity (*System Integration Testing* / SIT), performance resilience, and security in the **Staging** environment before client UAT (Module 09). Verbose SIT walkthrough & Enterprise A04 advisory: `deep-dives/07_QUALITY_ASSURANCE_SIT.md`.
 
