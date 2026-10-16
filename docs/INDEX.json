@@ -241,6 +241,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/POSTGRES_JOB_QUEUE_SKIP_LOCKED_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/SOLO_ARCHITECTURE_GUARDRAILS.md",
       "cataloged": true
     },
