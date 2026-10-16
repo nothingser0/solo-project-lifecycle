@@ -59,7 +59,21 @@ Adapted from LottieFiles production motion diagnostic rules:
 
 ---
 
-## 5. Mandatory Accessibility Gate (`prefers-reduced-motion`)
+## 5. Platform Motion Scaling & Viewport Caps
+
+Adapted from production context-adaptation motion scaling standards:
+
+| Platform Viewport | Duration Modifier | Permitted Complexity | Mobile Constraints |
+| :--- | :---: | :--- | :--- |
+| **Desktop (≥ 1024px)** | `1.0x` (Baseline) | Full spatial translation & multi-element choreographies. | Hover states, cursor tracking, multi-column stagger. |
+| **Tablet (768px – 1023px)** | `0.9x` | Standard transitions, reduce stagger count to 4. | Touch feedback < 100ms. |
+| **Mobile (< 768px)** | `0.8x` (Snappy) | Minimal: Opacity + single transform axis only. | **Zero Mobile Parallax**: Parallax scrolling is strictly banned on mobile viewports. |
+
+* **Mobile Max Displacement Rule**: Physical translation distance on screens under 600px must never exceed **20% of viewport width** (approx. 60px–80px) to prevent disorienting large-distance sweeps.
+
+---
+
+## 6. Mandatory Accessibility Gate (`prefers-reduced-motion`)
 
 To prevent motion sickness and vestibular disorders, every CSS transition and animation block MUST honor system accessibility preferences:
 

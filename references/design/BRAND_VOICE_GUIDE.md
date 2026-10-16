@@ -68,3 +68,24 @@ Adapted from Stripe's systematic UX content design framework:
 6. **Empty State Structure**:
    - Follow the **Trio Architecture**: `[Contextual Title] + [1-sentence value explanation] + [1 primary call-to-action button]`.
    - Example: *"No bank mutations imported yet. Upload your bank mutation CSV to automatically categorize tax deductions. [Import Mutation]"*
+
+---
+
+## 5. Multi-Modal Accessibility & Assistive Technology Standards
+
+Adapted from W3C WCAG 2.2 and Stripe accessibility content design guidelines:
+
+1. **Color Independence Rule (WCAG SC 1.4.1)**:
+   - Never convey status, error, warning, or completion using **color alone**.
+   - Every semantic color state MUST be paired with an explicit icon (e.g. checkmark, alert triangle) or descriptive text tag (e.g. `[Pending]`, `[Overdue]`, `[Failed]`) so red-green color-blind users can instantly distinguish state.
+2. **Screen Reader Error Announcements (`aria-live`)**:
+   - Dynamic form validation errors must be wrapped in `aria-live="polite"` or `role="alert"` containers:
+     ```html
+     <div id="password-error" role="alert" aria-live="polite" class="text-destructive text-sm">
+       Password must be at least 8 characters.
+     </div>
+     ```
+   - Form inputs must explicitly reference their error container via `aria-describedby="password-error" aria-invalid="true"`.
+3. **Descriptive Link Context**:
+   - Never write bare link text such as *"Click here"*, *"Read more"*, or *"Link"*.
+   - Always state the concrete destination or action: *"Download March tax report (PDF)"*, *"View Supabase migration guide"*.
