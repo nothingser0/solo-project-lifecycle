@@ -36,15 +36,51 @@ AI and inexperienced designers default to the same tired visual tropes. The foll
 
 ---
 
-## 2. Standard Asset Delivery Package (`assets/logo/`)
+## 2. The 7 Mark Types Decision Framework
+
+Before drawing or prompting any mark, select the exact mark archetype matching product strategy:
+
+| Mark Type | Description | Best Suited For | Industry Examples |
+| :--- | :--- | :--- | :--- |
+| **1. Wordmark** | Distinct custom typographic treatment of the brand name alone. | Short, punchy, memorable names (<7 chars). | Stripe, Google, Braun, Vercel |
+| **2. Letterform** | A singular, stylized first letter mark (monogram). | Digital products, mobile apps, crowded favicons. | Netflix (N), Airbnb (A), Notion (N) |
+| **3. Combination** | Dedicated symbol paired horizontally or vertically with a wordmark. | Standard B2B SaaS, developer tools, new startups. | Slack, Supabase, Linear, Linear |
+| **4. Pictorial** | Simplified, recognizable real-world object silhouette. | Direct metaphorical storytelling, lifestyle brands. | Apple, Twitter bird, Target |
+| **5. Abstract** | Geometric or conceptual mark with metaphorical meaning. | Deep-tech, infrastructure, financial protocols. | Nike swoosh, Chase octagon, Pepsi |
+| **6. Emblem** | Typographic wordmark enclosed within a boundary/badge. | Heritage, community, education, physical goods. | Starbucks, Harley-Davidson, GitHub Copilot badge |
+| **7. Mascot** | Illustrated character embodying the brand personality. | Consumer, gamified, or onboarding-heavy apps. | GitHub (Octocat), Duolingo (Owl), Docker (Moby) |
+
+---
+
+## 3. Mathematical Lockup & Clearspace Grid
+
+Professional branding enforces rigid spatial relationships between the icon and typographic wordmark:
+
+### A. Horizontal Lockup (Default / Navbar)
+* **Icon-to-Text Gap ($G$)**: The horizontal margin between the icon and the first letter of the wordmark MUST equal exactly **$25\%$ to $33\%$ of the icon's width ($W$)**.
+* **Vertical Baseline Alignment**: The vertical midpoint of the icon MUST align optically with the lowercase x-height or uppercase cap-height of the wordmark typography (never arbitrary baseline float).
+
+### B. Stacked Lockup (Center / Splash Screen)
+* **Icon-to-Text Gap**: Vertical distance equal to **$50\%$ of icon height ($H$)**.
+* **Optical Horizontal Centering**: Wordmark horizontally centered directly below the optical weight center of the icon.
+
+### C. The Clearspace Perimeter (The Exclusion Zone)
+* **Clearspace Margin ($X$)**: The minimum breathing room surrounding the logo lockup on all 4 sides MUST equal **$100\%$ of the icon's height ($H$)** (or the height of the capital letter "X" of the wordmark).
+* No competing text, borders, buttons, or page margins may invade this exclusion zone.
+
+---
+
+## 4. Standard Asset Delivery Package (`assets/logo/`)
 
 A production-ready logo delivery must provide the following files:
 
 ```
 assets/logo/
-├── logo.svg                 # Primary full lockup (Icon + Wordmark)
+├── logo.svg                 # Primary horizontal lockup (Icon + Wordmark)
+├── logo-stacked.svg         # Centered vertical lockup (for splash screens/invoices)
 ├── logo-icon.svg            # Standalone 1:1 square mark (for App Icon, Avatar, Favicon)
-├── logo-monochrome.svg      # Pure black/white vector silhouette
+├── logo-monochrome-black.svg# Pure black vector silhouette (#000000)
+├── logo-monochrome-white.svg# Pure white vector silhouette (#FFFFFF)
 ├── favicon.ico              # Multi-resolution ICO (16x16, 32x32, 48x48)
 ├── icon-192.png             # Android PWA home screen icon
 └── icon-512.png             # Android PWA splash screen & Apple touch fallback
@@ -52,7 +88,7 @@ assets/logo/
 
 ---
 
-## 3. SVG Technical Craft & Optical Rules
+## 5. SVG Technical Craft & Optical Rules
 
 1. **Optical Centering over Geometric Centering**:
    - Asymmetrical marks, triangles, play buttons, and curved letterforms (e.g. "P", "D", "3") have an uneven visual weight. Centering purely by mathematical bounding box makes them look off-center to the human eye.

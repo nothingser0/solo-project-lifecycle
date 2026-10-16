@@ -18,8 +18,9 @@
 
 ---
 
-## 3. Brand Vibe
+## 3. Brand Vibe & Mark Archetype Selection
 
+- **Target Mark Archetype**: [Select from `references/design/LOGO_DESIGN_CRAFT_GUIDE.md`: Wordmark / Letterform / Combination / Pictorial / Abstract / Emblem / Mascot]
 - **[Keyword 1]** - [Brief rationale]
 - **[Keyword 2]** - [Brief rationale]
 - **[Keyword 3]** - [Brief rationale]
