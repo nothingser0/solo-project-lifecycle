@@ -585,6 +585,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/01-discovery-commercial/BUSINESS_PROCESS_FLOW_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md",
       "cataloged": true
     },
@@ -623,6 +627,10 @@
     {
       "path": "templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/01-discovery-commercial/REQUIREMENTS_AMBIGUITY_CHECKLIST.md",
+      "cataloged": false
     },
     {
       "path": "templates/01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md",
