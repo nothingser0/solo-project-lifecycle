@@ -323,6 +323,10 @@
       ]
     },
     {
+      "path": "references/pm/EPIC_BREAKDOWN_PATTERNS.md",
+      "cataloged": false
+    },
+    {
       "path": "references/pm/INDUSTRY_TOOLS_ADAPTER.md",
       "cataloged": true,
       "modules": [
@@ -1291,6 +1295,10 @@
     {
       "path": "templates/09-product-growth/EVENT_TAXONOMY_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/09-product-growth/FEATURE_SUNSET_CHECKLIST.md",
+      "cataloged": false
     },
     {
       "path": "templates/09-product-growth/GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md",
