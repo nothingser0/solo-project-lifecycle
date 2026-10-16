@@ -27,7 +27,7 @@
 
 ---
 
-## 4. User Responsibility
+## 4. User Responsibility & Disciplinary Verification
 
 ⛔ **Blocked until Step 0.5 is satisfied**: this brief is written *from* the human's references in
 `docs/design/inspiration/`. If that folder holds no human-supplied file, the agent stops and asks —
@@ -37,8 +37,14 @@ User handles logo generation and asset extraction:
 1. Place your visual references in `docs/design/inspiration/` (screenshots, brand board, or `links.md`).
 2. Generate logo using the prompt template with your own visual references.
 3. Extract primary and optional accent brand colors (hex codes) for `DESIGN.md`.
-4. Save SVG and PNG exports to `/assets/logo/`:
-   - `logo.svg`
+4. Verify the generated mark against `references/design/LOGO_DESIGN_CRAFT_GUIDE.md`:
+   - [ ] **16px Squint Test**: Is the mark instantly identifiable as a 16x16 favicon?
+   - [ ] **One-Colour Test**: Does it hold its shape as pure monochrome black/white?
+   - [ ] **3:1 Contrast Shelf Test**: Verified against both light and dark surfaces.
+   - [ ] **Anti-Slop Ban**: Free of generic category clichés (no shields/charts/piggybanks).
+5. Save SVG and PNG exports to `/assets/logo/`:
+   - `logo.svg` (Primary lockup)
+   - `logo-icon.svg` (Standalone mark)
    - `icon-512.png`
    - `icon-192.png`
    - `favicon.ico`

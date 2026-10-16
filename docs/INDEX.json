@@ -309,6 +309,10 @@
       ]
     },
     {
+      "path": "references/design/LOGO_DESIGN_CRAFT_GUIDE.md",
+      "cataloged": false
+    },
+    {
       "path": "references/playbooks/AI_ASSISTED_DEVELOPMENT.md",
       "cataloged": true,
       "modules": [
