@@ -18,7 +18,8 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
        Crucial: if providing static screenshots without live URLs, the human MUST specify desired dynamic effects directly (e.g. parallax scroll, 3D Spline canvas, video background, stagger text animation, hover micro-interactions).
        ⛔ STOP 0.5: if that folder holds no human-supplied file → END TURN and ask. Do NOT create
           LOGO_DESIGN_BRIEF.md, assets/logo/, SITEMAP.md, COMPONENT_REQUIREMENTS.md, or DESIGN.md first.
-       Then: scaffold docs/design/inspiration/, analyze 2–5 references, capture human effect specifications,
+       Then: scaffold docs/design/inspiration/, analyze 2–5 references, capture human effect specifications.
+       If references include live URLs (`links.md`), execute **Source-Aware CSS Inspection**: inspect the live DOM/computed CSS of the benchmark to extract exact CSS tokens (`background-color`, primary brand hex, `font-family`, button `border-radius`, and card shadow depth) instead of guessing values from memory.
        select exactly 1 primary benchmark, cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md
        ⛔ FORBIDDEN: inventing a reference; notes.md is agent output, never the reference
  ▼ 0A. LOGO_DESIGN_BRIEF.md — name/philosophy/vibe/seed colors (≤2KB) → docs/specs/LOGO_DESIGN_BRIEF.md; save logo to assets/logo/ (logo.svg | logo.png)

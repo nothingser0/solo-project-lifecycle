@@ -88,7 +88,16 @@ assets/logo/
 
 ---
 
-## 5. SVG Technical Craft & Optical Rules
+## 6. Anti-AI-Default Convergence Ban (The Sameness Blocker)
+
+When unprompted, LLMs default to an identical predictable aesthetic across 90% of requests. The following AI-default styling convergence is **EXPLICITLY BANNED** unless the human's reference explicitly demands it:
+
+| Component | Forbidden AI-Default Convergence (Banned) | Disciplined Diverse Direction |
+| :--- | :--- | :--- |
+| **Color Palette** | Cream background (`#FDFBF7`) + Terracotta / Burnt Orange (`#C85A32`) + Muted Gold accent (`#D4AF37`). Also default Tailwind Blue (`#3B82F6`). | High-contrast monochromatic slate, deep petrol ink (`#0F172A`), acid lime, electric violet, or strict brutalist monotone. |
+| **Heading Font** | Fraunces, Playfair Display, or generic serif italic quotes on dark backgrounds. | Modern geometric display sans, crisp grotesks, technical monospace, or bespoke optical letterforms. |
+| **Mark Concept**| A single lowercase letter passively trapped inside a colored circle or rounded squircle. | Negative-space cutouts, dynamic asymmetric strokes, kinetic geometric angles, or pure structural wordmarks. |
+| **Background** | Subtle purple-indigo radial glow / mesh gradient centered in the viewport. | Solid optical matte surfaces, strict 1px border dividers, or subtle architectural dot grids. |
 
 1. **Optical Centering over Geometric Centering**:
    - Asymmetrical marks, triangles, play buttons, and curved letterforms (e.g. "P", "D", "3") have an uneven visual weight. Centering purely by mathematical bounding box makes them look off-center to the human eye.
