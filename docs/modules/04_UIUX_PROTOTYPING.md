@@ -19,6 +19,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
        ⛔ STOP 0.5: if that folder holds no human-supplied file → END TURN and ask. Do NOT create
           LOGO_DESIGN_BRIEF.md, assets/logo/, SITEMAP.md, COMPONENT_REQUIREMENTS.md, or DESIGN.md first.
        Then: scaffold docs/design/inspiration/, analyze 2–5 references, capture human effect specifications.
+       If the project archetype requires specific layout zones (e.g. Bookmark Manager, Notion-like Workspace, File Explorer), execute **`web_search`** against leading industry benchmarks (e.g. `Raindrop.io`, `Linear`, `Vercel`) to discover standard multi-zone layouts and prevent arbitrary omission.
        If references include live URLs (`links.md`), execute **Source-Aware CSS Inspection**: inspect the live DOM/computed CSS of the benchmark to extract exact CSS tokens (`background-color`, primary brand hex, `font-family`, button `border-radius`, and card shadow depth) instead of guessing values from memory.
        Enforce **Code vs. Asset Splitting**: UI components (buttons, input fields, badges, cards, navigation shells) MUST be authored in semantic HTML/CSS code; only photographic imagery, standalone 3D illustrations, and brand vector marks may reside in asset files. Never export styled UI containers as flat background images.
        select exactly 1 primary benchmark, cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md

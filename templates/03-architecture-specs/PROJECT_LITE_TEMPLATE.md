@@ -40,6 +40,8 @@
 ## 2. Lean Scope Boundaries (In-Scope vs Out-of-Scope)
 
 ### Features to Build (In-Scope MVP - Maximum 3–5 Core Features)
+> 🛑 **MANDATORY LIVE WEB SEARCH**: Before writing the 3–5 core features or screen wireframes below, the agent **MUST execute `web_search`** against real benchmark products in this category (e.g., if building a Bookmark Manager, search modern benchmark products like `Raindrop.io` or `mymind`) to inspect baseline layout standards, essential taxonomy zones, and expected user interactions. Do NOT invent features from training data assumptions alone.
+
 1. **[Feature 1]**: [Core functionality description]
 2. **[Feature 2]**: [Core functionality description]
 3. **[Feature 3]**: [Encrypted document storage / basic payment integration]

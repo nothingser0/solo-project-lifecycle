@@ -16,7 +16,7 @@
 - **Solo-capacity classifier runs at EVERY scale**, Small included: it derives the tier from the Intake fields, *not* the declared `Scale:` line, so if the two disagree (e.g. `Scale: small` + a payment webhook) the gate fails on the High-Water-Mark rule. Set `Scale:` to its verdict.
 
 ### Step 1 — 3-Filter Triage
-- **Classification**: archetype acronym + scale tier in the `IDEA_BRIEF.md` header, written `ACRONYM — long name` (e.g. `POS — Point of Sale`); summary table: `deep-dives/01_IDEA_FEASIBILITY.md` §0. Never load `references/taxonomy/`.
+- **Classification & Live Benchmark Search**: archetype acronym + scale tier in the `IDEA_BRIEF.md` header, written `ACRONYM — long name` (e.g. `POS — Point of Sale`); summary table: `deep-dives/01_IDEA_FEASIBILITY.md` §0. Never load `references/taxonomy/`. **MANDATORY**: Before drafting the core user loop or MVP features, execute **`web_search`** against leading live products in that archetype to discover table-stakes features, standard layout patterns, and modern expectations. Do NOT invent archetype feature-sets from stale training data.
 - **Problem filter**: who, how often, measurable loss today? Don't build if a sheet solves 80%.
 - **Data quality standards**: disclose sample size & split (N, interviews vs survey), recruitment bias, question formulation (only pricing-commitment questions count as WTP), loss-verification sample. Full procedure: deep-dive §1.
 - **Competitor benchmark** (skip if inheriting M00): 5–7 competitors across direct/adjacent/manual. If ≥2 competitors already provide a claimed-unique feature, the claim is FALSE — reframe it.
