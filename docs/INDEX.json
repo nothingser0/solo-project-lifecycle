@@ -355,6 +355,10 @@
       "cataloged": false
     },
     {
+      "path": "references/pm/FEATURE_FINANCIAL_INVESTMENT_FRAMEWORK.md",
+      "cataloged": false
+    },
+    {
       "path": "references/pm/INDUSTRY_TOOLS_ADAPTER.md",
       "cataloged": true,
       "modules": [
@@ -405,6 +409,10 @@
     },
     {
       "path": "references/pm/PRODUCT_SUNSET_AND_EOL_GUIDE.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/pm/PROOF_OF_LIFE_PROBE_GUIDE.md",
       "cataloged": false
     },
     {
