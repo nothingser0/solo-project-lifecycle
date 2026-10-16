@@ -52,9 +52,19 @@ assets/logo/
 
 ---
 
-## 3. SVG Technical Craft Rules
+## 3. SVG Technical Craft & Optical Rules
 
-1. **Clean ViewBox**: Always use a clean square or proportional `viewBox` (e.g. `viewBox="0 0 100 100"` or `viewBox="0 0 240 60"`), never hardcoded px bounds without viewBox.
-2. **Path Outlines**: Convert all live text fonts to vector `<path>` outlines so the SVG renders identically on devices without the local font installed.
-3. **Zero Embedded Base64**: Never embed raster images (`<image href="data:image/png...">`) inside an SVG logo file.
-4. **Vector Complexity Cap**: A production logo icon should be lightweight, clean, and under 50KB in total payload size.
+1. **Optical Centering over Geometric Centering**:
+   - Asymmetrical marks, triangles, play buttons, and curved letterforms (e.g. "P", "D", "3") have an uneven visual weight. Centering purely by mathematical bounding box makes them look off-center to the human eye.
+   - Adjust coordinates optically so the center of visual mass aligns with the icon container.
+2. **Overshoot Compensation**:
+   - Curves and sharp apexes appear smaller than flat baselines of identical mathematical height. Circles and curved elements must extend 1–2% beyond the baseline/cap height (overshoot) to look identical in scale.
+3. **Anchor Point Budget (Complexity Cap)**:
+   - A production vector mark should have **fewer than 150 anchor points**.
+   - Marks exceeding 300 anchor points indicate bloated autotracing or messy bezier handles that slow down DOM rendering and blur at 16px. Every anchor point must earn its place.
+4. **Zero Near-Miss Angles**:
+   - Avoid unintentional accidental slopes (e.g. 89.4° or 179.2°). Structural lines intended to be vertical or horizontal must snap strictly to 90.0° and 180.0°.
+5. **Clean ViewBox**: Always use a clean square or proportional `viewBox` (e.g. `viewBox="0 0 100 100"` or `viewBox="0 0 240 60"`), never hardcoded px bounds without viewBox.
+6. **Path Outlines**: Convert all live text fonts to vector `<path>` outlines so the SVG renders identically on devices without the local font installed.
+7. **Zero Embedded Base64**: Never embed raster images (`<image href="data:image/png...">`) inside an SVG logo file.
+8. **Vector Size Cap**: A production logo icon should be lightweight, clean, and under 50KB in total payload size.
