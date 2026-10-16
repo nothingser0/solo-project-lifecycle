@@ -657,6 +657,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/01-discovery-commercial/WORKING_BACKWARDS_PR_FAQ_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/02-design/AB_TEST_HYPOTHESIS_TEMPLATE.md",
       "cataloged": true
     },
