@@ -99,6 +99,8 @@ When unprompted, LLMs default to an identical predictable aesthetic across 90% o
 | **Mark Concept**| A single lowercase letter passively trapped inside a colored circle or rounded squircle. | Negative-space cutouts, dynamic asymmetric strokes, kinetic geometric angles, or pure structural wordmarks. |
 | **Background** | Subtle purple-indigo radial glow / mesh gradient centered in the viewport. | Solid optical matte surfaces, strict 1px border dividers, or subtle architectural dot grids. |
 
+## 5. SVG Technical Craft & Optical Rules
+
 1. **Optical Centering over Geometric Centering**:
    - Asymmetrical marks, triangles, play buttons, and curved letterforms (e.g. "P", "D", "3") have an uneven visual weight. Centering purely by mathematical bounding box makes them look off-center to the human eye.
    - Adjust coordinates optically so the center of visual mass aligns with the icon container.
@@ -109,7 +111,15 @@ When unprompted, LLMs default to an identical predictable aesthetic across 90% o
    - Marks exceeding 300 anchor points indicate bloated autotracing or messy bezier handles that slow down DOM rendering and blur at 16px. Every anchor point must earn its place.
 4. **Zero Near-Miss Angles**:
    - Avoid unintentional accidental slopes (e.g. 89.4° or 179.2°). Structural lines intended to be vertical or horizontal must snap strictly to 90.0° and 180.0°.
-5. **Clean ViewBox**: Always use a clean square or proportional `viewBox` (e.g. `viewBox="0 0 100 100"` or `viewBox="0 0 240 60"`), never hardcoded px bounds without viewBox.
-6. **Path Outlines**: Convert all live text fonts to vector `<path>` outlines so the SVG renders identically on devices without the local font installed.
-7. **Zero Embedded Base64**: Never embed raster images (`<image href="data:image/png...">`) inside an SVG logo file.
-8. **Vector Size Cap**: A production logo icon should be lightweight, clean, and under 50KB in total payload size.
+5. **Master File Cleanliness (Strict Forbidden Tags)**:
+   - Master SVG files must never contain raster `<image>`, blurry `<filter>`, or HTML `<foreignObject>` tags. Master marks must be pure vector geometry (`<path>`, `<rect>`, `<circle>`, `<polygon>`) for crisp rendering across Safari, Chrome, and mobile viewports.
+6. **Raster Erosion Gate (16px Favicon Limit)**:
+   - When scaled down to 16x16px, no line, stroke, or negative-space gap may render narrower than **1px physical thickness**. Details thinner than 1px disappear due to browser sub-pixel raster erosion.
+7. **False-Hole Prevention (`fill-rule` Integrity)**:
+   - Avoid compound-path fill bugs where negative-space counter-holes (e.g., inside an "O", "D", or donut loop) fill solid black due to mismatched winding directions. Always enforce explicit `fill-rule="evenodd"` or verify path winding.
+8. **Display Font License Gate**:
+   - Any typography used in wordmarks or logo lockups must possess an open-source commercial-safe license (e.g., SIL Open Font License 1.1 or Apache 2.0). Never embed proprietary/unlicensed typography into client deliverables.
+9. **Clean ViewBox**: Always use a clean square or proportional `viewBox` (e.g. `viewBox="0 0 100 100"` or `viewBox="0 0 240 60"`), never hardcoded px bounds without viewBox.
+10. **Path Outlines**: Convert all live text fonts to vector `<path>` outlines so the SVG renders identically on devices without the local font installed.
+11. **Zero Embedded Base64**: Never embed raster images (`<image href="data:image/png...">`) inside an SVG logo file.
+12. **Vector Size Cap**: A production logo icon should be lightweight, clean, and under 50KB in total payload size.
