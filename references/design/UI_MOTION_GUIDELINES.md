@@ -44,7 +44,22 @@ When revealing lists, table rows, or dashboard statistic cards:
 
 ---
 
-## 4. Mandatory Accessibility Gate (`prefers-reduced-motion`)
+## 4. The 100th-Viewing & Distraction Defenses
+
+Adapted from LottieFiles production motion diagnostic rules:
+
+1. **The 100th-Viewing Test**:
+   - Ask before freezing any interactive animation: *"Will the user still appreciate this on their 100th interaction, or will it feel like an annoying delay?"*
+   - If an animation feels like waiting on repeated daily usage (e.g. bouncy dialog pop-ups, lengthy button spinners), reduce duration to $\le 150\text{ms}$ or replace with instantaneous state change.
+2. **The 1/3 Screen Rule**:
+   - At any single moment, never animate more than **one-third (33%)** of the viewport surface area simultaneously.
+   - If a page has 12 cards, do not bounce all 12 at once. Animate the primary container or stagger entrance to prevent cognitive overload.
+3. **Zero Linear Spatial Motion**:
+   - Never use `linear` timing on physical coordinate movement (`translate`, `scale`, `rotate`). Linear spatial motion looks robotic and unnatural. Always use `ease-out` for entrances and `ease-in` for exits.
+
+---
+
+## 5. Mandatory Accessibility Gate (`prefers-reduced-motion`)
 
 To prevent motion sickness and vestibular disorders, every CSS transition and animation block MUST honor system accessibility preferences:
 

@@ -60,8 +60,11 @@ Adapted from Stripe's systematic UX content design framework:
    - Place the critical noun or requirement at the beginning of the sentence so mobile users immediately grasp the fix:  
      - ✅ *"Password must be at least 8 characters"*  
      - ❌ *"There is a requirement that your password has 8 characters"*
-4. **Specific Destructive Verbs**:
+4. **40–60 Character Optimal Line Length**:
+   - Body copy, helper text, and descriptions must maintain an optimal reading measure between **40 and 60 characters per line** (approx. 45ch–65ch in CSS or `max-w-prose`).
+   - Lines exceeding 75 characters significantly degrade reading comprehension and induce optical fatigue on wide monitors.
+5. **Specific Destructive Verbs**:
    - Use *"Delete"* when removing data permanently. Use *"Remove"* only when unlinking or detaching an item from a list (without destroying the underlying record).
-5. **Empty State Structure**:
+6. **Empty State Structure**:
    - Follow the **Trio Architecture**: `[Contextual Title] + [1-sentence value explanation] + [1 primary call-to-action button]`.
    - Example: *"No bank mutations imported yet. Upload your bank mutation CSV to automatically categorize tax deductions. [Import Mutation]"*
