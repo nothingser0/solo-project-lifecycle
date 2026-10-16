@@ -57,11 +57,28 @@
 
 ## 3. Typography & Form Ergonomics (Anti-Zoom Standards)
 
-### 3.1 Font Family Declarations
+### 3.1 The 5 Font Pairing Modes
+Select exactly one pairing strategy matching project scale and context:
+1. **`single-family`** *(Recommended for Solo Dev)*: One versatile variable family (e.g., Inter, Geist). Hierarchy driven solely by `wght` (font-weight), `opsz` (optical size), and letter-spacing. Lowest bandwidth, zero font-clash risk.
+2. **`superfamily`**: Sans + Serif sharing identical underlying skeleton, x-height, and proportions (e.g., IBM Plex Sans + IBM Plex Serif, Source Sans + Source Serif).
+3. **`contrast`**: Distinct, characterful display typeface for marketing headlines + ultra-neutral grotesque sans for app UI.
+4. **`same-designer`**: Two distinct faces engineered by the same type foundry or designer for harmonious baseline cadence.
+5. **`data-face`**: Specialized monospace or tabular sans dedicated to financial, numerical, or data-dense dashboard views.
+
+### 3.2 Font Family Declarations & The `tnum` Rule
 - **Primary UI / Body Font**: `Inter` (weights: 400, 500, 600, 700)
 - **Monospace / Numeric Font**: `JetBrains Mono` (weights: 400, 700) for codes, currency, hashes, and SKU identifiers.
+- **Tabular Numbers (`tnum`) Gate**: For financial, bookkeeping, accounting, or metrics dashboards (e.g., FreePajak, TataBuku), the body and data font MUST explicitly support OpenType tabular figures:
+  ```css
+  /* Enforce fixed-width numerals in all data tables, counters, and currencies */
+  .tabular-nums, table td, .metric-counter {
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
+  }
+  ```
+  *Failure mode: Proportional numbers ("1" narrower than "8") causing jittery alignment in financial tables or running timers.*
 
-### 3.2 Form Input Anti-Zoom Rule (iOS & iPad Safari)
+### 3.3 Form Input Anti-Zoom Rule (iOS & iPad Safari)
 - All form inputs (`<input>`, `<select>`, `<textarea>`) **MUST BE AT LEAST `16px` (`text-base`) across ALL viewports**.
 - **PROHIBITED**: Applying `text-base md:text-sm` to inputs. This triggers automatic viewport zoom on iPads and touch screens ≥ 768px, distorting layout shells.
 - **Inputmode Differentiation**:
@@ -225,3 +242,5 @@
 - [ ] **3. Border Separation**: Subtle container boundaries (`--border`) and high-contrast interactive borders (`--input`, ≥ 3:1) maintain separate token definitions.
 - [ ] **4. Universal 16px Inputs**: All form inputs specify `text-base` (16px) universally without `md:text-sm` responsive overrides to prevent iOS/iPad auto-zoom.
 - [ ] **5. Unified Stacking Scale**: All z-index contexts are declared via CSS variables from canvas (`0`) to modal dropdowns (`55`) and toasts (`60`).
+- [ ] **6. Zero Horizontal Overflow Gate**: Validated via browser inspection that `document.body.scrollWidth <= window.innerWidth` across 375px mobile and 1440px desktop viewports.
+- [ ] **7. Tabular Figure Compliance**: Financial, numeric, and currency data tables enforce `tabular-nums` (`font-feature-settings: "tnum" 1`).
