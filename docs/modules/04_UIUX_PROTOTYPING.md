@@ -1,7 +1,7 @@
 # Module 04: UI/UX Design & Prototyping
 
 > **Templates to copy**: `templates/02-design/` (SITEMAP, COMPONENT_REQUIREMENTS, DESIGN_SPEC, SCREEN_PROMPT) · `templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md` (benchmark notes → `docs/design/inspiration/notes.md`)
-> 📖 **Optional** (do NOT preload): `references/solo/SOLO_UIUX_GUIDE.md` · deep dive [`deep-dives/04_UIUX_PROTOTYPING.md`](deep-dives/04_UIUX_PROTOTYPING.md) — full A–E workflows, Figma MCP, root causes, Decision Matrix.
+> 📖 **Optional** (do NOT preload): `references/solo/SOLO_UIUX_GUIDE.md` · `patterns/architecture/SVG_TECHNICAL_DIAGRAM_STANDARD_PATTERN.md` (clean SVG diagram house style) · deep dive [`deep-dives/04_UIUX_PROTOTYPING.md`](deep-dives/04_UIUX_PROTOTYPING.md) — full A–E workflows, Figma MCP, root causes, Decision Matrix.
 
 This module translates `SCOPE_STATEMENT.md` (+ valid SOW, or M03 waived for Solo SaaS) into 6 authoritative design artifacts that serve as the UI source of truth: `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/design/inspiration/notes.md`, `docs/harness-root/DESIGN.md` (staged; deployed to root in M06), and `docs/specs/DESIGN_SPEC.md`.
 
