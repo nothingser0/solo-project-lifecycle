@@ -160,6 +160,7 @@ Stack-Locked-by: [name of the human who chose it — the AI agent may not choose
 - [Runtime/DB Client]: [x.y.z]
 
 - **Database Schema (Core Tables)**:
+- Follow `patterns/architecture/DATABASE_SCHEMA_AND_QUERY_OPTIMIZATION_PATTERN.md`: BIGINT or UUIDv7 PKs, mandatory indexes on all FKs (`*_id`), singular snake_case tables/columns, TIMESTAMPTZ, and CHECK constraints.
 ```sql
 -- Users & Sessions Table
 CREATE TABLE users (

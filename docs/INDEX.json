@@ -237,6 +237,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/DATABASE_SCHEMA_AND_QUERY_OPTIMIZATION_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md",
       "cataloged": true
     },
