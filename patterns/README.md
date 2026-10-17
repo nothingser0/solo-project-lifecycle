@@ -23,6 +23,7 @@
 | Realtime Communication & Network Protocols Pattern (SSE vs. WebSocket vs. Polling) | [`architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md`](./architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md) |
 | S.U.P.E.R Architecture & Closed-Loop Adaptive Control Pattern | [`architecture/SUPER_ARCHITECTURE_AND_ADAPTIVE_CONTROL_PATTERN.md`](./architecture/SUPER_ARCHITECTURE_AND_ADAPTIVE_CONTROL_PATTERN.md) |
 | SVG Technical & Architecture Diagram Standard Pattern | [`architecture/SVG_TECHNICAL_DIAGRAM_STANDARD_PATTERN.md`](./architecture/SVG_TECHNICAL_DIAGRAM_STANDARD_PATTERN.md) |
+| Caching Strategies & Data Consistency Pattern (Cache-Aside, Stampede Defense & CAP) | [`architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md`](./architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
 | Exact-Build Verification & Closed-Loop QA (Artifact Pinning & 4-State Lifecycle) | [`qa/EXACT_BUILD_VERIFICATION_PATTERN.md`](./qa/EXACT_BUILD_VERIFICATION_PATTERN.md) |
