@@ -249,6 +249,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md",
       "cataloged": true
     },
