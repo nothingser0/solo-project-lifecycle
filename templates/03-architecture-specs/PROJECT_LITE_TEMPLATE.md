@@ -138,6 +138,7 @@
 - **Quality Attributes & Architecture Risks**: Critical scenarios (p95 latency, recovery time) and risk register per `references/architecture/QUALITY_ATTRIBUTES_AND_RISK_FRAMEWORK.md`.
 - **Architecture Debt & Blast Radius**: Document debt findings and blast-radius tiers per `references/architecture/SENIOR_ARCHITECT_ASSESSMENT_PLAYBOOK.md` (template: `templates/03-architecture-specs/ARCHITECTURE_DEBT_AND_DRIFT_REGISTER_TEMPLATE.md`).
 - **Realtime Transport & Edge Protocols**: SSE for 1-way streams/AI, WebSockets for 2-way canvas/chat, zero short-polling per `patterns/architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md`.
+- **S.U.P.E.R Architecture & Adaptive Control**: Enforce 5 LEGO principles and telemetry drift-control ($\ge 20\%$ annotate, $\ge 40\%$ replan, $\ge 60\%$ rescope) per `patterns/architecture/SUPER_ARCHITECTURE_AND_ADAPTIVE_CONTROL_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
 Stack-Locked-by: [name of the human who chose it — the AI agent may not choose]
