@@ -135,6 +135,7 @@
 - **Architecture Topology**: Diagram per `patterns/architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md` (Client/Edge, Runtime, Persistence, Third-Party).
 - **Capacity Sizing (BOTEC)**: Realistic QPS & storage estimation per `references/architecture/BACK_OF_THE_ENVELOPE_CAPACITY_PLAYBOOK.md` (Peak QPS: `[x] req/s`, Annual Storage: `[x] GB`).
 - **Resilience Guardrails**: Timeouts on remote calls, exponential backoff with full jitter, and circuit-breaker degradation per `patterns/resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`.
+- **Quality Attributes & Architecture Risks**: Critical scenarios (p95 latency, recovery time) and risk register per `references/architecture/QUALITY_ATTRIBUTES_AND_RISK_FRAMEWORK.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
 Stack-Locked-by: [name of the human who chose it — the AI agent may not choose]
