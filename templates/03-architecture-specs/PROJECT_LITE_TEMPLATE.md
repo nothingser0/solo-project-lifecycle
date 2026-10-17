@@ -141,6 +141,7 @@
 - **S.U.P.E.R Architecture & Adaptive Control**: Enforce 5 LEGO principles and telemetry drift-control ($\ge 20\%$ annotate, $\ge 40\%$ replan, $\ge 60\%$ rescope) per `patterns/architecture/SUPER_ARCHITECTURE_AND_ADAPTIVE_CONTROL_PATTERN.md`.
 - **Technical Diagram Standard**: Dark-theme safe SVG diagrams with optical baseline centering and curved connectors per `patterns/architecture/SVG_TECHNICAL_DIAGRAM_STANDARD_PATTERN.md`.
 - **Caching & Data Consistency**: Cache-aside default, stampede defense (TTL jitter), and CP vs AP domain classification per `patterns/architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md`.
+- **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
 Stack-Locked-by: [name of the human who chose it — the AI agent may not choose]
