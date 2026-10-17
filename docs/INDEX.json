@@ -289,6 +289,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/ui/SCROLL_SCRUBBED_WORLD_PATTERN.md",
       "cataloged": true
     },

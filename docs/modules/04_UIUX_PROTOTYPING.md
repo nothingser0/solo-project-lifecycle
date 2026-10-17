@@ -48,6 +48,7 @@ OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 ## 2. Outputs
 `docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png), `assets/media/` (dedicated directory for 3D models, video loops, Lottie JSON, and rich media assets), and, for Workflow B, `docs/design/prompts/scr-xx/PROMPT.md` + `docs/design/screens/scr-xx/`.
 Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbidden). DESIGN.md + DESIGN_SPEC.md mandatory regardless of prototype choice.
+Viewport Precedence: apply [`patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md`](../../patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md) — Mobile-First is default for consumer/SaaS/portals; Desktop-First permitted only for dense ERP/canvas tools with mobile card reflow.
 
 ## 3. Gate Exit Criteria [GATE] — BLOCKING Checklist
 

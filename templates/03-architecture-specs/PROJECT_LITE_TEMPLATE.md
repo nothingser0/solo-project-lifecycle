@@ -117,8 +117,9 @@
 - **Component Storage**: Save exported AI UI components into `docs/design/screens/`.
 
 ### 4.4 Design Freeze & Anti-Slop Sign-Off
-- **Mobile Input Ergonomics**: All form inputs are ≥ 16px (`text-base`) to prevent iOS Safari auto-zoom.
-- **Touch Targets**: All buttons and interactive triggers meet ≥ 44px × 44px.
+- Mobile Input Ergonomics: All form inputs are ≥ 16px (`text-base`) to prevent iOS Safari auto-zoom.
+- Viewport Priority: Follow `patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md` (Mobile-First default; Desktop-First only for dense data/canvas).
+- Touch Targets: All buttons and interactive triggers meet ≥ 44px × 44px.
 - **Contrast Ratio**: Text contrast ≥ 4.5:1 against canvas background (WCAG 2.2 AA).
 - **Design Freeze Status**: `[FROZEN / APPROVED]` (UI layout locked; zero structural rework during coding).
 
