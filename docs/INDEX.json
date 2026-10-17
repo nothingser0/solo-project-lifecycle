@@ -321,6 +321,10 @@
       "cataloged": false
     },
     {
+      "path": "references/architecture/SENIOR_ARCHITECT_ASSESSMENT_PLAYBOOK.md",
+      "cataloged": false
+    },
+    {
       "path": "references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md",
       "cataloged": false
     },
@@ -843,6 +847,10 @@
     {
       "path": "templates/02-legal-commercial/SOW_SMB.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/03-architecture-specs/ARCHITECTURE_DEBT_AND_DRIFT_REGISTER_TEMPLATE.md",
+      "cataloged": false
     },
     {
       "path": "templates/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md",
