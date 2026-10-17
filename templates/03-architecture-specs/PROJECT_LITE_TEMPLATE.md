@@ -132,6 +132,7 @@
 > blueprint (STEP 5), and the Module 04 handoff strategy (STEP 5) — which M06 STEP 0 parses.
 
 - **Selected Tech Stack**: [Example: Next.js + PostgreSQL / Flutter + Supabase / FastAPI + SQLite]
+- **Architecture Topology**: Diagram per `patterns/architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md` (Client/Edge, Runtime, Persistence, Third-Party).
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
 Stack-Locked-by: [name of the human who chose it — the AI agent may not choose]

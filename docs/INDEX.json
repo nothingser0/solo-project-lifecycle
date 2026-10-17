@@ -245,6 +245,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/SOLO_ARCHITECTURE_GUARDRAILS.md",
       "cataloged": true
     },
