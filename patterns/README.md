@@ -30,6 +30,7 @@
 | Dwyl Learn API Design & Product-First API Principles Pattern | [`architecture/DWYL_API_DESIGN_PATTERN.md`](./architecture/DWYL_API_DESIGN_PATTERN.md) |
 | Full-Stack Execution Roadmap & Milestone Breakdown Pattern | [`execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md`](./execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md) |
 | MERN Stack Full-Stack Curriculum & Project Breakdown Pattern | [`execution/MERN_STACK_ROADMAP_PATTERN.md`](./execution/MERN_STACK_ROADMAP_PATTERN.md) |
+| AI Full-Stack Delivery Workflow & Multi-Role Dispatch Pattern | [`execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`](./execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
