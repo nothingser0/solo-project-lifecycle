@@ -49,6 +49,7 @@
 | Enterprise DevOps & SRE Agent-Ready SKILL.md Pattern | [`execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md`](./execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md) |
 | Enterprise CI/CD & Quality Gate Automation Pattern | [`execution/ADDY_OSMANI_CICD_AUTOMATION_PATTERN.md`](./execution/ADDY_OSMANI_CICD_AUTOMATION_PATTERN.md) |
 | Enterprise Agent Framework & Trigger-Based Skill Injection Pattern | [`execution/AKSHAY_KOKANE_AGENT_SKILLS_INJECTION_PATTERN.md`](./execution/AKSHAY_KOKANE_AGENT_SKILLS_INJECTION_PATTERN.md) |
+| Enterprise Agentic Customer Service & MCP Multi-Turn Testing Pattern | [`execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md`](./execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
