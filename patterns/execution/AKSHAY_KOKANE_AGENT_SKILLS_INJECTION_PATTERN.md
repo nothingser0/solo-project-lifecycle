@@ -1,4 +1,4 @@
-# Akshay Kokane Agent Framework & Trigger-Based Skill Injection Pattern
+# Enterprise Agent Framework & Trigger-Based Skill Injection Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
 > **Source**: Adapted from Akshay Kokane Agent Skill Implementation (`akshaykokane/Building-Customer-Service-Agent-with-Skill.md-and-Agent-Framework`).  
