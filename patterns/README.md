@@ -36,6 +36,7 @@
 | PaperOrchestra Multi-Agent Automated AI Research Paper Writing Pattern | [`execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md`](./execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md) |
 | Altimate AI Data Engineering & dbt/Snowflake Analytics Engineering Pattern | [`execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md`](./execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md) |
 | Vaquar Khan Data Engineering Agent Skills & Production Reliability Pattern | [`execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md`](./execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md) |
+| Riekelt Technical Writer Engineering Writing & Anti-AI-Slop Prose Pattern | [`execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md`](./execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
