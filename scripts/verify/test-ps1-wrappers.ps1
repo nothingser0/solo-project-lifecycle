@@ -61,6 +61,13 @@ $doc = @"
 - **Total Waitlist / Email Signups**: 9
 - **Waitlist-Conversion-Pct**: 7.5
 
+## 6. Unit Economics & Pricing Feasibility
+
+- **Acquisition Cost (CAC)**: Rp 15,000 / user
+- **Lifetime Value (LTV)**: Rp 900,000 / user
+- **LTV / CAC Ratio**: 60x
+- **Gross Margin**: 85%
+
 Validated-by: Test Lead on 2026-10-11
 
 ## 7. Kill Criteria & Gate Validation Outcome
