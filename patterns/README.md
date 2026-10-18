@@ -38,6 +38,7 @@
 | Vaquar Khan Data Engineering Agent Skills & Production Reliability Pattern | [`execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md`](./execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md) |
 | Riekelt Technical Writer Engineering Writing & Anti-AI-Slop Prose Pattern | [`execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md`](./execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md) |
 | Baraa SQL Data Warehouse & Medallion Architecture Pattern | [`execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md`](./execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md) |
+| Patterns Devkit Component-Based Data Graphs & SDK Pattern | [`execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md`](./execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
