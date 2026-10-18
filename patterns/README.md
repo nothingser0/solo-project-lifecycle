@@ -42,7 +42,8 @@
 | Petr Kindlmann QA Skills & AI-Augmented Quality Assurance Pattern | [`execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md`](./execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md) |
 | KimDoubleB Grafana k6 Performance & Chaos Testing Pattern | [`execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md`](./execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md) |
 | Tsilverberg WebApp UAT & Full Browser Testing Pattern | [`execution/WEBAPP_UAT_BROWSER_TESTING_PATTERN.md`](./execution/WEBAPP_UAT_BROWSER_TESTING_PATTERN.md) |
-| Cloudflare Multi-Phase Security Audit & Adversarial Verification Pattern | [`execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md`](./execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md) |
+| Cloudflare Security Audit & Vulnerability Hunting Pattern | [`execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md`](./execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md) |
+| Netresearch Security Audit & OWASP/PHP/GitHub Hardening Pattern | [`execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md`](./execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
