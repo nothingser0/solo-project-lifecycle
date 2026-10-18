@@ -253,6 +253,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/DWYL_API_DESIGN_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md",
       "cataloged": true
     },
