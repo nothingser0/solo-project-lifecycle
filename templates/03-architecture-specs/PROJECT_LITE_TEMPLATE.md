@@ -152,6 +152,7 @@
 - **Jeffallan Claude Skills**: Specialized modular skill activation, multi-skill workflows, context engineering via `/common-ground`, and Jira/Confluence epic lifecycle management per `patterns/execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md`.
 - **PaperOrchestra Research Writer**: Multi-agent automated research paper writing pipeline (Outline, Plotting, Lit Review, Section Writing, Content Refinement) and agent log aggregator per `patterns/execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md`.
 - **Altimate AI Data Engineering**: dbt modeling conventions, incremental model strategies, and Snowflake cost/query optimization per `patterns/execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md`.
+- **Vaquar Khan DE Agent Skills**: 5-stage DE lifecycle (`/spec` → `/plan` → `/build` → `/validate` → `/review`), Kafka/Spark reliability, and MCP data observability per `patterns/execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md`.
 - **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
