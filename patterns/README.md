@@ -26,6 +26,7 @@
 | Caching Strategies & Data Consistency Pattern (Cache-Aside, Stampede Defense & CAP) | [`architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md`](./architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md) |
 | System Design Methodology & Interview Problem-Solving Pattern | [`architecture/SYSTEM_DESIGN_METHODOLOGY_PATTERN.md`](./architecture/SYSTEM_DESIGN_METHODOLOGY_PATTERN.md) |
 | RESTful API Design & Resource Modeling Pattern | [`architecture/RESTFUL_API_DESIGN_PATTERN.md`](./architecture/RESTFUL_API_DESIGN_PATTERN.md) |
+| API Design Guidelines & Best Practices Cheat Sheet Pattern | [`architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`](./architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |

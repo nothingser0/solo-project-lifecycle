@@ -241,6 +241,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md",
       "cataloged": true
     },
