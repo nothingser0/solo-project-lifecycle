@@ -1,4 +1,4 @@
-# Arie Bregman DevOps & SRE Agent-Ready SKILL.md Pattern
+# Enterprise DevOps & SRE Agent-Ready SKILL.md Pattern
 
 > **Module**: M10 (Deployment & Infrastructure) & M13 (Product Operations & Iteration)  
 > **Source**: Adapted from Arie Bregman DevOps & SRE Skills (`bregman-arie/devops-sre-skills`).  

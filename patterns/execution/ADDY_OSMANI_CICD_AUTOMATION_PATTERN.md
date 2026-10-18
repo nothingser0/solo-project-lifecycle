@@ -1,4 +1,4 @@
-# Addy Osmani CI/CD and Automation Pattern
+# Enterprise CI/CD and Automation Pattern
 
 > **Module**: M10 (Deployment & Production) & M13 (Product Operations & Iteration)  
 > **Source**: Adapted from Addy Osmani Agent Skills (`addyosmani/agent-skills`).  

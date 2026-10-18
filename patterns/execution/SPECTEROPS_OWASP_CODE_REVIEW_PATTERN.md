@@ -1,4 +1,4 @@
-# SpecterOps OWASP Security Code Review & Evidence-Driven Auditing Pattern
+# Advanced OWASP Security Code Review & Evidence-Driven Auditing Pattern
 
 > **Module**: M05 (Architecture & Specs), M07 (Quality Assurance & SIT), & M12 (Warranty & Security)  
 > **Source**: Adapted from SpecterOps Skills (`SpecterOps/skills/owasp-security-code-review`).  
