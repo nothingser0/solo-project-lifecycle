@@ -157,6 +157,7 @@
 - **Baraa SQL Data Warehouse**: Medallion architecture (Bronze ingestion, Silver cleansing, Gold star-schema reporting) and quality assurance testing per `patterns/execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md`.
 - **Patterns Devkit**: Component-based data graphs, reusable Python/SQL nodes, and SDK table/parameter primitives per `patterns/execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md`.
 - **Petr Kindlmann QA Skills**: 50 professional QA workflows, risk-based test planning, Playwright/Cypress E2E automation, selector drift recovery, and AI-augmented bug triage per `patterns/execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md`.
+- **KimDoubleB Grafana k6**: API/browser performance test generation, OpenAPI/code-to-test scaffolding, scenario executors, CI/CD integration, and Kubernetes chaos engineering via `xk6-disruptor` per `patterns/execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md`.
 - **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
