@@ -46,6 +46,7 @@
 | Netresearch Security Audit & OWASP/PHP/GitHub Hardening Pattern | [`execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md`](./execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md) |
 | Strobes Security Web Penetration Testing & AI Skill Architecture Pattern | [`execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md`](./execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md) |
 | SpecterOps OWASP Security Code Review & Evidence-Driven Auditing Pattern | [`execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md`](./execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md) |
+| Arie Bregman DevOps & SRE Agent-Ready SKILL.md Pattern | [`execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md`](./execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
