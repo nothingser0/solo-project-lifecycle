@@ -265,6 +265,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/architecture/SOLO_ARCHITECTURE_GUARDRAILS.md",
       "cataloged": true
     },
