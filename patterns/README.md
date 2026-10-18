@@ -52,6 +52,7 @@
 | Enterprise Agentic Customer Service & MCP Multi-Turn Testing Pattern | [`execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md`](./execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md) |
 | Awesome Agent Skills & Progressive Disclosure Ecosystem Pattern | [`execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md`](./execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md) |
 | Enterprise AI Search & Technical SEO Optimization Pattern | [`execution/CLAUDE_SEO_GENERATIVE_ENGINE_OPTIMIZATION_PATTERN.md`](./execution/CLAUDE_SEO_GENERATIVE_ENGINE_OPTIMIZATION_PATTERN.md) |
+| Enterprise Growth Engineering & Marketing Intelligence Pattern | [`execution/MARKETING_SKILLS_GROWTH_ENGINEERING_PATTERN.md`](./execution/MARKETING_SKILLS_GROWTH_ENGINEERING_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |
