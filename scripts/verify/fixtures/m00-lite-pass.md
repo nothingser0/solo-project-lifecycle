@@ -51,11 +51,16 @@
 - **Intent-to-Buy-Pct**: 0
 - **Alternative-Proof**: deposits: 0 | loi: 0
 
+## 6. Unit Economics & Pricing Feasibility
+
+- **Acquisition Cost (CAC)**: Rp 15,000 / user
+- **Lifetime Value (LTV)**: Rp 900,000 / user
+- **LTV / CAC Ratio**: 60x (Target: >= 3x)
+- **Gross Margin**: 85%
+
 Validated-by: Test Lead on 2026-10-11
 
 ## 7. Kill Criteria & Gate Validation Outcome
-
-### Kill Criteria Triggers
 
 1. Market Kill: waitlist conversion < 2.0% after >=100 targeted visitors
 2. Feasibility Kill: MVP exceeds 6 weeks for one developer
