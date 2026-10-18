@@ -145,6 +145,7 @@
 - **RESTful API Design**: Noun-based endpoints, HTTP status semantics, cursor/offset pagination, and RFC 7807 problem details per `patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md`.
 - **API Design Best Practices**: Collection metaphors, no naked IDs, Accept-header versioning, and ETag caching per `patterns/architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`.
 - **API-as-a-Product Mindset**: Bloch & Lacker laws, opinionated design, and non-surprising developer UX per `patterns/architecture/DWYL_API_DESIGN_PATTERN.md`.
+- **Full-Stack Execution Roadmap**: Phased milestones from UI components, auth pipelines, state management, to backend database models per `patterns/execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md`.
 - **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
