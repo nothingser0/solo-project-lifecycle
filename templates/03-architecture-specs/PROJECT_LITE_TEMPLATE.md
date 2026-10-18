@@ -162,6 +162,7 @@
 - **Cloudflare Security Audit**: Multi-phase security audit orchestration, coverage-led hunting, adversarial candidate validation, and machine-readable `findings.json` schema validation per `patterns/execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md`.
 - **Netresearch Security Audit**: 80+ automated security checkpoints (`checkpoints.yaml`), OWASP Top 10 patterns, CWE Top 25 (2025) coverage, CVSS v4.0 scoring, and PHP/TYPO3 hardening hooks per `patterns/execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md`.
 - **Strobes Security Web Pentest**: Methodology-driven 4-layer AI agent skill architecture, 6-phase pentest lifecycle, CLI toolchain orchestration, and evidence-backed findings per `patterns/execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md`.
+- **SpecterOps OWASP Code Review**: Evidence-driven code review methodology, trust boundary mapping, untrusted-data sink tracing, and executable PoC generation (`poc_<finding_slug>.py`) per `patterns/execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md`.
 - **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
