@@ -167,6 +167,7 @@
 - **Enterprise CI/CD & Automation**: Quality gate enforcement pipelines (Lint, Types, Tests, Build, E2E, Audit), shift-left testing, AI feedback loops, and CI optimization per `patterns/execution/ADDY_OSMANI_CICD_AUTOMATION_PATTERN.md`.
 - **Enterprise Agent Framework & Skill Injection**: Token-efficient agent architecture, frontmatter trigger matching, progressive step delivery, and high-density decision tables per `patterns/execution/AKSHAY_KOKANE_AGENT_SKILLS_INJECTION_PATTERN.md`.
 - **Enterprise Agentic Customer Service & MCP Testing**: Portable Markdown agent workflows (`SKILL.md`), FastMCP server integration (`orders` and `tickets`), multi-turn YAML scenario testing, tool-call pattern assertion, and LLM-as-a-judge quality evaluations per `patterns/execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md`.
+- **Awesome Agent Skills Ecosystem**: Curated catalog of modular agent skills, progressive disclosure architecture (metadata loading first, full instructions loaded on relevance), and separation of skills vs MCP per `patterns/execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md`.
 - **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
