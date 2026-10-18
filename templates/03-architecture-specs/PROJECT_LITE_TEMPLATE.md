@@ -150,6 +150,8 @@
 - **AI Full-Stack Delivery Workflow**: 17-role master control orchestration, intent routing, and cross-role handoff pipeline per `patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`.
 - **Claude Code Spec-Driven Workflow**: Requirements → Design → Tasks implementation pipelines, bug-fix workflows, and 60-80% token reduction via bulk context optimization per `patterns/execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md`.
 - **Jeffallan Claude Skills**: Specialized modular skill activation, multi-skill workflows, context engineering via `/common-ground`, and Jira/Confluence epic lifecycle management per `patterns/execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md`.
+- **PaperOrchestra Research Writer**: Multi-agent automated research paper writing pipeline (Outline, Plotting, Lit Review, Section Writing, Content Refinement) and agent log aggregator per `patterns/execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md`.
+- **Altimate AI Data Engineering**: dbt modeling conventions, incremental model strategies, and Snowflake cost/query optimization per `patterns/execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md`.
 - **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
