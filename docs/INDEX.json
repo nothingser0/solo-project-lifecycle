@@ -309,6 +309,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md",
       "cataloged": true
     },

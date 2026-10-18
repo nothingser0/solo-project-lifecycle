@@ -149,6 +149,7 @@
 - **MERN Stack Curriculum**: Structured day-by-day stack breakdown from web fundamentals to Express/MongoDB & React auth per `patterns/execution/MERN_STACK_ROADMAP_PATTERN.md`.
 - **AI Full-Stack Delivery Workflow**: 17-role master control orchestration, intent routing, and cross-role handoff pipeline per `patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`.
 - **Claude Code Spec-Driven Workflow**: Requirements → Design → Tasks implementation pipelines, bug-fix workflows, and 60-80% token reduction via bulk context optimization per `patterns/execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md`.
+- **Jeffallan Claude Skills**: Specialized modular skill activation, multi-skill workflows, context engineering via `/common-ground`, and Jira/Confluence epic lifecycle management per `patterns/execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md`.
 - **AI Agent Execution Guardrails**: Zero-scratchpad comments, edit-over-create file discipline, and no AI visual tropes per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`.
 
 Stack Decision LOCKED: [Next.js / Laravel / Django / Go / SvelteKit / FastAPI]
