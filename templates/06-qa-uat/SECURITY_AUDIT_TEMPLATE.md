@@ -99,6 +99,47 @@ Compute the vector from what you **demonstrated**, not from what seems possible:
 
 ---
 
+## 4.6 Threat Modeling (before testing)
+
+The checklist above verifies controls. It does not ask **which threats the design should have prevented**. That is a different question, and it is answered before anything is tested.
+
+**Design first, then threats, then validation — in that order.** Threats identified by reading a design are candidates. A candidate becomes a confirmed record only after a lab reproduces it (see §4.5). Do not assign severity to an unvalidated threat; that is the most common way a threat model turns into fiction.
+
+### 4.6.1 Element IDs
+
+Phase one produces a data-flow diagram; every element gets a stable ID so later phases can point at it.
+
+| Element | Prefix | Example |
+| :--- | :--- | :--- |
+| External interactor | `EI` | `EI01` |
+| Process | `P` | `P01` |
+| Data store | `DS` | `DS01` |
+| Data flow | `DF` | `DF01` |
+| Trust boundary | `TB` | `TB01` |
+
+### 4.6.2 STRIDE, mapped to the control that answers it
+
+| Letter | Threat | The control that answers it | Where this audit checks it |
+| :--- | :--- | :--- | :--- |
+| **S** | Spoofing | Authentication — identity is proven | §3 A07 |
+| **T** | Tampering | Integrity — signing, checksums, parameterized writes | §3 A03, A08 |
+| **R** | Repudiation | Audit logging — the action is attributable | §3 A09 |
+| **I** | Information disclosure | Confidentiality — authorization, encryption, minimization | §3 A01, A02 |
+| **D** | Denial of service | Availability — rate limits, quotas, timeouts | §3 A04, A05 |
+| **E** | Elevation of privilege | Authorization — least privilege, role checks | §3 A01 |
+
+Threat ID format: `T-{STRIDE}-{ElementID}-{NNN}` — e.g. `T-S-P01-001` is the first spoofing threat against process 01.
+
+### 4.6.3 The two rules that make it useful
+
+**Every cross-boundary flow needs a named entry point.** For each `DF` crossing a `TB`, state the input the attacker controls and the check that gate applies. A flow with no entry point is either missing from the diagram or unprotected — decide which.
+
+**Every identified threat must be consumed or explicitly rejected.** A threat is consumed when it becomes a finding (which then needs the six elements in §4.5) or a confirmed control. It is explicitly rejected when the design says why it does not apply. A threat that is neither is an open question, and open questions block the conclusion.
+
+**Small projects**: this section collapses to one table — elements, threats per element, and one line per threat saying consumed or rejected. Do not produce a 40-page threat model for a three-route app.
+
+---
+
 ## 5. Security Conclusion & Pass Status
 
 - [x] **MEETS SECURITY STANDARDS (SECURITY PASS)**: All critical test parameters above are satisfied. The system is secure against common exploitation vectors and meets basic UU PDP No. 27/2022 compliance.
