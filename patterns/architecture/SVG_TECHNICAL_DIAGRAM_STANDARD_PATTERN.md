@@ -3,6 +3,7 @@
 > **Module**: M04 (UI/UX Prototyping) & M05 (Architecture & Specs)  
 > **Source**: Adapted from `bybit-exchange/svg-diagram` house style standards.  
 > **Scope**: Authoritative engineering rules for rendering crisp, geometrically precise, zero-dependency SVG technical diagrams (architecture, sequence, flowcharts) that render reliably across GitHub dark theme, technical docs, and browser engines.
+> **This governs *how* only after you have decided to author an SVG.** Mermaid and plain text diagrams remain the default and are **not** replaced or deprecated by this pattern — `FSD_TECHNICAL_TEMPLATE.md` §2 ships a text diagram and every `erDiagram`/`sequenceDiagram` in the templates stays. Reach for SVG when layout itself carries meaning (a printed figure, a precise topology, CJK typography), not to upgrade a diagram that already communicates.
 
 ---
 

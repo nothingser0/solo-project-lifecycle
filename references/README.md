@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory (62 files across 13 directories).
+Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **62 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
 
 ---
 
@@ -13,7 +13,7 @@ references/
 ├── playbooks/           (2 files)  - AI-assisted development, scale workflows
 ├── architecture/        (3 files)  - BOTEC sizing, quality attributes & risk, senior-architect assessment
 ├── ba/                  (2 files)  - Use case specification craft, requirements traceability & RTM
-├── design/              (9 files)  - AI writing tells, content quality, motion, logo craft, deliverable diagrams, fidelity
+├── design/              (8 files)  - AI writing tells, content quality, motion, logo craft, design-to-code fidelity
 ├── growth/              (2 files)  - Product growth patterns
 ├── pm/                 (12 files)  - Prioritization, analytics, communication, testing, tooling, stakeholder decoding
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
