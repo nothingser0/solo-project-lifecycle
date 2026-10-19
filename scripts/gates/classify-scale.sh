@@ -84,8 +84,10 @@ if [ "$P0_COUNT" -gt 25 ]; then
     TIER=4; REASON=">25 P0 features (Enterprise scope)"
 elif [ "$P0_COUNT" -ge 16 ] && [ $TIER -lt 3 ]; then
     TIER=3; REASON="16-25 P0 features (Large Scale platform)"
-elif [ "$P0_COUNT" -ge 8 ] && [ $TIER -lt 2 ]; then
-    TIER=2; REASON="8-15 P0 features (Medium Scale)"
+elif [ "$P0_COUNT" -ge 6 ] && [ $TIER -lt 2 ]; then
+    # 6-15 is the documented Medium band (SKILL.md:22-23, M01, M02, SCOPE_STATEMENT).
+    # A `-ge 8` threshold made the documented 6-7 band unreachable.
+    TIER=2; REASON="6-15 P0 features (Medium Scale)"
 fi
 
 # Sensitive data: structured yes/no only (no free-text matching).

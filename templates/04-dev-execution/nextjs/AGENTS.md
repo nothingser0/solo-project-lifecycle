@@ -145,7 +145,7 @@ To prevent AI generated bloat, low-quality code, and hallucinations:
 - **Deterministic Row-Locking Order**: When locking multiple rows with `SELECT ... FOR UPDATE`, always lock them in a consistent, deterministic order (e.g., `ORDER BY id ASC` or `ORDER BY product_id ASC`) to eliminate cross-transaction deadlocks.
 
 ### 4.2 Idempotency & Interaction Safety
-- Include an `X-Idempotency-Key` (UUID v4) on all state-changing `POST`/`PUT` requests.
+- Include an `Idempotency-Key` (UUID v4) on all state-changing `POST`/`PUT` requests.
 - Prevent double-submit: Debounce submit handlers and guard against keyboard repeat (`event.repeat`).
 
 ### 4.3 Mobile & Touch Ergonomics

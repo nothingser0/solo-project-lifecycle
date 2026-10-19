@@ -143,7 +143,7 @@
 - **Caching & Data Consistency**: Cache-aside default, stampede defense (TTL jitter), and CP vs AP domain classification per `patterns/architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md`.
 - **System Design Methodology**: 4-step structured problem solving (use-cases, high-level design, deep dive, trade-offs) per `patterns/architecture/SYSTEM_DESIGN_METHODOLOGY_PATTERN.md`.
 - **RESTful API Design**: Noun-based endpoints, HTTP status semantics, cursor/offset pagination, and RFC 7807 problem details per `patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md`.
-- **API Design Best Practices**: Collection metaphors, no naked IDs, Accept-header versioning, and ETag caching per `patterns/architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`.
+- **API Design Best Practices**: Collection metaphors, no naked IDs, **URL path-segment versioning** (`/api/v1/…`, not the `Accept` header), and ETag caching per `patterns/architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`.
 - **API-as-a-Product Mindset**: Bloch & Lacker laws, opinionated design, and non-surprising developer UX per `patterns/architecture/DWYL_API_DESIGN_PATTERN.md`.
 - **Full-Stack Execution Roadmap**: Phased milestones from UI components, auth pipelines, state management, to backend database models per `patterns/execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md`.
 - **AI Full-Stack Delivery Workflow**: 17-role master control orchestration, intent routing, and cross-role handoff pipeline per `patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`.

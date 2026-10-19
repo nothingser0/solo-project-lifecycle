@@ -388,7 +388,7 @@ Industry reports:
 
 ### Features competitors have that we DON'T (MVP scope):
 1. ❌ e-Filing integration (KlikPajak/OnlinePajak) — Complex, requires DJP API
-2. ❌ e-Faktur PPN (KlikPajak) — Not relevant for freelancer <Rp4.8M
+2. ❌ e-Faktur PPN (KlikPajak) — Not relevant for freelancer <Rp4.8B (4,8 miliar; the PPh Final eligibility threshold)
 3. ❌ Payroll bulk upload (KantorKu) — Not solo dev target
 4. ❌ Tax consultant marketplace (OnlinePajak) — Different business model
 

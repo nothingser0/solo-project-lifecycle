@@ -413,7 +413,7 @@ func Register(c *fiber.Ctx) error {
         return fiber.NewError(fiber.StatusBadRequest, "Invalid request body")
     }
     
-    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 10)
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12) // cost >= 12 (SOLO_ENGINEERING_STANDARDS)
     if err != nil {
         return fiber.NewError(fiber.StatusInternalServerError, "Failed to hash password")
     }

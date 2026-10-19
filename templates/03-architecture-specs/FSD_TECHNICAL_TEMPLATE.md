@@ -154,8 +154,8 @@ Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 - **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
 - **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
 - **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
-- **Authentication & Session**: [e.g., Better Auth / Supabase Auth / Laravel Breeze / Laravel Sanctum / NextAuth / Lucia]
-- **Form & Schema Validation**: [e.g., Zod ^3.23.8 / Valibot / Laravel Form Requests / Pydantic]
+- **Authentication**: [e.g., Better Auth / Supabase Auth / Laravel Breeze / Laravel Sanctum / NextAuth / Lucia] — covers session handling
+- **Validation**: [e.g., Zod ^3.23.8 / Valibot / Laravel Form Requests / Pydantic] — covers form and schema validation
 - **State Management & Query Cache**: [e.g., TanStack Query ^5.x / Zustand / Pinia / React Context]
 - **UI & Motion Component Suite**: [e.g., shadcn/ui + Radix UI + Lucide React + Framer Motion (per `patterns/ui/UI_COMPONENT_TAXONOMY.md` and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`)]
 
@@ -554,7 +554,7 @@ success/error pair — an endpoint without an error contract is not a specificat
   ```http
   Authorization: Bearer <TOKEN>
   Content-Type: application/json
-  X-Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
+  Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
   ```
 - **Request Body Schema**:
   ```json
@@ -567,7 +567,7 @@ success/error pair — an endpoint without an error contract is not a specificat
 - **Standardized Response Format**:
   - Success: `{"status": "SUCCESS", "data": { ... }}`
   - Error: `{"status": "ERROR", "error": {"code": "RESOURCE_LOCKED", "message": "Descriptive error"}}`
-- **Idempotency**: `X-Idempotency-Key` required (writes to financial/stock state) — see §3 `idempotency_keys`.
+- **Idempotency**: `Idempotency-Key` required (writes to financial/stock state) — see §3 `idempotency_keys`.
 
 ### 6.1b DTO catalog — the field contract a JSON example cannot express
 
@@ -629,7 +629,7 @@ placeholder rows before sign-off.*
 
 #### POST /api/v1/[resource]
 - **Auth**: Bearer JWT
-- **Headers**: `X-Idempotency-Key` required
+- **Headers**: `Idempotency-Key` required
 - **Request**: `{...}` (validated server-side; mirror the DDL CHECK constraints)
 - **Success**: `201 {"status": "SUCCESS", "data": {...}}`
 - **Error**: `422` field-level validation (`{"errors": {"field": "message"}}`); `409` on duplicate key
@@ -664,7 +664,7 @@ placeholder rows before sign-off.*
 | Secrets management | `.env.local` locally (never committed); [provider] secret store in production | `.env.example` contract |
 | Audit logging | Who/what/when on every state mutation; append-only (§3 audit tables) | §3 DDL |
 | UU PDP / GDPR | Consent capture, deletion right, retention window — or `N/A — <reason>` | [`patterns/compliance/UU_PDP_COMPLIANCE.md`](../../patterns/compliance/UU_PDP_COMPLIANCE.md) |
-| Idempotency (write safety) | `X-Idempotency-Key` on every financial/stock mutation | §3 `idempotency_keys` |
+| Idempotency (write safety) | `Idempotency-Key` on every financial/stock mutation | §3 `idempotency_keys` |
 | In-Memory Caching (Read Scalability) | [Redis / Keyv cache layer, TTL policy, cache invalidation — or `N/A — low traffic CRUD`] | [cache middleware / client] |
 | Asynchronous Queue / Worker | [BullMQ / Celery / Laravel Queue / QStash for PDF, bulk email, webhook processing — or `N/A — synchronous CRUD`] | [queue worker config / service] |
 | Edge DDoS & WAF Protection | Cloudflare Proxy (Orange Cloud), WAF Managed Challenge, Edge Rate Limiting, Authenticated Origin Pulls | [`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md) |
@@ -710,7 +710,7 @@ placeholder rows before sign-off.*
 - [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
 - [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
 - [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
-- [ ] **7. API Contract Completeness**: ≥10 endpoint headings documented as `#### <VERB> /path` (gate-enforced; M05 STEP 4), each with auth, request schema, and a success/error pair; `X-Idempotency-Key` shown on every financial/stock mutation.
+- [ ] **7. API Contract Completeness**: ≥10 endpoint headings documented as `#### <VERB> /path` (gate-enforced; M05 STEP 4), each with auth, request schema, and a success/error pair; `Idempotency-Key` shown on every financial/stock mutation.
 - [ ] **8. Security Blueprint (§7)**: Every control row resolved (implemented or `N/A — <reason>`); no blank rows. Password hashing, at-rest encryption, rate limiting, and audit logging each have an implementation reference.
 - [ ] **9. Module 04 Handoff (§8)**: Screen → route → component map covers 100% of `DESIGN_SPEC.md` screens; locked stack matches §2 verbatim; compatibility level recorded for M06 STEP 0.
 

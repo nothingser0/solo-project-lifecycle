@@ -256,7 +256,7 @@ Acceptance Criteria:
   - ❌ INCORRECT: `(Gross × 50% - PTKP) × Progressive Rate`
   - ✅ CORRECT: `Net = Gross × 50%`, `PKP = Net - PTKP`, `Tax = PKP × Progressive Rate`
 - [ ] **Progressive Rates:** Correct brackets (5% up to Rp60M, 15% Rp60-250M, 25% Rp250-500M, 30% Rp500M-5B, 35% >Rp5B under UU HPP 2021)
-- [ ] **PTKP 2026:** TK/0 = Rp54M, K/0 = Rp58.5M, K/1 = Rp63M, K/2 = Rp67.5M, K/3 = Rp72M (PMK 141/2015, assume unchanged for 2026)
+- [ ] **PTKP 2026:** TK/0 = Rp54M, K/0 = Rp58.5M, K/1 = Rp63M, K/2 = Rp67.5M, K/3 = Rp72M (PTKP set by PMK 101/PMK.010/2016; verify the current figures at jdih.kemenkeu.go.id before coding)
 
 **Unit Test Scenarios (Min 10):**
 - [ ] Turnover Rp0 → Tax Rp0 (edge case)

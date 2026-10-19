@@ -394,7 +394,7 @@ Host at: `https://yourapp.com/.well-known/assetlinks.json`
 
 **Problem**: User taps link → App not installed → Downloads from store → Opens app → **Context lost**
 
-**Solution**: Branch.io / Firebase Dynamic Links / Adjust
+**Solution**: Branch.io / Adjust — **Firebase Dynamic Links is retired** (Google shut it down 25 Aug 2025; `page.link` and custom-domain links stopped resolving). Do not add it to a new build.
 
 **Example: Branch.io**
 
@@ -480,17 +480,9 @@ branch.subscribe(({ params }) => {
 
 **For Non-Native Code** (React Native JS bundle, Flutter assets):
 
-**CodePush (React Native)**:
-```bash
-npm install -g appcenter-cli
-appcenter login
-appcenter apps create -d MyApp-iOS -o iOS -p React-Native
-```
+**CodePush — RETIRED.** Visual Studio App Center, including CodePush, was retired on 31 Mar 2025. The `appcenter` CLI no longer works; do not follow older tutorials that still show it.
 
-```bash
-# Deploy update (skips App Store review)
-appcenter codepush release-react -a <username>/MyApp-iOS -d Production
-```
+**Use EAS Update (React Native) or Expo Updates instead** — see the Expo Updates block below.
 
 **Limitations**:
 - ❌ Cannot update native code (Swift/Kotlin)
@@ -657,7 +649,7 @@ if (JailMonkey.isJailBroken()) {
   - [ ] Content rating completed
 
 - [ ] **OTA Updates Configured**:
-  - [ ] CodePush/Expo Updates initialized
+  - [ ] EAS Update / Expo Updates initialized (CodePush retired 2025-03-31)
   - [ ] Force update logic implemented
   - [ ] Version check endpoint deployed
 

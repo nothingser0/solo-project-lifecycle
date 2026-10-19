@@ -61,7 +61,7 @@ Referencing SQL DDL schema in `FSD.md`:
 | Endpoint Route | Method | Custom Header | Required Payload | Success Response |
 | :--- | :---: | :--- | :--- | :---: |
 | `/api/v1/auth/login` | `POST` | - | `email`, `password` | `200 OK` + HttpOnly Cookie |
-| `/api/v1/documents` | `POST` | `Authorization`, `X-Idempotency-Key` | `title`, `template_type`, `form_data` | `201 Created` (`document_id`) |
+| `/api/v1/documents` | `POST` | `Authorization`, `Idempotency-Key` | `title`, `template_type`, `form_data` | `201 Created` (`document_id`) |
 | `/api/v1/documents/:id` | `GET` | `Authorization` | - | `200 OK` + `preview_url` (15m) |
 | `/api/v1/sign/:token` | `POST` | - | `signature_svg`, `token` | `200 OK` (`SIGNED` Status) |
 
