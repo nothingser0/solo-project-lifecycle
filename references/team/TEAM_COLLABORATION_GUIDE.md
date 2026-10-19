@@ -72,3 +72,35 @@ When multiple engineers or autonomous AI agents work concurrently:
 3. **Atomic Task Queue in `TODO.md`**:
    - Avoid two developers modifying the same database migration or route handler concurrently.
    - Lock task in `TODO.md` by marking assignee before opening code files.
+4. **Dispatch admission** — see §3.1 before spawning any sub-agent.
+
+---
+
+### 3.1 Dispatch admission — parallelism is an economic decision
+
+Delegating work has two costs that are easy to forget:
+
+- **Cold-start tax**: the sub-agent re-reads files, rules and context you already hold.
+- **Orchestration overhead**: worktrees, handoffs, integration of divergent branches.
+
+Dispatch only when the parallelism gain plus the context-isolation value exceeds those costs. Otherwise you pay twice for the same reading.
+
+| Tier | When | What you do |
+| :--- | :--- | :--- |
+| **0 — direct (default)** | Task is S/M effort, touches ≤3 files, you already hold the context, or acceptance is machine-verifiable | Do it yourself on the working branch. No sub-agent, no worktree. |
+| **1 — single delegate** | L/XL bundle, heavy exploratory reading, or output long enough to pollute your context | Hand the whole batch to one agent. Isolation is the reason, not speed. |
+| **2 — parallel lanes** | **All** must hold: file sets are disjoint · each lane is ≥L effort · each lane is independently verifiable · ≤4 lanes | One agent per dependency-ready lane, each in its own worktree |
+
+**The Tier 2 conditions are conjunctive.** Three of four is not a reason to parallelise — it is a reason to stay at Tier 1. Disjoint files are the one that matters most: two lanes touching the same file produce a merge conflict that costs more than the parallelism saved.
+
+**Default to Tier 0.** On a solo project most work is Tier 0, and the honest answer to "should I delegate this?" is usually no. If the platform has no sub-agents, every tier collapses to Tier 0 — execute sequentially.
+
+**Matching the review to the risk**
+
+| Level | When |
+| :--- | :--- |
+| **L1 — machine validation** (always) | Acceptance checks plus the batch's combined validation |
+| **L2 — orchestrator diff review** (default) | You read the integrated diff against every acceptance criterion |
+| **L3 — independent reviewer** | Mandatory for every Tier 2 lane, and for high-risk work: contract or port format changes, logic code, cross-surface invariants |
+
+A Tier 2 lane that is not independently reviewed is a lane whose bugs you will find in M07 instead.
