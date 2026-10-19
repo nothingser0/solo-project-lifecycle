@@ -1,7 +1,8 @@
 # Module 02: Discovery & Scope Definition
 
 > **Template to copy**: `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md` · client/Medium+: `templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md` (→ `docs/pm/STAKEHOLDER_MAP.md`)
-> 📖 **Optional ref**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md` (do NOT preload)
+> **Companion registers** (copy when needed): `BUSINESS_RULES_REGISTER_TEMPLATE.md` · `ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md` · `REQUIREMENTS_REGISTER_TEMPLATE.md` (→ `docs/pm/`, same base name)
+> 📖 **Optional ref**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md` · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` (elicitation mix, ambiguity classes, review passes) (do NOT preload)
 
 **Purpose**: extract real requirements, define technical boundaries, and lock **In/Out-of-Scope** into `SCOPE_STATEMENT.md` **before** contracts or design.
 
@@ -20,6 +21,7 @@
 
 ### Step 2 — Problem-Solution Fit, MoSCoW & Acceptance Criteria
 - Must-Haves **collectively** resolve ≥70% of root causes; every Must maps to a primary bottleneck (zero vanity P0s). Secondary-friction features demote to Should/Won't.
+- **Type before wording** (`patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §4): classify each item as functional / non-functional / business rule / constraint first. Changes when the UI is redesigned → functional; must hold regardless → business rule. Ambiguity classes (§4.1) name the fix; banned-word table: `REQUIREMENTS_AMBIGUITY_CHECKLIST.md`.
 - **Given-When-Then Acceptance Criteria**: Every P0 Must-Have User Story MUST include at least one concrete BDD scenario (`Given [initial context], When [action occurs], Then [expected outcome]`). Vague statements ("the system allows users to cancel orders") are invalid and block scope locking.
 - **Non-Functional Requirements (NFR) Baseline**: Explicitly define quantitative system boundaries:
   - Max concurrent users target for MVP (e.g. 50–100 active sessions).
@@ -76,6 +78,7 @@ All in **`docs/pm/`**:
 1. **`docs/pm/SCOPE_STATEMENT.md`** (mandatory): objectives, MoSCoW, stories, RBAC, In/Out-of-Scope, dependencies, SLA. Stub-checked only (<40B fails) — quality is judged by the §Gate Exit Protocol checklist, not byte count.
 2. **`STAKEHOLDER_MAP.md`**, **`COMMUNICATION_PLAN.md`**, **`RACI_MATRIX.md`** — client/internal; 1-page for solo.
 3. Conditional: `RISK_REGISTER.md`, `REQUIREMENT_MATRIX.md`, `BACKLOG.md`, `OKR.md`.
+4. **Type-separated registers** (copy only when needed; rules in `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §4): `BUSINESS_RULES_REGISTER.md` (each rule cites a source and an enforcement point — a rule enforced by nothing is an **orphan rule**) · `ASSUMPTIONS_CONSTRAINTS.md` (each assumption owned + testable; each constraint hard/soft with a design impact) · `REQUIREMENTS_REGISTER.md` (`FR-`/`NFR-`/`BR-`/`CON-` separated, each with a source and an acceptance criterion).
 
 ---
 
@@ -96,6 +99,7 @@ All in **`docs/pm/`**:
    - [ ] Legal compliance planned (Privacy Policy, ToS, tax disclaimers, PII scrubbing); legal/tax text carries a `LEGAL-REVIEW:` marker
    - [ ] `Scope-P0-Count` is a real number matching counted Must rows; `Scope-Lock-Decision` is `LOCKED`
    - [ ] Timeline: epic sum + 20% buffer; CR freeze = QA − 2 wks; ≥3 Out-of-Scope exclusions; confidence legend (✅/🔶/❓); dependencies with SLA
+   - [ ] **Registers (if used) are sound**: no `BR-` row without a source + enforcement point (**zero orphan rules**); every ❓ assumption has an owner and a validation approach (never agent-validated); every hard constraint has a design impact, every soft one states its cost
 3. Present scope summary: P0 features, Out-of-Scope list, client dependencies.
 
 ### STEP 2 — Gate Verification (MANDATORY)

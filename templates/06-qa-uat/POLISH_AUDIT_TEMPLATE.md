@@ -1,6 +1,6 @@
 # Anti-Vibe-Code Polish Audit (`docs/qa/POLISH_AUDIT.md`)
 
-> **Purpose**: Catch the 32 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
+> **Purpose**: Catch the 33 tells that make a shipped project read as AI-generated. Run this **on the deployed staging URL** (not in the IDE) before M07 sign-off and again on production in M10 PVT.
 > **Why it exists**: Functional gates pass, but the product still *looks* vibe-coded. These are the highest-signal cheap checks.
 > **Rule**: every row is PASS/FAIL with **evidence** (screenshot path, command output, or URL). "Looks fine" is not evidence.
 
@@ -50,6 +50,7 @@
 | 22 | **Race condition on shared state** | For each mutation of stock/balance/counter/booking/status: is it inside a transaction with a row lock, unique constraint, or compare-and-swap? Is the webhook idempotent (dedupes on provider event ID)? Double-click submit — does it create two records? | | [ ] |
 | 23 | **Cliché eyebrow badge / AI pill** | No decorative capsule pills above H1 (`[ ✨ AI Powered ]`, `[ Next-Gen ]`, `[ Beta ]`) with thin glowing borders. Headline goes straight to clear domain capability. | | [ ] |
 | 24 | **Fabricated stats & testimonials** | Zero invented metrics ("10,000+ users", "99.9% uptime", "500M queries") and zero fake avatar testimonials. Real evidence only. | | [ ] |
+| 24b | **AI writing shape (not just words)** | Rendered copy is free of the **structural** tells: contrast reveals ("Not X. Y."), negation lists, rhetorical-question-then-answer, colon reveals, tidy closers, wisdom-shaped sentences, self-narration, and "in today's fast-paced world" openers. Cap check: no more than one fragment drumbeat and one reflexive three per section. Full list + self-check: `references/design/AI_WRITING_TELLS.md`. | | [ ] |
 | 25 | **Purple-to-blue gradient text** | No generic `bg-gradient-to-r from-blue-600 to-purple-600` text clips. Typography styling uses solid contrast tokens from `DESIGN.md`. | | [ ] |
 | 26 | **Leaked spec IDs & slot placeholders** | Zero internal spec IDs (`SCR-01`, `SCR-02`) or technical placeholder text (`[WASM Canvas slot]`, `[slot]`, `[placeholder]`) leaking into rendered UI. View layer contains customer-facing domain copy only. | | [ ] |
 | 27 | **Raw emoji / emoticons in place of icons** | Zero raw OS emoji used as action/nav icons. Standardized SVG icon system (e.g. Lucide React) used consistently. | | [ ] |
@@ -92,8 +93,8 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 
 ## D. Verdict
 
-- **Tells found**: [X] / 25
-- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder), **22 (unprotected race condition)**, **23, 24, 25 (AI slop tells)**, **26, 27, 28 (spec leaks, emoji icons, layout deviation)**, and **29, 30, 31, 32 (media/3D layout shift, database base64 bloat, FOUC theme flash, unbounded rate limits)**.
+- **Tells found**: [X] / 33
+- **Blocking tells (must fix before sign-off)**: 1, 2, 4, 5, 7, 11, 13, 14, 15, 19, 20 (broken experience / leaked placeholder), **22 (unprotected race condition)**, **23, 24, 24b, 25 (AI slop tells, including structural copy shape)**, **26, 27, 28 (spec leaks, emoji icons, layout deviation)**, and **29, 30, 31, 32 (media/3D layout shift, database base64 bloat, FOUC theme flash, unbounded rate limits)**.
 - **Non-blocking but logged**: 21 (slop comments) and the remaining polish rows.
 - **Non-blocking polish (fix before M10 or log as post-launch)**: the remainder.
 
@@ -104,3 +105,40 @@ Actual: Perf [ ] · BP [ ] · SEO [ ]
 ---
 
 > **Re-run requirement**: rows 1–25 MUST be re-verified on the **production domain** during M10 PVT. Staging-only verification is insufficient — CDN, minification, and env differences surface new tells (especially 5, 11, 15).
+
+---
+
+## E. The Three-Proof Rule (for every finding you report)
+
+A polish audit produces *candidates*, not findings. Most false positives come from treating one of these as proof when it is only a hint: repetition, a similar-looking token, or a file sitting near another file.
+
+Keep a candidate **only when all three proofs exist**:
+
+| Proof | What it establishes | What it is NOT |
+| :--- | :--- | :--- |
+| **1. Contract** | A binding decision governs this property and scope — a rule in `DESIGN.md`, an explicit design decision, or a direct contradiction in user-facing content within the same task. | "Prefer", "generally", a similar name, an omission, or the absence of an exception. |
+| **2. Runtime** | The cited owner, value, or behaviour actually reaches the affected surface through the traced path: rendering, imports, props, resolved config, CSS inheritance, or a generated artifact the page loads. | Two files sharing a name, two tokens that look alike, or being in the same folder. |
+| **3. Correction** | One specific change the evidence requires. If it depends on an existing token/primitive/exemplar, name it exactly. | Alternatives, a range of options, or a fix that requires inventing product intent. |
+
+### What source evidence can and cannot prove
+
+| Source can prove | Source **cannot** prove |
+| :--- | :--- |
+| Token, typography, colour, spacing, layout, copy, component-variant, and responsive-presentation violations | Whether a behaviour works |
+| Explicit design-contract breaches | Hierarchy, prominence, density, clarity, discoverability, usability, perceived coherence |
+
+The right-hand column needs **rendered or user evidence** — a screenshot, a recording, or a real person. Claiming a hierarchy problem from source alone is guessing with confidence.
+
+### Falsify before you report
+
+Before adding a row, re-open every cited source and try to **disprove** your own candidate. Delete it when:
+
+- the problem does not exactly match the cited implementation
+- the rule does not govern that property and that surface
+- counter-evidence shows the difference is valid or deliberate
+- the evidence supports several possible corrections
+- another finding describes the same root problem (merge, do not duplicate)
+
+**Cap the list at three findings.** Order by confidence, user impact, reach, and cost to fix. A short list of proven defects beats a long list of suspicions — and an audit that reports "no supported findings" is a valid, useful result.
+
+> Source: adapted from `ibelick/ui-skills` (MIT) — the three-proof gate from its read-only `improve-ui` audit.

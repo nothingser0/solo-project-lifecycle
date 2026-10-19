@@ -1,6 +1,10 @@
 # Motion Design & Interactive Animation Taxonomy
 
 > **Standard Reference**: Technical specifications, implementations, and delivery formats for 70+ modern web, mobile, digital, and spatial motion design effects. Mapped to the `solo-project-lifecycle` framework (`docs/specs/COMPONENT_REQUIREMENTS.md` Section 3, `docs/design/inspiration/notes.md`, and `M06-FE-02`).
+>
+> **This is a catalogue, not a chooser.** 73 effects are listed below; the *selection* layer — which effect for which intent, four personality archetypes, emotion-to-motion mapping, stagger budgets — lives in [`references/design/MOTION_PERSONALITY_GUIDE.md`](../../references/design/MOTION_PERSONALITY_GUIDE.md). Timing values are governed by [`references/design/UI_MOTION_GUIDELINES.md`](../../references/design/UI_MOTION_GUIDELINES.md) §7.
+>
+> **Rule**: never pick an effect from this list first. Start from the intent (function / personality / story), then find the effect that serves it.
 
 ---
 

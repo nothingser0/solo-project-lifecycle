@@ -193,3 +193,12 @@ playwright-report/
 *.tfstate.*
 .vagrant/
 
+# ==============================================================================
+# HOST TOOLING ARTIFACTS (not project files)
+# ==============================================================================
+# mcp-sqlite reads argv[2] as the database path, so a misconfigured launcher
+# passing "--db-path" creates a literal file with that name in its cwd. The
+# launcher config is fixed (~/.omp/agent/mcp.json), but a long-lived server
+# process can still recreate it until restarted. Never commit it.
+--db-path
+

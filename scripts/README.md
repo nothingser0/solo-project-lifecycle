@@ -71,6 +71,7 @@ Sanity checks, link validators, and ecosystem compatibility tools:
 | [`scripts/verify/verify-framework-version.sh`](./verify/verify-framework-version.sh) | [`scripts/verify/verify-framework-version.ps1`](./verify/verify-framework-version.ps1) | Validates installed project lockfiles against versions pinned in FSD.md `Framework Versions (Pinned):` — comparators for Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails; any other stack exits 1 as UNVERIFIED rather than passing silently |
 | [`scripts/verify/lint-template.sh`](./verify/lint-template.sh) | [`scripts/verify/lint-template.ps1`](./verify/lint-template.ps1) | Lints filled project documents and raw template structures |
 | [`scripts/verify/fixtures/m00-lite-pass.md`](./verify/fixtures/m00-lite-pass.md) | — | Test fixture for validating M00 gate behavior without executing full discovery cycles |
+| [`scripts/verify/check_evidence.py`](./verify/check_evidence.py) | — | Verifies that evidence cited in a completion report actually exists, is not a stub, and belongs to this run. `--manifest` = strict coverage + freshness; `--report` = lenient existence only. Guide: `references/technical/EVIDENCE_MANIFEST_GUIDE.md` |
 
 ### Archived Patterns Reference
 
@@ -87,6 +88,29 @@ Data engineering and performance load testing scripts:
 | [`scripts/runtime/etl-import.js`](./runtime/etl-import.js) | Node.js production batch database importer |
 | [`scripts/runtime/migrate-data.ts`](./runtime/migrate-data.ts) | Streaming batch ETL with reconciliation report (extracted vs loaded + rejected), 500-row default chunks |
 | [`scripts/runtime/load-test.js`](./runtime/load-test.js) | Universal k6 load testing script with p95 < 200ms latency thresholds |
+
+---
+
+## 4b. Design Craft Tooling (`scripts/design/`)
+
+Dependency-free Python 3 that mechanically checks brand-mark craft. Adapted from
+`kaankiziltug/logo-design-skill` (MIT); the reference SVG library is not redistributed,
+only its aggregate complexity benchmarks (`library-stats.json`).
+
+| Tool | Description |
+|:---|:---|
+| [`scripts/design/svg_audit.py`](./design/svg_audit.py) | Audits a logo SVG: live `<text>`, embedded rasters, `<foreignObject>`, missing `viewBox`, colour count, gradients, stroke usage, painted-white "fake holes", anchor-point complexity vs. the reference corpus, near-miss angles (0.3–3° off a clean angle), sub-shapes that vanish at small sizes, centring/overflow, and contrast against a background (`--bg`). `--json` for machine output. |
+| [`scripts/design/svglib.py`](./design/svglib.py) | Shared parser: path geometry, transforms, bounding boxes, colour normalisation, WCAG contrast. |
+| [`scripts/design/library-stats.json`](./design/library-stats.json) | Percentile benchmarks (anchors, colours) from a 1,432-logo corpus. |
+
+```bash
+python3 scripts/design/svg_audit.py assets/logo/*.svg
+python3 scripts/design/svg_audit.py assets/logo/logo.svg --bg "#0F7C80"
+```
+
+`validate-gate.sh M04` runs this automatically against `assets/logo/logo.svg`: a `FAIL`
+finding or an unparseable SVG blocks the design gate. Rules and corrections:
+`references/design/LOGO_DESIGN_CRAFT_GUIDE.md`.
 
 ---
 

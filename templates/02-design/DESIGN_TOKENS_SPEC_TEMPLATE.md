@@ -712,4 +712,30 @@ class CardView: UIView {
 - Migration guide published with deprecation announcement
 - Console warnings in code during deprecation period
 
+### Token shadowing — the silent override
+
+A token system is only the source of truth if nothing overrides it. The common failure is a utility class that redefines a token value for one component, so the token file says one thing and the rendered UI says another.
+
+```css
+/* tokens.css says the brand primary is #F48C06 */
+.bg-yellow-500 { background-color: #F48C06; }   /* utility, derived from the token */
+```
+
+```html
+<!-- the token is bypassed here: the semantic name no longer means what it says -->
+<button class="bg-yellow-500" style="background: rgba(35, 189, 238, 0.9)">
+```
+
+**Rule**: a component may reference a token, never restate its value. Concretely:
+
+| Allowed | Not allowed |
+| :--- | :--- |
+| `class="bg-brand-primary"` | `style="background: #F48C06"` |
+| A utility class generated *from* the token | A utility class whose name promises one value and whose body holds another |
+| A local CSS variable that aliases a token | A hard-coded hex, `rgba()`, or px value in a component |
+
+**Why it matters more than it looks**: an inline `style` override survives a theme change, a dark mode, and a rebrand. The token gets updated, the page keeps the old colour, and nobody notices until a client screenshots it. Treat a hard-coded value in a component as a defect with the same weight as a hard-coded API URL.
+
+**Check**: grep the components for hex codes, `rgba(`, and `style=` attributes. Every hit is either a token that should exist or a value that should be deleted.
+
 **Contact**: design-system@company.com

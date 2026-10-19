@@ -26,8 +26,10 @@ Calibrate the brand's verbal personality across these 4 spectrums:
 * **Transparent status indicators**: *"Settled", "Pending sync", "Authorized", "Live"*.
 * **Respectful clarity**: *"You've used 80% of storage", "Billing updates take effect on [Date]"*.
 
+> **Word-level only.** This list bans individual words. A draft can avoid every one of them and still read as machine-written, because the tell is in the **shape** — contrast reveals, negation lists, reflexive threes, tidy closers. Shape blacklist: `references/design/AI_WRITING_TELLS.md` (ban vs cap, second-generation tells, rewrite rules, self-check).
+
 ### B. Forbidden Banned Vocabulary (Never Use)
-* ❌ **AI Slop**: *"Delve", "Leverage", "Revolutionize", "Robust", "Seamless", "Supercharge"*.
+* ❌ **AI Slop**: see `references/design/AI_WRITING_TELLS.md` §5 (ban list, cap list, intensifiers) — **that file is the single source of truth** for AI tells. This line is a pointer; do not maintain a second word list here.
 * ❌ **Passive-Aggressive Blame**: *"You failed to fill...", "Invalid input provided by user"*.
 * ❌ **Dead-end Technical Codes**: *"Error code 0x80042109", "NullPointerException at line 42"*.
 

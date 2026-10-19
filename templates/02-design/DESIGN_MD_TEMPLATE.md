@@ -1,8 +1,51 @@
+---
+version: alpha
+name: [Brand / Product Name]
+description: [One sentence: the visual language this file encodes.]
+sources:
+  - [https://official-site.example — homepage / product page]
+  - [https://official-site.example/press — press kit, media kit, or brand page]
+  - [URL of any design case study that explains the identity system]
+notes:
+  - [Observed on YYYY-MM-DD. What was inspected: live DOM/computed CSS, SVG fills, font declarations.]
+  - [Any evidence limitation — blocked page, missing press kit, asset unavailable.]
+---
+
 # Design System Specification & CSS Tokens (DESIGN.md)
 
 > **Purpose**: Definitive design system tokens and visual engineering rules for AI coding agents. Deployed to `docs/harness-root/DESIGN.md` in Module 04 and root `./DESIGN.md` in Module 06.
 > **Standard**: Strict WCAG 2.2 Level AA compliance, calibrated triad semantic tokens, iOS-safe 16px inputs, and unified multi-theme CSS variables.
 > **Domain & Scale**: Adaptable across all software categories (CRM, CMS, HRIS, E-Commerce, Retail POS, Fintech, SaaS, Developer Tools) and scales (Small MVP to Enterprise).
+
+> **Source discipline (gate-enforced)**: `sources:` must list the real pages or files this system was derived from, and §0 must separate **observed evidence** from **inference**. A palette invented from memory is not a design system — it is a guess with hex codes. The agent may not fill `sources:` with a URL it did not actually inspect.
+
+---
+
+## 0. Evidence & Inference Log
+
+*Every token below came from somewhere. Record where, and mark what was inferred. This section is what separates a design system from a plausible-looking guess.*
+
+| # | Token / decision | Source type | Evidence (what was actually observed) | Confidence |
+| :-: | :--- | :--- | :--- | :---: |
+| 1 | `--primary` = `#0F7C80` | Direct | Computed `background-color` of the header CTA on the live homepage, 2026-10-19 | ✅ |
+| 2 | Display typeface = Inter | Direct | `font-family` declaration in the site's CSS bundle | ✅ |
+| 3 | `--radius-lg` = 12px | Direct | `border-radius` on product cards | ✅ |
+| 4 | Section rhythm = 96px | Inference | Not declared in CSS as a token; derived from observed spacing between blocks | 🔶 |
+| 5 | Status colours (success/warning) | Inference | Brand defines no status palette; assigned from the accent hue family | 🔶 |
+
+**Source-type legend**
+- **Direct** — observed CSS, SVG fill, image colour, font name, or layout behaviour.
+- **Official prose** — brand usage rules, typography notes, or press-kit copy published by the brand.
+- **Design rationale** — published explanation of motif, concept, colour naming, or type system.
+- **Inference** — a practical decision the agent made that no source states.
+
+**Confidence legend**: ✅ VERIFIED (observed) · 🔶 INFERENCE (decided, not observed) · ❓ UNKNOWN (unresolved, blocks a decision).
+
+**Rules**
+1. An inferred token must be marked 🔶 and say *why* it was needed. Do not promote an inference to ✅ later without new evidence.
+2. If a page was blocked (CAPTCHA, login, paywall), say so here. **Never bypass an access control** to get a colour.
+3. Where official brand rules restrict use (logo clearspace, forbidden pairings, licensed typefaces), quote the rule and link it.
+4. Third-party brand databases and inspiration galleries are **secondary** support only — never the sole source for a token.
 
 ---
 

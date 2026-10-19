@@ -136,7 +136,43 @@ npm run dev
 
 ---
 
-## 6. Final Local Verification Decision
+## 6. Evidence Manifest (required when the change has a visible surface)
+
+*A claim of "verified" needs artifacts that exist, are not stubs, and belong to **this** run. Guide: `references/technical/EVIDENCE_MANIFEST_GUIDE.md`.*
+
+Declare what this pass must capture — one entry per viewport/state that the change actually affects. A full desktop+mobile feature needs both; a narrow HUD fix needs only the affected desktop state. **Do not drop an entry because its capture failed** — the failure is the finding.
+
+`artifacts/evidence.json`:
+
+```json
+{
+  "version": 1,
+  "runId": "pass-1",
+  "captures": [
+    { "mode": "desktop", "state": "default", "report": "artifacts/pass-1/desktop.json" },
+    { "mode": "mobile",  "state": "default", "report": "artifacts/pass-1/mobile.json" }
+  ],
+  "artifacts": ["artifacts/pass-1/screen.webm"]
+}
+```
+
+```bash
+python3 scripts/verify/check_evidence.py . --manifest artifacts/evidence.json
+```
+
+| Check | Status | Evidence |
+| :--- | :--: | :--- |
+| Manifest declares every affected viewport/state | [ ] | |
+| `runId` is fresh (new run for this change, never relabelled) | [ ] | |
+| `check_evidence.py` passes (strict mode) | [ ] | |
+| **I looked at** each screenshot / recording myself | [ ] | [what I saw — not "looks good"] |
+| **Not verified** (state it plainly) | [ ] | [e.g. "low-end device FPS — no device available"] |
+
+> The last two rows are the honest ones. The checker proves artifacts exist; it cannot prove they show the right thing, that motion feels right, or that the build succeeded. Claiming otherwise is a false-green.
+
+---
+
+## 7. Final Local Verification Decision
 
 - [ ] **LOCAL PASS**: All checklist items above are fulfilled. Code is ready to be pushed to the `staging` branch for integration testing in **Module 07: QA & SIT**.
 - [ ] **FAIL**: Critical bugs or compilation failures found. Resolve before pushing.

@@ -233,6 +233,10 @@
       "cataloged": false
     },
     {
+      "path": "evals/scenarios/15_LOGO_CRAFT_AUDIT.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/README.md",
       "cataloged": true
     },
@@ -301,7 +305,31 @@
       "cataloged": true
     },
     {
+      "path": "patterns/execution/ADDY_OSMANI_CICD_AUTOMATION_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/AKSHAY_KOKANE_AGENT_SKILLS_INJECTION_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/APP_STORE_OPTIMIZATION_ASO_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md",
       "cataloged": true
     },
     {
@@ -309,7 +337,23 @@
       "cataloged": true
     },
     {
+      "path": "patterns/execution/CLAUDE_SEO_GENERATIVE_ENGINE_OPTIMIZATION_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md",
       "cataloged": true
     },
     {
@@ -317,7 +361,51 @@
       "cataloged": true
     },
     {
+      "path": "patterns/execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/MARKETING_SKILLS_GROWTH_ENGINEERING_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/execution/MERN_STACK_ROADMAP_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/METADATA_SERP_OPTIMIZATION_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/WEBAPP_UAT_BROWSER_TESTING_PATTERN.md",
       "cataloged": true
     },
     {
@@ -330,6 +418,14 @@
     },
     {
       "path": "patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/product/BRAND_STRATEGY_AND_IDENTITY_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md",
       "cataloged": true
     },
     {
@@ -421,11 +517,31 @@
       ]
     },
     {
+      "path": "references/design/AI_DEFAULTS_REFERENCE.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/design/AI_WRITING_TELLS.md",
+      "cataloged": false
+    },
+    {
       "path": "references/design/BRAND_VOICE_GUIDE.md",
       "cataloged": false
     },
     {
+      "path": "references/design/CONTENT_QUALITY_SCORECARD.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/design/DESIGN_TO_CODE_FIDELITY_GUIDE.md",
+      "cataloged": false
+    },
+    {
       "path": "references/design/LOGO_DESIGN_CRAFT_GUIDE.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/design/MOTION_PERSONALITY_GUIDE.md",
       "cataloged": false
     },
     {
@@ -685,6 +801,10 @@
       ]
     },
     {
+      "path": "references/technical/EVIDENCE_MANIFEST_GUIDE.md",
+      "cataloged": false
+    },
+    {
       "path": "references/technical/FIGMA_MCP_SETUP.md",
       "cataloged": true,
       "modules": [
@@ -729,6 +849,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/01-discovery-commercial/ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/01-discovery-commercial/B2B_COLD_OUTREACH_PLAYBOOK.md",
       "cataloged": false
     },
@@ -738,11 +862,23 @@
     },
     {
       "path": "templates/01-discovery-commercial/BRAND_MESSAGING_HIERARCHY.md",
-      "cataloged": false
+      "cataloged": true
+    },
+    {
+      "path": "templates/01-discovery-commercial/BRAND_NAMING_WORKSHEET_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/01-discovery-commercial/BRAND_POSITIONING_BRIEF_TEMPLATE.md",
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/BUSINESS_PROCESS_FLOW_TEMPLATE.md",
       "cataloged": false
+    },
+    {
+      "path": "templates/01-discovery-commercial/BUSINESS_RULES_REGISTER_TEMPLATE.md",
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md",
@@ -781,6 +917,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/01-discovery-commercial/PROBLEM_FRAMING_CANVAS_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md",
       "cataloged": false
     },
@@ -791,6 +931,10 @@
     {
       "path": "templates/01-discovery-commercial/REQUIREMENTS_AMBIGUITY_CHECKLIST.md",
       "cataloged": false
+    },
+    {
+      "path": "templates/01-discovery-commercial/REQUIREMENTS_REGISTER_TEMPLATE.md",
+      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/REQUIREMENT_MATRIX_TEMPLATE.md",
@@ -870,6 +1014,10 @@
     },
     {
       "path": "templates/02-design/SITEMAP_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/02-design/STATE_COPY_TEMPLATE.md",
       "cataloged": true
     },
     {
@@ -1297,6 +1445,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/06-qa-uat/ACCESSIBILITY_AUDIT_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/06-qa-uat/BUG_REPORT.md",
       "cataloged": false
     },
@@ -1314,6 +1466,10 @@
     },
     {
       "path": "templates/06-qa-uat/FEEDBACK_MATRIX.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/06-qa-uat/METADATA_AND_SEO_AUDIT_TEMPLATE.md",
       "cataloged": true
     },
     {
@@ -1598,6 +1754,18 @@
     },
     {
       "path": "templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md",
+      "cataloged": false
+    },
+    {
+      "path": "templates/ui/motion-tokens.css",
+      "cataloged": false
+    },
+    {
+      "path": "templates/ui/scroll-scrub-engine.js",
+      "cataloged": false
+    },
+    {
+      "path": "templates/ui/scroll-world-index.html",
       "cataloged": false
     }
   ]

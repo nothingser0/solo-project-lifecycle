@@ -24,7 +24,7 @@ gate_M07() {
         "Third-Party Integration" \
         "Load & Concurrency Test" \
         "Sign-Off"
-    # Anti-vibe-code polish audit (medium+): 32 tells must be checked on the deployed URL.
+    # Anti-vibe-code polish audit (medium+): 33 tells must be checked on the deployed URL.
     if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
         polish_content=$(cat "docs/qa/POLISH_AUDIT.md" 2>/dev/null || true)
         if echo "$polish_content" | grep -qiE "NOT READY"; then
@@ -37,7 +37,7 @@ gate_M07() {
             GATE_FAILED=1
         fi
     else
-        echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 32-tell anti-vibe-code audit on the deployed URL)"
+        echo "  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 33-tell anti-vibe-code audit on the deployed URL)"
         GATE_FAILED=1
     fi
     # Content verification (BLOCKER): workbook must attest a real PASS, not FAILED / NOT EXECUTED.

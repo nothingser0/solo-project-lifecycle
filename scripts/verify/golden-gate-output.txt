@@ -72,6 +72,7 @@
 === M04: UI/UX Prototyping Gate Checklist ===
   ✅ Intake Gate: all 9 mandatory fields answered
   ❌ assets/logo/logo.svg (TOO SMALL: 120B < 200B minimum required)
+  ❌ assets/logo/logo.svg is not parseable SVG — a placeholder or mislabelled file is not a logo asset.
   ✅ Design references: 1 human-supplied reference file(s) present
   ✅ notes.md cites a reference filename that exists in docs/design/inspiration/
   ✅ docs/design/inspiration/notes.md (Benchmark selection verified)
@@ -85,6 +86,9 @@
   ✅ docs/specs/DESIGN_SPEC.md core section headings verified (1 headings present)
   ✅ DESIGN.md accessibility & contrast ratios verified
   ✅ DESIGN.md z-index layering scale verified
+  ❌ DESIGN.md has no real 'sources:' entry — record the pages/files the tokens were derived from (M04 §0).
+     A palette with no provenance is a guess with hex codes, not a design system.
+  ❌ DESIGN.md missing the evidence/inference log — mark each token ✅ observed or 🔶 inferred (M04 §0).
   ✅ DESIGN_SPEC.md 5-state matrix markers verified (5/5 states detected)
   ✅ DESIGN.md Typography & Spacing sections verified
   ✅ DESIGN.md Anti-Slop design defenses verified
@@ -162,7 +166,7 @@
 ============================================================
 === M07: Quality Assurance & SIT Gate Checklist (medium+ only) ===
   ❌ docs/qa/SIT_WORKBOOK.md (MISSING)
-  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 32-tell anti-vibe-code audit on the deployed URL)
+  ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 33-tell anti-vibe-code audit on the deployed URL)
   ⚠️  docs/qa/SECURITY_AUDIT.md (optional, not found)
 
 ============================================================

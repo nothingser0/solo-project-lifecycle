@@ -11,9 +11,11 @@
 | Access Control Patterns (RBAC, ABAC, ReBAC & Postgres RLS) | [`security/ACCESS_CONTROL_PATTERNS.md`](./security/ACCESS_CONTROL_PATTERNS.md) |
 | Edge Security, DDoS & WAF Protection (Cloudflare Pattern) | [`security/EDGE_SECURITY_CLOUDFLARE.md`](./security/EDGE_SECURITY_CLOUDFLARE.md) |
 | Solo Product Discovery & Strategy Playbook (OST, RAT, 7 Powers) | [`product/SOLO_DISCOVERY_PLAYBOOK.md`](./product/SOLO_DISCOVERY_PLAYBOOK.md) |
+| Business Analysis Discovery & Requirements Craft (elicitation mix, ambiguity classes, review passes) | [`product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md`](./product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md) |
+| Brand Strategy, Naming & Identity (positioning, 7 name tests, architecture, audit, rebrand, measurement) | [`product/BRAND_STRATEGY_AND_IDENTITY_PATTERN.md`](./product/BRAND_STRATEGY_AND_IDENTITY_PATTERN.md) |
 | UI Component Taxonomy & Architecture (Modern UI System) | [`ui/UI_COMPONENT_TAXONOMY.md`](./ui/UI_COMPONENT_TAXONOMY.md) |
 | Motion Design & Interactive Animation Taxonomy (60+ Effects) | [`ui/MOTION_DESIGN_TAXONOMY.md`](./ui/MOTION_DESIGN_TAXONOMY.md) |
-| Scroll-Scrubbed Cinematic World Pattern (Apple-Style Fly-Through) | [`ui/SCROLL_SCRUBBED_WORLD_PATTERN.md`](./ui/SCROLL_SCRUBBED_WORLD_PATTERN.md) |
+| Scroll-Scrubbed Cinematic World Pattern (seam law, camera A/B, blob-seek engine, mobile hardening) | [`ui/SCROLL_SCRUBBED_WORLD_PATTERN.md`](./ui/SCROLL_SCRUBBED_WORLD_PATTERN.md) |
 | Responsive Design Priority Pattern (Mobile-First vs. Desktop-First) | [`ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md`](./ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md) |
 | Indonesian Legal Hierarchy & Grounded AI Citation | [`compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md`](./compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md) |
 | Legal Data Modeling & PostgreSQL LTREE Architecture | [`architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md`](./architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md) |
@@ -33,7 +35,6 @@
 | AI Full-Stack Delivery Workflow & Multi-Role Dispatch Pattern | [`execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`](./execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md) |
 | Claude Code Spec-Driven Development & Context Optimization Pattern | [`execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md`](./execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md) |
 | Jeffallan Claude Skills & Specialized Pair Programmer Pattern | [`execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md`](./execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md) |
-| PaperOrchestra Multi-Agent Automated AI Research Paper Writing Pattern | [`execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md`](./execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md) |
 | Altimate AI Data Engineering & dbt/Snowflake Analytics Engineering Pattern | [`execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md`](./execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md) |
 | Vaquar Khan Data Engineering Agent Skills & Production Reliability Pattern | [`execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md`](./execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md) |
 | Riekelt Technical Writer Engineering Writing & Anti-AI-Slop Prose Pattern | [`execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md`](./execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md) |

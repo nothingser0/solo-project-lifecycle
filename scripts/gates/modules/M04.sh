@@ -26,8 +26,63 @@ gate_M04() {
             echo "  ❌ $found_logo (TOO SMALL: ${lsize}B < ${min_logo}B minimum required)"
             GATE_FAILED=1
         fi
+        # 1b. Mechanical SVG audit (BLOCKER on FAIL findings). A logo can be 3 KB
+        # and still be undeliverable: live <text>, an embedded raster, or a
+        # <foreignObject> breaks on a machine without the font and cannot be cut
+        # or embroidered. Byte size proves nothing about craft, so the SVG is
+        # audited against references/design/LOGO_DESIGN_CRAFT_GUIDE.md §6.
+        # Advisory findings (WARN/INFO) are reported, never blocking: a
+        # deliberate near-miss angle is legitimate and the human decides.
+        case "$found_logo" in
+            *.svg)
+                audit_script="${SCRIPT_DIR:-scripts/gates}/../design/svg_audit.py"
+                py=""
+                command -v python3 >/dev/null 2>&1 && py=python3
+                [ -n "$py" ] || { command -v python >/dev/null 2>&1 && py=python; }
+                if [ ! -f "$audit_script" ]; then
+                    echo "  ⚠️  Logo audit skipped: $audit_script not found (framework incomplete)."
+                elif [ -z "$py" ]; then
+                    echo "  ⚠️  Logo audit skipped: no python3/python on PATH."
+                else
+                    audit_out="$("$py" "$audit_script" "$found_logo" 2>&1 || true)"
+                    audit_blocking=0
+                    for finding in live-text raster-image foreign-object; do
+                        if echo "$audit_out" | grep -q "FAIL \[$finding\]"; then
+                            audit_blocking=1
+                        fi
+                    done
+                    if echo "$audit_out" | grep -q "WARN \[no-viewbox\]"; then
+                        audit_blocking=1
+                    fi
+                    # A file named .svg that cannot be parsed as SVG is not a logo.
+                    # Without this, a placeholder file (or a renamed PNG) sailed
+                    # through as "no findings".
+                    if echo "$audit_out" | grep -q "could not parse"; then
+                        echo "  ❌ $found_logo is not parseable SVG — a placeholder or mislabelled file is not a logo asset."
+                        GATE_FAILED=1
+                        audit_parse_failed=1
+                    else
+                        audit_parse_failed=0
+                    fi
+                    if [ "$audit_parse_failed" -eq 1 ]; then
+                        :
+                    elif [ "$audit_blocking" -eq 1 ]; then
+                        echo "  ❌ $found_logo failed the mechanical SVG audit (M04 §6):"
+                        echo "$audit_out" | grep -E "FAIL \[|WARN \[no-viewbox\]" | sed 's/^/       /'
+                        GATE_FAILED=1
+                    elif echo "$audit_out" | grep -qE "FAIL \[|WARN \["; then
+                        score=$(echo "$audit_out" | sed -n 's/.*score: \([0-9]*\)\/100.*/\1/p' | head -1)
+                        echo "  ✅ $found_logo passed the blocking SVG audit (score ${score:-?}/100); advisory findings:"
+                        echo "$audit_out" | grep -E "WARN \[" | sed 's/^/       /'
+                    else
+                        score=$(echo "$audit_out" | sed -n 's/.*score: \([0-9]*\)\/100.*/\1/p' | head -1)
+                        echo "  ✅ $found_logo passed the mechanical SVG audit (score ${score:-?}/100, no findings)"
+                    fi
+                fi
+                ;;
+        esac
     else
-        echo "  ❌ assets/logo/ (MISSING: logo.svg / logo.png required before DESIGN.md can be generated)"
+        echo "  ❌ assets/logo/ (MISSING: logo.svg or logo.png required before DESIGN.md can be generated)"
         GATE_FAILED=1
     fi
 
@@ -73,6 +128,27 @@ gate_M04() {
             echo "  ✅ DESIGN.md z-index layering scale verified"
         else
             echo "  ❌ DESIGN.md missing z-index layering scale definition!"
+            GATE_FAILED=1
+        fi
+        # 3b. Provenance (BLOCKER). A DESIGN.md with no recorded source is an
+        # invented palette: the agent cannot distinguish an observed token from a
+        # plausible guess, and nobody downstream can re-verify it. Requires a
+        # non-placeholder `sources:` entry plus the evidence/inference log.
+        design_sources=$(sed -n '/^sources:/,/^[a-z-]*:/p' "$design_file" 2>/dev/null \
+            | grep -E "^\s*-\s*(https?://|[A-Za-z0-9_./-]+\.(md|css|svg|json))" \
+            | grep -vE "\[|<|your-|example\.(com|org)|\.\.\." || true)
+        if [ -n "$design_sources" ]; then
+            src_count=$(printf '%s\n' "$design_sources" | wc -l | tr -d ' ')
+            echo "  ✅ DESIGN.md records ${src_count} real source(s) for its tokens"
+        else
+            echo "  ❌ DESIGN.md has no real 'sources:' entry — record the pages/files the tokens were derived from (M04 §0)."
+            echo "     A palette with no provenance is a guess with hex codes, not a design system."
+            GATE_FAILED=1
+        fi
+        if grep -qiE "Evidence (and|&) Inference|Evidence & Inference Log|✅.*(observed|VERIFIED).*🔶|🔶" "$design_file"; then
+            echo "  ✅ DESIGN.md separates observed evidence from inference"
+        else
+            echo "  ❌ DESIGN.md missing the evidence/inference log — mark each token ✅ observed or 🔶 inferred (M04 §0)."
             GATE_FAILED=1
         fi
     fi

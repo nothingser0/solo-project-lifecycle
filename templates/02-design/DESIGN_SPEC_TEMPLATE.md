@@ -95,6 +95,8 @@
 
 *Define concrete system behaviors across the 5 canonical states for each recurring interface pattern:*
 
+> **Copy rule**: every state below must carry **real copy**, not a placeholder, and every user-facing string must score **≥ 7 on all four axes** of `references/design/CONTENT_QUALITY_SCORECARD.md` (purposeful / concise / conversational / clear). Write the strings once in `docs/specs/STATE_COPY.md` from `templates/02-design/STATE_COPY_TEMPLATE.md` — empty states split by type (first-use / cleared / no-results), errors by layer (validation / system / blocking). Improvising copy during M06 is how a product ends up saying "An error occurred" in three different ways.
+
 ### 4.1 Pattern: Data Table & List Views (e.g., Records, Directories, Logs)
 1. **Default (Idle)**: Table renders rows with zebra striping, sticky header, status badges, pagination footer.
 2. **Loading Skeleton**: Table header renders with 5 gray pulsing skeleton rows (`h-12 animate-pulse`).
@@ -128,6 +130,7 @@
 *Document interaction wireflows and protective logic rules to prevent domain failures:*
 
 ### 5.1 General Interaction, Motion & Input Defense
+- **Motion Personality (declare before choosing effects)**: [Playful / Premium / Corporate / Energetic] — with the three brand constants: signature easing `[curve]`, duration palette `[quick / standard / slow]`, entrance pattern `[from below / from right / scale-up]`. Selection guidance: `references/design/MOTION_PERSONALITY_GUIDE.md` §2; timing tokens: `references/design/UI_MOTION_GUIDELINES.md` §7. **A project with four easings and nine durations has no motion identity.**
 - **Motion & Interaction Directives**: All screen transitions and interactive feedback MUST reference patterns defined in `patterns/ui/MOTION_DESIGN_TAXONOMY.md` (e.g. Staggered reveal for lists, Spring physics for bottom sheets, Shimmer skeleton loaders, Parallax depth, Reduced-Motion fallbacks, and temporary `will-change: transform` GPU acceleration strictly during active animation to prevent mobile memory leaks).
 - **Reduced-Motion Compliance**: All animations must respect `prefers-reduced-motion: reduce` by replacing dynamic transforms/movement with instant or gentle opacity cross-fades.
 - **Double-Submit Prevention**: All submit buttons automatically debounce and enter a disabled loading state immediately upon initial click until server response completes.

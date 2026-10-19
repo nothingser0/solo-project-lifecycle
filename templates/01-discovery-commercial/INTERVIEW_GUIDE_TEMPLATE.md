@@ -132,6 +132,34 @@
 - **I want to**: Verify stock counts against cash receipts without calling branch staff,
 - **So that**: I can immediately detect discrepancies before staff shifts end.
 
+**Three layers — do not record only the functional one.** The functional job is what the product does; the social and emotional jobs are what makes the buyer choose it. A tool that wins on functional and loses on social does not get used in front of colleagues.
+
+| Layer | Question | Example (same interview) |
+| :--- | :--- | :--- |
+| **Functional** | What task are they trying to complete? | Reconcile stock against cash without calling both branches |
+| **Social** | How do they want to be perceived? | Be seen by staff as an owner who checks, not one who trusts blindly |
+| **Emotional** | What state are they trying to reach or avoid? | Avoid the 21:00 anxiety of not knowing whether the day balanced |
+
+**Pains** — record the *type*, because each implies a different fix:
+
+| Type | Meaning | Example |
+| :--- | :--- | :--- |
+| **Challenge** | An obstacle in the way | No stable internet at rush hour |
+| **Cost** | Too much time, money, or effort | 1.5 hours every evening on spreadsheets |
+| **Mistake** | An error the current setup invites | Staff re-enter data by hand and transcribe wrong |
+| **Unresolved gap** | Something no current option covers | No offline mode in any affordable POS |
+
+**Gains** — same discipline:
+
+| Type | Meaning |
+| :--- | :--- |
+| **Expectation** | What would beat the current solution |
+| **Saving** | Time, money, or effort that would delight |
+| **Adoption factor** | What would make them switch (price, trust, migration effort) |
+| **Life improvement** | How it makes the day easier or more pleasant |
+
+**Anti-pattern check**: "I want AI and dashboards" is a feature wish, not a job. "Millennials want mobile-first" is a demographic trait, not a job. "Be more productive" is too vague — name *which* task and *why*.
+
 #### 2. Key Pain Points & Quantified Impact
 1. **Critical Pain**: Stock shrinkage averages Rp 1.5M/month per branch (total Rp 3M/month loss). [✅ Verified]
 2. **Time Loss**: Spends 1.5 hours every evening manually reconciling Excel spreadsheets. [✅ Verified]

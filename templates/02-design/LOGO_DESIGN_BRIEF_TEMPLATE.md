@@ -20,11 +20,54 @@
 
 ## 3. Brand Vibe & Mark Archetype Selection
 
-- **Target Mark Archetype**: [Select from `references/design/LOGO_DESIGN_CRAFT_GUIDE.md`: Wordmark / Letterform / Combination / Pictorial / Abstract / Emblem / Mascot]
+- **Target Mark Archetype**: [Select from `references/design/LOGO_DESIGN_CRAFT_GUIDE.md` §2: Wordmark / Lettermark-Monogram / Letterform / Combination / Pictorial / Abstract / Emblem / Negative-Space]
+- **Archetype rationale**: [Why this type fits the name length, the product's image-ability, and the media budget — see the decision guide in §2]
+- **Second type explored**: [The alternative you tested before committing; a concept only ever drawn in one type was never tested]
+- **Category clichés named before drawing**: [The 3–4 obvious moves in this sector, written down first]
+- **One concept free of every default**: [Which concept uses nothing from the flagged list — required, or the shortlist is one idea three times]
 - **[Keyword 1]** - [Brief rationale]
 - **[Keyword 2]** - [Brief rationale]
 - **[Keyword 3]** - [Brief rationale]
 - **[Keyword 4]** - [Brief rationale]
+
+---
+
+## 3.0 Defaults Register (`defaults_used`)
+
+Every flagged default that survived into a concept — a font, a palette region, or a mark tag — is recorded here with a **concrete** reason. Base rates and the full tag vocabulary: `references/design/AI_DEFAULTS_REFERENCE.md`; the rule: `references/design/LOGO_DESIGN_CRAFT_GUIDE.md` §7.
+
+| Concept | Default id / tag | Why this brand, specifically |
+| :--- | :--- | :--- |
+| A | [e.g. `inter-text`] | [e.g. "UI-dense product, 4 languages, existing Inter brand asset"] |
+| B | [e.g. `negative-space`] | [e.g. "the mark reads as a ledger rule; competitors use literal icons"] |
+| C | — | *(none — this is the concept that must use no defaults)* |
+
+**Rules**
+- An empty or vague reason ("feels warm", "modern", "premium") is a **blocking** defect, not a pass. Claiming a default is not justifying it.
+- If the honest reason is "it was the first idea", write that. That is the finding, and the concept should change.
+- An agent may never invent a justification on the human's behalf.
+
+---
+
+## 3.1 Word Map (language → symbol)
+
+Good marks come from translating language into form. Fill this before drawing anything; if you cannot fill it, the brief is not ready.
+
+| Core word | Nouns (drawable) | Associations / metaphors | Opposites | Materials / processes |
+| :--- | :--- | :--- | :--- | :--- |
+| **Name**: [word] | | | | |
+| **Offering**: [what they sell] | | | | |
+| **Adjective 1** | | | | |
+| **Adjective 2** | | | | |
+| **Promise**: [the outcome] | | | | |
+
+**Intersections** (where two branches meet — this is where distinctive ideas live):
+1. [e.g. "an H whose crossbar is a calm horizon line"]
+2. [ ]
+3. [ ]
+4. [ ]
+
+> Each intersection becomes a **one-sentence concept** before it becomes a drawing. A sentence that could describe a competitor's logo is not a concept.
 
 ---
 
@@ -43,9 +86,13 @@ User handles logo generation and asset extraction:
    - [ ] **One-Colour Test**: Does it hold its shape as pure monochrome black/white?
    - [ ] **3:1 Contrast Shelf Test**: Verified against both light and dark surfaces.
    - [ ] **Anti-Slop Ban**: Free of generic category clichés (no shields/charts/piggybanks).
+   - [ ] **Optical corrections applied** (§3): overshoot on curves, bone effect fixed on capsules, reversed variant thinned for irradiation, optical centring nudged up
+   - [ ] **Mechanical audit clean**: `python3 scripts/design/svg_audit.py assets/logo/*.svg` — zero FAIL, and every WARN either fixed or explained
+   - [ ] **Real holes, not white paint**: negative-space counters use `fill-rule="evenodd"`, not white shapes on top
 5. Save SVG and PNG exports to `/assets/logo/`:
    - `logo.svg` (Primary lockup)
    - `logo-icon.svg` (Standalone mark)
+   - `logo-icon-small.svg` (Simplified small-size cut, if the main icon fails at 16px)
    - `icon-512.png`
    - `icon-192.png`
    - `favicon.ico`

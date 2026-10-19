@@ -22,7 +22,7 @@ Visual preview and interaction polish are mandatory to eliminate AI slop. Before
 
 ## Artifacts (all required, 1 page or less each)
 
-1. `docs/specs/LOGO_DESIGN_BRIEF.md` — name, vibe, seed colors. **Logo placeholder rule**: initials SVG at `assets/logo/logo.svg` is acceptable (monogram 1–2 letters, brand accent, ≥50B).
+1. `docs/specs/LOGO_DESIGN_BRIEF.md` — name, vibe, seed colors, chosen mark archetype + word map. **Logo placeholder rule**: initials SVG at `assets/logo/logo.svg` is acceptable (monogram 1–2 letters, brand accent, ≥50B) — but it must still pass the mechanical audit: `python3 scripts/design/svg_audit.py assets/logo/logo.svg` with **zero FAIL** (no live `<text>`, no raster, no `<foreignObject>`, has a `viewBox`). Small scale does not waive vector hygiene; see `references/design/LOGO_DESIGN_CRAFT_GUIDE.md` §6.
 2. `docs/specs/SITEMAP.md` — screen inventory + navigation (≥1000B).
 3. `docs/specs/COMPONENT_REQUIREMENTS.md` — lean inventory, primitives + composites only (≥1000B).
 4. `assets/media/` (optional) — dedicated directory for custom illustrations, Lottie animations, Spline/3D models (.splinecode, .glb), or reference media.
