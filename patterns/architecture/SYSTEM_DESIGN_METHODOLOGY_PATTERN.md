@@ -24,6 +24,27 @@ When faced with an ambiguous, open-ended architecture requirement (e.g., "Design
 * Define major data flows (e.g., how a message travels from sender to server to recipient).
 * Verify boundaries against the 4-boundary topological model (`patterns/architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md`).
 
+### Step 2.1: The Component Sweep (before you deep-dive)
+
+The four steps above tell you *how* to reason. This is the checklist that stops you leaving a layer out. Run it against Step 2's sketch and mark each line present, not needed, or a gap — silently skipping one is the usual way a design looks complete and is not.
+
+| # | Component | Question to answer | Commonly forgotten when |
+| :-: | :--- | :--- | :--- |
+| 1 | **Processing & servers** | How many, doing what, stateless or not? | The design assumes one box forever |
+| 2 | **Storage** | Which store, what shape, what grows without bound? | Media is treated like rows |
+| 3 | **Caching** | What is cached, how invalidated, what is the hit ratio assumption? | Invalidation is never specified |
+| 4 | **Concurrency & communication** | Sync or async, what happens when two writes collide? | The happy path has no second user |
+| 5 | **Security** | Authn/authz, transport, at-rest, who may read this? | Added as a later "hardening" phase |
+| 6 | **Load balancing & proxy** | Where does traffic split, and what is sticky? | Sessions are assumed shareable |
+| 7 | **CDN** | Which assets, at which edge, what invalidates? | Treated as automatic |
+| 8 | **Monetization** | If relevant: how does this make or cost money, and does the design permit it? | Only `PROJECT_LITE` asks it, and only as a pricing model |
+
+**Items 1–7 are technical; item 8 is not, and that is why it is missed.** A design that cannot express a billing boundary, a plan limit, or a metered unit will need rework when pricing arrives — and pricing arrives before launch, not after.
+
+**Build the sketch at the smallest honest scale first.** Take the figure to ~100 users before scaling it: at that size the data structures and component boundaries are visible without the noise of sharding and fan-out. Then scale it and note what changes. Solving at ten million users first hides which decisions were actually structural.
+
+---
+
 ### Step 3: Deep Dive into Core Component Bottlenecks
 * Isolate critical scaling hurdles:
   - Database sharding or indexing strategies for heavy writes.
