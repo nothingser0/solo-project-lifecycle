@@ -327,7 +327,7 @@ Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
 ============================================================
 === M00: Product Discovery & Strategy Gate Checklist ===
   [INFO] Detected M00-lite rapid validation path (Solo SaaS)
-  ✅ docs/pm/M00_LITE.md (2157B)
+  ✅ docs/pm/M00_LITE.md (2146B)
   ✅ docs/pm/M00_LITE.md core section headings verified (5 headings present)
   ✅ Gate decision declared: PASS
   ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)
@@ -345,7 +345,7 @@ Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
 ============================================================
 === M00: Product Discovery & Strategy Gate Checklist ===
   [INFO] Detected M00-lite rapid validation path (Solo SaaS)
-  ✅ docs/pm/M00_LITE.md (2159B)
+  ✅ docs/pm/M00_LITE.md (2148B)
   ✅ docs/pm/M00_LITE.md core section headings verified (5 headings present)
   ✅ Gate decision declared: RETEST
   ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)

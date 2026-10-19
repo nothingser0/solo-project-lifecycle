@@ -402,7 +402,8 @@ check_stack_questionnaire() {
     locker=$(grep -iE "Stack[- ]Lock(ed)?[- ]?by" "$target" 2>/dev/null | head -1 \
         | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r')
     if echo "$locker" | grep -qE "^[[:space:]]*[A-Za-z][A-Za-z.'-]*" && \
-       ! echo "$locker" | grep -qiE "^\[.*\]|your name|the human|<.*>|^tbd|^name$"; then
+       ! echo "$locker" | grep -qiE "^\[.*\]|your name|the human|<.*>|^tbd|^name$" && \
+       ! is_role_placeholder "$locker"; then
         echo "  ✅ Stack lock supported by 8 recorded answers + named approver"
     else
         echo "  ❌ $target names no human in 'Stack-Locked-by:' (found: '${locker:-<empty>}')."
@@ -528,7 +529,10 @@ check_tech_signoff() {
     fi
 
     # 2. The approver must be a named human, not a role placeholder.
-    if grep -qiE "^\s*[-*|]?\s*\**\s*(Approved by|Validated by|Approver)[^*:]{0,40}\**:?[[:space:]]*[A-Za-z]" "$doc" 2>/dev/null; then
+    local approver
+    approver=$(grep -iE "^\s*[-*|]?\s*\**\s*(Approved by|Validated by|Approver)[^*:]{0,40}\**:?[[:space:]]*[A-Za-z]" "$doc" 2>/dev/null \
+        | head -1 | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | sed 's/[[:space:]]*(.*$//' | tr -d '\r')
+    if [ -n "$approver" ] && ! is_role_placeholder "$approver"; then
         echo "  ✅ $label technical sign-off records a named approver"
     else
         echo "  ❌ $label missing a named technical approver (e.g. 'Approved by: <name>')."
@@ -591,6 +595,14 @@ check_client_inputs() {
 }
 
 # A2: content check — require core section headings from the matching template.
+# A role placeholder ("Validation Lead", "Founder", "Admin") is not a named human.
+# Sourced by the approver checks below; kept in one place so they cannot drift apart.
+is_role_placeholder() {
+    printf '%s' "$1" \
+        | tr 'A-Z' 'a-z' \
+        | grep -qE '^[[:space:]]*((validation|test|qa|project|tech|technical|engineering|delivery|product)[[:space:]-]+(lead|manager|owner|admin|approver|head)|founder|admin|team|owner|sme|dev|developer|tbd|n/?a|client|user)[[:space:]]*$'
+}
+
 check_sections() {
     local file="$1"
     shift

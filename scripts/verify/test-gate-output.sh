@@ -168,7 +168,7 @@ mk_m00_fixture() {
         printf -- '- **Core Pain**: Physical stock discrepancies vs Excel records\n'
         printf -- '- **Proposed Solution**: Offline-first cashier app\n'
         printf -- '- **Proposed Price Point**: Rp 99000 / month\n'
-        printf -- '- **Validation Lead**: A. Validator\n- **Date**: 2026-10-12\n\n'
+        printf -- '- **Validation Lead**: S. Rahma\n- **Date**: 2026-10-12\n\n'
         printf '## 2. Riskiest Assumption Register (RAT)\n\n'
         printf '| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |\n'
         printf '|:---|:---|:---:|:---|:---|:---|:---:|\n'
@@ -202,7 +202,7 @@ mk_m00_fixture "$W/m00pass" '- **Total Unique Visitors**: 140
 - **Total Waitlist / Email Signups**: 9
 - **Waitlist-Conversion-Pct**: 6.4
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -214,7 +214,7 @@ mk_m00_fixture "$W/m00retest" '- **Total Unique Visitors**: 140
 - **Total Waitlist / Email Signups**: 5
 - **Waitlist-Conversion-Pct**: 3.6
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: RETEST
 '

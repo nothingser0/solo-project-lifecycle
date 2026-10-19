@@ -106,12 +106,12 @@ expect_approval() {
 }
 
 TASKS_SELF='- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0\n- [x] **M06-BE-01: API**\n  - **Evidence**: tests pass\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: build exit 0\n'
-TASKS_APPROVED='- [x] **M06-DB-01: Schema**\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by validation-lead\n- [x] **M06-BE-01: API**\n  - **Evidence**: pass | Approved: 2026-10-12 by validation-lead\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: pass | Approved: 2026-10-12 by validation-lead\n'
-TASKS_PARTIAL='- [x] **M06-DB-01: Schema**\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by validation-lead\n- [x] **M06-BE-01: API**\n  - **Evidence**: tests pass\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: pass | Approved: 2026-10-12 by validation-lead\n'
+TASKS_APPROVED='- [x] **M06-DB-01: Schema**\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by S. Rahma\n- [x] **M06-BE-01: API**\n  - **Evidence**: pass | Approved: 2026-10-12 by S. Rahma\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: pass | Approved: 2026-10-12 by S. Rahma\n'
+TASKS_PARTIAL='- [x] **M06-DB-01: Schema**\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by S. Rahma\n- [x] **M06-BE-01: API**\n  - **Evidence**: tests pass\n- [x] **M06-FE-01: Screens**\n  - **Evidence**: pass | Approved: 2026-10-12 by S. Rahma\n'
 # Same defect with the bold markers omitted. The tick/pending counts are
 # bold-agnostic, so the approval guard's own task-id pattern must be too.
 TASKS_UNBOLD_SELF='- [x] M06-DB-01: Schema\n  - **Evidence**: migrations exit 0\n- [x] M06-BE-01: API\n  - **Evidence**: tests pass\n- [x] M06-FE-01: Screens\n  - **Evidence**: build exit 0\n'
-TASKS_UNBOLD_APPROVED='- [x] M06-DB-01: Schema\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by validation-lead\n- [x] M06-BE-01: API\n  - **Evidence**: pass | Approved: 2026-10-12 by validation-lead\n- [x] M06-FE-01: Screens\n  - **Evidence**: pass | Approved: 2026-10-12 by validation-lead\n'
+TASKS_UNBOLD_APPROVED='- [x] M06-DB-01: Schema\n  - **Evidence**: exit 0 | Approved: 2026-10-12 by S. Rahma\n- [x] M06-BE-01: API\n  - **Evidence**: pass | Approved: 2026-10-12 by S. Rahma\n- [x] M06-FE-01: Screens\n  - **Evidence**: pass | Approved: 2026-10-12 by S. Rahma\n'
 
 expect_approval "3 tasks [x], zero approvals (agent ran the sprint)" BLOCKED "$TASKS_SELF"
 expect_approval "3 tasks [x], all approved by human" ALLOWED "$TASKS_APPROVED"
@@ -217,7 +217,7 @@ expect_human_input() {
 
 # A. Design Freeze (M04)
 FREEZE_BLANK='# DESIGN_SPEC\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n'
-FREEZE_SIGNED='# DESIGN_SPEC\n\n## Design Freeze\n\n- Approved by: Validation Lead (founder)\n- Approved on: 2026-10-12\n'
+FREEZE_SIGNED='# DESIGN_SPEC\n\n## Design Freeze\n\n- Approved by: S. Rahma (founder)\n- Approved on: 2026-10-12\n'
 expect_human_input "M04 freeze left as a blank template" BLOCKED M04 "docs/specs/DESIGN_SPEC.md" "$FREEZE_BLANK"
 expect_human_input "M04 freeze signed by a human" ALLOWED M04 "docs/specs/DESIGN_SPEC.md" "$FREEZE_SIGNED"
 
@@ -262,7 +262,7 @@ expect_inspiration "M04 human screenshot + notes.md citing it" ALLOWED "notes.md
 
 # B. Stack questionnaire (M05) — the marker alone must not pass.
 printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$WORK/pl_noq.md"
-printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\nStack-Locked-by: Validation Lead\n\n- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n- Q8 Compliance Requirements: x\n' > "$WORK/pl_8q.md"
+printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n\n- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n- Q8 Compliance Requirements: x\n' > "$WORK/pl_8q.md"
 
 run_lock() {
     local name="$1" want="$2" src="$3"
@@ -300,7 +300,7 @@ run_rls() {
     {
         printf -- '## 1. Document Metadata\n'
         printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
-        printf -- 'Stack Decision LOCKED: FastAPI\nStack-Locked-by: Validation Lead\n'
+        printf -- 'Stack Decision LOCKED: FastAPI\nStack-Locked-by: S. Rahma\n'
         printf -- '### Framework Versions (Pinned):\n- FastAPI: 0.143.0\n'
         printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
         printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
@@ -315,7 +315,7 @@ run_rls() {
         printf -- '#### POST /api/v1/reports/daily\n'
         printf -- '## 7. Security Blueprint\nAES-256-GCM; Argon2id; OWASP Top 10; rate limiting.\n'
         printf -- '## 8. Module 04 Handoff Strategy\n**Compatibility Level**: Level 2\n'
-        printf -- '**Approved by**: Validation Lead\n**Approved on**: 2026-10-12\n**Approved by Client Single PIC**: Validation Lead (Date: 2026-10-12)\n'
+        printf -- '**Approved by**: S. Rahma\n**Approved on**: 2026-10-12\n**Approved by Client Single PIC**: S. Rahma (Date: 2026-10-12)\n'
         printf '%b' "$fsextra"
     } > "$dir/docs/specs/FSD.md"
     local out
@@ -348,7 +348,7 @@ run_endpoints() {
     {
         printf -- '## 1. Document Metadata\n'
         printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
-        printf -- 'Stack Decision LOCKED: Next.js\nStack-Locked-by: Validation Lead\n'
+        printf -- 'Stack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'
         printf -- '### Framework Versions (Pinned):\n- Next.js: 15.0.3\n'
         printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
         printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
@@ -407,30 +407,43 @@ expect_m05() {
 ANSWERED_Q8='- Q1 Team Expertise: TypeScript\n- Q2 Database Experience: PostgreSQL\n- Q3 Deployment Topology: PaaS\n- Q4 Expected Scale (Year 1): under 100 users\n- Q5 Data Model Characteristics: fixed schema\n- Q6 DevOps Complexity Tolerance: zero-config\n- Q7 Critical Feature Priority: speed\n- Q8 Compliance Requirements: UU PDP light\n'
 SECURITY_OK='AES-256-GCM envelope encryption; Argon2id hashing; OWASP Top 10; rate limiting 60/min.\n'
 HANDOFF_OK='### Module 04 Handoff Strategy\n**Compatibility Level**: Level 3\n**Conversion Plan**: rebuild 6 components.\n'
-SIGNOFF_OK='**Approved by**: Validation Lead\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: Validation Lead (Date: 2026-10-12)\n'
+SIGNOFF_OK='**Approved by**: S. Rahma\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: S. Rahma (Date: 2026-10-12)\n'
 
 build_raw_template() { # the false-green: raw template with only the lock line edited
     sed 's|^Stack Decision LOCKED: \[Next.js / Laravel / Django / Go / SvelteKit / FastAPI\]|Stack Decision LOCKED: Next.js|' \
         "$REPO/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" > "$1/PROJECT_LITE.md"
 }
 build_no_security() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Validation Lead\n'; printf '%b' "$ANSWERED_Q8$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 build_no_handoff() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Validation Lead\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 build_blank_signoff() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Validation Lead\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: _________________________\n**Approved on**: [YYYY-MM-DD]\n'; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: _________________________\n**Approved on**: [YYYY-MM-DD]\n'; } > "$1/PROJECT_LITE.md"
 }
 build_all_ok() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: Validation Lead\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
+# A role word satisfies "a leading letter" but is not a named human. Both approver
+# checks (stack lock and technical sign-off) must reject it, or the rule is vacuous.
+build_role_approver() { # $1 = target dir, $2 = role string
+    local dir="$1" role="$2"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: %s\n' "$role"; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: %s\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: %s (Date: 2026-10-12)\n' "$role" "$role"; } > "$dir/PROJECT_LITE.md"
+}
+build_role_approver_validation() { build_role_approver "$1" "Validation Lead"; }
+build_role_approver_founder() { build_role_approver "$1" "Founder"; }
+build_role_approver_admin() { build_role_approver "$1" "Admin"; }
 
 expect_m05 "M05 raw PROJECT_LITE template, only the lock line edited (placeholder answers)" BLOCKED "records only [0-9]+/8 real questionnaire" build_raw_template
 expect_m05 "M05 lock line but no security blueprint" BLOCKED "security blueprint incomplete" build_no_security
 expect_m05 "M05 lock line but no Module 04 handoff" BLOCKED "missing the 'Module 04 Handoff Strategy'" build_no_handoff
 expect_m05 "M05 blank/placeholder sign-off fields" BLOCKED "blank/placeholder sign-off fields" build_blank_signoff
 expect_m05 "M05 complete Small-path artifact set" ALLOWED "Gate validation FAILED" build_all_ok
+# Role words are not named humans — the check must not be satisfied by a title.
+expect_m05 "M05 approver is the role string 'Validation Lead'" BLOCKED "no human in 'Stack-Locked-by:'" build_role_approver_validation
+expect_m05 "M05 approver is 'Founder'" BLOCKED "no human in 'Stack-Locked-by:'" build_role_approver_founder
+expect_m05 "M05 approver is 'Admin'" BLOCKED "no human in 'Stack-Locked-by:'" build_role_approver_admin
 # C. Client input receipt (M08). Medium scale: M08 is WAIVED for Small, so a Small
 # fixture would pass vacuously and the guard would go untested.
 expect_client_input() {
@@ -515,7 +528,7 @@ expect_m00() {
         printf -- '- **Core Pain**: Physical stock discrepancies vs Excel records\n'
         printf -- '- **Proposed Solution**: Offline-first cashier app\n'
         printf -- '- **Proposed Price Point**: Rp 99000 / month\n'
-        printf -- '- **Validation Lead**: Validation Lead\n- **Date**: 2026-10-12\n\n'
+        printf -- '- **Validation Lead**: S. Rahma\n- **Date**: 2026-10-12\n\n'
         printf '## 2. Riskiest Assumption Register (RAT)\n\n'
         printf '| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |\n'
         printf '|:---|:---|:---:|:---|:---|:---|:---:|\n'
@@ -569,7 +582,7 @@ WL_TEMPLATE='- **Landing Page URL / Platform**: https://kasirkilat.carrd.co
 - **Waitlist-Conversion-Pct**: 6.4
 - **Gate Pass Benchmark**: >= 5.0% waitlist conversion
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -581,7 +594,7 @@ WL_BARE='Total Unique Visitors: 140
 Total Waitlist / Email Signups: 9
 Waitlist-Conversion-Pct: 6.4
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -592,7 +605,7 @@ WL_SMALL='- **Total Unique Visitors**: 1
 - **Total Waitlist / Email Signups**: 1
 - **Waitlist-Conversion-Pct**: 100
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -603,7 +616,7 @@ WL_RETEST='- **Total Unique Visitors**: 140
 - **Total Waitlist / Email Signups**: 5
 - **Waitlist-Conversion-Pct**: 3.6
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: RETEST
 '
@@ -614,7 +627,7 @@ WL_INFLATED='- **Total Unique Visitors**: 140
 - **Total Waitlist / Email Signups**: 5
 - **Waitlist-Conversion-Pct**: 3.6
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -625,7 +638,7 @@ WL_KILL='- **Total Unique Visitors**: 200
 - **Total Waitlist / Email Signups**: 2
 - **Waitlist-Conversion-Pct**: 1.0
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: FAIL
 '
@@ -636,7 +649,7 @@ WL_IMPOSSIBLE='- **Total Unique Visitors**: 120
 - **Total Waitlist / Email Signups**: 200
 - **Waitlist-Conversion-Pct**: 6.0
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -647,7 +660,7 @@ WL_MISMATCH='- **Total Unique Visitors**: 1000
 - **Total Waitlist / Email Signups**: 10
 - **Waitlist-Conversion-Pct**: 6.0
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -659,7 +672,7 @@ WL_INTENT='- **Total Unique Visitors**: 140
 - **Waitlist-Conversion-Pct**: 3.6
 - **Intent-to-Buy-Pct**: 34
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -680,7 +693,7 @@ WL_PLACEHOLDER='- **Total Unique Visitors**: 140
 - **Waitlist-Conversion-Pct**: 7.5
 - **Proposed Price Point**: Rp [X]/mo
 
-Validated-by: Validation Lead on 2026-10-12
+Validated-by: S. Rahma on 2026-10-12
 
 Gate-Decision: PASS
 '
@@ -706,7 +719,7 @@ expect_m00_interviews() {
         if [ "$verified" = "3" ]; then printf '| **INT-04** | Warung | paper | loss | Rp 50k | ✅ Real |\n'; else printf '| **INT-04** | Warung | paper | loss | Rp 50k | ⏳ Pending |\n'; fi
         printf '\n## 5. Behavioral Intent Validation (Waitlist / Smoke Test)\n\n'
         printf -- '- **Total Unique Visitors**: 140\n- **Total Waitlist / Email Signups**: 9\n- **Waitlist-Conversion-Pct**: 6.4\n'
-        printf '\nValidated-by: Validation Lead on 2026-10-12\n\nGate-Decision: PASS\n'
+        printf '\nValidated-by: S. Rahma on 2026-10-12\n\nGate-Decision: PASS\n'
     } > "$dir/docs/pm/M00_LITE.md"
     local out got
     out="$(cd "$dir" && bash "$GATE" M00 2>&1 || true)"
@@ -865,7 +878,7 @@ expect_capacity() {
 
 # 20 P0 with nothing non-delegable -> capacity risk, overridable (Large tier).
 CAP_LARGE='- **Scale**: large\n- Delivery: solo\n- Intake-Success-Metric: 500 orders/day\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 40 hrs/week x 20 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
-CAP_ACCEPTED='- Accepted-By: Validation Lead\n- Accepted-On: 2026-10-12\n- Scope-Version: v1\n'
+CAP_ACCEPTED='- Accepted-By: S. Rahma\n- Accepted-On: 2026-10-12\n- Scope-Version: v1\n'
 CAP_PLACEHOLDER='- Accepted-By: [real human name]\n- Accepted-On: [YYYY-MM-DD]\n'
 # Same size, but a non-delegable statutory obligation.
 CAP_COMPLIANCE='- **Scale**: large\n- Delivery: client\n- Intake-Success-Metric: 500 loans/day\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 40 hrs/week x 20 weeks\n- Intake-Sensitive-Data: yes\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: OJK\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
