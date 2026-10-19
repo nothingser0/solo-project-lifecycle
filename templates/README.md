@@ -32,7 +32,7 @@ templates/
 | Directory | Use when entering | Highlights |
 | :--- | :--- | :--- |
 | `00-pre-sales-enterprise/` | Enterprise pre-engagement | `RFP_RESPONSE_TEMPLATE.md`, `POC_PLAN_TEMPLATE.md`, `CONSULTING_AGREEMENT_TEMPLATE.md`, `WBS_PHASING_TEMPLATE.md` |
-| `01-discovery-commercial/` | M00–M02 | `M00_LITE_TEMPLATE.md`, `IDEA_BRIEF_TEMPLATE.md`, `SCOPE_STATEMENT_TEMPLATE.md`, `SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`, `MARKET_RESEARCH_TEMPLATE.md` |
+| `01-discovery-commercial/` | M00–M02 | `M00_LITE_TEMPLATE.md`, `IDEA_BRIEF_TEMPLATE.md`, `SCOPE_STATEMENT_TEMPLATE.md`, `USE_CASE_SPECIFICATION_TEMPLATE.md`, `SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`, `MARKET_RESEARCH_TEMPLATE.md` |
 | `02-design/` | M04 | `DESIGN_MD_TEMPLATE.md`, `DESIGN_SPEC_TEMPLATE.md`, `SITEMAP_TEMPLATE.md`, `COMPONENT_REQUIREMENTS_TEMPLATE.md`, `LOGO_DESIGN_BRIEF_TEMPLATE.md`; LITE bodies in `essentials/` |
 | `02-legal-commercial/` | M03 (small client) | `SOW_SMB.md`, `NDA_TEMPLATE.md`, `CHANGE_REQUEST_TEMPLATE.md` |
 | `03-architecture-specs/` | M05 | `PROJECT_LITE_TEMPLATE.md`, `PRD_FINAL_TEMPLATE.md`, `FSD_TECHNICAL_TEMPLATE.md`; Large/Enterprise only via `references/playbooks/SCALE_WORKFLOWS.md` M05B: `SYSTEM_DESIGN_DOC_TEMPLATE.md`, `CAPACITY_PLANNING_TEMPLATE.md`, `DISASTER_RECOVERY_PLAN_TEMPLATE.md` |

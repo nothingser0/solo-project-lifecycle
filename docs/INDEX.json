@@ -965,6 +965,10 @@
       "cataloged": false
     },
     {
+      "path": "templates/01-discovery-commercial/USE_CASE_SPECIFICATION_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/01-discovery-commercial/VERIFICATION_PLAN_TEMPLATE.md",
       "cataloged": true
     },
