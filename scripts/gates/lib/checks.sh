@@ -126,6 +126,9 @@ check_scale_feasibility() {
         # path), so run the same declared-vs-evaluated comparison as the rc=0 branch.
         echo "  ⚠️  SOLO CAPACITY OVERRIDE ACCEPTED (capacity-only): proceeding under a recorded risk acceptance."
         echo "     Non-delegable obligations (statutory compliance / legacy-core) are still hard-blocked — none were declared."
+        # The dispatcher turns this into exit 5. A later real failure (GATE_FAILED=1)
+        # still wins, so the override can never paint a broken gate green.
+        GATE_VERDICT="CAPACITY_OVERRIDE"
         local evaluated declared_s declared_n
         evaluated=$(echo "$classify_output" | sed -n 's/^Evaluated Scale[[:space:]]*:[[:space:]]*//p' | head -1 | tr -d ' \r')
         declared_s=$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]' | tr -d ' \r')

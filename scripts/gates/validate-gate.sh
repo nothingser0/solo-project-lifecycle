@@ -25,8 +25,11 @@ GATE_FAILED=0
 # Modules may downgrade a failure to a non-terminal verdict (M00 RETEST band:
 # evidence is real but insufficient to close the gate; M01 PROVISIONAL_PENDING_M00:
 # scoring is real but M00 primary research is missing, so no final GO may be
-# declared). The module sets this; the dispatcher owns the exit code so callers
-# only read one convention: 0 passed - 1 failed - 3 RETEST - 4 PROVISIONAL.
+# declared). check_scale_feasibility sets CAPACITY_OVERRIDE when a capacity-only
+# Large scope was accepted in writing: the artefacts may pass, but the verdict
+# must never read as a clean green. The dispatcher owns the exit code so callers
+# only read one convention: 0 passed - 1 failed - 3 RETEST - 4 PROVISIONAL -
+# 5 CAPACITY_OVERRIDE (gate continues, override is always surfaced).
 GATE_VERDICT=""
 
 if [ -z "$GATE_MODULE" ]; then
@@ -75,13 +78,19 @@ echo "============================================================"
 # RETEST / PROVISIONAL are non-terminal outcomes: the gate is NOT passed and the
 # lifecycle must not chain onward, but the project is not killed either. Distinct
 # exit codes let callers branch without parsing prose (3 = retest with better
-# evidence, 4 = collect the missing human research first).
+# evidence, 4 = collect the missing human research first). CAPACITY_OVERRIDE is
+# also non-terminal: the artefacts passed, but a capacity-only Large scope runs
+# solo under a written risk acceptance, so exit 5 keeps the override visible.
+# A real failure (GATE_FAILED=1) still wins — an override never hides a missing artefact.
 if [ "$GATE_VERDICT" = "RETEST" ] && [ $GATE_FAILED -eq 0 ]; then
     echo "⚠️  Gate validation NOT PASSED - RERUN after one optimisation sprint (exit 3)"
     exit 3
 elif [ "$GATE_VERDICT" = "PROVISIONAL_PENDING_M00" ] && [ $GATE_FAILED -eq 0 ]; then
     echo "⚠️  Gate validation NOT PASSED - PROVISIONAL: complete M00 primary research and re-run (exit 4)"
     exit 4
+elif [ "$GATE_VERDICT" = "CAPACITY_OVERRIDE" ] && [ $GATE_FAILED -eq 0 ]; then
+    echo "⚠️  Gate validation PASSED UNDER CAPACITY OVERRIDE - Large scope runs solo under a signed risk acceptance (exit 5)"
+    exit 5
 elif [ $GATE_FAILED -eq 1 ]; then
     echo "❌ Gate validation FAILED - missing mandatory artifacts"
     exit 1

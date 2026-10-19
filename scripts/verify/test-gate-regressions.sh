@@ -1014,6 +1014,31 @@ expect_capacity "OJK compliance + valid acceptance (non-delegable)" BLOCKED "$CA
 expect_capacity "Legacy-core + valid acceptance (non-delegable)" BLOCKED "$CAP_LEGACY" "$CAP_ACCEPTED"
 expect_capacity "Medium scope stays solo-viable (no override needed)" SOLO_VIABLE "$INTAKE_MEDIUM" "EMPTY"
 
+# The classifier's exit 5 used to die inside check_scale_feasibility: it printed a
+# warning and returned 0, so validate-gate.sh exited 0 — a clean green, which every
+# document forbids. The dispatcher now owns the verdict (GATE_VERDICT=CAPACITY_OVERRIDE
+# -> exit 5). A real artefact failure still wins, so the override cannot hide a
+# missing brief.
+# expect_gate_override <name> <want-exit> <brief|EMPTY>
+expect_gate_override() {
+    local name="$1" want="$2" brief="$3"
+    local dir="$WORK/ov"
+    make_project "$dir" "$CAP_LARGE"
+    printf '%b' "$CAP_ACCEPTED" > "$dir/docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md"
+    [ "$brief" = "EMPTY" ] || printf '%b' "$brief" > "$dir/docs/pm/IDEA_BRIEF.md"
+    local code
+    ( cd "$dir" && bash "$GATE" M01 >/dev/null 2>&1 ); code=$?
+    if [ "$code" -eq "$want" ]; then
+        echo -e "  ${GREEN}\u2713${NC} $name  (validate-gate M01 -> exit $code)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}\u2717${NC} $name  (validate-gate M01 -> exit $code, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_gate_override "Large override + complete brief is exit 5, not a clean green" 5 "$M01_OK"
+expect_gate_override "Large override + missing brief stays a hard fail (exit 1)" 1 "EMPTY"
+
 echo ""
 echo "M06 STEP 0 / STEP 2: the runbook's hard claims must be enforced, not prose."
 echo "Regressions: the FSD lock + handoff section were checked only by deep-dive"

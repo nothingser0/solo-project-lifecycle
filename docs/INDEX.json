@@ -377,6 +377,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md",
       "cataloged": true
     },

@@ -184,8 +184,10 @@
 > dikerjakan solo. Ini risiko *jadwal/kualitas* yang berjalan atas namamu sendiri, jadi keputusan
 > ada di tangan manusia — tapi harus **diterima secara tertulis** di
 > `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md` (nama manusia + tanggal asli).
-> `classify-scale.sh` lalu mengembalikan **exit 5**: gate berlanjut, dan override-nya **selalu
-> ditampilkan** — tidak pernah hijau bersih. Tanpa berkas itu → **exit 2** (diblokir).
+> `classify-scale.sh` mengembalikan **exit 5**, dan `validate-gate.sh` meneruskannya:
+> artefak lolos, tapi verdict gerbangnya juga **exit 5** — tidak pernah hijau bersih.
+> Kegagalan artefak tetap **exit 1** (override tidak menyembunyikan yang bolong).
+> Tanpa berkas itu → **exit 2** (diblokir).
 > Advisor (A00–A04) tetap wajib untuk lapisan tata kelola; kodingnya berjalan solo.
 
 ---
