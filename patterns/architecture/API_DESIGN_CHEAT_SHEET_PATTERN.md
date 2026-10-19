@@ -1,7 +1,7 @@
 # API Design Guidelines & Best Practices Cheat Sheet Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from `RestCheatSheet/api-cheat-sheet` (Collection Metaphor, No Naked IDs, Accept-header Versioning, and ETag Caching). **§C2 is source-derived but extended.** The source says, in one line, *"Use ISO 8601 timepoint formats for dates in representations."* §C2 keeps that rule and adds what the line does not state: UTC storage, the date-versus-instant distinction, and the multi-zone consequence — cross-checked against `patterns/localization/I18N_INDONESIA.md`.  
+> **Source**: Adapted from `RestCheatSheet/api-cheat-sheet` (Collection Metaphor, No Naked IDs, Accept-header Versioning, ETag Caching) and `dwyl/learn-api-design` (URI-versioning cache rationale, sparse fieldsets, `415 Unsupported Media Type`). **§C2 is source-derived but extended.** The source says, in one line, *"Use ISO 8601 timepoint formats for dates in representations."* §C2 keeps that rule and adds what the line does not state: UTC storage, the date-versus-instant distinction, and the multi-zone consequence — cross-checked against `patterns/localization/I18N_INDONESIA.md`.  
 > **Scope**: Advanced RESTful API conventions focusing on consumer-driven design, collection metaphors, hypermedia representation without naked IDs, Content-Type negotiation, and HTTP caching headers.
 
 ---
@@ -29,7 +29,7 @@
 * **Prefer evolution.** Additive changes to a JSON response need no version at all. Exhaust that first — most "we need v2" requests are one new optional field.
 * **When a breaking change is unavoidable**, add a URL path segment (`/api/v2/...`) as the first node, and keep it a **platform** version: do not version individual endpoints separately.
 * **Adding a required field to a request body** is the change most likely to force a version, because existing clients omit it.
-* **The Accept-header alternative** (`Accept: application/vnd.company.v2+json`) is what REST purists recommend, and it is genuinely better for content negotiation across several representations. It is **not** used in this framework, because the gate counts URL headings and every template shows a path version. Do not introduce it in one file and URL versioning in another — that is the inconsistency this note exists to prevent.
+* **The Accept-header alternative** (`Accept: application/vnd.company.v2+json`) is what REST purists recommend, and it is genuinely better for content negotiation across several representations. It is **not** used in this framework, because a header version forces every cache in the path to honour `Vary: Accept`, and because every template here shows a path version. Do not introduce it in one file and URL versioning in another — that is the inconsistency this note exists to prevent.
 
 ### C2. Time Representation: ISO 8601 in UTC, Never Local
 
