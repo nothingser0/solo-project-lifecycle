@@ -1,7 +1,11 @@
 # Enterprise AI Search & Technical SEO Optimization Pattern
 
 > **Module**: M05 (Architecture & Specs), M07 (Quality Assurance & SIT), & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Universal SEO Skill (`AgriciDaniel/claude-seo`).  
+> **Source**: `AgriciDaniel/claude-seo` — `skills/seo-geo` and `skills/seo/references/quality-gates.md`.
+>
+> **Licence**: MIT (upstream `LICENSE`, Copyright (c) 2026 agricidaniel).
+>
+> **Upstream claims are attributed, not adopted.** Dates and product behaviour below (e.g. "rollout completed 2026-08-31") come from that repository's `references/google-ai-optimization-guide.md`, not from a Google property read directly. Verify against Search Central before repeating one to a client.  
 > **Scope**: Generative Engine Optimization (GEO/AEO) as SEO fundamentals applied to AI-search surfaces, parallel sub-agent task orchestration, passage citability scoring, schema validation, agent-readiness claims separated from Google crawl signals (`llms.txt`, WebMCP, IPTC TrainedAlgorithmicMedia), technical SEO auditing, and tiered Google API reporting.
 
 ---
@@ -85,9 +89,24 @@ Generating a page per city, per integration, or per query variation is a legitim
 
 GEO advice is meaningless for a site that is not eligible to appear.
 
-**A page must be indexed and eligible to be shown with a snippet in Google Search**, and the site must be **included in Search generative AI features** via the Search Console "Search generative AI" control (include is the default; options are include / exclude / inherit; rolled out worldwide 2026-08-31).
+**A page must be indexed and eligible to be shown with a snippet in Google Search.** That much is unconditional. The AI-feature setting is the opposite: **include is the default**, so a site that never touched it is already in.
 
-**Audit order**: indexing → snippet eligibility → AI-feature inclusion → then content and citability. Recommending passage structure to a page that is `noindex` is wasted engagement, and it is a common one.
+**The check is therefore "is this site *excluded*?" — not "is it included?"** The Search Console "Search generative AI" control offers include / exclude / inherit (upstream guide reports rollout completed 2026-08-31; verify before citing). A site inheriting the default needs no action, and reporting "action required: enable AI features" to a client who never disabled them is a false finding.
 
-Government or regulated sites sometimes **exclude** themselves from AI features deliberately. Check the setting before reporting AI invisibility as a defect — it may be a policy decision, and telling the client to flip it is advice with legal implications.
+| State | Meaning | Audit response |
+| :--- | :--- | :--- |
+| Include (default) | Nothing to do | Proceed |
+| Inherit | Follows the account/domain default | Verify the inherited value once, then proceed |
+| **Exclude** | Deliberate or inherited exclusion | **GEO findings are unmeasurable, not wrong.** Ask whether this was a client decision before reporting anything below it. |
+
+**Two things this setting does not do**, which clients routinely assume it does:
+
+- It is **not a ranking signal**. Excluding does not lower search ranking.
+- It is **not a training control**. Excluding from generative AI features in Search does not prevent a model from training on the content. Clients often believe it does. Say so plainly — this is the single most common misunderstanding in the conversation.
+
+**Audit order**: indexing → snippet eligibility → check for exclusion → then content and citability. Recommending passage structure to a page that is `noindex` is wasted engagement, and it is a common one.
+
+Government or regulated sites sometimes exclude themselves deliberately. Telling a client to flip the setting is advice with legal implications — ask who made the decision.
+
+**Measurement**: do not assert a report name you have not seen in the client's own Search Console property. Phrase it as *"where available in the client's Search Console, export generative-AI query data and record the extraction date."* A GEO impact claim with no first-party extract and no date is unfounded.
 
