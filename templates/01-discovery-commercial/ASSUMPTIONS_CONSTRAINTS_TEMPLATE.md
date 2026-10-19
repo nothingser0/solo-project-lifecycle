@@ -11,13 +11,30 @@
 
 An assumption is a belief you are treating as true without evidence. If it is false, work is wasted.
 
-| ID | Assumption | Impact if false | Likelihood wrong | Validation approach | Owner | Status |
-| :--- | :--- | :--- | :---: | :--- | :--- | :--- |
-| **ASM-001** | Target users have a smartphone with ≥4 GB RAM | Core UI must be simplified; offline mode unusable | Medium | 5-user device survey during discovery | Human | ❓ OPEN |
-| **ASM-002** | Client can provide master data as clean CSV within week 1 | Migration slips; M08 blocked | High | Request sample file at M03 signing | Client PIC | ❓ OPEN |
-| **ASM-003** | Payment gateway sandbox supports QRIS simulation | SIT cannot verify settlement flow | Low | Verified in sandbox docs 2026-10-19 | Agent | ✅ VALIDATED |
+| ID | Assumption | Type | Impact if false | Likelihood wrong | Validation approach | Owner | Status |
+| :--- | :--- | :--- | :--- | :---: | :--- | :--- | :--- |
+| **ASM-001** | Target users have a smartphone with ≥4 GB RAM | `inferred` | Core UI must be simplified; offline mode unusable | Medium | 5-user device survey during discovery | Human | ❓ OPEN |
+| **ASM-002** | Client can provide master data as clean CSV within week 1 | `stated` | Migration slips; M08 blocked | High | Request sample file at M03 signing | Client PIC | ❓ OPEN |
+| **ASM-003** | Payment gateway sandbox supports QRIS simulation | `inferred` | SIT cannot verify settlement flow | Low | Verified in sandbox docs 2026-10-19 | Agent | ✅ VALIDATED |
+| **ASM-004** | Staff will reconcile stock daily because the owner asked for it | `assumed` | The feature is built and unused | High | Ask two staff how they close the register now | Human | ❓ OPEN |
 
 **Status legend**: ❓ OPEN (unvalidated) · 🔶 TESTING (instrument in flight) · ✅ VALIDATED (evidence recorded) · ❌ DISPROVEN (plan must change).
+
+**Type legend** — *where the belief came from*, a different axis from status:
+
+| Type | Meaning | Example |
+| :--- | :--- | :--- |
+| `stated` | Someone said it, and you can quote them | Client PIC on a call: "we export to Excel every Friday" |
+| `inferred` | Derived from a document, config, or the code | The repo has no offline package, so offline is out of scope |
+| `assumed` | Team belief with no source at all | "Users will enter data daily because that is what good users do" |
+| `uncertain` | Known gap you have not investigated | Nobody knows how the legacy cron is scheduled |
+
+**Why the axis matters**: `❓ OPEN` says *unvalidated*. It does not say whether the thing came from the client's mouth or from the agent's imagination. Those deserve different scrutiny — a `stated` belief is wrong because the client was wrong, an `assumed` one is wrong because nobody asked.
+
+### Provenance rules
+1. **Type is set once and never changes.** If an `assumed` item is later confirmed by the client, it becomes a new row with `stated`, or the status moves to ✅ VALIDATED — the original type stays visible as the audit trail of how the belief entered the project.
+2. **A high-impact `assumed` item starts at ❓ OPEN regardless of who is confident.** Confidence is not a source.
+3. **`inferred` must name its source** — the file, config, or document the inference came from. An inference with no traceable input is an `assumed`.
 
 ### Assumption Rules
 1. **Every ❓ OPEN assumption needs a validation approach and an owner.** An assumption nobody is testing is a guess with paperwork.
