@@ -101,6 +101,35 @@ npm run test:smoke
 
 ---
 
+## 3A. Project Gotchas (append-only — the traps this codebase actually contains)
+
+> The rules above are universal advice. This section is **specific knowledge that cost someone an afternoon.** Every entry earns its place by having actually bitten a person or an agent on this project.
+
+Each line must be **concrete, checkable, and local**. "Be careful with dates" is not a gotcha. "`created_at` is stored in UTC; every display path must call `formatDate()` or the date is off by 7 hours for Jakarta users" is.
+
+| # | Gotcha | Why it bites | What to do instead |
+| :-: | :--- | :--- | :--- |
+| 1 | <specific API, table, or file> | <the non-obvious behaviour> | <the correct usage> |
+| 2 | | | |
+
+**What belongs here**
+
+- A library whose API does not do what its name implies
+- A column or field whose stored unit differs from its display unit
+- A value duplicated in several files that must be updated together (`<grep to find them>`)
+- An operation that silently returns empty rather than failing (RLS, permissions, missing index)
+- A config that works locally and fails on deploy, and why
+
+**What does not belong here**
+
+- Anything already covered by a rule in §3
+- Anything an agent could learn by reading the code in under a minute
+- Vague warnings without a concrete trigger
+
+**Rule**: when a bug takes more than 30 minutes to find, add a row. That is the only maintenance this section needs, and it is the highest-value documentation in the repository because it is the only document written *after* reality proved it necessary.
+
+---
+
 ## 4. Domain Reasoning & Semantic Sanity (Think Before You Type)
 
 > An agent MUST reason about the *meaning* of the domain, not merely satisfy a checklist. Structurally valid code that is semantically nonsensical is a critical failure, not a pass.
