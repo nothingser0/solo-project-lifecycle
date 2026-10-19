@@ -3,7 +3,7 @@
 > **Module**: M05 (Architecture & Specs), M07 (Quality Assurance & SIT), & M13 (Product Operations & Iteration)  
 > **Sources**: `murphye/agent-skills-customer-service` (§1–§2 — MCP order/ticket servers, YAML scenarios, three assertion layers) and `akshaykokane/Building-Customer-Service-Agent-with-Skill.md-and-Agent-Framework` (§3–§5 — policy double-encoding, session identity, tool registration).
 >
-> **Licence**: neither upstream ships a `LICENSE` file. Everything below is written from observing the behaviour of both implementations; no upstream text is reproduced.  
+> **Licence**: `murphye` declares `license: MIT` in `SKILL.md` frontmatter but ships no `LICENSE` file; `akshaykokane` ships neither. Everything below is written from observing the behaviour of both implementations; no upstream text is reproduced.  
 > **Scope**: Portable multi-step agent workflows defined purely in Markdown (`SKILL.md`), Model Context Protocol (MCP) server integration (`orders` and `tickets` APIs), multi-turn conversation test harnesses with YAML scenarios, tool-call pattern assertion, outcome validation, and LLM-as-a-judge quality checks.
 
 ---
@@ -249,7 +249,59 @@ quality_checks:
 
 **The `must_not_include` assertion is the highest-value line in the file.** For a billing dispute, "escalated" and "refunded" are both plausible resolutions and only one is correct. An outcome check alone would pass the wrong one; the negative tool assertion is what pins it.
 
-**Judge output must never block a merge.** A non-deterministic check that gates CI produces flaky blocks and a team that learns to override red. Assert deterministically, judge advisory.
+**Judge output must never block a merge. The upstream harness does exactly that — here is the violation.**
+
+`run_test.py:634` sets `result.passed = False` when a quality check fails, and `:741` exits `1`. So an LLM's opinion gates the build. Worse, `:452-462` fails any check the judge did not evaluate:
+
+```python
+results.append({
+    "check": f"quality: {check}",
+    "passed": False,
+    "detail": "judge did not evaluate this check",
+})
+```
+
+A **judge timeout, a malformed response, or a skipped check is now indistinguishable from a quality failure.** The run reports a red quality gate when the truth is "the judge did not answer". Nobody investigating that has a signal pointing at the judge.
+
+**The rule:** three verdicts, not two.
+
+| Verdict | Meaning | Effect on the run |
+| :--- | :--- | :--- |
+| `passed` | The judge evaluated the check and it passed | Informational |
+| `failed` | The judge evaluated the check and it failed | Reported; blocks only if the team chose to gate on it |
+| **`unparseable`** | The judge did not evaluate this check (timeout, error, malformed output, skipped) | **Never** a failure — report it as a harness gap |
+
+A judge error is a harness defect, not a product defect. Conflating them means a flaky judge teaches the team to ignore quality output entirely — which is worse than not having it.
+
+**Assert deterministically, judge advisory.**
 
 **One scenario per failure mode.** The five scenarios that matter for a support agent: happy path · auto-approved action · escalation because the amount exceeds the limit · escalation because retries ran out · a new issue raised mid-conversation. That last one is the one nobody writes, and it is where the state-reset bug lives.
+
+---
+
+## 9. The Harness Itself Is Part of the Attack Surface
+
+Running an agent test suite means running an agent. The upstream harness passes `--dangerously-skip-permissions` in three places (line 124, the judge at 401, the reset call at 484) and never passes an `--allowedTools` list.
+
+**Skipping permission prompts removes the only enforcement of the skill's own allow-list.** The frontmatter declares `allowed-tools: mcp__orders__* mcp__tickets__* Read`; with prompts skipped, nothing mechanically verifies the agent stays inside it. The allow-list becomes documentation.
+
+| Risk | Consequence | Mitigation |
+| :--- | :--- | :--- |
+| Permissions skipped in CI | The declared allow-list is unenforced; an agent that reaches for a file or a shell succeeds | Assert the boundary in the suite itself — the negative tool assertion is now the *only* enforcement |
+| Judge runs with the same credentials, unsandboxed | A judge prompt influenced by the transcript under test can act with the harness's authority | Judge gets its own model, its own credential, no tools |
+| `--max-turns 1` with no tool allow-list | The judge *can* still use tools; nothing limits it | Pass an empty allow-list explicitly, not implicitly |
+
+**This is why the `must_not_include` assertion is load-bearing and not belt-and-braces.** Remove it and the escalation scenario asserts only that *something* happened.
+
+### Reset state between tests, or the suite is order-dependent
+
+The harness calls `mcp__orders__reset_state` and `mcp__tickets__reset_state` before each scenario. Without that, test N-1's refund satisfies test N's assertion that a refund occurred — the suite passes in one order and fails in another, and the failure looks like flakiness.
+
+**Every suite that mutates shared external state needs a reset step, and the reset must be verified.** A reset call that silently fails (wrong tool name, stale connection) turns the suite into a random pass generator. Assert post-reset state, or reset by construction.
+
+**Order-independence is a property to test**: run the scenarios in reverse. If the result changes, the reset is incomplete.
+
+### The good half worth citing
+
+`_clean_env()` (line 409) scrubs the environment before spawning the judge. That is the right instinct — the judge should not inherit the harness's full environment — and it is the piece most implementations omit entirely. Add an empty tool allow-list and a separate credential to it and the judge call is defensible.
 
