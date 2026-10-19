@@ -1359,6 +1359,7 @@ expect_gate_scaffold() {
             # Pad to 7 counted Must rows (the template ships fewer than the Medium floor).
             awk 'BEGIN{done=0} /^\| \*\*F-/ {n++} {print} /^$/ && !done && n>0 {print "| **F-901** | Fallback feature A | Must |"; print "| **F-902** | Fallback feature B | Must |"; done=1}' \
                 "$scope" > "$scope.tmp" && mv "$scope.tmp" "$scope"
+            mkdir -p "$dir/docs/governance"
             cp "$REPO/templates/03-governance/RACI_MATRIX.md" "$dir/docs/governance/RACI_MATRIX.md"
             cp "$REPO/templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md" "$dir/docs/pm/COMMUNICATION_PLAN.md"
             cp "$REPO/templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md" "$dir/docs/pm/STAKEHOLDER_MAP.md"
