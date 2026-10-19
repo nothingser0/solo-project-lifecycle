@@ -95,7 +95,7 @@ generate low-stock alerts, and provide daily inventory reports.
 ## 4. Budget & Payment Terms
 
 **Total Project Cost**: Rp [Amount] (excluding tax)  
-**Tax (PPN 11%)**: Rp [Amount]  
+**Tax (PPN at the statutory rate)**: Rp [Amount]  
 **Grand Total**: Rp [Amount] (including tax)
 
 **Payment Schedule**:
@@ -374,7 +374,7 @@ Signature: _________________________________
 1. **Timeline**: 2-6 months
 2. **Payment Split**: 30/40/30 (Medium) or 50/50 (Small Fast-Track) - pick one
 3. **Warranty**: 30 days standard, 60-90 days negotiable
-4. **Tax**: PPN 11% (Indonesia) - adjust for your country
+4. **Tax**: PPN (Indonesia) at the statutory rate in force on the invoice date - adjust for your country
 
 ---
 
@@ -495,7 +495,7 @@ Milestones:
 4. BUDGET
 
 Total: Rp 40,000,000 (excluding tax)
-Tax (PPN 11%): Rp 4,400,000
+Tax (PPN at the statutory rate): Rp 4,400,000
 Grand Total: Rp 44,400,000
 
 Payment Schedule:

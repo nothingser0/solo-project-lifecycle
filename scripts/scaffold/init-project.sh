@@ -106,6 +106,18 @@ case "$SCALE" in
         cp "$TEMPLATES/02-legal-commercial/NDA_TEMPLATE.md" "$TARGET_DIR/contracts/NDA.md"
         mkdir -p "$TARGET_DIR/docs/governance"
         cp "$TEMPLATES/03-governance/ADR_TEMPLATE.md" "$TARGET_DIR/docs/governance/ADR.md"
+        # M06 requires the 9-file harness; stage it now so the user EDITS it at M06
+        # instead of authoring six documents from scratch (which is what the previous
+        # "deferred" line asked for, and no template was ever supplied for them).
+        cp "$TEMPLATES/04-dev-execution/AGENTS_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/AGENTS.md"
+        cp "$TEMPLATES/04-dev-execution/CONTEXT_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/CONTEXT.md"
+        cp "$TEMPLATES/04-dev-execution/ARCHITECTURE_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/ARCHITECTURE.md"
+        cp "$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/DESIGN.md"
+        cp "$TEMPLATES/04-dev-execution/CONVENTIONS_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/CONVENTIONS.md"
+        cp "$TEMPLATES/04-dev-execution/TODO_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/TODO.md"
+        cp "$TEMPLATES/04-dev-execution/ENV_EXAMPLE_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/.env.example"
+        cp "$TEMPLATES/04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/RUNBOOK_LOCAL.md"
+        cp "$TEMPLATES/04-dev-execution/VERIFY_LOCAL_TEMPLATE.md" "$TARGET_DIR/docs/harness-root/VERIFY_LOCAL.md"
         # Design specs deferred to M04 entry (avoids ~65KB of empty template bodies at init)
         echo ""
         echo "Deferred to M04 entry (run when you reach Module 04):"
@@ -114,7 +126,8 @@ case "$SCALE" in
         echo "  cp \"$TEMPLATES/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/COMPONENT_REQUIREMENTS.md\""
         echo "  cp \"$TEMPLATES/02-design/DESIGN_SPEC_TEMPLATE.md\" \"$TARGET_DIR/docs/specs/DESIGN_SPEC.md\""
         echo "  cp \"$TEMPLATES/02-design/DESIGN_MD_TEMPLATE.md\" \"$TARGET_DIR/DESIGN.md\""
-        echo "Deferred to M05/M06 (create when reached): PRD_FINAL_TEMPLATE.md, FSD_TECHNICAL_TEMPLATE.md, TODO_TEMPLATE.md"
+        echo "Deferred to M05 (create when reached): PRD_FINAL_TEMPLATE.md, FSD_TECHNICAL_TEMPLATE.md."
+        echo "The 9-file harness is staged in docs/harness-root/ — fill it at M06, then copy to root and delete the staging dir."
         ;;
     large)
         echo "Configuring for Large Scale..."
@@ -170,7 +183,10 @@ case "$SCALE" in
         cp "$TEMPLATES/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md" "$TARGET_DIR/docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
         cp "$TEMPLATES/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md" "$TARGET_DIR/docs/qa/SIT_WORKBOOK.md"
         cp "$TEMPLATES/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md" "$TARGET_DIR/docs/qa/SECURITY_AUDIT.md"
+        mkdir -p "$TARGET_DIR/docs/procurement"
         cp "$TEMPLATES/03-architecture-specs/ENTERPRISE_ARCHITECTURE_BLUEPRINT_TEMPLATE.md" "$TARGET_DIR/docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md"
+        cp "$TEMPLATES/03-governance/VENDOR_PROCUREMENT_SCHEDULE_TEMPLATE.md" "$TARGET_DIR/docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md"
+        cp "$TEMPLATES/03-governance/GOVERNANCE_HANDOVER_PACK_TEMPLATE.md" "$TARGET_DIR/docs/governance/GOVERNANCE_HANDOVER_PACK.md"
         cp "$TEMPLATES/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md" "$TARGET_DIR/docs/security/THREAT_MODEL_STRIDE.md"
         cp "$TEMPLATES/03-governance/RACI_MATRIX.md" "$TARGET_DIR/docs/governance/RACI_MATRIX.md"
         cp "$TEMPLATES/03-governance/ADR_TEMPLATE.md" "$TARGET_DIR/docs/governance/ADR.md"

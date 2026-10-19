@@ -38,7 +38,7 @@ Command Executed: `pnpm audit --audit-level=high`
 | **A04: Insecure Design** | Rate Limiting on login and document endpoints | [x] PASS | Load burst of 10 requests/second returned `429 Too Many Requests` |
 | **A05: Security Misconfiguration** | Debug mode disabled in staging/production; error messages do not leak stack traces | [x] PASS | Server error responses return structured generic messages |
 | **A06: Vulnerable Components** | Dependency audit clean of public CVEs | [x] PASS | Passed `pnpm audit` |
-| **A07: Identification & Auth** | Brute force protection; session stored in `HttpOnly, Secure, SameSite=Strict` cookies | [x] PASS | Session cannot be stolen via JavaScript `document.cookie` |
+| **A07: Identification & Auth** | Brute force protection; session stored in `HttpOnly, Secure` cookies with `SameSite=Lax` (or `Strict` when app and API share one origin) | [x] PASS | Session cannot be stolen via JavaScript `document.cookie`; cookie is actually sent on the app→API call |
 | **A08: Software & Data Integrity** | Document integrity validated using SHA-256 cryptographic hashes | [x] PASS | SHA-256 value stored in database and PDF footer |
 | **A09: Logging & Monitoring** | Audit trail logging for every document creation & signing action | [x] PASS | Logs stored with UTC timestamp, IP address, and User-Agent |
 | **A10: Server-Side Request Forgery** | Webhook endpoints only invoke URLs registered on the official whitelist | [x] PASS | Calls to internal local IP addresses (127.0.0.1) are blocked |

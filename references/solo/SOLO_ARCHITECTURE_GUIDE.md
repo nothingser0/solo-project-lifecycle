@@ -89,7 +89,7 @@ To prevent race conditions when two concurrent processes modify the same record:
 - **SQL Injection**: Always use Parameterized Queries or proven ORMs (Prisma, Drizzle, SQLx, Gorm). Never concatenate raw SQL query strings (`"SELECT * FROM users WHERE email = '" + input + "'"`).
 - **Broken Authentication**:
   - Hash passwords using **Argon2id** or **bcrypt** (minimum cost factor 12). MD5 or plain SHA-256 for password hashing is strictly prohibited.
-  - Store authentication tokens in cookies with flags: `HttpOnly; Secure; SameSite=Strict`.
+  - Store authentication tokens in cookies with `HttpOnly; Secure`, and `SameSite=Lax` by default — `Strict` only when app and API share an origin (see `SOLO_ENGINEERING_STANDARDS.md` §SameSite).
 - **Idempotency Protection**:
   - For financial mutation or document generation endpoints (`POST`), require an `X-Idempotency-Key` (UUIDv4) header to prevent duplicate executions from unstable client networks.
 

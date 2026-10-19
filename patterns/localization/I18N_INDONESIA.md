@@ -63,13 +63,17 @@ export function formatIndonesianDate(
 
 ## 3. Statutory Tax Calculation & Rounding (PPN & PPh)
 
-1. **PPN (Pajak Pertambahan Nilai) 11%**:
-   - Calculated as: DPP × 0.11.
-   - Rounding: Standard mathematical rounding (`Math.round`) to the nearest integer Rupiah.
+1. **PPN (Pajak Pertambahan Nilai) — the statutory rate is 12%, the *effective* rate on ordinary goods is 11%**:
+   - Statutory rate: **12%** (UU HPP, in force since 1 Jan 2025).
+   - For ordinary goods the 12% is applied to a **DPP Nilai Lain** of `11/12 × harga jual`, so the customer pays `0.11 × harga jual` — an effective 11% of the selling price (PMK 131/2024).
+   - For luxury goods (PPnBM objects) the 12% applies to the full price.
+   - **Implement the mechanism, not the number**: store the rate and the DPP factor separately, so a future rate change is one constant. Writing `× 0.11` as "the PPN rate" is a two-year-stale reading that happens to produce the right total for ordinary goods and the wrong one for luxury.
+   - Rounding: standard mathematical rounding to the nearest integer Rupiah.
+   - **This is the single source for the rate in this repository.** Cite this section rather than repeating a percentage elsewhere.
 2. **PPh Final 0.5% (PP 55/2022 jo. PP 20/2026)**:
    - Permanent facility for qualifying Wajib Pajak Orang Pribadi (WP OP), PT Perorangan, and Koperasi with annual turnover ≤ Rp 4.8B (no longer eligible for CV, Firma, PT non-perorangan).
    - Non-taxable turnover threshold of Rp 500.000.000/year applies strictly to individual taxpayers (WP OP).
-   - Invoices must clearly separate DPP (Dasar Pengenaan Pajak), PPN 11%, and Total Tagihan.
+   - Invoices must clearly separate DPP (Dasar Pengenaan Pajak), PPN, and Total Tagihan — and state the rate applied.
 3. **Bea Meterai (UU No. 10/2020)**:
    - Dokumen perdata (termasuk tagihan/invoice dan kwitansi penerimaan uang) dengan nominal **di atas Rp 5.000.000** wajib dibubuhi Meterai Rp 10.000 (Meterai tempel fisik atau e-Meterai resmi Peruri).
    - Tagihan ≤ Rp 5.000.000 tidak dikenakan bea meterai.

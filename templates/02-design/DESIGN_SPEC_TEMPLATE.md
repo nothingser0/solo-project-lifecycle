@@ -11,7 +11,7 @@
 - **Specification Version**: 1.0.0
 - **Design Status**: [DRAFT / IN_REVIEW / FROZEN]
 - **Target Scale**: [Small (MVP) / Medium (SaaS) / Large / Enterprise]
-- **Prototyping Workflow**: [A (Markdown-only) / B (Visual Builder) / C (AI Prototype) / D (Design Tool)]
+- **Prototyping Workflow**: [A (AI prototype code — v0 / Bolt / Lovable) / B (design-tool export — Figma)] — must match the machine line in §11; pure markdown/text prototypes are not accepted
 - **Approval Date**: [YYYY-MM-DD]
 - **Low-Fidelity Wireframes**: [Link to Excalidraw / Whimsical / Paper Sketches in docs/design/wireframes/]
 - **High-Fidelity Prototype**: [Link to Figma / Penpot / Deployed HTML Dummy]

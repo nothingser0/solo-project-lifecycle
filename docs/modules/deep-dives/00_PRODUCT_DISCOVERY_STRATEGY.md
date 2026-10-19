@@ -136,6 +136,6 @@ Low Price
 
 ## 6. Unit Economics & Kill Criteria
 
-- Target price, CAC, LTV = ARPU × lifespan; gateway fees (QRIS 0.7%, VA Rp 2–4k/tx, card 2.9% + Rp 2k); PPN 11% + PPh Final 0.5%; gross margin ≥70%.
+- Target price, CAC, LTV = ARPU × lifespan; gateway fees (QRIS 0.7%, VA Rp 2–4k/tx, card 2.9% + Rp 2k); PPN (see I18N §3) + PPh Final 0.5%; gross margin ≥70%.
 - **Kill criteria**: 1) Market: intent <30% AND waitlist <2% of 200 visitors. 2) Economic: CAC > LTV/3 after initial marketing tests. 3) Solo feasibility: architecture requires real-time multi-master offline sync or custom banking protocols beyond one developer.
 - Waitlist banding: ≥5.0% PASS; 2.0–4.9% one 7-day copy/value-prop sprint then re-test; <2.0% KILL.

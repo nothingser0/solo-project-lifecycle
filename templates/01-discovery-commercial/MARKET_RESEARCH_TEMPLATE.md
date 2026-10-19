@@ -229,7 +229,7 @@ Innovators (2.5%) → Early Adopters (13.5%) → Early Majority (34%) → Late M
 | :--- | :--- | :--- | :--- |
 | **PSE Lingkup Privat** | Komdigi (Permen Kominfo No. 5/2020 jo. 10/2021) | Wajib mendaftar sebelum layanan beroperasi komersial | [ ] Daftar akun OSS RBA<br>[ ] Registrasi PSE Privat Komdigi sebelum Go-Live |
 | **UU PDP No. 27/2022** | Personal Data Protection | Mandatory consent management, encryption at-rest/transit, 72h data breach notification | [ ] Implement consent management UI<br>[ ] Setup AES-256 encryption<br>[ ] Draft incident response plan |
-| **Perpajakan (PPN/PKP)** | UU HPP No. 7/2021 (PPN PMSE 11%) & PP 55/2022 | Aturan PPN 11% untuk SaaS dan PPh Final 0.5% omzet UMKM | [ ] Pasang PPN 11% jika PKP<br>[ ] Atur NPWP & rekening penampung resmi |
+| **Perpajakan (PPN/PKP)** | UU HPP No. 7/2021 (PPN PMSE; rate per I18N §3) & PP 55/2022 | Aturan PPN untuk SaaS dan PPh Final 0.5% omzet UMKM | [ ] Pasang PPN sesuai tarif berlaku jika PKP<br>[ ] Atur NPWP & rekening penampung resmi |
 | **Legalitas & KBLI** | NIB melalui OSS-RBA (KBLI 62019 / 62029 / 63122) | Dasar hukum penerbitan invoice & integrasi payment gateway | [ ] Terbitkan NIB perorangan/badan<br>[ ] Pastikan KBLI sesuai kegiatan SaaS |
 | **Hak Merek DJKI** | UU No. 20/2016 tentang Merek dan Indikasi Geografis | Perlindungan nama software dari gugatan pihak ketiga | [ ] Cek database PDKI (pdki-indonesia.dgip.go.id)<br>[ ] Daftarkan merek kelas 9/42 |
 | **UU ITE No. 19/2016** | Electronic Transactions & Signatures | E-signatures legally binding via certified Electronic Certificate Providers (PSrE) | [ ] Integrate certified PSrE API<br>[ ] Or provide clear non-certified digital signature disclaimer |
@@ -269,7 +269,7 @@ Innovators (2.5%) → Early Adopters (13.5%) → Early Majority (34%) → Late M
 - **Estimated Blended CAC**: Rp [A] (Target: CAC ≤ (1 / 3) × LTV)
 - **Target Customer Lifespan**: [Z] months → **Estimated LTV**: Rp [LTV]
 - **Payment Gateway Fee**: QRIS (0.7%), Virtual Account (Rp 2.000–4.000/tx), Kartu Kredit (2.9% + Rp 2.000)
-- **Statutory Tax**: PPN 11% (UU HPP)
+- **Statutory Tax**: PPN per `patterns/localization/I18N_INDONESIA.md` §3 (UU HPP)
 - **Gross Margin**: Target ≥ 70% (after server hosting + payment fee)
 
 ### 5.2 Kill Criteria

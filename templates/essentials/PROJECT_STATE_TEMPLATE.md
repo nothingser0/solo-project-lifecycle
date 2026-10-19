@@ -67,13 +67,13 @@
 | **M04** | UI/UX & Information Architecture | `docs/specs/SITEMAP.md`, `DESIGN.md` | SITEMAP multi-role coverage, contrast ≥ 4.5:1 | [Status] | [YYYY-MM-DD] |
 | **M05** | Architecture Specs & PRD/FSD | `docs/specs/PRD.md`, `docs/specs/FSD.md` (Small: `PROJECT_LITE.md` §5); Medium+ also `docs/governance/ADR.md` | `Stack Decision LOCKED:` + 8 answers, DDL present, ≥10 endpoint headings, idempotency_keys iff sensitive data, RLS iff multi-branch | [Status] | [YYYY-MM-DD] |
 | **M06** | Development Execution | Root harness files deployed, `TODO.md` | 100% TODO completed, unit tests pass | [Status] | [YYYY-MM-DD] |
-| **M07** | Quality Assurance (SIT/Security) | `docs/qa/SIT_REPORT.md` | P0/P1 bugs = 0, security audit clean | [Status] | [YYYY-MM-DD] |
-| **M08** | Data Migration & Seeding | `docs/data/RECONCILIATION_REPORT.md` | Row counts match, data hash verified | [Status] | [YYYY-MM-DD] |
+| **M07** | Quality Assurance (SIT/Security) | `docs/qa/SIT_WORKBOOK.md` | P0/P1 bugs = 0, security audit clean | [Status] | [YYYY-MM-DD] |
+| **M08** | Data Migration & Seeding | `docs/pm/MIGRATION_RECONCILIATION_REPORT.md` | Row counts match, data hash verified | [Status] | [YYYY-MM-DD] |
 | **M09** | Client UAT & Validation | `docs/qa/UAT_SIGNOFF.md` | Validation Gate: Client UAT signed | [Status] | [YYYY-MM-DD] |
-| **M10** | Production Deployment | `docs/ops/DEPLOYMENT_REPORT.md` | Live DNS/SSL active, healthcheck 200 | [Status] | [YYYY-MM-DD] |
+| **M10** | Production Deployment | `docs/DEPLOYMENT_PROTOCOL.md` + `docs/pm/GO_LIVE_REPORT.md` | Live DNS/SSL active, healthcheck 200 | [Status] | [YYYY-MM-DD] |
 | **M11** | Handover & BAST | `docs/pm/BAST.md` (or `contracts/`) | Handover Gate: 100% payment, BAST signed (WAIVED for Solo SaaS) | [Status] | [YYYY-MM-DD] |
-| **M12** | Warranty & Maintenance Ops | `docs/ops/WARRANTY_POLICY.md` | SLA terms active, runbook verified | [Status] | [YYYY-MM-DD] |
-| **M13** | Product Growth & Iteration | `docs/pm/METRICS_REPORT.md` | North Star Metric telemetry instrumented | [Status] | [YYYY-MM-DD] |
+| **M12** | Warranty & Maintenance Ops | `docs/pm/WARRANTY_POLICY.md` (Small: `docs/pm/RUNBOOK_OPS.md`) | SLA terms active, runbook verified | [Status] | [YYYY-MM-DD] |
+| **M13** | Product Growth & Iteration | `docs/analytics/METRICS_BASELINE_REPORT.md` | North Star Metric telemetry instrumented | [Status] | [YYYY-MM-DD] |
 
 ---
 
@@ -114,7 +114,7 @@
 
 ## 6. Immediate Next Action for Resuming Session
 
-1. **Current Step**: [e.g., Run `./scripts/validate-gate.sh M02`]
+1. **Current Step**: [e.g., Run `./scripts/gates/validate-gate.sh M02`]
 2. **Target Deliverable**: [e.g., Draft `docs/specs/SITEMAP.md` using `templates/02-design/SITEMAP_TEMPLATE.md`]
 3. **Turn-Stopping Confirmation Prompt**:
    > *"Module [XX] completed. Review artifacts in `docs/pm/` and approve proceeding to Module [YY]."*

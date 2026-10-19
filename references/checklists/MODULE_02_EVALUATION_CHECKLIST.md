@@ -270,7 +270,7 @@ Acceptance Criteria:
 **CRITICAL Formula Check:**
 - [ ] **Subtotal:** `Σ(item.price × item.quantity)`
 - [ ] **Discount:** Applied BEFORE or AFTER tax? (standard: before tax)
-- [ ] **Tax (VAT/PPN 11%):** `(Subtotal - Discount) × 11%`
+- [ ] **Tax (VAT/PPN):** computed from the single source in `patterns/localization/I18N_INDONESIA.md` §3 (12% statutory on DPP Nilai Lain 11/12 → effective 11% for ordinary goods) — do not hardcode a percentage
 - [ ] **Shipping:** Flat rate, weight-based, or free threshold? (explicitly defined)
 - [ ] **Total:** `Subtotal - Discount + Tax + Shipping`
 

@@ -27,7 +27,7 @@ Applying these 9 patterns splits any monolithic feature into discrete, testable 
 * **When to use**: The feature contains multiple domain rules or boundary constraints.
 * **How to split**: Build the default/common rule first, then layer specialized constraints as separate tasks.
 * **Example**:
-  * *Slice 1*: Standard domestic tax calculation (PPN 12%).
+  * *Slice 1*: Standard domestic tax calculation (PPN — see `patterns/localization/I18N_INDONESIA.md` §3).
   * *Slice 2*: Exempt non-taxable income brackets (PTKP).
   * *Slice 3*: Foreign income tax treaty rules.
 

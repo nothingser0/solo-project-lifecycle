@@ -1165,6 +1165,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/03-governance/GOVERNANCE_HANDOVER_PACK_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/03-governance/INCIDENT_RESPONSE_PLAN.md",
       "cataloged": true
     },
@@ -1190,6 +1194,10 @@
     },
     {
       "path": "templates/03-governance/VENDOR_COMPARISON_MATRIX.md",
+      "cataloged": false
+    },
+    {
+      "path": "templates/03-governance/VENDOR_PROCUREMENT_SCHEDULE_TEMPLATE.md",
       "cataloged": false
     },
     {

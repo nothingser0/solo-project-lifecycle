@@ -24,9 +24,9 @@
 
 These three decide the tier when the answer is not "none". They are **not optional placeholders**: an absent field is not the same as "none", and while it is absent the classifier cannot see the risk, so a payment webhook or a multi-tenant hierarchy silently stays "Small".
 
-6. **External Integrations** — which third-party services/webhooks the MVP calls (`none`, or a comma-separated list: Midtrans, Xendit, WhatsApp, SendGrid, …). **Any one integration raises the tier to Medium; 4+ raise it to Large.**
-7. **Branch / Tenant Hierarchy** — `no | yes` (multi-branch, multi-tenant, or franchise hierarchy). `yes` → Large.
-8. **Statutory Compliance** — `none`, or the regulation that applies (OJK, BI, UU PDP, ISO 27001, medical devices). Anything other than `none` → Enterprise, which is **advisory only (A00–A04), never solo coding**.
+7. **External Integrations** — which third-party services/webhooks the MVP calls (`none`, or a comma-separated list: Midtrans, Xendit, WhatsApp, SendGrid, …). **Any one integration raises the tier to Medium; 4+ raise it to Large.**
+8. **Branch / Tenant Hierarchy** — `no | yes` (multi-branch, multi-tenant, or franchise hierarchy). `yes` → Large.
+9. **Statutory Compliance** — `none`, or the regulation that applies (OJK, BI, UU PDP, ISO 27001, medical devices). Anything other than `none` → Enterprise, which is **advisory only (A00–A04), never solo coding**.
 
 Answer `none` / `no` explicitly when there is nothing to declare. Leaving the line out fails the Intake Gate.
 

@@ -54,7 +54,7 @@
 ### 3.3 Commercial & Financial Adjustment
 - **Hourly / Daily Consulting Rate**: Rp [Amount] / day (or Rp [Amount] / hour)
 - **Calculated Change Fee**: Dev Hours × Rate = Rp  [Amount]
-- **Tax (PPN 11%)**: Rp [Amount]
+- **Tax (PPN at the statutory rate)**: Rp [Amount]
 - **Total Additional Invoice Value**: **Rp [Amount]** (including tax)
 - **Payment Term**: [100% upfront before development starts / Added to next milestone invoice]
 

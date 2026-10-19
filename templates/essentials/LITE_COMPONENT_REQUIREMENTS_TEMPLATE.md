@@ -20,6 +20,19 @@
 | FormCard | inputs + submit + inline errors | SCR-00X |
 | Toast | status badge + message + dismiss | global |
 
+## Accessibility (WCAG 2.2 AA)
+
+| Rule | Requirement |
+| :--- | :--- |
+| Text contrast | ≥ 4.5:1 body, ≥ 3:1 large text and UI borders |
+| Touch targets | ≥ 44px on mobile, ≥ 36px on desktop |
+| Focus | Every interactive element has a visible `:focus-visible` ring — never `outline: none` without a replacement |
+| Inputs | ≥ 16px font size on mobile (below that, iOS zooms on focus) |
+| Labels | Every input has a `<label>`; placeholder text is never the only label |
+| Semantics | Real `<button>`/`<a>` elements — a clickable `<div>` is not a control |
+| Motion | Respect `prefers-reduced-motion` |
+| Images | Meaningful images have `alt`; decorative ones use `alt=""` |
+
 ## Rules (enforced)
 
 - States per interactive component: default, hover, focus, disabled, loading.

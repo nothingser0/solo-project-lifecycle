@@ -75,7 +75,7 @@ fails on any mismatch with the §5 arithmetic). Research not yet run → `PENDIN
 - **Initial Distribution & "First 100 Users" Channel**: Explicitly validate at least 1 repeatable, low-cost organic/direct distribution channel accessible to a solo developer (niche community, direct outreach, programmatic SEO, partnership). Products without a clear customer acquisition channel fail strategy validation.
 - **Riskiest Assumption Test (RAT)**: Explicitly classify assumptions across Desirability, Feasibility, Viability, and Usability. Isolate the single lethal hypothesis that could invalidate the product and define a zero-to-low-code experiment (fake door, concierge, or manual workflow) before committing to full MVP builds.
 - **Moat & Defensibility (7 Powers)**: Identify at least one durable moat (Switching Costs, Network Effects, Counter-Positioning, Scale Economies, Process Power, Branding, or Cornered Resource) to protect against fast copycats.
-- Unit economics: target price, CAC, LTV, gateway fees, PPN 11% + PPh 0.5%, gross margin ≥70%.
+- Unit economics: target price, CAC, LTV, gateway fees, PPN (see I18N §3) + PPh 0.5%, gross margin ≥70%.
 - **Kill criteria**: market kill (all signals in §1b's KILL column), economic kill (CAC > LTV/3), solo-feasibility kill (architecture beyond 1 dev).
 
 ---

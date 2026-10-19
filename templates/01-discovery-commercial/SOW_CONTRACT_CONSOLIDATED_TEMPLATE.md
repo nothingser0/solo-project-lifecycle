@@ -104,7 +104,7 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 ### 3. Compensation Value & Payment Milestone Schedule
 
 1. **Total Contract Value**: Rp [Amount] (*[Amount in words]*), exclusive of Value Added Tax (VAT/PPN) and third-party infrastructure subscription fees (servers, cloud storage, paid APIs).
-   - **Tax Regulatory Clause**: Applicable taxes (PPN 11% under UU HPP No. 7/2021, and PPh 23 if corporate client) follow statutory tax regulations in force upon invoice issuance.
+   - **Tax Regulatory Clause**: Applicable taxes (PPN under UU HPP No. 7/2021 at the rate in force on the invoice date, and PPh 23 if corporate client) follow statutory tax regulations in force upon invoice issuance.
 2. **Payment Milestones (Must sum to exactly 100%)**:
    
    *Standard 3-Phase Schedule (Recommended for Medium Scale 30/40/30)*:

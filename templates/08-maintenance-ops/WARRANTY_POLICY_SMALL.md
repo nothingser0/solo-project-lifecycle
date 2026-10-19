@@ -14,7 +14,7 @@
 
 ---
 
-## 2. What's Covered (FREE)
+## 2. Warranty Coverage (FREE)
 
 ### 2.1 Software Bugs
 Defects in functionality that was delivered and working at handover:
@@ -31,7 +31,7 @@ Defects in functionality that was delivered and working at handover:
 
 ---
 
-## 3. What's NOT Covered (Out of Scope)
+## 3. Exclusions (Out of Scope)
 
 ### 3.1 New Features or Changes
 Any modification to scope/features:
@@ -108,7 +108,7 @@ Post-handover support:
 
 ---
 
-## 4. Response Time (SLA)
+## 4. Service Level Agreement (SLA)
 
 | Severity | Description | Response Time | Fix Time |
 |:---------|:------------|:--------------|:---------|

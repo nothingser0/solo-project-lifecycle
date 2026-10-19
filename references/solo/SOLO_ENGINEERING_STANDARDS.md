@@ -62,7 +62,7 @@ Mandatory format: `<type>(<scope>): <subject>`
   ```
 - Session tokens stored in cookies must set mandatory attributes:
   ```http
-  Set-Cookie: session_token=...; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=604800
+  Set-Cookie: session_token=...; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800
   ```
 
 ### 2.3 Automated Dependency Security Audits
@@ -214,3 +214,20 @@ export async function processDocument(user: User, docId: string) {
 
 ### 7.2 Multi-Table Transaction Integrity
 Data mutation operations involving more than one table must be wrapped in atomic transactions (`db.$transaction`). If any subsequent step fails, all preceding steps are automatically rolled back, ensuring data is never left in a partially corrupted state.
+
+### SameSite=None, Lax, Strict
+
+**`SameSite=Lax` is the default for a session cookie.** It is sent on top-level navigations and same-site requests, and blocked on cross-site subresource requests.
+
+**`SameSite=Strict` only when the API and the app share an origin** (same scheme, host, and port). Strict provides no additional protection inside one origin, and it breaks traffic that crosses subdomains: `app.example.com` calling `api.example.com` is cross-site for cookie purposes, so a `Strict` cookie is **not sent**, and the user is treated as logged out on every XHR.
+
+| Setup | Cookie | Why |
+| :--- | :--- | :--- |
+| App and API on one origin | `Strict` | No cross-site request exists to break |
+| App and API on sibling subdomains (`app.` → `api.`) | **`Lax`** | `Strict` silently drops the cookie |
+| Third-party embed / cross-site widget | `None; Secure` | `Lax` would block it; `None` requires `Secure` |
+
+**Never `SameSite=None` without `Secure`** — browsers reject the cookie entirely.
+
+**The failure mode is silent.** A `Strict` cookie on a cross-subdomain API produces no error, no console warning, and no failed request — the user is simply anonymous. Test with the API on a different host before choosing `Strict`.
+
