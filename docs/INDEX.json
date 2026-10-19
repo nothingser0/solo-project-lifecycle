@@ -457,6 +457,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/security/THREAT_MODELING_STRIDE_PATTERN.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/ui/MOTION_DESIGN_TAXONOMY.md",
       "cataloged": true
     },
@@ -1107,6 +1111,10 @@
     {
       "path": "templates/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md",
+      "cataloged": false
     },
     {
       "path": "templates/03-governance/ADR_TEMPLATE.md",

@@ -167,6 +167,8 @@ Options:
 - ISO27001: Need audit logs (database triggers, Sentry logging)
 - None: Simpler stack choices, faster iteration
 
+**Threat model**: any answer other than *None* means the system has a trust boundary somebody will attack. At **Client** scale and above, produce `docs/security/THREAT_MODEL_STRIDE.md` from `templates/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md` before the architecture is signed off; the method is `patterns/security/THREAT_MODELING_STRIDE_PATTERN.md`. At **Small** scale, skip the document and keep the one-table version described in that pattern.
+
 ---
 
 ## Registry Version Check: Rationale & Output (Extended)
