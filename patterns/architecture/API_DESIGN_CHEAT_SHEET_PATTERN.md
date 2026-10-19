@@ -1,7 +1,7 @@
 # API Design Guidelines & Best Practices Cheat Sheet Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from `RestCheatSheet/api-cheat-sheet` (Collection Metaphor, No Naked IDs, Accept-header Versioning, and ETag Caching).  
+> **Source**: Adapted from `RestCheatSheet/api-cheat-sheet` (Collection Metaphor, No Naked IDs, Accept-header Versioning, and ETag Caching). **§C2 (ISO 8601 time representation) is not from that source** — the source states only *"Use ISO 8601 timepoint formats for dates"* in one line; the UTC-storage rule, the date-versus-instant distinction and the multi-zone consequence are this framework's own, cross-checked against `patterns/localization/I18N_INDONESIA.md`.  
 > **Scope**: Advanced RESTful API conventions focusing on consumer-driven design, collection metaphors, hypermedia representation without naked IDs, Content-Type negotiation, and HTTP caching headers.
 
 ---
@@ -35,12 +35,12 @@ Every timestamp in a request or response body is **ISO 8601 with an explicit off
 | Rule | Why |
 | :--- | :--- |
 | Timestamps carry `Z` or an explicit offset | Without it, `2026-10-19T14:23` is ambiguous — two clients in different zones read it differently |
-| Store in UTC; convert only at display | Storing local time means every consumer must guess the original zone, and DST makes the guess wrong twice a year |
+| Store in UTC; convert only at display | Storing local time means every consumer must guess the original zone. Indonesia does not observe DST, so the failure there is a fixed 7–9 h offset plus disagreement between regions; for clients in DST countries the same mistake shifts twice a year. |
 | Dates are `YYYY-MM-DD`, no time | A due date is not an instant. Adding `T00:00:00` to it creates an off-by-one-day bug for anyone west of UTC |
 | Never a locale format in a payload | `19/10/2026` is unparseable without knowing the locale; the same string means two different days |
 | Never an epoch number in a JSON API | It is readable only by machines, and the unit (s/m/ms) is a guess |
 
-**This matters more here than in a US/EU project**: Indonesia is UTC+7, so a naive local-time field is off by seven hours for any consumer comparing it against a server log — and the error is silent, because the value is still a valid timestamp.
+**This matters more here than in a US/EU project.** Indonesia spans **three zones** — WIB UTC+7, WITA UTC+8, WIT UTC+9 (`patterns/localization/I18N_INDONESIA.md`). A naive local-time field is therefore off by 7–9 hours against UTC, and by up to 2 hours **between Indonesian regions** — a Jakarta dashboard and a Jayapura dashboard would disagree about which day an event happened. The error is silent, because the value is still a valid timestamp.
 
 ### D. Mandatory HTTP Caching Headers
 Every GET response should emit caching metadata to optimize bandwidth and client latency:
