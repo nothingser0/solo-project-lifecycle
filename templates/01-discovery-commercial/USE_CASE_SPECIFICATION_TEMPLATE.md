@@ -1,7 +1,7 @@
 # Use Case Specification Template
 
-> **Module**: M02 (Discovery & Scope) — produces `docs/specs/UC-<MODULE>-<NN>_<name>.md`
-> **Source**: Adapted from `phucnt-bazone-vietnam/use-case-writer` (MIT) — the 13-field structure, the scoping rules (Cockburn), and the 20-point checklist. Rewritten for this framework.
+> **Module**: M02 (Discovery & Scope) — produces `docs/pm/use-cases/UC-<MODULE>-<NN>_<name>.md`
+> **Source**: Adapted from `phucnt-bazone-vietnam/use-case-writer` (MIT) — the 14-field structure, the scoping rules (Cockburn), and the 20-point checklist. Rewritten for this framework.
 > **Craft rules**: `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` (actor↔system dialogue, postcondition-as-state, the 10 anti-patterns)
 > **When NOT to use**: a one-line need belongs in `REQUIREMENTS_REGISTER_TEMPLATE.md`; a whole business process spanning several systems belongs in `BUSINESS_PROCESS_FLOW_TEMPLATE.md`.
 
@@ -134,5 +134,5 @@ Report as `Item | Status | Note` with ✅ / ❌ / ⚠️. **A UC with any ❌ is
 
 - **Sequential drafting is the default for review-heavy work**: write the fields in five groups (identification+actor+description → conditions+priority+frequency → normal course → alternatives+exceptions → includes+special+assumptions+notes) and pause for confirmation between groups. One confirmation per group catches scope errors before they propagate into eight fields.
 - **If the user asks for the whole UC at once, give it** — but say once that sequential mode catches more issues, then drop it.
-- **File naming**: `docs/specs/UC-<MODULE>-<NN>_<kebab-name>.md`.
+- **File naming**: `docs/pm/use-cases/UC-<MODULE>-<NN>_<kebab-name>.md`.
 - **Traceability**: link the UC ID from `REQUIREMENTS_REGISTER_TEMPLATE.md` so a requirement and its UC cannot drift apart.

@@ -1,6 +1,7 @@
 # Module 02: Discovery & Scope Definition
 
-> **Template to copy**: `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md` · use cases: `templates/01-discovery-commercial/USE_CASE_SPECIFICATION_TEMPLATE.md` (scope first: coffee-break test + goal level, then the 13 fields, then the 20-point check) · client/Medium+: `templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md` (→ `docs/pm/STAKEHOLDER_MAP.md`)
+> **Template to copy**: `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md` · use cases: `templates/01-discovery-commercial/USE_CASE_SPECIFICATION_TEMPLATE.md` (scope first: coffee-break test + goal level, then the 14 fields, then the 20-point check) · client/Medium+: `templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md` (→ `docs/pm/STAKEHOLDER_MAP.md`)
+> **Meeting records**: `templates/01-discovery-commercial/MEETING_NOTES_TEMPLATE.md` (→ `docs/pm/meetings/YYYY-MM-DD_<topic>.md`) — decisions, action items and open questions separated, never fabricated
 > **Companion registers** (copy when needed): `BUSINESS_RULES_REGISTER_TEMPLATE.md` · `ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md` · `REQUIREMENTS_REGISTER_TEMPLATE.md` (→ `docs/pm/`, same base name)
 > 📖 **Optional ref**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md` · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` (elicitation mix, ambiguity classes, review passes) (do NOT preload)
 
@@ -78,7 +79,8 @@ All in **`docs/pm/`**:
 1. **`docs/pm/SCOPE_STATEMENT.md`** (mandatory): objectives, MoSCoW, stories, RBAC, In/Out-of-Scope, dependencies, SLA. Stub-checked only (<40B fails) — quality is judged by the §Gate Exit Protocol checklist, not byte count.
 2. **`STAKEHOLDER_MAP.md`**, **`COMMUNICATION_PLAN.md`**, **`RACI_MATRIX.md`** — client/internal; 1-page for solo.
 3. Conditional: `RISK_REGISTER.md`, `REQUIREMENT_MATRIX.md`, `BACKLOG.md`, `OKR.md`.
-4. **Type-separated registers** (copy only when needed; rules in `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §4): `BUSINESS_RULES_REGISTER.md` (each rule cites a source and an enforcement point — a rule enforced by nothing is an **orphan rule**) · `ASSUMPTIONS_CONSTRAINTS.md` (each assumption owned + testable; each constraint hard/soft with a design impact) · `REQUIREMENTS_REGISTER.md` (`FR-`/`NFR-`/`BR-`/`CON-` separated, each with a source and an acceptance criterion).
+4. **Use case specifications** (when the scope needs actor-level detail): `docs/pm/use-cases/UC-<MODULE>-<NN>_<name>.md` from `USE_CASE_SPECIFICATION_TEMPLATE.md`. One file per use case; each UC ID is cited from `REQUIREMENTS_REGISTER.md`.
+5. **Type-separated registers** (copy only when needed; rules in `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §4): `BUSINESS_RULES_REGISTER.md` (each rule cites a source and an enforcement point — a rule enforced by nothing is an **orphan rule**) · `ASSUMPTIONS_CONSTRAINTS.md` (each assumption owned + testable; each constraint hard/soft with a design impact) · `REQUIREMENTS_REGISTER.md` (`FR-`/`NFR-`/`BR-`/`CON-` separated, each with a source and an acceptance criterion).
 
 ---
 
