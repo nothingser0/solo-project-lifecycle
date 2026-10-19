@@ -18,3 +18,45 @@
 - **Design Docs & ADRs**: Mandatory Why & What boxes, alternative evaluations, and immutable consequences.
 - **Runbooks & Procedures**: ASD-STE100 simplified technical English principles (one instruction per sentence).
 - **Postmortems & Issue Tracking**: Root-cause analysis without blame, reproducible steps, and acceptance criteria.
+
+---
+
+## 3. Reviewing Prose: Severity Mapping and the Delivery Gate
+
+A prose review without severity ranks every nit equally, so the author fixes the commas and ships the unsupported claim.
+
+### 3.1 Severity mapping
+
+| Rank | Covers |
+| :--- | :--- |
+| **BLOCKER** | A claim the cited source does not support, or that traces to nothing. A number with no source. A procedure step with no actor. |
+| **WARNING** | A structural defect: conclusion buried, headings that are questions, paragraphs that could be rearranged without loss. |
+| **OBS** | Ambiguity, missing polish, anything an attentive author would likely catch themselves. |
+
+**The rule this enforces**: a BLOCKER is not a style opinion, and an OBS never blocks delivery. Collapsing the two teaches the author that review is taste.
+
+### 3.2 The remove-the-name test
+
+Delete the product name from the opening and the summary. Can a stranger who has never heard of this product still tell **what the text is about and what it does**?
+
+If not, the opening is describing the product to someone who already knows it — which is the most common defect in a handover document, and the one the client notices first.
+
+### 3.3 Editing is diagnosis
+
+Every edit names the concrete defect it fixes, and the smallest edit that fixes it wins. **Rewriting natural or approved language without a named defect is itself a defect.**
+
+Before delivering a rewrite, ask three control questions:
+
+1. Which sentence still sounds like a language model?
+2. Did the rewrite add or drop a fact, number, date, name, source, or claim?
+3. Does the rewrite recreate a removed pattern in a new rhetorical form?
+
+**An addition and a loss both count as errors, even when the text reads better for it.** Never add a fact to finish a sentence — ask, or write a simpler sentence.
+
+### 3.4 What not to flag
+
+The banned-construction list proves nothing by itself; every pattern also occurs in good human writing. Flag only when several signs coincide in the same paragraph.
+
+Polished grammar · one repeated sentence opening · one short sentence for emphasis · formal words that are not on the list · a factual contrast ("the pipeline sets the tag, the developer does not") · a serious alternative the reader would weigh · qualifiers that bound scope or legal risk · a reference to the previous state in a migration doc · a quoted word · metaphor that explains · deliberate awkwardness.
+
+> This list is the prose counterpart of `references/design/AI_WRITING_TELLS.md` §10.1: same rule, different scale — a single hit is not evidence, a cluster is.
