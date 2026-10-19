@@ -28,6 +28,8 @@ Write-Host "--------------------------------"
 # Create standard directory hierarchy
 $dirs = @(
     (Join-Path $TargetDir "docs/pm"),
+    (Join-Path $TargetDir "docs/pm/use-cases"),
+    (Join-Path $TargetDir "docs/pm/meetings"),
     (Join-Path $TargetDir "docs/specs"),
     (Join-Path $TargetDir "docs/design/inspiration"),
     (Join-Path $TargetDir "docs/design/prompts"),

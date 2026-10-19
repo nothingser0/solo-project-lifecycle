@@ -36,7 +36,7 @@ templates/
 | `02-design/` | M04 | `DESIGN_MD_TEMPLATE.md`, `DESIGN_SPEC_TEMPLATE.md`, `SITEMAP_TEMPLATE.md`, `COMPONENT_REQUIREMENTS_TEMPLATE.md`, `LOGO_DESIGN_BRIEF_TEMPLATE.md`; LITE bodies in `essentials/` |
 | `02-legal-commercial/` | M03 (small client) | `SOW_SMB.md`, `NDA_TEMPLATE.md`, `CHANGE_REQUEST_TEMPLATE.md` |
 | `03-architecture-specs/` | M05 | `PROJECT_LITE_TEMPLATE.md`, `PRD_FINAL_TEMPLATE.md`, `FSD_TECHNICAL_TEMPLATE.md`; Large/Enterprise only via `references/playbooks/SCALE_WORKFLOWS.md` M05B: `SYSTEM_DESIGN_DOC_TEMPLATE.md`, `CAPACITY_PLANNING_TEMPLATE.md`, `DISASTER_RECOVERY_PLAN_TEMPLATE.md` |
-| `03-governance/` | Enterprise / Large | ADR, RACI, CAB, SOC2/ISO, data policies, `DATA_PROTECTION_ADDENDUM.md` (UU PDP DPA, M03) |
+| `03-governance/` | Enterprise / Large | ADR, RACI, CAB, SOC2/ISO, data policies, `DATA_PROTECTION_ADDENDUM.md` (UU PDP DPA, M03); `DECISION_LOG_TEMPLATE.md` (cross-phase decision ledger, any scale) |
 | `04-dev-execution/` | M06 | 9 harness files (AGENTS/CONTEXT/ARCHITECTURE/DESIGN/CONVENTIONS/TODO/RUNBOOK_LOCAL/VERIFY_LOCAL/.env.example), per-stack AGENTS/CONVENTIONS, `examples/` worked sprint plan |
 | `05-data-migration/` | M08 | `DATA_MIGRATION_PLAN_TEMPLATE.md`, `DATA_MIGRATION_LITE.md`, `RECONCILIATION_REPORT_TEMPLATE.md` |
 | `06-qa-uat/` | M07/M09 | `SIT_WORKBOOK_TEMPLATE.md`, `SECURITY_CHECKLIST_SMALL.md`, `UAT_SIGNOFF_SMALL.md`, `UAT_WORKBOOK_TEMPLATE.md` |

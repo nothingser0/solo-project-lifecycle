@@ -49,7 +49,7 @@
 | NSM, MoSCoW, permission tables, schema rules, effort formula | **Discovery Interview** (5 Pillars), 50–100 signups, **sandbox keys / email credentials / master data** |
 
 > ✅ **Counsel-review marker defined**: the agent may draft the Privacy Policy / ToS / tax
-> disclaimers only as `LEGAL-REVIEW: PENDING` operational drafts (`02:40-46`). The human
+> disclaimers only as `LEGAL-REVIEW: PENDING` operational drafts (`02:50-58`). The human
 > flips it to `REVIEWED by <name> on <date>`; publishing legal text while `PENDING` is a
 > FROZEN-spec violation. `validate-gate.sh M02` enforces the marker whenever the scope
 > includes legal/tax text, and `test-gate-regressions.sh` pins the rule.

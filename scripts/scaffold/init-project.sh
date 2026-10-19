@@ -32,6 +32,8 @@ echo "--------------------------------"
 
 # Create standard directory hierarchy
 mkdir -p "$TARGET_DIR/docs/pm"
+mkdir -p "$TARGET_DIR/docs/pm/use-cases"
+mkdir -p "$TARGET_DIR/docs/pm/meetings"
 mkdir -p "$TARGET_DIR/docs/specs"
 mkdir -p "$TARGET_DIR/docs/design/inspiration"
 mkdir -p "$TARGET_DIR/docs/design/prompts"

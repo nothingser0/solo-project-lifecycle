@@ -43,11 +43,13 @@
 
 ## Decisions
 
-| # | Decision | Rationale | Made by | Date |
-| :-: | :--- | :--- | :--- | :--- |
-| D1 | <definitive statement — "The system will use X", not "X was discussed"> | | | |
+| # | Decision | Rationale | Made by | Date | Scope impact |
+| :-: | :--- | :--- | :--- | :--- | :--- |
+| D1 | <definitive statement — "The system will use X", not "X was discussed"> | | | | none / CR-NNN |
 
 > A decision is something agreed, resolved, or committed to. If the room only explored options, it is not here.
+>
+> **A decision that changes scope is not just a note.** If it adds, removes or reshapes a deliverable, it goes through `CHANGE_REQUEST_TEMPLATE.md` and the `SCOPE_STATEMENT.md` is updated; record the CR id here. Decisions that stay inside the agreed scope need only the row.
 
 ## Action items
 
@@ -65,10 +67,13 @@
 
 ## Assumptions introduced
 
-| # | Assumption | Basis | Needs verification by |
+| # | Assumption | Basis | Register ID |
 | :-: | :--- | :--- | :--- |
-| A1 | <something believed but not stated by a stakeholder> | | |
+| A1 | <something believed but not stated by a stakeholder> | | ASM-NNN |
+
+> **This table is a staging area, not a register.** Any assumption that could change scope, cost or architecture must be copied into `docs/pm/ASSUMPTIONS_CONSTRAINTS.md` as `ASM-NNN`, with an owner and a validation approach, and the ID written back here. An assumption that lives only in meeting notes never gets tested — it just quietly becomes a requirement.
 ```
+
 
 ---
 

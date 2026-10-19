@@ -1129,6 +1129,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/03-governance/DECISION_LOG_TEMPLATE.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/03-governance/ESCALATION_MATRIX.md",
       "cataloged": true
     },
