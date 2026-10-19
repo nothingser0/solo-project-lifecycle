@@ -53,6 +53,10 @@ pytest --cov=src --cov-branch --cov-context=test
 
 `--cov-context=test` tags every measured line with the test that ran it; `--cov-branch` stops a test that takes the `if` from being counted the same as one that takes the `else`. Read the contexts table out of the `.coverage` SQLite database to build, per test, the set of `(file, line)` and `(file, branch-arc)` pairs.
 
+> **Version caveat — check this before trusting any result.** `--cov-context` requires **pytest-cov ≥ 4**; it delegates to `coverage`'s dynamic contexts. On an older pin the flag is **silently ignored**, and you get per-file data while believing you have per-test — the worst possible failure for this step, because the analysis below then runs on data that cannot answer the question.
+>
+> Verify two things: that the flag exists in the installed version, and that the `.coverage` SQLite database has a **non-empty `context` table**. If the flag is unavailable, set `dynamic_context = test_function` under `[coverage]` in `setup.cfg` or `pyproject.toml` instead, and confirm the table is populated before continuing.
+
 From those sets you get two useful relations:
 
 - **Uniquely covered lines** — only one test covers them. That test is pulling its weight; losing it loses that coverage outright.
