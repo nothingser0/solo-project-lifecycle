@@ -88,6 +88,18 @@ _________________________________
 
 ---
 
+## Root Cause (fill after analysis, before the fix ships)
+
+A bug report that stops at "steps to reproduce" produces a patch, not a fix. Record what actually caused it — and be specific enough that a different symptom from the same cause would be recognised next time.
+
+**Root cause**: <the defect in the code, config, or assumption that produced this symptom>
+
+**Why it was not caught**: <which check was missing, or which assumption was wrong — a missing test, a missing index, an unhandled state, an unchecked external response>
+
+**Blast radius**: <other flows that share this cause and may have the same defect>
+
+**Fix and regression**: <what changed, and the test that fails before the fix and passes after. If no regression test was added, say why.>
+
 ## Additional Context
 
 **Related Features**: _________________________________  
