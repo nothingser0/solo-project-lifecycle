@@ -57,3 +57,29 @@ By signing this document, the Client states that they have reviewed the data rec
 | **Title / Role**: _________________ | **Title / Role**: Independent Lead Engineer |
 | **Date**: _________________________ | **Date**: _________________________ |
 | **Signature**: | **Signature**: |
+
+---
+
+## 6. Recurring Controls (only if the pipeline keeps running)
+
+This report reconciles **once**. A live billing, stock, or reporting pipeline needs the numbers to keep matching after the sign-off — and that is where the failures happen, because nobody is watching.
+
+| Field | Value |
+| :--- | :--- |
+| **Control objective** | <the one measure that must stay true, e.g. "daily invoice total = payment gateway settlement total"> |
+| **Acceptable variance** | <absolute or % — stated **before** the first run> |
+| **Exception owner** | <named person, and where an exception is routed> |
+| **Cadence** | <daily / weekly / monthly, and at what time> |
+| **Evidence per period** | <the query or report that reproduces the check, and where it is stored> |
+
+**The variance must be chosen before the first run.** A threshold set after a miss is not a control — it is a rationalisation with a number attached.
+
+**Three shortcuts to reject**, quoted as they are usually said:
+
+| Rationalisation | Why it fails |
+| :--- | :--- |
+| *"The logic is simple enough to trust"* | Simple logic with one wrong join silently doubles a total; simplicity is not evidence |
+| *"A small variance is probably fine"* | "Small" was not defined before the run, so it cannot be distinguished from a real drift |
+| *"The total matched once, so we're done"* | One match proves the pipeline worked once; it says nothing about tomorrow's data |
+
+**Per-period evidence must be reproducible.** A screenshot proves a number was seen; a saved query with a run date proves the number can be re-checked. Store the query, not the picture.

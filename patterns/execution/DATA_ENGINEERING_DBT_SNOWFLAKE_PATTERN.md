@@ -33,7 +33,6 @@ Test by column role, not by preference. Match the project's existing `schema.yml
 ### D. Documenting Models (`documenting-dbt-models`)
 Every model and every tested column carries a `description` in `schema.yml`. A column whose meaning lives only in someone's memory is the first thing the next engineer misreads — and on an analytics project, a misread column becomes a wrong number in a client report.
 
----
 
 ### E. Refactoring & Downstream Impact (`refactoring-dbt-models`)
 
