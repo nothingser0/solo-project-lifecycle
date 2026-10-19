@@ -159,22 +159,24 @@ function Show-ArchitectureMenu {
     Write-Host "  1. PRD (Product Requirements Document)"
     Write-Host "  2. FSD (Functional Specification Document)"
     Write-Host "  3. SYSTEM_DESIGN_DOC (Load balancing, caching, HA)"
-    Write-Host "  4. PROJECT_LITE (All-in-one MVP spec)"
-    Write-Host "  5. CAPACITY_PLANNING (Traffic projection, resource sizing)"
-    Write-Host "  6. DISASTER_RECOVERY_PLAN (RPO/RTO, backup procedures)"
-    Write-Host "  7. Back to main menu"
+    Write-Host "  4. CAPACITY_PLANNING (Traffic projection, resource sizing)"
+    Write-Host "  5. DISASTER_RECOVERY_PLAN (RPO/RTO, backup procedures)"
+    Write-Host "  6. PROJECT_LITE (All-in-one MVP spec)"
+    Write-Host "  7. THREAT_MODEL_STRIDE (Elements, trust boundaries, STRIDE)"
+    Write-Host "  8. Back to main menu"
     Write-Host ""
 
-    $choice = Read-Host "Select template (1-7)"
+    $choice = Read-Host "Select template (1-8)"
     
     switch ($choice) {
         "1" { Copy-Template "$TemplatesDir/03-architecture-specs/PRD_FINAL_TEMPLATE.md" "docs/specs/PRD.md" }
         "2" { Copy-Template "$TemplatesDir/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md" "docs/specs/FSD.md" }
         "3" { Copy-Template "$TemplatesDir/03-architecture-specs/SYSTEM_DESIGN_DOC_TEMPLATE.md" "docs/specs/SYSTEM_DESIGN_DOC.md" }
-        "4" { Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md" }
-        "5" { Copy-Template "$TemplatesDir/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md" "docs/specs/CAPACITY_PLANNING.md" }
-        "6" { Copy-Template "$TemplatesDir/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md" "docs/specs/DISASTER_RECOVERY_PLAN.md" }
-        "7" { return }
+        "4" { Copy-Template "$TemplatesDir/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md" "docs/specs/CAPACITY_PLANNING.md" }
+        "5" { Copy-Template "$TemplatesDir/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md" "docs/specs/DISASTER_RECOVERY_PLAN.md" }
+        "6" { Copy-Template "$TemplatesDir/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md" }
+        "7" { Copy-Template "$TemplatesDir/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md" "docs/security/THREAT_MODEL_STRIDE.md" }
+        "8" { return }
         default { Write-Host "Invalid choice" -ForegroundColor Red }
     }
 }

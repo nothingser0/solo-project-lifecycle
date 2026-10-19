@@ -458,7 +458,7 @@
     },
     {
       "path": "patterns/security/THREAT_MODELING_STRIDE_PATTERN.md",
-      "cataloged": false
+      "cataloged": true
     },
     {
       "path": "patterns/ui/MOTION_DESIGN_TAXONOMY.md",

@@ -124,6 +124,10 @@ switch ($Scale) {
         if (-not (Test-Path $govDir)) { New-Item -ItemType Directory -Force -Path $govDir | Out-Null }
         $opsDir = Join-Path $TargetDir "docs/ops"
         if (-not (Test-Path $opsDir)) { New-Item -ItemType Directory -Force -Path $opsDir | Out-Null }
+        $secDir = Join-Path $TargetDir "docs/security"
+        if (-not (Test-Path $secDir)) { New-Item -ItemType Directory -Force -Path $secDir | Out-Null }
+        $archDir = Join-Path $TargetDir "docs/architecture"
+        if (-not (Test-Path $archDir)) { New-Item -ItemType Directory -Force -Path $archDir | Out-Null }
         
         Copy-Item (Join-Path $templates "00-pre-sales-enterprise/RFP_RESPONSE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/RFP_RESPONSE.md") -Force
         Copy-Item (Join-Path $templates "00-pre-sales-enterprise/POC_PLAN_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/POC_PLAN.md") -Force
@@ -145,6 +149,7 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") -Force
         Copy-Item (Join-Path $templates "06-qa-uat/SIT_WORKBOOK_TEMPLATE.md") (Join-Path $TargetDir "docs/qa/SIT_WORKBOOK.md") -Force
         Copy-Item (Join-Path $templates "06-qa-uat/SECURITY_AUDIT_TEMPLATE.md") (Join-Path $TargetDir "docs/qa/SECURITY_AUDIT.md") -Force
+        Copy-Item (Join-Path $templates "03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md") (Join-Path $TargetDir "docs/security/THREAT_MODEL_STRIDE.md") -Force
         Copy-Item (Join-Path $templates "03-governance/RACI_MATRIX.md") (Join-Path $TargetDir "docs/governance/RACI_MATRIX.md") -Force
         Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
         Copy-Item (Join-Path $templates "03-governance/CAB_PROCESS.md") (Join-Path $TargetDir "docs/governance/CAB_APPROVAL.md") -Force

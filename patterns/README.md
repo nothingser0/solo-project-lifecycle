@@ -10,6 +10,7 @@
 | Offline-first sync & mutation queue | [`offline/OFFLINE_FIRST_SYNC.md`](./offline/OFFLINE_FIRST_SYNC.md) |
 | Access Control Patterns (RBAC, ABAC, ReBAC & Postgres RLS) | [`security/ACCESS_CONTROL_PATTERNS.md`](./security/ACCESS_CONTROL_PATTERNS.md) |
 | Edge Security, DDoS & WAF Protection (Cloudflare Pattern) | [`security/EDGE_SECURITY_CLOUDFLARE.md`](./security/EDGE_SECURITY_CLOUDFLARE.md) |
+| Threat Modeling with STRIDE (elements, boundaries, consume-or-reject) | [`security/THREAT_MODELING_STRIDE_PATTERN.md`](./security/THREAT_MODELING_STRIDE_PATTERN.md) |
 | Solo Product Discovery & Strategy Playbook (OST, RAT, 7 Powers) | [`product/SOLO_DISCOVERY_PLAYBOOK.md`](./product/SOLO_DISCOVERY_PLAYBOOK.md) |
 | Business Analysis Discovery & Requirements Craft (elicitation mix, ambiguity classes, review passes) | [`product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md`](./product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md) |
 | Brand Strategy, Naming & Identity (positioning, 7 name tests, architecture, audit, rebrand, measurement) | [`product/BRAND_STRATEGY_AND_IDENTITY_PATTERN.md`](./product/BRAND_STRATEGY_AND_IDENTITY_PATTERN.md) |

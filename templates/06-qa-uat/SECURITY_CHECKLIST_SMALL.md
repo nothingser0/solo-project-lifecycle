@@ -157,3 +157,5 @@ Escalate to full M07 Security Audit if:
 - Admin panel with sensitive operations
 
 For full audit, see `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md`.
+
+**Before coding**, list your elements and one STRIDE threat each — half a page, no document. Method: `patterns/security/THREAT_MODELING_STRIDE_PATTERN.md` §6. Skipping this is how a small project discovers at launch that the design was never reasoned about.

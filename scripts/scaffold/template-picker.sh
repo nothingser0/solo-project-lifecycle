@@ -196,9 +196,10 @@ phase_architecture() {
     echo "4. CAPACITY_PLANNING (Traffic projection, resources)"
     echo "5. DISASTER_RECOVERY_PLAN (RPO/RTO, failover)"
     echo "6. PROJECT_LITE (MVP all-in-one template)"
-    echo "7. Back to main menu"
+    echo "7. THREAT_MODEL_STRIDE (Elements, trust boundaries, STRIDE)"
+    echo "8. Back to main menu"
     echo ""
-    choice=$(get_choice "Select template (1-7): " 1)
+    choice=$(get_choice "Select template (1-8): " 1)
     
     case $choice in
         1) copy_template "$TEMPLATES_DIR/03-architecture-specs/PRD_FINAL_TEMPLATE.md" "docs/specs/PRD.md" ;;
@@ -207,7 +208,8 @@ phase_architecture() {
         4) copy_template "$TEMPLATES_DIR/03-architecture-specs/CAPACITY_PLANNING_TEMPLATE.md" "docs/specs/CAPACITY_PLANNING.md" ;;
         5) copy_template "$TEMPLATES_DIR/03-architecture-specs/DISASTER_RECOVERY_PLAN_TEMPLATE.md" "docs/specs/DISASTER_RECOVERY_PLAN.md" ;;
         6) copy_template "$TEMPLATES_DIR/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" "PROJECT_LITE.md" ;;
-        7) return ;;
+        7) copy_template "$TEMPLATES_DIR/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md" "docs/security/THREAT_MODEL_STRIDE.md" ;;
+        8) return ;;
         *) echo "Invalid choice" ;;
     esac
 }
