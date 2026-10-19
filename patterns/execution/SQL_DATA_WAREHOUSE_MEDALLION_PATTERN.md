@@ -47,7 +47,7 @@ The catalog that ships with these tables carries **type and description per colu
 
 Each prevents a specific way two reports end up disagreeing.
 
-### 3.1.1 Write the fact table's grain in one sentence
+#### 3.1.1 Write the fact table's grain in one sentence
 
 Before creating a fact table, write down what **one row represents**:
 
@@ -55,19 +55,19 @@ Before creating a fact table, write down what **one row represents**:
 
 If that sentence needs an "and" you cannot defend, you have two fact tables. Ambiguous grain produces double-counted revenue that looks correct in every individual query — this is the single most expensive modelling mistake, because it survives to the dashboard.
 
-### 3.1.2 Every dimension gets a surrogate key
+#### 3.1.2 Every dimension gets a surrogate key
 
 The dimension has both `customer_key` (surrogate, warehouse-generated) and `customer_id` (natural, from the source system). Joins and facts use the **surrogate**.
 
 **Why the natural key is not enough**: source systems reuse identifiers. A deleted customer's `customer_id` can be reassigned to a new customer, and every historical fact that joined on the natural key now points at the wrong person. The surrogate key is stable for the life of the row.
 
-### 3.1.3 A pre-built date dimension, not `date_trunc` per query
+#### 3.1.3 A pre-built date dimension, not `date_trunc` per query
 
 Build one `dim_date` with the columns reporting actually needs: date, day, week, month, quarter, year, fiscal period, is-weekend, is-holiday.
 
 **Why**: if every report computes its own month boundary, two reports will eventually disagree about which day belongs to which month — usually because one used `date_trunc` in local time and the other in UTC. One shared date dimension means one answer.
 
-### 3.1.4 Record SCD Type per dimension
+#### 3.1.4 Record SCD Type per dimension
 
 | Type | Behaviour | Consequence downstream |
 | :--- | :--- | :--- |
