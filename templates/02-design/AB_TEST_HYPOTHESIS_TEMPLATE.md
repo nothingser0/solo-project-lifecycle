@@ -102,6 +102,7 @@ Do NOT stop early unless:
 ### Pre-Launch
 - [ ] Design mockups approved (Control & Treatment)
 - [ ] Code implemented with feature flag (`EXPORT_BUTTON_VARIANT`)
+- [ ] **Removal date recorded** for the flag: `____-__-__` — a flag with no expiry becomes permanent dead code, and the losing variant's branch is never deleted
 - [ ] Analytics event tracking verified:
   - `report_viewed` (trigger: page load)
   - `export_button_clicked` (variant label: A/B)
@@ -118,6 +119,7 @@ Do NOT stop early unless:
 - [ ] Calculate statistical significance (chi-square test / z-test)
 - [ ] Document results in Section 6
 - [ ] Decision: Ship Treatment / Revert to Control / Iterate
+- [ ] **Flag removed** (or a dated ticket opened for removal) and the losing variant's code deleted — closing the experiment is part of running it
 
 ---
 

@@ -28,7 +28,7 @@
 A runbook read during an incident is read by whoever is on call — increasingly an agent. The steps below name rollback, failover, and scale operations. Without this block, the document says *what* to do and nothing about *what may be done without a human*.
 
 ```yaml
-default_mode: read_only          # inspect freely; change nothing on your own
+default_mode: mutating         # writes are permitted, but only through the confirm list below
 forbidden:                        # never, regardless of approval in the moment
   - production data deletion
   - credential or key rotation without the owner present

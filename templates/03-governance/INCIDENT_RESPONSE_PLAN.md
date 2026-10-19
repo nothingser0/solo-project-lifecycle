@@ -317,7 +317,7 @@ The [Company] Team
 The runbooks below name rollback, failover, and scaling operations. This block states what may run unattended, what needs approval, and what never runs.
 
 ```yaml
-default_mode: read_only
+default_mode: mutating          # writes permitted, but only through the confirm list below
 forbidden:
   - production data deletion
   - credential rotation without the owner present

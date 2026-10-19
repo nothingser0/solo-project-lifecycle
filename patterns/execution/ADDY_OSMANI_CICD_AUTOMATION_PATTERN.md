@@ -24,6 +24,24 @@ Pull Request Opened
 
 ---
 
+## 1.5 An Unenforced Gate Is a Report
+
+"No gate can be skipped" is prose. Nothing enforces prose. A quality gate becomes a gate only when **the merge button is physically disabled until it passes** — which is a repository setting, not a pipeline definition.
+
+| Setting | Effect | Without it |
+| :--- | :--- | :--- |
+| Required status check | The job must pass before merge | The job runs, goes red, and merges anyway |
+| Branch protection on the default branch | No direct pushes, no force-push | Someone "just" pushes past the gate |
+| Required review | At least one approval | Author self-approves in a hurry |
+| Dismiss stale approvals on new commits | Approval applies to the code that was reviewed | An approval covers commits added afterwards |
+| Admin bypass logged or removed | Bypass is visible and rare | The one person who can bypass does so routinely |
+
+**A green pipeline that nobody is blocked by is a dashboard, not a control.** The test of whether CI exists: has any change been blocked by it this month? If not, either the gates are not required, or the team is not making changes.
+
+This is enforced in `templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md` §1 — configure it there, not in the workflow YAML, where it has no effect.
+
+---
+
 ## 2. Core Automation Principles
 - **Shift Left**: Catch problems early in the pipeline. Linting issues cost minutes; production defects cost hours.
 - **No Gate Skipping**: If lint fails, fix lint; if tests fail, fix code. Never disable rules or skip tests.
