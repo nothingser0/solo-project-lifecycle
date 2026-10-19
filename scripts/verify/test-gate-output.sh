@@ -53,7 +53,7 @@ mk_fixture() {
 - Intake-Integrations: none
 - Intake-Branch-Hierarchy: no
 - Intake-Compliance: none
-- Intake-Legacy-Core: no
+- Intake-Legacy-Core: yes
 - Intake-Status: ANSWERED
 EOF
     printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$d/PROJECT_LITE.md"

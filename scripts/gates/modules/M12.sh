@@ -9,8 +9,10 @@ gate_M12() {
     echo "=== M12: Warranty SLA Retainer Gate Checklist ==="
     is_m12_solo=0
     m12_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
-    if [ "$m12_delivery" = "solo" ] || [ "$m12_delivery" = "portfolio" ] || [ "$m12_delivery" = "internal" ] \
-        || ([ ! -f "docs/pm/PROJECT_STATE.md" ] && [ -f "PROJECT_LITE.md" ]); then
+    # The M00_LITE/PROJECT_LITE infer-solo fallback is REMOVED, matching M03/M09/M11:
+    # a missing PROJECT_STATE.md must FAIL for an undeclared delivery, not silently
+    # route a client project to the solo waiver.
+    if [ "$m12_delivery" = "solo" ] || [ "$m12_delivery" = "portfolio" ] || [ "$m12_delivery" = "internal" ]; then
         is_m12_solo=1
     fi
 

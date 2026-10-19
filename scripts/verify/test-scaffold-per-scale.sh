@@ -17,13 +17,21 @@ PASS=0
 FAIL=0
 
 # Small deliberately skips the nine-file harness (SKILL.md). Every other scale = 9.
-declare -A EXPECTED=( [small]=2 [medium]=9 [large]=9 [enterprise]=9 )
+# A `case` rather than an associative array: macOS ships bash 3.2, which has no
+# `declare -A`, and this test must run on the maintainer's machine as well as CI.
+expected_for() {
+    case "$1" in
+        small) echo 2 ;;
+        medium|large|enterprise) echo 9 ;;
+        *) echo 0 ;;
+    esac
+}
 
 note() { printf '  %s %s\n' "$1" "$2"; }
 
 for scale in small medium large enterprise; do
     dir="$(mktemp -d)" || { note "❌" "$scale: mktemp failed"; FAIL=$((FAIL + 1)); continue; }
-    want="${EXPECTED[$scale]}"
+    want="$(expected_for "$scale")"
 
     if ! ( cd "$REPO" && bash "$SCAFFOLD" "$dir" "$scale" >/dev/null 2>&1 ); then
         note "❌" "$scale: scaffold exited non-zero"

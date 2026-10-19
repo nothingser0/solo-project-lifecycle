@@ -449,7 +449,11 @@ expect_m05 "M05 approver is 'Admin'" BLOCKED "no human in 'Stack-Locked-by:'" bu
 expect_client_input() {
     local name="$1" want="$2" content="$3"
     local dir="$WORK/pci"
-    make_project "$dir" "$INTAKE_MEDIUM"
+    # This helper exercises the CLIENT-INPUT check, which only runs when M08 is not
+    # waived. `Intake-Legacy-Core: no` is a greenfield project, and M08 is now
+    # correctly waived for it — so this fixture declares legacy data explicitly.
+    local intake="${INTAKE_MEDIUM/Intake-Legacy-Core: no/Intake-Legacy-Core: yes}"
+    make_project "$dir" "$intake"
     printf '%b' "$content" > "$dir/docs/pm/DATA_MIGRATION_PLAN.md"
     local out
     out="$(cd "$dir" && bash "$GATE" M08 2>&1 || true)"
@@ -474,6 +478,30 @@ expect_client_input "M08 plan recording the client handover (Medium)" ALLOWED "#
 # the shipped template line matched the key and nothing else was required.
 expect_client_input "M08 plan with the unfilled Inputs-Received template line (Medium)" BLOCKED "# PLAN\n\nInputs-Received: [what was received] from [client PIC] on [YYYY-MM-DD]\n"
 expect_client_input "M08 plan with an empty Inputs-Received value (Medium)" BLOCKED "# PLAN\n\nInputs-Received:\n"
+
+# The other direction of the waiver: INTAKE_GATE defines Intake-Legacy-Core as yes|no,
+# and `no` is a greenfield project, so M08 must be WAIVED for it. Before the fix the
+# waiver only matched `greenfield|none`, which no template ever produced.
+expect_m08_waived() {
+    local name="$1" legacy="$2" want="$3"
+    local dir="$WORK/m08w"
+    local intake="${INTAKE_MEDIUM/Intake-Legacy-Core: no/Intake-Legacy-Core: $legacy}"
+    make_project "$dir" "$intake"
+    printf '# PLAN\n\nno migration plan recorded\n' > "$dir/docs/pm/DATA_MIGRATION_PLAN.md"
+    local out got
+    out="$(cd "$dir" && bash "$GATE" M08 2>&1 || true)"
+    got="NOT_WAIVED"
+    printf '%s' "$out" | grep -qiE "M08 Data Migration is WAIVED" && got="WAIVED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M08 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M08 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m08_waived "M08 waived for greenfield (Intake-Legacy-Core: no)" no WAIVED
+expect_m08_waived "M08 NOT waived when legacy data exists (yes)" yes NOT_WAIVED
 
 # E. The authority matrix must exist and be referenced from SKILL.md.
 check_required "docs/AUTHORITY.md exists (single source of role attribution)" "$REPO/docs/AUTHORITY.md" "HUMAN-ONLY|FORBIDDEN"

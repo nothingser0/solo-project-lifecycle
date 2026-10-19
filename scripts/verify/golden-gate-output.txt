@@ -19,7 +19,7 @@
 === M01: Idea Feasibility Gate Checklist ===
   [INFO] Running mechanical scale & solo capacity classifier...
   ✅ Solo capacity verified: Scope is executable within solo capacity
-  ✅ docs/pm/PROJECT_STATE.md (406B)
+  ✅ docs/pm/PROJECT_STATE.md (407B)
   ❌ docs/pm/IDEA_BRIEF.md (MISSING — copy templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md; FEASIBILITY_REPORT.md is an accepted alias)
   ✅ Intake Gate: all 9 mandatory fields answered
 

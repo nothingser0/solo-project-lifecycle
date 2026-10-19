@@ -257,10 +257,6 @@
       "cataloged": true
     },
     {
-      "path": "patterns/architecture/DWYL_API_DESIGN_PATTERN.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/architecture/LEGACY_MODERNIZATION_STRANGLER_PATTERN.md",
       "cataloged": true
     },
@@ -402,10 +398,6 @@
     },
     {
       "path": "patterns/execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/execution/WEBAPP_UAT_BROWSER_TESTING_PATTERN.md",
       "cataloged": true
     },
     {
@@ -939,10 +931,6 @@
     {
       "path": "templates/01-discovery-commercial/PRODUCT_STRATEGY_TEMPLATE.md",
       "cataloged": false
-    },
-    {
-      "path": "templates/01-discovery-commercial/RACI_MATRIX_TEMPLATE.md",
-      "cataloged": true
     },
     {
       "path": "templates/01-discovery-commercial/REQUIREMENTS_AMBIGUITY_CHECKLIST.md",

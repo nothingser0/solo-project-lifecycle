@@ -144,7 +144,7 @@
 - **System Design Methodology**: 4-step structured problem solving (use-cases, high-level design, deep dive, trade-offs) per `patterns/architecture/SYSTEM_DESIGN_METHODOLOGY_PATTERN.md`.
 - **RESTful API Design**: Noun-based endpoints, HTTP status semantics, cursor/offset pagination, and RFC 7807 problem details per `patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md`.
 - **API Design Best Practices**: Collection metaphors, no naked IDs, **URL path-segment versioning** (`/api/v1/…`, not the `Accept` header), and ETag caching per `patterns/architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`.
-- **API-as-a-Product Mindset**: Bloch & Lacker laws, opinionated design, and non-surprising developer UX per `patterns/architecture/DWYL_API_DESIGN_PATTERN.md`.
+- **API-as-a-Product Mindset**: Bloch & Lacker laws, opinionated design, and non-surprising developer UX per `patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md`.
 - **Full-Stack Execution Roadmap**: Phased milestones from UI components, auth pipelines, state management, to backend database models per `patterns/execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md`.
 - **AI Full-Stack Delivery Workflow**: 17-role master control orchestration, intent routing, and cross-role handoff pipeline per `patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`.
 - **Claude Code Spec-Driven Workflow**: Requirements → Design → Tasks implementation pipelines, bug-fix workflows, and 60-80% token reduction via bulk context optimization per `patterns/execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md`.
@@ -156,7 +156,7 @@
 - **Patterns Devkit**: Component-based data graphs, reusable Python/SQL nodes, and SDK table/parameter primitives per `patterns/execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md`.
 - **Petr Kindlmann QA Skills**: 50 professional QA workflows, risk-based test planning, Playwright/Cypress E2E automation, selector drift recovery, and AI-augmented bug triage per `patterns/execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md`.
 - **KimDoubleB Grafana k6**: API/browser performance test generation, OpenAPI/code-to-test scaffolding, scenario executors, CI/CD integration, and Kubernetes chaos engineering via `xk6-disruptor` per `patterns/execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md`.
-- **Tsilverberg WebApp UAT**: Playwright-based browser UAT automation, console/network error capture, WCAG 2.2 AA a11y checks, i18n validation, and severity-based bug triage per `patterns/execution/WEBAPP_UAT_BROWSER_TESTING_PATTERN.md`.
+- **Tsilverberg WebApp UAT**: Playwright-based browser UAT automation, console/network error capture, WCAG 2.2 AA a11y checks, i18n validation, and severity-based bug triage per `patterns/qa/UAT_UNTRUSTED_OUTPUT_BOUNDARY_PATTERN.md`.
 - **Cloudflare Security Audit**: Multi-phase security audit orchestration, coverage-led hunting, adversarial candidate validation, and machine-readable `findings.json` schema validation per `patterns/execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md`.
 - **Netresearch Security Audit**: 80+ automated security checkpoints (`checkpoints.yaml`), OWASP Top 10 patterns, CWE Top 25 (2025) coverage, CVSS v4.0 scoring, and PHP/TYPO3 hardening hooks per `patterns/execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md`.
 - **Strobes Security Web Pentest**: Methodology-driven 4-layer AI agent skill architecture, 6-phase pentest lifecycle, CLI toolchain orchestration, and evidence-backed findings per `patterns/execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md`.

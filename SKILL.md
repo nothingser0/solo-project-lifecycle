@@ -56,7 +56,7 @@ High-water mark: if any single dimension is higher (e.g., 3 features but payment
 
 ## Harness root (9 files) — client / non-Small projects only
 
-AGENTS.md, CONTEXT.md, ARCHITECTURE.md, DESIGN.md, CONVENTIONS.md, TODO.md, .env.example, RUNBOOK_LOCAL.md, VERIFY_LOCAL.md → stage in `docs/harness-root/`, copy to root **after** scaffold completes, verify, then delete staging. The **Small** path skips the 9-file harness — root `AGENTS.md` + `TODO.md` suffice.
+AGENTS.md, CONTEXT.md, ARCHITECTURE.md, DESIGN.md, CONVENTIONS.md, TODO.md, .env.example, RUNBOOK_LOCAL.md, VERIFY_LOCAL.md → stage in `docs/harness-root/`, copy to root **after** scaffold completes, verify, then delete staging. The **Small** path skips the 9-file harness — root `AGENTS.md`, `TODO.md`, and `DESIGN.md` suffice (M06 requires that third file at root for Small too).
 
 ## Scripts
 

@@ -4,6 +4,8 @@ Comprehensive index of the engineering guides, checklists, playbooks, stack quic
 
 ---
 
+> **On catalogue coverage.** This file lists the curated references. A further set of files is marked `"cataloged": false` in `docs/INDEX.json`: they are reachable by path from the modules and patterns that need them, but they are not part of this curated table. That flag is deliberate, not an omission — `docs/INDEX.json` is the authoritative inventory, and `verify-links.js` proves every one of those paths resolves.
+
 ## Directory Structure
 
 ```

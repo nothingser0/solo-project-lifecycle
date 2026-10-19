@@ -1,5 +1,7 @@
 # Communication Plan: [Project Name]
 
+> **Tier: Small / Medium (single project, 1–6 stakeholders).** This is the file `init-project.sh` copies to `docs/pm/COMMUNICATION_PLAN.md`, and it is what M02 checks. For an Enterprise engagement with a steering committee, use `templates/03-governance/COMMUNICATION_PLAN.md` instead — do not fill both.
+
 **Project**: [Project Name]  
 **Timeline**: [Start Date] - [End Date]  
 **Prepared By**: [Your Name]  

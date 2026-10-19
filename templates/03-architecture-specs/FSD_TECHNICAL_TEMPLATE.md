@@ -538,7 +538,7 @@ GRANT EXECUTE ON FUNCTION rpc_execute_atomic_checkout(UUID, VARCHAR, UUID, NUMER
 ## 6. API Contract Specifications (REST / JSON API)
 
 > **Machine-read — do not reformat.** `validate-gate.sh M05` counts `#### <VERB>` headings in this
-> section and requires at least 5. The M05 runbook targets ≈10 for Medium+. One heading per real
+> section and requires at least 10. The M05 runbook targets ≈10 for Medium+. One heading per real
 > endpoint: never split an endpoint across two headings, never add an endpoint the scope does not
 > ask for (SKILL.md rule 5, YAGNI).
 
@@ -620,6 +620,31 @@ placeholder rows before sign-off.*
 - **Request**: `{"email": "user@example.com", "password": "..."}`
 - **Success**: `200` + HttpOnly session cookie (never a token in the response body)
 - **Error**: `401 {"status": "ERROR", "error": {"code": "INVALID_CREDENTIALS"}}`
+
+#### POST /api/v1/auth/logout
+- **Auth**: Bearer JWT
+- **Behaviour**: revoke the session server-side; the cookie alone is not the session
+- **Success**: `204` (no body)
+- **Error**: `401` when the session is already revoked (idempotent from the client's view)
+
+#### POST /api/v1/auth/refresh
+- **Auth**: Refresh token (HttpOnly cookie)
+- **Behaviour**: rotate the refresh token; the old one is single-use
+- **Success**: `200` + new access token
+- **Error**: `401` on reuse of a rotated token → revoke the whole family
+
+#### GET /api/v1/[resource]/:id
+- **Auth**: Bearer JWT
+- **Success**: `200 {"status": "SUCCESS", "data": {...}}`
+- **Error**: `404` unknown id — return 404, not 403, so the endpoint does not confirm existence
+
+#### POST /api/v1/[resource]/:id/[action]
+- **Auth**: Bearer JWT (action-specific role)
+- **Headers**: `Idempotency-Key` required — this is a state transition, not a field edit
+- **Success**: `200 {"status": "SUCCESS", "data": {...}}`
+- **Error**: `409` when the transition is illegal from the current state; `422` on precondition failure
+
+---
 
 #### GET /api/v1/[resource]
 - **Auth**: Bearer JWT

@@ -16,10 +16,14 @@ gate_M08() {
     elif [ -f "docs/pm/PROJECT_STATE.md" ]; then
         legacy_val="$(get_field "Intake-Legacy-Core" docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
         [ -z "$legacy_val" ] && legacy_val="$(get_field "Legacy Data" docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
-        if [ "$legacy_val" = "greenfield" ] || [ "$legacy_val" = "none" ]; then
+        # INTAKE_GATE.md and PROJECT_STATE_TEMPLATE.md define this field as yes|no, so
+        # "no" (a greenfield project) must waive M08 — it previously matched nothing.
+        case "$legacy_val" in
+            no|n|false|greenfield|none)
             echo "  [INFO] Greenfield project detected (no legacy data): M08 Data Migration is WAIVED."
             is_m08_waived=1
-        fi
+            ;;
+        esac
     fi
 
     if [ $is_m08_waived -eq 1 ]; then

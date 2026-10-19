@@ -34,7 +34,6 @@
 | System Design Methodology & Interview Problem-Solving Pattern | [`architecture/SYSTEM_DESIGN_METHODOLOGY_PATTERN.md`](./architecture/SYSTEM_DESIGN_METHODOLOGY_PATTERN.md) |
 | RESTful API Design & Resource Modeling Pattern | [`architecture/RESTFUL_API_DESIGN_PATTERN.md`](./architecture/RESTFUL_API_DESIGN_PATTERN.md) |
 | API Design Guidelines & Best Practices Cheat Sheet Pattern | [`architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`](./architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md) |
-| Dwyl Learn API Design & Product-First API Principles Pattern | [`architecture/DWYL_API_DESIGN_PATTERN.md`](./architecture/DWYL_API_DESIGN_PATTERN.md) |
 | Legacy Modernization & Strangler Fig Pattern | [`architecture/LEGACY_MODERNIZATION_STRANGLER_PATTERN.md`](./architecture/LEGACY_MODERNIZATION_STRANGLER_PATTERN.md) |
 | Full-Stack Execution Roadmap & Milestone Breakdown Pattern | [`execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md`](./execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md) |
 | AI Full-Stack Delivery Workflow & Multi-Role Dispatch Pattern | [`execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`](./execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md) |
@@ -47,7 +46,6 @@
 | Patterns Devkit Component-Based Data Graphs & SDK Pattern | [`execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md`](./execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md) |
 | Petr Kindlmann QA Skills & AI-Augmented Quality Assurance Pattern | [`execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md`](./execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md) |
 | KimDoubleB Grafana k6 Performance & Chaos Testing Pattern | [`execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md`](./execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md) |
-| Tsilverberg WebApp UAT & Full Browser Testing Pattern | [`execution/WEBAPP_UAT_BROWSER_TESTING_PATTERN.md`](./execution/WEBAPP_UAT_BROWSER_TESTING_PATTERN.md) |
 | Cloudflare Security Audit & Vulnerability Hunting Pattern | [`execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md`](./execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md) |
 | Netresearch Security Audit & OWASP/PHP/GitHub Hardening Pattern | [`execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md`](./execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md) |
 | Strobes Security Web Penetration Testing & AI Skill Architecture Pattern | [`execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md`](./execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md) |

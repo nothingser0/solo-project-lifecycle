@@ -1,6 +1,6 @@
 # Communication Plan Template
 
-> **Purpose**: Define communication strategy for Enterprise projects  
+> **Tier: Enterprise (10+ stakeholders, steering committee, executive reporting).** For a Small/Medium project use `templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md` — that is the one the scaffold copies and M02 checks.  
 > **When**: M02 Discovery or project kickoff  
 > **Target**: Enterprise projects with 10+ stakeholders
 

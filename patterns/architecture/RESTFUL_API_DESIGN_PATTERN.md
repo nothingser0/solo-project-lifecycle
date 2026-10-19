@@ -6,6 +6,21 @@
 
 ---
 
+## 0. The Four API Design Laws
+
+An API is a product, and most of its consumers are not humans reading your UI — they are automations, mobile clients, and other services. A bad API cannot be quietly fixed after release, so the design laws are worth stating before any convention.
+
+| Law | What it means in practice |
+| :--- | :--- |
+| **Appeal to laziness** | Make the intuitive path the correct one. If a caller has to read documentation to do the obvious thing, the API is wrong. |
+| **Be opinionated** | Pick one convention and enforce it, even when several are defensible. An inconsistent API forces every consumer to re-learn it. |
+| **Never surprise** | Predictability beats cleverness. If list responses are sorted by created date, they are sorted that way on every endpoint, forever. |
+| **Hard to misuse** | Validate rigorously and reject unsupported input. An API that silently accepts nonsense guarantees the client ships bugs. |
+
+A good API is **learnable** (usable with minimal documentation), **readable** (the consuming code stays clean), and **evolvable** (designed simply enough to absorb change without breaking callers).
+
+---
+
 ## 1. Core Resource-Oriented Design Rules
 
 ### A. Nouns, Not Verbs (Resource Paths)
