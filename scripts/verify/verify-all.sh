@@ -72,7 +72,9 @@ else
 fi
 echo ""
 echo "1b2. Linting every shipped template..."
-if bash scripts/verify/verify-template-lint.sh 2>&1 | grep -q "pass the placeholder"; then
+# Exit code, not a message substring: the summary text changed once already and
+# silently inverted this guard. Same form as the other preflight checks below.
+if bash scripts/verify/verify-template-lint.sh >/dev/null 2>&1; then
     echo "  ✅ all templates and patterns pass the linter"
 else
     echo "  ❌ template lint failed (run: bash scripts/verify/verify-template-lint.sh)"

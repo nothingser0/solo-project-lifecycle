@@ -60,7 +60,7 @@ To prevent conflicting directions and ensure solo developer execution efficiency
 
 ## PART II: COMMERCIAL AGREEMENT (SOW CONTRACT)
 
-### 1. Identification of Parties
+### II.1. Identification of Parties
 
 This Agreement is made and entered into on this day, [Day], date [Date], month [Month], year [Year], by and between:
 
@@ -80,7 +80,7 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 ---
 
-### 2. Scope of Work
+### II.2. Scope of Work
 
 1. The Developer is obligated to build the software in accordance with the feature details set forth in the attached document **SCOPE_STATEMENT.md** (Appendix I).
 2. Any items not explicitly specified in writing in Appendix I are legally deemed **Out-of-Scope** and cannot be demanded as Developer obligations.
@@ -101,7 +101,7 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 ---
 
-### 3. Compensation Value & Payment Milestone Schedule
+### II.3. Compensation Value & Payment Milestone Schedule
 
 1. **Total Contract Value**: Rp [Amount] (*[Amount in words]*), exclusive of Value Added Tax (VAT/PPN) and third-party infrastructure subscription fees (servers, cloud storage, paid APIs).
    - **Tax Regulatory Clause**: Applicable taxes (PPN under UU HPP No. 7/2021 at the rate in force on the invoice date, and PPh 23 if corporate client) follow statutory tax regulations in force upon invoice issuance.
@@ -123,7 +123,7 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 ---
 
-### 4. Client Dependencies & Execution Schedule
+### II.4. Client Dependencies & Execution Schedule
 
 1. The Client is required to deliver all data, account access credentials, and materials listed in the Client Dependency Register in a timely manner.
 2. In the event that the Client delays the submission of materials or review feedback exceeding **3 (three) business days**, the project completion target date shall automatically shift by the number of days of delay without penalty to the Developer.
@@ -138,7 +138,7 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 ---
 
-### 5. Change Request (CR) Procedure
+### II.5. Change Request (CR) Procedure
 
 1. Should the Client desire feature additions, workflow changes, or design adjustments beyond the initial agreement, the Client must submit a written request to the Developer.
 2. The Developer reserves the right to propose additional cost adjustments and timeline extensions (*Change Request Sheet*).
@@ -146,29 +146,29 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 ---
 
-### 5.1 Third-Party Subscriptions & Infrastructure Costs
+### II.5.1 Third-Party Subscriptions & Infrastructure Costs
 1. All recurring costs for third-party services—including but not limited to domain registration, cloud hosting/VPS (AWS/Vercel/DigitalOcean), transactional email (Resend/SendGrid), WhatsApp Gateway API (Fonnte/Wablas), database services, and payment gateway transaction fees—are **the sole financial responsibility of the Client**.
 2. All third-party accounts and subscriptions **MUST be registered under the Client corporate name and billed directly to the Client credit card**. The Developer shall never front or absorb third-party operational costs.
 
-### 5.2 Project Suspension, Kill Fee & Termination
+### II.5.2 Project Suspension, Kill Fee & Termination
 1. **Late Payment Penalty**: Invoices overdue by more than 7 (seven) calendar days will incur a late interest charge of **1% per calendar week**.
 2. **Project Pause**: The Developer reserves the right to suspend development and staging server access if client dependency submission or payment is overdue by more than 10 calendar days. Resuming a paused project requires an administrative restart fee of 5% of total contract value.
 3. **Client Termination & Kill Fee**: Should the Client terminate this agreement without Developer breach:
    - The 30% Down Payment is strictly non-refundable.
    - Work completed beyond the latest paid milestone will be billed prorata based on completed TODO.md sprint tasks.
 
-### 5.3 Developer Portfolio & Legal Review Disclaimer
+### II.5.3 Developer Portfolio & Legal Review Disclaimer
 1. **Portfolio Rights**: The Developer retains the irrevocable right to showcase screenshots, sanitized architecture case studies, and non-confidential project descriptions in professional portfolios and marketing materials unless expressly prohibited via a signed separate NDA.
 2. **Legal Review Disclaimer**: This document is an operational engineering contract drafted by an independent technical consultant. Both parties acknowledge that independent legal counsel review is recommended.
 
-### 6. Intellectual Property Rights
+### II.6. Intellectual Property Rights
 
 1. All source code, architectural designs, and software digital assets remain the intellectual property of the Developer until the full project compensation value (100%) has been paid in full by the Client.
 2. The transfer of usage rights (license) or full ownership to the Client shall only take effect from the date of signing the **Official Handover Report (BAST)** after full payment has been settled.
 
 ---
 
-### 7. Limitation of Liability
+### II.7. Limitation of Liability
 
 1. The Developer warrants that the software is built using industry-standard software engineering practices and is free of malicious code.
 2. The Developer shall not be liable for indirect business losses, lost profits, operational disruptions, or regulatory fines incurred by the Client arising from the use of this software.
@@ -176,13 +176,13 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 
 ---
 
-### 8. Data Confidentiality & Privacy Compliance (UU PDP)
+### II.8. Data Confidentiality & Privacy Compliance (UU PDP)
 
 The Parties agree to maintain the confidentiality of business information, technical data, and personal data in accordance with applicable data protection laws (such as Law No. 27 of 2022 on Personal Data Protection - UU PDP). Confidential information must not be disclosed to third parties without prior written consent from the data owner.
 
 ---
 
-### 9. Warranty Period
+### II.9. Warranty Period
 
 1. The Developer provides a bug fixing warranty period for **[30 / 60 / 90] calendar days** commencing from the signing of the BAST.
 2. The warranty applies exclusively to genuine errors/bugs where the system does not perform in accordance with agreed FSD/PRD documents.
@@ -190,7 +190,7 @@ The Parties agree to maintain the confidentiality of business information, techn
 
 ---
 
-### 10. Governing Law & Dispute Resolution
+### II.10. Governing Law & Dispute Resolution
 
 1. This agreement shall be governed by and construed in accordance with the laws of the Republic of Indonesia.
 2. Any dispute, controversy, or claim arising out of or relating to this contract, including its formation or breach, shall first be settled amicably through mutual consultation (*musyawarah*) within thirty (30) calendar days.
@@ -198,7 +198,7 @@ The Parties agree to maintain the confidentiality of business information, techn
 
 ---
 
-### 10.1 M03 Gate Confirmation Log
+### II.10.1 M03 Gate Confirmation Log
 
 > ⚠️ **M03 Commercial Gate prerequisite.** `scripts/gates/validate-gate.sh M03` verifies the
 > **M03 Gate Confirmation Log** below: the Down Payment line must be ticked **and** state a
@@ -219,7 +219,7 @@ The Parties agree to maintain the confidentiality of business information, techn
 
 ---
 
-### 10. Execution of Agreement
+### II.11. Execution of Agreement
 
 This Agreement is executed in duplicate (2 copies), sufficiently stamped with legal duty stamp (Rp 10,000 per Law No. 10/2020 Article 3 paragraph 1, verified current), and holds equal legal force for both parties.
 

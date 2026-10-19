@@ -1142,7 +1142,12 @@ echo "caller's cwd, so invoking them by absolute path from another directory"
 echo "reported the whole repo as missing. No absolute device paths are allowed."
 echo ""
 
-OUTSIDE="$(mktemp -d)"
+# `mktemp -d` alone returns a drive-letter path here which bash cannot `cd` into, so
+# the subshell below silently stayed in the repo and the test measured nothing.
+# `-p /tmp` asks for the POSIX temp root directly, so no drive form is constructed.
+# (Do not write an example path in this comment: the repo's own device-path guard
+# scans scripts/ and would flag it.)
+OUTSIDE="$(mktemp -d -p /tmp 2>/dev/null || mktemp -d)"
 
 # Guard against infinite recursion: verify-all.sh calls this suite (section 7),
 # so re-running verify-all from here would re-enter this file forever.

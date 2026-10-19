@@ -89,7 +89,7 @@ model UserConsent {
 
 ---
 
-## 3. Right to Erasure / Anonymization Workflow
+## 4. Right to Erasure / Anonymization Workflow
 
 When a user exercises their right to data deletion:
 
@@ -136,7 +136,7 @@ export async function processDataErasureRequest(userId: string) {
 
 ---
 
-## 4. Encryption & Security Controls (Pasal 35)
+## 5. Encryption & Security Controls (Pasal 35)
 
 - **Transit**: TLS 1.3 mandatory; HSTS headers enabled (`max-age=31536000`).
 - **At-Rest**: Sensitive PII fields (NIK, financial account numbers, health data) encrypted at application level using AES-256-GCM before database write.
@@ -144,7 +144,7 @@ export async function processDataErasureRequest(userId: string) {
 
 ---
 
-## 5. Cross-Border Data Transfer Protocol (Pasal 56)
+## 6. Cross-Border Data Transfer Protocol (Pasal 56)
 
 When using cloud services, AI APIs (OpenAI/Anthropic), or serverless infrastructure hosted outside Indonesia (e.g. AWS Singapore, Vercel US, Supabase US/EU):
 
