@@ -1034,7 +1034,9 @@ fi
 rm -rf "$OUTSIDE"
 
 DEVICE_PAT='(\b[A-Za-z]:[\\/](?![\\/])[A-Za-z0-9_.-]+|/Users/[a-z0-9_.-]+|/home/[a-z0-9_.-]+|/mnt/[a-z]/|AppData[\\/])'
-DEVICE_HITS="$(grep -rlE "$DEVICE_PAT" --include='*.sh' --include='*.ps1' --include='*.js' --include='*.ts' --include='*.yml' "$REPO/scripts" "$REPO/.github" 2>/dev/null | head -5 || true)"
+# verify-no-absolute-paths.js legitimately contains the patterns it searches for;
+# exempt it by name rather than forcing that file to obfuscate its own regexes.
+DEVICE_HITS="$(grep -rlE "$DEVICE_PAT" --include='*.sh' --include='*.ps1' --include='*.js' --include='*.ts' --include='*.yml' "$REPO/scripts" "$REPO/.github" 2>/dev/null | grep -v 'verify-no-absolute-paths' | head -5 || true)"
 if [ -z "$DEVICE_HITS" ]; then
     echo -e "  ${GREEN}✓${NC} no hardcoded device paths in scripts / CI"
     PASS=$((PASS + 1))

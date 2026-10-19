@@ -24,6 +24,7 @@ echo -e "${BLUE}=== Solo Project Lifecycle Integrity Check ===${NC}"
 echo ""
 
 ERRORS=0
+SKIPPED=0
 
 # 1. Verify Shell Scripts Syntax
 echo "1. Checking bash scripts syntax..."
@@ -57,6 +58,18 @@ else
     ERRORS=$((ERRORS + 1))
 fi
 
+echo ""
+echo "1c. Checking for leaked absolute paths..."
+if node --version >/dev/null 2>&1; then
+    if node scripts/verify/verify-no-absolute-paths.js; then
+        :
+    else
+        ERRORS=$((ERRORS + 1))
+    fi
+else
+    echo -e "  ${YELLOW}\u26a0${NC}  skipped \u2014 node is not executable from this shell"
+    SKIPPED=$((SKIPPED + 1))
+fi
 # 2. Verify 14 Modules Presence (M00 - M13)
 echo ""
 echo "2. Checking 14 Lifecycle Modules (docs/modules/)..."
@@ -211,7 +224,7 @@ fi
 # 8. Eval scenario catalog integrity (structural; does not run an agent)
 echo ""
 echo "8. Checking Eval Scenario Catalog..."
-if command -v node >/dev/null 2>&1; then
+if node --version >/dev/null 2>&1; then
     # Count from the runner rather than hardcoding it — the number went stale the
     # moment EVAL-09/EVAL-10 were added.
     if node scripts/evals/run-evals.js --validate >/dev/null 2>&1; then
@@ -221,11 +234,14 @@ if command -v node >/dev/null 2>&1; then
         echo -e "  ${RED}✗${NC} eval catalog invalid (run: node scripts/evals/run-evals.js --validate)"
         ERRORS=$((ERRORS + 1))
     fi
+else
+    echo -e "  ${YELLOW}\u26a0${NC}  skipped \u2014 node is not executable from this shell"
+    SKIPPED=$((SKIPPED + 1))
 fi
 
 # 9. Verify Markdown Links and Frontmatter
 echo "9. Checking Markdown Links and SKILL.md Frontmatter..."
-if command -v node >/dev/null 2>&1; then
+if node --version >/dev/null 2>&1; then
     if node scripts/verify/verify-skill-frontmatter.js >/dev/null 2>&1; then
         echo -e "  ${GREEN}✓${NC} SKILL.md frontmatter valid"
     else
@@ -244,10 +260,16 @@ if command -v node >/dev/null 2>&1; then
         echo -e "  ${RED}✗${NC} INDEX.json manifest out of sync (run: node scripts/verify/index-manifest.js)"
         ERRORS=$((ERRORS + 1))
     fi
+else
+    echo -e "  ${YELLOW}\u26a0${NC}  skipped \u2014 node is not executable from this shell"
+    SKIPPED=$((SKIPPED + 1))
 fi
 echo ""
-if [ $ERRORS -eq 0 ]; then
+if [ $ERRORS -eq 0 ] && [ $SKIPPED -eq 0 ]; then
     echo -e "${GREEN}All integrity checks passed successfully!${NC}"
+    exit 0
+elif [ $ERRORS -eq 0 ]; then
+    echo -e "${YELLOW}All bash checks passed \u2014 ${SKIPPED} node-based check(s) SKIPPED (node not executable from bash; run them explicitly)${NC}"
     exit 0
 else
     echo -e "${RED}Total errors found: $ERRORS${NC}"

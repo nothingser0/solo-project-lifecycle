@@ -1,7 +1,7 @@
 # API Design Guidelines & Best Practices Cheat Sheet Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from `RestCheatSheet/api-cheat-sheet` (Collection Metaphor, No Naked IDs, Accept-header Versioning, and ETag Caching). **§C2 (ISO 8601 time representation) is not from that source** — the source states only *"Use ISO 8601 timepoint formats for dates"* in one line; the UTC-storage rule, the date-versus-instant distinction and the multi-zone consequence are this framework's own, cross-checked against `patterns/localization/I18N_INDONESIA.md`.  
+> **Source**: Adapted from `RestCheatSheet/api-cheat-sheet` (Collection Metaphor, No Naked IDs, Accept-header Versioning, and ETag Caching). **§C2 is source-derived but extended.** The source says, in one line, *"Use ISO 8601 timepoint formats for dates in representations."* §C2 keeps that rule and adds what the line does not state: UTC storage, the date-versus-instant distinction, and the multi-zone consequence — cross-checked against `patterns/localization/I18N_INDONESIA.md`.  
 > **Scope**: Advanced RESTful API conventions focusing on consumer-driven design, collection metaphors, hypermedia representation without naked IDs, Content-Type negotiation, and HTTP caching headers.
 
 ---
@@ -20,9 +20,14 @@
   - `Content-Type: application/vnd.company.rating.thumbsup`
   - `Content-Type: application/vnd.company.rating.fivestar`
 
-### C. Evolution Over Versioning (Accept Header)
-* Prefer non-breaking additions to JSON response bodies (which require no versioning).
-* When breaking schema changes are mandatory, version via the **Accept Header** (`Accept: application/vnd.company.v2+json`) rather than polluting the URL path (`/api/v1/...`).
+### C. Evolution First; Version Only When Forced
+
+**This framework uses a URL path segment, not the Accept header.** `docs/modules/05_ARCHITECTURE_SPECS.md` requires endpoint headings of the form `#### POST /api/v1/...`, and `patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md` uses `/api/v1/...` in every example. Follow that; the paragraph below explains why the alternative exists, not what to do here.
+
+* **Prefer evolution.** Additive changes to a JSON response need no version at all. Exhaust that first — most "we need v2" requests are one new optional field.
+* **When a breaking change is unavoidable**, add a URL path segment (`/api/v2/...`) as the first node, and keep it a **platform** version: do not version individual endpoints separately.
+* **Adding a required field to a request body** is the change most likely to force a version, because existing clients omit it.
+* **The Accept-header alternative** (`Accept: application/vnd.company.v2+json`) is what REST purists recommend, and it is genuinely better for content negotiation across several representations. It is **not** used in this framework, because the gate counts URL headings and every template shows a path version. Do not introduce it in one file and URL versioning in another — that is the inconsistency this note exists to prevent.
 
 ### C2. Time Representation: ISO 8601 in UTC, Never Local
 
