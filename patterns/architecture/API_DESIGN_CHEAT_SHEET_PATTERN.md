@@ -24,6 +24,24 @@
 * Prefer non-breaking additions to JSON response bodies (which require no versioning).
 * When breaking schema changes are mandatory, version via the **Accept Header** (`Accept: application/vnd.company.v2+json`) rather than polluting the URL path (`/api/v1/...`).
 
+### C2. Time Representation: ISO 8601 in UTC, Never Local
+
+Every timestamp in a request or response body is **ISO 8601 with an explicit offset, stored and transmitted in UTC**:
+
+```json
+{ "created_at": "2026-10-19T14:23:07Z", "due_date": "2026-10-31" }
+```
+
+| Rule | Why |
+| :--- | :--- |
+| Timestamps carry `Z` or an explicit offset | Without it, `2026-10-19T14:23` is ambiguous — two clients in different zones read it differently |
+| Store in UTC; convert only at display | Storing local time means every consumer must guess the original zone, and DST makes the guess wrong twice a year |
+| Dates are `YYYY-MM-DD`, no time | A due date is not an instant. Adding `T00:00:00` to it creates an off-by-one-day bug for anyone west of UTC |
+| Never a locale format in a payload | `19/10/2026` is unparseable without knowing the locale; the same string means two different days |
+| Never an epoch number in a JSON API | It is readable only by machines, and the unit (s/m/ms) is a guess |
+
+**This matters more here than in a US/EU project**: Indonesia is UTC+7, so a naive local-time field is off by seven hours for any consumer comparing it against a server log — and the error is silent, because the value is still a valid timestamp.
+
 ### D. Mandatory HTTP Caching Headers
 Every GET response should emit caching metadata to optimize bandwidth and client latency:
 * `ETag`: Version hash including media type representation.

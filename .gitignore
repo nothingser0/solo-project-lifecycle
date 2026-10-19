@@ -207,4 +207,4 @@ playwright-report/
 # test must never leave these tracked again.
 C:/
 C:*
-C\uf03a*
+C*
