@@ -1,7 +1,9 @@
 # Enterprise Agentic Customer Service & MCP Multi-Turn Testing Pattern
 
 > **Module**: M05 (Architecture & Specs), M07 (Quality Assurance & SIT), & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Agent Skills Customer Service Demo (`murphye/agent-skills-customer-service`).  
+> **Sources**: `murphye/agent-skills-customer-service` (§1–§2 — MCP order/ticket servers, YAML scenarios, three assertion layers) and `akshaykokane/Building-Customer-Service-Agent-with-Skill.md-and-Agent-Framework` (§3–§5 — policy double-encoding, session identity, tool registration).
+>
+> **Licence**: neither upstream ships a `LICENSE` file. Everything below is written from observing the behaviour of both implementations; no upstream text is reproduced.  
 > **Scope**: Portable multi-step agent workflows defined purely in Markdown (`SKILL.md`), Model Context Protocol (MCP) server integration (`orders` and `tickets` APIs), multi-turn conversation test harnesses with YAML scenarios, tool-call pattern assertion, outcome validation, and LLM-as-a-judge quality checks.
 
 ---
@@ -171,4 +173,83 @@ Before shipping any agent skill, map every imperative verb in the procedure to a
 **An unregistered script is dead code, not a capability.** The file's presence in `Assets/` proves nothing; what matters is whether the runtime can call it.
 
 **Grep is enough to find this**: list every `AIFunctionFactory.Create` / tool registration, list every numbered instruction in the skill, and diff. A step with no tool is either a language task (say so explicitly) or a hallucination generator.
+
+---
+
+## 6. An Agent Loop Needs Named State
+
+A loop written as prose ("keep track of what the customer told you") degrades exactly when the conversation gets long — which is when it matters. Name the state.
+
+| Variable | Initial | Reset when |
+| :--- | :--- | :--- |
+| `CUSTOMER` | null | New customer interaction |
+| `INTENT` | null | New issue raised by the same customer |
+| `ORDER` | null | Intent changes to an order-scoped category |
+| `TICKET_ID` | null | Never mid-interaction; set once a ticket exists |
+| `CONFIDENCE` | null | Re-evaluated after every new fact |
+| `RETRY_COUNT` | 0 | New issue raised mid-conversation |
+
+**The reset rules carry the weight.** Two are routinely missed:
+
+- **A new, unrelated issue mid-conversation resets `INTENT`, `ORDER`, `CONFIDENCE`, and `RETRY_COUNT` — but keeps `CUSTOMER`.** Without this, the second issue inherits the first issue's retry budget and diagnoses the wrong problem with the right data.
+- **`RETRY_COUNT` resets on a new issue**, or the third question in a long session inherits an exhausted budget and escalates immediately.
+
+**`CONFIDENCE` must be set by a rule, not a feeling.** The version that works: `LOW` if the data is incomplete or contradictory, if the action exceeds the auto-approve threshold, or if the issue matches any escalation criterion. `HIGH` otherwise. Three conditions, all checkable.
+
+---
+
+## 7. The Retry Gate
+
+An agent that retries a failing resolution will retry forever — the customer says "no", the agent tries again, and there is no state that ever says stop.
+
+```
+RETRY_COUNT += 1
+if RETRY_COUNT < 3:  → retry with the new context
+if RETRY_COUNT >= 3: → CONFIDENCE = LOW; escalate; note the count on the ticket
+```
+
+**Two details make it work:**
+
+| Detail | Why |
+| :--- | :--- |
+| The increment happens in a dedicated gate step, not inside the retry | Otherwise the budget is re-entered or skipped depending on which branch ran |
+| Escalation writes `RETRY_COUNT` onto the ticket | The human receives the count; "customer is unhappy" without "we tried three times" loses the context |
+
+**Every loop needs a bound.** A retry gate, a turn limit, or a token budget — the name matters less than its existence. An unbounded agent loop in production is a cost incident with a customer on the other end.
+
+---
+
+## 8. Three Assertion Layers, Not One
+
+A scenario file that only checks the transcript passes an agent that did the wrong thing politely. This repo's format asserts three independent layers:
+
+```yaml
+expected_tool_calls:
+  must_include:
+    - pattern: "mcp__orders__lookup_customer.*email=alice@example\\.com"
+    - pattern: "mcp__tickets__escalate_ticket"
+  must_not_include:
+    - pattern: "mcp__orders__refund"        # escalation must NOT refund
+
+expected_outcomes:
+  customer_identified: "C-1001"
+  escalated: true
+  refund_processed: false
+
+quality_checks:
+  - "Agent greeted the customer by first name (Alice)"
+  - "Agent provided a ticket ID for reference"
+```
+
+| Layer | Catches | Deterministic? |
+| :--- | :--- | :--- |
+| **Tool calls** | The agent taking a forbidden action, or skipping a required one | Yes — regex, byte-stable |
+| **Outcomes** | The wrong end state, even when the path looked right | Yes |
+| **LLM-as-judge** | Tone, phrasing, whether the customer's question was actually answered | No — a signal, never a gate |
+
+**The `must_not_include` assertion is the highest-value line in the file.** For a billing dispute, "escalated" and "refunded" are both plausible resolutions and only one is correct. An outcome check alone would pass the wrong one; the negative tool assertion is what pins it.
+
+**Judge output must never block a merge.** A non-deterministic check that gates CI produces flaky blocks and a team that learns to override red. Assert deterministically, judge advisory.
+
+**One scenario per failure mode.** The five scenarios that matter for a support agent: happy path · auto-approved action · escalation because the amount exceeds the limit · escalation because retries ran out · a new issue raised mid-conversation. That last one is the one nobody writes, and it is where the state-reset bug lives.
 
