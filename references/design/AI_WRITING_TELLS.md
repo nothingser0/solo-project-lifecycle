@@ -151,6 +151,30 @@ These appear in copy that has **already been de-slopped**. The banned words and 
 | **Tidy closers** (Ban) | "Because your team deserves better." | A quotable last line that could close any page. End on a number, a named customer, the offer, or the CTA |
 | **Reflexive specificity** (Cap) | Every claim has a suspiciously round stat | Specificity copied as a style. Every number must be real and sourced — mark gaps `[NEED: proof]` instead of filling them |
 
+### 8.1 The claim-evidence audit (run before a document ships)
+
+`[NEED: proof]` is a rule you apply while writing. This is the check you run **after**, and it catches what the rule misses: numbers that got filled in with something plausible.
+
+**Extract every number and attributive claim, then sort each into three buckets.**
+
+| Bucket | Meaning | Action |
+| :--- | :--- | :--- |
+| **Supported** | The value appears in a source document you can point to (the client brief, the test log, the API response) | Keep. Record where. |
+| **Attributed** | The sentence carries a citation, a named source, or a prior-work reference | Keep. The attribution is the evidence. |
+| **Needs evidence** | Neither — the number exists only in this draft | **This is the finding.** Restate it from a real source, attribute it, or remove it. |
+
+**What counts as a claim worth auditing**: percentages, monetary amounts, durations, counts, "N× faster", "up to N users", uptime figures, and any sentence in the shape "studies show" / "experts agree" / "industry leading".
+
+**Where it applies in this framework** — every artifact a client reads:
+- `PROPOSAL_DECK.md`, `QUOTATION_EMAIL.md` — a fabricated benchmark in a proposal is a contractual problem
+- `README.md`, `USER_MANUAL.md` — handover artifacts that outlive the engagement
+- `SITE_COPY` / landing copy — "10,000+ users" with 40 users is the classic
+- `BENCHMARK.md`, load-test reports — the number must trace to a run, not to a memory of a run
+
+**The rule that makes it work**: a number with no source is *not* a weakness to be softened — it is a defect, and the fix is removal or `[NEED: <what you need>]`, never a rounder-looking guess. A missing number costs one question. An invented one costs the client's trust and, in a proposal, the contract.
+
+**Do not run this on internal drafts.** It is a gate before delivery, not a writing style; applied too early it interrupts the draft with questions you have not answered yet.
+
 ---
 
 ## 9. Rewrite rules
@@ -242,6 +266,6 @@ For copy (headlines, microcopy, subject lines), the self-check above is necessar
 | :--- | :--- |
 | `DESIGN_SPEC.md` / `STATE_COPY.md` | Error, empty and success copy is the most-read text in the product |
 | `README.md` / `USER_MANUAL.md` | The handover artifact the client keeps after you leave |
-| `PROPOSAL_DECK.md` / `QUOTATION_EMAIL.md` | Copy that decides whether the contract is signed |
+| `PROPOSAL_DECK.md` / `QUOTATION_EMAIL.md` | Copy that decides whether the contract is signed — run §8.1 before sending |
 | M07 `POLISH_AUDIT` row 23–25 | AI-slop tells are already a blocking audit row — this file is the detail behind it |
 | Any agent-written summary | An agent describing its own work defaults to these patterns most of all |
