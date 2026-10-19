@@ -26,7 +26,7 @@
 | Scale | P0 Must-Have Features | Blast Radius & Data | External Integrations | SLA & Uptime | Governance / Team | Timeline |
 |:------|:----------------------|:--------------------|:----------------------|:-------------|:------------------|:---------|
 | **Kecil (Fast-Track MVP)** | **3–7 P0** | Rendah (tidak ada mutasi finansial/rekam medis) | DB terisolasi (tanpa webhook eksternal) | Best-effort | 1 founder / dev | <4 minggu |
-| **Menengah (Solo SaaS / Agency)** | **8–15 P0** | Sedang (transaksi langganan, billing pengguna) | Webhook Payment Gateway / SMS / Mailer | 99.0% SLA | 1 founder atau 1 Client PIC | 1–3 bulan |
+| **Menengah (Solo SaaS / Agency)** | **6–15 P0** | Sedang (transaksi langganan, billing pengguna) | Webhook Payment Gateway / SMS / Mailer | 99.0% SLA | 1 founder atau 1 Client PIC | 1–3 bulan |
 | **Besar (Platform / Scaled)** | **16–25 P0** | Tinggi (multi-cabang, mutasi finansial massal) | Integrasi multi-vendor, ETL migrasi DB | 99.5% SLA | Tim vendor / multi-divisi | 3–6 bulan |
 | **Enterprise (Mission-Critical)** | **>25 P0** | Kritis (perbankan, kesehatan, regulasi ketat) | Core banking, ERP legacy, SSO/SAML | 99.9% 24/7 SLA | Multi-stakeholder, CAB, audit berkala | 6–12+ bulan |
 

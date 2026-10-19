@@ -4,7 +4,7 @@ Scale-specific alternatives to a main runbook. A variant **replaces** its parent
 
 | Variant | Replaces | Use when | Load |
 | :--- | :--- | :--- | :--- |
-| `04_UIUX_LITE.md` | `../04_UIUX_PROTOTYPING.md` | **Small / MVP** scale (3–7 P0, solo, <4 weeks) | **instead of** the full runbook, never both |
+| `04_UIUX_LITE.md` | `../04_UIUX_PROTOTYPING.md` | **Small / MVP** scale (1–5 P0, solo, <4 weeks) | **instead of** the full runbook, never both |
 
 ## Relationship to the other subfolders
 

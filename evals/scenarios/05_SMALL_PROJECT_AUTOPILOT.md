@@ -3,7 +3,7 @@
 ## 1. Test Metadata
 - **ID**: `EVAL-05`
 - **Focus**: Autopilot Mode Exception for Small Fast-Track Projects
-- **Target Scale**: Small Scale (3–7 P0 features, MVP <4 weeks, 1 decision maker)
+- **Target Scale**: Small Scale (1–5 P0 features, MVP <4 weeks, 1 decision maker)
 
 ---
 

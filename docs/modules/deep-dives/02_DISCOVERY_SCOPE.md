@@ -146,7 +146,7 @@ function sanitizeCSVCell(value: string): string {
 **Power/Interest quadrants**: Manage Closely (paying owner) / Keep Satisfied (CFO, legal) / Keep Informed (power users, staff) / Monitor (end customers).
 
 **Phase duration guidelines**:
-| Stage | Small (3–7 Must) | Medium (8–15 Must) | Large (16–25 Must) |
+| Stage | Small (1–5 Must) | Medium (6–15 Must) | Large (16–25 Must) |
 |---|---|---|---|
 | M04 UI/UX | 1 wk | 2–3 wks (30–50 screens + legal docs) | 3–4 wks |
 | M05 Architecture | 0.5 wk | 1 wk (ERD + RLS) | 1–2 wks |

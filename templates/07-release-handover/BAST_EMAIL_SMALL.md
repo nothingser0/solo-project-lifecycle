@@ -215,7 +215,7 @@ Date: October 4, 2024
 ## Legal Notes
 
 **Why Email Format?**
-- Small scale projects (3-7 P0 features, non-client solo/internal delivery) don't need a formal BAST document
+- Small scale projects (1-5 P0 features, non-client solo/internal delivery) don't need a formal BAST document
 - Email approval is legally valid (electronic signature law)
 - Faster turnaround (no printing, scanning, mailing)
 - Easy to archive and reference

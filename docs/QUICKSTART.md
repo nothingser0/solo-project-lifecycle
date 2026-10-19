@@ -1,6 +1,6 @@
 # Quick Start MVP Guide (<4 Weeks)
 
-> **Target**: Solo developers building simple MVPs (3-7 P0 features max, < Rp 20 million (~$1,250), < 4 weeks)  
+> **Target**: Solo developers building simple MVPs (1-5 P0 features max, < Rp 20 million (~$1,250), < 4 weeks)  
 > **Philosophy**: Ship working software fast, skip documentation overhead
 
 ---
@@ -98,7 +98,7 @@ Week 4: Deploy (2 days)
 - ✅ M10 (Deployment) → 1 day launch
 - ✅ M12-LITE (Ops) → Self-maintain via `templates/08-maintenance-ops/RUNBOOK_OPS.md`
 
-> 💡 **For Solo SaaS with Multiple Features (8-15 P0)**:
+> 💡 **For Solo SaaS with Multiple Features (6-15 P0)**:
 > Do NOT skip market validation completely. Use the **Solo SaaS Path** defined in `SKILL.md`:
 > `M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13`
 > (Validates demand with 5 user interviews and waitlist test via `templates/01-discovery-commercial/M00_LITE_TEMPLATE.md`).
