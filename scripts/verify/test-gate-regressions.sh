@@ -882,6 +882,63 @@ expect_capacity() {
     fi
 }
 
+# The Medium band is 6-15 in SKILL.md, M01, M02 and SCOPE_STATEMENT. The classifier
+# once used `-ge 8`, making the documented 6-7 band unreachable: a 6-P0 project was
+# classified small while every document called it Medium. These three pin both edges.
+# expect_scale_band <name> <p0-count> <want-scale-token>
+expect_scale_band() {
+    local name="$1" n="$2" want="$3"
+    local dir="$WORK/band"
+    make_project "$dir" "- **Scale**: small\n- Delivery: solo\n"
+    {
+        printf '# Scope\n\n| ID | Feature | Priority |\n| :--- | :--- | :--- |\n'
+        local i=1
+        while [ "$i" -le "$n" ]; do
+            printf '| **F-%03d** | feature %d | Must |\n' "$i" "$i"
+            i=$((i + 1))
+        done
+    } > "$dir/docs/pm/SCOPE_STATEMENT.md"
+    local out got
+    out="$(cd "$dir" && bash "$SCRIPT_DIR/../gates/classify-scale.sh" docs/pm/SCOPE_STATEMENT.md 2>&1 || true)"
+    got=$(printf '%s' "$out" | sed -n 's/^Evaluated Scale[[:space:]]*:[[:space:]]*\([a-z]*\).*/\1/p' | head -1)
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (${n} P0 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (${n} P0 -> ${got:-<none>}, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_scale_band "Scale band: 5 P0 stays small" 5 "small"
+expect_scale_band "Scale band: 6 P0 is medium (lower edge)" 6 "medium"
+expect_scale_band "Scale band: 15 P0 is medium (upper edge)" 15 "medium"
+expect_scale_band "Scale band: 16 P0 is large" 16 "large"
+
+# M12 at Large requires docs/pm/INCIDENT_RESPONSE.md, and no scaffold branch produced
+# it — a correctly scaffolded Large project failed the gate. Both scaffolds now copy
+# 08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md there; this pins the requirement.
+# expect_m12_incident <name> <scale> <create-incident:yes|no> <want>
+expect_m12_incident() {
+    local name="$1" scale="$2" create="$3" want="$4"
+    local dir="$WORK/m12inc"
+    make_project "$dir" "- **Scale**: $scale\n- Delivery: client\n"
+    printf '# Warranty\n\n## Coverage\n\n## Exclusions\n\n## Service Level Agreement\n' > "$dir/docs/pm/WARRANTY_POLICY.md"
+    [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n\n## Comms\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+    local out rc got
+    out="$(cd "$dir" && bash "$GATE" M12 2>&1)"; rc=$?
+    got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M12 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M12 -> $got, expected $want)"
+        echo "$out" | grep -E "INCIDENT_RESPONSE" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m12_incident "M12 Large without INCIDENT_RESPONSE.md" large no BLOCKED
+expect_m12_incident "M12 Large with INCIDENT_RESPONSE.md" large yes ALLOWED
+
 # 20 P0 with nothing non-delegable -> capacity risk, overridable (Large tier).
 CAP_LARGE='- **Scale**: large\n- Delivery: solo\n- Intake-Success-Metric: 500 orders/day\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 40 hrs/week x 20 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
 CAP_ACCEPTED='- Accepted-By: S. Rahma\n- Accepted-On: 2026-10-12\n- Scope-Version: v1\n'

@@ -10,7 +10,7 @@
 ## 1. Migration Scope
 
 ### Source System
-- **Inputs-Received**: [what was received] from [client PIC] on [YYYY-MM-DD] — the AI agent cannot supply source data; leave this blank until the client hands it over.
+- **Inputs-Received: [what was received] from [client PIC] on [YYYY-MM-DD] — leave this as-is until the client hands the data over; the gate rejects it while it still holds placeholders.
 - [ ] **Format**: Excel / CSV / Old database / Manual entry
 - [ ] **Location**: Client provides file or database access
 - [ ] **Volume**: Estimated row count: ___________

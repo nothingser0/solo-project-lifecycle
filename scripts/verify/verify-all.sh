@@ -71,6 +71,15 @@ else
     SKIPPED=$((SKIPPED + 1))
 fi
 echo ""
+echo "1d. Checking per-scale scaffold placement..."
+if bash scripts/verify/test-scaffold-per-scale.sh >/dev/null 2>&1; then
+    echo "  ✅ every scale stages the expected harness + A-series artifacts"
+else
+    echo "  ❌ per-scale scaffold placement failed (run: bash scripts/verify/test-scaffold-per-scale.sh)"
+    ERRORS=$((ERRORS + 1))
+fi
+
+echo ""
 echo "1d. Checking scaffold parity (.sh vs .ps1)..."
 if node --version >/dev/null 2>&1; then
     if node scripts/verify/verify-scaffold-parity.js; then

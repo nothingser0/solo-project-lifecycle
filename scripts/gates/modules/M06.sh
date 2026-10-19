@@ -63,7 +63,7 @@ gate_M06() {
         done
         if [ -n "$m06_harness_missing" ]; then
             echo "  ❌ STEP 2: harness file(s) missing from project root:$m06_harness_missing"
-            echo "     Staging is transit, not a destination: copy these 7 from docs/harness-root/"
+            echo "     Staging is transit, not a destination: copy the missing files above from docs/harness-root/"
             echo "     (or templates/04-dev-execution/<stack>/) to the project root, verify, THEN delete staging."
             GATE_FAILED=1
         else

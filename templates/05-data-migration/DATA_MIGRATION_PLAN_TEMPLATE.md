@@ -16,7 +16,7 @@
 > `validate-gate.sh M08` fails until this records that the client actually handed over
 > the source data and credentials. Never simulate, sample, or invent them.
 
-Inputs-Received: [what was received] from [client PIC] on [YYYY-MM-DD] — fill in only what actually arrived; the gate rejects this line while it still holds placeholders
+Inputs-Received: [what was received] from [client PIC] on [YYYY-MM-DD] — leave this as-is until the client hands the data over; the gate rejects it while it still holds placeholders.
 - Source data: [file name / export / DB dump — or "not yet received"]
 - Sandbox credentials: [received / not yet received]
 - Master data (reference tables): [received / not yet received]

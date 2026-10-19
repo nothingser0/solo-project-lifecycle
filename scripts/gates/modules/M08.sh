@@ -31,7 +31,10 @@ gate_M08() {
 
         # Content verification: reject raw template placeholders in data migration plan
         if [ -f "$plan_file" ]; then
-            if grep -qE "\[Your Name\]|\[Application Name\]|\[Client Company|\[YYYY-MM-DD\]" "$plan_file"; then
+            # The Inputs-Received line carries its own dedicated check (check_client_inputs,
+            # which names the exact fix). Grepping it here too would report one omission twice.
+            if grep -vE "Inputs[- ]Received|Client[- ]Provided|Received from client|Handover received" "$plan_file" \
+                | grep -qE "\[Your Name\]|\[Application Name\]|\[Client Company|\[YYYY-MM-DD\]"; then
                 echo "  ❌ $plan_file still contains unresolved template placeholders ([...])!"
                 GATE_FAILED=1
             fi

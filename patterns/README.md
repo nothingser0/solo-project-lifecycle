@@ -4,7 +4,7 @@
 >
 > Two kinds are kept: **Indonesia/regulatory** patterns (payment rails, UU PDP, PPh/PPN, IDR) and **decision-model** patterns (threat modeling, API versioning choice, CI gate enforcement, ASO indexing) that resolve a question rather than recite a library's API.
 >
-> The 14 generic patterns that failed that test (Zod, caching, N+1, auth, testing, CI/CD, git, observability, API conventions, DB seeding, error boundaries, GraphQL, design patterns) live in `archive/patterns/`.
+> The generic patterns that failed that test (Zod, caching, N+1, auth, testing, CI/CD, git, observability, API conventions, DB seeding, error boundaries, GraphQL, design patterns) live in `archive/patterns/`.
 
 | Pattern | File |
 |:---|:---|
