@@ -16,7 +16,9 @@ Solo developers must never select infrastructure based on brand names ("we need 
 
 ## 2. Hard Capacity Rules of Thumb (Orders of Magnitude)
 
-Memorize these reference points to ground sizing discussions without external lookups:
+Memorize these reference points to ground sizing discussions without external lookups.
+
+> **Read the order of magnitude, then measure.** These are point-query baselines for a *simple* request on *modest* hardware. A range scan, a multi-table join, or a fat payload can be **10x worse**; a well-tuned node can be better. Use the table to decide whether you are one database or ten, then validate against your own benchmark before it reaches a quote, an SLA, or a capacity plan. A number copied from this table into a client promise is a guess wearing a unit.
 
 | Component / Layer | Realistic Throughput Baseline | Architectural Limit / Transition Trigger |
 | :--- | :---: | :--- |
