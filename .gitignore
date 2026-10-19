@@ -202,3 +202,9 @@ playwright-report/
 # process can still recreate it until restarted. Never commit it.
 --db-path
 
+# Mangled scaffold paths (Windows path passed through bash lost its separators,
+# producing a literal "C:" / "C" directory at the repo root). A scaffold
+# test must never leave these tracked again.
+C:/
+C:*
+C\uf03a*

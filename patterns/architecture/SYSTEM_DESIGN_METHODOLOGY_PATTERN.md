@@ -20,9 +20,13 @@ When faced with an ambiguous, open-ended architecture requirement (e.g., "Design
 * *Rule*: Never assume scale; establish explicit numbers via Back-of-the-Envelope sizing (`references/architecture/BACK_OF_THE_ENVELOPE_CAPACITY_PLAYBOOK.md`).
 
 ### Step 2: High-Level Abstract Design
-* Outline core components on a blank slate: Client $\to$ Load Balancer $\to$ API Service $\to$ Database / Cache.
+
+**Draw it at the scale the project actually has, not the scale it might reach.** Sketch the system for its real current size first — for most solo and small projects that is one server and one database. Scaling is a later step, and doing it first hides which decisions were structural.
+
+* Outline core components on a blank slate **at that scale**, then note what would change at 100x.
 * Define major data flows (e.g., how a message travels from sender to server to recipient).
 * Verify boundaries against the 4-boundary topological model (`patterns/architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md`).
+* Reference for the honest starting point: `docs/modules/deep-dives/05_ARCHITECTURE_SPECS.md` — *"<100 users: Monolith is sufficient (PostgreSQL single instance)"*.
 
 ### Step 2.1: The Component Sweep (before you deep-dive)
 
@@ -41,7 +45,7 @@ The four steps above tell you *how* to reason. This is the checklist that stops 
 
 **Items 1–7 are technical; item 8 is not, and that is why it is missed.** A design that cannot express a billing boundary, a plan limit, or a metered unit will need rework when pricing arrives — and pricing arrives before launch, not after.
 
-**Build the sketch at the smallest honest scale first.** Take the figure to ~100 users before scaling it: at that size the data structures and component boundaries are visible without the noise of sharding and fan-out. Then scale it and note what changes. Solving at ten million users first hides which decisions were actually structural.
+**Run the sweep at the current scale too.** A row marked "not needed" is a legitimate answer — CDN and load balancer are not needed at 100 users. What is not legitimate is marking it "not needed" without knowing what would make it needed.
 
 ---
 

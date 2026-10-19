@@ -55,34 +55,49 @@
 
 ### 3.1 System Overview Diagram
 
+**Draw two columns, not one.** A single scaled topology hides the question that matters: which layers do you actually need *today*? Fill the right column with what would change at 100x, and leave a layer out of the left column whenever it is not yet justified.
+
+| Layer | At your current scale | At 100× |
+| :--- | :--- | :--- |
+| User devices | | |
+| CDN | | |
+| Load balancer / API gateway | | |
+| Application servers | | |
+| Database | | |
+| Cache | | |
+| Background job queue | | |
+| External services | | |
+
+For a project under ~100 users the honest left column is usually: devices → one application server → one database (plus whatever external services you actually call). **`docs/modules/deep-dives/05_ARCHITECTURE_SPECS.md` states it directly: "<100 users: Monolith is sufficient (PostgreSQL single instance)."** A CDN, a load balancer and read replicas are answers to a problem this project does not have yet.
+
+Then draw the topology you actually chose:
+
 ```
 [User Devices]
       ↓
-[CDN (Cloudflare)]
+[Application Server]
       ↓
-[Load Balancer / API Gateway]
-      ↓
-[Application Servers (Auto-scaling)]
-      ↓
-[Database (Primary + Read Replicas)] ← → [Cache (Redis)]
-      ↓
-[Background Job Queue (Bull + Redis)]
+[Database (PostgreSQL)]
       ↓
 [External Services (Payment, Email, Storage)]
 ```
+
+Replace this block with the real diagram once the two columns are filled. Keeping the scaled example above as "the default" is how a 50-user internal tool ends up with a Redis cluster nobody can operate.
 
 ### 3.2 Technology Stack
 
 **Frontend**: [Next.js 15 / React 19 / etc.]  
 **Backend**: [Node.js 22 / Python 3.12 / etc.]  
 **Database**: [PostgreSQL 16 (Supabase)]  
-**Cache**: [Redis (Upstash)]  
-**CDN**: [Cloudflare]  
+**Cache**: [Redis (Upstash) **or** `N/A — no read spike yet`]  
+**CDN**: [Cloudflare **or** `N/A — single region, low traffic`]  
 **Hosting**: [Vercel / AWS / GCP]  
-**Background Jobs**: [Bull + Redis / AWS SQS]  
+**Background Jobs**: [Bull + Redis / AWS SQS **or** `N/A — all work is synchronous`]  
 **Monitoring**: [Sentry + Vercel Analytics / Datadog]
 
 **Rationale**: [Explain why these choices (Boring Tech, team expertise, cost, managed services)]
+
+> **Every layer in §3.1's "not needed today" column needs an `N/A — <reason>` here.** A blank or a plausible-looking vendor name is how a project acquires a cache it cannot operate. `N/A` with a reason is a decision; an empty field is an omission, and a pre-filled default is a decision nobody made.
 
 ---
 
