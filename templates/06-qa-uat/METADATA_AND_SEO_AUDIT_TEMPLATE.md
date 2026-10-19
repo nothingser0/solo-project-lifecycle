@@ -92,12 +92,36 @@ Fix in this order. A critical failure invalidates the work below it.
 
 ## 7. Locale & alternates (low-medium)
 
+Rated low-medium **only when there is one locale**. With two or more, a broken hreflang set is high: Google ignores the *entire* set, not the bad entry, so a site can believe it is geo-targeted while serving nothing.
+
 | # | Check | Evidence | Status |
 | :-: | :--- | :--- | :--: |
 | 7.1 | `<html lang>` is correct | | [ ] |
 | 7.2 | `og:locale` is set when localization exists | | [ ] |
 | 7.3 | `hreflang` alternates exist **only** for pages that truly exist | | [ ] |
 | 7.4 | Localized pages canonicalize correctly per locale | | [ ] |
+| 7.5 | **Self-referencing tag** on every page — it links to itself | | [ ] |
+| 7.6 | **Return tags** — A→B implies B→A, all the way round | | [ ] |
+| 7.7 | `x-default` present when a fallback/selector exists; exactly one per set | | [ ] |
+| 7.8 | Language codes are ISO 639-1 (`en`, not `eng`; `ja`, not `jp`) | | [ ] |
+| 7.9 | Region codes are ISO 3166-1 Alpha-2 (`en-GB`, not `en-uk`); a region never appears without a language; `EU`/`UN`/`es-LA` are invalid | | [ ] |
+| 7.10 | hreflang appears only on **canonical** URLs, matching them exactly (protocol, host, trailing slash) | | [ ] |
+| 7.11 | One implementation method only — HTML `<link>`, HTTP header, or sitemap, not several | | [ ] |
+
+**Verify the mesh, not the list.** Load every URL in the set and confirm each returns all the others including itself. A set that is missing one return tag is not partially working — it is ignored wholesale.
+
+### 7.12 Claims that must carry a date
+
+Search guidance changes, and several widely-repeated recommendations are dead. Two rules for anything written into this section:
+
+| Claim to avoid | Why |
+| :--- | :--- |
+| "Set country targeting in Search Console" | The manual country-targeting setting and the International Targeting report were **removed in 2022**. hreflang is the remaining lever. |
+| "Add `<meta name="geo.position">` / HTML geotargeting" | Google **ignores** locational meta tags and geotargeting attributes. |
+| "hreflang is a ranking signal" | It is a **hint**, not a directive. Present it as annotation, never as ranking weight. |
+| "`llms.txt` / chunking / AI-rephrasing improves AI-search visibility" | Rejected by Google's own guidance. Treat community advice that contradicts a primary source as unproven. |
+
+**Every statistic in this report carries its source and the date you checked it.** A figure with no date cannot be distinguished from a figure that was true three years ago — and SEO reports are full of both.
 
 ## 8. Tool boundaries (critical)
 
