@@ -21,7 +21,7 @@
 
 ---
 
-## 2. Core Metrics to Monitor (RED Method)
+## 2. Core Metrics to Monitor (RED + Saturation)
 
 ### Request Rate
 - **Metric**: Requests per second (RPS)
@@ -40,6 +40,23 @@
   - P95 <500ms (95% users satisfied)
   - P99 <1000ms (catch outliers)
 - **Alert**: P95 >1000ms
+
+### Saturation — the signal RED does not give you
+
+RED tells you what already went wrong. Saturation tells you what is *about to* go wrong, which is the only window where you can still act cheaply. Add it as a fourth signal: **Rate · Error · Duration · Saturation**.
+
+| Resource | Metric to watch | Saturation point | Why it matters |
+| :--- | :--- | :--- | :--- |
+| **DB connection pool** | active / max connections | >70% sustained | The most common solo-project outage: pool exhausts, every request queues, latency goes vertical |
+| **CPU** | load average ÷ core count | >1.0 sustained | Above 1.0 work is queuing, not processing |
+| **Memory** | RSS / container limit | >85% | OOM kill looks like a random restart, not like memory |
+| **Disk** | free space | >85% used | Postgres stops accepting writes at 100%; logs fill first |
+| **Queue / worker backlog** | depth, oldest-job age | oldest job age growing | Depth alone hides it — a queue of 5 that never drains is worse than 500 that do |
+| **File descriptors** | open / limit | >80% | The failure is `EMFILE`, which reads as a mysterious network error |
+
+**Why the pool is the one to watch on a solo project**: a 60-second timeout with a 100-connection pool does not degrade — it collapses. Every waiting request holds a connection, so the first slow query becomes an outage. Alert at 70%, not at 100%.
+
+**The distinction to keep straight**: a RED alert fires because users are already affected. A saturation alert fires while they are not yet. If your alert list only contains RED, you are always finding out afterwards.
 
 ---
 
