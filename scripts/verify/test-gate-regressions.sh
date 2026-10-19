@@ -454,7 +454,9 @@ expect_client_input() {
     local out
     out="$(cd "$dir" && bash "$GATE" M08 2>&1 || true)"
     local got="ALLOWED"
-    if echo "$out" | grep -qE "no record that the client-supplied"; then
+    # Two distinct rejection messages: no marker at all, and a marker that is still a
+    # placeholder. Both mean BLOCKED; matching only the first hid the placeholder case.
+    if echo "$out" | grep -qE "no record that the client-supplied|client-input line is present but still a placeholder"; then
         got="BLOCKED"
     fi
     if [ "$got" = "$want" ]; then
@@ -468,6 +470,10 @@ expect_client_input() {
 
 expect_client_input "M08 plan with no client-input record (Medium)" BLOCKED "# PLAN\n\nno handover recorded here at all\n"
 expect_client_input "M08 plan recording the client handover (Medium)" ALLOWED "# PLAN\n\nInputs-Received: POS export from Budi (PIC) on 2026-10-12\n\n"
+# A present-but-unfilled marker is the false green this check exists to prevent:
+# the shipped template line matched the key and nothing else was required.
+expect_client_input "M08 plan with the unfilled Inputs-Received template line (Medium)" BLOCKED "# PLAN\n\nInputs-Received: [what was received] from [client PIC] on [YYYY-MM-DD]\n"
+expect_client_input "M08 plan with an empty Inputs-Received value (Medium)" BLOCKED "# PLAN\n\nInputs-Received:\n"
 
 # E. The authority matrix must exist and be referenced from SKILL.md.
 check_required "docs/AUTHORITY.md exists (single source of role attribution)" "$REPO/docs/AUTHORITY.md" "HUMAN-ONLY|FORBIDDEN"

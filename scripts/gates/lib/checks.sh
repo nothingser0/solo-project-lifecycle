@@ -582,9 +582,23 @@ check_client_inputs() {
     local plan="$1" label="$2"
     [ -f "$plan" ] || return 0 # existence enforced by check_required
 
+    # The marker alone is a false green: the unfilled template line matches too, so a plan
+    # where the client sent nothing would pass. Require a recorded value after the colon.
     if grep -qiE "Inputs[- ]Received|Client[- ]Provided|Received from client|Handover received" "$plan" 2>/dev/null; then
-        echo "  ✅ $label: client input receipt recorded"
-        return 0
+        local receipt
+        receipt=$(grep -iE "Inputs[- ]Received|Client[- ]Provided|Received from client|Handover received" "$plan" 2>/dev/null \
+            | head -1 | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r')
+        # Reject: empty, bracketed placeholders, or a line still carrying template tokens.
+        if [ -n "$receipt" ] \
+            && ! printf '%s' "$receipt" | grep -qE "^\[.*\]$|\[what was received\]|\[client PIC\]|\[YYYY-MM-DD\]|\[what\]|<what>|<client PIC>|<YYYY-MM-DD>"; then
+            echo "  ✅ $label: client input receipt recorded ($receipt)"
+            return 0
+        fi
+        echo "  ❌ $label: the client-input line is present but still a placeholder."
+        echo "     Record what actually arrived: 'Inputs-Received: <what> from <client PIC> on <YYYY-MM-DD>'."
+        echo "     A filled key with no value is the same as no receipt."
+        GATE_FAILED=1
+        return 1
     fi
 
     echo "  ❌ $label: no record that the client-supplied inputs were actually received."

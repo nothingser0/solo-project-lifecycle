@@ -8,6 +8,11 @@
 gate_M06() {
     echo "=== M06: Development Execution Gate Checklist ==="
     check_intake_gate || true
+    # HARNESS POLICY (one rule, applied everywhere below): `docs/harness-root/` is a
+    # STAGING directory. Files must end up at the project ROOT for this gate to pass —
+    # that copy is the human step M06 exists to verify. The staging path is accepted only
+    # where the gate needs to READ content before the copy happens (STEP 2 below enforces
+    # root placement for all seven files, and B1 does the same for RUNBOOK/VERIFY).
     check_required "AGENTS.md" "docs/harness-root/AGENTS.md" 500
     check_required "TODO.md" "docs/harness-root/TODO.md" 500
     # B1: Small scale requires AGENTS.md + TODO.md + DESIGN.md at the root harness level.
@@ -58,7 +63,8 @@ gate_M06() {
         done
         if [ -n "$m06_harness_missing" ]; then
             echo "  ❌ STEP 2: harness file(s) missing from project root:$m06_harness_missing"
-            echo "     Copy from docs/harness-root/ (or templates/04-dev-execution/<stack>/) BEFORE deleting staging."
+            echo "     Staging is transit, not a destination: copy these 7 from docs/harness-root/"
+            echo "     (or templates/04-dev-execution/<stack>/) to the project root, verify, THEN delete staging."
             GATE_FAILED=1
         else
             echo "  ✅ STEP 2: 9-file root harness complete (AGENTS/CONTEXT/ARCHITECTURE/DESIGN/CONVENTIONS/TODO/.env.example + RUNBOOK_LOCAL/VERIFY_LOCAL below)"

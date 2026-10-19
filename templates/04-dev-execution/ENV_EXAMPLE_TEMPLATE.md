@@ -19,7 +19,7 @@ JWT_EXPIRES_IN="7d"
 # ==============================================================================
 # 32-byte Master Encryption Key in hexadecimal format (64 hex characters)
 # Generate via terminal: node -e "console.log(crypto.randomBytes(32).toString('hex'))"
-ENCRYPTION_KEY="0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+ENCRYPTION_KEY="<64-hex-from-openssl-rand-hex-32>"
 
 # ==============================================================================
 # CLOUD STORAGE (CLOUDFLARE R2 / AWS S3)
@@ -33,7 +33,7 @@ STORAGE_REGION="auto"
 # ==============================================================================
 # TRANSACTIONAL EMAIL (RESEND / SMTP)
 # ==============================================================================
-EMAIL_FROM="[App Name] <no-reply@domain.com>"
+EMAIL_FROM="no-reply@example.com"
 RESEND_API_KEY="re_123456789_abcdefg"
 
 # ==============================================================================

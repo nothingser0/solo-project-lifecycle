@@ -132,7 +132,8 @@
   ✅ CONTEXT.md (611B)
   ✅ STEP 0: locked stack decision present in PROJECT_LITE.md
   ❌ STEP 2: harness file(s) missing from project root: ARCHITECTURE.md CONVENTIONS.md .env.example
-     Copy from docs/harness-root/ (or templates/04-dev-execution/<stack>/) BEFORE deleting staging.
+     Staging is transit, not a destination: copy these 7 from docs/harness-root/
+     (or templates/04-dev-execution/<stack>/) to the project root, verify, THEN delete staging.
   ❌ TODO.md has insufficient completed tasks: found only 1 marked '[x]' (minimum 3 completed tasks required)!
   ❌ TODO.md has 2 unfinished/blocked task(s) marked '[ ]', '[~]', or '[!]'! All sprint tasks must be completed ([x]) before closing Module 06.
   ❌ TODO.md: completed task(s) missing a human approval line in their Evidence.
