@@ -1,6 +1,10 @@
-# Code Patterns — Indonesia-Specific
+# Code Patterns
 
-> The 13 generic engineering patterns (Zod, caching, N+1, auth, testing, CI/CD, git, observability, API conventions, DB seeding, error boundaries) were archived to `archive/patterns/` — agents already know these cold; loading them wasted tokens. Kept here: Indonesia/domain-specific patterns only.
+> **Curation rule**: keep a pattern when it encodes a *decision rule*, a checklist, or a domain constraint that changes what an agent does. Archive it when it restates generic syntax-level advice a competent model already knows — loading that wastes context.
+>
+> Two kinds are kept: **Indonesia/regulatory** patterns (payment rails, UU PDP, PPh/PPN, IDR) and **decision-model** patterns (threat modeling, API versioning choice, CI gate enforcement, ASO indexing) that resolve a question rather than recite a library's API.
+>
+> The 14 generic patterns that failed that test (Zod, caching, N+1, auth, testing, CI/CD, git, observability, API conventions, DB seeding, error boundaries, GraphQL, design patterns) live in `archive/patterns/`.
 
 | Pattern | File |
 |:---|:---|

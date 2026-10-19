@@ -88,6 +88,13 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/AGENTS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONTEXT_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONTEXT.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ARCHITECTURE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/ARCHITECTURE.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONVENTIONS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONVENTIONS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ENV_EXAMPLE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/.env.example") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/RUNBOOK_LOCAL.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/VERIFY_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/VERIFY_LOCAL.md") -Force
     }
     { $_ -in "medium", "bespoke", "freelance" } {
         Write-Host "Configuring for Medium Bespoke / Client Commercial..."
@@ -145,6 +152,13 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/AGENTS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONTEXT_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONTEXT.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ARCHITECTURE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/ARCHITECTURE.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONVENTIONS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONVENTIONS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ENV_EXAMPLE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/.env.example") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/RUNBOOK_LOCAL.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/VERIFY_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/VERIFY_LOCAL.md") -Force
         # M06 requires the 9-file harness; mirror init-project.sh so both scaffolds agree.
         Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/AGENTS.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/CONTEXT_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONTEXT.md") -Force
@@ -163,6 +177,7 @@ switch ($Scale) {
         if (-not (Test-Path $procDir)) { New-Item -ItemType Directory -Force -Path $procDir | Out-Null }
         Copy-Item (Join-Path $templates "03-governance/VENDOR_PROCUREMENT_SCHEDULE_TEMPLATE.md") (Join-Path $TargetDir "docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md") -Force
         Copy-Item (Join-Path $templates "03-governance/GOVERNANCE_HANDOVER_PACK_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/GOVERNANCE_HANDOVER_PACK.md") -Force
+        Copy-Item (Join-Path $templates "03-governance/INCIDENT_RESPONSE_PLAN.md") (Join-Path $TargetDir "docs/pm/INCIDENT_RESPONSE.md") -Force
         Copy-Item (Join-Path $templates "03-governance/RACI_MATRIX.md") (Join-Path $TargetDir "docs/governance/RACI_MATRIX.md") -Force
         Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
         Copy-Item (Join-Path $templates "03-governance/CAB_PROCESS.md") (Join-Path $TargetDir "docs/governance/CAB_APPROVAL.md") -Force
@@ -193,6 +208,13 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "02-design/DESIGN_SPEC_TEMPLATE.md") (Join-Path $TargetDir "docs/specs/DESIGN_SPEC.md") -Force
         Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
         Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/AGENTS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONTEXT_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONTEXT.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ARCHITECTURE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/ARCHITECTURE.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONVENTIONS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONVENTIONS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ENV_EXAMPLE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/.env.example") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/RUNBOOK_LOCAL.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/VERIFY_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/VERIFY_LOCAL.md") -Force
         Copy-Item (Join-Path $templates "05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/DATA_MIGRATION_PLAN.md") -Force
         Copy-Item (Join-Path $templates "05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") -Force
         Copy-Item (Join-Path $templates "06-qa-uat/SIT_WORKBOOK_TEMPLATE.md") (Join-Path $TargetDir "docs/qa/SIT_WORKBOOK.md") -Force
