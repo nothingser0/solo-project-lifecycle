@@ -70,6 +70,19 @@ else
     echo -e "  ${YELLOW}\u26a0${NC}  skipped \u2014 node is not executable from this shell"
     SKIPPED=$((SKIPPED + 1))
 fi
+echo ""
+echo "1d. Checking scaffold parity (.sh vs .ps1)..."
+if node --version >/dev/null 2>&1; then
+    if node scripts/verify/verify-scaffold-parity.js; then
+        :
+    else
+        ERRORS=$((ERRORS + 1))
+    fi
+else
+    echo -e "  ${YELLOW}\u26a0${NC}  skipped \u2014 node is not executable from this shell"
+    SKIPPED=$((SKIPPED + 1))
+fi
+
 # 2. Verify 14 Modules Presence (M00 - M13)
 echo ""
 echo "2. Checking 14 Lifecycle Modules (docs/modules/)..."
