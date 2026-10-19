@@ -396,7 +396,7 @@ Coverage counts what exists. These three decide whether it is **worth existing**
 - [ ] Business requirements met
 - [ ] Documentation updated
 
-**Overall Assessment**:
+**Overall Assessment** (this is the end of the *checklist* — in the delivered review it goes **last**; see Output order immediately below):
 - ☐ **APPROVE** - Ready to merge
 - ☐ **REQUEST CHANGES** - Issues must be fixed before merge
 - ☐ **COMMENT** - Suggestions for improvement, but not blocking
