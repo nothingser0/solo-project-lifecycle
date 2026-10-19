@@ -19,7 +19,7 @@
 - **Core Pain**: Time lost tracking receipts and calculating manual reconciliations
 - **Proposed Solution**: Automated receipt scanning app with offline sync capability
 - **Proposed Price Point**: Rp 150000 / month
-- **Validation Lead**: Test Lead
+- **Validation Lead**: S. Rahma
 - **Date**: 2026-10-11
 
 ## 2. Riskiest Assumption Register (RAT)
@@ -58,7 +58,7 @@
 - **LTV / CAC Ratio**: 60x (Target: >= 3x)
 - **Gross Margin**: 85%
 
-Validated-by: Test Lead on 2026-10-11
+Validated-by: S. Rahma on 2026-10-11
 
 ## 7. Kill Criteria & Gate Validation Outcome
 

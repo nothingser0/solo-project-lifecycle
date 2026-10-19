@@ -68,7 +68,7 @@ $doc = @"
 - **LTV / CAC Ratio**: 60x
 - **Gross Margin**: 85%
 
-Validated-by: Test Lead on 2026-10-11
+Validated-by: S. Rahma on 2026-10-11
 
 ## 7. Kill Criteria & Gate Validation Outcome
 

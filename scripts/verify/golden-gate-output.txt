@@ -357,3 +357,21 @@ Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
 ============================================================
 ⚠️  Gate validation NOT PASSED - RERUN after one optimisation sprint (exit 3)
 ##### END GATE: _m00-lite-retest
+
+##### GATE: _m00-lite-role exit=1
+🔍 Validating Gate: M00
+============================================================
+=== M00: Product Discovery & Strategy Gate Checklist ===
+  [INFO] Detected M00-lite rapid validation path (Solo SaaS)
+  ✅ docs/pm/M00_LITE.md (2147B)
+  ✅ docs/pm/M00_LITE.md core section headings verified (5 headings present)
+  ✅ Gate decision declared: PASS
+  ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)
+  ✅ Targeted-visit floor met: 140 visitors (>= 100)
+  ✅ Waitlist conversion 6.4% is in the PASS band (>= 5.0%)
+  ❌ docs/pm/M00_LITE.md is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research.
+  ✅ Gate decision matches the evidence: PASS
+
+============================================================
+❌ Gate validation FAILED - missing mandatory artifacts
+##### END GATE: _m00-lite-role

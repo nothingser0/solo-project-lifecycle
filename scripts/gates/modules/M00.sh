@@ -216,8 +216,13 @@ gate_M00() {
         # 5. Human attribution. The agent may fill the report but cannot run the
         # interviews, so a PASS must carry a named human validator + real date.
         if [ "$declared" = "PASS" ]; then
+            local m00_validator
+            m00_validator=$(sed 's/\*//g' "$validation_file" 2>/dev/null \
+                | grep -iE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:" | head -1 \
+                | sed 's/^[^:]*:[[:space:]]*//' | sed 's/[[:space:]]*on[[:space:]]*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}.*$//' | tr -d '\r')
             if sed 's/\*//g' "$validation_file" 2>/dev/null \
-                | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z0-9_].*[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
+                | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z0-9_].*[0-9]{4}-[0-9]{2}-[0-9]{2}" \
+                && ! is_role_placeholder "$m00_validator"; then
                 echo "  ✅ Human validation recorded (Validated-by: <name> on <date>)"
             else
                 echo "  ❌ $validation_file is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research."
@@ -273,8 +278,13 @@ gate_M00() {
             elif grep -qiE "^Gate-Decision:[[:space:]]*PASS" "docs/pm/USER_RESEARCH_REPORT.md"; then
                 echo "  ✅ Gate decision verified: PASS"
                 # Human attribution, same rule as the lite path.
+                local m00_validator2
+                m00_validator2=$(sed 's/\*//g' "docs/pm/USER_RESEARCH_REPORT.md" 2>/dev/null \
+                    | grep -iE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:" | head -1 \
+                    | sed 's/^[^:]*:[[:space:]]*//' | sed 's/[[:space:]]*on[[:space:]]*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}.*$//' | tr -d '\r')
                 if sed 's/\*//g' "docs/pm/USER_RESEARCH_REPORT.md" 2>/dev/null \
-                    | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z0-9_].*[0-9]{4}-[0-9]{2}-[0-9]{2}"; then
+                    | grep -qiE "^[[:space:]]*-?[[:space:]]*Validated-by[[:space:]]*:[[:space:]]*[A-Za-z0-9_].*[0-9]{4}-[0-9]{2}-[0-9]{2}" \
+                    && ! is_role_placeholder "$m00_validator2"; then
                     echo "  ✅ Human validation recorded (Validated-by: <name> on <date>)"
                 else
                     echo "  ❌ USER_RESEARCH_REPORT.md is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research."

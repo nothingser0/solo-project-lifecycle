@@ -209,6 +209,19 @@ Gate-Decision: PASS
 ( cd "$W/m00pass" && bash "$GATE" M00 >"$W/_m00-lite-pass.out" 2>&1 ); code=$?
 compare "_m00-lite-pass" "$W/_m00-lite-pass.out" "$code"
 
+# Case A2: a ROLE is not a named human. Same evidence as Case A, but `Validated-by`
+# carries "Test Lead" — the check must reject it, or the attribution rule is vacuous.
+mk_m00_fixture "$W/m00role" '- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: 9
+- **Waitlist-Conversion-Pct**: 6.4
+
+Validated-by: Test Lead on 2026-10-12
+
+Gate-Decision: PASS
+'
+( cd "$W/m00role" && bash "$GATE" M00 >"$W/_m00-lite-role.out" 2>&1 ); code=$?
+compare "_m00-lite-role" "$W/_m00-lite-role.out" "$code"
+
 # Case B: RETEST — exit 3 is a distinct, non-terminal verdict; the golden file pins it.
 mk_m00_fixture "$W/m00retest" '- **Total Unique Visitors**: 140
 - **Total Waitlist / Email Signups**: 5
@@ -230,7 +243,7 @@ if [ "$UPDATE" -eq 1 ]; then
         echo "# Do not edit by hand. Each block: '${MARKER} <GATE> exit=<code>' then the exact"
         echo "# stdout+stderr that gate produced against the fixed fixture in the test script."
     } >> "$W/golden.new"
-    for name in $GATES _noarg _invalid _m00-lite-pass _m00-lite-retest; do
+    for name in $GATES _noarg _invalid _m00-lite-pass _m00-lite-retest _m00-lite-role; do
         [ -f "$W/$name.out" ] || continue
         rc="$(cat "$W/$name.code" 2>/dev/null || echo "?")"
         {
