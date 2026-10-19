@@ -1352,6 +1352,43 @@ expect_gate_scaffold M02 "M02 accepts the shipped scope + RACI + comms + stakeho
 expect_gate_scaffold M07 "M07 accepts the shipped SIT workbook with PASS + staging URL" ALLOWED
 expect_gate_scaffold M13 "M13 NOT waived for solo-saas: empty metrics blocks" BLOCKED
 
+# M00 FULL path (not the lite path). Its Validated-by extraction at M00.sh:294-300
+# is a separate inline regex from check_signoff, so the role denylist had to be
+# routed through it separately — and nothing exercised that path until now.
+# Four docs at >=1500 bytes, no bracketed tokens (the placeholder grep at :266
+# rejects [X]/[Y]/[WTP]/[Your Name]/[YYYY-MM-DD] and friends).
+# expect_m00_full <name> <validated-by-name> <want>
+expect_m00_full() {
+    local name="$1" validator="$2" want="$3"
+    local dir="$WORK/m00full"
+    # Delivery must NOT be client/portfolio/internal: M00 is WAIVED for those
+    # (scope is pre-defined), and a waived gate never reaches the validator check.
+    # Nothing else reaches the full path either — it must not be Small (lite) and
+    # must not look like M00-LITE.
+    make_project "$dir" "- **Scale**: Medium\n- Delivery: solo\n"
+    local filler
+    filler=$(awk 'BEGIN{for(i=0;i<80;i++) printf "Detailed research prose with substance and no bracket tokens. "}')
+    mkdir -p "$dir/docs/pm"
+    printf '# MARKET_RESEARCH\n\n%s\n\nSource: https://example.com/report\nVerified: 2026-10-12\n' "$filler" > "$dir/docs/pm/MARKET_RESEARCH.md"
+    printf '# COMPETITIVE_LANDSCAPE\n\n%s\n\nTest Date: 2026-10-10\nOnboarding Time: 14 minutes\n' "$filler" > "$dir/docs/pm/COMPETITIVE_LANDSCAPE.md"
+    printf '# PRODUCT_STRATEGY\n\n%s\n' "$filler" > "$dir/docs/pm/PRODUCT_STRATEGY.md"
+    printf '# USER_RESEARCH_REPORT\n\n%s\n\nGate-Decision: PASS\n\nValidated-by: %s on 2026-10-12\n' "$filler" "$validator" > "$dir/docs/pm/USER_RESEARCH_REPORT.md"
+    local out rc got
+    out="$(cd "$dir" && bash "$GATE" M00 2>&1)"; rc=$?
+    got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M00 full -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M00 full -> $got/exit $rc, expected $want)"
+        printf '%s' "$out" | grep -E "❌" | head -4 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+    rm -rf "$dir"
+}
+expect_m00_full "M00 full path rejects a role as validator" "Test Lead" BLOCKED
+expect_m00_full "M00 full path accepts a named validator" "S. Rahma" ALLOWED
+
 expect_gate A00 "A00 empty project blocks"            "contracts/CONSULTING_AGREEMENT.md" BLOCKED
 expect_gate A01 "A01 empty project blocks"            "docs/pm/WBS_PHASING_PLAN.md" BLOCKED
 expect_gate A02 "A02 empty project blocks"            "docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md" BLOCKED

@@ -71,6 +71,15 @@ else
     SKIPPED=$((SKIPPED + 1))
 fi
 echo ""
+echo "1c2. Checking template-to-gate pairing..."
+if bash scripts/verify/test-template-pairing.sh 2>&1 | grep -q "All .* template pairing checks passed"; then
+    echo "  ✅ every shipped template satisfies the contract its gate checks"
+else
+    echo "  ❌ template pairing failed (run: bash scripts/verify/test-template-pairing.sh)"
+    ERRORS=$((ERRORS + 1))
+fi
+
+echo ""
 echo "1d. Checking per-scale scaffold placement..."
 if bash scripts/verify/test-scaffold-per-scale.sh >/dev/null 2>&1; then
     echo "  ✅ every scale stages the expected harness + A-series artifacts"

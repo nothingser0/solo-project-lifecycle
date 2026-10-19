@@ -130,6 +130,26 @@ Select exactly one pairing strategy matching project scale and context:
 
 ---
 
+## 3.4 Spacing Scale
+
+M04 requires this section by name. A single spacing scale is what keeps a layout from drifting into arbitrary values (`13px`, `27px`) that look almost-consistent and are not.
+
+| Token | Value | Used for |
+| :--- | ---: | :--- |
+| `--space-0` | 0 | Flush edges |
+| `--space-1` | 4px | Icon-to-label, inline gaps |
+| `--space-2` | 8px | Form field internal padding |
+| `--space-3` | 12px | Related controls in a group |
+| `--space-4` | 16px | Default element spacing |
+| `--space-6` | 24px | Card padding, block separation |
+| `--space-8` | 32px | Section rhythm |
+| `--space-12` | 48px | Page-level separation |
+| `--space-16` | 64px | Hero / empty-state breathing room |
+
+**Rules**: every margin and padding is a token, never a raw number. The base unit is 4px; all values are multiples of it. Vertical rhythm inside a section uses one step, section-to-section uses the next.
+
+---
+
 ## 4. Touch Ergonomics & Specialized Hardware Geometry
 
 ### 4.1 Touch Targets (Comfort & AAA Standard)
