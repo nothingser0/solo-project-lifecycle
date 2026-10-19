@@ -569,6 +569,37 @@ success/error pair — an endpoint without an error contract is not a specificat
   - Error: `{"status": "ERROR", "error": {"code": "RESOURCE_LOCKED", "message": "Descriptive error"}}`
 - **Idempotency**: `X-Idempotency-Key` required (writes to financial/stock state) — see §3 `idempotency_keys`.
 
+### 6.1b DTO catalog — the field contract a JSON example cannot express
+
+A JSON example shows *one* valid payload. Two endpoints can show the same field with different types and nothing catches it. List every shared field once, here.
+
+**Wire type, not language type.** The contract is what travels, not what your ORM happens to use:
+
+| Wire type | Why it is not a "string" or "number" |
+| :--- | :--- |
+| `string (uuid)` | A plain string accepts `"42"` and fails at the database |
+| `string (date, ISO 8601)` | `"19/10/2026"` is a different day in a different locale |
+| `string (decimal, 2dp)` | Money in a float loses cents |
+| `number (64-bit integer)` | A 64-bit value above 2^53 loses precision in JavaScript — a real billing defect |
+| `boolean` | Not `0`/`1`, not `"true"` |
+
+**`Required` is tri-state, not boolean:**
+
+| Value | Meaning |
+| :--- | :--- |
+| `yes` | Must be present; omission is a 400 |
+| `no` | Optional; omission is legal |
+| `if <condition>` | Required only when the condition holds — name the condition |
+
+**Omitted versus null must be stated on every replace-style write (`PUT`).** They are not the same thing:
+
+- **Omitted** — the field is absent from the payload. On a `PUT` this usually means *remove it*; on a `PATCH` it means *leave it unchanged*.
+- **`null`** — the field is present and explicitly empty.
+
+A client that assumes omission means "leave unchanged" on a `PUT` will silently delete data. Write the rule per endpoint; do not leave it to the client's intuition.
+
+**Where this goes**: one table per shared entity, above the endpoint blocks. An endpoint that needs an exception states it inline and says why.
+
 ### 6.2 Endpoint Matrix
 
 *Fill one row per in-scope endpoint, then expand each below using the §6.1 block. Delete the

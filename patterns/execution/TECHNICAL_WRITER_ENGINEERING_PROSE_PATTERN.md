@@ -53,6 +53,8 @@ Before delivering a rewrite, ask three control questions:
 
 **An addition and a loss both count as errors, even when the text reads better for it.** Never add a fact to finish a sentence — ask, or write a simpler sentence.
 
+This is also the rule that keeps §3.4 from becoming an excuse and §3.1 from becoming a licence: **if you cannot name the defect, leave the text alone.**
+
 ### 3.4 What not to flag
 
 The banned-construction list proves nothing by itself; every pattern also occurs in good human writing. Flag only when several signs coincide in the same paragraph.
@@ -60,3 +62,19 @@ The banned-construction list proves nothing by itself; every pattern also occurs
 Polished grammar · one repeated sentence opening · one short sentence for emphasis · formal words that are not on the list · a factual contrast ("the pipeline sets the tag, the developer does not") · a serious alternative the reader would weigh · qualifiers that bound scope or legal risk · a reference to the previous state in a migration doc · a quoted word · metaphor that explains · deliberate awkwardness.
 
 > This list is the prose counterpart of `references/design/AI_WRITING_TELLS.md` §10.1: same rule, different scale — a single hit is not evidence, a cluster is.
+
+### 3.5 The delivery gate (before any document goes out)
+
+Nine checks, all cheap, all mechanical enough to run on every document:
+
+1. **Remove-the-name test** on the opening and summary — §3.2.
+2. **Reads cold** — natural to someone who never saw the conversation that produced it. No "as we discussed", no reference to a prior review round.
+3. **Reads whole** — one voice throughout; no patchwork seams; no sentence explaining why the document was written this way.
+4. **One term per concept**, defined at first use. Two words for one thing is two things to the reader.
+5. **Headings name the content** — no question forms, no "What X means", and no heading immediately restated in its first sentence.
+6. **Every numeric claim cites a source named in the document** — pairs with `references/design/AI_WRITING_TELLS.md` §8A.
+7. **References verified by following them** — chapter numbers, relative links, and file names actually exist.
+8. **On a rewrite: no fact, number, date, name or source added or lost** — §3.3.
+9. **Read the summary aloud** — no row of fragments, no three sentences with the same opening.
+
+**Why a checklist and not more prose**: items 2 and 3 are the ones a writer cannot see in their own draft, so they only get caught by a fixed list that is run every time. A rule remembered is a rule skipped under deadline.
