@@ -71,7 +71,7 @@
 | :-: | :--- | :--- | :--- |
 | A1 | <something believed but not stated by a stakeholder> | | ASM-NNN |
 
-> **This table is a staging area, not a register.** Any assumption that could change scope, cost or architecture must be copied into `docs/pm/ASSUMPTIONS_CONSTRAINTS.md` as `ASM-NNN`, with an owner and a validation approach, and the ID written back here. An assumption that lives only in meeting notes never gets tested — it just quietly becomes a requirement.
+> **This table is a staging area, not a register.** Any assumption that could change scope, cost or architecture must be copied into `docs/pm/ASSUMPTIONS_CONSTRAINTS.md` as `ASM-NNN`, with an owner, a validation approach, and a provenance type (`stated` / `inferred` / `assumed` / `uncertain`) — `inferred` must name the artefact it came from. Write the ID back here. An assumption that lives only in meeting notes never gets tested — it just quietly becomes a requirement.
 ```
 
 

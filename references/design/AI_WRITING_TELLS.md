@@ -151,7 +151,7 @@ These appear in copy that has **already been de-slopped**. The banned words and 
 | **Tidy closers** (Ban) | "Because your team deserves better." | A quotable last line that could close any page. End on a number, a named customer, the offer, or the CTA |
 | **Reflexive specificity** (Cap) | Every claim has a suspiciously round stat | Specificity copied as a style. Every number must be real and sourced — mark gaps `[NEED: proof]` instead of filling them |
 
-### 8.1 The claim-evidence audit (run before a document ships)
+## 8A. The claim-evidence audit (run before a document ships)
 
 `[NEED: proof]` is a rule you apply while writing. This is the check you run **after**, and it catches what the rule misses: numbers that got filled in with something plausible.
 
@@ -266,6 +266,6 @@ For copy (headlines, microcopy, subject lines), the self-check above is necessar
 | :--- | :--- |
 | `DESIGN_SPEC.md` / `STATE_COPY.md` | Error, empty and success copy is the most-read text in the product |
 | `README.md` / `USER_MANUAL.md` | The handover artifact the client keeps after you leave |
-| `PROPOSAL_DECK.md` / `QUOTATION_EMAIL.md` | Copy that decides whether the contract is signed — run §8.1 before sending |
+| `PROPOSAL_DECK.md` / `QUOTATION_EMAIL.md` | Copy that decides whether the contract is signed — run §8A before sending |
 | M07 `POLISH_AUDIT` row 23–25 | AI-slop tells are already a blocking audit row — this file is the detail behind it |
 | Any agent-written summary | An agent describing its own work defaults to these patterns most of all |
