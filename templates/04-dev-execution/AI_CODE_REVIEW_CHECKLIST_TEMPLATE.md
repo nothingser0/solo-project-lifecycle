@@ -401,6 +401,24 @@ Coverage counts what exists. These three decide whether it is **worth existing**
 - ☐ **REQUEST CHANGES** - Issues must be fixed before merge
 - ☐ **COMMENT** - Suggestions for improvement, but not blocking
 
+### Output order — findings first, verdict last
+
+The template above is a *checklist you work through*. The **review you deliver is in a different order**, and this is the part that gets ignored. A reader who opens a review and finds "Overall Assessment: APPROVE" before the finding about a data-loss bug will act on the verdict.
+
+**Deliver in this order:**
+
+1. **Findings**, grouped by severity (Critical → High → Medium → Low). Nothing above them.
+2. **Testing gaps** — gaps not already attached to a finding.
+3. **Questions** — unresolved items that block a conclusion.
+4. **Residual risks** — what could not be reviewed, and why.
+5. **Overall Assessment** — last.
+
+**Each finding carries**: `file:line` · what breaks and for whom · the evidence from the diff · the trigger (input, state, or path) · the minimal fix direction · the test gap.
+
+**If there are no findings**, say `No findings` explicitly and still report testing gaps and residual risks. Silence reads as "not looked at", not as "clean".
+
+**Never soften a finding to make the verdict look better**, and never downgrade a severity to reach APPROVE. The severity prefix table below governs which items block; this section governs where they appear. Both matter, and only one of them was specified.
+
 ---
 
 ## Reviewer Notes
