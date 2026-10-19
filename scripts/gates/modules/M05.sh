@@ -104,6 +104,29 @@ gate_M05() {
         ep_count=$(echo "$ep_count" | tr -d ' ')
         if [ "${ep_count:-0}" -ge 10 ]; then
             echo "  ✅ API endpoint contracts verified ($ep_count endpoints documented)"
+            # A heading is not a contract. Count headings that carry the four fields a
+            # consumer needs: who may call it, what it takes, what success looks like,
+            # and how it fails. Without this, ten empty headings satisfied the gate.
+            contracted=$(awk '
+                /^[[:space:]]*#{2,6}[[:space:]]*(GET|POST|PUT|PATCH|DELETE)[[:space:]]+\// {
+                    if (inb && has_auth && has_req && has_succ && has_err) ok++
+                    inb=1; has_auth=has_req=has_succ=has_err=0; next
+                }
+                /^[[:space:]]*#{1,6}[[:space:]]/ { if (inb) { if (has_auth && has_req && has_succ && has_err) ok++; inb=0 } }
+                inb && /- \*\*Auth\*\*:/   { has_auth=1 }
+                inb && /- \*\*(Request|Query|Headers)\*\*:/ { has_req=1 }
+                inb && /- \*\*Success\*\*:/ { has_succ=1 }
+                inb && /- \*\*Error\*\*:/   { has_err=1 }
+                END { if (inb && has_auth && has_req && has_succ && has_err) ok++; print ok+0 }
+            ' "$fsd" 2>/dev/null || echo 0)
+            contracted=$(echo "$contracted" | tr -d ' ')
+            if [ "${contracted:-0}" -ge 10 ]; then
+                echo "  ✅ All $contracted endpoint blocks document Auth, Request, Success and Error"
+            else
+                echo "  ❌ Only ${contracted:-0} of ${ep_count} endpoint headings carry all four contract fields (Auth / Request|Query|Headers / Success / Error)."
+                echo "     A heading is not a contract: document who may call it, what it takes, what success returns, and how it fails."
+                GATE_FAILED=1
+            fi
         else
             echo "  ❌ FSD.md insufficient API endpoint contracts: found only ${ep_count:-0} endpoints (minimum 10 required by M05 STEP 4)!"
             GATE_FAILED=1

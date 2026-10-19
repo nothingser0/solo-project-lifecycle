@@ -190,28 +190,40 @@ gate_M00() {
             GATE_FAILED=1
         fi
 
-        # A strong secondary signal rescues a RETEST band into PASS.
-        strong=0
-        if [ "$band" = "PASS" ]; then strong=1; fi
-        if [ -n "$intent" ] && [ "$(awk -v i="$intent" 'BEGIN { print (i + 0 >= 30) ? 1 : 0 }')" = "1" ]; then
-            strong=1
-            echo "  ✅ Secondary signal: intent-to-buy $intent% (>= 30%)"
+        # Aggregate all four signals the way the runbook defines them
+        # (docs/modules/00_PRODUCT_DISCOVERY_STRATEGY.md §1):
+        #   PASS if ANY signal is in its PASS band
+        #   KILL only if ALL signals are in KILL
+        #   otherwise RETEST (best signal is RETEST)
+        # Previously only waitlist conversion decided the band, so an intent-only
+        # 20% report scored KILL, and any "strong" signal rescued a genuine KILL.
+        sig=""
+        band_of() { # $1 value, $2 pass threshold, $3 retest threshold
+            awk -v v="$1" -v p="$2" -v r="$3" 'BEGIN { if (v+0 >= p) print "PASS"; else if (v+0 >= r) print "RETEST"; else print "KILL" }'
+        }
+        [ -n "$band" ] && sig="$sig $band"
+        if [ -n "$intent" ]; then
+            b=$(band_of "$intent" 30 15); sig="$sig $b"
+            echo "  [signal] intent-to-buy $intent% -> $b"
         fi
-        if [ -n "$deposits" ] && [ "$(awk -v d="$deposits" 'BEGIN { print (d + 0 >= 5) ? 1 : 0 }')" = "1" ]; then
-            strong=1
-            echo "  ✅ Secondary signal: $deposits refundable deposits (>= 5)"
+        if [ -n "$deposits" ]; then
+            b=$(band_of "$deposits" 5 1); sig="$sig $b"
+            echo "  [signal] refundable deposits $deposits -> $b"
         fi
-        if [ -n "$loi" ] && [ "$(awk -v l="$loi" 'BEGIN { print (l + 0 >= 2) ? 1 : 0 }')" = "1" ]; then
-            strong=1
-            echo "  ✅ Secondary signal: $loi signed LOIs (>= 2)"
+        if [ -n "$loi" ]; then
+            b=$(band_of "$loi" 2 1); sig="$sig $b"
+            echo "  [signal] signed LOIs $loi -> $b"
         fi
 
         local computed=""
-        if [ "$strong" = "1" ]; then
+        if printf '%s' "$sig" | grep -q "PASS"; then
             computed="PASS"
-        elif [ -n "$band" ]; then
-            computed="$band"
+        elif printf '%s' "$sig" | grep -q "RETEST"; then
+            computed="RETEST"
+        elif [ -n "$sig" ]; then
+            computed="KILL"
         fi
+        [ -n "$computed" ] && echo "  [INFO] Aggregated verdict from signals:${sig} -> $computed"
 
         # 5. Human attribution. The agent may fill the report but cannot run the
         # interviews, so a PASS must carry a named human validator + real date.

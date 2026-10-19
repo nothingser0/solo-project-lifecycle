@@ -564,6 +564,8 @@ success/error pair — an endpoint without an error contract is not a specificat
     "action_type": "EXECUTE"
   }
   ```
+- **Success**: `200 {"status": "SUCCESS", "data": {...}}` — see the standardized envelope below
+- **Error**: `422` validation failure; `409` on duplicate or conflicting state
 - **Standardized Response Format**:
   - Success: `{"status": "SUCCESS", "data": { ... }}`
   - Error: `{"status": "ERROR", "error": {"code": "RESOURCE_LOCKED", "message": "Descriptive error"}}`
@@ -623,18 +625,21 @@ placeholder rows before sign-off.*
 
 #### POST /api/v1/auth/logout
 - **Auth**: Bearer JWT
+- **Request**: none (the session is identified by the credential)
 - **Behaviour**: revoke the session server-side; the cookie alone is not the session
 - **Success**: `204` (no body)
 - **Error**: `401` when the session is already revoked (idempotent from the client's view)
 
 #### POST /api/v1/auth/refresh
 - **Auth**: Refresh token (HttpOnly cookie)
+- **Request**: none (the refresh token is the cookie)
 - **Behaviour**: rotate the refresh token; the old one is single-use
 - **Success**: `200` + new access token
 - **Error**: `401` on reuse of a rotated token → revoke the whole family
 
 #### GET /api/v1/[resource]/:id
 - **Auth**: Bearer JWT
+- **Request**: path `:id` only
 - **Success**: `200 {"status": "SUCCESS", "data": {...}}`
 - **Error**: `404` unknown id — return 404, not 403, so the endpoint does not confirm existence
 
@@ -667,6 +672,7 @@ placeholder rows before sign-off.*
 
 #### DELETE /api/v1/[resource]/:id
 - **Auth**: Bearer JWT (admin role)
+- **Request**: path `:id` only
 - **Behaviour**: soft delete (`deleted_at`), never a hard row removal on audited tables
 - **Success**: `200 {"status": "SUCCESS", "data": {"id": "..."}}`
 - **Error**: `403` on insufficient role; `409` when dependent rows exist

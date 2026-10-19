@@ -378,3 +378,32 @@ During project:
 **RACI saves time**: Reduces unnecessary meetings (C vs I)
 
 **RACI is living document**: Update as project evolves
+
+---
+
+## Decision-Making Authority Table
+
+| Decision Category | Primary Authority (A) | Backup Authority | Veto Power | Escalation Path |
+| :--- | :--- | :--- | :--- | :--- |
+| **Scope Change** | Product Owner | Client PIC | CFO (budget), CTO (feasibility) | CEO if PO unavailable |
+| **Design Approval** | Client PIC | Product Owner | None | CEO if disagreement |
+| **Tech Stack Choice** | CTO | Solo Dev (if solo) | None | Board if major vendor lock-in risk |
+| **Budget Approval** | CFO | CEO | None | Board if >20% overrun |
+| **Go-Live Decision** | Client PIC | Product Owner | CTO (if critical bug), QA (if test fail) | CEO if risk dispute |
+| **Security Exception** | CTO | Security Officer | Legal (if compliance risk) | CEO + Legal if regulatory impact |
+| **Contract Amendment** | Legal | CFO | CEO | Board if material change |
+
+---
+
+---
+
+## Conflict Resolution Matrix
+
+| Conflict Type | Resolution Owner | Process | Escalation Trigger |
+| :--- | :--- | :--- | :--- |
+| **Solo Dev vs QA** (bug severity dispute) | CTO | Technical review, test evidence | If unresolved >24h |
+| **Designer vs Product Owner** (design vs scope) | Product Owner (final call) | Design workshop, user testing data | If Designer escalates formally |
+| **Solo Dev vs CTO** (tech approach) | CTO (final call) | POC/spike, peer review | If Solo Dev escalates to CEO |
+| **Product Owner vs Client PIC** (scope interpretation) | Client PIC (contract authority) | Review SOW contract clause | If PO escalates to Legal |
+
+---

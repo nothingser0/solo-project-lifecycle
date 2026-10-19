@@ -334,6 +334,7 @@ Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
   ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)
   ✅ Targeted-visit floor met: 140 visitors (>= 100)
   ✅ Waitlist conversion 6.4% is in the PASS band (>= 5.0%)
+  [INFO] Aggregated verdict from signals: PASS -> PASS
   ✅ Human validation recorded (Validated-by: <name> on <date>)
   ✅ Gate decision matches the evidence: PASS
 
@@ -352,6 +353,7 @@ Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
   ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)
   ✅ Targeted-visit floor met: 140 visitors (>= 100)
   ⚠️  Waitlist conversion 3.6% is in the RETEST band (2.0-4.9%)
+  [INFO] Aggregated verdict from signals: RETEST -> RETEST
   ✅ Gate decision matches the evidence: RETEST
      RETEST: run one 7-day optimisation sprint, then re-test with more targeted visits.
 
@@ -370,6 +372,7 @@ Available gates: M00..M13 (SDLC Modules) | A00..A04 (Enterprise Advisory Series)
   ✅ Real user interviews verified in INT-0x rows: 3 (>= 3 of 5 attempts confirmed)
   ✅ Targeted-visit floor met: 140 visitors (>= 100)
   ✅ Waitlist conversion 6.4% is in the PASS band (>= 5.0%)
+  [INFO] Aggregated verdict from signals: PASS -> PASS
   ❌ docs/pm/M00_LITE.md is missing 'Validated-by: <human name> on <YYYY-MM-DD>' — the agent cannot validate its own research.
   ✅ Gate decision matches the evidence: PASS
 

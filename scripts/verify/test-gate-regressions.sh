@@ -1170,6 +1170,131 @@ else
     fi
 fi
 
+# ---------------------------------------------------------------------------
+# Gate smoke coverage for the modules that had NO rule-level case.
+#
+# The golden suite runs every gate and byte-compares its output, so a gate is
+# never "untested" — but a golden pins whatever the gate printed that day, and
+# would happily pin a broken rule. These assert the rule itself, in both
+# directions: an empty project must FAIL, a minimally filled one must PASS.
+#
+# Each case names one artifact the gate is responsible for. If a gate starts
+# passing an empty project, or stops accepting a filled one, this fails.
+# ---------------------------------------------------------------------------
+# expect_gate <gate> <label> <required-file> <want: BLOCKED|ALLOWED> [extra-content]
+#   No extra-content  => document the gate requires is absent   -> expect BLOCKED
+#   extra-content set => that document exists with content      -> expect ALLOWED
+expect_gate() {
+    local gate="$1" label="$2" file="$3" want="$4" content="${5:-}"
+    local dir="$WORK/smoke-$gate"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    # Enterprise advisory gates need the enterprise delivery declaration.
+    case "$gate" in
+        A*) printf -- '- **Scale**: Enterprise\n- Delivery: client\n' > "$dir/docs/pm/PROJECT_STATE.md" ;;
+    esac
+    if [ -n "$content" ]; then
+        mkdir -p "$dir/$(dirname "$file")"
+        printf '%b' "$content" > "$dir/$file"
+    fi
+    local out rc got
+    out="$(cd "$dir" && bash "$GATE" "$gate" 2>&1)"; rc=$?
+    got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $label  ($gate -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $label  ($gate -> $got/exit $rc, expected $want)"
+        printf '%s' "$out" | grep -E "MISSING|missing|❌" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+    rm -rf "$dir"
+}
+
+# Content long enough to clear the byte floor, with the headings each gate greps.
+FILL='%s'  # placeholder replaced per case below
+
+# M00 aggregates four signals (runbook §1): PASS if any PASS, KILL only if ALL KILL,
+# otherwise RETEST. The gate once used waitlist conversion alone, so an intent-only
+# 20% report scored KILL, and any single "strong" signal rescued a genuine KILL.
+# expect_m00_signal <name> <waitlist-pct> <intent> <deposits> <loi> <declared> <want-computed>
+expect_m00_signal() {
+    local name="$1" pct="$2" intent="$3" dep="$4" loi="$5" declared="$6" want="$7"
+    local dir="$WORK/m00sig"
+    make_project "$dir" "- **Scale**: Medium\n- Delivery: solo\n"
+    cat > "$dir/docs/pm/M00_LITE.md" <<M00EOF
+# M00-Lite: Rapid Market Validation
+
+## 1. Project Metadata & Problem Pitch
+- **Project Codename**: SigTest
+- **Target User**: Micro-retail owners
+- **Core Pain**: stock discrepancies
+- **Proposed Solution**: offline cashier
+- **Proposed Price Point**: Rp 99000 / month
+- **Validation Lead**: S. Rahma
+- **Date**: 2026-10-12
+
+## 2. Riskiest Assumption Register (RAT)
+| ID | Core Hypothesis | Risk Level | Evidence Needed | Cheap Test Method | Kill Threshold | Outcome |
+|:---|:---|:---:|:---|:---|:---|:---:|
+| **ASM-01** | users lose money | HIGH | 3/5 confirm | Deep interviews | <2 respondents | ✅ |
+
+## 3. Quick Competitor & Alternative Check
+| Solution Name | Type | Price | Strengths | Weaknesses | Differentiator |
+|:---|:---|:---|:---|:---|:---|
+| Toko | Direct | Rp 200k | Brand | Offline broken | Offline-first |
+
+## 4. Real User Interviews (INT-0x)
+| ID | Name | Role | Date | Status |
+|:---|:---|:---|:---|:---|
+| INT-01 | A | owner | 2026-10-01 | ✅ Real |
+| INT-02 | B | owner | 2026-10-02 | ✅ Real |
+| INT-03 | C | owner | 2026-10-03 | ✅ Real |
+
+## 5. Quantitative Validation Thresholds
+- **Total Unique Visitors**: 140
+- **Total Waitlist / Email Signups**: ${pct%.*}0
+- **Waitlist-Conversion-Pct**: $pct
+- **Intent-to-Buy-Pct**: $intent
+Alternative-Proof: deposits:$dep loi:$loi
+
+Validated-by: S. Rahma on 2026-10-12
+
+Gate-Decision: $declared
+M00EOF
+    local out got
+    out="$(cd "$dir" && bash "$GATE" M00 2>&1 || true)"
+    got=$(printf '%s' "$out" | sed -n 's/.*Aggregated verdict from signals:.*-> \([A-Z]*\).*/\1/p' | head -1)
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (aggregated -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (aggregated -> ${got:-<none>}, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+    rm -rf "$dir"
+}
+# The combination a founder actually hits: weak waitlist, real deposit interest.
+expect_m00_signal "M00 waitlist KILL + deposits RETEST aggregates to RETEST" 1.5 10 2 0 RETEST RETEST
+expect_m00_signal "M00 any PASS signal closes the gate" 1.5 35 0 0 PASS PASS
+expect_m00_signal "M00 all signals KILL aggregates to KILL" 1.0 5 0 0 KILL KILL
+
+expect_gate M02 "M02 empty project blocks"            "docs/pm/SCOPE_STATEMENT.md" BLOCKED
+expect_gate M03 "M03 empty project blocks"            "contracts/SOW_SMB.md" BLOCKED
+
+expect_gate M07 "M07 empty project blocks"            "docs/qa/SIT_WORKBOOK.md" BLOCKED
+expect_gate M09 "M09 empty project blocks"            "docs/pm/UAT_SIGNOFF_REPORT.md" BLOCKED
+expect_gate M10 "M10 empty project blocks"            "docs/DEPLOYMENT_PROTOCOL.md" BLOCKED
+expect_gate M11 "M11 empty project blocks"            "docs/pm/BAST.md" BLOCKED
+# M13 is waived for client/portfolio/internal delivery (lifecycle ends at M11/M12),
+# so an empty METRICS_BASELINE_REPORT is correctly accepted for this fixture.
+expect_gate M13 "M13 waived for client delivery (empty metrics accepted)" "docs/analytics/METRICS_BASELINE_REPORT.md" ALLOWED
+
+expect_gate A00 "A00 empty project blocks"            "contracts/CONSULTING_AGREEMENT.md" BLOCKED
+expect_gate A01 "A01 empty project blocks"            "docs/pm/WBS_PHASING_PLAN.md" BLOCKED
+expect_gate A02 "A02 empty project blocks"            "docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md" BLOCKED
+expect_gate A03 "A03 empty project blocks"            "docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md" BLOCKED
+expect_gate A04 "A04 empty project blocks"            "docs/governance/GOVERNANCE_HANDOVER_PACK.md" BLOCKED
+
 echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
