@@ -57,7 +57,47 @@ Command Executed: `pnpm audit --audit-level=high`
 
 ---
 
+## 4.5 What Counts as a Finding (and what does not)
+
+A finding needs **all six** of these. If any is missing, it is not a finding — it is a checklist deviation, and checklist deviations do not belong in a security report.
+
+| Element | Question |
+| :--- | :--- |
+| **Lower-trust principal** | Who is acting with less trust than the system? |
+| **Accepted input or action** | What can they send, or what can they do? |
+| **Intended control** | Which control is supposed to stop them? |
+| **Crossed boundary** | What boundary does that control guard? |
+| **Affected principal or resource** | Whose data, or what resource, is reached? |
+| **Observed result** | What concretely happens — observed, or observable by the owner? |
+
+**Rejected as findings** (each lacks one of the six): a missing best practice with no reachable violation · defence-in-depth advice · a generic parser crash with no impact · self-impact where the principal only reaches their own data · guessed deployment or provider behaviour not present in the source.
+
+**The severity rule that matters**: only a **confirmed** record gets a severity. A record whose decisive fact lives outside the repository — in a proxy config, a provider setting, an identity policy — is **`needs_validation`**, and it carries **no severity at all**. It records the exact missing fact and what would resolve it.
+
+| Severity | Anchor |
+| :--- | :--- |
+| **Critical** | Unauthenticated actor gains code execution, full data-store access, or takeover of arbitrary accounts |
+| **High** | An actor **fully defeats** an explicit control with real consequences: auth bypass, cross-tenant read/write, stored script affecting other users |
+| **Medium** | A real boundary violation with limited blast radius, uncommon preconditions, or a narrow resource set |
+| **Low** | Non-secret internal disclosure, or minimal gain for sustained effort |
+
+**The high/medium discriminator**: does the demonstrated result *fully defeat* an explicit control for an action with real consequences, or only weaken it? If you cannot state the concrete damage, the severity is lower than it feels.
+
+---
+
 ## 5. Security Conclusion & Pass Status
 
 - [x] **MEETS SECURITY STANDARDS (SECURITY PASS)**: All critical test parameters above are satisfied. The system is secure against common exploitation vectors and meets basic UU PDP No. 27/2022 compliance.
 - [ ] **REJECTED (FAIL)**: Critical/High category security vulnerabilities identified that must be resolved prior to go-live.
+- [ ] **PASS WITH OUTSTANDING VALIDATION**: No confirmed Critical/High finding, but one or more items are recorded as `needs_validation`. List them in §6 and name who can resolve each one. **This is not a pass** — it is a decision to proceed while the gap is written down and owned.
+
+
+---
+
+## 6. Outstanding Validation
+
+| # | Hypothesis | Missing fact | Who can resolve it | Target date |
+| :-: | :--- | :--- | :--- | :--- |
+| 1 | | | | |
+
+> An item here has **no severity** and **does not block go-live on its own** — but it must have an owner and a date. A `needs_validation` item with no owner is an unverified claim someone will later mistake for a verified one.
