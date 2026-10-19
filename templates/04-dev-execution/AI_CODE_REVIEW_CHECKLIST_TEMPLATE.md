@@ -442,6 +442,22 @@ The template above is a *checklist you work through*. The **review you deliver i
 | `[QUESTION]` | Genuine clarification request, not a demand. | ❌ No | `[QUESTION] Why is this retry capped at 3?` |
 | `[PRAISE]` | Reinforce good practice (morale + learning). | ❌ No | `[PRAISE] Excellent idempotency guard here.` |
 
+### Independent Review Panel — consensus over volume
+
+When more than one reviewer (human or agent) looks at the same diff, three rules decide whether the extra attention helps or just multiplies noise.
+
+**1. Feed files in a different randomized order to each reviewer.** Same files, different sequence. Reviewers that read the same diff in the same order correlate — an early finding anchors the rest, and the agreement you measure is the order, not the defect. Shuffling per reviewer is what makes the vote independent.
+
+**2. Only what two of three rate medium-or-above survives.** A finding reported by one reviewer is a hypothesis; the same finding reached independently by two is a signal. Applying the prefix protocol above, the voting rule is: an issue must be raised by **two or more reviewers**, and **at least one** of them must rate it `[BLOCKER]` / `[BUG]` / `[SECURITY]` / `[PERF]`.
+
+**3. Everything else is dropped, not downgraded.** This is the part that stops `[NIT]` inflation. Three reviewers each producing twelve nits produces thirty-six nits and buries the one blocking issue. Under consensus, a single dissenting `[NIT]` disappears.
+
+| Reviewers | Raised by 1 | Raised by 2+, one medium+ | Raised by 3, all `[NIT]` |
+| :--- | :--- | :--- | :--- |
+| 3 | Dropped | **Reported** | Dropped |
+
+**The failure this prevents**: parallel reviewers make output longer without making it more accurate. Agreement is only evidence when the reviewers were independent — which is why the ordering rule comes first, not last.
+
 ### Review Philosophy Rules
 1. **Seek continuous improvement, not perfection**: Do not block a PR for `[NIT]`/`[SUGGESTION]` items. Only `[BLOCKER]`/`[BUG]`/`[SECURITY]` block merge.
 2. **Style guide is the authority**: Verify against the documented style guide, never personal preference.
