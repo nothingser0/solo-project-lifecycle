@@ -257,13 +257,28 @@ pnpm build
   - Check: `__tests__` directory has tests for new code
   
 - [ ] **Tests actually test**: Tests fail when code is intentionally broken
-  - Test: Comment out key logic, verify tests fail
+  - Test: comment out key logic, or flip one value, and confirm the test goes red
+  - **Also test the converse**: a valid alternative implementation should still pass. A test that fails on a correct refactor is testing implementation, not behaviour
+- [ ] **The expected result came from the requirement, not from running the code**
+  - Check: the assertion matches `SCOPE_STATEMENT` / `REQUIREMENTS_REGISTER`, not console output
   
 - [ ] **Edge cases covered**: Tests include boundary conditions, empty states
   - Check: Tests cover happy path + error cases + edge cases
   
 - [ ] **Integration tests for critical flows**: Auth, payment, data mutation tested
   - Check: Critical user journeys have integration tests
+
+#### 5.1b Three questions before adding a test
+
+Coverage counts what exists. These three decide whether it is **worth existing** — and they catch the most common failure on a solo project: a test written by the same agent that wrote the code, asserting the same mistaken assumption.
+
+1. **Which concrete mistake would fail this test, and what would it cost a user or maintainer?** If you cannot name the mistake, the test protects a shape, not a behaviour.
+2. **Would an equivalent refactor, or a better valid result, also fail?** If yes, the test freezes implementation rather than contract.
+3. **Which existing test, type check or gate already catches this mistake?** If one does, the new test pays maintenance cost for no added protection.
+
+**The independence rule**: the implementation and its own generated output cannot establish the correct expectation. Write the assertion from the requirement, the public contract, or a real observed failure — never from what the code currently returns. When an agent writes both sides, this is the only check that catches a shared wrong assumption.
+
+**What is still worth protecting even when it looks like a "shape" test**: data loss or corruption, permission and trust boundaries, promised compatibility, essential accessibility failures, resource leaks, and broken recovery.
 
 ### 5.2 Test Quality
 
