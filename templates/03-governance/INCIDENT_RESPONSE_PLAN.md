@@ -312,6 +312,31 @@ The [Company] Team
 
 ## Incident Runbooks
 
+### Permission Envelope for Runbook Execution
+
+The runbooks below name rollback, failover, and scaling operations. This block states what may run unattended, what needs approval, and what never runs.
+
+```yaml
+default_mode: read_only
+forbidden:
+  - production data deletion
+  - credential rotation without the owner present
+  - security-group opening to 0.0.0.0/0
+  - force-push to the deploy branch
+requires_confirmation_for:
+  - rollback to a previous deploy
+  - database failover
+  - scale-up / scale-down
+  - feature-flag flip
+  - circuit-breaker override
+```
+
+`forbidden` and `requires_confirmation_for` must be disjoint; `read_only` with a populated confirm list is a dead declaration (the gate can never fire). Every destructive step in the runbooks below belongs to exactly one list.
+
+**Widening this envelope during an outage is how an outage becomes a data-loss event.** If a step is forbidden, escalate to the owner listed in the roles section.
+
+---
+
 ### Runbook: API Returning 500 Errors
 
 **Symptoms**: API returning HTTP 500, error rate >1%

@@ -84,7 +84,7 @@
 | :---: | :--- | :--- | :--- |
 | **A00** | Commercial Clearance | `contracts/CONSULTING_AGREEMENT.md` | `templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md` |
 | **A01** | WBS Decomposition | `docs/pm/WBS_PHASING_PLAN.md` | `templates/00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md` |
-| **A02** | C4 & Threat Model | `docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md`<br>`docs/security/THREAT_MODEL_STRIDE.md` | Blueprint: `SYSTEM_DESIGN_DOC_TEMPLATE.md`<br>Threat model: `templates/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md` |
+| **A02** | C4 & Threat Model | `docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md`<br>`docs/security/THREAT_MODEL_STRIDE.md` | Blueprint: `templates/03-architecture-specs/ENTERPRISE_ARCHITECTURE_BLUEPRINT_TEMPLATE.md`<br>Threat model: `templates/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md` |
 | **A03** | Vendor Procurement | `docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md`<br>`docs/governance/VENDOR_COMPARISON_MATRIX.md` | `templates/03-governance/VENDOR_COMPARISON_MATRIX.md` |
 | **A04** | Governance Handover | `docs/governance/GOVERNANCE_HANDOVER_PACK.md` | Governance Pack & Retainer Charter |
 

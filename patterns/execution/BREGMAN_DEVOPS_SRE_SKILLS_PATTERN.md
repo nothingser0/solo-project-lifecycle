@@ -11,27 +11,40 @@ Every DevOps/SRE skill follows a predictable, machine-readable YAML front matter
 
 ```yaml
 ---
-id: deploy-kubernetes-manifests
-name: Deploy Kubernetes Manifests
-description: Use when applying or rolling out Kubernetes manifests to a target cluster.
-tags: [kubernetes, deployment, argocd]
-maturity: production
+id: triage-app-outofsync
+name: Triage Argo CD Application OutOfSync
+description: Use when an Argo CD application reports OutOfSync or degraded sync status.
+tags: [argocd, gitops, triage, oncall]
+maturity: draft
 inputs:
-  cluster_name: string
-  namespace: string
+  application: string
+  namespace: string?
 outputs:
-  deployment_status: string
+  - sync_status
+  - suspected_drift_source
+  - reconciliation_plan
 tools_allowed:
-  - shell.read
-  - shell.write
+  - argocd.read
+  - k8s.get
+  - vcs.read
 safety:
-  default_mode: requires_confirmation
+  default_mode: read_only
   forbidden:
-    - kubectl delete namespace
-  requires_confirmation_for:
-    - kubectl apply --force
+    - argocd.sync
+  requires_confirmation_for: []
 ---
 ```
+
+This block validates against the source schema (`draft|stable|deprecated`, `read_only|mutating`, `outputs` as an array of strings, tool **IDs** not commands).
+
+**Two rules the format needs, which no schema can express — and which its own validator misses:**
+
+| Rule | Why it matters |
+| :--- | :--- |
+| **`forbidden` and `requires_confirmation_for` must be disjoint** | The same tool in both is a contradiction: one field says never, the other says after approval. The runtime's behaviour depends on undocumented precedence, so the contract means nothing. |
+| **`default_mode: read_only` + a non-empty `requires_confirmation_for` is a dead declaration** | The confirmation gate can never fire, because the mode forbids the action before approval is ever requested. Write `mutating` if writes are permitted with approval. |
+
+Both are mechanically checkable in a validator — which is why their absence from one is worth naming.
 
 ---
 
@@ -68,11 +81,16 @@ tools_allowed:
 
 **Default to `read_only`.** A skill that writes must say so explicitly, in both `default_mode` and `requires_confirmation_for`. The absence of a write capability is the safety mechanism; the absence of a *mention* is not.
 
+**The schema has exactly two values:**
+
 | `default_mode` | Meaning |
 | :--- | :--- |
 | `read_only` | Every action inspects. The default for triage and diagnosis. |
-| `requires_confirmation` | Writes are permitted after explicit human approval; list them under `requires_confirmation_for`. |
-| `write` | Unrestricted writes. Requires a stated reason — this is the exception, not the norm. |
+| `mutating` | The skill may change state. Pair it with a non-empty `requires_confirmation_for`, or you have declared unrestricted writes. |
+
+There is no third value. A `requires_confirmation` mode does not exist in this schema — confirmation is expressed as a **list of tools** in `requires_confirmation_for`, orthogonal to the mode. Getting this wrong makes the document pass no validator while reading correctly to a human, which is the worst of both.
+
+> The rules in §1 apply here: `forbidden` and `requires_confirmation_for` must be disjoint, and `read_only` with a non-empty `requires_confirmation_for` is a dead declaration.
 
 ---
 
