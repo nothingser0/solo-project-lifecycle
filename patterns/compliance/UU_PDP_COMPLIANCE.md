@@ -2,6 +2,24 @@
 
 > **Statutory Basis**: Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP).
 > **Target Audience**: SaaS developers and technical architects operating digital platforms in Indonesia.
+> **Verification status**: The article numbers below (Pasal 46 breach notification, Pasal 56 cross-border transfer, Pasal 20–22 lawful basis) are **summaries written from the regulation, not quotations**. Before citing any of them in a contract, a privacy policy, or a client deliverable, open the official text and confirm the article number — see §0.
+> **Source discipline**: `patterns/compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md` §3.
+
+---
+
+## 0. Verify Before You Cite (do not trust this file's article numbers)
+
+A compliance pattern that cites `Pasal 46` and gets it wrong is worse than one that cites nothing, because it reads as authoritative. The article numbers here were written from the regulation's text; **regulation texts are amended, and parsers make mistakes.** Treat every number below as a claim to verify, not a fact.
+
+| # | Where to get the official text |
+| :-: | :--- |
+| 1 | **Primary source**: JDIH of the issuing body (e.g. `jdih.setneg.go.id`, `jdih.kemenkeu.go.id`, `jdih.komdigi.go.id`). The gazette PDF is the only authoritative version. |
+| 2 | **Index**: `peraturan.go.id` for the national register (PDF only — no structured search; `ilhamfp/pasal` and `mashanz/peraturan-perundang-undangan` offer text conversions, but a conversion is **not** the source). |
+| 3 | **Check the amendment chain** before relying on any article: a `DICABUT` or `DIUBAH` status changes the answer entirely. |
+
+**Rule**: when you cite an article in a deliverable, record `source URL + date accessed` next to it. A citation without a retrievable source is a claim, and this framework does not ship claims as compliance.
+
+---
 
 ---
 

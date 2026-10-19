@@ -48,6 +48,23 @@ When AI agents generate compliance reports, contract clauses, or tax computation
 * ✅ **Disciplined Grounded Citation**:
   > *"Pursuant to **UU No. 6 Tahun 2023** (Penetapan Perpu Cipta Kerja) Pasal 156 Ayat (2) jo. **PP No. 35 Tahun 2021** Pasal 40, severance compensation for termination is calculated as follows: [Exact formula]. Status: IN FORCE."*
 
+### 2.1 Where the text must come from
+
+The four parts above describe *how* to cite. This section is about *what you are allowed to cite from* — the part that is skipped, and the reason wrong article numbers ship.
+
+| Source | Status | Use it for |
+| :--- | :--- | :--- |
+| **JDIH of the issuing body** (Setneg, Kemenkeu, Komdigi, …) — the gazette PDF | ✅ **Authoritative** | Anything that reaches a contract, policy, or client deliverable |
+| `peraturan.go.id` national register | ✅ Authoritative pointer, PDF-only | Finding the right JDIH document |
+| Converted text archives (`mashanz/peraturan-perundang-undangan`, `ilhamfp/pasal`) | ⚠️ **Convenience copy** | Reading, searching, drafting — never the citation of record |
+| An LLM's recollection of an article | ❌ **Never** | Nothing |
+
+**The conversion rule**: a markdown conversion can lose an `Ayat`, merge two `Pasal`, or drop an amendment. It is useful precisely because it is searchable — and dangerous precisely because it looks like the law. Cite the JDIH document; use the conversion to find your way there.
+
+**Rule for deliverables**: every statutory citation carries `source URL + date accessed`. A citation you cannot retrieve is a claim, not a finding. This applies to a privacy policy just as much as to a legal memo.
+
+---
+
 ### The 4-Part Grounding Requirement:
 1. **Exact Statutory Instrument**: Name + Number + Year (e.g., `UU No. 27 Tahun 2022`).
 2. **Structural Coordinates**: Exact `Bab` (Chapter), `Pasal` (Article), and `Ayat` (Clause).
