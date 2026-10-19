@@ -31,7 +31,6 @@
 | API Design Guidelines & Best Practices Cheat Sheet Pattern | [`architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`](./architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md) |
 | Dwyl Learn API Design & Product-First API Principles Pattern | [`architecture/DWYL_API_DESIGN_PATTERN.md`](./architecture/DWYL_API_DESIGN_PATTERN.md) |
 | Full-Stack Execution Roadmap & Milestone Breakdown Pattern | [`execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md`](./execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md) |
-| MERN Stack Full-Stack Curriculum & Project Breakdown Pattern | [`execution/MERN_STACK_ROADMAP_PATTERN.md`](./execution/MERN_STACK_ROADMAP_PATTERN.md) |
 | AI Full-Stack Delivery Workflow & Multi-Role Dispatch Pattern | [`execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`](./execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md) |
 | Claude Code Spec-Driven Development & Context Optimization Pattern | [`execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md`](./execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md) |
 | Jeffallan Claude Skills & Specialized Pair Programmer Pattern | [`execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md`](./execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md) |
