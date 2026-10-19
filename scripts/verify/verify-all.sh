@@ -71,6 +71,15 @@ else
     SKIPPED=$((SKIPPED + 1))
 fi
 echo ""
+echo "1b2. Linting every shipped template..."
+if bash scripts/verify/verify-template-lint.sh 2>&1 | grep -q "pass the placeholder"; then
+    echo "  ✅ all templates and patterns pass the linter"
+else
+    echo "  ❌ template lint failed (run: bash scripts/verify/verify-template-lint.sh)"
+    ERRORS=$((ERRORS + 1))
+fi
+
+echo ""
 echo "1c0. Checking the scale band is stated one way..."
 if bash scripts/verify/verify-scale-bands.sh >/dev/null 2>&1; then
     echo "  ✅ every document states the same P0 band per scope"

@@ -125,10 +125,18 @@
 |---|---|
 | Metrics, cohorts, RICE, experiment hypotheses | **Double Down / Pivot / Kill** (`13:38`), recruiting power users (`13:35`), NPS to real users (`13:34`) |
 
-### A00 — Enterprise Advisory
-| Agent | Human only |
-|---|---|
-| Architecture drafts, ADR, STRIDE, blueprints | 🛑 **3 STOPs**: Advisory Agreement, Arch Sign-off, Final Sign-off — **mandatory legal counsel** (`A00:55`) |
+### A00–A04 — Enterprise Advisory
+The advisory series is **never solo coding**. The agent drafts; a licensed professional and the client decide.
+
+| Phase | Agent | Human only |
+|---|---|---|
+| **A00** Commercial clearance | Agreement drafts, scope annexes | 🛑 **3 STOPs**: Advisory Agreement, Arch Sign-off, Final Sign-off — **mandatory legal counsel** (`A00:55`) |
+| **A01** WBS decomposition | Phase breakdown, package boundaries | Sign-off on phasing and the capacity split |
+| **A02** C4 & threat model | Blueprint, STRIDE register, quality scenarios | Architecture sign-off; the risk acceptance is the client's |
+| **A03** Vendor procurement | RFP schedule, comparison matrix, scoring | Vendor selection and the conflict-of-interest declaration |
+| **A04** Governance handover | Handover pack, RACI, CAB process, retainer charter | Acceptance of operational ownership; revocation of advisor access |
+
+**No phase in this series may be closed by the agent**, and none is a waiver of the Global FORBIDDEN list below.
 
 ---
 
