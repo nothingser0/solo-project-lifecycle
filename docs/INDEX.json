@@ -437,6 +437,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/qa/TEST_SUITE_CURATION_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md",
       "cataloged": true
     },

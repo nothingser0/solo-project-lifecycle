@@ -1,7 +1,7 @@
 # Module 07: Quality Assurance (Unit Test, SIT, & Security Audit)
 
 > **Templates to copy**: `templates/06-qa-uat/BUG_REPORT.md` · `SIT_WORKBOOK_TEMPLATE.md` · `POLISH_AUDIT_TEMPLATE.md` · `ACCESSIBILITY_AUDIT_TEMPLATE.md` (→ `docs/qa/ACCESSIBILITY_AUDIT.md`) · `METADATA_AND_SEO_AUDIT_TEMPLATE.md` (→ `docs/qa/METADATA_AUDIT.md`)
-> 📖 **Optional refs** (do NOT preload): `references/playbooks/AI_ASSISTED_DEVELOPMENT.md` (pre-merge review: inline checklist below) · `patterns/qa/EXACT_BUILD_VERIFICATION_PATTERN.md` (exact-build pinning & 4-state lifecycle) · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §6 (deliverable-consistency + evidence-gap passes before UAT) · `references/design/AI_WRITING_TELLS.md` (structural copy tells — polish row 24b) · `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` (Large/Enterprise only)
+> 📖 **Optional refs** (do NOT preload): `references/playbooks/AI_ASSISTED_DEVELOPMENT.md` (pre-merge review: inline checklist below) · `patterns/qa/EXACT_BUILD_VERIFICATION_PATTERN.md` (exact-build pinning & 4-state lifecycle) · `patterns/qa/TEST_SUITE_CURATION_PATTERN.md` (pruning a bloated suite: coverage is not redundancy, quarantine before delete) · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §6 (deliverable-consistency + evidence-gap passes before UAT) · `references/design/AI_WRITING_TELLS.md` (structural copy tells — polish row 24b) · `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` (Large/Enterprise only)
 
 This module validates reliability, third-party integration integrity (*System Integration Testing* / SIT), performance resilience, and security in the **Staging** environment before client UAT (Module 09). Verbose SIT walkthrough & Enterprise A04 advisory: `deep-dives/07_QUALITY_ASSURANCE_SIT.md`.
 
