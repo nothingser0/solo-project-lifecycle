@@ -38,7 +38,9 @@ Pull Request Opened
 
 **A green pipeline that nobody is blocked by is a dashboard, not a control.** The test of whether CI exists: has any change been blocked by it this month? If not, either the gates are not required, or the team is not making changes.
 
-This is enforced in `templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md` §1 — configure it there, not in the workflow YAML, where it has no effect.
+**Where this lives depends on scale.** `templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md` marks PRs *Optional* for Small and *Recommended* for Medium; required checks are enforced at Large and Enterprise. That matrix governs **review**, not enforcement — a Small project with a CI job still needs the status check set to *required*, or the job is the dashboard described above. If there is no CI job, there is nothing to enforce and the honest statement is "no automated gate", not "CI is green".
+
+Configure it in repository settings, never in the workflow YAML, where required-status-check intent has no effect.
 
 ---
 
