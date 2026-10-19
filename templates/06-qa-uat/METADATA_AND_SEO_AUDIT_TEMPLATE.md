@@ -37,6 +37,13 @@ Fix in this order. A critical failure invalidates the work below it.
 | 1.4 | Any dynamic/user-generated string is escaped and sanitized | | [ ] |
 | 1.5 | Every route has safe defaults for title and description (a 404 page included) | | [ ] |
 
+**The one content test that no technical pass can substitute for.** Ask of each page: *could this have been written without having done the thing?*
+
+- "7 Tips for First-Time Homebuyers" — commodity. Written from what everyone knows.
+- "Why We Waived the Inspection & Saved Money: A Look Inside the Sewer Line" — first-hand. Written from having done it.
+
+**A page whose content could be produced without the experience is commodity content, and a technical SEO pass cannot fix that.** It can make commodity content indexable; it cannot make it distinctive. Record this as a content finding, not a tag finding — the remediation is different, and it is not in this document.
+
 ## 2. Title & description (high)
 
 | # | Check | Evidence | Status |
@@ -46,6 +53,21 @@ Fix in this order. A critical failure invalidates the work below it.
 | 2.3 | Titles are short and readable; no keyword stuffing | | [ ] |
 | 2.4 | Shareable/searchable pages have a meta description | | [ ] |
 | 2.5 | Descriptions are plain text — no markdown, no quote spam | | [ ] |
+| 2.6 | Descriptions do not share **one generated shape** across pages — see below | | [ ] |
+| 2.7 | Any CTA in a description was written for that page, not appended by a template | | [ ] |
+
+**Uniqueness is necessary but not sufficient.** N descriptions can each be a
+unique string while all sharing one generated shape: open with the page title,
+close on a stock CTA ("Try it free now.", "Start free!"). The strings differ;
+the page reads like every other page.
+
+| Check | How |
+| :--- | :--- |
+| Cluster the **openings** | Extract the first 3–4 words of every description; repeated stems indicate the shape |
+| Cluster the **closings** | Same on the last 3–4 tokens — stock CTAs live here |
+| Compare the middle | If the middle is the only part that varies, the template is doing the writing |
+
+Fix the template, not the pages: a CTA appended site-wide is a template artifact, and rewriting 200 descriptions by hand reproduces it.
 
 ## 3. Canonical & indexing (high)
 

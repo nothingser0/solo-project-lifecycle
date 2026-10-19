@@ -456,7 +456,19 @@ When more than one reviewer (human or agent) looks at the same diff, three rules
 | `[BLOCKER]`, `[BUG]`, `[SECURITY]`, `[PERF]` | **Non-votable.** A single reviewer's report is **reported, always**, carrying its reviewer count and reasoning. |
 | any prefix raised by all three | Reported |
 
-**3. A severity finding cannot be outvoted.** Two reviewers may not delete a `[SECURITY]` or `[BLOCKER]` raised by the third. The most they can do is **state why it does not apply**, on the record. A majority veto over a vulnerability is how a review panel becomes a liability — the one reviewer who noticed is exactly the value the panel was built to capture.
+**3. Quorum is on existence, not on severity.** The vote answers *"did this get noticed by more than one reviewer?"*, never *"is it real?"*. Three consequences:
+
+- **A single `[BLOCKER]`/`[SECURITY]` is non-votable.** It is escalated as-is, with that reviewer's reasoning. The other two may state why it does not apply — on the record, in the PR — but they cannot delete it.
+- **Disagreement on severity does not suppress the finding.** If two reviewers rate an issue medium+ and the third rates it low *because they saw compensating code*, the finding still passes: the count is met, and the third reviewer's reasoning is attached to it, where it may well resolve it.
+- **A majority veto over a vulnerability is the one outcome a review panel must never produce.** The single reviewer who noticed is precisely the value the panel was built to capture.
+
+| Situation | Outcome |
+| :--- | :--- |
+| 1 reviewer: `[SECURITY]` | **Reported, non-votable**, with reasoning |
+| 2 reviewers: medium+ / 1 reviewer: low *citing compensating code* | **Reported**, finding + the low rationale attached |
+| 2 reviewers: medium+ / 1 reviewer: did not notice | **Reported** |
+| 1 reviewer: `[NIT]` | Dropped |
+| 3 reviewers: `[NIT]` | Dropped |
 
 > Counting matters, in the other direction: an issue raised by one reviewer is shown **with its count** ("1/3 reviewers"). The count informs the author; it does not suppress the report.
 
