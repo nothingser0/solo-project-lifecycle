@@ -53,6 +53,8 @@ The single most expensive ASO mistake is optimising text the store does not inde
 
 **The asymmetry that catches people**: the iOS description is *not* indexed while the Google Play long description *is*. A copy-paste of the iOS description into Play leaves ranking value on the table, and copying the Play description into iOS spends effort on nothing.
 
+> **Honesty note on these two rows.** "iOS description not indexed" and "promotional text not indexed" are **widely reported, not documented by Apple** — nor is Play's long-description indexing stated in Google's console help. They are the load-bearing claims of this section, so verify against current App Store Connect and Play Console documentation before repeating either to a client. Apple has changed keyword-field behaviour before.
+
 ### The keyword field has three rules people skip
 
 - Comma-separated, **no spaces after commas** — spaces waste characters from the 100-char budget
@@ -68,6 +70,8 @@ Assignment without scoring is taste. Score four dimensions 1–10, then compute:
 ```
 Score = (Relevance × 0.4) + (Volume × 0.2) + (Competition × 0.2) + (Conversion × 0.2)
 ```
+
+**These weights are arbitrary, and every input is a 1–10 self-rating.** The output looks quantitative while being one person's judgement. Use it to **order a list for your own working notes** — never as evidence, and never as a number shown to a client. The tier bands are the honest part: "this keyword is Tier 1" is a claim you can defend; "this keyword scores 8.3" is not.
 
 | Dimension | What a 1 means | What a 10 means |
 | :--- | :--- | :--- |

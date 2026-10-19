@@ -5,7 +5,7 @@
 >
 > **Licence**: MIT (upstream `LICENSE`, Copyright (c) 2026 agricidaniel).
 >
-> **Upstream claims are attributed, not adopted.** Dates and product behaviour below (e.g. "rollout completed 2026-08-31") come from that repository's `references/google-ai-optimization-guide.md`, not from a Google property read directly. Verify against Search Central before repeating one to a client.  
+> **Upstream claims are attributed, not adopted.** Dates and product behaviour below (e.g. "rollout completed 2026-08-31") were read in that repository's `references/google-ai-optimization-guide.md` and verified there on 2026-10-19 — but not against a Google property directly. Verify against Search Central before repeating one to a client.  
 > **Scope**: Generative Engine Optimization (GEO/AEO) as SEO fundamentals applied to AI-search surfaces, parallel sub-agent task orchestration, passage citability scoring, schema validation, agent-readiness claims separated from Google crawl signals (`llms.txt`, WebMCP, IPTC TrainedAlgorithmicMedia), technical SEO auditing, and tiered Google API reporting.
 
 ---
