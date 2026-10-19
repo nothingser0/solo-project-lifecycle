@@ -1,4 +1,4 @@
-# Taksonomi Lengkap 1.000 Sistem & Pembagian Skala Implementasi (Portfolio zeenn)
+# Taksonomi Lengkap 1.000 Sistem & Pembagian Skala Implementasi
 
 ## Contents
 
