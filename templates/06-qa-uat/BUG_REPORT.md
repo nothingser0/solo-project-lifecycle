@@ -108,8 +108,6 @@ A bug report that stops at "steps to reproduce" produces a patch, not a fix. Rec
 
 ---
 
----
-
 ## Example: Filled Bug Report
 
 ```
@@ -176,6 +174,16 @@ Response: 401 {"error": "Invalid credentials"}
 (But credentials ARE valid - verified in database)
 
 ---
+
+Root Cause: `refreshSession()` read `expiresAt` from the response body, but the
+  auth service moved that field into a JWT claim in commit abc123, so the comparison
+  was `undefined < now` and every regular-user session was treated as expired.
+Why it was not caught: the auth unit tests mock the response body, so the shape
+  change never reached them; only a real login exposed it.
+Blast radius: any flow that reads a field from the auth response — password reset
+  and invite acceptance share the same call.
+Fix and regression: read the claim instead of the body; `session-expiry.test.ts`
+  fails on the old code and passes on the new. No adjacent behaviour changed.
 
 Additional Context:
 - Started happening after commit abc123 (session refactor)
