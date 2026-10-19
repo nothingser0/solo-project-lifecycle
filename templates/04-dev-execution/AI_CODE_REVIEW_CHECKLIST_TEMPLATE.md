@@ -448,13 +448,21 @@ When more than one reviewer (human or agent) looks at the same diff, three rules
 
 **1. Feed files in a different randomized order to each reviewer.** Same files, different sequence. Reviewers that read the same diff in the same order correlate — an early finding anchors the rest, and the agreement you measure is the order, not the defect. Shuffling per reviewer is what makes the vote independent.
 
-**2. Only what two of three rate medium-or-above survives.** A finding reported by one reviewer is a hypothesis; the same finding reached independently by two is a signal. Applying the prefix protocol above, the voting rule is: an issue must be raised by **two or more reviewers**, and **at least one** of them must rate it `[BLOCKER]` / `[BUG]` / `[SECURITY]` / `[PERF]`.
+**2. Consensus suppresses volume, never severity.** Voting decides which **noise** to drop, not which **defects** to believe. Split by prefix:
 
-**3. Everything else is dropped, not downgraded.** This is the part that stops `[NIT]` inflation. Three reviewers each producing twelve nits produces thirty-six nits and buries the one blocking issue. Under consensus, a single dissenting `[NIT]` disappears.
+| Prefix | Voting rule |
+| :--- | :--- |
+| `[NIT]`, `[SUGGESTION]`, `[QUESTION]`, `[PRAISE]` | **Votable.** Reported only if two or more reviewers raise it. This is the whole point — it stops `[NIT]` inflation across parallel reviewers. |
+| `[BLOCKER]`, `[BUG]`, `[SECURITY]`, `[PERF]` | **Non-votable.** A single reviewer's report is **reported, always**, carrying its reviewer count and reasoning. |
+| any prefix raised by all three | Reported |
 
-| Reviewers | Raised by 1 | Raised by 2+, one medium+ | Raised by 3, all `[NIT]` |
+**3. A severity finding cannot be outvoted.** Two reviewers may not delete a `[SECURITY]` or `[BLOCKER]` raised by the third. The most they can do is **state why it does not apply**, on the record. A majority veto over a vulnerability is how a review panel becomes a liability — the one reviewer who noticed is exactly the value the panel was built to capture.
+
+> Counting matters, in the other direction: an issue raised by one reviewer is shown **with its count** ("1/3 reviewers"). The count informs the author; it does not suppress the report.
+
+| Reviewers | `[NIT]` by 1 | `[SECURITY]` by 1 | `[NIT]` by 3 |
 | :--- | :--- | :--- | :--- |
-| 3 | Dropped | **Reported** | Dropped |
+| 3 | Dropped | **Reported — non-votable** | Dropped |
 
 **The failure this prevents**: parallel reviewers make output longer without making it more accurate. Agreement is only evidence when the reviewers were independent — which is why the ordering rule comes first, not last.
 
