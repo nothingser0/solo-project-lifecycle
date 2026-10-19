@@ -49,6 +49,44 @@ $$\text{text\_y} = \text{box\_y} + \frac{\text{box\_height}}{2} + (\text{font\_s
 
 ---
 
+## 3.1 Block Spacing, Text Width & Paint Order
+
+Three rules that prevent the defects geometry alone does not catch.
+
+**Block spacing — one standard: ≥25px, 25–30px recommended.** The breakdown is 5px start clearance + 11px end clearance and arrowhead + **≥6px of visible line** + safety margin. Under 6px the arrowhead degenerates into a dot. Do not exceed ~30px: wider spacing reads as loose and stretches every connector.
+
+**Estimate text width before placing it.** Overflow is silent at 100% zoom and collides at print size:
+
+| Font size | Latin char | CJK char |
+| :--- | :--- | :--- |
+| 8px | 4.5px | 8px |
+| 9px | 5.0px | 9px |
+| 10px | 5.5px | 10px |
+| 11px | 6.0px | 11px |
+| 12px | 7.0px | 12px |
+
+- `text-anchor="start"`: right edge ≈ `x + chars × charWidth`
+- `text-anchor="middle"`: edges ≈ `x ± (chars × charWidth) / 2`
+- `text-anchor="end"`: left edge ≈ `x − chars × charWidth`
+
+**Check before committing**: text right edge + 10px < left edge of the neighbour on its right.
+
+**SVG has no z-index — paint order is the layer order.** Elements painted later sit on top. Author in this order, always:
+
+1. Background boxes (grouping containers, swimlanes)
+2. Connectors and arrows
+3. Node boxes
+4. Text labels
+5. Legend
+
+An arrow that disappears behind a box is a paint-order bug, not a routing bug.
+
+**Why `markerUnits` matters** (referenced in §3): a marker defaults to `markerUnits="strokeWidth"`, so the arrowhead scales with the line — a 3px stroke gets an arrowhead three times the one you sized for 1px, and it looks like a lollipop. `userSpaceOnUse` pins the marker to user units so one definition works at every stroke width. If you want the arrowhead to grow, keep `strokeWidth` and define a second, larger marker for thick strokes.
+
+**Escape special characters**: `&` → `&amp;`, `<` → `&lt;`, `>` → `&gt;`. A raw `<` in a label silently truncates the element and leaves a blank region you will hunt for later.
+
+---
+
 ## 4. The 5 Semantic Color Triples
 
 Use these consistent presentation attribute triples `(Fill / Stroke / Text)` to communicate architectural roles:
