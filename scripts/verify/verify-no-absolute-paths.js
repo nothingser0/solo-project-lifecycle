@@ -23,10 +23,11 @@ const path = require("path");
 // tracked relative path. git emits forward slashes only, so there is no
 // backslash branch.
 const RULES = [
+  // A tracked literal "C:" directory prints as "C:/..." — reachable.
   { name: "drive letter + fullwidth colon", re: /^[A-Za-z]\uF03A\// },
   { name: "drive letter + slash", re: /^[A-Za-z]:\// },
-  { name: "temp under a user profile", re: /(^|\/)(Users|home)\/[^/]+\/(AppData\/)?/i },
-  { name: "temp directory in path", re: /AppData\/Local\/Temp/i },
+  // Must require the temp tail: a legitimate folder named "Users" is fine.
+  { name: "user temp directory", re: /(^|\/)(Users|home)\/[^/]+\/AppData\/Local\/Temp\//i },
 ];
 
 // Resolve the repo root from this file, so the scan is cwd-independent and the
