@@ -74,6 +74,29 @@ LIMIT 10;
 2. **N+1 queries**: ORM lazy loading (fetch related data in loop)
 3. **Inefficient JOINs**: Cartesian products, missing foreign key indexes
 4. **Large OFFSET**: Pagination with high offset (use cursor-based instead)
+5. **Non-SARGable predicates**: A function wrapped around an indexed column disables the index — see below
+
+**Non-SARGable predicates (the invisible index killer)**
+
+An index can only be used when the column stands alone on one side of the comparison. Wrapping it in a function, a cast, or leading-wildcard `LIKE` forces a full scan — the index still exists, so nothing looks wrong until the table grows.
+
+```sql
+-- Bad: index on created_at is never used
+SELECT * FROM orders WHERE date_trunc('day', created_at) = '2026-01-01';
+SELECT * FROM orders WHERE created_at::date = '2026-01-01';
+SELECT * FROM customers WHERE lower(email) = 'a@b.com';   -- unless a functional index exists
+
+-- Good: range on the bare column
+SELECT * FROM orders
+WHERE created_at >= '2026-01-01' AND created_at < '2026-01-02';
+```
+
+**Checks worth running**
+- `EXPLAIN` shows `Seq Scan` on a table you expected to be indexed — check the predicate before adding an index.
+- A query that is fast when filtered by ID and slow when filtered by date usually has a wrapped column, not a missing index.
+- `lower(email)` and `created_at::date` are acceptable **only** with the matching functional/expression index (`CREATE INDEX ON customers (lower(email))`). Decide which side you want; do not add both a plain index and a functional one and assume it covers.
+
+**Why this belongs in the bottleneck list**: missing indexes get found. Wrapped columns do not, because the index is present and `\d table` looks correct. It surfaces as "the database got slow when we grew" with no obvious cause.
 
 ---
 
