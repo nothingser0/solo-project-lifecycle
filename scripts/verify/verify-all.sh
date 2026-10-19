@@ -71,6 +71,15 @@ else
     SKIPPED=$((SKIPPED + 1))
 fi
 echo ""
+echo "1c0. Checking the scale band is stated one way..."
+if bash scripts/verify/verify-scale-bands.sh >/dev/null 2>&1; then
+    echo "  ✅ every document states the same P0 band per scope"
+else
+    echo "  ❌ scale bands disagree (run: bash scripts/verify/verify-scale-bands.sh)"
+    ERRORS=$((ERRORS + 1))
+fi
+
+echo ""
 echo "1c1. Checking for duplicate function definitions..."
 if bash scripts/verify/verify-no-duplicate-functions.sh >/dev/null 2>&1; then
     echo "  ✅ no gate function is defined twice (bash would silently keep the last)"
