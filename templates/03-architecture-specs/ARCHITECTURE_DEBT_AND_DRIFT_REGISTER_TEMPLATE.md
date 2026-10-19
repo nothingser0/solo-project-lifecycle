@@ -7,6 +7,23 @@
 
 ---
 
+## 0. Establish the Dominant Pattern Before Calling Anything Drift
+
+Half of all "drift" findings are wrong because the reviewer measured against what they expected rather than what this codebase actually does. Before writing a single row, count.
+
+| Observation | Verdict | What to do |
+| :--- | :--- | :--- |
+| One file does X, nine do Y | **Drift** | A finding. Record the nine as baseline, the one as deviation. |
+| Five do X, five do Y | **Open question** | Not a finding. The owner must choose the convention; you cannot. |
+| Every file does X, your instinct says Y | **Not a finding** | Your instinct is not a baseline. X is the convention. |
+| X is used but the framework documents Y | **Framework drift** | A finding — this one has a written authority behind it. |
+
+**The two permitted baselines** are the framework's documented conventions and this project's own dominant pattern. Personal preference, "what most codebases do", and "what I would have written" are not baselines.
+
+**Flow conflicts are the exception that needs tracing, not counting.** A claim that two flows disagree requires following the actual path from entry point to data — not inferring it from file names or folder layout.
+
+---
+
 ## 1. Baselines Used for Assessment
 
 * **Framework Official Conventions**: `[e.g. Next.js 15 App Router + Server Actions / Supabase Auth]`
