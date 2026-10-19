@@ -441,6 +441,10 @@
       "cataloged": true
     },
     {
+      "path": "patterns/qa/UAT_UNTRUSTED_OUTPUT_BOUNDARY_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md",
       "cataloged": true
     },
