@@ -10,7 +10,7 @@
 - **Solo Developer / Consultant**: [Your Name]
 - **Document Reference**: `docs/pm/IDEA_BRIEF.md` (v1.0)
 - **Document Status**: `[DRAFT | IN_REVIEW | APPROVED | FROZEN]`
-- **Defined Project Scale**: [Small (MVP, 3–7 Must) / Solo SaaS (8–15 Must) / Medium (8–15 Must) / Large (16–25 Must) / Enterprise]
+- **Defined Project Scale**: [Small (MVP, 1–5 Must) / Solo SaaS (6–15 Must) / Medium (6–15 Must) / Large (16–25 Must) / Enterprise]
 - **Elicitation Completion Date**: [YYYY-MM-DD]
 - **Last Modified**: [YYYY-MM-DD]
 
@@ -89,7 +89,7 @@
 > - **P3 (Won't-Have)**: Formally EXCLUDED from project deliverables.
 
 ### 4.1 MoSCoW Feature Inventory
-*Respect scale limits: Small (3–7 Must), Medium/Solo SaaS (8–15 Must), Large (16–25 Must):*
+*Respect scale limits: Small (1–5 Must), Medium/Solo SaaS (6–15 Must), Large (16–25 Must):*
 
 | Feature ID | Module / Domain | Functional Description | Priority | Est. Effort (Days) | Root Cause Addressed | Target Release | Confidence |
 | :--- | :--- | :--- | :---: | :---: | :--- | :---: | :---: |

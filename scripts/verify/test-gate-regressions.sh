@@ -804,7 +804,7 @@ expect_m01() {
         PASS=$((PASS + 1))
     else
         echo -e "  ${RED}✗${NC} $name  (M01 -> $got, expected $want)"
-        echo "$out" | grep -E '❌|⚠️' | head -3 | sed 's/^/       /'
+        echo "$out" | grep -E '❌|⚠️' | head -4 | sed "s/^/       /"
         FAIL=$((FAIL + 1))
     fi
 }
@@ -853,7 +853,7 @@ expect_m01_alias() {
         PASS=$((PASS + 1))
     else
         echo -e "  ${RED}✗${NC} $name  (M01 -> $got, expected $want + alias notice)"
-        echo "$out" | grep -E '❌|\[INFO\]' | head -3 | sed 's/^/       /'
+        echo "$out" | grep -E '❌|\[INFO\]' | head -4 | sed "s/^/       /"
         FAIL=$((FAIL + 1))
     fi
 }
@@ -1016,7 +1016,7 @@ expect_m06_step() {
         PASS=$((PASS + 1))
     else
         echo -e "  ${RED}✗${NC} $name  (M06 -> $got, expected $want)"
-        echo "$out" | grep -E '❌ STEP' | head -3 | sed 's/^/       /'
+        echo "$out" | grep -E '❌ STEP' | head -4 | sed "s/^/       /"
         FAIL=$((FAIL + 1))
     fi
 }
@@ -1162,7 +1162,7 @@ else
     # Look for author-machine paths, not for the literal <REPO> placeholder.
     if grep -qE '(/[A-Za-z]/Users/|/Users/[a-z0-9_.-]+/|/home/[a-z0-9_.-]+/|[A-Za-z]:[\\/]Users)' "$GOLDEN_FILE" 2>/dev/null; then
         echo -e "  ${RED}✗${NC} golden output contains an absolute device path:"
-        grep -nE '(/[A-Za-z]/Users/|/Users/[a-z0-9_.-]+/|/home/[a-z0-9_.-]+/|[A-Za-z]:[\\/]Users)' "$GOLDEN_FILE" | head -3 | sed 's/^/       /'
+        grep -nE '(/[A-Za-z]/Users/|/Users/[a-z0-9_.-]+/|/home/[a-z0-9_.-]+/|[A-Za-z]:[\\/]Users)' "$GOLDEN_FILE" | head -4 | sed "s/^/       /"
         FAIL=$((FAIL + 1))
     else
         echo -e "  ${GREEN}✓${NC} golden gate outputs are device-independent (no absolute author paths)"
@@ -1211,8 +1211,6 @@ expect_gate() {
 }
 
 # Content long enough to clear the byte floor, with the headings each gate greps.
-FILL='%s'  # placeholder replaced per case below
-
 # M00 aggregates four signals (runbook §1): PASS if any PASS, KILL only if ALL KILL,
 # otherwise RETEST. The gate once used waitlist conversion alone, so an intent-only
 # 20% report scored KILL, and any single "strong" signal rescued a genuine KILL.
@@ -1278,6 +1276,66 @@ expect_m00_signal "M00 waitlist KILL + deposits RETEST aggregates to RETEST" 1.5
 expect_m00_signal "M00 any PASS signal closes the gate" 1.5 35 0 0 PASS PASS
 expect_m00_signal "M00 all signals KILL aggregates to KILL" 1.0 5 0 0 KILL KILL
 
+# Positive direction where the gate needs more than one artifact. M02 reconciles
+# Scope-P0-Count against the counted Must-Have rows, so the count is derived from
+# the shipped template rather than guessed — the check this pins is that a
+# template-faithful document passes, not that a hand-written one does.
+# expect_gate_scaffold <gate> <label> <want>   (uses INTAKE_MEDIUM + templates)
+expect_gate_scaffold() {
+    local gate="$1" label="$2" want="$3"
+    local dir="$WORK/scaf-$gate"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    case "$gate" in
+        M02)
+            # The shipped template is a form: fill the lock, the count (which must equal
+            # the counted Must rows), and add Must rows to reach the Medium band (6-15).
+            cp "$REPO/templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md" "$dir/docs/pm/SCOPE_STATEMENT.md"
+            local scope="$dir/docs/pm/SCOPE_STATEMENT.md"
+            sed -i 's/^Scope-P0-Count: \[number\]/Scope-P0-Count: 7/; s/^Scope-Lock-Decision: PENDING/Scope-Lock-Decision: LOCKED/' "$scope"
+            sed -i 's/\[Project Name\]/Acme/g; s/\[Client Company\]/Acme Corp/g; s/\[Your Name\]/S. Rahma/g; s/\[YYYY-MM-DD\]/2026-10-12/g' "$scope"
+            # Nested brackets need two passes; M02 rejects any remaining [...].
+            sed -i -E 's/\[[^][]*\]/X/g' "$scope"
+            sed -i -E 's/\[[^][]*\]/X/g' "$scope"
+            # Pad to 7 counted Must rows (the template ships fewer than the Medium floor).
+            awk 'BEGIN{done=0} /^\| \*\*F-/ {n++} {print} /^$/ && !done && n>0 {print "| **F-901** | Fallback feature A | Must |"; print "| **F-902** | Fallback feature B | Must |"; done=1}' \
+                "$scope" > "$scope.tmp" && mv "$scope.tmp" "$scope"
+            cp "$REPO/templates/03-governance/RACI_MATRIX.md" "$dir/docs/governance/RACI_MATRIX.md"
+            cp "$REPO/templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md" "$dir/docs/pm/COMMUNICATION_PLAN.md"
+            cp "$REPO/templates/01-discovery-commercial/STAKEHOLDER_MAP_TEMPLATE.md" "$dir/docs/pm/STAKEHOLDER_MAP.md"
+            ;;
+        M07)
+            mkdir -p "$dir/docs/qa"
+            cp "$REPO/templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md" "$dir/docs/qa/SIT_WORKBOOK.md"
+            local wb="$dir/docs/qa/SIT_WORKBOOK.md"
+            sed -i 's/\[Project Name\]/Acme/g; s/\[Client Company\]/Acme Corp/g; s/\[Your Name\]/S. Rahma/g; s/\[YYYY-MM-DD\]/2026-10-12/g; s/\[staging URL\]/https:\/\/staging.example.com/g' "$wb"
+            printf '\nSIT PASS\nStaging-URL: https://staging.example.com\n' >> "$wb"
+            # M07 also requires a security audit artifact.
+            cp "$REPO/templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md" "$dir/docs/qa/SECURITY_AUDIT.md"
+            sed -i 's/\[Project Name\]/Acme/g; s/\[Your Name\]/S. Rahma/g; s/\[YYYY-MM-DD\]/2026-10-12/g' "$dir/docs/qa/SECURITY_AUDIT.md"
+            # M07 also requires the polish audit and a passing SIT result.
+            mkdir -p "$dir/docs/qa"
+            printf '# Polish Audit\n\nAll 33 tells reviewed. READY (0 blocking tells).\n' > "$dir/docs/qa/POLISH_AUDIT.md"
+            # The workbook ships a form; strip every [...] so the placeholder check passes.
+            sed -i -E 's/\[[^][]*\]/X/g' "$wb"; mkdir -p "$dir/tmp2"; sed -i -E 's/\[[^][]*\]/X/g' "$wb"
+            ;;
+        M13)
+            printf -- '- **Scale**: solo-saas\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"
+            ;;
+    esac
+    local out rc got
+    out="$(cd "$dir" && bash "$GATE" "$gate" 2>&1)"; rc=$?
+    got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $label  ($gate -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $label  ($gate -> $got/exit $rc, expected $want)"
+        printf '%s' "$out" | grep -E "❌" | head -4 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+    rm -rf "$dir"
+}
+
 expect_gate M02 "M02 empty project blocks"            "docs/pm/SCOPE_STATEMENT.md" BLOCKED
 expect_gate M03 "M03 empty project blocks"            "contracts/SOW_SMB.md" BLOCKED
 
@@ -1289,11 +1347,62 @@ expect_gate M11 "M11 empty project blocks"            "docs/pm/BAST.md" BLOCKED
 # so an empty METRICS_BASELINE_REPORT is correctly accepted for this fixture.
 expect_gate M13 "M13 waived for client delivery (empty metrics accepted)" "docs/analytics/METRICS_BASELINE_REPORT.md" ALLOWED
 
+# Positive direction for the three gates whose fixture needs more than one stub.
+expect_gate_scaffold M02 "M02 accepts the shipped scope + RACI + comms + stakeholders" ALLOWED
+expect_gate_scaffold M07 "M07 accepts the shipped SIT workbook with PASS + staging URL" ALLOWED
+expect_gate_scaffold M13 "M13 NOT waived for solo-saas: empty metrics blocks" BLOCKED
+
 expect_gate A00 "A00 empty project blocks"            "contracts/CONSULTING_AGREEMENT.md" BLOCKED
 expect_gate A01 "A01 empty project blocks"            "docs/pm/WBS_PHASING_PLAN.md" BLOCKED
 expect_gate A02 "A02 empty project blocks"            "docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md" BLOCKED
 expect_gate A03 "A03 empty project blocks"            "docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md" BLOCKED
 expect_gate A04 "A04 empty project blocks"            "docs/governance/GOVERNANCE_HANDOVER_PACK.md" BLOCKED
+
+# Positive direction for the A-series: prove the gate ACCEPTS a filled instance.
+# The 13 BLOCKED cases above only prove it rejects an empty one. A02 and A03 each
+# require TWO artifacts, so the helper takes a tpl:dest pair list.
+# expect_gate_tpl <gate> <label> <want> <tpl:dest> [<tpl:dest>...]
+expect_gate_tpl() {
+    local gate="$1" label="$2" want="$3"; shift 3
+    local dir="$WORK/tpl-$gate"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    case "$gate" in
+        A*) printf -- '- **Scale**: Enterprise\n- Delivery: client\n' > "$dir/docs/pm/PROJECT_STATE.md" ;;
+    esac
+    local pair tpl dest
+    for pair in "$@"; do
+        tpl="${pair%%:*}"; dest="${pair#*:}"
+        mkdir -p "$dir/$(dirname "$dest")"
+        sed -e 's/\[Project Name\]/Acme/g' -e 's/\[Client Company\]/Acme Corp/g' \
+            -e 's/\[Your Name\]/S. Rahma/g' -e 's/\[YYYY-MM-DD\]/2026-10-12/g' \
+            "$REPO/$tpl" > "$dir/$dest"
+    done
+    local out rc got
+    out="$(cd "$dir" && bash "$GATE" "$gate" 2>&1)"; rc=$?
+    got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $label  ($gate -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $label  ($gate -> $got/exit $rc, expected $want)"
+        printf '%s' "$out" | grep -E "❌" | head -4 | sed "s/^/       /"
+        FAIL=$((FAIL + 1))
+    fi
+    rm -rf "$dir"
+}
+
+expect_gate_tpl A02 "A02 accepts the shipped blueprint + threat model" ALLOWED \
+    templates/03-architecture-specs/ENTERPRISE_ARCHITECTURE_BLUEPRINT_TEMPLATE.md:docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md \
+    templates/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md:docs/security/THREAT_MODEL_STRIDE.md
+expect_gate_tpl A03 "A03 accepts the shipped schedule + comparison matrix" ALLOWED \
+    templates/03-governance/VENDOR_PROCUREMENT_SCHEDULE_TEMPLATE.md:docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md \
+    templates/03-governance/VENDOR_COMPARISON_MATRIX.md:docs/governance/VENDOR_COMPARISON_MATRIX.md
+expect_gate_tpl A04 "A04 accepts the shipped governance pack" ALLOWED \
+    templates/03-governance/GOVERNANCE_HANDOVER_PACK_TEMPLATE.md:docs/governance/GOVERNANCE_HANDOVER_PACK.md
+expect_gate_tpl A00 "A00 accepts the shipped consulting agreement" ALLOWED \
+    templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md:contracts/CONSULTING_AGREEMENT.md
+expect_gate_tpl A01 "A01 accepts the shipped WBS template" ALLOWED \
+    templates/00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md:docs/pm/WBS_PHASING_PLAN.md
 
 echo ""
 if [ "$FAIL" -eq 0 ]; then
