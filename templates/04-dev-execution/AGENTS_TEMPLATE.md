@@ -85,6 +85,7 @@ npm run test:smoke
 5. **Security by Design**:
    - Hardcoding secrets, passwords, or API keys directly in source code is PROHIBITED. Use `process.env.*`.
    - Raw SQL query strings are PROHIBITED. All database interactions must use parameterized queries or an ORM.
+   - **Active security testing against any host requires recorded written authorization naming that host.** This covers scanners, exploit verification, and load/DoS probes. Ownership of the code is not authorization to attack the deployment — a staging box the client pays for is not yours to probe. Gate: `templates/06-qa-uat/PENTEST_SCOPE_TEMPLATE.md` §0.
 6. **Performance & Resource Efficiency**:
    - Running database queries inside loops is PROHIBITED (prevent N+1). Use joins/includes.
    - Indexes must be added to foreign keys and status lookup columns.

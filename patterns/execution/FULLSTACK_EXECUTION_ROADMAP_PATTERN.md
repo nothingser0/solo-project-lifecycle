@@ -29,7 +29,7 @@ When executing a solo full-stack project (such as Next.js/MERN SaaS), break down
 
 ### Phase 4: Backend API & Database Schemas (Days 56–58)
 * **Server Setup**: Initialize Express/FastAPI/Next.js API handlers with CORS middleware, request body parsers, and environment variable loaders (`dotenv`).
-* **Middleware ordering is the contract**: request parsers before anything that reads `req.body`; auth verification before any handler that touches user data; the error handler last, or it never sees the error. A route that works with middleware in the wrong order is not working — it is missing its checks.
+* **Middleware ordering is the contract**: request parsers before anything that reads `req.body`; auth verification (`express-jwt` / `jsonwebtoken` in Express, the framework's own guard elsewhere) before any handler that touches user data; the error handler last, or it never sees the error. A route that works with middleware in the wrong order is not working — it is missing its checks.
 * **Runtime basics worth knowing once**: the V8 event loop (why a blocking call stalls every request), the REPL for poking at a value without a rebuild, and structured logging (`morgan` in Express) rather than ad-hoc `console.log`.
 * **Database Models**: Define rigorous schemas (Mongoose models or Prisma/Supabase DDL tables) with proper foreign keys and indexation.
 * **Modular Controllers**: Decouple route definitions from controller business logic and data persistence layers.
