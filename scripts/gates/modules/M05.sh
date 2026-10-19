@@ -172,7 +172,7 @@ gate_M05() {
         # 6. Module 04 Handoff Strategy (BLOCKER). M06 STEP 0 parses this section to
         #    derive the prototype compatibility level; without it the agent reaches
         #    coding with no agreed way to turn the frozen prototype into components.
-        if grep -qiE "Module 04 Handoff|Handoff Strategy|Handoff-Compatibility|Compatibility Level" "$fsd"; then
+        if check_handoff_strategy "$fsd" "FSD.md"; then
             echo "  ✅ FSD.md records the Module 04 Handoff Strategy (prototype conversion plan)"
         else
             echo "  ❌ FSD.md missing the 'Module 04 Handoff Strategy' section (Level 1-4 + conversion plan)!"
@@ -220,6 +220,17 @@ gate_M05() {
     #    and the human technical sign-off the templates ship blank. All three run
     #    for BOTH paths — a false-green here propagates into M06 unreviewed.
     check_security_blueprint || true
-    check_handoff_strategy || true
+    # Handoff coverage for the SMALL path only. The FSD call above (check 6) runs
+    # inside `if [ -f docs/specs/FSD.md ]`, so a Small project has no FSD and would
+    # otherwise never be checked. Passing the path explicitly stops the old fallback,
+    # which re-derived the document itself and could print ✅ for a DIFFERENT file
+    # than the one the caller asked about.
+    if [ ! -f "docs/specs/FSD.md" ]; then
+        _m05_lite="PROJECT_LITE.md"
+        [ -f "$_m05_lite" ] || _m05_lite="docs/specs/PROJECT_LITE.md"
+        if [ -f "$_m05_lite" ]; then
+            check_handoff_strategy "$_m05_lite" "PROJECT_LITE.md" || true
+        fi
+    fi
     check_tech_signoff || true
 }

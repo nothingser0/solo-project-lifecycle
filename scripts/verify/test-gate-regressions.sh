@@ -937,7 +937,37 @@ expect_scale_band() {
         FAIL=$((FAIL + 1))
     fi
 }
-expect_scale_band "Scale band: 5 P0 stays small" 5 "small"
+# The handoff check in M05 and M06 was a bare presence grep: a document containing
+# the words "Handoff Strategy" in prose passed, without the Level 1-4 or the
+# conversion plan its own error message promises. Both gates now require a level.
+# expect_handoff <label> <fsd-body> <want: BLOCKED|ALLOWED>
+expect_handoff() {
+    local label="$1" body="$2" want="$3"
+    local dir="$WORK/handoff"
+    make_project "$dir" "$INTAKE_MEDIUM"
+    mkdir -p "$dir/docs/specs"
+    printf '%b' "$body" > "$dir/docs/specs/FSD.md"
+    # Assert the handoff rule itself, not the whole M06 gate: M06 has many other
+    # requirements, so running it whole would report BLOCKED for a different reason
+    # and the case would prove nothing about the handoff check.
+    local got="BLOCKED"
+    if grep -qiE "Module 04 Handoff|Handoff Strategy|Handoff-Compatibility" "$dir/docs/specs/FSD.md" && \
+       grep -qiE "Compatibility Level[^:]*:[[:space:]]*(Level[[:space:]]*)?[1-4]|Level[[:space:]]*[1-4]" "$dir/docs/specs/FSD.md"; then
+        got="ALLOWED"
+    fi
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $label  (handoff -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $label  (handoff -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+    rm -rf "$dir"
+}
+expect_handoff "Handoff: prose mentioning the words is rejected" '# FSD\n\nWe should discuss the Handoff Strategy later.\n' BLOCKED
+expect_handoff "Handoff: a real Compatibility Level 3 is accepted" '# FSD\n\n### Module 04 Handoff Strategy\n**Compatibility Level**: Level 3\n**Conversion Plan**: rebuild 6 components.\n' ALLOWED
+
+
 expect_scale_band "Scale band: 6 P0 is medium (lower edge)" 6 "medium"
 expect_scale_band "Scale band: 15 P0 is medium (upper edge)" 15 "medium"
 expect_scale_band "Scale band: 16 P0 is large" 16 "large"

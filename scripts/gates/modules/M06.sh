@@ -43,7 +43,7 @@ gate_M06() {
         # Small (PROJECT_LITE) has no handoff section; Medium+ FSD must define how the
         # frozen M04 prototype converts to the chosen stack (compatibility level 1-4).
         if [ "$m06_spec" = "docs/specs/FSD.md" ]; then
-            if grep -qiE "Module 04 Handoff|Handoff Strategy|Handoff-Compatibility|Compatibility Level" "$m06_spec"; then
+            if check_handoff_strategy "$m06_spec" "FSD.md"; then
                 echo "  ✅ STEP 0: Module 04 Handoff Strategy present in FSD.md"
             else
                 echo "  ❌ STEP 0: FSD.md missing the 'Module 04 Handoff Strategy' section (prototype conversion plan, Level 1-4)!"

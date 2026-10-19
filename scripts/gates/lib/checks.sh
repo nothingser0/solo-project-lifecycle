@@ -423,16 +423,13 @@ check_stack_questionnaire() {
 # here, where the stack is locked. Section name matches M06 verbatim.
 # Returns 1 (and sets GATE_FAILED) when the section or its Level is absent.
 check_handoff_strategy() {
-    local fsd="docs/specs/FSD.md"
-    local lite="PROJECT_LITE.md"
-    [ ! -f "$lite" ] && [ -f "docs/specs/PROJECT_LITE.md" ] && lite="docs/specs/PROJECT_LITE.md"
-    local target=""
-    if is_small_scale && [ -f "$lite" ]; then
-        target="$lite"
-    elif [ -f "$fsd" ]; then
-        target="$fsd"
-    fi
-    [ -n "$target" ] || return 0 # missing artifact is reported by check_required
+    # Honour the caller's path. The previous version re-derived FSD/PROJECT_LITE itself,
+    # so M05 and M06 could silently check DIFFERENT documents on a Small project
+    # (M05 passed "$fsd", got the LITE file checked, and a missing handoff on the FSD
+    # went unreported). Pass the document you mean; default to the FSD path.
+    local target="${1:-docs/specs/FSD.md}"
+    local label="${2:-$target}"
+    [ -f "$target" ] || return 1   # a missing artifact is reported by check_required
 
     local bad=0
     if grep -qiE "Module 04 Handoff Strategy|Prototype Conversion Strategy" "$target" 2>/dev/null; then
@@ -443,10 +440,19 @@ check_handoff_strategy() {
         bad=1
     fi
 
-    if grep -qiE "Compatibility[- ]Level\**:?[[:space:]]*\**Level[[:space:]]*[1-4]\b" "$target" 2>/dev/null; then
-        echo "  ✅ Module 04 handoff compatibility level recorded (Level 1-4)"
+    # The level must be a CHOSEN value, not the template's menu. Extracting and
+    # anchoring is what distinguishes "Level 3" / "3" (a choice) from
+    # "[Level 1 | Level 2 | Level 3 | Level 4]" (the menu, which a naive
+    # `Level[1-4]` grep matched — so an unfilled template passed).
+    local val
+    val=$(grep -iE "Compatibility[- ]Level[^:]*:" "$target" 2>/dev/null | head -1 \
+        | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r' \
+        | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+    if [ -n "$val" ] && printf '%s' "$val" | grep -qiE '^(Level[[:space:]]*)?[1-4]$'; then
+        echo "  ✅ Module 04 handoff compatibility level recorded (Level $val)"
     else
-        echo "  ❌ $target missing 'Compatibility Level: Level 1-4' (level definitions: FSD template §2.1)."
+        echo "  ❌ $target has no chosen 'Compatibility Level' (found: '${val:-<none>}')."
+        echo "     Record the level the human chose (1-4), not the template's menu."
         bad=1
     fi
 

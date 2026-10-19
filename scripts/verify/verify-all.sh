@@ -71,6 +71,15 @@ else
     SKIPPED=$((SKIPPED + 1))
 fi
 echo ""
+echo "1c1. Checking for duplicate function definitions..."
+if bash scripts/verify/verify-no-duplicate-functions.sh >/dev/null 2>&1; then
+    echo "  ✅ no gate function is defined twice (bash would silently keep the last)"
+else
+    echo "  ❌ duplicate function definition (run: bash scripts/verify/verify-no-duplicate-functions.sh)"
+    ERRORS=$((ERRORS + 1))
+fi
+
+echo ""
 echo "1c2. Checking template-to-gate pairing..."
 if bash scripts/verify/test-template-pairing.sh 2>&1 | grep -q "All .* template pairing checks passed"; then
     echo "  ✅ every shipped template satisfies the contract its gate checks"
