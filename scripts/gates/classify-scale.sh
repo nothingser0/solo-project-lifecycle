@@ -2,7 +2,7 @@
 # classify-scale.sh - Deterministic Engineering Scale Classifier + Solo Capacity Gate
 # v2: Structured-field parsing ONLY (no raw keyword grep over free text).
 # Reads: Intake-* fields, Scale/Delivery lines (anchored, bold-tolerant), SCOPE_STATEMENT/PROJECT_LITE.
-# Tiers: small 1-5 P0 | medium 8-15 | large 16-25 | enterprise >25.
+# Tiers: small 1-5 P0 | medium 6-15 | large 16-25 | enterprise >25.
 # Enforces the HIGH-WATER MARK RULE and the SOLO CAPACITY GATE, which has TWO
 # different predicates (the cause matters, not the tier number):
 #   NON-DELEGABLE  -> statutory compliance or legacy-core replacement. A licensed

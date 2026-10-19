@@ -10,7 +10,9 @@
 # repo root, so validating a scaffolded project silently validated the framework's own
 # tree instead (every gate reported MISSING artifacts).
 #
-# Exit codes: 0 PASS - 1 FAILED - 3 RETEST (non-terminal verdict) - 2 no usable bash.
+# Exit codes (passed through from validate-gate.sh): 0 PASS - 1 FAILED - 3 RETEST
+# (non-terminal verdict) - 4 PROVISIONAL_PENDING_M00 - 5 CAPACITY_OVERRIDE.
+# The wrapper's own failure codes: 1 no module/unknown script - 2 no usable bash.
 
 param(
     [Parameter(Position = 0)]
