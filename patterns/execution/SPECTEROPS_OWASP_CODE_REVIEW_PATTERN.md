@@ -15,6 +15,40 @@
 
 ---
 
+## 1.5 A Control That Is Not Reached Is Not a Control
+
+Steps 1–5 verify that a control exists and is correct. They do not verify that it **runs**. A control passes only when it is both **reached** and **fails closed** — and these are two separate checks, neither of which a test suite reliably catches.
+
+### Is it reached?
+
+Centralized middleware is a promise that every request passes through it. Enumerate the paths that might not:
+
+| Path class | How to check |
+| :--- | :--- |
+| Alternate routes | Route table vs. middleware mounting — a router registered before the auth middleware is unprotected |
+| Async handlers | Queue consumers, webhooks, scheduled jobs: these often bypass HTTP middleware entirely |
+| Exports and reports | Often built by a separate code path with its own queries |
+| Admin and internal endpoints | Frequently mounted on a different router with a different pipeline |
+| Direct service-to-service calls | Branch logic that trusts an internal caller |
+
+`grep` proves the skip cheaply: list every route registration and every file importing the database client directly. A handler that queries the database without the authorization layer in its call chain is the finding.
+
+### Does it fail closed?
+
+Being reached is not enough — the control must **deny** when its inputs are absent or malformed. Read the code for each of these:
+
+| Condition | Must |
+| :--- | :--- |
+| Policy engine unreachable | Deny, not allow |
+| Upstream identity header missing | Deny, not treat as anonymous-with-default-permissions |
+| Token payload missing a role claim | Deny, not default to the lowest role silently |
+| Tenant resolution returns null | Deny, not query without a tenant predicate |
+| Exception inside the authorization check | Propagate, not `return true` |
+
+**The fail-open half cannot be proven by a test suite** — the suite runs against a working policy engine. It is a code read, and it is where the highest-severity findings come from: `catch { return user }` around an authorization check is a Critical, and every test will still pass.
+
+---
+
 ## 2. Finding Standard & PoC Requirements
 - **Evidence-Driven Conformance**: Report a finding *only* when a complete execution path from source to sink is verified in the source code. Unverified concerns must be filed as **Open Questions / Assumptions** or **Coverage Gaps**.
 - **Executable PoC Requirement**: For every confirmed finding, include an autonomous, safe verification script (`poc_<finding_slug>.py`) specifying minimum attacker position, required credentials, environmental pre-conditions, and invocation instructions.

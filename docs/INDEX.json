@@ -1097,6 +1097,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/03-architecture-specs/ENTERPRISE_ARCHITECTURE_BLUEPRINT_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md",
       "cataloged": true
     },

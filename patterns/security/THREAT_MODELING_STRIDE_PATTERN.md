@@ -65,6 +65,40 @@ A cell is `—` when the threat does not apply **and you can say why**. That rea
 
 ---
 
+## 3.5 Attack Trees — from threat to concrete code path
+
+STRIDE tells you *what* can go wrong per element. An attack tree tells you *how*, and it is the bridge from this document to a code review (`patterns/execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md`).
+
+**Decompose the goal with AND / OR nodes.** The root is the attacker's objective; each child is a sub-goal.
+
+```
+[GOAL] Read another tenant's signed document
+│
+├─ OR
+│  ├─ [AND] Predict a document ID
+│  │  ├─ IDs are sequential            ← leaf: code evidence
+│  │  └─ No rate limit on enumeration  ← leaf: code evidence
+│  ├─ [AND] Bypass the tenant predicate
+│  │  ├─ Alternate route without RLS   ← leaf: code evidence
+│  │  └─ Export job uses raw query     ← leaf: code evidence
+│  └─ [AND] Steal a session belonging to the other tenant
+│     └─ Session fixation possible     ← leaf: BLOCKED (httpOnly + rotation on login)
+```
+
+**Two rules make the tree worth drawing:**
+
+**1. Every leaf carries code evidence** — a file and line, or a grep result. A leaf with no evidence is a guess, and a guess in an attack tree becomes a finding it does not deserve.
+
+**2. A blocked branch is a verified control, not a discarded one.** When a leaf is blocked, record it as coverage:
+
+> `Session fixation — BLOCKED: httpOnly cookie + session ID rotation on login (auth/session.ts:44). Verified by code read, not by test.`
+
+Discarding blocked branches throws away the most valuable output of the exercise: the list of controls that are actually load-bearing, and the evidence that they work. It also hides the asymmetry — an attack tree that only shows open paths looks like a system with no defences.
+
+**An OR node with every branch blocked** is a threat you can mark `Rejected` in §4, with the tree as the reason. That is a far stronger rejection than "does not apply".
+
+---
+
 ## 4. Consume or reject — the rule that makes it useful
 
 Every threat identified ends in exactly one of two states:

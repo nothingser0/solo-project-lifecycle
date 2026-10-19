@@ -170,6 +170,7 @@ case "$SCALE" in
         cp "$TEMPLATES/05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md" "$TARGET_DIR/docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
         cp "$TEMPLATES/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md" "$TARGET_DIR/docs/qa/SIT_WORKBOOK.md"
         cp "$TEMPLATES/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md" "$TARGET_DIR/docs/qa/SECURITY_AUDIT.md"
+        cp "$TEMPLATES/03-architecture-specs/ENTERPRISE_ARCHITECTURE_BLUEPRINT_TEMPLATE.md" "$TARGET_DIR/docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md"
         cp "$TEMPLATES/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md" "$TARGET_DIR/docs/security/THREAT_MODEL_STRIDE.md"
         cp "$TEMPLATES/03-governance/RACI_MATRIX.md" "$TARGET_DIR/docs/governance/RACI_MATRIX.md"
         cp "$TEMPLATES/03-governance/ADR_TEMPLATE.md" "$TARGET_DIR/docs/governance/ADR.md"

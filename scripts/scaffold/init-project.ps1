@@ -149,6 +149,7 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "05-data-migration/RECONCILIATION_REPORT_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/MIGRATION_RECONCILIATION_REPORT.md") -Force
         Copy-Item (Join-Path $templates "06-qa-uat/SIT_WORKBOOK_TEMPLATE.md") (Join-Path $TargetDir "docs/qa/SIT_WORKBOOK.md") -Force
         Copy-Item (Join-Path $templates "06-qa-uat/SECURITY_AUDIT_TEMPLATE.md") (Join-Path $TargetDir "docs/qa/SECURITY_AUDIT.md") -Force
+        Copy-Item (Join-Path $templates "03-architecture-specs/ENTERPRISE_ARCHITECTURE_BLUEPRINT_TEMPLATE.md") (Join-Path $TargetDir "docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md") -Force
         Copy-Item (Join-Path $templates "03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md") (Join-Path $TargetDir "docs/security/THREAT_MODEL_STRIDE.md") -Force
         Copy-Item (Join-Path $templates "03-governance/RACI_MATRIX.md") (Join-Path $TargetDir "docs/governance/RACI_MATRIX.md") -Force
         Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
