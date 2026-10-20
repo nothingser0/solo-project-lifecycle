@@ -1,0 +1,210 @@
+# ==============================================================================
+# AGENT & IDE CACHE
+# ==============================================================================
+.omo/
+.codegraph/
+.claude/
+.cursor/
+.vscode/
+.idea/
+.sisyphus/
+
+# ==============================================================================
+# OPERATING SYSTEM METADATA
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==============================================================================
+# ENVIRONMENT & SECRETS (JANGAN DI-COMMIT)
+# ==============================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.keystore
+*.jks
+
+# ==============================================================================
+# LOGS & TEMPORARY FILES
+# ==============================================================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.dump
+*.sql.gz
+rejected-rows.csv
+
+# ==============================================================================
+# DEPENDENCIES & BUILD OUTPUTS
+# ==============================================================================
+node_modules/
+/dist/
+build/
+out/
+.next/
+coverage/
+.turbo/
+
+# ==============================================================================
+# PYTHON
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+*.egg
+.coverage
+htmlcov/
+
+# ==============================================================================
+# GO
+# ==============================================================================
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+vendor/
+
+# ==============================================================================
+# PHP / LARAVEL
+# ==============================================================================
+vendor/
+composer.lock
+.phpunit.result.cache
+storage/*.key
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/testing/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*
+!storage/framework/.gitignore
+!storage/logs/.gitignore
+!bootstrap/cache/.gitignore
+
+# ==============================================================================
+# JAVA / SPRING
+# ==============================================================================
+*.class
+*.jar
+*.war
+*.ear
+target/
+.gradle/
+build/
+.mvn/
+mvnw
+mvnw.cmd
+
+# ==============================================================================
+# RUBY / RAILS
+# ==============================================================================
+*.gem
+*.rbc
+.bundle/
+log/*
+tmp/*
+!log/.keep
+!tmp/.keep
+.byebug_history
+
+# ==============================================================================
+# RUST
+# ==============================================================================
+target/
+Cargo.lock
+**/*.rs.bk
+
+# ==============================================================================
+# FRAMEWORKS (JavaScript/TypeScript)
+# ==============================================================================
+# Next.js
+.vercel
+
+# Nuxt.js
+.nuxt/
+.output/
+
+# SvelteKit
+.svelte-kit/
+
+# Remix
+.cache/
+public/build/
+
+# Astro
+.astro/
+
+# Vite
+.vite/
+
+# ==============================================================================
+# DATABASES
+# ==============================================================================
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# ==============================================================================
+# TESTING & COVERAGE
+# ==============================================================================
+.nyc_output/
+test-results/
+playwright-report/
+.playwright/
+
+# ==============================================================================
+# MISC
+# ==============================================================================
+.cache/
+.parcel-cache/
+.terraform/
+*.tfstate
+*.tfstate.*
+.vagrant/
+
+# ==============================================================================
+# HOST TOOLING ARTIFACTS (not project files)
+# ==============================================================================
+# mcp-sqlite reads argv[2] as the database path, so a misconfigured launcher
+# passing "--db-path" creates a literal file with that name in its cwd. The
+# launcher config is fixed (~/.omp/agent/mcp.json), but a long-lived server
+# process can still recreate it until restarted. Never commit it.
+--db-path
+
+# Mangled scaffold paths (Windows path passed through bash lost its separators,
+# producing a literal "C:" / "C" directory at the repo root). A scaffold
+# test must never leave these tracked again.
+C:/
+C:*
+C*

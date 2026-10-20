@@ -1,0 +1,15 @@
+{
+  "event": "invoice.paid",
+  "id": "xendit_inv_123456789",
+  "external_id": "ORDER-DEMO-001",
+  "status": "PAID",
+  "merchant_name": "Demo Store",
+  "amount": 150000,
+  "paid_amount": 150000,
+  "payment_method": "QRIS",
+  "payment_channel": "QRIS",
+  "paid_at": "2026-10-15T07:30:00.000Z",
+  "created": "2026-10-15T07:25:00.000Z",
+  "updated": "2026-10-15T07:30:00.000Z",
+  "currency": "IDR"
+}

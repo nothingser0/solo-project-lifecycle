@@ -1,0 +1,74 @@
+/* ============================================================================
+   motion-tokens.css — the shared motion scale
+   ----------------------------------------------------------------------------
+   Copy this :root block into your project ONCE and import it, or paste it into
+   your global stylesheet. Then reference any token as var(--…):
+
+       .dropdown { transition: transform var(--duration-fast) var(--ease-smooth-out),
+                               opacity  var(--duration-fast) var(--ease-smooth-out); }
+
+   Rule: match on USAGE, never on the nearest number. A 300ms modal close maps to
+   --duration-quick (150ms) because both mean "modal close". If a value's usage
+   matches no token here, leave it alone.
+
+   Reference: references/design/UI_MOTION_GUIDELINES.md §7–§9
+   Adapted from transitions.dev (Jakub Antalik) — the token values and their
+   documented usages. Values are free to use in any project; see the upstream
+   license for redistribution terms.
+   ========================================================================== */
+
+:root {
+  /* ── Durations ─────────────────────────────────────────────────────────── */
+  --duration-stagger: 40ms;      /* per-item stagger offset */
+  --duration-micro: 80ms;        /* tooltip/path delay, shake segment, large stagger */
+  --duration-quick: 150ms;       /* modal/dropdown CLOSE, text swap, tooltip appear */
+  --duration-fast: 250ms;        /* icon swap, dropdown/modal OPEN, tabs, page slide */
+  --duration-medium: 350ms;      /* panel close, toast close */
+  --duration-slow: 400ms;        /* panel open, skeleton reveal, input clear */
+  --duration-very-slow: 500ms;   /* emphasis only: badge appear, text reveal, success check */
+
+  /* ── Easings ───────────────────────────────────────────────────────────── */
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);      /* default: open/close, slide, resize */
+  --ease-in-out: ease-in-out;                             /* icon swap, text swap, reveals */
+  --ease-out: ease-out;                                   /* tooltip */
+  --ease-linear: linear;                                  /* shimmer, skeleton pulse, spinner ONLY */
+  --ease-bounce: cubic-bezier(0.34, 1.36, 0.64, 1);       /* badge pop open */
+  --ease-bounce-strong: cubic-bezier(0.34, 3.85, 0.64, 1);/* bouncy hover-OUT only */
+
+  /* ── Distances (travel scales down with frequency, up with ceremony) ───── */
+  --distance-micro: 4px;         /* text swap */
+  --distance-small: 6px;         /* error shake, small segment */
+  --distance-base: 8px;          /* badge reveal, page slide, shake large segment */
+  --distance-medium: 12px;       /* text reveal */
+  --distance-large: 30px;        /* check badge appear */
+
+  /* ── Scales (these are the PRE values; they settle to 1) ───────────────── */
+  --scale-large: 0.96;           /* modal open / close */
+  --scale-medium: 0.97;          /* dropdown open */
+  --scale-small: 0.98;           /* tooltip open */
+  --scale-tiny: 0.99;            /* dropdown close */
+
+  /* ── Blur (pre values; settle to 0) ────────────────────────────────────── */
+  --blur-small: 2px;             /* panel reveal, icon swap, text swap, skeleton, number */
+  --blur-medium: 3px;            /* page slide, text reveal */
+  --blur-large: 8px;             /* success check open */
+}
+
+/* ── Asymmetric surfaces: open slower than close ──────────────────────────
+   Dropdown/modal  open 250ms → close 150ms
+   Panel           open 400ms → close 350ms
+   Symmetric (same both ways): page slide, tabs, accordion, icon swap, text swap.
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    /* Collapse the scale rather than deleting it, so components that read the
+       tokens keep working while all motion becomes effectively instant. */
+    --duration-stagger: 0ms;
+    --duration-micro: 0ms;
+    --duration-quick: 0ms;
+    --duration-fast: 0ms;
+    --duration-medium: 0ms;
+    --duration-slow: 0ms;
+    --duration-very-slow: 0ms;
+  }
+}

@@ -1,0 +1,143 @@
+name: Framework Quality CI
+
+on:
+  # 'dev' is the active development branch. It was previously excluded, so the
+  # merge-conflict markers that broke scripts/gates/modules/M05.sh were committed
+  # and never validated by CI.
+  push:
+    branches: [main, master, staging, dev]
+  pull_request:
+    branches: [main, master, staging, dev]
+  workflow_dispatch:
+
+jobs:
+  bash-validation:
+    name: Bash Scripts & Templates Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (for fallback package version check)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Full framework integrity check (verify-all)
+        run: |
+          bash scripts/verify/verify-all.sh
+
+      - name: Syntax check Bash scripts (bash -n)
+        run: |
+          for script in scripts/*/*.sh scripts/*/*/*.sh templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh templates/04-dev-execution/scripts/check-dependencies.sh; do
+            echo "Checking syntax: $script"
+            bash -n "$script"
+          done
+
+      - name: Verify CLI template picker dry-run
+        run: |
+          ./scripts/scaffold/template-picker.sh --phase 8 --dry-run --dest /tmp
+
+      - name: Verify Gate Validation execution (bash)
+        run: |
+          mkdir -p /tmp/mock-project/docs/pm
+          printf '%b' '- **Scale**: Medium\n- Delivery: solo\n' > /tmp/mock-project/docs/pm/PROJECT_STATE.md
+          cp scripts/verify/fixtures/m00-lite-pass.md /tmp/mock-project/docs/pm/M00_LITE.md
+          (cd /tmp/mock-project && "$GITHUB_WORKSPACE/scripts/gates/validate-gate.sh" M00)
+
+      - name: Verify SKILL.md frontmatter
+        run: |
+          node scripts/verify/verify-skill-frontmatter.js
+
+      - name: Verify Markdown internal links
+        run: |
+          node scripts/verify/verify-links.js
+
+      - name: Verify ETL importer execution
+        run: |
+          node scripts/runtime/etl-import.js --source /tmp/mock.csv --dry-run
+
+      - name: Verify package version auto-check
+        run: |
+          ./scripts/verify/check-package-versions.sh nextjs
+
+      - name: Lint sample PRD template
+        run: |
+          ./scripts/verify/lint-template.sh templates/03-architecture-specs/PRD_FINAL_TEMPLATE.md
+
+      - name: Validate eval scenario catalog
+        run: |
+          node scripts/evals/run-evals.js --validate
+
+      - name: Gate behavioral regression tests
+        run: |
+          bash scripts/verify/test-gate-regressions.sh
+
+      - name: Gate output parity (byte-for-byte vs golden)
+        run: |
+          bash scripts/verify/test-gate-output.sh
+
+  powershell-validation:
+    name: PowerShell Scripts Tokenization & Execution
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Tokenize PowerShell scripts (PSParser)
+        shell: powershell
+        run: |
+          $files = Get-ChildItem -Path scripts -Recurse -Filter *.ps1
+          $hasErrors = $false
+          foreach ($f in $files) {
+            $errors = $null
+            $tokens = [System.Management.Automation.PSParser]::Tokenize((Get-Content $f.FullName -Raw), [ref]$errors)
+            if ($errors.Count -gt 0) {
+              Write-Host "[FAIL] $($f.Name): $($errors.Count) errors" -ForegroundColor Red
+              $hasErrors = $true
+            } else {
+              Write-Host "[PASS] $($f.Name)" -ForegroundColor Green
+            }
+          }
+          if ($hasErrors) { exit 1 }
+
+      - name: Verify package version auto-check (PowerShell)
+        shell: powershell
+        run: |
+          .\scripts\verify\check-package-versions.ps1 -Framework nextjs
+
+      - name: Test template picker dry-run
+        shell: powershell
+        run: |
+          .\scripts\scaffold\template-picker.ps1 -Phase 8 -DryRun -Dest "$env:TEMP"
+
+      - name: Test Gate Validation execution (PowerShell)
+        shell: powershell
+        run: |
+          $mockDir = Join-Path $env:TEMP "mock-project-pwsh"
+          New-Item -ItemType Directory -Force -Path (Join-Path $mockDir "docs/pm") | Out-Null
+          # Projects record their scale/delivery in PROJECT_STATE.md; the wrapper must
+          # read the gate against THIS directory, not the framework repo.
+          [System.IO.File]::WriteAllText(
+            (Join-Path $mockDir "docs/pm/PROJECT_STATE.md"),
+            "- **Scale**: Medium`n- Delivery: solo`n",
+            [System.Text.Encoding]::UTF8)
+          Copy-Item "scripts/verify/fixtures/m00-lite-pass.md" `
+            (Join-Path $mockDir "docs/pm/M00_LITE.md") -Force
+          Push-Location $mockDir
+          try {
+            & "$env:GITHUB_WORKSPACE\scripts\gates\validate-gate.ps1" -Module M00
+            if ($LASTEXITCODE -ne 0) { throw "Gate validation failed with exit $LASTEXITCODE" }
+          } finally {
+            Pop-Location
+          }
+
+      - name: Verify PowerShell wrappers (parse + caller-directory resolution)
+        shell: powershell
+        run: |
+          # Guards two Windows-only failure modes that `bash-validation` cannot see:
+          # 1. non-ASCII characters in a BOM-less .ps1 (PS 5.1 decodes it as ANSI and
+          #    the file stops parsing);
+          # 2. the wrapper changing directory to the framework repo, so a gate run
+          #    against a project validated the framework's own tree instead.
+          .\scripts\verify\test-ps1-wrappers.ps1

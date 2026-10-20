@@ -1,0 +1,84 @@
+# Project CI/CD Pipeline (scaffold into .github/workflows/ci.yml)
+# Purpose: Independent, machine-run quality gate that executes OUTSIDE the AI agent's control.
+#          The agent cannot skip, fake, or self-approve these checks — CI is the final arbiter.
+# Adapt the stack-specific steps (marked) to your locked stack from FSD.md.
+
+name: Project CI
+
+on:
+  push:
+    branches: [main, staging, 'feat/**']
+  pull_request:
+    branches: [main, staging]
+
+jobs:
+  quality-gate:
+    name: Typecheck, Lint, Test & Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ---- Next.js / Node stack ----
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Type check (zero escape hatches)
+        run: pnpm tsc --noEmit
+      - name: Lint
+        run: pnpm lint
+      - name: Unit & integration tests
+        run: pnpm test --run
+      - name: Dependency vulnerability audit
+        run: pnpm audit --audit-level=high
+
+      # ---- Laravel stack (uncomment, remove Node steps) ----
+      # - name: Setup PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with: { php-version: '8.3' }
+      # - run: composer install --no-interaction
+      # - run: php artisan test
+      # - run: composer audit
+
+      # ---- Django stack (uncomment, remove Node steps) ----
+      # - uses: actions/setup-python@v5
+      #   with: { python-version: '3.12' }
+      # - run: pip install -r requirements.txt
+      # - run: python manage.py test
+
+      # ---- Go stack (uncomment, remove Node steps) ----
+      # - uses: actions/setup-go@v5
+      #   with: { go-version: '1.27' }
+      # - run: go test ./...
+      # - run: go vet ./...
+
+  anti-slop-scan:
+    name: Anti-AI-Slop Source Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Fail on type-suppression escape hatches
+        run: |
+          if grep -rInE "//\s*@ts-(ignore|nocheck|expect-error)" src app lib 2>/dev/null; then
+            echo "::error::Type-suppression escape hatch found"; exit 1
+          fi
+      - name: Fail on placeholder TODO stubs
+        run: |
+          if grep -rInE "//\s*TODO:?\s*(Implement|Add (your )?logic|Fill|Complete|Fix later)" src app lib 2>/dev/null; then
+            echo "::error::Placeholder TODO stub found"; exit 1
+          fi
+      - name: Fail on hardcoded secrets
+        run: |
+          if grep -rInE "(api_?key|secret|password|token)[[:space:]]*[:=][[:space:]]*[\"'][^\"']{16,}" src app lib 2>/dev/null | grep -viE "process\.env|example|placeholder|your[_-]"; then
+            echo "::error::Possible hardcoded secret found"; exit 1
+          fi
+      - name: Fail if server-only secret leaked to client bundle
+        run: |
+          if grep -rInE "NEXT_PUBLIC_[A-Z_]*(SECRET|SERVICE_ROLE|SERVER_KEY|PRIVATE)" .env.example src 2>/dev/null; then
+            echo "::error::Server secret exposed with NEXT_PUBLIC_ prefix"; exit 1
+          fi
