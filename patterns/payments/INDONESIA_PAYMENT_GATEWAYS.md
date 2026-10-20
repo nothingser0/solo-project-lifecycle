@@ -128,7 +128,88 @@ export async function POST(req: NextRequest) {
 
 ---
 
-## 3. QRIS Dynamic Generation & Expiration
+## 3. Idempotent Webhook Handler (Xendit Example)
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
+
+export async function POST(req: NextRequest) {
+  try {
+    // 1. Verification of Xendit Callback Token
+    const callbackToken = req.headers.get('x-callback-token');
+    const configuredToken = process.env.XENDIT_CALLBACK_TOKEN;
+
+    if (!configuredToken || callbackToken !== configuredToken) {
+      console.warn('[Security Alert] Invalid or missing Xendit callback token');
+      return NextResponse.json({ error: 'Unauthorized callback token' }, { status: 403 });
+    }
+
+    const body = await req.json();
+    // Xendit standard invoice payload uses `external_id` (your order ID) and `id` (Xendit transaction ID)
+    const { id: xenditInvoiceId, external_id: order_id, status } = body;
+
+    if (!order_id || !status) {
+      return NextResponse.json({ error: 'Invalid payload structure' }, { status: 400 });
+    }
+
+    const idempotencyKey = `xendit_${xenditInvoiceId || order_id}`;
+
+    // 2. Fetch Order Status
+    const existingOrder = await db.order.findUnique({
+      where: { id: order_id },
+      select: { status: true, paymentStatus: true },
+    });
+
+    if (!existingOrder) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    }
+
+    if (existingOrder.paymentStatus === 'PAID') {
+      return NextResponse.json({ status: 'already_processed' }, { status: 200 });
+    }
+
+    // 3. Status Mapping (Xendit Invoice statuses: 'PAID', 'SETTLED', 'EXPIRED', 'PENDING')
+    let newPaymentStatus: 'PENDING' | 'PAID' | 'FAILED' | 'EXPIRED' = 'PENDING';
+    if (status === 'PAID' || status === 'SETTLED') {
+      newPaymentStatus = 'PAID';
+    } else if (status === 'EXPIRED') {
+      newPaymentStatus = 'EXPIRED';
+    }
+
+    // 4. Atomic Transactional Update with Unique Webhook Log
+    await db.$transaction(async (tx) => {
+      await tx.paymentLog.create({
+        data: {
+          idempotencyKey,
+          orderId: order_id,
+          gateway: 'XENDIT',
+          rawPayload: body,
+          status: newPaymentStatus,
+        },
+      });
+
+      await tx.order.update({
+        where: { id: order_id },
+        data: {
+          paymentStatus: newPaymentStatus,
+          status: newPaymentStatus === 'PAID' ? 'PROCESSING' : existingOrder.status,
+          paidAt: newPaymentStatus === 'PAID' ? new Date() : null,
+        },
+      });
+    });
+
+    return NextResponse.json({ status: 'ok' }, { status: 200 });
+  } catch (error) {
+    console.error('Xendit webhook processing error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+```
+
+---
+
+## 4. QRIS Dynamic Generation & Expiration
 
 1. **Expiration Window**: Dynamic QRIS invoices must expire within 15–30 minutes to prevent stale inventory reservations.
 2. **Fee Calculation**:

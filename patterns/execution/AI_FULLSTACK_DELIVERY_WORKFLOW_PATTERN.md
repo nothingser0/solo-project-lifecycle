@@ -21,7 +21,7 @@ Input → Classify → Route → Execute → Verify → Document → Learn
 4. **Field-Journal Query**: Check past project experience (`field-journal/`) for reusable patterns or known pitfalls.
 5. **Tool & Environment Bootstrap**: Verify tool requirements against `tool-index.json` / `tool-index.md` and bootstrap if missing.
 6. **Execution & Collaboration**: Execute design, coding, testing, or deployment. Cross-role handoffs use explicit `@role` tagging.
-7. **Acceptance & Self-Evolution**: Validate against delivery criteria (`templates/delivery-acceptance-criteria.md`), write completion reports, and feed insights back into `EVOLUTION.md` and `field-journal/`.
+7. **Acceptance & Self-Evolution**: Validate against delivery criteria (`templates/06-qa-uat/UAT_SIGNOFF_TEMPLATE.md`), write completion reports, and feed insights back into `EVOLUTION.md` and `field-journal/`.
 
 ---
 

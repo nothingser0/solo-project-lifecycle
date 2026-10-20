@@ -155,3 +155,22 @@ When using cloud services, AI APIs (OpenAI/Anthropic), or serverless infrastruct
 2. **Praktik Terbaik Solo Developer**:
    - Cantumkan daftar sub-prosesor luar negeri (OpenAI, Resend, Supabase, Cloudflare) secara transparan pada Kebijakan Privasi (*Privacy Policy*).
    - Pastikan data sensitif inti (NIK, nomor rekening, catatan medis) tidak dikirim mentah ke LLM eksternal tanpa pseudonimisasi/redaksi lokal terlebih dahulu.
+
+---
+
+## 7. Data Protection Officer (DPO / Pejabat PDP) Threshold (Pasal 53)
+
+Solo developers and early-stage founders frequently ask: *"Apakah startup 1 orang wajib merekrut DPO bersertifikasi?"*
+
+### Statutory Triggers (Pasal 53 Ayat 1)
+Penunjukan Pejabat/Petugas Pelindungan Data Pribadi (DPO) **hanya wajib** jika memenuhi salah satu kondisi berikut:
+1. Pemrosesan Data Pribadi untuk kepentingan **pelayanan publik** (instansi pemerintah, BUMN, rumah sakit umum, layanan kependudukan).
+2. Kegiatan inti pengendali data memerlukan **pemantauan secara teratur dan sistematis atas Data Pribadi berskala besar** (misal: platform telekomunikasi, adtech tracking jutaan pengguna, core banking nasional).
+3. Kegiatan inti terdiri dari pemrosesan **Data Spesifik (sensitif)** dan/atau data tindak pidana **dalam skala besar** (misal: platform telemedicine pemroses rekam medis massal, biometrik skala jutaan).
+
+### Solo Founder Compliance Stance:
+- **Exemption in Practice**: Standard micro-SaaS, developer tools, portfolio apps, and local e-commerce MVPs operated by solo developers **do not** trigger the "skala besar" threshold. You are **NOT** legally required to hire an external certified DPO or third-party law firm.
+- **Designated Contact Person (Self-Appointed)**: Act as the internal Data Protection Officer yourself.
+  - Set up a dedicated, monitored inbox: `privacy@yourdomain.com` or `dpo@yourdomain.com`.
+  - Display this contact in your public Privacy Policy as the single point of contact for exercising user rights under Pasal 5–13 (access, rectification, erasure).
+  - Adhere to the statutory response SLA: respond to user privacy requests within maximum **72 hours** of receipt.

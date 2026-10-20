@@ -17,6 +17,10 @@ As a solo developer, you are the only person on call when a server goes down at 
    - PostgreSQL's `JSONB` columns support index queries (`GIN Index`), schema validation, and high performance without needing to maintain two separate database clusters.
 3. **Rung 3: Managed PaaS & Cloud Services**:
    - Prioritize Managed Databases (Supabase, Neon, AWS RDS) and PaaS solutions (Vercel, Cloudflare, Railway) so you never waste time managing Linux OS patches, automated disk backups, or manual firewall configurations.
+4. **Rung 4: The $5/mo Self-Hosted Escape Hatch (Coolify / Dokku on VPS)**:
+   - When managed PaaS bills threaten bootstrapped runway ($50–$100+/month for multi-tenant databases, vector indices, or background queues), migrate to a single Hetzner or DigitalOcean VPS ($4–$6/month) running Coolify or Dokku.
+   - Maintain PaaS-like git push deployments while paying flat, predictable hardware costs.
+   - Pair with zero-egress storage (Cloudflare R2) and automated offsite database snapshots.
 
 ---
 
@@ -24,8 +28,12 @@ As a solo developer, you are the only person on call when a server goes down at 
 
 ### 2.1 Deployment & Execution Topology
 - **Modular Monolith (Default Standard | 95% Use Case)**:
-  - *Definition*: Single deployable artifact/runtime with strict internal domain separation (e.g. `src/modules/billing`, `src/modules/auth`).
-  - *Solo Advantage*: In-process function calls, ACID transactions across modules, zero network overhead, single CI/CD pipeline.
+   - *Definition*: Single deployable artifact/runtime with strict internal domain separation (e.g. `src/modules/billing`, `src/modules/auth`).
+   - *Solo Advantage*: In-process function calls, ACID transactions across modules, zero network overhead, single CI/CD pipeline.
+- **Self-Hosted VPS Monolith (The Solo FinOps Sweet Spot | $4–$6/mo)**:
+   - *Definition*: Single Linux VPS running Coolify/Dokku + Dockerized App + Postgres + Redis.
+   - *Solo Advantage*: Deterministic hosting bill, zero cold starts, unlimited staging databases, unmetered background workers.
+   - *Mandatory Safeguard*: Automate offsite encrypted daily backups to Cloudflare R2 / AWS S3 using a hardened cron job; rely on Caddy/Traefik for automated Let's Encrypt SSL.
 - **Microservices (Overkill Flag | Avoid as Solo)**:
   - *Definition*: Distributed independent services communicating over HTTP/gRPC/Kafka.
   - *Solo Trap*: Operational suicide for one developer. Introduces distributed transactions (2PC/Saga), eventual consistency bugs, dual-run deployments, and complex infrastructure (K8s, service mesh, distributed tracing).

@@ -59,6 +59,17 @@ While M05 enforces real-time registry queries to avoid cutoff drift, the officia
 | **Enterprise TypeScript** | **Angular 22.x** | TypeScript Strict | Signal-based reactivity, Zoneless by default, standalone components |
 | **Lightweight Edge / Scripting** | **Astro 5.x** / **Hono 4.13.x** | Bun / Cloudflare Workers | 0 KB JS default, Turso libSQL / D1, sub-millisecond edge routing |
 
+### 2026 Ecosystem Drift & Breaking Change Guardrails
+
+Solo developers must watch for these modern framework shifts when scaffolding new projects:
+1. **Next.js 15+ / React 19 Async Page Props**:
+   - `params` and `searchParams` in Page/Layout components are Promises: `const { id } = await props.params;` (synchronous access `props.params.id` throws warnings/errors in Next.js 15+).
+   - Server Actions require modern React 19 hooks: use `useActionState` (replacing deprecated `useFormState`) and `useOptimistic`.
+2. **Tailwind CSS Compatibility (v3.4 vs v4.0)**:
+   - For UI component registries relying on classic `tailwind.config.ts` plugins and CSS variables (e.g., standard `shadcn/ui`), pin `tailwindcss@^3.4.17` until upstream component templates fully support pure CSS `@theme` v4 directives.
+3. **Schema Validation Pinning**:
+   - Pin `zod@^3.23.8` to ensure strict inference stability across form validators and API route schemas.
+
 ---
 
 ## Anti-Overkill Stack Selection Matrix (By Project Scale)
