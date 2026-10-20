@@ -14,10 +14,15 @@
 
 ## Screen coverage
 
+> One row per screen in `SITEMAP.md` — M04 diffs the distinct screen IDs between the
+> two files; a missing row fails the gate (LITE projects have too few screens for
+> the ±10% tolerance to absorb drift). LITE_SITEMAP ships SCR-001–003:
+
 | Screen ID | States implemented | Notes |
 | :--- | :--- | :--- |
-| SCR-003 | 5-state | primary (matches LITE_SITEMAP SCR-003) |
-| SCR-004+ | Default only | secondary screens |
+| SCR-001 | Default | landing / entry |
+| SCR-002 | Default, Error | login: failure banner + retry |
+| SCR-003 | 5-state | primary data screen (matches LITE_SITEMAP SCR-003) |
 
 ## Interaction rules
 

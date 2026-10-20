@@ -140,6 +140,39 @@ pair_case "Warranty policy shipped template is accepted by M12" M12 0 \
 pair_case "Migration LITE shipped template is rejected while unfilled" M08 1 \
     templates/05-data-migration/DATA_MIGRATION_LITE.md:docs/pm/DATA_MIGRATION_LITE.md
 
+# SOLO CAPACITY: the acceptance template is the ONLY file that opens a Large tier.
+# Raw (placeholders intact) must be rejected by the classifier; a human-filled copy
+# must produce the override (exit 5). This pins the template's field names to what
+# classify-scale.sh greps (Accepted-By + Accepted-On YYYY-MM-DD) — the exact defect
+# class that shipped with Accepted-On vs Accepted-date drift.
+capacity_pair_case() {
+    local label="$1" want="$2" mode="$3"
+    local dir="$BASE/cap-$(echo "$label" | tr -cd 'a-zA-Z0-9')"
+    mkdir -p "$dir/docs/pm"
+    # 20 P0, no compliance/legacy -> CAPACITY-ONLY Large: the tier this file governs.
+    printf '# PROJECT_STATE\n- Current Phase: Phase 01\n- Scale: large\n- Delivery: solo\n- Intake-P0-Features: 20 (a..t)\n- Intake-Integrations: none\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    cp "$REPO/templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md" "$dir/docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md"
+    if [ "$mode" = "fill" ]; then fill "$dir/docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md"; fi
+    local rc
+    ( cd "$dir" && bash "$REPO/scripts/gates/classify-scale.sh" >/dev/null 2>&1 ); rc=$?
+    if [ "$rc" -eq "$want" ]; then ok "$label (exit $rc)"; else bad "$label (exit $rc, wanted $want)"; fi
+    rm -rf "$dir"
+}
+capacity_pair_case "Capacity acceptance raw template is rejected by the classifier" 2 raw
+capacity_pair_case "Capacity acceptance human-filled template yields the override" 5 fill
+
+# M04 small path: LITE_SITEMAP + LITE_DESIGN_SPEC ship together into docs/specs/ and
+# the gate diffs their distinct SCR-IDs with zero tolerance at 3 screens
+# (tolerance = floor(3/10) = 0). Drifting ID sets between the two templates fail M04
+# on every fresh Small project — pin them equal here.
+lite_ids() { grep -oE 'SCR-[0-9]+' "$1" | sort -u; }
+if diff <(lite_ids "$REPO/templates/essentials/LITE_SITEMAP_TEMPLATE.md") \
+         <(lite_ids "$REPO/templates/essentials/LITE_DESIGN_SPEC_TEMPLATE.md") >/dev/null; then
+    ok "M04 contract: LITE SITEMAP and DESIGN_SPEC ship the same screen IDs"
+else
+    bad "M04 contract: LITE SITEMAP/DESIGN_SPEC screen IDs drift (every fresh Small project would fail the ±10% check)"
+fi
+
 echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo "All $PASS template pairing checks passed."
