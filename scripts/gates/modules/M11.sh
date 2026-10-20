@@ -7,7 +7,6 @@
 # --- gate_M11 ------------------------------------------------------
 gate_M11() {
     echo "=== M11: Handover & BAST Gate Checklist ==="
-    check_intake_gate || true
     is_m11_solo=0
     m11_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
     if [ "$m11_delivery" = "solo" ] || [ "$m11_delivery" = "portfolio" ] || [ "$m11_delivery" = "internal" ]; then

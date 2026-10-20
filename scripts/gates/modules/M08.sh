@@ -7,7 +7,6 @@
 # --- gate_M08 ------------------------------------------------------
 gate_M08() {
     echo "=== M08: Data Migration & Seeding Gate Checklist ==="
-    check_intake_gate || true
     # Automatic waiver for Small Scale (legacy data triggers re-classification to Large per SKILL.md)
     # or Greenfield projects explicitly declared in Intake (Legacy Data: None/No).
     is_m08_waived=0

@@ -37,8 +37,11 @@ gate_M04() {
             *.svg)
                 audit_script="${SCRIPT_DIR:-scripts/gates}/../design/svg_audit.py"
                 py=""
-                command -v python3 >/dev/null 2>&1 && py=python3
-                [ -n "$py" ] || { command -v python >/dev/null 2>&1 && py=python; }
+                if python3 -c "import sys; sys.exit(0)" >/dev/null 2>&1; then
+                    py=python3
+                elif python -c "import sys; sys.exit(0)" >/dev/null 2>&1; then
+                    py=python
+                fi
                 if [ ! -f "$audit_script" ]; then
                     echo "  ⚠️  Logo audit skipped: $audit_script not found (framework incomplete)."
                 elif [ -z "$py" ]; then

@@ -7,7 +7,6 @@
 # --- gate_M07 ------------------------------------------------------
 gate_M07() {
     echo "=== M07: Quality Assurance & SIT Gate Checklist (medium+ only) ==="
-    check_intake_gate || true
     # NOTE: Small scale does NOT run M07; security is folded into M06.
     is_m07_waived=0
     if is_small_scale; then

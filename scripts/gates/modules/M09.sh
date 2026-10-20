@@ -7,7 +7,6 @@
 # --- gate_M09 ------------------------------------------------------
 gate_M09() {
     echo "=== M09: Validation Gate (UAT Sign-Off) Checklist ==="
-    check_intake_gate || true
     is_m09_solo=0
     m09_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
     if [ "$m09_delivery" = "solo" ] || [ "$m09_delivery" = "portfolio" ] || [ "$m09_delivery" = "internal" ]; then

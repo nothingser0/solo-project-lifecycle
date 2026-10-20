@@ -7,7 +7,6 @@
 # --- gate_M03 ------------------------------------------------------
 gate_M03() {
     echo "=== M03: Legal SOW & Charter Checklist ==="
-    check_intake_gate || true
     target_sow="contracts/SOW_CONTRACT.md"
     [ -f "$target_sow" ] || target_sow="docs/pm/SOW_CONTRACT.md"
     [ -f "$target_sow" ] || target_sow="contracts/SOW_SMB.md"
