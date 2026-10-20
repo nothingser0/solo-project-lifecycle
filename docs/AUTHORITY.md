@@ -39,7 +39,7 @@
 
 > ✅ **Gate-enforced**: the declared Scale never overrides the classifier — a project
 > declaring `Small` whose own Intake answers evaluate higher (payment webhook, sensitive
-> data, 8+ P0) fails the High-Water-Mark check. `PROVISIONAL_PENDING_M00` halts with exit 4
+> data, 6+ P0) fails the High-Water-Mark check. `PROVISIONAL_PENDING_M00` halts with exit 4
 > instead of being read as an undeclared decision, and a `CONDITIONAL_GO` must carry a
 > `Mitigation:` line.
 

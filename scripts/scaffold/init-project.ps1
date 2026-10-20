@@ -1,5 +1,5 @@
 # init-project.ps1 - Deterministic Project Directory Initializer
-# Usage: .\scripts\init-project.ps1 -TargetDir <PATH> [-Scale <small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise>] [-Archetype <ACRONYM>] [-Delivery <bespoke|saas|on-premise|academic|open-source>]
+# Usage: .\scripts\scaffold\init-project.ps1 -TargetDir <PATH> [-Scale <small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise>] [-Archetype <ACRONYM>] [-Delivery <bespoke|saas|on-premise|academic|open-source>]
 
 param (
     [Parameter(Mandatory=$true)]

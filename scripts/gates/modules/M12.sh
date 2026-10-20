@@ -7,6 +7,7 @@
 # --- gate_M12 ------------------------------------------------------
 gate_M12() {
     echo "=== M12: Warranty SLA Retainer Gate Checklist ==="
+    check_intake_gate || true
     is_m12_solo=0
     m12_delivery="$(get_field Delivery docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
     # The M00_LITE/PROJECT_LITE infer-solo fallback is REMOVED, matching M03/M09/M11:

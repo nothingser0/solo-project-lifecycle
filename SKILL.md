@@ -26,7 +26,7 @@ The framework repo is **read-only**. Project documents are written into the user
 
 High-water mark: if any single dimension is higher (e.g., 3 features but payment webhooks), classify at the highest tier. Legacy data = NOT "Small + M08"; reclassify upward. The Solo Capacity Gate has **two predicates**: a *non-delegable* obligation (statutory compliance, legacy-core) is a permanent hard block (exit 2), while a *capacity-only* Large scope may be accepted in writing (exit 5).
 
-**Light default**: when scale is unclear, start Small and escalate only on risk triggers (payment webhooks, legacy data, regulated data, >7 P0 features, SLA commitments).
+**Light default**: when scale is unclear, start Small and escalate only on risk triggers (payment webhooks, legacy data, regulated data, 6+ P0 features, SLA commitments).
 
 ## File map (load only what's relevant)
 

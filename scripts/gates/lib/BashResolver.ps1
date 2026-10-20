@@ -26,7 +26,14 @@ function Resolve-Bash {
     }
     if ($env:LOCALAPPDATA) { $candidates += (Join-Path $env:LOCALAPPDATA "Programs\Git\bin\bash.exe") }
     foreach ($c in $candidates) {
-        if ($c -and (Test-Path $c)) { return $c }
+        if ($c -and (Test-Path $c)) {
+            $prevEAP = $ErrorActionPreference
+            $ErrorActionPreference = "SilentlyContinue"
+            $probe = & $c "-c" "exit 0" 2>&1
+            $code = $LASTEXITCODE
+            $ErrorActionPreference = $prevEAP
+            if ($code -eq 0) { return $c }
+        }
     }
 
     $onPath = Get-Command bash -ErrorAction SilentlyContinue

@@ -15,6 +15,8 @@ scripts/
 ├── verify/     - Static analysis, link integrity, frontmatter, and package version checkers
 ├── runtime/    - Production batch ETL, data migration, and load test scripts
 ├── release/    - Clean-release builder (strips dev-only files from release branches)
+├── design/     - Logo craft, SVG auditing, and visual comparison tools
+├── evals/      - Behavioral test scenario runners for SDLC agent compliance
 └── dist/       - Framework distribution bundling and size calculation tools
 ```
 

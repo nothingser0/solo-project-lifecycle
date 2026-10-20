@@ -66,6 +66,11 @@ if node --version >/dev/null 2>&1; then
     else
         ERRORS=$((ERRORS + 1))
     fi
+    if node scripts/verify/verify-no-secrets.js; then
+        :
+    else
+        ERRORS=$((ERRORS + 1))
+    fi
 else
     echo -e "  ${YELLOW}\u26a0${NC}  skipped \u2014 node is not executable from this shell"
     SKIPPED=$((SKIPPED + 1))

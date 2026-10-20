@@ -79,7 +79,7 @@ Gate-Decision: PASS
 $wrapper = Join-Path (Split-Path -Parent $PSScriptRoot) "gates/validate-gate.ps1"
 Push-Location $proj
 try {
-    $out = & $wrapper M00 2>&1 | Out-String
+    $out = & $wrapper M00 *>&1 | Out-String
     $code = $LASTEXITCODE
 } finally {
     Pop-Location

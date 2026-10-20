@@ -161,6 +161,7 @@ fi
 # so the human may accept it in writing. The override must name a real person and date:
 # a placeholder is not an acceptance.
 ACCEPTANCE_FILE="docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md"
+[ -f "$ACCEPTANCE_FILE" ] || ACCEPTANCE_FILE="docs/pm/SOLO_CAPACITY_RISK_ACCEPTANCE.md"
 if [ "$TIER" -ge 3 ]; then
     if [ ! -f "$ACCEPTANCE_FILE" ]; then
         echo "------------------------------------------------------"

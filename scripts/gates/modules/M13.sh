@@ -7,6 +7,7 @@
 # --- gate_M13 ------------------------------------------------------
 gate_M13() {
     echo "=== M13: Product Operations & Iteration Gate Checklist ==="
+    check_intake_gate || true
     # M13 is a Continuous Product Loop for SELF-INITIATED products only.
     # Small Scale terminates at M12; Client delivery terminates at M11/M12.
     is_m13_waived=0

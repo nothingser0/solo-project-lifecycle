@@ -24,7 +24,8 @@ templates/
 ├── 08-maintenance-ops/          SLA retainer contracts, warranty policies, incident response
 ├── 09-product-growth/           Event taxonomies, analytics plans, A/B testing, dashboards
 ├── by-use-case/                 Fast-track task guides (MVP, client commercial, legal-vault example)
-└── essentials/                  Fast-track index + LITE bodies for the Small path
+├── essentials/                  Fast-track index + LITE bodies for the Small path
+└── ui/                          UI runtime assets (motion tokens, scroll-scrub engine, standalone viewer)
 ```
 
 ## Per-directory quick map
@@ -45,6 +46,7 @@ templates/
 | `09-product-growth/` | M13 | `METRICS_BASELINE_REPORT_TEMPLATE.md`, `GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md`, `AB_TEST_REPORT_TEMPLATE.md` |
 | `by-use-case/` | — | Index READMEs per workflow + `examples/legal-vault/` worked example |
 | `essentials/` | Small path | `INTAKE_GATE.md`, `PROJECT_STATE_TEMPLATE.md`, `LITE_*.md` bodies, fast-track index |
+| `ui/` | M04/M06 | `motion-tokens.css`, `scroll-scrub-engine.js`, `scroll-world-index.html` (cinematic world & motion tokens) |
 
 ## Full Inventory (secondary & specialist templates)
 

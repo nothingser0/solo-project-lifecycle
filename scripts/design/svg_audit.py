@@ -6,9 +6,9 @@ reference library, near-miss angles (lines 0.3–3° off a clean angle), tiny de
 padding/centring inside the viewBox, strokes that should be expanded, and white "fake knockouts".
 
 Usage:
-  python3 scripts/svg_audit.py logo.svg [more.svg ...]
-  python3 scripts/svg_audit.py logo.svg --json            # machine-readable
-  python3 scripts/svg_audit.py logo.svg --bg "#0F7C80"    # also report contrast of colours on a background
+  python3 scripts/design/svg_audit.py logo.svg [more.svg ...]
+  python3 scripts/design/svg_audit.py logo.svg --json            # machine-readable
+  python3 scripts/design/svg_audit.py logo.svg --bg "#0F7C80"    # also report contrast of colours on a background
 
 Exit code is 0 unless a file cannot be parsed. Findings are advice, not law: a deliberate choice can
 override a warning — but you should be able to say why.

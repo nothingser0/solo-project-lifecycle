@@ -1,5 +1,5 @@
 # calculate-size.ps1 - Accurately calculate repository footprint and token counts
-# Usage: .\scripts\calculate-size.ps1
+# Usage: .\scripts\dist\calculate-size.ps1
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $rootDir = Split-Path -Parent (Split-Path -Parent $scriptDir)
@@ -10,9 +10,10 @@ try {
     Write-Host ""
 
     $allFiles = Get-ChildItem -Recurse -File | Where-Object {
-        $_.FullName -notmatch '\\\.' -and
-        $_.FullName -notmatch '\\node_modules\\' -and
-        $_.FullName -notmatch '\\dist\\'
+        $rel = $_.FullName.Substring($rootDir.Length).TrimStart('\', '/')
+        $rel -notmatch '(^|[\\/])\.' -and
+        $rel -notmatch '(^|[\\/])node_modules([\\/]|$)' -and
+        $rel -notmatch '(^|[\\/])dist([\\/]|$)'
     }
 
     $totalBytes = ($allFiles | Measure-Object -Property Length -Sum).Sum

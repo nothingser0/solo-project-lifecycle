@@ -1,5 +1,5 @@
 # build-dist.ps1 - Package framework for distribution and skill upload
-# Usage: .\scripts\build-dist.ps1
+# Usage: .\scripts\dist\build-dist.ps1
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $rootDir = Split-Path -Parent (Split-Path -Parent $scriptDir)
@@ -17,7 +17,7 @@ New-Item -ItemType Directory -Force -Path $pkgDir | Out-Null
 Copy-Item (Join-Path $rootDir "SKILL.md") $pkgDir
 Copy-Item (Join-Path $rootDir "README.md") $pkgDir
 # docs/INDEX.json travels with the docs/ copy below -- verify-all checks it in-package
-foreach ($dir in @("docs", "templates", "patterns", "references", "scripts", "case-studies", "evals")) {
+foreach ($dir in @("docs", "templates", "patterns", "references", "scripts", "case-studies", "evals", "archive")) {
     $src = Join-Path $rootDir $dir
     if (Test-Path $src) {
         Write-Host "Copying $dir/..."

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Generate FSD (Functional Specification Document) scaffold with pinned versions
-# Usage: ./scripts/generate-fsd.sh [framework] [project_name]
+# Usage: ./scripts/scaffold/generate-fsd.sh [framework] [project_name]
 
 set -e
 

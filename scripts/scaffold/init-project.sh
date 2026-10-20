@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # init-project.sh - Deterministic Project Directory Initializer
-# Usage: ./scripts/init-project.sh <TARGET_DIR> [small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise] [ARCHETYPE] [DELIVERY]
+# Usage: ./scripts/scaffold/init-project.sh <TARGET_DIR> [small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise] [ARCHETYPE] [DELIVERY]
 
 set -e
 

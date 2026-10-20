@@ -29,7 +29,7 @@ jobs:
 
       - name: Syntax check Bash scripts (bash -n)
         run: |
-          for script in scripts/*/*.sh templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh templates/04-dev-execution/scripts/check-dependencies.sh; do
+          for script in scripts/*/*.sh scripts/*/*/*.sh templates/04-dev-execution/TODO_VERIFICATION_SCRIPT.sh templates/04-dev-execution/scripts/check-dependencies.sh; do
             echo "Checking syntax: $script"
             bash -n "$script"
           done

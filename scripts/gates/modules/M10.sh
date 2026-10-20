@@ -7,6 +7,7 @@
 # --- gate_M10 ------------------------------------------------------
 gate_M10() {
     echo "=== M10: Deployment Production Gate Checklist ==="
+    check_intake_gate || true
     check_required "docs/DEPLOYMENT_PROTOCOL.md" "docs/pm/DEPLOYMENT_PROTOCOL.md" 1000
     check_required "docs/pm/GO_LIVE_REPORT.md" "docs/GO_LIVE_REPORT.md" 500
 

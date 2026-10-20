@@ -1,6 +1,6 @@
 # Template Linter (PowerShell)
 # Validates filled templates against framework conventions
-# Usage: .\scripts\lint-template.ps1 -File "docs/specs/PRD.md"
+# Usage: .\scripts\verify\lint-template.ps1 -File "docs/specs/PRD.md"
 
 param(
     [Parameter(Mandatory=$true)]

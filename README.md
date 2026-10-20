@@ -31,7 +31,8 @@ solo-project-lifecycle/
 │   ├── 07-release-handover/       # Handover protocols, BAST, credentials vault
 │   ├── 08-maintenance-ops/        # SLA/SLO, backup, warranty, runbooks
 │   ├── 09-product-growth/         # Analytics, A/B tests, growth experiments
-│   └── by-use-case/               # Per-use-case template bundles
+│   ├── by-use-case/               # Per-use-case template bundles
+│   └── ui/                        # Cinematic world engine & motion tokens
 ├── references/
 │   ├── checklists/          # Feasibility criteria, module evaluation checklists
 │   ├── taxonomy/            # 1,000 system catalog and 250 software archetypes

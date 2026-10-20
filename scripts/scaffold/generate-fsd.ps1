@@ -1,5 +1,5 @@
 # Generate FSD (Functional Specification Document) scaffold with pinned versions
-# Usage: .\scripts\generate-fsd.ps1 [-Framework nextjs] [-ProjectName "MyProject"]
+# Usage: .\scripts\scaffold\generate-fsd.ps1 [-Framework nextjs] [-ProjectName "MyProject"]
 
 param (
     [string]$Framework = "nextjs",

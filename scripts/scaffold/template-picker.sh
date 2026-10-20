@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # template-picker.sh - Interactive template selection tool
-# Usage: ./scripts/template-picker.sh
+# Usage: ./scripts/scaffold/template-picker.sh
 
 set -e
 
@@ -9,6 +9,7 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 TEMPLATES_DIR="${TEMPLATES_DIR:-$ROOT_DIR/templates}"
 PROJECT_ROOT="."
 PHASE_ARG=""
+SEARCH_ARG=""
 DRY_RUN=0
 AUTO_CONFIRM=0
 
@@ -28,6 +29,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --phase)
             PHASE_ARG="$2"
+            shift 2
+            ;;
+        -s|--search)
+            SEARCH_ARG="$2"
             shift 2
             ;;
         *)
@@ -443,6 +448,27 @@ show_all_templates() {
         read -p "Press Enter to continue..."
     fi
 }
+
+# Search template invocation
+if [ -n "$SEARCH_ARG" ]; then
+    echo -e "${BLUE}Searching templates matching: '$SEARCH_ARG'...${NC}"
+    echo ""
+    matches=$(find "$TEMPLATES_DIR" -name "*.md" -type f | grep -iE "$SEARCH_ARG" || true)
+    if [ -z "$matches" ]; then
+        echo -e "${YELLOW}No templates found matching '$SEARCH_ARG'.${NC}"
+        exit 0
+    fi
+    count=$(echo "$matches" | wc -l | tr -d ' ')
+    echo -e "${GREEN}Found $count matching template(s):${NC}"
+    while IFS= read -r f; do
+        rel="${f#$TEMPLATES_DIR/}"
+        echo "  * $rel"
+        if [ -n "$PROJECT_ROOT" ] && [ "$PROJECT_ROOT" != "." ]; then
+            copy_template "$f" "$PROJECT_ROOT/$(basename "$f")"
+        fi
+    done <<< "$matches"
+    exit 0
+fi
 
 # Non-interactive phase invocation
 if [ -n "$PHASE_ARG" ]; then

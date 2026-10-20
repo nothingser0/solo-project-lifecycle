@@ -1,7 +1,7 @@
 /**
  * Standalone Data Migration & Batch ETL Script
  * Usage:
- *   npx tsx scripts/migrate-data.ts --source ./data/legacy-records.csv --batch 500 [--dry-run]
+ *   npx tsx scripts/runtime/migrate-data.ts --source ./data/legacy-records.csv --batch 500 [--dry-run]
  */
 
 import * as fs from 'node:fs';

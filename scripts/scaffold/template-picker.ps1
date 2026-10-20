@@ -1,9 +1,10 @@
 # Template Picker (PowerShell)
 # Interactive template selection tool
-# Usage: .\scripts\template-picker.ps1
+# Usage: .\scripts\scaffold\template-picker.ps1
 
 param(
     [string]$Phase,
+    [string]$Search,
     [string]$Dest = ".",
     [switch]$DryRun,
     [switch]$Force
@@ -439,6 +440,28 @@ function Show-UseCaseMenu {
 }
 
 # Main loop
+if ($Search) {
+    Show-Header
+    Write-Host "Searching templates matching: '$Search'..." -ForegroundColor Cyan
+    Write-Host ""
+    $matched = Get-ChildItem -Path $TemplatesDir -Recurse -File -Filter "*.md" | Where-Object {
+        $_.Name -like "*$Search*" -or (Get-Content $_.FullName -TotalCount 5 -ErrorAction SilentlyContinue) -like "*$Search*"
+    }
+    if (-not $matched) {
+        Write-Host "No templates found matching '$Search'." -ForegroundColor Yellow
+        exit 0
+    }
+    Write-Host "Found $($matched.Count) matching template(s):" -ForegroundColor Green
+    foreach ($m in $matched) {
+        $relPath = $m.FullName.Substring($TemplatesDir.Length).TrimStart('\', '/')
+        Write-Host "  * $relPath" -ForegroundColor White
+        if ($Dest -and $Dest -ne ".") {
+            Copy-Template $m.FullName (Join-Path $Dest $m.Name)
+        }
+    }
+    exit 0
+}
+
 if ($Phase) {
     switch ($Phase) {
         "1" { Show-DiscoveryMenu; exit 0 }

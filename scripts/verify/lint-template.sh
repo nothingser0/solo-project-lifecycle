@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # lint-template.sh - Validate template completeness
-# Usage: ./scripts/lint-template.sh docs/specs/PRD.md
+# Usage: ./scripts/verify/lint-template.sh docs/specs/PRD.md
 
 set -e
 

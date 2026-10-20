@@ -5,6 +5,7 @@
 # ==============================================================================
 
 $ErrorActionPreference = "Continue"
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Write-Host "=== Solo Project Lifecycle Integrity Check (PowerShell) ===" -ForegroundColor Blue
 Write-Host ""
@@ -39,6 +40,16 @@ if (-not $conflictHits) {
 } else {
     Write-Host "  [FAIL] merge-conflict markers found (resolve before committing):" -ForegroundColor Red
     $conflictHits | ForEach-Object { Write-Host "       $_" }
+    $errors++
+}
+
+Write-Host ""
+Write-Host "1c. Checking PowerShell wrappers & caller resolution..."
+$wrapperRes = & (Join-Path $scriptDir "test-ps1-wrappers.ps1") 2>&1
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "  [OK] PowerShell wrappers & caller resolution verified" -ForegroundColor Green
+} else {
+    Write-Host "  [FAIL] test-ps1-wrappers.ps1 failed" -ForegroundColor Red
     $errors++
 }
 
@@ -118,24 +129,21 @@ foreach ($cs in $caseStudies) {
     }
 }
 
-# 5. Verify Patterns Presence (4 active Indonesia/domain-specific + archived generics)
+# 5. Verify Patterns Presence (all active patterns + archived generics)
 Write-Host ""
 Write-Host "5. Checking Patterns..."
-$patterns = @(
-    "patterns/payments/INDONESIA_PAYMENT_GATEWAYS.md",
-    "patterns/compliance/UU_PDP_COMPLIANCE.md",
-    "patterns/offline/OFFLINE_FIRST_SYNC.md",
-    "patterns/localization/I18N_INDONESIA.md"
-)
-
-foreach ($pat in $patterns) {
-    if (Test-Path $pat) {
-        Write-Host "  [OK] $pat" -ForegroundColor Green
+$activePatterns = Get-ChildItem -Path "patterns" -Recurse -Filter "*.md"
+$foundActive = 0
+foreach ($pat in $activePatterns) {
+    if (Test-Path $pat.FullName) {
+        $foundActive++
     } else {
-        Write-Host "  [FAIL] Missing $pat" -ForegroundColor Red
+        Write-Host "  [FAIL] Missing pattern: $($pat.FullName)" -ForegroundColor Red
         $errors++
     }
 }
+Write-Host "  [OK] $foundActive active domain & engineering patterns present under patterns/" -ForegroundColor Green
+
 # Archived generic patterns (present under archive/patterns/ for recovery; not loaded by agents)
 $archivedPatterns = @(
     "archive/patterns/validation/zod-patterns.md",
@@ -153,7 +161,7 @@ Write-Host "  [OK] archived generic patterns present under archive/patterns/" -F
 
 # 6. Verify Markdown Links and Frontmatter
 Write-Host ""
-Write-Host "6. Checking Markdown Links and SKILL.md Frontmatter..."
+Write-Host "6. Checking Markdown Links, Secrets, and Manifests..."
 if (Get-Command node -ErrorAction SilentlyContinue) {
     $fmRes = node scripts/verify/verify-skill-frontmatter.js 2>&1
     if ($LASTEXITCODE -eq 0) {
@@ -175,6 +183,22 @@ if (Get-Command node -ErrorAction SilentlyContinue) {
     } else {
         Write-Host "  [FAIL] INDEX.json manifest out of sync (run: node scripts/verify/index-manifest.js)" -ForegroundColor Red
         $errors++
+    }
+    $parRes = node scripts/verify/verify-scaffold-parity.js 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "  [OK] Scaffold parity between Bash and PowerShell verified" -ForegroundColor Green
+    } else {
+        Write-Host "  [FAIL] Scaffold parity failed" -ForegroundColor Red
+        $errors++
+    }
+    if (Test-Path scripts/verify/verify-no-secrets.js) {
+        $secRes = node scripts/verify/verify-no-secrets.js 2>&1
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "  [OK] No leaked live credentials or secret keys found" -ForegroundColor Green
+        } else {
+            Write-Host "  [FAIL] Credential/secret leak scanner detected issues" -ForegroundColor Red
+            $errors++
+        }
     }
 }
 Write-Host ""

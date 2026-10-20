@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # calculate-size.sh - Accurately calculate repository footprint and token counts
-# Usage: ./scripts/calculate-size.sh
+# Usage: ./scripts/dist/calculate-size.sh
 
 set -e
 

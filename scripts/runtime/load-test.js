@@ -1,5 +1,5 @@
 // Universal k6 Load Test Script
-// Usage: k6 run scripts/load-test.js
+// Usage: k6 run scripts/runtime/load-test.js
 // Environment variables:
 //   BASE_URL - Target host (default: http://localhost:3000)
 //   VUS      - Max concurrent virtual users (default: 50)

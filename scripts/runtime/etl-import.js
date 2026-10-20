@@ -2,7 +2,7 @@
 /**
  * Production ETL Data Importer
  * Usage:
- *   DATABASE_URL="postgresql://..." node scripts/etl-import.js --source data/source.csv [--table documents] [--batch 1000]
+ *   DATABASE_URL="postgresql://..." node scripts/runtime/etl-import.js --source data/source.csv [--table documents] [--batch 1000]
  */
 
 const fs = require('fs');

@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 # build-dist.sh - Package framework for distribution and skill upload
-# Usage: ./scripts/build-dist.sh
-
+# Usage: ./scripts/dist/build-dist.sh
+ 
 set -e
-
+ 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DIST_DIR="$ROOT_DIR/dist"
 DIST_PACKAGE="$DIST_DIR/package"
-
+ 
 echo "=== Building Distribution Package ==="
 echo "Target directory: $DIST_DIR"
-
+ 
 rm -rf "$DIST_DIR"
 mkdir -p "$DIST_PACKAGE"
-
+ 
 # Copy root metadata and core files
 cp "$ROOT_DIR/SKILL.md" "$DIST_PACKAGE/"
 cp "$ROOT_DIR/README.md" "$DIST_PACKAGE/"
-
+ 
 # Copy core skill directories
 # (docs/INDEX.json rides along with the docs/ copy below — verify-all.sh checks it in-package)
-for dir in docs templates patterns references scripts case-studies evals; do
+for dir in docs templates patterns references scripts case-studies evals archive; do
     if [ -d "$ROOT_DIR/$dir" ]; then
         echo "Copying $dir/..."
         cp -r "$ROOT_DIR/$dir" "$DIST_PACKAGE/"
