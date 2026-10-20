@@ -160,7 +160,7 @@ The advisory series is **never solo coding**. The agent drafts; a licensed profe
 | Check | Where | Status |
 | :--- | :--- | :--- |
 | Intake file + 9 mandatory fields answered | `validate-gate.sh` every module | ✅ script |
-| Solo capacity / High-Water Mark | `validate-gate.sh` M01, M02 | ✅ script |
+| Solo capacity / High-Water Mark | `validate-gate.sh` M01, M02, M05, M06 | ✅ script |
 | Per-task human approval | `validate-gate.sh` M06 | ✅ script |
 | M06 output artifacts present (`AI_REVIEW_LOG.md`, `DEVELOPMENT_PROGRESS_TRACKER.md`, `RUNBOOK_LOCAL.md`, `VERIFY_LOCAL.md`) | `validate-gate.sh` M06 + `TODO.md` tasks `M06-GATE-03/04` | 🧑 prose only (checklist + template); only RUNBOOK/VERIFY_LOCAL are hard-checked |
 | Locked stack + Module 04 Handoff present before coding | `verify-framework-version.sh` + `validate-gate.sh` M06/M05 | ✅ script |

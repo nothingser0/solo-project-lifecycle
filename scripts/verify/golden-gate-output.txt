@@ -18,7 +18,26 @@
 ============================================================
 === M01: Idea Feasibility Gate Checklist ===
   [INFO] Running mechanical scale & solo capacity classifier...
-  ✅ Solo capacity verified: Scope is executable within solo capacity
+  ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier.
+     Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory.
+     A risk-acceptance file cannot open this block.
+    === Engineering Scale Classifier (High-Water Mark + Solo Capacity) ===
+    Target: docs/pm/PROJECT_STATE.md
+    Assumed solo productive hours/week: 28
+    Delivery (structured)        : client
+    Detected P0 Must-Have Count  : 12
+    Detected Distinct Integrations: 0
+    ------------------------------------------------------
+    Evaluated Scale   : medium
+    Primary Rationale : 6-15 P0 features (Medium Scale)
+    ------------------------------------------------------
+    ⛔ NON-DELEGABLE GATE: medium — the obligation cannot be discharged solo.
+       Reason: legacy-core replacement — requires vendor/legacy specialist
+       MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04).
+       Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY.
+       This block is NOT overridable by a risk-acceptance file: a signature
+       cannot produce an audit certificate or a licensed vendor.
+       Exit code: 2 (non-delegable — route to A00-A04 Advisory).
   ✅ docs/pm/PROJECT_STATE.md (407B)
   ❌ docs/pm/IDEA_BRIEF.md (MISSING — copy templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md; FEASIBILITY_REPORT.md is an accepted alias)
   ✅ Intake Gate: all 9 mandatory fields answered
@@ -33,7 +52,26 @@
 === M02: Discovery & Scope Gate Checklist ===
   ✅ Intake Gate: all 9 mandatory fields answered
   [INFO] Running mechanical scale & solo capacity classifier...
-  ✅ Solo capacity verified: Scope is executable within solo capacity
+  ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier.
+     Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory.
+     A risk-acceptance file cannot open this block.
+    === Engineering Scale Classifier (High-Water Mark + Solo Capacity) ===
+    Target: docs/pm/PROJECT_STATE.md
+    Assumed solo productive hours/week: 28
+    Delivery (structured)        : client
+    Detected P0 Must-Have Count  : 12
+    Detected Distinct Integrations: 0
+    ------------------------------------------------------
+    Evaluated Scale   : medium
+    Primary Rationale : 6-15 P0 features (Medium Scale)
+    ------------------------------------------------------
+    ⛔ NON-DELEGABLE GATE: medium — the obligation cannot be discharged solo.
+       Reason: legacy-core replacement — requires vendor/legacy specialist
+       MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04).
+       Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY.
+       This block is NOT overridable by a risk-acceptance file: a signature
+       cannot produce an audit certificate or a licensed vendor.
+       Exit code: 2 (non-delegable — route to A00-A04 Advisory).
   ✅ docs/pm/SCOPE_STATEMENT.md (1275B)
   ✅ docs/pm/SCOPE_STATEMENT.md core section headings verified (2 headings present)
   ✅ Zero ambiguous terms in Must-Have scope rows
@@ -108,6 +146,27 @@
 ============================================================
 === M05: Architecture & Specs Gate Checklist ===
   ✅ Intake Gate: all 9 mandatory fields answered
+  [INFO] Running mechanical scale & solo capacity classifier...
+  ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier.
+     Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory.
+     A risk-acceptance file cannot open this block.
+    === Engineering Scale Classifier (High-Water Mark + Solo Capacity) ===
+    Target: docs/pm/PROJECT_STATE.md
+    Assumed solo productive hours/week: 28
+    Delivery (structured)        : client
+    Detected P0 Must-Have Count  : 12
+    Detected Distinct Integrations: 0
+    ------------------------------------------------------
+    Evaluated Scale   : medium
+    Primary Rationale : 6-15 P0 features (Medium Scale)
+    ------------------------------------------------------
+    ⛔ NON-DELEGABLE GATE: medium — the obligation cannot be discharged solo.
+       Reason: legacy-core replacement — requires vendor/legacy specialist
+       MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04).
+       Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY.
+       This block is NOT overridable by a risk-acceptance file: a signature
+       cannot produce an audit certificate or a licensed vendor.
+       Exit code: 2 (non-delegable — route to A00-A04 Advisory).
   ❌ docs/specs/PRD.md (MISSING)
   ❌ docs/specs/FSD.md (MISSING)
   [INFO] Medium+ scale detected: Architecture Decision Record (ADR) is MANDATORY.
@@ -131,6 +190,27 @@
 ============================================================
 === M06: Development Execution Gate Checklist ===
   ✅ Intake Gate: all 9 mandatory fields answered
+  [INFO] Running mechanical scale & solo capacity classifier...
+  ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier.
+     Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory.
+     A risk-acceptance file cannot open this block.
+    === Engineering Scale Classifier (High-Water Mark + Solo Capacity) ===
+    Target: docs/pm/PROJECT_STATE.md
+    Assumed solo productive hours/week: 28
+    Delivery (structured)        : client
+    Detected P0 Must-Have Count  : 12
+    Detected Distinct Integrations: 0
+    ------------------------------------------------------
+    Evaluated Scale   : medium
+    Primary Rationale : 6-15 P0 features (Medium Scale)
+    ------------------------------------------------------
+    ⛔ NON-DELEGABLE GATE: medium — the obligation cannot be discharged solo.
+       Reason: legacy-core replacement — requires vendor/legacy specialist
+       MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04).
+       Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY.
+       This block is NOT overridable by a risk-acceptance file: a signature
+       cannot produce an audit certificate or a licensed vendor.
+       Exit code: 2 (non-delegable — route to A00-A04 Advisory).
   ✅ AGENTS.md (707B)
   ✅ TODO.md (126B)
   ✅ CONTEXT.md (611B)

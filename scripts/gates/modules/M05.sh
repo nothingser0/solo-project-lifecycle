@@ -8,6 +8,12 @@
 gate_M05() {
     echo "=== M05: Architecture & Specs Gate Checklist ==="
     check_intake_gate || true
+    # Solo-capacity / High-Water-Mark classifier. SKILL.md promises it "still runs"
+    # even when M01/M02 are waived (the Small path skips both), but only M01/M02 ever
+    # called it — a Small project could therefore reach design/architecture with an
+    # unvalidated Intake (declared 'small' while its answers say webhook/legacy/sensitive)
+    # and M05 was the first gate that actually ran. Same ground truth as M01/M02.
+    check_scale_feasibility || true
     if is_small_scale; then
         echo "  [INFO] Detected Small-Scale Fast-Track MVP path (PROJECT_LITE.md)"
         local lite="PROJECT_LITE.md"

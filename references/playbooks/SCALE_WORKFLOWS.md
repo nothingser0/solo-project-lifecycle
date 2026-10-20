@@ -613,7 +613,7 @@ IF project context == RFP/tender/corporate/regulated (statutory audit constraint
   → Total lifecycle: 14 modules (M00 through M13)
   → Timeline: 40-44 minggu + 3 bulan warranty + ongoing M13
   → Payment: 20-30-30-20% (4 milestones)
-  → Gates: M00 feasibility gate, M03 DP gate, M04B design system gate, M05B capacity planning gate, M07 pentest gate, M09 UAT gate, M11 BAST gate
+  → Gates: M00 feasibility gate, M03 DP gate, M04 design freeze gate, M05 tech spec gate (M05B capacity artifacts are playbook work products, not validated by validate-gate), M07 pentest gate, M09 UAT gate, M11 BAST gate
 ```
 
 ---

@@ -868,6 +868,34 @@ expect_intake "Small + ANSWERED but escalation fields absent" BLOCKED "$INTAKE_N
 STATE_WEBHOOK='- **Scale**: small\n- Delivery: client\n- Intake-Success-Metric: m\n- Intake-P0-Features: 4 (a,b,c,d)\n- Intake-Time-Capacity: 10 hrs/week x 4 weeks\n- Intake-Sensitive-Data: no\n- Intake-Integrations: Midtrans payment webhook\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
 expect_m01 "Small + Midtrans webhook integration (escalates to Medium)" FAIL "$STATE_WEBHOOK" "$M01_OK"
 
+# M05 / M06 must run the SAME classifier: SKILL.md promises "the scale classifier still
+# runs" on the Small path, but only M01/M02 called it, and Small skips both — so a
+# Small-declared project reached architecture/coding with an unvalidated Intake.
+# This fixture declares small, but its answers evaluate to medium (1 webhook), so the
+# High-Water-Mark mismatch must now fail at M05/M06, not only at M01/M02.
+expect_gate_scale_mismatch() {
+    local gate="$1" name="$2"
+    local dir="$WORK/gsm-$gate"
+    make_project "$dir" "$STATE_WEBHOOK"
+    local out code got
+    out="$(cd "$dir" && bash "$GATE" "$gate" 2>&1)"; code=$?
+    got="PASSED"
+    if [ "$code" -ne 0 ]; then
+        got="BLOCKED"
+    fi
+    if [ "$got" = "BLOCKED" ] && echo "$out" | grep -q "Scale mismatch"; then
+        echo -e "  ${GREEN}✓${NC} $name  ($gate -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  ($gate -> $got/exit $code, expected BLOCKED with Scale mismatch)"
+        echo "$out" | grep -E '❌' | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+    rm -rf "$dir"
+}
+expect_gate_scale_mismatch M05 "M05 runs the classifier: declared small vs webhook=medium"
+expect_gate_scale_mismatch M06 "M06 runs the classifier: declared small vs webhook=medium"
+
 # The eval scenario expects a NOT-YET-RUN research state to be PENDING, not PASS.
 WL_PENDING='- **Total Unique Visitors**: 0
 - **Total Waitlist / Email Signups**: 0
@@ -1012,6 +1040,13 @@ expect_capacity "Large capacity-only, named+dated acceptance" OVERRIDDEN "$CAP_L
 # The non-delegable block must hold EVEN WITH a complete acceptance file.
 expect_capacity "OJK compliance + valid acceptance (non-delegable)" BLOCKED "$CAP_COMPLIANCE" "$CAP_ACCEPTED"
 expect_capacity "Legacy-core + valid acceptance (non-delegable)" BLOCKED "$CAP_LEGACY" "$CAP_ACCEPTED"
+# Non-delegable is an obligation, not a size. INTAKE_GATE.md Q6, SKILL.md and the
+# acceptance template all say legacy-core blocks "at any size" — but the predicate
+# used to live inside the TIER>=3 branch, so a 12-P0 Medium ledger migration passed
+# as "Within solo capacity" (exit 0) with a valid acceptance file sitting unused.
+MED_LEGACY="${INTAKE_MEDIUM/Intake-Legacy-Core: no/Intake-Legacy-Core: yes}"
+expect_capacity "Medium legacy-core is non-delegable at ANY tier" BLOCKED "$MED_LEGACY" "$CAP_ACCEPTED"
+expect_capacity "Medium legacy-core, no acceptance file either" BLOCKED "$MED_LEGACY" "EMPTY"
 expect_capacity "Medium scope stays solo-viable (no override needed)" SOLO_VIABLE "$INTAKE_MEDIUM" "EMPTY"
 
 # The classifier's exit 5 used to die inside check_scale_feasibility: it printed a

@@ -7,7 +7,7 @@
 # different predicates (the cause matters, not the tier number):
 #   NON-DELEGABLE  -> statutory compliance or legacy-core replacement. A licensed
 #                     third party is legally required, so no amount of solo
-#                     capacity substitutes. Hard block -> exit 2 (A00-A04).
+#                     capacity substitutes. Hard block AT ANY TIER -> exit 2 (A00-A04).
 #   CAPACITY-ONLY  -> 16-25 P0 / multi-service with no non-delegable obligation.
 #                     That is a schedule/quality risk the human may accept in
 #                     writing (docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md) -> exit 5.
@@ -126,38 +126,42 @@ echo "------------------------------------------------------"
 echo "Evaluated Scale   : $FINAL_SCALE"
 echo "Primary Rationale : $REASON"
 
-# --- SOLO CAPACITY GATE (two predicates; the cause decides, not the tier) ---
+# --- SOLO CAPACITY GATE ---------------------------------------------------------
+# Predicate 1 — NON-DELEGABLE, checked at EVERY tier (INTAKE_GATE Q6, SKILL.md and
+# templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md all say "at any size").
+# Statutory compliance (OJK/BI/UU PDP/ISO/medical) and a legacy-core replacement both
+# require a licensed third party: an audit certificate or vendor engagement nobody can
+# self-issue. Declaring "I am ready to code solo" cannot substitute for a missing
+# auditor, so this is a hard block regardless of tier and NO override file can open it.
+# Regression: this predicate used to live inside the TIER>=3 branch, so a 12-P0 Medium
+# ledger migration (legacy-core yes, no compliance) printed "Within solo capacity" and
+# exited 0 — exactly the case the docs call "never solo coding, at any size".
+NON_DELEGABLE=""
+if [ -n "$COMPLIANCE" ] && ! echo "$COMPLIANCE" | grep -qiE "^\s*(none|no|tidak ada|-)\s*$" 2>/dev/null; then
+    NON_DELEGABLE="statutory compliance ($COMPLIANCE) — requires licensed audit/counsel"
+fi
+if echo "$LEGACY_CORE" | grep -qiE "^\s*(yes|ya|true)" 2>/dev/null; then
+    NON_DELEGABLE="${NON_DELEGABLE:+$NON_DELEGABLE; }legacy-core replacement — requires vendor/legacy specialist"
+fi
+
+if [ -n "$NON_DELEGABLE" ]; then
+    echo "------------------------------------------------------"
+    echo "⛔ NON-DELEGABLE GATE: $FINAL_SCALE — the obligation cannot be discharged solo."
+    echo "   Reason: $NON_DELEGABLE"
+    echo "   MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04)."
+    echo "   Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY."
+    echo "   This block is NOT overridable by a risk-acceptance file: a signature"
+    echo "   cannot produce an audit certificate or a licensed vendor."
+    echo "   Exit code: 2 (non-delegable — route to A00-A04 Advisory)."
+    exit 2
+fi
+
+# Predicate 2 — CAPACITY-ONLY, Large tier and above. 16-25 P0 / multi-service with no
+# non-delegable obligation. This is a schedule and quality risk that runs in YOUR name,
+# so the human may accept it in writing. The override must name a real person and date:
+# a placeholder is not an acceptance.
 ACCEPTANCE_FILE="docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md"
 if [ "$TIER" -ge 3 ]; then
-    # Predicate 1 — NON-DELEGABLE. Statutory compliance (OJK/BI/UU PDP/ISO/medical)
-    # and a legacy-core replacement both require a licensed third party: an audit
-    # certificate or vendor engagement nobody can self-issue. Declaring "I am ready
-    # to code solo" cannot substitute for a missing auditor, so this stays a hard
-    # block at every tier and NO override file can open it.
-    NON_DELEGABLE=""
-    if [ -n "$COMPLIANCE" ] && ! echo "$COMPLIANCE" | grep -qiE "^\s*(none|no|tidak ada|-)\s*$" 2>/dev/null; then
-        NON_DELEGABLE="statutory compliance ($COMPLIANCE) — requires licensed audit/counsel"
-    fi
-    if echo "$LEGACY_CORE" | grep -qiE "^\s*(yes|ya|true)" 2>/dev/null; then
-        NON_DELEGABLE="${NON_DELEGABLE:+$NON_DELEGABLE; }legacy-core replacement — requires vendor/legacy specialist"
-    fi
-
-    if [ -n "$NON_DELEGABLE" ]; then
-        echo "------------------------------------------------------"
-        echo "⛔ NON-DELEGABLE GATE: $FINAL_SCALE — the obligation cannot be discharged solo."
-        echo "   Reason: $NON_DELEGABLE"
-        echo "   MANDATORY REDIRECTION: Route to A-Series Advisory Lifecycle (A00-A04)."
-        echo "   Allowed output: ENTERPRISE ARCHITECTURE & READINESS PACKAGE ONLY."
-        echo "   This block is NOT overridable by a risk-acceptance file: a signature"
-        echo "   cannot produce an audit certificate or a licensed vendor."
-        echo "   Exit code: 2 (non-delegable — route to A00-A04 Advisory)."
-        exit 2
-    fi
-
-    # Predicate 2 — CAPACITY-ONLY. 16-25 P0 / multi-service with no non-delegable
-    # obligation. This is a schedule and quality risk that runs in YOUR name, so the
-    # human may accept it in writing. The override must name a real person and date:
-    # a placeholder is not an acceptance.
     if [ ! -f "$ACCEPTANCE_FILE" ]; then
         echo "------------------------------------------------------"
         echo "⛔ SOLO CAPACITY GATE: $FINAL_SCALE EXCEEDS SOLO DEVELOPER CAPACITY."

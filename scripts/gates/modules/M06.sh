@@ -8,6 +8,9 @@
 gate_M06() {
     echo "=== M06: Development Execution Gate Checklist ==="
     check_intake_gate || true
+    # High-Water Mark / solo-capacity classifier, same as M01/M02/M05: M06 is the
+    # gate coding starts under, so an unvalidated scale claim must not survive it.
+    check_scale_feasibility || true
     # HARNESS POLICY (one rule, applied everywhere below): `docs/harness-root/` is a
     # STAGING directory. Files must end up at the project ROOT for this gate to pass —
     # that copy is the human step M06 exists to verify. The staging path is accepted only

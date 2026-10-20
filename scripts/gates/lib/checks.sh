@@ -30,8 +30,9 @@ is_small_scale() {
 # Universal precondition: the Intake answers must exist before ANY module work.
 # Small projects have M00/M01/M02 waived, so the intake gate is their ONLY
 # requirement — it must never be nested inside a scale-waiver branch.
-# Besides the 6 core questions, the 4 escalation fields READ BY
-# classify-scale.sh (Integrations / Branch-Hierarchy / Compliance / Legacy-Core) are required:
+# Besides the 6 core questions (INTAKE_GATE.md Q1-Q6, Legacy-Core included), the 3
+# escalation answers READ BY classify-scale.sh (Integrations / Branch-Hierarchy /
+# Compliance) are required — the loop below enforces all 9 fields plus Intake-Status:
 # an absent field is not "none", and while it is absent a payment webhook or a
 # multi-tenant hierarchy stays invisible and the project keeps its self-declared
 # "small" tier. "None" is a valid answer; blank/UNKNOWN/UNSET is not.
@@ -143,8 +144,17 @@ check_scale_feasibility() {
         return 0
     fi
     if [ "$rc" -eq 2 ]; then
-        echo "  ❌ SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!"
-        echo "     The declared Scale does not override the classifier — the HIGH-WATER MARK wins."
+        # Exit 2 has two causes and the fix differs: a non-delegable obligation needs
+        # an A-Series redirect (no file opens it), a capacity risk needs the signed
+        # acceptance. Say which one — the classifier block below carries the detail.
+        if echo "$classify_output" | grep -q "NON-DELEGABLE GATE"; then
+            echo "  ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier."
+            echo "     Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory."
+            echo "     A risk-acceptance file cannot open this block."
+        else
+            echo "  ❌ SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!"
+            echo "     The declared Scale does not override the classifier — the HIGH-WATER MARK wins."
+        fi
     else
         echo "  ❌ Scale classifier ERROR (exit $rc): solo capacity could NOT be verified. Failing closed."
     fi
