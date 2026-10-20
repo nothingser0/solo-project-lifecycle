@@ -1,9 +1,9 @@
 # Enterprise Agentic Customer Service & MCP Multi-Turn Testing Pattern
 
 > **Module**: M05 (Architecture & Specs), M07 (Quality Assurance & SIT), & M13 (Product Operations & Iteration)  
-> **Sources**: `murphye/agent-skills-customer-service` (§1–§2 — MCP order/ticket servers, YAML scenarios, three assertion layers) and `akshaykokane/Building-Customer-Service-Agent-with-Skill.md-and-Agent-Framework` (§3–§5 — policy double-encoding, session identity, tool registration).
+> **Sources**: a published customer-service agent-skills repository (§1–§2 — MCP order/ticket servers, YAML scenarios, three assertion layers) and a published customer-service skill + agent-framework repository (§3–§5 — policy double-encoding, session identity, tool registration).
 >
-> **Licence**: `murphye` declares `license: MIT` in `SKILL.md` frontmatter but ships no `LICENSE` file; `akshaykokane` ships neither. Everything below is written from observing the behaviour of both implementations; no upstream text is reproduced.  
+> **Licence**: The first source declares `license: MIT` in `SKILL.md` frontmatter but ships no `LICENSE` file; the second ships neither. Everything below is written from observing the behaviour of both implementations; no upstream text is reproduced.  
 > **Scope**: Portable multi-step agent workflows defined purely in Markdown (`SKILL.md`), Model Context Protocol (MCP) server integration (`orders` and `tickets` APIs), multi-turn conversation test harnesses with YAML scenarios, tool-call pattern assertion, outcome validation, and LLM-as-a-judge quality checks.
 
 ---

@@ -1,7 +1,7 @@
 # API Design Guidelines & Best Practices Cheat Sheet Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from `RestCheatSheet/api-cheat-sheet` (Collection Metaphor, No Naked IDs, Accept-header Versioning, ETag Caching) and `dwyl/learn-api-design` (URI-versioning cache rationale, sparse fieldsets, `415 Unsupported Media Type`). **§C2 is source-derived but extended.** The source says, in one line, *"Use ISO 8601 timepoint formats for dates in representations."* §C2 keeps that rule and adds what the line does not state: UTC storage, the date-versus-instant distinction, and the multi-zone consequence — cross-checked against `patterns/localization/I18N_INDONESIA.md`.  
+> **Source**: Adapted from a public API cheat sheet (Collection Metaphor, No Naked IDs, Accept-header Versioning, ETag Caching) and a learn-api-design` (URI-versioning cache rationale, sparse fieldsets, `415 Unsupported Media Type`). **§C2 is source-derived but extended.** The source says, in one line, *"Use ISO 8601 timepoint formats for dates in representations."* §C2 keeps that rule and adds what the line does not state: UTC storage, the date-versus-instant distinction, and the multi-zone consequence — cross-checked against `patterns/localization/I18N_INDONESIA.md`.  
 > **Scope**: Advanced RESTful API conventions focusing on consumer-driven design, collection metaphors, hypermedia representation without naked IDs, Content-Type negotiation, and HTTP caching headers.
 
 ---

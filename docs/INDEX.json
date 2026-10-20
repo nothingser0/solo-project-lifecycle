@@ -305,19 +305,15 @@
       "cataloged": true
     },
     {
-      "path": "patterns/execution/ADDY_OSMANI_CICD_AUTOMATION_PATTERN.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md",
       "cataloged": true
     },
     {
-      "path": "patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md",
+      "path": "patterns/execution/AGENT_SKILL_INJECTION_FRAMEWORK_PATTERN.md",
       "cataloged": true
     },
     {
-      "path": "patterns/execution/AKSHAY_KOKANE_AGENT_SKILLS_INJECTION_PATTERN.md",
+      "path": "patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md",
       "cataloged": true
     },
     {
@@ -326,10 +322,6 @@
     },
     {
       "path": "patterns/execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md",
       "cataloged": true
     },
     {
@@ -357,6 +349,14 @@
       "cataloged": true
     },
     {
+      "path": "patterns/execution/DEVOPS_SRE_AGENT_SKILLS_PATTERN.md",
+      "cataloged": true
+    },
+    {
+      "path": "patterns/execution/ENTERPRISE_CICD_AUTOMATION_PATTERN.md",
+      "cataloged": true
+    },
+    {
       "path": "patterns/execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md",
       "cataloged": true
     },
@@ -373,7 +373,7 @@
       "cataloged": true
     },
     {
-      "path": "patterns/execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md",
+      "path": "patterns/execution/OWASP_SECURITY_CODE_REVIEW_PATTERN.md",
       "cataloged": true
     },
     {
@@ -389,7 +389,7 @@
       "cataloged": true
     },
     {
-      "path": "patterns/execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md",
+      "path": "patterns/execution/SECURITY_AUDIT_CHECKPOINTS_PATTERN.md",
       "cataloged": true
     },
     {
@@ -397,11 +397,11 @@
       "cataloged": true
     },
     {
-      "path": "patterns/execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md",
+      "path": "patterns/execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md",
       "cataloged": true
     },
     {
-      "path": "patterns/execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md",
+      "path": "patterns/execution/WEB_PENTEST_METHODOLOGY_PATTERN.md",
       "cataloged": true
     },
     {

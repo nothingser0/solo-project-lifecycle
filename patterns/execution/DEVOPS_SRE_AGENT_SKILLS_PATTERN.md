@@ -1,7 +1,7 @@
 # Enterprise DevOps & SRE Agent-Ready SKILL.md Pattern
 
 > **Module**: M10 (Deployment & Infrastructure) & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Arie Bregman DevOps & SRE Skills (`bregman-arie/devops-sre-skills`).  
+> **Source**: Adapted from a published DevOps & SRE agent-skills library.  
 > **Scope**: Agent-ready `SKILL.md` library pattern for SRE and DevOps workflows, safe-by-default execution contracts, structured YAML front matter schemas, read-only vs write-allowed safety gates, and mandatory rollback/undo runbooks.
 
 ---

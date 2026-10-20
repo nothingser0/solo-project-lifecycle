@@ -1,7 +1,7 @@
 # Scroll-Scrubbed Cinematic World Pattern
 
 > **Module**: M04 (UI/UX Landing Page) & M06 (Frontend Engineering)
-> **Source**: Adapted from `oso95/scroll-world` (MIT) — seam law, camera architectures, mobile hardening, and the blob-seek engine — plus Apple-style scroll-through landing pages.
+> **Source**: Adapted from a published scroll-world engine (MIT) — seam law, camera architectures, mobile hardening, and the blob-seek engine — plus Apple-style scroll-through landing pages.
 > **Objective**: A hero where **scroll drives a camera**: a pre-rendered flight through scenes, scrubbed by scroll position, with no visible cuts and no framework lock-in.
 
 ---

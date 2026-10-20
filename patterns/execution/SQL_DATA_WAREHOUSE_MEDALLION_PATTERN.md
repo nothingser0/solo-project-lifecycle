@@ -1,7 +1,7 @@
-# Baraa SQL Data Warehouse & Medallion Architecture Pattern
+# SQL Data Warehouse & Medallion Architecture Pattern
 
 > **Module**: M05 (Architecture & Specs), M06 (Development Execution), & M08 (Data Migration & Seeding)  
-> **Source**: Adapted from Baraa Khatib Salkini's SQL Data Warehouse project (`DataWithBaraa/sql-data-warehouse-project`).  
+> **Source**: Adapted from a published SQL data-warehouse curriculum project.  
 > **Scope**: Modern enterprise data warehousing using SQL Server structured around the Medallion Architecture (Bronze, Silver, Gold) with clear ETL procedures, data cleansing, and star-schema analytical reporting.
 
 ---

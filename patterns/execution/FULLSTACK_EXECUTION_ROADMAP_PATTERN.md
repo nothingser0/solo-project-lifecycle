@@ -1,7 +1,7 @@
 # Full-Stack Execution Roadmap & Milestone Breakdown Pattern
 
 > **Module**: M06 (Development Execution) & M07 (Quality Assurance)  
-> **Source**: Adapted from Hemanshu (HemansNation) MERN Stack Roadmap curriculum (`hemansnation/MERN-Stack-Roadmap-2022`).  
+> **Source**: Adapted from a published MERN-stack roadmap curriculum.  
 > **Scope**: Structured, day-by-day milestone breakdown for full-stack feature implementation. Enforces linear progression from fundamental frontend components, authentication pipelines, state management, to robust backend controllers and database schemas.
 
 ---

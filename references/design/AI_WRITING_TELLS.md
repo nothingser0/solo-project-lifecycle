@@ -1,7 +1,7 @@
 # AI Writing Tells — The Structural Blacklist
 
 > **Module**: M04 (copy), M06 (README/docs), M07 (polish audit), M11 (handover docs)
-> **Source**: Adapted from `coreyhaines31/marketingskills` (MIT) — `copywriting/references/ai-tells.md`. Patterns and evidence are drawn from Wikipedia's *Signs of AI writing* (WikiProject AI Cleanup) and Kobak et al., excess vocabulary in 15M+ PubMed abstracts (arXiv 2406.07016).
+> **Source**: Adapted from a published marketing-skills library (MIT) — its copywriting AI-tells reference. Patterns and evidence are drawn from Wikipedia's *Signs of AI writing* (WikiProject AI Cleanup) and Kobak et al., excess vocabulary in 15M+ PubMed abstracts (arXiv 2406.07016).
 > **Companion**: `references/design/BRAND_VOICE_GUIDE.md` holds the *word* blacklist. This file holds the **shape** blacklist — the reason a draft can avoid every banned word and still read as machine-written.
 
 ---

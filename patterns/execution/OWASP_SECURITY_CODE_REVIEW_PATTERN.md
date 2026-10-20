@@ -1,7 +1,7 @@
 # Advanced OWASP Security Code Review & Evidence-Driven Auditing Pattern
 
 > **Module**: M05 (Architecture & Specs), M07 (Quality Assurance & SIT), & M12 (Warranty & Security)  
-> **Source**: Adapted from SpecterOps Skills (`SpecterOps/skills/owasp-security-code-review`).  
+> **Source**: Adapted from a published OWASP security code-review skill.  
 > **Scope**: Evidence-driven security code reviews, trust boundary mapping, authentication/authorization verification, untrusted-data sink tracing, business logic & cryptography assessment, and executable PoC generation (`poc_<finding_slug>.py`).
 
 ---

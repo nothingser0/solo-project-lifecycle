@@ -1,7 +1,7 @@
 # Brand Strategy, Naming & Identity Pattern
 
 > **Module**: M00 (Product Discovery), M01 (Idea Feasibility), M04 (UI/UX & Prototyping)
-> **Source**: Adapted from `arnabbagxd/Brand-building-skills` (MIT) — positioning discipline, naming workflow, brand audit scorecard, brand architecture models, rebrand scoping, and brand measurement funnel.
+> **Source**: Adapted from a published brand-building-skills library (MIT) — positioning discipline, naming workflow, brand audit scorecard, brand architecture models, rebrand scoping, and brand measurement funnel.
 > **Scope**: The strategy layer that sits *above* the logo. A mark cannot be judged without a position, a position cannot be owned without a name, and neither survives without a measurement system. This pattern covers positioning, naming, architecture, audit, rebrand, and measurement — in that dependency order.
 
 ---

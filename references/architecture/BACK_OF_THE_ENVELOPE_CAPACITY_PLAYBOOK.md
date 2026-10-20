@@ -1,7 +1,7 @@
 # Back-of-the-Envelope Capacity & Sizing Playbook (BOTEC)
 
 > **Module**: M01 (Idea & Feasibility) & M05 (Architecture & Technical Specifications)  
-> **Source**: Adapted from Martin Kleppmann (*DDIA*), Alex Xu (*ByteByteGo*), and `proyecto26/system-design-skills`.  
+> **Source**: Adapted from Martin Kleppmann (*DDIA*), the *ByteByteGo* system-design curriculum, and a published system-design-skills library.  
 > **Scope**: Authoritative engineering rules to convert vague scale descriptions ("high traffic", "huge data") into concrete arithmetic constraints. Prevents premature clustering, unnecessary distributed infra, and under-provisioned bottlenecks.
 
 ---

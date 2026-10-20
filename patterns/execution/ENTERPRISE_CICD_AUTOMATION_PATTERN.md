@@ -1,7 +1,7 @@
 # Enterprise CI/CD and Automation Pattern
 
 > **Module**: M10 (Deployment & Production) & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Addy Osmani Agent Skills (`addyosmani/agent-skills`).  
+> **Source**: Adapted from a published engineering-skills agent library (CI/CD quality-gate track).  
 > **Scope**: Quality gate enforcement pipelines (Lint, Type Check, Unit Tests, Build, Integration, E2E, Security Audit), shift-left testing, feedback loops for AI agents, feature flags, staged rollouts, rollback workflows, and CI optimization (caching & parallelism).
 
 ---

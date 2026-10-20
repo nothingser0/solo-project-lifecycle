@@ -1,7 +1,7 @@
 # Database Schema & Query Optimization Pattern
 
 > **Module**: M05 (Architecture & Specs), M06 (Development Execution), & M07 (Quality Assurance / Performance Audit)  
-> **Source**: Adapted from `planetscale/database-skills` (Vitess & PostgreSQL/MySQL production standards).  
+> **Source**: Adapted from a published database-skills library (Vitess & PostgreSQL/MySQL production standards).  
 > **Scope**: Authoritative engineering rules for resilient relational database schema design, B-Tree index optimization, foreign key indexing, SARGable queries, and N+1 prevention.
 
 ---

@@ -1,7 +1,7 @@
 # Business Analysis Discovery & Requirements Craft Pattern
 
 > **Module**: M02 (Discovery & Scope), M05 (Architecture & Specs), M07 (QA)
-> **Source**: Adapted from `45ck/business-analysis-skills` (MIT, 53 skills across atomic / workflows / quality tracks).
+> **Source**: Adapted from a published business-analysis-skills library (MIT, 53 skills across atomic / workflows / quality tracks).
 > **Scope**: The elicitation-to-specification craft that sits between "client said something" and a locked scope: choosing the right elicitation technique, pressure-testing requirement wording, separating functional from non-functional and business rules, proving traceability, and running the review passes that catch a pack before the client does.
 
 ---

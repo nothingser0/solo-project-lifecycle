@@ -1,9 +1,9 @@
 # Enterprise AI Search & Technical SEO Optimization Pattern
 
 > **Module**: M05 (Architecture & Specs), M07 (Quality Assurance & SIT), & M13 (Product Operations & Iteration)  
-> **Source**: `AgriciDaniel/claude-seo` — `skills/seo-geo` and `skills/seo/references/quality-gates.md`.
+> **Source**: a published SEO/GEO Claude-skills repository — `skills/seo-geo` and `skills/seo/references/quality-gates.md`.
 >
-> **Licence**: MIT (upstream `LICENSE`, Copyright (c) 2026 agricidaniel).
+> **Licence**: MIT (upstream `LICENSE`, Copyright (c) 2026 the upstream author).
 >
 > **Upstream claims are attributed, not adopted.** Dates and product behaviour below (e.g. "rollout completed 2026-08-31") were read in that repository's `references/google-ai-optimization-guide.md` and verified there on 2026-10-19 — but not against a Google property directly. Verify against Search Central before repeating one to a client.  
 > **Scope**: Generative Engine Optimization (GEO/AEO) as SEO fundamentals applied to AI-search surfaces, parallel sub-agent task orchestration, passage citability scoring, schema validation, agent-readiness claims separated from Google crawl signals (`llms.txt`, WebMCP, IPTC TrainedAlgorithmicMedia), technical SEO auditing, and tiered Google API reporting.

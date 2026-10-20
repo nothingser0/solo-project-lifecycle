@@ -1,7 +1,7 @@
 # Exact-Build Verification & Closed-Loop QA Pattern
 
 > **Module**: M07 (Quality Assurance & SIT) & M09 (UAT & Client Sign-off)  
-> **Source**: Adapted from autonomous agent QA coordination protocols (`finna/project-manager-skill`).  
+> **Source**: Adapted from a published autonomous agent QA coordination protocol.  
 > **Objective**: Eliminate "it works on my machine" assurances and fabricated passes; enforce verifiable artifact pinning and non-binary verification lifecycles.
 
 ---

@@ -1,7 +1,7 @@
 # AI Full-Stack Delivery Workflow & Multi-Role Dispatch Pattern
 
 > **Module**: M06 (Development Execution), M07 (Quality Assurance), & M10 (Deployment)  
-> **Source**: Adapted from `zhaoxuya520/AI-Fullstack-Delivery-Workflow` (AI Full-stack Delivery Workflow Master Control System).  
+> **Source**: Adapted from a published AI full-stack delivery workflow master-control system.  
 > **Scope**: Multi-role AI orchestration framework featuring 17 distinct technical roles (Product Manager, PM, UI/UX, API Designer, Frontend, Backend, Fullstack, DB, QA, Automation QA, DevOps, SRE, Security, Reverse/Pentest, Data Analyst, AI/ML, Tech Writer), routing tables, self-evolution protocols, and field-journal experience capture.
 
 ---

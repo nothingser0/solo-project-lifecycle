@@ -1,7 +1,7 @@
 # System Design Interview & Problem-Solving Methodology Pattern
 
 > **Module**: M01 (Idea Feasibility), M02 (Scope Statement), & M05 (Architecture Specs)  
-> **Source**: Adapted from Shashank Sharma's `shashank88/system_design` curriculum.  
+> **Source**: Adapted from a published open-source system-design curriculum.  
 > **Scope**: Authoritative engineering guidelines for structuring open-ended architectural problems, defining requirements step-by-step, identifying scale bottlenecks, and weighing system trade-offs.
 
 ---

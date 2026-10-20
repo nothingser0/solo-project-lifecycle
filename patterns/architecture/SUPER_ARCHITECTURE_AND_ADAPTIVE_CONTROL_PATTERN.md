@@ -1,7 +1,7 @@
 # S.U.P.E.R Architecture & Closed-Loop Adaptive Control Pattern
 
 > **Module**: M05 (Architecture & Specs), M06 (Development Execution), & M07 (Quality Assurance / SIT)  
-> **Source**: Adapted from `zhu1090093659/spec_driven_develop` (v1.15.0) & Qian Xuesen's Engineering Cybernetics.  
+> **Source**: Adapted from a published spec-driven-development framework (v1.15.0) & Qian Xuesen's Engineering Cybernetics.  
 > **Scope**: Authoritative engineering rules enforcing clean component boundaries (S.U.P.E.R), closed-loop feedback telemetry to prevent agent drift, and structured delivery batching.
 
 ---

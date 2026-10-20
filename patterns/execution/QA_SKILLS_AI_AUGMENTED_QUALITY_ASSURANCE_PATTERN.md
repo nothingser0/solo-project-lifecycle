@@ -1,7 +1,7 @@
-# Petr Kindlmann QA Skills & AI-Augmented Quality Assurance Pattern
+# AI-Augmented QA Workflows Pattern
 
 > **Module**: M07 (Quality Assurance & SIT) & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Petr Kindlmann QA Skills (`petrkindlmann/qa-skills`).  
+> **Source**: Adapted from a published 50-workflow QA skills library.  
 > **Scope**: 50 professional QA and test-automation workflows encompassing Playwright/Cypress E2E testing, risk-based test planning, test reliability healing, selector drift recovery, and AI-augmented bug triage.
 
 ---

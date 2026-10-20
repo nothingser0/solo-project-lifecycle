@@ -1,7 +1,7 @@
-# Altimate AI Data Engineering & dbt/Snowflake Analytics Engineering Pattern
+# dbt & Snowflake Analytics Engineering Pattern
 
 > **Module**: M05 (Architecture & Specs), M06 (Development Execution), & M08 (Data Migration & Seeding)  
-> **Source**: Adapted from Altimate AI Data Engineering Skills (`AltimateAI/data-engineering-skills`).  
+> **Source**: Adapted from a published dbt/Snowflake data-engineering skills library.  
 > **Scope**: Standardized analytics engineering workflows for dbt modeling, incremental strategies, column-role testing, model documentation, downstream-impact refactoring, SQL-to-dbt migration, and Snowflake query optimization.
 
 ---

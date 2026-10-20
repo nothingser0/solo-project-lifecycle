@@ -67,7 +67,7 @@ A cell is `—` when the threat does not apply **and you can say why**. That rea
 
 ## 3.5 Attack Trees — from threat to concrete code path
 
-STRIDE tells you *what* can go wrong per element. An attack tree tells you *how*, and it is the bridge from this document to a code review (`patterns/execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md`).
+STRIDE tells you *what* can go wrong per element. An attack tree tells you *how*, and it is the bridge from this document to a code review (`patterns/execution/OWASP_SECURITY_CODE_REVIEW_PATTERN.md`).
 
 **Decompose the goal with AND / OR nodes.** The root is the attacker's objective; each child is a sub-goal.
 

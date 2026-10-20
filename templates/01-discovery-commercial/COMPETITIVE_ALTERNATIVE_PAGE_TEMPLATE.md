@@ -1,7 +1,7 @@
 # Competitive Comparison & Alternative Page Template
 
 > **Module**: M00 (Product Discovery) & M04 (UI/UX Landing Page Design)  
-> **Source**: Adapted from high-converting SaaS competitor positioning frameworks (`coreyhaines31/marketingskills`).  
+> **Source**: Adapted from high-converting SaaS competitor positioning frameworks (a published marketing-skills-for-agents library).  
 > **Objective**: Capture high-intent organic search traffic (e.g., "[Competitor] alternative") and provide transparent, balanced evaluations that convert switcher traffic without dishonest claims.
 
 ---

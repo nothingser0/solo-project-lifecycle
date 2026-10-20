@@ -1,7 +1,7 @@
 # Awesome Agent Skills & Progressive Disclosure Ecosystem Pattern
 
 > **Module**: M05 (Architecture & Specs) & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Kodus Tech Awesome Agent Skills (`kodustech/awesome-agent-skills`).
+> **Source**: Adapted from a published awesome-agent-skills catalog.
 >
 > **Licence**: CC0 1.0 — public-domain dedication, so the upstream wording (FAQ, skill-template) could be reproduced verbatim; only the principles are used here.  
 > **Scope**: Curated directory of modular, standardized engineering skills for AI coding agents, progressive disclosure architecture (metadata loading first, full instructions loaded only on relevance), separation of concerns between Agent Skills ("how to think and act") and MCP ("how to access tools"), and runtime instruction flexibility vs model fine-tuning rigidity.

@@ -1,7 +1,7 @@
 # RESTful API Design & Resource Modeling Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from Roy Fielding's REST Dissertation, Richardson Maturity Model, and industrial REST API design references (`aisuhua/restful-api-design-references`).  
+> **Source**: Adapted from Roy Fielding's REST Dissertation, Richardson Maturity Model, and industrial REST API design reference collections.  
 > **Scope**: Authoritative engineering rules for designing clean, predictable, resource-oriented RESTful APIs. Covers noun-based resource paths, HTTP method semantics, pagination/filtering query parameters, and robust error handling contracts.
 
 ---

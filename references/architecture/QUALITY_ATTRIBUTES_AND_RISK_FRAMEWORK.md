@@ -1,7 +1,7 @@
 # Software Architecture Quality Attributes & Risk Framework
 
 > **Module**: M05 (Architecture & Technical Specifications) & M06 (Development Execution)  
-> **Source**: Adapted from SEI (Software Engineering Institute), Bass/Clements/Kazman, and `45ck/software-architecture-skills`.  
+> **Source**: Adapted from SEI (Software Engineering Institute) published literature and a software-architecture-skills library.  
 > **Scope**: Authoritative engineering rules to translate vague non-functional goals into measurable Quality Attribute Scenarios, evaluate Monolith vs. Modular Monolith architectures, and maintain an empirical Architecture Risk Register.
 
 ---

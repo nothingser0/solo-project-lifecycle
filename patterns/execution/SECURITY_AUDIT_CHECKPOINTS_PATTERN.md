@@ -1,7 +1,7 @@
-# Netresearch Security Audit & OWASP/PHP/GitHub Hardening Pattern
+# Automated Security Audit Checkpoints & OWASP/PHP Hardening Pattern
 
 > **Module**: M05 (Architecture & Specs) & M07 (Quality Assurance & SIT)  
-> **Source**: Adapted from Netresearch Security Audit Skill (`netresearch/security-audit-skill`).  
+> **Source**: Adapted from a published security-audit checkpoint skill (`checkpoints.yaml`-style rule packs).  
 > **Scope**: 80+ automated security checkpoints, OWASP Top 10 patterns, CWE Top 25 (2025) coverage, CVSS v4.0 scoring, and deep PHP/TYPO3 & GitHub project security scanning.
 
 ---

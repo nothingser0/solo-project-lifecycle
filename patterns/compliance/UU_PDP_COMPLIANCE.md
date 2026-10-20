@@ -14,7 +14,7 @@ A compliance pattern that cites `Pasal 46` and gets it wrong is worse than one t
 | # | Where to get the official text |
 | :-: | :--- |
 | 1 | **Primary source**: JDIH of the issuing body (e.g. `jdih.setneg.go.id`, `jdih.kemenkeu.go.id`, `jdih.komdigi.go.id`). The gazette PDF is the only authoritative version. |
-| 2 | **Index**: `peraturan.go.id` for the national register (PDF only — no structured search; `ilhamfp/pasal` and `mashanz/peraturan-perundang-undangan` offer text conversions, but a conversion is **not** the source). |
+| 2 | **Index**: `peraturan.go.id` for the national register (PDF only — no structured search; published open-law text-conversion projects exist, but a conversion is **not** the source). |
 | 3 | **Check the amendment chain** before relying on any article: a `DICABUT` or `DIUBAH` status changes the answer entirely. |
 
 **Rule**: when you cite an article in a deliverable, record `source URL + date accessed` next to it. A citation without a retrievable source is a claim, and this framework does not ship claims as compliance.

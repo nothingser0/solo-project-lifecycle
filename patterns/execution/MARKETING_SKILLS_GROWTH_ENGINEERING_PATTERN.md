@@ -1,7 +1,7 @@
 # Enterprise Growth Engineering & Marketing Intelligence Pattern
 
 > **Module**: M00 (Product Discovery Strategy), M01 (Idea Feasibility), & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Marketing Skills for AI Agents (`coreyhaines31/marketingskills`).  
+> **Source**: Adapted from a published marketing-skills-for-agents library.  
 > **Scope**: Growth engineering frameworks, conversion rate optimization (CRO) across landing pages/signup/onboarding/paywalls, rigorous copywriting and email lifecycle flows, technical & AI search optimization (SEO, AEO, GEO), analytics tracking setup, churn prevention, and product marketing context dependency mapping.
 
 ---

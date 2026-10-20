@@ -1,7 +1,7 @@
 # PaperOrchestra Multi-Agent Automated AI Research Paper Writing Pattern
 
 > **Module**: M06 (Development Execution) & Technical Documentation  
-> **Source**: Adapted from Google's PaperOrchestra framework implementation (`Ar9av/PaperOrchestra`, arXiv:2604.05018).  
+> **Source**: Adapted from the PaperOrchestra framework (arXiv:2604.05018, public implementation).  
 > **Scope**: Multi-agent pipeline for transforming unstructured research materials and agent logs into submission-ready LaTeX research papers via pluggable host-agent skills with zero API keys or embedded SDK dependencies.
 
 ---

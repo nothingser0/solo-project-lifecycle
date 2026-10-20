@@ -38,21 +38,21 @@
 | Full-Stack Execution Roadmap & Milestone Breakdown Pattern | [`execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md`](./execution/FULLSTACK_EXECUTION_ROADMAP_PATTERN.md) |
 | AI Full-Stack Delivery Workflow & Multi-Role Dispatch Pattern | [`execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md`](./execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md) |
 | Claude Code Spec-Driven Development & Context Optimization Pattern | [`execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md`](./execution/CLAUDE_CODE_SPEC_WORKFLOW_PATTERN.md) |
-| Jeffallan Claude Skills & Specialized Pair Programmer Pattern | [`execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md`](./execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md) |
-| Altimate AI Data Engineering & dbt/Snowflake Analytics Engineering Pattern | [`execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md`](./execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md) |
-| Vaquar Khan Data Engineering Agent Skills & Production Reliability Pattern | [`execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md`](./execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md) |
-| Riekelt Technical Writer Engineering Writing & Anti-AI-Slop Prose Pattern | [`execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md`](./execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md) |
-| Baraa SQL Data Warehouse & Medallion Architecture Pattern | [`execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md`](./execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md) |
+| Specialized Pair-Programmer Skill Sets Pattern | [`execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md`](./execution/CLAUDE_SKILLS_SPECIALIZED_PAIR_PROGRAMMER_PATTERN.md) |
+| dbt & Snowflake Analytics Engineering Pattern | [`execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md`](./execution/DATA_ENGINEERING_DBT_SNOWFLAKE_PATTERN.md) |
+| Data Engineering Agent Skills & Production Reliability Pattern | [`execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md`](./execution/DATA_ENGINEERING_AGENT_SKILLS_RELIABILITY_PATTERN.md) |
+| Technical Writer: Engineering Prose & Anti-AI-Slop Pattern | [`execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md`](./execution/TECHNICAL_WRITER_ENGINEERING_PROSE_PATTERN.md) |
+| SQL Data Warehouse & Medallion Architecture Pattern | [`execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md`](./execution/SQL_DATA_WAREHOUSE_MEDALLION_PATTERN.md) |
 | Patterns Devkit Component-Based Data Graphs & SDK Pattern | [`execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md`](./execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md) |
-| Petr Kindlmann QA Skills & AI-Augmented Quality Assurance Pattern | [`execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md`](./execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md) |
-| KimDoubleB Grafana k6 Performance & Chaos Testing Pattern | [`execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md`](./execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md) |
+| AI-Augmented QA Workflows Pattern | [`execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md`](./execution/QA_SKILLS_AI_AUGMENTED_QUALITY_ASSURANCE_PATTERN.md) |
+| Grafana k6 Performance & Chaos Testing Pattern | [`execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md`](./execution/GRAFANA_K6_PERFORMANCE_AND_CHAOS_TESTING_PATTERN.md) |
 | Cloudflare Security Audit & Vulnerability Hunting Pattern | [`execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md`](./execution/CLOUDFLARE_SECURITY_AUDIT_VULNERABILITY_PATTERN.md) |
-| Netresearch Security Audit & OWASP/PHP/GitHub Hardening Pattern | [`execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md`](./execution/NETRESEARCH_SECURITY_AUDIT_CHECKPOINTS_PATTERN.md) |
-| Strobes Security Web Penetration Testing & AI Skill Architecture Pattern | [`execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md`](./execution/STROBES_SECURITY_WEB_PENTEST_METHODOLOGY_PATTERN.md) |
-| Advanced OWASP Security Code Review & Evidence-Driven Auditing Pattern | [`execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md`](./execution/SPECTEROPS_OWASP_CODE_REVIEW_PATTERN.md) |
-| Enterprise DevOps & SRE Agent-Ready SKILL.md Pattern | [`execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md`](./execution/BREGMAN_DEVOPS_SRE_SKILLS_PATTERN.md) |
-| Enterprise CI/CD & Quality Gate Automation Pattern | [`execution/ADDY_OSMANI_CICD_AUTOMATION_PATTERN.md`](./execution/ADDY_OSMANI_CICD_AUTOMATION_PATTERN.md) |
-| Enterprise Agent Framework & Trigger-Based Skill Injection Pattern | [`execution/AKSHAY_KOKANE_AGENT_SKILLS_INJECTION_PATTERN.md`](./execution/AKSHAY_KOKANE_AGENT_SKILLS_INJECTION_PATTERN.md) |
+| Automated Security Audit Checkpoints & OWASP/PHP Hardening Pattern | [`execution/SECURITY_AUDIT_CHECKPOINTS_PATTERN.md`](./execution/SECURITY_AUDIT_CHECKPOINTS_PATTERN.md) |
+| Web Penetration Testing Methodology & AI Skill Architecture Pattern | [`execution/WEB_PENTEST_METHODOLOGY_PATTERN.md`](./execution/WEB_PENTEST_METHODOLOGY_PATTERN.md) |
+| Advanced OWASP Security Code Review & Evidence-Driven Auditing Pattern | [`execution/OWASP_SECURITY_CODE_REVIEW_PATTERN.md`](./execution/OWASP_SECURITY_CODE_REVIEW_PATTERN.md) |
+| Enterprise DevOps & SRE Agent-Ready SKILL.md Pattern | [`execution/DEVOPS_SRE_AGENT_SKILLS_PATTERN.md`](./execution/DEVOPS_SRE_AGENT_SKILLS_PATTERN.md) |
+| Enterprise CI/CD & Quality Gate Automation Pattern | [`execution/ENTERPRISE_CICD_AUTOMATION_PATTERN.md`](./execution/ENTERPRISE_CICD_AUTOMATION_PATTERN.md) |
+| Enterprise Agent Framework & Trigger-Based Skill Injection Pattern | [`execution/AGENT_SKILL_INJECTION_FRAMEWORK_PATTERN.md`](./execution/AGENT_SKILL_INJECTION_FRAMEWORK_PATTERN.md) |
 | Enterprise Agentic Customer Service & MCP Multi-Turn Testing Pattern | [`execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md`](./execution/AGENT_SKILLS_CUSTOMER_SERVICE_MCP_PATTERN.md) |
 | Awesome Agent Skills & Progressive Disclosure Ecosystem Pattern | [`execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md`](./execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md) |
 | Enterprise AI Search & Technical SEO Optimization Pattern | [`execution/CLAUDE_SEO_GENERATIVE_ENGINE_OPTIMIZATION_PATTERN.md`](./execution/CLAUDE_SEO_GENERATIVE_ENGINE_OPTIMIZATION_PATTERN.md) |

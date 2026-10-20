@@ -1,7 +1,7 @@
 # Fault Tolerance, Resilience, & Graceful Degradation Pattern
 
 > **Module**: M05 (Architecture & Technical Specs) & M06 (Development Execution)  
-> **Source**: Adapted from `proyecto26/system-design-skills` (`resilience-failure`) & production reliability engineering.  
+> **Source**: Adapted from a published system-design-skills resilience track & production reliability engineering.  
 > **Scope**: Authoritative engineering rules to prevent outage amplification, cascading failures, retry storms, and service death-spirals in distributed or external API integrations.
 
 ---

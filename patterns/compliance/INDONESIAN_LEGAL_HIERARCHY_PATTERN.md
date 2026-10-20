@@ -1,7 +1,7 @@
 # Indonesian Legal Hierarchy & Grounded AI Citation Pattern
 
 > **Module**: M03 (Legal & Commercial Charter) & M05 (Architecture & Technical Specs)  
-> **Source**: Adapted from official Indonesian legislative standards (UU No. 12/2011 jo UU No. 13/2022) and open legal data architectures (`mashanz/peraturan-perundang-undangan`, `ilhamfp/pasal`).  
+> **Source**: Adapted from official Indonesian legislative standards (UU No. 12/2011 jo UU No. 13/2022) and open legal data architectures (published Indonesian statute datasets).  
 > **Objective**: Prevent legal hallucinations in AI applications and ensure strict regulatory compliance across SaaS and FinTech systems operating in Indonesia.
 
 ---
@@ -56,7 +56,7 @@ The four parts above describe *how* to cite. This section is about *what you are
 | :--- | :--- | :--- |
 | **JDIH of the issuing body** (Setneg, Kemenkeu, Komdigi, …) — the gazette PDF | ✅ **Authoritative** | Anything that reaches a contract, policy, or client deliverable |
 | `peraturan.go.id` national register | ✅ Authoritative pointer, PDF-only | Finding the right JDIH document |
-| Converted text archives (`mashanz/peraturan-perundang-undangan`, `ilhamfp/pasal`) | ⚠️ **Convenience copy** | Reading, searching, drafting — never the citation of record |
+| Converted text archives (published statute text-conversion datasets) | ⚠️ **Convenience copy** | Reading, searching, drafting — never the citation of record |
 | An LLM's recollection of an article | ❌ **Never** | Nothing |
 
 **The conversion rule**: a markdown conversion can lose an `Ayat`, merge two `Pasal`, or drop an amendment. It is useful precisely because it is searchable — and dangerous precisely because it looks like the law. Cite the JDIH document; use the conversion to find your way there.

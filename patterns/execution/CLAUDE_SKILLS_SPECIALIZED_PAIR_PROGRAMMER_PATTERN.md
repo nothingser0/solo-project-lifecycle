@@ -1,7 +1,7 @@
-# Jeffallan Claude Skills & Specialized Pair Programmer Pattern
+# Specialized Pair-Programmer Skill Sets Pattern
 
 > **Module**: M06 (Development Execution) & M07 (Quality Assurance)  
-> **Source**: Adapted from `Jeffallan/claude-skills` (67 Specialized Skills for Full-Stack Developers & 9 Epic Lifecycle Workflows).  
+> **Source**: Adapted from a published 67-specialized-skills pair-programmer library (9 epic lifecycle workflows).  
 > **Scope**: Modular skill activation frameworks, multi-skill execution combinations (Feature Development, Bug Investigation, Security Hardening), context engineering via `/common-ground`, and Jira/Confluence Atlassian MCP integration.
 
 ---

@@ -1,7 +1,7 @@
 # Claude Code Spec-Driven Development & Context Optimization Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from `Pimzino/claude-code-spec-workflow` (Claude Code Spec-Driven Development & Context Optimization System).  
+> **Source**: Adapted from a published Claude-Code spec-driven workflow (context optimization system).  
 > **Scope**: Structured feature development pipelines (`Requirements → Design → Tasks → Implementation`), streamlined bug-fix workflows (`Report → Analyze → Fix → Verify`), steering context documents (`product.md`, `tech.md`, `structure.md`), and token-efficient hierarchical context sharing (60-80% reduction via bulk loading).
 
 ---

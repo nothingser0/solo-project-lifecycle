@@ -1,7 +1,7 @@
 # Behavioral Psychology & Mental Models Framework for Software Builders
 
 > **Scope**: Foundational psychological models, cognitive biases, and behavioral economics principles adapted for solo developers building high-converting, ethical software products.  
-> **Source**: Adapted from behavioral design and marketing psychology foundations (`coreyhaines31/marketingskills`).
+> **Source**: Adapted from behavioral design and marketing psychology foundations (a published marketing-skills-for-agents library).
 
 ---
 

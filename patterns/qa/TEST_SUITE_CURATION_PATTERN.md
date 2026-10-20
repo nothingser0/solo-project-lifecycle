@@ -1,7 +1,7 @@
 # Test Suite Curation & Pruning Pattern
 
 > **Module**: M06 (Development Execution) & M07 (Quality Assurance) — when the regression suite has become the bottleneck
-> **Source**: Principles adapted from `petrkindlmann/qa-skills` `test-suite-curation` (MIT) — the coverage-equality trap, per-test coverage fingerprinting, quarantine-before-delete, and the per-test audit row. Written for this framework.
+> **Source**: Principles adapted from a published QA-skills library, test-suite-curation track (MIT) — the coverage-equality trap, per-test coverage fingerprinting, quarantine-before-delete, and the per-test audit row. Written for this framework.
 > **When to use**: the suite takes long enough that people skip it, or the same test file has grown past what anyone reads. Not for judging whether one test is well written (`AI_CODE_REVIEW_CHECKLIST_TEMPLATE.md`) or healing a flaky test.
 > **The scope warning first**: this pattern *proposes* deletions. A human approves them. Whole-corpus analysis is the agent's advantage; whole-corpus auto-deletion is not.
 

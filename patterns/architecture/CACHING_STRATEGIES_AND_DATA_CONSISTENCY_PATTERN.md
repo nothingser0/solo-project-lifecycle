@@ -1,7 +1,7 @@
 # Caching Strategies & Data Consistency Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from Donne Martin (`donnemartin/system-design-primer`).  
+> **Source**: Adapted from the public system-design-primer curriculum.  
 > **Scope**: Authoritative engineering rules for designing multi-tier caching architectures (Cache-Aside, Write-Through, Write-Behind), mitigating cache stampedes and avalanches, applying CAP theorem trade-offs, and reasoning with foundational latency numbers.
 
 ---

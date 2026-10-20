@@ -1,7 +1,7 @@
 # B2B Cold Outbound & Prospecting Playbook
 
 > **Module**: M00 (Product Discovery) & M03 (Commercial Charter)  
-> **Source**: Adapted from peer-to-peer B2B cold outbound frameworks (`coreyhaines31/marketingskills`).  
+> **Source**: Adapted from peer-to-peer B2B cold outbound frameworks (a published marketing-skills-for-agents library).  
 > **Objective**: Conduct disciplined, human-centered cold email outreach to acquire early pilot customers and validate product demand without sounding like an automated sales machine.
 
 ---

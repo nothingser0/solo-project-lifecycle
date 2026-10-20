@@ -1,7 +1,7 @@
 # SaaS Onboarding & User Activation Playbook
 
 > **Module**: M04 (UX Flows) & M13 (Product Operations & Continuous Iteration)  
-> **Source**: Adapted from product-led onboarding and activation frameworks (`coreyhaines31/marketingskills`).  
+> **Source**: Adapted from product-led onboarding and activation frameworks (a published marketing-skills-for-agents library).  
 > **Objective**: Drive new users from signup to their core "aha moment" within the first session while eliminating activation blockers.
 
 ---

@@ -1,7 +1,7 @@
-# Vaquar Khan Data Engineering Agent Skills & Production Reliability Pattern
+# Data Engineering Agent Skills & Production Reliability Pattern
 
 > **Module**: M06 (Development Execution), M07 (Quality Assurance), & M10 (Deployment)  
-> **Source**: Adapted from Vaquar Khan's Data Engineering Agent Skills (`vaquarkhan/data-engineering-agent-skills`).  
+> **Source**: Adapted from a published data-engineering agent-skills library.  
 > **Scope**: Production-grade data engineering agent workflows, dataset contract verification, safe backfill/replay, Kafka & Spark reliability, and MCP observability guardrails.
 
 ---

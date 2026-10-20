@@ -1,7 +1,7 @@
 # Enterprise Metadata & SERP Optimization Pattern
 
 > **Module**: M05 (Architecture & Specs) & M13 (Product Operations & Iteration)  
-> **Source**: Adapted from Meta Tags Optimizer (`aaron-he-zhu/seo-geo-claude-skills`).  
+> **Source**: Adapted from a published meta-tags/SEO optimization skill.  
 > **Scope**: High-CTR metadata optimization (Title tags front-loaded with keywords, Meta descriptions with direct answers and CTAs, Open Graph, and Twitter Cards), intent alignment validation (CORE-EEAT checks C01 & C02), and multi-tier metric attribution (*Measured* vs. *User-provided* vs. *Estimated*).
 
 ---

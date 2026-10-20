@@ -1,7 +1,7 @@
 # Enterprise Agent Framework & Trigger-Based Skill Injection Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from Akshay Kokane Agent Skill Implementation (`akshaykokane/Building-Customer-Service-Agent-with-Skill.md-and-Agent-Framework`).  
+> **Source**: Adapted from a published agent-skill implementation framework (trigger-based skill injection).  
 > **Scope**: Token-efficient agent architecture, trigger-based dynamic skill injection via front matter classifiers, progressive information delivery through sequential runbook steps, high-density markdown decision tables, and context isolation for conversational AI agents.
 
 ---

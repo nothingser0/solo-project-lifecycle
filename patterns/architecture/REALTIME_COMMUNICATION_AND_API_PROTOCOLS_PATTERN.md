@@ -1,7 +1,7 @@
 # Realtime Communication & Network Protocols Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from Alex Xu (`ByteByteGoHq/system-design-101`) & modern production transport engineering.  
+> **Source**: Adapted from a published system-design-101 curriculum & modern production transport engineering.  
 > **Scope**: Authoritative engineering rules for selecting network protocols (SSE vs. WebSocket vs. Polling), designing Edge Reverse Proxy vs. API Gateway layers, and enforcing resilient connection lifecycles.
 
 ---

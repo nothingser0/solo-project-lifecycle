@@ -1,7 +1,7 @@
-# KimDoubleB Grafana k6 Performance & Chaos Engineering Testing Pattern
+# Grafana k6 Performance & Chaos Engineering Testing Pattern
 
 > **Module**: M07 (Quality Assurance & SIT) & M10 (Deployment)  
-> **Source**: Adapted from KimDoubleB Grafana k6 Skills (`KimDoubleB/grafana-k6-skills`). §3 (request-phase decomposition, p95-vs-median rule) is from its `analyzing-test-results` skill.  
+> **Source**: Adapted from a published Grafana k6 performance-testing skills library. §3 (request-phase decomposition, p95-vs-median rule) is from its `analyzing-test-results` skill.  
 > **Scope**: Specialized Grafana k6 performance testing, API/browser load script generation, OpenAPI/code-to-test scaffolding, test scenario orchestration, Kubernetes-based chaos engineering via `xk6-disruptor`, and reading the resulting metrics (request-phase decomposition, p95-versus-median, thresholds as a gate).
 
 ---

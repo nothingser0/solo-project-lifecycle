@@ -1,7 +1,7 @@
 # Engineering as Marketing Playbook
 
 > **Scope**: Pedagogical reference and decision framework for solo developers leveraging free, interactive software tools (calculators, generators, analyzers, graders) as zero-cost, high-leverage user acquisition engines.  
-> **Source**: Adapted from proven growth engineering frameworks (`coreyhaines31/marketingskills`).
+> **Source**: Adapted from proven growth engineering frameworks (a published marketing-skills-for-agents library).
 
 ---
 

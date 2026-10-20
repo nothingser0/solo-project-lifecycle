@@ -1,7 +1,7 @@
-# Riekelt Technical Writer Engineering Writing & Anti-AI-Slop Prose Pattern
+# Technical Writer: Engineering Prose & Anti-AI-Slop Pattern
 
 > **Module**: M05 (Architecture & Specs), M09 (UAT & Signoff), & M11 (Handover BAST)  
-> **Source**: Adapted from Riekelt Technical Writer skills (`riekelt/technical-writer`).  
+> **Source**: Adapted from a published technical-writer skill library.  
 > **Scope**: Strict engineering documentation house style: bottom-line-up-front (BLUF), claim traceability, zero AI tells/slop, and structured document types (ADRs, design docs, postmortems, runbooks).
 
 ---

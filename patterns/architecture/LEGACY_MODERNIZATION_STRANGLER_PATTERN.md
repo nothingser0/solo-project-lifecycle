@@ -1,7 +1,7 @@
 # Legacy Modernization & Strangler Fig Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution) — for projects that inherit a running system
-> **Source**: The five-step workflow and the traffic-increment checkpoints (5 → 25 → 50 → 100%) are adapted from `jeffallan/claude-skills` `legacy-modernizer` (MIT). The underlying concepts are older than that repo: **strangler fig is Martin Fowler's**, and **characterization tests are Michael Feathers'** (*Working Effectively with Legacy Code*). The failure table, checkpoints and exit criteria are this framework's own.
+> **Source**: The five-step workflow and the traffic-increment checkpoints (5 → 25 → 50 → 100%) are adapted from a published legacy-modernization skill (MIT). The underlying concepts are older than that repo: **strangler fig is Martin Fowler's**, and **characterization tests are Michael Feathers'** (*Working Effectively with Legacy Code*). The failure table, checkpoints and exit criteria are this framework's own.
 > **When**: the client already has a system in production and wants it replaced, upgraded, or decomposed. Not for greenfield work.
 > **Why this exists separately from greenfield**: on a legacy project the risk is not "will the new code work" — it is "will the business keep running while we replace it". Every rule here is about that second question.
 

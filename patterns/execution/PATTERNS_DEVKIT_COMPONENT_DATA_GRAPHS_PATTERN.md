@@ -1,7 +1,7 @@
 # Patterns Devkit Component-Based Data Graphs & SDK Pattern
 
 > **Module**: M05 (Architecture & Specs) & M06 (Development Execution)  
-> **Source**: Adapted from Patterns Devkit (`patterns-app/patterns-devkit`).  
+> **Source**: Adapted from a published component-based data-graph devkit.  
 > **Scope**: Building modular, versioned data pipelines and graphs from reusable Python and SQL components connected via `graph.yml` and platform SDK primitives (`Table`, `Parameter`, `State`).
 
 ---

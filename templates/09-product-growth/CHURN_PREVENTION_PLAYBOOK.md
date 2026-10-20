@@ -1,7 +1,7 @@
 # SaaS Churn Prevention & Cancellation Flow Playbook
 
 > **Module**: M13 (Product Operations & Continuous Iteration)  
-> **Source**: Adapted from SaaS retention engineering frameworks (`coreyhaines31/marketingskills`).  
+> **Source**: Adapted from SaaS retention engineering frameworks (a published marketing-skills-for-agents library).  
 > **Objective**: Eliminate voluntary customer loss through dynamic save offers and recover involuntary payment failures without intrusive dark patterns.
 
 ---

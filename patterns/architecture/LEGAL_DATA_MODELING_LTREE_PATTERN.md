@@ -1,7 +1,7 @@
 # Legal Data Modeling & PostgreSQL LTREE Architecture
 
 > **Module**: M05 (Architecture & Technical Specs) & M08 (Data Seeding & Migration)  
-> **Source**: Adapted from production legal engineering schemas (`ilhamfp/pasal`).  
+> **Source**: Adapted from published Indonesian open-law engineering schemas.  
 > **Objective**: Efficiently query deep hierarchical statutory structures and maintain tamper-proof, append-only revision trails in PostgreSQL.
 
 ---

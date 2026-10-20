@@ -1,7 +1,7 @@
 # SaaS Pricing, Packaging & Monetization Guide
 
 > **Module**: M01 (Idea & Business Model) & M13 (Product Operations & Continuous Iteration)  
-> **Source**: Adapted from value-based SaaS pricing frameworks (`coreyhaines31/marketingskills`).  
+> **Source**: Adapted from value-based SaaS pricing frameworks (a published marketing-skills-for-agents library).  
 > **Objective**: Eliminate underpricing traps, select sustainable value metrics, and execute de-risked price rollouts for solo-developed software.
 
 ---

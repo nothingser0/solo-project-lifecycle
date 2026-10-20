@@ -1,7 +1,7 @@
 # PostgreSQL Native Job Queue Pattern (`FOR UPDATE SKIP LOCKED`)
 
 > **Module**: M05 (Architecture & Technical Specs) & M06 (Development Execution)  
-> **Source**: Adapted from high-concurrency database-native scraping queues (`ilhamfp/pasal`).  
+> **Source**: Adapted from high-concurrency database-native scraping queues in published open-law data tooling.  
 > **Objective**: Eliminate external queuing infrastructure (Redis, BullMQ, RabbitMQ, Celery) for background jobs in solo projects; enforce transactional, crash-safe, concurrent task processing inside PostgreSQL.
 
 ---

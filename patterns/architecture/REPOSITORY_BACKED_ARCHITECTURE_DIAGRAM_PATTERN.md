@@ -1,7 +1,7 @@
 # Repository-Backed Architecture Diagram Pattern
 
 > **Module**: M05 (Architecture & Technical Specifications) & M06 (Development Execution)  
-> **Source**: Adapted from `tt-a1i/archify` production architecture visualization standards.  
+> **Source**: Adapted from a published architecture-visualization tool's production standards.  
 > **Scope**: Authoritative engineering rules for creating verifiable, source-backed architecture diagrams and system topologies. Eliminates hand-waving architecture diagrams, hallucinated microservices, and ungrounded box-and-arrow diagrams.
 
 ---
