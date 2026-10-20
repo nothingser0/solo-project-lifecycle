@@ -65,6 +65,8 @@ While M05 enforces real-time registry queries to avoid cutoff drift, the officia
 
 Solo developers must adhere to the principle: **Never use a cannon to kill an ant**. Choosing a stack must match project scale to preserve velocity and eliminate unnecessary operational layers.
 
+> **Tier naming here ≠ lifecycle tiers.** The week bands below describe how long the *stack itself* takes to prototype and productionize. The normative project-scale tiers — P0 feature counts, timelines, gate paths, non-delegable obligations — live in [`references/playbooks/SCALE_WORKFLOWS.md`](../playbooks/SCALE_WORKFLOWS.md) and the `classify-scale.sh` gate. When they disagree, the lifecycle tiers win.
+
 ```
 +--------------------------------------------------------------------------------------------------+
 | PROJECT SCALE        | RECOMMENDED STACK (ANTI-OVERKILL)      | STRICTLY OVERKILL (DO NOT USE)   |

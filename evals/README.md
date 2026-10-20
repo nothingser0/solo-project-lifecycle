@@ -48,7 +48,7 @@ node scripts/evals/run-evals.js --interactive EVAL-01
 ```
 
 Exit code `0` = pass, `1` = fail. Grading is a **screen, not a verdict**: each
-scenario has 3–5 machine-checkable criteria derived from its rubric (regex-based,
+scenario has 3–6 machine-checkable criteria derived from its rubric (regex-based,
 accepting English and Indonesian paraphrases). When a criterion fails, read the
 scenario's full rubric before recording the result — a paraphrasing agent can
 legitimately miss a keyword.
