@@ -112,6 +112,43 @@ gate_M06() {
         if [ $has_core_categories -eq 1 ]; then
             echo "  ✅ Atomic task categories verified across all scales in TODO.md (SETUP, DB, BE, FE)"
         fi
+
+        # Anti-Bundling & SITEMAP Screen Coverage Check
+        sitemap_spec=""
+        [ -f "docs/specs/SITEMAP.md" ] && sitemap_spec="docs/specs/SITEMAP.md"
+        [ -z "$sitemap_spec" ] && [ -f "SITEMAP.md" ] && sitemap_spec="SITEMAP.md"
+        if [ -n "$sitemap_spec" ]; then
+            sitemap_scr_count=$(grep -oE "SCR-[0-9]+" "$sitemap_spec" | sort -u | wc -l || true)
+            sitemap_scr_count=$(echo "$sitemap_scr_count" | tr -d ' ')
+            todo_fe_count=$(grep -cE "M06-FE-[0-9]+" "$target_todo" || true)
+            todo_fe_count=$(echo "$todo_fe_count" | tr -d ' ')
+            # If SITEMAP defines 5 or more unique screens, TODO cannot drop more than 20% into lazy stubs
+            min_fe_tasks=$(( sitemap_scr_count * 75 / 100 ))
+            [ "${min_fe_tasks:-0}" -lt 4 ] && min_fe_tasks=4
+            if [ "${sitemap_scr_count:-0}" -ge 5 ] && [ "${todo_fe_count:-0}" -lt "${min_fe_tasks}" ]; then
+                echo "  ❌ TODO.md has lazy bundling! SITEMAP.md defines ${sitemap_scr_count} unique screens, but TODO.md has only ${todo_fe_count} FE tasks (minimum ${min_fe_tasks} required)."
+                echo "     Every core SCR-xx screen in SITEMAP.md must have its own dedicated M06-FE-xx task."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Screen fidelity verified: ${todo_fe_count} FE tasks match SITEMAP screen definitions (${sitemap_scr_count} unique screens)"
+            fi
+        fi
+
+        # Auth & RBAC Coverage Check
+        needs_auth=0
+        if [ -n "$sitemap_spec" ] && grep -qiE "/login|/auth|authentication|SCR-02" "$sitemap_spec"; then
+            needs_auth=1
+        elif [ -n "$m06_spec" ] && grep -qiE "supabase\.auth|nextauth|session|jwt|cookie|login" "$m06_spec"; then
+            needs_auth=1
+        fi
+        if [ $needs_auth -eq 1 ]; then
+            if grep -qiE "M06-AUTH-[0-9]+|M06-SETUP-[0-9]+.*(auth|login)|M06-BE-[0-9]+.*(auth|login)|login|authentication" "$target_todo"; then
+                echo "  ✅ Authentication & RBAC tasks verified in TODO.md"
+            else
+                echo "  ❌ TODO.md missing required Authentication/RBAC task(s)! (SITEMAP/FSD specifies auth/login flow)"
+                GATE_FAILED=1
+            fi
+        fi
         # Mandatory specs pre-read task must exist and be completed
         if grep -qiE "M06-SETUP-[0-9]+.*(Specs Pre-Read|Pre-Read|Read Specs)|Specs Pre-Read|Pre-Read Sign-Off" "$target_todo"; then
             if grep -iE "M06-SETUP-[0-9]+.*(Specs Pre-Read|Pre-Read|Read Specs)|Specs Pre-Read|Pre-Read Sign-Off" "$target_todo" | grep -qE "^\s*-\s*\[x\]"; then
@@ -246,21 +283,109 @@ gate_M06() {
             GATE_FAILED=1
         fi
         # 4. Narrating / stub comments (ADVISORY — row 21 of POLISH_AUDIT; subjective, so non-blocking)
-        slop_cmt=$(grep -rInE "(//|#)[[:space:]]*(Increment|Import|Get the|Set the|Initialize|Create a|This (function|method|class) (is|will)|Add your logic|Loop through|Return the result)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+        slop_cmt=$(grep -rInE "(//|#|{/\*)[[:space:]]*(Increment|Import|Get the|Set the|Initialize|Create a|This (function|method|class) (is|will)|Add your logic|Loop through|Return the result|Navbar Header|Hero Section|Feature Cards|Footer Section|Handle error|Server Actions for)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
         if [ "${slop_cmt:-0}" -gt 0 ]; then
             echo "  ⚠️  Anti-slop advisory: ${slop_cmt} comment(s) that may merely restate the code (row 21 of POLISH_AUDIT). Review and delete if redundant."
         else
             echo "  ✅ Anti-slop: no narrating/stub comments detected in source"
         fi
         # 4b. Internal spec ID & slot leaks in UI/view layer (BLOCKER)
-        # Catches SCR-xx, [WASM Canvas slot], [slot], etc. leaking into user-facing markup/templates
-        spec_leaks=$(grep -rInE "(SCR-[0-9]{2,}|\[.*(slot|placeholder|canvas).*\])" $scan_dirs 2>/dev/null \
-            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts)" | wc -l | tr -d ' ')
+        # Catches SCR-xx, REQ-xx, M06-xx, [WASM Canvas slot], [slot], etc. leaking into user-facing markup/templates
+        spec_leaks=$(grep -rInE "(SCR-[0-9]+|REQ-[0-9]+|M06-[A-Z]+-[0-9]+|\[.*(slot|placeholder|canvas).*\])" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md)" | wc -l | tr -d ' ')
         if [ "${spec_leaks:-0}" -gt 0 ]; then
-            echo "  ❌ Anti-slop: found ${spec_leaks} internal spec identifier(s) / slot placeholder(s) leaking in source (e.g. SCR-xx, [slot])!"
+            echo "  ❌ Anti-slop: found ${spec_leaks} internal spec identifier(s) / slot placeholder(s) leaking in source (e.g. SCR-xx, REQ-xx, [slot])!"
+            echo "     Internal spec codes must never be visible to end users in UI headers, badges, or copy."
             GATE_FAILED=1
         else
             echo "  ✅ Anti-slop: zero internal spec identifiers / slot placeholders leaked in source"
+        fi
+        # 4d. Tech stack vendor leaks in customer UI (BLOCKER)
+        # Catches Supabase Auth, Next.js, Prisma ORM, etc. leaking into customer-facing text
+        tech_leaks=$(grep -rInE "(Supabase Auth|Powered by Next\.js|Dikembangkan dengan Next|Prisma ORM|Tailwind CSS)" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md|config|package)" | wc -l | tr -d ' ')
+        if [ "${tech_leaks:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${tech_leaks} tech stack vendor leak(s) in customer UI (e.g. 'Supabase Auth', 'Next.js', 'Prisma')!"
+            echo "     End users care about their domain problem, not your stack. Speak strictly in business domain language."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero tech stack / vendor leaks in customer UI"
+        fi
+        # 4e. Anti-Stub Page Blocker
+        # Catches lazy hollow page files (< 400 bytes or < 12 lines) that merely render an <h1> placeholder
+        stub_pages=""
+        for pdir in "src/app" "app" "src/pages" "pages"; do
+            if [ -d "$pdir" ]; then
+                for pf in $(find "$pdir" -type f \( -name "page.tsx" -o -name "page.jsx" -o -name "page.js" \) 2>/dev/null); do
+                    case "$pf" in
+                        *loading*|*error*|*not-found*|*layout*) continue ;;
+                    esac
+                    plines=$(wc -l < "$pf" 2>/dev/null | tr -d ' ')
+                    psize=$(wc -c < "$pf" 2>/dev/null | tr -d ' ')
+                    if [ "${plines:-0}" -lt 12 ] || [ "${psize:-0}" -lt 400 ]; then
+                        stub_pages="$stub_pages $pf"
+                    fi
+                done
+            fi
+        done
+        if [ -n "$stub_pages" ]; then
+            echo "  ❌ Anti-slop: found hollow stub page(s) with no real UI implementation (<12 lines / <400B):$stub_pages"
+            echo "     Every route declared in the app must be fully implemented with real components, tables, or forms — never an empty placeholder."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero hollow stub pages detected in app routes"
+        fi
+
+        # 4f. Anti-Fake-Auth Navigation Blocker
+        # Catches login forms where the submit button is a client <Link href="/dashboard"> without real authentication
+        fake_auth=$(grep -rInE "<Link[^>]+href=[\"']/(dashboard|staff|admin|app)" $scan_dirs 2>/dev/null \
+            | grep -iE "(login|auth)" | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts)" | wc -l | tr -d ' ')
+        if [ "${fake_auth:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found fake login form navigation! Submit button directly links to dashboard without authenticating credentials."
+            echo "     Login forms must execute real authentication (calling Auth handler/API, handling errors, and setting secure session cookies)."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero fake login navigation links"
+        fi
+
+        # 4g. Anti-Dummy-URL in Production Source & Seeds
+        # Catches example.com or placeholder.com in production components or prisma seeds
+        dummy_urls=$(grep -rInE "(https?://example\.com|https?://placeholder\.com)" $scan_dirs prisma 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md|config)" | wc -l | tr -d ' ')
+        if [ "${dummy_urls:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${dummy_urls} dummy mock URL(s) (example.com / placeholder.com) in UI/source/seeds! Use real fallback handlers or local assets."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero dummy mock URLs in production UI"
+        fi
+
+        # 4h. Multi-Role Capability & Route Protection Guard (BLOCKER)
+        # If FSD or SITEMAP defines operational roles (Staff / Operator / Manager),
+        # verify that the codebase implements role-aware logic, session checks, or dedicated operational routing.
+        fsd_file="docs/specs/FSD.md"
+        [ -f "$fsd_file" ] || fsd_file="docs/specs/PROJECT_LITE.md"
+        if [ -f "$fsd_file" ] && grep -qiE "Staff|Operator|Manager" "$fsd_file" 2>/dev/null; then
+            has_role_handling=$(grep -rInE "(role.*===|role.*==|user\.role|session.*role|isStaff|isOwner|hasRole|requireRole|checkRole)" $scan_dirs 2>/dev/null \
+                | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts)" | wc -l | tr -d ' ')
+            if [ "${has_role_handling:-0}" -eq 0 ]; then
+                echo "  ❌ Multi-role architecture defined in $fsd_file (Staff/Operator/Manager) but zero role authorization checks (role === / user.role / requireRole) found in source!"
+                echo "     Implement server-side role enforcement and frontend role masking to protect sensitive views and operations."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Multi-role authorization verified: ${has_role_handling} role-conditional check(s) found in source"
+            fi
+        fi
+
+        # 4i. Zero Raw Browser Alerts Blocker (BLOCKER)
+        # Catches alert(), window.alert(), confirm(), window.confirm(), prompt(), window.prompt() in UI code
+        raw_alerts=$(grep -rInE "(window\.(alert|confirm|prompt)\(|\b(alert|confirm|prompt)\([\"'\`])" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md|config)" | wc -l | tr -d ' ')
+        if [ "${raw_alerts:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${raw_alerts} raw browser alert/confirm/prompt call(s) in source!"
+            echo "     Raw browser alerts are prohibited. Use custom Dialog/Modal or Toast (Sonner/HotToast) components styled to match system design tokens."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero raw browser alert/confirm/prompt calls in UI source"
         fi
         # 4c. Raw emoji in UI components (ADVISORY — row 26 of POLISH_AUDIT: prefer SVG icon library)
         raw_emojis=$(grep -rInP "[\x{1F300}-\x{1FAD6}\x{1F600}-\x{1F64F}\x{2700}-\x{27BF}]" $scan_dirs 2>/dev/null \

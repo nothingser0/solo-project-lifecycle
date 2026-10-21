@@ -39,26 +39,34 @@ graph TD
 > ⚠️ **ANTI-STUB CONTENT MANDATE (Mencegah Halaman Kosong/Pendek Tanpa Bobot)**:
 > AI Agent sering menghasilkan halaman yang "hanya 1 card pendek" atau landing page tanpa isi konkret. Setiap halaman yang didefinisikan dalam sitemap WAJIB merinci komponen konten minimal di bawah ini agar spesifikasi UI tidak menjadi stub/kopong:
 >
-> 1. **Public Landing (`/`)**: Wajib minimal 4 seksi konten nyata:
->    - *Hero Section* (Heading, sub-headline nilai produk, primary CTA, visual mockup/preview UI).
->    - *Problem & Social Proof* (3 kartu titik nyeri pengguna, statistik pembuktian, atau logo mitra/klien).
->    - *Core Feature Showcase* (Minimal 3 blok demonstrasi fitur utama dengan tangkapan layar/diagram interaktif).
->    - *Pricing / Value Anchor & Closing CTA* (Tabel komparasi paket atau penawaran nilai + tombol aksi penutup).
-> 2. **Dashboard Utuh (`/dashboard`)**: Dilarang hanya menampilkan salam *"Selamat Datang"*. Wajib memuat:
+> 1. **Public Landing (`/`)**: Wajib minimal 6 seksi konten nyata (The 6-Section Mandate):
+>    - *Hero Section* (Heading berbobot, sub-headline nilai produk, primary CTA, badge pembuktian, dan frame mockup visual preview UI nyata).
+>    - *Product UI Mockup / Live Preview Frame* (Tangkapan layar antarmuka aplikasi atau frame interaktif asli, bukan cuma kartu teks).
+>    - *Problem & Solution Showcase* (3 kartu titik nyeri pengguna lama vs solusi otomatis software modern).
+>    - *Feature Deep-Dives* (Minimal 3 blok demonstrasi fitur unggulan dengan ilustrasi alur kerja konkret).
+>    - *Interactive Value / Calculator / Comparison* (Kalkulator estimasi penghematan waktu/biaya atau matriks komparasi fitur).
+>    - *FAQ & Closing CTA* (Akordeon 4–6 tanya jawab umum seputar privasi & cara kerja + tombol aksi penutup).
+> 2. **Authentication Screens (`/login`, `/register`)**:
+>    - *Form Autentikasi Nyata* (Wajib memanggil API/action login asli; dilarang membungkus tombol submit dalam tag `<Link href="/dashboard">` tanpa verifikasi kredensial).
+>    - *Remember Me* (Checkbox "Ingat Saya" untuk persistensi sesi).
+>    - *Forgot Password* (Link alur pemulihan kata sandi).
+>    - *Validation Alert* (Kotak peringatan pesan error jika email/password salah atau kosong).
+> 3. **Dashboard Utuh (`/dashboard`)**: Dilarang hanya menampilkan salam *"Selamat Datang"*. Wajib memuat:
 >    - *Stat KPI Cards* (Minimal 3–4 metrik utama dengan perbandingan tren +/-%).
+>    - *Gantt / Timeline Calendar / Schedule Matrix* (Jadwal horizontal tanggal/reservasi jika domain memiliki jadwal/kalender per referensi visual).
 >    - *Primary Action Bar* (Tombol jalan pintas transaksi/pembuatan data baru).
 >    - *Recent Activity / Transaction Feed* (Tabel/daftar 5–10 transaksi mutasi terakhir dengan status badge).
->    - *Pending Action / Approval Alert* (Pemberitahuan item yang membutuhkan perhatian segera).
-> 3. **Halaman Daftar Entitas (`/[resource]`)**: Wajib memuat:
->    - *Toolbar*: Input pencarian live (debounce 300ms) + filter status dropdown + tombol tambah data.
+>    - *Action Drawer / Alert Feed* (Panel aksi cepat yang dapat dibuka-tutup / collapsible).
+> 4. **Halaman Daftar Entitas (`/[resource]`)**: Wajib memuat:
+>    - *Toolbar*: Input pencarian live (debounce 300ms) + filter status kustom popover + tombol tambah data.
 >    - *Data Grid / Table*: Kolom data terstruktur + status badge + menu aksi baris (Lihat, Edit, Arsipkan).
 >    - *Pagination & Summary*: Info *"Menampilkan X dari Y data"* + kontrol paginasi.
-> 4. **Halaman Detail Entitas (`/[resource]/:id`)**: Wajib memuat:
+> 5. **Halaman Detail Entitas (`/[resource]/:id`)**: Wajib memuat:
 >    - *Header Summary*: ID entitas, tanggal dibuat, status badge, action bar (Ubah, Cetak, Hapus).
 >    - *Field Grouping*: Informasi data dibagi ke 2–3 kartu bertema (Informasi Utama, Detail Finansial/Operasional).
 >    - *Audit History Timeline*: Riwayat perubahan data (siapa yang mengubah, kapan, dan status perubahan).
 >
-> *(Pengecualian*: Hanya halaman `SHELL-AUTH` (login/register) dan `SHELL-PRINT` (cetak struk) yang diizinkan memiliki layout minimalis satu fokus).*
+> ⛔ **ZERO STUB PAGES TOLERANCE**: Membuat halaman dengan hanya tag `<h1>` dan deskripsi singkat 1 paragraf (`< 15` baris / `< 400` bytes) tanpa tabel atau form adalah pelanggaran kualitas fatal yang langsung menggagalkan Gate M06!
 
 ---
 
@@ -150,6 +158,27 @@ graph TD
 | `/manager/approvals`| SCR-22 | ❌ Deny | ❌ Deny | ❌ Deny | Full | Full | `/403` |
 | `/admin/users` | SCR-26 | ❌ Deny | ❌ Deny | ❌ Deny | Read-Only | Full | `/403` |
 | `/admin/audit-logs`| SCR-28 | ❌ Deny | ❌ Deny | ❌ Deny | ❌ Deny | Full | `/403` |
+
+### 7.1 Granular Role Capability & Boundary Rules (Boleh Apa vs DILARANG Apa)
+
+> ⚠️ **MANDATORY RBAC BOUNDARY SPECIFICATION**:
+> Setiap role pengguna yang didefinisikan dalam SITEMAP wajib memiliki rincian aksi yang diizinkan dan aksi yang DILARANG keras. Dilarang keras membiarkan role bawahan (seperti Staff/Operator) melihat data finansial rahasia (omzet, laba bersih, rekening bank) atau membiarkan role staff diabaikan tanpa layar view khusus.
+
+1. **Admin / Owner (ROL-01)**:
+   - **Boleh**: Akses semua modul; mutasi tarif sewa & listrik; ubah rekening bank; verifikasi transaksi; kelola akun staff & hak akses.
+   - **Dilarang**: *Tidak ada pembatasan*.
+2. **Manager / Supervisor (ROL-02)**:
+   - **Boleh**: Monitoring shift; review tiket komplain; approval override diskon; manajemen inventaris stok/kamar.
+   - **Dilarang**: Mengubah nomor rekening penampung dana, menghapus entitas inti bisnis, mengakses log audit master.
+3. **Staff / Operator / Penjaga (ROL-03)**:
+   - **Boleh**: Input harian (meteran kWh, stok fisik opname, pelaporan tiket rusak); update status kamar (misal: Selesai Bersih); lihat kontak penyewa/klien.
+   - **DILARANG & DISEMBUNYIKAN (UI MASKED)**:
+     - ❌ **Dilarang melihat kartu omzet finansial, total uang masuk, atau laba bersih kos**.
+     - ❌ **Dilarang mengakses halaman pembukuan kas & pengeluaran (`/finances`)**.
+     - ❌ **Dilarang mengubah tarif pokok sewa atau konfigurasi rekening bank**.
+4. **Member / Customer / Tenant (ROL-04)**:
+   - **Boleh**: Melihat profil sendiri, riwayat transaksi/invoice pribadi via tautan token, mengajukan komplain kamar.
+   - **Dilarang**: Mengakses data kamar/penyewa lain atau melihat dashboard internal pengelola.
 
 ---
 

@@ -203,6 +203,14 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 
 **Gate-enforced fields** (`validate-gate.sh M04` fails without these — the AI agent may not fill them in):
 
+### Visual Benchmark Side-by-Side Review Checklist (MANDATORY BEFORE SIGN-OFF):
+- [ ] **Spatial & Grid Layout**: Viewport width, multi-column arrangement, and spacing densities match `docs/design/inspiration/<benchmark>`.
+- [ ] **Component Anatomy & Indicators**: Progress indicators preserve benchmark style (e.g. segmented pill dashes vs generic flat bar); card radii and shadows match.
+- [ ] **Color Calibration & Tone Balance**: Exact HEX tokens matched from benchmark; zero uncalibrated neon hues (`#FF5722` / raw orange).
+- [ ] **Schedule / Timeline Architecture**: Real column-aligned CSS grid for calendars/Gantt charts; zero fake full-width table rows.
+- [ ] **Action Density & Calmness**: Minimalist triggers; no button-crowded list cards.
+- [ ] **Human In-Browser Review**: Human user opened `docs/design/screens/index.html` in browser and directly compared side-by-side with the reference image.
+
 - Approved by: [name of Client PIC or the human user — never the AI agent]
 - Approved on: [YYYY-MM-DD]
 

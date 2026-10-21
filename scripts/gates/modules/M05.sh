@@ -157,6 +157,20 @@ gate_M05() {
             GATE_FAILED=1
         fi
 
+        # 4c. Granular RBAC Role Capability & Limitation Matrix (Boleh vs DILARANG)
+        # If the project defines user roles (Owner/Staff/Manager/Tenant/RBAC), FSD.md must detail
+        # explicit capabilities, negative boundaries (DILARANG/UI MASKED), and dedicated views.
+        if grep -qiE "role|Owner|Staff|Manager|Tenant|Operator|RBAC" "$fsd" 2>/dev/null; then
+            if grep -qiE "Boleh Dilakukan|Allowed Capabilities" "$fsd" && \
+               grep -qiE "DILARANG|UI MASKED|Forbidden Actions" "$fsd"; then
+                echo "  ✅ Granular RBAC Capability & Limitation Matrix verified in FSD.md (Boleh vs DILARANG defined)"
+            else
+                echo "  ❌ FSD.md missing Granular RBAC Role Capability & Limitation Matrix in Section 4.0!"
+                echo "     Every role (Owner, Manager, Staff, Member) must explicitly specify 'Boleh Dilakukan' and 'DILARANG & UI MASKED'."
+                GATE_FAILED=1
+            fi
+        fi
+
         # 5. Multi-Tenant Row-Level Security (RLS) verification.
         # Trigger on the STRUCTURED Intake field (the same signal classify-scale.sh uses),
         # never on free-text search over PROJECT_STATE.md: that file's template ships the

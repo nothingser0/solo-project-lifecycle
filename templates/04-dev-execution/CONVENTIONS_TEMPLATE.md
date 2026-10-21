@@ -74,6 +74,9 @@
 5. **Global Error Boundaries & Process Lifecycle**:
    - **Frontend**: Implement root and route-level Error Boundaries (`error.tsx`) displaying user-friendly error fallbacks with recovery/retry buttons to prevent blank screen crashes.
    - **Backend**: Catch `unhandledRejection` with structured logging. Implement graceful shutdown intercepting `SIGTERM` and `SIGINT` to cleanly close server connections and flush DB connection pools within a 10s grace timeout.
+6. **Zero Redundant / Obvious Comments (The Clean Code Rule)**:
+   - Comments that merely narrate what the syntax clearly states (`// Fetch rooms`, `// Return data`, `// Submit button`, `// Header layout`) are classified as AI slop and strictly PROHIBITED.
+   - Code must be self-explanatory through expressive naming. Comments are reserved exclusively for non-obvious business reasons, regulatory tax rules, or third-party workarounds.
 
 ---
 
@@ -124,3 +127,56 @@
    - Do not use raw OS emoji (e.g. ⚙️, 📁, 🚀, ❌) as icons for actions, navigations, or statuses in production components. Always import standardized SVG icon components (e.g. Lucide React).
 9. **Layout Fidelity to Inspiration**:
    - Layout implementations must strictly align with the spatial structure, density, and layout archetypes deposited in `docs/design/inspiration/` and synthesized in `DESIGN.md`.
+10. **Zero Tech Stack Leaks in UI Copy**:
+    - End users care about solving their domain problem, not your software dependencies. Never include internal tech stack names (`Supabase Auth`, `Next.js 16`, `Prisma`, `PostgreSQL`, `Tailwind CSS`) in customer-facing UI badges, footers, tooltips, or form helper text. Speak strictly in authentic domain language.
+11. **Prohibited Raw Native `<select>` for Filter Pills & Rich Dropdowns**:
+    - Using native unstyled `<select>` tags for interactive filter pills, floor pickers, or action menus is STRICTLY PROHIBITED. Native options cannot be rounded by CSS and render as crude, sharp-cornered 90-degree OS rectangles with zero shadows.
+    - All filter selectors and dropdown menus MUST be authored as custom floating Popover/DropdownMenu components (e.g. Radix UI, Headless UI, or custom floating `<div>`) featuring:
+      - `rounded-2xl` matching the system border radius
+      - Soft multi-layer elevation shadow (`shadow-xl shadow-slate-200/50`)
+      - Clean floating offset (`mt-2`) and subtle border (`border border-slate-100`)
+      - Smooth enter/exit transition (`duration-150 ease-out`) and soft hover items (`hover:bg-slate-50 rounded-xl px-3 py-2`).
+12. **Mandatory Micro-Interactions & Motion Transitions**:
+    - Every interactive element MUST implement tactile micro-interactions (per `references/design/UI_MOTION_GUIDELINES.md` and `templates/ui/motion-tokens.css`):
+      - **Hover**: Subtle background tint and elevation change (`transition-all duration-150 ease-out`).
+      - **Active**: Physical spring click feel (`active:scale-[0.98] transition-transform`).
+      - **Focus**: High-contrast accessible ring (`focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 outline-none`).
+      - **Modal Open/Close**: Backdrop blur fade (`fade-in-0 duration-200`) + dialog scale-in (`zoom-in-95 duration-200 slide-in-from-bottom-2`).
+      - **Dropdown/Popover Open**: Scale/fade entrance (`scale-95 to scale-100`, `opacity-0 to opacity-100`, `duration-150 ease-out`).
+      - **Progress Bars**: Fluid width transitions (`transition-all duration-500 ease-out`). Zero inert static jumps.
+13. **Zero Stub Pages (100% Functional Depth)**:
+    - Every route declared in `SITEMAP.md` must be implemented with real components, tables, filters, and interactive forms. Creating hollow stub pages that contain merely an `<h1>` title and description paragraph (e.g. `< 15` lines or `< 400` bytes) to pass navigation checks is STRICTLY FORBIDDEN as Stub Slop.
+14. **Authentic Authentication vs Fake Link Navigation**:
+    - Login, registration, and password recovery forms must execute genuine authentication actions (calling Supabase Auth / NextAuth / API handlers, managing session tokens/cookies, handling invalid credential states, and displaying loading spinners).
+    - Wrapping a submit button in a client `<Link href="/dashboard">` without validating credentials is a CRITICAL SECURITY & LOGIC DEFECT that leads to infinite redirect loops in production.
+    - Login screens MUST include "Ingat Saya" (Remember Me checkbox) and "Lupa Kata Sandi" (Forgot Password link).
+15. **Interactive Control Integrity (Zero Dead Buttons)**:
+    - Every button rendered in topbars, headers, cards, and toolbars MUST be wired to an authentic event handler (`onClick`, form submit, or state toggle).
+    - Notification bells: MUST toggle an interactive popover/dropdown displaying recent alerts or a clean empty state; rendering an unresponsive icon button is PROHIBITED.
+    - Quick action buttons (e.g. "Catat Meter"): MUST open the designated action modal directly instead of redirecting awkwardly.
+    - Desktop navigation shell: MUST support responsive expand/collapse toggle for screen efficiency.
+16. **Authentic Media & Document Previews (Zero `example.com` Links)**:
+    - Receipts, proof of payment, and document attachments must render within an in-app lightbox/modal previewer.
+    - Hardcoding or seeding broken mock URLs (`https://example.com/receipts/...` or `placeholder.com`) is PROHIBITED.
+    - Creation modals for expenses/invoices must provide authentic file upload handling (or local base64/file object simulation), never bare text inputs for manual URL typing.
+17. **Modern SaaS Landing Page Standard (The 6-Section Mandate)**:
+    - A public landing page (`SCR-01`) must never be a hollow 100-line hero with 3 static text cards. It must deliver an engaging, modern presentation comprising:
+      1. High-impact Hero with value proposition, subheadline, dynamic CTA, and trust signal badge.
+      2. Authentic Product Mockup / Interactive Preview Frame showing the real UI in action.
+      3. Feature Showcase Cards with workflow illustrations.
+      4. Value Calculator or Before/After Comparison Grid.
+      5. FAQ Accordion addressing common user questions.
+      6. Responsive footer with navigation and legal links.
+18. **Strict RBAC Action & UI Masking Protocol (Boleh vs DILARANG)**:
+    - Every role (Owner, Manager, Staff, Member/Tenant) defined in `FSD.md` Section 4.0 must have strictly segregated capabilities:
+      - **Backend Defense-in-Depth**: Every Server Action, Route Handler, or API mutation must verify the caller's role before execution. Unauthorized attempts must reject immediately with `403 Forbidden` (or throw an unauthorized error). Never rely solely on frontend element hiding.
+      - **Sensitive UI Masking**: Lower roles (e.g. Staff/Operator) MUST NOT see executive financial figures (gross revenue, net profit, occupancy financial yield), settings, bank account configurations, or staff management. These components must be conditionally masked or hidden based on session role.
+      - **Dedicated Operational Views**: Staff members must be routed to their dedicated operational workspace (e.g. `/staff` or `/ops/workspace`) focused on daily tasks, meter logs, and maintenance tickets, rather than viewing a crippled, disabled-state Owner dashboard.
+19. **Visual Asset & Card Imagery Preservation**:
+    - When inspiration benchmarks display photographic cards (e.g. room photo thumbnails, property covers, product cards, user profile pictures), the implemented frontend components MUST retain matching image elements (`<img>` or Next.js `<Image>`) with proper aspect ratios (`aspect-video`, `aspect-[4/3]`, `aspect-square`) and `object-cover`.
+    - Flattening media-rich cards into text-only boxes or substituting photographic user avatars with raw monochrome initial text circles (`PK`, `BS`) is STRICTLY PROHIBITED as Card Slop. Use curated high-resolution photo URLs or local assets in `public/images/`.
+20. **Zero Raw Browser Alerts (`alert()`, `confirm()`, `prompt()`)**:
+    - Triggering browser OS modal popups via `window.alert()`, `alert()`, `window.confirm()`, `confirm()`, or `prompt()` is STRICTLY FORBIDDEN as Amateur AI Slop.
+    - All user feedback and notifications MUST use high-fidelity, styled UI components tailored to the system design:
+      - **Transient Feedback (Success / Error / Info)**: Use custom Toast notifications (e.g. Sonner, react-hot-toast, or custom design-token toast) styled with matching border radius (`rounded-xl`), soft shadows (`shadow-lg`), and contextual SVG icons.
+      - **Confirmation & Destructive Actions**: Use custom Dialog / Confirmation Modals (e.g. Radix Dialog or custom backdrop modal) featuring soft backdrop blur (`backdrop-blur-sm`), smooth scale-in animation (`zoom-in-95`), clear warning messaging, and explicit Cancel / Confirm action buttons.

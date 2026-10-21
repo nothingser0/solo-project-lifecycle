@@ -1441,6 +1441,14 @@
       "cataloged": false
     },
     {
+      "path": "templates/04-dev-execution/scripts/smoke-test-routes.ps1",
+      "cataloged": false
+    },
+    {
+      "path": "templates/04-dev-execution/scripts/smoke-test-routes.sh",
+      "cataloged": false
+    },
+    {
       "path": "templates/04-dev-execution/serverless/AGENTS.md",
       "cataloged": true
     },

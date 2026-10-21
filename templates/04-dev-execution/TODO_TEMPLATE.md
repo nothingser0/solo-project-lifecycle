@@ -55,16 +55,24 @@ For each task:
 8. **Status** — `- [ ]` pending | `- [~]` in progress | `- [!]` blocked (with reason) | `- [x]` completed (exit 0 + evidence)
 
 ## Task ID prefixes
-The framework defines exactly **7 closed task categories** across all project scales (Small, Medium, Large, Enterprise). Sub-categories are strictly expressed via sprint section headers and task titles rather than inventing new prefixes.
+The framework defines the following standard task categories across all project scales (Small, Medium, Large, Enterprise). Sub-categories are strictly expressed via sprint section headers and task titles.
 | Prefix | Source | Output |
 | :--- | :--- | :--- |
 | `M06-SETUP-xx` | Environment, DB config, design assets | `.env.local`, DB connection, brand assets |
-| `M06-DB-xx` | `FSD.md` (§schema/RLS/RPC) or `PROJECT_LITE.md` §5 | `migrations/*.sql` (tables, RLS, RPCs) |
-| `M06-BE-xx` | `FSD.md` §API & `PRD.md` | `src/actions/*`, `src/app/api/*` |
-| `M06-FE-xx` | `SITEMAP.md` & `DESIGN_SPEC.md` | `src/app/*` (UI components, SCR-xx screens) |
-| `M06-INT-xx` | `FSD.md` §integration | Live wire-up, webhooks, hardware |
+| `M06-AUTH-xx` | `FSD.md` (§Auth/RBAC) & `SITEMAP.md` | Auth flows, session guards, login/logout, middleware |
+| `M06-DB-xx` | `FSD.md` (§schema/RLS/RPC) or `PROJECT_LITE.md` §5 | `migrations/*.sql` (tables, RLS, RPCs, seed) |
+| `M06-BE-xx` | `FSD.md` §API & `PRD.md` | `src/actions/*`, `src/app/api/*`, business engines |
+| `M06-UI-xx` | `COMPONENT_REQUIREMENTS.md` & `DESIGN_SPEC.md` | Reusable primitives (`Button`, `Input`) & composites (`Card`, `Modal`) |
+| `M06-FE-xx` | `SITEMAP.md` & `DESIGN_SPEC.md` | `src/app/*` (1-to-1 screen mapping for each `SCR-xx`) |
+| `M06-INT-xx` | `FSD.md` §integration | Live wire-up, webhooks, hardware, payment gateways |
 | `M06-TEST-xx` | `PRD.md` acceptance criteria | `tests/db`, `tests/sit`, `tests/e2e` |
 | `M06-GATE-xx` | Release protocols | Verified build, git handoff log |
+
+> **Anti-Bundling & Full-Fidelity Mandate**:
+> 1. **1-to-1 Screen Parity**: Every screen `SCR-xx` in `SITEMAP.md` MUST have its own individual `M06-FE-xx` task. Compressing multiple screens into generic placeholders (e.g. "Core Screens") is strictly forbidden.
+> 2. **Dedicated Auth & RBAC**: Whenever authentication, login portals, or user roles exist, explicit `M06-AUTH-xx` tasks are mandatory.
+> 3. **Component Primitives**: Reusable primitives and composite patterns from `COMPONENT_REQUIREMENTS.md` must be itemized before assembling screen views.
+> 4. **Approval Protocol**: When the human replies with "approve", "approved", "acc", or "ok lanjut", the agent marks `[x]`, records raw output under `Evidence:`, and adds `Approved: <date> by <name>`.
 
 **Module exit gate**: 100% tasks `[x]` (zero `[ ]`/`[~]`/`[!]`), build + typecheck exit 0, smoke tests pass, zero `@ts-ignore`, `validate-gate.sh M06` passed. Every `[x]` must trace to a **human approval** recorded in the task's `Evidence` — tasks the agent self-approved do not count.
 
@@ -96,7 +104,25 @@ The framework defines exactly **7 closed task categories** across all project sc
 
 ---
 
-## Sprint 1: Database Foundation (skip if no DB — mark N/A)
+## Sprint 1: Authentication & Authorization / RBAC (skip if no auth — mark N/A)
+
+- [ ] **M06-AUTH-01: Authentication Flow & Session Management**
+  - **Files**: `src/lib/auth/*`, `src/middleware.ts` (or stack equivalent)
+  - **Depends**: `M06-SETUP-01`
+  - **Action**: Implement login/logout authentication handlers, session cookie validation, and token refresh per FSD.
+  - **Verify**: Authenticated session returns valid user identity; invalid/expired credentials reject with 401.
+  - **Expected**: Secure session handling with HttpOnly cookies.
+
+- [ ] **M06-AUTH-02: Role-Based Access Control (RBAC) & Route Protection**
+  - **Files**: `src/middleware.ts`, route guards
+  - **Depends**: `M06-AUTH-01`
+  - **Action**: Implement route protection matrix per SITEMAP §4 (e.g. Owner vs Staff vs Public/Tenant).
+  - **Verify**: Unauthenticated access to protected routes redirects to `/login`; unauthorized roles receive 403 Forbidden.
+  - **Expected**: 100% adherence to role protection matrix.
+
+---
+
+## Sprint 2: Database Foundation (skip if no DB — mark N/A)
 
 - [ ] **M06-DB-01: Relational Schema & FK Indexing**
   - **Files**: `supabase/migrations/001_initial_schema.sql` (or Prisma/Drizzle/Laravel/Django/Go migrations)
@@ -108,41 +134,74 @@ The framework defines exactly **7 closed task categories** across all project sc
   - **Evidence**: `<command output>`
     `Approved: [YYYY-MM-DD] by [Your Name]`
 
-*(Repeat the 8-element pattern for: RLS/access control, idempotent registration RPC, atomic mutation procedures, sensitive-data views, idempotency/audit tables. See example file for full DB tasks.)*
+- [ ] **M06-DB-02: Idempotent Database Seeding**
+  - **Files**: `prisma/seed.ts` (or stack seeder class)
+  - **Depends**: `M06-DB-01`
+  - **Action**: Implement idempotent seed data using static UUIDs and UPSERT / `ON CONFLICT DO NOTHING`.
+  - **Verify**: Run seed script twice; confirm zero unique constraint errors and identical row counts.
+  - **Expected**: 100% re-runnable without duplicates.
 
-## Sprint 2: Backend (skip if no backend — mark N/A)
+---
 
-- [ ] **M06-BE-01: API Boundary Validation (Zod)**
+## Sprint 3: Backend Logic & Business Calculation Engines
+
+- [ ] **M06-BE-01: API Boundary Validation & Server Actions**
   - **Files**: `src/actions/*`, `src/app/api/v1/*`
   - **Action**: Map all data mutations to server actions/route handlers. Validate every payload with strict Zod schemas (`uuid`, `min`, `positive`, integer amounts).
   - **Verify**: Send dirty/empty payload to a server action.
   - **Expected**: Rejected with `VALIDATION_ERROR` + structured field errors.
 
-*(Repeat for: RBAC route protection middleware, real mutation handlers. No dummy UUIDs; no empty `catch {}`.)*
+- [ ] **M06-BE-02: Core Business Calculation Engine**
+  - **Files**: `src/lib/engine/*`
+  - **Action**: Implement mathematical business formulas per FSD (e.g. billing calculation, interest, discounts).
+  - **Verify**: Run unit test assertions covering edge cases (zero delta, overflow, negative values).
+  - **Expected**: Deterministic integer IDR / decimal calculations matching spec.
 
-## Sprint 3: Frontend
+---
 
-- [ ] **M06-FE-01: Design Tokens, Typography & Strict TS Config**
-  - **Files**: `globals.css`, `tailwind.config.js` (or CSS-first Tailwind v4)
-  - **Action**: Register CSS variables per `DESIGN.md` (surface base, status triad, z-index scale). Install brand font.
-  - **Verify**: `type-check` + DevTools color check.
-  - **Expected**: Exit 0; variables resolve cleanly.
+## Sprint 4: UI Design System & Component Primitives
 
-- [ ] **M06-FE-02: Interactive Polish & Motion Primitives**
-  - **Files**: `src/components/ui/*`, `src/styles/*`
-  - **Action**: Implement smooth hover/focus-visible states, subtle micro-interactions, spring transitions, and interactive canvas/3D slots (Framer Motion / Lucide / Spline / Three.js per M04 prototype).
-  - **Verify**: Run UI in browser, confirm zero layout shift and 60fps interaction smoothness.
-  - **Expected**: Delightful tactile feel, zero inert buttons, no jarring layout pops.
-  - **Evidence**: `<command output / DevTools audit>`
-    `Approved: [YYYY-MM-DD] by [Your Name]`
+- [ ] **M06-UI-01: Design Tokens, Typography & Base Primitives**
+  - **Files**: `globals.css`, `tailwind.config.ts`, `src/components/ui/*`
+  - **Action**: Register CSS variables per `DESIGN.md` (colors, surface, typography, z-index). Implement atomic primitives (`Button`, `Input`, `Badge`, `Select`, `LoadingSpinner`) complying with WCAG 2.2 AA.
+  - **Verify**: `pnpm run build` or Storybook/unit test; verify button focus rings and minimum 16px inputs.
+  - **Expected**: 100% tokens and atomic primitives ready for composite assembly.
 
-*(Repeat for each SCR-xx screen: 5-state matrix — idle/loading/empty/error/success. Mobile: inputs 16px, touch targets ≥44px, monetary inputs `inputmode="numeric"` with live thousand separators.)*
+- [ ] **M06-UI-02: Composite Interaction Components**
+  - **Files**: `src/components/*`
+  - **Action**: Implement high-interaction composites from `COMPONENT_REQUIREMENTS.md` (`DataTable`, `Modal`, `ConfirmDialog`, entity cards, search toolbars).
+  - **Verify**: Keyboard accessibility (Escape dismisses dialog, focus trap active).
+  - **Expected**: Accessible reusable composites ready for screen views.
 
-## Sprint 4: Frontend→Backend Wire-Up
+---
 
-- [ ] **M06-INT-01: Live Form Connection (Anti-Fake-Success)**
-  - **Action**: Connect all forms to Sprint 2 handlers. Forbidden: empty `try/catch`, fake success popups on failed requests. Show specific backend error messages.
-  - **Verify**: Submit while backend returns a validation error.
+## Sprint 5: Frontend Views & Screen Coverage (1-to-1 SITEMAP Parity)
+
+*(Generate exactly ONE task for EACH screen defined in `SITEMAP.md` [SCR-01 through SCR-N]. Do NOT bundle.)*
+
+- [ ] **M06-FE-01: Screen View [SCR-01] Landing / Shell**
+  - **Files**: `src/app/page.tsx`
+  - **Action**: Implement screen with 5-state matrix (idle/loading/empty/error/success) and brand assets.
+  - **Verify**: Dev server serves page at `/`; responsive across mobile and desktop.
+  - **Expected**: Layout matches frozen prototype and design tokens.
+
+- [ ] **M06-FE-02: Screen View [SCR-02] Authentication Portal**
+  - **Files**: `src/app/(auth)/login/page.tsx`
+  - **Action**: Implement login form with client validation, pending submit indicator, and error display.
+  - **Verify**: Submit form; verify redirect to dashboard on success and inline error on failure.
+  - **Expected**: Accessible form with `disabled={isSubmitting}` double-submit protection.
+
+*(Repeat M06-FE-03..N for all remaining SCR screens from SITEMAP.md)*
+
+---
+
+## Sprint 6: System Integration & Webhooks (M06-INT)
+
+- [ ] **M06-INT-01: Payment Gateway & Webhook Handlers**
+  - **Files**: `src/app/api/webhooks/*`
+  - **Action**: Implement signature verification, replay defense, and idempotency key guards.
+  - **Verify**: Send simulated webhook payload; verify cashflow ledger auto-credited and duplicate event rejected.
+  - **Expected**: 100% idempotent webhook processing.
   - **Expected**: Red error toast with real server message; no success modal.
 
 *(Conditional: payment webhooks with HMAC verification + idempotency keys; thermal printing fallbacks.)*

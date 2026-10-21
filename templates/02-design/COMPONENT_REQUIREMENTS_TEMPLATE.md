@@ -82,7 +82,7 @@
 | 1 | `Button` | primary, secondary, outline, ghost, destructive | default, hover, active, focus, disabled, loading | Form actions, dialog triggers, checkout submission |
 | 2 | `Input` | text, email, password, search | default, hover, focus, error, disabled | Data entry across all forms; uses `inputmode="numeric"` for currency |
 | 3 | `Textarea` | standard | default, hover, focus, error, disabled | Notes, adjustment reasons, address fields |
-| 4 | `Select` | single, combobox / search-select | closed, open, focused, selected, disabled | Categories, units, branch pickers |
+| 4 | `Select / PopoverMenu` | custom styled floating popover (zero raw native select) | closed, open, focused, selected, disabled | Categories, units, floor filter pickers; requires rounded-2xl container & shadow-xl |
 | 5 | `Badge` | neutral, success, warning, destructive, info | default, interactive hover (optional) | Status flags, stock levels, role indicators |
 | 6 | `Checkbox` | default | unchecked, checked, indeterminate, disabled | Multi-item selection, agreement terms |
 | 7 | `LoadingSpinner`| sm (16px), md (24px), lg (32px) | animated spin | Async indicators, submit buttons |
@@ -156,6 +156,12 @@
 - Error message text associated with input fields (`aria-describedby`) **MUST be at least 13px** (`text-xs md:text-sm`).
 - Error text color **MUST achieve ≥ 4.5:1** contrast against background (e.g., `#B91C1C` / `#991B1B` on white = 5.6:1+).
 - Every error state pairs color with an alert icon and explicit text explanation.
+
+### 5.5 Zero Raw Browser Alerts (`alert()`, `confirm()`, `prompt()`)
+- **Strict Prohibition**: Invoking native browser OS dialogs (`window.alert()`, `alert()`, `window.confirm()`, `confirm()`, `prompt()`) is STRICTLY PROHIBITED as amateur AI slop.
+- **Standard Replacements**:
+  - **System Feedback & Notifications**: Implement custom design-calibrated `Toast` notifications (e.g. Sonner, hot-toast) with soft shadows (`shadow-lg`), rounded corners (`rounded-xl`), and explicit SVG status icons.
+  - **Confirmations & Destructive Actions**: Implement custom `ConfirmDialog` or `Modal` components featuring smooth entrance animations (`zoom-in-95`), backdrop blur (`backdrop-blur-sm`), accessible focus trap, and explicit Confirm / Cancel action buttons.
 
 ---
 

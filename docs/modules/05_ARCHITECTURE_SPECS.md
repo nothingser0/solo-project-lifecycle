@@ -96,6 +96,12 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 ### STEP 5: Security Blueprint, Secrets Validation & Module 04 Handoff (gate-enforced)
 
 - **Security**: record AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting, and Edge DDoS/WAF protection via Cloudflare ([`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md)) (+ UU PDP on Medium+). Gate-enforced; `N/A — <reason>` accepted, blank not.
+- **Granular RBAC Role Capability & Limitation Matrix (Boleh Apa vs DILARANG Apa)**:
+  - If the application involves multiple roles (e.g. Owner, Manager, Staff, Member/Tenant), `docs/specs/FSD.md` Section 4.0 MUST define a granular capability matrix detailing:
+    1. **Boleh Dilakukan (Allowed Capabilities)**: Explicit list of allowed business actions per role.
+    2. **DILARANG & UI MASKED (Forbidden Actions & Hidden UI)**: Strict negative boundaries for each role. Sensitive views (e.g. profit/loss, bank accounts, staff management, audit logs) MUST NOT be accessible to lower roles (e.g. Staff/Operator).
+    3. **Dedicated Operational Views**: Lower roles (e.g. Staff) must have a tailored operational interface (e.g. `/staff` or `/ops/workspace`) showing only operational tasks (daily tasks, meter recording, ticket logs), eliminating confusing read-only disabled views or exposure to executive analytics.
+    4. **Backend Action Authorization (Defense-in-Depth)**: Frontend route masking alone is insufficient; server actions, mutations, and API endpoints must independently enforce role verification and throw HTTP 403 Forbidden on unauthorized execution.
 - **Typed Environment Variables Schema (`.env.example`)**: Declare complete environment variable contract with runtime type-validation (Zod / `@t3-oss/env-nextjs` / Pydantic / config validators) to enforce fail-fast application startup if secrets are missing.
 - **Handoff**: prototype → chosen framework conversion (component map, token extraction). The gate requires a section **named `Module 04 Handoff Strategy`** carrying **`Compatibility Level: Level 1-4`** — M06 STEP 0 parses those exact strings; level table in `FSD_TECHNICAL_TEMPLATE.md` §2.1.
 
@@ -119,6 +125,7 @@ The **human** signs (Client Single PIC, or on solo work the developer); an AI ag
 - [ ] DDL present (tables, keys, CHECK, indexes, audit trail)
 - [ ] ≥10 API endpoint **headings** (`#### <VERB> /path`) with request/response schemas; idempotency for financial POSTs — **gate-enforced at ≥10**
 - [ ] Security blueprint complete (AES-256-GCM, Argon2id, OWASP, rate limiting; +UU PDP on Medium+) — each control resolved or `N/A — <reason>` *(gate-enforced)*
+- [ ] Granular RBAC Role Capability & Limitation Matrix present in `FSD.md` when multiple roles are defined (Owner vs Manager vs Staff vs Member: Boleh vs DILARANG & UI Masked, dedicated views, server-side 403 authorization) *(gate-enforced)*
 - [ ] `Module 04 Handoff Strategy` + `Compatibility Level: Level 1-4` present *(gate-enforced; M06 STEP 0 depends on it)*
 - [ ] Substantive `PROJECT_LITE.md` (Small) or `PRD.md` + `FSD.md` (Medium+) — ≥1000B / ≥2000B targets; the script stub-checks size, so judge substance
 - [ ] Idempotency strategy if applicable. RLS required **only** when `Intake-Branch-Hierarchy` is yes/multi (or the DDL declares `org_id`/`tenant_id`); single-tenant passes with `N/A — single tenant`

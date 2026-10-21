@@ -348,9 +348,25 @@ CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
 
 ---
 
-## 4. Multi-Tenant Row-Level Security (RLS) Architecture
+## 4. Role-Based Access Control (RBAC) & Row-Level Security (RLS) Architecture
 
-*(Applicable when building multi-tenant SaaS or exposing database directly to client SDKs. For single-tenant internal apps or backend-only APIs, document application-layer authorization and mark database RLS N/A)*
+### 4.0 Granular RBAC Role Capability & Limitation Matrix (Boleh Apa vs DILARANG Apa)
+
+> ⚠️ **MANDATORY RBAC DISCIPLINE (Gate-Enforced in M05 & M06)**:
+> Simply listing role names without detailing exact boundaries is strictly prohibited. Every user persona/role defined in the system MUST have explicit, unambiguous definitions of what they CAN do, and what they are STRICTLY FORBIDDEN from doing or seeing.
+
+| Role Name | Persona & Scope | Boleh Dilakukan (Allowed Capabilities) | DILARANG / DISEMBUNYIKAN (Forbidden & Masked) | Dedicated Route / Shell |
+|:---|:---|:---|:---|:---|
+| **Admin / Owner** | Full system administrator & business owner | • Akses penuh semua data operasional & finansial<br/>• Konfigurasi tarif, rekening bank, & profil bisnis<br/>• Manajemen akun staff, hak akses, & invite role<br/>• Hapus/terminasi data entitas utama | *Tidak ada pembatasan operasional* | `/admin/overview` atau `/dashboard` |
+| **Manager / Supervisor** | Operational supervisor & shift lead | • Review antrean tiket, approval override diskon/void<br/>• Manajemen stok barang / inventaris kamar<br/>• Input transaksi dan validasi operasional | ❌ **DILARANG**: Mengubah data rekening bank penerima dana, menghapus profil bisnis, atau mengubah tarif global | `/manager/dashboard` |
+| **Staff / Operator / Kasir** | Frontline operator / penjaga operasional | • Input pencatatan harian (meter kWh, stok opname, tiket rusak)<br/>• Update status kamar/tiket (misal: Bersih / Siap Huni)<br/>• Melihat direktori kontak darurat penyewa/klien | ❌ **DILARANG & DISEMBUNYIKAN (UI MASKED)**:<br/>• Kartu omzet, total laba bersih, & laporan finansial buku kas<br/>• Mengubah tarif sewa pokok atau rekening bank<br/>• Menghapus data penyewa atau histori audit | `/staff` atau `/ops/workspace` |
+| **Member / Customer / Tenant** | End-user / penghuni / pembeli | • Melihat data profil & riwayat transaksi pribadi<br/>• Mengakses invoice publik miliknya via token rahasia<br/>• Mengajukan tiket keluhan / komplain perbaikan | ❌ **DILARANG TOTAL**: Mengakses data kamar/penyewa lain, melihat dashboard internal, atau mengakses API mutasi kas | `/dashboard` (Member) atau `/invoice/:token` |
+
+### 4.0b Backend Enforcement vs Frontend UI Masking Law
+1. **Server-Side Authorization**: Every Server Action, Route Handler, and API endpoint MUST verify the actor's role. A low-privilege token calling a restricted mutation MUST immediately throw a `403 Forbidden` error. Never rely on hiding buttons in the browser.
+2. **Frontend UI Masking**: Sensitive financial metrics (Revenue, Gross Margin, Net Profit, Bank Account Credentials) must never be sent to the client browser of lower-privileged roles. Components must wrap sensitive cards in `<RoleGuard allowed={['Owner', 'Admin']}>` or render role-specific operational dashboard views.
+
+---
 
 ### 4.1 Security Definer Helper Function Hardening
 ```sql
