@@ -1,8 +1,8 @@
 # Solo Capacity Risk Acceptance
 
 > **When**: `scripts/gates/classify-scale.sh` evaluates the project to **Large** (16–25 P0
-> features / multi-service) with **no** non-delegable obligation — i.e. no statutory
-> compliance (OJK / BI / UU PDP-heavy / ISO 27001 / medical) and no legacy-core replacement.
+> features / multi-service) with **no** non-delegable obligation — i.e. no
+> formal external audit/certification/sector approval obligation and no legacy-core replacement. Baseline privacy duties (including UU PDP) are still required where applicable, but are not a non-delegable assurance obligation.
 > Without this file the gate blocks with exit 2.
 > **Where**: `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`
 > **Who**: a real human. The AI agent may draft every field, but **`Accepted-By` and `Accepted-On`
@@ -17,7 +17,7 @@ Large-scope solo delivery is a **schedule and quality risk**, not a legal one. T
 that the human chose to carry it. The gate then continues (exit 5) but the override is **always
 surfaced** — it never reads as a clean pass.
 
-**This file cannot open the non-delegable block.** Statutory compliance and legacy-core
+**This file cannot open the non-delegable block.** Formal external assurance obligations and legacy-core
 replacement require a licensed third party (audit certificate, vendor engagement) that no
 signature can manufacture. Those stay hard-blocked (exit 2) regardless of this file.
 

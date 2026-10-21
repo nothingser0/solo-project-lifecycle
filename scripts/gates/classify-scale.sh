@@ -5,7 +5,7 @@
 # Tiers: small 1-5 P0 | medium 6-15 | large 16-25 | enterprise >25.
 # Enforces the HIGH-WATER MARK RULE and the SOLO CAPACITY GATE, which has TWO
 # different predicates (the cause matters, not the tier number):
-#   NON-DELEGABLE  -> statutory compliance or legacy-core replacement. A licensed
+#   NON-DELEGABLE  -> explicit formal external assurance obligation or legacy-core replacement. A licensed
 #                     third party is legally required, so no amount of solo
 #                     capacity substitutes. Hard block AT ANY TIER -> exit 2 (A00-A04).
 #   CAPACITY-ONLY  -> 16-25 P0 / multi-service with no non-delegable obligation.
@@ -93,7 +93,7 @@ fi
 # Sensitive data: structured yes/no only (no free-text matching).
 if echo "$SENSITIVE" | grep -qiE "^\s*(yes|ya|true)" 2>/dev/null; then
     if [ $TIER -lt 2 ]; then
-        TIER=2; REASON="High-Water Mark: Sensitive data (UU PDP applies) elevates tier to Medium"
+        TIER=2; REASON="High-Water Mark: Personal/sensitive data requires privacy and security safeguards"
     fi
 fi
 
@@ -110,8 +110,8 @@ if echo "$BRANCH_HIER" | grep -qiE "^\s*(yes|ya|true|multi)" 2>/dev/null; then
     fi
 fi
 
-if [ -n "$COMPLIANCE" ] && ! echo "$COMPLIANCE" | grep -qiE "^\s*(none|no|tidak ada|-)\s*$" 2>/dev/null; then
-    TIER=4; REASON="High-Water Mark: Statutory compliance ($COMPLIANCE) elevates tier to Enterprise"
+if echo "$COMPLIANCE" | grep -qiE "(^|[;|])[[:space:]]*formal assurance:[[:space:]]*(required|yes|mandatory)([[:space:]]*[-—:][[:space:]]*[^;|]+)?([;|]|$)" 2>/dev/null; then
+    TIER=4; REASON="High-Water Mark: Explicit formal assurance obligation ($COMPLIANCE) elevates tier to Enterprise"
 fi
 
 FINAL_SCALE="small"
@@ -129,7 +129,7 @@ echo "Primary Rationale : $REASON"
 # --- SOLO CAPACITY GATE ---------------------------------------------------------
 # Predicate 1 — NON-DELEGABLE, checked at EVERY tier (INTAKE_GATE Q6, SKILL.md and
 # templates/essentials/SOLO_CAPACITY_RISK_ACCEPTANCE.md all say "at any size").
-# Statutory compliance (OJK/BI/UU PDP/ISO/medical) and a legacy-core replacement both
+# Explicit formal external assurance obligations and legacy-core replacement both
 # require a licensed third party: an audit certificate or vendor engagement nobody can
 # self-issue. Declaring "I am ready to code solo" cannot substitute for a missing
 # auditor, so this is a hard block regardless of tier and NO override file can open it.
@@ -137,8 +137,8 @@ echo "Primary Rationale : $REASON"
 # ledger migration (legacy-core yes, no compliance) printed "Within solo capacity" and
 # exited 0 — exactly the case the docs call "never solo coding, at any size".
 NON_DELEGABLE=""
-if [ -n "$COMPLIANCE" ] && ! echo "$COMPLIANCE" | grep -qiE "^\s*(none|no|tidak ada|-)\s*$" 2>/dev/null; then
-    NON_DELEGABLE="statutory compliance ($COMPLIANCE) — requires licensed audit/counsel"
+if echo "$COMPLIANCE" | grep -qiE "(^|[;|])[[:space:]]*formal assurance:[[:space:]]*(required|yes|mandatory)([[:space:]]*[-—:][[:space:]]*[^;|]+)?([;|]|$)" 2>/dev/null; then
+    NON_DELEGABLE="explicit formal assurance obligation ($COMPLIANCE) — requires external assurance"
 fi
 if echo "$LEGACY_CORE" | grep -qiE "^\s*(yes|ya|true)" 2>/dev/null; then
     NON_DELEGABLE="${NON_DELEGABLE:+$NON_DELEGABLE; }legacy-core replacement — requires vendor/legacy specialist"

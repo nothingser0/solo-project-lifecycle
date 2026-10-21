@@ -2,7 +2,7 @@
 name: solo-project-lifecycle
 description: Lightweight SDLC framework for solo devs and small teams, from idea to release. Use for new projects (MVP, SaaS, client work) that need phase structure, document templates, and quality gates. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
 version: 1.0.0
-updated: 2026-10-11
+updated: 2026-10-21
 ---
 
 # Solo Project Lifecycle
@@ -21,10 +21,38 @@ The framework repo is **read-only**. Project documents are written into the user
 | **Small / MVP** | 1–5 P0 features, no financial mutations, 1 decision maker, <4 weeks | Optional Pre-Intake Spike (`spike/`) → Intake (9 fields — 6 core + 3 escalation; record in `docs/pm/PROJECT_STATE.md`, halt until answered) → M04-LITE → M05 → [STOP] → M06+security → M09-LITE → [STOP] → M10 → M12-LITE (`RUNBOOK_OPS.md`) — M01/M02 are WAIVED here, but the scale classifier still runs | 2 stops |
 | **Solo SaaS** | 6–15 P0, billing, 1 founder | M00-lite → M01 → M02 → M04 → M05 → M06 → M07 → M10 → M12 → M13 | M05 stack lock + M07 |
 | **Client (Medium)** | 6–15 P0, API/payment webhooks, contract, 99% SLA | M01 → M02 → **M03 SOW+DP [GATE]** → M04 → M05 → M06 → M07 → **M09 UAT [GATE]** → M10 → **M11 BAST+final payment [GATE]** → M12 | gates M03/M09/M11 + M05 stack lock, M07, M08 |
-| **Large** | 16–25 P0, multi-service, **no** non-delegable obligation | **Solo coding + advisor** — the capacity risk must be accepted in writing (`docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`, human-signed) → classifier exit **5**. A non-delegable answer (statutory compliance / legacy-core) re-routes to A00–A04. | per phase |
-| **Enterprise** | >25 P0, or any non-delegable obligation: statutory compliance (OJK/UU PDP/ISO), legacy-core replacement | ⛔ no solo coding — non-delegable, advisory only: A00–A04 in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md`. No signature can substitute a licensed auditor/vendor. | per phase |
+| **Large** | 16–25 P0, multi-service, **no** non-delegable obligation | **Solo coding + advisor** — the capacity risk must be accepted in writing (`docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`, human-signed) → classifier exit **5**. An explicit formal-assurance answer or legacy-core replacement re-routes to A00–A04. | per phase |
+| **Enterprise** | >25 P0, or any explicit non-delegable formal assurance obligation / legacy-core replacement | ⛔ no solo coding — advisory only: A00–A04 in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md`. Baseline privacy duties (including UU PDP) require safeguards but do not alone trigger Enterprise. | per phase |
 
-High-water mark: if any single dimension is higher (e.g., 3 features but payment webhooks), classify at the highest tier. Legacy data = NOT "Small + M08"; reclassify upward. The Solo Capacity Gate has **two predicates**: a *non-delegable* obligation (statutory compliance, legacy-core) is a permanent hard block (exit 2), while a *capacity-only* Large scope may be accepted in writing (exit 5).
+High-water mark: if any single dimension is higher (e.g., 3 features but payment webhooks), classify at the highest tier. Legacy data = NOT "Small + M08"; reclassify upward. The Solo Capacity Gate has **two predicates**: a *non-delegable* obligation (explicit formal assurance, legacy-core) is a permanent hard block (exit 2), while a *capacity-only* Large scope may be accepted in writing (exit 5).
+
+## Phase names (required in user-facing status and project documents)
+
+The phase codes are internal identifiers and are not self-explanatory. Whenever a phase appears in a status, gate, recommendation, decision log, or user-facing explanation, write its code **with its plain-language name** at least on first mention in that section. Never leave labels such as `M00`, `M01`, `M03`, or `A01` unexplained. Use the canonical names below; local documents may add a short translation but must not replace the code.
+
+| Code | Canonical phase name |
+|---|---|
+| M00 | Product Research & Discovery |
+| M01 | Idea Feasibility |
+| M02 | Scope Definition & Freeze |
+| M03 | Legal, SOW & Client Data Protection |
+| M04 | UI/UX & Prototyping |
+| M05 | Architecture & Technical Specifications |
+| M06 | Development Execution |
+| M07 | Quality Assurance & System Integration Testing (SIT) |
+| M08 | Data Migration & Seeding |
+| M09 | User Acceptance Testing (UAT) & Client Sign-off |
+| M10 | Production Deployment |
+| M11 | Handover & Final Acceptance (BAST) |
+| M12 | Warranty, SLA & Retainer |
+| M13 | Product Operations & Iteration |
+| A00 | Enterprise Advisory: Bid/No-Bid & Legal Clearance |
+| A01 | Enterprise Advisory: Work Breakdown & Phasing |
+| A02 | Enterprise Advisory: Architecture, Threat Modeling & Quality Scenarios |
+| A03 | Enterprise Advisory: Vendor Procurement & Build-vs-Buy |
+| A04 | Enterprise Advisory: Governance Handover |
+
+Example: write `M00 · Product Research & Discovery` and `M01 · Idea Feasibility`, not bare codes. For ranges, name the stages in the range or link to this glossary (for example, `M05–M13 · Architecture through Product Operations`).
 
 **Light default**: when scale is unclear, start Small and escalate only on risk triggers (payment webhooks, legacy data, regulated data, 6+ P0 features, SLA commitments).
 
@@ -53,7 +81,8 @@ High-water mark: if any single dimension is higher (e.g., 3 features but payment
 5. **YAGNI & Craftsmanship Anti-Slop**: no features/components beyond what the scope asks. No unpaid work without a CR. **Zero tech stack leaks in customer UI**: never mention internal tech stack names (`Supabase Auth`, `Next.js`, `Prisma`, `PostgreSQL`, `Tailwind`) in user-facing copy, badges, footers, or tooltips; speak strictly in customer domain language. **Zero spec identifier leaks**: never display internal spec codes (`SCR-xx`, `REQ-xx`, `M06-FE-xx`, `FSD-xx`) in customer-facing UI headings, badges, or subtitles. **Zero stub pages**: every route declared in SITEMAP must be fully implemented with real components, tables, and forms (empty `<12` line / `<400` byte placeholder pages fail M06 gate). **Authentic auth**: login forms must execute real credential actions, never client `<Link>` shortcuts. **Zero dead buttons**: all action buttons/bells must have active handlers or popovers. **Zero dummy mock URLs**: no `example.com` in seed data or attachments. **Zero redundant codebase comments**: eliminate obvious syntax-repeating comments (e.g. `// Header`, `// Button`, `// Loop through items`, `// Return result`); code must be self-documenting. **Zero raw browser alerts**: calling `window.alert()`, `confirm()`, or `prompt()` is strictly prohibited; all user feedback and confirmations MUST use design-matched custom Toasts and Dialog Modals. **Zero unstyled native `<select>` slop**: dropdowns, filter pills, and action menus must use custom styled floating popovers with rounded containers and soft shadows. **Mandatory micro-interactions**: hover, active press compression, focus rings, modal zoom/fade, and progress transitions must be animated.
 6. **Security**: never ask the user to paste secrets in chat — have them write to `.env.local`; verify the file exists without reading it.
 7. **Research evidence**: primary research data must come from real users. If none yet, mark `PENDING_PRIMARY_RESEARCH` — never fabricate.
-8. **Language**: reply and produce deliverables in **English** by default; switch languages only if the user explicitly asks. Indonesian commercial/regulatory context (SOW/SPK, DP milestones, BAST, UU PDP, e-Meterai, PPN, QRIS/Midtrans/Xendit) is natively supported.
+8. **Language matching**: use the language the human is using in the current conversation for replies and human-facing prose in project files (especially Markdown documents, reports, plans, and UI copy). If the human writes in Indonesian, speak Indonesian and write the explanatory prose in project `.md` files in Indonesian; follow the same rule for other languages. Keep code, identifiers, API and schema names, commands, conventional technical terms, and code comments in standard English unless the project or user explicitly requires otherwise. Preserve established names and quoted source text; do not translate code or identifiers just to match prose language. When editing a mixed-language document, make the prose you author or revise match the human's language while leaving technical tokens intact. Indonesian commercial/regulatory context (SOW/SPK, DP milestones, BAST, UU PDP, e-Meterai, PPN, QRIS/Midtrans/Xendit) is natively supported.
+9. **Next action brevity**: `docs/pm/PROJECT_STATE.md` may include one `Next action` line or short paragraph to preserve handoff continuity. State only the immediate action and its condition/owner if needed (normally one sentence). Do not repeat the project summary, rationale, risks, prior decisions, or later-stage reminders there; those belong in their dedicated sections. Other files need a `Next action` section only when their template or purpose requires a handoff.
 
 ## Harness root (9 files) — client / non-Small projects only
 

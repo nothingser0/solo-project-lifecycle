@@ -126,7 +126,7 @@ check_scale_feasibility() {
         # still must match the evaluated tier (a Large project cannot keep the Small
         # path), so run the same declared-vs-evaluated comparison as the rc=0 branch.
         echo "  ⚠️  SOLO CAPACITY OVERRIDE ACCEPTED (capacity-only): proceeding under a recorded risk acceptance."
-        echo "     Non-delegable obligations (statutory compliance / legacy-core) are still hard-blocked — none were declared."
+        echo "     Formal external assurance / legacy-core obligations remain hard-blocked — none were declared."
         # The dispatcher turns this into exit 5. A later real failure (GATE_FAILED=1)
         # still wins, so the override can never paint a broken gate green.
         GATE_VERDICT="CAPACITY_OVERRIDE"
@@ -149,7 +149,7 @@ check_scale_feasibility() {
         # acceptance. Say which one — the classifier block below carries the detail.
         if echo "$classify_output" | grep -q "NON-DELEGABLE GATE"; then
             echo "  ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier."
-            echo "     Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory."
+            echo "     Formal external assurance / legacy-core replacement needs a qualified third party — route to A00-A04 Advisory."
             echo "     A risk-acceptance file cannot open this block."
         else
             echo "  ❌ SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!"
@@ -343,9 +343,9 @@ check_design_inspiration() {
     while IFS= read -r f; do
         [ -n "$f" ] || continue
         base="$(basename "$f")"
-        if grep -qiF -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
+        if grep -qi -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
         base="${base%.*}"
-        if [ -n "$base" ] && grep -qiF -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
+        if [ -n "$base" ] && grep -qi -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
     done < <(find "$dir" -maxdepth 1 -type f 2>/dev/null \
         ! -name 'notes.md' ! -name 'README.md' ! -name 'NOTES_TEMPLATE.md' ! -name '.*')
     if [ "$cited" -eq 1 ]; then

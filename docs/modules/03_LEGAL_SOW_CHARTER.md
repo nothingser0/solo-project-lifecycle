@@ -51,7 +51,7 @@ Document name, title, email, phone of **1 absolute decision maker** client-side,
 
 Hierarchy on conflict: **MSA** (enduring principles) > **SOW** (deliverables, milestones, payments) > **DPA** (UU PDP roles, breach notice) > **NDA**.
 
-**Enterprise routing**: >25 P0 features, a legacy-core replacement, or any statutory compliance (OJK/BI/UU PDP/ISO) is **non-delegable** — that exceeds solo capacity at any size, so do NOT sign a development SOW; use the Consulting Agreement under Phase A00 with the Risk Assessment Matrix and RACI Matrix approved. A **Large (16–25 P0) scope with no non-delegable obligation** may stay solo and still take a development SOW, provided `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md` is signed and the classifier returns exit 5.
+**Enterprise routing**: >25 P0 features, a legacy-core replacement, or an explicit formal external audit/certification/sector approval obligation that cannot be discharged by the developer is **non-delegable**. Baseline privacy duties, including UU PDP, still require appropriate delivery safeguards but are not by themselves a reason to route to A00. A **Large (16–25 P0) scope with no non-delegable obligation** may stay solo and still take a development SOW, provided `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md` is signed and the classifier returns exit 5.
 
 ---
 

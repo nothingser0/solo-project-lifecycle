@@ -26,7 +26,7 @@ Software operational framework for solo developers executing projects from Small
 | **Small (MVP)** | <4 weeks, 1–5 P0, no financial mutation | `PROJECT_LITE.md` + M04-LITE | Smoke + security checklist small | PaaS deploy, email BAST (client) |
 | **Medium (Solo SaaS / Client)** | 1–3 months, auth, DB, payments | Modular PRD, Design System, FSD, API contract | SIT, signed PIC UAT | CI/CD, stamped BAST, 60-day warranty |
 | **Large** | 3–6 months, multi-system | Formal PRD/FSD, WBS, risk | Full test pyramid, basic pentest | Zero-downtime, 90-day warranty |
-| **Enterprise** | >25 P0, regulated, legacy | Full governance pack | Third-party pentest, DR drill | CAB, legal BAST, SLA — **solo coding prohibited**, advisory only (A00–A04) |
+| **Enterprise** | >25 P0, formal external assurance, legacy | Full governance pack | Third-party pentest, DR drill | CAB, legal BAST, SLA — **solo coding prohibited**, advisory only (A00–A04) |
 
 **Warranty**: Small 30d · Medium 60d · Large/Enterprise 90d.
 

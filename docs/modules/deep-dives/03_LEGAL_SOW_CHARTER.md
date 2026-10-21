@@ -15,7 +15,7 @@ Companion to [`../03_LEGAL_SOW_CHARTER.md`](../03_LEGAL_SOW_CHARTER.md). Referen
 
 ## 1. Enterprise Advisory Gate (Phase A00) — Full Detail
 
-**Solo capacity limitation enforcement**: projects with >25 P0 features (Enterprise tier), legacy core replacements, or strict statutory compliance (OJK, BI, ISO 27001, Kemenkes) **exceed solo developer capacity**. Do NOT sign a monolithic development SOW. The commercial instrument is the **Consulting Agreement** (`templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md`) under Phase A00.
+**Solo capacity limitation enforcement**: projects with >25 P0 features (Enterprise tier), legacy core replacements, or explicit formal external audit/certification/sector approval obligations **exceed solo developer capacity**. Baseline privacy duties such as UU PDP are scoped as delivery safeguards. Do NOT sign a monolithic development SOW. The commercial instrument is the **Consulting Agreement** (`templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md`) under Phase A00.
 
 Governance & compliance templates for A00–A04:
 
