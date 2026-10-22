@@ -229,8 +229,7 @@ CREATE TABLE core_entities (
 
 | Level | Situation | Conversion Approach |
 | :--- | :--- | :--- |
-| **1** | AI-generated prototype code, same framework (Workflow A) | Clean and wire the generated components; refactor to conventions |
-| **2** | Figma/designer export (Workflow B) | Extract components from the exported design/previews; rebuild on frozen layout |
+| **1** | Interactive prototype code in `docs/design/screens/` | Clean and wire the generated components; refactor to conventions |
 
 **Conversion Plan**: 1. Extract [n] components from `COMPONENT_REQUIREMENTS.md` → 2. Map `DESIGN.md` tokens to [Tailwind/theme config] → 3. Rebuild screens in [framework], static first, then data-backed.
 **Estimated Conversion Time**: [X days]

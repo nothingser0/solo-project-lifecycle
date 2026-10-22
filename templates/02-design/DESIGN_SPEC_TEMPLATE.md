@@ -239,7 +239,7 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 ## Machine Validation Summary (M04 Gate)
 
 ```text
-Prototyping-Workflow: [A|B]
+Prototyping: Interactive Code Prototype
 ```
 
-*(A = AI Prototype Code via v0/Bolt/Lovable exported to `docs/design/screens/`. B = Design Tool / Figma export into `docs/design/screens/`. Visual preview is mandatory to eliminate AI slop. All prototype screens must use the Modular & Reusable Architecture, linking to shared `css/styles.css` and `js/app.js` to ensure consistent navbar, typography, buttons, badges, and card sizing across every screen in SITEMAP.md).*
+*(Interactive HTML/code prototype in `docs/design/screens/` is mandatory to eliminate AI slop. All prototype screens must use the Modular & Reusable Architecture, linking to shared `css/styles.css` and `js/app.js` to ensure consistent navbar, typography, buttons, badges, and card sizing across every screen in SITEMAP.md).*

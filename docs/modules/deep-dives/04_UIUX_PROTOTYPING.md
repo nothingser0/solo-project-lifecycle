@@ -8,7 +8,7 @@
 - [Content Moved From the Runbook (Condensed M04 Rewrite)](#content-moved-from-the-runbook-condensed-m04-rewrite)
 
 
-> Companion to [`docs/modules/04_UIUX_PROTOTYPING.md`](../04_UIUX_PROTOTYPING.md). This file contains the detailed Step 0 process, the full prototyping option workflows (A–E including Figma MCP), and the root-cause analysis of design failure. The runbook holds the condensed execution path, gate criteria, and stop protocol.
+> Companion to [`docs/modules/04_UIUX_PROTOTYPING.md`](../04_UIUX_PROTOTYPING.md). This file contains the detailed Step 0 process, the interactive code prototyping standards, and the root-cause analysis of design failure. The runbook holds the condensed execution path, gate criteria, and stop protocol.
 
 ---
 

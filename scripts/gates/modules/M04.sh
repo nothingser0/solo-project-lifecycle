@@ -189,71 +189,68 @@ gate_M04() {
             fi
         fi
 
-        # 6. Prototyping Workflow enforcement (Visual prototypes MANDATORY: A/B)
-        wf=$(grep -iE "^Prototyping-Workflow:\s*[AB]" "docs/specs/DESIGN_SPEC.md" | grep -oiE "[AB]" | head -1 | tr '[:lower:]' '[:upper:]')
-        if [ "$wf" = "A" ] || [ "$wf" = "B" ]; then
-            echo "  [INFO] Prototyping-Workflow: $wf (visual preview mandatory)."
-            # Allow flat files in docs/design/screens/*.html or nested subfolders docs/design/screens/scr-xx/
-            screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.svg" \) 2>/dev/null | wc -l | tr -d ' ')
-            if [ "${screen_files:-0}" -ge 1 ]; then
-                echo "  ✅ Interactive screen preview outputs present (found $screen_files preview files)"
-                # 6b. Mechanical Anti-Slop Prototype Audit
-                neon_colors=$(grep -rInE "(#FF5722|#FF0000|#00FF00|bg-orange-500|bg-red-500)" docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
-                if [ "${neon_colors:-0}" -gt 0 ]; then
-                    echo "  ⚠️  Anti-slop advisory: found ${neon_colors} uncalibrated neon color(s) in prototype. Use curated tones from DESIGN.md in M06 FE."
-                fi
-                # 6c. Spec identifier leaks in prototype UI (BLOCKER)
-                proto_spec_leaks=$(grep -rInE "(SCR-[0-9]+|M06-FE-[0-9]+)" docs/design/screens 2>/dev/null \
-                    | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts)" | wc -l | tr -d ' ')
-                if [ "${proto_spec_leaks:-0}" -gt 0 ]; then
-                    echo "  ❌ Anti-slop: found ${proto_spec_leaks} internal spec identifier(s) (e.g. SCR-xx) leaking in prototype UI! Spec codes are internal; end users must never see them."
-                    GATE_FAILED=1
-                else
-                    echo "  ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI"
-                fi
-                # 6d. Prototype Screen Coverage Check: prevent single-screen dashboard cop-out
-                if [ -f "docs/specs/SITEMAP.md" ]; then
-                    sitemap_screens=$(grep -oE "SCR-[0-9]+" "docs/specs/SITEMAP.md" | sort -u | wc -l | tr -d ' ')
-                    if [ "${sitemap_screens:-0}" -ge 4 ] && [ "${screen_files:-0}" -eq 1 ]; then
-                        # If only 1 file exists, check if it contains multi-screen views/tabs
-                        single_html=$(find docs/design/screens -type f -name "*.html" | head -1)
-                        if [ -f "$single_html" ] && ! grep -qiE "(data-screen|view-|tab-|screen-container|switchView|showScreen)" "$single_html"; then
-                            echo "  ❌ Prototype coverage incomplete! SITEMAP defines ${sitemap_screens} screens, but docs/design/screens/ only has 1 screen file without multi-view switching."
-                            echo "     Every core screen in SITEMAP.md must be prototyped in HTML (either multi-page HTML or an interactive SPA switcher) before entering M06 FE coding."
-                            GATE_FAILED=1
-                        else
-                            echo "  ✅ Full prototype screen coverage verified (multi-view / multi-page prototype covers SITEMAP)"
-                        fi
-                    fi
-                fi
-                # 6e. Modern Landing Page Section Depth Check (SCR-01)
-                if [ -f "docs/specs/SITEMAP.md" ] && grep -qiE "SCR-01.*Landing|Landing.*Page" "docs/specs/SITEMAP.md"; then
-                    landing_has_sections=0
-                    if grep -qiE "FAQ|Frequently Asked|Mockup|Product (Preview|Tour|Showcase)|Calculator|Comparison" docs/specs/DESIGN_SPEC.md 2>/dev/null; then
-                        landing_has_sections=1
-                    elif grep -qiE "FAQ|Frequently Asked|Mockup|Product (Preview|Tour|Showcase)|Calculator|Comparison" docs/design/screens/*.html 2>/dev/null; then
-                        landing_has_sections=1
-                    fi
-                    if [ $landing_has_sections -eq 1 ]; then
-                        echo "  ✅ Landing Page (SCR-01) multi-section depth verified (Product Preview/FAQ/Features)"
-                    else
-                        echo "  ⚠️  Landing Page advisory: SCR-01 missing depth (Hero only). Standard SaaS landing pages require 6 sections: Hero, Product Preview Frame, Feature Deep Dives, ROI/Calculator, FAQ, and Footer."
-                    fi
-                fi
-                # 6f. Reusable Prototype Architecture Check (Shared CSS / Design System)
-                shared_css=$(find docs/design/screens -type f \( -name "*.css" -o -name "styles.css" -o -name "design-system.css" \) 2>/dev/null | wc -l | tr -d ' ')
-                html_count=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | wc -l | tr -d ' ')
-                if [ "${html_count:-0}" -ge 2 ]; then
-                    if [ "${shared_css:-0}" -ge 1 ] || grep -qriE 'rel="stylesheet" href="[^"]*(\.css|styles|tailwind)' docs/design/screens/*.html 2>/dev/null; then
-                        echo "  ✅ Reusable prototype architecture verified (screens utilize shared CSS/design-system)"
-                    else
-                        echo "  ⚠️  Prototype advisory: multiple HTML screens detected without shared CSS. Ensure screens link to shared css/styles.css to maintain navbar, button, badge, and typography consistency across the sitemap."
-                    fi
-                fi
-            else
-                echo "  ❌ Workflow $wf selected but interactive screen previews missing! Place HTML/component prototypes in docs/design/screens/."
-                GATE_FAILED=1
+        # 6. Interactive Prototyping enforcement (Visual prototype MANDATORY)
+        echo "  [INFO] Interactive Prototyping (visual preview mandatory)."
+        # Allow flat files in docs/design/screens/*.html or nested subfolders docs/design/screens/scr-xx/
+        screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.svg" \) 2>/dev/null | wc -l | tr -d ' ')
+        if [ "${screen_files:-0}" -ge 1 ]; then
+            echo "  ✅ Interactive screen preview outputs present (found $screen_files preview files)"
+            # 6b. Mechanical Anti-Slop Prototype Audit
+            neon_colors=$(grep -rInE "(#FF5722|#FF0000|#00FF00|bg-orange-500|bg-red-500)" docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${neon_colors:-0}" -gt 0 ]; then
+                echo "  ⚠️  Anti-slop advisory: found ${neon_colors} uncalibrated neon color(s) in prototype. Use curated tones from DESIGN.md in M06 FE."
             fi
+            # 6c. Spec identifier leaks in prototype UI (BLOCKER)
+            proto_spec_leaks=$(grep -rInE "(SCR-[0-9]+|M06-FE-[0-9]+)" docs/design/screens 2>/dev/null \
+                | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts)" | wc -l | tr -d ' ')
+            if [ "${proto_spec_leaks:-0}" -gt 0 ]; then
+                echo "  ❌ Anti-slop: found ${proto_spec_leaks} internal spec identifier(s) (e.g. SCR-xx) leaking in prototype UI! Spec codes are internal; end users must never see them."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI"
+            fi
+            # 6d. Prototype Screen Coverage Check: prevent single-screen dashboard cop-out
+            if [ -f "docs/specs/SITEMAP.md" ]; then
+                sitemap_screens=$(grep -oE "SCR-[0-9]+" "docs/specs/SITEMAP.md" | sort -u | wc -l | tr -d ' ')
+                if [ "${sitemap_screens:-0}" -ge 4 ] && [ "${screen_files:-0}" -eq 1 ]; then
+                    # If only 1 file exists, check if it contains multi-screen views/tabs
+                    single_html=$(find docs/design/screens -type f -name "*.html" | head -1)
+                    if [ -f "$single_html" ] && ! grep -qiE "(data-screen|view-|tab-|screen-container|switchView|showScreen)" "$single_html"; then
+                        echo "  ❌ Prototype coverage incomplete! SITEMAP defines ${sitemap_screens} screens, but docs/design/screens/ only has 1 screen file without multi-view switching."
+                        echo "     Every core screen in SITEMAP.md must be prototyped in HTML (either multi-page HTML or an interactive SPA switcher) before entering M06 FE coding."
+                        GATE_FAILED=1
+                    else
+                        echo "  ✅ Full prototype screen coverage verified (multi-view / multi-page prototype covers SITEMAP)"
+                    fi
+                fi
+            fi
+            # 6e. Modern Landing Page Section Depth Check (SCR-01)
+            if [ -f "docs/specs/SITEMAP.md" ] && grep -qiE "SCR-01.*Landing|Landing.*Page" "docs/specs/SITEMAP.md"; then
+                landing_has_sections=0
+                if grep -qiE "FAQ|Frequently Asked|Mockup|Product (Preview|Tour|Showcase)|Calculator|Comparison" docs/specs/DESIGN_SPEC.md 2>/dev/null; then
+                    landing_has_sections=1
+                elif grep -qiE "FAQ|Frequently Asked|Mockup|Product (Preview|Tour|Showcase)|Calculator|Comparison" docs/design/screens/*.html 2>/dev/null; then
+                    landing_has_sections=1
+                fi
+                if [ $landing_has_sections -eq 1 ]; then
+                    echo "  ✅ Landing Page (SCR-01) multi-section depth verified (Product Preview/FAQ/Features)"
+                else
+                    echo "  ⚠️  Landing Page advisory: SCR-01 missing depth (Hero only). Standard SaaS landing pages require 6 sections: Hero, Product Preview Frame, Feature Deep Dives, ROI/Calculator, FAQ, and Footer."
+                fi
+            fi
+            # 6f. Reusable Prototype Architecture Check (Shared CSS / Design System)
+            shared_css=$(find docs/design/screens -type f \( -name "*.css" -o -name "styles.css" -o -name "design-system.css" \) 2>/dev/null | wc -l | tr -d ' ')
+            html_count=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${html_count:-0}" -ge 2 ]; then
+                if [ "${shared_css:-0}" -ge 1 ] || grep -qriE 'rel="stylesheet" href="[^"]*(\.css|styles|tailwind)' docs/design/screens/*.html 2>/dev/null; then
+                    echo "  ✅ Reusable prototype architecture verified (screens utilize shared CSS/design-system)"
+                else
+                    echo "  ⚠️  Prototype advisory: multiple HTML screens detected without shared CSS. Ensure screens link to shared css/styles.css to maintain navbar, button, badge, and typography consistency across the sitemap."
+                fi
+            fi
+        else
+            echo "  ❌ Interactive screen previews missing! Place HTML/component prototypes in docs/design/screens/."
+            GATE_FAILED=1
         fi
 
         # 7. Screen count match: SITEMAP routes vs DESIGN_SPEC screen rows (±10%)

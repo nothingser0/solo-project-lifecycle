@@ -10,6 +10,24 @@ This document provides practical guidelines for solo developers to design profes
 
 Solo developers should never waste time designing twice (first on a vector canvas, then recoding from scratch). Use `DESIGN.md` as the single source of truth for visual decisions across all project scales, from Small to Enterprise.
 
+### 1.0 Bagaimana SITEMAP.md Dihasilkan dari SCOPE_STATEMENT.md (Hulu ke Hilir)
+Sebelum merancang prototipe atau menulis `SITEMAP.md`, struktur halaman tidak boleh dikarang bebas dari imajinasi. `SITEMAP.md` diturunkan secara deterministik dari 4 fondasi utama di `docs/pm/SCOPE_STATEMENT.md`:
+
+1. **Pemetaan Fitur MoSCoW (P0 Must-Have & P1 Should-Have)**:
+   - Setiap fitur yang disepakati (`F-01..F-NN`) **wajib** memiliki representasi minimal 1 layar konkret (`SCR-01..SCR-NN`) tempat user berinteraksi.
+   - *Contoh*: `F-01` (Auth) → `/login`, `F-02` (Katalog Unit) → `/rooms` & `/rooms/:id`, `F-03` (Invoicing) → `/billing`.
+   - **Aturan Anti-Drift**: Zero orphan screens (tidak ada layar tanpa dasar fitur di scope, dan tidak ada fitur P0 yang tertinggal tanpa layar UI).
+
+2. **Matriks Peran Pengguna / RBAC (`ROL-01..ROL-NN`)**:
+   - Menentukan segmentasi rute dan hak akses navigasi (*route guards*).
+   - Memisahkan zona Public (`/`, `/login`), zona Operator/Staff (`/app/*`), dan zona Admin/Owner (`/admin/*`).
+
+3. **User Stories & Critical Flows (Given-When-Then)**:
+   - Rangkaian alur cerita pengguna mendikte hierarki navigasi dan tautan antar-layar (*screen flows & breadcrumbs*: misal Dashboard → Daftar Entitas → Formulir Input → Halaman Sukses).
+
+4. **Struktur Shell dari Visual Benchmark (Step 0.5)**:
+   - Referensi desain di `docs/design/inspiration/` menentukan Information Architecture (IA) fisik (apakah aplikasi menggunakan Fixed Sidebar, Topbar Navigation, atau Segmented Tab Shell).
+
 ### 1.1 Three-Step Procedure for a Slop-Free `DESIGN.md` Workflow
 1. **Step 1: Lock the Design System (`DESIGN.md`)**:
     - Populate the `DESIGN.md` template upfront with color tokens, typography, radius, spacing, interactive states, and accessibility constraints.

@@ -26,10 +26,10 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
        select exactly 1 primary benchmark, cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md
        ⛔ FORBIDDEN: inventing a reference; notes.md is agent output, never the reference
  ▼ 0A. LOGO_DESIGN_BRIEF.md — name/philosophy/vibe/seed colors (≤2KB) → docs/specs/LOGO_DESIGN_BRIEF.md; save logo to assets/logo/ (logo.svg | logo.png)
- ▼ 0B. SITEMAP.md — hierarchy, 3–5 critical flows, breadcrumbs, States/RBAC (SITEMAP_TEMPLATE.md) → docs/specs/SITEMAP.md
+ ▼ 0B. SITEMAP.md — diturunkan langsung dari SCOPE_STATEMENT.md (pemetaan 1-ke-1 dari P0/P1 Feature Inventory, RBAC Role Matrix, & User Story critical flows): hierarchy, screen routing (SCR-01..SCR-NN), breadcrumbs, role route guards (SITEMAP_TEMPLATE.md) → docs/specs/SITEMAP.md
  ▼ 0C. COMPONENT_REQUIREMENTS.md (TEMPLATE) — features→UI patterns, 3-tier inventory (Primitives/Standard Composites/Domain Composites), 5-state matrix, WCAG 2.2 AA (prevents AI slop)
  ▼ 1. DESIGN.md — from benchmark + logo: tokens, computed WCAG ratios, z-index scale → docs/harness-root/DESIGN.md (staged)
- ▼ 2. Choose prototyping workflow (visual mandatory): A AI prototype code (v0/Bolt/Lovable export into `docs/design/screens/`) | B Design tool export/handoff (Figma/Penpot exported assets/previews into `docs/design/screens/`). (Pure text/markdown abolished).
+ ▼ 2. Author interactive prototype (visual mandatory) — build interactive HTML/code screens in `docs/design/screens/` with shared `css/styles.css` and `js/app.js`. (Pure text/markdown abolished).
         **Visual Benchmark DNA & Anti-Slop Prototype Fidelity Rules (MANDATORY)**:
         - **Spatial & Timeline Grid Fidelity**: If the benchmark features a Gantt-style schedule or calendar timeline with date columns, the prototype MUST implement an authentic CSS Grid with column-aligned horizontal event spans. Creating flat, full-width `w-full` table rows that disregard the date columns above them is STRICTLY FORBIDDEN as Fake Timeline Slop.
         - **Micro-Indicator Fidelity**: If the benchmark utilizes segmented progress dashes (e.g. 5 segmented pill dashes), the prototype MUST implement segmented dashes instead of substituting a generic continuous progress line.
@@ -44,7 +44,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
         - **Zero Spec Identifier Leaks**: Internal spec codes (`SCR-xx`, `REQ-xx`, `M06-FE-xx`, `FSD-xx`) are project management metadata. They MUST NEVER appear in user-facing UI badges, headings, cards, or microcopy.
         - **Modular & Reusable Component Architecture (Shared CSS & JS Standard)**: Prototype screens in `docs/design/screens/` MUST NOT be authored as isolated, monolithic HTML files containing duplicate inline `<style>` tags or arbitrary hardcoded styles that drift across pages. Each screen HTML (`index.html`, `rooms.html`, `billing.html`, etc.) MUST link to a single centralized stylesheet (`css/styles.css`) and centralized script (`js/app.js`). All design tokens from `DESIGN.md` (colors, typography, spacing, radius) and reusable component classes (`.btn`, `.card`, `.badge`, `.navbar`, `.sidebar`, `.form-input`) must reside in `css/styles.css` so button sizes, card paddings, font scales, badges, navbars, and colors remain 100% consistent across every screen in `SITEMAP.md`.
  ▼ 3. DESIGN_SPEC.md (DESIGN_SPEC_TEMPLATE.md) — every in-scope screen (SCR-01..SCR-NN) with 5-state matrix: Default, Loading Skeleton, Empty, Error, Success
- ▼ 4. (Workflow B only; SKIPPED for A) — prompts via SCREEN_PROMPT_TEMPLATE.md → docs/design/prompts/scr-xx/PROMPT.md; rendered outputs → docs/design/screens/scr-xx/
+ ▼ 4. Interactive Prototype Verification — verify all screens in `docs/design/screens/` render 5 states cleanly, link to shared `css/styles.css` & `js/app.js`, and match `SITEMAP.md` routes.
  ▼ 5. Walkthrough + Design Freeze — The agent MUST present a structured Side-by-Side Verification comparison comparing `docs/design/screens/index.html` with `docs/design/inspiration/<reference>.png` across 5 pillars (spatial layout, component anatomy, color curation, timeline grid, action density). The human user opens the prototype in browser alongside the benchmark, completes the Visual Benchmark Review checklist in `DESIGN_SPEC.md`, and signs the Design Freeze Sign-Off. Moving to M05/M06 before Design Freeze is strictly forbidden.
 OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 ```
@@ -60,7 +60,7 @@ OUTPUT: 6 COMPLETE ARTIFACTS → proceed to Module 05
 **Step 0.5 acceptance (gate-enforced, every scale)**: `docs/design/inspiration/` contains ≥1 file that is not `notes.md`/`README.md`/`NOTES_TEMPLATE.md`/dotfile, and `notes.md` cites a filename that actually exists in that folder. `validate-gate.sh M04` fails without both; M06 re-checks it for projects that started before this rule existed.
 
 ## 2. Outputs
-`docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png), `assets/media/` (dedicated directory for 3D models, video loops, Lottie JSON, and rich media assets), and, for Workflow B, `docs/design/prompts/scr-xx/PROMPT.md` + `docs/design/screens/scr-xx/`.
+`docs/specs/LOGO_DESIGN_BRIEF.md` · `docs/specs/SITEMAP.md` · `docs/specs/COMPONENT_REQUIREMENTS.md` · `docs/design/inspiration/notes.md` · `docs/harness-root/DESIGN.md` · `docs/specs/DESIGN_SPEC.md` — plus `assets/logo/` (logo.svg/logo.png), `assets/media/` (dedicated directory for 3D models, video loops, Lottie JSON, and rich media assets), and interactive prototype screens in `docs/design/screens/` (sharing `css/styles.css` and `js/app.js`).
 Location rules: `DESIGN_SPEC.md` MUST be in `docs/specs/` (root placement forbidden). DESIGN.md + DESIGN_SPEC.md mandatory regardless of prototype choice.
 Viewport Precedence: apply [`patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md`](../../patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md) — Mobile-First is default for consumer/SaaS/portals; Desktop-First permitted only for dense ERP/canvas tools with mobile card reflow.
 
@@ -78,7 +78,7 @@ Viewport Precedence: apply [`patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md`]
 - [ ] `docs/specs/SITEMAP.md` exists (≥1000B Small / ≥2000B Medium+; screen inventory, flows, navigation).
 - [ ] `docs/harness-root/DESIGN.md` exists, staged (≥1000B; palette + typography + z-index scale).
 - [ ] `docs/specs/DESIGN_SPEC.md` exists (≥1000B Small / ≥2000B Medium+; per-screen 5-state specs + motion/interaction directives).
-- [ ] Screen prompts/screens exist iff Workflow B selected; **screen count match**: SITEMAP total routes == DESIGN_SPEC wireflow screens.
+- [ ] **Interactive prototype screens exist**: `docs/design/screens/` covers all screens; **screen count match**: SITEMAP total routes == DESIGN_SPEC wireflow screens.
 
 ### Accessibility & Anti-Slop (computed, not self-approved)
 - [ ] **WCAG contrast (DESIGN.md tokens, light & dark): primary text ≥7.0:1; secondary + placeholder + status ≥4.5:1; input borders ≥3:1.**

@@ -170,8 +170,7 @@ Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 
 | Level | Meaning | Conversion effort |
 | :---: | :--- | :--- |
-| **1** | AI-generated prototype code (Workflow A) — v0/Bolt/Lovable export, cleaned and wired | Low: refactor to conventions |
-| **2** | Figma/designer export (Workflow B) — components/screens extracted from design tool | Medium: design → components |
+| **1** | Interactive prototype code — HTML/component export in `docs/design/screens/`, cleaned and wired | Low: refactor to conventions |
 
 **Conversion Plan**:
 1. [Source artifact → target path, e.g. "Extract 12 components from `docs/design/screens/` → `src/components/`"]
@@ -741,8 +740,7 @@ placeholder rows before sign-off.*
   WCAG ratios preserved).
 - **Component mapping**: [React → Vue / Svelte / Blade / Jetpack Compose, or `N/A — prototype
   already produced framework-native components`]. One row per primitive that changes shape.
-- **Prototype workflow used in M04**: [A | B | C | D | E] — determines whether screens exist as
-  Markdown specs only or as rendered artifacts under `docs/design/screens/`.
+- **Prototyping in M04**: Interactive code prototype in `docs/design/screens/` with shared `css/styles.css` and `js/app.js`.
 - **Compatibility level for M06 STEP 0**: [1–4, with the one-line reason M06 reads].
 
 ---
