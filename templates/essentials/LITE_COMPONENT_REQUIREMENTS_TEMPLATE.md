@@ -37,5 +37,5 @@
 
 - States per interactive component: default, hover, focus, disabled, loading.
 - Monetary inputs: `inputmode="numeric"` + live thousand separators (never `<input type="number">`).
-- Icons: one family only; no emoji as UI icons.
-- No gradients, no glassmorphism, shadows ≤4px.
+- Icons: one family only; jangan pernah menggunakan emoticon/emoji, selalu gunakan icons (SVG).
+- No glassmorphism, shadows ≤4px.

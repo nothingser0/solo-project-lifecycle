@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Screen Name] - [App Name] Prototype</title>
+  <!-- Shared Reusable Design System Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Shared Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <!-- Brand SVG Mark (No raw emoji) -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <path d="M9 3v18"></path>
+        </svg>
+        <span class="text-lg">[App Name]</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Links automatically highlighted by js/app.js based on filename -->
+        <a href="index.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="rooms.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          </svg>
+          <span>Units & Rooms</span>
+        </a>
+        <a href="billing.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+          <span>Billing & Invoices</span>
+        </a>
+        <a href="settings.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Shared Navbar Header -->
+      <header class="navbar">
+        <h2 class="text-xl">[Screen Title]</h2>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <!-- 5-State Preview Switcher for Review -->
+          <select id="state-switcher" class="form-select" style="height: 36px; min-height: 36px; font-size: 0.8125rem; width: auto;">
+            <option value="ideal">State: Ideal / Populated</option>
+            <option value="loading">State: Loading Skeleton</option>
+            <option value="empty">State: Empty</option>
+            <option value="error">State: Error</option>
+          </select>
+          <button class="btn btn-primary" onclick="showToast('Primary action triggered', 'success')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add New Item</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Page Container with 5 States -->
+      <div class="page-container">
+        <!-- Ideal / Default State -->
+        <div data-state-panel="ideal" class="state-panel active">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="text-lg">Overview Data</h3>
+              <span class="badge badge-success">Live System</span>
+            </div>
+            <div class="card-body">
+              <p class="text-muted" style="margin-bottom: 1.5rem;">Manage real records with consistent UI components.</p>
+              
+              <div class="table-container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Identifier</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                      <th style="text-align: right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-weight: 500;">Unit A-101</td>
+                      <td>Deluxe Room</td>
+                      <td><span class="badge badge-success">Occupied</span></td>
+                      <td style="text-align: right;">
+                        <button class="btn btn-ghost" style="height: 32px; min-height: 32px; padding: 0 0.5rem;">Edit</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: 500;">Unit B-204</td>
+                      <td>Standard Room</td>
+                      <td><span class="badge badge-warning">Pending Payment</span></td>
+                      <td style="text-align: right;">
+                        <button class="btn btn-ghost" style="height: 32px; min-height: 32px; padding: 0 0.5rem;">Edit</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Skeleton State -->
+        <div data-state-panel="loading" class="state-panel">
+          <div class="card">
+            <div class="card-header">
+              <div class="skeleton" style="width: 140px; height: 24px;"></div>
+              <div class="skeleton" style="width: 80px; height: 20px;"></div>
+            </div>
+            <div class="card-body" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div class="skeleton" style="width: 100%; height: 48px;"></div>
+              <div class="skeleton" style="width: 100%; height: 48px;"></div>
+              <div class="skeleton" style="width: 100%; height: 48px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div data-state-panel="empty" class="state-panel">
+          <div class="card">
+            <div class="empty-state">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 1rem; color: var(--muted);">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              <h4 class="text-lg" style="margin-bottom: 0.5rem;">No Records Available</h4>
+              <p class="text-muted" style="margin-bottom: 1.5rem;">Get started by creating your first entry.</p>
+              <button class="btn btn-secondary">Create Entry</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div data-state-panel="error" class="state-panel">
+          <div class="card" style="border-color: rgba(220, 38, 38, 0.3);">
+            <div class="empty-state">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--destructive)" stroke-width="1.5" style="margin: 0 auto 1rem;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <h4 class="text-lg" style="margin-bottom: 0.5rem; color: var(--destructive);">Failed to Load Records</h4>
+              <p class="text-muted" style="margin-bottom: 1.5rem;">An error occurred while fetching data from the server.</p>
+              <button class="btn btn-primary" onclick="showToast('Retrying...', 'info')">Retry Request</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Shared Reusable Script -->
+  <script src="js/app.js"></script>
+</body>
+</html>

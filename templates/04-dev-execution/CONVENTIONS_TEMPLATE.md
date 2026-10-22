@@ -123,8 +123,8 @@
    - Buttons, cards, and input fields must inherit exact height, padding, and corner radius extracted from the human's visual benchmark in `notes.md` (no unprompted pill buttons or excessive rounded corners).
 7. **Zero Internal Spec Leaks in Customer Views**:
    - Screen IDs (`SCR-01`, `SCR-02`), internal document headers, and technical slots (`[WASM Canvas slot]`, `[slot]`) must NEVER appear in rendered customer-facing UI. Use authentic domain-specific nomenclature.
-8. **Prohibited Raw OS Emoticons in UI Actions**:
-   - Do not use raw OS emoji (e.g. ⚙️, 📁, 🚀, ❌) as icons for actions, navigations, or statuses in production components. Always import standardized SVG icon components (e.g. Lucide React).
+8. **Jangan Pernah Menggunakan Emoticon (Gunakan Icons Selalu)**:
+   - Dilarang keras menggunakan emoticon atau karakter emoji OS (e.g. ⚙️, 📁, 🚀, ❌, 😊) sebagai icon tindakan, navigasi, header, feature card, badge, atau status pada antarmuka. Selalu gunakan komponen icon SVG terstandarisasi (misalnya Lucide React, Heroicons, Radix Icons).
 9. **Layout Fidelity to Inspiration**:
    - Layout implementations must strictly align with the spatial structure, density, and layout archetypes deposited in `docs/design/inspiration/` and synthesized in `DESIGN.md`.
 10. **Zero Tech Stack Leaks in UI Copy**:

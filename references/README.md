@@ -67,7 +67,7 @@ references/
 | [`PM_TOOLS_SETUP_GUIDE.md`](./pm/PM_TOOLS_SETUP_GUIDE.md) | Configuration guide for Linear, Jira, GitHub Projects, Notion for solo dev workflows | Module 01 |
 | [`PM_USER_TESTING_GUIDE.md`](./pm/PM_USER_TESTING_GUIDE.md) | User testing facilitation scripts, usability test plans, SUS scoring calculation | Module 04 |
 | [`INDUSTRY_TOOLS_ADAPTER.md`](./pm/INDUSTRY_TOOLS_ADAPTER.md) | Integration bridge for Notion databases, Linear/Jira CSV import, and remote Figma MCP | Module 01, 04 |
-| [`KANBAN_CARD_CRAFT_GUIDE.md`](./pm/KANBAN_CARD_CRAFT_GUIDE.md) | Reusable standard for writing Kanban cards: Summary/Description craft, work-type examples (Epic, Story, Task, Bug, Spike, Chore), minimum card fields, Work Type vs Priority | Module 02, 06 |
+| [`KANBAN_CARD_CRAFT_GUIDE.md`](./pm/KANBAN_CARD_CRAFT_GUIDE.md) | Reusable standard for Solo Kanban & Jira optimization: Workflow & WIP limits, field automation (Assignee/Labels/Due date), punchy scannable card structure, work-type examples | Module 02, 06 |
 
 ---
 

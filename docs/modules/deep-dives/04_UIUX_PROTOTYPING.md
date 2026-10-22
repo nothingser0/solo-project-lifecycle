@@ -568,8 +568,6 @@ def verify_module_04():
 
     # 6. Anti-slop check (search for violations)
     violations = []
-    if "gradient" in design_md.lower() or "linear-gradient" in design_md.lower():
-        violations.append("Gradient detected in DESIGN.md")
     if "backdrop-blur" in design_md.lower() or "glassmorphism" in design_md.lower():
         violations.append("Glassmorphism detected")
     if "shadow-2xl" in design_md or "shadow-xl" in design_md:

@@ -1,33 +1,63 @@
 # Interactive Prototype Output
 
-> **Purpose**: Store generated screen outputs from Interactive Prototype for review and handoff to development.
+> **Purpose**: Store generated screen outputs for review and handoff to development using a **Modular & Reusable Architecture**.
 
 ## Folder Structure
 
 ```
 docs/design/screens/
-├── SCR-01-landing/
-│   ├── screen.html            # Generated HTML
-│   ├── components/            # Extracted components
-│   │   ├── Hero.tsx
-│   │   ├── PricingCard.tsx
-│   │   └── ...
-│   └── screenshot.png         # Visual reference
-├── SCR-02-login/
-│   ├── screen.html
-│   ├── components/
-│   └── screenshot.png
-└── ...
+├── css/
+│   └── styles.css             # Centralized design system: tokens, typography, .btn, .card, .badge, .navbar, form controls
+├── js/
+│   └── app.js                # Centralized scripts: navigation highlight, modals, toasts, 5-state preview switcher
+├── index.html                 # SCR-01 Landing / Dashboard (links to css/styles.css & js/app.js)
+├── rooms.html                 # SCR-02 Unit / Room Management (links to css/styles.css & js/app.js)
+├── billing.html               # SCR-03 Invoicing / Finance (links to css/styles.css & js/app.js)
+├── tenants.html               # SCR-04 Tenant Records (links to css/styles.css & js/app.js)
+└── settings.html              # SCR-05 Configuration & Rules (links to css/styles.css & js/app.js)
 ```
+
+*(Nested subfolder structure like `scr-01/screen.html` is also supported, provided all screens link to the shared `css/styles.css` and `js/app.js` via relative path).*
+
+---
+
+## Reusable Component Architecture Standards
+
+To prevent visual inconsistencies (different button sizes, mismatched card paddings, rogue fonts, divergent navbar heights, and contrasting colors across screens):
+
+1. **Strictly No Monolithic / Hardcoded Inline Slop**:
+   - Dilarang keras menulis tag `<style>` inline atau meng-hardcode styling unik pada setiap halaman HTML.
+   - Semua halaman prototype wajib mengimpor stylesheet yang sama:
+     ```html
+     <link rel="stylesheet" href="css/styles.css">
+     ```
+   - Semua interaksi umum (dropdown popover, modal dialog, toast feedback, tab navigasi) wajib mengimpor script yang sama:
+     ```html
+     <script src="js/app.js" defer></script>
+     ```
+
+2. **Standardized Reusable Classes in `css/styles.css`**:
+   - **CSS Variables (`:root`)**: Synchronized 1-to-1 with `DESIGN.md` (colors, typography, radii, shadows, z-indexes).
+   - **Buttons (`.btn`)**: `.btn-primary`, `.btn-secondary`, `.btn-ghost`, `.btn-destructive` (uniform height, padding, radius, focus rings).
+   - **Cards (`.card`)**: `.card-header`, `.card-body`, `.card-footer` (uniform border radius, 1px border, subtle shadow).
+   - **Badges (`.badge`)**: `.badge-success`, `.badge-warning`, `.badge-destructive`, `.badge-neutral`.
+   - **Form Controls (`.form-input`, `.form-select`)**: Mandatory 16px font size on mobile (anti-zoom), uniform height & focus ring.
+   - **Navigation (`.navbar`, `.sidebar`)**: Consistent layout, active nav-link highlighting, logo sizing.
+
+3. **Shared Interactivity in `js/app.js`**:
+   - Active route highlighting based on current file/page name.
+   - Shared Toast notification dispatcher (`showToast(message, type)`).
+   - Shared Modal / Drawer open & close handlers with accessible keyboard `Escape` trap.
+   - 5-State Matrix preview simulator (Default, Loading Skeleton, Empty, Error, Success).
+
+---
 
 ## Workflow
 
-1. **Generate via MCP**: Use `prototype_generate_screen_from_text` with prompts from `docs/design/prompts/`
-2. **Export HTML**: Use `prototype_get_screen` to retrieve generated HTML
-3. **Save to folder**: `docs/design/screens/scr-xx/screen.html`
-4. **Extract components**: Break HTML into reusable React/Vue components
-5. **Take screenshot**: Visual reference for design review
-6. **Review**: Check against DESIGN_SPEC.md requirements (5 states, responsive, accessibility)
+1. **Setup Shared Assets**: Ensure `css/styles.css` and `js/app.js` are populated with tokens from `DESIGN.md`.
+2. **Build Screen HTML**: Implement each screen using the reusable classes (`<button class="btn btn-primary">`, `<div class="card">`).
+3. **Verify Sitemaps**: Verify that clicking navigation links transitions smoothly across prototype HTML files while keeping the navbar, typography, and button styles 100% consistent.
+4. **Review**: Check against DESIGN_SPEC.md requirements (5 states, responsive, accessibility, zero emoticons).
 
 ## Quality Gates
 
@@ -35,13 +65,13 @@ Before moving to Module 06 (Development), verify each screen:
 
 | Check | Status |
 |:------|:------:|
-| Matches DESIGN.md color tokens | ❌ / ✅ |
-| Uses specified typography | ❌ / ✅ |
-| Follows component patterns | ❌ / ✅ |
-| Responsive (mobile/tablet/desktop) | ❌ / ✅ |
+| Linked to shared `css/styles.css` & `js/app.js` (no inline styles) | ❌ / ✅ |
+| Matches DESIGN.md color tokens & typography | ❌ / ✅ |
+| Reusable component classes used consistently (.btn, .card, .badge) | ❌ / ✅ |
+| Responsive (mobile/tablet/desktop) & 44px touch targets | ❌ / ✅ |
 | 5 states present (ideal/loading/empty/error/success) | ❌ / ✅ |
-| No AI slop (generic shadows, gradients, mismatched colors) | ❌ / ✅ |
-| Accessibility (ARIA labels, keyboard nav) | ❌ / ✅ |
+| Zero emoticons/emojis (cohesive SVG icons used everywhere) | ❌ / ✅ |
+| No AI slop (generic shadows, uncalibrated styling, mismatched colors) | ❌ / ✅ |
 
 ## Handoff to Development
 

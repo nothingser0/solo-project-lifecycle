@@ -37,12 +37,14 @@ mkdir -p "$TARGET_DIR/docs/pm/meetings"
 mkdir -p "$TARGET_DIR/docs/specs" "$TARGET_DIR/docs/security"
 mkdir -p "$TARGET_DIR/docs/design/inspiration"
 mkdir -p "$TARGET_DIR/docs/design/prompts"
-mkdir -p "$TARGET_DIR/docs/design/screens"
+mkdir -p "$TARGET_DIR/docs/design/screens/css" "$TARGET_DIR/docs/design/screens/js"
 mkdir -p "$TARGET_DIR/docs/harness-root"
 
 # Universal: Project State tracker
 cp "$TEMPLATES/essentials/PROJECT_STATE_TEMPLATE.md" "$TARGET_DIR/docs/pm/PROJECT_STATE.md"
 cp "$TEMPLATES/02-design/SCREEN_PROMPT_TEMPLATE.md" "$TARGET_DIR/docs/design/prompts/SCREEN_PROMPT_TEMPLATE.md"
+cp "$TEMPLATES/02-design/references/prototype-output/css/styles.css" "$TARGET_DIR/docs/design/screens/css/styles.css"
+cp "$TEMPLATES/02-design/references/prototype-output/js/app.js" "$TARGET_DIR/docs/design/screens/js/app.js"
 
 case "$SCALE" in
     small|open-source)

@@ -13,10 +13,10 @@ Solo developers should never waste time designing twice (first on a vector canva
 ### 1.1 Three-Step Procedure for a Slop-Free `DESIGN.md` Workflow
 1. **Step 1: Lock the Design System (`DESIGN.md`)**:
     - Populate the `DESIGN.md` template upfront with color tokens, typography, radius, spacing, interactive states, and accessibility constraints.
-    - Treat this document as the reference for design, implementation, and review to prevent purple gradients, floating cards, or fonts that clash with the product identity.
+    - Treat this document as the reference for design, implementation, and review to prevent emoticons instead of icons, floating cards, or fonts that clash with the product identity.
 2. **Step 2: Precision Screen Prompting Formula**:
     - *Prompt Pattern*:
-      > *"Build the [Screen Name] interface for the [Role] user. Follow `DESIGN.md`. Display a clean, flat Tailwind-based layout. Displayed data: [List of Real Columns/Fields]. Components: use dense data tables, semantic status badges, and 1px bordered action buttons. Do not use heavy drop-shadows or color gradients."*
+      > *"Build the [Screen Name] interface for the [Role] user. Follow `DESIGN.md`. Display a clean, flat Tailwind-based layout. Displayed data: [List of Real Columns/Fields]. Components: use dense data tables, semantic status badges, and 1px bordered action buttons. Do not use heavy drop-shadows or generic AI styling. Never use emoticons or emojis; always use SVG icons."*
 3. **Step 3: Connecting Screens into a Real Prototype**:
     - Implement components strictly according to `DESIGN.md`.
     - Connect routing links: `<a href="/target-page">`.
@@ -28,6 +28,17 @@ Solo developers should never waste time designing twice (first on a vector canva
 | **Small (MVP / Freelance)** | **100% of all pages** in Scope (no reductions) | Instant Live Vercel Staging link |
 | **Medium (B2B SaaS)** | **100% of all pages** complete with 5-state variants | Fully interactive Live Web Staging |
 | **Large & Enterprise** | **100% of all pages** covering all user roles & permissions | Live Web Staging + WCAG AA Accessibility Compliance Audit |
+
+### 1.3 Modular & Reusable Architecture for Prototype Screens
+When building prototype screens in `docs/design/screens/`:
+- **Separate HTML, CSS, and JS**:
+  - `css/styles.css`: Centralized design system (tokens from `DESIGN.md`, base typography, `.btn`, `.card`, `.badge`, `.navbar`, `.sidebar`, form controls).
+  - `js/app.js`: Centralized interaction behaviors (active nav detection, modal backdrop handlers, toast notifications, 5-state matrix preview switcher).
+  - Screen HTMLs (`index.html`, `rooms.html`, `billing.html`): Clean semantic markup linking to the shared CSS and JS (`<link rel="stylesheet" href="css/styles.css">` and `<script src="js/app.js"></script>`).
+- **Eliminate Disjointed Inline Slop**:
+  - Never write monolithic HTML files with duplicate inline `<style>` tags or arbitrary hardcoded classes per screen.
+  - Ensures navbar layout, button heights, card paddings, font scales, and badge styles remain 100% identical and consistent across every route in `SITEMAP.md`.
+  - Accelerates M06 implementation: cleanly structured prototype components convert directly 1-to-1 into React/Vue/Blade components with zero guesswork.
 
 ---
 

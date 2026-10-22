@@ -35,7 +35,11 @@
 - **Touch Targets**:
   - All interactive tap targets (buttons, steppers, icon triggers) MUST meet minimum ≥ 44px × 44px (`h-11 min-w-11`).
 - **Visual Anti-Slop Directives**:
+  - NEVER use emoticons or raw OS emojis in the UI; ALWAYS use cohesive SVG icons (e.g. Lucide / Heroicons).
   - NO purple/neon gradients, NO glassmorphism backdrop blur, NO drop shadows > shadow-md.
+- **Reusable Prototype Architecture**:
+  - All screens MUST link to the shared stylesheet (`<link rel="stylesheet" href="css/styles.css">`) and shared script (`<script src="js/app.js"></script>`).
+  - DO NOT use inline `<style>` tags or divergent hardcoded styles. Use standardized shared classes (`.btn`, `.card`, `.badge`, `.navbar`, `.sidebar`, `.form-input`) so fonts, button sizes, card paddings, badges, and navbar layouts stay 100% consistent across every screen in the sitemap.
 
 ---
 

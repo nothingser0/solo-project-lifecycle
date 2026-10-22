@@ -26,6 +26,29 @@ Title,Description,Priority,Estimate,Labels
 "F-06: Export Reports to Excel","Manager exports monthly transaction ledger. Acceptance criteria: CSV injection sanitized.",Medium,3,reporting;P1
 ```
 
+### 1.3 Standar Penambahan Field Jira ke Kanban (Solo Developer Optimization)
+
+Ketika mengintegrasikan atau memperbarui Kanban board dengan Jira untuk proyek Solo Developer:
+1. **Otomatisasi Field (Eliminasi Redundansi Manual)**:
+   - **Assignee**: Dikelola otomatis oleh Jira Automation ke *"Assign to me"* saat kartu ditarik ke `In Progress`. Tidak perlu ditulis manual di setiap kartu.
+   - **Labels**: Hapus label `Solo` dari semua kartu (karena proyek dikerjakan mandiri). Label hanya disematkan untuk kondisi khusus seperti `blocked`.
+   - **Due Date**: Gunakan aturan global (dikosongkan kecuali ada *hard deadline* eksternal); hapus baris tanggal dari kartu individual.
+2. **Struktur Kartu Scannable (Punchy & Scannable)**:
+   - Format kartu: `[ID] [Work Type] — Judul Singkat`.
+   - Komponen wajib kartu:
+     * **`Parent`**: ID parent Epic bila ada (misal `Parent: RK-001`).
+     * **`Priority`**: `Highest` | `High` | `Medium` | `Low`.
+     * **`Description`**: Maksimal 2 kalimat padat yang menjelaskan nilai/deliverable konkret.
+     * **`Acceptance Criteria`**: Poin-poin checklist pendek (`- [ ] ...`) tanpa kalimat berbunga-bunga.
+     * **`Estimate`**: Durasi jam (`X hours` / `X–Y hours`).
+     * **`Dependencies`**: Prasyarat kartu lain atau `None`.
+3. **Workflow & Batas WIP Solo**:
+   - `Backlog` $\rightarrow$ `To Do (5)` $\rightarrow$ `In Progress (2)` $\rightarrow$ `In Review (1)` $\rightarrow$ `Done`.
+   - Penjelasan transisi status maksimal 1 kalimat per status.
+4. **Verifikasi Integritas**:
+   - Periksa dan hitung jumlah kartu sebelum dan setelah penambahan/pembaruan.
+   - Pastikan setiap kartu memiliki format scannable lengkap di atas tanpa penggandaan dokumen.
+
 ---
 
 ## 2. Notion Specification Database Adapter

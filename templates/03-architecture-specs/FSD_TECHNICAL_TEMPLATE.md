@@ -737,8 +737,8 @@ placeholder rows before sign-off.*
   | SCR-003 | `/[resource]` | [e.g., `Table`, `EmptyState`, `Toast`] | [5-state matrix → loading/error/empty branches] |
 
 - **Design-token transfer**: [How `DESIGN.md` tokens land in code — Tailwind theme, CSS custom
-  properties, or framework equivalent], including the anti-slop constraints (no gradients,
-  shadows ≤4px, WCAG ratios preserved).
+  properties, or framework equivalent], including the anti-slop constraints (shadows ≤4px,
+  WCAG ratios preserved).
 - **Component mapping**: [React → Vue / Svelte / Blade / Jetpack Compose, or `N/A — prototype
   already produced framework-native components`]. One row per primitive that changes shape.
 - **Prototype workflow used in M04**: [A | B | C | D | E] — determines whether screens exist as

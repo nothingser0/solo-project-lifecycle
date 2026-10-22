@@ -181,10 +181,10 @@ gate_M04() {
             fi
 
             # 5b. Anti-Slop Design Defenses (BLOCKER)
-            if grep -qiE "Anti-Slop|Zero Gradients|Zero Glassmorphism|Restrained Shadows" "$design_file"; then
+            if grep -qiE "Anti-Slop|Zero Emoticons|Zero Glassmorphism|Restrained Shadows" "$design_file"; then
                 echo "  ✅ DESIGN.md Anti-Slop design defenses verified"
             else
-                echo "  ❌ DESIGN.md missing Anti-Slop design rules (Zero Gradients, Zero Glassmorphism, Restrained Shadows)!"
+                echo "  ❌ DESIGN.md missing Anti-Slop design rules (Anti-Slop, Zero Emoticons, Zero Glassmorphism, Restrained Shadows)!"
                 GATE_FAILED=1
             fi
         fi
@@ -238,6 +238,16 @@ gate_M04() {
                         echo "  ✅ Landing Page (SCR-01) multi-section depth verified (Product Preview/FAQ/Features)"
                     else
                         echo "  ⚠️  Landing Page advisory: SCR-01 missing depth (Hero only). Standard SaaS landing pages require 6 sections: Hero, Product Preview Frame, Feature Deep Dives, ROI/Calculator, FAQ, and Footer."
+                    fi
+                fi
+                # 6f. Reusable Prototype Architecture Check (Shared CSS / Design System)
+                shared_css=$(find docs/design/screens -type f \( -name "*.css" -o -name "styles.css" -o -name "design-system.css" \) 2>/dev/null | wc -l | tr -d ' ')
+                html_count=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${html_count:-0}" -ge 2 ]; then
+                    if [ "${shared_css:-0}" -ge 1 ] || grep -qriE 'rel="stylesheet" href="[^"]*(\.css|styles|tailwind)' docs/design/screens/*.html 2>/dev/null; then
+                        echo "  ✅ Reusable prototype architecture verified (screens utilize shared CSS/design-system)"
+                    else
+                        echo "  ⚠️  Prototype advisory: multiple HTML screens detected without shared CSS. Ensure screens link to shared css/styles.css to maintain navbar, button, badge, and typography consistency across the sitemap."
                     fi
                 fi
             else
