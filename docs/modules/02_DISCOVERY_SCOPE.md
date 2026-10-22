@@ -4,7 +4,7 @@
 > **Decision ledger**: `templates/03-governance/DECISION_LOG_TEMPLATE.md` (→ `docs/DECISION_LOG.md`) — every decision across every phase, appended and superseded, never rewritten
 > **Meeting records**: `templates/01-discovery-commercial/MEETING_NOTES_TEMPLATE.md` (→ `docs/pm/meetings/YYYY-MM-DD_<topic>.md`) — decisions, action items and open questions separated, never fabricated
 > **Companion registers** (copy when needed): `BUSINESS_RULES_REGISTER_TEMPLATE.md` · `ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md` · `REQUIREMENTS_REGISTER_TEMPLATE.md` (→ `docs/pm/`, same base name)
-> 📖 **Optional ref**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md` · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` (elicitation mix, ambiguity classes, review passes) (do NOT preload)
+> 📖 **Optional ref**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md` · `references/pm/KANBAN_CARD_CRAFT_GUIDE.md` (Summary/Description craft, work-type examples, minimum card fields) · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` (elicitation mix, ambiguity classes, review passes) (do NOT preload)
 
 **Purpose**: extract real requirements, define technical boundaries, and lock **In/Out-of-Scope** into `SCOPE_STATEMENT.md` **before** contracts or design.
 

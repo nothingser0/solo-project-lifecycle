@@ -594,6 +594,14 @@
       ]
     },
     {
+      "path": "references/pm/KANBAN_CARD_CRAFT_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M02",
+        "M06"
+      ]
+    },
+    {
       "path": "references/pm/PM_ANALYTICS_SETUP_GUIDE.md",
       "cataloged": true,
       "modules": [

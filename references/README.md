@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **62 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
+Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **63 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
 
 ---
 
@@ -17,7 +17,7 @@ references/
 ├── ba/                  (2 files)  - Use case specification craft, requirements traceability & RTM
 ├── design/              (8 files)  - AI writing tells, content quality, motion, logo craft, design-to-code fidelity
 ├── growth/              (2 files)  - Product growth patterns
-├── pm/                 (12 files)  - Prioritization, analytics, communication, testing, tooling, stakeholder decoding
+├── pm/                 (13 files)  - Prioritization, analytics, communication, testing, tooling, stakeholder decoding, Kanban card craft
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
@@ -67,6 +67,7 @@ references/
 | [`PM_TOOLS_SETUP_GUIDE.md`](./pm/PM_TOOLS_SETUP_GUIDE.md) | Configuration guide for Linear, Jira, GitHub Projects, Notion for solo dev workflows | Module 01 |
 | [`PM_USER_TESTING_GUIDE.md`](./pm/PM_USER_TESTING_GUIDE.md) | User testing facilitation scripts, usability test plans, SUS scoring calculation | Module 04 |
 | [`INDUSTRY_TOOLS_ADAPTER.md`](./pm/INDUSTRY_TOOLS_ADAPTER.md) | Integration bridge for Notion databases, Linear/Jira CSV import, and remote Figma MCP | Module 01, 04 |
+| [`KANBAN_CARD_CRAFT_GUIDE.md`](./pm/KANBAN_CARD_CRAFT_GUIDE.md) | Reusable standard for writing Kanban cards: Summary/Description craft, work-type examples (Epic, Story, Task, Bug, Spike, Chore), minimum card fields, Work Type vs Priority | Module 02, 06 |
 
 ---
 
