@@ -50,14 +50,27 @@ To prevent visual inconsistencies (different button sizes, mismatched card paddi
    - Shared Modal / Drawer open & close handlers with accessible keyboard `Escape` trap.
    - 5-State Matrix preview simulator (Default, Loading Skeleton, Empty, Error, Success).
 
+4. **100% SITEMAP Coverage Mandate (Zero Missing Screens)**:
+   - Setiap rute dan ID layar (`SCR-01..SCR-NN`) yang dideklarasikan di `docs/specs/SITEMAP.md` **wajib** memiliki file HTML prototipe nyata yang fungsional di `docs/design/screens/`.
+   - Dilarang hanya membuat 1 halaman dashboard lalu membiarkan layar-layar operasional lainnya kosong. Seluruh alur aplikasi harus bisa diklik dan dijelajahi.
+
+5. **Interactive Multi-Role Simulation (RBAC Testing Standard)**:
+   - Setiap layar wajib menyertakan `#role-switcher` di navbar agar peninjau (klien/developer) dapat berpindah peran secara langsung (Guest, Tenant, Staff, Manager, Owner).
+   - Tautan sidebar dan menu yang terbatas untuk role tertentu wajib diberi atribut `data-roles="owner,manager"`.
+   - Data angka sensitif (seperti omzet, laba bersih, nomor rekening) wajib diberi atribut `data-role-mask="staff,user,guest"` untuk memverifikasi proteksi informasi sejak fase prototipe.
+
 ---
 
 ## Workflow
 
 1. **Setup Shared Assets**: Ensure `css/styles.css` and `js/app.js` are populated with tokens from `DESIGN.md`.
 2. **Build Screen HTML**: Implement each screen using the reusable classes (`<button class="btn btn-primary">`, `<div class="card">`).
-3. **Verify Sitemaps**: Verify that clicking navigation links transitions smoothly across prototype HTML files while keeping the navbar, typography, and button styles 100% consistent.
-4. **Review**: Check against DESIGN_SPEC.md requirements (5 states, responsive, accessibility, zero emoticons).
+3. **Automated UI/UX Consistency Audit & Auto-Fix**: Run the mechanical audit tool:
+   - Linux/Mac: `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix --report docs/specs/DESIGN_SYSTEM_AUDIT.md`
+   - Windows: `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix -Report docs/specs/DESIGN_SYSTEM_AUDIT.md`
+   The auditor verifies cross-screen navigation parity, component class uniformity, animation timings, zero emoticons, and automatically resolves missing link tags and viewport definitions.
+4. **Verify Sitemaps**: Verify that clicking navigation links transitions smoothly across prototype HTML files while keeping the navbar, typography, and button styles 100% consistent.
+5. **Review**: Check against DESIGN_SPEC.md requirements (5 states, responsive, accessibility, zero emoticons).
 
 ## Quality Gates
 

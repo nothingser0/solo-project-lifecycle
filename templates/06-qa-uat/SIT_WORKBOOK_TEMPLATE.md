@@ -11,7 +11,7 @@
 - **Test Environment**: Staging Server (`https://staging.[client-domain].com`)
 - **Person in Charge / Solo QA & Dev**: [Your Name]
 - **Target Execution Date**: [YYYY-MM-DD]
-- **Document References**: FSD-[ID] v1.0 & PRD-[ID] v1.0
+- **Document References**: FSD-[ID] v1.0, PRD-[ID] v1.0, & Wireflow Scenarios (`docs/specs/wireflows/`)
 
 ---
 

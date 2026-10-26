@@ -15,7 +15,7 @@ gate_M04() {
         min_logo=50 # M04-LITE: initial placeholder SVG allowed (min 50B)
     fi
     found_logo=""
-    for l in "assets/logo/logo.svg" "assets/logo/logo.png" "assets/logo/logo.webp"; do
+    for l in "docs/design/brand/logo.svg" "docs/design/brand/logo.png" "assets/logo/logo.svg" "assets/logo/logo.png" "assets/logo/logo.webp"; do
         if [ -f "$l" ]; then found_logo="$l"; break; fi
     done
     if [ -n "$found_logo" ]; then
@@ -85,7 +85,7 @@ gate_M04() {
                 ;;
         esac
     else
-        echo "  ❌ assets/logo/ (MISSING: logo.svg or logo.png required before DESIGN.md can be generated)"
+        echo "  ❌ Logo missing: logo.svg or logo.png required in docs/design/brand/ (or assets/logo/) before DESIGN.md can be generated"
         GATE_FAILED=1
     fi
 
@@ -111,7 +111,7 @@ gate_M04() {
     check_required "docs/specs/SITEMAP.md" "" $min_sitemap
     check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
     check_sections "docs/specs/COMPONENT_REQUIREMENTS.md" "Primitives|Atomic" "Composites" "WCAG|Accessibility"
-    check_required "docs/specs/LOGO_DESIGN_BRIEF.md" "" 200
+    check_required "docs/design/brand/LOGO_DESIGN_BRIEF.md" "docs/specs/LOGO_DESIGN_BRIEF.md" 200
     check_required "docs/design/inspiration/notes.md" "" 200
     check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000
     check_required "docs/specs/DESIGN_SPEC.md" "" $min_design_spec
@@ -229,7 +229,7 @@ gate_M04() {
                 landing_has_sections=0
                 if grep -qiE "FAQ|Frequently Asked|Mockup|Product (Preview|Tour|Showcase)|Calculator|Comparison" docs/specs/DESIGN_SPEC.md 2>/dev/null; then
                     landing_has_sections=1
-                elif grep -qiE "FAQ|Frequently Asked|Mockup|Product (Preview|Tour|Showcase)|Calculator|Comparison" docs/design/screens/*.html 2>/dev/null; then
+                elif grep -qriE "FAQ|Frequently Asked|Mockup|Product (Preview|Tour|Showcase)|Calculator|Comparison" docs/design/screens 2>/dev/null; then
                     landing_has_sections=1
                 fi
                 if [ $landing_has_sections -eq 1 ]; then
@@ -239,13 +239,24 @@ gate_M04() {
                 fi
             fi
             # 6f. Reusable Prototype Architecture Check (Shared CSS / Design System)
-            shared_css=$(find docs/design/screens -type f \( -name "*.css" -o -name "styles.css" -o -name "design-system.css" \) 2>/dev/null | wc -l | tr -d ' ')
+            shared_css=$(find docs/design -type f \( -name "*.css" -o -name "styles.css" -o -name "design-system.css" \) 2>/dev/null | wc -l | tr -d ' ')
             html_count=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | wc -l | tr -d ' ')
             if [ "${html_count:-0}" -ge 2 ]; then
-                if [ "${shared_css:-0}" -ge 1 ] || grep -qriE 'rel="stylesheet" href="[^"]*(\.css|styles|tailwind)' docs/design/screens/*.html 2>/dev/null; then
+                if [ "${shared_css:-0}" -ge 1 ] || grep -qriE 'rel="stylesheet" href="[^"]*(\.css|styles|tailwind)' docs/design/screens 2>/dev/null; then
                     echo "  ✅ Reusable prototype architecture verified (screens utilize shared CSS/design-system)"
                 else
                     echo "  ⚠️  Prototype advisory: multiple HTML screens detected without shared CSS. Ensure screens link to shared css/styles.css to maintain navbar, button, badge, and typography consistency across the sitemap."
+                fi
+            fi
+            # 6g. Mechanical UI/UX Consistency Audit
+            uiux_audit_script="${SCRIPT_DIR:-scripts/gates}/../../scripts/design/uiux_audit.py"
+            if [ -n "$py" ] && [ -f "$uiux_audit_script" ]; then
+                uiux_out="$("$py" "$uiux_audit_script" docs/design/screens 2>&1)"
+                uiux_ec=$?
+                if [ $uiux_ec -eq 0 ]; then
+                    echo "  ✅ Mechanical UI/UX consistency audit PASSED"
+                else
+                    echo "  ⚠️  UI/UX consistency audit found items to fix. Run: python3 scripts/design/uiux_audit.py docs/design/screens/ --fix"
                 fi
             fi
         else
@@ -279,6 +290,12 @@ gate_M04() {
             if grep -qiE "Visual Benchmark Side-by-Side|Spatial & Grid Layout|Component Anatomy & Indicators" "docs/specs/DESIGN_SPEC.md"; then
                 echo "  ✅ Visual Benchmark side-by-side review checklist verified in DESIGN_SPEC.md"
             fi
+        fi
+
+        # 10. Wireflow Interaction Scenarios (docs/specs/wireflows/*.md)
+        scenario_count=$(find docs/specs/wireflows docs/design/scenarios -type f -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        if [ "${scenario_count:-0}" -ge 1 ]; then
+            echo "  ✅ Wireflow Interaction Scenarios verified (found ${scenario_count} scenario runbook(s) in docs/specs/wireflows/)"
         fi
     fi
 }

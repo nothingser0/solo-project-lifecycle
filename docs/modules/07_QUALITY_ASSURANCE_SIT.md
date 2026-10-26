@@ -7,7 +7,7 @@ This module validates reliability, third-party integration integrity (*System In
 
 **Scale routing (one line)**: Small: M07 waived → `SECURITY_CHECKLIST_SMALL.md` in M06, go M09-LITE · Medium/Large: full M07 below (a capacity-only Large runs solo under a signed risk acceptance) · Enterprise / non-delegable: Phase A04 advisory (`deep-dives/07_QUALITY_ASSURANCE_SIT.md`).
 
-**Input**: staging branch from M06 + `FSD.md`.
+**Input**: staging branch from M06 + `FSD.md` + Wireflow Interaction Scenarios in `docs/specs/wireflows/` (`SCENARIOS_WFxx.md`).
 
 ## Steps
 
@@ -34,7 +34,8 @@ pnpm run test        # Vitest / Jest / Pytest / Go test — exit code 0
 2. **Encrypted vault upload**: AES-256 encrypted upload to storage bucket + presigned URL download/decrypt within 15-minute expiry.
 3. **Transactional email**: OTP email arrives with correctly formatted template (SMTP / Resend delivery log).
 4. **BOLA / IDOR Authorization Tests**: Explicitly test cross-tenant and cross-user data access (User A attempting to read/update User B's resource ID must strictly return `403 Forbidden` or `404 Not Found`).
-5. **SIT Sandbox Teardown & Reset Protocol**: After running synthetic sandbox mutations (test orders, simulated payments, generated OTPs), execute a clean-state reset or re-seed script before entering Module 09 (Client UAT) so client stakeholders encounter clean demo accounts rather than distorted test transactions.
+5. **Wireflow Scenarios Execution**: Verify the staging app against 100% of declared test scenarios in `docs/specs/wireflows/SCENARIOS_WFxx.md` (Happy Path nominals, Sad Path validation constraints, and domain edge cases like disabled/expired accounts). Record Pass/Fail outcomes directly into `docs/qa/SIT_WORKBOOK.md` and log defects in `docs/qa/BUG_REPORT.md`.
+6. **SIT Sandbox Teardown & Reset Protocol**: After running synthetic sandbox mutations (test orders, simulated payments, generated OTPs), execute a clean-state reset or re-seed script before entering Module 09 (Client UAT) so client stakeholders encounter clean demo accounts rather than distorted test transactions.
 
 ### Step 3 — Security Audit & Bug Triage
 ```bash

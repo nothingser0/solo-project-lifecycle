@@ -1,11 +1,13 @@
 /**
  * Reusable Prototype Interactivity Script
- * Provides shared UI behaviors across all prototype screens in docs/design/screens/
+ * Provides shared UI behaviors, 5-state matrix preview, and interactive multi-role RBAC simulation
+ * across all prototype screens in docs/design/screens/
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initActiveNav();
   initStateSwitcher();
+  initRoleSwitcher();
   initFormGuardrails();
 });
 
@@ -53,7 +55,63 @@ function initStateSwitcher() {
 }
 
 /**
- * 3. Form Submission Guardrail Simulation
+ * 3. Interactive Multi-Role Simulation (RBAC Simulator)
+ * Allows reviewing the prototype as Guest, User/Tenant, Staff, Manager, or Owner.
+ * Persists across page navigations via localStorage.
+ */
+function initRoleSwitcher() {
+  const roleSelect = document.getElementById('role-switcher');
+  const savedRole = localStorage.getItem('proto_simulated_role') || 'all';
+
+  if (roleSelect) {
+    roleSelect.value = savedRole;
+    roleSelect.addEventListener('change', (e) => {
+      const selectedRole = e.target.value;
+      localStorage.setItem('proto_simulated_role', selectedRole);
+      applyRolePermissions(selectedRole);
+      showToast(`Simulating Role: ${selectedRole.toUpperCase()}`, 'info');
+    });
+  }
+
+  applyRolePermissions(savedRole);
+}
+
+function applyRolePermissions(role) {
+  // 1. Role-restricted elements (data-roles="owner,manager")
+  const roleElements = document.querySelectorAll('[data-roles]');
+  roleElements.forEach(el => {
+    const allowedRoles = el.getAttribute('data-roles').split(',').map(r => r.trim().toLowerCase());
+    if (role === 'all' || allowedRoles.includes(role.toLowerCase())) {
+      el.style.display = '';
+    } else {
+      el.style.display = 'none';
+    }
+  });
+
+  // 2. Sensitive data masking (e.g. data-role-mask="staff" hides revenue from staff)
+  const maskedElements = document.querySelectorAll('[data-role-mask]');
+  maskedElements.forEach(el => {
+    const maskedFor = el.getAttribute('data-role-mask').split(',').map(r => r.trim().toLowerCase());
+    if (!el.hasAttribute('data-original-val')) {
+      el.setAttribute('data-original-val', el.innerHTML);
+    }
+
+    if (role !== 'all' && maskedFor.includes(role.toLowerCase())) {
+      el.innerHTML = '<span class="text-muted" style="font-size: 0.8em; letter-spacing: 2px;">••••••••</span> <span class="badge badge-warning" style="font-size: 0.65rem; padding: 2px 4px;">Restricted</span>';
+    } else {
+      el.innerHTML = el.getAttribute('data-original-val');
+    }
+  });
+
+  // 3. Update active role badge if present
+  const roleBadge = document.getElementById('active-role-badge');
+  if (roleBadge) {
+    roleBadge.textContent = role === 'all' ? 'All Roles' : role.toUpperCase();
+  }
+}
+
+/**
+ * 4. Form Submission Guardrail Simulation
  * Prevents double submissions and simulates pending state
  */
 function initFormGuardrails() {
@@ -83,7 +141,7 @@ function initFormGuardrails() {
 }
 
 /**
- * 4. Shared Toast Notification System
+ * 5. Shared Toast Notification System
  * @param {string} message
  * @param {'info' | 'success' | 'warning' | 'destructive'} type
  */
@@ -110,7 +168,7 @@ window.showToast = function(message, type = 'info') {
 };
 
 /**
- * 5. Accessible Modal Dialog System
+ * 6. Accessible Modal Dialog System
  */
 window.openModal = function(modalId) {
   const modal = document.getElementById(modalId);

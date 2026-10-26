@@ -34,6 +34,7 @@ Visual preview and interaction polish are mandatory to eliminate AI slop. Author
 - **Keyboard & Mobile Reflow**: High-contrast `focus-visible:ring-2` on all interactive controls (never `outline: none`); data tables on viewports `<640px` reflow into stacked key-value cards (never unconstrained horizontal scroll hiding action buttons).
 - Component signature match: Primary buttons, cards, and input fields must mirror exact radius, height, and border styling extracted from benchmark in `notes.md` (no generic AI defaults).
 - **Reusable Prototype Architecture**: All screens in `docs/design/screens/` must link to shared `css/styles.css` (tokens, buttons, cards, badges, navbar) and `js/app.js` (nav, modals, toast) — no inline styles or divergent component styling across pages.
+- **Mechanical UI/UX Consistency Audit**: Run `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix` (or `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix`) to audit and auto-fix any button, card, badge, animation, or navigation drifts across screens.
 
 ## Gate
 

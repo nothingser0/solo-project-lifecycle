@@ -58,6 +58,28 @@ When building prototype screens in `docs/design/screens/`:
   - Ensures navbar layout, button heights, card paddings, font scales, and badge styles remain 100% identical and consistent across every route in `SITEMAP.md`.
   - Accelerates M06 implementation: cleanly structured prototype components convert directly 1-to-1 into React/Vue/Blade components with zero guesswork.
 
+### 1.4 Audit Otomatis UI/UX & Auto-Fixer: Menjaga Konsistensi Lintas Halaman
+Sebelum menunjukkan prototipe kepada klien atau sebelum menandatangani Design Freeze, solo developer wajib menjalankan audit otomatis konsistensi UI/UX:
+- **Perintah Eksekusi**:
+  - `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix -Report docs/specs/DESIGN_SYSTEM_AUDIT.md` (Windows)
+  - `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix --report docs/specs/DESIGN_SYSTEM_AUDIT.md` (Linux/Mac/CI)
+- **Peran Auditor UI/UX Otomatis**:
+  1. **Audit Komponen**: Memeriksa seluruh tombol, kartu, badge, dan formulir agar tidak ada yang memakai styling acak atau inline style di luar `css/styles.css`.
+  2. **Audit Animasi & Micro-Interaction**: Memastikan durasi transisi hover seragam (`150ms ease-out`), kompresi sentuhan aktif (`active:scale-[0.98]`), dan kepatuhan `prefers-reduced-motion`.
+  3. **Audit Zero Emoticon**: Memastikan zero raw emojis pada antarmuka, mewajibkan penggunaan icon SVG kohesif (misal: Lucide).
+  4. **Audit Paritas Navigasi**: Memeriksa menu sidebar dan navbar di seluruh layar; mencegah perbedaan nama brand atau menu navigasi yang hilang antar-halaman.
+  5. **Auto-Fixing**: Otomatis menyuntikkan tag stylesheet, script interaktif, dan meta viewport mobile yang hilang.
+
+### 1.5 Standar Kelengkapan Prototipe: 100% Layar Sitemap & Simulasi Multi-Role
+Untuk memastikan peninjau dapat mengevaluasi aplikasi secara utuh sebelum masuk ke tahap koding M06:
+1. **Cakupan 100% Layar SITEMAP.md**:
+   - Setiap rute `SCR-01..SCR-NN` yang ada di `docs/specs/SITEMAP.md` **wajib** dibuatkan file HTML prototipe konkretnya di `docs/design/screens/`.
+   - Dilarang hanya membuat 1 halaman dashboard utama lalu membiarkan halaman sekunder lainnya kosong. Seluruh alur aplikasi harus bisa diklik dan dijelajahi.
+2. **Pengujian Multi-Role Interaktif (RBAC Testing)**:
+   - Pasang `#role-switcher` di navbar prototipe yang membaca dan menyimpan role aktif ke `localStorage` (Guest, User, Staff, Manager, Owner).
+   - Gunakan atribut `data-roles="owner,manager"` pada menu sidebar dan tombol aksi agar menu otomatis disaring sesuai role yang sedang aktif.
+   - Gunakan atribut `data-role-mask="staff,user,guest"` untuk memverifikasi penyembunyian data sensitif (seperti omzet atau nomor rekening bank) dari pandangan staff atau publik.
+
 ---
 
 ## 2. Solo Engineer Visual "Anti-Slop" Principles
