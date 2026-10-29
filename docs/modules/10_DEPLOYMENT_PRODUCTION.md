@@ -38,6 +38,7 @@ Promotes UAT-passed code from `staging` to `main`, configures production infra (
 6. **Observability**: Sentry DSN active; uptime monitor on `/api/health`; alert bots (Telegram/WhatsApp).
 7. **PVT**: login flow; create 1 document → PDF in prod bucket; 1 real low-nominal payment (e.g. Rp 10.000 QRIS) for the prod webhook; compile into **`GO_LIVE_REPORT.md`**.
 8. **Polish re-check on the production domain**: re-run all 33 tells of `docs/qa/POLISH_AUDIT.md` (or `POLISH_AUDIT_TEMPLATE.md` for Small) against the live production domain — favicon, OG preview image, page title, console errors, image weight, media/3D CLS, database base64 bloat, FOUC theme flash, unbounded rate limits, plus rows 21–22 (slop comments, race conditions) against the deployed build. CDN/minification/env differences surface new tells that staging hid. Record the delta in `GO_LIVE_REPORT.md`.
+9. **Production web-quality recheck (when applicable)**: verify the M02 performance budget on the production web app and repeat accessibility checks for user-facing interfaces when deployment changes runtime behavior. Recheck SEO/metadata only for public, indexable pages. Reuse the M07 audit reports and record production deltas in `GO_LIVE_REPORT.md`; mark non-applicable surfaces and checks with a short reason.
 
 ## 4. Mobile (Android/iOS) — Summary
 

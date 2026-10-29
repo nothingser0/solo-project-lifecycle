@@ -1,6 +1,6 @@
 ---
 name: solo-project-lifecycle
-description: Lightweight SDLC framework for solo devs and small teams, from idea to release. Use for new projects (MVP, SaaS, client work) that need phase structure, document templates, and quality gates. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
+description: Lightweight SDLC framework for solo devs and small teams, from idea to release. Use for new projects (MVP, SaaS, client work) that need phase structure, document templates, quality gates, and post-launch A/B test analysis. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
 version: 1.0.0
 updated: 2026-10-21
 ---
@@ -60,7 +60,7 @@ Example: write `M00 · Product Research & Discovery` and `M01 · Idea Feasibilit
 
 - Modules M00–M13, A-series: `docs/modules/NN_*.md` — each is a compact runbook (≤~2k tokens): inputs → steps → outputs → gate criteria. Extended material lives in `docs/modules/deep-dives/`; open it only when a step requires depth.
 - Templates: `templates/` — fast-track: `templates/essentials/`
-- References: `references/` (stacks, solo patterns, checklists) — load when entering the related phase
+- References: `references/` (stacks, solo patterns, checklists, `references/pm/AB_TEST_ANALYSIS_GUIDE.md`) — load when entering the related phase
 - Code patterns: `patterns/` (Indonesia-specific: payment gateways, UU PDP, i18n/IDR, offline-first) — load only when the project needs that concern
 - Case studies: `case-studies/` — for timeline/budget estimates
 
@@ -90,4 +90,4 @@ AGENTS.md, CONTEXT.md, ARCHITECTURE.md, DESIGN.md, CONVENTIONS.md, TODO.md, .env
 
 ## Scripts
 
-`./scripts/gates/validate-gate.sh <MODULE>` · `./scripts/scaffold/init-project.sh <dir> <scale>` · `./scripts/scaffold/template-picker.sh` · see `scripts/` for more.
+`./scripts/gates/validate-gate.sh <MODULE>` · `./scripts/scaffold/init-project.sh <dir> <scale>` · `./scripts/scaffold/template-picker.sh` · `python scripts/runtime/analyze_ab_test.py` · see `scripts/` for more.

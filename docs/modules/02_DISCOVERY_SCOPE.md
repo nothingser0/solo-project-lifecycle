@@ -25,6 +25,7 @@
 - Must-Haves **collectively** resolve ≥70% of root causes; every Must maps to a primary bottleneck (zero vanity P0s). Secondary-friction features demote to Should/Won't.
 - **Type before wording** (`patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §4): classify each item as functional / non-functional / business rule / constraint first. Changes when the UI is redesigned → functional; must hold regardless → business rule. Ambiguity classes (§4.1) name the fix; banned-word table: `REQUIREMENTS_AMBIGUITY_CHECKLIST.md`.
 - **Given-When-Then Acceptance Criteria**: Every P0 Must-Have User Story MUST include at least one concrete BDD scenario (`Given [initial context], When [action occurs], Then [expected outcome]`). Vague statements ("the system allows users to cancel orders") are invalid and block scope locking.
+- **Test traceability**: Give each acceptance criterion a stable requirement/story ID and map it to a concrete test scenario. For interactive flows, use the canonical wireflow scenarios from M04 and reference their `WFxx` IDs instead of copying the same scenario into a second source. M07 must trace each in-scope criterion to an executed test and recorded evidence; uncovered criteria remain open.
 - **Non-Functional Requirements (NFR) Baseline**: Explicitly define quantitative system boundaries:
   - Max concurrent users target for MVP (e.g. 50–100 active sessions).
   - Latency SLA target (API p95 ≤500ms, page TTI ≤3s on 4G).

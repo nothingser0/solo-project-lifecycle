@@ -123,7 +123,7 @@
 ### M13 — Product Operations
 | Agent | Human only |
 |---|---|
-| Metrics, cohorts, RICE, experiment hypotheses | **Double Down / Pivot / Kill** (`13:38`), recruiting power users (`13:35`), NPS to real users (`13:34`) |
+| Metrics, cohorts, RICE, experiment hypotheses | **Double Down / Pivot / Kill** (`13:53`), recruiting power users (`13:38`), NPS to real users (`13:37`) |
 
 ### A00–A04 — Enterprise Advisory
 The advisory series is **never solo coding**. The agent drafts; a licensed professional and the client decide.

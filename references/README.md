@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **63 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
+Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **64 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
 
 ---
 
@@ -17,7 +17,7 @@ references/
 ├── ba/                  (2 files)  - Use case specification craft, requirements traceability & RTM
 ├── design/              (8 files)  - AI writing tells, content quality, motion, logo craft, design-to-code fidelity
 ├── growth/              (2 files)  - Product growth patterns
-├── pm/                 (13 files)  - Prioritization, analytics, communication, testing, tooling, stakeholder decoding, Kanban card craft
+├── pm/                 (14 files)  - Prioritization, analytics, communication, testing, tooling, stakeholder decoding, Kanban card craft, A/B test analysis
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
@@ -60,6 +60,7 @@ references/
 
 | File | Purpose | Referenced In |
 |---|---|---|
+| [`AB_TEST_ANALYSIS_GUIDE.md`](./pm/AB_TEST_ANALYSIS_GUIDE.md) | Statistical significance, SRM check, sample size/power, guardrail audit, decision matrix (Ship/Extend/Stop) | Module 13 |
 | [`PM_ANALYTICS_SETUP_GUIDE.md`](./pm/PM_ANALYTICS_SETUP_GUIDE.md) | Event taxonomy, funnel design, metric baselines (Mixpanel, GA4, PostHog) | Module 06 |
 | [`PM_COMMUNICATION_GUIDE.md`](./pm/PM_COMMUNICATION_GUIDE.md) | Stakeholder management, status updates, client expectation setting, meeting cadences | Module 02 |
 | [`PM_CONTINUOUS_IMPROVEMENT_GUIDE.md`](./pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md) | Post-launch iteration loops, NPS feedback, bug triage, retrospective facilitation | Module 13 |

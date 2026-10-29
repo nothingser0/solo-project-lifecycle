@@ -35,6 +35,7 @@ pnpm run test        # Vitest / Jest / Pytest / Go test — exit code 0
 3. **Transactional email**: OTP email arrives with correctly formatted template (SMTP / Resend delivery log).
 4. **BOLA / IDOR Authorization Tests**: Explicitly test cross-tenant and cross-user data access (User A attempting to read/update User B's resource ID must strictly return `403 Forbidden` or `404 Not Found`).
 5. **Wireflow Scenarios Execution**: Verify the staging app against 100% of declared test scenarios in `docs/specs/wireflows/SCENARIOS_WFxx.md` (Happy Path nominals, Sad Path validation constraints, and domain edge cases like disabled/expired accounts). Record Pass/Fail outcomes directly into `docs/qa/SIT_WORKBOOK.md` and log defects in `docs/qa/BUG_REPORT.md`.
+   - **Acceptance-criteria traceability**: Every in-scope P0 acceptance criterion from M02 must point to a scenario ID and a SIT result/evidence row. Reuse the M04 wireflow ID when it covers the criterion; add a focused test case when it does not. Report uncovered criteria explicitly and keep the SIT result NOT READY until they are tested or formally descoped by the human.
 6. **SIT Sandbox Teardown & Reset Protocol**: After running synthetic sandbox mutations (test orders, simulated payments, generated OTPs), execute a clean-state reset or re-seed script before entering Module 09 (Client UAT) so client stakeholders encounter clean demo accounts rather than distorted test transactions.
 
 ### Step 3 — Security Audit & Bug Triage
@@ -74,10 +75,11 @@ Tests pass ≠ looks finished. Build `docs/qa/POLISH_AUDIT.md` from `templates/0
 
 ### Step 7b — Accessibility & Metadata audits
 
-Two audits that automated gates do not cover, both run on the **deployed staging URL**:
+Run applicable audits on the **deployed staging URL**; record non-applicability in the SIT workbook with a short reason:
 
-- **`docs/qa/ACCESSIBILITY_AUDIT.md`** (from `ACCESSIBILITY_AUDIT_TEMPLATE.md`) — 9 priority categories. Critical: accessible names, keyboard access, focus & dialogs, tool boundaries. **The manual keyboard pass is not optional** — automated tools catch roughly a third of real issues. Do not claim WCAG 2.2 AA conformance without it.
-- **`docs/qa/METADATA_AUDIT.md`** (from `METADATA_AND_SEO_AUDIT_TEMPLATE.md`) — 8 priority categories. Critical: correctness/duplication (one metadata source per page, no duplicate tags) and tool boundaries. Verify social cards on a **real URL**, not localhost.
+- **`docs/qa/ACCESSIBILITY_AUDIT.md`** (from `ACCESSIBILITY_AUDIT_TEMPLATE.md`) for user-facing interfaces — 9 priority categories. Critical: accessible names, keyboard access, focus & dialogs, tool boundaries. **The manual keyboard pass is required**; automated tools alone do not establish WCAG conformance. Do not claim WCAG 2.2 AA conformance without the applicable manual checks.
+- **`docs/qa/METADATA_AUDIT.md`** (from `METADATA_AND_SEO_AUDIT_TEMPLATE.md`) for public, indexable web pages — 8 priority categories. Critical: correctness/duplication (one metadata source per page, no duplicate tags) and tool boundaries. Verify social cards on a **real URL**, not localhost. Internal tools, authenticated apps, and non-web products record `N/A` with the reason in the SIT workbook.
+- **Performance**: verify the measurable M02 NFR budget on the relevant target device/network. For web apps, use the performance checks already in `POLISH_AUDIT_TEMPLATE.md`; add Core Web Vitals only when they are part of the product's performance requirements.
 
 Both follow the polish audit's evidence rule: every row is PASS/FAIL with the exact tag, command output, or screenshot. When reporting findings from any of these audits, apply the **three-proof rule** (contract + runtime + correction) in `POLISH_AUDIT_TEMPLATE.md` §E — a candidate that fails any proof is dropped, not reported.
 
@@ -85,8 +87,8 @@ Both follow the polish audit's evidence rule: every row is PASS/FAIL with the ex
 1. **`docs/qa/SIT_WORKBOOK.md`** — SIT plan + pass evidence, conclusion: READY FOR CLIENT UAT (prerequisite for M09 UAT).
 2. **`docs/qa/SECURITY_AUDIT.md`** — dependency audit results, OWASP/header status, secret-scan and encryption verification (also accepted as `docs/qa/SECURITY_AUDIT_REPORT.md`).
 3. **`docs/qa/POLISH_AUDIT.md`** — 33-tell anti-vibe-code + code-quality audit with per-row evidence; conclusion READY / NOT READY.
-4. **`docs/qa/ACCESSIBILITY_AUDIT.md`** — 9-category audit including the manual keyboard pass; conclusion READY / NOT READY, and whether a WCAG 2.2 AA claim is supportable.
-5. **`docs/qa/METADATA_AUDIT.md`** — 8-category audit (duplication, canonical, social cards verified on a real URL, structured data, locale).
+4. **Conditional: `docs/qa/ACCESSIBILITY_AUDIT.md`** — 9-category audit including the manual keyboard pass for user-facing interfaces; otherwise record N/A and why in SIT.
+5. **Conditional: `docs/qa/METADATA_AUDIT.md`** — 8-category audit for public, indexable web pages; otherwise record N/A and why in SIT.
 
 ## Gate Exit Criteria [GATE]
 - [ ] All unit + integration tests pass (exit 0).
@@ -95,8 +97,7 @@ Both follow the polish audit's evidence rule: every row is PASS/FAIL with the ex
 - [ ] Load test: ≤200 ms avg latency, zero 500s.
 - [ ] Staging deployed and stable; smoke test passes.
 - [ ] `docs/qa/POLISH_AUDIT.md` published: 0 blocking tells open (favicon, 404, OG image, console errors, placeholder text, dead buttons, etc.).
-- [ ] `docs/qa/ACCESSIBILITY_AUDIT.md` published: zero critical-category failures, and the manual keyboard pass recorded (not inferred from axe alone).
-- [ ] `docs/qa/METADATA_AUDIT.md` published: no duplicate metadata tags, canonical matches `og:url`, social card verified on a real URL.
+- [ ] Applicable web-quality checks recorded: accessibility for user-facing interfaces; performance against the M02 NFR budget; SEO/metadata for public, indexable pages. Mark non-applicable checks with the reason. Reuse existing audit templates and reports; do not create duplicate reports for the same surface.
 - [ ] `docs/qa/SIT_WORKBOOK.md` published with **READY FOR CLIENT UAT**.
 
 **Coverage (one line)**: Large ≥70% line / ≥60% branch, Enterprise ≥80% / ≥70% (`pnpm test:coverage`), Small/Medium pragmatic coverage of critical paths only.

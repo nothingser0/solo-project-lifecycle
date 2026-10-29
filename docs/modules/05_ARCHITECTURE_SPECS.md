@@ -57,6 +57,8 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
   - **UI Primitives & Motion**: shadcn/ui + Radix UI + Lucide + Framer Motion (per `patterns/ui/UI_COMPONENT_TAXONOMY.md` and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`).
   - **Access Control & Permissions**: Explicit RBAC / ReBAC model implementation (per `patterns/security/ACCESS_CONTROL_PATTERNS.md`).
 
+**Risk-triggered security and vendor references**: Load `patterns/security/THREAT_MODELING_STRIDE_PATTERN.md` and the relevant security pattern when the product handles personal/sensitive data, payments, public APIs, multi-tenant access, or privileged roles; use the project data classification and threat model to select controls. For a third-party service, first assess data handled, failure impact, exit path, and cost in the vendor/build-vs-buy decision. After the stack and provider are chosen, consult that provider's official skill or documentation for integration details; vendor-specific guidance does not replace the project's threat model or security review.
+
 ### STEP 3: Database Schema & Object Storage Design (ERD, DDL & Media Architecture)
 
 - **Visual ERD (Mermaid)**: Wajib memuat diagram relasi visual `erDiagram` (Mermaid) yang menggambarkan kardinalitas (one-to-many, many-to-many) antar entitas inti.

@@ -267,6 +267,39 @@ docs/experiments/
 └── 2026-10-experiment-003-pricing-page-redesign.md
 ```
 
+### 5.4 A/B Test Statistical Analysis Pipeline
+
+Full manual guide: `references/pm/AB_TEST_ANALYSIS_GUIDE.md`.
+
+Automated CLI analysis via `scripts/runtime/analyze_ab_test.py`:
+
+```bash
+# Example invocation with guardrails
+python scripts/runtime/analyze_ab_test.py \
+  --test-name "Pricing Page Redesign" \
+  --hypothesis "Clearer tiered comparison increases trial conversions" \
+  --duration-days 14 \
+  -cu 1800 -cc 180 \
+  -vu 1820 -vc 235 \
+  --mde 10.0 \
+  --guardrail "P95 Latency:210ms:215ms:PASS" \
+  --guardrail "Refund Rate:1.2%:1.1%:PASS"
+```
+
+**Statistical Formulas Enforced**:
+1. **Sample Size & Power**: $n_{\text{req}} = \frac{2 \cdot (Z_{\alpha/2} + Z_\beta)^2 \cdot p(1-p)}{MDE^2}$. Flag if underpowered ($<80\%$ power or $<100$ conversions/variant).
+2. **Sample Ratio Mismatch (SRM)**: $\chi^2 = \sum \frac{(O - E)^2}{E}$. If $p_{SRM} < 0.001$, traffic allocation is biased — test is invalid.
+3. **Relative Lift**: $\text{Lift} = \frac{p_v - p_c}{p_c} \times 100\%$.
+4. **Z-Score & Two-Tailed p-value**: $Z = \frac{p_v - p_c}{\sqrt{SE_c^2 + SE_v^2}}$, evaluate against $\alpha = 0.05$.
+5. **95% Confidence Interval**: $\Delta \pm 1.96 \cdot SE$.
+
+**Outcome Actions**:
+- **Ship it**: Significant positive lift ($p < 0.05$) + clean guardrails $\rightarrow$ Roll out to 100%.
+- **Investigate**: Significant positive lift, but secondary metric degraded $\rightarrow$ Trade-off review.
+- **Extend the test**: Directional positive lift, but underpowered or duration $< 7$ days $\rightarrow$ Run longer.
+- **Stop the test**: Inconclusive / flat lift with adequate power $\rightarrow$ Kill variant, free bandwidth.
+- **Don't ship**: Significant negative lift $\rightarrow$ Instant kill switch, revert to control.
+
 ---
 
 ## Step 6 (Detail): Product Health Monitoring

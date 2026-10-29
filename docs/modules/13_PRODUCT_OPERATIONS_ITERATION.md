@@ -1,7 +1,7 @@
 # Module 13: Product Operations & Continuous Iteration
 
 > **Templates to copy**: `templates/09-product-growth/AB_TEST_REPORT_TEMPLATE.md` · `METRICS_BASELINE_REPORT_TEMPLATE.md` · `GROWTH_EXPERIMENTS_BACKLOG_TEMPLATE.md` · `CHURN_PREVENTION_PLAYBOOK.md` · `SAAS_PRICING_MONETIZATION_GUIDE.md` · `ONBOARDING_ACTIVATION_PLAYBOOK.md`
-> 📖 **Optional** (do NOT preload): `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` · `references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md` · `references/pm/PRODUCT_SUNSET_AND_EOL_GUIDE.md` · `references/pm/FEATURE_FINANCIAL_INVESTMENT_FRAMEWORK.md` · `references/growth/ENGINEERING_AS_MARKETING_PLAYBOOK.md` · `references/growth/BEHAVIORAL_PSYCHOLOGY_FRAMEWORK.md` · `deep-dives/13_PRODUCT_OPERATIONS_ITERATION.md` (retention/churn SQL, NPS snippets, RICE worked examples, OKR templates, benchmarks)
+> 📖 **Optional** (do NOT preload): `references/pm/AB_TEST_ANALYSIS_GUIDE.md` · `references/pm/PM_PRIORITIZATION_FRAMEWORKS.md` · `references/pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md` · `references/pm/PRODUCT_SUNSET_AND_EOL_GUIDE.md` · `references/pm/FEATURE_FINANCIAL_INVESTMENT_FRAMEWORK.md` · `references/growth/ENGINEERING_AS_MARKETING_PLAYBOOK.md` · `references/growth/BEHAVIORAL_PSYCHOLOGY_FRAMEWORK.md` · `deep-dives/13_PRODUCT_OPERATIONS_ITERATION.md` (retention/churn SQL, NPS snippets, RICE worked examples, OKR templates, benchmarks)
 
 > **RICE scoring (inline — no need to open the PM guide)**:
 > `Score = (Reach × Impact × Confidence) / Effort` · Reach = users/quarter affected · Impact = 0.25 minimal / 0.5 low / 1 medium / 2 high / 3 massive · Confidence = 100% high / 80% medium / 50% low · Effort = person-weeks. Higher score = do first.
@@ -30,15 +30,26 @@ Not uptime/deploy speed — the **quality of product decisions from data**. Dev 
 
 ## 3. Step-by-Step (SQL, snippets & examples in deep dive)
 
+### Evidence method by traffic and risk
+Choose the smallest method that can answer the product question. With low traffic or few customers, use instrumented task observation, support/interview themes, cohort direction, or a time-boxed concierge/usability test; report counts and context, and label the result directional. Use an A/B test only when traffic, conversion volume, and exposure control can support the planned decision. Do not turn an underpowered result into a winner or a failed feature. Set a feature flag and rollback path when a production change needs controlled exposure or fast reversal; a flag is not a prerequisite for every interview or manual experiment. Keep claims proportional to the evidence and carry unresolved assumptions in the shared assumption ledger.
+
 1. **Baseline** (≥30 days live): Acquisition (signups/sources), Activation (% onboarded / first core action ≤24 h), Retention (Day 1/7/30/90), Revenue (MRR/ARPU/LTV), Engagement (DAU/MAU), Performance (P95, error rate). P95 = SLA threshold. Benchmarks: B2B SaaS Day-30 retention 25–40%, NPS 30–50. Below benchmark → prioritize onboarding/activation. Alert on DAU drop > 30% vs 30-day baseline.
-2. **Feedback loop**: NPS = % Promoters − % Detractors, automated at Day 7/30/Quarterly; Canny/Fider widget; > 5 identical tickets → FAQ or UX fix.
+2. **Feedback loop**: NPS = % Promoters − % Detractors, automated at Day 7/30/Quarterly when the sample and consent support it; Canny/Fider widget; > 5 identical tickets → FAQ or UX fix. Group requests by user segment, job, and observed pain; deduplicate repeats and retain representative evidence. Treat request counts as a prioritization signal, not proof of demand—validate decision-critical needs with user behavior or research before expanding scope.
 3. **Cohorts**: weekly signup cohorts; Power Users (top 10% → advisory board, beta, testimonials), At-Risk (inactive > 14 days consumer / > 7 days daily-tools → win-back), Churned (> 60 days or canceled). Signals: activity drop > 50%, activation milestone never reached.
 4. **RICE**: `(Reach × Impact × Confidence) / Effort` (Impact 0.25–3; Confidence 50/80/100%). ROI = (incremental revenue − cost)/cost → payback < 6 months. Mandatory opportunity-cost questions. Quadrants: Do First / Schedule / Delegate / Drop.
-5. **Experiments & Rollback Safety**:
+5. **Experiments & Rollback Safety (method chosen for the evidence available)**:
    - Hypothesis format: *"We believe [CHANGE] → [IMPACT] for [SEGMENT] because [RATIONALE]; measured by [METRIC & THRESHOLD]"*.
-   - **Feature Flag / Instant Kill Switch**: Production experiments MUST be gated behind dynamic feature flags (PostHog, LaunchDarkly, or DB-backed flags) with an instant kill switch to disable degraded variants in `< 5 minutes` without requiring a full code re-deployment. **Record a removal date when the flag is created** — a flag with no expiry becomes permanent dead code, and the losing variant's branch is never removed.
-   - **Statistical Significance & Sample Size Guardrail**: A/B tests MUST declare minimum sample size and 95% statistical significance ($p < 0.05$) before calling a winner. Underpowered experiments (<100 conversions per variant) must not trigger sweeping architectural changes.
-   - Queue by lift × ease + North Star alignment; velocity 2–4/month; log win/lose/neutral in `docs/experiments/`.
+   - **Controlled exposure**: When a production experiment needs segmented rollout or rapid reversal, use a feature flag with a named owner, rollback trigger, and removal date. Otherwise document the test's exposure and rollback method; do not add a flag by default.
+   - **Statistical guardrails**: For A/B tests, check allocation, sample adequacy, duration, confidence interval, and practical effect before deciding. Underpowered or low-volume results are inconclusive and must not be reported as statistically proven. Do not require an A/B test when a qualitative or behavioral method is more suitable.
+   - **Guardrail metrics**: Check relevant secondary measures (such as revenue, latency, churn, errors, or support burden) for material harm; choose these before the test based on the change.
+   - **Structured Decision Matrix**: Evaluate results via CLI (`python scripts/runtime/analyze_ab_test.py`) into actionable verdicts:
+     - *Ship it (100% rollout)*: Significant positive lift, no guardrail degradations.
+     - *Investigate*: Significant positive lift, but secondary/guardrail metric regressed.
+     - *Extend the test*: Directional positive trend, but underpowered or duration < 7 days.
+     - *Stop the test*: Inconclusive / flat lift with adequate power — preserve dev bandwidth.
+     - *Don't ship*: Significant negative lift — toggle kill switch, revert to control.
+     - *Stop & Invalidate*: SRM detected ($p_{SRM} < 0.001$) — allocation router broken.
+   - Queue by lift × ease + North Star alignment; set a cadence the product's traffic and solo capacity can sustain; log result, evidence strength, and next decision in `docs/experiments/` (see `references/pm/AB_TEST_ANALYSIS_GUIDE.md`).
 6. **Health cadence**: weekly 15-min (signups, activation, D7 retention, MRR vs churn, errors/latency); monthly OKR vs North Star; quarterly Double Down / Pivot / Kill (< 5% adoption after 3 months → deprecate); annual strategy refresh vs M00.
 7. **Scaling**: P95 > 500ms / query > 100ms / N+1 / CPU > 80% → indexing audit, Redis, CDN, scale out. DB > 1M rows unpartitioned, backup > 30 min → indexes/partitioning. `CAU = infra cost / MAU` (< $1 consumer, < $10 B2B). Overload (> 60 h/wk, tickets > 48 h unanswered) → VA/support, freelance dev, or co-founder.
 
@@ -60,7 +71,8 @@ Small → **M13 WAIVED** (ends M12). Client/Freelance/Internal → **WAIVED** (e
 - [ ] 30-day baseline documented (`METRICS_BASELINE_REPORT.md`).
 - [ ] Feedback loop active (NPS scheduled, widget live, tickets aggregated).
 - [ ] Cohort analysis executed ≥ 1x/month; backlog RICE-prioritized (`GROWTH_EXPERIMENTS_BACKLOG.md`).
-- [ ] ≥ 1 experiment launched with feature flag & instant kill switch; results documented with statistical significance ($p < 0.05$); weekly review run ≥ 4 consecutive weeks.
+- [ ] At least one decision-making learning cycle is documented with a method suitable for the available traffic, evidence strength, result, and resulting action; A/B claims include valid statistical analysis when an A/B test was used.
+- [ ] Product review cadence is established and supported by actual data; flag and rollback controls are documented when controlled production exposure is used.
 - [ ] Scaling signals monitored (performance, cost, workload).
 
 ## 7. Module Integration

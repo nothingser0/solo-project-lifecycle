@@ -87,6 +87,7 @@ Data engineering and performance load testing scripts:
 
 | Tool | Description |
 |:---|:---|
+| [`scripts/runtime/analyze_ab_test.py`](./runtime/analyze_ab_test.py) | Statistical A/B test analyzer: Sample Ratio Mismatch (SRM), z-test, 95% CI, power, guardrails, and Ship/Extend/Stop recommendations |
 | [`scripts/runtime/etl-import.js`](./runtime/etl-import.js) | Node.js production batch database importer |
 | [`scripts/runtime/migrate-data.ts`](./runtime/migrate-data.ts) | Streaming batch ETL with reconciliation report (extracted vs loaded + rejected), 500-row default chunks |
 | [`scripts/runtime/load-test.js`](./runtime/load-test.js) | Universal k6 load testing script with p95 < 200ms latency thresholds |

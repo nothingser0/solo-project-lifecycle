@@ -11,6 +11,7 @@
 
 ### Step 0 — Premise Testing & M00 Inheritance
 - If M00 ran: inherit TAM/SAM/SOM, competitor matrix, personas — do NOT redo; focus on technical triage.
+- Continue the same assumption IDs and ledger started in M00; do not create a competing copy. For each decision-critical open premise, record impact if false, uncertainty, smallest useful validation, evidence/result, and the decision or next test. Use `templates/01-discovery-commercial/ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md` when the M00-lite artifact cannot carry that trail. A test plan is not evidence; inconclusive results remain open.
 - Log unproven premises with confidence tags (✅/🔶/❓) and kill thresholds.
 - **Provisional Gate Rule**: if M00 is `PENDING_PRIMARY_RESEARCH`, write `Feasibility-Decision: PROVISIONAL_PENDING_M00` — no final GO. The gate returns a distinct non-terminal verdict (**exit 4**); do not chain onward until the M00 research is done and the gate re-runs green.
 - **Solo-capacity classifier runs at EVERY scale**, Small included: it derives the tier from the Intake fields, *not* the declared `Scale:` line, so if the two disagree (e.g. `Scale: small` + a payment webhook) the gate fails on the High-Water-Mark rule. Set `Scale:` to its verdict.
