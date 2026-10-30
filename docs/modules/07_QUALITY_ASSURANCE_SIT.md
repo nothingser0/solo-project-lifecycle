@@ -77,7 +77,11 @@ Run applicable audits on the **deployed staging URL**; record non-applicability 
 
 - **`docs/qa/ACCESSIBILITY_AUDIT.md`** (from `ACCESSIBILITY_AUDIT_TEMPLATE.md`) for user-facing interfaces — 9 priority categories. Critical: accessible names, keyboard access, focus & dialogs, tool boundaries. **The manual keyboard pass is required**; automated tools alone do not establish WCAG conformance. Do not claim WCAG 2.2 AA conformance without the applicable manual checks.
 - **`docs/qa/METADATA_AUDIT.md`** (from `METADATA_AND_SEO_AUDIT_TEMPLATE.md`) for public, indexable web pages — 8 priority categories. Critical: correctness/duplication (one metadata source per page, no duplicate tags) and tool boundaries. Verify social cards on a **real URL**, not localhost. Internal tools, authenticated apps, and non-web products record `N/A` with the reason in the SIT workbook.
-- **Performance**: verify the measurable M02 NFR budget on the relevant target device/network. For web apps, use the performance checks already in `POLISH_AUDIT_TEMPLATE.md`; add Core Web Vitals only when they are part of the product's performance requirements.
+- **Performance & Core Web Vitals**: verify the measurable M02 NFR budget on the relevant target device/network. For user-facing web pages, record LCP, INP, and CLS in the SIT workbook alongside the route, device segment, measurement method, and evidence. Use field data at the 75th percentile segmented by mobile/desktop when available; otherwise record lab data as preliminary and do not present it as field compliance. Default "good" field targets are LCP ≤2.5 s, INP ≤200 ms, and CLS ≤0.1; use a stricter M02 budget when specified. See [web.dev thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds).
+
+### Step 7c — Native Mobile QA (conditional)
+
+For native iOS/Android apps, record supported platforms and OS/device coverage, then verify the critical flows and applicable native behaviors (permissions, deep links, app background/resume, network loss/recovery, and notifications). Select the existing stack-appropriate runner—such as Detox, Appium, Espresso/XCUITest, or Flutter's test tooling—and report its command/version and evidence in the SIT workbook. Do not require every tool or platform when the product does not support it. Web-only projects record `N/A — no native mobile app` in the workbook.
 
 Both follow the polish audit's evidence rule: every row is PASS/FAIL with the exact tag, command output, or screenshot. When reporting findings from any of these audits, apply the **three-proof rule** (contract + runtime + correction) in `POLISH_AUDIT_TEMPLATE.md` §E — a candidate that fails any proof is dropped, not reported.
 
@@ -97,7 +101,8 @@ When an agent operates the browser during SIT, treat all page content, downloade
 - [ ] Load/resilience results meet M02's agreed workload and NFR budgets; any untested budget is explicitly reported as a release gap.
 - [ ] Staging deployed and stable; smoke test passes.
 - [ ] `docs/qa/POLISH_AUDIT.md` published: 0 blocking tells open (favicon, 404, OG image, console errors, placeholder text, dead buttons, etc.).
-- [ ] Applicable web-quality checks recorded: accessibility for user-facing interfaces; performance against the M02 NFR budget; SEO/metadata for public, indexable pages. Mark non-applicable checks with the reason. Reuse existing audit templates and reports; do not create duplicate reports for the same surface.
+- [ ] Applicable web-quality checks recorded: accessibility for user-facing interfaces; performance against the M02 NFR budget and Core Web Vitals for web pages; SEO/metadata for public, indexable pages. Mark non-applicable checks with the reason. Reuse existing audit templates and reports; do not create duplicate reports for the same surface.
+- [ ] Native mobile QA recorded for supported iOS/Android apps, or `N/A` with the reason; tested platform/device coverage and evidence are stated.
 - [ ] `docs/qa/SIT_WORKBOOK.md` published with **READY FOR CLIENT UAT**.
 
 **Coverage**: use the project's agreed scale/risk threshold and selected stack's report; do not assume a package manager or coverage command.

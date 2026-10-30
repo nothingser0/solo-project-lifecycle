@@ -98,6 +98,22 @@ Report the selected stack's coverage command and actual output, if coverage is r
 
 > Small / Medium scale: no strict threshold — report actual numbers for transparency.
 
+### 4c. Core Web Vitals (web surfaces only)
+
+Record routes in M02's performance scope and identify any representative route grouping. Include the measurement source, device segment, build/URL, and evidence. Prefer field data at the 75th percentile, segmented by mobile and desktop. When field data is unavailable, label the result as lab data and preliminary; a lab score does not establish field compliance. Compare against M02 budgets or, when none exist, the current default good thresholds: LCP ≤2.5 s, INP ≤200 ms, CLS ≤0.1. Source: [web.dev Core Web Vitals thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds).
+
+| Route / surface | Device segment | Data type + source | LCP (≤2.5 s) | INP (≤200 ms) | CLS (≤0.1) | Result / evidence |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| [route or N/A — no web UI] | [mobile / desktop] | [field p75 / lab + tool] | [value] | [value] | [value] | [status + evidence path] |
+
+### 4d. Native Mobile QA (native apps only)
+
+For an iOS/Android app, list supported platforms and representative OS/device coverage. Include critical user flows and applicable permission, deep-link, background/resume, offline/recovery, and notification behavior. Record the selected runner and exact command; do not require multiple overlapping frameworks. Web-only projects record `N/A — no native mobile app` and why.
+
+| Platform / OS / device | Critical flow or native behavior | Runner / command | Result | Evidence |
+| :--- | :--- | :--- | :---: | :--- |
+| [iOS / Android or N/A with reason] | [scenario] | [tool + command/version] | [PASS / FAIL / BLOCKED / N/A] | [artifact / run link] |
+
 ---
 
 ### 5. Gate Recommendation

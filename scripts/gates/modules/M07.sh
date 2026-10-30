@@ -23,6 +23,8 @@ gate_M07() {
         "PART II: SIT REPORT" \
         "Third-Party Integration" \
         "Load & Concurrency Test" \
+        "Core Web Vitals" \
+        "Native Mobile QA" \
         "Sign-Off"
     # Anti-vibe-code polish audit (medium+): 33 tells must be checked on the deployed URL.
     if [ -f "docs/qa/POLISH_AUDIT.md" ]; then
