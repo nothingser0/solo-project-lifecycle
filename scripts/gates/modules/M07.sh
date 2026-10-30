@@ -46,10 +46,10 @@ gate_M07() {
         if echo "$sit_content" | grep -qE "\[Your Name\]|\[Application Name\]|\[client-domain\]|\[e\.g\.|\[git-hash\]|\[YYYY-MM-DD\]|\[Total\]|\[ID\]"; then
             echo "  ❌ SIT_WORKBOOK.md still contains unresolved template placeholders ([...])! Fill in real execution results."
             GATE_FAILED=1
-        elif echo "$sit_content" | grep -qiE "NOT EXECUTED|NOT PASSED|NOT TESTED|Status[[:space:]]*:[[:space:]]*FAIL|Testing Status[[:space:]]*:[[:space:]]*FAIL"; then
+        elif echo "$sit_content" | grep -qiE "NOT EXECUTED|NOT PASSED|NOT TESTED|Final Testing Status[^:]*:[[:space:]]*.*NOT READY|Status[[:space:]]*:[[:space:]]*FAIL|Testing Status[[:space:]]*:[[:space:]]*FAIL"; then
             echo "  ❌ SIT_WORKBOOK.md reports a FAILED / NOT EXECUTED status! SIT must PASS before Client UAT."
             GATE_FAILED=1
-        elif echo "$sit_content" | grep -qiE "SIT PASS|READY FOR (CLIENT )?UAT|Testing Status[^:]*:[[:space:]]*PASS|PASSED \(SIT PASS\)"; then
+        elif echo "$sit_content" | grep -qiE "Final Testing Status[^:]*:[[:space:]]*SIT PASS"; then
             echo "  ✅ SIT_WORKBOOK.md attests SIT PASS (ready for UAT)"
         else
             echo "  ❌ SIT_WORKBOOK.md missing explicit PASS attestation ('SIT PASS' / 'READY FOR UAT')!"
@@ -62,59 +62,43 @@ gate_M07() {
             GATE_FAILED=1
         fi
         # Reject any failed scenario: an explicit FAIL cell or a non-zero Failed-column count.
-        if echo "$sit_content" | grep -qE "\|[[:space:]]*\**FAIL\**[[:space:]]*\|" || echo "$sit_content" | grep -qE "\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|"; then
+        if echo "$sit_content" | grep -qE "\|[[:space:]]*\**(FAIL|BLOCKED)\**[[:space:]]*\|" || echo "$sit_content" | grep -qE "\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|"; then
             echo "  ❌ SIT_WORKBOOK.md contains FAILED test scenario(s)! 100% of SIT scenarios must PASS before Client UAT."
             GATE_FAILED=1
         else
             echo "  ✅ SIT_WORKBOOK.md shows zero failed SIT scenarios"
         fi
-        # Coverage threshold for Large / Enterprise (module 07 §6).
+        # Large / Enterprise must report measured coverage; M02/project policy owns any threshold.
         m07_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
         if [ "$m07_scale" = "large" ] || [ "$m07_scale" = "enterprise" ]; then
-            if [ "$m07_scale" = "enterprise" ]; then
-                cov_min=80
-            else
-                cov_min=70
-            fi
             cov_line=$(echo "$sit_content" | grep -iE "line[[:space:]]*coverage" | grep -oE "[0-9]+([.][0-9]+)?%" | head -1 | tr -d '%')
             if [ -n "$cov_line" ]; then
-                cov_int=${cov_line%%.*}
-                if [ "${cov_int:-0}" -ge "$cov_min" ]; then
-                    echo "  ✅ SIT_WORKBOOK.md line coverage ${cov_int}% >= ${cov_min}% (required)"
-                else
-                    echo "  ❌ SIT_WORKBOOK.md line coverage ${cov_int}% < ${cov_min}% required for this scale!"
-                    GATE_FAILED=1
-                fi
+                echo "  ✅ SIT_WORKBOOK.md measured line coverage recorded (${cov_line}%)"
             else
-                echo "  ❌ SIT_WORKBOOK.md missing 'Line Coverage: N%' report (>= ${cov_min}% required for this scale)!"
+                echo "  ❌ SIT_WORKBOOK.md missing measured line coverage required for this scale; report actual coverage or document why unavailable."
                 GATE_FAILED=1
             fi
         fi
     fi
-    if [ "${m07_scale:-}" = "large" ] || [ "${m07_scale:-}" = "enterprise" ]; then
-        echo "  [INFO] Large / Enterprise scale detected: Security Audit is MANDATORY."
-        check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
-        # Content verification (BLOCKER): zero-critical attestation required.
-        sec_target=""
-        [ -f "docs/qa/SECURITY_AUDIT.md" ] && sec_target="docs/qa/SECURITY_AUDIT.md"
-        [ -z "$sec_target" ] && [ -f "docs/qa/SECURITY_AUDIT_REPORT.md" ] && sec_target="docs/qa/SECURITY_AUDIT_REPORT.md"
-        if [ -n "$sec_target" ]; then
-            sec_content=$(cat "$sec_target" 2>/dev/null || true)
-            if echo "$sec_content" | grep -qE "\[Your Name\]|\[Application Name\]|\[client-domain\]|\[YYYY-MM-DD\]|\[Patched / Monitored\]"; then
-                echo "  ❌ $sec_target still contains unresolved template placeholders ([...])! Fill in real audit results."
-                GATE_FAILED=1
-            elif echo "$sec_content" | grep -qiE "\[x\][^A-Za-z]*REJECTED" || echo "$sec_content" | grep -qiE "\|[[:space:]]*Critical[[:space:]]*\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|"; then
-                echo "  ❌ $sec_target reports unresolved Critical vulnerabilities! Zero Critical required before go-live."
-                GATE_FAILED=1
-            elif echo "$sec_content" | grep -qiE "\[x\][^A-Za-z]*(SECURITY PASS|MEETS SECURITY STANDARDS)|Free of Critical|Zero Critical|0 Critical"; then
-                echo "  ✅ $sec_target attests SECURITY PASS (zero Critical vulnerabilities)"
-            else
-                echo "  ❌ $sec_target missing zero-Critical attestation ('SECURITY PASS' / 'Free of Critical')!"
-                GATE_FAILED=1
-            fi
+    echo "  [INFO] Full M07 scale detected: Security Audit is MANDATORY."
+    check_required "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
+    # Content verification (BLOCKER): zero-critical attestation required.
+    sec_target=""
+    [ -f "docs/qa/SECURITY_AUDIT.md" ] && sec_target="docs/qa/SECURITY_AUDIT.md"
+    [ -z "$sec_target" ] && [ -f "docs/qa/SECURITY_AUDIT_REPORT.md" ] && sec_target="docs/qa/SECURITY_AUDIT_REPORT.md"
+    if [ -n "$sec_target" ]; then
+        sec_content=$(cat "$sec_target" 2>/dev/null || true)
+        if echo "$sec_content" | grep -qE "\[Your Name\]|\[Application Name\]|\[client-domain\]|\[YYYY-MM-DD\]|\[Patched / Monitored\]"; then
+            echo "  ❌ $sec_target still contains unresolved template placeholders ([...])! Fill in real audit results."
+            GATE_FAILED=1
+        elif echo "$sec_content" | grep -qiE "\[x\][^A-Za-z]*REJECTED" || echo "$sec_content" | grep -qiE "\|[[:space:]]*Critical[[:space:]]*\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|"; then
+            echo "  ❌ $sec_target reports unresolved Critical vulnerabilities! Zero Critical required before go-live."
+            GATE_FAILED=1
+        elif echo "$sec_content" | grep -qiE "\[x\][^A-Za-z]*(SECURITY PASS|MEETS SECURITY STANDARDS)|Free of Critical|Zero Critical|0 Critical"; then
+            echo "  ✅ $sec_target attests SECURITY PASS (zero Critical vulnerabilities)"
+        else
+            echo "  ❌ $sec_target missing zero-Critical attestation ('SECURITY PASS' / 'Free of Critical')!"
+            GATE_FAILED=1
         fi
-    else
-        check_optional "docs/qa/SECURITY_AUDIT.md" "docs/qa/SECURITY_AUDIT_REPORT.md"
-    fi
     fi
 }

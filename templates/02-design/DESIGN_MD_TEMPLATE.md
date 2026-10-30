@@ -173,8 +173,7 @@ M04 requires this section by name. A single spacing scale is what keeps a layout
 
 ## 5. Anti-Slop Rules & Design Defenses
 - **Zero Emoticons / Emojis (Icons Only)**: Jangan pernah menggunakan emoticon atau karakter emoji OS (seperti 🚀, 💡, ⚙️, ❌) pada antarmuka; selalu gunakan icon SVG standar yang kohesif (e.g. Lucide, Heroicons).
-- **Zero Glassmorphism**: No `backdrop-blur` or semi-transparent floating glass panels that destroy text legibility and tank low-end GPU performance.
-- **Restrained Shadows**: Maximum shadow elevation is `4px` (`shadow-sm` / subtle drop shadow). No glowing or blown-out neon drop shadows.
+- **Effects by evidence**: Choose blur, transparency, and shadow from the inspected reference and test them for text contrast, visual hierarchy, and performance on target devices. Remove an effect when it obscures content or adds no useful hierarchy; do not reject it by name alone.
 - **Mobile Touch Defense**: All interactive form inputs must maintain `16px` base font size on mobile viewports to prevent iOS Safari auto-zoom; all buttons must satisfy `min-h-[44px]` touch targets.
 
 ---

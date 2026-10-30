@@ -45,8 +45,9 @@ Governance & compliance templates for A00–A04:
 
 ## 3. Clause Drafting Notes (Operational Drafts)
 
-**Single PIC clause (sample wording)**:
-> "All instructions, design approvals, UAT results, and document signings are valid only if issued or signed off by the designated Client Single PIC. Verbal instructions or written requests from client staff outside the designated Single PIC hold no binding authority over the Developer."
+**Decision authority**: Record the operational PIC's approval scope separately from the Client's authorized contract signatory. One person may hold both roles. A backup acts only under written delegation that states its scope and limits. This avoids treating project approval authority as proof of legal signing authority.
+
+**Scope-to-contract reconciliation**: Include the approved scope document's version/date in the SOW and check each deliverable, exclusion, acceptance test, dependency, milestone, and payment trigger against it. Resolve differences before signature or record them as an approved CR.
 
 **Liability cap (sample wording)**:
 > "The Developer is not liable for indirect damages, loss of business profit, or data breaches caused by client employee negligence in storing passwords. The Developer's maximum financial liability under any circumstance is capped at the total contract value actually paid by the Client."

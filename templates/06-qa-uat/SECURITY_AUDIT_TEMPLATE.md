@@ -1,6 +1,8 @@
 # Software Security Audit Report
 
-> Technical security audit documentation, dependency sanitation, OWASP Top 10 vulnerability protection, and data regulatory compliance verification (UU PDP No. 27/2022).
+> Technical security assessment covering applicable OWASP categories, dependencies, and project-specific data protections.
+
+> Working report template: begin with no findings/results marked as passed. Scope the checks to the M05 threat model, reachable trust boundaries, deployed configuration, and dependency tools for the selected stack. Mark non-applicable controls with a reason. This report is not a legal compliance certification.
 
 ---
 
@@ -9,51 +11,50 @@
 - **Target Environment URL**: `https://staging.[client-domain].com`
 - **Technical Auditor / Solo Security Engineer**: [Your Name]
 - **Audit Date**: [YYYY-MM-DD]
-- **Compliance Level**: Standard Web Application / Regulated Data
+- **Data classification / regulatory scope**: [project classification or N/A with reason]
 
 ---
 
 ## 2. Third-Party Dependency Audit Results (Supply-Chain Security)
 
-Command Executed: `pnpm audit --audit-level=high`
+Command and tool version: [selected stack's dependency scanner, exact command, version, and date]
 
 | Vulnerability Level | Findings Count | Remediation Status |
 | :--- | :---: | :--- |
-| **Critical** | 0 | Free of Critical Vulnerabilities |
-| **High** | 0 | Free of High Vulnerabilities |
-| **Moderate** | [ ] | [Patched / Monitored] |
-| **Low** | [ ] | Ignored if development build dependency only |
+| **Critical** | [observed count] | [disposition / evidence] |
+| **High** | [observed count] | [disposition / evidence] |
+| **Moderate** | [observed count] | [disposition / evidence] |
+| **Low** | [observed count] | [disposition / evidence] |
 
 ---
 
 ## 3. OWASP Top 10 Verification Checklist
 
-> **Naming note**: `A01`–`A10` here are **OWASP Top 10 categories** (e.g. `A01:2021 Broken Access Control`), NOT the Enterprise Advisory phases `A00`–`A04` in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md`. Same letters, unrelated namespaces.
+**Version / scope used**: [current OWASP Top 10 version and applicable application type]
 
-| Vulnerability Category | Defense Mechanism Tested | Test Status | Technical Evidence |
+> **Naming note**: `A01`–`A10` here are **OWASP Top 10 categories**, NOT the Enterprise Advisory phases `A00`–`A04` in `docs/modules/A00_ENTERPRISE_ADVISORY_SERIES.md`. Same letters, unrelated namespaces.
+
+| OWASP Top 10:2025 category / threat ID | Applicable control and test | Status (PASS / FAIL / N/A + reason) | Technical Evidence |
 | :--- | :--- | :---: | :--- |
-| **A01: Broken Access Control** | IDOR verification: User A restricted from accessing User B's documents | [x] PASS | Isolated query with filter `WHERE creator_id = user.id` |
-| **A02: Cryptographic Failures** | File vault AES-256 encrypted; password Argon2id hashed; TLS 1.3 active | [x] PASS | Verified via binary inspection of S3 files and database hash columns |
-| **A03: Injection (SQLi/Command)** | Database queries must be parameterized (Prisma/Drizzle); Zod input validation | [x] PASS | Injection payload `' OR '1'='1` rejected as plain string input |
-| **A04: Insecure Design** | Rate Limiting on login and document endpoints | [x] PASS | Load burst of 10 requests/second returned `429 Too Many Requests` |
-| **A05: Security Misconfiguration** | Debug mode disabled in staging/production; error messages do not leak stack traces | [x] PASS | Server error responses return structured generic messages |
-| **A06: Vulnerable Components** | Dependency audit clean of public CVEs | [x] PASS | Passed `pnpm audit` |
-| **A07: Identification & Auth** | Brute force protection; session stored in `HttpOnly, Secure` cookies with `SameSite=Lax` (or `Strict` when app and API share one origin) | [x] PASS | Session cannot be stolen via JavaScript `document.cookie`; cookie is actually sent on the app→API call |
-| **A08: Software & Data Integrity** | Document integrity validated using SHA-256 cryptographic hashes | [x] PASS | SHA-256 value stored in database and PDF footer |
-| **A09: Logging & Monitoring** | Audit trail logging for every document creation & signing action | [x] PASS | Logs stored with UTC timestamp, IP address, and User-Agent |
-| **A10: Server-Side Request Forgery** | Webhook endpoints only invoke URLs registered on the official whitelist | [x] PASS | Calls to internal local IP addresses (127.0.0.1) are blocked |
+| **A01: Broken Access Control** | [test applicable authorization boundaries] | [ ] | [observed evidence or N/A reason] |
+| **A02: Security Misconfiguration** | [inspect applicable deployed configuration and error handling] | [ ] | [observed evidence or N/A reason] |
+| **A03: Software Supply Chain Failures** | [review dependency/build provenance and scanner results] | [ ] | [command, version, output or N/A reason] |
+| **A04: Cryptographic Failures** | [test cryptography and sensitive-data flows present] | [ ] | [observed evidence or N/A reason] |
+| **A05: Injection** | [test input/query/command boundaries present] | [ ] | [observed evidence or N/A reason] |
+| **A06: Insecure Design** | [test relevant abuse/rate controls from threat model] | [ ] | [observed evidence or N/A reason] |
+| **A07: Authentication Failures** | [test authentication/session controls if present] | [ ] | [observed evidence or N/A reason] |
+| **A08: Software & Data Integrity** | [test update, build, webhook or data integrity controls that apply] | [ ] | [observed evidence or N/A reason] |
+| **A09: Security Logging and Alerting Failures** | [test security-relevant logging/alerting requirements] | [ ] | [observed evidence or N/A reason] |
+| **A10: Mishandling of Exceptional Conditions** | [test error, failure, timeout, and recovery paths] | [ ] | [observed evidence or N/A reason] |
+| **Additional threat-model scenarios (including SSRF where applicable)** | [test relevant trust boundaries not covered above] | [ ] | [observed evidence or N/A reason] |
 
 ---
 
 ## 4. HTTP Security Headers Verification
 
-| Security Header | Mandatory Configuration Value | Status |
+| Security Header / deployed control | Expected value from threat model and deployment needs | Status + response evidence |
 | :--- | :--- | :---: |
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` | Enabled |
-| `X-Content-Type-Options` | `nosniff` | Enabled |
-| `X-Frame-Options` | `DENY` (Prevents Clickjacking attacks) | Enabled |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` | Enabled |
-| `Content-Security-Policy` | `default-src 'self'; script-src 'self' ...` | Enabled |
+| [header/control] | [expected value or N/A rationale] | [PASS / FAIL / N/A + evidence] |
 
 ---
 
@@ -109,7 +110,7 @@ If no threat model exists, note that as a gap and proceed with §3. Do not build
 
 ## 5. Security Conclusion & Pass Status
 
-- [x] **MEETS SECURITY STANDARDS (SECURITY PASS)**: All critical test parameters above are satisfied. The system is secure against common exploitation vectors and meets basic UU PDP No. 27/2022 compliance.
+- [ ] **SECURITY PASS**: Applicable tests have evidence and findings meet the project's documented release policy. This is not a legal compliance certification.
 - [ ] **REJECTED (FAIL)**: Critical/High category security vulnerabilities identified that must be resolved prior to go-live.
 - [ ] **PASS WITH OUTSTANDING VALIDATION**: No confirmed Critical/High finding, but one or more items are recorded as `needs_validation`. List them in §7 and name who can resolve each one. **This is not a pass** — it is a decision to proceed while the gap is written down and owned.
 

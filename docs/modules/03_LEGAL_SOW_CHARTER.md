@@ -24,7 +24,10 @@
 Percentages must sum to exactly 100%. Standard = **30/40/30**; **50/50** only for Small fast-track client projects.
 
 ### Step 3 — Single PIC Rule
-Document name, title, email, phone of **1 absolute decision maker** client-side, along with a **designated Back-up PIC** (escalation path if Primary PIC is uncontactable for ≥5 business days) and **1 official communication channel** (email/project tool). All instructions, approvals, UAT results, and signatures are valid only from that PIC via that channel. Clause: *"Verbal instructions, casual chat messages, or written requests from client staff outside the designated Single PIC and official channel hold no binding authority over the developer."* Review SLA: max 3 business days.
+Record the operational PIC's name, title, email, phone, approval scope, and **1 official communication channel**. Record the Client's authorized contract signatory separately; one person may fill both roles. A backup may approve only within authority and limits delegated by the Client in writing. Record UAT and change-request authority explicitly. Review SLA: max 3 business days.
+
+### Step 3a — Contract Baseline and Data Handling
+Before signature, reconcile every SOW deliverable, exclusion, milestone, acceptance test, dependency, and payment trigger against the approved `SCOPE_STATEMENT.md` version. Record its version/date in the SOW; any difference is either corrected or approved through a documented CR. If personal data will be processed, complete the DPA fields for data categories, purpose, duration, subprocessors, processing locations, and cross-border access/transfers; obtain professional legal review and signatures before that processing begins. Record `DPA signed` or `DPA N/A — no personal data processed` in the M03 log. Keep legal deadlines and obligations subject to counsel review for the applicable jurisdiction and contract.
 
 ### Step 4 — Legal Protection Clauses
 1. **IP**: source code, credentials, licenses remain the Developer's property until 100% of milestones are paid.
@@ -74,6 +77,9 @@ PASSED if and only if:
 - [ ] `docs/pm/SOW_CONTRACT.md` (including Part I: Project Charter) approved
 - [ ] Contract signed by Client and Developer (or approved internally for solo products)
 - [ ] Client Single PIC officially designated
+- [ ] Operational approval authority and authorized contract signatory recorded; any backup delegation documented
+- [ ] SOW scope and acceptance terms reconciled against the approved scope version
+- [ ] DPA signed before personal-data processing, or explicit `N/A` recorded when none is processed
 - [ ] **Down Payment (Milestone 1) received and confirmed in the Developer's bank account** (or self-budget allocated for internal projects)
 
 ---

@@ -109,6 +109,16 @@
 - **Current Solution**: [...]
 - **Budget**: [...]
 
+### Beachhead Decision
+
+Compare up to three plausible initial segments. Score only from evidence; label unsupported judgments as assumptions and link the supporting interview or market research.
+
+| Segment | Pain / urgency | WTP evidence | Buyer reachability | Solo serviceability | Decision / evidence link |
+|---|---|---|---|---|---|
+| [Segment A] | [Evidence / assumption] | [Signal] | [How reachable] | [Constraints] | [Select / defer + source] |
+
+Select one initial segment. For that segment, compare up to three channels by access to qualified users, time/cost to run a first test, repeatability, and result attribution; select one channel and record its first test and success signal under Go-To-Market Strategy. Keep this decision proportional: do not complete unused rows just to fill the table.
+
 ### Value Proposition
 
 **One-Line Hook:**  
@@ -176,12 +186,11 @@ For solo technical founders who want to ship SaaS products fast, LaunchKit is an
 
 ### Riskiest Assumption Test (RAT) Framework
 
-Identify the single lethal hypothesis before committing engineering resources to MVP:
+Summarize the highest-priority open assumptions from the shared M00–M05 assumption ledger. Keep IDs, evidence, status, and next steps in that ledger; this table links the strategy to the selected test and does not create a parallel register.
 
-| Assumption ID | Category (Desirability / Feasibility / Viability / Usability) | Hypothesis | Lethal Impact (What breaks if false?) | Cheap Validation Experiment (Fake Door / Concierge / Survey) | Success Metric | Status (PASS / FAIL / PENDING) |
-|---|---|---|---|---|---|---|
-| `RAT-01` | Desirability | Freelancers actively track tax obligations monthly | Product completely unused | Manual Google Sheets review with 10 freelancers | ≥ 6/10 use it weekly | PENDING |
-| `RAT-02` | Viability | Users will pay Rp 50.000/mo for automated PPh calculation | Zero revenue / fatal unit economics | Pre-order deposit link on landing page | ≥ 5 paid deposits | PENDING |
+| Assumption ID (ledger link) | Category (Desirability / Feasibility / Viability / Usability) | Hypothesis summary | Decision impact | Linked test / success signal | Ledger status |
+|---|---|---|---|---|---|
+| [ASM-001] | [Risk category] | [Short hypothesis] | [What decision changes if false] | [Test + measurable signal] | [OPEN / TESTING / VALIDATED / DISPROVEN] |
 
 ### Strategic Response to Threats
 

@@ -16,6 +16,8 @@
 | **Client (Controller)** | [Client Company / PT / CV Name] |
 | **Developer (Processor)** | [Your Name / Independent Software Consultant], acting as a data processor acting on documented instructions only |
 | **Sub-processors** | e.g., cloud hosting (AWS/Vercel), database (Supabase/Neon), email (Resend/SendGrid), payments (Midtrans/Xendit) — all under the **Client's** corporate account |
+| **Processing location(s)** | [Service / country or region / data stored or accessed / purpose] |
+| **Cross-border access or transfer** | [None / destination, service, data involved, and documented Client authorisation] |
 | **Categories of Data Subjects** | e.g., end customers, employees, agents |
 | **Categories of Personal Data** | e.g., name, phone/WhatsApp, email, address, transaction history |
 | **Special-category data** | [none / health / biometric / financial detail — restricted processing] |
@@ -95,6 +97,7 @@
 ## Checklist (before signature)
 
 - [ ] Roles (controller/processor) and sub-processors listed
+- [ ] Processing locations, data access regions, and any cross-border access or transfer recorded for review
 - [ ] Categories of data subjects and personal data recorded
 - [ ] Security baseline accepted (§4)
 - [ ] Breach notification deadline (≤24h to Client / 72h statutory) accepted

@@ -8,11 +8,21 @@
 **AI Tool Used**: [Cursor / Windsurf / Claude Code / GitHub Copilot]  
 **Feature/PR**: [Description]
 
+## Review Scope & Finding Disposition
+
+Review the actual diff against its TODO task, source requirement IDs, and locked acceptance criteria. Confirm every changed file and behavior is in scope; verify new packages and APIs against current official documentation for the selected stack. Focus security review on changed trust boundaries and data flows (authentication/authorization, input validation, data access, secrets, and external calls). Treat the stack-specific examples below as prompts, not universal requirements: mark a control N/A with a reason when the project does not use that technology or data flow.
+
+| Finding | Severity (blocker / fix now / accepted risk / out of scope) | Evidence / file | Disposition |
+|---|---|---|---|
+| [Finding or none] | [Severity] | [Diff location / command output] | [Fix, CR, accepted with owner + review date, or N/A reason] |
+
+Blockers and in-scope defects must be fixed before merge. Route behavior or scope changes through the project's Change Request flow. Record accepted risks with an owner and review date; do not silently waive them.
+
 ---
 
 ## Pre-Review: Automated Checks
 
-Run these commands before manual review:
+Run the project's configured equivalents before manual review. Confirm each command exists in the selected stack's harness; omit unsupported checks with a brief reason. Do not copy these TypeScript/Node examples into non-Node projects without adaptation:
 
 ```bash
 # Type Safety

@@ -209,6 +209,7 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 - [ ] **Color Calibration & Tone Balance**: Exact HEX tokens matched from benchmark; zero uncalibrated neon hues (`#FF5722` / raw orange).
 - [ ] **Schedule / Timeline Architecture**: Real column-aligned CSS grid for calendars/Gantt charts; zero fake full-width table rows.
 - [ ] **Action Density & Calmness**: Minimalist triggers; no button-crowded list cards.
+- [ ] **Task Completion & Trust**: Main action and next step are clear; errors explain recovery; validate core tasks with keyboard and assistive technology as applicable.
 - [ ] **Human In-Browser Review**: Human user opened `docs/design/screens/index.html` in browser and directly compared side-by-side with the reference image.
 
 - Approved by: [name of Client PIC or the human user — never the AI agent]

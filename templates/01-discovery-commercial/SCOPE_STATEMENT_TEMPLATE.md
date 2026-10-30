@@ -35,18 +35,20 @@
 - **Secondary Root Causes (≈ 20%)**: [Secondary friction points: e.g., notification delays, multi-branch coordination]
 - **Problem-Solution Fit Rule**: Every Must-Have (P0) feature must directly address the primary 80% root causes.
 
-### 2.2 Realistic Business Growth Ramp
-- **Year 1 Customer Target**: [e.g., 50–100 paying organizations (not fantasy 500 in Month 1)]
-- **Projected MRR**: [e.g., Rp 5M – Rp 10M at Rp 99k/month]
-- **Target D30 Retention**: [e.g., 30%–40% active after initial 30 days]
-- **Modeled Customer Lifetime**: [e.g., 12–18 months based on SMB churn rates]
+### 2.2 Project Success Criteria
 
-### 2.3 Non-Circular North Star Metric & Guardrails
-- **North Star Metric**: [e.g., Active Tenant Rate = 70% of monthly active signed-up organizations record ≥5 operational transactions per week]
+Gunakan hasil M00/M01 sebagai sumber baseline bila tersedia. Tetapkan ukuran keberhasilan yang sesuai dengan tujuan proyek ini; jangan salin target pelanggan, MRR, retensi, atau churn generik.
+
+| Outcome / metric | Definition | Baseline + source | Target + time window | Measurement source | Owner |
+|---|---|---|---|---|---|
+| [Business outcome] | [How it is calculated or observed] | [Value / unknown + evidence] | [Target / date] | [System, report, or human review] | [Owner] |
+
+### 2.3 Primary Outcome Metric & Guardrails
+- **North Star / Primary Outcome Metric**: [Name, formula or observation method, target, time window, and why it reflects delivered value. Use a project-level outcome measure if a North Star Metric does not fit.]
 - **Operational Guardrail Metrics (Must NOT degrade)**:
-  - Guardrail 1 (Performance): [e.g., Critical action API p95 response time ≤ 500ms on 3G connections]
-  - Guardrail 2 (Integrity): [e.g., Inventory/financial discrepancy rate ≤ 0.1%]
-  - Guardrail 3 (Reliability): [e.g., Zero unhandled checkout exceptions or data corruption incidents]
+  - Guardrail 1: [Metric, threshold, and evidence source]
+  - Guardrail 2: [Metric, threshold, and evidence source]
+  - Guardrail 3 (if needed): [Metric, threshold, and evidence source]
 
 ---
 
@@ -102,8 +104,20 @@
 | **F-07** | [Integrations / Alert]| [Third-party webhooks, external notifications] | **P2 (Could)** | 3 days | Workflow enhancement | Phase 2 Backlog | 🔶 |
 | **F-08** | [Deferred Scope] | [Multi-currency, mobile native app, AI copilot] | **P3 (Won't)** | — | Non-essential scope | Excluded | ✅ |
 
-### 4.2 User Stories & Acceptance Criteria (INVEST & Given-When-Then Standard)
+### 4.2 User Workflow Map (Conditional)
+
+Gunakan bagian ini bila produk memiliki beberapa alur/peran inti atau irisan MVP belum jelas. Petakan perjalanan pengguna untuk menemukan langkah yang hilang dan menandai irisan MVP yang menyelesaikan pekerjaan end-to-end. Peta ini membantu MoSCoW; jangan jadikan backlog kedua. Hapus bagian ini bila tidak diperlukan.
+
+| Segment / Role | Goal | Activity | User step / task | Feature ID | Release slice | Outcome completed |
+|---|---|---|---|---|---|---|
+| [Role] | [User outcome] | [Activity] | [Observable step] | [F-xx] | [MVP / Later] | [Useful result from this slice] |
+
+Pastikan slice MVP menghasilkan outcome yang bisa digunakan. Hindari mendefinisikan rilis hanya sebagai kumpulan lapisan teknis seperti frontend, backend, atau database.
+
+### 4.3 User Stories & Acceptance Criteria (INVEST & Given-When-Then Standard)
 *Document user stories for all P0 (Must) and P1 (Should) features using strict Given-When-Then criteria for both happy paths and edge cases:*
+
+Satu story menyatakan satu hasil bernilai bagi pengguna. Bila story terlalu besar untuk diestimasi atau mencakup beberapa alur/aturan, pecah menurut langkah workflow, variasi aturan/data, atau batas dependensi sambil menjaga setiap slice tetap bernilai dan bisa diuji. Jangan memecah story pengguna menjadi tiket frontend/backend; rincian teknis masuk ke rencana implementasi.
 
 #### Feature F-01: [Feature Name, e.g., Role-Based Authentication & Session Management]
 - **User Story**: As a [role], I want to [action], so that [benefit].
@@ -121,7 +135,7 @@
 
 ---
 
-### 4.3 Non-Functional Requirements (NFR) Baseline SLA
+### 4.4 Non-Functional Requirements (NFR) Baseline SLA
 *Quantitative performance and platform boundaries disallowing open-ended optimization requests:*
 
 - **Target Concurrent Users**: [e.g. 50 active concurrent operational sessions for MVP]

@@ -566,15 +566,8 @@ def verify_module_04():
     if "Approved by:" not in design_spec or "Date:" not in design_spec:
         raise GateError("Design Freeze Sign-Off missing in DESIGN_SPEC.md")
 
-    # 6. Anti-slop check (search for violations)
-    violations = []
-    if "backdrop-blur" in design_md.lower() or "glassmorphism" in design_md.lower():
-        violations.append("Glassmorphism detected")
-    if "shadow-2xl" in design_md or "shadow-xl" in design_md:
-        violations.append("Excessive shadow detected (>shadow-md)")
-
-    if violations:
-        raise GateError(f"Anti-slop violations: {', '.join(violations)}")
+    # 6. Review visual effects in context. Blur and shadow are not automatic
+    # violations; assess contrast, hierarchy, performance, and reference fidelity.
 
     return True
 ```

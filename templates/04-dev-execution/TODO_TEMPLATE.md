@@ -43,7 +43,9 @@ For each task:
 - **Bug (Zero-Cost Correction)**: Behavior deviates from locked `PRD.md` / `FSD.md` / Acceptance Criteria $\rightarrow$ log as immediate bugfix in current sprint.
 - **Change Request (CR - Scope Extension)**: Request introduces new inputs, alters agreed flows, or extends domain scope $\rightarrow$ do NOT implement in TODO; divert to `change-requests/CR-*.md`.
 
-## Task architecture (8 mandatory elements)
+## Task architecture (9 mandatory elements)
+
+Every generated task must include all nine fields below; do not omit source traceability when writing the task blocks.
 
 1. **Task ID** — `M06-DB-01`, `M06-BE-01`, `M06-FE-01` (used in commits/test logs)
 2. **Title & single objective** — 1 table, 1 endpoint, or 1 screen only
@@ -52,7 +54,8 @@ For each task:
 5. **Action** — precise implementation instructions & constraints
 6. **Out of Scope** — what NOT to touch in this task
 7. **Verify & Expected** — executable command + deterministic success criteria
-8. **Status** — `- [ ]` pending | `- [~]` in progress | `- [!]` blocked (with reason) | `- [x]` completed (exit 0 + evidence)
+8. **Source trace** — requirement / acceptance-criteria / screen / schema IDs this task implements; use `N/A` with a reason for setup-only tasks
+9. **Status** — `- [ ]` pending | `- [~]` in progress | `- [!]` blocked (with reason) | `- [x]` completed (exit 0 + evidence)
 
 ## Task ID prefixes
 The framework defines the following standard task categories across all project scales (Small, Medium, Large, Enterprise). Sub-categories are strictly expressed via sprint section headers and task titles.

@@ -39,23 +39,24 @@ or Windows:
   `docs/specs/FSD.md` (M06 gate `verify-framework-version.sh` reads it).
 - **Machine-read — do not reformat**: keep the heading colon and the `- <Package>: <version>` bullets; delete stacks you did not lock (a stale `- Django:` line in a Next.js project fails M06, as does a table).
 
-### STEP 1: Tech Stack Discovery Questionnaire (MANDATORY — BLOCKS FSD)
+### STEP 1: Resolve Architecture Inputs (BLOCKS STACK LOCK)
 
-Ask the 8 questions, END TURN, wait (option lists in deep dive):
+Review M01/M02 decisions, `PROJECT_STATE.md`, the approved scope, and M04 design before asking anything. Reuse confirmed answers and record their source. Ask only targeted questions for missing or conflicting decisions that materially affect stack, data, deployment, scale, or compliance; use the questionnaire below as a prompt bank, not a second intake interview:
 **Team Expertise · Database Experience · Deployment Topology · Expected Scale (Year 1) · Data Model Characteristics · DevOps Complexity Tolerance · Critical Feature Priority · Compliance Requirements**
 
-Then present **2–3 options** with cost/pros/cons and let **the user LOCK the stack**. No default; changing after lock costs +2 weeks.
+Present 2–3 viable options with trade-offs when the stack remains undecided. The human selects and records the stack lock; carry forward any earlier decisions that remain valid.
 
 ### STEP 2: Tech Stack Justification & Ecosystem Libraries Locking
 
 Reasoning for the chosen stack; **alternatives rejected with reasons**; topology aligned with budget & scale. Content must adapt to the stack (PostgreSQL → SQL DDL, MongoDB → Mongoose, Laravel → Eloquent migrations, Django → ORM — never AI-SLOP generic schemas; anti-patterns in deep dive).
 
-- **Ecosystem Libraries & Auth Solution Locking**: In addition to the base framework, M05 MUST explicitly evaluate, select, and lock the companion ecosystem libraries to prevent dependency bloat, security holes, and runtime mismatches in M06:
+- **Ecosystem Libraries & Auth Solution Locking**: Evaluate only companion libraries required by this product and lock choices that affect M06. Prefer built-in framework capabilities when they meet the requirements:
   - **Authentication & Session**: Next.js (Better Auth / Supabase Auth / Auth.js) vs Laravel (Breeze / Sanctum / Fortify) vs Django (allauth) vs Go/FastAPI (JWT / OAuth2).
   - **Validation & Serialization**: Zod / Valibot (TS) vs Form Requests (Laravel) vs Pydantic (Python).
   - **State Management & Data Fetching**: Zustand / TanStack Query (React) vs Pinia (Vue) vs Inertia / Livewire.
-  - **UI Primitives & Motion**: shadcn/ui + Radix UI + Lucide + Framer Motion (per `patterns/ui/UI_COMPONENT_TAXONOMY.md` and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`).
+  - **UI Primitives & Motion**: derive framework mappings from the already-approved M04 component inventory and design tokens; do not choose a second UI system here.
   - **Access Control & Permissions**: Explicit RBAC / ReBAC model implementation (per `patterns/security/ACCESS_CONTROL_PATTERNS.md`).
+  - Evaluate each category only when the product needs it; prefer existing framework capabilities where sufficient and record `N/A` with a short reason otherwise.
 
 **Risk-triggered security and vendor references**: Load `patterns/security/THREAT_MODELING_STRIDE_PATTERN.md` and the relevant security pattern when the product handles personal/sensitive data, payments, public APIs, multi-tenant access, or privileged roles; use the project data classification and threat model to select controls. For a third-party service, first assess data handled, failure impact, exit path, and cost in the vendor/build-vs-buy decision. After the stack and provider are chosen, consult that provider's official skill or documentation for integration details; vendor-specific guidance does not replace the project's threat model or security review.
 
@@ -63,28 +64,23 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 
 - **Visual ERD (Mermaid)**: Wajib memuat diagram relasi visual `erDiagram` (Mermaid) yang menggambarkan kardinalitas (one-to-many, many-to-many) antar entitas inti.
 - **DDL & Performance Indexes**: Tables, PK/FK, CHECK constraints, composite indexes pada kolom query/foreign keys (`idx_*`) — syntax per chosen DB.
-- **Object Storage & Media Architecture (Zero Base64 in DB)**:
-  - If project handles media uploads (images, avatars, documents, 3D models): define dedicated object storage buckets (e.g. S3, Supabase Storage, Cloudflare R2).
-  - Explicit size boundaries: max file upload limit (e.g. `MAX_UPLOAD_SIZE = 5MB` for images, `15MB` for 3D/canvas models).
-  - Explicit mime-type validation and CDN caching policy (`Cache-Control: public, max-age=31536000, immutable`).
-  - Storing raw base64 strings in relational database columns is strictly prohibited.
-- **Cascade Soft-Delete & Data Retention Architecture**:
-  - For financial records, invoices, orders, and core entities: enforce soft-delete (`deleted_at TIMESTAMP WITH TIME ZONE`).
-  - **Partial Unique Index Guardrail**: Any unique constraint on columns that can be soft-deleted (e.g. `email`, `slug`, `username`) MUST use a partial unique index (`CREATE UNIQUE INDEX uq_table_column_active ON table (column) WHERE deleted_at IS NULL;`) instead of an unqualified `UNIQUE` constraint, allowing re-registration/reuse after deletion.
-  - Queries, views, or RLS policies MUST include automatic filtering for parent-child relationships (e.g. child records of a soft-deleted parent workspace/user are automatically excluded from active queries).
-- **Serverless Database Connection Pooling**:
-  - Serverless and edge runtimes (Next.js App Router, Cloudflare Workers, Vercel Functions) MUST route database queries through a connection pooler in transaction mode (e.g. PgBouncer / Supavisor on port `6543`, Prisma Accelerate, or Neon pooler).
-  - Direct connection strings (port `5432` session mode) are strictly reserved for local DDL migrations and CI scripts to prevent serverless connection exhaustion (`FATAL: remaining connection slots are reserved`).
-- Audit trail: `created_at`, `updated_at`, `actor_id`, soft-delete.
+- **Object Storage & Media Architecture**:
+  - If the product accepts user-uploaded media, choose a storage location and define access, size, type validation, retention, and delivery behavior. Otherwise record `N/A — no user-uploaded media`.
+  - In the FSD, record this in `Object storage decision`; in `PROJECT_LITE.md`, include the same decision in the architecture summary.
+  - Set file size limits from the product, provider, and abuse risk. Validate content type and size server-side. Choose cache headers by access level; private user data must not inherit public immutable caching.
+  - Keep large binary payloads out of relational columns by default; document a justified exception if inline storage is appropriate.
+- **Deletion & Retention Semantics**: Define retention and deletion per data class and legal/product need. Use soft-delete only when restoration or tombstone behavior is required; immutable financial/audit records should use explicit reversal/correction records where appropriate. Add a partial unique index only when the product permits reusing a value after soft-delete.
+- **Connection Management**: For serverless or highly concurrent runtimes, follow the selected database provider's current pooling and connection-limit guidance. Document migration and runtime connection paths separately when they differ.
+- Audit fields and retention: choose fields from the entity lifecycle and traceability needs; do not add `updated_at` or soft-delete semantics to immutable records without a reason.
 - Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
-- `idempotency_keys` table for all POST mutations of financial/stock state.
-- **In-Memory Caching Strategy**: Specify Redis / Keyv layer for high-throughput reads (e.g. session stores, catalog data, rate limit counters) with explicit TTLs and cache invalidation policies (never serve stale ledger balances).
-- **Asynchronous Processing & Worker Queue Strategy**: Decouple resource-intensive tasks (PDF invoice compilation, transactional bulk emails, webhook processing, AI batch inference) from synchronous HTTP request cycles using a persistent queue architecture (e.g. BullMQ, Celery, Laravel Queue, pg-boss, or QStash/Inngest) to eliminate HTTP 504 gateway timeouts.
-- **Disaster Recovery & Backup SLA (RPO & RTO)**: Define Recovery Point Objective (RPO ≤ 24h via daily WAL / snapshot) and Recovery Time Objective (RTO ≤ 2h cold recovery target on secondary host).
+- `idempotency_keys` or an equivalent idempotency mechanism for financial/stock mutations when retries could duplicate state changes.
+- **Caching**: Add a cache only for measured or expected read pressure; record consistency and invalidation rules, or `N/A — no cache needed at this scale`.
+- **Asynchronous Processing**: Define a durable queue for work that can outlive a request or needs retry/isolation; otherwise record `N/A — request-bound work is sufficient`.
+- **Recovery & Backup Targets (RPO/RTO)**: Set recovery targets from the business impact of data loss and downtime, then choose backups and restore procedures that fit the budget and operating model. Treat RPO ≤24h / RTO ≤2h as examples, not defaults.
 
-### STEP 4: API Endpoint Matrix & Realtime Transport (≥10 endpoints — gate-enforced)
+### STEP 4: API Contracts & Realtime Transport
 
-- HTTP verb, path, auth, idempotency headers; JSON request/response schemas; success-vs-error matrix; style per stack (REST/GraphQL/tRPC).
+- Document every in-scope API operation from the requirements and wireflows; do not invent endpoints to meet a count. For each operation record method/path (or protocol operation), auth, idempotency where needed, request/response schema, and success/error behavior. If there is no application API, record `N/A — no application API`.
 - **Mandatory Pagination & Hard Cap Limit**:
   - Every collection/list endpoint MUST enforce bounded pagination (default: `limit=20`, hard maximum `MAX_LIMIT=100`). Unbounded queries (`SELECT * FROM table` without `LIMIT`) are strictly prohibited to prevent memory exhaustion (OOM).
   - High-volume data feeds (activity feeds, transactions, chat history) MUST specify cursor-based pagination over deep offset pagination.
@@ -93,11 +89,12 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 - **Realtime & Offline Transport Architecture** (if applicable: collaborative canvas, live chat, notifications):
   - Explicit transport protocol: WebSocket / Supabase Realtime / Server-Sent Events (SSE). Polling loops (`setInterval`) are forbidden for realtime flows.
   - Reconnection & state recovery strategy on network drop.
-- **One heading per endpoint** (`#### POST /api/v1/...`) — the gate counts these headings and fails below 10.
+- Use one heading per HTTP endpoint (`#### POST /api/v1/...`) so each contract can be reviewed independently.
 
 ### STEP 5: Security Blueprint, Secrets Validation & Module 04 Handoff (gate-enforced)
 
-- **Security**: record AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting, and Edge DDoS/WAF protection via Cloudflare ([`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md)) (+ UU PDP on Medium+). Gate-enforced; `N/A — <reason>` accepted, blank not.
+- **Security**: use the risk-triggered STRIDE model and data classification to choose controls. Record the decision, enforcement point, and verification path for encryption at rest (including whether application-level AES-256-GCM is warranted), password hashing (Argon2id or the selected identity provider's managed approach), OWASP-relevant risks, rate limits, edge protection, and applicable privacy requirements. Keep `N/A — <reason>` explicit; do not prescribe a vendor or control without a project need.
+- **Threat-to-verification traceability**: map each consumed threat/security requirement to its FSD control, enforcing component, and planned M07 verification. Keep threat IDs stable across the threat model, FSD, and security audit.
 - **Granular RBAC Role Capability & Limitation Matrix (Boleh Apa vs DILARANG Apa)**:
   - If the application involves multiple roles (e.g. Owner, Manager, Staff, Member/Tenant), `docs/specs/FSD.md` Section 4.0 MUST define a granular capability matrix detailing:
     1. **Boleh Dilakukan (Allowed Capabilities)**: Explicit list of allowed business actions per role.
@@ -121,12 +118,12 @@ The **human** signs (Client Single PIC, or on solo work the developer); an AI ag
 
 ## [GATE] Exit Criteria (condensed)
 
-- [ ] 8-question questionnaire completed, 2–3 options presented, stack **LOCKED** (`Stack Decision LOCKED:` + `Stack-Locked-by:` naming the human). Real values only — the gate rejects `[answer]` placeholders and a blank `Stack-Locked-by:`
+- [ ] Existing architecture inputs reconciled; material gaps resolved; stack **LOCKED** by a named human (`Stack Decision LOCKED:` + `Stack-Locked-by:`)
 - [ ] Versions verified via registry script, pinned verbatim in `Framework Versions (Pinned):` (M06 `verify-framework-version.sh` reads it)
 - [ ] Stack justification with rejected alternatives
 - [ ] DDL present (tables, keys, CHECK, indexes, audit trail)
-- [ ] ≥10 API endpoint **headings** (`#### <VERB> /path`) with request/response schemas; idempotency for financial POSTs — **gate-enforced at ≥10**
-- [ ] Security blueprint complete (AES-256-GCM, Argon2id, OWASP, rate limiting; +UU PDP on Medium+) — each control resolved or `N/A — <reason>` *(gate-enforced)*
+- [ ] All in-scope API operations have complete contracts, or `N/A — no application API`; idempotency for high-risk mutations
+- [ ] Security blueprint complete with risk-appropriate decisions (encryption, password hashing, OWASP-relevant controls, rate limits, and applicable privacy obligations) and enforcement/verification references; each item resolved or `N/A — <reason>` *(gate-enforced)*
 - [ ] Granular RBAC Role Capability & Limitation Matrix present in `FSD.md` when multiple roles are defined (Owner vs Manager vs Staff vs Member: Boleh vs DILARANG & UI Masked, dedicated views, server-side 403 authorization) *(gate-enforced)*
 - [ ] `Module 04 Handoff Strategy` + `Compatibility Level: Level 1-4` present *(gate-enforced; M06 STEP 0 depends on it)*
 - [ ] Substantive `PROJECT_LITE.md` (Small) or `PRD.md` + `FSD.md` (Medium+) — ≥1000B / ≥2000B targets; the script stub-checks size, so judge substance

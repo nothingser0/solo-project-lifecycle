@@ -18,38 +18,32 @@
 ### 2. Testing Scope
 
 #### In-Scope
-1. Internal API integration between frontend and backend database.
-2. Sandbox payment gateway integration (invoice generation & webhook handling).
-3. Cloudflare R2 / S3 file storage integration (encryption & presigned URLs).
-4. Transactional email delivery integration (SMTP / Resend).
+List only integrations and critical user journeys in the locked FSD, threat model, and acceptance criteria. For each, record its requirement/scenario ID and environment. The examples in the matrix below are optional, not assumed project features.
 
 #### Out-of-Scope
-- Extreme load testing > 10,000 concurrent users (exceeding agreed capacity).
+- Load beyond the agreed workload/capacity target (unless explicitly in scope).
 - Physical hardware testing of client office network.
 
 ---
 
 ### 3. SIT Test Matrix
 
-| Test ID | Module / Service | Test Scenario | Expected Result | Pass Criteria |
-| :---: | :--- | :--- | :--- | :---: |
-| **SIT-01** | Auth API | Login with valid staff account | Receives HttpOnly session token, redirects to dashboard | PASS / FAIL |
-| **SIT-02** | Document API | Create document with valid data | Document saved in DB, `DRAFT` status, ID generated | PASS / FAIL |
-| **SIT-03** | Vault Storage | Render PDF and save to Cloud Storage | PDF file saved with binary AES-256 encryption | PASS / FAIL |
-| **SIT-04** | Presigned URL | Retrieve document download link | URL accessible and expires after 15 minutes | PASS / FAIL |
-| **SIT-05** | E-Sign API | Execute digital signature via token | Signature recorded, document status `SIGNED` | PASS / FAIL |
-| **SIT-06** | Email Sandbox | Send signer link notification | Email delivered to recipient inbox with proper formatting | PASS / FAIL |
-| **SIT-07** | Payment Webhook | Send successful transaction webhook payload | Order status automatically transitions from `PENDING` → `PAID` | PASS / FAIL |
-| **SIT-08** | Idempotency | Send duplicate checkout request (double-click) | Second request rejected with `409 Conflict`, no duplicate records created | PASS / FAIL |
-| **SIT-09** | Webhook Security | Test forged HMAC signature & replay delivery | Forged signature rejected with `401/403`; repeated delivery handled idempotently without duplicate credits | PASS / FAIL |
-| **SIT-10** | Auth & BOLA/IDOR | Attempt reading/updating another tenant/user ID | Endpoint rejects cross-tenant/cross-user access with `403 Forbidden` or `404 Not Found` | PASS / FAIL |
+| Test ID | Requirement / risk ID | Module / Service | Test Scenario | Expected Result | Applicability (Y/N + reason) | Result (PASS / FAIL / BLOCKED / N/A) | Evidence |
+| :---: | :--- | :--- | :--- | :--- | :--- | :---: | :--- |
+| SIT-01 | [ID] | [API / core flow] | [Valid and invalid contract cases] | [FSD / acceptance criteria] | [Y/N + reason] | [record after execution] | [command / artifact] |
+| SIT-02 | [ID] | [Authorization boundary] | [Access as a distinct unauthorized principal, if applicable] | [No unauthorized data or side effect] | [Y/N + reason] | [record after execution] | [command / artifact] |
+| SIT-03 | [ID] | [Third-party integration] | [Success, failure, timeout/retry behavior, if applicable] | [FSD contract] | [Y/N + reason] | [record after execution] | [sandbox evidence] |
+| SIT-04 | [ID] | [Webhook / async delivery] | [Invalid signature and duplicate delivery, if applicable] | [Reject unauthenticated delivery; idempotent effect] | [Y/N + reason] | [record after execution] | [request IDs / logs] |
+| SIT-05 | [ID] | [Data lifecycle] | [Create/read/update/delete and boundary cases] | [Expected state and data isolation] | [Y/N + reason] | [record after execution] | [query / assertion] |
+
+Add rows for every in-scope P0 acceptance criterion and material threat scenario. Every N/A needs a reason; a blocked or untested applicable row prevents SIT PASS. Never pre-mark a template row as passed.
 
 ---
 
 ### 4. Entry & Exit Criteria
-- **Entry Criteria**: All code on `staging` branch passes TypeScript compilation and 100% of local unit tests.
+- **Entry Criteria**: The identified staging build matches the M06 handoff; the selected stack's static checks and required local tests pass.
 - **Exit Criteria**:
-  - 100% of test scenarios above marked **PASS**.
+  - Every applicable scenario is **PASS**; N/A rows have a reason; no applicable row remains blocked or untested.
   - Free of Critical/Blocker severity bugs.
   - Part II (SIT Report) published and ready for review to unlock Client UAT.
 
@@ -63,7 +57,7 @@
 - **Staging Server URL**: `https://staging.[client-domain].com`
 - **Testing Completion Date**: [YYYY-MM-DD]
 - **Tester / Lead Engineer**: [Your Name]
-- **Final Testing Status**: **PASSED (SIT PASS - READY FOR UAT)**
+- **Final Testing Status**: [SIT PASS - READY FOR UAT / NOT READY]
 
 ---
 
@@ -71,45 +65,36 @@
 
 | Test Category | Total Scenarios | Passed | Failed | Pass Rate |
 | :--- | :---: | :---: | :---: | :---: |
-| **Unit & Logic Tests** | [e.g.: 24] | 24 | 0 | **100%** |
-| **API Contract Tests** | [e.g.: 12] | 12 | 0 | **100%** |
-| **Third-Party Integrations** | [e.g.: 8] | 8 | 0 | **100%** |
-| **Security & OWASP Sanity** | 10 | 10 | 0 | **100%** |
-| **TOTAL** | **[Total]** | **[Total]** | **0** | **100%** |
+| **Unit & Logic Tests** | [count] | [count] | [count] | [calculate] |
+| **API Contract Tests** | [count] | [count] | [count] | [calculate] |
+| **Applicable Third-Party Integrations** | [count] | [count] | [count] | [calculate] |
+| **Security Scenarios** | [count] | [count] | [count] | [calculate] |
+| **TOTAL** | [count] | [count] | [count] | [calculate] |
 
 ---
 
 ### 3. Third-Party Integration Testing Details
 
-1. **Document Storage (Cloudflare R2 / AWS S3)**:
-   - *Status*: **PASS**
-   - *Evidence*: Document PDF files successfully uploaded under AES-256-GCM encryption. Presigned download URLs successfully generated and automatically expire after 15 minutes.
-2. **Sandbox Payment Gateway (Midtrans / Xendit)**:
-   - *Status*: **PASS**
-   - *Evidence*: Bank transfer and QRIS payment simulations successfully triggered webhooks to the staging server; order status transitioned automatically to `PAID` without manual intervention.
-3. **Transactional Email (Resend / SMTP)**:
-   - *Status*: **PASS**
-   - *Evidence*: Document signing link emails arrived in recipient inboxes in < 5 seconds with active signature action button.
+For each applicable integration, record provider/environment, build identity, scenario IDs, request/correlation IDs, observed result, and evidence path. Record N/A and why when no integration exists. Do not copy example provider names or results into the report.
 
 ---
 
 ### 4. Load & Concurrency Test Results (Load Test Metrics)
 
-Testing Tool: `k6` / `autocannon`
-- **Concurrent Users**: 50 Virtual Users
-- **Test Duration**: 30 Seconds
-- **Total Requests Processed**: [e.g.: 4,850 requests]
-- **Average Response Time (Latency p95)**: **142 ms** (Target threshold: ≤ 200 ms)
-- **Error Rate**: **0.00%** (Zero failed requests)
-- **Database Status**: Connection pool load stable, zero connection timeouts occurred.
+Testing Tool: [tool/version or N/A with reason]
+- **Workload / concurrency / duration**: [M02 target and observed run]
+- **Requests processed**: [observed]
+- **Latency percentiles and threshold**: [observed vs M02 budget]
+- **Error rate and threshold**: [observed vs M02 budget]
+- **Resource / dependency saturation and recovery**: [observed]
 
 ---
 
 ### 4b. Automated Test Coverage (Large / Enterprise scale mandatory)
 
-Report the output of `pnpm test:coverage` (or `npm run coverage`):
-- **Line Coverage**: [e.g.: 74%] (Large: ≥ 70% | Enterprise: ≥ 80%)
-- **Branch Coverage**: [e.g.: 63%] (Large: ≥ 60% | Enterprise: ≥ 70%)
+Report the selected stack's coverage command and actual output, if coverage is required by project scale or risk:
+- **Line Coverage**: [observed % / N/A with reason]
+- **Branch Coverage**: [observed % / N/A with reason]
 
 > Small / Medium scale: no strict threshold — report actual numbers for transparency.
 
@@ -119,9 +104,9 @@ Report the output of `pnpm test:coverage` (or `npm run coverage`):
 
 Based on all technical test results, third-party system integrations, security audits, and load testing above:
 
-The system is declared **STABLE, SECURE, AND PASSED SYSTEM INTEGRATION TESTING (SIT PASS)**.
+**Conclusion**: [SIT PASS / NOT READY / PASS WITH RELEASE RISKS]. Base this on executed scenarios and evidence; do not claim overall security or release readiness from this workbook alone.
 
-The system is officially recommended to initiate **User Acceptance Testing (UAT)** with the **Client Single PIC** in the Staging environment.
+If and only if the conclusion is SIT PASS and all applicable exit criteria are evidenced, recommend **User Acceptance Testing (UAT)** with the designated client reviewer in the staging environment. Otherwise record the blocking gaps and do not recommend progression.
 
 ---
 

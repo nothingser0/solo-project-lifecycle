@@ -200,35 +200,14 @@ After stack is locked, agent proceeds to generate FSD sections based on the chos
 
 ---
 
-## Verbose Agent Prompt Example: Tech Stack Discovery Complete
+## Architecture Input Reconciliation Example
 
-**Agent prompt after questionnaire** (verbose example):
-```
-📋 Tech Stack Discovery Complete
+1. Read confirmed architecture inputs from prior project artifacts and record their sources.
+2. Ask only about material gaps or conflicts that affect the decision.
+3. Present 2–3 stack options with project-specific trade-offs if the stack is undecided.
+4. Wait for the human to choose and lock a stack before finalizing the FSD.
 
-User Answers Summary:
-1. Team Expertise: JavaScript/TypeScript
-2. Database: PostgreSQL
-3. Hosting Topology: Serverless / Edge free-tier
-4. Scale: <100 users
-5. Data Model: Fixed schema
-6. DevOps: Zero-config
-7. Critical Feature: SEO
-8. Compliance: UU PDP
-
-Generating stack options...
-
-[Agent generates 2-3 options here]
-
-Please select stack (A/B/C) to proceed. Decision LOCKS tech stack for this project.
-
-⚠️ WAITING FOR STACK SELECTION - Cannot generate FSD without locked stack decision.
-```
-
-**Agent MUST END TURN and wait for user input.**
-
----
-
+Wait for user input only when a material gap or the stack lock requires a human decision; do not repeat answered intake questions.
 ## Verbose Gate Handoff Prompt (after Module 05 Gate PASSED)
 
 ```
@@ -280,17 +259,17 @@ counts Q1–Q8 individually and rejects placeholder answers.*
 
 Ordered by where it appears in `scripts/gates/modules/M05.sh`:
 
-# Agent must track user answers in memory or temp file
-# Check if all 8 questions answered (placeholders like "[answer]" do NOT count)
+# Record confirmed answers from existing project artifacts; ask only for missing
+# or conflicting decisions. A placeholder is not a recorded architecture input.
 if ($answeredQuestions -lt 8) {
     Write-Error "❌ PHASE 0 GATE FAILED: Only $answeredQuestions/8 questions answered."
-    Write-Error "Complete questionnaire before generating stack options."
+    Write-Error "Resolve missing architecture inputs before locking the stack."
     exit 1
 }
 
-**Gate-enforced** (the machine-checkable markers): 8 real answers + a human `Stack-Locked-by:`,
-AES-256-GCM/Argon2id/OWASP/rate-limit coverage (+UU PDP on Medium+), the `Module 04 Handoff Strategy`
-section with `Compatibility Level: Level 1-4`, `≥10` endpoint headings, and a human sign-off with a real
+**Gate-enforced** (the machine-checkable markers): recorded architecture inputs + a human `Stack-Locked-by:`,
+encryption/password-hashing/OWASP/rate-limit coverage (+UU PDP on Medium+), the `Module 04 Handoff Strategy`
+section with `Compatibility Level: Level 1-4`, complete contracts for each in-scope API operation (or explicit N/A), and a human sign-off with a real
 name + date. **Judged by the human at sign-off** (the gate cannot assess quality): stack-justification
 substance, whether the endpoint schemas are realistic, and version-registry freshness. The gate confirms
 the artifacts exist and hold their markers — not that the engineering is good.

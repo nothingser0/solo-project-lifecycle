@@ -31,11 +31,12 @@ To prevent conflicting directions and ensure solo developer execution efficiency
 - **Full Name of PIC**: [Client PIC Name]
 - **Official Title**: [Product Owner / IT Manager / Operations Director]
 - **Email & WhatsApp Contact**: [email@company.com / +628...]
-- **Designated Back-up PIC (Escalation Path)**: [Back-up PIC Name / Title / email / phone] — holds delegated approval authority strictly if Primary PIC is uncontactable for ≥5 consecutive business days.
+- **Designated Back-up PIC (Escalation Path)**: [Back-up PIC Name / Title / email / phone] — may act only within delegation and limits documented by the Client in writing.
+- **Authorized Contract Signatory**: [Name / Title / basis of authority] — may be the same person as the operational PIC; confirm authority to bind the Client before signature.
 - **Designated Official Communication Channel**: [Formal Email / Designated Slack Connect / Notion / Linear] — casual verbal instructions, personal chat messages, or unofficial groups hold no legal or binding authority over project scope.
 - **Exclusive Authority of PIC**:
   1. The sole party authorized to provide formal approval for PRD, FSD, and UI/UX design changes.
-  2. The sole party authorized to sign UAT test sheets and the Official Acceptance Report (BAST).
+  2. The operational PIC may approve UAT results and sign the Official Acceptance Report (BAST) only where the Client has delegated that authority in writing. Contract signing authority is recorded separately above.
   3. Instructions or change requests from other client staff are **NOT RECOGNIZED** until confirmed in writing by the PIC above.
 - **Client Response SLA**: The Client PIC is required to provide written feedback or approval within a maximum of **3 (three) business days**. Response delays automatically shift the system release target day-for-day without delay penalties for the developer.
 - **Deemed Acceptance (Klausul Klien Diam)**: If the Client fails to provide written feedback, change requests, or defect reports within **7 (seven) calendar days** following a milestone demo submission or UAT delivery, the respective milestone shall be **LEGALLY DEEMED APPROVED AND ACCEPTED IN FULL (DEEMED ACCEPTED)**. The associated milestone invoice shall become immediately due and payable.
@@ -86,6 +87,9 @@ This Agreement is made and entered into on this day, [Day], date [Date], month [
 2. Any items not explicitly specified in writing in Appendix I are legally deemed **Out-of-Scope** and cannot be demanded as Developer obligations.
 
 #### Scope Baseline Summary
+
+- **Approved scope document**: `SCOPE_STATEMENT.md`, version/date [version / YYYY-MM-DD], attached as Appendix I.
+- **Reconciliation**: [Confirmed against scope / differences resolved by CR-...].
 
 **Primary In-Scope**:
 1. [Module/Feature 1]
@@ -211,7 +215,8 @@ The Parties agree to maintain the confidentiality of business information, techn
 - [ ] NDA signed (mandatory for Medium+ client delivery, before client data access)
 - [ ] DPA / Data Protection Addendum signed (required when personal data is processed; write `N/A` when no personal data)
 - [ ] Part I Project Charter approved (baseline dates locked)
-- [ ] Single PIC officially designated with contact info
+- [ ] Operational PIC authority and authorized contract signatory recorded; backup delegation documented
+- [ ] Scope version and any approved differences recorded in Scope Baseline Summary
 - [ ] Revision limits + Deemed Acceptance + Limitation of Liability clauses accepted by Client
 - [ ] DP (Milestone 1) received in bank account — Date/Time: YYYY-MM-DD HH:MM WIB — Amount: Rp X — Confirmed By: NAME (tick this line once the transfer is verified; the receipt wording already sits on this same line)
 

@@ -69,6 +69,8 @@ flowchart TD
     API -->|JSON Payload| User
 ```
 
+**Object storage decision**: [selected service, access, size/type validation, retention, and cache policy / N/A — no user-uploaded media]
+
 ### 2.2 Entity Relationship Diagram (ERD)
 
 ```mermaid
@@ -135,9 +137,9 @@ sequenceDiagram
 Stack Decision LOCKED: [chosen stack]
 Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 
-> ⚠️ **M05 GATE ENFORCEMENT**: `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without the 8
-> recorded questionnaire answers below, or if `Stack-Locked-by:` still contains brackets or template placeholders.
-> The agent asks the 8 questions; the human answers and locks the stack. Replace `[Human Name]` with the actual human name.
+> ⚠️ **M05 GATE ENFORCEMENT**: `validate-gate.sh M05` requires eight architecture inputs to be recorded before
+> the stack lock, and a named human in `Stack-Locked-by:`. Reuse confirmed answers from M01/M02 and cite their
+> source; ask the human only for missing or conflicting information. The human chooses and locks the stack.
 
 - Q1 Team Expertise: [answer]
 - Q2 Database Experience: [answer]
@@ -701,9 +703,9 @@ placeholder rows before sign-off.*
 
 | Control | Decision for this project | Implementation reference |
 | :--- | :--- | :--- |
-| Data-at-rest encryption | AES-256-GCM envelope encryption for PII/sensitive columns | [key-management ADR] |
-| Password hashing | Argon2id (or bcrypt cost ≥12 where Argon2id is unavailable) | application auth layer |
-| Transport | TLS 1.3 terminating at [edge/proxy]; HSTS enabled | deployment config |
+| Data-at-rest encryption | [Managed storage encryption / application-level AES-256-GCM where data classification and threat model warrant it / N/A with reason] | [provider config / key-management ADR] |
+| Password hashing | [Argon2id or maintained framework/provider-managed password hashing; N/A if authentication is delegated] | [auth layer / provider] |
+| Transport | [Production TLS configuration for the chosen host; add HSTS only when domain and rollout support it] | deployment config |
 | OWASP Top 10 | [Which items are in scope and how each is mitigated — or `N/A — <reason>`] | [mechanism: query parameterization, output encoding, CSRF token, …] |
 | Rate limiting | [per-IP + per-account limits on auth and mutation routes] | [middleware / gateway] |
 | Session/token policy | HttpOnly + Secure + SameSite cookies; rotation on privilege change | auth layer |
@@ -713,9 +715,17 @@ placeholder rows before sign-off.*
 | Idempotency (write safety) | `Idempotency-Key` on every financial/stock mutation | §3 `idempotency_keys` |
 | In-Memory Caching (Read Scalability) | [Redis / Keyv cache layer, TTL policy, cache invalidation — or `N/A — low traffic CRUD`] | [cache middleware / client] |
 | Asynchronous Queue / Worker | [BullMQ / Celery / Laravel Queue / QStash for PDF, bulk email, webhook processing — or `N/A — synchronous CRUD`] | [queue worker config / service] |
-| Edge DDoS & WAF Protection | Cloudflare Proxy (Orange Cloud), WAF Managed Challenge, Edge Rate Limiting, Authenticated Origin Pulls | [`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md) |
+| Edge DDoS & WAF Protection | [Selected host/provider control or `N/A — <reason>`] | [provider config / reason] |
 | Environment Secrets Validation | Typed `.env.example` schema with boot-time validation (Zod / @t3-oss/env-nextjs / Pydantic) | `src/env.ts` or config schema |
-| Disaster Recovery & Backup SLA | Target RPO ≤ 24h (WAL/daily snapshot); Target RTO ≤ 2h cold restore on secondary host | deployment & ops runbook |
+| Disaster Recovery & Backup SLA | [RPO / RTO derived from business impact, verified backup/restore path, or `N/A — <reason>`] | deployment & ops runbook |
+
+### 7.1 Security Requirement Traceability
+
+Map each consumed threat and security requirement to its design control and planned verification. Use the same threat IDs in the STRIDE model and M07 security audit.
+
+| Threat / Requirement ID | FSD control and enforcing component | Planned M07 verification | Owner / status |
+| :--- | :--- | :--- | :--- |
+| [T-... / SEC-...] | [control + component] | [test, review, or explicit rationale] | [owner / status] |
 
 ---
 
@@ -755,7 +765,7 @@ placeholder rows before sign-off.*
 - [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
 - [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
 - [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
-- [ ] **7. API Contract Completeness**: ≥10 endpoint headings documented as `#### <VERB> /path` (gate-enforced; M05 STEP 4), each with auth, request schema, and a success/error pair; `Idempotency-Key` shown on every financial/stock mutation.
+- [ ] **7. API Contract Completeness**: Every in-scope API operation documented as `#### <VERB> /path`, each with auth, request schema, and success/error behavior; or record `N/A — no application API`. `Idempotency-Key` is specified for applicable high-risk mutations.
 - [ ] **8. Security Blueprint (§7)**: Every control row resolved (implemented or `N/A — <reason>`); no blank rows. Password hashing, at-rest encryption, rate limiting, and audit logging each have an implementation reference.
 - [ ] **9. Module 04 Handoff (§8)**: Screen → route → component map covers 100% of `DESIGN_SPEC.md` screens; locked stack matches §2 verbatim; compatibility level recorded for M06 STEP 0.
 

@@ -282,12 +282,14 @@ gate_M06() {
             echo "  ❌ Git hygiene: .gitignore is missing from project root! Create .gitignore to prevent leaking secrets/build artifacts."
             GATE_FAILED=1
         fi
-        # 4. Narrating / stub comments (ADVISORY — row 21 of POLISH_AUDIT; subjective, so non-blocking)
+        # 4. Narrating / stub comments (BLOCKER — row 21 of POLISH_AUDIT)
         slop_cmt=$(grep -rInE "(//|#|{/\*)[[:space:]]*(Increment|Import|Get the|Set the|Initialize|Create a|This (function|method|class) (is|will)|Add your logic|Loop through|Return the result|Navbar Header|Hero Section|Feature Cards|Footer Section|Handle error|Server Actions for)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
         if [ "${slop_cmt:-0}" -gt 0 ]; then
-            echo "  ⚠️  Anti-slop advisory: ${slop_cmt} comment(s) that may merely restate the code (row 21 of POLISH_AUDIT). Review and delete if redundant."
+            echo "  ❌ Anti-slop: found ${slop_cmt} narrating / redundant comment(s) in source (e.g. '// Initialize', '// Handle error', '// Hero Section')!"
+            echo "     AI agents must never use comments to narrate obvious code or scratchpad thoughts. Code must be self-documenting."
+            GATE_FAILED=1
         else
-            echo "  ✅ Anti-slop: no narrating/stub comments detected in source"
+            echo "  ✅ Anti-slop: zero narrating/stub comments detected in source"
         fi
         # 4b. Internal spec ID & slot leaks in UI/view layer (BLOCKER)
         # Catches SCR-xx, REQ-xx, M06-xx, [WASM Canvas slot], [slot], etc. leaking into user-facing markup/templates
@@ -348,8 +350,8 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero fake login navigation links"
         fi
 
-        # 4g. Anti-Dummy-URL in Production Source & Seeds
-        # Catches example.com or placeholder.com in production components or prisma seeds
+        # 4g. Anti-Dummy-URL, Lorem Ipsum & Mock Data in Production Source & Seeds
+        # Catches example.com, placeholder.com, lorem ipsum, john doe in production components or prisma seeds
         dummy_urls=$(grep -rInE "(https?://example\.com|https?://placeholder\.com)" $scan_dirs prisma 2>/dev/null \
             | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md|config)" | wc -l | tr -d ' ')
         if [ "${dummy_urls:-0}" -gt 0 ]; then
@@ -357,6 +359,28 @@ gate_M06() {
             GATE_FAILED=1
         else
             echo "  ✅ Anti-slop: zero dummy mock URLs in production UI"
+        fi
+
+        # 4g2. Anti-Lorem Ipsum & Generic Persona Slop (BLOCKER)
+        lorem_hits=$(grep -rInEi "(lorem[[:space:]]+ipsum|dolor[[:space:]]+sit[[:space:]]+amet|john[[:space:]]+doe|jane[[:space:]]+doe)" $scan_dirs prisma 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md)" | wc -l | tr -d ' ')
+        if [ "${lorem_hits:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${lorem_hits} instance(s) of Lorem Ipsum / generic fake personas ('John Doe' / 'Lorem ipsum') in source or seeds!"
+            echo "     Use realistic, contextual domain data (e.g. real customer names, Indonesian locale context, actual business descriptions)."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero Lorem Ipsum or generic persona slop in source/seeds"
+        fi
+
+        # 4g3. Anti-Dead Links (href="#" or href="") in UI Components (BLOCKER)
+        dead_links=$(grep -rInE "(href=[\"']#[\"']|href=[\"'][\"'])" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md)" | wc -l | tr -d ' ')
+        if [ "${dead_links:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${dead_links} dead link(s) (href='#' or href='') in UI components!"
+            echo "     All links must point to valid declared routes or be replaced with functional buttons/dialog modals."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero dead links (href='#') detected in UI source"
         fi
 
         # 4h. Multi-Role Capability & Route Protection Guard (BLOCKER)
@@ -387,11 +411,37 @@ gate_M06() {
         else
             echo "  ✅ Anti-slop: zero raw browser alert/confirm/prompt calls in UI source"
         fi
-        # 4c. Raw emoji in UI components (ADVISORY — row 26 of POLISH_AUDIT: prefer SVG icon library)
+
+        # 4j. Stray Debug console.log in Production Source (BLOCKER)
+        # Catches console.log / console.debug left in production UI & API code
+        stray_logs=$(grep -rInE "\bconsole\.(log|debug)\(" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md|scripts)" | wc -l | tr -d ' ')
+        if [ "${stray_logs:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${stray_logs} stray debug console.log/debug call(s) in production source!"
+            echo "     Remove leftover debug statements or route structured logs through a proper logger."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero stray console.log debug calls in production source"
+        fi
+
+        # 4k. TypeScript Escape Hatches (any Type Slop) (BLOCKER)
+        # Catches ': any' or 'as any' in application source
+        any_types=$(grep -rInE "(:[[:space:]]*any\b|as[[:space:]]+any\b)" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md)" | wc -l | tr -d ' ')
+        if [ "${any_types:-0}" -gt 0 ]; then
+            echo "  ❌ Anti-slop: found ${any_types} ': any' / 'as any' type bypasses in source!"
+            echo "     Define explicit domain types/interfaces or use 'unknown' with proper type guards."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Anti-slop: zero unconstrained 'any' types in production source"
+        fi
+        # 4c. Raw emoji / emoticon in UI components & source (BLOCKER — row 26 of POLISH_AUDIT: zero emoticons mandate)
         raw_emojis=$(grep -rInP "[\x{1F300}-\x{1FAD6}\x{1F600}-\x{1F64F}\x{2700}-\x{27BF}]" $scan_dirs 2>/dev/null \
             | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json)" | wc -l | tr -d ' ')
         if [ "${raw_emojis:-0}" -gt 0 ]; then
-            echo "  ⚠️  Anti-slop advisory: found ${raw_emojis} raw emoji character(s) in source. Use SVG icons (e.g. Lucide) instead of OS emoticons."
+            echo "  ❌ Anti-slop: found ${raw_emojis} raw emoji / emoticon character(s) in source (e.g. 🚀, 💡, ⚡, ⚙️, ✨)!"
+            echo "     Raw unicode emojis are strictly forbidden in production code. Use cohesive SVG icons (e.g. Lucide) instead."
+            GATE_FAILED=1
         else
             echo "  ✅ Anti-slop: zero raw emoticons detected in UI source"
         fi

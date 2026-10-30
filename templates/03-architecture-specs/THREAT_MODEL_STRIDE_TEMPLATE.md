@@ -92,13 +92,13 @@ One row per identified threat. ID format: `T-{STRIDE}-{ElementID}-{NNN}`.
 
 Each mitigation names the control, where it is enforced, and how it is verified. A mitigation with no verification path is an intention.
 
-| Threat ID | Mitigation | Enforced at | Verified by |
-| :--- | :--- | :--- | :--- |
-| `T-S-P01-001` | 15-minute access token; refresh rotation; server-side revocation | Auth middleware | Integration test: reused token after logout returns 401 |
-| `T-T-P01-001` | Tenant context resolved from verified token claim only | Request pipeline | Unit test: body `tenant_id` differing from token is ignored |
-| `T-I-DS01-001` | RLS policy on every tenant-scoped table | Database | Cross-tenant read attempt returns zero rows |
-| `T-D-P01-001` | Per-tenant rate limit; exports run on a bounded queue | API gateway + queue | Load test: quota exceeded returns 429, queue depth stays bounded |
-| `T-E-P01-001` | Role mutation restricted to service role | Authorization layer | Test: user token cannot PATCH own `role` |
+| Threat ID | FSD control / requirement | Mitigation | Enforced at | Planned M07 verification |
+| :--- | :--- | :--- | :--- | :--- |
+| `T-S-P01-001` | [FSD §7 / SEC-...] | 15-minute access token; refresh rotation; server-side revocation | Auth middleware | Integration test: reused token after logout returns 401 |
+| `T-T-P01-001` | [FSD §4 / SEC-...] | Tenant context resolved from verified token claim only | Request pipeline | Unit test: body `tenant_id` differing from token is ignored |
+| `T-I-DS01-001` | [FSD §3 / SEC-...] | RLS policy on every tenant-scoped table | Database | Cross-tenant read attempt returns zero rows |
+| `T-D-P01-001` | [FSD §7 / SEC-...] | Per-tenant rate limit; exports run on a bounded queue | API gateway + queue | Load test: quota exceeded returns 429, queue depth stays bounded |
+| `T-E-P01-001` | [FSD §4 / SEC-...] | Role mutation restricted to service role | Authorization layer | Test: user token cannot PATCH own `role` |
 
 ### Residual risk accepted
 

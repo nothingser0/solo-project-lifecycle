@@ -405,7 +405,7 @@ check_stack_questionnaire() {
         echo "  ❌ $target declares 'Stack Decision LOCKED:' but records only ${answered}/8 real questionnaire answers."
         [ -n "$missing" ] && echo "     Missing:${missing}"
         [ -n "$placeholder" ] && echo "     Still a template placeholder (not a human answer):${placeholder}"
-        echo "     The 8 answers are the human's input (M05 STEP 1). Ask the questions, END TURN, and record all 8 before locking."
+        echo "     Record missing architecture inputs from confirmed project artifacts or ask targeted questions before locking."
         GATE_FAILED=1
         return 1
     fi
@@ -474,12 +474,10 @@ check_handoff_strategy() {
 }
 
 # M05 security blueprint guard.
-# M05 STEP 5 makes the security blueprint a deliverable (AES-256-GCM envelope
-# encryption, Argon2id hashing, OWASP Top 10, rate limiting, UU PDP) and M06
-# inherits it as the baseline its anti-slop audit is measured against. Nothing
-# checked it, so a project could be told its architecture was signed off without
-# a single control recorded. Counted by distinct control; Medium+ also needs the
-# compliance tie-in.
+# M05 STEP 5 makes project-specific security decisions a deliverable. This
+# helper checks topic markers only; the human still judges whether the chosen
+# controls fit the data, threats, stack, and deployment model. Medium+ also needs
+# an explicit privacy/compliance decision.
 # Returns 1 (and sets GATE_FAILED) when the blueprint is absent/incomplete.
 check_security_blueprint() {
     local fsd="docs/specs/FSD.md"
@@ -494,7 +492,7 @@ check_security_blueprint() {
     [ -n "$target" ] || return 0 # missing artifact is reported by check_required
 
     local need=4 hit=0 have="" kw
-    for kw in "AES-256|AES.?256|aes-256-gcm" "Argon2id|Argon2|bcrypt|scrypt" "OWASP" "rate.?limit"; do
+    for kw in "AES-256|AES.?256|aes-256-gcm|data-at-rest encryption|data at rest" "Argon2id|Argon2|bcrypt|scrypt|password hashing" "OWASP" "rate.?limit"; do
         if grep -qiE "$kw" "$target" 2>/dev/null; then
             hit=$((hit + 1)); have="${have} $(echo "$kw" | cut -d'|' -f1)"
         fi
@@ -510,7 +508,7 @@ check_security_blueprint() {
         echo "  ✅ Security blueprint recorded in $target (${hit} controls:$have)"
     else
         echo "  ❌ $target security blueprint incomplete (${hit}/${need} controls found:$have)."
-        echo "     M05 STEP 5 requires: AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting$([ "$need" -eq 5 ] && echo ", UU PDP consent/deletion/audit")."
+        echo "     M05 STEP 5 requires project decisions for encryption at rest, password hashing, OWASP-relevant risks, and rate limiting$([ "$need" -eq 5 ] && echo ", plus applicable privacy obligations")."
         GATE_FAILED=1
         return 1
     fi
