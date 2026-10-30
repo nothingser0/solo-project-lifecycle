@@ -29,6 +29,9 @@ Record the operational PIC's name, title, email, phone, approval scope, and **1 
 ### Step 3a — Contract Baseline and Data Handling
 Before signature, reconcile every SOW deliverable, exclusion, milestone, acceptance test, dependency, and payment trigger against the approved `SCOPE_STATEMENT.md` version. Record its version/date in the SOW; any difference is either corrected or approved through a documented CR. If personal data will be processed, complete the DPA fields for data categories, purpose, duration, subprocessors, processing locations, and cross-border access/transfers; obtain professional legal review and signatures before that processing begins. Record `DPA signed` or `DPA N/A — no personal data processed` in the M03 log. Keep legal deadlines and obligations subject to counsel review for the applicable jurisdiction and contract.
 
+### Step 3b — Counterparty Paper Review (conditional)
+Use this workflow only when a client or vendor supplies its own contract, NDA, or material terms that differ from the project templates. If no counterparty paper is involved, record `N/A` and continue. Use `templates/02-legal-commercial/CONTRACT_REVIEW_TEMPLATE.md`; identify the document version/date, parties, your represented party, governing law if stated, and the relevant project playbook. Review material clauses against that playbook, cite the exact clause/page, and record the issue in plain language, severity, likelihood, preferred position, and a fallback. If an approved position is missing, mark it `UNKNOWN — ask owner/counsel`; do not invent a legal or commercial position. Route findings as `GREEN` (routine for human confirmation), `YELLOW` (owner and/or counsel review needed), or `RED` (hold signature and escalate). These labels only route review; they do not establish that a document is safe, legally sufficient, or approved. A qualified lawyer must review legal interpretation, enforceability, unfamiliar jurisdictions, and material high-severity findings. Only the authorized human may decide or sign.
+
 ### Step 4 — Legal Protection Clauses
 1. **IP**: source code, credentials, licenses remain the Developer's property until 100% of milestones are paid.
 2. **Limitation of Liability**: no indirect damages / lost profit / breach-from-client-negligence liability; capped at total contract value actually paid.
@@ -68,6 +71,7 @@ Written to **`contracts/`** or **`docs/pm/`** (gate accepts either path per file
 4. **`change-requests/CR-*.md`** + **`FINANCIAL_TRACKING.md`** — one CR sheet per approved change; burn tracked from day one.
 5. **`SOLO_SAAS_CHARTER.md`** — Solo SaaS / internal only, in place of the SOW.
 6. **`PROJECT_STATE.md`** — updated `M03` row + the `Delivery` field that routes the gate.
+7. **`CONTRACT_REVIEW_<document>.md`** — conditional review worksheet when counterparty paper is reviewed; record findings and their disposition, including counsel escalation where needed.
 
 ---
 
@@ -80,6 +84,7 @@ PASSED if and only if:
 - [ ] Operational approval authority and authorized contract signatory recorded; any backup delegation documented
 - [ ] SOW scope and acceptance terms reconciled against the approved scope version
 - [ ] DPA signed before personal-data processing, or explicit `N/A` recorded when none is processed
+- [ ] If counterparty paper was reviewed, findings and disposition are recorded; review status does not replace the signed agreement or required legal review
 - [ ] **Down Payment (Milestone 1) received and confirmed in the Developer's bank account** (or self-budget allocated for internal projects)
 
 ---
