@@ -11,8 +11,8 @@
 
 ### Step 0 — Premise Testing & M00 Inheritance
 - If M00 ran: inherit TAM/SAM/SOM, competitor matrix, personas — do NOT redo; focus on technical triage.
-- Continue the same assumption IDs and ledger started in M00; do not create a competing copy. For each decision-critical open premise, record impact if false, uncertainty, smallest useful validation, evidence/result, and the decision or next test. Use `templates/01-discovery-commercial/ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md` when the M00-lite artifact cannot carry that trail. A test plan is not evidence; inconclusive results remain open.
-- **Probe selection (when the test method is unclear)**: Choose the cheapest method that can produce evidence for the specific premise, not the method easiest to build. Use a time-boxed spike for technical/API unknowns, an observed task test for usability, real-user behavior or a pricing commitment for demand/viability, and synthetic simulation only for edge cases or data logic. A narrative prototype can test comprehension or stakeholder alignment, but does not establish customer demand. Link the hypothesis, chosen probe, timebox, observed result, and decision to the existing assumption ID; do not create a separate experiment register or treat a test artifact as evidence by itself.
+- Continue the same assumption IDs and ledger started in M00; do not create a competing copy. Scan the idea across Value/desirability, Usability, Viability, Feasibility, Go-to-Market, and Team/operations; add Regulatory when the domain requires it. Tag each decision-critical premise with its risk lens, impact if false, uncertainty, and source. Rank impact and uncertainty High/Medium/Low in a 3×3 matrix; test High-High first, then break ties by decision impact and how quickly credible evidence can be obtained. Do not mistake the feasibility scorecard for an assumption register. Use `templates/01-discovery-commercial/ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md` when the M00-lite artifact cannot carry that trail.
+- **Probe selection and experiment design**: Choose the cheapest method that can produce evidence for the specific premise, not the method easiest to build. Use a time-boxed spike for technical/API unknowns, an observed task test for usability, real-user behavior or a pricing commitment for demand/viability, and synthetic simulation only for edge cases or data logic. A narrative prototype can test comprehension or stakeholder alignment, but does not establish customer demand. For each experiment, record the assumption ID, falsifiable hypothesis, target/sample and context, probe, timebox, success and failure thresholds, observed evidence, and resulting decision. Do not create a separate experiment register or treat a test artifact as evidence by itself. An inconclusive result stays open.
 - Log unproven premises with confidence tags (✅/🔶/❓) and kill thresholds.
 - **Provisional Gate Rule**: if M00 is `PENDING_PRIMARY_RESEARCH`, write `Feasibility-Decision: PROVISIONAL_PENDING_M00` — no final GO. The gate returns a distinct non-terminal verdict (**exit 4**); do not chain onward until the M00 research is done and the gate re-runs green.
 - **Solo-capacity classifier runs at EVERY scale**, Small included: it derives the tier from the Intake fields, *not* the declared `Scale:` line, so if the two disagree (e.g. `Scale: small` + a payment webhook) the gate fails on the High-Water-Mark rule. Set `Scale:` to its verdict.
@@ -25,6 +25,7 @@
 - **Core user loop**: `[Trigger] → [System mutation] → [Value/record locked]`.
 - **MVP Razor**: with ONE capability, which justifies switching? Cut the rest.
 - **Anti-contradiction checks**: zero ghost features; inventory parity with M02/M04; no dual-status features; profit-label alignment (Gross vs Net Profit).
+- **Pre-mortem**: Before finalizing the brief, imagine the project failed within 12 months. Record the three most plausible causes, an early observable warning for each, and the linked assumption or mitigation. Keep this separate from post-development kill thresholds; it is a discovery prompt, not evidence that failure is certain.
 
 ### Step 2 — MVP Razor & Root Cause Validation Gate (MANDATORY)
 - 80/20 breakdown of the problem metric; MVP Razor must target the ~80% primary root cause (≥70% resolution) or it is REJECTED.
@@ -55,7 +56,7 @@ Post-gate (`GO`/`CONDITIONAL_GO`, carrying its `Mitigation:`), using the shipped
 
 ## 2. Output Artifacts
 
-All in **`docs/pm/`**: **`IDEA_BRIEF.md`** (archetype header, pitch, core loop, features, 4D scorecard + confidence tags, scale classification, kill/pivot criteria) and **`PROJECT_STATE.md`** (scores, gate decision, assumptions, next path + the Intake answers).
+All in **`docs/pm/`**: **`IDEA_BRIEF.md`** (archetype header, pitch, core loop, assumption lenses and prioritized probes, pre-mortem, features, 4D scorecard + confidence tags, scale classification, kill/pivot criteria) and **`PROJECT_STATE.md`** (scores, gate decision, assumption links, next path + the Intake answers).
 
 ---
 
@@ -72,6 +73,7 @@ M01 is **not** a stop point: after the brief passes the gate, chain into Module 
 - [ ] Epic-sum + 20% buffer + overhead consistent with the timeline (±20%)
 - [ ] Legal compliance planned; commercial model uses discounted intent + COGS benchmarks
 - [ ] Assumption register with kill thresholds; 5–7 competitors, uniqueness checked
+- [ ] Decision-critical assumptions tagged by risk lens and ranked; each planned experiment has a falsifiable threshold; pre-mortem's top causes link to assumptions or mitigations
 - [ ] `PROJECT_STATE.md` updated; all 8 Intake fields answered (`Intake-Status: ANSWERED`)
 
 **Gate verification (MANDATORY)**: paste the raw output of `./scripts/gates/validate-gate.sh M01`. Exit 0 = passed · 1 = incomplete, fix and re-run · 4 = `PROVISIONAL_PENDING_M00` (M00 research outstanding — not passed, do not chain onward).
