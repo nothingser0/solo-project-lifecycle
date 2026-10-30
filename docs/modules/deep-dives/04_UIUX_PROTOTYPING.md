@@ -222,21 +222,27 @@ docs/specs/COMPONENT_REQUIREMENTS.md
 
 ## Prototyping Approach Selection (STEP 2) — Full Option Details
 
-**Choose approach based on project context**:
+**Choose the lightest approach that meets review and handoff needs. M04 artifact and human approval requirements still apply; tools are optional ways to produce or inspect those artifacts.**
 
-### Option A: Markdown-Only (FASTEST - Solo Projects)
-**Use when**:
-- Solo developer project (no client visual approval needed)
-- Fast turnaround priority (rapid specification without GUI tools)
-- Simple UI (forms, tables, dashboards)
+| Need | Suitable approach | Choose when |
+|---|---|---|
+| Low-dependency interactive prototype | Native HTML/CSS | Solo project, simple flows, or no design handoff requirement |
+| Rapid generated React/Tailwind screens | v0 or similar builder | The chosen stack fits the project and exported code will be reviewed |
+| Explore visual directions | Stitch or another visual builder | Early layout exploration matters more than reusable production code |
+| Shared design file and designer handoff | Figma or Penpot | Stakeholders need editable design artifacts or ongoing design collaboration |
+| Sync code and a Figma library | Figma MCP / Code Connect | Figma is the agreed source of truth and integration is available |
+| Verify rendered flows | Browser automation already available (for example Playwright) | A focused check helps validate P0 journeys; do not add tooling solely for M04 |
 
-**Deliverables**:
-- ✅ DESIGN.md (tokens)
-- ✅ DESIGN_SPEC.md (5-state matrix per screen)
-- ❌ No interactive prototype
+Choose React, Tailwind, shadcn/ui, WordPress/WPDS, or another component system only when it matches the implementation stack and product. Do not make a tool or library a gate requirement.
 
-**Pros**: Fastest (2-4 hours), no tool dependency, forces clear specification
-**Cons**: No visual preview before coding, client may request changes post-M06
+For conversion-focused landing, signup, onboarding, or paywall work, review offer clarity, user effort, trust, and recovery using M00/M01 audience and outcome evidence. Skip this branch when conversion is not an explicit outcome; avoid deceptive or coercive patterns.
+
+### Option A: Native HTML/CSS Prototype (Default for Solo Projects)
+Use for simple flows or when a low-dependency, reviewable prototype fits best. Markdown specs help define the prototype but do not replace the interactive prototype required by the M04 gate. Keep it small for M04-LITE.
+
+**Deliverables**: `DESIGN.md`, `DESIGN_SPEC.md`, and the required interactive prototype.
+
+**Pros**: No external design-tool dependency; source can be reviewed and reused during implementation. **Trade-off**: visual iteration is manual unless a browser tool is already available.
 
 ---
 
