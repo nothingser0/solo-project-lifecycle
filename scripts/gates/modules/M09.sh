@@ -33,7 +33,21 @@ gate_M09() {
             check_required "docs/pm/UAT_SIGNOFF_REPORT.md" "docs/qa/UAT_SIGNOFF.md" 500
         fi
     fi
-    check_optional "docs/qa/UAT_WORKBOOK.md"
+    # Client UAT must include scenario-to-requirement traceability and evidence.
+    if [ $is_m09_solo -eq 1 ]; then
+        check_optional "docs/pm/UAT_WORKBOOK.md" "docs/qa/UAT_WORKBOOK.md"
+    else
+        check_required "docs/pm/UAT_WORKBOOK.md" "docs/qa/UAT_WORKBOOK.md" 300
+    fi
+    target_workbook="docs/pm/UAT_WORKBOOK.md"
+    [ -f "$target_workbook" ] || target_workbook="docs/qa/UAT_WORKBOOK.md"
+    if [ $is_m09_solo -eq 0 ] && [ -f "$target_workbook" ]; then
+        check_sections "$target_workbook" "Requirement / AC ID" "Evidence" "UAT"
+        if grep -qiE "UAT Approved[^:]*:[[:space:]]*(yes|true)|Pass Rate.*90%" "$target_workbook"; then
+            echo "  ❌ $target_workbook contains a fixed approval/pass-rate assumption; base UAT decision on applicable P0 criteria and authorized risk disposition."
+            GATE_FAILED=1
+        fi
+    fi
     if [ -f "docs/pm/UAT_SIGNOFF_REPORT.md" ] || [ -f "docs/qa/UAT_SIGNOFF.md" ] || [ -f "docs/qa/UAT_SIGNOFF_SMALL.md" ] || [ -f "docs/pm/UAT_SIGNOFF_SMALL.md" ]; then
         target_uat="docs/pm/UAT_SIGNOFF_REPORT.md"
         [ -f "$target_uat" ] || target_uat="docs/qa/UAT_SIGNOFF.md"
@@ -45,10 +59,10 @@ gate_M09() {
             GATE_FAILED=1
         fi
         # 2. Reject explicit failure / rejection status (BLOCKER)
-        if grep -qiE "REJECTED|DISAPPROVED|NOT APPROVED|FAILED[[:space:]]*BY[[:space:]]*CLIENT|Status[[:space:]]*:[[:space:]]*REJECT" "$target_uat"; then
+        if grep -qiE "REJECTED|DISAPPROVED|NOT APPROVED|NO-GO|PENDING|FAILED[[:space:]]*BY[[:space:]]*CLIENT|Status[[:space:]]*:[[:space:]]*REJECT" "$target_uat"; then
             echo "  ❌ $target_uat reports REJECTED / NOT APPROVED status! Client UAT must pass before Production Go-Live."
             GATE_FAILED=1
-        elif grep -qiE "APPROVED|PASSED|ACCEPTED|UAT PASS|Production Release Authorization" "$target_uat"; then
+        elif grep -qiE "(^|[^A-Z])GO([^A-Z]|$)|APPROVED|PASSED|ACCEPTED|UAT PASS|Production Release Authorization" "$target_uat"; then
             echo "  ✅ UAT approved status verified in $target_uat"
         else
             echo "  ❌ $target_uat missing explicit approval attestation ('APPROVED' / 'PASSED' / 'UAT PASS')!"
@@ -62,7 +76,7 @@ gate_M09() {
         fi
         # 2c. Verify core section headings for standard UAT report
         if [ "$target_uat" = "docs/pm/UAT_SIGNOFF_REPORT.md" ] || [ "$target_uat" = "docs/qa/UAT_SIGNOFF.md" ]; then
-            check_sections "$target_uat" "Sign-Off Metadata" "Testing Summary" "Release Authorization" || true
+            check_sections "$target_uat" "Sign-Off Metadata" "Testing Summary" "Acceptance & Release Decision"
         fi
         # 3. Verify Client Single PIC Sign-off: reject blank signature lines (______ or empty signature cell)
         if grep -qiE "Client Single PIC|Approved by Client" "$target_uat"; then

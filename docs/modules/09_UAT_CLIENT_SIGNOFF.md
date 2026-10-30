@@ -1,7 +1,7 @@
 # Module 09: [VALIDATION GATE] UAT & Client Sign-Off on Staging
 
 > **Templates to copy**: `templates/06-qa-uat/UAT_WORKBOOK_SMALL.md` · `UAT_SIGNOFF_SMALL.md` (Small/Fast-track) · `UAT_WORKBOOK_TEMPLATE.md` (Medium+)
-> 📖 **Optional** (do NOT preload): `deep-dives/09_UAT_CLIENT_SIGNOFF.md` (training/demo/feedback templates, full client-protection scripts, full severity matrix, deemed-acceptance clause)
+> 📖 **Optional** (do NOT preload): `deep-dives/09_UAT_CLIENT_SIGNOFF.md` (training/demo/feedback templates, full client-protection scripts, full severity matrix)
 
 **BLOCKING VALIDATION GATE**: DEPLOYMENT TO PRODUCTION OR PRIMARY-DOMAIN POINTING IS PROHIBITED BEFORE THIS GATE PASSES. The Client Single PIC tests on Staging against `PRD.md` acceptance criteria; defects are triaged, scope creep deflected, and the **UAT Sign-Off Report (Berita Acara UAT)** is signed.
 
@@ -12,7 +12,7 @@
 ```text
 [ INPUT: Staging ready & data populated — M07 SIT pass REQUIRED; M08 done or bypassed (greenfield) ]
   → STEP 1: Convert PRD acceptance criteria to layman test steps; provision client tester accounts
-  → STEP 2: Kickoff (30-min walkthrough demo); lock window (max 5–7 business days); apply Deemed Acceptance
+  → STEP 2: Kickoff; name testers, approver, and any veto authority; agree the test window and decision process in the SOW/project plan
   → STEP 3: Triage — real bugs (Sev 1–3) vs scope creep (→ Change Request)
   → STEP 4: Fix valid bugs on fix/* → merge staging → PIC retests → RESOLVED in UAT_DEFECT_LOG.md
   → STEP 5: Sign UAT_SIGNOFF_REPORT.md → [GATE] Module 10
@@ -23,14 +23,14 @@
 ## 2. Solo Dev Protection Rules (full scripts in deep dive)
 
 1. **Deflect features-as-bugs**: review agreed PRD/FSD; anything documented Out-of-Scope is `Passed UAT` — offer a formal CR form.
-2. **Deemed Acceptance**: window capped 5–7 business days; no testing/written defects within 10 business days of the Staging link = legally *Deemed Accepted*; production deploy + final invoice may proceed.
-3. **Iteration limit**: max **2 UAT cycles** per contract; Sev 3/4 cosmetic defects never block sign-off (deferred to warranty); 7 calendar days of client silence = **DEEMED ACCEPTED**.
+2. **Acceptance window**: record the agreed start/end, response expectations, and escalation path in the signed SOW/project plan. Deemed acceptance is never inferred by this workflow; use it only when explicit contract language has been reviewed for the applicable agreement and jurisdiction. Silence alone does not authorize the agent or developer to mark UAT approved or deploy.
+3. **Iteration limit**: record any contractual cycle limit; do not invent a default. Sev 3/4 cosmetic defects may be deferred only with the Client Single PIC's documented approval and an owner/target date.
 4. **Conditional Sign-Off with Punch List (Defect Containment)**:
-   - If non-critical defects (Sev 3 cosmetic / Sev 2 with operational workaround) remain at the end of the UAT window, the Client Single PIC MAY execute a **Conditional Sign-Off** containing an explicit **Punch List**.
+   - If non-critical defects (normally Sev 3/4; Sev 2 only if release policy allows) remain at the end of the UAT window, the Client Single PIC may execute a **Conditional Sign-Off** containing an explicit **Punch List**.
    - A Punch List binds the Developer to resolve listed minor items during the 30-day warranty period (M12) without blocking production deployment or milestone payment release.
-5. **Defect Verification Evidence & Repro Obligation**:
+5. **Defect Verification Evidence**:
    - Client defect submissions MUST include verifiable reproduction evidence (exact input payload, timestamp, screenshot, or video recording).
-   - Unreproducible defects ("it felt slow once", "something looked weird yesterday") do NOT block sign-off and cannot be logged as Severity 1 or 2.
+   - If a report is not yet reproducible, record it as `NEEDS REPRODUCTION`, capture the missing evidence, and agree who will investigate. Lack of a repro alone does not prove the issue harmless or set its severity; the PIC decides disposition under the release policy.
 
 ## 3. Defect Severity Matrix
 
@@ -53,12 +53,16 @@
 1. **`docs/pm/UAT_WORKBOOK.md`** — scenario workbook + defect log (`UAT_WORKBOOK_TEMPLATE.md`; light: `UAT_WORKBOOK_SMALL.md`).
 2. **`docs/pm/UAT_SIGNOFF_REPORT.md`** — signed acceptance report (`UAT_SIGNOFF_TEMPLATE.md`; Small: `docs/qa/UAT_SIGNOFF_SMALL.md`).
 
+The workbook maps every in-scope acceptance criterion to one or more test scenarios. Each scenario records its requirement/AC ID, preconditions, business-language steps, expected result, tester, observed result, status, and evidence. Use Given/When/Then when it clarifies the behavior; it is optional for manual UAT.
+
 ## 6. Gate Exit Criteria [GATE]
 
-- [ ] All scenarios PASS, or all Severity 1 & 2 findings RESOLVED.
-- [ ] Stability: 0 unresolved Sev 1; error rate < 1%; uptime ≥99% (48 h); core flows unblocked.
+- [ ] Every in-scope P0 acceptance criterion is mapped to a scenario and PASS, or has a documented exception approved by the authorized PIC under the release policy. All other applicable scenarios have a recorded result and evidence; blocked/untested items are dispositioned.
+- [ ] Stability and service-level results meet the project's M02 NFR and M10 release criteria; do not apply universal error-rate or uptime thresholds absent an agreed target.
 - [ ] Feature requests split into written CRs.
-- [ ] **Client Single PIC signed `docs/pm/UAT_SIGNOFF_REPORT.md`.**
+- [ ] Every in-scope acceptance criterion is mapped to a UAT scenario; untested, blocked, failed, and N/A cases have an explicit disposition and evidence/reason.
+- [ ] Tester, Client Single PIC approver, and any release veto authority are named; final Go/No-Go and residual risks are documented.
+- [ ] **Client Single PIC signed `docs/pm/UAT_SIGNOFF_REPORT.md` (or approved Small template).**
 
 ---
 
