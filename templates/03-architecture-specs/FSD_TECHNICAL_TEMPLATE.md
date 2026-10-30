@@ -71,6 +71,28 @@ flowchart TD
 
 **Object storage decision**: [selected service, access, size/type validation, retention, and cache policy / N/A — no user-uploaded media]
 
+### 2.1a C4 System Views (Conditional)
+
+Add the views that make the architecture easier to understand when multiple deployable services, data stores, external systems, or trust boundaries are involved. System Context shows users and external systems around this product; Container shows the deployable applications, data stores, and their interactions. Add Component only when a container's internal structure needs clarification. Keep the views aligned with this DFD, the selected stack, and the threat model. Otherwise record `N/A — DFD is sufficient`.
+
+- System Context: [diagram / N/A with reason]
+- Container: [diagram / N/A with reason]
+- Component: [diagram / N/A with reason]
+
+### 2.1b Existing Repository Assessment (Conditional)
+
+Complete when extending or replacing an existing codebase. Cite evidence from source, configuration, tests, and deployment files; mark unverified claims `UNKNOWN`.
+
+| Area | Current state and evidence | Constraint or target change |
+|---|---|---|
+| Entry points, runtime, and framework | | |
+| Data stores, models, and migrations | | |
+| External integrations and trust boundaries | | |
+| Authentication and authorization | | |
+| Tests, build, and deployment | | |
+
+For greenfield work, record `N/A — no existing codebase`.
+
 ### 2.2 Entity Relationship Diagram (ERD)
 
 ```mermaid
@@ -769,6 +791,8 @@ Map each consumed threat and security requirement to its design control and plan
 - [ ] **7. API Contract Completeness**: Every in-scope API operation documented as `#### <VERB> /path`, each with auth, request schema, and success/error behavior; or record `N/A — no application API`. `Idempotency-Key` is specified for applicable high-risk mutations.
 - [ ] **8. Security Blueprint (§7)**: Every control row resolved (implemented or `N/A — <reason>`); no blank rows. Password hashing, at-rest encryption, rate limiting, and audit logging each have an implementation reference.
 - [ ] **9. Module 04 Handoff (§8)**: Screen → route → component map covers 100% of `DESIGN_SPEC.md` screens; locked stack matches §2 verbatim; compatibility level recorded for M06 STEP 0.
+- [ ] **10. Architecture Review (before sign-off)**: PRD/scope and M04 handoff trace to this FSD; decisions and diagrams agree; assumptions and open items are explicit; a developer can implement data/API/security/failure behavior without guessing. For an existing repository, proposed changes account for the evidence and constraints in §2.1b.
+- [ ] **11. C4 Views (conditional)**: Context/Container views are present when needed to clarify the system, or §2.1a records why the DFD is sufficient.
 
 
 ---

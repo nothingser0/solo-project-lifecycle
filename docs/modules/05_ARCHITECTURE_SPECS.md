@@ -41,6 +41,8 @@ or Windows:
 
 ### STEP 1: Resolve Architecture Inputs (BLOCKS STACK LOCK)
 
+**Existing codebase (conditional)**: If this project extends or replaces an existing repository, inspect its entry points, runtime/configuration, data stores and models, external integrations, authentication boundaries, tests, and deployment path before proposing the target design. Cite files or commands as evidence; mark anything unverified `UNKNOWN`. Record the current state, constraints, and required changes in the FSD architecture section. Use `patterns/architecture/LEGACY_MODERNIZATION_STRANGLER_PATTERN.md` when incremental replacement is needed. For a greenfield project, record `N/A — no existing codebase`.
+
 Review M01/M02 decisions, `PROJECT_STATE.md`, the approved scope, and M04 design before asking anything. Reuse confirmed answers and record their source. Ask only targeted questions for missing or conflicting decisions that materially affect stack, data, deployment, scale, or compliance; use the questionnaire below as a prompt bank, not a second intake interview:
 **Team Expertise · Database Experience · Deployment Topology · Expected Scale (Year 1) · Data Model Characteristics · DevOps Complexity Tolerance · Critical Feature Priority · Compliance Requirements**
 
@@ -59,6 +61,8 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
   - Evaluate each category only when the product needs it; prefer existing framework capabilities where sufficient and record `N/A` with a short reason otherwise.
 
 **Risk-triggered security and vendor references**: Load `patterns/security/THREAT_MODELING_STRIDE_PATTERN.md` and the relevant security pattern when the product handles personal/sensitive data, payments, public APIs, multi-tenant access, or privileged roles; use the project data classification and threat model to select controls. For a third-party service, first assess data handled, failure impact, exit path, and cost in the vendor/build-vs-buy decision. After the stack and provider are chosen, consult that provider's official skill or documentation for integration details; vendor-specific guidance does not replace the project's threat model or security review.
+
+**C4 views (conditional)**: Add a C4 System Context and/or Container view when multiple deployable services, data stores, external systems, or trust boundaries make the system shape hard to understand from the DFD. Use a Component view only when a container's internal structure needs clarification. Keep diagrams consistent with the selected stack, DFD, and threat model; otherwise record `N/A — DFD is sufficient`.
 
 ### STEP 3: Database Schema & Object Storage Design (ERD, DDL & Media Architecture)
 
@@ -112,6 +116,8 @@ Reasoning for the chosen stack; **alternatives rejected with reasons**; topology
 
 ### STEP 7: Technical Sign-Off
 
+Before sign-off, review the FSD (or Section 5 of `PROJECT_LITE.md` for Small) against approved requirements/scope, any PRD, and the M04 handoff: confirm traceability, consistent decisions and diagrams, explicit assumptions/open items, and enough data/API/security/failure behavior for implementation without guessing. Resolve blockers or record an owner and decision point for non-blocking items. For existing repositories, verify the proposed changes account for the observed codebase constraints.
+
 The **human** signs (Client Single PIC, or on solo work the developer); an AI agent is never a valid approver. The gate **fails** on residual `____` / `[YYYY-MM-DD]` / `[Your Name]` fields — a real name + date is required (same false-green the M04 Design Freeze guard closes). M05 is **not** a stop point: after sign-off, chain to M06 for Small/Solo SaaS; on Client work pause for explicit "Proceed to Module 06". Changes requested → revise and re-run.
 
 ---
@@ -129,6 +135,7 @@ The **human** signs (Client Single PIC, or on solo work the developer); an AI ag
 - [ ] Substantive `PROJECT_LITE.md` (Small) or `PRD.md` + `FSD.md` (Medium+) — ≥1000B / ≥2000B targets; the script stub-checks size, so judge substance
 - [ ] Idempotency strategy if applicable. RLS required **only** when `Intake-Branch-Hierarchy` is yes/multi (or the DDL declares `org_id`/`tenant_id`); single-tenant passes with `N/A — single tenant`
 - [ ] Medium+ only: `docs/governance/ADR.md` (gate-enforced); Enterprise adds `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md`
+- [ ] Architecture review completed before technical sign-off; FSD or Small-path blueprint is implementable without guessing; existing-codebase constraints and conditional C4 views are addressed or marked `N/A`.
 - [ ] Technical sign-off obtained — **human name + real date, no residual blank/placeholder fields** *(gate-enforced; AI is never a valid approver)*
 
 > **Scale note**: size figures are targets, not hard checks — `lib/checks.sh` stub-checks only (`<40B` fails); content checks are what reject.
