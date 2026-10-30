@@ -76,6 +76,39 @@ Write-Host "[INFO] FSD Stack: $stack"
 Write-Host ""
 
 switch ($stack) {
+    { $_ -in "Expo", "expo", "React Native", "react-native" } {
+        Assert-ScaffoldType "Expo" "package.json" $null $null
+        $fsdExpo = Extract-FsdVersion "Expo"
+        if (-not $fsdExpo) {
+            Write-Host "[ERROR] Expo pin missing in Framework Versions (Pinned); use '- Expo: X.Y.Z'" -ForegroundColor Red
+            exit 1
+        }
+        if (-not (Test-Path "package-lock.json")) {
+            Write-Host "[ERROR] Expo M06 comparator requires package-lock.json (npm lockfile)" -ForegroundColor Red
+            exit 1
+        }
+        $lockData = Get-Content "package-lock.json" -Raw | ConvertFrom-Json
+        $resolved = $lockData.packages.'node_modules/expo'.version
+        if (-not $resolved) {
+            Write-Host "[ERROR] expo not resolved in package-lock.json" -ForegroundColor Red
+            exit 1
+        }
+        $fsdMM = ($fsdExpo -replace '^v', '' -split '\.')[0..1] -join '.'
+        $resolvedMM = ($resolved -split '\.')[0..1] -join '.'
+        if ($resolvedMM -ne $fsdMM) {
+            Write-Host "[ERROR] VERSION MISMATCH: FSD Expo $fsdExpo, package-lock Expo $resolved" -ForegroundColor Red
+            exit 1
+        }
+        Write-Host "[OK] Expo package $resolved matches FSD" -ForegroundColor Green
+        if (-not (Get-Command npx -ErrorAction SilentlyContinue)) {
+            Write-Host "[ERROR] Required tool 'npx' not found in PATH" -ForegroundColor Red
+            exit 1
+        }
+        npx expo install --check
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        npx expo-doctor@latest
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
     { $_ -in "Next.js", "Nextjs", "next.js" } {
         Assert-ScaffoldType "Next.js" "package.json" "composer.json" "Laravel/PHP"
         Test-Tailwind
@@ -404,7 +437,7 @@ switch ($stack) {
     
     default {
         Write-Host "[ERROR] No lockfile comparator for stack: $stack" -ForegroundColor Red
-        Write-Host "        Comparators exist for: Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails." -ForegroundColor Gray
+        Write-Host "        Comparators exist for: Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails, Expo (npm/package-lock)." -ForegroundColor Gray
         Write-Host "        The pin is UNVERIFIED - do not report M06 STEP 3 as passed." -ForegroundColor Gray
         Write-Host "        Action: verify by hand against the lockfile, record the result in the FSD" -ForegroundColor Gray
         Write-Host "        'Framework Versions (Pinned):' block, and add the comparator here (bash + ps1)." -ForegroundColor Gray

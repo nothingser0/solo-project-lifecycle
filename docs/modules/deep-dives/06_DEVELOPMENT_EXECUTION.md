@@ -617,16 +617,17 @@ def install_dependencies_with_fallback():
 
 ### Template Selection Matrix (Stack-Specific Harness Paths)
 
-| Template File | Next.js Path | Laravel Path | Django Path | Go Path |
-|---|---|---|---|---|
-| AGENTS.md | `templates/04-dev-execution/nextjs/AGENTS.md` | `templates/04-dev-execution/laravel/AGENTS.md` | `templates/04-dev-execution/django/AGENTS.md` | `templates/04-dev-execution/go/AGENTS.md` |
-| ARCHITECTURE.md | `templates/04-dev-execution/nextjs/ARCHITECTURE.md` | `templates/04-dev-execution/laravel/ARCHITECTURE.md` | `templates/04-dev-execution/django/ARCHITECTURE.md` | `templates/04-dev-execution/go/ARCHITECTURE.md` |
-| CONVENTIONS.md | `templates/04-dev-execution/nextjs/CONVENTIONS.md` | `templates/04-dev-execution/laravel/CONVENTIONS.md` | `templates/04-dev-execution/django/CONVENTIONS.md` | `templates/04-dev-execution/go/CONVENTIONS.md` |
+| Template File | Next.js Path | Laravel Path | Django Path | Go Path | Expo Path |
+|---|---|---|---|---|---|
+| AGENTS.md | `templates/04-dev-execution/nextjs/AGENTS.md` | `templates/04-dev-execution/laravel/AGENTS.md` | `templates/04-dev-execution/django/AGENTS.md` | `templates/04-dev-execution/go/AGENTS.md` | `templates/04-dev-execution/expo/README.md` |
+| ARCHITECTURE.md | `templates/04-dev-execution/nextjs/ARCHITECTURE.md` | `templates/04-dev-execution/laravel/ARCHITECTURE.md` | `templates/04-dev-execution/django/ARCHITECTURE.md` | `templates/04-dev-execution/go/ARCHITECTURE.md` | Generate from FSD boundaries; see Expo guide |
+| CONVENTIONS.md | `templates/04-dev-execution/nextjs/CONVENTIONS.md` | `templates/04-dev-execution/laravel/CONVENTIONS.md` | `templates/04-dev-execution/django/CONVENTIONS.md` | `templates/04-dev-execution/go/CONVENTIONS.md` | Generate from FSD and Expo guide |
 
 ### Extended Stack Scaffold Commands (Non-Primary Stacks)
 
 | Detected Stack | Scaffold Command | ORM/Migration Tool |
 |---|---|---|
+| Expo / React Native | `npx create-expo-app@latest <proj> --template <template compatible with FSD-locked SDK>`; pin the FSD `expo` package with npm and commit `package-lock.json` | Expo Router / SQLite or selected FSD data layer |
 | Remix | `npx create-remix@latest` | Prisma / Drizzle |
 | SvelteKit | `npm create svelte@latest` | Prisma / Drizzle |
 | Astro | `npm create astro@latest` | Prisma (API routes) |

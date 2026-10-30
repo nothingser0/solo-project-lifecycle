@@ -110,6 +110,34 @@ tailwind_check() {
 }
 
 case "$STACK" in
+    Expo|expo|React\ Native|react-native)
+        scaffold_type_check "Expo" "package.json" ""
+        FSD_EXPO=$(extract_fsd_version "Expo")
+        if [[ -z "$FSD_EXPO" ]]; then
+            echo -e "${RED}Expo pin missing in Framework Versions (Pinned); use '- Expo: X.Y.Z'${NC}"
+            exit 1
+        fi
+        if [[ ! -f "package-lock.json" ]]; then
+            echo -e "${RED}Expo M06 comparator requires package-lock.json (npm lockfile)${NC}"
+            exit 1
+        fi
+        require_cmd node "needed to read package-lock.json"
+        RESOLVED=$(node -p "require('./package-lock.json').packages['node_modules/expo']?.version || ''" 2>/dev/null)
+        if [[ -z "$RESOLVED" ]]; then
+            echo -e "${RED}expo not resolved in package-lock.json${NC}"
+            exit 1
+        fi
+        FSD_MM=$(echo "$FSD_EXPO" | sed 's/^v//' | cut -d. -f1-2)
+        RESOLVED_MM=$(echo "$RESOLVED" | cut -d. -f1-2)
+        if [[ "$RESOLVED_MM" != "$FSD_MM" ]]; then
+            echo -e "${RED}VERSION MISMATCH: FSD Expo $FSD_EXPO, package-lock Expo $RESOLVED${NC}"
+            exit 1
+        fi
+        echo "Expo package $RESOLVED matches FSD"
+        require_cmd npx "needed for Expo compatibility checks"
+        npx expo install --check
+        npx expo-doctor@latest
+        ;;
     Next.js|Nextjs|next.js)
         scaffold_type_check "Next.js" "package.json" "$([ -f composer.json ] && echo 'Laravel/PHP' || ([ -f manage.py ] && echo 'Django/Python' || true))"
         tailwind_check
@@ -420,7 +448,7 @@ case "$STACK" in
         
     *)
         echo -e "${RED}❌ No lockfile comparator for stack: $STACK${NC}"
-        echo "   Comparators exist for: Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails."
+        echo "   Comparators exist for: Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails, Expo (npm/package-lock)."
         echo "   Your stack is locked in the FSD, but this gate cannot read its lockfile, so the pin"
         echo "   is UNVERIFIED — do not report M06 STEP 3 as passed."
         echo "   Action: verify the pin by hand against the lockfile, record the result in the FSD"

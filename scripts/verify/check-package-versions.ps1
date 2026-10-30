@@ -78,6 +78,9 @@ function Check-NpmPackage {
 $frameworkMap = @{
     "nextjs"     = "nextjs"
     "node"       = "nextjs"
+    "expo"       = "expo"
+    "react-native" = "expo"
+    "reactnative" = "expo"
     "laravel"    = "laravel"
     "php"        = "laravel"
     "django"     = "django"
@@ -105,6 +108,10 @@ $fw = $Framework.ToLower().Trim()
 $target = if ($frameworkMap.ContainsKey($fw)) { $frameworkMap[$fw] } else { "unsupported" }
 
 switch ($target) {
+    "expo" {
+        $expo = Check-NpmPackage "expo"
+        Write-Host "Framework: Expo ^$($expo.latest)" -ForegroundColor White
+    }
     "nextjs" {
         Write-Host "Framework: Next.js Ecosystem (npm Registry)" -ForegroundColor Cyan
         Write-Host ""
@@ -485,7 +492,7 @@ switch ($target) {
 
     default {
         Write-Host "Error: Unsupported framework '$Framework'." -ForegroundColor Red
-        Write-Host "Supported frameworks: nextjs, laravel, django, fastapi, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt" -ForegroundColor White
+        Write-Host "Supported frameworks: nextjs, expo, laravel, django, fastapi, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt" -ForegroundColor White
         exit 1
     }
 }

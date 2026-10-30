@@ -153,6 +153,7 @@ Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 ### Framework Versions & Ecosystem Libraries (Pinned)
 *(Populate directly from `./scripts/verify/check-package-versions.sh <stack>` — see the live-version STEP 0 in `docs/modules/05_ARCHITECTURE_SPECS.md`)*
 - **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]
+- Expo: [For Expo/React Native only, exact `expo` npm package version, e.g. 55.0.12] (SDK: [Expo SDK version])
 - **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
 - **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
 - **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]

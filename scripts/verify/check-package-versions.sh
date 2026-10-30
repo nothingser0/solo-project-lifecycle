@@ -116,6 +116,11 @@ check_npm_package() {
 }
 
 case $FRAMEWORK in
+    expo|react-native|reactnative)
+        expo_info=$(check_npm_package "expo")
+        expo_ver=$(echo "$expo_info" | cut -d'|' -f1)
+        echo "Framework: Expo ^$expo_ver"
+        ;;
     nextjs|node)
         echo -e "${CYAN}Framework: Next.js Ecosystem (npm Registry)${NC}"
         echo ""
@@ -550,7 +555,7 @@ EOF
 
     *)
         echo -e "${RED}Error: Unsupported framework '$FRAMEWORK'.${NC}"
-        echo "Supported frameworks: nextjs, laravel, django, fastapi, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt"
+        echo "Supported frameworks: nextjs, expo, laravel, django, fastapi, go, rails, mern, aspnet, spring, serverless, flutter, remix, astro, sveltekit, nuxt"
         exit 1
         ;;
 esac

@@ -56,6 +56,24 @@ jobs:
       # - run: go test ./...
       # - run: go vet ./...
 
+      # ---- Expo / React Native (npm; uncomment, remove default Node steps) ----
+      # - uses: actions/setup-node@v4
+      #   with: { node-version: 22, cache: 'npm' }
+      # - run: npm ci
+      # - run: npx expo install --check
+      # - run: npx expo-doctor@latest
+      # Add only scripts actually defined by the project (lint, typecheck, test).
+      # EAS cloud builds are optional; configure profile and credentials separately.
+
+      # ---- Terraform (only for projects with Terraform; run from IaC root) ----
+      # - uses: hashicorp/setup-terraform@v3
+      # - run: terraform fmt -check -recursive
+      # - run: terraform init -backend=false
+      # - run: terraform validate
+      # Run terraform test only after reviewing every .tftest.hcl command; apply
+      # mode may provision billable infrastructure. Never add apply tests here
+      # without isolated credentials and explicit project approval.
+
   anti-slop-scan:
     name: Anti-AI-Slop Source Scan
     runs-on: ubuntu-latest

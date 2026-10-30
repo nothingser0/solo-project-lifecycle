@@ -21,13 +21,13 @@
 Run real-time version check against official registries (never trust training-data versions):
 
 ```bash
-./scripts/verify/check-package-versions.sh <nextjs|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+./scripts/verify/check-package-versions.sh <nextjs|expo|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
 or Windows:
 
 ```powershell
-.\scripts\verify\check-package-versions.ps1 -Framework <nextjs|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+.\scripts\verify\check-package-versions.ps1 -Framework <nextjs|expo|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
 ```
 
 > Stack list source of truth: `references/stacks/STACK_SUPPORT_MATRIX.md`. A **PRODUCTION** stack
