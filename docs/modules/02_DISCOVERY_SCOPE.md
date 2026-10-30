@@ -4,7 +4,7 @@
 > **Decision ledger**: `templates/03-governance/DECISION_LOG_TEMPLATE.md` (→ `docs/DECISION_LOG.md`) — every decision across every phase, appended and superseded, never rewritten
 > **Meeting records**: `templates/01-discovery-commercial/MEETING_NOTES_TEMPLATE.md` (→ `docs/pm/meetings/YYYY-MM-DD_<topic>.md`) — decisions, action items and open questions separated, never fabricated
 > **Companion registers** (copy when needed): `BUSINESS_RULES_REGISTER_TEMPLATE.md` · `ASSUMPTIONS_CONSTRAINTS_TEMPLATE.md` · `REQUIREMENTS_REGISTER_TEMPLATE.md` (→ `docs/pm/`, same base name)
-> 📖 **Optional ref**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md` · `references/pm/KANBAN_CARD_CRAFT_GUIDE.md` (Summary/Description craft, work-type examples, minimum card fields) · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` (elicitation mix, ambiguity classes, review passes) (do NOT preload)
+> 📖 **Optional refs**: `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/STAKEHOLDER_REQUEST_DECODING_PLAYBOOK.md` · `references/pm/KANBAN_CARD_CRAFT_GUIDE.md` (Summary/Description craft, work-type examples, minimum card fields) · `references/pm/EPIC_BREAKDOWN_PATTERNS.md` (load only when an epic or implementation task is too large to slice) · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` (elicitation mix, ambiguity classes, review passes) (do NOT preload)
 
 **Purpose**: extract real requirements, define technical boundaries, and lock **In/Out-of-Scope** into `SCOPE_STATEMENT.md` **before** contracts or design.
 
@@ -25,9 +25,12 @@
 - Must-Haves **collectively** resolve ≥70% of root causes; every Must maps to a primary bottleneck (zero vanity P0s). Secondary-friction features demote to Should/Won't.
 - **Workflow-to-scope map (conditional)**: Bila ada beberapa peran/alur inti atau irisan MVP belum jelas, petakan tujuan pengguna → aktivitas → langkah/tugas, lalu tandai irisan end-to-end yang tetap memberi hasil berguna. Gunakan peta untuk menemukan celah dan menentukan batas rilis; peta bukan backlog kedua. Hapus bagian peta dari template bila alur sudah jelas atau pemetaan tidak diperlukan.
 - **Story slicing**: Setiap story harus menyampaikan nilai pengguna yang bisa diuji. Jika terlalu besar untuk diestimasi atau memuat beberapa alur/aturan, pecah pada batas alur kerja, variasi aturan/data, atau dependensi eksternal sambil menjaga tiap irisan tetap bernilai. Jangan memecah story pengguna menjadi tiket frontend/backend; detail tugas teknis diturunkan di tahap implementasi.
+- **Epic hypotheses (for strategic epics)**: For each strategic epic or release slice, record the target user and outcome, an `If [change] for [user], then [measurable outcome], because [evidence]` hypothesis, the leading signal and target/time window, and the decision if the signal moves or does not. Link to existing outcome metrics and evidence; do not create a second roadmap or assume every atomic requirement needs its own hypothesis.
+- **Oversized epic breakdown (conditional)**: When a story remains too large to estimate or deliver as one user-valued slice, use the relevant workflow, business-rule, data, CRUD, or spike pattern in `references/pm/EPIC_BREAKDOWN_PATTERNS.md`. Preserve a useful end-to-end user result in each M02 release slice; reserve implementation task breakdown for M06.
 - **Prioritization**: Gunakan MoSCoW untuk menetapkan batas scope dan hitung P0 sesuai batas skala. Jangan menumpuk RICE/ICE di atas keputusan yang sama. Bila urutan P1/P2 masih perlu diputuskan, pilih satu metode yang sesuai dengan bukti dan konteks; skor tidak mengalahkan kebutuhan legal, keamanan, atau dependensi wajib.
 - **Type before wording** (`patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §4): classify each item as functional / non-functional / business rule / constraint first. Changes when the UI is redesigned → functional; must hold regardless → business rule. Ambiguity classes (§4.1) name the fix; banned-word table: `REQUIREMENTS_AMBIGUITY_CHECKLIST.md`.
 - **Given-When-Then Acceptance Criteria**: Every P0 Must-Have User Story MUST include at least one concrete BDD scenario (`Given [initial context], When [action occurs], Then [expected outcome]`). Vague statements ("the system allows users to cancel orders") are invalid and block scope locking.
+- **Scope red-team before lock**: Challenge the draft for unsupported features, missing or excluded users, outcomes with no observable measure, contradictory priorities, unpriced dependencies, weak acceptance criteria, and hidden legal/operational obligations. Record each material challenge, affected ID, evidence, and disposition (change, defer with reason, or reject with reason). The human scope owner resolves trade-offs and approves the lock; adversarial review does not silently change scope.
 - **Test traceability**: Give each acceptance criterion a stable requirement/story ID and map it to a concrete test scenario. For interactive flows, use the canonical wireflow scenarios from M04 and reference their `WFxx` IDs instead of copying the same scenario into a second source. M07 must trace each in-scope criterion to an executed test and recorded evidence; uncovered criteria remain open.
 - **Non-Functional Requirements (NFR) Baseline**: Explicitly define quantitative system boundaries:
   - Max concurrent users target for MVP (e.g. 50–100 active sessions).
@@ -81,7 +84,7 @@ Register inputs: sandbox keys, email credentials, master data CSV/Excel, ≤3-bu
 ## 3. Output Artifacts
 
 All in **`docs/pm/`**:
-1. **`docs/pm/SCOPE_STATEMENT.md`** (mandatory): objectives, MoSCoW, stories, RBAC, In/Out-of-Scope, dependencies, SLA. Stub-checked only (<40B fails) — quality is judged by the §Gate Exit Protocol checklist, not byte count.
+1. **`docs/pm/SCOPE_STATEMENT.md`** (mandatory): objectives, outcome hypotheses when strategic epics exist, MoSCoW, stories, RBAC, In/Out-of-Scope, dependencies, SLA, and red-team dispositions. Stub-checked only (<40B fails) — quality is judged by the §Gate Exit Protocol checklist, not byte count.
 2. **`STAKEHOLDER_MAP.md`**, **`COMMUNICATION_PLAN.md`**, **`RACI_MATRIX.md`** — client/internal; 1-page for solo.
 3. Conditional: `RISK_REGISTER.md`, `REQUIREMENT_MATRIX.md`, `BACKLOG.md`, `OKR.md`.
 4. **Use case specifications** (when the scope needs actor-level detail): `docs/pm/use-cases/UC-<MODULE>-<NN>_<name>.md` from `USE_CASE_SPECIFICATION_TEMPLATE.md`. One file per use case; each UC ID is cited from `REQUIREMENTS_REGISTER.md`.
@@ -97,7 +100,7 @@ All in **`docs/pm/`**:
 ### STEP 1 — Content Validation
 1. Stop/continue is governed by SKILL.md rule 3 (M03 is a gate only for Client projects; Small and Solo SaaS chain onward).
 2. Checklist:
-   - [ ] All sections complete (Objectives, RBAC, MoSCoW, Stories with Given-When-Then criteria, NFR baseline, Boundaries, SLA)
+   - [ ] Required elements complete (Objectives, outcome hypotheses for strategic epics when applicable, RBAC, MoSCoW, Stories with Given-When-Then criteria, NFR baseline, Boundaries, SLA)
    - [ ] Must-Have count within scale limits; zero ambiguous terms (TBD/maybe/tentative) in Must rows
    - [ ] Must-Haves resolve ≥70% of root causes; personas need zero out-of-scope features
    - [ ] Multi-tenant schema (`org_id` + RLS via `public.user_roles`); financial precision (`DECIMAL`, `unit_cost` snapshot, append-only movements)
@@ -106,6 +109,7 @@ All in **`docs/pm/`**:
    - [ ] Legal compliance planned (Privacy Policy, ToS, tax disclaimers, PII scrubbing); legal/tax text carries a `LEGAL-REVIEW:` marker
    - [ ] `Scope-P0-Count` is a real number matching counted Must rows; `Scope-Lock-Decision` is `LOCKED`
    - [ ] Timeline: epic sum + 20% buffer; CR freeze = QA − 2 wks; ≥3 Out-of-Scope exclusions; confidence legend (✅/🔶/❓); dependencies with SLA
+   - [ ] Red-team challenges recorded with affected IDs and dispositions; human scope owner resolved trade-offs before `Scope-Lock-Decision: LOCKED`
    - [ ] **Registers (if used) are sound**: no `BR-` row without a source + enforcement point (**zero orphan rules**); every ❓ assumption has an owner and a validation approach (never agent-validated); every hard constraint has a design impact, every soft one states its cost
 3. Present scope summary: P0 features, Out-of-Scope list, client dependencies.
 

@@ -114,6 +114,14 @@ Gunakan bagian ini bila produk memiliki beberapa alur/peran inti atau irisan MVP
 
 Pastikan slice MVP menghasilkan outcome yang bisa digunakan. Hindari mendefinisikan rilis hanya sebagai kumpulan lapisan teknis seperti frontend, backend, atau database.
 
+### 4.2a Hipotesis Outcome Epic (Bila Ada Epic Strategis)
+
+Untuk setiap epic strategis atau potongan rilis yang dimaksudkan mengubah perilaku/outcome, hubungkan scope dengan hasil yang bisa diamati. Gunakan metrik di §2; tidak perlu membuat roadmap kedua atau hipotesis terpisah untuk setiap requirement atomik.
+
+| Epic / release slice | Pengguna sasaran | Hipotesis: Jika ... maka ... karena ... | Sinyal awal + target / periode | Bukti pendukung | Keputusan bila tercapai / tidak tercapai |
+|---|---|---|---|---|---|
+| [Epic atau slice] | [Peran / segmen] | [Perubahan yang diuji dan alasannya] | [Metrik, baseline, target, jangka waktu] | [M00/M01/riset atau unknown] | [Lanjutkan / ubah / hentikan] |
+
 ### 4.3 User Stories & Acceptance Criteria (INVEST & Given-When-Then Standard)
 *Document user stories for all P0 (Must) and P1 (Should) features using strict Given-When-Then criteria for both happy paths and edge cases:*
 
@@ -134,6 +142,17 @@ Satu story menyatakan satu hasil bernilai bagi pengguna. Bila story terlalu besa
   - [ ] Edge Case: Given [offline network state], when transaction is completed, then payload is queued in local IndexedDB with unique UUIDv7 idempotency key.
 
 ---
+
+### 4.3a Tinjauan Red-Team Scope (Sebelum Lock)
+
+Uji draf scope secara adversarial. Catat tantangan material beserta ID yang terdampak dan disposisinya. Pemilik scope manusia memutuskan trade-off dan menyetujui lock; review ini tidak mengubah prioritas atau scope secara diam-diam.
+
+**Red-team reviewer / date**: [Name — YYYY-MM-DD]
+Jika tidak ada tantangan material, tulis `No material challenges` dan catat siapa yang meninjau.
+
+| Tantangan / potensi kegagalan | ID terdampak | Bukti atau alasan | Disposisi (ubah / tunda / tolak) + alasan | Pemilik keputusan |
+|---|---|---|---|---|
+| [Fitur tanpa bukti, pengguna tertinggal, outcome tak terukur, konflik prioritas, dependensi, acceptance criteria, kewajiban legal/operasional] | [F-xx / US-xx / NFR-xx] | [Sumber atau unknown] | [Keputusan dan alasan] | [Nama pemilik scope] |
 
 ### 4.4 Non-Functional Requirements (NFR) Baseline SLA
 *Quantitative performance and platform boundaries disallowing open-ended optimization requests:*
