@@ -3,62 +3,62 @@
 > **Templates to copy**: `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md` · `ROLLBACK_PLAN_TEMPLATE.md` · `GO_LIVE_REPORT_TEMPLATE.md`
 > 📖 **Optional** (do NOT preload): `deep-dives/10_DEPLOYMENT_PRODUCTION.md` (full ENV checklist & scripts, manual clean-release git procedure, DNS/SSL steps, migration options with SQL, mobile workflow, enterprise CAB routing)
 
-Promotes UAT-passed code from `staging` to `main`, configures production infra (DNS, SSL TLS 1.3, production DB), runs zero-downtime migrations + observability, and verifies until officially **LIVE ON PRODUCTION**.
+Promotes the human-approved release candidate, configures the selected production platform, and records deployment and post-deployment verification evidence. The project owner executes production deployment and makes the Go/No-Go decision; platform-specific steps apply only when relevant.
 
 ---
 
 ## 1. Execution Cycle (Condensed)
 
 ```text
-[ INPUT: Signed UAT report (M09) + stable staging branch ]
-  → STEP 1: [GATE] Go/No-Go — signed UAT; build & smoke exit 0; no agent auto-deploy (human deploys);
-    no Friday/holiday releases; pre-migration DB snapshot
-  → STEP 2: Clean release merge staging ──► main (harness stripped); tag v1.0.0; push → CI/CD
-  → STEP 3: DNS A/CNAME + SSL TLS 1.3 (Grade A); .env.production live keys; sandbox ──► production
-  → STEP 4: Zero-downtime DB migration + import verified client data (M08 result)
-  → STEP 5: Sentry (env=production), uptime healthcheck /api/health @60s, backup schedule verified
-  → STEP 6: PVT on public domain ──► GO_LIVE_REPORT.md ──► Module 11
+[ INPUT: M09 decision where applicable + approved release candidate + project release policy ]
+  → STEP 1: [GATE] Human Go/No-Go; CI/build/security checks meet project policy; freeze exceptions recorded
+  → STEP 2: Human executes approved release workflow; record commit, artifact, version, and deployment target
+  → STEP 3: Apply platform-specific configuration, secrets, domain, and schema/data changes as applicable
+  → STEP 4: Roll out using the selected strategy (standard, staged, canary, or blue-green); stop/rollback triggers agreed
+  → STEP 5: Verify critical flows, telemetry, alerts, and service objectives against project targets
+  → STEP 6: Record PVT evidence, release notes, and final status in GO_LIVE_REPORT.md → Module 11/12
 ```
 
 ## 2. Golden Rules
 
-1. **No Friday Deployment**: prohibited Friday PM / weekends / holiday eves → reschedule Tuesday–Thursday 09:00–14:00; ideal **Tue/Wed 09:00–11:00**.
-2. **Zero sandbox keys in prod** — live accounts only (payment, SMTP, storage).
-3. **Rollback plan < 15 min** verified before deploy; no deployment before build + migrations + core tests exit 0 locally.
-4. **Pre-Cutover DNS TTL Reduction**: Lower DNS TTL to 300s (5 minutes) at least 24 hours prior to cutover to guarantee rapid IP propagation and rollback flexibility.
-5. **Deep Health Check Endpoint**: `/api/health` MUST be a deep probe verifying DB read/write connectivity, cache ping, and disk/memory limits (returning `503 Service Unavailable` if dependencies fail), never a shallow static string.
+1. **Release window**: use the window and freeze rules agreed for the project; avoid periods without sufficient response/rollback coverage.
+2. **Production secrets**: use production-scoped secrets from the approved secret manager; never copy credentials into docs, chat, logs, or source control. Verify the selected provider's production mode when the service has sandbox/live modes.
+3. **Rollback readiness**: define measurable stop/rollback triggers, an owner, and a recovery procedure that matches the platform and data-change reversibility. Record tested recovery time; do not assume a universal time target.
+4. **DNS and TLS**: apply only to public-domain services; follow registrar/hosting guidance and the project's availability needs for TTL, certificate, and cutover.
+5. **Health checks**: define checks for the service's critical dependencies. Avoid unsafe writes or exposing sensitive dependency details from public health endpoints.
+6. **Progressive rollout**: use canary, phased rollout, blue-green, or feature flags when supported and proportionate. Define observation period and abort thresholds before starting; otherwise document the standard rollout and rollback path.
 
 ## 3. Step-by-Step (detail & commands in deep dive)
 
-1. **Pre-flight**: UAT signature valid; production ENV live-key verified (non-emitting checks in deep dive: `sk_live_` prefix, no `sandbox`, prod DB/SMTP/bucket, secrets ≥32 chars & rotated, CORS = prod domain, Sentry env=production). Scan: `grep -E "sk_test|sandbox|test_" .env.production` must be empty — **STOP if not**. Rollback dry-run passed in staging; snapshot via `pg_dump`.
-2. **Clean release**: `main` = production code + client-facing specs ONLY — never the harness (`AGENTS.md`, `TODO.md`, `docs/pm/`, `docs/qa/`). Use `./scripts/release/build-clean-release.sh v1.0.0` (exclusions: `scripts/release/release-exclude.txt`); verify `git ls-files | grep -iE "AGENTS|TODO|docs/pm|docs/qa"` is empty before push; then push `main` + tag `v1.0.0`.
-3. **DNS, SSL & Edge Protection (Cloudflare)** — 🛡️ **LEVERAGE RULE (`Delivery: client`)**: Milestone 3 (Final 30%) is payable **before** DNS pointing & BAST (30/40/30 contract). Deploy to a developer-controlled server for PVT + `GO_LIVE_REPORT.md`; pointing `app.client.com` and master credentials are held as commercial leverage until 100% payment clears in M11. `Delivery: solo | internal | portfolio` points the primary domain directly. Enable Cloudflare Orange Cloud proxy, Full (Strict) SSL/TLS, and edge rate limiting per [`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md). Verify propagation; SSL Grade A (TLS 1.3).
-4. **Data import** (M08 result; greenfield bypass → seed-data check only): A) ETL re-run to prod (recommended); B) staging dump — verify zero test data first (`%test%` / `Test Document` / `@example.com` = 0, STOP if found); C) manual CSV (<100 rows). Post-check: row counts match M08 reconciliation, no NULL timestamps, no orphaned FKs.
-5. **Schema migration**: `pnpm db:migrate` against prod — **additive only**; `DROP COLUMN`/`TRUNCATE` prohibited.
-6. **Observability**: Sentry DSN active; uptime monitor on `/api/health`; alert bots (Telegram/WhatsApp).
-7. **PVT**: login flow; create 1 document → PDF in prod bucket; 1 real low-nominal payment (e.g. Rp 10.000 QRIS) for the prod webhook; compile into **`GO_LIVE_REPORT.md`**.
-8. **Polish re-check on the production domain**: re-run all 33 tells of `docs/qa/POLISH_AUDIT.md` (or `POLISH_AUDIT_TEMPLATE.md` for Small) against the live production domain — favicon, OG preview image, page title, console errors, image weight, media/3D CLS, database base64 bloat, FOUC theme flash, unbounded rate limits, plus rows 21–22 (slop comments, race conditions) against the deployed build. CDN/minification/env differences surface new tells that staging hid. Record the delta in `GO_LIVE_REPORT.md`.
-9. **Production web-quality recheck (when applicable)**: verify the M02 performance budget on the production web app and repeat accessibility checks for user-facing interfaces when deployment changes runtime behavior. Recheck SEO/metadata only for public, indexable pages. Reuse the M07 audit reports and record production deltas in `GO_LIVE_REPORT.md`; mark non-applicable surfaces and checks with a short reason.
+1. **Pre-flight**: confirm the required M09 decision, release candidate/build, green CI and required M07 security/quality evidence under the project policy. A human verifies production environment and secret references without exposing values. Confirm backup/recovery steps when data changes, and record any freeze exception.
+2. **Release artifact**: follow the approved release workflow. Record source commit, artifact/version, environment, CI result, release notes/changelog, and human release owner. The agent must not push, merge, tag, or deploy to production.
+3. **Domain, TLS & edge**: apply only where relevant. Confirm ownership, DNS target, certificate, and required edge protections with the human operator. For client delivery, follow the signed contract and M11 handover/payment terms; no commercial milestone rule applies universally.
+4. **Data import** (M08 result; greenfield bypass → seed-data check only): use the approved ETL, dump, or manual import path. Verify test-data exclusion where relevant and reconcile counts, constraints, and rejected rows against M08.
+5. **Schema/data changes**: run only reviewed migration steps. Use expand-contract or another safe strategy where needed; destructive or irreversible changes require a human-approved backup, recovery, and data-impact plan.
+6. **Observability**: verify selected error tracking, logs, metrics, uptime checks, and alerts where applicable. Trigger a safe test alert and record receipt; do not assume a vendor or polling interval.
+7. **PVT**: verify critical user flows on the production target with safe, authorized test data. For payment/webhook systems, use the provider-approved verification path; a real charge is optional and requires explicit human authorization plus a refund/reversal plan. Record evidence in **`GO_LIVE_REPORT.md`**.
+8. **Production quality recheck**: repeat only applicable M07 checks whose runtime behavior may change in production; record deltas and non-applicable checks with a reason.
+9. **Production web-quality recheck**: verify applicable M02 performance budgets and accessibility behavior; check SEO/metadata only on public, indexable pages. Reuse M07 evidence and record production deltas.
 
 ## 4. Mobile (Android/iOS) — Summary
 
-Full workflow in deep dive. Keystore `.jks` loss = permanent update lockout; Play review 24–72 h (phased 10→50→100%), App Store 24–48 h (7-day phased); TestFlight/Internal Sharing beta before public; quote go-live from *Ready for Sale* status; mandatory force-update endpoint + OTA (Expo Updates / Shorebird).
+Use the selected mobile platform deployment and signing workflow. Keep signing material in an approved vault, validate the store-distributed build, and record current review status and phased-rollout options. Version compatibility or OTA updates are conditional on platform support and project needs.
 
 ## 5. Scale Adaptation (one line each)
 
-Small → PaaS, rolling restart, git-revert rollback. Medium → Cloud Run/VPS, blue-green, snapshot swap. Large → multi-region, canary, mandatory `ROLLBACK_PLAN.md` (<15 min drill). Enterprise → **routed to A03/A00** (CAB RFC 3 days pre-deploy, DR/BCP, vendor runbook review).
+Small → managed platform and documented prior-version rollback. Medium → choose rollout method based on downtime and data risk. Large → written rollout/rollback plan and human release approval. Enterprise → routed to A03/A00 for CAB, DR/BCP, and vendor runbook review. Do not impose patterns or recovery-time targets unsupported by the platform.
 
 ## 6. Deliverables (`docs/pm/`)
 
-1. **`DEPLOYMENT_PROTOCOL.md`** — runbook, topology, migration steps, PVT checklists.
-2. **`GO_LIVE_REPORT.md`** — PVT proof, live endpoints, SSL attestation.
-3. **`ROLLBACK_PLAN.md`** — <15-min recovery (mandatory Large scale).
+1. **`DEPLOYMENT_PROTOCOL.md`** — project-specific runbook, selected platform/topology, migration and rollout steps.
+2. **`GO_LIVE_REPORT.md`** — release identity, verification evidence, telemetry, exceptions, and decision.
+3. **`ROLLBACK_PLAN.md`** — recovery procedure and tested recovery time (mandatory Large scale).
 
 ## 7. Gate Exit Criteria [GATE]
 
-- [ ] `main` tagged SemVer (`v1.0.0`); domain live with SSL/TLS 1.3.
-- [ ] DB migration without data loss; all ENV live (not sandbox).
-- [ ] PVT real-transaction test 100% PASS; uptime monitoring + Sentry active.
+- [ ] Human release decision is recorded; release commit/artifact/version and required CI/security checks are identified.
+- [ ] Applicable environment, domain/TLS, migration, and secret checks are verified without exposing secret values.
+- [ ] Critical PVT checks have results/evidence; failures and exceptions have an explicit disposition. Rollout strategy, observation period, stop triggers, owner, and rollback/recovery path are recorded.
 
 ---
 
@@ -68,8 +68,8 @@ Small → PaaS, rolling restart, git-revert rollback. Medium → Cloud Run/VPS, 
 `test -f docs/pm/GO_LIVE_REPORT.md`. Missing → **STOP**, report `CRITICAL ERROR: File GO_LIVE_REPORT.md was not created. Module 10 FAILED - cannot proceed to Module 11 (Handover & BAST).` END TURN.
 
 ### STEP 1 — Content Validation
-1. Never hand over repos/root passwords before M11's 100%-payment gate (M11 enforces this); no M11 tooling until this gate passes.
-2. Checklist: PVT rows all PASS (no `FAIL`, no rollback/failure status, no placeholders); domain + SSL live; monitoring active; production transaction verified.
+1. Follow M11 handover and any signed contractual payment gates before transferring repositories, root access, or credentials; do not infer a universal payment schedule.
+2. Confirm critical PVT results/evidence, project targets, applicable domain/TLS and monitoring checks, and documented dispositions for failures or exceptions.
 
 ### STEP 2 — Gate Verification (MANDATORY)
 
@@ -80,4 +80,4 @@ Small → PaaS, rolling restart, git-revert rollback. Medium → Cloud Run/VPS, 
 Execute `./scripts/gates/validate-gate.sh M10` (or `.ps1`). Exit 1 = incomplete; fix and re-run.
 
 ### STEP 3 — STOP & Wait for Approval
-Present go-live status and **END TURN**, asking — *(Client)*: ready to issue the final 30% settlement invoice before official domain pointing & repo transfer in Module 11? *(Solo/Internal)*: ready to proceed to Module 12 (Operations & Runbook)?
+Present evidence-based go-live status and **END TURN**. Production deployment, Go/No-Go, DNS pointing, and real financial transactions remain human-only actions and decisions. Continue to handover or operations only after the responsible human confirms the next step.

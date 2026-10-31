@@ -1,146 +1,76 @@
-# Production Deployment Protocol & Go-Live Report
+# Production Deployment Protocol
 
-> Combined document for production system deployment execution guide and post-release verification report.
+> Project-specific M10 runbook. Adapt to the chosen platform and remove non-applicable checks with a reason. Production access stays with the human operator; never paste credentials or secret values into this file.
 
----
+## 1. Release
 
-## PART I: DEPLOYMENT RUNBOOK
+- **Project / version**: [name / version or provider release ID]
+- **Source branch, commit, artifact**: [immutable identifiers]
+- **Target platform / environment**: [provider and environment]
+- **Release owner / human operator**: [name]
+- **Approved window and timezone**: [window]
+- **Release freeze rule / approved exception**: [reference]
+- **M09 UAT decision**: [reference or N/A with reason]
+- **CI / build / security checks required by project policy**: [checks and links]
+- **Release notes / changelog**: [link]
+- **Human Go/No-Go**: [decision maker, GO/NO-GO, date]
 
-### 1. Release Metadata
-- **System Name**: [Application Name]
-- **Target Release Version**: `v1.0.0`
-- **Official Domain**: `https://app.client.com`
-- **Release Date & Time**: [YYYY-MM-DD] at [09:00 - 11:00 UTC/WIB]
-- **Release Engineer**: [Your Name]
+## 2. Production Access Inputs (gate-enforced)
 
-### Production Access Inputs (gate-enforced)
+`validate-gate.sh M10` checks that production access inputs were received by the human operator. The agent must not request, hold, copy, or use production credentials.
 
-> `validate-gate.sh M10` fails until this records that production access was actually
-> handed over. The AI agent must not hold, request, or use production credentials.
+Inputs-Received: [access handed over] from [human PIC] on [YYYY-MM-DD]
+- **Credentials**: [held by named human in approved secret manager; reference only]
+- **DNS / domain / platform access owner**: [name or role]
+- **Payment / third-party production mode**: [owner and verification method, if applicable]
+- **Production action executed by**: [human name]
 
-Inputs-Received: [access handed over] from [client PIC name] on [YYYY-MM-DD]
-- Production credentials: [held by the human — never pasted in chat or committed]
-- DNS / domain access: [who controls it]
-- Payment provider live keys: [who holds them]
-- Production deploy executed by: [human name — never an AI agent]
+## 3. Preflight
 
----
+- [ ] Required UAT and release approvals are recorded.
+- [ ] CI/build and required security checks meet project policy; exceptions name approver and rationale.
+- [ ] Release commit/artifact is immutable and matches the approved candidate.
+- [ ] Production secrets are configured through the approved secret manager and verified without exposing values.
+- [ ] Backup/snapshot and recovery procedure are ready when data or infrastructure changes require them.
+- [ ] DNS, TLS, billing, and provider-specific prerequisites are checked when applicable.
+- [ ] Freeze exceptions and expected user impact are communicated to the responsible stakeholders.
 
-### 2. Pre-Launch Checklist (Pre-Flight Sanity)
+## 4. Deploy (Human Operator)
 
-- [ ] **UAT Sign-Off**: `UAT_SIGNOFF_REPORT.md` document has been signed by Client Single PIC.
-- [ ] **Safe Window**: Release scheduled during working days (Tuesday–Thursday morning), not Friday afternoon or weekend.
-- [ ] **Snapshot Backup**: Production database manually backed up before executing migrations.
-- [ ] **Environment Keys**: Production `.env` variables use LIVE credentials (not sandbox).
+Record provider-specific instructions here. The human operator runs the approved workflow and performs production deployment, merge/tag/push, DNS cutover, and any real financial transaction. Do not paste access tokens, connection strings, or secret-bearing commands into this document.
 
----
+- **Workflow / provider run reference**: [link]
+- **Migration / data-change sequence**: [steps or N/A]
+- **Deployment sequence**: [steps]
+- **Traffic / cohort progression**: [standard / staged / canary / blue-green / mobile store / other]
+- **Observation period**: [project-defined]
+- **Stop and rollback triggers**: [measurable thresholds]
+- **Rollback owner and procedure**: [person / runbook]
 
-### 3. Deployment Execution Steps (Step-by-Step Commands)
+Use a progressive rollout only when the platform supports it and the project has suitable telemetry and a safe abort path. For mobile, record platform review/distribution status and staged rollout evidence as applicable.
 
-#### Step 1: Branch Merge & Git Tagging
-```bash
-# Switch to main branch and merge from staging
-git checkout main
-git pull origin main
-git merge --no-ff staging -m "chore: merge staging for production release v1.0.0"
+## 5. Post-Deployment Verification
 
-# Tag official release version
-git tag -a v1.0.0 -m "Release Production v1.0.0"
-git push origin main --tags
-```
+Run safe, authorized smoke/PVT checks against the deployed artifact. Use synthetic or designated test data. Real charges require explicit human authorization and a documented refund/reversal path.
 
-#### Step 2: Production Database Migration
-```bash
-# Run SQL DDL schema migration
-DATABASE_URL="postgresql://user:***@prod-host:5432/db_prod?sslmode=require" pnpm db:migrate
-```
+| Check ID | Critical flow / system check | Expected project result | Actual result | Status (PASS / FAIL / BLOCKED / N/A) | Evidence |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| [ID] | [applicable check] | [target] | [observation] | [status + reason] | [link] |
 
-#### Step 3: Container Build & Deploy Execution
-```bash
-# If using Docker / Serverless:
-# CI/CD pipeline runs automatically on git push tag v1.0.0
-# Verify pipeline status in GitHub Actions / Cloud Hosting Dashboard
-```
+## 6. Observability
 
-#### Step 4: DNS & SSL Certificate Verification (Web Deployment)
-```bash
-# Check DNS propagation
-dig +short app.client.com
-# Test SSL certificate status
-curl -Iv https://app.client.com
-```
+- **Error tracking, logs, metrics**: [tool and evidence, or N/A]
+- **Health / uptime checks**: [target, project-defined interval, result, or N/A]
+- **Alert verification**: [safe test alert and receipt evidence]
+- **Observation window and service objectives**: [project-defined targets and result]
+- **Known risks / exceptions and owner**: [items or none]
 
-#### Step 5: Mobile App Launch (Mobile Apps Only)
-- [ ] **Android Keystore**: Release keystore `.jks` file securely stored in encrypted vault.
-- [ ] **Build Android App Bundle**: `flutter build appbundle --release` or `cd android && ./gradlew bundleRelease` (produces `.aab` file).
-- [ ] **Google Play Console**: Upload `.aab` to *Production* track (or run *Staged Rollout 20%*).
-- [ ] **iOS Archive**: `flutter build ipa --release` or archive via Xcode with *Distribution Certificate* & *Provisioning Profile*.
-- [ ] **Apple App Store Connect**: Upload `.ipa` via Transporter/Xcode → Submit for Review.
-- [ ] **Force-Update Check**: Endpoint `/api/v1/app/version-check` returns minimum version `1.0.0`.
+## 7. Release Record
 
----
+- **Release notes / documentation updated**: [links or N/A with reason]
+- **Final status**: [LIVE / NOT LIVE / DEGRADED / ROLLED BACK]
+- **GO/NO-GO decision and human approver**: [name, decision, date]
+- **GO_LIVE_REPORT.md**: [path]
+- **Rollback plan**: [path or N/A with reason]
 
-### 4. Monitoring & Alert Bot Activation (Observability)
-
-- [ ] **Deep Health Check**: `/api/health` endpoint actively verifies live database query execution and cache connectivity (returns HTTP 503 if DB unreachable, HTTP 200 when healthy).
-- [ ] **Error Tracking**: Production Sentry DSN confirmed receiving test error events.
-- [ ] **Uptime Ping**: Uptime Kuma / BetterStack actively monitoring `https://app.client.com/api/health` endpoint every 60 seconds.
-- [ ] **Telegram/Slack/WA Alert**: Downtime notification bot connected to solo developer device.
-- [ ] **Auto-Backup & Restoration Test**: Daily backup cron job at 02:00 confirmed active; sample backup dump verified restorable.
-- [ ] **DNS Cutover Pre-Requisite**: DNS TTL lowered to 300s (5m) prior to official domain point.
-
----
-
-## PART II: GO-LIVE VERIFICATION REPORT
-
-### 1. Launch Metadata
-- **System Name**: [Application Name]
-- **Official Release Version**: `v1.0.0`
-- **Official Public Domain**: `https://app.client.com`
-- **Official Go-Live Time**: [YYYY-MM-DD] at [HH:MM UTC/WIB]
-- **Lead Release Engineer**: [Your Name]
-- **Operational Status**: **LIVE ON PRODUCTION (STABLE)**
-
----
-
-### 2. Production Infrastructure Status
-
-| Infrastructure Component | Service Provider | Configuration Status | Verification Result |
-| :--- | :--- | :--- | :---: |
-| **Domain & DNS** | Cloudflare / Provider | A & CNAME Records Active | DNS Resolution Passed |
-| **Security Certificate** | Let's Encrypt / Cloudflare | TLS 1.3 Active (90-day validity) | SSL Labs Grade A |
-| **Production Database** | Managed PostgreSQL v16 | Multi-AZ / Daily Backup Active | Connection Pool Stable |
-| **Storage Vault** | Cloudflare R2 / AWS S3 | Private Bucket (AES-256-GCM Encryption) | Upload/Download Passed |
-| **Payment Gateway** | Midtrans / Stripe / Xendit | **Production Mode (LIVE)** | Webhook Verified |
-| **Transactional Email** | Resend / SendGrid | Sender Domain Verified (DKIM/SPF) | Delivery Rate 100% |
-
----
-
-### 3. Post-Release Verification Test Results (Production Verification Testing)
-
-Real transaction tests executed directly on public domain:
-
-- [x] **PVT-01 (Authentication)**: Official Super Admin and Staff accounts successfully logged in to production system.
-- [x] **PVT-02 (Document Creation)**: New draft document successfully inputted, rendered to official PDF, and securely stored in encrypted vault.
-- [x] **PVT-03 (Digital Signature)**: Digital signature link opened on mobile device and signed successfully.
-- [x] **PVT-04 (Real Transaction)**: Real payment transaction test successfully debited and updated order status instantly.
-- [x] **PVT-05 (Observability)**: Uptime monitoring active with average latency of **125 ms** (target < 200 ms).
-
----
-
-### 4. Operational Readiness Declaration
-
-It is hereby declared that the software system is officially operating autonomously in the Production environment.
-
-The project officially advances to the commercial closing and handover phase: **Module 11: [HANDOVER GATE] 100% Final Payment, Training, BAST, & Repository Handover**.
-
----
-
-### 5. Go-Live Sign-Off Sheet
-
-| Client Single PIC | Release Engineer |
-| :--- | :--- |
-| **Name**: _________________________ | **Name**: _________________________ |
-| **Title**: ________________________ | **Title**: Independent Lead Engineer |
-| **Date**: _________________________ | **Date**: _________________________ |
-| **Signature**: | **Signature**: |
+The agent may draft this protocol and summarize evidence but must not perform production deployment, make the Go/No-Go decision, or claim human checks/sign-offs as completed.

@@ -3,6 +3,8 @@
 > **Purpose**: Gate production deployments with formal approval  
 > **When**: M10 Deployment (before every production release)  
 > **Target**: Enterprise projects with change control requirements
+>
+> Adapt this optional checklist to the project's risk, SLOs, and release policy. Blank checkboxes are not evidence. All numerical values below are project-defined; example thresholds must not be treated as defaults.
 
 ---
 
@@ -17,7 +19,7 @@
 - Security Lead (security approval)
 - Operations Lead (infrastructure readiness)
 
-**Decision**: ✅ GO or ❌ NO-GO
+**Decision**: [GO / GO WITH CONDITIONS / NO-GO]
 
 **NO-GO Criteria** (any one fails = no release):
 - Critical bugs unresolved
@@ -33,7 +35,7 @@
 ### 1. Code Quality ✅
 
 - [ ] All code merged to main branch
-- [ ] Code review completed (2+ approvals)
+- [ ] Required code review completed under project policy
 - [ ] No merge conflicts
 - [ ] Build passing (CI/CD green)
 - [ ] TypeScript strict mode (zero errors)
@@ -50,10 +52,8 @@
 
 ### 2. Testing ✅
 
-- [ ] Unit tests passing (100%)
-- [ ] Integration tests passing (100%)
-- [ ] End-to-end tests passing (100%)
-- [ ] Test coverage ≥80% (or project threshold)
+- [ ] Applicable unit, integration, and end-to-end checks meet project release policy
+- [ ] Test coverage meets the agreed project threshold, if one is defined
 - [ ] Smoke tests passing on staging
 - [ ] Regression tests passing
 - [ ] Cross-browser testing (Chrome, Firefox, Safari, Edge)
@@ -103,10 +103,10 @@
 ### 4. Performance ✅
 
 - [ ] Load testing completed
-- [ ] System handles target load (e.g., 10k concurrent users)
-- [ ] API response time <200ms (p95)
-- [ ] Page load time <3s (p90)
-- [ ] Database query time <100ms (p95)
+- [ ] System meets the project's documented load target, if applicable
+- [ ] API response time meets the documented SLO, if applicable
+- [ ] Page load time meets the documented budget, if applicable
+- [ ] Database query time meets the documented SLO, if applicable
 - [ ] No memory leaks detected
 - [ ] CDN configured (if applicable)
 - [ ] Caching configured (Redis, browser cache)
@@ -116,7 +116,7 @@
 - Peak load tested: ____ users
 - API p95 latency: ____ ms
 - Page load p90: ____ s
-- Error rate: ____% (target: <1%)
+- Error rate: ____% (project target: ____%)
 
 **Verified by**: Tech Lead  
 **Date**: _______  
@@ -130,7 +130,7 @@
 - [ ] Database migrations tested on staging
 - [ ] Database migrations reversible (rollback script ready)
 - [ ] Infrastructure as Code (IaC) applied
-- [ ] SSL certificate valid (not expiring in 30 days)
+- [ ] Applicable certificate is valid under the project's renewal policy
 - [ ] DNS configured correctly
 - [ ] Load balancer configured
 - [ ] Auto-scaling configured (if applicable)
@@ -227,10 +227,10 @@
 - [ ] Rollback decision criteria defined
 
 **Rollback Decision Criteria**:
-- [ ] Error rate >5% for 5 minutes
-- [ ] API latency >500ms (p95) for 5 minutes
+- [ ] Project-defined error-rate trigger breached for the agreed observation window
+- [ ] Project-defined latency trigger breached for the agreed observation window
 - [ ] Critical bug discovered
-- [ ] Customer complaints >10 in first hour
+- [ ] Project-defined customer impact trigger met
 
 **Verified by**: Tech Lead  
 **Date**: _______  
@@ -264,7 +264,7 @@
 **Post-Deployment**:
 - [ ] Smoke tests passed
 - [ ] Monitoring shows healthy metrics
-- [ ] Error rate <1%
+- [ ] Error rate within the documented project target
 - [ ] API latency within SLA
 - [ ] Disable maintenance mode
 - [ ] Status page updated ("All systems operational")
@@ -287,8 +287,8 @@
 4. Go/no-go decision (5 min)
 
 **Decision**:
-- ✅ **GO**: All checks passed, deploy as scheduled
-- ⚠️ **GO with conditions**: Minor issues, proceed with caution
+- ✅ **GO**: Applicable release criteria pass and the authorized human approves deployment.
+- ⚠️ **GO with conditions**: Only with an authorized, documented exception, named risk owner, mitigation, and follow-up date.
 - ❌ **NO-GO**: Critical issues, reschedule deployment
 
 ---
@@ -304,7 +304,7 @@ Decision: NO-GO until fixed
 
 **Failed Load Test**:
 ```
-Issue: System crashes at 5k users (target: 10k)
+Issue: System fails below the project's documented load target
 Impact: Black Friday launch at risk
 Decision: NO-GO until performance improved
 ```
@@ -318,38 +318,25 @@ Decision: NO-GO until patched
 
 **Incomplete Testing**:
 ```
-Issue: E2E tests only 80% passing
-Impact: Unknown bugs may exist
-Decision: NO-GO until 100% passing
+Issue: A required E2E check is failing under the project's release policy
+Impact: Release criteria are not yet met
+Decision: NO-GO until the failure is resolved or formally dispositioned under policy
 ```
 
 ---
 
-## Release Approval Document
+## Release Approval Record Template
 
-**Release**: v1.0.0
-**Date**: 2024-10-04  
-**Deployment Window**: 2024-10-05 02:00-03:00 UTC  
-
-**Decision**: ✅ GO
-
-**Approvals**:
-- Tech Lead: ✅ John Smith (2024-10-04)
-- QA Lead: ✅ Sarah Chen (2024-10-04)
-- Security Lead: ✅ Mike Wang (2024-10-04)
-- DevOps Lead: ✅ Alice Johnson (2024-10-04)
-- Product Manager: ✅ Bob Martinez (2024-10-04)
-
-**Conditions**:
-- None (all checks passed)
-
-**Risk Assessment**:
-- Overall risk: Low
-- Rollback plan: Ready (tested on staging)
-- Downtime: 5 minutes (read-only mode)
-
-**On-call**: John Smith (Tech Lead)  
-**Backup**: Sarah Chen (QA Lead)  
+- **Release / version / artifact**: [identifier]
+- **Date and release window**: [date, time, timezone]
+- **Human Go/No-Go decision maker**: [name / role]
+- **Decision**: [GO / GO WITH CONDITIONS / NO-GO]
+- **Required approvers under project policy**: [names / roles and decisions]
+- **Conditions and exceptions**: [owner, mitigation, deadline, approval or none]
+- **Project risk assessment**: [summary]
+- **Rollback / recovery plan**: [path and evidence]
+- **Expected downtime / user impact**: [project estimate or none]
+- **On-call / response owner**: [name / role]
 
 ---
 

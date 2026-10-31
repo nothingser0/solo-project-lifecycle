@@ -4,7 +4,7 @@
 
 - [Step 1 (Detail): Verify Production Environment Variables](#step-1-detail-verify-production-environment-variables)
 - [Step 2 (Detail): Clean Release Merge — Manual Procedure](#step-2-detail-clean-release-merge-manual-procedure)
-- [Step 3 (Detail): Leverage-Safe Commercial Handover Rule (Delivery: client)](#step-3-detail-leverage-safe-commercial-handover-rule-delivery-client)
+- [Step 3 (Detail): Contractual Client DNS and Handover Conditions](#step-3-detail-contractual-client-dns-and-handover-conditions)
 - [Step 4 (Detail): Import Verified Client Real Data — 3 Options](#step-4-detail-import-verified-client-real-data-3-options)
 - [Step 5 (Detail): Schema Migration](#step-5-detail-schema-migration)
 - [Section 4 (Full): Mobile App Deployment Specific Workflow (Android & iOS)](#section-4-full-mobile-app-deployment-specific-workflow-android-ios)
@@ -15,56 +15,28 @@
 
 ## Step 1 (Detail): Verify Production Environment Variables
 
-Before touching DNS or deployment, verify production ENV:
+Before production cutover, the human operator verifies environment and secret configuration using the selected provider and stack tooling. Prefer non-emitting checks that return pass/fail without printing secret values. Never paste production secrets or connection strings into a document, command example, chat, or shell history.
 
-```bash
-# Verify payment gateway mode
-[[ "$PAYMENT_GATEWAY_MODE" =~ ^(production|live)$ ]] && echo "✅ Payment mode production" || echo "❌ NOT PRODUCTION"
+**Environment checklist**:
+- [ ] Required production variables are present in the approved secret manager and scoped to the right environment.
+- [ ] Provider integrations use production mode where a sandbox/live distinction exists.
+- [ ] Database, email, storage, CORS, and callback targets match the production environment where applicable.
+- [ ] Signing, encryption, and session material meet the selected stack's security guidance and is not reused from development.
+- [ ] Production monitoring and alert configuration uses the production environment.
+- [ ] No test credentials or sandbox endpoints are configured for production integrations.
 
-# Verify database URL (non-emitting check)
-echo "$DATABASE_URL" | grep -q -E 'prod|production|live' && echo "✅ Production DB verified" || echo "❌ INVALID DB TARGET"
-
-# Verify API keys (non-emitting prefix validation)
-if [[ "$STRIPE_SECRET_KEY" =~ ^sk_live_ ]]; then
-  echo "✅ Stripe live key verified"
-else
-  echo "❌ INVALID STRIPE KEY"
-fi
-
-# Verify JWT secret non-empty
-[[ -n "$JWT_SECRET" && ${#JWT_SECRET} -ge 32 ]] && echo "✅ JWT secret valid" || echo "❌ WEAK OR MISSING JWT SECRET"
-
-# Verify encryption key non-empty
-[[ -n "$ENCRYPTION_KEY" && ${#ENCRYPTION_KEY} -ge 32 ]] && echo "✅ Encryption key valid" || echo "❌ WEAK OR MISSING ENCRYPTION KEY"
-```
-
-**Checklist Production ENV**:
-- [ ] `PAYMENT_GATEWAY_MODE=production` (NOT sandbox)
-- [ ] `STRIPE_SECRET_KEY` (if used) starts with `sk_live_` (not `sk_test_`)
-- [ ] `MIDTRANS_SERVER_KEY` (if used) does NOT contain `sandbox`
-- [ ] Run verification: `grep -E "sk_test|sandbox|test_" .env.production && echo "⚠️ TEST KEYS DETECTED" || echo "✓ Production keys verified"`
-- [ ] `DATABASE_URL` points to production DB
-- [ ] `MIDTRANS_IS_PRODUCTION=true`
-- [ ] `SMTP_HOST` is production mail server (NOT mailtrap/mailpit)
-- [ ] `STORAGE_BUCKET` is production bucket (NOT staging)
-- [ ] `JWT_SECRET` different from staging
-- [ ] `ENCRYPTION_KEY` rotated for production
-- [ ] `CORS_ORIGIN` matches production domain
-- [ ] `SENTRY_DSN` with `environment: "production"`
-- [ ] `SESSION_SECRET` unique to production
-
-**STOP deployment if sandbox keys are still present!**
+**Stop the cutover** if any required value is missing, points to a non-production service, or cannot be safely verified.
 
 **Rollback Plan Dry-Run Verification**:
-- [ ] Rollback plan dry-run executed in staging (verify git revert + DB restore time)
-- [ ] Database migration rollback script tested (if DDL changes exist)
-- [ ] Documented: can we restore last known good state in <15 minutes?
+- [ ] Recovery procedure and rollback/forward-fix paths tested in an appropriate non-production environment, where feasible.
+- [ ] Migration recovery path tested where feasible; document irreversible changes and human-approved recovery alternatives.
+- [ ] Record the project-approved recovery-time target and the tested result, or state that no target is defined.
 
-**WARNING**: DDL migrations (ADD COLUMN, DROP TABLE) may not be reversible without data loss. Test rollback procedure in staging first.
+**Migration risk**: schema changes may be irreversible or incompatible with older application versions. Validate the selected recovery path in a non-production environment and document data loss or forward-fix risks before release.
 
 **Pre-deploy DB snapshot** (if updating an existing system):
 ```bash
-pg_dump -U postgres -d legal_vault_prod -F c -b -v -f "backup-pre-deploy-$(date +%Y%m%d).dump"
+pg_dump -U postgres -d [production_database] -F c -b -v -f "backup-pre-deploy-[date].dump"
 ```
 
 ---
@@ -79,7 +51,9 @@ pg_dump -U postgres -d legal_vault_prod -F c -b -v -f "backup-pre-deploy-$(date 
 `main`. `.gitignore` cannot remove files that are already tracked. Harness must be untracked
 (`git rm --cached`) on a temporary release branch BEFORE merging.
 
-**Automated (recommended)**:
+**Human-only release procedure**: An agent must not execute build/release, merge, tag, push, or deployment commands. The human release owner follows protected-branch and approval policy; use a PR/review workflow where required.
+
+**Automated release tooling (human-operated)**:
 ```bash
 ./scripts/release/build-clean-release.sh v1.0.0            # Git Bash / macOS / Linux
 .\scripts\release\build-clean-release.ps1 -Version v1.0.0  # Windows PowerShell
@@ -122,11 +96,11 @@ git push origin v1.0.0
 
 ---
 
-## Step 3 (Detail): Leverage-Safe Commercial Handover Rule (Delivery: client)
+## Step 3 (Detail): Contractual Client DNS and Handover Conditions
 
-> 🛡️ Under the standardized 30/40/30 contract (`03_LEGAL_SOW_CHARTER.md` and `SOW_CONTRACT_CONSOLIDATED_TEMPLATE.md`), **Milestone 3 (Final 30%) is payable prior to DNS production pointing and BAST handover**.
+> For projects using the supplied 30/40/30 SOW terms, apply the agreed milestone and DNS/handover conditions in that signed contract. Other projects follow their own signed terms.
 > - In Module 10, the developer deploys to a **developer-controlled production/preview server** to execute PVT testing and produce `GO_LIVE_REPORT.md`.
-> - Pointing the Client's official primary domain (`app.client.com`) and transferring master cloud/repo credentials **MUST BE HELD AS COMMERCIAL LEVERAGE** until 100% final payment clears in Module 11.
+> - For client delivery, follow the signed contract and approved handover terms for DNS, platform ownership, and credential transfer. Never use access or credentials as leverage outside that agreement.
 > - For `Delivery: solo | internal | portfolio`, configure the primary production domain directly.
 
 **DNS & SSL steps**:
@@ -135,7 +109,7 @@ git push origin v1.0.0
    - `Type A`: `@` → Production Server IP / Load Balancer.
    - `CNAME`: `app` or `www` → hosting domain (Vercel / Cloud Run).
 3. Verify DNS propagation using `dig` or `nslookup`.
-4. Ensure SSL certificate is issued and achieves at least a **Grade A** rating on SSL Labs (TLS 1.3 enabled).
+4. Verify certificate validity and TLS configuration against the selected provider and the project security policy; record the evidence.
 
 ---
 
@@ -148,8 +122,8 @@ git push origin v1.0.0
 If source data (Excel/CSV) is still available and unchanged since UAT:
 
 ```bash
-# Run ETL script directly against production DB
-DATABASE_URL="postgresql://user:***@prod-db:5432/db" node scripts/runtime/etl-import.js --source data/client-final.xlsx
+# Human operator runs the approved ETL using secret-manager-injected production access; never put connection strings in command arguments or shell history.
+node scripts/runtime/etl-import.js --source <approved-source-file>
 
 # Verify row count
 psql $DATABASE_URL -c "SELECT COUNT(*) FROM documents;"
@@ -158,7 +132,7 @@ psql $DATABASE_URL -c "SELECT COUNT(*) FROM users;"
 
 **Benefit**: Fresh data, no staging artifacts, reconciliation identical to UAT.
 
-**OPTION B: Copy Staging Database to Production** (Faster — Staging Dump)
+**OPTION B: Import an Approved Staging Snapshot** (only with human approval and verified M08 reconciliation)
 
 Pre-Migration Test Data Verification (MANDATORY before dump):
 
@@ -169,7 +143,7 @@ psql $STAGING_DB_URL -c "SELECT COUNT(*) FROM documents WHERE title = 'Test Docu
 psql $STAGING_DB_URL -c "SELECT COUNT(*) FROM users WHERE email LIKE '%@example.com';"  # Expected: 0
 ```
 
-**STOP if test data found!** Clean staging DB before proceeding.
+**STOP if test data, client data, or unapproved records are present.** A staging snapshot is not automatically safe for production; use only an approved, reconciled import and the project data-handling plan.
 
 ```bash
 # Dump staging DB
@@ -186,7 +160,7 @@ psql postgresql://prod-db/legal_vault_prod -c "SELECT COUNT(*) FROM documents;"
 
 **OPTION C: Manual Migration (Last Resort)**
 
-If data volume is small (<100 rows) and ETL script is unavailable:
+Use a manual import only when volume and risk are within the project-approved limit and a validated ETL path is unavailable:
 
 ```bash
 # Export staging data to CSV
@@ -209,14 +183,7 @@ psql $PROD_DB_URL -c "SELECT * FROM documents WHERE created_at IS NULL LIMIT 5;"
 # Check foreign key integrity
 psql $PROD_DB_URL -c "SELECT COUNT(*) FROM documents d LEFT JOIN users u ON d.creator_id = u.id WHERE u.id IS NULL;"  # Expected: 0
 
-# Verify application-level data access
-curl -X POST https://app.client.com/api/auth/login \
-  -d '{"email":"admin@client.com","password":"***"}' \
-  | jq '.token' # Should return valid JWT
-
-# Verify document retrieval
-curl https://app.client.com/api/documents?limit=5 \
-  -H "Authorization: Bearer ***" # Should return real documents
+# Run the approved application smoke-test procedure using a designated test account. Do not print or save access tokens.
 ```
 
 **IF M08 executed**: Match row count with `UAT_SIGNOFF_REPORT.md` Section "Data Migration Reconciliation".
@@ -227,10 +194,10 @@ curl https://app.client.com/api/documents?limit=5 \
 ## Step 5 (Detail): Schema Migration
 
 ```bash
-DATABASE_URL="postgresql://user:***@prod-db:5432/db" pnpm db:migrate
+# Human operator runs the reviewed migration with production credentials injected by the approved secret manager. Record the artifact and migration result; never put secret values in command args or history.
 ```
 
-*Solo Dev Note: Ensure migration scripts are additive (only adding new columns/tables); destructive commands (`DROP COLUMN` / `TRUNCATE`) are strictly prohibited.*
+*Migration note: choose a migration strategy based on compatibility, data risk, and rollback limits. Destructive or irreversible operations need an explicit human-approved recovery and data-impact plan.*
 
 ---
 
@@ -250,8 +217,8 @@ If the project includes a mobile application (Flutter / React Native / Native), 
            │                                      │
            ▼                                      ▼
 [ GOOGLE PLAY CONSOLE ]                    [ APPLE APP STORE CONNECT ]
-• Review: 24–72 Hours (Automated & Manual) • Review: 24–48 Hours (Strict Apple Guidelines)
-• Phased Rollout: 10% ──► 50% ──► 100%    • Phased Release: 7-Day Phased
+• Store review timing and staged rollout options vary; check the current provider status and project release plan.
+• Use staged rollout only where the store supports it; choose progression and pause criteria from project risk and available telemetry.
 ```
 
 ### 4.1 Key Management & Signing (Keystore & Certificates)
@@ -259,25 +226,25 @@ If the project includes a mobile application (Flutter / React Native / Native), 
 - **iOS**: Enroll in the Client's Apple Developer Program ($99/year). Create distribution certificates and App Store Provisioning Profiles.
 
 ### 4.2 Pre-Public Beta Testing Strategy (TestFlight & Internal Sharing)
-- Directly releasing the first build to public production is prohibited.
+- Use internal/beta distribution before public rollout when supported and proportionate; record the tested build and decision.
 - **Android**: Upload to the **Internal Testing** track in Google Play Console → share link with Client Single PIC for verification on real Android devices.
 - **iOS**: Upload to **TestFlight** → invite Client Single PIC Apple ID email address to test on real iPhone devices.
 
 ### 4.3 Factoring in App Store Review Buffer
 - Unlike web which can be released instantly in 2 minutes, mobile releases depend on human review schedules:
-  - Apple App Store: Requires **24–48 business hours**.
-  - Google Play Console: Requires **24–72 business hours** (especially for new developer accounts).
+  - Check the current App Store review status and account-specific timing before communicating a launch date.
+  - Check the current Play Console review status and account-specific timing before communicating a launch date.
 - **Client Complaint Mitigation Strategy**: State in the schedule that mobile go-live dates are calculated from when the app status changes to *Ready for Sale / Published* by app stores.
 
 ### 4.4 Rollback & Mobile Emergency Updates (OTA & Force Update)
 - Mobile apps cannot be rolled back instantly if critical bugs reach users.
-- **Mandatory Force-Update Mechanism**: Mobile apps must include a minimum version check on the splash screen (`GET /api/v1/app/version-check`). In the event of a critical bug, the backend can force users to update to the latest version before accessing the dashboard.
-- **Over-The-Air (OTA) Updates**: For React Native (Expo Updates) or Flutter (Shorebird), implement an OTA patch mechanism so minor JavaScript/Dart bug fixes can be deployed immediately without going through app store review again.
+- **Version compatibility and emergency updates**: define a force-update or compatibility policy only when the app, backend, and store workflow need one. OTA updates apply only where supported and permitted by the selected platform and release policy.
+- **OTA updates**: use only when supported, permitted by the selected platform and app-store policy, and covered by testing and rollback procedures.
 
 ---
 
 ## Enterprise Scale Advisory (A03/A00)
 
-Enterprise-scale projects exceed solo capacity for high-blast-radius production cutovers — routed to **Phase A03/A00 Advisory**: CAB RFC documented and approved (`templates/03-governance/CAB_PROCESS.md`; RFC submitted 3 business days before deployment, CAB review of risk, blast radius, rollback plan, maintenance window), Disaster Recovery / Business Continuity Plan aligned (`templates/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md`), and vendor deployment runbook reviewed with client DevOps leadership.
+Enterprise-scale deployments follow the applicable A03/A00 governance: CAB, DR/BCP, vendor runbook review, and release approvals required by the organization. Use the organization-defined notice period and release controls.
 
-> Summary for the runbook: verify live ENV keys (zero sandbox), clean-release merge with harness stripping, hold client DNS pointing until final payment (Delivery: client), migrate production data via ETL re-run / staging dump / manual CSV with reconciliation, additive-only schema migrations, and mobile releases need store review buffers + force-update mechanism.
+> Summary for the runbook: use non-emitting production-secret verification, the approved protected release workflow, contract-specific client handover terms, reconciled data migration, and a platform-supported rollout/recovery plan. Mobile store review and emergency update policies are platform- and project-specific.
