@@ -20,16 +20,18 @@ Copy the configuration template file to `.env`:
 cp .env.example .env
 ```
 
-### Required Environment Variable Dictionary:
-| Variable Name | Example Value | Description |
+> 💡 **Detailed Acquisition Guide**: Every variable in `.env.example` includes a dedicated step-by-step header explaining **how and where to acquire or generate** the value (console URLs, terminal one-liners for encryption keys, and callback endpoints).
+
+### Required Environment Variable Dictionary & Acquisition Reference:
+| Variable Name | Example / Generation Command | Source & How to Acquire |
 | :--- | :--- | :--- |
-| `DATABASE_URL` | `postgresql://postgres:password@localhost:5432/legal_vault?schema=public` | PostgreSQL database connection |
-| `JWT_SECRET` | `generate-random-secret-key-min-32-chars` | Session authentication token signing key |
-| `VAULT_MASTER_KEY` | `32-byte-hex-string-for-aes-256-gcm-encryption` | PDF file encryption key in Document Vault |
-| `STORAGE_BUCKET_NAME`| `legal-document-vault-dev` | S3 / Cloudflare R2 bucket name |
-| `STORAGE_ACCESS_KEY` | `your-r2-or-s3-access-key` | Cloud storage access credentials |
-| `STORAGE_SECRET_KEY` | `your-r2-or-s3-secret-key` | Cloud storage secret credentials |
-| `STORAGE_ENDPOINT`   | `https://<account-id>.r2.cloudflarestorage.com` | S3-compatible API endpoint |
+| `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/myapp_dev?schema=public` | Local PostgreSQL Docker, or Supabase/Neon connection string (Port 6543 pooler for serverless) |
+| `NEXTAUTH_SECRET` / `AUTH_SECRET` | `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"` | Generate locally via Node.js or `openssl rand -base64 32` |
+| `ENCRYPTION_KEY` | `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` | 64-hex string for AES-256-GCM data encryption at rest |
+| `STORAGE_ENDPOINT` | `https://<account_id>.r2.cloudflarestorage.com` | Cloudflare Dashboard $\rightarrow$ R2 $\rightarrow$ Bucket Settings |
+| `STORAGE_ACCESS_KEY` & `SECRET` | Cloudflare R2 API Token / AWS IAM User | Cloudflare Dashboard $\rightarrow$ R2 $\rightarrow$ Manage API Tokens (Admin Read & Write) |
+| `RESEND_API_KEY` | `re_your_api_key_here` | Resend Dashboard $\rightarrow$ API Keys; use `onboarding@resend.dev` in local dev |
+| `MIDTRANS_SERVER_KEY` / `STRIPE_SECRET_KEY` | Sandbox API Key | Midtrans Dashboard $\rightarrow$ Settings $\rightarrow$ Access Keys (Sandbox mode) |
 
 ---
 
