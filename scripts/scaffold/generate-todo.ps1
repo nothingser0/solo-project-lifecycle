@@ -1,4 +1,4 @@
-# generate-todo.ps1 — Automatically scaffold TODO.md from 5-Spec multi-document inputs
+# generate-todo.ps1 -- Automatically scaffold TODO.md from 5-Spec multi-document inputs
 # Usage: powershell -File scripts/scaffold/generate-todo.ps1 [dest_path]
 
 param(
@@ -21,7 +21,7 @@ Write-Host "=== Generating $Dest from 5-Spec Multi-Document Inputs ===" -Foregro
 
 $sb = [System.Text.StringBuilder]::new()
 
-[void]$sb.AppendLine("# TODO.md — Engineering Execution Plan & Automated Quality Gates")
+[void]$sb.AppendLine("# TODO.md -- Engineering Execution Plan & Automated Quality Gates")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("> **Generated on**: $DateStr")
 [void]$sb.AppendLine("> **Role**: Sequential atomic task list. Implement ONE task, run Verify, report Evidence, and STOP.")
@@ -30,7 +30,7 @@ $sb = [System.Text.StringBuilder]::new()
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("---")
 [void]$sb.AppendLine("")
-[void]$sb.AppendLine("## 📖 Panduan Pengembang & Verifikasi Cepat")
+[void]$sb.AppendLine("## Panduan Pengembang & Verifikasi Cepat")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### 1. Setup Environment (``.env.local``)")
 [void]$sb.AppendLine("1. Salin template:")
@@ -130,7 +130,7 @@ $dbIndex = 1
 if ($tables.Count -gt 0) {
     foreach ($tbl in $tables) {
         $padId = "{0:D2}" -f $dbIndex
-        [void]$sb.AppendLine("- [ ] **M06-DB-$padId: Schema Migration for Table/Model ``$tbl``**")
+        [void]$sb.AppendLine("- [ ] **M06-DB-${padId}: Schema Migration for Table/Model ``$tbl``**")
         [void]$sb.AppendLine("  - **Files**: ``src/db/schema/$tbl.ts`` or migrations")
         [void]$sb.AppendLine("  - **Action**: Implement ``$tbl`` model with columns, foreign keys, and indexes.")
         [void]$sb.AppendLine("  - **Verify**: ``pnpm run db:push || npx prisma validate``")
@@ -149,7 +149,7 @@ if ($tables.Count -gt 0) {
 }
 
 $padId = "{0:D2}" -f $dbIndex
-[void]$sb.AppendLine("- [ ] **M06-DB-$padId: Idempotent Database Seeding Script**")
+[void]$sb.AppendLine("- [ ] **M06-DB-${padId}: Idempotent Database Seeding Script**")
 [void]$sb.AppendLine("  - **Files**: ``prisma/seed.ts`` or seeder class")
 [void]$sb.AppendLine("  - **Action**: Implement seed script using deterministic UUIDs and UPSERT statements.")
 [void]$sb.AppendLine("  - **Verify**: Running seed script twice produces zero duplicate key errors and identical row counts.")
@@ -197,7 +197,7 @@ if (Test-Path $ComponentsPath) {
 }
 
 # Frontend Screens (1-to-1 Parity)
-[void]$sb.AppendLine("## Sprint 5: Frontend Views & Screen Coverage (M06-FE — 1-to-1 SITEMAP Parity)")
+[void]$sb.AppendLine("## Sprint 5: Frontend Views & Screen Coverage (M06-FE -- 1-to-1 SITEMAP Parity)")
 [void]$sb.AppendLine("")
 
 $feIndex = 1
@@ -214,7 +214,7 @@ if (Test-Path $SitemapPath) {
         $route = if ($routeMatch.Success) { $routeMatch.Value } else { "/" }
         $cleanLine = ($line -replace "\|", " ").Trim()
 
-        [void]$sb.AppendLine("- [ ] **M06-FE-$padId: Screen View [$scrId] $cleanLine**")
+        [void]$sb.AppendLine("- [ ] **M06-FE-${padId}: Screen View [$scrId] $cleanLine**")
         [void]$sb.AppendLine("  - **Files**: ``src/app/.../page.tsx``")
         [void]$sb.AppendLine("  - **Route**: ``$route``")
         [void]$sb.AppendLine("  - **Action**: Implement responsive screen with 5-state matrix (idle, loading, success, error, empty) matching DESIGN.md tokens.")
@@ -264,4 +264,4 @@ if ($feIndex -eq 1) {
 
 [System.IO.File]::WriteAllText($Dest, $sb.ToString(), [System.Text.Encoding]::UTF8)
 
-Write-Host "✅ $Dest generated successfully with full 5-spec decomposition!" -ForegroundColor Green
+Write-Host "OK $Dest generated successfully with full 5-spec decomposition!" -ForegroundColor Green
