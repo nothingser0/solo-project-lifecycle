@@ -337,9 +337,12 @@ run_rls "M05 single-tenant project is NOT asked for RLS" ALLOWED "no" ""
 run_rls "M05 multi-branch project IS asked for RLS" BLOCKED "yes" ""
 run_rls "M05 single-tenant but FSD declares org_id -> RLS required" BLOCKED "no" "\nCREATE TABLE users (org_id uuid not null);\n"
 
-# B1c. M05 endpoint counting. Regression: the old pattern required a bare "####" at
-# column 0, so a heading nested under a section (template-faithful) scored 0 and no
-# project could pass its own gate. The floor is 10 (M05 STEP 4 / exit criteria).
+# B1c. M05 endpoint contracts. The spec (M05 §STEP 4) says "document every in-scope API
+# operation; do not invent endpoints to meet a count" — so there is no numeric floor.
+# What the gate must prove is (1) headings nested under a section are still counted
+# (leading-space tolerance) and (2) a heading without the four contract fields is not a
+# contract. Regression: the old pattern required a bare "####" at column 0, so a
+# template-faithful FSD scored 0 endpoints and no project could pass its own gate.
 run_endpoints() {
     local name="$1" want="$2" body="$3"
     local dir="$WORK/ep"
@@ -360,7 +363,7 @@ run_endpoints() {
     local out
     out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
     local got="TOO_FEW"
-    if echo "$out" | grep -q "API endpoint contracts verified"; then
+    if echo "$out" | grep -q "API endpoint contracts found" && ! echo "$out" | grep -q "carry all four contract fields"; then
         got="ENOUGH"
     fi
     if [ "$got" = "$want" ]; then
@@ -372,11 +375,25 @@ run_endpoints() {
     fi
 }
 
-# Indented headings (2 spaces) prove the leading-space tolerance in the pattern.
-TEN_HEADINGS='## 6. API\n  #### GET /api/v1/a\n#### POST /api/v1/a\n#### PATCH /api/v1/a/:id\n#### DELETE /api/v1/a/:id\n#### POST /api/v1/login\n#### GET /api/v1/b\n#### POST /api/v1/b\n#### PATCH /api/v1/b/:id\n#### DELETE /api/v1/b/:id\n#### POST /api/v1/b/approve\n'
-NINE_HEADINGS='## 6. API\n#### GET /api/v1/a\n#### POST /api/v1/a\n#### PATCH /api/v1/a/:id\n#### DELETE /api/v1/a/:id\n#### POST /api/v1/login\n#### GET /api/v1/b\n#### POST /api/v1/b\n#### PATCH /api/v1/b/:id\n#### DELETE /api/v1/b/:id\n'
-run_endpoints "M05 FSD with 10 endpoint headings (one indented) passes the floor" ENOUGH "$TEN_HEADINGS"
-run_endpoints "M05 FSD with 9 endpoint headings fails the floor" TOO_FEW "$NINE_HEADINGS"
+# Contract-valid block builder: every field the gate counts.
+ep_block() {
+    local indent="$1" method="$2" path="$3" omit="${4:-}"
+    printf '%b#### %s %s\n' "$indent" "$method" "$path"
+    [ "$omit" = "auth" ] || printf -- '- **Auth**: bearer token, role ADMIN\n'
+    [ "$omit" = "req" ]  || printf -- '- **Request**: `{ "name": string }`\n'
+    [ "$omit" = "ok" ]   || printf -- '- **Success**: 200 `{ "id": uuid }`\n'
+    [ "$omit" = "err" ]  || printf -- '- **Error**: 400 validation, 403 forbidden\n'
+}
+
+TEN_HEADINGS="## 6. API\n"
+TEN_HEADINGS+="$(ep_block '  ' GET /api/v1/a)"
+for i in 2 3 4 5 6 7 8 9 10; do TEN_HEADINGS+="$(ep_block '' POST /api/v1/r$i)"; done
+TEN_HEADINGS+=$'\n'
+
+INCOMPLETE_HEADINGS="## 6. API\n$(ep_block '' GET /api/v1/a)\n$(ep_block '' POST /api/v1/b err)\n"
+
+run_endpoints "M05 counts nested headings and accepts complete contracts" ENOUGH "$TEN_HEADINGS"
+run_endpoints "M05 rejects a heading without the four contract fields" TOO_FEW "$INCOMPLETE_HEADINGS"
 # B2. M05 deliverables that were never verified. The first case is the false-green
 # that motivated the guard: copy the RAW PROJECT_LITE_TEMPLATE.md, change ONLY the
 # lock line, and the old gate passed with "8 recorded questionnaire answers" because
@@ -1403,16 +1420,24 @@ expect_gate_scaffold() {
             mkdir -p "$dir/docs/qa"
             cp "$REPO/templates/06-qa-uat/SIT_WORKBOOK_TEMPLATE.md" "$dir/docs/qa/SIT_WORKBOOK.md"
             local wb="$dir/docs/qa/SIT_WORKBOOK.md"
-            sed -i 's/\[Project Name\]/Acme/g; s/\[Client Company\]/Acme Corp/g; s/\[Your Name\]/S. Rahma/g; s/\[YYYY-MM-DD\]/2026-10-12/g; s/\[staging URL\]/https:\/\/staging.example.com/g' "$wb"
-            printf '\nSIT PASS\nStaging-URL: https://staging.example.com\n' >> "$wb"
-            # M07 also requires a security audit artifact.
+            sed -i 's/\[Project Name\]/Acme/g; s/\[Client Company\]/Acme Corp/g; s/\[Your Name\]/S. Rahma/g; s/\[YYYY-MM-DD\]/2026-10-12/g; s/\[staging URL\]/https:\/\/staging.example.com/g; s/\[client-domain\]/example.com/g' "$wb"
+            # Fill the form like a human would: the shipped line is a choose-one menu
+            # ("[SIT PASS - READY FOR UAT / NOT READY]"), which is not an attestation.
+            sed -i -E 's/^(\s*-\s*\*\*Final Testing Status\*\*:).*/\1 SIT PASS - READY FOR UAT/' "$wb"
+            # M07 also requires a security audit artifact with a real attestation.
             cp "$REPO/templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md" "$dir/docs/qa/SECURITY_AUDIT.md"
-            sed -i 's/\[Project Name\]/Acme/g; s/\[Your Name\]/S. Rahma/g; s/\[YYYY-MM-DD\]/2026-10-12/g' "$dir/docs/qa/SECURITY_AUDIT.md"
+            local sa="$dir/docs/qa/SECURITY_AUDIT.md"
+            # A filled audit form: every bracketed prompt replaced with the recorded value,
+            # then the attestation checkbox ticked by the human auditor.
+            sed -i -E 's/\[[^][]*\]/X/g' "$sa"
+            sed -i 's/\[Patched \/ Monitored\]/Patched/g' "$sa" || true
+            printf '\n- [x] **SECURITY PASS**: Applicable tests have evidence and findings meet the release policy.\n' >> "$sa"
             # M07 also requires the polish audit and a passing SIT result.
-            mkdir -p "$dir/docs/qa"
             printf '# Polish Audit\n\nAll 33 tells reviewed. READY (0 blocking tells).\n' > "$dir/docs/qa/POLISH_AUDIT.md"
-            # The workbook ships a form; strip every [...] so the placeholder check passes.
-            sed -i -E 's/\[[^][]*\]/X/g' "$wb"; mkdir -p "$dir/tmp2"; sed -i -E 's/\[[^][]*\]/X/g' "$wb"
+            # The workbook ships a form; strip every remaining [...] so the placeholder
+            # check passes. Do NOT strip the security audit after marking its checkbox —
+            # the gate reads "[x] **SECURITY PASS**" as the attestation.
+            sed -i -E 's/\[[^][]*\]/X/g' "$wb"
             ;;
         M13)
             printf -- '- **Scale**: solo-saas\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"

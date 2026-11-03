@@ -103,4 +103,5 @@ gate_M07() {
             GATE_FAILED=1
         fi
     fi
+    fi
 }

@@ -149,7 +149,7 @@ check_scale_feasibility() {
         # acceptance. Say which one — the classifier block below carries the detail.
         if echo "$classify_output" | grep -q "NON-DELEGABLE GATE"; then
             echo "  ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier."
-            echo "     Formal external assurance / legacy-core replacement needs a qualified third party — route to A00-A04 Advisory."
+            echo "     Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory."
             echo "     A risk-acceptance file cannot open this block."
         else
             echo "  ❌ SOLO CAPACITY GATE TRIGGERED: Project exceeds solo developer capacity!"

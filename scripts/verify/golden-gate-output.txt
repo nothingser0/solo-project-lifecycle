@@ -120,7 +120,7 @@
   ✅ docs/specs/LOGO_DESIGN_BRIEF.md (348B)
   ✅ docs/design/inspiration/notes.md (77B)
   ✅ DESIGN.md (1266B)
-  ✅ docs/specs/DESIGN_SPEC.md (1341B)
+  ✅ docs/specs/DESIGN_SPEC.md (1357B)
   ✅ docs/specs/DESIGN_SPEC.md core section headings verified (1 headings present)
   ✅ DESIGN.md accessibility & contrast ratios verified
   ✅ DESIGN.md z-index layering scale verified
@@ -132,6 +132,8 @@
   ✅ DESIGN.md Anti-Slop design defenses verified
   [INFO] Interactive Prototyping (visual preview mandatory).
   ✅ Interactive screen preview outputs present (found 1 preview files)
+  ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI
+  ✅ Mechanical UI/UX consistency audit PASSED
   ✅ Screen count match verified (SITEMAP 2 vs DESIGN_SPEC 2, tolerance ±0)
   ❌ DESIGN_SPEC.md still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Name]). The human signs the Design Freeze before M06.
   ❌ DESIGN_SPEC.md missing a named Design Freeze approver ('Approved by: <name>' or 'Signed by: <name>').
@@ -175,7 +177,7 @@
   ✅ Locked tech stack decision documented in PROJECT_LITE.md
   ❌ PROJECT_LITE.md declares 'Stack Decision LOCKED:' but records only 0/8 real questionnaire answers.
      Missing: Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8
-     The 8 answers are the human's input (M05 STEP 1). Ask the questions, END TURN, and record all 8 before locking.
+     Record missing architecture inputs from confirmed project artifacts or ask targeted questions before locking.
   ❌ PROJECT_LITE.md missing the 'Module 04 Handoff Strategy' section — M06 STEP 0 cannot be completed without it.
      Document the prototype → framework conversion plan (see FSD_TECHNICAL_TEMPLATE.md §2.1).
   ❌ PROJECT_LITE.md has no chosen 'Compatibility Level' (found: '<none>').
@@ -224,6 +226,8 @@
      Add e.g. 'Approved: <date> by <name>' to each block below, or un-tick them:
        - M06-DB-01: Schema
   ❌ TODO.md missing core category tasks for 'M06-SETUP-xx'!
+  ✅ Screen fidelity verified: 1 FE tasks match SITEMAP screen definitions (2 unique screens)
+  ❌ TODO.md missing required Authentication/RBAC task(s)! (SITEMAP/FSD specifies auth/login flow)
   ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-xx Specs Pre-Read)!
   ✅ AGENTS.md technical quality and engineering guidelines verified
   ❌ RUNBOOK_LOCAL.md (MISSING)
@@ -235,8 +239,17 @@
   ✅ Anti-slop: zero silent empty catch blocks in source
   ✅ Anti-slop: zero obvious hardcoded secrets in source
   ❌ Git hygiene: .gitignore is missing from project root! Create .gitignore to prevent leaking secrets/build artifacts.
-  ✅ Anti-slop: no narrating/stub comments detected in source
+  ✅ Anti-slop: zero narrating/stub comments detected in source
   ✅ Anti-slop: zero internal spec identifiers / slot placeholders leaked in source
+  ✅ Anti-slop: zero tech stack / vendor leaks in customer UI
+  ✅ Anti-slop: zero hollow stub pages detected in app routes
+  ✅ Anti-slop: zero fake login navigation links
+  ✅ Anti-slop: zero dummy mock URLs in production UI
+  ✅ Anti-slop: zero Lorem Ipsum or generic persona slop in source/seeds
+  ✅ Anti-slop: zero dead links (href='#') detected in UI source
+  ✅ Anti-slop: zero raw browser alert/confirm/prompt calls in UI source
+  ✅ Anti-slop: zero stray console.log debug calls in production source
+  ✅ Anti-slop: zero unconstrained 'any' types in production source
   ✅ Anti-slop: zero raw emoticons detected in UI source
   ✅ Visual inspiration: reference files present in docs/design/inspiration/ and DESIGN.md tracked
   ⚠️  AI_REVIEW_LOG.md (optional, not found)
@@ -252,7 +265,8 @@
 === M07: Quality Assurance & SIT Gate Checklist (medium+ only) ===
   ❌ docs/qa/SIT_WORKBOOK.md (MISSING)
   ❌ docs/qa/POLISH_AUDIT.md (MISSING: run the 33-tell anti-vibe-code audit on the deployed URL)
-  ⚠️  docs/qa/SECURITY_AUDIT.md (optional, not found)
+  [INFO] Full M07 scale detected: Security Audit is MANDATORY.
+  ❌ docs/qa/SECURITY_AUDIT.md (MISSING)
 
 ============================================================
 ❌ Gate validation FAILED - missing mandatory artifacts
@@ -282,7 +296,7 @@
 ============================================================
 === M09: Validation Gate (UAT Sign-Off) Checklist ===
   ❌ docs/pm/UAT_SIGNOFF_REPORT.md (MISSING)
-  ⚠️  docs/qa/UAT_WORKBOOK.md (optional, not found)
+  ❌ docs/pm/UAT_WORKBOOK.md (MISSING)
 
 ⚠️  DO NOT deploy to production until UAT signed
 
