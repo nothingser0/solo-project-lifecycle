@@ -1,6 +1,6 @@
 # Production Distributed Systems Checklist (The "Vibe Coder" Reality Check)
 
-> **Purpose**: A pragmatic production checklist covering 82 distributed systems, database, concurrency, runtime, release, observability, and security realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)**, **Module 07 (QA/Security)** and **Module 10 (Production Deployment)**, filtered by project scale.
+> **Purpose**: A pragmatic production checklist covering 101 distributed systems, database, concurrency, runtime, release, observability, security, resilience, and protocol realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)**, **Module 07 (QA/Security)** and **Module 10 (Production Deployment)**, filtered by project scale.
 
 ---
 
@@ -136,9 +136,40 @@
 
 ---
 
+## 83–101: Resilience, Performance Physics & Protocols
+
+### 83–88: Business Continuity
+83. **Disaster Recovery**: A written plan with RTO (how long you may be down) and RPO (how much data you may lose), plus a tested restore. A backup without a restore drill is a hypothesis.
+84. **Backups**: Automated, encrypted, off-site/off-account, versioned against ransomware, with retention policy. Test restores on a schedule — the only backup that counts is a restored one.
+85. **Failover**: Automatic promotion of a standby (DB, region, AZ). Must be tested under load; an untested failover usually fails at the moment it is needed. Watch for split-brain and stale DNS.
+86. **Multi-Region Deployment**: Data residency, replication lag, and cross-region latency become design constraints. Only justified by hard latency or compliance requirements — not by ambition.
+87. **Chaos Engineering**: Deliberately inject failures (kill pods, add latency, drop packets) in staging to prove resilience. Start small, blast-radius limited, always with an abort switch.
+88. **Cost Optimization**: Know your top 3 cost drivers (egress, DB instance size, log volume, idle compute). Right-size before optimizing code — architecture, not cleverness, sets most of the bill.
+
+### 89–90: Serverless Realities
+89. **Cold Starts**: Cold boot latency per runtime (Node ~100–400ms, JVM/Spring seconds, Go/Rust tens of ms). Mitigate with provisioned concurrency, smaller bundles, or a warm path — but measure it, do not guess.
+90. **Serverless Limits**: Execution timeout, memory ceiling, payload size, connection limits per instance, and no persistent local state. Pooled DB connections from many lambdas will exhaust your database — use a proxy (PgBouncer/RDS Proxy/Neon/Supabase pooler).
+
+### 91–97: Performance Physics & Network Truths
+91. **Latency**: Response time for one request. Decompose before optimizing: network + queue + compute + I/O + render. The dominant term is usually I/O or a serial dependency, not CPU.
+92. **Throughput**: Requests per unit of time. Not the inverse of latency — concurrency (Little's Law: `L = λ × W`) links them. More throughput without concurrency limits just moves the backlog.
+93. **P99 Latency**: The slow 1%. Averages hide pain; at P99 with 100 RPS, one user per second is having the worst experience. Set SLOs on percentiles, never on the mean.
+94. **Tail Latency**: The extreme end (P99.9+) caused by GC pauses, retries, lock queues, cold caches, and head-of-line blocking. Fan-out amplifies it: one call to 100 services means the slowest of 100 dominates.
+95. **Network Partitions**: Split brain between nodes. Decide per subsystem whether to be consistent or available (see #34), and ensure the minority side cannot accept writes it will later have to discard.
+96. **Clock Skew**: Machine clocks drift. Never order events by wall-clock timestamps across nodes — use monotonic clocks, logical clocks (Lamport/vector), or DB sequence values. TTL and JWT `exp` also break under skew.
+97. **DNS**: The first hop and the most common silent outage. TTLs control failover speed, CNAME chains add latency, and resolver caching ignores your "instant" change. Health-checked DNS failover plus low TTLs for critical records.
+
+### 98–101: Protocols & Integration Contracts
+98. **TCP vs UDP**: TCP orders, retransmits, and blocks under loss (HTTP, DB, queues). UDP is fire-and-forget with no delivery guarantee (DNS, realtime media, QUIC's base). Choose by whether loss is tolerable, not by habit.
+99. **HTTP/2 & HTTP/3**: HTTP/2 multiplexes streams over one TCP connection (solves app-level head-of-line blocking, not TCP-level loss). HTTP/3 runs over QUIC/UDP with per-stream loss recovery. Enable at the edge/proxy; it is a transport win, not an architecture.
+100. **gRPC**: Typed protobuf over HTTP/2, streaming (unary/server/client/bidi), code-generated clients. Excellent for internal service-to-service; poor for public browser APIs without a gateway/connect layer. Deadline propagation is mandatory.
+101. **Webhooks**: Inbound HTTP callbacks from a provider. Must verify signatures (HMAC), be idempotent on replay, respond fast (enqueue, do not process inline), tolerate out-of-order delivery, and handle retries with your own dedupe store.
+
+---
+
 ## Scale Enforcement (Anti-Overkill Rule)
 
-- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene, #50 Cache Invalidation, #55 Rollbacks, #56–#59 Health/Monitoring/Logging, #67 Secrets, #70 JWT rotation, #71–#73 encryption, #76–#82 CORS/CSRF/injection/XSS/SSRF/migrations. Skip #8, #9, #18, #19, #30.
-- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy, #42–#45 GC/thread/backpressure/autoscaling, #48 CDN, #51 Feature Flags, #54 Rolling Deploys, #57 Probes, #61–#62 metrics/alerts, #68 IAM, #74 WAF.
-- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election, #46–#47 scaling decision, #49 Edge Caching, #60 Distributed Tracing, #63–#65 SLO/SLI/error budget, #66 Observability maturity, #75 DDoS.
-- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem, #52–#53 Blue-Green/Canary, #69 OAuth federation at scale.
+- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene, #50 Cache Invalidation, #55 Rollbacks, #56–#59 Health/Monitoring/Logging, #67 Secrets, #70 JWT rotation, #71–#73 encryption, #76–#82 CORS/CSRF/injection/XSS/SSRF/migrations, #84 Backups, #91–#93 latency basics, #97 DNS, #101 webhooks. Skip #8, #9, #18, #19, #30.
+- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy, #42–#45 GC/thread/backpressure/autoscaling, #48 CDN, #51 Feature Flags, #54 Rolling Deploys, #57 Probes, #61–#62 metrics/alerts, #68 IAM, #74 WAF, #83 DR plan with RTO/RPO, #85 Failover, #89–#90 serverless limits & pooling, #94 tail latency awareness, #98–#99 protocol choice at the edge.
+- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election, #46–#47 scaling decision, #49 Edge Caching, #60 Distributed Tracing, #63–#65 SLO/SLI/error budget, #66 Observability maturity, #75 DDoS, #95 network partition policy, #96 clock skew discipline, #100 gRPC for internal services.
+- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem, #52–#53 Blue-Green/Canary, #69 OAuth federation at scale, #86 Multi-Region, #87 Chaos Engineering, #88 cost governance.
