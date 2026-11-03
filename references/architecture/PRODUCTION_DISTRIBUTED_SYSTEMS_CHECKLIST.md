@@ -1,6 +1,6 @@
 # Production Distributed Systems Checklist (The "Vibe Coder" Reality Check)
 
-> **Purpose**: A pragmatic production checklist covering 59 distributed systems, database, concurrency, runtime, release, and observability realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)** and **Module 10 (Production Deployment)**, filtered by project scale.
+> **Purpose**: A pragmatic production checklist covering 82 distributed systems, database, concurrency, runtime, release, observability, and security realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)**, **Module 07 (QA/Security)** and **Module 10 (Production Deployment)**, filtered by project scale.
 
 ---
 
@@ -99,9 +99,46 @@
 
 ---
 
+## 60–82: Observability Targets, Identity, Crypto & App Security
+
+### 60–66: The Three Pillars & Reliability Targets
+60. **Distributed Tracing**: Propagate a trace ID across every service, queue, and outbound call (OpenTelemetry). Span timing exposes where latency actually goes — logs tell you *that* it was slow, traces tell you *which hop*.
+61. **Metrics**: Numeric time series, low cardinality labels only. Never put user IDs or raw URLs in labels — that is how a metrics bill becomes a second mortgage.
+62. **Alerts**: Alert on symptoms (error rate, p99 latency, queue lag), not on CPU cosmetics. Every alert must be actionable, owned, and linked to a runbook. Alert fatigue kills the alerting.
+63. **SLOs**: A numeric reliability promise to users ("99.9% of checkouts succeed within 500ms over 28 days"). Internal target, not a marketing number.
+64. **SLIs**: The measurement that feeds the SLO (success ratio, latency percentile, throughput). Choose SLIs at the user boundary, not the CPU boundary.
+65. **Error Budgets**: `100% − SLO` = allowed failure. Budget remaining decides whether you ship features or fix reliability. Exhausted budget freezes risky deploys — enforce it or the SLO is theatre.
+66. **Observability**: The ability to ask new questions without shipping code. Logs + metrics + traces + correlation IDs, plus enough context to explain an unknown-unknown failure. Monitoring tells you *if* it broke; observability tells you *why*.
+
+### 67–70: Identity & Secrets
+67. **Secrets Management**: Secrets live in a manager (Vault, AWS Secrets Manager, Doppler, or platform env injection), never in git, images, or chat. Rotate on a schedule, scope per environment, and audit access.
+68. **IAM**: Least privilege per role, not per person. Separate deploy/runtime/admin identities, avoid wildcard `*` actions, and review stale permissions quarterly.
+69. **OAuth**: Delegated authorization via short-lived access tokens + refresh token rotation. Always validate `state` (CSRF), exact `redirect_uri`, and `aud`/`iss`. Never treat the implicit flow as modern.
+70. **JWT Rotation**: Short access-token TTL (5–15 min) + rotating refresh tokens with reuse detection. Support `kid`-based key rotation so signing keys can change without logging everyone out. Never store JWTs in `localStorage` if an httpOnly cookie works.
+
+### 71–73: Cryptography in Practice
+71. **TLS**: TLS 1.2+ minimum, 1.3 preferred. Valid certs with automated renewal (Let's Encrypt/ACM), HSTS, and no mixed content. Internal service traffic encrypts too — the network is not trusted.
+72. **Encryption at Rest**: Disk/volume encryption plus field-level encryption for PII and payment-adjacent data. Key management is the real problem: separate the key from the ciphertext and have a rotation path.
+73. **Encryption in Transit**: TLS/mTLS between services, signed webhooks (HMAC), and no plaintext over private networks. Verify signatures on inbound, and pin to expected algorithms — never trust the algorithm in the header.
+
+### 74–80: Application Security Attack Surface
+74. **WAF**: Managed rule sets in front of the app (Cloudflare, AWS WAF). Catches commodity attacks; never a substitute for input validation in the app.
+75. **DDoS Protection**: Edge absorption (Cloudflare, CloudFront Shield), rate limits, and autoscale headroom. Application-layer floods need per-identity quotas, not just IP blocks.
+76. **CORS**: Explicit origin allowlist, no `*` with credentials, minimal allowed methods/headers, and correct preflight handling. CORS is a browser policy, not an auth control.
+77. **CSRF**: SameSite cookies + per-session CSRF tokens on state-changing requests. If you rely on bearer tokens in headers only, say so explicitly — mixing models is where the hole is.
+78. **SQL Injection**: Parameterized queries / prepared statements everywhere, no string concatenation. ORMs help only when you do not drop to raw SQL with interpolation.
+79. **XSS**: Context-aware output encoding, framework auto-escaping (never `dangerouslySetInnerHTML`/`v-html` on user input), strict CSP, and httpOnly cookies.
+80. **SSRF**: Any user-supplied URL fetched by the server is a hole. Allowlist schemes/hosts, block link-local and metadata IPs (`169.254.169.254`), disable redirects, and put egress behind a proxy.
+
+### 81–82: Schema Evolution
+81. **Database Migrations**: Versioned, reviewed, forward-only scripts run by CI, never by hand in production. Test on a production-size copy, keep them fast and lock-aware, and never edit an applied migration.
+82. **Schema Versioning**: Expand-contract for zero-downtime: add nullable column → dual-write/backfill → switch reads → drop old. Old and new app versions must coexist during any rolling deploy.
+
+---
+
 ## Scale Enforcement (Anti-Overkill Rule)
 
-- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene, #50 Cache Invalidation, #55 Rollbacks, #56–#59 Health/Monitoring/Logging. Skip #8, #9, #18, #19, #30.
-- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy, #42–#45 GC/thread/backpressure/autoscaling, #48 CDN, #51 Feature Flags, #54 Rolling Deploys, #57 Probes.
-- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election, #46–#47 scaling decision, #49 Edge Caching.
-- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem, #52–#53 Blue-Green/Canary.
+- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene, #50 Cache Invalidation, #55 Rollbacks, #56–#59 Health/Monitoring/Logging, #67 Secrets, #70 JWT rotation, #71–#73 encryption, #76–#82 CORS/CSRF/injection/XSS/SSRF/migrations. Skip #8, #9, #18, #19, #30.
+- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy, #42–#45 GC/thread/backpressure/autoscaling, #48 CDN, #51 Feature Flags, #54 Rolling Deploys, #57 Probes, #61–#62 metrics/alerts, #68 IAM, #74 WAF.
+- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election, #46–#47 scaling decision, #49 Edge Caching, #60 Distributed Tracing, #63–#65 SLO/SLI/error budget, #66 Observability maturity, #75 DDoS.
+- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem, #52–#53 Blue-Green/Canary, #69 OAuth federation at scale.
