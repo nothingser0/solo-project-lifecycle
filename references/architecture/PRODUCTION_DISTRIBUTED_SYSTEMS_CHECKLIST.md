@@ -1,6 +1,6 @@
 # Production Distributed Systems Checklist (The "Vibe Coder" Reality Check)
 
-> **Purpose**: A pragmatic production checklist covering 101 distributed systems, database, concurrency, runtime, release, observability, security, resilience, and protocol realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)**, **Module 07 (QA/Security)** and **Module 10 (Production Deployment)**, filtered by project scale.
+> **Purpose**: A pragmatic production checklist covering 111 distributed systems, database, concurrency, runtime, release, observability, security, resilience, protocol, and incident-response realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)**, **Module 07 (QA/Security)** and **Module 10 (Production Deployment)**, filtered by project scale.
 
 ---
 
@@ -167,9 +167,29 @@
 
 ---
 
+## 102–111: Contracts, Infrastructure as Code & Incident Response
+
+### 102–103: Versioning Contracts
+102. **API Versioning**: Version the contract consumers depend on (`/v1`, header, or media type). Never break a live version silently — run old and new in parallel, deprecate with a documented sunset window, and keep changelogs machine-readable. Breaking a mobile client you cannot roll back is the classic solo-dev foot-gun.
+103. **Semantic Versioning**: `MAJOR.MINOR.PATCH` means breaking / additive / fix. Honour it for libraries and internal packages; a "patch" that breaks imports destroys trust in your own release pipeline. Pre-release tags (`-beta.1`) and pinned lockfiles are part of the discipline.
+
+### 104–108: Infrastructure as Code & Build Reliability
+104. **Infrastructure as Code**: Every resource declared in version control, applied by automation, never clicked in a console. Reproducible environments, reviewable diffs, and rollback by revert. Clickops leaves no history — the outage bequest.
+105. **Terraform**: Declarative HCL with state as the source of truth. Remote backend with locking (never state in git), separate workspaces per environment, `plan` reviewed before `apply`, and module pinning to avoid surprise upgrades.
+106. **Helm Charts**: Templated Kubernetes manifests with values per environment. Useful only once you actually run Kubernetes — for a solo SaaS it is a second YAML tax on top of a stack you did not need (see #8). Pin chart versions and render diffs before install.
+107. **Build Caching**: Cache dependencies, compiled artifacts, and container layers keyed on lockfile hashes. Cuts CI from minutes to seconds; a broken cache key silently gives you stale builds, so cache on the lockfile, not the whole directory.
+108. **Dependency Hell**: Transitive conflicts, peer-dependency mismatch, abandoned packages, and duplicated versions in one bundle. Mitigate with a single lockfile committed, minimal dependency count, automated update PRs (Dependabot/Renovate), and a real reason for every new package.
+
+### 109–111: Incident Response & Learning
+109. **Production Incidents**: Detect fast (alert), contain (rollback or feature-flag off), then diagnose. Declare severity and an incident commander even when it is you — write the timeline as it happens, because memory rewrites itself afterwards.
+110. **On-Call**: Defined escalation path, paging only for actionable alerts, runbooks per alert, and a documented response time. Solo founder = you are on-call; make sure alerts reach a phone, and that a dead man's switch fires when the app is fully down.
+111. **Postmortems**: Blameless, written within 48 hours: timeline, impact, root cause, contributing factors, and action items with owners and dates. An incident without a postmortem is a rehearsal for the same incident. Track the action items to closure or the document is fiction.
+
+---
+
 ## Scale Enforcement (Anti-Overkill Rule)
 
-- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene, #50 Cache Invalidation, #55 Rollbacks, #56–#59 Health/Monitoring/Logging, #67 Secrets, #70 JWT rotation, #71–#73 encryption, #76–#82 CORS/CSRF/injection/XSS/SSRF/migrations, #84 Backups, #91–#93 latency basics, #97 DNS, #101 webhooks. Skip #8, #9, #18, #19, #30.
-- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy, #42–#45 GC/thread/backpressure/autoscaling, #48 CDN, #51 Feature Flags, #54 Rolling Deploys, #57 Probes, #61–#62 metrics/alerts, #68 IAM, #74 WAF, #83 DR plan with RTO/RPO, #85 Failover, #89–#90 serverless limits & pooling, #94 tail latency awareness, #98–#99 protocol choice at the edge.
-- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election, #46–#47 scaling decision, #49 Edge Caching, #60 Distributed Tracing, #63–#65 SLO/SLI/error budget, #66 Observability maturity, #75 DDoS, #95 network partition policy, #96 clock skew discipline, #100 gRPC for internal services.
-- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem, #52–#53 Blue-Green/Canary, #69 OAuth federation at scale, #86 Multi-Region, #87 Chaos Engineering, #88 cost governance.
+- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene, #50 Cache Invalidation, #55 Rollbacks, #56–#59 Health/Monitoring/Logging, #67 Secrets, #70 JWT rotation, #71–#73 encryption, #76–#82 CORS/CSRF/injection/XSS/SSRF/migrations, #84 Backups, #91–#93 latency basics, #97 DNS, #101 webhooks, #102 API versioning, #103 SemVer, #107 build caching, #108 dependency discipline, #109–#111 incident/on-call/postmortem basics. Skip #8, #9, #18, #19, #30.
+- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy, #42–#45 GC/thread/backpressure/autoscaling, #48 CDN, #51 Feature Flags, #54 Rolling Deploys, #57 Probes, #61–#62 metrics/alerts, #68 IAM, #74 WAF, #83 DR plan with RTO/RPO, #85 Failover, #89–#90 serverless limits & pooling, #94 tail latency awareness, #98–#99 protocol choice at the edge, #104 Infrastructure as Code.
+- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election, #46–#47 scaling decision, #49 Edge Caching, #60 Distributed Tracing, #63–#65 SLO/SLI/error budget, #66 Observability maturity, #75 DDoS, #95 network partition policy, #96 clock skew discipline, #100 gRPC for internal services, #105 Terraform state & workspaces.
+- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem, #52–#53 Blue-Green/Canary, #69 OAuth federation at scale, #86 Multi-Region, #87 Chaos Engineering, #88 cost governance, #106 Helm chart governance.
