@@ -218,7 +218,7 @@ if (Test-Path $SitemapPath) {
         [void]$sb.AppendLine("  - **Files**: ``src/app/.../page.tsx``")
         [void]$sb.AppendLine("  - **Route**: ``$route``")
         [void]$sb.AppendLine("  - **Action**: Implement responsive screen with 5-state matrix (idle, loading, success, error, empty) matching DESIGN.md tokens.")
-        [void]$sb.AppendLine("  - **Verify**: ``powershell -Command ``"(Invoke-WebRequest -Uri http://localhost:3000$route -UseBasicParsing).StatusCode``" || curl -fsSL -o /dev/null -w ``"%{http_code}``" http://localhost:3000$route``")
+        [void]$sb.AppendLine("  - **Verify**: ``powershell -Command `"(Invoke-WebRequest -Uri http://localhost:3000$route -UseBasicParsing).StatusCode`" || curl -fsSL -o /dev/null -w `"%{http_code}`" http://localhost:3000$route``")
         [void]$sb.AppendLine("  - **Expected**: HTTP 200 OK (or 307 redirect to /login); route resolves with zero 404.")
         [void]$sb.AppendLine("  - **Evidence**:")
         [void]$sb.AppendLine("")
