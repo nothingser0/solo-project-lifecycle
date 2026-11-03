@@ -1,7 +1,7 @@
 # Module 01: Idea & Feasibility (Idea Screening & Feasibility Testing)
 
 > **Template**: `templates/01-discovery-commercial/IDEA_BRIEF_TEMPLATE.md` → `docs/pm/IDEA_BRIEF.md` (alias `FEASIBILITY_REPORT.md`; if both exist the gate scores the one with more `Feasibility-Score-*` lines, so a stub cannot shadow a filled report).
-> 📖 **Optional refs** (do NOT preload): `references/checklists/FEASIBILITY_CRITERIA.md`, `references/checklists/MODULE_01_ACTION_ITEMS_CHECKLIST.md`.
+> 📖 **Optional refs** (do NOT preload): `references/checklists/FEASIBILITY_CRITERIA.md`, `references/checklists/MODULE_01_ACTION_ITEMS_CHECKLIST.md`, `templates/01-discovery-commercial/WORKING_BACKWARDS_PR_FAQ_TEMPLATE.md` (pressure-test the value proposition), `templates/01-discovery-commercial/COMPETITIVE_ALTERNATIVE_PAGE_TEMPLATE.md`, `templates/01-discovery-commercial/B2B_COLD_OUTREACH_PLAYBOOK.md` (only when validating demand with real prospects).
 
 **Purpose**: first gate — turn a raw idea into a **Validated Idea Brief** with scale boundaries before heavy documents or code. Follows M00; entry point for **Solo SaaS and client fixed-scope** work. The **Small** path WAIVES M01 (Intake + `PROJECT_LITE.md` replace it — see SKILL.md's router), though the classifier below still runs.
 
