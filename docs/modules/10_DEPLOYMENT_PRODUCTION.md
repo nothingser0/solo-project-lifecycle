@@ -1,7 +1,7 @@
 # Module 10: Deployment & Production Go-Live (Official Launch to Production Environment)
 
 > **Templates to copy**: `templates/07-release-handover/DEPLOYMENT_PROTOCOL_TEMPLATE.md` · `ROLLBACK_PLAN_TEMPLATE.md` · `GO_LIVE_REPORT_TEMPLATE.md`
-> 📖 **Optional** (do NOT preload): `deep-dives/10_DEPLOYMENT_PRODUCTION.md` (full ENV checklist & scripts, manual clean-release git procedure, DNS/SSL steps, migration options with SQL, mobile workflow, enterprise CAB routing)
+> 📖 **Optional** (do NOT preload): `deep-dives/10_DEPLOYMENT_PRODUCTION.md` (full ENV checklist & scripts, manual clean-release git procedure, DNS/SSL steps, migration options with SQL, mobile workflow, enterprise CAB routing) · `references/architecture/PRODUCTION_DISTRIBUTED_SYSTEMS_CHECKLIST.md` §56–59, §74–82, §83–85, §97, §109–111 (health, security, DR/backup, DNS, incident readiness — record which rows are N/A and why)
 
 Promotes the human-approved release candidate, configures the selected production platform, and records deployment and post-deployment verification evidence. The project owner executes production deployment and makes the Go/No-Go decision; platform-specific steps apply only when relevant.
 

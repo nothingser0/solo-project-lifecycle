@@ -481,6 +481,10 @@
       "cataloged": false
     },
     {
+      "path": "references/architecture/PRODUCTION_DISTRIBUTED_SYSTEMS_CHECKLIST.md",
+      "cataloged": false
+    },
+    {
       "path": "references/architecture/QUALITY_ATTRIBUTES_AND_RISK_FRAMEWORK.md",
       "cataloged": false
     },
@@ -681,6 +685,10 @@
       "modules": [
         "M03"
       ]
+    },
+    {
+      "path": "references/process/ANTI_YES_MAN.md",
+      "cataloged": false
     },
     {
       "path": "references/solo/SOLO_ARCHITECTURE_GUIDE.md",
@@ -1087,6 +1095,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/02-legal-commercial/CONTRACT_REVIEW_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/02-legal-commercial/FINANCIAL_TRACKING.md",
       "cataloged": true
     },
@@ -1356,6 +1368,10 @@
     },
     {
       "path": "templates/04-dev-execution/examples/TODO_EXAMPLE_POS_RETAIL.md",
+      "cataloged": true
+    },
+    {
+      "path": "templates/04-dev-execution/expo/README.md",
       "cataloged": true
     },
     {
