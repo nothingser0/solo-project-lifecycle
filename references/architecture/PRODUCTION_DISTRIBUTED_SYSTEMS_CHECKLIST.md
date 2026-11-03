@@ -1,6 +1,6 @@
 # Production Distributed Systems Checklist (The "Vibe Coder" Reality Check)
 
-> **Purpose**: A pragmatic production checklist covering 41 distributed systems, database, concurrency, and backend infrastructure realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)** and **Module 10 (Production Deployment)**, filtered by project scale.
+> **Purpose**: A pragmatic production checklist covering 59 distributed systems, database, concurrency, runtime, release, and observability realities that pure prompt-based (vibe) coding typically misses. Use during **Module 05 (Architecture)** and **Module 10 (Production Deployment)**, filtered by project scale.
 
 ---
 
@@ -69,9 +69,39 @@
 
 ---
 
+## 42–59: Runtime, Scaling, Release & Observability
+
+### 42–45: Runtime & Flow Control
+42. **Garbage Collection**: Know your GC (V8 young/old gen, JVM G1/ZGC, Go concurrent tri-color). Long pauses come from heap growth and allocation churn, not from GC itself. Tune heap limits before tuning GC flags.
+43. **Thread Safety**: Shared mutable state across threads/coroutines is the bug source. Prefer immutability, per-request state, and atomic ops. In Node/Python-async the danger is interleaved `await` on shared objects, not real parallelism.
+44. **Backpressure**: A fast producer and slow consumer ends in unbounded memory. Bound queues, reject or shed load, and propagate pressure upstream (streams `highWaterMark`, 429 on overload).
+45. **Autoscaling**: Scale on a signal that leads load (queue depth, CPU, RPS per pod), not on lagging ones. Always set min/max and a stabilization window, or you get thrash scaling up and down every minute.
+
+### 46–50: Scaling & Content Delivery
+46. **Horizontal Scaling**: Add instances. Requires stateless app, externalized sessions, shared storage. This is the default for web tiers.
+47. **Vertical Scaling**: Bigger machine. Simplest and often cheapest at small scale; hard ceiling and single point of failure. Start vertical, go horizontal when you hit the ceiling.
+48. **CDN**: Static assets and cacheable responses served from edge PoPs. Requires correct `Cache-Control`, immutable hashed filenames, and purge capability. Without cache headers a CDN does nothing.
+49. **Edge Caching**: Cache at the request boundary (CDN, Next.js ISR, Cloudflare KV). Define per-route policy: `s-maxage`, `stale-while-revalidate`. Personalized responses must be `private, no-store`.
+50. **Cache Invalidation**: The hard part. Use versioned keys, short TTLs plus explicit purge on write, or write-through. "There are only two hard things in CS" — stale data is a correctness bug, not a performance detail.
+
+### 51–55: Release Engineering
+51. **Feature Flags**: Decouple deploy from release. Every flag needs an owner and an expiry date; unremoved flags become permanent dead branches. Kill switches are the same mechanism used in reverse.
+52. **Blue-Green Deployment**: Two identical environments, switch traffic at the router. Instant rollback, double infrastructure cost during switch. Needs DB migration compatibility both ways.
+53. **Canary Releases**: Route a small percentage to the new version, watch error rate and latency, then ramp. Needs real metrics and automated abort, otherwise it is just a slow full rollout.
+54. **Rolling Deployments**: Replace instances incrementally. Zero extra infra, but mixed versions run simultaneously — API and schema changes must be backward compatible for at least one release.
+55. **Rollbacks**: Must be tested, not assumed. Keep previous artifact, ensure migrations are reversible or expand-contract, and know the exact command. An untested rollback is a rumor.
+
+### 56–59: Health & Observability
+56. **Health Checks**: An endpoint that actually verifies critical dependencies (DB reachable, migrations applied), not a hardcoded `200 OK`. Keep it cheap and unauthenticated internally.
+57. **Liveness & Readiness Probes**: Liveness = "restart me" (process deadlocked); readiness = "send me traffic" (dependencies OK, warm). Conflating them causes restart loops under load. Startup probes for slow boots.
+58. **Monitoring**: Metrics (RED: rate, errors, duration; USE: utilization, saturation, errors) plus alerting on symptoms users feel. Dashboards without alerts are decoration.
+59. **Logging**: Structured JSON, correlation/request ID on every line, no secrets or PII, levels that mean something. Logs answer "what happened to this one request"; metrics answer "is it broken for everyone".
+
+---
+
 ## Scale Enforcement (Anti-Overkill Rule)
 
-- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene. Skip #8, #9, #18, #19, #30.
-- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy.
-- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election for singleton jobs.
-- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem.
+- **Small / MVP (1–2 weeks)**: #1 Rate Limiting, #2 Caching, #4 Reverse Proxy, #6 CI/CD, #7 Docker, #11–#14 Timeouts/Retries/Backoff/Idempotency, #21 Cron guards, #25–#28 Indexing/Query/N+1/Pooling, #39–#41 Race/Deadlock/Leak hygiene, #50 Cache Invalidation, #55 Rollbacks, #56–#59 Health/Monitoring/Logging. Skip #8, #9, #18, #19, #30.
+- **Medium / Solo SaaS (2–4 weeks)**: Add #15 Message Queues, #16 Pub/Sub, #20 DLQ, #22–#24 realtime transport choice, #29 Read Replicas, #35 Eventual Consistency, #36–#38 locking strategy, #42–#45 GC/thread/backpressure/autoscaling, #48 CDN, #51 Feature Flags, #54 Rolling Deploys, #57 Probes.
+- **Large (1–3 months)**: Add #10 Circuit Breakers, #17 Event-Driven Architecture, #31 Partitioning, #32 Replication with documented RPO, #33 Leader Election, #46–#47 scaling decision, #49 Edge Caching.
+- **Enterprise (3–6+ months)**: Full set including #5 API Gateway, #8 Kubernetes, #9 Service Discovery, #18 Distributed Transactions, #19 Sagas, #30 Sharding, #34 CAP statement per subsystem, #52–#53 Blue-Green/Canary.
