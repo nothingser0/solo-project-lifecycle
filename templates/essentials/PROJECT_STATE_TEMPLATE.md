@@ -24,6 +24,17 @@
   - **Shipped**: [YYYY-MM-DD | not yet]
   - **Days Since Start** is computed, never typed: a project with `Shipped` filled has a lead time; one without is accumulating debt.
 
+### 1.0 Triage — 10 minutes (advisory, every scale)
+
+The cheap half of M01's 3-Filter Triage. Small waives M01, so without this an MVP can start
+without anyone asking whether it should exist. Not gate-enforced; keep it honest.
+
+- **Triage-Problem**: [who hurts + measurable loss per week]
+- **Triage-Spreadsheet-Test**: [pass | FAIL — a spreadsheet solves 80%]
+- **Triage-One-Capability**: [the single reason to switch]
+
+`FAIL` here means stop before M04, not "proceed carefully".
+
 ### 1.1 Intake Gate (mandatory at EVERY scale)
 
 > The 9 answers from `templates/essentials/INTAKE_GATE.md`. Every module's gate fails while any of these is missing, empty, or `UNKNOWN`.
