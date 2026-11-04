@@ -49,13 +49,19 @@ INPUT: SCOPE_STATEMENT.md + valid SOW (or M03 waived for Solo SaaS)
      every primitive and composite. STOP & ACC: the human approves it before any screen assembly.
 2    Prototype screens in docs/design/screens/<role>/ (public, user, staff, admin) linking
      docs/design/shared/css/styles.css and shared/js/app.js. No #role-switcher. 100% of SITEMAP screens.
-     Visual DNA (mandatory): real CSS Grid timelines, never flat full-width rows; segmented indicators
-     stay segmented; hex taken from the benchmark, never neon or default orange; at most one primary
-     action per card; real media with correct aspect ratio and ring border, never text-only card slop;
+     Visual DNA (mandatory): real CSS Grid timelines, never flat full-width rows; segmented progress
+     indicators stay segmented dashes, never thick generic lines; hex sampled from the benchmark (never
+     neon, never default orange); at most one primary action per card, never 3-4 buttons crowding a
+     list card; real media with correct aspect ratio and ring border, never text-only card slop;
      one SVG icon set with consistent stroke and size, never emoji; circular avatars with counter
-     badges and realistic placeholders; hover/active/focus/pending feedback plus reduced-motion;
-     dialogs and in-page notices instead of alert/confirm/prompt; no SCR-/REQ-/M06-/FSD- codes in copy.
-     Every screen links the shared stylesheet and script; no per-page inline <style> drift.
+     badges and realistic placeholders; floating menus and popovers rounded-2xl + shadow-xl, a raw
+     unstyled native <select> is forbidden; tactile micro-interactions on every interactive element
+     (hover duration-150, active scale-[0.98], focus-visible ring-2, backdrop-blur modal choreography,
+     fluid progress transitions) with reduced-motion respected; dialogs and in-page notices instead of
+     alert/confirm/prompt; no SCR-/REQ-/M06-/FSD- codes in copy.
+     Every screen links the shared stylesheet and script; no per-page inline <style> drift — shared CSS,
+     never hardcoded ad-hoc styles. In M06 the approved prototypes are ported as-is: zero ad-hoc layout
+     invention during coding.
 2.5  Wireflow runbooks docs/specs/wireflows/SCENARIOS_WFxx.md per wireflow screen: baseline fixture
      with seed credentials and RBAC scopes, happy path, sad path and edge cases, UI feedback behaviour.
 3    DESIGN_SPEC.md per screen: 5-state matrix (default, loading, empty with CTA, error with retry,
