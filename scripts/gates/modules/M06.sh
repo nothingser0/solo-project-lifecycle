@@ -92,6 +92,33 @@ gate_M06() {
         GATE_FAILED=1
     fi
 
+    # DB defense (BLOCKER): an M06-DB-* task asserts the schema is real. A green unit test
+    # against a stubbed repo is not that proof, so require the probe itself in the evidence
+    # report. Scoped to M06-DB only: a UI task is covered by the route probe instead.
+    db_todo="TODO.md"
+    [ -f "$db_todo" ] || db_todo="docs/harness-root/TODO.md"
+    if [ -f "$db_todo" ] && grep -qE '^\s*-\s*\[[xX]\]\s*\**M06-DB-' "$db_todo"; then
+        ev_file="artifacts/final-evidence.md"
+        missing=""
+        for probe in 'migrate[^a-z]*down|down' 'COUNT\(' 'EXPLAIN'; do
+            if ! grep -qiE "$probe" "$ev_file" 2>/dev/null; then
+                case "$probe" in
+                    'migrate[^a-z]*down|down') missing="$missing migrate-down" ;;
+                    'COUNT\(')                 missing="$missing seeder-count" ;;
+                    'EXPLAIN')                 missing="$missing explain" ;;
+                esac
+            fi
+        done
+        if [ -n "$missing" ]; then
+            echo "  ❌ M06-DB tasks were marked '[x]' but the evidence shows no real-DB proof: missing$missing"
+            echo "     Paste the raw probes into $ev_file: migrate up->down->up, seeder COUNT(*) before/after, EXPLAIN."
+            echo "     A stubbed unit test is not setup evidence (docs/modules/06_DEVELOPMENT_EXECUTION.md 'DB defense')."
+            GATE_FAILED=1
+        else
+            echo "  ✅ M06-DB evidence shows real-DB probes (reversible, idempotent, indexed)"
+        fi
+    fi
+
     # Content verification for TODO.md (BLOCKER: tasks must actually be completed)
     target_todo="TODO.md"
     [ -f "$target_todo" ] || target_todo="docs/harness-root/TODO.md"

@@ -223,6 +223,9 @@
      Staging is transit, not a destination: copy the missing files above from docs/harness-root/
      (or templates/04-dev-execution/<stack>/) to the project root, verify, THEN delete staging.
   ❌ artifacts/final-evidence.md missing — STEP 6 requires an evidence report before completion.
+  ❌ M06-DB tasks were marked '[x]' but the evidence shows no real-DB proof: missing migrate-down seeder-count explain
+     Paste the raw probes into artifacts/final-evidence.md: migrate up->down->up, seeder COUNT(*) before/after, EXPLAIN.
+     A stubbed unit test is not setup evidence (docs/modules/06_DEVELOPMENT_EXECUTION.md 'DB defense').
   ❌ TODO.md has insufficient completed tasks: found only 1 marked '[x]' (minimum 3 completed tasks required)!
   ❌ TODO.md has 2 unfinished/blocked task(s) marked '[ ]', '[~]', or '[!]'! All sprint tasks must be completed ([x]) before closing Module 06.
   ❌ TODO.md: completed task(s) missing a human approval line in their Evidence.

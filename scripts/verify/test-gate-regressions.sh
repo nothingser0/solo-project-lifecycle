@@ -79,6 +79,34 @@ expect_intake "Small + ANSWERED intake" ALLOWED "$INTAKE_ANSWERED" M01
 expect_intake "Small + ANSWERED intake (later module)" ALLOWED "$INTAKE_ANSWERED" M05
 
 echo ""
+echo "DB defense: a ticked M06-DB task without real-DB probes must be rejected."
+# Regression: STEP 6 required a real database probe but nothing enforced it, so a DB task
+# could cite a green vitest run against a stubbed repo and pass. Scoped to M06-DB only.
+expect_db() {
+    local name="$1" want="$2" todo="$3" evidence="$4"
+    local dir="$WORK/dbdef"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/artifacts"
+    printf '%b' "$todo" > "$dir/TODO.md"
+    printf '%b' "$evidence" > "$dir/artifacts/final-evidence.md"
+    local out got
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    got="ALLOWED"
+    echo "$out" | grep -qE "no real-DB proof" && got="BLOCKED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+DB_TODO='- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0 | Approved: 2026-10-12 by S. Rahma\n'
+DB_PROBES='migrate up\nmigrate down\nmigrate up\nseeder COUNT(*) before 0 after 12\nEXPLAIN uses idx_inv_tenant\n'
+expect_db "stubbed DB task blocked"        "BLOCKED" "$DB_TODO" 'Evidence: vitest 12 passed\n'
+expect_db "probed DB task allowed"         "ALLOWED" "$DB_TODO" "$DB_PROBES"
+expect_db "partial probes blocked"         "BLOCKED" "$DB_TODO" 'migrate down ok\nEXPLAIN ok\n'
+expect_db "UI task unaffected by DB rule"  "ALLOWED" '- [x] **M06-FE-01: Page**\n  - **Evidence**: route 200 | Approved: 2026-10-12 by S. Rahma\n' 'route /invoices 200\n'
+
 echo "Per-task human approval gate: M06 must reject self-approved tasks."
 echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
