@@ -34,16 +34,23 @@ solo-project-lifecycle/
 │   ├── by-use-case/               # Per-use-case template bundles
 │   └── ui/                        # Cinematic world engine & motion tokens
 ├── references/
+│   ├── architecture/        # Architecture decision references (4)
+│   ├── ba/                  # Requirements traceability / RTM guides (2)
 │   ├── checklists/          # Feasibility criteria, module evaluation checklists
-│   ├── taxonomy/            # 1,000 system catalog and 250 software archetypes
+│   ├── design/              # Logo craft, design-system and reference-analysis guides
+│   ├── growth/              # Acquisition and lifecycle benchmarks
 │   ├── playbooks/           # Scale workflows, AI-assisted development, design patterns
 │   ├── pm/                  # Prioritization, analytics, communication, testing guides
 │   ├── pre-sales/           # Discovery call checklists, proposals, quotations
+│   ├── process/             # Anti-yes-man pushback protocol
 │   ├── solo/                # Solo architecture, patterns, standards, UI/UX guides
 │   ├── stacks/              # Framework matrix and stack quickstarts (Next.js, Laravel, Go, Django)
-│   ├── technical/           # Deep research, design systems, APM, compliance guides
-│   └── team/                # Team collaboration and agency handoff
-├── patterns/                # Indonesia-specific & engineering patterns (Payments, UU PDP, i18n/IDR, Offline-first, Solo Architecture Guardrails)
+│   ├── taxonomy/            # 1,000 system catalog and 250 software archetypes
+│   ├── team/                # Team collaboration and agency handoff
+│   └── technical/           # Deep research, design systems, APM, compliance guides
+├── patterns/                # Cited decision-rule patterns (Payments, UU PDP, i18n/IDR, Threat Modeling, Solo Guardrails) — see patterns/README.md
+├── archive/patterns/        # Superseded generic patterns (Zod, caching, N+1, auth…) kept for reference; not loaded by any phase
+├── case-studies/            # Worked examples: SaaS, e-commerce, CRM, B2B SaaS, large integration
 ├── scripts/
 │   ├── scaffold/            # Project init, TODO generation, and template picker scripts (Bash/PowerShell)
 │   ├── gates/               # Lifecycle gate validation automation
