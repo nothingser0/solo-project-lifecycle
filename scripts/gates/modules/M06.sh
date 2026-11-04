@@ -74,6 +74,24 @@ gate_M06() {
         fi
     fi
 
+    # Evidence report (BLOCKER): STEP 6 tells the agent to write artifacts/final-evidence.md
+    # and run check_evidence.py, but nothing enforced that, so "Evidence:" could be a path
+    # that never existed. The check is existence/non-stub only; it cannot prove the run.
+    if [ -f "artifacts/final-evidence.md" ]; then
+        fw_root="$(cd "${SCRIPT_DIR:-scripts/gates}/../.." && pwd)"
+        ev_out=$(python3 "$fw_root/scripts/verify/check_evidence.py" "$(pwd)" --report artifacts/final-evidence.md 2>&1)
+        if printf '%s' "$ev_out" | grep -q "✅ Evidence check passed"; then
+            echo "  ✅ Evidence report resolves (every cited path exists and is not a stub)"
+        else
+            echo "  ❌ Evidence report does not resolve:"
+            printf '%s\n' "$ev_out" | grep -E "❌" | head -5 | sed 's/^/     /'
+            GATE_FAILED=1
+        fi
+    else
+        echo "  ❌ artifacts/final-evidence.md missing — STEP 6 requires an evidence report before completion."
+        GATE_FAILED=1
+    fi
+
     # Content verification for TODO.md (BLOCKER: tasks must actually be completed)
     target_todo="TODO.md"
     [ -f "$target_todo" ] || target_todo="docs/harness-root/TODO.md"
