@@ -17,6 +17,12 @@
 - **Project Language**: [Indonesian / English]
 - **Last Active Session Date**: [YYYY-MM-DD]
 - **Session Operator**: [Solo Dev / AI Agent / Tech Lead]
+- **Momentum** (answer "am I closer to shipping?", not "is the paperwork done"):
+  - **Started**: [YYYY-MM-DD] — the day the idea was written down
+  - **First Working Screen**: [YYYY-MM-DD | not yet] — the first screen/endpoint that runs and was seen working
+  - **Ship Target**: [YYYY-MM-DD]
+  - **Shipped**: [YYYY-MM-DD | not yet]
+  - **Days Since Start** is computed, never typed: a project with `Shipped` filled has a lead time; one without is accumulating debt.
 
 ### 1.1 Intake Gate (mandatory at EVERY scale)
 

@@ -47,6 +47,13 @@ foreach ($d in $dirs) {
 
 # Universal: Project State tracker
 Copy-Item (Join-Path $templates "essentials/PROJECT_STATE_TEMPLATE.md") (Join-Path $TargetDir "docs/pm/PROJECT_STATE.md") -Force
+# Stamp the momentum start date - same field, same format as the .sh scaffold.
+$statePath = Join-Path $TargetDir "docs/pm/PROJECT_STATE.md"
+if (Test-Path $statePath) {
+    $today = Get-Date -Format "yyyy-MM-dd"
+    (Get-Content $statePath -Raw) -replace '\*\*Started\*\*: \[YYYY-MM-DD\]', "**Started**: $today" |
+        Set-Content $statePath -NoNewline
+}
 Copy-Item (Join-Path $templates "02-design/SCREEN_PROMPT_TEMPLATE.md") (Join-Path $TargetDir "docs/design/prompts/SCREEN_PROMPT_TEMPLATE.md") -Force
 Copy-Item (Join-Path $templates "02-design/references/prototype-output/css/styles.css") (Join-Path $TargetDir "docs/design/screens/css/styles.css") -Force
 Copy-Item (Join-Path $templates "02-design/references/prototype-output/js/app.js") (Join-Path $TargetDir "docs/design/screens/js/app.js") -Force
