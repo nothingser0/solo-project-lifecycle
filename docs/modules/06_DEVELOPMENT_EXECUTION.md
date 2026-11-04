@@ -64,6 +64,8 @@ Git: `main` → `staging` → `feat/*`.
 
 **STEP 8 — RUNBOOK_LOCAL.md + VERIFY_LOCAL.md** from `templates/04-dev-execution/{RUNBOOK_LOCAL,VERIFY_LOCAL}_TEMPLATE.md` (placeholders → FSD endpoints + stack commands). Smoke test 100%.
 
+> **Placement**: every artefact below has exactly one home — see `docs/WHERE_THINGS_GO.md`. Do not create a second copy in another folder.
+
 ## 2. Output Artifacts
 Source code (on `staging`) · **`RUNBOOK_LOCAL.md`** · **`VERIFY_LOCAL.md`** · **`AI_REVIEW_LOG.md`** · **`DEVELOPMENT_PROGRESS_TRACKER.md`** (`templates/04-dev-execution/`).
 

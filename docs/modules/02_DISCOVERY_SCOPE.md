@@ -77,6 +77,8 @@ Register the client inputs — sandbox keys, email credentials, master data CSV/
 
 ---
 
+> **Placement**: every artefact below has exactly one home — see `docs/WHERE_THINGS_GO.md`. Do not create a second copy in another folder.
+
 ## 3. Output Artifacts
 
 All in **`docs/pm/`**:
