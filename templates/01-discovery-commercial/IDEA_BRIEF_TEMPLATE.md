@@ -127,9 +127,18 @@ Feasibility-Score-Technical: [fill 1.0-5.0]
 Feasibility-Score-Operational: [fill 1.0-5.0]
 Feasibility-Score-Regulatory: [fill 1.0-5.0]
 Feasibility-Score-Financial: [fill 1.0-5.0]
+Feasibility-Evidence-Technical: [cited data: sample size, x/y observed, measured loss]
+Feasibility-Evidence-Operational: [epic hours vs capacity, or scope count]
+Feasibility-Evidence-Regulatory: [which regime, whether any external audit applies]
+Feasibility-Evidence-Financial: [price commitments x/y, COGS ratio of ARPU]
 Feasibility-Decision: [GO | CONDITIONAL_GO | PIVOT | KILL | PROVISIONAL_PENDING_M00]
 Mitigation: [required when the decision is CONDITIONAL_GO]
 ```
+
+> **A score of 4.0 or higher must cite a data point** on the matching `Feasibility-Evidence-*`
+> line (sample size, x/y observed, a measured loss). The gate forces an unbacked 4.0 down to 3.0,
+> which makes `GO` (average ≥ 3.5) unreachable — Confidence markers are trivial to fake, a cited
+> number is not. A score of 3.5 or below needs no citation.
 
 *(Key mapping: `Operational` = Bandwidth Feasibility, `Financial` = Commercial Feasibility. The machine validator rejects M01 if any dimension is missing, non-numeric, out of the 1.0-5.0 range, or < 3.0; if `GO` is declared with an average < 3.5 or `CONDITIONAL_GO` without a `Mitigation:` line (the scorecard's own checkbox form — e.g. `- [x] **CONDITIONAL_GO**` — is also accepted); or if the decision is `KILL`/`PIVOT`. `PROVISIONAL_PENDING_M00` is a valid halt: exit 4, no chain onward.)*
 

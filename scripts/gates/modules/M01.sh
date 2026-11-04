@@ -131,6 +131,32 @@ gate_M01() {
                 dim_sum=$(awk -v a="$dim_sum" -v b="$dim_val" 'BEGIN { print a + b }')
             done
 
+            # 3c-bis. Evidence binding (BLOCKER). A 4.0+ dimension is a claim of near-certainty,
+            #     and the scorecard is where invented numbers do the most damage: a brief with no
+            #     research at all can otherwise score 4.0 across the board and be declared GO.
+            #     Confidence markers ([x]/[!]/[?]) are not checked - they are trivial to fake;
+            #     a cited data point (N=, x/y, a measured loss) is not. A high score without one
+            #     is forced down to 3.0, which makes GO (average >= 3.5) unreachable on vibes.
+            if [ $dim_ok -eq 1 ]; then
+                for dim in Technical Operational Regulatory Financial; do
+                    dim_val=$(grep -iE "^[[:space:]]*-?[[:space:]]*\**Feasibility-Score-${dim}\**:[[:space:]]*[0-9]" "$BRIEF_FILE" 2>/dev/null \
+                        | grep -oE "[0-9]+(\.[0-9]+)?" | head -1 || echo "")
+                    [ -z "$dim_val" ] && continue
+                    if [ "$(awk -v v="$dim_val" 'BEGIN { print (v >= 4.0) ? 1 : 0 }')" -ne 1 ]; then
+                        continue
+                    fi
+                    ev_line=$(grep -iE "^[[:space:]]*-?[[:space:]]*\**Feasibility-Evidence-${dim}\**:[[:space:]]*.+" "$BRIEF_FILE" 2>/dev/null | head -1 || echo "")
+                    ev_text=$(printf '%s' "$ev_line" | sed -E 's/^[^:]*:[[:space:]]*//')
+                    if ! printf '%s' "$ev_text" | grep -qE 'N[[:space:]]*=[[:space:]]*[0-9]|[0-9]+[[:space:]]*/[[:space:]]*[0-9]+|[0-9]'; then
+                        echo "  ❌ Feasibility-Score-${dim}: ${dim_val} claims near-certainty with no cited evidence"
+                        echo "     Add 'Feasibility-Evidence-${dim}: <sample size, x/y observed, measured loss>' or lower the score to 3.0."
+                        echo "     Score forced to 3.0 (GO requires average >= 3.5, so GO is now unreachable)."
+                        dim_sum=$(awk -v a="$dim_sum" -v b="$dim_val" 'BEGIN { print a - b + 3.0 }')
+                        EVIDENCE_FORCED=1
+                    fi
+                done
+            fi
+
             if [ $dim_ok -eq 1 ]; then
                 dim_avg=$(awk -v s="$dim_sum" 'BEGIN { printf "%.2f", s / 4 }')
                 echo "  ✅ Dimension Floor verified: all 4 dimensions >= 3.0 (average $dim_avg)"

@@ -854,7 +854,7 @@ expect_m01() {
     fi
 }
 
-M01_OK='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\n'
+M01_OK='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo'
 # Declared Small, but the structured fields say 20 P0 features + sensitive data.
 STATE_LIES_SMALL='- **Scale**: small\n- Delivery: solo\n- Intake-Success-Metric: m\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 5 hrs/week x 2 weeks\n- Intake-Sensitive-Data: yes\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
 expect_m01 "Self-declared Small, 20 P0 + sensitive data (classifier wins)" FAIL "$STATE_LIES_SMALL" "$M01_OK"
@@ -863,15 +863,27 @@ expect_m01 "Self-declared Small, 20 P0 + sensitive data (classifier wins)" FAIL 
 expect_m01 "Medium intent, no PROJECT_STATE.md" FAIL "EMPTY" "$M01_OK"
 
 # PROVISIONAL is a legitimate halt state, not an undeclared decision.
-M01_PROV='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: PROVISIONAL_PENDING_M00\n'
+M01_PROV='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: PROVISIONAL_PENDING_M00\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo'
 expect_m01 "PROVISIONAL_PENDING_M00 (no final GO)" PROVISIONAL "$INTAKE_MEDIUM" "$M01_PROV"
+
+# Evidence binding: a 4.0 dimension is a claim of near-certainty. An all-4.0 brief was the
+# cheapest possible fabrication (190 bytes, no research) and it passed the gate; a cited data
+# point is what a Confidence marker cannot fake. Unbacked high scores are forced to 3.0, which
+# makes GO (average >= 3.5) unreachable.
+M01_NO_EVIDENCE='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\n'
+expect_m01 "all-4.0 brief with zero cited evidence is rejected" FAIL "$INTAKE_MEDIUM" "$M01_NO_EVIDENCE"
+M01_ONE_BACKED='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Score-Operational: 4.0\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Score-Financial: 4.0\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo\nFeasibility-Decision: GO\n'
+expect_m01 "same 4.0 scores with cited evidence pass" PASS "$INTAKE_MEDIUM" "$M01_ONE_BACKED"
+# A modest score needs no citation: evidence is only demanded where certainty is claimed.
+M01_MODEST='# Brief\n\nFeasibility-Score-Technical: 3.5\nFeasibility-Score-Operational: 3.5\nFeasibility-Score-Regulatory: 3.5\nFeasibility-Score-Financial: 3.5\nFeasibility-Decision: GO\n'
+expect_m01 "3.5 scores need no citation" PASS "$INTAKE_MEDIUM" "$M01_MODEST"
 
 # Fail-closed: average < 3.5 may not be declared GO.
 M01_LOW='# Brief\n\nFeasibility-Score-Technical: 3.5\nFeasibility-Score-Operational: 3.5\nFeasibility-Score-Regulatory: 3.0\nFeasibility-Score-Financial: 3.0\nFeasibility-Decision: GO\n'
 expect_m01 "average 3.25 declared GO (talked up)" FAIL "$INTAKE_MEDIUM" "$M01_LOW"
 
 # CONDITIONAL_GO must carry its mitigation plan, in either spelling.
-M01_COND_NOMIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\n'
+M01_COND_NOMIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo'
 expect_m01 "CONDITIONAL_GO without a Mitigation line" FAIL "$INTAKE_MEDIUM" "$M01_COND_NOMIT"
 M01_COND_MIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\n\nMitigation: defer offline sync to Phase 2\n'
 expect_m01 "CONDITIONAL_GO with a Mitigation line" PASS "$INTAKE_MEDIUM" "$M01_COND_MIT"
