@@ -24,13 +24,13 @@
 Percentages must sum to exactly 100%. Standard = **30/40/30**; **50/50** only for Small fast-track client projects.
 
 ### Step 3 — Single PIC Rule
-Record the operational PIC's name, title, email, phone, approval scope, and **1 official communication channel**. Record the Client's authorized contract signatory separately; one person may fill both roles. A backup may approve only within authority and limits delegated by the Client in writing. Record UAT and change-request authority explicitly. Review SLA: max 3 business days.
+Record the operational PIC's name, title, email, phone, approval scope and **one official communication channel**; record the authorised contract signatory separately (one person may hold both). A backup approves only inside the Client's written delegation. Record UAT and change-request authority explicitly. Review SLA: max 3 business days.
 
 ### Step 3a — Contract Baseline and Data Handling
-Before signature, reconcile every SOW deliverable, exclusion, milestone, acceptance test, dependency, and payment trigger against the approved `SCOPE_STATEMENT.md` version. Record its version/date in the SOW; any difference is either corrected or approved through a documented CR. If personal data will be processed, complete the DPA fields for data categories, purpose, duration, subprocessors, processing locations, and cross-border access/transfers; obtain professional legal review and signatures before that processing begins. Record `DPA signed` or `DPA N/A — no personal data processed` in the M03 log. Keep legal deadlines and obligations subject to counsel review for the applicable jurisdiction and contract.
+Before signature, reconcile every deliverable, exclusion, milestone, acceptance test, dependency and payment trigger against the approved `SCOPE_STATEMENT.md` version, and record that version/date in the SOW — any difference is corrected or approved through a documented CR. If personal data is processed, complete the DPA fields (categories, purpose, duration, subprocessors, processing locations, cross-border access/transfers) and get professional legal review plus signatures **before** processing starts; log `DPA signed` or `DPA N/A — no personal data processed`. Legal deadlines stay subject to counsel review for the applicable jurisdiction.
 
 ### Step 3b — Counterparty Paper Review (conditional)
-Use this workflow only when a client or vendor supplies its own contract, NDA, or material terms that differ from the project templates. If no counterparty paper is involved, record `N/A` and continue. Use `templates/02-legal-commercial/CONTRACT_REVIEW_TEMPLATE.md`; identify the document version/date, parties, your represented party, governing law if stated, and the relevant project playbook. Review material clauses against that playbook, cite the exact clause/page, and record the issue in plain language, severity, likelihood, preferred position, and a fallback. If an approved position is missing, mark it `UNKNOWN — ask owner/counsel`; do not invent a legal or commercial position. Route findings as `GREEN` (routine for human confirmation), `YELLOW` (owner and/or counsel review needed), or `RED` (hold signature and escalate). These labels only route review; they do not establish that a document is safe, legally sufficient, or approved. A qualified lawyer must review legal interpretation, enforceability, unfamiliar jurisdictions, and material high-severity findings. Only the authorized human may decide or sign.
+Only when the client or vendor supplies its own contract, NDA or terms. Otherwise record `N/A`. Use `templates/02-legal-commercial/CONTRACT_REVIEW_TEMPLATE.md`: record document version/date, parties, your represented party, governing law and the project playbook; cite clause/page for each material clause against that playbook, and state the issue in plain language with severity, likelihood, preferred position and fallback. Missing approved position → `UNKNOWN — ask owner/counsel`; never invent a legal position. Route findings `GREEN` (routine, human confirms) / `YELLOW` (owner and/or counsel) / `RED` (hold signature, escalate) — the label routes review, it does not certify the document. A qualified lawyer must review legal interpretation; the agent's review is preparation, not legal advice.
 
 ### Step 4 — Legal Protection Clauses
 1. **IP**: source code, credentials, licenses remain the Developer's property until 100% of milestones are paid.
@@ -95,15 +95,15 @@ PASSED if and only if:
 For client delivery, one of `contracts/SOW_CONTRACT.md`, `docs/pm/SOW_CONTRACT.md`, `contracts/SOW_SMB.md`, or `docs/pm/SOW_SMB.md` must exist. If none: **STOP IMMEDIATELY** — no validation, no summary, no DP prompt. Report `CRITICAL ERROR: SOW_CONTRACT.md file was not created. Module 03 FAILED - cannot proceed to Module 04.` and END TURN. (Solo SaaS / internal: skip STEP 0–1; the charter replaces the SOW and the gate is `WAIVED`.)
 
 ### STEP 1 — Content Validation & DP Confirmation
-1. No Module 04 (design) work until this [GATE] passes — DP confirmed or BYPASS recorded (contractual stop, SKILL.md rule 3).
+1. No Module 04 (design) work before this gate passes — DP confirmed or BYPASS recorded (contractual stop, SKILL.md rule 3).
 2. Checklist:
-   - [ ] Milestone structure documented (or BYPASS flag for internal)
-   - [ ] Part I (Project Charter) present with baseline dates (or WAIVED for Solo SaaS)
-   - [ ] Single PIC identified with official contact info and Back-up PIC (client projects)
-   - [ ] Limitation of Liability clause present (cap = total fees received)
-   - [ ] Project Suspension & Kill Fee clause documented (overdue >10d pause, non-refundable DP)
-   - [ ] Governing law & developer domicile jurisdiction clause locked
-3. Present summary: go-live date, milestone schedule & DP amount (or internal flag), risk boundaries.
+   - [ ] Milestone structure documented (or BYPASS flag for internal).
+   - [ ] Part I (Project Charter) present with baseline dates (or WAIVED for Solo SaaS).
+   - [ ] Single PIC with official contact info and a Back-up PIC (client projects).
+   - [ ] Limitation of Liability present, capped at fees received.
+   - [ ] Project Suspension & Kill Fee documented (overdue >10d pause, non-refundable DP).
+   - [ ] Governing law and developer-domicile jurisdiction clause locked.
+3. Present the summary: go-live date, milestone schedule and DP amount (or internal flag), risk boundaries.
 
 ### STEP 2 — Gate Verification (MANDATORY)
 
@@ -111,7 +111,7 @@ For client delivery, one of `contracts/SOW_CONTRACT.md`, `docs/pm/SOW_CONTRACT.m
 [PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M03]
 ```
 
-**MANDATORY**: Execute `./scripts/gates/validate-gate.sh M03` (or `.ps1`). Exit 1 = incomplete; fix and re-run before declaring completion. **DO NOT proceed to Module 04 until DP is confirmed** (or bypassed for Solo SaaS).
+**MANDATORY**: execute `./scripts/gates/validate-gate.sh M03` (or `.ps1`). Exit 1 = incomplete — fix and re-run. **Do not proceed to Module 04 until DP is confirmed** (or bypassed for Solo SaaS).
 
 ### STEP 3 — STOP: Down Payment Confirmation Prompt
 
@@ -129,13 +129,13 @@ Reply: BELUM / NO / NOT YET if still awaiting transfer
 (Self-initiated product / Solo SaaS: reply BYPASS to record commercial gate as WAIVED)
 ```
 
-**Payment matching logic**: CONFIRMED = "dp received", "sudah transfer", "paid", "lunas dp". WAITING = "belum", "no", "waiting". BYPASS = "bypass", "skip", "solo saas". Casual filler ("ok", "lanjut") does **NOT** count as DP confirmation.
+**Payment matching**: CONFIRMED = "dp received", "sudah transfer", "paid", "lunas dp" · WAITING = "belum", "no", "waiting" · BYPASS = "bypass", "skip", "solo saas". Casual filler ("ok", "lanjut") never counts as DP confirmation.
 
-After confirmation, log in the `SOW_CONTRACT.md` footer:
+After confirmation, log it in the `SOW_CONTRACT.md` footer:
 ```markdown
 ## Gate Confirmation Log
 - **DP Confirmed**: [YYYY-MM-DD HH:MM WIB]
 - **Confirmed By**: [User Name]
 - **Next Module**: 04 (UI/UX Design & Prototyping)
 ```
-Then wait for explicit user approval before proceeding to Module 04.
+Then wait for explicit user approval before Module 04.
