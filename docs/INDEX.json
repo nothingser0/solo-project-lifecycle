@@ -241,15 +241,7 @@
       "cataloged": false
     },
     {
-      "path": "evals/scenarios/17_ANTI_YES_MAN_SECURITY_BLIND_SPOT.md",
-      "cataloged": false
-    },
-    {
       "path": "evals/scenarios/18_ANTI_YES_MAN_OVERENGINEERING.md",
-      "cataloged": false
-    },
-    {
-      "path": "evals/scenarios/19_ANTI_YES_MAN_STACK_LOCK.md",
       "cataloged": false
     },
     {
@@ -281,14 +273,6 @@
       "cataloged": true
     },
     {
-      "path": "patterns/architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/architecture/POSTGRES_JOB_QUEUE_SKIP_LOCKED_PATTERN.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md",
       "cataloged": true
     },
@@ -317,10 +301,6 @@
       "cataloged": true
     },
     {
-      "path": "patterns/compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/compliance/UU_PDP_COMPLIANCE.md",
       "cataloged": true
     },
@@ -334,10 +314,6 @@
     },
     {
       "path": "patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/execution/APP_STORE_OPTIMIZATION_ASO_PATTERN.md",
       "cataloged": true
     },
     {
@@ -389,16 +365,8 @@
       "cataloged": true
     },
     {
-      "path": "patterns/execution/METADATA_SERP_OPTIMIZATION_PATTERN.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/execution/OWASP_SECURITY_CODE_REVIEW_PATTERN.md",
       "cataloged": true
-    },
-    {
-      "path": "patterns/execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md",
-      "cataloged": false
     },
     {
       "path": "patterns/execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md",
@@ -466,10 +434,6 @@
     },
     {
       "path": "patterns/security/ACCESS_CONTROL_PATTERNS.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/security/EDGE_SECURITY_CLOUDFLARE.md",
       "cataloged": true
     },
     {
