@@ -20,23 +20,24 @@
 
 Stacks with complete scaffold, AI harness templates in `templates/04-dev-execution/`, version gates, and verification commands:
 
-| Stack | Scaffold Command | Templates in `templates/04-dev-execution/` | Version Gate Verification | Status |
+| Stack | Scaffold Command | Templates in `templates/04-dev-execution/` | Version Gate (`check-package-versions.sh <stack>`) | Status |
 |:------|:-----------------|:-------------------------------------------|:--------------------------|:-------|
-| **Next.js** | `pnpm create next-app@latest` | `nextjs/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | npm Registry: `npm view next version` → package-lock.json | **PRODUCTION** |
-| **Laravel** | `composer create-project laravel/laravel` | `laravel/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Packagist API: `repo.packagist.org/p2/laravel/framework.json` → composer.lock | **PRODUCTION** |
-| **Django** | `django-admin startproject` | `django/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | PyPI API: `pypi.org/pypi/django/json` → requirements.txt | **PRODUCTION** |
-| **Go** | `go mod init` | `go/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Go API & Proxy: `go.dev/dl` + `proxy.golang.org` → go.mod | **PRODUCTION** |
-| **FastAPI** | `fastapi dev` / `uvicorn app.main:app` | `fastapi/` (AGENTS, ARCHITECTURE, CONVENTIONS) | PyPI API: `pypi.org/pypi/fastapi/json` → requirements.txt | **PRODUCTION** |
-| **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS, .env.example) | RubyGems API: `rubygems.org/api/v1/gems/rails.json` → Gemfile.lock | **ROADMAP / BETA** |
-| **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | npm Registry: `npm view @remix-run/dev version` → lockfile | **ROADMAP / BETA** |
-| **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | npm Registry: `npm view express version` → package-lock.json | **ROADMAP / BETA** |
-| **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | NuGet API: `api.nuget.org` → .csproj target | **ROADMAP / BETA** |
-| **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | Maven Central / `start.spring.io` → pom.xml / build.gradle | **ROADMAP / BETA** |
-| **JAMstack** | `npm create astro@latest` | `jamstack/` (AGENTS) · `astro/` (README only — scaffold pending) | npm Registry: `npm view astro version` → package-lock.json | **ROADMAP / BETA** |
-| **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | npm Registry: `npm view serverless version` → template.yaml | **ROADMAP / BETA** |
-| **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | Pub.dev API: `pub.dev/api/packages/flutter_lints` → pubspec.lock | **ROADMAP / BETA** |
-| **SvelteKit** | `npm create svelte@latest` | `sveltekit/` (AGENTS, ARCHITECTURE, CONVENTIONS, README) | npm Registry: `npm view @sveltejs/kit version` → package-lock.json | **ROADMAP / BETA** |
-| **Nuxt** | `npx nuxi@latest init` | `nuxt/` (README) | npm Registry: `npm view nuxt version` → package-lock.json | **ROADMAP / PLANNED** |
+| **Next.js** | `pnpm create next-app@latest` | `nextjs/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | npm Registry: `npm view next version` → package-lock.json → `check-package-versions.sh nextjs`| **PRODUCTION** |
+| **Laravel** | `composer create-project laravel/laravel` | `laravel/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Packagist API: `repo.packagist.org/p2/laravel/framework.json` → composer.lock → `check-package-versions.sh laravel`| **PRODUCTION** |
+| **Django** | `django-admin startproject` | `django/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | PyPI API: `pypi.org/pypi/django/json` → requirements.txt → `check-package-versions.sh django`| **PRODUCTION** |
+| **Go** | `go mod init` | `go/` (AGENTS, ARCHITECTURE, CONVENTIONS, ENV) | Go API & Proxy: `go.dev/dl` + `proxy.golang.org` → go.mod → `check-package-versions.sh go`| **PRODUCTION** |
+| **FastAPI** | `fastapi dev` / `uvicorn app.main:app` | `fastapi/` (AGENTS, ARCHITECTURE, CONVENTIONS) | PyPI API: `pypi.org/pypi/fastapi/json` → requirements.txt → `check-package-versions.sh fastapi`| **PRODUCTION** |
+| **Ruby on Rails** | `rails new project-name --database=postgresql` | `rails/` (AGENTS, ARCHITECTURE, CONVENTIONS, .env.example) | RubyGems API: `rubygems.org/api/v1/gems/rails.json` → Gemfile.lock → `check-package-versions.sh rails`| **ROADMAP / BETA** |
+| **Remix** | `npx create-remix@latest` | `remix/` (AGENTS, README) | npm Registry: `npm view @remix-run/dev version` → lockfile → `check-package-versions.sh remix`| **ROADMAP / BETA** |
+| **MERN Stack** | `express-generator` + `create-react-app`/`vite` | `mern/` (AGENTS) | npm Registry: `npm view express version` → package-lock.json → `check-package-versions.sh mern`| **ROADMAP / BETA** |
+| **ASP.NET Core** | `dotnet new webapi -n ProjectName` | `aspnet/` (AGENTS) | NuGet API: `api.nuget.org` → .csproj target → `check-package-versions.sh aspnet`| **ROADMAP / BETA** |
+| **Spring Boot** | `spring init --dependencies=web,data-jpa` | `spring/` (AGENTS) | Maven Central / `start.spring.io` → pom.xml / build.gradle → `check-package-versions.sh spring`| **ROADMAP / BETA** |
+| **JAMstack** | `npm create astro@latest` | `jamstack/` (AGENTS) · `astro/` (AGENTS, README — scaffold pending) | npm Registry: `npm view astro version` → package-lock.json → `check-package-versions.sh astro`| **ROADMAP / BETA** |
+| **Serverless** | `serverless create` / `sam init` | `serverless/` (AGENTS) | npm Registry: `npm view serverless version` → template.yaml → `check-package-versions.sh serverless`| **ROADMAP / BETA** |
+| **Expo / React Native** | `npx create-expo-app@latest` | `expo/` (README only — harness pending) | npm Registry: `npm view expo version` → package-lock.json → `check-package-versions.sh expo` | **ROADMAP / BETA** |
+| **Flutter** | `flutter create project_name` | `flutter/` (AGENTS) | Pub.dev API: `pub.dev/api/packages/flutter_lints` → pubspec.lock → `check-package-versions.sh flutter`| **ROADMAP / BETA** |
+| **SvelteKit** | `npm create svelte@latest` | `sveltekit/` (AGENTS, ARCHITECTURE, CONVENTIONS, README) | npm Registry: `npm view @sveltejs/kit version` → package-lock.json → `check-package-versions.sh sveltekit`| **ROADMAP / BETA** |
+| **Nuxt** | `npx nuxi@latest init` | `nuxt/` (README) | npm Registry: `npm view nuxt version` → package-lock.json → `check-package-versions.sh nuxt`| **ROADMAP / PLANNED** |
 
 ---
 
