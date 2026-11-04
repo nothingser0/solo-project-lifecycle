@@ -237,6 +237,18 @@
       "cataloged": false
     },
     {
+      "path": "evals/scenarios/16_ANTI_YES_MAN_SCOPE_CREEP.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/17_ANTI_YES_MAN_SECURITY_BLIND_SPOT.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/18_ANTI_YES_MAN_OVERENGINEERING.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/README.md",
       "cataloged": true
     },
