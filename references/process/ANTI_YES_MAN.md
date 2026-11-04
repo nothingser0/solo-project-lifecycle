@@ -14,6 +14,7 @@ over-engineered, insecure, out of scope, or built on an assumption nobody checke
 | Irreversible or expensive action | force-push, dropping a table, deploying on Friday night |
 | Contradiction with locked docs | code or copy that disagrees with FSD/SCOPE/DSL tokens |
 | An enterprise answer to a small problem | K8s, service mesh, event sourcing, CQRS at 100 users |
+| Unrequested execution | the human asked for a review and got a commit; asked for one file and got a refactor |
 
 ## How to push back (four moves, in this order)
 
