@@ -1,8 +1,8 @@
 ---
 name: solo-project-lifecycle
 description: Lightweight SDLC framework for solo devs and small teams, from idea to release. Use for new projects (MVP, SaaS, client work) that need phase structure, document templates, quality gates, and post-launch A/B test analysis. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
-version: 1.0.0
-updated: 2026-10-21
+version: 1.1.0
+updated: 2026-11-03
 ---
 
 # Solo Project Lifecycle
@@ -63,6 +63,23 @@ Example: write `M00 · Product Research & Discovery` and `M01 · Idea Feasibilit
 - References: `references/` (stacks, solo patterns, checklists, `references/pm/AB_TEST_ANALYSIS_GUIDE.md`) — load when entering the related phase
 - Code patterns: `patterns/` (Indonesia-specific: payment gateways, UU PDP, i18n/IDR, offline-first) — load only when the project needs that concern
 - Case studies: `case-studies/` — for timeline/budget estimates
+
+## Context budget (hard limits, not advice)
+
+The repo is ~1.2M tokens. Anything beyond these limits means you are loading the framework instead of doing the work.
+
+| What | Limit per phase |
+|---|---|
+| Module files open at once | **1** (read its sections, not its neighbours) |
+| Framework files per phase (module + template + reference) | **3**, ~10k tokens total |
+| `docs/modules/deep-dives/` | only when the module step says "see deep-dives" |
+| `references/` + `patterns/` | 2 files, and only those the phase module names |
+
+Rules:
+- Enter a phase by reading its module (`docs/modules/NN_*.md`), then the one template you are filling. Load a second reference only when a step names it.
+- Never pre-load the next phase's module, the whole `templates/` tree, or a deep-dive "for background".
+- A small path (SKILL.md + intake + 6 modules) is ~25k tokens. If your context is over ~50% used mid-phase, stop loading docs: re-read `docs/pm/PROJECT_STATE.md` and continue from there (see Core rule 6).
+- Modules M00, M01, M02, M03, M04, M05, M06, M07 and M13 currently exceed the 2k-token runbook target and are tracked as debt (runbook trimming needs an editorial pass per module). Until then, read their **steps and gate criteria** first; open `deep-dives/` only for the one section a step points at, never the whole file.
 
 **Never load**: `docs/INDEX.json`, `references/taxonomy/PROJECT_CATALOG_1000.md` — human-facing catalogs, too large for agent context.
 
