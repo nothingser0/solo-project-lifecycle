@@ -9,6 +9,8 @@
 
 **Project initialization workflow**: Create project folder, initialize git, then generate docs.
 
+> **Where does a given file go?** `docs/WHERE_THINGS_GO.md` — one page, 11 project folders + the project root, three deciding questions. Read it before writing a document into a folder you picked yourself.
+
 ```bash
 # Step 1: Create project directory
 mkdir ~/projects/my-mvp-app
@@ -18,10 +20,13 @@ cd ~/projects/my-mvp-app
 git init
 
 # Step 3: Generate specifications & planning docs
-# Framework generates:
-#   - docs/pm/ (PM documents)
-#   - docs/specs/ (PRD, FSD)
+# Framework generates (full map: docs/WHERE_THINGS_GO.md):
+#   - docs/pm/           (PM documents: state, scope, plans, reports)
+#   - docs/specs/        (PRD, FSD, SITEMAP, DESIGN_SPEC - the build contract)
+#   - docs/design/       (inspiration/, screens/<role>/, shared/)
 #   - docs/harness-root/ (9 AI control files - STAGED, not in root yet)
+#   - docs/qa/ docs/governance/ docs/security/ docs/ops/ docs/architecture/
+#   - contracts/ (only for client delivery)
 
 # Step 4: After scaffold (npx create-next-app, etc.)
 # STRICT ORDER (scaffold MUST finish first, verify BEFORE deleting):

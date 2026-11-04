@@ -15,6 +15,7 @@ solo-project-lifecycle/
 │   ├── modules/             # 14 lifecycle modules (M00-M13) + A00-A04 advisory + deep-dives/ + variants/
 │   ├── INDEX.json           # Machine-readable file manifest (two-way parity with the filesystem)
 │   ├── AUTHORITY.md         # AGENT / HUMAN-DECIDES / HUMAN-ONLY / FORBIDDEN per module
+│   ├── WHERE_THINGS_GO.md   # Where a file goes: 11 project folders + the project root + 3 deciding questions
 │   ├── QUICKSTART.md        # Rapid onboarding guide
 │   └── PACKAGE_VERSION_AUTO_CHECK.md
 ├── templates/
@@ -133,10 +134,11 @@ The `scripts/` directory provides cross-platform Bash and PowerShell utilities:
 
 ## Getting Started
 
-1. Consult `docs/QUICKSTART.md` for a 10-minute setup walkthrough.
-2. Read the stack quickstart for Next.js, Laravel, Go, or Django in `references/stacks/`; for any other stack (FastAPI, Rails, SvelteKit, …) start from `templates/04-dev-execution/<stack>/AGENTS.md` and `references/stacks/STACK_SUPPORT_MATRIX.md`.
-3. Review `references/taxonomy/SYSTEM_ARCHETYPES_250.md` to map standard features for your target system category.
-4. Scaffold project governance and harness files using the `scripts/scaffold/` utilities.
+1. Read `docs/WHERE_THINGS_GO.md` — it decides which folder every artefact belongs in (the gates enforce those paths).
+2. Consult `docs/QUICKSTART.md` for a 10-minute setup walkthrough.
+3. Read the stack quickstart for Next.js, Laravel, Go, or Django in `references/stacks/`; for any other stack (FastAPI, Rails, SvelteKit, …) start from `templates/04-dev-execution/<stack>/AGENTS.md` and `references/stacks/STACK_SUPPORT_MATRIX.md`.
+4. Review `references/taxonomy/SYSTEM_ARCHETYPES_250.md` to map standard features for your target system category.
+5. Scaffold project governance and harness files using the `scripts/scaffold/` utilities.
 
 ---
 
