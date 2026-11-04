@@ -3,6 +3,26 @@
   "note": "Machine-readable index. `cataloged: false` means no catalog README mentions the file (potential orphan).",
   "files": [
     {
+      "path": "README.md",
+      "cataloged": true
+    },
+    {
+      "path": "SKILL.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/AUTHORITY.md",
+      "cataloged": false
+    },
+    {
+      "path": "docs/QUICKSTART.md",
+      "cataloged": false
+    },
+    {
+      "path": "docs/WHERE_THINGS_GO.md",
+      "cataloged": false
+    },
+    {
       "path": "docs/modules/00_PRODUCT_DISCOVERY_STRATEGY.md",
       "cataloged": true,
       "modules": [
