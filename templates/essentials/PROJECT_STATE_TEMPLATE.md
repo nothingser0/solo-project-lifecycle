@@ -114,6 +114,13 @@
 
 ## 6. Immediate Next Action for Resuming Session
 
+> Both fields below are **gate-enforced** (M05 runs `check_handoff_state`): a session that
+> resumes with a compressed context reads this section first, so it must be true, not a
+> placeholder. Write `none` for Open-Decisions when nothing is waiting.
+
+- **Next-Action**: [one sentence — the immediate step, e.g. "Run `./scripts/gates/validate-gate.sh M02`"]
+- **Open-Decisions**: [every decision still waiting on the human, with the phase that blocks on it | none]
+
 1. **Current Step**: [e.g., Run `./scripts/gates/validate-gate.sh M02`]
 2. **Target Deliverable**: [e.g., Draft `docs/specs/SITEMAP.md` using `templates/02-design/SITEMAP_TEMPLATE.md`]
 3. **Turn-Stopping Confirmation Prompt**:

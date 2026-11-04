@@ -79,7 +79,7 @@ Rules:
 - Enter a phase by reading its module (`docs/modules/NN_*.md`), then the one template you are filling. Load a second reference only when a step names it.
 - Never pre-load the next phase's module, the whole `templates/` tree, or a deep-dive "for background".
 - A small path (SKILL.md + intake + 6 modules) is ~25k tokens. If your context is over ~50% used mid-phase, stop loading docs: re-read `docs/pm/PROJECT_STATE.md` and continue from there (see Core rule 6).
-- Modules M00, M01, M02, M03, M04, M05, M06, M07 and M13 currently exceed the 2k-token runbook target and are tracked as debt (runbook trimming needs an editorial pass per module). Until then, read their **steps and gate criteria** first; open `deep-dives/` only for the one section a step points at, never the whole file.
+- A runbook budget is **~4.5k tokens** (`scripts/verify/verify-all.sh` warns above it). A module stays under that by keeping steps + gate criteria inline and pushing extended prose into `deep-dives/`. Read the condensed step, then open only the deep-dive section it points at — never the whole file.
 
 **Never load**: `docs/INDEX.json`, `references/taxonomy/PROJECT_CATALOG_1000.md` — human-facing catalogs, too large for agent context.
 
@@ -103,7 +103,7 @@ Rules:
    - **No slop in shipped code**: zero comments (including narrating comments such as `// Fetch data`); zero `console.log`; zero `: any` / `as any`; zero `window.alert/confirm/prompt` (use design-matched Toast/Dialog); no unstyled native `<select>`.
    - **Icons & motion**: no unicode emoji in the shipped product (code, UI, or user-facing docs) — use semantic SVG icons (Lucide/Heroicons). This ban is scoped to the project's artefacts; the framework's own agent-facing docs use emoji as navigation markers.
    - **Micro-interactions**: hover, press compression, focus ring, modal fade/zoom, and progress transitions are required, not optional.
-6. **Context Amnesia & Real Verification Guard**: When context compresses or tasks span multiple turns, the agent MUST re-read `docs/pm/PROJECT_STATE.md` to prevent drifting from agreed architecture and scope. Furthermore, citing fake unit tests or unrelated mocks as evidence for UI/endpoint delivery is strictly forbidden; verification MUST directly prove the running deliverable (e.g. route HTTP probe or linter output).
+6. **Context Amnesia & Real Verification Guard**: when context compresses or a task spans turns, re-read `docs/pm/PROJECT_STATE.md` before acting — it is the handoff, not a summary. Its `Next-Action:` and `Open-Decisions:` fields are **gate-enforced** (`check_handoff_state` runs in M05): a missing or placeholder value fails the gate, so a resuming session can never restart blind. Keep them current at every stop. Furthermore, citing fake unit tests or unrelated mocks as evidence for UI/endpoint delivery is strictly forbidden; verification MUST directly prove the running deliverable (e.g. route HTTP probe or linter output).
 
 7. **Dependency & Zero Broken Build Guard**: Never assume package versions or install unvetted libraries without checking package manifests (`package.json`, `requirements.txt`, etc.). Before completing any build or module step, the agent MUST execute the local typecheck/build command and confirm zero compiler errors.
 

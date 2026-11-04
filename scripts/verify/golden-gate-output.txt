@@ -148,6 +148,8 @@
 ============================================================
 === M05: Architecture & Specs Gate Checklist ===
   ✅ Intake Gate: all 9 mandatory fields answered
+  ❌ Handoff: Next-Action missing from docs/pm/PROJECT_STATE.md — the next session cannot resume deterministically.
+  ❌ Handoff: Open-Decisions missing from docs/pm/PROJECT_STATE.md — the next session cannot resume deterministically.
   [INFO] Running mechanical scale & solo capacity classifier...
   ❌ NON-DELEGABLE OBLIGATION DECLARED: this scope cannot be discharged solo at any tier.
      Statutory compliance / legacy-core replacement needs a licensed third party — route to A00-A04 Advisory.

@@ -3,6 +3,8 @@
 > **Templates to copy**: `templates/02-design/` (SITEMAP, COMPONENT_REQUIREMENTS, DESIGN_SPEC, SCREEN_PROMPT) · `templates/02-design/references/inspiration-template/NOTES_TEMPLATE.md` (benchmark notes → `docs/design/inspiration/notes.md`)
 > **Optional refs** (do NOT preload): `references/design/LOGO_DESIGN_CRAFT_GUIDE.md` (mark types, SVG craft) · `references/design/DESIGN_TO_CODE_FIDELITY_GUIDE.md` (viewport vs capture pixels, `scripts/design/compare_png.py`) · `references/design/UI_MOTION_GUIDELINES.md` (durations, easing, reduced-motion). Copy/voice, scoring and motion-personality guides are in `references/design/` when a step needs them.
 
+> **Pushback applies here**: if the human asks for a design flourish that breaks the reference DNA, accessibility or the approved inventory, say so before building it — protocol in `references/process/ANTI_YES_MAN.md`.
+
 This module translates `SCOPE_STATEMENT.md` (+ valid SOW, or M03 waived for Solo SaaS) into 6 authoritative design artifacts that serve as the UI source of truth: `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/design/inspiration/notes.md`, `docs/harness-root/DESIGN.md` (staged; deployed to root in M06), and `docs/specs/DESIGN_SPEC.md`.
 
 In addition, it produces vector SVG assets in `assets/logo/`, an interactive reusable component showcase in `docs/design/components/index.html` (reviewed & ACC'd by the human first), and a 100% complete interactive prototype organized cleanly into role subfolders (`docs/design/screens/<role>/`) sharing global CSS and JS.

@@ -77,6 +77,41 @@ check_intake_gate() {
     [ "$bad" -eq 0 ]
 }
 
+# Handoff completeness: the gate runs after a phase, and the next session may start
+# with a compressed context. PROJECT_STATE.md is the only artefact guaranteed to
+# survive that, so the two fields carrying the decision trail must be real:
+#   Next-Action:     one sentence naming the immediate step
+#   Open-Decisions:  every decision still waiting on the human, or "none"
+# A placeholder or an empty value here is exactly how context is lost, and it is
+# checkable — so it belongs in the gate, not in an instruction to remember.
+check_handoff_state() {
+    local state="docs/pm/PROJECT_STATE.md"
+    [ -f "$state" ] || return 0 # check_intake_gate already fails on a missing file
+    local bad=0 pair field label value
+    for pair in "Next-Action|Next action" "Open-Decisions|Open decisions"; do
+        field="${pair%%|*}"
+        label="${pair##*|}"
+        value=$(get_field "$field" "$state")
+        if [ -z "$value" ]; then
+            echo "  ❌ Handoff: $field missing from $state — the next session cannot resume deterministically."
+            bad=1
+            continue
+        fi
+        # Normalise: strip wrapping brackets/quote noise, lowercase, then match the
+        # placeholder vocabulary by case (ERE bracketing here is a footgun, so don't).
+        norm=$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]' | tr -d '[]{}<>_*`' | sed 's/^[[:space:]].*[[:space:]]$//; s/^[[:space:]]*//; s/[[:space:]]*$//')
+        case "$norm" in
+            ""|"..."|tbd|todo|tba|fixme|"none set"|"n/a"|"na"|"-"|"--"|"your name"|"next action"|"open decisions"|"to be filled")
+                echo "  ❌ Handoff: $field is still a placeholder ($value) — fill it or write 'none'."
+                bad=1
+                ;;
+        esac
+    done
+    [ "$bad" -eq 0 ] && echo "  ✅ Handoff: Next-Action and Open-Decisions present"
+    [ "$bad" -ne 0 ] && GATE_FAILED=1
+    [ "$bad" -eq 0 ]
+}
+
 # Solo-capacity / High-Water-Mark classifier — runs for EVERY scale, including
 # projects that declare themselves Small. M01 used to call it from inside its
 # non-Small branch, so a self-declared "small" tier skipped the check the scale

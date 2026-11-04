@@ -1,6 +1,7 @@
 # Module 02: Discovery & Scope Definition
 
 > **Templates**: `templates/01-discovery-commercial/SCOPE_STATEMENT_TEMPLATE.md` · `USE_CASE_SPECIFICATION_TEMPLATE.md` (scope first: coffee-break test + goal level, then the 14 fields, then the 20-point check) · `STAKEHOLDER_MAP_TEMPLATE.md` (client/Medium+ → `docs/pm/STAKEHOLDER_MAP.md`) · `MEETING_NOTES_TEMPLATE.md` (→ `docs/pm/meetings/YYYY-MM-DD_<topic>.md`; decisions, action items and open questions kept separate, never fabricated) · companion registers when needed: `BUSINESS_RULES_REGISTER` · `ASSUMPTIONS_CONSTRAINTS` · `REQUIREMENTS_REGISTER` (→ `docs/pm/`, same base name).
+> **Pushback applies here**: scope creep and vanity P0s are pushed back on, not absorbed — protocol in `references/process/ANTI_YES_MAN.md`.
 > **Decision ledger**: `templates/03-governance/DECISION_LOG_TEMPLATE.md` (→ `docs/DECISION_LOG.md`) — every decision, every phase, appended and superseded, never rewritten.
 > **Optional refs** (do NOT preload): `references/checklists/MODULE_02_EVALUATION_CHECKLIST.md` · `references/ba/USE_CASE_SPECIFICATION_CRAFT_GUIDE.md` · `references/ba/REQUIREMENTS_TRACEABILITY_AND_RTM_GUIDE.md` · `references/pm/EPIC_BREAKDOWN_PATTERNS.md` (only when an epic is too large to slice) · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` (elicitation mix, ambiguity classes, review passes).
 

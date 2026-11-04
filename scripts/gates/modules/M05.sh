@@ -8,6 +8,10 @@
 gate_M05() {
     echo "=== M05: Architecture & Specs Gate Checklist ==="
     check_intake_gate || true
+    # Handoff state: M05 is the last planning phase before code, and the phase an agent
+    # resumes after the longest context gap. PROJECT_STATE must carry the next action and
+    # the decisions still waiting on the human, or the session restarts blind.
+    check_handoff_state || true
     # Solo-capacity / High-Water-Mark classifier. SKILL.md promises it "still runs"
     # even when M01/M02 are waived (the Small path skips both), but only M01/M02 ever
     # called it — a Small project could therefore reach design/architecture with an

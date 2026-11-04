@@ -4,6 +4,8 @@
 > 📖 **Optional** (do NOT preload): `references/solo/SOLO_ARCHITECTURE_GUIDE.md` · `references/stacks/STACK_SUPPORT_MATRIX.md` · `references/architecture/PRODUCTION_DISTRIBUTED_SYSTEMS_CHECKLIST.md` (111 production realities — read only the rows your scale requires; state per-subsystem CAP choice and acceptance of the skipped items) · `patterns/product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md` §6 (the five review passes) · deep dive `deep-dives/05_ARCHITECTURE_SPECS.md`
 > **Conditional patterns** (open only when the project needs it): `patterns/` holds the Indonesia-specific rails — `compliance/UU_PDP_COMPLIANCE.md`, `payments/INDONESIA_PAYMENT_GATEWAYS.md`, `offline/OFFLINE_FIRST_SYNC.md`, `security/ACCESS_CONTROL_PATTERNS.md`, `security/THREAT_MODELING_STRIDE_PATTERN.md`, `architecture/*` queue/LTREE/strangler patterns, `resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`; `references/architecture/` holds the BOTEC capacity playbook and the quality-attribute frame. Load a pattern only for the concern in front of you.
 
+> **Pushback applies here**: an enterprise stack or a duplicate-purpose library set is challenged with its concrete cost before the lock is recorded — protocol in `references/process/ANTI_YES_MAN.md`.
+
 **Inputs**: `SCOPE_STATEMENT.md` (M02) + `DESIGN_SPEC.md` (M04) + Wireflow Scenarios in `docs/specs/wireflows/` (`SCENARIOS_WFxx.md`); Small uses `PROJECT_LITE.md`.
 **Outputs**: `docs/specs/PRD.md` + `docs/specs/FSD.md` → ready for M06. Small: pinned into `PROJECT_LITE.md` §5 + human sign-off (§6).
 
