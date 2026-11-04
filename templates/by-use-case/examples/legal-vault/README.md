@@ -32,7 +32,7 @@
 ### Release & Operations (Module 07-08)
 - `HANDOVER_PROTOCOL_TEMPLATE.md` - Production infrastructure handover
 - `ROLLBACK_PLAN_TEMPLATE.md` - Emergency rollback with database restore
-- `INCIDENT_RESPONSE_TEMPLATE.md` - Example RCA for slow document queries
+- RCA for slow document queries: fill `templates/08-maintenance-ops/INCIDENT_RESPONSE_TEMPLATE.md` (the copy that used to sit here was byte-identical to it, which meant the "example" was a blank template)
 
 ## How to Use This Example
 
