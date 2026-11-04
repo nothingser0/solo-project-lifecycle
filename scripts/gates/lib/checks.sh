@@ -77,6 +77,41 @@ check_intake_gate() {
     [ "$bad" -eq 0 ]
 }
 
+# Handoff completeness: the gate runs after a phase, and the next session may start
+# with a compressed context. PROJECT_STATE.md is the only artefact guaranteed to
+# survive that, so the two fields carrying the decision trail must be real:
+#   Next-Action:     one sentence naming the immediate step
+#   Open-Decisions:  every decision still waiting on the human, or "none"
+# A placeholder or an empty value here is exactly how context is lost, and it is
+# checkable — so it belongs in the gate, not in an instruction to remember.
+check_handoff_state() {
+    local state="docs/pm/PROJECT_STATE.md"
+    [ -f "$state" ] || return 0 # check_intake_gate already fails on a missing file
+    local bad=0 pair field label value
+    for pair in "Next-Action|Next action" "Open-Decisions|Open decisions"; do
+        field="${pair%%|*}"
+        label="${pair##*|}"
+        value=$(get_field "$field" "$state")
+        if [ -z "$value" ]; then
+            echo "  ❌ Handoff: $field missing from $state — the next session cannot resume deterministically."
+            bad=1
+            continue
+        fi
+        # Normalise: strip wrapping brackets/quote noise, lowercase, then match the
+        # placeholder vocabulary by case (ERE bracketing here is a footgun, so don't).
+        norm=$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]' | tr -d '[]{}<>_*`' | sed 's/^[[:space:]].*[[:space:]]$//; s/^[[:space:]]*//; s/[[:space:]]*$//')
+        case "$norm" in
+            ""|"..."|tbd|todo|tba|fixme|"none set"|"n/a"|"na"|"-"|"--"|"your name"|"next action"|"open decisions"|"to be filled")
+                echo "  ❌ Handoff: $field is still a placeholder ($value) — fill it or write 'none'."
+                bad=1
+                ;;
+        esac
+    done
+    [ "$bad" -eq 0 ] && echo "  ✅ Handoff: Next-Action and Open-Decisions present"
+    [ "$bad" -ne 0 ] && GATE_FAILED=1
+    [ "$bad" -eq 0 ]
+}
+
 # Solo-capacity / High-Water-Mark classifier — runs for EVERY scale, including
 # projects that declare themselves Small. M01 used to call it from inside its
 # non-Small branch, so a self-declared "small" tier skipped the check the scale
@@ -126,7 +161,7 @@ check_scale_feasibility() {
         # still must match the evaluated tier (a Large project cannot keep the Small
         # path), so run the same declared-vs-evaluated comparison as the rc=0 branch.
         echo "  ⚠️  SOLO CAPACITY OVERRIDE ACCEPTED (capacity-only): proceeding under a recorded risk acceptance."
-        echo "     Non-delegable obligations (statutory compliance / legacy-core) are still hard-blocked — none were declared."
+        echo "     Formal external assurance / legacy-core obligations remain hard-blocked — none were declared."
         # The dispatcher turns this into exit 5. A later real failure (GATE_FAILED=1)
         # still wins, so the override can never paint a broken gate green.
         GATE_VERDICT="CAPACITY_OVERRIDE"
@@ -343,9 +378,9 @@ check_design_inspiration() {
     while IFS= read -r f; do
         [ -n "$f" ] || continue
         base="$(basename "$f")"
-        if grep -qiF -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
+        if grep -qi -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
         base="${base%.*}"
-        if [ -n "$base" ] && grep -qiF -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
+        if [ -n "$base" ] && grep -qi -- "$base" "$notes" 2>/dev/null; then cited=1; break; fi
     done < <(find "$dir" -maxdepth 1 -type f 2>/dev/null \
         ! -name 'notes.md' ! -name 'README.md' ! -name 'NOTES_TEMPLATE.md' ! -name '.*')
     if [ "$cited" -eq 1 ]; then
@@ -405,7 +440,7 @@ check_stack_questionnaire() {
         echo "  ❌ $target declares 'Stack Decision LOCKED:' but records only ${answered}/8 real questionnaire answers."
         [ -n "$missing" ] && echo "     Missing:${missing}"
         [ -n "$placeholder" ] && echo "     Still a template placeholder (not a human answer):${placeholder}"
-        echo "     The 8 answers are the human's input (M05 STEP 1). Ask the questions, END TURN, and record all 8 before locking."
+        echo "     Record missing architecture inputs from confirmed project artifacts or ask targeted questions before locking."
         GATE_FAILED=1
         return 1
     fi
@@ -474,12 +509,10 @@ check_handoff_strategy() {
 }
 
 # M05 security blueprint guard.
-# M05 STEP 5 makes the security blueprint a deliverable (AES-256-GCM envelope
-# encryption, Argon2id hashing, OWASP Top 10, rate limiting, UU PDP) and M06
-# inherits it as the baseline its anti-slop audit is measured against. Nothing
-# checked it, so a project could be told its architecture was signed off without
-# a single control recorded. Counted by distinct control; Medium+ also needs the
-# compliance tie-in.
+# M05 STEP 5 makes project-specific security decisions a deliverable. This
+# helper checks topic markers only; the human still judges whether the chosen
+# controls fit the data, threats, stack, and deployment model. Medium+ also needs
+# an explicit privacy/compliance decision.
 # Returns 1 (and sets GATE_FAILED) when the blueprint is absent/incomplete.
 check_security_blueprint() {
     local fsd="docs/specs/FSD.md"
@@ -494,7 +527,7 @@ check_security_blueprint() {
     [ -n "$target" ] || return 0 # missing artifact is reported by check_required
 
     local need=4 hit=0 have="" kw
-    for kw in "AES-256|AES.?256|aes-256-gcm" "Argon2id|Argon2|bcrypt|scrypt" "OWASP" "rate.?limit"; do
+    for kw in "AES-256|AES.?256|aes-256-gcm|data-at-rest encryption|data at rest" "Argon2id|Argon2|bcrypt|scrypt|password hashing" "OWASP" "rate.?limit"; do
         if grep -qiE "$kw" "$target" 2>/dev/null; then
             hit=$((hit + 1)); have="${have} $(echo "$kw" | cut -d'|' -f1)"
         fi
@@ -510,7 +543,7 @@ check_security_blueprint() {
         echo "  ✅ Security blueprint recorded in $target (${hit} controls:$have)"
     else
         echo "  ❌ $target security blueprint incomplete (${hit}/${need} controls found:$have)."
-        echo "     M05 STEP 5 requires: AES-256-GCM envelope encryption, Argon2id hashing, OWASP Top 10, rate limiting$([ "$need" -eq 5 ] && echo ", UU PDP consent/deletion/audit")."
+        echo "     M05 STEP 5 requires project decisions for encryption at rest, password hashing, OWASP-relevant risks, and rate limiting$([ "$need" -eq 5 ] && echo ", plus applicable privacy obligations")."
         GATE_FAILED=1
         return 1
     fi

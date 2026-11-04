@@ -57,12 +57,12 @@
 ### M03 — Legal / SOW / DP 〔GATE〕
 | Agent | Human only |
 |---|---|
-| SOW **draft**, payment-matching logic, CR sheet | **Contract signature** (`03:75`), **DP received in bank** (`03:75`), professional legal review (`03:5`) |
+| SOW **draft**, payment-matching logic, CR sheet | **Contract signature** (`03:30`), **DP received in bank** (`03:14`), professional legal review (`03:5`) |
 
 ### M04 — UI/UX & Prototype
 | Agent | Human decides | Human only |
 |---|---|---|
-| Sitemap, component requirements, `DESIGN.md` tokens + WCAG, screen spec, AI prompts | Prototyping workflow A–E (`04:28`), design approval | **Design Freeze sign-off** (`04:76`), real brand assets, and **Step 0.5: the reference material itself** (`04:16`) |
+| Sitemap, component requirements, `DESIGN.md` tokens + WCAG, screen spec, AI prompts | Design approval | **Design Freeze sign-off** (`04:74`), real brand assets, and **Step 0.5: the reference material itself** (`04:10`) |
 
 > ✅ **Gate-enforced** (two independent blockers): (1) Step 0.5 — `docs/design/inspiration/` must hold ≥1 file the agent could not have authored (`notes.md`, `README.md`, `NOTES_TEMPLATE.md`, dotfiles excluded), and `notes.md` must cite a reference filename that exists there; the agent may not supply the reference itself. Nothing visual (logo, components, SITEMAP, `DESIGN.md`, screen prompts) may be produced before it — folder empty means STOP AND ASK, END TURN. `validate-gate.sh M06` re-checks the same rule for projects that began before it existed. (2) The freeze must carry a named approver and a real date, with no residual `_____` blank fields.
 
@@ -87,7 +87,7 @@
 ### M07 — QA & SIT
 | Agent | Human only |
 |---|---|
-| Tests, OWASP, load test, SIT workbook, polish audit rows | **Approval to proceed** (`07:95`), **real-phone pass** (`07:63`), third-party pentest (`07:44`) |
+| Tests, OWASP, load test, SIT workbook, polish audit rows | **Approval to proceed** (`07:95`), **real-phone pass** (`07:63`), third-party pentest (`07:48`) |
 
 > 🧑 Marked `HUMAN-ONLY` inline: the real-device pass.
 
@@ -101,7 +101,7 @@
 ### M09 — UAT 〔GATE〕
 | Agent | Human only |
 |---|---|
-| Test steps, tester accounts, triage, fix bugs on `fix/*` | **Client PIC tests and signs** (`09:6`, `09:18`), Deemed Acceptance call (`09:26`), go-live authorisation (`09:77`) |
+| Test steps, tester accounts, triage, fix bugs on `fix/*` | **Client PIC tests and signs** (`09:6`, `09:18`), Deemed Acceptance call (`09:26`), go-live authorisation (`09:89`) |
 
 ### M10 — Deployment
 | Agent | Human only |
@@ -123,7 +123,7 @@
 ### M13 — Product Operations
 | Agent | Human only |
 |---|---|
-| Metrics, cohorts, RICE, experiment hypotheses | **Double Down / Pivot / Kill** (`13:38`), recruiting power users (`13:35`), NPS to real users (`13:34`) |
+| Metrics, cohorts, RICE, experiment hypotheses | **Double Down / Pivot / Kill** (`13:47`), recruiting power users (`13:38`), NPS to real users (`13:37`) |
 
 ### A00–A04 — Enterprise Advisory
 The advisory series is **never solo coding**. The agent drafts; a licensed professional and the client decide.

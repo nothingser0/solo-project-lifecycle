@@ -6,63 +6,30 @@
 
 ## PART I: UAT TEST SCENARIOS
 
-### 1. Environment Information & Test Credentials
-- **Staging Server URL**: `https://staging.[client-domain].com`
-- **Testing Window**: [Start Date] to [End Date] (Maximum 7 Business Days)
-- **Tester Credentials**:
-  - Super Admin: `tester-admin@staging.local` / `UatTest2026!`
-  - Operations Staff: `tester-staff@staging.local` / `UatTest2026!`
+### 1. Environment, Window & Decision Roles
+- **Staging URL**: [approved staging URL]
+- **Build / commit under test**: [version and commit]
+- **Testing window**: [agreed start and end dates; source agreement]
+- **Test account access**: [secure vault/process reference only; never paste credentials or secrets here]
+
+| Role | Name | Responsibility / authority | Contact / evidence reference |
+| :--- | :--- | :--- | :--- |
+| Tester(s) | [name(s)] | Execute assigned scenarios and record observed results | [reference] |
+| Client Single PIC (approver) | [name] | Accepts results and signs UAT decision | [reference] |
+| Release veto authority (if any) | [name/role or N/A with reason] | Can block release under agreed policy | [reference] |
+| Developer / triage owner | [name] | Triage, fixes, staging redeploy, and retest coordination | [reference] |
 
 ---
 
-### 2. UAT Test Scenario Worksheets
+### 2. UAT Scenario Matrix
 
-#### Scenario 1: User Login & Authentication Flow
-- **Scenario ID**: `UAT-SCN-01`
-- **Test Objective**: Verify users can log in securely and are redirected to the appropriate dashboard.
-- **Test Steps**:
-  1. Open URL `https://staging.[client-domain].com/login`.
-  2. Enter staff tester email and password.
-  3. Click **"Log In to Account"** button.
-- **Expected Result**:
-  - Page redirects to Staff Dashboard (`/dashboard`).
-  - Tester username is displayed in top-right corner.
-  - Login session persists when browser tab is closed and reopened.
-- **Client Test Result**: [ ] **PASS** / [ ] **FAIL**
-- **Tester Notes**: __________________________________________________
+Create at least one scenario for every in-scope PRD acceptance criterion. Use plain business language. Include preconditions, exact actions, observable expected results, actual result, tester, status, and evidence. Use Given/When/Then where useful. Remove out-of-scope or non-applicable scenarios with a reason; never copy example outcomes as evidence.
 
----
+| Scenario ID | Requirement / AC ID | Priority | Preconditions / test data | User steps (Given / When / Then where useful) | Expected result | Actual result | Tester | Status (PASS / FAIL / BLOCKED / N/A + reason) | Evidence / retest build |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UAT-SCN-01 | [PRD/FSD AC ID] | [P0/P1/P2] | [preconditions; synthetic account/data reference] | [business-language steps] | [observable acceptance result] | [fill after execution] | [name] | [unexecuted] | [evidence path/link] |
 
-#### Scenario 2: New Document Draft Creation
-- **Scenario ID**: `UAT-SCN-02`
-- **Test Objective**: Verify staff can fill in document template forms and the system generates an official PDF preview.
-- **Test Steps**:
-  1. From dashboard, click **"Create New Document"** button.
-  2. Select template type **"Freelance Service Agreement"**.
-  3. Fill in party names, compensation amount, and effective date fields.
-  4. Click **"Generate Document Preview"** button.
-- **Expected Result**:
-  - Document PDF preview is displayed on browser screen within < 5 seconds.
-  - Form data entered is accurately rendered within document clauses.
-  - Document status is recorded as `DRAFT`.
-- **Client Test Result**: [ ] **PASS** / [ ] **FAIL**
-- **Tester Notes**: __________________________________________________
-
----
-
-#### Scenario 3: Digital Signature & Document Locking
-- **Scenario ID**: `UAT-SCN-03`
-- **Test Objective**: Verify signers can sign documents via public links and documents are locked against modifications.
-- **Test Steps**:
-  1. Click **"Send Signature Link"** button to signer's email.
-  2. Open confidential link received via email.
-  3. Draw signature on digital canvas box, then click **"Save & Sign"**.
-- **Expected Result**:
-  - Successful signature confirmation screen appears.
-  - Document status on dashboard automatically transitions to `SIGNED (LOCKED)`.
-  - Final PDF document displays signature image and SHA-256 hash stamp in footer.
-- **Client Test Result**: [ ] **PASS** / [ ] **FAIL**
-- **Tester Notes**: __________________________________________________
+**Coverage summary**: [in-scope AC count] · [mapped to scenario count] · [PASS] · [FAIL] · [BLOCKED] · [N/A with reason] · [untested]. Any unmapped or untested in-scope P0 criterion is a release gap requiring explicit disposition by the approver.
 
 ---
 
@@ -80,9 +47,7 @@
 
 | Bug ID | Date Reported | Module / Page | Issue Description & Steps to Reproduce | Severity (1/2/3/CR) | Remediation Status | Resolution Date | Client Retest Verification |
 | :---: | :---: | :--- | :--- | :---: | :---: | :---: | :---: |
-| **BUG-01** | [YYYY-MM-DD] | Document Form | Date of birth cannot be selected prior to year 1980 | **Severity 2** | `CLOSED` | [YYYY-MM-DD] | [x] Verified Pass |
-| **BUG-02** | [YYYY-MM-DD] | E-Sign Canvas | Clear canvas button does not reset signature strokes | **Severity 3** | `CLOSED` | [YYYY-MM-DD] | [x] Verified Pass |
-| **CR-01**  | [YYYY-MM-DD] | Notifications | Client requests SMS notification integration in addition to email | **Out-of-Scope** | `TRANSFERRED TO CR` | - | Moved to CR Sheet #02 |
+| [ID] | [date] | [module/route] | [repro steps, expected vs actual, evidence reference] | [severity/CR] | [status + owner] | [date] | [tester, retest build, result] |
 
 ---
 
@@ -105,9 +70,14 @@
 
 ---
 
-### 5. UAT Approval Sheet
+### 5. UAT Decision & Sign-Off
 
-After all test scenarios pass and Severity 1 & 2 bugs are resolved, Client Single PIC signs the UAT approval sheet:
+Record the final decision, release risks accepted, any approved punch-list items, and why the decision meets the project's release policy. `GO` requires all applicable P0 criteria to pass and no unresolved blocker; any exception needs explicit authorized approval. `NO-GO` or `PENDING` keeps production release blocked.
+
+- **Decision**: [GO / NO-GO / PENDING]
+- **Residual risks / accepted deviations**: [list with owner and mitigation, or none]
+- **Deferred punch-list items**: [IDs, owner, target date, or none]
+- **Decision rationale / release policy reference**: [text/reference]
 
 | Client Single PIC | Lead Developer |
 | :--- | :--- |

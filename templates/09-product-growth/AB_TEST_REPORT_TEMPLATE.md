@@ -128,10 +128,15 @@ Because users want to "try before they commit" and don't want to provide company
 | Variant A | [N] | [N] | 49.8% |
 | **Total** | [N] | [N] | 100% |
 
-**Data Quality Checks:**
-- ✅ Traffic split within 51/49 range (no allocation bias)
-- ✅ No bot traffic detected (reCAPTCHA filter applied)
-- ✅ No outliers removed (no users excluded)
+**Data Quality & Validity Checks:**
+- ✅ **Sample Ratio Mismatch (SRM)**: [PASSED (p = 0.75 >= 0.001) / FAILED (p < 0.001)] (Expected split 50/50 vs Observed)
+- ✅ **Test Duration**: [N] days (>= 7–14 days, covers 1–2 full weekly business cycles to eliminate seasonality)
+- ✅ **Statistical Power**: [N users / variant >= required power sample size (~1,800/var), min 100 conversions]
+- ✅ **Traffic Quality**: No bot traffic detected (reCAPTCHA/Cloudflare filter applied)
+- ✅ **Outliers**: Checked (no anomalous single-user bulk transactions skewed results)
+
+> 💡 **Automated CLI Analysis**:
+> Run `python scripts/runtime/analyze_ab_test.py -cu [N] -cc [N] -vu [N] -vc [N] --mde [X] --guardrail "Metric:Control:Variant:OK"` to generate statistical significance, SRM, confidence intervals, and decision recommendations automatically.
 
 ### Primary Metric: [Metric Name]
 
@@ -307,7 +312,20 @@ Annual impact: ~$67,500 ARR
 
 ## 8. Recommendation
 
-### Ship Variant A to 100%
+### Standard Decision Options
+
+| Outcome | Recommendation | Action |
+|---|:---:|---|
+| **Significant positive lift, no guardrail issues** | **Ship it** | Roll out variant to 100% of users, archive control code. |
+| **Significant positive lift, guardrail concerns** | **Investigate** | Understand trade-offs before shipping; resolve secondary friction. |
+| **Not significant, positive trend, underpowered** | **Extend the test** | Continue running until sample size reaches power target (max 30 days). |
+| **Not significant, flat / inconclusive, powered** | **Stop the test** | Kill variant, clean up flag, refocus on higher-impact RICE items. |
+| **Significant negative lift** | **Don't ship** | Immediately revert to Control via kill switch, conduct post-mortem. |
+| **SRM detected ($p_{SRM} < 0.001$)** | **Stop & Invalidate** | Halt test; traffic allocation was corrupted; data cannot be trusted. |
+
+---
+
+### Selected Recommendation: **[Ship Variant A to 100% / Investigate / Extend / Stop / Don't Ship]**
 
 **Rationale:**
 1. Clear statistical win (+23% lift, p<0.01)

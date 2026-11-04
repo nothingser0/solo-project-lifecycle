@@ -30,7 +30,7 @@ When orchestrating or prompting AI coding agents (Claude Code, Cursor, Codex, Op
 
 When generating frontend UI components or design tokens, coding agents must actively avoid hallmark "AI slop" styling:
 1. **No Purple-Blue Gradients**: Do not default to `bg-gradient-to-r from-blue-600 to-purple-600` for hero sections, headers, or action buttons.
-2. **No Emoji Feature Cards**: Do not place random emojis (🚀, 💡, ⚡) inside feature card headers. Use real SVG icons (Lucide / Radix) with semantic meaning.
+2. **Never Use Emoticons / Emojis (Use Icons Only)**: Do not use emoticons or raw OS emojis anywhere in UI components, headers, or feature cards (🚀, 💡, ⚡, ⚙️). Always use standardized, semantic SVG icons (Lucide / Radix / Heroicons).
 3. **No Colored Left-Border Accent Cards**: Avoid generic `border-l-4 border-indigo-500` card styling on white surfaces. Use subtle borders (`border-slate-200 dark:border-slate-800`) or tonal elevations.
 4. **Contrast Strictness**: All text must achieve WCAG AA contrast ($\ge 4.5:1$ for body text, $\ge 3:1$ for large text and UI controls). Differentiate status colors by lightness/saturation, not hue alone (accessible for colorblindness).
 

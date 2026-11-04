@@ -203,6 +203,29 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 
 **Gate-enforced fields** (`validate-gate.sh M04` fails without these — the AI agent may not fill them in):
 
+### Visual Benchmark Side-by-Side Review Checklist (MANDATORY BEFORE SIGN-OFF):
+- [ ] **Spatial & Grid Layout**: Viewport width, multi-column arrangement, and spacing densities match `docs/design/inspiration/<benchmark>`.
+- [ ] **Component Anatomy & Indicators**: Progress indicators preserve benchmark style (e.g. segmented pill dashes vs generic flat bar); card radii and shadows match.
+- [ ] **Color Calibration & Tone Balance**: Exact HEX tokens matched from benchmark; zero uncalibrated neon hues (`#FF5722` / raw orange).
+- [ ] **Schedule / Timeline Architecture**: Real column-aligned CSS grid for calendars/Gantt charts; zero fake full-width table rows.
+- [ ] **Action Density & Calmness**: Minimalist triggers; no button-crowded list cards.
+- [ ] **Task Completion & Trust**: Main action and next step are clear; errors explain recovery; validate core tasks with keyboard and assistive technology as applicable.
+- [ ] **Human In-Browser Review**: Human user opened `docs/design/screens/index.html` in browser and directly compared side-by-side with the reference image.
+
+Rate each dimension 0 (missing or blocking), 1 (partial), or 2 (clear and supported by evidence). Use ratings to find weak areas; any blocking issue still needs resolution and the human approver makes the final decision.
+
+| Review dimension | Rating (0–2) | Evidence / issue / disposition |
+|---|---:|---|
+| Visual hierarchy and reference fidelity | | |
+| Component and design-token consistency | | |
+| Accessibility and responsive behavior | | |
+| Core task completion and feedback/recovery | | |
+| Trust and content clarity | | |
+
+Optional browser check: if an interactive browser tool is available, check each P0 flow at mobile and desktop widths, including one important error/recovery state; inspect console errors, fix observed issues, and record anything not checked. Do not add a browser dependency solely for this check.
+
+For landing, signup, onboarding, or paywall flows with an explicit conversion goal, record offer clarity, user effort/friction, trust cues, and recovery from hesitation. Use discovery evidence and avoid manipulative patterns. Otherwise mark `N/A`.
+
 - Approved by: [name of Client PIC or the human user — never the AI agent]
 - Approved on: [YYYY-MM-DD]
 
@@ -231,7 +254,7 @@ By signing this document, the Project Lead / Client PIC formally confirms that a
 ## Machine Validation Summary (M04 Gate)
 
 ```text
-Prototyping-Workflow: [A|B]
+Prototyping: Interactive Code Prototype
 ```
 
-*(A = AI Prototype Code via v0/Bolt/Lovable exported to `docs/design/screens/`. B = Design Tool / Figma export into `docs/design/screens/`. Visual preview is mandatory to eliminate AI slop.)*
+*(Interactive HTML/code prototype in `docs/design/screens/` is mandatory to eliminate AI slop. All prototype screens must use the Modular & Reusable Architecture, linking to shared `css/styles.css` and `js/app.js` to ensure consistent navbar, typography, buttons, badges, and card sizing across every screen in SITEMAP.md).*

@@ -196,7 +196,7 @@
 
 > ⛔ **BLOKIR KERAS — tidak bisa di-override**:
 > Proyek dengan **>25 fitur P0**, atau **kewajiban non-delegable apa pun pada skala berapa pun** —
-> regulasi statutori (OJK/BI/UU PDP/ISO 27001), penggantian core legacy, atau multi-cabang dengan
+> kewajiban audit/sertifikasi eksternal formal atau persetujuan sektoral non-delegable, penggantian core legacy, atau multi-cabang dengan
 > mutasi finansial massal — **tidak dapat diselesaikan solo**, karena hasilnya adalah sertifikat
 > audit atau keterlibatan vendor berlisensi yang tak bisa diterbitkan sendiri.
 > Berkas risk-acceptance **tidak membuka** blokir ini: tanda tangan tidak bisa memproduksi auditor.

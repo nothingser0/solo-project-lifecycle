@@ -74,6 +74,13 @@ npm run test:smoke
    - NEVER output `// ... rest of the code` or `/* existing code remains unchanged */` when generating or editing files. Always preserve existing functionality and produce complete, valid source code without truncating needed functions.
 1d. **Native Platform First (Zero Redundant Dependencies)**:
    - Prefer native platform APIs (`fetch`, Web APIs, standard libraries, CSS-native solutions) over pulling in redundant dependencies (e.g. avoid adding `lodash` or `axios` when native standard library suffices). Never install an external package for what 3 lines of native code can accomplish.
+1e. **Zero Tech Stack Leaks in User-Facing UI**:
+   - Customer-facing copy, badges, placeholders, and tooltips must speak purely in the user's business domain (e.g. "Kelola kamar, sewa, dan pengeluaran kos").
+   - Leaking internal developer tech stack names (e.g. `Supabase Auth`, `Next.js 16`, `PostgreSQL`, `Tailwind CSS`, `Prisma ORM`, `JWT session`) into end-user UI screens is STRICTLY FORBIDDEN. End users do not care and should never see the underlying developer plumbing.
+1f. **Zero Redundant / Obvious Comments (Clean Code Standard)**:
+   - Source code must be self-documenting through clear, domain-expressive naming.
+   - Writing comments that merely restate syntax or describe the obvious (e.g. `// Render navbar header`, `// Loop through items`, `// Return true if valid`, `// Set loading state`, `// Catch error and log`) is STRICTLY PROHIBITED.
+   - Comments are permitted ONLY when explaining non-obvious domain logic, mathematical formulas (e.g. electricity delta tariffs), statutory regulatory citations (e.g. UU PPN/UU PDP), or known workarounds for upstream library defects.
 2. **Context Integrity**:
    - BEFORE creating new API endpoints or new database tables, you MUST read `ARCHITECTURE.md` and `CONTEXT.md`.
    - BEFORE creating or editing UI component styling, you MUST read `DESIGN.md`.

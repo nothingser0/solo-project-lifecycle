@@ -24,7 +24,13 @@
 Percentages must sum to exactly 100%. Standard = **30/40/30**; **50/50** only for Small fast-track client projects.
 
 ### Step 3 — Single PIC Rule
-Document name, title, email, phone of **1 absolute decision maker** client-side, along with a **designated Back-up PIC** (escalation path if Primary PIC is uncontactable for ≥5 business days) and **1 official communication channel** (email/project tool). All instructions, approvals, UAT results, and signatures are valid only from that PIC via that channel. Clause: *"Verbal instructions, casual chat messages, or written requests from client staff outside the designated Single PIC and official channel hold no binding authority over the developer."* Review SLA: max 3 business days.
+Record the operational PIC's name, title, email, phone, approval scope and **one official communication channel**; record the authorised contract signatory separately (one person may hold both). A backup approves only inside the Client's written delegation. Record UAT and change-request authority explicitly. Review SLA: max 3 business days.
+
+### Step 3a — Contract Baseline and Data Handling
+Before signature, reconcile every deliverable, exclusion, milestone, acceptance test, dependency and payment trigger against the approved `SCOPE_STATEMENT.md` version, and record that version/date in the SOW — any difference is corrected or approved through a documented CR. If personal data is processed, complete the DPA fields (categories, purpose, duration, subprocessors, processing locations, cross-border access/transfers) and get professional legal review plus signatures **before** processing starts; log `DPA signed` or `DPA N/A — no personal data processed`. Legal deadlines stay subject to counsel review for the applicable jurisdiction.
+
+### Step 3b — Counterparty Paper Review (conditional)
+Only when the client or vendor supplies its own contract, NDA or terms. Otherwise record `N/A`. Use `templates/02-legal-commercial/CONTRACT_REVIEW_TEMPLATE.md`: record document version/date, parties, your represented party, governing law and the project playbook; cite clause/page for each material clause against that playbook, and state the issue in plain language with severity, likelihood, preferred position and fallback. Missing approved position → `UNKNOWN — ask owner/counsel`; never invent a legal position. Route findings `GREEN` (routine, human confirms) / `YELLOW` (owner and/or counsel) / `RED` (hold signature, escalate) — the label routes review, it does not certify the document. A qualified lawyer must review legal interpretation; the agent's review is preparation, not legal advice.
 
 ### Step 4 — Legal Protection Clauses
 1. **IP**: source code, credentials, licenses remain the Developer's property until 100% of milestones are paid.
@@ -51,7 +57,7 @@ Document name, title, email, phone of **1 absolute decision maker** client-side,
 
 Hierarchy on conflict: **MSA** (enduring principles) > **SOW** (deliverables, milestones, payments) > **DPA** (UU PDP roles, breach notice) > **NDA**.
 
-**Enterprise routing**: >25 P0 features, a legacy-core replacement, or any statutory compliance (OJK/BI/UU PDP/ISO) is **non-delegable** — that exceeds solo capacity at any size, so do NOT sign a development SOW; use the Consulting Agreement under Phase A00 with the Risk Assessment Matrix and RACI Matrix approved. A **Large (16–25 P0) scope with no non-delegable obligation** may stay solo and still take a development SOW, provided `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md` is signed and the classifier returns exit 5.
+**Enterprise routing**: >25 P0 features, a legacy-core replacement, or an explicit formal external audit/certification/sector approval obligation that cannot be discharged by the developer is **non-delegable**. Baseline privacy duties, including UU PDP, still require appropriate delivery safeguards but are not by themselves a reason to route to A00. A **Large (16–25 P0) scope with no non-delegable obligation** may stay solo and still take a development SOW, provided `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md` is signed and the classifier returns exit 5.
 
 ---
 
@@ -65,6 +71,7 @@ Written to **`contracts/`** or **`docs/pm/`** (gate accepts either path per file
 4. **`change-requests/CR-*.md`** + **`FINANCIAL_TRACKING.md`** — one CR sheet per approved change; burn tracked from day one.
 5. **`SOLO_SAAS_CHARTER.md`** — Solo SaaS / internal only, in place of the SOW.
 6. **`PROJECT_STATE.md`** — updated `M03` row + the `Delivery` field that routes the gate.
+7. **`CONTRACT_REVIEW_<document>.md`** — conditional review worksheet when counterparty paper is reviewed; record findings and their disposition, including counsel escalation where needed.
 
 ---
 
@@ -74,6 +81,10 @@ PASSED if and only if:
 - [ ] `docs/pm/SOW_CONTRACT.md` (including Part I: Project Charter) approved
 - [ ] Contract signed by Client and Developer (or approved internally for solo products)
 - [ ] Client Single PIC officially designated
+- [ ] Operational approval authority and authorized contract signatory recorded; any backup delegation documented
+- [ ] SOW scope and acceptance terms reconciled against the approved scope version
+- [ ] DPA signed before personal-data processing, or explicit `N/A` recorded when none is processed
+- [ ] If counterparty paper was reviewed, findings and disposition are recorded; review status does not replace the signed agreement or required legal review
 - [ ] **Down Payment (Milestone 1) received and confirmed in the Developer's bank account** (or self-budget allocated for internal projects)
 
 ---
@@ -84,15 +95,15 @@ PASSED if and only if:
 For client delivery, one of `contracts/SOW_CONTRACT.md`, `docs/pm/SOW_CONTRACT.md`, `contracts/SOW_SMB.md`, or `docs/pm/SOW_SMB.md` must exist. If none: **STOP IMMEDIATELY** — no validation, no summary, no DP prompt. Report `CRITICAL ERROR: SOW_CONTRACT.md file was not created. Module 03 FAILED - cannot proceed to Module 04.` and END TURN. (Solo SaaS / internal: skip STEP 0–1; the charter replaces the SOW and the gate is `WAIVED`.)
 
 ### STEP 1 — Content Validation & DP Confirmation
-1. No Module 04 (design) work until this [GATE] passes — DP confirmed or BYPASS recorded (contractual stop, SKILL.md rule 3).
+1. No Module 04 (design) work before this gate passes — DP confirmed or BYPASS recorded (contractual stop, SKILL.md rule 3).
 2. Checklist:
-   - [ ] Milestone structure documented (or BYPASS flag for internal)
-   - [ ] Part I (Project Charter) present with baseline dates (or WAIVED for Solo SaaS)
-   - [ ] Single PIC identified with official contact info and Back-up PIC (client projects)
-   - [ ] Limitation of Liability clause present (cap = total fees received)
-   - [ ] Project Suspension & Kill Fee clause documented (overdue >10d pause, non-refundable DP)
-   - [ ] Governing law & developer domicile jurisdiction clause locked
-3. Present summary: go-live date, milestone schedule & DP amount (or internal flag), risk boundaries.
+   - [ ] Milestone structure documented (or BYPASS flag for internal).
+   - [ ] Part I (Project Charter) present with baseline dates (or WAIVED for Solo SaaS).
+   - [ ] Single PIC with official contact info and a Back-up PIC (client projects).
+   - [ ] Limitation of Liability present, capped at fees received.
+   - [ ] Project Suspension & Kill Fee documented (overdue >10d pause, non-refundable DP).
+   - [ ] Governing law and developer-domicile jurisdiction clause locked.
+3. Present the summary: go-live date, milestone schedule and DP amount (or internal flag), risk boundaries.
 
 ### STEP 2 — Gate Verification (MANDATORY)
 
@@ -100,7 +111,7 @@ For client delivery, one of `contracts/SOW_CONTRACT.md`, `docs/pm/SOW_CONTRACT.m
 [PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M03]
 ```
 
-**MANDATORY**: Execute `./scripts/gates/validate-gate.sh M03` (or `.ps1`). Exit 1 = incomplete; fix and re-run before declaring completion. **DO NOT proceed to Module 04 until DP is confirmed** (or bypassed for Solo SaaS).
+**MANDATORY**: execute `./scripts/gates/validate-gate.sh M03` (or `.ps1`). Exit 1 = incomplete — fix and re-run. **Do not proceed to Module 04 until DP is confirmed** (or bypassed for Solo SaaS).
 
 ### STEP 3 — STOP: Down Payment Confirmation Prompt
 
@@ -118,13 +129,13 @@ Reply: BELUM / NO / NOT YET if still awaiting transfer
 (Self-initiated product / Solo SaaS: reply BYPASS to record commercial gate as WAIVED)
 ```
 
-**Payment matching logic**: CONFIRMED = "dp received", "sudah transfer", "paid", "lunas dp". WAITING = "belum", "no", "waiting". BYPASS = "bypass", "skip", "solo saas". Casual filler ("ok", "lanjut") does **NOT** count as DP confirmation.
+**Payment matching**: CONFIRMED = "dp received", "sudah transfer", "paid", "lunas dp" · WAITING = "belum", "no", "waiting" · BYPASS = "bypass", "skip", "solo saas". Casual filler ("ok", "lanjut") never counts as DP confirmation.
 
-After confirmation, log in the `SOW_CONTRACT.md` footer:
+After confirmation, log it in the `SOW_CONTRACT.md` footer:
 ```markdown
 ## Gate Confirmation Log
 - **DP Confirmed**: [YYYY-MM-DD HH:MM WIB]
 - **Confirmed By**: [User Name]
 - **Next Module**: 04 (UI/UX Design & Prototyping)
 ```
-Then wait for explicit user approval before proceeding to Module 04.
+Then wait for explicit user approval before Module 04.

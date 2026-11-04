@@ -138,7 +138,7 @@ Quantitative Research (Survey):
 | ... | | | | | | |
 | U10+ | | | | | | |
 
-**Interview Transcripts**: [Link to Google Drive/Notion folder with full transcripts, or anonymized summary in appendix]
+**Interview Source Location**: [Restricted link for authorized reviewers, or anonymized notes in appendix; do not include direct identifiers in this report]
 
 ---
 
@@ -197,6 +197,16 @@ Quantitative Research (Survey):
 4. **Job #4**: [...]
 
 5. **Job #5**: [...]
+
+### 4.3a Feature Requests (only when participants raised them)
+
+Treat a request as evidence of a possible need, not as a requirement or a ready-made solution. Link it to the underlying job/opportunity and preserve the source locator.
+
+| Request/theme ID | Exact request or faithful paraphrase | Interview ID + timestamp/note locator | Underlying job/outcome | Current workaround / satisfaction | Other affected users | Strategic fit / effort / uncertainty | Next test or decision |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [ID or N/A] | [request] | [INT-xx + locator] | [need/outcome] | [current alternative] | [count/cohort/unknown] | [evidence, not unsupported score] | [test / defer / reject] |
+
+Group duplicate requests into opportunities; consider at least one alternative approach before selecting a feature. Carry high-impact uncertainty into the shared assumption ledger and validate it before M02 turns a candidate into a requirement. If no participant raised a feature request, state `N/A — none observed`.
 
 ---
 

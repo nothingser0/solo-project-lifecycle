@@ -9,7 +9,7 @@
 ## 1. Project Metadata & Problem Pitch
 
 - **Project Codename**: [e.g., MiniPOS / KasirKilat]
-- **Target User**: [e.g., Micro-retail store owners with 1–3 branches in metropolitan areas]
+- **Provisional Target Segment**: [e.g., Micro-retail store owners with 1–3 branches in metropolitan areas; confirm the beachhead choice in Section 6]
 - **Core Pain**: [e.g., Physical stock discrepancies vs Excel records averaging Rp 1–3M/month]
 - **Proposed Solution**: [e.g., Offline-first cashier & inventory app syncing automatically to Cloud/WhatsApp]
 - **Proposed Price Point**: Rp [X] / month
@@ -34,11 +34,11 @@
 
 *Benchmark against 2 direct competitors and 1 free/government substitute:*
 
-| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Unique Differentiator We Offer |
-|:--------------|:-----|:-------------|:----------|:--------------------|:-------------------------------|
-| [Competitor A] | Direct SaaS | Rp [X]/mo | Strong brand, rich feature set | Complex UI, demands 100% stable internet | Lightweight, 100% offline-first |
-| [Competitor B] | Direct SaaS | Rp [Y]/mo | Affordable | No multi-branch or blind count support | Multi-branch with blind stock audit |
-| **SIAPIK / Excel** | Free / Govt | Rp 0 | Zero cost, flexible | Manual entry, formula corruption risk | Automated receipts & instant cloud sync |
+| Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Evidence URL + checked date | Unique Differentiator We Offer |
+|:--------------|:-----|:-------------|:----------|:--------------------|:-------------------------|:-------------------------------|
+| [Competitor A] | Direct SaaS | Rp [X]/mo | Strong brand, rich feature set | Complex UI, demands 100% stable internet | [URL — YYYY-MM-DD] | Lightweight, 100% offline-first |
+| [Competitor B] | Direct SaaS | Rp [Y]/mo | Affordable | No multi-branch or blind count support | [URL — YYYY-MM-DD] | Multi-branch with blind stock audit |
+| **SIAPIK / Excel** | Free / Govt | Rp 0 | Zero cost, flexible | Manual entry, formula corruption risk | [URL — YYYY-MM-DD] | Automated receipts & instant cloud sync |
 
 ---
 
@@ -55,6 +55,8 @@
 > 1. Verbatim quote detailing measurable past pain (not hypothetical interest).
 > 2. Specific stated Willingness-to-Pay (WTP) in nominal currency (e.g. "Rp 100k/mo"), not vague approval.
 > State must explicitly be marked as `✅ Real` for verified customer conversations or `⏳ Pending` for planned ones.
+>
+> **Summary integrity**: Interview transcripts and AI summaries do not replace source evidence. Verify any quote, number, or reported claim against an interview ID and timestamp/note locator. Record whether transcription or external AI processing was used and confirm the required consent/authorization first; use pseudonyms in this shared report.
 
 | Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
 |:--------------|:---------------------|:-----------------|:------------------------|:-------------------|:---------------:|
@@ -63,6 +65,16 @@
 | **INT-03** | [e.g., Boutique, 3 staff] | Commercial POS app X | Slow during offline, staff confusion | Willing to pay Rp 150k/mo if offline seamless | ⏳ Pending |
 | **INT-04** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
 | **INT-05** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
+
+If a participant asks for a feature, capture its source `INT-xx`, underlying job/outcome, and current workaround. Treat it as a discovery signal; test whether the need is shared and important before moving a solution into the MVP scope.
+
+### Opportunity Solution Tree (lite)
+
+Start from one measurable user outcome, branch into opportunities supported by interview evidence, then compare at least two plausible solutions for each priority opportunity. Link each solution to its riskiest assumption and smallest credible test before adding it to MVP scope. Use `patterns/product/SOLO_DISCOVERY_PLAYBOOK.md` for the full OST workflow; keep detailed test results in the shared assumption ledger when this page is too small.
+
+| Desired outcome (measure, baseline → target, timeframe) | Opportunity (user need + source `INT-xx`) | Candidate solutions (at least 2) | Riskiest assumption + test | Decision |
+|:--|:--|:--|:--|:--|
+| [e.g., reduce time spent reconciling stock; baseline → target by date] | [Observed need; interview/source IDs] | [A: simplest operational option; B: software option] | [Assumption; test and success signal] | [Keep testing / pursue / drop] |
 
 ---
 
@@ -100,7 +112,8 @@
 
 ## 6. Unit Economics & Solo Capacity Sanity Check
 
-- **First 100 Users Acquisition Channel**: [Define 1 repeatable low-cost organic/direct distribution channel, e.g. direct outreach to 200 niche WhatsApp/FB community admins or programmatic SEO]
+- **Beachhead Decision**: [Compare up to 3 segments using evidenced pain/urgency, willingness-to-pay signal, buyer reachability, and solo serviceability. Name the selected segment and link evidence; label unsupported judgments as assumptions.]
+- **First 100 Users Acquisition Channel**: [Name one low-cost organic/direct channel for the selected segment; state why qualified users are reachable there and the smallest first test, including its success signal.]
 - **Target ARPU**: Rp [X] / month
 - **Estimated CAC**: Rp [Y] / customer (Test ads / organic outreach time)
 - **Gross Margin Target**: ≥ 70% after infrastructure hosting and Payment Gateway processing fees

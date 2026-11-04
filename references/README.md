@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **62 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
+Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **66 files across 14 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
 
 ---
 
@@ -13,13 +13,14 @@ references/
 ├── checklists/          (4 files)  - Feasibility criteria, evaluation checklists, elicitation guides
 ├── taxonomy/            (2 files)  - 250 industry software archetypes, 1,000 project catalog
 ├── playbooks/           (2 files)  - AI-assisted development, scale workflows
-├── architecture/        (3 files)  - BOTEC sizing, quality attributes & risk, senior-architect assessment
+├── architecture/        (4 files)  - BOTEC sizing, quality attributes & risk, senior-architect assessment, production reality checklist (111 items)
 ├── ba/                  (2 files)  - Use case specification craft, requirements traceability & RTM
 ├── design/              (8 files)  - AI writing tells, content quality, motion, logo craft, design-to-code fidelity
 ├── growth/              (2 files)  - Product growth patterns
-├── pm/                 (12 files)  - Prioritization, analytics, communication, testing, tooling, stakeholder decoding
+├── pm/                 (14 files)  - Prioritization, analytics, communication, testing, tooling, stakeholder decoding, Kanban card craft, A/B test analysis
 ├── pre-sales/           (3 files)  - Discovery call checklists, proposals, quotation templates
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
+├── process/             (1 file)   - Anti-yes-man critical pushback rule
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
 ├── technical/          (12 files)  - Deep research, design systems, APM, compliance, animation, hydration policy, tooling comparison
 └── team/                (1 file)   - Team collaboration, agency handoff, multi-agent coordination
@@ -60,6 +61,7 @@ references/
 
 | File | Purpose | Referenced In |
 |---|---|---|
+| [`AB_TEST_ANALYSIS_GUIDE.md`](./pm/AB_TEST_ANALYSIS_GUIDE.md) | Statistical significance, SRM check, sample size/power, guardrail audit, decision matrix (Ship/Extend/Stop) | Module 13 |
 | [`PM_ANALYTICS_SETUP_GUIDE.md`](./pm/PM_ANALYTICS_SETUP_GUIDE.md) | Event taxonomy, funnel design, metric baselines (Mixpanel, GA4, PostHog) | Module 06 |
 | [`PM_COMMUNICATION_GUIDE.md`](./pm/PM_COMMUNICATION_GUIDE.md) | Stakeholder management, status updates, client expectation setting, meeting cadences | Module 02 |
 | [`PM_CONTINUOUS_IMPROVEMENT_GUIDE.md`](./pm/PM_CONTINUOUS_IMPROVEMENT_GUIDE.md) | Post-launch iteration loops, NPS feedback, bug triage, retrospective facilitation | Module 13 |
@@ -67,6 +69,7 @@ references/
 | [`PM_TOOLS_SETUP_GUIDE.md`](./pm/PM_TOOLS_SETUP_GUIDE.md) | Configuration guide for Linear, Jira, GitHub Projects, Notion for solo dev workflows | Module 01 |
 | [`PM_USER_TESTING_GUIDE.md`](./pm/PM_USER_TESTING_GUIDE.md) | User testing facilitation scripts, usability test plans, SUS scoring calculation | Module 04 |
 | [`INDUSTRY_TOOLS_ADAPTER.md`](./pm/INDUSTRY_TOOLS_ADAPTER.md) | Integration bridge for Notion databases, Linear/Jira CSV import, and remote Figma MCP | Module 01, 04 |
+| [`KANBAN_CARD_CRAFT_GUIDE.md`](./pm/KANBAN_CARD_CRAFT_GUIDE.md) | Reusable standard for Solo Kanban & Jira optimization: Workflow & WIP limits, field automation (Assignee/Labels/Due date), punchy scannable card structure, work-type examples | Module 02, 06 |
 
 ---
 

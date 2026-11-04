@@ -9,16 +9,27 @@
 
 ## Test Environment
 
-**URL**: https://staging.yourdomain.com  
-**Test Credentials**:
-- Admin: `admin@test.com` / `[provided separately]`
-- User: `user@test.com` / `[provided separately]`
+**URL**: [approved staging URL]
+**Build / commit**: [version and commit]
+**Test account access**: [secure vault/process reference; never paste credentials or secrets here]
 
 **Test Period**: [START DATE] to [END DATE]
+
+| Role | Name | Responsibility / authority |
+| :--- | :--- | :--- |
+| Tester(s) | [name(s)] | Execute assigned tests and record evidence |
+| Approver / Client Single PIC | [name] | Makes and signs the UAT decision |
+| Release veto authority | [name/role or N/A with reason] | Can block release under agreed policy |
 
 ---
 
 ## Critical User Flows (10-15 Test Cases)
+
+Before testing, map every in-scope P0 acceptance criterion to one or more test cases. For each case, record the requirement/AC ID, preconditions, user steps, expected and actual result, tester, status, and evidence. Adapt or remove example flows that do not apply; do not copy them as evidence. Use Given/When/Then when it makes the behavior clearer.
+
+| Test Case | Requirement / AC ID | Tester | Preconditions / test data | Status | Evidence / build |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| [TC-ID] | [PRD/FSD AC-ID] | [name] | [synthetic test data] | [untested] | [reference] |
 
 ### 1. User Registration
 
@@ -253,11 +264,9 @@
 
 ## Bug Summary
 
-| Bug ID | Severity | Test Case | Description | Status |
-|:-------|:---------|:----------|:------------|:-------|
-| 1 | S1 Critical | TC-2 | Login returns 500 error | ☐ Fixed ☐ Open |
-| 2 | S2 High | TC-4 | Form submit doesn't save | ☐ Fixed ☐ Open |
-| 3 | S3 Medium | TC-13 | Email validation too strict | ☐ Fixed ☐ Open |
+| Bug ID | Severity | Test Case / AC | Description + repro/evidence | Status / owner | Retest build + result |
+|:-------|:---------|:----------|:------------|:-------|:-------|
+| [ID] | [S1-S4 / CR] | [TC/AC ID] | [observed defect and reproduction reference] | [status / owner] | [version / result] |
 
 **Severity Levels**:
 - **S1 Critical**: Blocks major functionality, no workaround
@@ -270,19 +279,20 @@
 ## UAT Sign-Off
 
 **Test Summary**:
-- Total test cases: 15
-- Passed: _____ / 15
-- Failed: _____ / 15
-- Blocked: _____ / 15
+- In-scope acceptance criteria: _____
+- Mapped to test cases: _____
+- Passed / Failed / Blocked / Untested: _____ / _____ / _____ / _____
 
-**Critical bugs** (S1/S2): _____  
-**Must be fixed before launch**: ☐ Yes ☐ No
+**Unresolved release-blocking defects**: _____
+**Residual risks and accepted deviations (owner + mitigation)**: _____
 
-**UAT Approved**: ☐ Yes ☐ No (re-test after fixes)
+**Decision**: ☐ GO ☐ NO-GO ☐ PENDING (untested P0 or blocker means NO-GO/PENDING unless an authorized exception is recorded)
 
 **Client PIC**: ___________________________  
 **Signature**: ___________________________  
 **Date**: ___________________________
+
+**Decision rationale / approved punch-list reference**: ___________________________
 
 **Developer**: ___________________________  
 **Signature**: ___________________________  

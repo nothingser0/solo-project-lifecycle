@@ -26,6 +26,17 @@ const MANIFEST = path.join(ROOT, 'docs', 'INDEX.json');
 // Directories whose files must be fully indexed.
 const TRACKED_DIRS = ['templates', 'references', 'patterns', 'docs/modules', 'evals'];
 
+// Root-level human-facing docs: not content, but they are the entry points an agent or a
+// person reads first, so they belong in the manifest too. Enumerated explicitly rather than
+// globbing docs/* (the walk would not descend) so nothing large like INDEX.json slips in.
+const TRACKED_ROOT_DOCS = [
+  'SKILL.md',
+  'README.md',
+  'docs/AUTHORITY.md',
+  'docs/QUICKSTART.md',
+  'docs/WHERE_THINGS_GO.md',
+];
+
 // README catalogs used to derive the owning module per file.
 const CATALOGS = [
   'templates/README.md',
@@ -95,9 +106,8 @@ function parseCatalogs() {
 function buildManifest() {
   const { cataloged, modules } = parseCatalogs();
   const files = [];
-  for (const dir of TRACKED_DIRS) {
-    for (const f of walk(path.join(ROOT, dir))) files.push(f);
-  }
+  for (const dir of TRACKED_DIRS) files.push(...walk(path.join(ROOT, dir)));
+  for (const f of TRACKED_ROOT_DOCS) if (fs.existsSync(path.join(ROOT, f))) files.push(f);
   files.sort();
   return {
     generated: 'scripts/verify/index-manifest.js',
@@ -138,8 +148,14 @@ if (!manifest) {
   process.exit(1);
 }
 
-const onDisk = new Set();
-for (const dir of TRACKED_DIRS) for (const f of walk(path.join(ROOT, dir))) onDisk.add(f);
+const trackedFiles = () => {
+  const out = [];
+  for (const dir of TRACKED_DIRS) out.push(...walk(path.join(ROOT, dir)));
+  for (const f of TRACKED_ROOT_DOCS) if (fs.existsSync(path.join(ROOT, f))) out.push(f);
+  return out;
+};
+
+const onDisk = new Set(trackedFiles());
 const inManifest = new Set(manifest.files.map((f) => f.path));
 
 const missingFromManifest = [...onDisk].filter((f) => !inManifest.has(f)).sort();

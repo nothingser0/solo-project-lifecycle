@@ -13,7 +13,6 @@
 | Rupiah/WIB localization, tax rounding | [`localization/I18N_INDONESIA.md`](./localization/I18N_INDONESIA.md) |
 | Offline-first sync & mutation queue | [`offline/OFFLINE_FIRST_SYNC.md`](./offline/OFFLINE_FIRST_SYNC.md) |
 | Access Control Patterns (RBAC, ABAC, ReBAC & Postgres RLS) | [`security/ACCESS_CONTROL_PATTERNS.md`](./security/ACCESS_CONTROL_PATTERNS.md) |
-| Edge Security, DDoS & WAF Protection (Cloudflare Pattern) | [`security/EDGE_SECURITY_CLOUDFLARE.md`](./security/EDGE_SECURITY_CLOUDFLARE.md) |
 | Threat Modeling with STRIDE (elements, boundaries, consume-or-reject) | [`security/THREAT_MODELING_STRIDE_PATTERN.md`](./security/THREAT_MODELING_STRIDE_PATTERN.md) |
 | Solo Product Discovery & Strategy Playbook (OST, RAT, 7 Powers) | [`product/SOLO_DISCOVERY_PLAYBOOK.md`](./product/SOLO_DISCOVERY_PLAYBOOK.md) |
 | Business Analysis Discovery & Requirements Craft (elicitation mix, ambiguity classes, review passes) | [`product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md`](./product/BUSINESS_ANALYSIS_DISCOVERY_PATTERN.md) |
@@ -22,9 +21,6 @@
 | Motion Design & Interactive Animation Taxonomy (60+ Effects) | [`ui/MOTION_DESIGN_TAXONOMY.md`](./ui/MOTION_DESIGN_TAXONOMY.md) |
 | Scroll-Scrubbed Cinematic World Pattern (seam law, camera A/B, blob-seek engine, mobile hardening) | [`ui/SCROLL_SCRUBBED_WORLD_PATTERN.md`](./ui/SCROLL_SCRUBBED_WORLD_PATTERN.md) |
 | Responsive Design Priority Pattern (Mobile-First vs. Desktop-First) | [`ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md`](./ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md) |
-| Indonesian Legal Hierarchy & Grounded AI Citation | [`compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md`](./compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md) |
-| Legal Data Modeling & PostgreSQL LTREE Architecture | [`architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md`](./architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md) |
-| PostgreSQL Native Job Queue (`FOR UPDATE SKIP LOCKED`) | [`architecture/POSTGRES_JOB_QUEUE_SKIP_LOCKED_PATTERN.md`](./architecture/POSTGRES_JOB_QUEUE_SKIP_LOCKED_PATTERN.md) |
 | Repository-Backed Architecture Diagram Pattern | [`architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md`](./architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md) |
 | Database Schema & Query Optimization Pattern | [`architecture/DATABASE_SCHEMA_AND_QUERY_OPTIMIZATION_PATTERN.md`](./architecture/DATABASE_SCHEMA_AND_QUERY_OPTIMIZATION_PATTERN.md) |
 | Realtime Communication & Network Protocols Pattern (SSE vs. WebSocket vs. Polling) | [`architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md`](./architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md) |
@@ -57,8 +53,6 @@
 | Awesome Agent Skills & Progressive Disclosure Ecosystem Pattern | [`execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md`](./execution/AWESOME_AGENT_SKILLS_ECOSYSTEM_PATTERN.md) |
 | Enterprise AI Search & Technical SEO Optimization Pattern | [`execution/CLAUDE_SEO_GENERATIVE_ENGINE_OPTIMIZATION_PATTERN.md`](./execution/CLAUDE_SEO_GENERATIVE_ENGINE_OPTIMIZATION_PATTERN.md) |
 | Enterprise Growth Engineering & Marketing Intelligence Pattern | [`execution/MARKETING_SKILLS_GROWTH_ENGINEERING_PATTERN.md`](./execution/MARKETING_SKILLS_GROWTH_ENGINEERING_PATTERN.md) |
-| Enterprise Metadata & SERP Optimization Pattern | [`execution/METADATA_SERP_OPTIMIZATION_PATTERN.md`](./execution/METADATA_SERP_OPTIMIZATION_PATTERN.md) |
-| Enterprise App Store Optimization (ASO) Pattern | [`execution/APP_STORE_OPTIMIZATION_ASO_PATTERN.md`](./execution/APP_STORE_OPTIMIZATION_ASO_PATTERN.md) |
 | AI Agent System Prompt Engineering & Execution Guardrails Pattern | [`architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`](./architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md) |
 | Fault Tolerance, Resilience, & Graceful Degradation Pattern | [`resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`](./resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md) |
 | Solo Architecture Guardrails (The Boring Tech Ladder vs Over-Engineering) | [`architecture/SOLO_ARCHITECTURE_GUARDRAILS.md`](./architecture/SOLO_ARCHITECTURE_GUARDRAILS.md) |

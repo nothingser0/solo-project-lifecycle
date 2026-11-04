@@ -8,6 +8,10 @@
 gate_M05() {
     echo "=== M05: Architecture & Specs Gate Checklist ==="
     check_intake_gate || true
+    # Handoff state: M05 is the last planning phase before code, and the phase an agent
+    # resumes after the longest context gap. PROJECT_STATE must carry the next action and
+    # the decisions still waiting on the human, or the session restarts blind.
+    check_handoff_state || true
     # Solo-capacity / High-Water-Mark classifier. SKILL.md promises it "still runs"
     # even when M01/M02 are waived (the Small path skips both), but only M01/M02 ever
     # called it — a Small project could therefore reach design/architecture with an
@@ -100,19 +104,22 @@ gate_M05() {
             GATE_FAILED=1
         fi
 
-        # 3. API Endpoints contract verification (M05 STEP 4: minimum 10 endpoint headings).
-        #    Count endpoint HEADINGS (one per endpoint), not body lines: the FSD template
-        #    shows the verb+path in a heading, and the older pattern demanded a '####'
-        #    prefix with no leading-space tolerance, so a template-faithful FSD scored 0
-        #    and could never pass its own gate. The 10 floor matches STEP 4 / the exit
-        #    criteria / the deep dive (this file previously enforced only 5).
-        ep_count=$(grep -icE "^\s*#{2,6}\s*(GET|POST|PUT|PATCH|DELETE)\s+/|Route::(get|post|put|delete)|@(Get|Post|Put|Delete)Mapping" "$fsd" 2>/dev/null || echo 0)
+        # 3. Contract every in-scope HTTP endpoint. A project with no application
+        #    API records an explicit N/A instead of inventing routes to hit a quota.
+        ep_count=$(grep -icE "^[[:space:]]*#{2,6}[[:space:]]*(GET|POST|PUT|PATCH|DELETE)[[:space:]]+/" "$fsd" 2>/dev/null || echo 0)
         ep_count=$(echo "$ep_count" | tr -d ' ')
-        if [ "${ep_count:-0}" -ge 10 ]; then
-            echo "  ✅ API endpoint contracts verified ($ep_count endpoints documented)"
+        if [ "${ep_count:-0}" -eq 0 ]; then
+            if grep -qiE "N/A.*no application API|N/A.*no HTTP endpoints|no application API.*N/A" "$fsd" 2>/dev/null; then
+                echo "  ✅ No HTTP endpoints declared (N/A with rationale)"
+            else
+                echo "  ❌ FSD.md has no API contracts; add the in-scope API operations or record 'N/A — no application API'."
+                GATE_FAILED=1
+            fi
+        else
+            echo "  ✅ API endpoint contracts found ($ep_count endpoints)"
             # A heading is not a contract. Count headings that carry the four fields a
             # consumer needs: who may call it, what it takes, what success looks like,
-            # and how it fails. Without this, ten empty headings satisfied the gate.
+            # and how it fails.
             contracted=$(awk '
                 /^[[:space:]]*#{2,6}[[:space:]]*(GET|POST|PUT|PATCH|DELETE)[[:space:]]+\// {
                     if (inb && has_auth && has_req && has_succ && has_err) ok++
@@ -126,16 +133,13 @@ gate_M05() {
                 END { if (inb && has_auth && has_req && has_succ && has_err) ok++; print ok+0 }
             ' "$fsd" 2>/dev/null || echo 0)
             contracted=$(echo "$contracted" | tr -d ' ')
-            if [ "${contracted:-0}" -ge 10 ]; then
+            if [ "${contracted:-0}" -eq "${ep_count:-0}" ]; then
                 echo "  ✅ All $contracted endpoint blocks document Auth, Request, Success and Error"
             else
                 echo "  ❌ Only ${contracted:-0} of ${ep_count} endpoint headings carry all four contract fields (Auth / Request|Query|Headers / Success / Error)."
                 echo "     A heading is not a contract: document who may call it, what it takes, what success returns, and how it fails."
                 GATE_FAILED=1
             fi
-        else
-            echo "  ❌ FSD.md insufficient API endpoint contracts: found only ${ep_count:-0} endpoints (minimum 10 required by M05 STEP 4)!"
-            GATE_FAILED=1
         fi
 
         # 4. Idempotency Key table verification for financial/mutation systems
@@ -149,12 +153,27 @@ gate_M05() {
             fi
         fi
 
-        # 4b. Object Storage & Media Architecture (Zero Base64 in DB)
-        if grep -qiE "Object Storage|S3|R2|Supabase Storage|blob storage" "$fsd"; then
-            echo "  ✅ Media & Object Storage architecture verified in FSD.md (Zero Base64 policy)"
+        # 4b. Record a chosen object-storage service or an explicit N/A rationale.
+        media_decision=$(grep -iE "^[[:space:]]*[-*][[:space:]]*\*\*Object storage decision\*\*:" "$fsd" 2>/dev/null | head -1)
+        if [ -n "$media_decision" ] && ! echo "$media_decision" | grep -qiE "\[selected|\[provider|\[service"; then
+            echo "  ✅ Object storage decision recorded in FSD.md"
         else
-            echo "  ❌ FSD.md missing explicit Object Storage architecture (S3/R2/Supabase Storage) for media assets (Zero Base64 in DB)!"
+            echo "  ❌ FSD.md must record an object-storage provider/use or 'N/A — no user-uploaded media'."
             GATE_FAILED=1
+        fi
+
+        # 4c. Granular RBAC Role Capability & Limitation Matrix (Boleh vs DILARANG)
+        # If the project defines user roles (Owner/Staff/Manager/Tenant/RBAC), FSD.md must detail
+        # explicit capabilities, negative boundaries (DILARANG/UI MASKED), and dedicated views.
+        if grep -qiE "role|Owner|Staff|Manager|Tenant|Operator|RBAC" "$fsd" 2>/dev/null; then
+            if grep -qiE "Boleh Dilakukan|Allowed Capabilities" "$fsd" && \
+               grep -qiE "DILARANG|UI MASKED|Forbidden Actions" "$fsd"; then
+                echo "  ✅ Granular RBAC Capability & Limitation Matrix verified in FSD.md (Boleh vs DILARANG defined)"
+            else
+                echo "  ❌ FSD.md missing Granular RBAC Role Capability & Limitation Matrix in Section 4.0!"
+                echo "     Every role (Owner, Manager, Staff, Member) must explicitly specify 'Boleh Dilakukan' and 'DILARANG & UI MASKED'."
+                GATE_FAILED=1
+            fi
         fi
 
         # 5. Multi-Tenant Row-Level Security (RLS) verification.

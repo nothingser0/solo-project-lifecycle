@@ -15,6 +15,7 @@ solo-project-lifecycle/
 │   ├── modules/             # 14 lifecycle modules (M00-M13) + A00-A04 advisory + deep-dives/ + variants/
 │   ├── INDEX.json           # Machine-readable file manifest (two-way parity with the filesystem)
 │   ├── AUTHORITY.md         # AGENT / HUMAN-DECIDES / HUMAN-ONLY / FORBIDDEN per module
+│   ├── WHERE_THINGS_GO.md   # Where a file goes: 11 project folders + the project root + 3 deciding questions
 │   ├── QUICKSTART.md        # Rapid onboarding guide
 │   └── PACKAGE_VERSION_AUTO_CHECK.md
 ├── templates/
@@ -34,16 +35,23 @@ solo-project-lifecycle/
 │   ├── by-use-case/               # Per-use-case template bundles
 │   └── ui/                        # Cinematic world engine & motion tokens
 ├── references/
+│   ├── architecture/        # Architecture decision references (4)
+│   ├── ba/                  # Requirements traceability / RTM guides (2)
 │   ├── checklists/          # Feasibility criteria, module evaluation checklists
-│   ├── taxonomy/            # 1,000 system catalog and 250 software archetypes
+│   ├── design/              # Logo craft, design-system and reference-analysis guides
+│   ├── growth/              # Acquisition and lifecycle benchmarks
 │   ├── playbooks/           # Scale workflows, AI-assisted development, design patterns
 │   ├── pm/                  # Prioritization, analytics, communication, testing guides
 │   ├── pre-sales/           # Discovery call checklists, proposals, quotations
+│   ├── process/             # Anti-yes-man pushback protocol
 │   ├── solo/                # Solo architecture, patterns, standards, UI/UX guides
 │   ├── stacks/              # Framework matrix and stack quickstarts (Next.js, Laravel, Go, Django)
-│   ├── technical/           # Deep research, design systems, APM, compliance guides
-│   └── team/                # Team collaboration and agency handoff
-├── patterns/                # Indonesia-specific & engineering patterns (Payments, UU PDP, i18n/IDR, Offline-first, Solo Architecture Guardrails)
+│   ├── taxonomy/            # 1,000 system catalog and 250 software archetypes
+│   ├── team/                # Team collaboration and agency handoff
+│   └── technical/           # Deep research, design systems, APM, compliance guides
+├── patterns/                # Cited decision-rule patterns (Payments, UU PDP, i18n/IDR, Threat Modeling, Solo Guardrails) — see patterns/README.md
+├── archive/patterns/        # Superseded generic patterns (Zod, caching, N+1, auth…) kept for reference; not loaded by any phase
+├── case-studies/            # Worked examples: SaaS, e-commerce, CRM, B2B SaaS, large integration
 ├── scripts/
 │   ├── scaffold/            # Project init, TODO generation, and template picker scripts (Bash/PowerShell)
 │   ├── gates/               # Lifecycle gate validation automation
@@ -126,10 +134,11 @@ The `scripts/` directory provides cross-platform Bash and PowerShell utilities:
 
 ## Getting Started
 
-1. Consult `docs/QUICKSTART.md` for a 10-minute setup walkthrough.
-2. Read the stack quickstart for Next.js, Laravel, Go, or Django in `references/stacks/`; for any other stack (FastAPI, Rails, SvelteKit, …) start from `templates/04-dev-execution/<stack>/AGENTS.md` and `references/stacks/STACK_SUPPORT_MATRIX.md`.
-3. Review `references/taxonomy/SYSTEM_ARCHETYPES_250.md` to map standard features for your target system category.
-4. Scaffold project governance and harness files using the `scripts/scaffold/` utilities.
+1. Read `docs/WHERE_THINGS_GO.md` — it decides which folder every artefact belongs in (the gates enforce those paths).
+2. Consult `docs/QUICKSTART.md` for a 10-minute setup walkthrough.
+3. Read the stack quickstart for Next.js, Laravel, Go, or Django in `references/stacks/`; for any other stack (FastAPI, Rails, SvelteKit, …) start from `templates/04-dev-execution/<stack>/AGENTS.md` and `references/stacks/STACK_SUPPORT_MATRIX.md`.
+4. Review `references/taxonomy/SYSTEM_ARCHETYPES_250.md` to map standard features for your target system category.
+5. Scaffold project governance and harness files using the `scripts/scaffold/` utilities.
 
 ---
 

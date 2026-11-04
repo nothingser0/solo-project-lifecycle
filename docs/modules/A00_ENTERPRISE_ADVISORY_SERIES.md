@@ -2,7 +2,7 @@
 
 > **Naming note**: `A00`–`A04` here are **Enterprise Advisory phases**, NOT OWASP Top 10 categories. If you see `A01`–`A10` labels like "Broken Access Control" or "Injection", that is the OWASP checklist in `templates/06-qa-uat/SECURITY_AUDIT_TEMPLATE.md` — a different namespace.
 
-> **Target**: Projects classified **BEYOND_SOLO_CAPACITY** — >25 P0 features, or **any non-delegable obligation** (statutory audit OJK/BI/UU PDP/ISO, core legacy integration) at any size. A Large (16–25 P0) scope with no non-delegable obligation is *not* routed here by default: it may run solo under a signed `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`, with the advisory series still covering the governance layers.
+> **Target**: Projects classified **BEYOND_SOLO_CAPACITY** — >25 P0 features, or an explicit non-delegable formal external audit/certification/sector approval obligation or core legacy integration at any size. Baseline privacy duties (including UU PDP) are handled in the delivery plan and do not alone trigger this route. A Large (16–25 P0) scope with no non-delegable obligation is *not* routed here by default: it may run solo under a signed `docs/pm/SOLO-CAPACITY-RISK-ACCEPTANCE.md`.
 > **Premise**: Solo developer acts as **Lead Enterprise Architect / Technical Advisor**. Hands-on solo coding is strictly prohibited. The output is a verified **Enterprise Architecture & Procurement Readiness Package**.
 
 ---

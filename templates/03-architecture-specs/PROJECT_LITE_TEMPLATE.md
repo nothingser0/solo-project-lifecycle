@@ -133,6 +133,9 @@
 
 - **Selected Tech Stack**: [Example: Next.js + PostgreSQL / Flutter + Supabase / FastAPI + SQLite]
 - **Architecture Topology**: Diagram per `patterns/architecture/REPOSITORY_BACKED_ARCHITECTURE_DIAGRAM_PATTERN.md` (Client/Edge, Runtime, Persistence, Third-Party).
+- **C4 views (conditional)**: Add System Context/Container only when multiple services, stores, external systems, or trust boundaries make the topology unclear; otherwise `N/A — topology diagram is sufficient`.
+- **Existing repository assessment (conditional)**: For inherited codebases, record current entry points, runtime, data stores, integrations, auth boundaries, tests, and deployment with file evidence; state constraints and required changes. For greenfield, `N/A — no existing codebase`.
+- **Object storage decision**: [service, access, validation, retention, and cache policy / N/A — no user-uploaded media].
 - **Capacity Sizing (BOTEC)**: Realistic QPS & storage estimation per `references/architecture/BACK_OF_THE_ENVELOPE_CAPACITY_PLAYBOOK.md` (Peak QPS: `[x] req/s`, Annual Storage: `[x] GB`).
 - **Resilience Guardrails**: Timeouts on remote calls, exponential backoff with full jitter, and circuit-breaker degradation per `patterns/resilience/FAULT_TOLERANCE_AND_DEGRADATION_PATTERN.md`.
 - **Quality Attributes & Architecture Risks**: Critical scenarios (p95 latency, recovery time) and risk register per `references/architecture/QUALITY_ATTRIBUTES_AND_RISK_FRAMEWORK.md`.
@@ -140,8 +143,9 @@
 - **Realtime Transport & Edge Protocols**: SSE for 1-way streams/AI, WebSockets for 2-way canvas/chat, zero short-polling per `patterns/architecture/REALTIME_COMMUNICATION_AND_API_PROTOCOLS_PATTERN.md`.
 - **S.U.P.E.R Architecture & Adaptive Control**: Enforce 5 LEGO principles and telemetry drift-control ($\ge 20\%$ annotate, $\ge 40\%$ replan, $\ge 60\%$ rescope) per `patterns/architecture/SUPER_ARCHITECTURE_AND_ADAPTIVE_CONTROL_PATTERN.md`.
 - **Technical Diagram Standard**: Dark-theme safe SVG diagrams with optical baseline centering and curved connectors per `patterns/architecture/SVG_TECHNICAL_DIAGRAM_STANDARD_PATTERN.md`.
-- **Caching & Data Consistency**: Cache-aside default, stampede defense (TTL jitter), and CP vs AP domain classification per `patterns/architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md`.
+- **Caching & Data Consistency**: [If cache is needed: cache-aside/read policy, invalidation, and consistency choice per `patterns/architecture/CACHING_STRATEGIES_AND_DATA_CONSISTENCY_PATTERN.md` / N/A with reason].
 - **System Design Methodology**: 4-step structured problem solving (use-cases, high-level design, deep dive, trade-offs) per `patterns/architecture/SYSTEM_DESIGN_METHODOLOGY_PATTERN.md`.
+- **Architecture review before sign-off**: Check consistency with the approved scope and M04 handoff, traceability, diagram/decision alignment, explicit assumptions and open items, and implementation-ready data/API/security/failure behavior. Resolve blockers; assign an owner and decision point to any non-blocking open item.
 - **RESTful API Design**: Noun-based endpoints, HTTP status semantics, cursor/offset pagination, and RFC 7807 problem details per `patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md`.
 - **API Design Best Practices**: Collection metaphors, no naked IDs, **URL path-segment versioning** (`/api/v1/…`, not the `Accept` header), and ETag caching per `patterns/architecture/API_DESIGN_CHEAT_SHEET_PATTERN.md`.
 - **API-as-a-Product Mindset**: Bloch & Lacker laws, opinionated design, and non-surprising developer UX per `patterns/architecture/RESTFUL_API_DESIGN_PATTERN.md`.
@@ -214,12 +218,12 @@ CREATE TABLE core_entities (
 );
 ```
 
-### Security Blueprint (STEP 5 — all four required; gate-checked)
+### Security Blueprint (STEP 5 — four project-specific decisions; gate-checked)
 
-- **Data at rest**: AES-256-GCM envelope encryption for [sensitive columns: e.g. `payload`, PII fields]; keys held outside the repo.
-- **Password hashing**: Argon2id (memory-hard; never MD5/SHA-1/bcrypt-cost<10).
-- **Web hardening**: OWASP Top 10 mitigations — input validation on every write path, output encoding, CSRF token, `HttpOnly`+`Secure`+`SameSite` cookies, no verbose error leakage.
-- **Rate limiting**: [login 5/min per IP, mutating endpoints 60/min per user].
+- **Data at rest**: [provider-managed encryption / application-level AES-256-GCM if data classification and threat model warrant it / N/A with reason]; keys held outside the repo.
+- **Password hashing**: [Argon2id or maintained framework/provider-managed hashing / N/A if authentication is delegated].
+- **Web hardening**: record OWASP-relevant risks for this app and their controls (e.g. input validation, output encoding, CSRF, secure production cookies); note out-of-scope items with a reason.
+- **Rate limiting**: [limits for sensitive operations based on abuse and cost risk / N/A with reason].
 - **Personal data**: [UU PDP — consent capture, deletion right, audit log] or `N/A (no personal data)`.
 
 ### Module 04 Handoff Strategy (STEP 5 — gate-checked; parsed by M06 STEP 0)
@@ -229,8 +233,7 @@ CREATE TABLE core_entities (
 
 | Level | Situation | Conversion Approach |
 | :--- | :--- | :--- |
-| **1** | AI-generated prototype code, same framework (Workflow A) | Clean and wire the generated components; refactor to conventions |
-| **2** | Figma/designer export (Workflow B) | Extract components from the exported design/previews; rebuild on frozen layout |
+| **1** | Interactive prototype code in `docs/design/screens/` | Clean and wire the generated components; refactor to conventions |
 
 **Conversion Plan**: 1. Extract [n] components from `COMPONENT_REQUIREMENTS.md` → 2. Map `DESIGN.md` tokens to [Tailwind/theme config] → 3. Rebuild screens in [framework], static first, then data-backed.
 **Estimated Conversion Time**: [X days]
@@ -241,9 +244,9 @@ CREATE TABLE core_entities (
   - `GET /api/v1/entities` (Fetch authenticated data list)
   - `POST /api/v1/entities` (Create new Zod-validated data)
 
-> Medium/Large use `docs/specs/FSD.md` instead: a full endpoint matrix (**≥10 endpoint
-> headings**, gate-enforced) with request/response schemas and idempotency headers for
-> financial POSTs.
+> Medium/Large use `docs/specs/FSD.md` instead: a complete contract for each in-scope API
+> operation, or an explicit `N/A — no application API`, with request/response schemas and
+> idempotency headers for applicable high-risk mutations.
 
 ---
 

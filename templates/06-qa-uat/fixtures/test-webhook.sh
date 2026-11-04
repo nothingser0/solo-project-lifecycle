@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Quick Webhook SIT Runner for Local & Staging Verification
 # Usage: ./templates/06-qa-uat/fixtures/test-webhook.sh [endpoint_url] [fixture_path] [token/secret]
+# Fixtures: midtrans-webhook-settlement.json (default) · xendit-webhook-paid.json (Xendit paid invoice)
 
 set -euo pipefail
 

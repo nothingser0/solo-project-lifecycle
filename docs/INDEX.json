@@ -3,6 +3,26 @@
   "note": "Machine-readable index. `cataloged: false` means no catalog README mentions the file (potential orphan).",
   "files": [
     {
+      "path": "README.md",
+      "cataloged": true
+    },
+    {
+      "path": "SKILL.md",
+      "cataloged": true
+    },
+    {
+      "path": "docs/AUTHORITY.md",
+      "cataloged": false
+    },
+    {
+      "path": "docs/QUICKSTART.md",
+      "cataloged": false
+    },
+    {
+      "path": "docs/WHERE_THINGS_GO.md",
+      "cataloged": false
+    },
+    {
       "path": "docs/modules/00_PRODUCT_DISCOVERY_STRATEGY.md",
       "cataloged": true,
       "modules": [
@@ -237,6 +257,18 @@
       "cataloged": false
     },
     {
+      "path": "evals/scenarios/16_ANTI_YES_MAN_SCOPE_CREEP.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/18_ANTI_YES_MAN_OVERENGINEERING.md",
+      "cataloged": false
+    },
+    {
+      "path": "evals/scenarios/20_CHANGE_FENCE_UNREQUESTED_EDIT.md",
+      "cataloged": false
+    },
+    {
       "path": "patterns/README.md",
       "cataloged": true
     },
@@ -258,14 +290,6 @@
     },
     {
       "path": "patterns/architecture/LEGACY_MODERNIZATION_STRANGLER_PATTERN.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/architecture/LEGAL_DATA_MODELING_LTREE_PATTERN.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/architecture/POSTGRES_JOB_QUEUE_SKIP_LOCKED_PATTERN.md",
       "cataloged": true
     },
     {
@@ -297,10 +321,6 @@
       "cataloged": true
     },
     {
-      "path": "patterns/compliance/INDONESIAN_LEGAL_HIERARCHY_PATTERN.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/compliance/UU_PDP_COMPLIANCE.md",
       "cataloged": true
     },
@@ -314,10 +334,6 @@
     },
     {
       "path": "patterns/execution/AI_FULLSTACK_DELIVERY_WORKFLOW_PATTERN.md",
-      "cataloged": true
-    },
-    {
-      "path": "patterns/execution/APP_STORE_OPTIMIZATION_ASO_PATTERN.md",
       "cataloged": true
     },
     {
@@ -369,16 +385,8 @@
       "cataloged": true
     },
     {
-      "path": "patterns/execution/METADATA_SERP_OPTIMIZATION_PATTERN.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/execution/OWASP_SECURITY_CODE_REVIEW_PATTERN.md",
       "cataloged": true
-    },
-    {
-      "path": "patterns/execution/PAPER_ORCHESTRA_RESEARCH_WRITING_PATTERN.md",
-      "cataloged": false
     },
     {
       "path": "patterns/execution/PATTERNS_DEVKIT_COMPONENT_DATA_GRAPHS_PATTERN.md",
@@ -449,10 +457,6 @@
       "cataloged": true
     },
     {
-      "path": "patterns/security/EDGE_SECURITY_CLOUDFLARE.md",
-      "cataloged": true
-    },
-    {
       "path": "patterns/security/THREAT_MODELING_STRIDE_PATTERN.md",
       "cataloged": true
     },
@@ -478,6 +482,10 @@
     },
     {
       "path": "references/architecture/BACK_OF_THE_ENVELOPE_CAPACITY_PLAYBOOK.md",
+      "cataloged": false
+    },
+    {
+      "path": "references/architecture/PRODUCTION_DISTRIBUTED_SYSTEMS_CHECKLIST.md",
       "cataloged": false
     },
     {
@@ -579,6 +587,13 @@
       ]
     },
     {
+      "path": "references/pm/AB_TEST_ANALYSIS_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M13"
+      ]
+    },
+    {
       "path": "references/pm/EPIC_BREAKDOWN_PATTERNS.md",
       "cataloged": false
     },
@@ -591,6 +606,13 @@
       "cataloged": true,
       "modules": [
         "M01"
+      ]
+    },
+    {
+      "path": "references/pm/KANBAN_CARD_CRAFT_GUIDE.md",
+      "cataloged": true,
+      "modules": [
+        "M02"
       ]
     },
     {
@@ -667,6 +689,10 @@
       "modules": [
         "M03"
       ]
+    },
+    {
+      "path": "references/process/ANTI_YES_MAN.md",
+      "cataloged": false
     },
     {
       "path": "references/solo/SOLO_ARCHITECTURE_GUIDE.md",
@@ -1021,6 +1047,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/02-design/SCENARIOS_WF_TEMPLATE.md",
+      "cataloged": false
+    },
+    {
       "path": "templates/02-design/SCREEN_PROMPT_TEMPLATE.md",
       "cataloged": false
     },
@@ -1053,8 +1083,24 @@
       "cataloged": true
     },
     {
+      "path": "templates/02-design/references/prototype-output/css/styles.css",
+      "cataloged": false
+    },
+    {
+      "path": "templates/02-design/references/prototype-output/js/app.js",
+      "cataloged": false
+    },
+    {
+      "path": "templates/02-design/references/prototype-output/screen-template.html",
+      "cataloged": false
+    },
+    {
       "path": "templates/02-legal-commercial/CHANGE_REQUEST_TEMPLATE.md",
       "cataloged": true
+    },
+    {
+      "path": "templates/02-legal-commercial/CONTRACT_REVIEW_TEMPLATE.md",
+      "cataloged": false
     },
     {
       "path": "templates/02-legal-commercial/FINANCIAL_TRACKING.md",
@@ -1329,6 +1375,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/04-dev-execution/expo/README.md",
+      "cataloged": true
+    },
+    {
       "path": "templates/04-dev-execution/fastapi/AGENTS.md",
       "cataloged": true
     },
@@ -1438,6 +1488,14 @@
     },
     {
       "path": "templates/04-dev-execution/scripts/check-dependencies.sh",
+      "cataloged": false
+    },
+    {
+      "path": "templates/04-dev-execution/scripts/smoke-test-routes.ps1",
+      "cataloged": false
+    },
+    {
+      "path": "templates/04-dev-execution/scripts/smoke-test-routes.sh",
       "cataloged": false
     },
     {
@@ -1706,10 +1764,6 @@
     },
     {
       "path": "templates/by-use-case/examples/legal-vault/HANDOVER_PROTOCOL_TEMPLATE.md",
-      "cataloged": true
-    },
-    {
-      "path": "templates/by-use-case/examples/legal-vault/INCIDENT_RESPONSE_TEMPLATE.md",
       "cataloged": true
     },
     {

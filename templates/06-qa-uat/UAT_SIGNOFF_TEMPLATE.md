@@ -1,6 +1,6 @@
 # User Acceptance Testing (UAT) Sign-Off Report
 
-> Legal sign-off document for User Acceptance Testing (UAT) results certifying that the software meets all PRD/FSD specification criteria and is approved for release to the Production environment.
+> UAT decision record. This project artifact is not a substitute for legal review of contract terms.
 
 ---
 
@@ -17,41 +17,45 @@
 
 ## 2. UAT Testing Summary Results
 
-Based on workbooks **`UAT_SCENARIOS.md`** and **`UAT_DEFECT_LOG.md`**, the parties record the test results as follows:
+Based on the identified UAT workbook and defect log, the parties record actual results for the tested build below. Replace example rows with this project's in-scope modules; do not copy unverified results.
 
 | Module Category | Total Scenarios Tested | Passed | Notes / Resolution |
 | :--- | :---: | :---: | :--- |
-| **Authentication & Account Module** | [ ] Scenarios | [ ] Pass | All login flows & RBAC permissions validated |
-| **Document Creation Module** | [ ] Scenarios | [ ] Pass | All form templates & PDF rendering validated |
-| **Document Vault & S3 Module** | [ ] Scenarios | [ ] Pass | File encryption and presigned URLs validated |
-| **Digital Signature Module** | [ ] Scenarios | [ ] Pass | Signing workflow and hash stamp validated |
-| **SEVERITY 1 & 2 STATUS** | **0 Open** | **PASSED** | All critical and major defects resolved |
+| [in-scope module / requirement IDs] | [count] | [count] | [result and evidence reference] |
+| **P0 acceptance criteria** | [in-scope count] | [passed count] | [unmapped, failed, blocked, or exception IDs] |
+| **Release-blocking defects** | [count] | [resolved count] | [open count + disposition] |
 
 ---
 
-## 3. Acceptance & Release Authorization Declaration
+## 3. Acceptance & Release Decision
 
 By signing this Sign-Off Report, the **CLIENT** certifies and agrees that:
 
-1. **Specification Acceptance**: The software system tested on the Staging server functions satisfactorily and meets all requirement criteria stated in the **PRD.md** and **FSD.md** documents.
-2. **Production Release Authorization**: The Client officially authorizes the Developer to merge code into the `main` branch and proceed with deployment to the **Production environment (Module 10: Production Go-Live)**.
-3. **Scope Lock**: All requests for changes to workflows, layouts, or additions of new features following this signing date cannot delay the deployment process and will be processed via paid **Change Request (CR)** procedures or follow-on service agreements.
+1. **Tested build and coverage**: This decision applies only to the staging build and acceptance criteria listed in the attached UAT workbook. Record unmapped/untested criteria and their disposition.
+2. **Decision**: [GO / NO-GO / PENDING]. GO authorizes progression to the M10 release approval process; it does not replace the M10 deployment approval or rollback checks.
+3. **Residual risks and deviations**: Record each accepted risk, owner, mitigation, and target date. Any conditional approval or deferred defect must be listed in the signed punch list below and permitted by the release policy.
+4. **Scope changes**: Requests outside the approved PRD/FSD scope are logged as Change Requests and require separate approval.
+
+| Decision role | Name | Decision / authority | Date |
+| :--- | :--- | :--- | :--- |
+| Client Single PIC approver | [name] | [GO / NO-GO / PENDING] | [date] |
+| Release veto authority (if any) | [name/role or N/A with reason] | [cleared / veto / N/A] | [date] |
+| Developer / UAT coordinator | [name] | [acknowledgment] | [date] |
 
 ---
 
 ## 4. Punch List & Conditional Sign-Off (Warranty Transition)
-*Minor defects (Severity 3 cosmetic / Severity 2 with acceptable workaround) to be addressed during Module 12 Warranty without blocking production deployment or milestone payment:*
+*Deferred defects require explicit PIC approval under the release policy, with owner and target date. Severity alone does not automatically authorize release with an open defect.*
 
 | Punch Item # | Module / Screen | Defect Description | Severity (Sev 2/3) | Target Resolution Date (M12) |
 | :---: | :--- | :--- | :---: | :--- |
-| **PL-01** | [e.g. Settings] | Minor alignment offset on tablet view | Sev 3 | YYYY-MM-DD (Warranty Day 7) |
-| **PL-02** | [e.g. Export] | CSV download button tooltip typo | Sev 3 | YYYY-MM-DD (Warranty Day 14) |
+| [ID] | [module/screen] | [defect and evidence] | [severity] | [owner + target date + mitigation] |
 
 ---
 
 ## 5. Signatures of the Parties
 
-This document is executed in 2 (two) counterparts, each having equal legal validity for Client and Developer.
+Use the signature method and record-retention process agreed by the parties. Any legal effect is governed by the applicable contract and jurisdiction.
 
 | Approved by Client Single PIC | Validated by Lead Software Engineer |
 | :--- | :--- |

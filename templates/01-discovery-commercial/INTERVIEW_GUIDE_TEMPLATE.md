@@ -119,6 +119,10 @@
 
 *Copy this block for each completed interview transcript:*
 
+> A transcript or AI summary is a working aid, not primary evidence. Verify every quote, number, and reported fact against its source locator. Keep participant statements, researcher observations, and interpretations distinct. Do not send identifiable or confidential material to an external AI service unless that processing is authorized.
+>
+> For each quote retained in the report, record its `INT-xx` ID and timestamp/note locator; verify wording against the source. Paraphrases must not be formatted as direct quotes.
+
 ```markdown
 ### Interview Log: INT-[01]
 - **Respondent Name / Pseudonym**: [e.g., Pak Hendra]
@@ -126,6 +130,9 @@
 - **Stakeholder Group**: [Group B: Economic Buyer]
 - **Date & Duration**: [YYYY-MM-DD] | 38 minutes
 - **Evidence Verification**: ✅ Audio recording archived / Timestamped notes verified
+- **Source locator**: [recording timestamp(s) or note/page/line IDs for reported claims]
+- **AI-assisted transcription/summary**: [No / Yes — tool and human reviewer/date; confirm processing consent before external use]
+- **Shared-report identity**: [Pseudonym / respondent ID; keep any identity key separately with limited access]
 
 #### 1. Core Jobs-To-Be-Done (JTBD)
 - **When**: Closing daily store registers across 2 separate locations,
@@ -175,6 +182,7 @@
 
 #### 5. Golden Verbatim Quotes
 > "Kalau aplikasi kasir mati pas mati lampu atau sinyal jelek, antrean toko saya langsung macet. Akhirnya kasir saya catat di kertas lagi, dan besoknya selisih stok Rp 200 ribu nggak ada yang ngaku."
+
 ```
 
 ---

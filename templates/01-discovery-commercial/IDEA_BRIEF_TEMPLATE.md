@@ -27,15 +27,19 @@
 ## 3. The 3-Filter Triage & Market Validation
 
 ### 3.0 Premise Testing & Assumption Register (Riskiest Assumption First)
-*Do not accept problem statements in the brief at face value. Catalog and test foundational premises first.*
+*Do not accept problem statements in the brief at face value. Scan the idea across Value/desirability, Usability, Viability, Feasibility, Go-to-Market, and Team/operations; add Regulatory when relevant. Reuse M00 assumption IDs and the shared ledger when one exists.*
 
-| ID | Core Premise / Assumption | Risk Level (H/M/L) | Evidence Needed to Validate | Cheap Test Method (RAT) | Kill Threshold (Ambang Gugur) | Status |
-|:---|:--------------------------|:------------------:|:----------------------------|:------------------------|:------------------------------|:-------|
-| PREM-01 | [e.g., Problem is severe enough that users actively seek solutions] | High | Users already tried or paid for workarounds | 5 Discovery interviews | If 0/5 spend money or >2 hrs/wk on this | [Unproven / Tested / Disproven] |
-| PREM-02 | [e.g., Target segment has authority to adopt & pay] | High | Budget authority confirmation from persona | Economic buyer interview (Group B) | No budget authority (<Rp 50k/mo) | [Unproven / Tested / Disproven] |
-| PREM-03 | [e.g., Regulatory barriers allow 1 developer to build MVP legally] | High | Legal checklist & licensing research | Compliance audit in M00/M01 | Direct OJK/BI license required | [Unproven / Tested / Disproven] |
+Rank each premise on **Impact if false** and **Uncertainty** (High / Medium / Low). Test High-High premises first; break ties by decision impact, then by how quickly credible evidence can be obtained. Add only decision-critical premises here and link broader tracking to the shared assumption ledger.
 
-> ⚡ **RULE**: If any High-Risk premise hits its **Kill Threshold**, STOP or PIVOT immediately before proceeding to technical specifications or architecture design.
+| ID | Risk lens | Core Premise / Assumption | Impact if false | Uncertainty | Evidence / context needed | Cheapest credible probe + timebox | Success / failure threshold | Status / decision |
+|:---|:---|:---|:---|:---:|:---|:---|:---|:---|
+| PREM-01 | Value | [Users have a costly, recurring problem they actively address] | [Product has no demand] | High | [Past workaround, frequency, cost; sample/context] | [5 interviews; 2 days] | [e.g. ≥3/5 show recurring behavior and quantified cost] | [Open / result / decision] |
+| PREM-02 | Viability / GTM | [Buyer can pay and is reachable through a viable channel] | [Cannot acquire or monetize users] | High | [Buyer authority, price commitment, channel access] | [Buyer interviews or channel test; 3 days] | [State a measurable threshold before running] | [Open / result / decision] |
+| PREM-03 | Feasibility / Regulatory | [One developer can deliver the core loop within constraints] | [Cannot ship or operate legally] | High | [Technical unknown, approval or rule to verify] | [Spike or primary regulatory source check; 1–2 days] | [State a pass/fail condition before running] | [Open / result / decision] |
+
+An experiment is ready only when it names the assumption ID, falsifiable hypothesis, target/sample and context, probe, timebox, success and failure thresholds, and the decision each result would trigger. Record observed evidence and the decision against the same ID. An inconclusive result remains open; a prototype or test plan alone is not evidence.
+
+> **Gate rule**: If a high-priority premise crosses its stated kill threshold, stop or pivot before architecture. Do not change the threshold after seeing the result.
 
 ---
 
@@ -89,6 +93,15 @@
 - **Target Segment Feasibility**:
   - [Segment 1: e.g., Primary Persona matching MVP scope] → Fits MVP model: `[YES]`
   - [Segment 2: e.g., Adjacent Persona requiring unbuilt complex feature] → `[NO - DROPPED FROM MVP OR UPGRADE FEATURE]`
+
+### 3.6 Pre-mortem (Before Feasibility Decision)
+*Imagine this project failed within 12 months. Name plausible causes before committing to the build; link each cause to an assumption or mitigation.*
+
+| Plausible failure cause | Earliest observable warning | Linked assumption ID | Prevention / mitigation |
+|:--|:--|:--|:--|
+| [e.g., target users keep using their workaround] | [Behavior that would appear first] | [PREM-xx / ASM-xx] | [Smallest action that reduces exposure] |
+| [e.g., acquisition channel cannot reach qualified buyers] | [Signal and time window] | [PREM-xx / ASM-xx] | [Test a fallback channel] |
+| [e.g., external approval blocks launch] | [Approval milestone missed] | [PREM-xx / ASM-xx] | [Fallback or early application] |
 
 ---
 

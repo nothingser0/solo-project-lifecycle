@@ -11,14 +11,14 @@
 
 An assumption is a belief you are treating as true without evidence. If it is false, work is wasted.
 
-| ID | Assumption | Type | Impact if false | Likelihood wrong | Validation approach | Owner | Status |
-| :--- | :--- | :--- | :--- | :---: | :--- | :--- | :--- |
-| **ASM-001** | Target users have a smartphone with ≥4 GB RAM | `inferred` | Core UI must be simplified; offline mode unusable | Medium | 5-user device survey during discovery | Human | ❓ OPEN |
-| **ASM-002** | Client can provide master data as clean CSV within week 1 | `stated` | Migration slips; M08 blocked | High | Request sample file at M03 signing | Client PIC | ❓ OPEN |
-| **ASM-003** | Payment gateway sandbox supports QRIS simulation | `inferred` | SIT cannot verify settlement flow | Low | Verified in sandbox docs 2026-10-19 | Agent | ✅ VALIDATED |
-| **ASM-004** | Staff will reconcile stock daily because the owner asked for it | `assumed` | The feature is built and unused | High | Ask two staff how they close the register now | Human | ❓ OPEN |
+| ID | Assumption | Type | Impact if false | Likelihood wrong | Validation approach | Owner | Status | Evidence / result | Decision / next step |
+| :--- | :--- | :--- | :--- | :---: | :--- | :--- | :--- | :--- | :--- |
+| **ASM-001** | Target users have a smartphone with ≥4 GB RAM | `inferred` | Core UI must be simplified; offline mode unusable | Medium | Check device mix with target users | Human | ❓ OPEN | — | Keep open; test before UI freeze |
+| **ASM-002** | Client can provide master data as clean CSV within week 1 | `stated` | Migration slips; M08 blocked | High | Request a representative sample file | Client PIC | ❓ OPEN | — | Keep open; define fallback if rejected |
+| **ASM-003** | Payment gateway sandbox supports QRIS simulation | `inferred` | SIT cannot verify settlement flow | Low | Verify in current sandbox documentation and test account | Agent | 🔶 TESTING | — | Close only after a runnable sandbox check |
+| **ASM-004** | Staff will reconcile stock daily because the owner asked for it | `assumed` | The feature is built and unused | High | Ask staff how they close the register now | Human | ❓ OPEN | — | Validate behavior before prioritizing the feature |
 
-**Status legend**: ❓ OPEN (unvalidated) · 🔶 TESTING (instrument in flight) · ✅ VALIDATED (evidence recorded) · ❌ DISPROVEN (plan must change).
+**Status legend**: ❓ OPEN (unvalidated) · 🔶 TESTING (instrument in flight) · ✅ VALIDATED (evidence recorded) · ❌ DISPROVEN (plan must change). A status change requires an evidence entry; the decision records what changes in scope, design, or the next experiment.
 
 **Type legend** — *where the belief came from*, a different axis from status:
 
@@ -41,6 +41,8 @@ An assumption is a belief you are treating as true without evidence. If it is fa
 2. **Never let the agent validate its own assumption.** Evidence comes from a real source — a document, a sandbox response, or a named human (`docs/AUTHORITY.md`).
 3. **A disproven assumption is a scope event**, not a footnote: route it to the Change Request process if it changes deliverables.
 4. **Assumptions about human behaviour are the riskiest.** "Users will enter data daily" fails more often than any technical assumption.
+5. **Test the highest-risk assumption first.** Rank open assumptions by impact if false and uncertainty; choose the smallest test that can change a decision. Record the observed result, sample/context, and resulting decision in the same row. A proposed test is not evidence, and an inconclusive result stays open or testing.
+6. **Keep one ledger.** Carry assumption IDs from discovery into feasibility and scope; update their evidence and decision in place instead of copying the same assumption into another register. Link to the interview, experiment, or technical spike record when available.
 
 ---
 

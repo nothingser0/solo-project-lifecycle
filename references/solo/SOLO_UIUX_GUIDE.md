@@ -10,13 +10,31 @@ This document provides practical guidelines for solo developers to design profes
 
 Solo developers should never waste time designing twice (first on a vector canvas, then recoding from scratch). Use `DESIGN.md` as the single source of truth for visual decisions across all project scales, from Small to Enterprise.
 
+### 1.0 Bagaimana SITEMAP.md Dihasilkan dari SCOPE_STATEMENT.md (Hulu ke Hilir)
+Sebelum merancang prototipe atau menulis `SITEMAP.md`, struktur halaman tidak boleh dikarang bebas dari imajinasi. `SITEMAP.md` diturunkan secara deterministik dari 4 fondasi utama di `docs/pm/SCOPE_STATEMENT.md`:
+
+1. **Pemetaan Fitur MoSCoW (P0 Must-Have & P1 Should-Have)**:
+   - Setiap fitur yang disepakati (`F-01..F-NN`) **wajib** memiliki representasi minimal 1 layar konkret (`SCR-01..SCR-NN`) tempat user berinteraksi.
+   - *Contoh*: `F-01` (Auth) → `/login`, `F-02` (Katalog Unit) → `/rooms` & `/rooms/:id`, `F-03` (Invoicing) → `/billing`.
+   - **Aturan Anti-Drift**: Zero orphan screens (tidak ada layar tanpa dasar fitur di scope, dan tidak ada fitur P0 yang tertinggal tanpa layar UI).
+
+2. **Matriks Peran Pengguna / RBAC (`ROL-01..ROL-NN`)**:
+   - Menentukan segmentasi rute dan hak akses navigasi (*route guards*).
+   - Memisahkan zona Public (`/`, `/login`), zona Operator/Staff (`/app/*`), dan zona Admin/Owner (`/admin/*`).
+
+3. **User Stories & Critical Flows (Given-When-Then)**:
+   - Rangkaian alur cerita pengguna mendikte hierarki navigasi dan tautan antar-layar (*screen flows & breadcrumbs*: misal Dashboard → Daftar Entitas → Formulir Input → Halaman Sukses).
+
+4. **Struktur Shell dari Visual Benchmark (Step 0.5)**:
+   - Referensi desain di `docs/design/inspiration/` menentukan Information Architecture (IA) fisik (apakah aplikasi menggunakan Fixed Sidebar, Topbar Navigation, atau Segmented Tab Shell).
+
 ### 1.1 Three-Step Procedure for a Slop-Free `DESIGN.md` Workflow
 1. **Step 1: Lock the Design System (`DESIGN.md`)**:
     - Populate the `DESIGN.md` template upfront with color tokens, typography, radius, spacing, interactive states, and accessibility constraints.
-    - Treat this document as the reference for design, implementation, and review to prevent purple gradients, floating cards, or fonts that clash with the product identity.
+    - Treat this document as the reference for design, implementation, and review to prevent emoticons instead of icons, floating cards, or fonts that clash with the product identity.
 2. **Step 2: Precision Screen Prompting Formula**:
     - *Prompt Pattern*:
-      > *"Build the [Screen Name] interface for the [Role] user. Follow `DESIGN.md`. Display a clean, flat Tailwind-based layout. Displayed data: [List of Real Columns/Fields]. Components: use dense data tables, semantic status badges, and 1px bordered action buttons. Do not use heavy drop-shadows or color gradients."*
+      > *"Build the [Screen Name] interface for the [Role] user. Follow `DESIGN.md`. Display a clean, flat Tailwind-based layout. Displayed data: [List of Real Columns/Fields]. Components: use dense data tables, semantic status badges, and 1px bordered action buttons. Do not use heavy drop-shadows or generic AI styling. Never use emoticons or emojis; always use SVG icons."*
 3. **Step 3: Connecting Screens into a Real Prototype**:
     - Implement components strictly according to `DESIGN.md`.
     - Connect routing links: `<a href="/target-page">`.
@@ -28,6 +46,39 @@ Solo developers should never waste time designing twice (first on a vector canva
 | **Small (MVP / Freelance)** | **100% of all pages** in Scope (no reductions) | Instant Live Vercel Staging link |
 | **Medium (B2B SaaS)** | **100% of all pages** complete with 5-state variants | Fully interactive Live Web Staging |
 | **Large & Enterprise** | **100% of all pages** covering all user roles & permissions | Live Web Staging + WCAG AA Accessibility Compliance Audit |
+
+### 1.3 Modular & Reusable Architecture for Prototype Screens
+When building prototype screens in `docs/design/screens/`:
+- **Separate HTML, CSS, and JS**:
+  - `css/styles.css`: Centralized design system (tokens from `DESIGN.md`, base typography, `.btn`, `.card`, `.badge`, `.navbar`, `.sidebar`, form controls).
+  - `js/app.js`: Centralized interaction behaviors (active nav detection, modal backdrop handlers, toast notifications, 5-state matrix preview switcher).
+  - Screen HTMLs (`index.html`, `rooms.html`, `billing.html`): Clean semantic markup linking to the shared CSS and JS (`<link rel="stylesheet" href="css/styles.css">` and `<script src="js/app.js"></script>`).
+- **Eliminate Disjointed Inline Slop**:
+  - Never write monolithic HTML files with duplicate inline `<style>` tags or arbitrary hardcoded classes per screen.
+  - Ensures navbar layout, button heights, card paddings, font scales, and badge styles remain 100% identical and consistent across every route in `SITEMAP.md`.
+  - Accelerates M06 implementation: cleanly structured prototype components convert directly 1-to-1 into React/Vue/Blade components with zero guesswork.
+
+### 1.4 Audit Otomatis UI/UX & Auto-Fixer: Menjaga Konsistensi Lintas Halaman
+Sebelum menunjukkan prototipe kepada klien atau sebelum menandatangani Design Freeze, solo developer wajib menjalankan audit otomatis konsistensi UI/UX:
+- **Perintah Eksekusi**:
+  - `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix -Report docs/specs/DESIGN_SYSTEM_AUDIT.md` (Windows)
+  - `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix --report docs/specs/DESIGN_SYSTEM_AUDIT.md` (Linux/Mac/CI)
+- **Peran Auditor UI/UX Otomatis**:
+  1. **Audit Komponen**: Memeriksa seluruh tombol, kartu, badge, dan formulir agar tidak ada yang memakai styling acak atau inline style di luar `css/styles.css`.
+  2. **Audit Animasi & Micro-Interaction**: Memastikan durasi transisi hover seragam (`150ms ease-out`), kompresi sentuhan aktif (`active:scale-[0.98]`), dan kepatuhan `prefers-reduced-motion`.
+  3. **Audit Zero Emoticon**: Memastikan zero raw emojis pada antarmuka, mewajibkan penggunaan icon SVG kohesif (misal: Lucide).
+  4. **Audit Paritas Navigasi**: Memeriksa menu sidebar dan navbar di seluruh layar; mencegah perbedaan nama brand atau menu navigasi yang hilang antar-halaman.
+  5. **Auto-Fixing**: Otomatis menyuntikkan tag stylesheet, script interaktif, dan meta viewport mobile yang hilang.
+
+### 1.5 Standar Kelengkapan Prototipe: 100% Layar Sitemap & Simulasi Multi-Role
+Untuk memastikan peninjau dapat mengevaluasi aplikasi secara utuh sebelum masuk ke tahap koding M06:
+1. **Cakupan 100% Layar SITEMAP.md**:
+   - Setiap rute `SCR-01..SCR-NN` yang ada di `docs/specs/SITEMAP.md` **wajib** dibuatkan file HTML prototipe konkretnya di `docs/design/screens/`.
+   - Dilarang hanya membuat 1 halaman dashboard utama lalu membiarkan halaman sekunder lainnya kosong. Seluruh alur aplikasi harus bisa diklik dan dijelajahi.
+2. **Pengujian Multi-Role Interaktif (RBAC Testing)**:
+   - Pasang `#role-switcher` di navbar prototipe yang membaca dan menyimpan role aktif ke `localStorage` (Guest, User, Staff, Manager, Owner).
+   - Gunakan atribut `data-roles="owner,manager"` pada menu sidebar dan tombol aksi agar menu otomatis disaring sesuai role yang sedang aktif.
+   - Gunakan atribut `data-role-mask="staff,user,guest"` untuk memverifikasi penyembunyian data sensitif (seperti omzet atau nomor rekening bank) dari pandangan staff atau publik.
 
 ---
 

@@ -1,73 +1,63 @@
 # Go-Live Verification Report (PVT & Production Cutover)
 
-> **Purpose**: Production cutover proof, post-deployment verification testing (PVT), and live telemetry sign-off  
-> **Module**: Module 10 (Deployment & Release)  
-> **Author**: Lead Software Engineer / Solo Developer  
-> **Date**: [YYYY-MM-DD]  
-> **Status**: [PASSED / VERIFIED LIVE]
+> **Purpose**: Record release identity, human decision, deployment evidence, post-deployment checks, telemetry, and recovery readiness.
+> **Module**: M10 — Production Deployment
+> **Status**: PENDING — complete only after human-led deployment and verification.
 
----
+## 1. Release and Environment
 
-## 1. Release & Environment Metadata
-
-| Attribute | Specification / Value |
+| Attribute | Value / evidence |
 | :--- | :--- |
-| **Project Name** | [Project Name] |
-| **Release Version** | `v1.0.0` (SemVer Tagged on `main`) |
-| **Commit SHA** | `[git rev-parse --short HEAD]` |
-| **Deployment Target** | [Vercel / Cloud Run / AWS / VPS / Railway] |
-| **Production URL** | `https://[app.client.com or production-domain]` |
-| **Healthcheck URL** | `https://[app.client.com]/api/health` |
-| **HTTP Status Code** | **200 OK** (Verified via automated curl probe) |
-| **SSL / TLS Version** | TLS 1.3 (Grade A on SSL Labs) |
+| Project / release | [name and version or provider release ID] |
+| Source commit / artifact ID | [immutable identifier] |
+| Deployment target / environment | [provider, project, environment] |
+| Release owner / human operator | [name] |
+| Deployment window / timezone | [date, start/end, timezone] |
+| CI / build result | [run/build URL and result] |
+| Production URL | [URL, if public; otherwise N/A with reason] |
+| Domain / TLS result | [evidence or N/A with reason] |
 
----
+## 2. Release Decision and Change Controls
 
-## 2. Leverage-Safe Handover & DNS Status
+Human decision: [GO / NO-GO / PENDING]
+Decision maker and date: [name / date]
+- **M09 UAT decision**: [reference or N/A with reason]
+- **Release freeze / exception**: [policy and approved exception, or N/A]
+- **Release notes / changelog**: [link or N/A with reason]
+- **Outstanding risks / exceptions**: [owner, mitigation, approval, or none]
 
-> **Commercial Leverage Rule**:  
-> For `Delivery: client` projects, full DNS pointing to the client's official root domain and master cloud ownership transfer occur **ONLY after 100% final settlement and signed BAST in Module 11** (`11_HANDOVER_BAST.md:57-63`).
+## 3. Rollout
 
-- [x] **Deployment Mode**: [Preview / Staging Cutover / Direct Production]
-- [x] **DNS Pointing**: [Pointed to Production / Staged on Developer-Controlled URL pending M11 Final Settlement]
-- [x] **Cloud Root Access**: Developer retains administrative root control until final invoice is cleared
+- **Strategy**: [standard / staged / canary / blue-green / mobile store / other]
+- **Steps and observation period**: [project-specific plan]
+- **Stop / abort triggers**: [measurable project-defined criteria]
+- **Rollout result**: [completed / paused / aborted / rolled back]
+- **Traffic or cohort progression**: [evidence or N/A]
 
----
+## 4. Post-Deployment Verification (PVT)
 
-## 3. Post-Deployment Verification Testing (PVT)
+Use safe, authorized test data. Do not record credentials, tokens, or sensitive personal data. A real payment is not a default test; if explicitly authorized, record the approval and refund/reversal plan.
 
-| Test ID | Critical User Flow | Test Description | Expected Result | Status |
-| :---: | :--- | :--- | :--- | :---: |
-| **PVT-01** | Landing & Health | Hit production root and `/api/health` | HTTP 200, latency < 200ms | **PASS** |
-| **PVT-02** | Authentication | Login with live production credentials | Valid session/JWT, HttpOnly cookie set | **PASS** |
-| **PVT-03** | Core Data Mutation | Create 1 sample resource in production DB | Record saved, zero DB constraint error | **PASS** |
-| **PVT-04** | Live Webhook / Payment | Real micro-transaction (e.g., QRIS Rp 10.000) | Live payment provider returns 200, webhook verified | **PASS** |
-| **PVT-05** | Storage & File Vault | Upload 1 sample file to production bucket | Presigned URL generated, download verified | **PASS** |
-| **PVT-06** | Email / Notification | Trigger production transactional email | Email received in inbox (SPF/DKIM pass) | **PASS** |
+| Test ID | Critical flow / check | Expected result | Actual result | Status (PASS / FAIL / BLOCKED / N/A) | Evidence / build |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| [PVT-ID] | [applicable user flow or check] | [project target] | [observed result] | [status + reason] | [link/reference] |
 
----
+## 5. Monitoring and Recovery
 
-## 4. Live Observability & Telemetry Verification
+- **Error tracking / logs / metrics**: [tool, environment, evidence or N/A]
+- **Health / uptime checks**: [check, target, result or N/A]
+- **Alert path**: [safe test alert and receipt evidence or N/A]
+- **Observation period and service targets**: [project-defined values and result]
+- **Rollback / recovery runbook**: [path or N/A with reason]
+- **Recovery triggers and owner**: [criteria / person]
+- **Recovery time**: [tested result and date; no assumed universal target]
+- **Backup / restore and data migration limits**: [evidence, risks, approved plan or N/A]
 
-- [x] **Error Tracking**: Sentry / GlitchTip active with `environment: "production"` (0 unhandled crashes)
-- [x] **Uptime Monitoring**: Registered on Uptime Kuma / BetterStack / Cronitor with 60s ping interval
-- [x] **Database Connectivity**: Connection pooling configured with SSL enforced (`sslmode=require`)
-- [x] **Alert Channels**: Telegram Bot / WhatsApp notification connected for P0 downtime alerts
+## 6. Verification Attestation
 
----
+Release status: [LIVE / NOT LIVE / DEGRADED / ROLLED BACK]
+Verification performed by: [human name]
+- **Date**: [YYYY-MM-DD]
+- **Summary and evidence references**: [links]
 
-## 5. Rollback Preparedness Attestation
-
-- **Rollback Runbook**: `docs/pm/ROLLBACK_PLAN.md` (or `docs/ROLLBACK_PLAN.md`) verified
-- **RTO (Recovery Time Objective)**: < 15 minutes to restore previous stable state
-- **Pre-Deploy Snapshot**: Production database snapshot created before running schema migrations
-
----
-
-## 6. Engineering Sign-Off
-
-**Verified and Declared Production-Ready By**:
-
-Lead Engineer: _________________________  
-Date: [YYYY-MM-DD]  
-Status: **SYSTEM LIVE & OPERATIONAL** (Ready for Module 11 Handover)
+This report records evidence; it does not delegate production deployment or release approval to an agent. Continue to handover or operations only after the responsible human confirms the next step.

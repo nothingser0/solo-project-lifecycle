@@ -1,52 +1,63 @@
-# Emergency Recovery Plan (Rollback & Break-Glass Plan)
+# Production Recovery and Rollback Plan
 
-> Emergency procedure to abort a release and restore the system to its previous stable state in under 15 minutes in the event of a fatal failure during go-live.
+> Complete for the selected platform and data stores before release. Recovery is human-operated. Do not assume application rollback also reverses database or external side effects.
 
----
+## 1. Release and Ownership
 
-## 1. Rollback Triggers
+- **Project / release candidate**: [version, commit, artifact]
+- **Deployment target**: [provider / environment]
+- **Incident commander / rollback owner**: [name and contact method]
+- **Human authority to stop or roll back**: [name / role]
+- **Communications owner**: [name / role]
+- **Runbook / provider instructions**: [link]
 
-The Rollback procedure **MUST BE EXECUTED IMMEDIATELY** if any of the following conditions occur post-release:
-1. Database migration script fails mid-execution causing data corruption.
-2. Request error rate (*500 Error Rate*) > 5% within the first 15 minutes.
-3. System response latency (*p95 Latency*) spikes above 2,000 ms (2 seconds).
-4. Core transactional flows (e.g., payment or document encryption) suffer total failure.
+## 2. Stop and Recovery Triggers
 
----
+Define thresholds from the project's SLOs, release risk, and telemetry. Triggers must be measurable and observable. Examples to adapt: critical user flow failure, data integrity issue, elevated error rate, breached latency/error budget, or security incident.
 
-## 2. Rapid Recovery Action Sequence (The 15-Minute Rollback)
+| Signal | Project threshold / condition | Observation window | Data source | Decision owner |
+| :--- | :--- | :--- | :--- | :--- |
+| [critical flow / metric] | [threshold] | [window] | [dashboard / alert] | [name] |
 
-### Step 1: Revert Application Code to Previous Stable Version
-If using Vercel / Railway / Cloud Run:
-- Open cloud hosting dashboard → Select previous stable deployment → Click **"Rollback / Promote to Production"** (Execution time: < 1 minute).
+## 3. Recovery Decision Tree
 
-If using Git & manual Docker:
-```bash
-# Checkout to previous release tag (e.g., v0.9.5)
-git checkout v0.9.5
-docker build -t app:v0.9.5 .
-docker stop app-current && docker rm app-current
-docker run -d --name app-current -p 3000:3000 app:v0.9.5
-```
+1. Stop or pause further rollout when a trigger is met; preserve evidence and notify the decision owner.
+2. Choose the least risky recovery for the incident: disable a feature flag, halt a canary, redeploy the last known-good artifact, apply a forward fix, or restore data only when necessary.
+3. Before any destructive restore or replay, assess writes and side effects since deployment, data loss, idempotency, and external system impact. Obtain the required human authorization.
+4. Record the action, operator, timestamps, affected version/data, and decision rationale.
 
-### Step 2: Database Restore
-If database schema is corrupted due to failed migration:
-```bash
-# Temporarily halt database connections
-# Restore data from pre-deployment snapshot backup:
-pg_restore -U postgres -d [database_name]_prod -c "backup-pre-deploy-[DATE].dump"
-```
+## 4. Platform-Specific Steps
 
-### Step 3: Post-Rollback System Verification
-- Open `https://app.client.com/api/health` → Confirm `200 OK` response.
-- Verify users can log in again using the previous stable version.
+### Application / infrastructure
 
----
+- **Last known-good artifact and how to restore it**: [provider-specific steps]
+- **Traffic / canary reversal**: [steps or N/A]
+- **Feature flags / maintenance mode**: [steps or N/A]
+- **Infrastructure rollback**: [steps or N/A]
 
-## 3. Emergency Communication Template to Client Single PIC
+### Database and data
 
-If rollback procedure must be executed:
+- **Migration type and compatibility**: [expand-contract / reversible / irreversible / N/A]
+- **Forward-fix procedure**: [steps]
+- **Snapshot / backup location reference**: [secure reference only; no credentials]
+- **Restore procedure, expected data loss, and approval**: [steps or N/A]
+- **External side effects / reconciliation**: [payments, messages, webhooks, or N/A]
 
-> *"Good day [Client PIC Name], this is to inform you that during the system release process at [Time], we detected an anomaly in [specify issue, e.g., database synchronization] causing latency to exceed our tolerance threshold.*
->
-> *To safeguard data integrity and your company's operational continuity, per our standard operating procedures we have triggered the rollback protocol to the previous stable version. The system is currently restored to normal and safe for use. We are analyzing the root cause and will reschedule the deployment once the fix is verified."*
+## 5. Recovery Validation
+
+- **Health and critical-flow checks**: [project-specific checks]
+- **Data integrity / reconciliation**: [checks or N/A]
+- **Monitoring and alert verification**: [checks]
+- **Recovery time target**: [project-approved target or none]
+- **Tested recovery time and test date**: [result; distinguish tested from estimated]
+- **Drill evidence / environment**: [reference]
+
+## 6. Communication and Follow-Up
+
+- **Stakeholders and approved channels**: [list]
+- **Status update owner and cadence**: [owner / cadence]
+- **Customer impact message**: [approved draft or reference]
+- **Incident review owner / due date**: [name / date]
+- **Approver and date of plan review**: [human name / date]
+
+This runbook does not authorize an agent to deploy, roll back, restore production data, or communicate with customers. Production actions and incident decisions remain with the named human operators.

@@ -3,7 +3,7 @@
 > **Purpose**: Simplified legal agreement for small-medium business clients  
 > **When**: M03 Legal/Commercial (after proposal accepted)  
 > **Duration**: 1-2 days to prepare and sign  
-> **Simpler than**: Enterprise SOW (no legal review needed)
+> **Legal review**: Format ringkas ini tetap memerlukan review hukum profesional sebelum ditandatangani.
 
 ---
 
@@ -45,6 +45,8 @@ generate low-stock alerts, and provide daily inventory reports.
 3. [Feature 3]
 4. [Feature 4]
 5. [Feature 5]
+
+**Approved scope baseline**: `SCOPE_STATEMENT.md`, version/date [version / YYYY-MM-DD]. Confirm this SOW's deliverables, exclusions, milestones, acceptance criteria, dependencies, and payment triggers match that version; document approved differences as CRs: [reference / N/A].
 
 **Deliverables**:
 - Staging environment (for testing)
@@ -123,7 +125,9 @@ generate low-stock alerts, and provide daily inventory reports.
 1. **Designated Single PIC**:
    - **Name**: [Client PIC Name]
    - **Title & Contact**: [Title] / [email@company.com] / [+628...]
-   - **Authority**: The sole authorized individual on client side with authority to approve design mockups, scope adjustments, and milestone acceptance. Instructions from other client staff hold no binding authority.
+   - **Operational authority**: The designated person may approve project scope, design, UAT, and change requests through the official channel. This role does not by itself authorize signing the contract.
+   - **Authorized contract signatory**: [Name / Title / basis of authority]. May be the same person as the operational PIC.
+   - **Backup PIC**: [Name / Title / email / phone]. Approval authority applies only when the Client has documented the delegation and its limits in writing.
 2. **Content**: Text, images, logos, branding guidelines
 3. **Access**: Credentials for existing systems (if integration needed)
 4. **Feedback**: Timely approval within SLA (3 business days)
@@ -224,9 +228,10 @@ Client decision: Approved / Deferred to Phase 2
 
 - [ ] SOW signed by both parties (dated copy filed)
 - [ ] Part I Project Charter approved (baseline dates locked)
-- [ ] Single PIC officially designated with contact info
+- [ ] Operational PIC authority and authorized contract signatory recorded; backup delegation documented
+- [ ] Scope version and any approved differences recorded above
 - [ ] NDA signed (required when Client data is sensitive / commercial; mandatory for Medium+)
-- [ ] DPA / Data Protection Addendum signed (required when personal data is processed)
+- [ ] DPA signed before personal-data processing, or `N/A` recorded when no personal data is processed
 - [ ] DP (Milestone 1) received in bank account — Date/Time: [YYYY-MM-DD HH:MM WIB] | Amount: Rp [Amount] | Confirmed By: [Name]
 
 `Gate-Decision: PENDING`

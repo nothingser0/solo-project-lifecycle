@@ -241,22 +241,25 @@ for pat in "${ARCHIVED_PATTERNS[@]}"; do
 done
 echo -e "  ${GREEN}✓${NC} archived generic patterns present under archive/patterns/"
 
-# 6. Runbook token budget (SKILL.md promises "≤~2k tokens" per runbook)
-# Warning-only: catches silent bloat that would defeat on-demand loading.
+# 6. Runbook token budget. A runbook carries steps + gate criteria, so the ceiling is
+# 4.5k: enough for every gate-checked item, tight enough to catch a module drifting into
+# prose. Detail that pushes past it belongs in docs/modules/deep-dives/.
+# Warning-only: it flags bloat, it must never block a legitimate gate contract.
+BUDGET=4500
 echo ""
-echo "6. Checking Runbook Token Budget (≤~2k each)..."
+echo "6. Checking Runbook Token Budget (<=~4.5k each)..."
 BUDGET_WARN=0
 for rb in docs/modules/*.md; do
     [ "$(basename "$rb")" = "README.md" ] && continue
     rb_bytes=$(wc -c < "$rb")
     rb_tok=$((rb_bytes / 4))
-    if [ "$rb_tok" -gt 2000 ]; then
-        echo -e "  ${YELLOW}⚠${NC} $rb ~${rb_tok} tokens (>2000) — move detail to docs/modules/deep-dives/"
+    if [ "$rb_tok" -gt "$BUDGET" ]; then
+        echo -e "  ${YELLOW}⚠${NC} $rb ~${rb_tok} tokens (>${BUDGET}) — move detail to docs/modules/deep-dives/"
         BUDGET_WARN=$((BUDGET_WARN + 1))
     fi
 done
 if [ $BUDGET_WARN -eq 0 ]; then
-    echo -e "  ${GREEN}✓${NC} all runbooks within the ~2k token budget"
+    echo -e "  ${GREEN}✓${NC} all runbooks within the ~4.5k token budget"
 else
     echo -e "  ${YELLOW}⚠${NC} $BUDGET_WARN runbook(s) over budget (non-blocking)"
 fi

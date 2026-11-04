@@ -617,16 +617,17 @@ def install_dependencies_with_fallback():
 
 ### Template Selection Matrix (Stack-Specific Harness Paths)
 
-| Template File | Next.js Path | Laravel Path | Django Path | Go Path |
-|---|---|---|---|---|
-| AGENTS.md | `templates/04-dev-execution/nextjs/AGENTS.md` | `templates/04-dev-execution/laravel/AGENTS.md` | `templates/04-dev-execution/django/AGENTS.md` | `templates/04-dev-execution/go/AGENTS.md` |
-| ARCHITECTURE.md | `templates/04-dev-execution/nextjs/ARCHITECTURE.md` | `templates/04-dev-execution/laravel/ARCHITECTURE.md` | `templates/04-dev-execution/django/ARCHITECTURE.md` | `templates/04-dev-execution/go/ARCHITECTURE.md` |
-| CONVENTIONS.md | `templates/04-dev-execution/nextjs/CONVENTIONS.md` | `templates/04-dev-execution/laravel/CONVENTIONS.md` | `templates/04-dev-execution/django/CONVENTIONS.md` | `templates/04-dev-execution/go/CONVENTIONS.md` |
+| Template File | Next.js Path | Laravel Path | Django Path | Go Path | Expo Path |
+|---|---|---|---|---|---|
+| AGENTS.md | `templates/04-dev-execution/nextjs/AGENTS.md` | `templates/04-dev-execution/laravel/AGENTS.md` | `templates/04-dev-execution/django/AGENTS.md` | `templates/04-dev-execution/go/AGENTS.md` | `templates/04-dev-execution/expo/README.md` |
+| ARCHITECTURE.md | `templates/04-dev-execution/nextjs/ARCHITECTURE.md` | `templates/04-dev-execution/laravel/ARCHITECTURE.md` | `templates/04-dev-execution/django/ARCHITECTURE.md` | `templates/04-dev-execution/go/ARCHITECTURE.md` | Generate from FSD boundaries; see Expo guide |
+| CONVENTIONS.md | `templates/04-dev-execution/nextjs/CONVENTIONS.md` | `templates/04-dev-execution/laravel/CONVENTIONS.md` | `templates/04-dev-execution/django/CONVENTIONS.md` | `templates/04-dev-execution/go/CONVENTIONS.md` | Generate from FSD and Expo guide |
 
 ### Extended Stack Scaffold Commands (Non-Primary Stacks)
 
 | Detected Stack | Scaffold Command | ORM/Migration Tool |
 |---|---|---|
+| Expo / React Native | `npx create-expo-app@latest <proj> --template <template compatible with FSD-locked SDK>`; pin the FSD `expo` package with npm and commit `package-lock.json` | Expo Router / SQLite or selected FSD data layer |
 | Remix | `npx create-remix@latest` | Prisma / Drizzle |
 | SvelteKit | `npm create svelte@latest` | Prisma / Drizzle |
 | Astro | `npm create astro@latest` | Prisma (API routes) |
@@ -697,3 +698,55 @@ terminal('git log -1')           -> Latest commit exists on staging branch
 ```
 
 Approval prompt to user: *"All core features have been developed and verified locally (Smoke Test PASS). Is this development output approved before we initiate the next phase?"*
+
+## Runbook Step Originals (moved 2026-11-04)
+
+The runbook now carries the condensed form of these steps. Original text verbatim:
+
+### STEP 3 (original)
+
+**STEP 3 — Version gate (MANDATORY).** Run `./scripts/verify/verify-framework-version.sh` (or `.ps1`). It checks the scaffold manifest type matches FSD, then lockfile vs FSD `Framework Versions (Pinned)`: **major.minor exact**. Current lockfile comparators: Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails, and Expo (Expo requires npm `package-lock.json` and runs `npx expo install --check` plus `npx expo-doctor@latest`). Tailwind v3/v4 is reported where applicable. Mismatch or missing comparator → FAIL. Other stacks in `STACK_SUPPORT_MATRIX.md` are tracked/recommended but are not M06 gate-ready until both scaffold/harness guidance and bash + PowerShell lockfile comparators exist. Never claim STEP 3 passed when the verifier says the pin is UNVERIFIED. Anti-overkill (`references/stacks/STACK_SUPPORT_MATRIX.md`): Small = no Docker/microservices; Medium = monolith (no Kafka/K8s); Large = modular monolith + DB + Redis. Drift → prune.
+
+### STEP 5 (original)
+
+**STEP 5 — Generate TODO.md** via `templates/04-dev-execution/TODO_TEMPLATE.md`. Read PRD/FSD/SITEMAP/COMPONENT_REQUIREMENTS/DESIGN_SPEC (or PROJECT_LITE.md). **100% Multi-Document Specification Decomposition (Anti-Bundling Standard)**:
+- **1-to-1 Screen Parity with SITEMAP (SCR-01..SCR-N)**: Every screen listed in `SITEMAP.md` MUST have an individual `M06-FE-xx` task. Compressing or bundling multiple screens into generic placeholders (e.g. "Core Screens") is strictly forbidden.
+- **Dedicated Auth & RBAC Tasks**: If authentication, sessions, or role guards are specified in FSD/SITEMAP, TODO MUST include explicit `M06-AUTH-xx` tasks (or `M06-SETUP-xx` / `M06-BE-xx`) for auth configuration, login/logout screens, and route middleware guards.
+- **UI Design System & Primitives (COMPONENT_REQUIREMENTS)**: When `COMPONENT_REQUIREMENTS.md` is present, reusable UI primitives (Button, Input, Badge, etc.) and composite patterns (Card, DataTable, Modal, ConfirmDialog) MUST be established in a dedicated sprint or prerequisite tasks before screen assembly.
+- **Database & Business Logic 1-to-1 Mapping**: 1 task per DB table/model migration + seeder idempotency (`M06-DB-xx`), and 1 task per major server action/business engine (`M06-BE-xx`).
+- **Enterprise WBS Phasing Scope Boundary**: For projects originating from Enterprise WBS Decomposition (`A01_WORK_BREAKDOWN_PHASING.md`), `TODO.md` MUST strictly scope tasks only for the **active contracted Phase** (e.g. Phase 1 MVP, 8–15 P0 features). Generating multi-phase monolithic TODO backlogs is strictly prohibited.
+- Exactly 7 closed categories across all scales: `M06-{SETUP|DB|BE|FE|INT|TEST|GATE}-xx` (sub-categories are expressed strictly via sprint headings/titles, no ad-hoc prefixes); mandatory `M06-SETUP-03` specs pre-read (gate-checked). Each task: **Verify** {stack cmd}, **Expected** {criteria}, **Evidence** {output}.
+- **Approval Protocol**: When the human replies with "approve", "approved", "acc", or "ok lanjut", the agent immediately marks `- [x]`, appends `Evidence: <raw output>`, and writes `Approved: YYYY-MM-DD by <name>`.
+- 🛑 **END TURN after writing TODO.md** — present task count and coverage mapping; wait for user confirmation BEFORE implementing the first task.
+
+### STEP 6 (original)
+
+**STEP 6 — Implement per TODO (DB → API → prototype).** **One task per turn**: implement → run `Verify` → audit 10-Check S.U.P.E.R review card & telemetry drift check (`patterns/architecture/SUPER_ARCHITECTURE_AND_ADAPTIVE_CONTROL_PATTERN.md`) → enforce agent execution guardrails (zero scratchpad comments, edit-over-create file hygiene per `patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`) → report Evidence → 🛑 **END TURN**. Human approves before `[x]` and the next task; `Approved: <date> by <name>` is **gate-enforced** (self-ticked tasks fail). Batch only when the user names task IDs.
+- **Evidence must resolve, not just be cited**: when a task produces a visible surface or a file artifact, run `python3 scripts/verify/check_evidence.py . --report artifacts/final-evidence.md` before claiming completion. A missing path, a 0-byte stub, or a relabelled report from an earlier run is a fabricated claim — the gate checks the `Approved:` line, not whether the file exists. State what you looked at and what you did **not** verify.
+- **Zero UI Invention from Scratch (1-to-1 Prototype Conversion)**: For every frontend screen task (`M06-FE-xx`), the agent MUST port the layout, component hierarchy, Tailwind styling, and micro-interactions directly from `docs/design/screens/<screen>.html`. Inventing divergent card styles (e.g. replacing dark/colored hero cards with plain white boxes), inconsistent filters, or unapproved layouts from memory is STRICTLY FORBIDDEN.
+- **Zero Spec Identifier Leaks in Customer UI**: Internal spec codes (`SCR-xx`, `REQ-xx`, `M06-FE-xx`, `FSD-xx`) MUST NEVER be rendered into user-facing headings, badges, labels, or subtitles. Strip all specification metadata during frontend component assembly.
+- **Anti-False-Verification Mandate (The 404 Route Defense)**:
+  - For every frontend route/screen task (`M06-FE-xx`), the `Verify` command MUST directly test that specific route via automated HTTP probe (e.g. `curl -fsSL -o /dev/null -w "%{http_code}" http://localhost:3000/<route>` or PowerShell `Invoke-WebRequest` asserting HTTP 200/307) or production build manifest check (`npm run build`).
+  - An agent is **STRICTLY PROHIBITED** from running unrelated unit tests (e.g. `npm test` on backend calculations) and presenting exit code 0 as evidence for a frontend UI task.
+  - A route returning **HTTP 404** or an unhandled client/server crash when visited is an immediate critical defect that blocks approval.
+- **DB & Seed Idempotency**: stack ORM migrations; pooling; FK-column indexes; reversible; **all seeder scripts MUST be 100% idempotent** (using deterministic static UUIDs / UPSERT / `ON CONFLICT DO NOTHING`) so executing the seeder 10x never produces duplicate records or violates unique constraints.
+- **API**: endpoints per FSD, Zod/schema validation + 3 pillars — Security: encryption, HttpOnly cookies, parameterized queries; Performance: N+1 prevention, caching, indexing, bounded pagination (`limit <= 100`); Resources: connection pooling (PgBouncer/Supavisor), streaming, memory.
+- **Frontend Mutation Guardrails**: all mutating forms MUST bind to loading/submitting states (`disabled={isSubmitting}`) with visual indicators to prevent client-side double submits and duplicate records.
+- **Concurrency, Deadlock Prevention & Hygiene**:
+  - Read-modify-write on stock/balance/counter/status MUST be atomic (tx + row lock, unique constraint, or CAS); webhooks idempotent.
+  - **Deadlock Prevention Protocol**: Any transaction acquiring row-level locks on multiple records across tables or rows MUST acquire locks in a globally deterministic order (strictly `ORDER BY id ASC` or deterministic primary key sort) to mathematically prevent database deadlocks (PostgreSQL error `40P01`).
+  - **Graceful Shutdown Protocol**: Server entrypoints and background workers MUST intercept `SIGTERM` and `SIGINT` signals to reject new incoming traffic, drain in-flight jobs/requests, and cleanly close database pools within a 10s grace timeout (prevents corrupted transactions during deploys).
+  - No comments that restate code, no stubs, no commented-out code. Details: deep dive.
+- **Prototype**: per FSD `Module 04 Handoff Strategy` (Levels 1-4); **UI 100% identical to frozen prototype**; static screens first (Sprint 3), data-backed after DB+API.
+- **5 UI states** per screen (idle/loading/success/error/empty).
+- **Zero Raw Browser Alerts Mandate**: Using `window.alert()`, `confirm()`, or `prompt()` is strictly forbidden as amateur AI slop. All notifications and user confirmations MUST use custom design-calibrated Toasts (e.g. Sonner/hot-toast) and styled Dialog Modals (with `backdrop-blur-sm`, `rounded-2xl`, and micro-interaction animations).
+- **Error Boundaries & Unhandled Exception Defense**: Frontend MUST implement nested and root Error Boundaries (`error.tsx` in Next.js / boundary component) with reset action to eliminate White Screen of Death; Backend MUST catch unhandled rejections with structured logging.
+- **Hydration-free UI (SSR stacks)**: if a view is correct without hydration, it must be built that way. No `Date.now()`/`new Date()`/`Math.random()`/`localStorage`/bare `toLocaleString()` during the initial render; every date/number formatter passes an explicit `locale` + `timeZone`; `'use client'` only on the smallest leaf that needs interaction, each one recorded in `VERIFY_LOCAL.md` §4C. Ladder: `references/technical/HYDRATION_FREE_RENDERING.md`; console proof required per `VERIFY_LOCAL.md` §4C.
+- **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in RUNBOOK_LOCAL.md; jobs → worker verified.
+- **Defect Triage Protocol (Bug vs CR Boundary)**:
+  - **Bug**: Functionality violates locked `PRD.md` / `FSD.md` / Acceptance Criteria $\rightarrow$ fixed immediately at zero cost.
+  - **Change Request (CR)**: Any modification of behavior or additional capability outside locked specs $\rightarrow$ diverted to `change-requests/CR-*.md` with fee & timeline impact; never implemented during sprint.
+
+### Pre-merge AI review callout (original)
+
+> **Pre-merge AI review (log in `AI_REVIEW_LOG.md`)**: review the actual diff against its TODO task and locked acceptance criteria; trace changed files and behavior to source requirement IDs; verify new dependencies/APIs against the selected stack's current official docs; inspect security-sensitive paths changed (auth, input, data access, secrets, external calls); run only the repository's applicable lint/typecheck/test/build commands and record exact output. Classify each finding (blocker / fix now / accepted risk / out of scope); fix blockers and in-scope defects, route scope changes through CR, and record accepted risks with owner/date. Review is a distinct pass from executing the task's `Verify` command.

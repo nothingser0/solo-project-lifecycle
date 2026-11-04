@@ -36,12 +36,22 @@
 > A citation with no matching file is a fabricated benchmark and fails `validate-gate.sh M04`.
 
 **Observations**:
-- **Colors**: Primary #[HEX], Secondary #[HEX], Neutrals [gray scale]
+- **Colors**: Primary #[HEX], Secondary #[HEX], Neutrals [gray scale] (Extract exact hex from image; zero raw neon hues like #FF5722)
 - **Typography**: [Font name], Weights [400/600/700], Sizes [14px body, 24px heading]
 - **Spacing**: Padding [Xpx], Gaps [Ypx], Margins [Zpx]
 - **Borders**: [Width] [Color], Radius [Xpx]
 - **Shadows**: [box-shadow values] or "None"
 - **Layout**: [Max width, grid columns, alignment]
+- **Component DNA & Micro-Patterns**:
+  - Hero Card Progress: [Segmented dashes / continuous bar / circular ring]
+  - Timeline/Calendar Structure: [Column-aligned Gantt grid / multi-track schedule / card reflow] (No fake full-width table rows)
+  - Action Density & Calm: [Max 1 action per card / clean checkmark / dropdown] (No button-crowded cards)
+  - Avatar Craft: [High-fidelity circular photos / soft borders / counter badge +N]
+  - Visual Assets & Card Imagery Extraction:
+    - Card Photos & Media: [Does the card feature property/product photos, cover banners, or thumbnail artwork? Yes/No - Aspect Ratio: e.g. 16:9 / 4:3 / rounded-2xl]
+    - Visual Asset Preservation Mandate: If the benchmark cards have photos or thumbnails, prototype and frontend code MUST preserve them using high-res image URLs (curated Unsplash direct links or local assets). Replacing rich photo cards with flat text-only boxes or empty grey rectangles is STRICTLY FORBIDDEN as AI Slop.
+    - Avatar Imagery: [Realistic photo avatars with subtle ring border / online indicator dot] (Zero harsh monochrome initials circles)
+    - Iconography Family: [Lucide / Heroicons / Tabler] (Must use 1 unified SVG icon library; no mixing disjoint styles or raw OS emoji)
 
 ---
 

@@ -277,6 +277,18 @@ terraform {
 
 ## Terraform Workflow
 
+### M06 Static Verification (Terraform Projects Only)
+
+Run from the Terraform root directory (or the selected environment directory in a monorepo):
+
+```bash
+terraform fmt -check -recursive
+terraform init -backend=false
+terraform validate
+```
+
+If the project has `.tftest.hcl` tests, review each test's `command` before running `terraform test`. Prefer `command = plan` for checks that must not provision infrastructure. Apply-mode tests can create real, billable resources: run them only with explicit project approval and isolated non-production credentials/account, and confirm cleanup behavior first. Skip Terraform checks when the project does not use Terraform.
+
 ### 1. Initialize
 ```bash
 terraform init

@@ -69,6 +69,30 @@ flowchart TD
     API -->|JSON Payload| User
 ```
 
+**Object storage decision**: [selected service, access, size/type validation, retention, and cache policy / N/A — no user-uploaded media]
+
+### 2.1a C4 System Views (Conditional)
+
+Add the views that make the architecture easier to understand when multiple deployable services, data stores, external systems, or trust boundaries are involved. System Context shows users and external systems around this product; Container shows the deployable applications, data stores, and their interactions. Add Component only when a container's internal structure needs clarification. Keep the views aligned with this DFD, the selected stack, and the threat model. Otherwise record `N/A — DFD is sufficient`.
+
+- System Context: [diagram / N/A with reason]
+- Container: [diagram / N/A with reason]
+- Component: [diagram / N/A with reason]
+
+### 2.1b Existing Repository Assessment (Conditional)
+
+Complete when extending or replacing an existing codebase. Cite evidence from source, configuration, tests, and deployment files; mark unverified claims `UNKNOWN`.
+
+| Area | Current state and evidence | Constraint or target change |
+|---|---|---|
+| Entry points, runtime, and framework | | |
+| Data stores, models, and migrations | | |
+| External integrations and trust boundaries | | |
+| Authentication and authorization | | |
+| Tests, build, and deployment | | |
+
+For greenfield work, record `N/A — no existing codebase`.
+
 ### 2.2 Entity Relationship Diagram (ERD)
 
 ```mermaid
@@ -135,9 +159,9 @@ sequenceDiagram
 Stack Decision LOCKED: [chosen stack]
 Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 
-> ⚠️ **M05 GATE ENFORCEMENT**: `validate-gate.sh M05` fails if `Stack Decision LOCKED:` appears without the 8
-> recorded questionnaire answers below, or if `Stack-Locked-by:` still contains brackets or template placeholders.
-> The agent asks the 8 questions; the human answers and locks the stack. Replace `[Human Name]` with the actual human name.
+> ⚠️ **M05 GATE ENFORCEMENT**: `validate-gate.sh M05` requires eight architecture inputs to be recorded before
+> the stack lock, and a named human in `Stack-Locked-by:`. Reuse confirmed answers from M01/M02 and cite their
+> source; ask the human only for missing or conflicting information. The human chooses and locks the stack.
 
 - Q1 Team Expertise: [answer]
 - Q2 Database Experience: [answer]
@@ -151,6 +175,7 @@ Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 ### Framework Versions & Ecosystem Libraries (Pinned)
 *(Populate directly from `./scripts/verify/check-package-versions.sh <stack>` — see the live-version STEP 0 in `docs/modules/05_ARCHITECTURE_SPECS.md`)*
 - **Framework**: [e.g., Next.js ^15.0.3 (App Router) / Laravel v13.x / Django ^6.1.1 / Go go1.27.1 / Rails ~8.1.4]
+- Expo: [For Expo/React Native only, exact `expo` npm package version, e.g. 55.0.12] (SDK: [Expo SDK version])
 - **Language / Runtime**: [e.g., Node.js 22 LTS / PHP ^8.3 / Python >=3.12 / Go 1.27 / Ruby >=3.2.0]
 - **Database Engine**: PostgreSQL 16+ (or MySQL / SQLite appropriate to scale)
 - **ORM / Driver**: [e.g., Drizzle ORM / Prisma / Eloquent / GORM / psycopg]
@@ -170,8 +195,7 @@ Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 
 | Level | Meaning | Conversion effort |
 | :---: | :--- | :--- |
-| **1** | AI-generated prototype code (Workflow A) — v0/Bolt/Lovable export, cleaned and wired | Low: refactor to conventions |
-| **2** | Figma/designer export (Workflow B) — components/screens extracted from design tool | Medium: design → components |
+| **1** | Interactive prototype code — HTML/component export in `docs/design/screens/`, cleaned and wired | Low: refactor to conventions |
 
 **Conversion Plan**:
 1. [Source artifact → target path, e.g. "Extract 12 components from `docs/design/screens/` → `src/components/`"]
@@ -348,9 +372,25 @@ CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
 
 ---
 
-## 4. Multi-Tenant Row-Level Security (RLS) Architecture
+## 4. Role-Based Access Control (RBAC) & Row-Level Security (RLS) Architecture
 
-*(Applicable when building multi-tenant SaaS or exposing database directly to client SDKs. For single-tenant internal apps or backend-only APIs, document application-layer authorization and mark database RLS N/A)*
+### 4.0 Granular RBAC Role Capability & Limitation Matrix (Boleh Apa vs DILARANG Apa)
+
+> ⚠️ **MANDATORY RBAC DISCIPLINE (Gate-Enforced in M05 & M06)**:
+> Simply listing role names without detailing exact boundaries is strictly prohibited. Every user persona/role defined in the system MUST have explicit, unambiguous definitions of what they CAN do, and what they are STRICTLY FORBIDDEN from doing or seeing.
+
+| Role Name | Persona & Scope | Boleh Dilakukan (Allowed Capabilities) | DILARANG / DISEMBUNYIKAN (Forbidden & Masked) | Dedicated Route / Shell |
+|:---|:---|:---|:---|:---|
+| **Admin / Owner** | Full system administrator & business owner | • Akses penuh semua data operasional & finansial<br/>• Konfigurasi tarif, rekening bank, & profil bisnis<br/>• Manajemen akun staff, hak akses, & invite role<br/>• Hapus/terminasi data entitas utama | *Tidak ada pembatasan operasional* | `/admin/overview` atau `/dashboard` |
+| **Manager / Supervisor** | Operational supervisor & shift lead | • Review antrean tiket, approval override diskon/void<br/>• Manajemen stok barang / inventaris kamar<br/>• Input transaksi dan validasi operasional | ❌ **DILARANG**: Mengubah data rekening bank penerima dana, menghapus profil bisnis, atau mengubah tarif global | `/manager/dashboard` |
+| **Staff / Operator / Kasir** | Frontline operator / penjaga operasional | • Input pencatatan harian (meter kWh, stok opname, tiket rusak)<br/>• Update status kamar/tiket (misal: Bersih / Siap Huni)<br/>• Melihat direktori kontak darurat penyewa/klien | ❌ **DILARANG & DISEMBUNYIKAN (UI MASKED)**:<br/>• Kartu omzet, total laba bersih, & laporan finansial buku kas<br/>• Mengubah tarif sewa pokok atau rekening bank<br/>• Menghapus data penyewa atau histori audit | `/staff` atau `/ops/workspace` |
+| **Member / Customer / Tenant** | End-user / penghuni / pembeli | • Melihat data profil & riwayat transaksi pribadi<br/>• Mengakses invoice publik miliknya via token rahasia<br/>• Mengajukan tiket keluhan / komplain perbaikan | ❌ **DILARANG TOTAL**: Mengakses data kamar/penyewa lain, melihat dashboard internal, atau mengakses API mutasi kas | `/dashboard` (Member) atau `/invoice/:token` |
+
+### 4.0b Backend Enforcement vs Frontend UI Masking Law
+1. **Server-Side Authorization**: Every Server Action, Route Handler, and API endpoint MUST verify the actor's role. A low-privilege token calling a restricted mutation MUST immediately throw a `403 Forbidden` error. Never rely on hiding buttons in the browser.
+2. **Frontend UI Masking**: Sensitive financial metrics (Revenue, Gross Margin, Net Profit, Bank Account Credentials) must never be sent to the client browser of lower-privileged roles. Components must wrap sensitive cards in `<RoleGuard allowed={['Owner', 'Admin']}>` or render role-specific operational dashboard views.
+
+---
 
 ### 4.1 Security Definer Helper Function Hardening
 ```sql
@@ -686,9 +726,9 @@ placeholder rows before sign-off.*
 
 | Control | Decision for this project | Implementation reference |
 | :--- | :--- | :--- |
-| Data-at-rest encryption | AES-256-GCM envelope encryption for PII/sensitive columns | [key-management ADR] |
-| Password hashing | Argon2id (or bcrypt cost ≥12 where Argon2id is unavailable) | application auth layer |
-| Transport | TLS 1.3 terminating at [edge/proxy]; HSTS enabled | deployment config |
+| Data-at-rest encryption | [Managed storage encryption / application-level AES-256-GCM where data classification and threat model warrant it / N/A with reason] | [provider config / key-management ADR] |
+| Password hashing | [Argon2id or maintained framework/provider-managed password hashing; N/A if authentication is delegated] | [auth layer / provider] |
+| Transport | [Production TLS configuration for the chosen host; add HSTS only when domain and rollout support it] | deployment config |
 | OWASP Top 10 | [Which items are in scope and how each is mitigated — or `N/A — <reason>`] | [mechanism: query parameterization, output encoding, CSRF token, …] |
 | Rate limiting | [per-IP + per-account limits on auth and mutation routes] | [middleware / gateway] |
 | Session/token policy | HttpOnly + Secure + SameSite cookies; rotation on privilege change | auth layer |
@@ -698,9 +738,17 @@ placeholder rows before sign-off.*
 | Idempotency (write safety) | `Idempotency-Key` on every financial/stock mutation | §3 `idempotency_keys` |
 | In-Memory Caching (Read Scalability) | [Redis / Keyv cache layer, TTL policy, cache invalidation — or `N/A — low traffic CRUD`] | [cache middleware / client] |
 | Asynchronous Queue / Worker | [BullMQ / Celery / Laravel Queue / QStash for PDF, bulk email, webhook processing — or `N/A — synchronous CRUD`] | [queue worker config / service] |
-| Edge DDoS & WAF Protection | Cloudflare Proxy (Orange Cloud), WAF Managed Challenge, Edge Rate Limiting, Authenticated Origin Pulls | [`patterns/security/EDGE_SECURITY_CLOUDFLARE.md`](../../patterns/security/EDGE_SECURITY_CLOUDFLARE.md) |
+| Edge DDoS & WAF Protection | [Selected host/provider control or `N/A — <reason>`] | [provider config / reason] |
 | Environment Secrets Validation | Typed `.env.example` schema with boot-time validation (Zod / @t3-oss/env-nextjs / Pydantic) | `src/env.ts` or config schema |
-| Disaster Recovery & Backup SLA | Target RPO ≤ 24h (WAL/daily snapshot); Target RTO ≤ 2h cold restore on secondary host | deployment & ops runbook |
+| Disaster Recovery & Backup SLA | [RPO / RTO derived from business impact, verified backup/restore path, or `N/A — <reason>`] | deployment & ops runbook |
+
+### 7.1 Security Requirement Traceability
+
+Map each consumed threat and security requirement to its design control and planned verification. Use the same threat IDs in the STRIDE model and M07 security audit.
+
+| Threat / Requirement ID | FSD control and enforcing component | Planned M07 verification | Owner / status |
+| :--- | :--- | :--- | :--- |
+| [T-... / SEC-...] | [control + component] | [test, review, or explicit rationale] | [owner / status] |
 
 ---
 
@@ -721,12 +769,11 @@ placeholder rows before sign-off.*
   | SCR-003 | `/[resource]` | [e.g., `Table`, `EmptyState`, `Toast`] | [5-state matrix → loading/error/empty branches] |
 
 - **Design-token transfer**: [How `DESIGN.md` tokens land in code — Tailwind theme, CSS custom
-  properties, or framework equivalent], including the anti-slop constraints (no gradients,
-  shadows ≤4px, WCAG ratios preserved).
+  properties, or framework equivalent], including the anti-slop constraints (shadows ≤4px,
+  WCAG ratios preserved).
 - **Component mapping**: [React → Vue / Svelte / Blade / Jetpack Compose, or `N/A — prototype
   already produced framework-native components`]. One row per primitive that changes shape.
-- **Prototype workflow used in M04**: [A | B | C | D | E] — determines whether screens exist as
-  Markdown specs only or as rendered artifacts under `docs/design/screens/`.
+- **Prototyping in M04**: Interactive code prototype in `docs/design/screens/` with shared `css/styles.css` and `js/app.js`.
 - **Compatibility level for M06 STEP 0**: [1–4, with the one-line reason M06 reads].
 
 ---
@@ -741,9 +788,11 @@ placeholder rows before sign-off.*
 - [ ] **4. Accurate Data Types**: Monetary values avoid floating-point types (`BIGINT` or `NUMERIC`), and quantities support domain-required fractional precision.
 - [ ] **5. 100% Foreign Key Indexes**: Every column with a `REFERENCES` constraint has an explicit `CREATE INDEX`.
 - [ ] **6. Audit Trail Protection**: State journals, movement ledgers, and `audit_logs` protect historical records against un-audited `UPDATE` and `DELETE` operations.
-- [ ] **7. API Contract Completeness**: ≥10 endpoint headings documented as `#### <VERB> /path` (gate-enforced; M05 STEP 4), each with auth, request schema, and a success/error pair; `Idempotency-Key` shown on every financial/stock mutation.
+- [ ] **7. API Contract Completeness**: Every in-scope API operation documented as `#### <VERB> /path`, each with auth, request schema, and success/error behavior; or record `N/A — no application API`. `Idempotency-Key` is specified for applicable high-risk mutations.
 - [ ] **8. Security Blueprint (§7)**: Every control row resolved (implemented or `N/A — <reason>`); no blank rows. Password hashing, at-rest encryption, rate limiting, and audit logging each have an implementation reference.
 - [ ] **9. Module 04 Handoff (§8)**: Screen → route → component map covers 100% of `DESIGN_SPEC.md` screens; locked stack matches §2 verbatim; compatibility level recorded for M06 STEP 0.
+- [ ] **10. Architecture Review (before sign-off)**: PRD/scope and M04 handoff trace to this FSD; decisions and diagrams agree; assumptions and open items are explicit; a developer can implement data/API/security/failure behavior without guessing. For an existing repository, proposed changes account for the evidence and constraints in §2.1b.
+- [ ] **11. C4 Views (conditional)**: Context/Container views are present when needed to clarify the system, or §2.1a records why the DFD is sufficient.
 
 
 ---

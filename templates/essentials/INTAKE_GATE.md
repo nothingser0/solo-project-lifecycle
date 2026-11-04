@@ -15,7 +15,7 @@
 2. **Success Metric** — the single measurable number that defines "done" (e.g., "10 users can create a task")
 3. **Must-Have Features & Explicit Non-Features** — the 1–5 P0 features (focused core loop) AND at least 1 thing NOT built
 4. **Time Capacity** — hours per week × weeks available (drives scope pruning)
-5. **Login or Sensitive Data** — `yes | no` (yes → UU PDP applies from day one; also raises blast-radius tier)
+5. **Login or Personal/Sensitive Data** — `yes | no` (yes → identify personal and sensitive data, apply privacy/security safeguards, and record the scope; this alone does not trigger Enterprise)
 6. **Legacy Core Replacement** — `yes | no`: does the work replace or integrate a system whose data/behaviour a licensed vendor or the client's own team currently owns (core banking, ERP, hospital HIS)? `yes` → **non-delegable: advisory only (A00–A04), never solo coding**, at any size. A capacity risk-acceptance file cannot open this block.
 
 ---
@@ -26,7 +26,7 @@ These three decide the tier when the answer is not "none". They are **not option
 
 7. **External Integrations** — which third-party services/webhooks the MVP calls (`none`, or a comma-separated list: Midtrans, Xendit, WhatsApp, SendGrid, …). **Any one integration raises the tier to Medium; 4+ raise it to Large.**
 8. **Branch / Tenant Hierarchy** — `no | yes` (multi-branch, multi-tenant, or franchise hierarchy). `yes` → Large.
-9. **Statutory Compliance** — `none`, or the regulation that applies (OJK, BI, UU PDP, ISO 27001, medical devices). Anything other than `none` → Enterprise, which is **advisory only (A00–A04), never solo coding**.
+9. **Privacy and Formal Assurance** — state baseline privacy separately from a formal obligation, using one of these unambiguous forms: `none`; `baseline privacy (UU PDP); formal assurance: none`; or `baseline privacy (UU PDP); formal assurance: required — [specific external audit/certification/sector approval]`. Baseline privacy duties require safeguards but do not alone change scale or block solo coding. Only `formal assurance: required` with a specific non-delegable obligation routes to Enterprise advisory (A00–A04). Phrases such as “no audit required” must never trigger Enterprise.
 
 Answer `none` / `no` explicitly when there is nothing to declare. Leaving the line out fails the Intake Gate.
 
@@ -43,7 +43,7 @@ Answer `none` / `no` explicitly when there is nothing to declare. Leaving the li
 - Intake-Sensitive-Data: [yes | no]
 - Intake-Integrations: [none | comma-separated list]
 - Intake-Branch-Hierarchy: [no | yes]
-- Intake-Compliance: [none | OJK | BI | UU PDP | ISO 27001 | ...]
+- Intake-Compliance: [none | baseline privacy (UU PDP); formal assurance: none | baseline privacy (UU PDP); formal assurance: required — (specific external audit/certification/sector approval)]
 - Intake-Legacy-Core: [yes | no]
 - Intake-Status: [ANSWERED | UNKNOWN]
 ```

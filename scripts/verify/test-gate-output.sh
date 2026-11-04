@@ -67,7 +67,7 @@ EOF
     printf 'placeholder for reference-1-dashboard.png\n' > "$d/docs/design/inspiration/reference-1-dashboard.png"
     printf 'Selected Benchmark: Won by reference-1-dashboard.png\npalette #111111 #ffffff\n' > "$d/docs/design/inspiration/notes.md"
     printf 'SCR-003 SCR-004\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'c')" > "$d/docs/specs/SITEMAP.md"
-    printf '# DESIGN_SPEC\n\nPrototyping-Workflow: A\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Motion & Interaction\nSpring physics and smooth transitions\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
+    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Motion & Interaction\nSpring physics and smooth transitions\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
     mkdir -p "$d/docs/design/screens"
     touch "$d/docs/design/screens/SCR-003.html"
     printf '# LOGO_DESIGN_BRIEF\nSelected benchmark: Linear\n%s\n' "$(head -c 300 /dev/zero | tr '\0' 'e')" > "$d/docs/specs/LOGO_DESIGN_BRIEF.md"
