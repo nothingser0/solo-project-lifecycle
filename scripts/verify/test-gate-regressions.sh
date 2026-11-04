@@ -112,6 +112,29 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m02_scope <name> <PASS|FAIL> <scope-content>
+expect_m02_scope() {
+    local name="$1" want="$2" scope="$3"
+    local dir="$WORK/m02ac"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '%b' "$scope" > "$dir/docs/pm/SCOPE_STATEMENT.md"
+    # Unrelated M02 prerequisites, so the assertion isolates the criteria/OOS rule.
+    # Non-stub (the gate rejects near-empty files): real prose, kept short.
+    printf '# Stakeholders\n\nThe buyer sponsors the work and signs off each milestone. The\noperations lead supplies the domain rules and reviews the workflow. No third\nparty has approval authority, so decisions resolve within one working day.\n' > "$dir/docs/pm/STAKEHOLDER_MAP.md"
+    printf '# Communication Plan\n\nA written status update goes out every Friday covering what\nshipped, what slipped and the next milestone. Blocking questions are raised the\nsame day rather than saved for the weekly call.\n' > "$dir/docs/pm/COMMUNICATION_PLAN.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M02 2>&1 || true)"
+    echo "$out" | grep -qE "Gate validation FAILED" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M02 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M02 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
 # expect_approval <name> <BLOCKED|ALLOWED> <todo-content>
 expect_approval() {
     local name="$1" want="$2" todo="$3"
@@ -866,6 +889,16 @@ expect_m01 "Medium intent, no PROJECT_STATE.md" FAIL "EMPTY" "$M01_OK"
 M01_PROV='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: PROVISIONAL_PENDING_M00\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo'
 expect_m01 "PROVISIONAL_PENDING_M00 (no final GO)" PROVISIONAL "$INTAKE_MEDIUM" "$M01_PROV"
 
+# Acceptance-criteria binding: `## Acceptance Criteria` was checked as a heading only, so a
+# scope whose entire criteria section read "(the acceptance criteria are obvious)" locked and
+# passed. A locked scope promises every Must-Have is testable.
+M02_VAGUE_AC='# Scope\n\n## User Stories\n\n- x\n\n## Acceptance Criteria\n\n(the acceptance criteria are obvious)\n\n## Out-of-Scope\n\n- Offline mode is not supported in the MVP\n- Multi-currency pricing is excluded\n- Native mobile apps are out of scope\n\n## Must-Have\n\n| ID | Requirement | Priority |\n|---|---|---|\n| **F-01** | a | Must |\n| **F-02** | b | Must |\n| **F-03** | c | Must |\n| **F-04** | d | Must |\n| **F-05** | e | Must |\n| **F-06** | f | Must |\n\nNo self-approval for mutations/approvals.\n\nScope-Lock-Decision: LOCKED\nScope-P0-Count: 6\n\n✅ legend\n'
+M02_TESTED_AC='# Scope\n\n## User Stories\n\n- x\n\n## Acceptance Criteria\n\n- [ ] Given a user, when they submit F-01, then response is 200\n- [ ] Given a user, when they submit F-02, then response is 200\n- [ ] Given a user, when they submit F-03, then response is 200\n- [ ] Given a user, when they submit F-04, then response is 200\n- [ ] Given a user, when they submit F-05, then response is 200\n- [ ] Given a user, when they submit F-06, then response is 200\n\n## Out-of-Scope\n\n- Offline mode is not supported in the MVP\n- Multi-currency pricing is excluded\n- Native mobile apps are out of scope\n\n## Must-Have\n\n| ID | Requirement | Priority |\n|---|---|---|\n| **F-01** | a | Must |\n| **F-02** | b | Must |\n| **F-03** | c | Must |\n| **F-04** | d | Must |\n| **F-05** | e | Must |\n| **F-06** | f | Must |\n\nNo self-approval for mutations/approvals.\n\nScope-Lock-Decision: LOCKED\nScope-P0-Count: 6\n\n✅ legend\n'
+M02_JUNK_OOS='# Scope\n\n## User Stories\n\n- x\n\n## Acceptance Criteria\n\n- [ ] Given a user, when they submit F-01, then response is 200\n- [ ] Given a user, when they submit F-02, then response is 200\n- [ ] Given a user, when they submit F-03, then response is 200\n- [ ] Given a user, when they submit F-04, then response is 200\n- [ ] Given a user, when they submit F-05, then response is 200\n- [ ] Given a user, when they submit F-06, then response is 200\n\n## Out-of-Scope\n\n- 1\n- 2\n- 3\n\n## Must-Have\n\n| ID | Requirement | Priority |\n|---|---|---|\n| **F-01** | a | Must |\n| **F-02** | b | Must |\n| **F-03** | c | Must |\n| **F-04** | d | Must |\n| **F-05** | e | Must |\n| **F-06** | f | Must |\n\nNo self-approval for mutations/approvals.\n\nScope-Lock-Decision: LOCKED\nScope-P0-Count: 6\n\n✅ legend\n'
+expect_m02_scope "vague acceptance criteria blocked" FAIL "$M02_VAGUE_AC"
+expect_m02_scope "testable criteria for every Must-Have pass" PASS "$M02_TESTED_AC"
+expect_m02_scope "junk out-of-scope placeholders blocked" FAIL "$M02_JUNK_OOS"
+
 # Evidence binding: a 4.0 dimension is a claim of near-certainty. An all-4.0 brief was the
 # cheapest possible fabrication (190 bytes, no research) and it passed the gate; a cited data
 # point is what a Confidence marker cannot fake. Unbacked high scores are forced to 3.0, which
@@ -1451,6 +1484,10 @@ expect_gate_scaffold() {
             # Pad to 7 counted Must rows (the template ships fewer than the Medium floor).
             awk 'BEGIN{done=0} /^\| \*\*F-/ {n++} {print} /^$/ && !done && n>0 {print "| **F-901** | Fallback feature A | Must |"; print "| **F-902** | Fallback feature B | Must |"; done=1}' \
                 "$scope" > "$scope.tmp" && mv "$scope.tmp" "$scope"
+            # Same reasoning for criteria: the fixture pads F-901/F-902 to reach the Medium
+            # band, so it must ship a criterion for them or it asserts a scope lock on features
+            # with no acceptance test - exactly what the AC binding rule forbids.
+            sed -i 's|^# Scope|# Scope\n\nAC-F-901: Given a user, when they use fallback A, then the response is 200 with 0 errors\nAC-F-902: Given an admin, when they use fallback B, then the record is created and listed|' "$scope" 2>/dev/null || true
             mkdir -p "$dir/docs/governance"
             cp "$REPO/templates/03-governance/RACI_MATRIX.md" "$dir/docs/governance/RACI_MATRIX.md"
             cp "$REPO/templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md" "$dir/docs/pm/COMMUNICATION_PLAN.md"

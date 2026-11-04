@@ -140,6 +140,27 @@ Satu story menyatakan satu hasil bernilai bagi pengguna. Bila story terlalu besa
   - [ ] Given [scanned SKU], when product is added to cart, then system validates local stock balance and renders price formatted in IDR.
   - [ ] Given [completed transaction], when cashier submits payment, then stock balance decrements atomically and receipt data is emitted.
   - [ ] Edge Case: Given [offline network state], when transaction is completed, then payload is queued in local IndexedDB with unique UUIDv7 idempotency key.
+- **Rule**: every **P0 (Must)** row in the feature table needs at least one criterion here, in
+  `Given …, when …, then <measurable outcome>` form. The gate counts Must-Have rows against
+  criterion lines, so a feature with no criterion blocks the scope lock.
+
+#### Feature F-03: [Feature Name, e.g., Primary Operational Workflow]
+- **User Story**: As a [role], I want to [action], so that [benefit].
+- **Acceptance Criteria**:
+  - [ ] Given [valid input], when the primary workflow is submitted, then the record is persisted and the list view reflects it on reload.
+  - [ ] Edge Case: Given [concurrent edit by another user], when both submit, then the second write is rejected with `CONFLICT` and no data is lost.
+
+#### Feature F-04: [Feature Name, e.g., Billing / Subscription Engine]
+- **User Story**: As a [role], I want to [action], so that [benefit].
+- **Acceptance Criteria**:
+  - [ ] Given [an active subscription], when the renewal webhook arrives, then the period extends once and exactly one invoice row is created.
+  - [ ] Edge Case: Given [a duplicate webhook delivery], when it is processed, then no second invoice is created (idempotent).
+
+#### Feature F-05: [Feature Name, e.g., Data Export / Offboarding]
+- **User Story**: As a [role], I want to [action], so that [benefit].
+- **Acceptance Criteria**:
+  - [ ] Given [an owner account], when they request an export, then a CSV is produced with the declared columns and 0 unescaped formula-injection prefixes.
+  - [ ] Edge Case: Given [an export exceeding the row limit], when requested, then the response is a queued job reference instead of a timeout.
 
 ---
 
