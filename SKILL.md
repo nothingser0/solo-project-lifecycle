@@ -1,8 +1,8 @@
 ---
 name: solo-project-lifecycle
 description: Lightweight SDLC framework for solo devs and small teams, from idea to release. Use for new projects (MVP, SaaS, client work) that need phase structure, document templates, quality gates, and post-launch A/B test analysis. Do NOT use for one-off throwaway scripts, single-file bug fixes, or routine coding syntax questions.
-version: 1.1.0
-updated: 2026-11-03
+version: 0.1.0
+updated: 2026-11-04
 ---
 
 # Solo Project Lifecycle
