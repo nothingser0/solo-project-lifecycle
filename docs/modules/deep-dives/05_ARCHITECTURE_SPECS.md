@@ -289,3 +289,95 @@ live script is a stub-check (≥40B); `MinSize` here shows the runbook's *target
    lines on purpose, because a leftover one is read as a declared pin and fails against the
    lockfile of a different stack.
 The parser exists in both `.sh` and `.ps1`; keep them in sync when adding a stack.
+
+## Full Execution Steps 0-5 (moved from the runbook, 2026-11-04)
+
+The runbook now carries the condensed steps. This is the original text verbatim, kept so no
+clause is lost when the condensed form is ambiguous.
+
+### STEP 0: Version Check (MANDATORY FIRST)
+
+Run real-time version check against official registries (never trust training-data versions):
+
+```bash
+./scripts/verify/check-package-versions.sh <nextjs|expo|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+```
+
+or Windows:
+
+```powershell
+.\scripts\verify\check-package-versions.ps1 -Framework <nextjs|expo|laravel|django|go|fastapi|rails|mern|aspnet|spring|serverless|flutter|remix|astro|sveltekit|nuxt>
+```
+
+> Stack list source of truth: `references/stacks/STACK_SUPPORT_MATRIX.md`. A **PRODUCTION** stack
+> there must be queryable by both scripts — if yours is missing, report the gap (rule 7).
+
+- Pin the proven stable version; if a bleeding-edge major breaks the ecosystem (Tailwind v4, Zod v4), pin the stable one explicitly.
+- **Breaking Changes & Documentation Sync**: The agent must inspect official release notes / migration guides for the chosen framework major version (via web search/docs check) and record the authoritative documentation URL and breaking change notes in `docs/specs/FSD.md` to prevent training-data deprecation errors in M06.
+- Transcribe agreed versions **verbatim** into the `Framework Versions (Pinned):` bullet block of
+  `docs/specs/FSD.md` (M06 gate `verify-framework-version.sh` reads it).
+- **Machine-read — do not reformat**: keep the heading colon and the `- <Package>: <version>` bullets; delete stacks you did not lock (a stale `- Django:` line in a Next.js project fails M06, as does a table).
+
+### STEP 1: Resolve Architecture Inputs (BLOCKS STACK LOCK)
+
+**Existing codebase (conditional)**: If this project extends or replaces an existing repository, inspect its entry points, runtime/configuration, data stores and models, external integrations, authentication boundaries, tests, and deployment path before proposing the target design. Cite files or commands as evidence; mark anything unverified `UNKNOWN`. Record the current state, constraints, and required changes in the FSD architecture section. Use `patterns/architecture/LEGACY_MODERNIZATION_STRANGLER_PATTERN.md` when incremental replacement is needed. For a greenfield project, record `N/A — no existing codebase`.
+
+Review M01/M02 decisions, `PROJECT_STATE.md`, the approved scope, and M04 design before asking anything. Reuse confirmed answers and record their source. Ask only targeted questions for missing or conflicting decisions that materially affect stack, data, deployment, scale, or compliance; use the questionnaire below as a prompt bank, not a second intake interview:
+**Team Expertise · Database Experience · Deployment Topology · Expected Scale (Year 1) · Data Model Characteristics · DevOps Complexity Tolerance · Critical Feature Priority · Compliance Requirements**
+
+Present 2–3 viable options with trade-offs when the stack remains undecided. The human selects and records the stack lock; carry forward any earlier decisions that remain valid.
+
+### STEP 2: Tech Stack Justification & Ecosystem Libraries Locking
+
+Justify the chosen stack, name the **alternatives rejected with reasons**, and align topology with budget and scale. Content must adapt to the stack (PostgreSQL → SQL DDL, MongoDB → Mongoose, Laravel → Eloquent migrations, Django → ORM — never generic AI schemas; anti-patterns in the deep dive).
+
+- **Ecosystem libraries & auth**: lock only the companion libraries M06 will actually install, per product need: authentication & session, validation/serialization, state management & data fetching, access control (RBAC/ReBAC per `patterns/security/ACCESS_CONTROL_PATTERNS.md`), and UI primitives — the last one derives from the already-approved M04 inventory; never introduce a second UI system here. Per-framework candidate lists: `templates/03-architecture-specs/FSD_TECHNICAL_TEMPLATE.md`.
+- **Prefer the framework's own capability** when it meets the requirement; record `N/A — <reason>` for each category the product does not need.
+
+**Risk-triggered security and vendor references**: Load `patterns/security/THREAT_MODELING_STRIDE_PATTERN.md` and the relevant security pattern when the product handles personal/sensitive data, payments, public APIs, multi-tenant access, or privileged roles; use the project data classification and threat model to select controls. For a third-party service, first assess data handled, failure impact, exit path, and cost in the vendor/build-vs-buy decision. After the stack and provider are chosen, consult that provider's official skill or documentation for integration details; vendor-specific guidance does not replace the project's threat model or security review.
+
+**C4 views (conditional)**: Add a C4 System Context and/or Container view when multiple deployable services, data stores, external systems, or trust boundaries make the system shape hard to understand from the DFD. Use a Component view only when a container's internal structure needs clarification. Keep diagrams consistent with the selected stack, DFD, and threat model; otherwise record `N/A — DFD is sufficient`.
+
+### STEP 3: Database Schema & Object Storage Design (ERD, DDL & Media Architecture)
+
+- **Visual ERD (Mermaid)**: Wajib memuat diagram relasi visual `erDiagram` (Mermaid) yang menggambarkan kardinalitas (one-to-many, many-to-many) antar entitas inti.
+- **DDL & Performance Indexes**: Tables, PK/FK, CHECK constraints, composite indexes pada kolom query/foreign keys (`idx_*`) — syntax per chosen DB.
+- **Object Storage & Media Architecture**:
+  - If the product accepts user-uploaded media, choose a storage location and define access, size, type validation, retention, and delivery behavior. Otherwise record `N/A — no user-uploaded media`.
+  - In the FSD, record this in `Object storage decision`; in `PROJECT_LITE.md`, include the same decision in the architecture summary.
+  - Set file size limits from the product, provider, and abuse risk. Validate content type and size server-side. Choose cache headers by access level; private user data must not inherit public immutable caching.
+  - Keep large binary payloads out of relational columns by default; document a justified exception if inline storage is appropriate.
+- **Deletion & Retention Semantics**: Define retention and deletion per data class and legal/product need. Use soft-delete only when restoration or tombstone behavior is required; immutable financial/audit records should use explicit reversal/correction records where appropriate. Add a partial unique index only when the product permits reusing a value after soft-delete.
+- **Connection Management**: For serverless or highly concurrent runtimes, follow the selected database provider's current pooling and connection-limit guidance. Document migration and runtime connection paths separately when they differ.
+- Audit fields and retention: choose fields from the entity lifecycle and traceability needs; do not add `updated_at` or soft-delete semantics to immutable records without a reason.
+- Multi-tenant isolation (RLS / schema / DB-per-tenant) if applicable.
+- `idempotency_keys` or an equivalent idempotency mechanism for financial/stock mutations when retries could duplicate state changes.
+- **Caching**: Add a cache only for measured or expected read pressure; record consistency and invalidation rules, or `N/A — no cache needed at this scale`.
+- **Asynchronous Processing**: Define a durable queue for work that can outlive a request or needs retry/isolation; otherwise record `N/A — request-bound work is sufficient`.
+- **Recovery & Backup Targets (RPO/RTO)**: Set recovery targets from the business impact of data loss and downtime, then choose backups and restore procedures that fit the budget and operating model. Treat RPO ≤24h / RTO ≤2h as examples, not defaults.
+
+### STEP 4: API Contracts & Realtime Transport
+
+- Document every in-scope API operation from the requirements and wireflows; do not invent endpoints to meet a count. For each operation record method/path (or protocol operation), auth, idempotency where needed, request/response schema, and success/error behavior. If there is no application API, record `N/A — no application API`.
+- **Mandatory Pagination & Hard Cap Limit**:
+  - Every collection/list endpoint MUST enforce bounded pagination (default: `limit=20`, hard maximum `MAX_LIMIT=100`). Unbounded queries (`SELECT * FROM table` without `LIMIT`) are strictly prohibited to prevent memory exhaustion (OOM).
+  - High-volume data feeds (activity feeds, transactions, chat history) MUST specify cursor-based pagination over deep offset pagination.
+- **Rate Limit & Cost Ceilings Guardrails**:
+  - Sensitive endpoints (Auth, OTP email, AI inference, file upload) MUST specify rate limit boundaries (e.g., max 5 requests/min per IP/user) to prevent billing shocks on third-party SaaS APIs.
+- **Realtime & Offline Transport Architecture** (if applicable: collaborative canvas, live chat, notifications):
+  - Explicit transport protocol: WebSocket / Supabase Realtime / Server-Sent Events (SSE). Polling loops (`setInterval`) are forbidden for realtime flows.
+  - Reconnection & state recovery strategy on network drop.
+- Use one heading per HTTP endpoint (`#### POST /api/v1/...`) so each contract can be reviewed independently.
+
+### STEP 5: Security Blueprint, Secrets Validation & Module 04 Handoff (gate-enforced)
+
+- **Security**: use the risk-triggered STRIDE model and data classification to choose controls. Record the decision, enforcement point, and verification path for encryption at rest (including whether application-level AES-256-GCM is warranted), password hashing (Argon2id or the selected identity provider's managed approach), OWASP-relevant risks, rate limits, edge protection, and applicable privacy requirements. Keep `N/A — <reason>` explicit; do not prescribe a vendor or control without a project need.
+- **Threat-to-verification traceability**: map each consumed threat/security requirement to its FSD control, enforcing component, and planned M07 verification. Keep threat IDs stable across the threat model, FSD, and security audit.
+- **Granular RBAC Role Capability & Limitation Matrix (Boleh Apa vs DILARANG Apa)**:
+  - If the application involves multiple roles (e.g. Owner, Manager, Staff, Member/Tenant), `docs/specs/FSD.md` Section 4.0 MUST define a granular capability matrix detailing:
+    1. **Boleh Dilakukan (Allowed Capabilities)**: Explicit list of allowed business actions per role.
+    2. **DILARANG & UI MASKED (Forbidden Actions & Hidden UI)**: Strict negative boundaries for each role. Sensitive views (e.g. profit/loss, bank accounts, staff management, audit logs) MUST NOT be accessible to lower roles (e.g. Staff/Operator).
+    3. **Dedicated Operational Views**: Lower roles (e.g. Staff) must have a tailored operational interface (e.g. `/staff` or `/ops/workspace`) showing only operational tasks (daily tasks, meter recording, ticket logs), eliminating confusing read-only disabled views or exposure to executive analytics.
+    4. **Backend Action Authorization (Defense-in-Depth)**: Frontend route masking alone is insufficient; server actions, mutations, and API endpoints must independently enforce role verification and throw HTTP 403 Forbidden on unauthorized execution.
+- **Typed Environment Variables Schema (`.env.example`)**: Declare complete environment variable contract with runtime type-validation (Zod / `@t3-oss/env-nextjs` / Pydantic / config validators) to enforce fail-fast application startup if secrets are missing.
+- **Handoff**: prototype → chosen framework conversion (component map, token extraction). The gate requires a section **named `Module 04 Handoff Strategy`** carrying **`Compatibility Level: Level 1-4`** — M06 STEP 0 parses those exact strings; level table in `FSD_TECHNICAL_TEMPLATE.md` §2.1.
