@@ -318,6 +318,28 @@ check_design_freeze() {
         bad=1
     fi
 
+    # 2b. The approver must be a human. The runbook says "the AI agent is never a valid
+    #     approver", and the check above accepts any name - including the model's own.
+    if grep -qiE "^\s*[-*]?\s*\**\s*(Approved by|Signed by|Design-Freeze: Signed by)\**:?[[:space:]]*[A-Za-z]" "$spec" 2>/dev/null; then
+        approver=$(grep -iE "^\s*[-*]?\s*\**\s*(Approved by|Signed by|Design-Freeze: Signed by)\**:?[[:space:]]*[A-Za-z]" "$spec" \
+            | head -1 | sed -E 's/^[^:]*:[[:space:]]*//' | tr -d '*' | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+        case "$approver" in
+            *aiagent*|*agent*|*claude*|*gpt*|*assistant*|*chatbot*|*copilot*|*llm*)
+                echo "  ❌ Design Freeze approver is not a human ('$approver') - the agent may present options, never approve."
+                bad=1 ;;
+            *) echo "  ✅ Design Freeze approver is a named human" ;;
+        esac
+    fi
+
+    # 2c. Approval channel: where did the sign-off happen? A name and a date with no channel
+    #     cannot be checked against anything later.
+    if grep -qiE "Approved via|Persetujuan via|Disetujui via" "$spec" 2>/dev/null; then
+        echo "  ✅ Design Freeze approval channel recorded"
+    else
+        echo "  ❌ DESIGN_SPEC.md missing the approval channel ('Approved via: WhatsApp | email | meeting')."
+        bad=1
+    fi
+
     # 3. An approval date must be present and look like a real date.
     if grep -qE "(Approved on|Approval Date|Date|on)\**:?[[:space:]]*[0-9]{4}-[0-9]{2}-[0-9]{2}" "$spec" 2>/dev/null; then
         echo "  ✅ Design Freeze approval date recorded"

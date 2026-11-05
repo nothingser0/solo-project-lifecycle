@@ -112,6 +112,29 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m04_freeze <name> <PASS|FAIL> <freeze-block>
+# A Design Freeze approved by the model is not an approval: the runbook says so and the gate
+# used to accept any name, plus a sign-off with no channel at all.
+expect_m04_freeze() {
+    local name="$1" want="$2" block="$3"
+    local dir="$WORK/m04fz"
+    rm -rf "$dir"; mkdir -p "$dir/docs/specs"
+    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\n\n## Motion & Interaction\nspring\n\n%b\n' "$block" > "$dir/docs/specs/DESIGN_SPEC.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -qE "approver is not a human|missing the approval channel" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (freeze -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (freeze -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m04_freeze "agent cannot approve the design freeze" FAIL '- Approved by: Claude Agent\n- Approved on: 2026-11-05\n- Approved via: chat\n'
+expect_m04_freeze "sign-off without a channel is rejected" FAIL '- Approved by: Sri Wahyuni\n- Approved on: 2026-11-05\n'
+expect_m04_freeze "human with name, date and channel passes" PASS '- Approved by: Sri Wahyuni\n- Approved on: 2026-11-05\n- Approved via: WhatsApp\n'
+
 # expect_m04_screen <name> <PASS|FAIL> <screen-html>
 # Builds the minimum M04 project and varies only the prototype screen content.
 expect_m04_screen() {

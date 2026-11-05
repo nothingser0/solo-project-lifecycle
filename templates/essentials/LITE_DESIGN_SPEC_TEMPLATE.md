@@ -36,4 +36,5 @@
 
 - Approved by: [name] — solo projects: the human user self-approves; an AI agent may not
 - Approved on: [YYYY-MM-DD]
+- Approved via: [WhatsApp | email | meeting — the channel the sign-off happened on]
 - Scope frozen: changes after this line require a CR or documented scope note.
