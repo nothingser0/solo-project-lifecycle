@@ -25,6 +25,23 @@ For Expo, use npm and commit `package-lock.json` for the M06 version gate. Align
 
 Git: `main` → `staging` → `feat/*`.
 **STEP 2 — Deploy harness files to root AFTER scaffold (gate-enforced).** Source `docs/harness-root/` (staged M01-M05 for all scales, including Small); overwrites boilerplate. Unstaged fallback: `templates/04-dev-execution/{AGENTS,ARCHITECTURE,CONVENTIONS,ENV_EXAMPLE}_TEMPLATE.md` + `{stack}/` + `templates/02-design/DESIGN_MD_TEMPLATE.md`, renaming `ENV_EXAMPLE`→`.env.example`.
+
+### The nine harness files — what each one is for
+
+| File | Answers the question | Source |
+|---|---|---|
+| `AGENTS.md` | "what are the rules of this codebase?" (anti-slop, forbidden APIs, the prototype path) | `templates/04-dev-execution/AGENTS_TEMPLATE.md` |
+| `CONTEXT.md` | "what is this product and what is out of scope?" (domain, glossary, closed scope) | `CONTEXT_TEMPLATE.md` |
+| `ARCHITECTURE.md` | "where does code go?" (folders, layers, boundaries) | `ARCHITECTURE_TEMPLATE.md` |
+| `DESIGN.md` | "what colour/size/spacing is this?" (tokens copied verbatim from M04) | `docs/design/DESIGN.md` |
+| `CONVENTIONS.md` | "how is code written and named here?" | `CONVENTIONS_TEMPLATE.md` |
+| `TODO.md` | "what is left, how is it verified, how does a human check it?" | `TODO_TEMPLATE.md` |
+| `.env.example` | "which keys must exist?" (no secret values) | `ENV_EXAMPLE_TEMPLATE.md` |
+| `RUNBOOK_LOCAL.md` | "how do I run it?" (`npm install`, `npm run dev`, migrate, seed) | `RUNBOOK_LOCAL_TEMPLATE.md` |
+| `VERIFY_LOCAL.md` | "how do I prove it passed locally?" (commands, output, date, commit) | `VERIFY_LOCAL_TEMPLATE.md` |
+
+`docs/harness-root/` ships all nine as a ready set — `cp docs/harness-root/* ./` is the whole
+deploy step. **Small** needs `AGENTS.md` + `TODO.md` only.
 ⛔ **STRICT ORDER (never reorder):** (1) scaffold finished; (2) `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ 2>/dev/null || true`; (3) verify root harness files (Medium+: 9 files; Small: `AGENTS.md`, `TODO.md`, `DESIGN.md`); (4) ONLY then `rm -rf docs/harness-root/`. Optional: `./scripts/scaffold/template-picker.sh --phase 4 --dest .`.
 
 **STEP 3 — Version gate (MANDATORY).** Run `./scripts/verify/verify-framework-version.sh` (or `.ps1`). It checks the scaffold manifest matches the FSD, then compares lockfile against `Framework Versions (Pinned)`: **major.minor exact**. Comparators exist for Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails and Expo (Expo needs npm `package-lock.json`, then `npx expo install --check` and `npx expo-doctor@latest`); Tailwind v3/v4 is reported where applicable. Mismatch or a missing comparator fails — never claim STEP 3 passed while the verifier says the pin is UNVERIFIED. Stacks listed only as tracked in `references/stacks/STACK_SUPPORT_MATRIX.md` are not gate-ready. **Anti-overkill baseline** (same matrix): Small = no Docker, no microservices · Medium = monolith, no Kafka or K8s · Large = modular monolith + DB + Redis. Drift from that baseline gets pruned.

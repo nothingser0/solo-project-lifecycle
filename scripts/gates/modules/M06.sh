@@ -60,6 +60,12 @@ gate_M06() {
     # promises "all 9 verified in root"; ARCHITECTURE/DESIGN/CONVENTIONS/.env.example/
     # RUNBOOK_LOCAL/VERIFY_LOCAL were only ever printed as optional warnings.
     if [ "$is_m06_small" -eq 0 ]; then
+        # The agent must know where the frozen prototypes live before writing a screen.
+        if [ -f "AGENTS.md" ] && ! grep -qiE "docs/design/screens" AGENTS.md; then
+            echo "  ❌ AGENTS.md never names the frozen prototype path (docs/design/screens/)."
+            echo "     Without it the agent has no documented layout source and invents screens from memory."
+            GATE_FAILED=1
+        fi
         m06_harness_missing=""
         for hf in AGENTS.md CONTEXT.md ARCHITECTURE.md DESIGN.md CONVENTIONS.md TODO.md .env.example; do
             [ -f "$hf" ] || m06_harness_missing="$m06_harness_missing $hf"

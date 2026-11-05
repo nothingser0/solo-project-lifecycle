@@ -229,7 +229,7 @@
        This block is NOT overridable by a risk-acceptance file: a signature
        cannot produce an audit certificate or a licensed vendor.
        Exit code: 2 (non-delegable — route to A00-A04 Advisory).
-  ✅ AGENTS.md (707B)
+  ✅ AGENTS.md (789B)
   ✅ TODO.md (126B)
   ✅ CONTEXT.md (611B)
   ✅ STEP 0: locked stack decision present in PROJECT_LITE.md

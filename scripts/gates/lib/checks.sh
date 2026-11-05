@@ -309,6 +309,29 @@ check_task_approval() {
         return 1
     fi
 
+    # The agent runs a command; a human checks the result. Only the first was ever asked for, so
+    # nobody was told where to look - and twelve frozen prototypes got rebuilt from imagination.
+    local no_human_check
+    no_human_check=$(awk '
+        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*{0,2}M06-(SETUP|DB|FE)-/ {
+            if (id != "" && !hc) print id
+            id = $0
+            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*/, "", id)
+            sub(/\*+[ \t]*$/, "", id)
+            hc = ($0 ~ /\[[^]]*x[^]]*\]/) ? 0 : 1
+            next
+        }
+        /Human Check|Manusia cek|Cek manual/ { hc = 1 }
+        END { if (id != "" && !hc) print id }
+    ' "$todo" 2>/dev/null || true)
+
+    if [ -n "$no_human_check" ]; then
+        echo "  ❌ TODO.md: SETUP/DB/FE task(s) with no 'Human Check' line — say what the human opens or runs:"
+        echo "$no_human_check" | sed 's/^/       - /'
+        echo "     'Verify' is the agent's command; 'Human Check' is what a person does with their own eyes."
+        GATE_FAILED=1
+    fi
+
     # One screenshot cannot be the evidence for the schema, the API and the screens. Reusing a
     # single path across distinct task categories is the cheapest way to fake completion.
     local reused
