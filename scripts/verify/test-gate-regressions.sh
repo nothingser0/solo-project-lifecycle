@@ -112,6 +112,84 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_a01a04 <name> <PASS|FAIL> <mode:a01model|a01razor|a01ok|a04tdb|a04dr|a04ok>
+expect_a01a04() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/a0104"; rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/governance"
+    printf -- '- **Scale**: Large\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        a01*)
+            local sign="Sri Wahyuni on 2026-11-05" razor='- Loyalty points deferred because no loyalty programme.
+- Multi-warehouse moved out because one warehouse until 2027.' rows='| Phase | Package | Price |
+|---|---|---|
+| 1 | Ordering core | 300000000 |
+| 2 | Reporting | 200000000 |'
+            [ "$mode" = "a01model" ] && sign="Claude Agent"
+            [ "$mode" = "a01razor" ] && razor="Nothing cut."
+            cat > "$dir/docs/pm/WBS_PHASING_PLAN.md" <<EOF
+# WBS Phasing Plan
+
+## Phasing Strategy
+Two phases.
+
+## Phased Package Breakdown
+$rows
+
+## Scope Razor
+$razor
+
+## Sign-Off
+Signed by: $sign
+EOF
+            ;;
+        a04*)
+            local owner="Sri Wahyuni" dr="RTO: 4 hours. RPO: 15 minutes."
+            [ "$mode" = "a04tdb" ] && owner="TBD"
+            [ "$mode" = "a04dr" ] && dr="We have backups."
+            cat > "$dir/docs/governance/GOVERNANCE_HANDOVER_PACK.md" <<EOF
+# Governance Handover Pack
+
+## RACI
+| Activity | Owner | Role |
+|---|---|---|
+| Release approval | $owner | A |
+| Incident triage | Budi | R |
+| Change requests | Zeenn | C |
+
+## CAB
+Monthly, first Tuesday, quorum 2.
+
+## Disaster Recovery
+$dr
+
+Signed by: Sri Wahyuni on 2026-11-05
+EOF
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$(echo "$mode" | cut -c1-3 | tr 'a-z' 'A-Z')" 2>&1 || true)"
+    case "$mode" in
+        a01model) echo "$out" | grep -q "names a model in the Sign-Off" && got="FAIL" ;;
+        a01razor) echo "$out" | grep -q "Scope Razor says nothing is cut" && got="FAIL" ;;
+        a04tdb)   echo "$out" | grep -q "assigns a role to TBD/placeholder" && got="FAIL" ;;
+        a04dr)    echo "$out" | grep -q "states no RTO" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (a0104:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (a0104:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "Sign-Off|Razor|RACI|RTO" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_a01a04 "a model signing the phasing plan blocks" FAIL a01model
+expect_a01a04 "a scope razor that cuts nothing blocks" FAIL a01razor
+expect_a01a04 "a complete phasing plan passes" PASS a01ok
+expect_a01a04 "a RACI owner of TBD blocks" FAIL a04tdb
+expect_a01a04 "a DR with no RTO blocks" FAIL a04dr
+expect_a01a04 "a complete governance pack passes" PASS a04ok
+
 # expect_advisory <name> <PASS|FAIL> <mode:a00model|a00fee|a02stride|a03rows>
 expect_advisory() {
     local name="$1" want="$2" mode="$3"
