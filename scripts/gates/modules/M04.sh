@@ -85,6 +85,27 @@ gate_M04() {
                 ;;
         esac
     else
+        # 0A-bis. The runbook requires a favicon alongside the logo; nothing checked for it, so
+        #     a prototype could ship without a tab icon and the gap would follow it into M06.
+        favicon=""
+        for cand in docs/design/brand/favicon.svg docs/design/brand/logo-icon.svg assets/logo/favicon.svg; do
+            [ -f "$cand" ] && favicon="$cand" && break
+        done
+        if [ -n "$favicon" ]; then
+            fv_sz=$(wc -c < "$favicon" 2>/dev/null | tr -d ' ')
+            if [ "${fv_sz:-0}" -lt 50 ]; then
+                echo "  ❌ $favicon is ${fv_sz}B — too small to be a real icon (>= 50B)."
+                GATE_FAILED=1
+            elif ! grep -qiE "<svg" "$favicon" 2>/dev/null; then
+                echo "  ❌ $favicon is not parseable SVG — a placeholder or mislabelled file is not an icon."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Favicon present and parseable ($favicon)"
+            fi
+        else
+            echo "  ❌ Favicon missing: docs/design/brand/favicon.svg (or logo-icon.svg) required by M04 Step 0A."
+            GATE_FAILED=1
+        fi
         echo "  ❌ Logo missing: logo.svg or logo.png required in docs/design/brand/ (or assets/logo/) before DESIGN.md can be generated"
         GATE_FAILED=1
     fi
@@ -359,6 +380,42 @@ PYEOF
                     dup=$(grep -oE 'id="[^"]+"' "$hf" 2>/dev/null | sort | uniq -d | head -1 || true)
                     [ -n "$dup" ] && a11y_problems="$a11y_problems $(basename "$hf"):dup-$dup"
                 done
+                # 6f-quater. <head> completeness: the prototype is ported as-is in M06, so an
+                #     empty <head> becomes an empty production <head>. Titles must also differ
+                #     per screen, otherwise every tab reads the same.
+                head_problems=""
+                seen_titles=""
+                for hf in $(find docs/design/screens -type f -name "*.html" 2>/dev/null | sort); do
+                    bn=$(basename "$hf")
+                    grep -qiE '<meta[^>]+charset' "$hf" || head_problems="$head_problems $bn:no-charset"
+                    ttl=$(grep -oiE '<title>[^<]*</title>' "$hf" 2>/dev/null | sed -E 's/<[^>]*>//g' | head -1 || true)
+                    if [ -z "${ttl// /}" ]; then
+                        head_problems="$head_problems $bn:no-title"
+                    else
+                        case " $seen_titles " in *" [$ttl] "*) head_problems="$head_problems $bn:duplicate-title" ;; esac
+                        seen_titles="$seen_titles [$ttl]"
+                    fi
+                    if grep -qriE '<link[^>]+rel="(icon|shortcut icon)"' "$hf"; then
+                        icon_ref=$(grep -oiE '<link[^>]+rel="(icon|shortcut icon)"[^>]+href="[^"]+"' "$hf" | sed -E 's/.*href="([^"]+)".*/\1/' | head -1)
+                        icon_target="$icon_ref"
+                        case "$icon_ref" in /*|http*) ;; *) icon_target="$(dirname "$hf")/$icon_ref" ;; esac
+                        [ -e "$icon_target" ] || head_problems="$head_problems $bn:icon-404"
+                    else
+                        head_problems="$head_problems $bn:no-icon"
+                    fi
+                done
+                if [ -n "$head_problems" ]; then
+                    echo "  ❌ <head> incomplete in the prototype:$head_problems"
+                    echo "     Every screen needs charset, a unique <title> and a resolving rel=icon — it ports to M06 as-is."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Every screen has a complete <head> (charset, unique title, resolving icon)"
+                fi
+                # 6f-quinquies. meta description is a SEO concern, not a prototyping one: advisory.
+                no_desc=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | while read -r f; do grep -qiE '<meta[^>]+name="description"' "$f" || echo "$f"; done | wc -l | tr -d ' ')
+                if [ "${no_desc:-0}" -gt 0 ]; then
+                    echo "  ⚠️  ${no_desc} screen(s) have no <meta name=\"description\"> (advisory: needed for SEO, not for prototyping)."
+                fi
                 if [ -n "$a11y_problems" ]; then
                     echo "  ❌ Accessibility defect(s) in the prototype:$a11y_problems"
                     echo "     <html lang>, alt on every <img>, and unique ids are the minimum for WCAG AA markup."
