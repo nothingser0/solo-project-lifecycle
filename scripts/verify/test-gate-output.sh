@@ -70,7 +70,9 @@ EOF
     printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Motion & Interaction\nSpring physics and smooth transitions\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
     mkdir -p "$d/docs/design/screens"
     # A real (if minimal) screen: the gate now rejects an empty .html as a delivered prototype.
-    mkdir -p "$d/docs/design/components" "$d/docs/specs/wireflows"
+    mkdir -p "$d/docs/design/components" "$d/docs/specs/wireflows" "$d/docs/design/shared/css" "$d/docs/design/shared/js"
+    printf 'body{margin:0;font-family:system-ui}\n' > "$d/docs/design/shared/css/styles.css"
+    printf 'document.documentElement.dataset.ready=\"1\";\n' > "$d/docs/design/shared/js/app.js"
     printf '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Components</title></head><body><main>\n%s\n</main></body></html>\n' \
         "$(printf 'Primitive button, input and composite card rendered on the shared stylesheet. %.0s' $(seq 1 30))" > "$d/docs/design/components/index.html"
     printf '# SCENARIOS_WF01\n\n## Baseline fixture\nadmin@example.com / seed\n\n## Happy path\n%s\n' \

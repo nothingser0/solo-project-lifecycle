@@ -137,6 +137,12 @@ expect_m04_screen() {
     case "$variant" in
         no-showcase)     : ;;
         hollow-showcase) printf '<!doctype html><html><body>\n' > "$dir/docs/design/components/index.html" ;;
+        broken-asset)
+            printf '<!doctype html><html><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/missing.css"></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor comfortably. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        word-only)
+            printf '<!doctype html><html><head><meta name="viewport" content="width=device-width"><title>s</title></head><body>%s</body></html>\n' \
+                "$(printf 'Just prose with no elements at all in the body tag. %.0s' $(seq 1 50))" > "$dir/docs/design/screens/SCR-003.html" ;;
         *)               printf '<!doctype html><html><body><main>\n%s\n</main></body></html>\n' \
                              "$(printf 'Primitive and composite components rendered on the shared sheet. %.0s' $(seq 1 30))" > "$dir/docs/design/components/index.html" ;;
     esac
@@ -149,6 +155,7 @@ expect_m04_screen() {
     out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
     echo "$out" | grep -qE "too hollow to be a screen" && got="FAIL"
     echo "$out" | grep -qE "Component showcase missing|Component showcase .* too hollow|Wireflow Interaction Scenarios missing" && got="FAIL"
+    echo "$out" | grep -qE "asset reference\(s\) resolve to nothing|no elements in <body>" && got="FAIL"
     if [ "$got" = "$want" ]; then
         echo -e "  ${GREEN}✓${NC} $name  (M04 hollow -> $got)"
         PASS=$((PASS + 1))
@@ -157,6 +164,8 @@ expect_m04_screen() {
         FAIL=$((FAIL + 1))
     fi
 }
+expect_m04_screen "stylesheet that resolves to nothing blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' broken-asset
+expect_m04_screen "body with no elements is not a screen" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' word-only
 expect_m04_screen "component showcase missing blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-showcase
 expect_m04_screen "hollow component showcase blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' hollow-showcase
 expect_m04_screen "zero wireflow runbooks block" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-wireflow

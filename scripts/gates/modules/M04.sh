@@ -215,6 +215,64 @@ EOF
             else
                 echo "  ✅ Every prototype screen has real markup (>= 2000 bytes, >= 20 words)"
             fi
+            # 6a-ter. A screen that cannot open is not a prototype. Two failures pass every
+            #     other check and only surface when the human double-clicks the file: a stylesheet
+            #     or script that resolves to nothing (white page), and a "screen" that is markup
+            #     with no elements in the body (prose dressed as a screen).
+            if command -v python3 >/dev/null 2>&1; then
+                lnk_out=$(python3 - docs/design/screens <<'PYEOF' 2>&1
+import os, re, sys
+root = sys.argv[1]
+bad_links, empty_bodies, parse_errors = [], [], []
+for dirpath, _, files in os.walk(root):
+    for f in files:
+        if not f.endswith((".html", ".tsx", ".jsx", ".vue")):
+            continue
+        path = os.path.join(dirpath, f)
+        try:
+            text = open(path, encoding="utf-8", errors="replace").read()
+        except OSError:
+            continue
+        # local href/src only: absolute http(s) and data: are out of scope
+        for m in re.finditer(r'(?:href|src)\s*=\s*["\']([^"\']+)["\']', text):
+            ref = m.group(1).strip()
+            if not ref or ref.startswith(("http://", "https://", "//", "data:", "#", "mailto:", "javascript:")):
+                continue
+            ref = ref.split("#")[0].split("?")[0]
+            if not ref:
+                continue
+            target = ref if os.path.isabs(ref) else os.path.normpath(os.path.join(dirpath, ref))
+            if not os.path.exists(target):
+                bad_links.append(f"{os.path.relpath(path, root)} -> {ref}")
+        if f.endswith(".html"):
+            body = re.search(r"<body[^>]*>(.*?)</body>", text, re.S | re.I)
+            inner = body.group(1) if body else ""
+            # strip script/style, then look for at least one real element
+            inner = re.sub(r"<(script|style)\b.*?</\1>", "", inner, flags=re.S | re.I)
+            if not re.search(r"<(div|main|section|article|header|footer|nav|form|table|ul|ol|p|h[1-6]|button|input|select|textarea|img|svg|canvas)\b", inner, re.I):
+                empty_bodies.append(os.path.relpath(path, root))
+for label, items in (("LINK", bad_links), ("BODY", empty_bodies)):
+    for it in items:
+        print(f"{label} {it}")
+PYEOF
+)
+                link_fail=$(printf '%s\n' "$lnk_out" | grep -c '^LINK ' || true)
+                body_fail=$(printf '%s\n' "$lnk_out" | grep -c '^BODY ' || true)
+                if [ "${link_fail:-0}" -gt 0 ]; then
+                    echo "  ❌ ${link_fail} prototype asset reference(s) resolve to nothing — the page would open unstyled or broken:"
+                    printf '%s\n' "$lnk_out" | grep '^LINK ' | head -5 | sed 's/^LINK /     /'
+                    GATE_FAILED=1
+                fi
+                if [ "${body_fail:-0}" -gt 0 ]; then
+                    echo "  ❌ ${body_fail} prototype screen(s) have no elements in <body> — prose is not a screen:"
+                    printf '%s\n' "$lnk_out" | grep '^BODY ' | head -5 | sed 's/^BODY /     /'
+                    GATE_FAILED=1
+                fi
+                if [ "${link_fail:-0}" -eq 0 ] && [ "${body_fail:-0}" -eq 0 ]; then
+                    echo "  ✅ Prototype opens: every local asset resolves and every screen has real body elements"
+                fi
+            fi
+
             # 6b. Mechanical Anti-Slop Prototype Audit
             neon_colors=$(grep -rInE "(#FF5722|#FF0000|#00FF00|bg-orange-500|bg-red-500)" docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
             if [ "${neon_colors:-0}" -gt 0 ]; then
