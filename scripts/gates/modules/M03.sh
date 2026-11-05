@@ -64,6 +64,21 @@ gate_M03() {
         else
             echo "  [INFO] Medium+ client delivery: NDA is MANDATORY before client data access."
             check_required "contracts/NDA.md" "docs/pm/NDA.md" 500
+
+    # An NDA is signed by both parties; a model may draft it, never be a party. Same rule as
+    # M09/M10/M11/A00/A01/A04.
+    nda_file="contracts/NDA.md"
+    [ -f "$nda_file" ] || nda_file="docs/pm/NDA.md"
+    if [ -f "$nda_file" ]; then
+        if grep -iE "(signed by|signed|party|disclosing|receiving)[[:space:]]*:" "$nda_file" | grep -qiE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)"; then
+            echo "  ❌ $nda_file names a model as a signing party - the agent may draft the NDA, never sign it."
+            GATE_FAILED=1
+        fi
+        if ! grep -qiE "(signed by|signature|party)[[:space:]]*:" "$nda_file"; then
+            echo "  ❌ $nda_file has no signing party line - an unsigned NDA protects nothing."
+            GATE_FAILED=1
+        fi
+    fi
             local target_nda="contracts/NDA.md"
             [ -f "$target_nda" ] || target_nda="docs/pm/NDA.md"
             if [ -f "$target_nda" ]; then

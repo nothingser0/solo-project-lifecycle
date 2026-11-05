@@ -112,6 +112,50 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m03m12 <name> <PASS|FAIL> <mode:ndamodel|ndahuman|irmissing|irreal>
+expect_m03m12() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/m03m12"; rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/contracts"
+    printf -- '- **Scale**: Large\n- Delivery: client\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        nda*)
+            local sign="Sri Wahyuni on 2026-11-05"
+            [ "$mode" = "ndamodel" ] && sign="Claude Agent"
+            cp "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/templates/00-pre-sales-enterprise/SOW_CONTRACT_TEMPLATE.md" "$dir/contracts/SOW_CONTRACT.md" 2>/dev/null || true
+            [ -f "$dir/contracts/SOW_CONTRACT.md" ] || printf '# SOW\n' > "$dir/contracts/SOW_CONTRACT.md"
+            printf '# NDA\n\nDisclosing Party: PT Klien Sejahtera\nReceiving Party: Zeenn Studio\n\nSigned by: %s\n' "$sign" > "$dir/contracts/NDA.md"
+            ;;
+        ir*)
+            printf '# Warranty\n\n## Coverage\nx\n## Exclusion\nx\n## Service Level Agreement\nx\n' > "$dir/docs/pm/WARRANTY_POLICY.md"
+            if [ "$mode" = "irmissing" ]; then
+                printf '# Incident Response\n\nWe will handle incidents when they happen.\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+            else
+                printf '# Incident Response Plan\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Communication\nStatus page every 30 minutes.\n\nOwner: Sri Wahyuni\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+            fi
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$([ "${mode#nda}" != "$mode" ] && echo M03 || echo M12)" 2>&1 || true)"
+    case "$mode" in
+        ndamodel) echo "$out" | grep -q "names a model as a signing party" && got="FAIL" ;;
+        irmissing) echo "$out" | grep -q "missing severity-level detail" && got="FAIL" ;;
+        irreal)   echo "$out" | grep -q "missing .*-level detail" && got="FAIL" ;;
+        ndahuman) echo "$out" | grep -q "names a model\|no signing party line" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (m03m12:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (m03m12:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "model|missing .*-level|signing party" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m03m12 "an NDA signed by a model blocks" FAIL ndamodel
+expect_m03m12 "an NDA signed by a human does not raise the signature issue" PASS ndahuman
+expect_m03m12 "an incident plan with no severity scale blocks" FAIL irmissing
+expect_m03m12 "a real incident plan passes" PASS irreal
+
 # expect_a01a04 <name> <PASS|FAIL> <mode:a01model|a01razor|a01ok|a04tdb|a04dr|a04ok>
 expect_a01a04() {
     local name="$1" want="$2" mode="$3"
@@ -895,7 +939,7 @@ expect_m03_sow() {
     local dir="$WORK/m03sow"
     rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/contracts" "$dir/docs/governance"
     printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
-    printf '# NDA\n\n%s\n' "$(printf 'Mutual confidentiality obligations apply to both parties. %.0s' $(seq 1 20))" > "$dir/contracts/NDA.md"
+    printf '# NDA\n\nDisclosing Party: PT Klien\nReceiving Party: Zeenn\n\nSigned by: Sri Wahyuni on 2026-11-05\n\n%s\n' "$(printf 'Mutual confidentiality obligations apply to both parties. %.0s' $(seq 1 20))" > "$dir/contracts/NDA.md"
     local i=1; while [ $i -le 40 ]; do echo "risk item $i with owner and mitigation described in enough words" >> "$dir/docs/governance/RISK_ASSESSMENT_MATRIX.md"; i=$((i+1)); done
     i=1; while [ $i -le 40 ]; do echo "raci row $i with responsible accountable consulted informed named" >> "$dir/docs/governance/RACI_MATRIX.md"; i=$((i+1)); done
     {
@@ -1924,7 +1968,9 @@ expect_m12_incident() {
     local dir="$WORK/m12inc"
     make_project "$dir" "- **Scale**: $scale\n- Delivery: client\n"
     printf '# Warranty\n\n## Coverage\n\n## Exclusions\n\n## Service Level Agreement\n' > "$dir/docs/pm/WARRANTY_POLICY.md"
-    [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n\n## Comms\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+    # A plan must define severity, escalation, response time and comms; a document with the
+    # headings and no content is exactly what the incident gate now rejects.
+    [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Comms\nStatus page every 30 minutes.\n\nOwner: Sri Wahyuni\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
     local out rc got
     out="$(cd "$dir" && bash "$GATE" M12 2>&1)"; rc=$?
     got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"

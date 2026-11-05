@@ -42,6 +42,27 @@ gate_M12() {
     if [ "$m12_scale" = "large" ] || [ "$m12_scale" = "enterprise" ]; then
         echo "  [INFO] Large / Enterprise scale detected: Incident Response Plan is MANDATORY."
         check_required "docs/pm/INCIDENT_RESPONSE.md" "docs/INCIDENT_RESPONSE.md" 500
+        ir_file="docs/pm/INCIDENT_RESPONSE.md"
+        [ -f "$ir_file" ] || ir_file="docs/INCIDENT_RESPONSE.md"
+        if [ -f "$ir_file" ]; then
+            # An incident plan needs a severity scale somebody defined, an escalation path with
+            # names, response time targets, and a communication channel. "We will handle it" has
+            # none of those and passed at Large scale.
+            for req in "severity|SEV[0-9]|P[0-9][[:space:]]|priority" "escalat|on-call|on call|contact" "response time|SLA|within[[:space:]]+[0-9]+[[:space:]]*(hour|hr|minute|min)" "communicat|status page|notify"; do
+                if ! grep -qiE "$req" "$ir_file"; then
+                    echo "  ❌ $ir_file is missing $(echo "$req" | cut -d'|' -f1)-level detail - an incident plan without it is an intention."
+                    GATE_FAILED=1
+                fi
+            done
+            if grep -qiE "(we will handle|handle it when|deal with it later|as needed)" "$ir_file"; then
+                echo "  ❌ $ir_file defers incident handling instead of defining it."
+                GATE_FAILED=1
+            fi
+            if grep -qiE "(signed by|approved by|owner)[[:space:]]*:" "$ir_file" | grep -qiE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)"; then
+                echo "  ❌ $ir_file names a model as its owner - the agent may draft it, never own incident response."
+                GATE_FAILED=1
+            fi
+        fi
     else
     check_optional "docs/pm/INCIDENT_RESPONSE.md" "docs/INCIDENT_RESPONSE.md"
     fi
