@@ -32,9 +32,28 @@ gate_M11() {
         else
             check_required "docs/pm/BAST.md" "contracts/BAST.md" 500
         fi
-        # Content verification for BAST (BLOCKER)
+# Content verification for BAST (BLOCKER)
         if [ -f "$target_bast" ]; then
             bast_content=$(cat "$target_bast" 2>/dev/null || true)
+                    # Both parties sign a BAST, and neither may be a model. A document signed
+            # "SECOND PARTY: Claude Agent" is a legal handover with no human on either side.
+            # Match "Signed by FIRST PARTY:" too - the signature block is where the model's
+            # name actually lands, and the first version only looked at the identity lines.
+            for party in "FIRST PARTY" "SECOND PARTY"; do
+                party_line=$(echo "$bast_content" | grep -iE "$party[^:]*:" | grep -iE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)" | head -1)
+                if [ -n "$party_line" ]; then
+                    echo "  ❌ $target_bast names a model as $party - the agent may draft the BAST, never sign it."
+                    GATE_FAILED=1
+                fi
+            done
+            # The two parties must differ: a handover between one person is no handover.
+            first_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*FIRST PARTY[^:]*:" | grep -viE "signed by" | head -1 | sed -E 's/.*:[[:space:]]*//' | cut -c1-40 | tr '[:upper:]' '[:lower:]')
+            second_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*SECOND PARTY[^:]*:" | grep -viE "signed by" | head -1 | sed -E 's/.*:[[:space:]]*//' | cut -c1-40 | tr '[:upper:]' '[:lower:]')
+            if [ -n "$first_name" ] && [ "$first_name" = "$second_name" ]; then
+                echo "  ❌ $target_bast has the same party on both sides ('$first_name') - that is not a handover."
+                GATE_FAILED=1
+            fi
+
             # 1. Reject unresolved template placeholders [...]
             if echo "$bast_content" | grep -qE "\[PROJECT_CODE\]|\[Client PIC|\[Your Full Name\]|\[Your Name\]|\[CONTRACT_NUMBER\]|\[30 / 60 / 90\]"; then
                 echo "  ❌ $target_bast still contains unresolved template placeholders ([...])! Fill in actual BAST legal terms."
@@ -56,13 +75,19 @@ gate_M11() {
                 if echo "$bast_content" | grep -qiE "_{5,}"; then
                     echo "  ❌ $target_bast has unfulfilled blank signature lines (______ / unassigned PIC)!"
                     GATE_FAILED=1
+                elif echo "$bast_content" | grep -iE "(FIRST|SECOND) PARTY[^:]*:" | grep -qiE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)"; then
+                    # Do not print a pass next to the model-signature failure above: a gate that
+                    # says "signed by both parties" and "a model signed" in the same report is
+                    # the same contradiction the harness sections were fixed for.
+                    echo "  ❌ $target_bast is not signed by both parties - a model is in a signature line."
+                    GATE_FAILED=1
                 else
                     echo "  ✅ BAST signed by both parties"
                 fi
             fi
             # 4. Core section headings verification for formal BAST
             if [ "$target_bast" = "docs/pm/BAST.md" ] || [ "$target_bast" = "contracts/BAST.md" ]; then
-                check_sections "$target_bast" "Article 1" "Article 2" "Article 3" || true
+                check_sections "$target_bast" "Article 1" "Article 2" "Article 3"
             fi
         fi
 

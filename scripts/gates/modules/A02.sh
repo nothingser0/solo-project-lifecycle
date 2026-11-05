@@ -17,7 +17,7 @@ gate_A02() {
             echo "  ❌ $arch_target still contains unresolved template placeholders ([...])!"
             GATE_FAILED=1
         fi
-        check_sections "$arch_target" "C4" "Data Residency" "Scenario" || true
+        check_sections "$arch_target" "C4" "Data Residency" "Scenario"
     fi
 
     local sec_target="docs/security/THREAT_MODEL_STRIDE.md"
@@ -27,6 +27,6 @@ gate_A02() {
             echo "  ❌ $sec_target still contains unresolved template placeholders ([...])!"
             GATE_FAILED=1
         fi
-        check_sections "$sec_target" "STRIDE" "Mitigation" || true
+        check_sections "$sec_target" "STRIDE" "Mitigation"
     fi
 }

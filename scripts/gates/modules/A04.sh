@@ -16,6 +16,6 @@ gate_A04() {
             echo "  ❌ $target still contains unresolved template placeholders ([...])!"
             GATE_FAILED=1
         fi
-        check_sections "$target" "RACI" "CAB" "Disaster Recovery" || true
+        check_sections "$target" "RACI" "CAB" "Disaster Recovery"
     fi
 }

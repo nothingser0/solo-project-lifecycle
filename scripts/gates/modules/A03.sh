@@ -17,7 +17,7 @@ gate_A03() {
             echo "  ❌ $sched_target still contains unresolved template placeholders ([...])!"
             GATE_FAILED=1
         fi
-        check_sections "$sched_target" "Procurement Scope" "Timeline" "Requirements" || true
+        check_sections "$sched_target" "Procurement Scope" "Timeline" "Requirements"
     fi
 
     local matrix_target="docs/governance/VENDOR_COMPARISON_MATRIX.md"
@@ -27,6 +27,6 @@ gate_A03() {
             echo "  ❌ $matrix_target still contains unresolved template placeholders ([...])!"
             GATE_FAILED=1
         fi
-        check_sections "$matrix_target" "Comparison Framework" "Decision Matrix" "Recommendation" || true
+        check_sections "$matrix_target" "Comparison Framework" "Decision Matrix" "Recommendation"
     fi
 }

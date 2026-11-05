@@ -49,6 +49,13 @@ gate_M10() {
             echo "  ❌ $live_report contains blank Lead Engineer signature line (_____)! Must record real engineer sign-off."
             GATE_FAILED=1
         fi
+        # 4b. The model may prepare the go-live report, never sign it. "Lead Engineer: Claude
+        # Agent" was accepted as "attestation verified" - and this is the production cutover.
+        if echo "$report_content" | grep -qiE "Lead Engineer:[[:space:]]*(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)"; then
+            echo "  ❌ $live_report names a model as Lead Engineer - the agent may prepare this report, never sign it."
+            echo "     The human who ran the cutover signs, with their own name and the date."
+            GATE_FAILED=1
+        fi
         # 5. Core section headings verification
         check_sections "$live_report" "Release and Environment" "Post-Deployment Verification" "Monitoring and Recovery"
         prod_url=$(grep -iE "Production URL|Live URL|URL Live" "$live_report" | grep -oE "https?://[^ ]+" | head -1 || echo "")

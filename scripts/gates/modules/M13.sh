@@ -34,7 +34,7 @@ gate_M13() {
                 GATE_FAILED=1
             fi
             # 2. Require core metrics baseline dimensions (Acquisition, Activation, Retention)
-            check_sections "$metrics_target" "Acquisition" "Activation" "Retention" || true
+            check_sections "$metrics_target" "Acquisition" "Activation" "Retention"
         fi
         # For Large scale, RICE-scored growth experiment backlog is MANDATORY
         m13_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"

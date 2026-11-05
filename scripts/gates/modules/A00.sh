@@ -15,7 +15,7 @@ gate_A00() {
             echo "  ❌ $target still contains unresolved template placeholders ([...])!"
             GATE_FAILED=1
         fi
-        check_sections "$target" "Parties" "Advisory Deliverables" "Professional Fees" "Liability" || true
+        check_sections "$target" "Parties" "Advisory Deliverables" "Professional Fees" "Liability"
     fi
     check_optional "docs/pm/RFP_RESPONSE.md"
 }

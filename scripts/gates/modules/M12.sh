@@ -33,7 +33,7 @@ gate_M12() {
                 GATE_FAILED=1
             fi
             # 2. Require core section headings: Coverage, Exclusions, and SLA
-            check_sections "$target_wp" "Coverage" "Exclusion" "Service Level Agreement" || true
+            check_sections "$target_wp" "Coverage" "Exclusion" "Service Level Agreement"
         fi
     fi
     check_optional "docs/pm/SLA_RETAINER_CONTRACT.md" "contracts/SLA_RETAINER.md"

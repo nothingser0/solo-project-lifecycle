@@ -14,6 +14,6 @@ gate_A01() {
             echo "  ❌ $target still contains unresolved template placeholders ([...])!"
             GATE_FAILED=1
         fi
-        check_sections "$target" "Phasing Strategy" "Phased Package Breakdown" "Scope Razor" "Sign-Off" || true
+        check_sections "$target" "Phasing Strategy" "Phased Package Breakdown" "Scope Razor" "Sign-Off"
     fi
 }

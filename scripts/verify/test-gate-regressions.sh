@@ -112,6 +112,87 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_signatory <name> <PASS|FAIL> <mode:m10model|m10human|m11model|m11same|m11ok>
+expect_signatory() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/sign"; rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        m10*)
+            printf '# Protocol\n\n## Release and Environment\nx\n## Post-Deployment Verification\nx\n## Monitoring and Recovery\nx\n' > "$dir/docs/pm/DEPLOYMENT_PROTOCOL.md"
+            local lead="Claude Agent"
+            [ "$mode" = "m10human" ] && lead="Sri Wahyuni"
+            cat > "$dir/docs/pm/GO_LIVE_REPORT.md" <<EOF
+# Go Live Report
+
+## Release and Environment
+Environment: production
+
+## Post-Deployment Verification
+| ID | Scenario | Result |
+|---|---|---|
+| PVT-01 | Login works | PASS |
+
+## Monitoring and Recovery
+Rollback: previous image tag
+
+Human decision: GO
+Release status: LIVE
+Lead Engineer: $lead
+EOF
+            ;;
+        m11*)
+            local p1="Sri Wahyuni, PT Klien" p2="Zeenn, Studio" s1="Sri Wahyuni" s2="Zeenn"
+            case "$mode" in
+                m11model) s1="Claude Agent" ;;
+                m11same)  p1="Zeenn, Studio"; p2="Zeenn, Studio"; s1="Zeenn"; s2="Zeenn" ;;
+            esac
+            cat > "$dir/docs/pm/BAST.md" <<EOF
+# BAST
+
+## Article 1 Parties
+FIRST PARTY: $p1
+SECOND PARTY: $p2
+
+## Article 2 Payment
+The client confirmed settled all payment in full.
+
+## Article 3 Handover
+All deliverables transferred.
+
+## Signatures
+Signed by FIRST PARTY: $s1
+Date: 2026-11-05
+Signed by SECOND PARTY: $s2
+Date: 2026-11-05
+EOF
+            printf '# Manual\n\n## Getting Started\nx\n## Features\nx\n' > "$dir/docs/USER_MANUAL.md"
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$([ "${mode#m10}" != "$mode" ] && echo M10 || echo M11)" 2>&1 || true)"
+    case "$mode" in
+        m10model) echo "$out" | grep -q "names a model as Lead Engineer" && got="FAIL" ;;
+        m10human) echo "$out" | grep -q "names a model as Lead Engineer" && got="FAIL" ;;
+        m11model) echo "$out" | grep -q "names a model as" && got="FAIL" ;;
+        m11same)  echo "$out" | grep -q "same party on both sides" && got="FAIL" ;;
+        m11ok)    echo "$out" | grep -qE "names a model|same party" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (sign:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (sign:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "model|same party" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_signatory "a model as Lead Engineer blocks" FAIL m10model
+expect_signatory "a human Lead Engineer passes" PASS m10human
+expect_signatory "a model signing FIRST PARTY blocks" FAIL m11model
+expect_signatory "the same party on both sides blocks" FAIL m11same
+expect_signatory "two different humans pass" PASS m11ok
+
 # expect_m06_visual <name> <PASS|FAIL> <src-body> <mode:contrast|font|scale|bare|upload> [fsd]
 expect_m06_visual() {
     local name="$1" want="$2" body="$3" mode="$4" fsd="${5:-}"
