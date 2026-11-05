@@ -602,6 +602,12 @@ def tw_color(catalog, first, shade):
 
 # bare bg-white / bg-black / text-white carry no shade
 TW_BARE = re.compile(r"\b(bg|text)-(white|black)\b")
+# a Tailwind opacity modifier: text-slate-400/70 blends the text colour onto whatever is behind it,
+# which can be far worse than the base colour - /70 on white took 2.56:1 down to 1.95:1.
+TW_OPACITY = re.compile(r"\btext-([a-z]+)-(\d{2,3})/(\d{1,3})\b")
+
+def blend(fg, bg, alpha):
+    return tuple(round(f * alpha + b * (1 - alpha)) for f, b in zip(fg, bg))
 
 SKIP_FILES = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock", ".md")
 SKIP_DIRS = ("node_modules", ".next", "dist", "build", ".git", "coverage")
@@ -682,8 +688,20 @@ for p, body in files(sys.argv[1:]):
             if prefix == "bg" and not b:
                 bg = tw_color(PALETTE, name, "")
                 bg_name = f"bg-{name}"
+        # An opacity modifier on the text colour is blended onto the background before scoring.
+        # TW_TEXT matches "text-slate-400/70" too (the class boundary stops at "/"), so the base
+        # colour must be read from the opacity match - otherwise the finding is reported without
+        # its modifier and the named colour is wrong.
+        op = TW_OPACITY.search(el)
+        note = ""
+        if op:
+            base = tw_color(PALETTE, op.group(1), op.group(2))
+            fg_name = f"text-{op.group(1)}-{op.group(2)}/{op.group(3)}"
+            if base and bg:
+                fg = blend(base, bg, int(op.group(3)) / 100.0)
+                note = f" (at /{op.group(3)} opacity)"
         if fg and bg and ratio(fg, bg) < 4.5:
-            class_contrast_bad.append(f"{p} ({fg_name} on {bg_name} = {ratio(fg, bg):.2f}:1)")
+            class_contrast_bad.append(f"{p} ({fg_name} on {bg_name} = {ratio(fg, bg):.2f}:1{note})")
 
     # --- font must be loaded somewhere in the same tree
     for fam in set(re.findall(r"fontFamily\s*:\s*['\"]([A-Za-z0-9 ]+)['\"]", body)):
