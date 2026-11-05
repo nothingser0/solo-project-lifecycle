@@ -112,6 +112,38 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m07_sit <name> <PASS|FAIL> <workbook-rows>
+# M07 signs the system off, so a workbook that skips requirements must not pass.
+expect_m07_sit() {
+    local name="$1" want="$2" rows="$3"
+    local dir="$WORK/m07sit"
+    rm -rf "$dir"; mkdir -p "$dir/docs/qa" "$dir/docs/pm" "$dir/docs/specs"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\nSCR-002 Dashboard\n' > "$dir/docs/specs/SITEMAP.md"
+    printf '| REQ-01 | F-01 |\n| REQ-02 | F-02 |\n' > "$dir/docs/specs/PRD.md"
+    {
+      printf '# SIT Workbook\n\nPART I: SIT TEST PLAN\nPART II: SIT REPORT\nThird-Party Integration\n'
+      printf 'Load & Concurrency Test\nCore Web Vitals\nNative Mobile QA\nSign-Off\nDocument Metadata\n'
+      printf 'Scope\nEnvironment\n\nStaging-URL: https://staging.example.test\nFinal Testing Status: SIT PASS\n\n'
+      printf '| ID | Scenario | Expected | Actual | Status |\n|---|---|---|---|---|\n'
+      printf '%b\n' "$rows"
+    } > "$dir/docs/qa/SIT_WORKBOOK.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M07 2>&1 || true)"
+    echo "$out" | grep -qE "never tests|no negative/edge scenario" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M07 sit -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M07 sit -> $got, expected $want)"
+        echo "$out" | grep -E "never tests|negative/edge|SIT covers" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m07_sit "SIT attesting PASS while skipping requirements blocks" FAIL '| TC-01 | login works | dashboard | ok | PASS |'
+expect_m07_sit "SIT covering everything but only happy paths blocks" FAIL '| TC-01 | REQ-01 SCR-001 login | ok | ok | PASS |\n| TC-02 | REQ-02 SCR-002 totals | ok | ok | PASS |'
+expect_m07_sit "SIT with full coverage and a rejected-input row passes" PASS '| TC-01 | REQ-01 SCR-001 login | ok | ok | PASS |\n| TC-02 | REQ-02 SCR-002 totals | ok | ok | PASS |\n| TC-03 | REQ-01 wrong password rejected | error | ok | PASS |'
+
 # expect_m06_int <name> <PASS|FAIL> <todo-extra> <fsd-body>
 expect_m06_int() {
     local name="$1" want="$2" extra="$3" fsd="${4:-Payment gateway: Midtrans, webhook settlement callbacks.}"

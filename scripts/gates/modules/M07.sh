@@ -70,6 +70,37 @@ gate_M07() {
         else
             echo "  ✅ SIT_WORKBOOK.md shows zero failed SIT scenarios"
         fi
+        # Coverage: a SIT workbook with one row can attest "SIT PASS" for an application with
+        # dozens of requirements. Every REQ-xx and every SCR-xx from the specs must appear as a
+        # tested item, so the attestation covers the system rather than one happy path.
+        sit_reqs=""
+        [ -f "docs/specs/PRD.md" ] && sit_reqs=$(grep -oE "REQ-[0-9]+" docs/specs/PRD.md | sort -u || true)
+        [ -z "$sit_reqs" ] && [ -f "docs/specs/FSD.md" ] && sit_reqs=$(grep -oE "REQ-[0-9]+" docs/specs/FSD.md | sort -u || true)
+        sit_screens=""
+        [ -f "docs/specs/SITEMAP.md" ] && sit_screens=$(grep -oE "SCR-[A-Z]*-?[0-9]+" docs/specs/SITEMAP.md | sort -u || true)
+
+        untested=""
+        for rq in $sit_reqs; do
+            grep -qE "(^|[^A-Za-z0-9-])${rq}([^0-9]|$)" docs/qa/SIT_WORKBOOK.md || untested="$untested $rq"
+        done
+        for sc in $sit_screens; do
+            grep -qE "(^|[^A-Za-z0-9-])${sc}([^0-9]|$)" docs/qa/SIT_WORKBOOK.md || untested="$untested $sc"
+        done
+        if [ -n "$untested" ]; then
+            echo "  ❌ SIT_WORKBOOK.md attests SIT PASS but never tests:$untested"
+            echo "     Each REQ-xx and SCR-xx needs a row: a passing suite that skips items cannot sign the system off."
+            GATE_FAILED=1
+        elif [ -n "$sit_reqs$sit_screens" ]; then
+            echo "  ✅ SIT covers every REQ-xx and SCR-xx in the specs"
+        fi
+
+        # A suite of passing rows with no failure path proves the happy path only. Wireflow and
+        # acceptance criteria define sad and edge paths, so at least one row must exercise one.
+        if ! grep -qiE "invalid|wrong|rejected|denied|forbidden|unauthori[sz]ed|error|empty|null|negative|sad path|edge|timeout|expired|missing" docs/qa/SIT_WORKBOOK.md; then
+            echo "  ❌ SIT_WORKBOOK.md has no negative/edge scenario - only happy paths. Add rows for invalid input, unauthorised access, empty state or error handling."
+            GATE_FAILED=1
+        fi
+
         # Large / Enterprise must report measured coverage; M02/project policy owns any threshold.
         m07_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
         if [ "$m07_scale" = "large" ] || [ "$m07_scale" = "enterprise" ]; then
