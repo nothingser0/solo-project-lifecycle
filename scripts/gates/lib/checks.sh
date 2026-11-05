@@ -277,10 +277,69 @@ check_task_approval() {
         END { if (cur_done && !cur_appr) print cur_id }
     ' "$todo" 2>/dev/null || true)
 
+    # An approval naming the model is not an approval. M04 has rejected AI approvers for the
+    # design freeze since the same gap was found there; this guard accepted any word.
+    local ai_approved
+    ai_approved=$(awk '
+        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*{0,2}M06-/ {
+            cur_id = $0
+            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*/, "", cur_id)
+            sub(/\*+[ \t]*$/, "", cur_id)
+            cur_done = ($0 ~ /\[x\]/)
+            next
+        }
+        cur_done && /(Approved|Disetujui)/ {
+            line = tolower($0)
+            if (line ~ /claude|chatgpt|gpt-|copilot|assistant|ai agent|chatbot|llm/) print cur_id
+        }
+    ' "$todo" 2>/dev/null || true)
+
+    if [ -n "$ai_approved" ]; then
+        echo "  ❌ TODO.md: task(s) approved by a model, not a human — the agent may report, never approve:"
+        echo "$ai_approved" | sed 's/^/       - /'
+        GATE_FAILED=1
+        return 1
+    fi
+
     if [ -n "$missing" ]; then
         echo "  ❌ TODO.md: completed task(s) missing a human approval line in their Evidence."
         echo "     Add e.g. 'Approved: <date> by <name>' to each block below, or un-tick them:"
         echo "$missing" | sed 's/^/       - /'
+        GATE_FAILED=1
+        return 1
+    fi
+
+    # One screenshot cannot be the evidence for the schema, the API and the screens. Reusing a
+    # single path across distinct task categories is the cheapest way to fake completion.
+    local reused
+    reused=$(awk '
+        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*{0,2}M06-/ {
+            id = $0
+            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*/, "", id)
+            sub(/\*+[ \t]*$/, "", id)
+            if (match(id, /M06-[A-Z]+-/)) cat = substr(id, RSTART, RLENGTH)
+            next
+        }
+        /[Ee]vidence/ {
+            while (match($0, /[A-Za-z0-9_.\/-]+\.(png|jpg|jpeg|webp|svg|pdf|log|txt|md|json)/)) {
+                p = substr($0, RSTART, RLENGTH)
+                if (cat != "") { n[p]++; c[p] = c[p] " " cat }
+                $0 = substr($0, RSTART + RLENGTH)
+            }
+        }
+        END {
+            for (p in n) {
+                split(c[p], arr, " ")
+                distinct = 0; prev = ""
+                for (i in arr) if (arr[i] != "" && arr[i] != prev) { distinct++; prev = arr[i] }
+                if (distinct > 1) print p " (" distinct " task categories)"
+            }
+        }
+    ' "$todo" 2>/dev/null || true)
+
+    if [ -n "$reused" ]; then
+        echo "  ❌ TODO.md: one evidence path is cited for different task categories — each needs its own proof:"
+        echo "$reused" | sed 's/^/       - /'
         GATE_FAILED=1
         return 1
     fi

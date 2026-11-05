@@ -112,6 +112,38 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m06_todo <name> <PASS|FAIL> <todo-tail-after-header>
+# M06 trusts TODO.md, so the two ways a tick lies are worth pinning: a model approving it,
+# and one artefact standing in for several unrelated tasks.
+expect_m06_todo() {
+    local name="$1" want="$2" body="$3"
+    local dir="$WORK/m06td"
+    rm -rf "$dir"; mkdir -p "$dir/docs/harness-root" "$dir/artifacts"
+    printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/db.png"
+    cp "$dir/artifacts/db.png" "$dir/artifacts/api.png"
+    cp "$dir/artifacts/db.png" "$dir/artifacts/ui.png"
+    cp "$dir/artifacts/db.png" "$dir/artifacts/setup.png"
+    printf '# TODO\n\n%b\n' "$body" > "$dir/docs/harness-root/TODO.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -qE "approved by a model|one evidence path is cited" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 todo -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 todo -> $got, expected $want)"
+        echo "$out" | grep -E "approval|evidence path|model" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M06_T=('- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/setup.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
+M06_T+=('- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/db.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
+M06_T+=('- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/api.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
+M06_T+=('- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/ui.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
+expect_m06_todo "model approval of a task blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Claude Agent\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n"
+expect_m06_todo "one artefact reused across categories blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n"
+expect_m06_todo "human-approved distinct evidence passes" PASS "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n"
+
 # expect_m05_schema <name> <PASS|FAIL> <fsd-tail>
 # Assert the ERD/DDL cross-check and the rejected-alternative rule on their own.
 expect_m05_schema() {
