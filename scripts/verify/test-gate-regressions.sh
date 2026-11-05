@@ -124,6 +124,8 @@ expect_m04_screen() {
     printf 'SCR-003 admin invoices\n%s\n' "$(printf 'sitemap detail row. %.0s' $(seq 1 120))" > "$dir/docs/specs/SITEMAP.md"
     printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\n%s\n' \
         "$(printf 'screen rows and state matrix detail. %.0s' $(seq 1 100))" > "$dir/docs/specs/DESIGN_SPEC.md"
+    mkdir -p "$dir/docs/design/shared/css"
+    printf 'body{margin:0;font-family:system-ui}\n' > "$dir/docs/design/shared/css/styles.css"
     printf '# Components\n\n## Primitives & Atomic\nbutton input\n## Composites\ncard form\n## Accessibility WCAG AA\ncontrast 4.5:1\n%s\n' \
         "$(printf 'component inventory detail. %.0s' $(seq 1 60))" > "$dir/docs/specs/COMPONENT_REQUIREMENTS.md"
     printf '# Logo brief\n\nmonogram mark with brand accent and clear space rules defined\n' > "$dir/docs/specs/LOGO_DESIGN_BRIEF.md"
@@ -140,6 +142,17 @@ expect_m04_screen() {
         broken-asset)
             printf '<!doctype html><html><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/missing.css"></head><body><main><p>%s</p></main></body></html>\n' \
                 "$(printf 'Screen words that clear the hollow floor comfortably. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        two-sheets)
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/a.css"></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html"
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/b.css"></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-004.html" ;;
+        inline-style)
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><style>.x{color:red}</style></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        no-alt)
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"></head><body><main><img src="x.png"><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
         word-only)
             printf '<!doctype html><html><head><meta name="viewport" content="width=device-width"><title>s</title></head><body>%s</body></html>\n' \
                 "$(printf 'Just prose with no elements at all in the body tag. %.0s' $(seq 1 50))" > "$dir/docs/design/screens/SCR-003.html" ;;
@@ -156,6 +169,7 @@ expect_m04_screen() {
     echo "$out" | grep -qE "too hollow to be a screen" && got="FAIL"
     echo "$out" | grep -qE "Component showcase missing|Component showcase .* too hollow|Wireflow Interaction Scenarios missing" && got="FAIL"
     echo "$out" | grep -qE "asset reference\(s\) resolve to nothing|no elements in <body>" && got="FAIL"
+    echo "$out" | grep -qE "different stylesheets|per-page <style> block|Accessibility defect|No screen links a stylesheet|screen\(s\) link the shared stylesheet" && got="FAIL"
     if [ "$got" = "$want" ]; then
         echo -e "  ${GREEN}✓${NC} $name  (M04 hollow -> $got)"
         PASS=$((PASS + 1))
@@ -164,6 +178,9 @@ expect_m04_screen() {
         FAIL=$((FAIL + 1))
     fi
 }
+expect_m04_screen "two different stylesheets across screens block" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' two-sheets
+expect_m04_screen "per-page <style> block blocks" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' inline-style
+expect_m04_screen "img without alt blocks" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' no-alt
 expect_m04_screen "stylesheet that resolves to nothing blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' broken-asset
 expect_m04_screen "body with no elements is not a screen" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' word-only
 expect_m04_screen "component showcase missing blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-showcase
@@ -171,7 +188,7 @@ expect_m04_screen "hollow component showcase blocks" FAIL '<!doctype html><html>
 expect_m04_screen "zero wireflow runbooks block" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-wireflow
 # the same fixture, but with a showcase + wireflow, must pass the new checks
 expect_m04_screen "empty 0-byte .html is not a prototype" FAIL ''
-expect_m04_screen "real markup screen passes the hollow check" PASS "<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Invoices</title></head><body data-roles=\"admin\"><main><h1>Invoices</h1><p>$(printf 'Invoice rows for the current month with totals and status per row. %.0s' $(seq 1 40))</p></main></body></html>
+expect_m04_screen "real markup screen passes the hollow check" PASS "<!doctype html><html lang=\"id\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"../shared/css/styles.css\"><title>Invoices</title></head><body data-roles=\"admin\"><main><h1>Invoices</h1><p>$(printf 'Invoice rows for the current month with totals and status per row. %.0s' $(seq 1 40))</p></main></body></html>
 "
 # A screenshot is a reference, not a screen the developer built.
 m04_png_only() {

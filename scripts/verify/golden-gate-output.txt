@@ -135,6 +135,9 @@
   ✅ Every prototype screen has real markup (>= 2000 bytes, >= 20 words)
   ✅ Prototype opens: every local asset resolves and every screen has real body elements
   ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI
+  ✅ One shared stylesheet used by all 1 screen(s): ../shared/css/styles.css
+  ✅ No per-page <style> drift (all styling comes from the shared sheet)
+  ✅ Accessibility basics present (html lang, img alt, unique ids)
   ✅ Mechanical UI/UX consistency audit PASSED
   ✅ Screen count match verified (SITEMAP 2 vs DESIGN_SPEC 2, tolerance ±0)
   ❌ DESIGN_SPEC.md still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Name]). The human signs the Design Freeze before M06.

@@ -317,13 +317,54 @@ PYEOF
                 fi
             fi
             # 6f. Reusable Prototype Architecture Check (Shared CSS / Design System)
-            shared_css=$(find docs/design -type f \( -name "*.css" -o -name "styles.css" -o -name "design-system.css" \) 2>/dev/null | wc -l | tr -d ' ')
+            #     The old form accepted "any .css file somewhere" OR "one screen links something",
+            #     so three screens with three different stylesheets still printed 'verified'. The
+            #     claim is consistency, so one stylesheet path must be shared by every screen.
             html_count=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | wc -l | tr -d ' ')
-            if [ "${html_count:-0}" -ge 2 ]; then
-                if [ "${shared_css:-0}" -ge 1 ] || grep -qriE 'rel="stylesheet" href="[^"]*(\.css|styles|tailwind)' docs/design/screens 2>/dev/null; then
-                    echo "  ✅ Reusable prototype architecture verified (screens utilize shared CSS/design-system)"
+            if [ "${html_count:-0}" -ge 1 ]; then
+                sheet_paths=$(grep -rhoiE 'rel="stylesheet"[^>]*href="[^"]+"' docs/design/screens 2>/dev/null \
+                    | sed -E 's/.*href="([^"]+)".*/\1/' | sort -u || true)
+                sheet_count=$(printf '%s\n' "$sheet_paths" | grep -c . || true)
+                screens_with_sheet=$(grep -rliE 'rel="stylesheet"' docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${sheet_count:-0}" -eq 0 ]; then
+                    echo "  ❌ No screen links a stylesheet — every screen must use the shared CSS, not ad-hoc styling."
+                    GATE_FAILED=1
+                elif [ "${sheet_count:-0}" -gt 1 ]; then
+                    echo "  ❌ ${sheet_count} different stylesheets across screens — one shared design system, not per-screen drift:"
+                    printf '%s\n' "$sheet_paths" | grep . | head -4 | sed 's/^/     /'
+                    GATE_FAILED=1
+                elif [ "${screens_with_sheet:-0}" -lt "${html_count:-0}" ]; then
+                    echo "  ❌ Only ${screens_with_sheet}/${html_count} screen(s) link the shared stylesheet — the rest render unstyled."
+                    GATE_FAILED=1
                 else
-                    echo "  ⚠️  Prototype advisory: multiple HTML screens detected without shared CSS. Ensure screens link to shared css/styles.css to maintain navbar, button, badge, and typography consistency across the sitemap."
+                    echo "  ✅ One shared stylesheet used by all ${html_count} screen(s): $(printf '%s' "$sheet_paths" | head -1)"
+                fi
+                # 6f-bis. No inline <style> blocks: the runbook forbids per-page style drift.
+                inline_blocks=$(grep -rliE '<style' docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${inline_blocks:-0}" -gt 0 ]; then
+                    echo "  ❌ ${inline_blocks} screen(s) carry a per-page <style> block — styles belong in the shared stylesheet."
+                    grep -rliE '<style' docs/design/screens 2>/dev/null | head -3 | sed 's/^/     /'
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ No per-page <style> drift (all styling comes from the shared sheet)"
+                fi
+                # 6f-ter. Accessibility facts that cost nothing to check and are wrong by default in
+                #     generated markup: missing lang, unlabelled images, duplicate ids.
+                a11y_problems=""
+                for hf in $(find docs/design/screens -type f -name "*.html" 2>/dev/null); do
+                    grep -qiE '<html[^>]*lang="[a-zA-Z-]+"' "$hf" || a11y_problems="$a11y_problems $(basename "$hf"):no-lang"
+                    if grep -qiE '<img' "$hf" && grep -iE '<img' "$hf" | grep -qviE 'alt='; then
+                        a11y_problems="$a11y_problems $(basename "$hf"):img-without-alt"
+                    fi
+                    dup=$(grep -oE 'id="[^"]+"' "$hf" 2>/dev/null | sort | uniq -d | head -1 || true)
+                    [ -n "$dup" ] && a11y_problems="$a11y_problems $(basename "$hf"):dup-$dup"
+                done
+                if [ -n "$a11y_problems" ]; then
+                    echo "  ❌ Accessibility defect(s) in the prototype:$a11y_problems"
+                    echo "     <html lang>, alt on every <img>, and unique ids are the minimum for WCAG AA markup."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Accessibility basics present (html lang, img alt, unique ids)"
                 fi
             fi
             # 6g. Mechanical UI/UX Consistency Audit
