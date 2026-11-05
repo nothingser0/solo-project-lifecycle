@@ -28,5 +28,25 @@ gate_A02() {
             GATE_FAILED=1
         fi
         check_sections "$sec_target" "STRIDE" "Mitigation"
+
+        # A threat model whose STRIDE section says "none found" is a document with no threats,
+        # which is the one thing a threat model cannot be. Require >=3 STRIDE categories named
+        # and at least one mitigation row.
+        if [ -f "$sec_target" ]; then
+            stride_hits=0
+            for cat in Spoofing Tampering Repudiation "Information Disclosure" "Denial of Service" "Elevation of Privilege"; do
+                grep -qi "$cat" "$sec_target" && stride_hits=$((stride_hits + 1))
+            done
+            if [ "$stride_hits" -lt 3 ]; then
+                echo "  ❌ $sec_target names $stride_hits of the 6 STRIDE categories - a threat model covering fewer than 3 has not been done."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Threat model covers $stride_hits/6 STRIDE categories"
+            fi
+            if ! grep -qE "^\|[^-|].*\|" "$sec_target"; then
+                echo "  ❌ $sec_target contains no threat table rows - 'none found' is not a threat model."
+                GATE_FAILED=1
+            fi
+        fi
     fi
 }

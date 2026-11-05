@@ -112,6 +112,67 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_advisory <name> <PASS|FAIL> <mode:a00model|a00fee|a02stride|a03rows>
+expect_advisory() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/adv"; rm -rf "$dir"
+    mkdir -p "$dir/docs/pm" "$dir/docs/architecture" "$dir/docs/security" "$dir/docs/procurement" "$dir/docs/governance"
+    printf -- '- **Scale**: Large\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        a00*)
+            local who="Zeenn" fee="IDR 15.000.000 per month"
+            [ "$mode" = "a00model" ] && who="Claude Agent"
+            [ "$mode" = "a00fee" ] && fee="0"
+            cat > "$dir/docs/pm/CONSULTING_AGREEMENT.md" <<EOF
+# Consulting Agreement
+
+## Parties
+Client: PT Klien
+Consultant: $who
+
+## Advisory Deliverables
+Architecture review, monthly.
+
+## Professional Fees
+Fee: $fee
+
+## Liability
+Capped at 2x monthly fee.
+
+Signed by: $who on 2026-11-05
+EOF
+            ;;
+        a02stride)
+            printf '# Blueprint\n\n## C4\nx\n## Data Residency\nx\n## Scenario\nx\n' > "$dir/docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md"
+            printf '# Threat model\n\n## STRIDE\nnone found\n## Mitigation\nnothing needed\n' > "$dir/docs/security/THREAT_MODEL_STRIDE.md"
+            ;;
+        a03rows)
+            printf '# Schedule\n\n## Procurement Scope\nx\n## Timeline\nx\n## Requirements\nx\n' > "$dir/docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md"
+            printf '# Matrix\n\n## Comparison Framework\nx\n## Decision Matrix\n| Vendor | Score |\n|---|---|\n## Recommendation\nGo with someone.\n' > "$dir/docs/governance/VENDOR_COMPARISON_MATRIX.md"
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$(echo "$mode" | cut -c1-3 | tr 'a-z' 'A-Z')" 2>&1 || true)"
+    case "$mode" in
+        a00model) echo "$out" | grep -q "names a model as a signing party" && got="FAIL" ;;
+        a00fee)   echo "$out" | grep -q "zero/absent professional fee" && got="FAIL" ;;
+        a02stride) echo "$out" | grep -q "fewer than 3 has not been done" && got="FAIL" ;;
+        a03rows)  echo "$out" | grep -q "scored row(s)" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (adv:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (adv:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "model|fee|STRIDE|scored" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_advisory "a model signing the consulting agreement blocks" FAIL a00model
+expect_advisory "a zero fee without pro bono blocks" FAIL a00fee
+expect_advisory "a STRIDE model with no categories blocks" FAIL a02stride
+expect_advisory "a decision matrix with no scored rows blocks" FAIL a03rows
+
 # expect_signatory <name> <PASS|FAIL> <mode:m10model|m10human|m11model|m11same|m11ok>
 expect_signatory() {
     local name="$1" want="$2" mode="$3"

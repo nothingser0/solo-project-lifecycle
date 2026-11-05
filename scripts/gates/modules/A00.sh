@@ -16,6 +16,30 @@ gate_A00() {
             GATE_FAILED=1
         fi
         check_sections "$target" "Parties" "Advisory Deliverables" "Professional Fees" "Liability"
+
+        # The consultant signs. A model may draft the agreement, never be a party to it - the
+        # same rule M09/M10/M11 already enforce for UAT, go-live and BAST.
+        if grep -iE "(consultant|signed by|signed)[[:space:]]*:" "$target" | grep -qiE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)"; then
+            echo "  ❌ $target names a model as a signing party - the agent may draft the agreement, never sign it."
+            GATE_FAILED=1
+        fi
+
+        # A fee of zero is a pro-bono engagement, which must say so; and a consulting agreement
+        # whose liability is "None at all" protects nobody, including the consultant.
+        a00_fees=$(grep -iA3 "professional fees" "$target" | grep -oiE "(fee|rate|amount)[s]?[[:space:]]*:[[:space:]]*[^ ]*" | head -1)
+        if [ -n "$a00_fees" ]; then
+            if echo "$a00_fees" | grep -qE ":[[:space:]]*(0|0\.0*|free|none)[[:space:]]*$" \
+               || echo "$a00_fees" | grep -qiE ":[[:space:]]*(free|none)[[:space:]]*$"; then
+                if ! grep -qiE "pro[- ]?bono" "$target"; then
+                    echo "  ❌ $target states a zero/absent professional fee without 'pro bono' - that is an unpaid contract, not a priced one."
+                    GATE_FAILED=1
+                fi
+            fi
+        fi
+        if grep -iE "^.*liability[[:space:]]*:" "$target" | grep -qiE ":[[:space:]]*(none|n/a|no liability|nil)[[:space:]]*$"; then
+            echo "  ❌ $target sets liability to none/nil - an agreement with no liability clause is not an agreement."
+            GATE_FAILED=1
+        fi
     fi
     check_optional "docs/pm/RFP_RESPONSE.md"
 }
