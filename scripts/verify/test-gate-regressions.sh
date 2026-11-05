@@ -112,6 +112,49 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m06_slop <name> <PASS|FAIL> <src-file-body> <mode:emoji|comment|todo>
+# The anti-slop checks that were measuring the wrong thing: an emoji range that skipped
+# U+2600-U+26FF, and a comment pattern that only matched thirteen capitalised phrases.
+expect_m06_slop() {
+    local name="$1" want="$2" body="$3" mode="$4"
+    local dir="$WORK/m06sl"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/b.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/c.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/d.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCH\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    printf '# DESIGN\ntokens #3b82f6\n' > "$dir/DESIGN.md"
+    printf '# CONV\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUN\nnpm run dev\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '# VERIFY\ntests\n' > "$dir/VERIFY_LOCAL.md"
+    printf '%b\n' "$body" > "$dir/src/page.tsx"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    case "$mode" in
+        emoji)   echo "$out" | grep -q "raw emoji / emoticon" && got="FAIL" ;;
+        comment) echo "$out" | grep -q "narrating / redundant comment" && got="FAIL" ;;
+        todo)    echo "$out" | grep -q "placeholder TODO stub" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (slop:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (slop:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "emoji|comment|TODO stub" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_slop "lightning and gear emoji are caught" FAIL 'export const A = () => <b>\xe2\x9a\xa1 \xe2\x9a\x99</b>;' emoji
+expect_m06_slop "warning sign emoji is caught" FAIL 'export const B = () => <b>\xe2\x9a\xa0</b>;' emoji
+expect_m06_slop "banner-and-lowercase comments block" FAIL '// ============================\n// increment the counter\nexport const c = 1;' comment
+expect_m06_slop "shouted comment blocks" FAIL '// THIS IS THE LOGIN PAGE OK\nexport const d = 1;' comment
+expect_m06_slop "TODO left in source blocks" FAIL '// TODO: add validation later\nexport const e = 1;' todo
+expect_m06_slop "a why-comment is allowed" PASS '// Retry once because the payment provider times out on cold start.\nexport const f = 1;' comment
+
 # expect_m08_m09 <name> <PASS|FAIL> <mode:m08map|m08rows|m09model|m09incomplete> <body>
 expect_m08_m09() {
     local name="$1" want="$2" mode="$3" body="$4"

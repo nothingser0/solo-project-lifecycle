@@ -395,7 +395,11 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero type-suppression escape hatches in source"
         fi
         # 2. Placeholder TODO stubs left in production code
-        todo_stub=$(grep -rInE "//\s*TODO:?\s*(Implement|Add (your )?logic|Fill|Complete|Fix later)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+        # Any TODO/FIXME/HACK/XXX in shipped source is unresolved work in a file that claims to
+        # be done. The old pattern needed "TODO: Implement|Fill|Complete|Fix later" specifically,
+        # so "// TODO: add validation later" shipped clean.
+        todo_stub=$(grep -rInE "(//|/\*|#|--)[[:space:]]*(TODO|FIXME|HACK|XXX)([[:space:]]|:|\()" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md)" | wc -l | tr -d ' ')
         if [ "${todo_stub:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${todo_stub} unresolved placeholder TODO stub(s) in source!"
             GATE_FAILED=1
@@ -434,7 +438,48 @@ gate_M06() {
             GATE_FAILED=1
         fi
         # 4. Narrating / stub comments (BLOCKER — row 21 of POLISH_AUDIT)
-        slop_cmt=$(grep -rInE "(//|#|{/\*)[[:space:]]*(Increment|Import|Get the|Set the|Initialize|Create a|This (function|method|class) (is|will)|Add your logic|Loop through|Return the result|Navbar Header|Hero Section|Feature Cards|Footer Section|Handle error|Server Actions for)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+        # What is forbidden is a comment that repeats the code or decorates it, not the comment
+        # that explains a why. The old pattern matched thirteen capitalised phrases, so
+        # "// increment the counter" and a banner of "====" both passed.
+        slop_cmt=$(python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo 0
+import os, re, sys
+SKIP = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock")
+LINE = re.compile(r"^\s*(?://+|#|/\*|\*)\s*(.*)$")
+# a comment that narrates the next line
+NARRATE = re.compile(
+    r"^(increment|decrement|import|export|get the|set the|initialize|initialise|create a|"
+    r"this (function|method|class|component) (is|will)|add your logic|loop through|"
+    r"return the result|handle error|handle the error|update the|call the|fetch the|"
+    r"define the|declare the|render the|check if|if the|now we|here we|first,|then,)\b",
+    re.I)
+# a decorative banner: ====, ----, ****, ####
+BANNER = re.compile(r"^[=\-*#_~]{4,}$")
+# every word shouting
+SHOUT = re.compile(r"^[A-Z0-9 _\-!?.,:'\"/()]{12,}$")
+hits = 0
+for root in sys.argv[1:]:
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if d not in ("node_modules", ".next", "dist", "build", ".git")]
+        for fn in filenames:
+            if any(s in fn for s in SKIP) or fn.endswith((".md", ".css")):
+                continue
+            try:
+                lines = open(os.path.join(dirpath, fn), encoding="utf-8", errors="ignore").read().split("\n")
+            except OSError:
+                continue
+            for ln in lines:
+                m = LINE.match(ln)
+                if not m:
+                    continue
+                body = m.group(1).strip()
+                if not body or body.startswith("!"):
+                    continue
+                if BANNER.match(body) or NARRATE.match(body) or SHOUT.match(body):
+                    hits += 1
+print(hits)
+PYEOF
+)
+        slop_cmt=$(printf '%s' "$slop_cmt" | tr -dc '0-9')
         if [ "${slop_cmt:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${slop_cmt} narrating / redundant comment(s) in source (e.g. '// Initialize', '// Handle error', '// Hero Section')!"
             echo "     AI agents must never use comments to narrate obvious code or scratchpad thoughts. Code must be self-documenting."
@@ -587,8 +632,33 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero unconstrained 'any' types in production source"
         fi
         # 4c. Raw emoji / emoticon in UI components & source (BLOCKER — row 26 of POLISH_AUDIT: zero emoticons mandate)
-        raw_emojis=$(grep -rInP "[\x{1F300}-\x{1FAD6}\x{1F600}-\x{1F64F}\x{2700}-\x{27BF}]" $scan_dirs 2>/dev/null \
-            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json)" | wc -l | tr -d ' ')
+        # Codepoint ranges are matched with python3 on purpose: grep -P rejects \x{1F300} under
+        # LC_ALL=C ("character code point value too large"), which is how CI runs, and the old
+        # range skipped U+2600-U+26FF altogether - so ⚡ ⚙ ⚠ passed as "zero emoticons".
+        raw_emojis=$(python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo 0
+import os, re, sys
+RANGES = [
+    (0x2190, 0x21FF), (0x2300, 0x23FF), (0x25A0, 0x27BF), (0x2900, 0x297F),
+    (0x2B00, 0x2BFF), (0x1F000, 0x1FAFF), (0xFE0F, 0xFE0F), (0x200D, 0x200D),
+]
+PAT = re.compile("[" + "".join(f"{chr(a)}-{chr(b)}" for a, b in RANGES) + "]")
+SKIP = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock")
+hits = 0
+for root in sys.argv[1:]:
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if d not in ("node_modules", ".next", "dist", "build", ".git")]
+        for fn in filenames:
+            if any(s in fn for s in SKIP):
+                continue
+            try:
+                body = open(os.path.join(dirpath, fn), encoding="utf-8", errors="ignore").read()
+            except OSError:
+                continue
+            hits += len(PAT.findall(body))
+print(hits)
+PYEOF
+)
+        raw_emojis=$(printf '%s' "$raw_emojis" | tr -dc '0-9')
         if [ "${raw_emojis:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${raw_emojis} raw emoji / emoticon character(s) in source (e.g. 🚀, 💡, ⚡, ⚙️, ✨)!"
             echo "     Raw unicode emojis are strictly forbidden in production code. Use cohesive SVG icons (e.g. Lucide) instead."
