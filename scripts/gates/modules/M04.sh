@@ -164,7 +164,7 @@ gate_M04() {
                 state_count=$((state_count + 1))
             fi
         done
-        if [ "$state_count" -ge 3 ]; then
+        if [ "$state_count" -ge 5 ]; then
             echo "  ✅ DESIGN_SPEC.md 5-state matrix markers verified ($state_count/5 states detected)"
         else
             echo "  ❌ DESIGN_SPEC.md missing 5-state matrix coverage (found only $state_count/5 states)!"
@@ -192,9 +192,29 @@ gate_M04() {
         # 6. Interactive Prototyping enforcement (Visual prototype MANDATORY)
         echo "  [INFO] Interactive Prototyping (visual preview mandatory)."
         # Allow flat files in docs/design/screens/*.html or nested subfolders docs/design/screens/scr-xx/
-        screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.svg" \) 2>/dev/null | wc -l | tr -d ' ')
+        screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" \) 2>/dev/null | wc -l | tr -d ' ')
         if [ "${screen_files:-0}" -ge 1 ]; then
             echo "  ✅ Interactive screen preview outputs present (found $screen_files preview files)"
+            # 6a-bis. A file existing is not a screen. A 0-byte .html counted as a delivered
+            #     prototype, so require the smallest evidence that markup was actually written.
+            hollow=""
+            while IFS= read -r sf; do
+                [ -z "$sf" ] && continue
+                sz=$(wc -c < "$sf" 2>/dev/null | tr -d ' ')
+                words=$(grep -oE "[A-Za-z]{2,}" "$sf" 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${sz:-0}" -lt 2000 ] || [ "${words:-0}" -lt 20 ]; then
+                    hollow="$hollow $(basename "$sf"):${sz}B/${words}w"
+                fi
+            done <<EOF
+$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" \) 2>/dev/null)
+EOF
+            if [ -n "$hollow" ]; then
+                echo "  ❌ Prototype screen(s) too hollow to be a screen (need >=2000 bytes and >=20 words):$hollow"
+                echo "     A placeholder file is not a prototype; an empty one proves nothing was designed."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Every prototype screen has real markup (>= 2000 bytes, >= 20 words)"
+            fi
             # 6b. Mechanical Anti-Slop Prototype Audit
             neon_colors=$(grep -rInE "(#FF5722|#FF0000|#00FF00|bg-orange-500|bg-red-500)" docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
             if [ "${neon_colors:-0}" -gt 0 ]; then

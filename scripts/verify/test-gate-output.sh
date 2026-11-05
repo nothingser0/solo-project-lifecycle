@@ -69,7 +69,9 @@ EOF
     printf 'SCR-003 SCR-004\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'c')" > "$d/docs/specs/SITEMAP.md"
     printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Motion & Interaction\nSpring physics and smooth transitions\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
     mkdir -p "$d/docs/design/screens"
-    touch "$d/docs/design/screens/SCR-003.html"
+    # A real (if minimal) screen: the gate now rejects an empty .html as a delivered prototype.
+    printf '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Screen 3</title><link rel="stylesheet" href="../shared/css/styles.css"></head><body data-roles="admin"><main>\n%s\n</main><script src="../shared/js/app.js"></script></body></html>\n' \
+        "$(printf 'Prototype screen content for the reviewer to inspect. %.0s' $(seq 1 45))" > "$d/docs/design/screens/SCR-003.html"
     printf '# LOGO_DESIGN_BRIEF\nSelected benchmark: Linear\n%s\n' "$(head -c 300 /dev/zero | tr '\0' 'e')" > "$d/docs/specs/LOGO_DESIGN_BRIEF.md"
     printf '# COMPONENT_REQUIREMENTS\n\n## Primitives (Atomic Components)\n\n## Composites (Standard & Domain)\n\n## WCAG 2.2 AA Accessibility\n%s\n' "$(head -c 1000 /dev/zero | tr '\0' 'f')" > "$d/docs/specs/COMPONENT_REQUIREMENTS.md"
     head -c 120 /dev/zero | tr '\0' 'z' > "$d/assets/logo/logo.svg"

@@ -132,6 +132,7 @@
   ✅ DESIGN.md Anti-Slop design defenses verified
   [INFO] Interactive Prototyping (visual preview mandatory).
   ✅ Interactive screen preview outputs present (found 1 preview files)
+  ✅ Every prototype screen has real markup (>= 2000 bytes, >= 20 words)
   ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI
   ✅ Mechanical UI/UX consistency audit PASSED
   ✅ Screen count match verified (SITEMAP 2 vs DESIGN_SPEC 2, tolerance ±0)

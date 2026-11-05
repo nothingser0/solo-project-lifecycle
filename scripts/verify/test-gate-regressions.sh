@@ -112,6 +112,57 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m04_screen <name> <PASS|FAIL> <screen-html>
+# Builds the minimum M04 project and varies only the prototype screen content.
+expect_m04_screen() {
+    local name="$1" want="$2" html="$3"
+    local dir="$WORK/m04scr"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/docs/design/brand" "$dir/docs/design/inspiration"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '%b' "$html" > "$dir/docs/design/screens/SCR-003.html"
+    # everything M04 needs that is not under test
+    printf 'SCR-003 admin invoices\n%s\n' "$(printf 'sitemap detail row. %.0s' $(seq 1 120))" > "$dir/docs/specs/SITEMAP.md"
+    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\n%s\n' \
+        "$(printf 'screen rows and state matrix detail. %.0s' $(seq 1 100))" > "$dir/docs/specs/DESIGN_SPEC.md"
+    printf '# Components\n\n## Primitives & Atomic\nbutton input\n## Composites\ncard form\n## Accessibility WCAG AA\ncontrast 4.5:1\n%s\n' \
+        "$(printf 'component inventory detail. %.0s' $(seq 1 60))" > "$dir/docs/specs/COMPONENT_REQUIREMENTS.md"
+    printf '# Logo brief\n\nmonogram mark with brand accent and clear space rules defined\n' > "$dir/docs/specs/LOGO_DESIGN_BRIEF.md"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#3b82f6"/><text x="32" y="42" font-size="28" fill="#fff" text-anchor="middle">A</text></svg>\n' > "$dir/docs/design/brand/logo.svg"
+    printf '# inspiration notes\n\nWinning benchmark: Linear, because of its density and neutral palette.\n%s\n' \
+        "$(printf 'observation detail. %.0s' $(seq 1 60))" > "$dir/docs/design/inspiration/notes.md"
+    printf 'reference screenshot placeholder supplied by the human\n' > "$dir/docs/design/inspiration/ref.png"
+    printf 'sources:\n  - docs/design/inspiration/notes.md\n\nEvidence & Inference Log: tokens marked observed or inferred\n\nTypography scale and Spacing scale defined here.\nContrast 4.5:1 and 7.0:1 recorded. z-index base 0 toast 60.\n%s\n' \
+        "$(printf 'design token detail. %.0s' $(seq 1 60))" > "$dir/DESIGN.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -qE "too hollow to be a screen" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M04 hollow -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M04 hollow -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m04_screen "empty 0-byte .html is not a prototype" FAIL ''
+expect_m04_screen "real markup screen passes the hollow check" PASS "<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Invoices</title></head><body data-roles=\"admin\"><main><h1>Invoices</h1><p>$(printf 'Invoice rows for the current month with totals and status per row. %.0s' $(seq 1 40))</p></main></body></html>
+"
+# A screenshot is a reference, not a screen the developer built.
+m04_png_only() {
+    local dir="$WORK/m04png"; rm -rf "$dir"; mkdir -p "$dir/docs/design/screens" "$dir/docs/pm"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'x' > "$dir/docs/design/screens/shot.png"
+    local out; out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    if echo "$out" | grep -qE "Interactive screen preview outputs present"; then
+        echo -e "  ${RED}✗${NC} a PNG alone must not count as a prototype screen"
+        FAIL=$((FAIL + 1))
+    else
+        echo -e "  ${GREEN}✓${NC} a PNG alone does not count as a prototype screen"
+        PASS=$((PASS + 1))
+    fi
+}
+m04_png_only
+
 # expect_m03_sow <name> <PASS|FAIL> <signature-block-content>
 # Builds a complete client SOW and swaps only its signature block / clause substance.
 expect_m03_sow() {
