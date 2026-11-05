@@ -56,7 +56,7 @@ mk_fixture() {
 - Intake-Legacy-Core: yes
 - Intake-Status: ANSWERED
 EOF
-    printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$d/PROJECT_LITE.md"
+    printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\n' > "$d/PROJECT_LITE.md"
     printf '# AGENTS\n\n## Engineering Standards\nAnti-slop rules: no @ts-ignore, no as any, no empty catch, no secrets.\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'x')" > "$d/AGENTS.md"
     printf '# CONTEXT\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'y')" > "$d/CONTEXT.md"
     printf '# TODO\n\n- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0\n- [ ] **M06-BE-01: API**\n- [ ] **M06-FE-01: Screens**\n' > "$d/TODO.md"

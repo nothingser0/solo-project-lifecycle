@@ -112,6 +112,32 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m05_schema <name> <PASS|FAIL> <fsd-tail>
+# Assert the ERD/DDL cross-check and the rejected-alternative rule on their own.
+expect_m05_schema() {
+    local name="$1" want="$2" tail="$3"
+    local dir="$WORK/m05sc"
+    rm -rf "$dir"; mkdir -p "$dir/docs/specs"
+    printf '# FSD\n\n%b\n\nApproved by: Sri Wahyuni\nApproved on: 2026-11-05\n' "$tail" > "$dir/docs/specs/FSD.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    echo "$out" | grep -qE "missing from the ERD|never created by the DDL|no rejected alternative|without a reason" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 schema -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 schema -> $got, expected $want)"
+        echo "$out" | grep -E "ERD|Table|Rejected|rejected" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M05_ERD_AGREE='```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React'
+expect_m05_schema "ERD that omits a DDL table blocks" FAIL '```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE TABLE invoices (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React'
+expect_m05_schema "ERD describing a table no DDL creates blocks" FAIL '```mermaid\nerDiagram\n    purchase {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React'
+expect_m05_schema "locked stack with no rejected alternative blocks" FAIL '```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js'
+expect_m05_schema "rejected alternative with no reason blocks" FAIL '```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel'
+expect_m05_schema "ERD matching DDL with a justified stack passes" PASS "$M05_ERD_AGREE"
+
 # expect_m05_chain <name> <PASS|FAIL> <prd-body> [scope-body] [sitemap-body]
 # M05's job is the traceability chain, so these cases assert the chain and nothing else.
 expect_m05_chain() {
@@ -568,8 +594,8 @@ expect_inspiration "M04 notes.md cites a file that does not exist" BLOCKED "note
 expect_inspiration "M04 human screenshot + notes.md citing it" ALLOWED "notes.md:reference-1-dashboard.png" "reference-1-dashboard.png:binary-data"
 
 # B. Stack questionnaire (M05) — the marker alone must not pass.
-printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$WORK/pl_noq.md"
-printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n\n- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n- Q8 Compliance Requirements: x\n' > "$WORK/pl_8q.md"
+printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\n' > "$WORK/pl_noq.md"
+printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n\n- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n- Q8 Compliance Requirements: x\n' > "$WORK/pl_8q.md"
 
 run_lock() {
     local name="$1" want="$2" src="$3"
@@ -607,7 +633,7 @@ run_rls() {
     {
         printf -- '## 1. Document Metadata\n'
         printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
-        printf -- 'Stack Decision LOCKED: FastAPI\nStack-Locked-by: S. Rahma\n'
+        printf -- 'Stack Decision LOCKED: FastAPI  Rejected: Next.js because the workload is batch-heavy\nStack-Locked-by: S. Rahma\n'
         printf -- '### Framework Versions (Pinned):\n- FastAPI: 0.143.0\n'
         printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
         printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
@@ -658,7 +684,7 @@ run_endpoints() {
     {
         printf -- '## 1. Document Metadata\n'
         printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
-        printf -- 'Stack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'
+        printf -- 'Stack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'
         printf -- '### Framework Versions (Pinned):\n- Next.js: 15.0.3\n'
         printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
         printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
@@ -734,26 +760,26 @@ HANDOFF_OK='### Module 04 Handoff Strategy\n**Compatibility Level**: Level 3\n**
 SIGNOFF_OK='**Approved by**: S. Rahma\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: S. Rahma (Date: 2026-10-12)\n'
 
 build_raw_template() { # the false-green: raw template with only the lock line edited
-    sed 's|^Stack Decision LOCKED: \[Next.js / Laravel / Django / Go / SvelteKit / FastAPI\]|Stack Decision LOCKED: Next.js|' \
+    sed 's|^Stack Decision LOCKED: \[Next.js / Laravel / Django / Go / SvelteKit / FastAPI\]|Stack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React|' \
         "$REPO/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" > "$1/PROJECT_LITE.md"
 }
 build_no_security() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 build_no_handoff() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 build_blank_signoff() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: _________________________\n**Approved on**: [YYYY-MM-DD]\n'; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: _________________________\n**Approved on**: [YYYY-MM-DD]\n'; } > "$1/PROJECT_LITE.md"
 }
 build_all_ok() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 # A role word satisfies "a leading letter" but is not a named human. Both approver
 # checks (stack lock and technical sign-off) must reject it, or the rule is vacuous.
 build_role_approver() { # $1 = target dir, $2 = role string
     local dir="$1" role="$2"
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: %s\n' "$role"; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: %s\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: %s (Date: 2026-10-12)\n' "$role" "$role"; } > "$dir/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: %s\n' "$role"; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: %s\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: %s (Date: 2026-10-12)\n' "$role" "$role"; } > "$dir/PROJECT_LITE.md"
 }
 build_role_approver_validation() { build_role_approver "$1" "Validation Lead"; }
 build_role_approver_founder() { build_role_approver "$1" "Founder"; }
@@ -1457,9 +1483,9 @@ expect_m06_step() {
     fi
 }
 
-FSD_OK_LOCK='Stack Decision LOCKED: Next.js 15\n\n## Module 04 Handoff Strategy\nCompatibility Level: 2\n'
+FSD_OK_LOCK='Stack Decision LOCKED: Next.js 15  Rejected: Laravel because the team already ships React\n\n## Module 04 Handoff Strategy\nCompatibility Level: 2\n'
 FSD_NO_LOCK='## 2. Component Architecture\n\nORM / Driver: Drizzle\n'
-FSD_NO_HANDOFF='Stack Decision LOCKED: Next.js 15\n\n## 3. Database Schema\n'
+FSD_NO_HANDOFF='Stack Decision LOCKED: Next.js 15  Rejected: Laravel because the team already ships React\n\n## 3. Database Schema\n'
 
 expect_m06_step "FSD with no locked stack" BLOCKED "$FSD_NO_LOCK" yes
 expect_m06_step "FSD with no Module 04 Handoff Strategy" BLOCKED "$FSD_NO_HANDOFF" yes
@@ -1472,7 +1498,7 @@ expect_m05_handoff() {
     local dir="$WORK/m05h"
     make_project "$dir" "$INTAKE_MEDIUM"
     mkdir -p "$dir/docs/specs"
-    printf '### Stack Decision\nStack Decision LOCKED: Next.js\n\n- Q1 x\n- Q2 x\n- Q3 x\n- Q4 x\n- Q5 x\n- Q6 x\n- Q7 x\n- Q8 x\n' > "$dir/docs/specs/FSD.md"
+    printf '### Stack Decision\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\n\n- Q1 x\n- Q2 x\n- Q3 x\n- Q4 x\n- Q5 x\n- Q6 x\n- Q7 x\n- Q8 x\n' > "$dir/docs/specs/FSD.md"
     [ "$with_handoff" = "yes" ] && printf '\n## Module 04 Handoff Strategy\nCompatibility Level: 3\n' >> "$dir/docs/specs/FSD.md"
     local out
     out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
@@ -1505,7 +1531,7 @@ expect_version() {
     local name="$1" want="$2" fsdline="$3" resolved="$4" extra="$5"
     local dir="$WORK/vt"
     rm -rf "$dir"; mkdir -p "$dir/docs/specs" "$dir/bin"
-    printf '### Stack Decision (LOCKED)\nStack Decision LOCKED: Next.js 15\n\n### Framework Versions (Pinned)\n%b\n\n## 3. Database Schema\n' "$fsdline" > "$dir/docs/specs/FSD.md"
+    printf '### Stack Decision (LOCKED)\nStack Decision LOCKED: Next.js 15  Rejected: Laravel because the team already ships React\n\n### Framework Versions (Pinned)\n%b\n\n## 3. Database Schema\n' "$fsdline" > "$dir/docs/specs/FSD.md"
     printf '{"dependencies":{"next":"^15.0.3"}}\n' > "$dir/package.json"
     printf '{"packages":{"node_modules/next":{"version":"%s"}}}\n' "$resolved" > "$dir/package-lock.json"
     [ -n "$extra" ] && printf '{}\n' > "$dir/$extra"

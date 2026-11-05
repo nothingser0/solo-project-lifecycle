@@ -170,6 +170,31 @@ PYEOF
             echo "  ❌ FSD.md missing Visual ERD! Include a mermaid erDiagram block in Section 2.2."
             GATE_FAILED=1
         fi
+        # 2b. The ERD must describe the schema that the DDL creates. Checking that both exist
+        #     let an erDiagram of "purchase" sit beside CREATE TABLE orders and pass.
+        ddl_tables=$(grep -oiE "CREATE TABLE (IF NOT EXISTS )?[\"\`]?[a-z_][a-z0-9_]*" "$fsd" \
+                     | sed -E 's/.*(TABLE (IF NOT EXISTS )?)//' | tr -d '"\`' | tr '[:upper:]' '[:lower:]' | sort -u || true)
+        if [ -n "$ddl_tables" ] && grep -qiE "erDiagram" "$fsd"; then
+            erd_tables=$(sed -n '/erDiagram/,/^[[:space:]]*```/p' "$fsd" \
+                         | grep -oE "^[[:space:]]*[A-Za-z_][A-Za-z0-9_]*[[:space:]]*\{" \
+                         | sed -E 's/^[[:space:]]+//; s/[[:space:]]*\{//' | tr '[:upper:]' '[:lower:]' | sort -u || true)
+            ddl_only=""
+            for tb in $ddl_tables; do
+                printf '%s\n' "$erd_tables" | grep -qx "$tb" || ddl_only="$ddl_only $tb"
+            done
+            erd_only=""
+            for tb in $erd_tables; do
+                printf '%s\n' "$ddl_tables" | grep -qx "$tb" || erd_only="$erd_only $tb"
+            done
+            if [ -n "$ddl_only" ] || [ -n "$erd_only" ]; then
+                [ -n "$ddl_only" ] && echo "  ❌ Table(s) in the DDL but missing from the ERD:$ddl_only"
+                [ -n "$erd_only" ] && echo "  ❌ Table(s) in the ERD but never created by the DDL:$erd_only  (the diagram and the schema disagree)"
+                GATE_FAILED=1
+            else
+                echo "  ✅ ERD and DDL describe the same $(printf '%s\n' "$ddl_tables" | grep -c .) table(s)"
+            fi
+        fi
+
         if grep -qiE "CREATE INDEX|idx_[A-Za-z0-9_]+|INDEX|uniqueIndex" "$fsd"; then
             echo "  ✅ Database performance indexing verified in FSD.md (indexes present)"
         else
@@ -303,6 +328,19 @@ PYEOF
     if [ -n "$m05_lock_target" ]; then
         if grep -qiE "Stack Decision LOCKED:" "$m05_lock_target"; then
             echo "  ✅ Locked tech stack decision documented in $m05_lock_target"
+            # 6b. A locked stack with no rejected alternative is a preference, not a decision.
+            #     A single word next to the winner is not a reason - require two.
+            stack_line=$(grep -m1 -iE "Stack Decision LOCKED:" "$m05_lock_target")
+            rejected=$(printf '%s\n' "$stack_line" | grep -oiE "(rejected|ditolak|not chosen)[[:space:]]*:[[:space:]]*[^\n]+" | head -1)
+            if [ -z "$rejected" ]; then
+                echo "  ❌ 'Stack Decision LOCKED' names no rejected alternative - add 'Rejected: <option> because <reason>' so the choice is reviewable."
+                GATE_FAILED=1
+            elif [ "$(printf '%s' "$rejected" | tr ' ' '\n' | grep -c . )" -lt 5 ]; then
+                echo "  ❌ The rejected alternative is stated without a reason ('$rejected') - say why it lost."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Stack choice records a rejected alternative and why"
+            fi
         else
             echo "  ❌ $m05_lock_target missing locked tech stack decision ('Stack Decision LOCKED:')!"
             GATE_FAILED=1

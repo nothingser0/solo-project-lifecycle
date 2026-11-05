@@ -156,7 +156,7 @@ sequenceDiagram
 
 ### Stack Decision (LOCKED — human decision, gate-enforced)
 
-Stack Decision LOCKED: [chosen stack]
+Stack Decision LOCKED: [chosen stack]  Rejected: [the runner-up] because [why it lost]
 Stack-Locked-by: [Human Name] on [YYYY-MM-DD]
 
 > ⚠️ **M05 GATE ENFORCEMENT**: `validate-gate.sh M05` requires eight architecture inputs to be recorded before
