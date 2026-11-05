@@ -1,5 +1,9 @@
 # Local Verification & Smoke Test Checklist
 
+> Sections 1-3 and 4A/4B are mechanically checkable and the M06 gate enforces most of
+> them. Section 4A-2 lists what no static check can answer — those are checked by a human
+> with a screenshot, and an unchecked box there means the UI was never actually looked at.
+
 > Self-verification sheet before a solo developer publishes code to the staging repository or submits a release milestone.
 
 ---
@@ -72,6 +76,23 @@ A commit SHA identifies the *source*, not the *artifact*. Record what actually r
 - [ ] Shadow style consistent (flat `shadow-sm border` vs heavy `shadow-lg`)
 - [ ] Border width matches spec (typically 1px `border-neutral-200`)
 - [ ] Spacing follows Tailwind scale from DESIGN.md
+
+### 4A-2. Human-only checks (the gate cannot see these)
+
+The automated gate reads source text. It scores literal hex pairs, Tailwind `text-*`/`bg-*` pairs
+and opacity modifiers, checks that a declared font is loaded somewhere, and that no size sits
+outside the DESIGN.md scale. The four things below have no static answer, so they are checked here
+by a person, on a running app, and recorded with a screenshot.
+
+| # | Check | How a human does it | Record |
+| :--- | :--- | :--- | :--- |
+| H1 | Contrast resolved at runtime (`var(--color-…)`, theme tokens) | DevTools → inspect the text element → Accessibility pane → the contrast badge (AA needs 4.5:1, large text 3:1) | [ ] screenshot of the badge |
+| H2 | Contrast against a background set in a *different* file (parent card, layout, gradient) | Look at the real screen; if the badge in H1 is red, it fails | [ ] screenshot of the screen |
+| H3 | Interactive components actually open and close (dropdown, popover, date picker, modal) | Click it. Open, pick an option, close with Escape, and tab through with the keyboard | [ ] 1 screenshot open + 1 closed |
+| H4 | Layout collision and overflow at the sizes the client uses | DevTools device toolbar at 360px, 768px, 1280px — nothing overlaps, nothing overflows horizontally | [ ] screenshot per width |
+
+**Why this section exists:** every item above was found by a person looking at a screen, not by a
+gate. If H1-H4 are unchecked, the release claim is "the static checks passed", not "the UI works".
 
 ### 4B. 5-State Matrix (Per SITEMAP Screens)
 

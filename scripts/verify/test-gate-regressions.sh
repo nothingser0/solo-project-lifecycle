@@ -430,6 +430,46 @@ expect_m06_visual "text-gray-300 on bg-gray-100 fails AA (1.34:1)" FAIL 'export 
 expect_m06_visual "text-slate-900 on bg-white passes AA (17:1)" PASS 'export const A = () => <p className="text-slate-900 bg-white">x</p>;' contrast
 expect_m06_visual "text-slate-400/70 on bg-white fails AA (1.86:1)" FAIL 'export const A = () => <p className="text-slate-400/70 bg-white">x</p>;' contrast
 expect_m06_visual "text-slate-900/60 on bg-white passes AA (4.69:1)" PASS 'export const A = () => <p className="text-slate-900/60 bg-white">x</p>;' contrast
+expect_m06_human() {
+    local name="$1" want="$2" body="$3" mode="$4"
+    local dir="$WORK/m06h"; rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium
+- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/b.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/c.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/d.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCH\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    printf '# DESIGN\ntokens\n' > "$dir/DESIGN.md"
+    printf '# CONV\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUN\nnpm run dev\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '%b\n' "$body" > "$dir/VERIFY_LOCAL.md"
+    printf 'export const A = () => <p className="text-slate-900 bg-white">x</p>;\n' > "$dir/src/a.tsx"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -q "lists no human-only checks\|does not cover both runtime contrast" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (human:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (human:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "human-only|runtime contrast" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_human "a VERIFY_LOCAL with no human-only checks blocks" FAIL '# Verify
+tests pass' a
+expect_m06_human "human-only checks without an interactive step block" FAIL '# Verify
+
+## Human-only checks
+DevTools computed style for runtime contrast.' b
+expect_m06_human "human-only checks covering both pass" PASS '# Verify
+
+## Human-only checks
+DevTools computed style for runtime contrast.
+Open every dropdown and popover.' c
 
 # expect_m06_slop <name> <PASS|FAIL> <src-file-body> <mode:emoji|comment|todo>
 # The anti-slop checks that were measuring the wrong thing: an emoji range that skipped

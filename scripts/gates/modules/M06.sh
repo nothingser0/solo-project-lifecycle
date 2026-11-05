@@ -98,6 +98,24 @@ gate_M06() {
         fi
     fi
 
+        # The gate cannot see a runtime-resolved colour, a dropdown opening, or layout collision.
+        # VERIFY_LOCAL.md has to say so, or the checklist implies the gate covered the UI.
+        vf_candidates=""
+        for cand in VERIFY_LOCAL.md docs/harness-root/VERIFY_LOCAL.md; do
+            [ -f "$cand" ] && vf_candidates="$vf_candidates $cand"
+        done
+        if [ -n "$vf_candidates" ]; then
+            if ! grep -qiE "human-only|manual check" $vf_candidates 2>/dev/null; then
+                echo "  ❌ VERIFY_LOCAL.md lists no human-only checks - the gate cannot see runtime contrast, opening dropdowns or layout collision, so those need a named human step."
+                GATE_FAILED=1
+            elif ! grep -qiE "computed|devtools|runtime" $vf_candidates 2>/dev/null || ! grep -qiE "dropdown|popover|modal" $vf_candidates 2>/dev/null; then
+                echo "  ❌ VERIFY_LOCAL.md human-only section does not cover both runtime contrast (DevTools/computed) and an interactive component (dropdown/popover/modal)."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Human-only verification steps present (runtime contrast + interactive components)"
+            fi
+        fi
+
     # Evidence report (BLOCKER): STEP 6 tells the agent to write artifacts/final-evidence.md
     # and run check_evidence.py, but nothing enforced that, so "Evidence:" could be a path
     # that never existed. The check is existence/non-stub only; it cannot prove the run.

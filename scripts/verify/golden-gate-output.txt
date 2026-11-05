@@ -236,6 +236,7 @@
   ❌ STEP 2: harness file(s) missing from project root: .env.example
      Staging is transit, not a destination: copy the missing files above from docs/harness-root/
      (or templates/04-dev-execution/<stack>/) to the project root, verify, THEN delete staging.
+  ❌ VERIFY_LOCAL.md lists no human-only checks - the gate cannot see runtime contrast, opening dropdowns or layout collision, so those need a named human step.
   ❌ artifacts/final-evidence.md missing — STEP 6 requires an evidence report before completion.
   ❌ M06-DB tasks were marked '[x]' but the evidence shows no real-DB proof: missing migrate-down seeder-count explain
      Paste the raw probes into artifacts/final-evidence.md: migrate up->down->up, seeder COUNT(*) before/after, EXPLAIN.
