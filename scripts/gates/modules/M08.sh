@@ -44,7 +44,48 @@ gate_M08() {
             fi
             # Section check for full migration plan
             if [ "$plan_file" = "docs/pm/DATA_MIGRATION_PLAN.md" ]; then
-                check_sections "$plan_file" "Data Hygiene" "Mapping Matrix" "Masking Protocol" || true
+                check_sections "$plan_file" "Data Hygiene" "Mapping Matrix" "Masking Protocol"
+            fi
+        fi
+
+        # E. A reconciliation that says only "PASSED" is an assertion, not evidence. Real
+        # reconciliation counts rows per table: source, loaded, matched.
+        # Only claim anything when the report is actually present; a missing file is reported by
+        # check_required/check_optional, and the else-branch was printing a pass for an absent file.
+        if [ -f docs/pm/MIGRATION_RECONCILIATION_REPORT.md ]; then
+            if grep -qiE "^\|.*(row|baris).*(row|baris)|rows?[[:space:]]*:[[:space:]]*[0-9]+" docs/pm/MIGRATION_RECONCILIATION_REPORT.md; then
+                echo "  ✅ Reconciliation report carries per-table row counts"
+            else
+                echo "  ❌ MIGRATION_RECONCILIATION_REPORT.md states no row counts - 'PASSED' without numbers is an opinion."
+                echo "     Add a table: | Table | Source rows | Loaded rows | Matched | (counts, not adjectives)."
+                GATE_FAILED=1
+            fi
+        fi
+
+        # C+E. A mapping matrix that names no table from the schema is a table of words, and a
+        # reconciliation that reports only the word PASSED proves nothing. Both are checked
+        # against the DDL that M05 produced, when there is a schema to check against.
+        if [ -f docs/specs/FSD.md ] || [ -f "docs/specs/PROJECT_LITE.md" ]; then
+            ddl_src="docs/specs/FSD.md"
+            [ -f "$ddl_src" ] || ddl_src="docs/specs/PROJECT_LITE.md"
+            m08_tables=$(grep -oiE "CREATE TABLE (IF NOT EXISTS )?[\"\`]?[a-z_][a-z0-9_]*" "$ddl_src" 2>/dev/null \
+                         | sed -E 's/.*(TABLE (IF NOT EXISTS )?)//' | tr -d '"\`' | tr '[:upper:]' '[:lower:]' | sort -u || true)
+            if [ -n "$m08_tables" ]; then
+                if grep -qiE "N/A[[:space:]]*[-—:].*(migration|migrasi|no data)|no data migration" "$plan_file"; then
+                    echo "  ✅ Data migration marked N/A with a stated rationale"
+                else
+                    unmapped=""
+                    for tb in $m08_tables; do
+                        grep -qiE "(^|[^a-z0-9_])${tb}([^a-z0-9_]|$)" "$plan_file" || unmapped="$unmapped $tb"
+                    done
+                    if [ -n "$unmapped" ]; then
+                        echo "  ❌ DATA_MIGRATION_PLAN.md never mentions these schema table(s):$unmapped"
+                        echo "     The mapping matrix must map real columns from the DDL, or record 'N/A — no data migration' with a reason."
+                        GATE_FAILED=1
+                    else
+                        echo "  ✅ Mapping matrix references the $(printf '%s\n' "$m08_tables" | grep -c .) schema table(s)"
+                    fi
+                fi
             fi
         fi
 

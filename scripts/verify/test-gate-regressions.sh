@@ -112,6 +112,59 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m08_m09 <name> <PASS|FAIL> <mode:m08map|m08rows|m09model|m09incomplete> <body>
+expect_m08_m09() {
+    local name="$1" want="$2" mode="$3" body="$4"
+    local dir="$WORK/m0809"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/qa"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '# FSD\n\nCREATE TABLE customers (id uuid);\nCREATE TABLE invoices (id uuid);\n' > "$dir/docs/specs/FSD.md"
+    case "$mode" in
+        m08map|m08rows)
+            printf '# Plan\n\n## Data Hygiene\nx\n## Mapping Matrix\n%b\n## Masking Protocol\nx\nInputs-Received: yes\n' \
+                "$([ "$mode" = m08map ] && printf 'generic column mapping\n' || printf '| customers.name | customers.name |\n| invoices.total | invoices.total |\n')" \
+                > "$dir/docs/pm/DATA_MIGRATION_PLAN.md"
+            printf '# Recon\nStatus: RECONCILED\n%b\n' "$body" > "$dir/docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
+            ;;
+        m09model|m09incomplete)
+            printf '# UAT\n\n### Requirement / AC ID\n### Evidence\n\n%b\n' "$body" > "$dir/docs/qa/UAT_WORKBOOK.md"
+            printf '# Report\n\n### Sign-Off Metadata\n### Testing Summary\n### Acceptance & Release Decision\n\n%b\nStatus: SIGNED\n' "$body" > "$dir/docs/pm/UAT_SIGNOFF_REPORT.md"
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$([ "${mode#m08}" != "$mode" ] && echo M08 || echo M09)" 2>&1 || true)"
+    case "$mode" in
+        m08map)  echo "$out" | grep -q "never mentions these schema table" && got="FAIL" ;;
+        m08rows) echo "$out" | grep -q "states no row counts" && got="FAIL" ;;
+        m09model) echo "$out" | grep -q "names a model as the client signatory" && got="FAIL" ;;
+        m09incomplete) echo "$out" | grep -q "sign-off is incomplete" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (${mode} -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (${mode} -> $got, expected $want)"
+        echo "$out" | grep -E "never mentions|row counts|model|incomplete" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m08_m09 "migration plan that maps no schema table blocks" FAIL m08map 'All tables passed.'
+expect_m08_m09 "reconciliation without row counts blocks" FAIL m08rows 'All tables passed.'
+expect_m08_m09 "migration plan + counted reconciliation passes" PASS m08rows '| Table | Source rows | Loaded rows | Matched |
+|---|---|---|---|
+| customers | 100 | 100 | 100 |
+| invoices | 40 | 40 | 40 |'
+expect_m08_m09 "model signing the client UAT blocks" FAIL m09model 'Client Single PIC: Claude Agent
+Signature: Claude Agent
+Date: 2026-11-05
+Signed via: meeting'
+expect_m08_m09 "UAT signature without a channel blocks" FAIL m09incomplete 'Client Single PIC: Sri Wahyuni
+Signature: Sri Wahyuni'
+expect_m08_m09 "human client sign-off with channel passes" PASS m09incomplete 'Client Single PIC: Sri Wahyuni
+Signature: Sri Wahyuni
+Date: 2026-11-05
+Signed via: meeting'
+
 # expect_m06_harness <name> <PASS|FAIL> <mode:runbook|context|arch>
 # A harness file that exists only to clear a size floor is decoration; each must carry the
 # section the person opening it came for.

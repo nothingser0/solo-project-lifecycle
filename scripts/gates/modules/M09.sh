@@ -78,6 +78,26 @@ gate_M09() {
         if [ "$target_uat" = "docs/pm/UAT_SIGNOFF_REPORT.md" ] || [ "$target_uat" = "docs/qa/UAT_SIGNOFF.md" ]; then
             check_sections "$target_uat" "Sign-Off Metadata" "Testing Summary" "Acceptance & Release Decision"
         fi
+        # 2b. The client signatory must be a person. M04 and M06 already refuse a model as
+        # approver; this is the signature that closes the project, so it is the last place the
+        # agent could sign its own work off. A ticked box is not a sign-off.
+        if grep -qiE "Client Single PIC|Approved by Client|Signature" "$target_uat"; then
+            sig_lines=$(grep -iE "Client Single PIC|Approved by Client|Signature" "$target_uat")
+            if printf '%s\n' "$sig_lines" | grep -qiE "claude|chatgpt|gpt-|copilot|assistant|ai agent|chatbot|llm|anthropic|openai"; then
+                echo "  ❌ $target_uat names a model as the client signatory — the agent may prepare the pack, never sign it."
+                GATE_FAILED=1
+            fi
+            # A signature carries a name, a date and a channel. Any one missing is not a signature.
+            # The channel may sit on its own line, so search the whole file, not the name line.
+            sig_missing=""
+            grep -qiE "Signed via|Sign-off via|Disetujui via|Approved via" "$target_uat" || sig_missing="$sig_missing channel"
+            grep -qiE "[0-9]{4}-[0-9]{2}-[0-9]{2}" "$target_uat" || sig_missing="$sig_missing date"
+            if [ -n "$sig_missing" ]; then
+                echo "  ❌ $target_uat sign-off is incomplete: missing$sig_missing (need a named human, YYYY-MM-DD, and 'Signed via: meeting|email|WhatsApp')."
+                GATE_FAILED=1
+            fi
+        fi
+
         # 3. Verify Client Single PIC Sign-off: reject blank signature lines (______ or empty signature cell)
         if grep -qiE "Client Single PIC|Approved by Client" "$target_uat"; then
             if grep -qiE "Name[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*\|[[:space:]]*$" "$target_uat"; then
