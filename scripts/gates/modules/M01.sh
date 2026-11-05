@@ -40,8 +40,18 @@ gate_M01() {
 
         if [ -n "$BRIEF_FILE" ] && [ -f "$BRIEF_FILE" ]; then
             # 3a. Reject template placeholders [...]
-            if grep -q "\[\.\.\.\]\|\[Example:\|\[Your Name\]\|\[Direct Comp\|\[Adjacent Comp\|\[Segment 1:\|Rp \[X\]" "$BRIEF_FILE"; then
-                echo "  ❌ Unresolved template placeholders [...] detected in $BRIEF_FILE!"
+            # Any bracket field left unfilled is an unresolved placeholder. The old version
+            # matched eight hardcoded strings, so "[Direct Comp 1]", "[Segment 1: ...]" and
+            # "[Your Name]" survived - and a faithfully filled brief still failed on the ones it
+            # did list. Markdown links are stripped first so [label](url) is not flagged, and
+            # checkbox cells are allowed because they are filled marks, not fields.
+            m01_leftovers=$(sed -e 's/\[[^]]*\]([^)]*)//g' "$BRIEF_FILE" 2>/dev/null \
+                | sed -E -e 's/^([[:space:]]*-[[:space:]]*)\[[xX ]\]/\1/g' \
+                           -e 's/\|[[:space:]]*\[[xX ]\][[:space:]]*\|/|/g' \
+                | grep -oE '\[[^]]+\]' | sort -u || true)
+            if [ -n "$m01_leftovers" ]; then
+                echo "  ❌ Unresolved template placeholders detected in $BRIEF_FILE:"
+                printf '%s\n' "$m01_leftovers" | head -8 | sed 's/^/       /'
                 GATE_FAILED=1
             fi
 
@@ -164,16 +174,36 @@ gate_M01() {
                 #     average < 3.5 must be CONDITIONAL_GO; average >= 3.5 declared as
                 #     CONDITIONAL_GO must carry its mitigation plan (M01 sends
                 #     CONDITIONAL_GO onward to M02, so the plan has to exist here).
-                if [ "$(awk -v a="$dim_avg" 'BEGIN { print (a < 3.5) ? 1 : 0 }')" -eq 1 ]; then
-                    if [ "$decision_normalised" = "GO" ]; then
-                        echo "  ❌ Decision mismatch: average $dim_avg < 3.5 requires 'CONDITIONAL_GO', not 'GO'"
-                        GATE_FAILED=1
+                if [ "$(awk -v a="$dim_avg" 'BEGIN { print (a < 3.5) ? 1 : 0 }')" -eq 1 ] \
+                   && [ "$decision_normalised" = "GO" ]; then
+                    echo "  ❌ Decision mismatch: average $dim_avg < 3.5 requires 'CONDITIONAL_GO', not 'GO'"
+                    GATE_FAILED=1
+                fi
+                # Independent of the average: CONDITIONAL_GO carries a plan or it does not
+                # proceed. The label alone is not a plan - the template ships
+                # "Mitigation: [required when the decision is CONDITIONAL_GO]", which the old
+                # check called "recorded" and sent into M02 as an approved condition.
+                if [ "$decision_normalised" = "CONDITIONAL_GO" ]; then
+                    # The template carries two lines that start with the word: the blank field
+                    # and the instruction that explains it. A founder appends the real plan at
+                    # the end, so read the LAST occurrence, not the first.
+                    m01_mitigation=$(grep -iE "^[[:space:]]*-?[[:space:]]*\**Mitigation\**[[:space:]]*:|^[[:space:]]*-?[[:space:]]*\**Mitigasi\**[[:space:]]*:" "$BRIEF_FILE" 2>/dev/null \
+                        | grep -vE '[\[<]' | tail -1 | sed 's/.*:[[:space:]]*//' | tr -d '*\r')
+                    m01_mitigation_ok=1
+                    if [ -z "$m01_mitigation" ]; then
+                        m01_mitigation_ok=0
+                    elif printf '%s' "$m01_mitigation" | grep -qE '[\[<]'; then
+                        m01_mitigation_ok=0     # still a template field
+                    elif printf '%s' "$m01_mitigation" | grep -qiE '^(required when|tbd|todo|n/?a|none|—|-)$'; then
+                        m01_mitigation_ok=0
+                    elif [ "$(printf '%s' "$m01_mitigation" | tr -d ' ' | wc -c)" -lt 21 ]; then
+                        m01_mitigation_ok=0     # under 20 characters is a label, not a plan
                     fi
-                elif [ "$decision_normalised" = "CONDITIONAL_GO" ]; then
-                    if grep -qiE "Mitigation[[:space:]]*:|Mitigasi[[:space:]]*:" "$BRIEF_FILE"; then
+                    if [ "$m01_mitigation_ok" -eq 1 ]; then
                         echo "  ✅ CONDITIONAL_GO mitigation plan recorded"
                     else
-                        echo "  ❌ CONDITIONAL_GO at average $dim_avg requires an explicit mitigation plan ('Mitigation: ...' in $BRIEF_FILE)."
+                        echo "  ❌ CONDITIONAL_GO at average $dim_avg requires a real mitigation plan, not the field itself."
+                        echo "     Write what you will do about the weakest dimension (>=20 characters). Found: $(printf '%s' "$m01_mitigation" | cut -c1-60)"
                         GATE_FAILED=1
                     fi
                 fi

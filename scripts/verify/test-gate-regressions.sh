@@ -1836,7 +1836,7 @@ M01_COND_MIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Ope
 expect_m01 "CONDITIONAL_GO with a Mitigation line" PASS "$INTAKE_MEDIUM" "$M01_COND_MIT"
 
 # Checkbox form: the scorecard declares the decision by ticking a row.
-M01_CHECKBOX='# Brief\n\n- [ ] **GO**\n- [x] **CONDITIONAL_GO**\n- [ ] **PIVOT**\n- [ ] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n\nMitigation: ship online-first MVP\n'
+M01_CHECKBOX='# Brief\n\n- [ ] **GO**\n- [x] **CONDITIONAL_GO**\n- [ ] **PIVOT**\n- [ ] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n\nMitigation: ship an online-first MVP to five pilot shops before the full build\n'
 expect_m01 "checkbox form: [x] **CONDITIONAL_GO**" PASS "$INTAKE_MEDIUM" "$M01_CHECKBOX"
 M01_UNTICKED='# Brief\n\n- [ ] **GO**\n- [ ] **CONDITIONAL_GO**\n- [x] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n'
 expect_m01 "checkbox form: [x] **KILL**" FAIL "$INTAKE_MEDIUM" "$M01_UNTICKED"
@@ -2426,6 +2426,45 @@ expect_m00_kill "an admission of needing a lending licence blocks" FAIL '## 8. B
 Our model requires a lending licence from OJK before launch.'
 expect_m00_kill "a 12-week MVP timeline blocks" FAIL '## 9. Delivery
 MVP development timeline: 12 weeks for one developer.'
+
+# M01: the mitigation label was accepted as a plan. The template ships the label with the
+# instruction inside it and the old check only grepped for "Mitigation:", so a CONDITIONAL_GO with
+# no plan passed into M02. Four spellings must block, one real plan must pass.
+expect_m01_mitigation() {
+    local name="$1" want="$2" line="$3"
+    local dir="$WORK/m01mit"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m01-go" "$dir"
+    python3 - "$dir/docs/pm/IDEA_BRIEF.md" "$line" <<'PYFIX'
+import io, re, sys
+p, line = sys.argv[1], sys.argv[2]
+s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"^Feasibility-Decision:.*$", "Feasibility-Decision: CONDITIONAL_GO", s, flags=re.M)
+s = s.replace("Mitigation: two weeks of discovery with five shop owners before build.", line)
+io.open(p, "w", encoding="utf-8").write(s)
+PYFIX
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M01 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (mitigation -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (mitigation -> $got, expected $want)"
+        echo "$out" | grep -E "mitigation plan" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m01-go" ]; then
+    expect_m01_mitigation "the template's own mitigation label is not a plan" FAIL \
+        'Mitigation: [required when the decision is CONDITIONAL_GO]'
+    expect_m01_mitigation "an empty mitigation blocks" FAIL 'Mitigation:'
+    expect_m01_mitigation "TBD mitigation blocks" FAIL 'Mitigation: TBD'
+    expect_m01_mitigation "a four-word mitigation blocks" FAIL 'Mitigation: ship it fast'
+    expect_m01_mitigation "a real mitigation plan passes" PASS \
+        'Mitigation: two weeks of discovery with five shop owners before build.'
+else
+    echo -e "  ${YELLOW}-${NC} M01 mitigation regressions skipped: fixture m01-go missing"
+fi
 
 # Positive direction where the gate needs more than one artifact. M02 reconciles
 # Scope-P0-Count against the counted Must-Have rows, so the count is derived from
