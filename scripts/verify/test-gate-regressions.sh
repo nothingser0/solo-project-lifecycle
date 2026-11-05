@@ -112,6 +112,37 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m05_chain <name> <PASS|FAIL> <prd-body> [scope-body] [sitemap-body]
+# M05's job is the traceability chain, so these cases assert the chain and nothing else.
+expect_m05_chain() {
+    local name="$1" want="$2" prd="$3" scope="${4:-}" sitemap="${5:-}"
+    local dir="$WORK/m05ch"
+    rm -rf "$dir"; mkdir -p "$dir/docs/specs" "$dir/docs/pm"
+    printf '%b' "$prd" > "$dir/docs/specs/PRD.md"
+    printf '# FSD\n\n## Technical Sign-Off\n\nApproved by: Sri Wahyuni\nApproved on: 2026-11-05\n' > "$dir/docs/specs/FSD.md"
+    [ -n "$scope" ] && printf '%b' "$scope" > "$dir/docs/pm/SCOPE_STATEMENT.md"
+    [ -n "$sitemap" ] && printf '%b' "$sitemap" > "$dir/docs/specs/SITEMAP.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    echo "$out" | grep -qE "no requirement mapping|no feature behind them|no traceability matrix|never approved|no BDD scenarios|scenario\(s\) name no REQ|no requirement mentions" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 chain -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 chain -> $got, expected $want)"
+        echo "$out" | grep -E "traceability|scope|BDD|SITEMAP" | head -4 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M05_HDR='# PRD\n\n## Document Metadata\nv1\n\n## Functional Traceability Matrix\n\n'
+M05_SCEN='\n\nScenario: sign in\nGiven a registered user\nWhen they submit valid credentials\nThen they reach the dashboard\nREQ-01\n'
+expect_m05_chain "feature with no requirement blocks" FAIL "$M05_HDR"'| F-01 | login |\n'"$M05_SCEN"
+expect_m05_chain "requirement with no feature blocks" FAIL "$M05_HDR"'| REQ-01 | login |\n'"$M05_SCEN"
+expect_m05_chain "feature outside the M02 scope blocks" FAIL "$M05_HDR"'| REQ-01 | F-99 |\n'"$M05_SCEN" '| F-01 | auth |\n'
+expect_m05_chain "prose with Given/When/Then is not a scenario" FAIL "$M05_HDR"'| REQ-01 | F-01 |\n\nGiven the pressure When the market Then whoever\n' '| F-01 | auth |\n'
+expect_m05_chain "SITEMAP screen no requirement mentions blocks" FAIL "$M05_HDR"'| REQ-01 | F-01 |\n'"$M05_SCEN" '| F-01 | auth |\n' 'SCR-001 Login\nSCR-002 Dashboard\n'
+expect_m05_chain "fully traceable spec passes" PASS "$M05_HDR"'| REQ-01 | F-01 | SCR-001 |\n'"$M05_SCEN" '| F-01 | auth |\n' 'SCR-001 Login\n'
+
 # expect_m04_route <name> <PASS|FAIL> <sitemap-ids> <files-to-create> <stray-colour?>
 # Isolates the SCR-xx -> screen mapping and the token-colour rule.
 setup_m04() {
