@@ -88,3 +88,23 @@ Referencing SQL DDL schema in `FSD.md`:
 1. **File Encryption**: PDF documents must be encrypted before uploading to S3/R2 using `crypto.createCipheriv('aes-256-gcm', key, iv)`.
 2. **Presigned URL**: File download links must expire within a maximum of 15 minutes (900 seconds).
 3. **Pessimistic Locking**: Document signing flows must use atomic transactions with `SELECT ... FOR UPDATE` to prevent race conditions.
+
+---
+
+## 6. Key architecture decisions (ADR-lite)
+
+Short records: what was decided, the context that forced it, and what was rejected. Three lines
+each is enough; a decision with no rejected alternative is not written here.
+
+### D-01: [Single deployable app instead of frontend + API services]
+- **Context**: [one maintainer, one deploy target, no independent scaling requirement]
+- **Decision**: [ship one Next.js app with route handlers; no separate API service]
+- **Rejected**: [NestJS API — doubles the deploy surface and duplicates the types for no benefit at this scale]
+
+### D-02: [Hosted Postgres instead of self-managed]
+- **Context**: [no on-call, no DBA, needs point-in-time recovery]
+- **Decision**: [managed Postgres (Neon/Supabase/RDS), same engine as local]
+- **Rejected**: [local Postgres in a VPS — backups and failover become my job, and the local probe would prove a schema that is not the shipped one]
+
+> **Rule**: if a decision changes a boundary (a new service, a new datastore, a new external
+> dependency), it needs an entry here **before** the code that depends on it lands.

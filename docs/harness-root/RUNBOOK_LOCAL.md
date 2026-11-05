@@ -94,3 +94,33 @@ npm run test:concurrency # (runs configured load/concurrency suite, e.g. tests/d
 ```
 
 *If all assertions display `PASS` status and zero deadlock errors occur, the application is verified and ready for Staging deployment.*
+
+---
+
+## 7. Troubleshooting (the failures that actually stop a new machine)
+
+| Symptom | Cause | Fix |
+| :--- | :--- | :--- |
+| `EADDRINUSE :3000` | another dev server or Docker container holds the port | `lsof -ti:3000 \| xargs kill -9`, or start on another port: `PORT=3001 npm run dev` |
+| `Cannot find module 'x'` right after `git pull` | stale `node_modules` against a changed lockfile | `rm -rf node_modules && npm ci` (never `npm install` on CI parity) |
+| Migration fails halfway, schema in an unknown state | dirty migration history | `npm run db:reset` — drops the schema, re-runs migrations in order, re-seeds |
+| `Prisma Client not generated` | `postinstall` skipped (e.g. copied `node_modules`) | `npx prisma generate` |
+| App boots but every page shows a DB error | missing/incorrect `DATABASE_URL` in `.env` | `cp .env.example .env`, then fill the real value; confirm with `psql "$DATABASE_URL" -c 'select 1'` |
+| Login works locally but not for a teammate | different seed data or stale cookie domain | `npm run db:reset`, then clear cookies for `localhost` |
+| `hydration failed` / `Text content does not match` | using `Date.now()`/`Math.random()`/`localStorage` during render | move it into `useEffect` or a server action — see `CONVENTIONS.md` |
+| Port 5432 already allocated | a local Postgres is already running | `docker compose stop db` or stop the local service, then restart |
+
+If a symptom is not listed here, fix it, then **add the row** — this table is the point of the
+file, and a runbook that only covers the happy path is a runbook nobody uses twice.
+
+## 8. Reset to a clean state (the honest way)
+
+```bash
+npm run db:reset        # drop schema, re-run every migration, re-seed deterministic data
+rm -rf .next node_modules
+npm ci
+npm run dev
+```
+
+Never "fix" a broken local environment by deleting rows by hand or editing migration files that
+have already run somewhere. If a migration is wrong, add a new one that corrects it.

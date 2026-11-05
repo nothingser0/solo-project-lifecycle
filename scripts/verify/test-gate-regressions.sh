@@ -112,6 +112,46 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m06_harness <name> <PASS|FAIL> <mode:runbook|context|arch>
+# A harness file that exists only to clear a size floor is decoration; each must carry the
+# section the person opening it came for.
+expect_m06_harness() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/m06hs"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/a.png"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nproduct summary\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCHITECTURE\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    printf '# DESIGN\ntokens\n' > "$dir/DESIGN.md"
+    printf '# CONVENTIONS\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUNBOOK\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '# VERIFY\ntests\n' > "$dir/VERIFY_LOCAL.md"
+    case "$mode" in
+        runbook) printf '# RUNBOOK\nnpm run dev\n' > "$dir/RUNBOOK_LOCAL.md" ;;
+        context) printf '# CONTEXT\nproduct summary\n' > "$dir/CONTEXT.md" ;;
+        arch)    printf '# ARCHITECTURE\ntopology\n' > "$dir/ARCHITECTURE.md" ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -q "missing the section they exist for" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 harness -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 harness -> $got, expected $want)"
+        echo "$out" | grep -E "missing the section" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_harness "runbook without troubleshooting blocks" FAIL runbook
+expect_m06_harness "context without a decision log blocks" FAIL context
+expect_m06_harness "architecture with no rejected alternative blocks" FAIL arch
+
 # expect_m07_sit <name> <PASS|FAIL> <workbook-rows>
 # M07 signs the system off, so a workbook that skips requirements must not pass.
 expect_m07_sit() {

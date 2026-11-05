@@ -58,7 +58,11 @@ mk_fixture() {
 EOF
     printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\n' > "$d/PROJECT_LITE.md"
     printf '# AGENTS\n\n## Engineering Standards\nAnti-slop rules: no @ts-ignore, no as any, no empty catch, no secrets.\\nThe prototype is the UI source of truth: docs/design/screens/<role>/SCR-xx.html.\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'x')" > "$d/AGENTS.md"
-    printf '# CONTEXT\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'y')" > "$d/CONTEXT.md"
+    printf '# CONTEXT\nDecision Log: see below. Known issues tracked here.\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'y')" > "$d/CONTEXT.md"
+    printf '# ARCHITECTURE\\ntopology and boundaries\\nRejected: a separate API service, because it doubles the deploy surface.\\n' > "$d/ARCHITECTURE.md"
+    printf '# RUNBOOK_LOCAL\\nnpm run dev\\nTroubleshooting: EADDRINUSE on 3000 -> kill the holder.\\nReset to a clean state: npm run db:reset.\\n' > "$d/RUNBOOK_LOCAL.md"
+    printf '# CONVENTIONS\\nnaming and error handling\\n' > "$d/CONVENTIONS.md"
+    printf '# VERIFY_LOCAL\\nnpm test output pasted here\\n' > "$d/VERIFY_LOCAL.md"
     printf '# TODO\n\n- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0\n- [ ] **M06-BE-01: API**\n- [ ] **M06-FE-01: Screens**\n' > "$d/TODO.md"
     printf '# SCOPE_STATEMENT\n\n## User Stories\n\n## Acceptance Criteria\n\nScale: Medium\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/docs/pm/SCOPE_STATEMENT.md"
     printf 'DESIGN\nContrast 7.0:1\nz-index scale\nTypography\nSpacing\nAnti-Slop\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/DESIGN.md"

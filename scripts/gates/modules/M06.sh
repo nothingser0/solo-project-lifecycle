@@ -60,6 +60,24 @@ gate_M06() {
     # promises "all 9 verified in root"; ARCHITECTURE/DESIGN/CONVENTIONS/.env.example/
     # RUNBOOK_LOCAL/VERIFY_LOCAL were only ever printed as optional warnings.
     if [ "$is_m06_small" -eq 0 ]; then
+        # Harness files that only exist to satisfy a size floor are decoration. Each one earns its
+        # place by containing the section its reader opens it for.
+        if [ "$is_m06_small" -eq 0 ]; then
+            m06_section_gaps=""
+            grep -qiE "Troubleshooting|Reset to a clean state" RUNBOOK_LOCAL.md 2>/dev/null \
+                || m06_section_gaps="$m06_section_gaps RUNBOOK_LOCAL.md:no-troubleshooting"
+            grep -qiE "Decision Log|Known issues" CONTEXT.md 2>/dev/null \
+                || m06_section_gaps="$m06_section_gaps CONTEXT.md:no-decision-log"
+            grep -qiE "Rejected" ARCHITECTURE.md 2>/dev/null \
+                || m06_section_gaps="$m06_section_gaps ARCHITECTURE.md:no-rejected-alternative"
+            if [ -n "$m06_section_gaps" ]; then
+                echo "  ❌ Harness file(s) present but missing the section they exist for:$m06_section_gaps"
+                echo "     RUNBOOK_LOCAL needs the failures that stop a new machine; CONTEXT needs the decision log"
+                echo "     and known debt; ARCHITECTURE needs at least one decision naming what was rejected."
+                GATE_FAILED=1
+            fi
+        fi
+
         # The agent must know where the frozen prototypes live before writing a screen.
         if [ -f "AGENTS.md" ] && ! grep -qiE "docs/design/screens" AGENTS.md; then
             echo "  ❌ AGENTS.md never names the frozen prototype path (docs/design/screens/)."

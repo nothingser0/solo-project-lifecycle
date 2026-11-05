@@ -231,9 +231,9 @@
        Exit code: 2 (non-delegable — route to A00-A04 Advisory).
   ✅ AGENTS.md (789B)
   ✅ TODO.md (126B)
-  ✅ CONTEXT.md (611B)
+  ✅ CONTEXT.md (663B)
   ✅ STEP 0: locked stack decision present in PROJECT_LITE.md
-  ❌ STEP 2: harness file(s) missing from project root: ARCHITECTURE.md CONVENTIONS.md .env.example
+  ❌ STEP 2: harness file(s) missing from project root: .env.example
      Staging is transit, not a destination: copy the missing files above from docs/harness-root/
      (or templates/04-dev-execution/<stack>/) to the project root, verify, THEN delete staging.
   ❌ artifacts/final-evidence.md missing — STEP 6 requires an evidence report before completion.
@@ -252,8 +252,9 @@
   ❌ TODO.md missing required Authentication/RBAC task(s)! (SITEMAP/FSD specifies auth/login flow)
   ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-xx Specs Pre-Read)!
   ✅ AGENTS.md technical quality and engineering guidelines verified
-  ❌ RUNBOOK_LOCAL.md (MISSING)
-  ❌ VERIFY_LOCAL.md (MISSING)
+  ✅ RUNBOOK_LOCAL.md (130B)
+  ✅ VERIFY_LOCAL.md (45B)
+  ❌ VERIFY_LOCAL.md missing proof of test execution (requires 'LOCAL PASS', 'Exit code 0', or passing test assertions)!
   ✅ Design references: 1 human-supplied reference file(s) present
   ✅ notes.md cites a reference filename that exists in docs/design/inspiration/
   ✅ Anti-slop: zero type-suppression escape hatches in source

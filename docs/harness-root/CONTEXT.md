@@ -133,3 +133,31 @@ The AI agent MUST NOT implement any of the following capabilities unless explici
 - [ ] **3. Segregation of Duties**: Operational roles are separated from review/approval roles with zero self-approval, or marked N/A for single-user tools.
 - [ ] **4. Exception & Fallback Workflows**: Hardware and transaction failure fallbacks are defined where applicable, or marked N/A.
 - [ ] **5. Definitive Domain Glossary**: Core technical and business terms are documented to prevent implementation misunderstandings.
+
+---
+
+## 9. Decision Log (why we chose this, so it is not asked again)
+
+Every decision that a future session might question belongs here, with the alternative that lost.
+An entry without a rejected alternative is a preference, not a decision.
+
+| # | Date | Decision | Why | Alternative rejected |
+| :--- | :--- | :--- | :--- | :--- |
+| D-01 | [YYYY-MM-DD] | [e.g. single Next.js app, no separate API service] | [one deploy target, one maintainer] | [NestJS API: two deploys, duplicate types] |
+| D-02 | [YYYY-MM-DD] | [Postgres + Prisma] | [team knows SQL; relational reporting needed] | [MongoDB: no joins for the monthly report] |
+
+## 10. Known issues & deliberate technical debt
+
+Debt that is **accepted on purpose**, with the trigger that would make us pay it down. Anything
+here must also be a task in `TODO.md` with an id, or it will be forgotten.
+
+| # | Debt | Accepted because | Revisit when |
+| :--- | :--- | :--- | :--- |
+| TD-01 | [invoice list has no pagination] | [under 500 rows for the first year] | [a tenant passes 500 rows] |
+| TD-02 | [no background job queue] | [under 50 emails/day, sync send is fine] | [send latency exceeds 2s p95] |
+
+## 11. Session start — read this first
+
+At the start of every session, in this order: `CONTEXT.md` (this file) → `TODO.md` (what is left)
+→ `AGENTS.md` (the rules) → the one module doc you are working in. If you are mid-phase and context
+is getting long, stop loading files and return to `docs/pm/PROJECT_STATE.md`.
