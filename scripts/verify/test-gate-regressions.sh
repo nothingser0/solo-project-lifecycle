@@ -425,6 +425,9 @@ expect_m06_visual "a size inside the scale passes" PASS 'export const A = () => 
 expect_m06_visual "a bare select blocks" FAIL 'export const A = () => <select><option>a</option></select>;' bare
 expect_m06_visual "an FSD upload with no file input blocks" FAIL 'export const A = () => <input type="text" className="x" />;' upload '| FR-01 | Customer uploads a KTP scan (.jpg, .pdf, max 2MB) | file rejected |'
 expect_m06_visual "an FSD upload with a file input passes" PASS 'export const A = () => <input type="file" accept="image/*" className="x" />;' upload '| FR-01 | Customer uploads a KTP scan (.jpg, .pdf, max 2MB) | file rejected |'
+expect_m06_visual "text-slate-400 on bg-white fails AA (2.56:1)" FAIL 'export const A = () => <p className="text-slate-400 bg-white">x</p>;' contrast
+expect_m06_visual "text-gray-300 on bg-gray-100 fails AA (1.34:1)" FAIL 'export const A = () => <p className="text-gray-300 bg-gray-100">x</p>;' contrast
+expect_m06_visual "text-slate-900 on bg-white passes AA (17:1)" PASS 'export const A = () => <p className="text-slate-900 bg-white">x</p>;' contrast
 
 # expect_m06_slop <name> <PASS|FAIL> <src-file-body> <mode:emoji|comment|todo>
 # The anti-slop checks that were measuring the wrong thing: an emoji range that skipped

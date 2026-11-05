@@ -581,8 +581,27 @@ PYEOF
 
         # 4f-i. Visual slop that the text checks cannot see. All five are static: no browser.
         # Each fires only on source that exists, so a project with no UI is unaffected.
-        visual_report=$(python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo "SKIP|||"
+        visual_report=$(GATE_TAILWIND_PALETTE="$(dirname "${BASH_SOURCE[0]}")/../lib/tailwind_palette.json" python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo "SKIP|||"
 import os, re, sys, json
+
+# Tailwind v3 hex values, so a class pair can be scored the same way a literal hex pair is.
+# Without this, "text-slate-400 on bg-white" (2.6:1) passed as accessible.
+PALETTE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)) if "__file__" in dir() else ".", "")
+try:
+    _palette_file = os.environ.get("GATE_TAILWIND_PALETTE", "")
+    PALETTE = json.load(open(_palette_file, encoding="utf-8")) if _palette_file and os.path.exists(_palette_file) else {}
+except Exception:
+    PALETTE = {}
+TW_TEXT = re.compile(r"\btext-(?!xs\b|sm\b|base\b|lg\b|xl\b|2xl\b|3xl\b|4xl\b|5xl\b|6xl\b|7xl\b|8xl\b|9xl\b|left\b|center\b|right\b|justify\b|start\b|end\b|wrap\b|nowrap\b|balance\b|pretty\b|ellipsis\b|clip\b|transparent\b|current\b|inherit\b)([a-z]+)-(\d{2,3})\b")
+TW_BG = re.compile(r"\bbg-(?!transparent\b|current\b|inherit\b|cover\b|contain\b|center\b|no-repeat\b|repeat\b|fixed\b|local\b|scroll\b)([a-z]+)-(\d{2,3})\b")
+
+def tw_color(catalog, first, shade):
+    key = f"{first}-{shade}" if shade else first
+    val = catalog.get(key)
+    return rgb(val) if val else None
+
+# bare bg-white / bg-black / text-white carry no shade
+TW_BARE = re.compile(r"\b(bg|text)-(white|black)\b")
 
 SKIP_FILES = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock", ".md")
 SKIP_DIRS = ("node_modules", ".next", "dist", "build", ".git", "coverage")
@@ -628,6 +647,7 @@ COLOR = re.compile(r"(?:^|[\s;{,'\"])(color|background(?:-color)?)\s*:\s*['\"]?(
 SIZE = re.compile(r"fontSize\s*:\s*['\"]?(\d+(?:\.\d+)?)px")
 
 contrast_bad, fonts_missing, scale_bad, bare_ctl = [], [], [], []
+class_contrast_bad = []
 for p, body in files(sys.argv[1:]):
     # --- contrast: only when both colours are literal hex in the same style object
     for style in re.findall(r"style=\{\{([^}]*)\}\}", body) + re.findall(r"style:\s*\{([^}]*)\}", body):
@@ -638,6 +658,32 @@ for p, body in files(sys.argv[1:]):
             a, b = rgb(d["fg"]), rgb(d["bg"])
             if a and b and ratio(a, b) < 4.5:
                 contrast_bad.append(f"{p} ({d['fg']} on {d['bg']} = {ratio(a, b):.2f}:1)")
+
+    # --- class-based contrast: resolve Tailwind text-*/bg-* on the same element
+    # The quote characters inside this pattern cannot be escaped for both the shell heredoc and
+    # python, so the class expression is searched first and the string literal taken from it.
+    for el_raw in re.findall(r"className=\{([^}]*)\}", body) + re.findall(r'className="([^"]*)"', body):
+        el = el_raw.replace("`", "").replace("'", "").replace('"', "")
+        t = TW_TEXT.search(el)
+        b = TW_BG.search(el)
+        bare = TW_BARE.findall(el)
+        fg = bg = None
+        fg_name = bg_name = ""
+        if t:
+            fg = tw_color(PALETTE, t.group(1), t.group(2))
+            fg_name = f"text-{t.group(1)}-{t.group(2)}"
+        if b:
+            bg = tw_color(PALETTE, b.group(1), b.group(2))
+            bg_name = f"bg-{b.group(1)}-{b.group(2)}"
+        for prefix, name in bare:
+            if prefix == "text" and not t:
+                fg = tw_color(PALETTE, name, "")
+                fg_name = f"text-{name}"
+            if prefix == "bg" and not b:
+                bg = tw_color(PALETTE, name, "")
+                bg_name = f"bg-{name}"
+        if fg and bg and ratio(fg, bg) < 4.5:
+            class_contrast_bad.append(f"{p} ({fg_name} on {bg_name} = {ratio(fg, bg):.2f}:1)")
 
     # --- font must be loaded somewhere in the same tree
     for fam in set(re.findall(r"fontFamily\s*:\s*['\"]([A-Za-z0-9 ]+)['\"]", body)):
@@ -678,7 +724,7 @@ for p, fam in fonts_missing:
     missing.append(f"{p} ({fam})")
 missing = sorted(set(missing))
 
-print("CONTRAST||" + "; ".join(sorted(set(contrast_bad))))
+print("CONTRAST||" + "; ".join(sorted(set(contrast_bad + class_contrast_bad))))
 print("FONTS||" + "; ".join(missing))
 print("SCALE||" + "; ".join(f"{p}:{px}px" for p, px in sorted(set(scale_bad))))
 print("BARECTL||" + "; ".join(sorted(set(bare_ctl))))
