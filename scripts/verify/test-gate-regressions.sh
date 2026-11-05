@@ -112,6 +112,39 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m06_int <name> <PASS|FAIL> <todo-extra> <fsd-body>
+expect_m06_int() {
+    local name="$1" want="$2" extra="$3" fsd="${4:-Payment gateway: Midtrans, webhook settlement callbacks.}"
+    local dir="$WORK/m06int"
+    rm -rf "$dir"; mkdir -p "$dir/docs/harness-root" "$dir/docs/specs" "$dir/artifacts"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# FSD\n\n## Integrations\n\n%b\n' "$fsd" > "$dir/docs/specs/FSD.md"
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    {
+      printf '# TODO\n\n'
+      printf -- '- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
+      printf -- '- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
+      printf -- '- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
+      printf -- '- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
+      printf '%b\n' "$extra"
+    } > "$dir/docs/harness-root/TODO.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -q "no M06-INT-xx task" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 int -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 int -> $got, expected $want)"
+        echo "$out" | grep -E "M06-INT|Integration wire" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_int "declared integration with no M06-INT task blocks" FAIL ''
+expect_m06_int "M06-INT task satisfies a declared integration" PASS '- [x] **M06-INT-01: Midtrans webhook**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni'
+expect_m06_int "integration marked N/A with a reason passes" PASS '- M06-INT: N/A - payment collected offline by bank transfer'
+expect_m06_int "no declared integration needs no INT task" PASS '' 'No external services; everything is in-house.'
+
 # expect_m06_cross <name> <PASS|FAIL> <mode:port|dbtarget> <fixture-shape>
 # The two cross-module rules M06 was missing: a frozen prototype nobody ported, and a DB probe
 # that ran against a different server than the app.

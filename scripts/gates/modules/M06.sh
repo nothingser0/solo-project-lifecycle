@@ -234,6 +234,31 @@ gate_M06() {
             fi
         fi
 
+        # Integration coverage. TODO_TEMPLATE.md ships a Sprint 6 of M06-INT-xx tasks (payment
+        # gateway, webhooks, hardware), but nothing required them: a project whose FSD declares an
+        # external integration could finish M06 with the wire-up simply absent.
+        if [ -f "docs/specs/FSD.md" ]; then
+            declared_integrations=""
+            for kw in webhook payment-gateway:payment "payment gateway:payment" midtrans xendit stripe hardware:hardware; do
+                label="${kw%%:*}"
+                pattern="${kw#*:}"
+                if grep -qiE "$pattern" docs/specs/FSD.md 2>/dev/null; then
+                    declared_integrations="$declared_integrations $label"
+                fi
+            done
+            if [ -n "$declared_integrations" ]; then
+                if grep -qiE "M06-INT-[0-9]+" "$target_todo"; then
+                    echo "  ✅ Integration wire-up tasks present for declared external integration(s):$declared_integrations"
+                elif grep -qiE "M06-INT.*N/A|N/A.*integration" "$target_todo"; then
+                    echo "  ✅ Declared integration(s) marked N/A with a stated rationale:$declared_integrations"
+                else
+                    echo "  ❌ FSD declares external integration(s):$declared_integrations but TODO.md has no M06-INT-xx task."
+                    echo "     Add the wire-up task (webhook handler, gateway adapter) or record 'M06-INT: N/A — <why>'."
+                    GATE_FAILED=1
+                fi
+            fi
+        fi
+
         # Auth & RBAC Coverage Check
         needs_auth=0
         if [ -n "$sitemap_spec" ] && grep -qiE "/login|/auth|authentication|SCR-02" "$sitemap_spec"; then
