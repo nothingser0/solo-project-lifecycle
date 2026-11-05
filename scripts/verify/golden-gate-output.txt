@@ -270,6 +270,10 @@
   ✅ Anti-slop: zero dummy mock URLs in production UI
   ✅ Anti-slop: zero Lorem Ipsum or generic persona slop in source/seeds
   ✅ Anti-slop: zero dead links (href='#') detected in UI source
+  ✅ Accessibility: no literal colour pair falls below 4.5:1
+  ✅ Typography: every declared font-family is loaded
+  ✅ Typography: no hard-coded font sizes outside the scale
+  ✅ Components: every form control carries styling
   ✅ Anti-slop: zero raw browser alert/confirm/prompt calls in UI source
   ✅ Anti-slop: zero stray console.log debug calls in production source
   ✅ Anti-slop: zero unconstrained 'any' types in production source

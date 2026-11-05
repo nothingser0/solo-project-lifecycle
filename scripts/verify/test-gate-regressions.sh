@@ -112,6 +112,56 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m06_visual <name> <PASS|FAIL> <src-body> <mode:contrast|font|scale|bare|upload> [fsd]
+expect_m06_visual() {
+    local name="$1" want="$2" body="$3" mode="$4" fsd="${5:-}"
+    local dir="$WORK/m06vis"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/b.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/c.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/d.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCH\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    if [ "$mode" = "scale" ]; then
+        printf '# DESIGN\n| token | value |\n|---|---|\n| caption | 13px |\n| body | 17px |\n' > "$dir/DESIGN.md"
+    else
+        printf '# DESIGN\ntokens\n' > "$dir/DESIGN.md"
+    fi
+    printf '# CONV\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUN\nnpm run dev\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '# VERIFY\ntests\n' > "$dir/VERIFY_LOCAL.md"
+    [ -n "$fsd" ] && printf '# FSD\n\n%s\n' "$fsd" > "$dir/docs/specs/FSD.md"
+    printf '%b\n' "$body" > "$dir/src/page.tsx"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    case "$mode" in
+        contrast) echo "$out" | grep -q "contrast below WCAG AA" && got="FAIL" ;;
+        font)     echo "$out" | grep -q "font-family used but never loaded" && got="FAIL" ;;
+        scale)    echo "$out" | grep -q "not in the DESIGN.md type scale\|defines no px type scale" && got="FAIL" ;;
+        bare)     echo "$out" | grep -q "rendered with no className/style" && got="FAIL" ;;
+        upload)   echo "$out" | grep -q "specifies a file upload but no file input" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (visual:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (visual:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "contrast|font-family|type scale|no className|file upload" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_visual "fefefe text on white fails AA" FAIL 'export const A = () => <p style={{ color: "#fefefe", background: "#ffffff" }}>x</p>;' contrast
+expect_m06_visual "dark text on white passes AA" PASS 'export const A = () => <p style={{ color: "#111827", background: "#ffffff" }}>x</p>;' contrast
+expect_m06_visual "an Inter font-family that is never loaded blocks" FAIL 'export const A = () => <p style={{ fontFamily: "Inter" }}>x</p>;' font
+expect_m06_visual "a font size outside the DESIGN.md scale blocks" FAIL 'export const A = () => <p style={{ fontSize: "15px" }}>x</p>;' scale
+expect_m06_visual "a size inside the scale passes" PASS 'export const A = () => <p style={{ fontSize: "13px" }}>x</p>;' scale
+expect_m06_visual "a bare select blocks" FAIL 'export const A = () => <select><option>a</option></select>;' bare
+expect_m06_visual "an FSD upload with no file input blocks" FAIL 'export const A = () => <input type="text" className="x" />;' upload '| FR-01 | Customer uploads a KTP scan (.jpg, .pdf, max 2MB) | file rejected |'
+expect_m06_visual "an FSD upload with a file input passes" PASS 'export const A = () => <input type="file" accept="image/*" className="x" />;' upload '| FR-01 | Customer uploads a KTP scan (.jpg, .pdf, max 2MB) | file rejected |'
+
 # expect_m06_slop <name> <PASS|FAIL> <src-file-body> <mode:emoji|comment|todo>
 # The anti-slop checks that were measuring the wrong thing: an emoji range that skipped
 # U+2600-U+26FF, and a comment pattern that only matched thirteen capitalised phrases.

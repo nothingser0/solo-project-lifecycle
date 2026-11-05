@@ -579,6 +579,193 @@ PYEOF
             echo "  ✅ Anti-slop: zero dead links (href='#') detected in UI source"
         fi
 
+        # 4f-i. Visual slop that the text checks cannot see. All five are static: no browser.
+        # Each fires only on source that exists, so a project with no UI is unaffected.
+        visual_report=$(python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo "SKIP|||"
+import os, re, sys, json
+
+SKIP_FILES = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock", ".md")
+SKIP_DIRS = ("node_modules", ".next", "dist", "build", ".git", "coverage")
+SRC_EXT = (".tsx", ".jsx", ".ts", ".js", ".vue", ".svelte", ".astro", ".html", ".css")
+
+def files(roots):
+    for root in roots:
+        for dp, dn, fns in os.walk(root):
+            dn[:] = [d for d in dn if d not in SKIP_DIRS]
+            for fn in fns:
+                if any(x in fn for x in SKIP_FILES) or fn.endswith(".d.ts"):
+                    continue
+                if fn.endswith(SRC_EXT):
+                    p = os.path.join(dp, fn)
+                    try:
+                        yield p, open(p, encoding="utf-8", errors="ignore").read()
+                    except OSError:
+                        continue
+
+def rgb(h):
+    h = h.strip().lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    if len(h) != 6 or any(c not in "0123456789abcdefABCDEF" for c in h):
+        return None
+    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+
+def lum(c):
+    def f(v):
+        v /= 255.0
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (f(x) for x in c)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+def ratio(a, b):
+    la, lb = lum(a), lum(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+# Tailwind slate/gray/neutral pairs that are known-good are not worth re-deriving; only literal
+# hex values are compared, because a class pair cannot be resolved without the compiled theme.
+COLOR = re.compile(r"(?:^|[\s;{,'\"])(color|background(?:-color)?)\s*:\s*['\"]?(#[0-9a-fA-F]{3,6})")
+SIZE = re.compile(r"fontSize\s*:\s*['\"]?(\d+(?:\.\d+)?)px")
+
+contrast_bad, fonts_missing, scale_bad, bare_ctl = [], [], [], []
+for p, body in files(sys.argv[1:]):
+    # --- contrast: only when both colours are literal hex in the same style object
+    for style in re.findall(r"style=\{\{([^}]*)\}\}", body) + re.findall(r"style:\s*\{([^}]*)\}", body):
+        d = {}
+        for k, v in re.findall(r"(color|backgroundColor|background)\s*:\s*['\"]?(#[0-9a-fA-F]{3,6})", style):
+            d["bg" if k != "color" else "fg"] = v
+        if "fg" in d and "bg" in d:
+            a, b = rgb(d["fg"]), rgb(d["bg"])
+            if a and b and ratio(a, b) < 4.5:
+                contrast_bad.append(f"{p} ({d['fg']} on {d['bg']} = {ratio(a, b):.2f}:1)")
+
+    # --- font must be loaded somewhere in the same tree
+    for fam in set(re.findall(r"fontFamily\s*:\s*['\"]([A-Za-z0-9 ]+)['\"]", body)):
+        fonts_missing.append((p, fam.strip()))
+
+    # --- arbitrary px size that is in no token file
+    for px in SIZE.findall(body):
+        scale_bad.append((p, px))
+
+    # --- form controls with no styling at all
+    for tag, attrs in re.findall(r"<(select|input|textarea)\b([^>]*)>", body):
+        if tag == "input" and re.search(r"type\s*=\s*['\"](hidden|checkbox|radio)['\"]", attrs):
+            continue
+        has_style = re.search(r"(className|class|style)\s*=", attrs)
+        if not has_style:
+            bare_ctl.append(f"{p} <{tag}>")
+
+# a fontFamily is satisfied if ANY source or css file in the tree loads that family
+all_bodies = [b for _, b in files(sys.argv[1:])]
+loaded = set()
+for b in all_bodies:
+    for fam in re.findall(r"from\s+['\"]next/font/(?:google|local)['\"]", b):
+        loaded.add("*nextfont*")
+    for fam in re.findall(r"@font-face\s*\{[^}]*font-family\s*:\s*['\"]?([A-Za-z0-9 ]+)", b):
+        loaded.add(fam.strip().lower())
+    for fam in re.findall(r"fonts\.googleapis\.com[^\"']*family=([A-Za-z0-9+]+)", b):
+        loaded.add(fam.replace("+", " ").lower())
+    for fam in re.findall(r"@import\s+url\([^)]*family=([A-Za-z0-9+]+)", b):
+        loaded.add(fam.replace("+", " ").lower())
+    for fam in re.findall(r"import\s+\{\s*([A-Za-z0-9_]+)\s*\}\s+from\s+['\"]next/font", b):
+        loaded.add(fam.lower())
+
+missing = []
+for p, fam in fonts_missing:
+    f = fam.lower()
+    if f in loaded or "*nextfont*" in loaded or f.replace(" ", "") in {x.replace(" ", "") for x in loaded}:
+        continue
+    missing.append(f"{p} ({fam})")
+missing = sorted(set(missing))
+
+print("CONTRAST||" + "; ".join(sorted(set(contrast_bad))))
+print("FONTS||" + "; ".join(missing))
+print("SCALE||" + "; ".join(f"{p}:{px}px" for p, px in sorted(set(scale_bad))))
+print("BARECTL||" + "; ".join(sorted(set(bare_ctl))))
+PYEOF
+)
+
+        v_contrast=$(printf '%s\n' "$visual_report" | sed -n 's/^CONTRAST||//p')
+        v_fonts=$(printf '%s\n' "$visual_report" | sed -n 's/^FONTS||//p')
+        v_scale=$(printf '%s\n' "$visual_report" | sed -n 's/^SCALE||//p')
+        v_bare=$(printf '%s\n' "$visual_report" | sed -n 's/^BARECTL||//p')
+
+        # C1. Contrast below WCAG AA. Only literal hex pairs are compared, so this is arithmetic.
+        if [ -n "$v_contrast" ]; then
+            echo "  ❌ Accessibility: text/background contrast below WCAG AA 4.5:1 -> $v_contrast"
+            echo "     Raise contrast or move the pair into DESIGN.md as a tested token."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Accessibility: no literal colour pair falls below 4.5:1"
+        fi
+
+        # C2. A font-family declared but never loaded renders as a fallback nobody chose.
+        if [ -n "$v_fonts" ]; then
+            echo "  ❌ Typography: font-family used but never loaded -> $v_fonts"
+            echo "     Load it with next/font, @font-face, a <link> or an @import - or use the stack in DESIGN.md."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Typography: every declared font-family is loaded"
+        fi
+
+        # C3. Arbitrary px sizes bypass the type scale, which is how a page ends up with seven sizes.
+        # The design tokens live in the M04 prototype folder; the harness root also carries a
+        # DESIGN.md, and a project may only have one of the two. Check both.
+        scale_src=""
+        for cand in docs/design/DESIGN.md DESIGN.md docs/harness-root/DESIGN.md; do
+            [ -f "$cand" ] && scale_src="$cand" && break
+        done
+        if [ -n "$v_scale" ]; then
+            if [ -n "$scale_src" ] && grep -qoE "[0-9]+px" "$scale_src" 2>/dev/null; then
+                unscaled=""
+                for entry in $v_scale; do
+                    px="${entry##*:}"
+                    grep -q "$px" "$scale_src" 2>/dev/null || unscaled="$unscaled $entry"
+                done
+                if [ -n "$unscaled" ]; then
+                    echo "  ❌ Typography: font size(s) not in the $scale_src type scale ->$unscaled"
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Typography: every literal font size appears in the $scale_src scale"
+                fi
+            else
+                echo "  ❌ Typography: hard-coded font size(s) but DESIGN.md defines no px type scale -> $v_scale"
+                GATE_FAILED=1
+            fi
+        else
+            echo "  ✅ Typography: no hard-coded font sizes outside the scale"
+        fi
+
+        # C4. A bare <select>/<input>/<textarea> renders the browser default - the unstyled
+        # dropdown that ships when nobody ports the prototype's control.
+        if [ -n "$v_bare" ]; then
+            echo "  ❌ Components: form control(s) rendered with no className/style -> $v_bare"
+            echo "     Port the control from the prototype; a native default control is a design defect."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Components: every form control carries styling"
+        fi
+
+        # C5. An FSD that asks for an upload / popover but ships only a text input lost a requirement.
+        if [ -f docs/specs/FSD.md ]; then
+            if grep -qiE "(upload|unggah|file input|attach|lampiran).*(\.jpg|\.pdf|\.png|kb|mb|file)" docs/specs/FSD.md; then
+                if ! grep -rqiE "type=[\"']file[\"']|accept=[\"']|useDropzone|FileInput|UploadZone" $scan_dirs 2>/dev/null; then
+                    echo "  ❌ Requirements: FSD specifies a file upload but no file input exists in the shipped source."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Requirements: the FSD file-upload requirement has a file input"
+                fi
+            fi
+            if grep -qiE "(popover|searchable list|dropdown|combobox|autocomplete)" docs/specs/FSD.md; then
+                if ! grep -rqiE "(combobox|listbox|Popover|Command|Dropdown|Select)" $scan_dirs 2>/dev/null; then
+                    echo "  ❌ Requirements: FSD specifies a popover/combobox but no such component exists."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Requirements: the FSD popover/combobox requirement has a component"
+                fi
+            fi
+        fi
+
         # 4h. Multi-Role Capability & Route Protection Guard (BLOCKER)
         # If FSD or SITEMAP defines operational roles (Staff / Operator / Manager),
         # verify that the codebase implements role-aware logic, session checks, or dedicated operational routing.
