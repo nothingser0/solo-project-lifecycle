@@ -246,7 +246,9 @@
      Add e.g. 'Approved: <date> by <name>' to each block below, or un-tick them:
        - M06-DB-01: Schema
   ❌ TODO.md missing core category tasks for 'M06-SETUP-xx'!
-  ✅ Screen fidelity verified: 1 FE tasks match SITEMAP screen definitions (2 unique screens)
+  ✅ FE task count matches SITEMAP screen count: 1 task(s) for 2 screen(s)
+  ❌ Shipped source never references these frozen prototype screen(s): SCR-003 SCR-004
+     Each screen in docs/design/screens/ must be ported; name its SCR-xx in the component/page so the port is traceable.
   ❌ TODO.md missing required Authentication/RBAC task(s)! (SITEMAP/FSD specifies auth/login flow)
   ❌ TODO.md missing mandatory specs pre-read task (M06-SETUP-xx Specs Pre-Read)!
   ✅ AGENTS.md technical quality and engineering guidelines verified

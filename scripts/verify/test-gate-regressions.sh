@@ -112,6 +112,46 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m06_cross <name> <PASS|FAIL> <mode:port|dbtarget> <fixture-shape>
+# The two cross-module rules M06 was missing: a frozen prototype nobody ported, and a DB probe
+# that ran against a different server than the app.
+expect_m06_cross() {
+    local name="$1" want="$2" mode="$3" src="$4" dsnenv="$5" evidence="$6"
+    local dir="$WORK/m06cx"
+    rm -rf "$dir"; mkdir -p "$dir/docs/harness-root" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/a.png"
+    cp "$dir/artifacts/a.png" "$dir/artifacts/b.png"
+    cp "$dir/artifacts/a.png" "$dir/artifacts/c.png"
+    cp "$dir/artifacts/a.png" "$dir/artifacts/d.png"
+    printf 'SCR-001 Login\nSCR-002 Dashboard\n' > "$dir/docs/specs/SITEMAP.md"
+    printf '%b' "$dsnenv" > "$dir/.env"
+    printf '%b' "$evidence" > "$dir/artifacts/final-evidence.md"
+    printf '%b' "$src" > "$dir/src/pages.tsx"
+    printf '# TODO\n\n- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-02: dashboard**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n' > "$dir/docs/harness-root/TODO.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    case "$mode" in
+        port)     echo "$out" | grep -q "never references these frozen prototype" && got="FAIL" ;;
+        dbtarget) echo "$out" | grep -q "never name the configured database target" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 $mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 $mode -> $got, expected $want)"
+        echo "$out" | grep -E "prototype|database target" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M06_EV_OK='migrate down\nCOUNT(\nEXPLAIN\nagainst neon.tech\n'
+M06_EV_LOCAL='migrate down\nCOUNT(\nEXPLAIN\nran on localhost\n'
+M06_ENV_NEON='DATABASE_URL=postgresql://u:p@ep-cool.neon.tech/app\n'
+M06_SRC_PORTED='/* SCR-001 SCR-002 */\n'
+expect_m06_cross "source that never ports the frozen screens blocks" FAIL port "$(printf '/* nothing */')" "$M06_ENV_NEON" "$M06_EV_OK"
+expect_m06_cross "ported source passes" PASS port "$M06_SRC_PORTED" "$M06_ENV_NEON" "$M06_EV_OK"
+expect_m06_cross "DB probe on localhost while the app uses Neon blocks" FAIL dbtarget "$M06_SRC_PORTED" "$M06_ENV_NEON" "$M06_EV_LOCAL"
+expect_m06_cross "DB probe naming the configured target passes" PASS dbtarget "$M06_SRC_PORTED" "$M06_ENV_NEON" "$M06_EV_OK"
+
 # expect_m06_todo <name> <PASS|FAIL> <todo-tail-after-header>
 # M06 trusts TODO.md, so the two ways a tick lies are worth pinning: a model approving it,
 # and one artefact standing in for several unrelated tasks.

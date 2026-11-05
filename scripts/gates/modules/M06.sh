@@ -116,6 +116,38 @@ gate_M06() {
             GATE_FAILED=1
         else
             echo "  ✅ M06-DB evidence shows real-DB probes (reversible, idempotent, indexed)"
+
+            # The probe must run against the database the app runs against. Migrating a local
+            # Postgres while the app points at a hosted one (Neon, Supabase, RDS) tests a schema
+            # nobody ships - the failure is invisible because both are "Postgres".
+            configured_dsn=""
+            for envf in .env .env.local .env.example; do
+                [ -f "$envf" ] || continue
+                configured_dsn=$(grep -hoiE "^(DATABASE_URL|DB_HOST|POSTGRES_HOST|DB_URL)=[^[:space:]]*" "$envf" 2>/dev/null | head -1 | sed -E 's/^[^=]*=//' | tr -d '"'"'"'' | tr '[:upper:]' '[:lower:]')
+                [ -n "$configured_dsn" ] && break
+            done
+            if [ -n "$configured_dsn" ]; then
+                ev_lc=$(tr '[:upper:]' '[:lower:]' < "$ev_file" 2>/dev/null || true)
+                db_target=""
+                for hint in neon supabase rds planetscale turso cockroach atlas railway render; do
+                    case "$configured_dsn" in
+                        *"$hint"*) db_target="$hint" ;;
+                    esac
+                done
+                case "$configured_dsn" in
+                    *localhost*|*127.0.0.1*) db_target="localhost" ;;
+                esac
+                if [ -n "$db_target" ]; then
+                    if printf '%s' "$ev_lc" | grep -q "$db_target"; then
+                        echo "  ✅ DB probes ran against the configured target (${db_target})"
+                    else
+                        echo "  ❌ DB probes never name the configured database target (${db_target}, from DATABASE_URL/DB_HOST)."
+                        echo "     Probing a different server (e.g. local Postgres while the app uses ${db_target}) proves a schema you do not ship."
+                        echo "     Paste the probe output including the host/dsn it ran against."
+                        GATE_FAILED=1
+                    fi
+                fi
+            fi
         fi
     fi
 
@@ -175,7 +207,30 @@ gate_M06() {
                 echo "     Every core SCR-xx screen in SITEMAP.md must have its own dedicated M06-FE-xx task."
                 GATE_FAILED=1
             else
-                echo "  ✅ Screen fidelity verified: ${todo_fe_count} FE tasks match SITEMAP screen definitions (${sitemap_scr_count} unique screens)"
+                echo "  ✅ FE task count matches SITEMAP screen count: ${todo_fe_count} task(s) for ${sitemap_scr_count} screen(s)"
+            fi
+
+            # A task per screen is a count, not a port. M04 froze a prototype for every SCR-xx;
+            # if the shipped source never references that screen, the FE work was invented rather
+            # than ported, and "Screen fidelity verified" was claiming something unmeasured.
+            if [ -d "docs/design/screens" ] && { [ -d "src" ] || [ -d "app" ]; }; then
+                fe_src_dirs="src app"
+                unported=""
+                ported=0
+                for scr in $(grep -oE "SCR-[A-Z]*-?[0-9]+" "$sitemap_spec" | sort -u); do
+                    if grep -rqiE "(^|[^A-Za-z0-9-])${scr}([^0-9]|$)" $fe_src_dirs 2>/dev/null; then
+                        ported=$((ported + 1))
+                    else
+                        unported="$unported $scr"
+                    fi
+                done
+                if [ -n "$unported" ]; then
+                    echo "  ❌ Shipped source never references these frozen prototype screen(s):$unported"
+                    echo "     Each screen in docs/design/screens/ must be ported; name its SCR-xx in the component/page so the port is traceable."
+                    GATE_FAILED=1
+                elif [ "$ported" -gt 0 ]; then
+                    echo "  ✅ All ${ported} frozen prototype screen(s) are referenced by the shipped source"
+                fi
             fi
         fi
 
@@ -187,8 +242,10 @@ gate_M06() {
             needs_auth=1
         fi
         if [ $needs_auth -eq 1 ]; then
-            if grep -qiE "M06-AUTH-[0-9]+|M06-SETUP-[0-9]+.*(auth|login)|M06-BE-[0-9]+.*(auth|login)|login|authentication" "$target_todo"; then
+            auth_line=$(grep -iE "M06-AUTH-[0-9]+|M06-SETUP-[0-9]+.*(auth|login)|M06-BE-[0-9]+.*(auth|login)|login|authentication" "$target_todo" | head -1)
+            if [ -n "$auth_line" ]; then
                 echo "  ✅ Authentication & RBAC tasks verified in TODO.md"
+
             else
                 echo "  ❌ TODO.md missing required Authentication/RBAC task(s)! (SITEMAP/FSD specifies auth/login flow)"
                 GATE_FAILED=1
