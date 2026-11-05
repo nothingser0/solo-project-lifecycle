@@ -81,6 +81,8 @@ EOF
     printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#3b82f6"/></svg>\n' > "$d/docs/design/brand/favicon.svg"
     printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Screen 3</title><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../brand/favicon.svg"></head><body data-roles="admin"><main>\n%s\n</main><script src="../shared/js/app.js"></script></body></html>\n' \
         "$(printf 'Prototype screen content for the reviewer to inspect. %.0s' $(seq 1 45))" > "$d/docs/design/screens/SCR-003.html"
+    printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../brand/favicon.svg"><title>Invoices</title></head><body><main><p>%s</p></main></body></html>\n' \
+        "$(printf 'Prototype screen content for the reviewer to inspect. %.0s' $(seq 1 45))" > "$d/docs/design/screens/SCR-004.html"
     printf '# LOGO_DESIGN_BRIEF\nSelected benchmark: Linear\n%s\n' "$(head -c 300 /dev/zero | tr '\0' 'e')" > "$d/docs/specs/LOGO_DESIGN_BRIEF.md"
     printf '# COMPONENT_REQUIREMENTS\n\n## Primitives (Atomic Components)\n\n## Composites (Standard & Domain)\n\n## WCAG 2.2 AA Accessibility\n%s\n' "$(head -c 1000 /dev/zero | tr '\0' 'f')" > "$d/docs/specs/COMPONENT_REQUIREMENTS.md"
     head -c 120 /dev/zero | tr '\0' 'z' > "$d/assets/logo/logo.svg"

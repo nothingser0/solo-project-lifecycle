@@ -131,14 +131,16 @@
   ✅ DESIGN.md Typography & Spacing sections verified
   ✅ DESIGN.md Anti-Slop design defenses verified
   [INFO] Interactive Prototyping (visual preview mandatory).
-  ✅ Interactive screen preview outputs present (found 1 preview files)
+  ✅ Interactive screen preview outputs present (found 2 preview files)
   ✅ Every prototype screen has real markup (>= 2000 bytes, >= 20 words)
   ✅ Prototype opens: every local asset resolves and every screen has real body elements
   ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI
-  ✅ One shared stylesheet used by all 1 screen(s): ../shared/css/styles.css
+  ✅ Prototype coverage mapped: all 2 SITEMAP screen(s) resolve to a screen
+  ✅ Prototype colours all trace back to design tokens
+  ✅ One shared stylesheet used by all 2 screen(s): ../shared/css/styles.css
   ✅ No per-page <style> drift (all styling comes from the shared sheet)
   ✅ Every screen has a complete <head> (charset, unique title, resolving icon)
-  ⚠️  1 screen(s) have no <meta name="description"> (advisory: needed for SEO, not for prototyping).
+  ⚠️  2 screen(s) have no <meta name="description"> (advisory: needed for SEO, not for prototyping).
   ✅ Accessibility basics present (html lang, img alt, unique ids)
   ✅ Mechanical UI/UX consistency audit PASSED
   ✅ Screen count match verified (SITEMAP 2 vs DESIGN_SPEC 2, tolerance ±0)

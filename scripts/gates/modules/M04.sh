@@ -308,21 +308,54 @@ PYEOF
             else
                 echo "  ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI"
             fi
-            # 6d. Prototype Screen Coverage Check: prevent single-screen dashboard cop-out
+            # 6d. Prototype Screen Coverage: every SCR-xx in SITEMAP must be reachable in the
+            #     prototype. The old form only noticed a single file when SITEMAP declared >=4
+            #     screens and, even then, accepted the word "tab-" anywhere in it as proof that
+            #     all screens were covered. Counting is not mapping.
             if [ -f "docs/specs/SITEMAP.md" ]; then
-                sitemap_screens=$(grep -oE "SCR-[0-9]+" "docs/specs/SITEMAP.md" | sort -u | wc -l | tr -d ' ')
-                if [ "${sitemap_screens:-0}" -ge 4 ] && [ "${screen_files:-0}" -eq 1 ]; then
-                    # If only 1 file exists, check if it contains multi-screen views/tabs
-                    single_html=$(find docs/design/screens -type f -name "*.html" | head -1)
-                    if [ -f "$single_html" ] && ! grep -qiE "(data-screen|view-|tab-|screen-container|switchView|showScreen)" "$single_html"; then
-                        echo "  ❌ Prototype coverage incomplete! SITEMAP defines ${sitemap_screens} screens, but docs/design/screens/ only has 1 screen file without multi-view switching."
-                        echo "     Every core screen in SITEMAP.md must be prototyped in HTML (either multi-page HTML or an interactive SPA switcher) before entering M06 FE coding."
-                        GATE_FAILED=1
-                    else
-                        echo "  ✅ Full prototype screen coverage verified (multi-view / multi-page prototype covers SITEMAP)"
+                sitemap_ids=$(grep -oE "SCR-[A-Z]*-?[0-9]+" "docs/specs/SITEMAP.md" 2>/dev/null | sort -u || true)
+                sitemap_screens=$(printf '%s\n' "$sitemap_ids" | grep -c . || true)
+                missing_screens=""
+                for sid in $sitemap_ids; do
+                    if ! find docs/design/screens -type f -iname "*${sid}*" 2>/dev/null | grep -q . \
+                       && ! grep -rqiE "data-screen=[\"']${sid}[\"']" docs/design/screens 2>/dev/null; then
+                        missing_screens="$missing_screens $sid"
                     fi
+                done
+                if [ -n "$missing_screens" ]; then
+                    echo "  ❌ SITEMAP declares ${sitemap_screens} screen(s); these have no file and no data-screen section:$missing_screens"
+                    echo "     Each SCR-xx needs its own <role>/SCR-xx.html (or a section marked data-screen=\"SCR-xx\")."
+                    GATE_FAILED=1
+                elif [ "${sitemap_screens:-0}" -gt 0 ]; then
+                    echo "  ✅ Prototype coverage mapped: all ${sitemap_screens} SITEMAP screen(s) resolve to a screen"
                 fi
             fi
+            # 6d-bis. Brand fidelity: a design system whose tokens the screens ignore is a
+            #     document, not a system. Every hex used in the prototype must exist in the
+            #     token sources (DESIGN.md or the shared stylesheet). Third-party brand colours
+            #     are explicitly allowed through an allowlist line in DESIGN.md.
+            if [ -f "$design_file" ]; then
+                token_hexes=$( { grep -rhoiE "#[0-9a-f]{6}\b" "$design_file" 2>/dev/null
+                                 grep -rhoiE "#[0-9a-f]{6}\b" docs/design/shared 2>/dev/null
+                                 grep -rhoiE "#[0-9a-f]{6}\b" docs/design/components 2>/dev/null; } \
+                               | tr '[:upper:]' '[:lower:]' | sort -u || true)
+                allow_hexes=$(grep -iE "brand-colours-allowed|Brand colours allowed" "$design_file" 2>/dev/null \
+                               | grep -oiE "#[0-9a-f]{6}\b" | tr '[:upper:]' '[:lower:]' | sort -u || true)
+                stray=""
+                for hx in $(grep -rhoiE "#[0-9a-f]{6}\b" docs/design/screens 2>/dev/null | tr '[:upper:]' '[:lower:]' | sort -u); do
+                    printf '%s\n' "$token_hexes" | grep -qx "$hx" && continue
+                    printf '%s\n' "$allow_hexes" | grep -qx "$hx" && continue
+                    stray="$stray $hx"
+                done
+                if [ -n "$stray" ]; then
+                    echo "  ❌ Colours used in the prototype but absent from the design tokens:$stray"
+                    echo "     Add them to DESIGN.md (or the shared stylesheet) as tokens, or list them under 'Brand colours allowed:'."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Prototype colours all trace back to design tokens"
+                fi
+            fi
+
             # 6e. Modern Landing Page Section Depth Check (SCR-01)
             if [ -f "docs/specs/SITEMAP.md" ] && grep -qiE "SCR-01.*Landing|Landing.*Page" "docs/specs/SITEMAP.md"; then
                 landing_has_sections=0

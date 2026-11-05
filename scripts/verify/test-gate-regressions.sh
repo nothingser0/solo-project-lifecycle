@@ -112,6 +112,64 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m04_route <name> <PASS|FAIL> <sitemap-ids> <files-to-create> <stray-colour?>
+# Isolates the SCR-xx -> screen mapping and the token-colour rule.
+setup_m04() {
+    local dir="$1" html="${2:-}"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/docs/design/brand" "$dir/docs/design/inspiration"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '%b' "$html" > "$dir/docs/design/screens/SCR-003.html"
+    # everything M04 needs that is not under test
+    printf 'SCR-003 admin invoices\n%s\n' "$(printf 'sitemap detail row. %.0s' $(seq 1 120))" > "$dir/docs/specs/SITEMAP.md"
+    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\n\n## Motion & Interaction\ntransition 150ms, active scale 0.98\n%s\n' \
+        "$(printf 'screen rows and state matrix detail. %.0s' $(seq 1 100))" > "$dir/docs/specs/DESIGN_SPEC.md"
+    mkdir -p "$dir/docs/design/shared/css"
+    printf 'body{margin:0;font-family:system-ui}\n' > "$dir/docs/design/shared/css/styles.css"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#3b82f6"/></svg>\n' > "$dir/docs/design/brand/favicon.svg"
+    printf '# Components\n\n## Primitives & Atomic\nbutton input\n## Composites\ncard form\n## Accessibility WCAG AA\ncontrast 4.5:1\n%s\n' \
+        "$(printf 'component inventory detail. %.0s' $(seq 1 60))" > "$dir/docs/specs/COMPONENT_REQUIREMENTS.md"
+    printf '# Logo brief\n\nmonogram mark with brand accent and clear space rules defined\n' > "$dir/docs/specs/LOGO_DESIGN_BRIEF.md"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Acme mark"><title>Acme</title><circle cx="32" cy="32" r="28" fill="#3b82f6"/><path d="M20 40 L32 20 L44 40 Z" fill="#ffffff"/><rect x="18" y="44" width="28" height="4" fill="#ffffff"/></svg>\n' > "$dir/docs/design/brand/logo.svg"
+    printf '# inspiration notes\n\nWinning benchmark: ref.png (Linear), because of its density and neutral palette.\n%s\n' \
+        "$(printf 'observation detail. %.0s' $(seq 1 60))" > "$dir/docs/design/inspiration/notes.md"
+    printf 'reference screenshot placeholder supplied by the human\n' > "$dir/docs/design/inspiration/ref.png"
+    printf 'sources:\n  - docs/design/inspiration/notes.md\n\nEvidence & Inference Log: tokens marked observed or inferred\n\n## Anti-Slop\nZero emoticons, zero glassmorphism, restrained shadows, one icon set.\n\nTypography scale and Spacing scale defined here.\nContrast 4.5:1 and 7.0:1 recorded. z-index base 0 toast 60.\n%s\n' \
+        "$(printf 'design token detail. %.0s' $(seq 1 60))" > "$dir/DESIGN.md"
+    mkdir -p "$dir/docs/design/components" "$dir/docs/specs/wireflows"
+    
+}
+
+expect_m04_route() {
+    local name="$1" want="$2" ids="$3" files="$4" stray="${5:-}"
+    local dir="$WORK/m04rt"
+    # START FROM THE PASSING M04 FIXTURE: this test targets two rules and nothing else, so
+    # rebuilding the whole prerequisite stack here would assert unrelated checks.
+    rm -rf "$dir"; mkdir -p "$dir"
+    setup_m04 "$dir"
+    # setup_m04 ships one SCR-003 screen; these cases re-cut the map, so start from an empty screen dir
+    rm -f "$dir"/docs/design/screens/*.html
+    printf 'SCR-001 Login screen with an email field and a submit button for the operator\nSCR-002 Dashboard screen with totals and a table of recent invoices for review\n' > "$dir/docs/specs/SITEMAP.md"
+    printf 'body{color:#3b82f6}\n' > "$dir/docs/design/shared/css/styles.css"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#3b82f6"/></svg>\n' > "$dir/docs/design/brand/favicon.svg"
+    for f in $files; do
+        printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../brand/favicon.svg"><title>%s</title></head><body><main><p style="color:%s">%s</p></main></body></html>\n' \
+            "$f" "${stray:-#3b82f6}" "$(printf 'Screen words that clear the hollow floor comfortably. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/$f.html"
+    done
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -qE "no file and no data-screen section|Colours used in the prototype but absent" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (route/token -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (route/token -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m04_route "SITEMAP screen with no file blocks" FAIL "x" "SCR-001"
+expect_m04_route "every SITEMAP screen mapped passes" PASS "x" "SCR-001 SCR-002"
+expect_m04_route "prototype colour outside the tokens blocks" FAIL "x" "SCR-001 SCR-002" "#ff00aa"
+
 # expect_m04_freeze <name> <PASS|FAIL> <freeze-block>
 # A Design Freeze approved by the model is not an approval: the runbook says so and the gate
 # used to accept any name, plus a sign-off with no channel at all.
@@ -137,29 +195,11 @@ expect_m04_freeze "human with name, date and channel passes" PASS '- Approved by
 
 # expect_m04_screen <name> <PASS|FAIL> <screen-html>
 # Builds the minimum M04 project and varies only the prototype screen content.
+
 expect_m04_screen() {
     local name="$1" want="$2" html="$3" variant="${4:-}"
     local dir="$WORK/m04scr"
-    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/docs/design/brand" "$dir/docs/design/inspiration"
-    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
-    printf '%b' "$html" > "$dir/docs/design/screens/SCR-003.html"
-    # everything M04 needs that is not under test
-    printf 'SCR-003 admin invoices\n%s\n' "$(printf 'sitemap detail row. %.0s' $(seq 1 120))" > "$dir/docs/specs/SITEMAP.md"
-    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\n\n## Motion & Interaction\ntransition 150ms, active scale 0.98\n%s\n' \
-        "$(printf 'screen rows and state matrix detail. %.0s' $(seq 1 100))" > "$dir/docs/specs/DESIGN_SPEC.md"
-    mkdir -p "$dir/docs/design/shared/css"
-    printf 'body{margin:0;font-family:system-ui}\n' > "$dir/docs/design/shared/css/styles.css"
-    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#3b82f6"/></svg>\n' > "$dir/docs/design/brand/favicon.svg"
-    printf '# Components\n\n## Primitives & Atomic\nbutton input\n## Composites\ncard form\n## Accessibility WCAG AA\ncontrast 4.5:1\n%s\n' \
-        "$(printf 'component inventory detail. %.0s' $(seq 1 60))" > "$dir/docs/specs/COMPONENT_REQUIREMENTS.md"
-    printf '# Logo brief\n\nmonogram mark with brand accent and clear space rules defined\n' > "$dir/docs/specs/LOGO_DESIGN_BRIEF.md"
-    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Acme mark"><title>Acme</title><circle cx="32" cy="32" r="28" fill="#3b82f6"/><path d="M20 40 L32 20 L44 40 Z" fill="#ffffff"/><rect x="18" y="44" width="28" height="4" fill="#ffffff"/></svg>\n' > "$dir/docs/design/brand/logo.svg"
-    printf '# inspiration notes\n\nWinning benchmark: ref.png (Linear), because of its density and neutral palette.\n%s\n' \
-        "$(printf 'observation detail. %.0s' $(seq 1 60))" > "$dir/docs/design/inspiration/notes.md"
-    printf 'reference screenshot placeholder supplied by the human\n' > "$dir/docs/design/inspiration/ref.png"
-    printf 'sources:\n  - docs/design/inspiration/notes.md\n\nEvidence & Inference Log: tokens marked observed or inferred\n\n## Anti-Slop\nZero emoticons, zero glassmorphism, restrained shadows, one icon set.\n\nTypography scale and Spacing scale defined here.\nContrast 4.5:1 and 7.0:1 recorded. z-index base 0 toast 60.\n%s\n' \
-        "$(printf 'design token detail. %.0s' $(seq 1 60))" > "$dir/DESIGN.md"
-    mkdir -p "$dir/docs/design/components" "$dir/docs/specs/wireflows"
+    setup_m04 "$dir" "$html"
     case "$variant" in
         no-showcase)     : ;;
         hollow-showcase) printf '<!doctype html><html><body>\n' > "$dir/docs/design/components/index.html" ;;
