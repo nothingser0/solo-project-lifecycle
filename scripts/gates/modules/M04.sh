@@ -312,10 +312,34 @@ EOF
             fi
         fi
 
+        # 9b. Component showcase (BLOCKER). STEP 1.5 has a human STOP & ACC on
+        #     docs/design/components/index.html, but no gate ever looked for it, so the approval
+        #     could be claimed for a file that was never built.
+        showcase=""
+        for cand in docs/design/components/index.html docs/design/components/showcase.html; do
+            [ -f "$cand" ] && showcase="$cand" && break
+        done
+        if [ -n "$showcase" ]; then
+            sh_sz=$(wc -c < "$showcase" 2>/dev/null | tr -d ' ')
+            sh_words=$(grep -oE "[A-Za-z]{2,}" "$showcase" 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${sh_sz:-0}" -lt 2000 ] || [ "${sh_words:-0}" -lt 20 ]; then
+                echo "  ❌ Component showcase $showcase is too hollow (${sh_sz}B/${sh_words}w) to have been reviewed."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Component showcase present and substantive ($showcase)"
+            fi
+        else
+            echo "  ❌ Component showcase missing — STEP 1.5 requires docs/design/components/index.html before screen assembly."
+            GATE_FAILED=1
+        fi
+
         # 10. Wireflow Interaction Scenarios (docs/specs/wireflows/*.md)
         scenario_count=$(find docs/specs/wireflows docs/design/scenarios -type f -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
         if [ "${scenario_count:-0}" -ge 1 ]; then
             echo "  ✅ Wireflow Interaction Scenarios verified (found ${scenario_count} scenario runbook(s) in docs/specs/wireflows/)"
+        else
+            echo "  ❌ Wireflow Interaction Scenarios missing — STEP 2.5 requires a SCENARIOS_WFxx.md per wireflow screen."
+            GATE_FAILED=1
         fi
     fi
 }

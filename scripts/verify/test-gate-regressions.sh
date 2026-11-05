@@ -115,7 +115,7 @@ echo ""
 # expect_m04_screen <name> <PASS|FAIL> <screen-html>
 # Builds the minimum M04 project and varies only the prototype screen content.
 expect_m04_screen() {
-    local name="$1" want="$2" html="$3"
+    local name="$1" want="$2" html="$3" variant="${4:-}"
     local dir="$WORK/m04scr"
     rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/docs/design/brand" "$dir/docs/design/inspiration"
     printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
@@ -133,9 +133,22 @@ expect_m04_screen() {
     printf 'reference screenshot placeholder supplied by the human\n' > "$dir/docs/design/inspiration/ref.png"
     printf 'sources:\n  - docs/design/inspiration/notes.md\n\nEvidence & Inference Log: tokens marked observed or inferred\n\nTypography scale and Spacing scale defined here.\nContrast 4.5:1 and 7.0:1 recorded. z-index base 0 toast 60.\n%s\n' \
         "$(printf 'design token detail. %.0s' $(seq 1 60))" > "$dir/DESIGN.md"
+    mkdir -p "$dir/docs/design/components" "$dir/docs/specs/wireflows"
+    case "$variant" in
+        no-showcase)     : ;;
+        hollow-showcase) printf '<!doctype html><html><body>\n' > "$dir/docs/design/components/index.html" ;;
+        *)               printf '<!doctype html><html><body><main>\n%s\n</main></body></html>\n' \
+                             "$(printf 'Primitive and composite components rendered on the shared sheet. %.0s' $(seq 1 30))" > "$dir/docs/design/components/index.html" ;;
+    esac
+    case "$variant" in
+        no-wireflow) : ;;
+        *)           printf '# SCENARIOS_WF01\n\n## Baseline fixture\nseed admin account\n\n## Happy path\n%s\n' \
+                          "$(printf 'Open invoices and confirm totals update. %.0s' $(seq 1 20))" > "$dir/docs/specs/wireflows/SCENARIOS_WF01.md" ;;
+    esac
     local out got="PASS"
     out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
     echo "$out" | grep -qE "too hollow to be a screen" && got="FAIL"
+    echo "$out" | grep -qE "Component showcase missing|Component showcase .* too hollow|Wireflow Interaction Scenarios missing" && got="FAIL"
     if [ "$got" = "$want" ]; then
         echo -e "  ${GREEN}✓${NC} $name  (M04 hollow -> $got)"
         PASS=$((PASS + 1))
@@ -144,6 +157,10 @@ expect_m04_screen() {
         FAIL=$((FAIL + 1))
     fi
 }
+expect_m04_screen "component showcase missing blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-showcase
+expect_m04_screen "hollow component showcase blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' hollow-showcase
+expect_m04_screen "zero wireflow runbooks block" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-wireflow
+# the same fixture, but with a showcase + wireflow, must pass the new checks
 expect_m04_screen "empty 0-byte .html is not a prototype" FAIL ''
 expect_m04_screen "real markup screen passes the hollow check" PASS "<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Invoices</title></head><body data-roles=\"admin\"><main><h1>Invoices</h1><p>$(printf 'Invoice rows for the current month with totals and status per row. %.0s' $(seq 1 40))</p></main></body></html>
 "

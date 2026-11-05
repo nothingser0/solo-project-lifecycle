@@ -139,6 +139,8 @@
   ❌ DESIGN_SPEC.md still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Name]). The human signs the Design Freeze before M06.
   ❌ DESIGN_SPEC.md missing a named Design Freeze approver ('Approved by: <name>' or 'Signed by: <name>').
   ❌ DESIGN_SPEC.md missing a real Design Freeze date ('Approved on: YYYY-MM-DD' or 'on YYYY-MM-DD').
+  ✅ Component showcase present and substantive (docs/design/components/index.html)
+  ✅ Wireflow Interaction Scenarios verified (found 1 scenario runbook(s) in docs/specs/wireflows/)
 
 ============================================================
 ❌ Gate validation FAILED - missing mandatory artifacts
