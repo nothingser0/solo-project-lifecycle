@@ -2400,6 +2400,33 @@ expect_m00_signal "M00 a survey lifts a RETEST to PASS" 3.5 35 0 0 PASS PASS
 expect_m00_signal "M00 a real deposit closes the gate over a waitlist KILL" 1.5 10 6 0 PASS PASS
 expect_m00_signal "M00 all signals KILL aggregates to KILL" 1.0 5 0 0 KILL KILL
 
+# The kill-criteria checks must not fire on the document that DEFINES the criterion. The CI
+# fixture m00-lite-pass.md contains "Regulatory Kill: business model requires a banking licence"
+# and my first version blocked it - a gate failing the correct document.
+expect_m00_kill() {
+    local name="$1" want="$2" appended="$3"
+    local dir="$WORK/m00kill"; rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf -- '- **Scale**: solo\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    cp "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/verify/fixtures/m00-lite-pass.md" "$dir/docs/pm/M00_LITE.md"
+    [ -n "$appended" ] && printf '%b\n' "$appended" >> "$dir/docs/pm/M00_LITE.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M00 2>&1 || true)"
+    echo "$out" | grep -qE "Regulatory kill|Feasibility kill" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (kill -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (kill -> $got, expected $want)"
+        echo "$out" | grep -E "Regulatory kill|Feasibility kill" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m00_kill "a document that only DEFINES the kill criteria passes" PASS ""
+expect_m00_kill "an admission of needing a lending licence blocks" FAIL '## 8. Business Model
+Our model requires a lending licence from OJK before launch.'
+expect_m00_kill "a 12-week MVP timeline blocks" FAIL '## 9. Delivery
+MVP development timeline: 12 weeks for one developer.'
+
 # Positive direction where the gate needs more than one artifact. M02 reconciles
 # Scope-P0-Count against the counted Must-Have rows, so the count is derived from
 # the shipped template rather than guessed — the check this pins is that a

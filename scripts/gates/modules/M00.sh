@@ -296,8 +296,17 @@ gate_M00() {
                 GATE_FAILED=1
             fi
         fi
-        if grep -qiE "(requires?|needs?|mandates?)[^.]*(lending licen[cs]e|banking licen[cs]e|OJK P2P licen[cs]e)" "$validation_file" 2>/dev/null; then
+        # A kill criterion is a sentence that DEFINES the trigger, so the document's own
+        # "Regulatory Kill: business model requires a banking licence" must not trip this. Only a
+        # statement about this business counts, and never one that sits in a kill-criteria line.
+        local m00_reg
+        m00_reg=$(sed 's/\*//g' "$validation_file" 2>/dev/null \
+            | grep -viE "kill|criteria|criterion|trigger|exceeds|would|if the|threshold" \
+            | grep -iE "(requires?|needs?|mandates?)[^.]*(lending licen[cs]e|banking licen[cs]e|OJK P2P licen[cs]e|P2P licen[cs]e)" \
+            | head -1 || true)
+        if [ -n "$m00_reg" ]; then
             echo "  ❌ Regulatory kill: the business model states it needs a lending/banking licence."
+            echo "     Line: $(printf '%s' "$m00_reg" | cut -c1-100)"
             GATE_FAILED=1
         fi
 
