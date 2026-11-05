@@ -2337,6 +2337,13 @@ expect_m00_signal() {
 |:---|:---|:---:|:---|:---|:---|:---:|
 | **ASM-01** | users lose money | HIGH | 3/5 confirm | Deep interviews | <2 respondents | ✅ |
 
+## 3b. Real User Interviews (INT-0x)
+| ID | Name | Role | Date | Status |
+|:---|:---|:---|:---|:---|
+| INT-01 | A | owner | 2026-10-01 | ✅ Real |
+| INT-02 | B | owner | 2026-10-02 | ✅ Real |
+| INT-03 | C | owner | 2026-10-03 | ✅ Real |
+
 ## 3. Quick Competitor & Alternative Check
 | Solution Name | Type | Price | Strengths | Weaknesses | Differentiator |
 |:---|:---|:---|:---|:---|:---|
@@ -2349,12 +2356,22 @@ expect_m00_signal() {
 | INT-02 | B | owner | 2026-10-02 | ✅ Real |
 | INT-03 | C | owner | 2026-10-03 | ✅ Real |
 
-## 5. Quantitative Validation Thresholds
+## 4b. User Discovery
+Five attempts, three confirmed above; the remaining two were unreachable calls.
+
+## 5. Behavioral Intent Validation (Waitlist / Smoke Test)
 - **Total Unique Visitors**: 140
-- **Total Waitlist / Email Signups**: ${pct%.*}0
+- **Total Waitlist / Email Signups**: $(awk -v p="$pct" 'BEGIN { printf "%d", (p * 140 / 100) + 0.5 }')
 - **Waitlist-Conversion-Pct**: $pct
 - **Intent-to-Buy-Pct**: $intent
 Alternative-Proof: deposits:$dep loi:$loi
+
+## 6. Unit Economics & Solo Capacity Sanity Check
+- **Target ARPU**: Rp 99000 / month
+- **Estimated CAC**: Rp 25000 / customer
+
+## 7. Kill Criteria & Gate Validation Outcome
+Kill criteria as listed in the module contract.
 
 Validated-by: S. Rahma on 2026-10-12
 
@@ -2363,6 +2380,7 @@ M00EOF
     local out got
     out="$(cd "$dir" && bash "$GATE" M00 2>&1 || true)"
     got=$(printf '%s' "$out" | sed -n 's/.*Aggregated verdict from signals:.*-> \([A-Z]*\).*/\1/p' | head -1)
+    if [ -z "$got" ]; then got="<none: the fixture never reached aggregation>"; fi
     if [ "$got" = "$want" ]; then
         echo -e "  ${GREEN}✓${NC} $name  (aggregated -> $got)"
         PASS=$((PASS + 1))
@@ -2372,9 +2390,14 @@ M00EOF
     fi
     rm -rf "$dir"
 }
-# The combination a founder actually hits: weak waitlist, real deposit interest.
+# The module contract (00_PRODUCT_DISCOVERY_STRATEGY.md §1b): any PASS behavioural signal closes
+# the gate, RETEST is the best signal in RETEST, KILL is all in KILL. One documented exception: a
+# survey lifts RETEST, it never overturns a measured behavioural KILL - otherwise 1.5% of 140
+# visitors is talked up by a questionnaire, which is the whole point of running the waitlist.
 expect_m00_signal "M00 waitlist KILL + deposits RETEST aggregates to RETEST" 1.5 10 2 0 RETEST RETEST
-expect_m00_signal "M00 any PASS signal closes the gate" 1.5 35 0 0 PASS PASS
+expect_m00_signal "M00 a survey cannot overturn a waitlist KILL" 1.5 35 0 0 KILL KILL
+expect_m00_signal "M00 a survey lifts a RETEST to PASS" 3.5 35 0 0 PASS PASS
+expect_m00_signal "M00 a real deposit closes the gate over a waitlist KILL" 1.5 10 6 0 PASS PASS
 expect_m00_signal "M00 all signals KILL aggregates to KILL" 1.0 5 0 0 KILL KILL
 
 # Positive direction where the gate needs more than one artifact. M02 reconciles

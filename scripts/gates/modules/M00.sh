@@ -159,6 +159,7 @@ gate_M00() {
         # count cannot be cross-checked, which is exactly how a rate gets invented.
         if [ -z "$signups" ]; then
             echo "  ❌ Total Waitlist / Email Signups missing or still an unresolved placeholder in $validation_file!"
+            echo "     Both halves of the conversion rate are required - without the signup count the rate cannot be checked."
             GATE_FAILED=1
         fi
 
@@ -177,8 +178,23 @@ gate_M00() {
             fi
         fi
 
+        # "Did primary research actually run?" is needed before the band is computed: a 0% over 0
+        # visitors is not a KILL, it is "nothing happened yet", and reporting it as KILL punished
+        # the honest PENDING.
+        # Two different questions: did anything run at all, and did a behavioural test reach its
+        # sample floor. Only the second can decide PASS/RETEST/KILL - three interviews are
+        # qualitative, they cannot produce a conversion band.
+        local m00_ran=0 m00_behaviour=0
+        if [ -n "$visitors" ] && [ "$(awk -v v="$visitors" 'BEGIN { print (v + 0 >= 100) ? 1 : 0 }')" = "1" ]; then
+            m00_ran=1
+            m00_behaviour=1
+        fi
+        if [ "${real_interviews:-0}" -ge 3 ] 2>/dev/null; then
+            m00_ran=1
+        fi
+
         band=""
-        if [ -n "$pct" ]; then
+        if [ -n "$pct" ] && [ "$m00_behaviour" -eq 1 ]; then
             band=$(awk -v p="$pct" 'BEGIN { if (p + 0 >= 5.0) print "PASS"; else if (p + 0 >= 2.0) print "RETEST"; else print "KILL" }')
             case "$band" in
                 PASS)   echo "  ✅ Waitlist conversion $pct% is in the PASS band (>= 5.0%)" ;;
@@ -202,28 +218,88 @@ gate_M00() {
             awk -v v="$1" -v p="$2" -v r="$3" 'BEGIN { if (v+0 >= p) print "PASS"; else if (v+0 >= r) print "RETEST"; else print "KILL" }'
         }
         [ -n "$band" ] && sig="$sig $band"
-        if [ -n "$intent" ]; then
+        # A survey is opinion. Until a behavioural test reached its floor, no signal defines a
+        # band - otherwise "0 visitors, 0% intent" computed a KILL and called an honest PENDING a
+        # contradiction.
+        if [ -n "$intent" ] && [ "$m00_behaviour" -eq 1 ]; then
             b=$(band_of "$intent" 30 15); sig="$sig $b"
             echo "  [signal] intent-to-buy $intent% -> $b"
         fi
-        if [ -n "$deposits" ]; then
+        if [ -n "$deposits" ] && [ "$m00_behaviour" -eq 1 ]; then
             b=$(band_of "$deposits" 5 1); sig="$sig $b"
             echo "  [signal] refundable deposits $deposits -> $b"
         fi
-        if [ -n "$loi" ]; then
+        if [ -n "$loi" ] && [ "$m00_behaviour" -eq 1 ]; then
             b=$(band_of "$loi" 2 1); sig="$sig $b"
             echo "  [signal] signed LOIs $loi -> $b"
         fi
 
-        local computed=""
-        if printf '%s' "$sig" | grep -q "PASS"; then
+        # 4. Nothing was run, so there is no band. Feeding 0 visitors through the arithmetic
+        # reported "PENDING contradicts the evidence band KILL", which punishes the honest answer
+        # and teaches the reader to write PASS instead.
+        # Aggregation follows the module contract (00_PRODUCT_DISCOVERY_STRATEGY.md §1b):
+        #   any PASS signal closes the gate; RETEST = best signal in RETEST; KILL = all in KILL.
+        # The one exception is a survey. Deposits and signed LOIs are somebody paying; an
+        # intent-to-buy answer is somebody saying they might. A survey may lift RETEST to PASS,
+        # never overturn a behavioural KILL - otherwise 1.7% of 180 visitors is talked up by a
+        # questionnaire, which is the exact failure this framework exists to prevent.
+        local computed="" behavioural_pass=0 survey_pass=0
+        [ "$band" = "PASS" ] && behavioural_pass=1
+        if [ -n "$deposits" ] && [ "$(awk -v d="$deposits" 'BEGIN { print (d + 0 >= 5) ? 1 : 0 }')" = "1" ]; then
+            behavioural_pass=1
+        fi
+        if [ -n "$loi" ] && [ "$(awk -v l="$loi" 'BEGIN { print (l + 0 >= 2) ? 1 : 0 }')" = "1" ]; then
+            behavioural_pass=1
+        fi
+        if [ -n "$intent" ] && [ "$(awk -v i="$intent" 'BEGIN { print (i + 0 >= 30) ? 1 : 0 }')" = "1" ] \
+           && [ "$m00_behaviour" -eq 1 ]; then
+            survey_pass=1
+        fi
+
+        # A KILL waitlist only overrides opinion (a survey). A behavioural signal that is itself
+        # in RETEST (1-4 deposits, 1 LOI) is not a PASS, so the contract's "best signal in RETEST"
+        # still applies - otherwise "KILL + RETEST deposits" reported KILL instead of RETEST.
+        local other_retest=0
+        if [ -n "$deposits" ] && [ "$(awk -v d="$deposits" 'BEGIN { print (d + 0 >= 1 && d + 0 < 5) ? 1 : 0 }')" = "1" ]; then
+            other_retest=1
+        fi
+        if [ -n "$loi" ] && [ "$(awk -v l="$loi" 'BEGIN { print (l + 0 == 1) ? 1 : 0 }')" = "1" ]; then
+            other_retest=1
+        fi
+        if [ "$band" = "KILL" ] && [ "$behavioural_pass" -eq 0 ] && [ "$other_retest" -eq 0 ]; then
+            computed="KILL"
+            if [ "$survey_pass" -eq 1 ]; then
+                echo "  [INFO] intent-to-buy $intent% is in its PASS band, but the measured waitlist"
+                echo "         is KILL and no deposit or LOI backs it - behaviour outranks opinion."
+            fi
+        elif [ "$behavioural_pass" -eq 1 ] || [ "$survey_pass" -eq 1 ] \
+             || printf '%s' "$sig" | grep -q "PASS"; then
             computed="PASS"
         elif printf '%s' "$sig" | grep -q "RETEST"; then
             computed="RETEST"
-        elif [ -n "$sig" ]; then
+        elif [ "$m00_behaviour" -eq 1 ] && [ -n "$sig" ]; then
             computed="KILL"
         fi
         [ -n "$computed" ] && echo "  [INFO] Aggregated verdict from signals:${sig} -> $computed"
+
+        # E. Two kill criteria are stated in the template and were in no gate. A plan that admits
+        # "12 weeks for one developer" or "we need a lending licence" must not reach M01.
+        local m00_timeline
+        m00_timeline=$(sed 's/\*//g' "$validation_file" 2>/dev/null \
+            | grep -iE "(mvp|build|development)[^:]*timeline[^:]*:" | head -1 \
+            | grep -oE '[0-9]+([.][0-9]+)?[[:space:]]*(week|minggu)' || true)
+        if [ -n "$m00_timeline" ]; then
+            local m00_weeks
+            m00_weeks=$(printf '%s' "$m00_timeline" | grep -oE '[0-9]+([.][0-9]+)?' | head -1)
+            if [ "$(awk -v w="$m00_weeks" 'BEGIN { print (w + 0 > 6) ? 1 : 0 }')" = "1" ]; then
+                echo "  ❌ Feasibility kill: MVP timeline is ${m00_weeks} weeks for one developer (> 6)."
+                GATE_FAILED=1
+            fi
+        fi
+        if grep -qiE "(requires?|needs?|mandates?)[^.]*(lending licen[cs]e|banking licen[cs]e|OJK P2P licen[cs]e)" "$validation_file" 2>/dev/null; then
+            echo "  ❌ Regulatory kill: the business model states it needs a lending/banking licence."
+            GATE_FAILED=1
+        fi
 
         # 5. Human attribution. The agent may fill the report but cannot run the
         # interviews, so a PASS must carry a named human validator + real date.
