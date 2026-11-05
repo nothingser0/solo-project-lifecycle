@@ -112,6 +112,55 @@ echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
 
+# expect_m03_sow <name> <PASS|FAIL> <signature-block-content>
+# Builds a complete client SOW and swaps only its signature block / clause substance.
+expect_m03_sow() {
+    local name="$1" want="$2" sig="$3"
+    local dir="$WORK/m03sow"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/contracts" "$dir/docs/governance"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '# NDA\n\n%s\n' "$(printf 'Mutual confidentiality obligations apply to both parties. %.0s' $(seq 1 20))" > "$dir/contracts/NDA.md"
+    local i=1; while [ $i -le 40 ]; do echo "risk item $i with owner and mitigation described in enough words" >> "$dir/docs/governance/RISK_ASSESSMENT_MATRIX.md"; i=$((i+1)); done
+    i=1; while [ $i -le 40 ]; do echo "raci row $i with responsible accountable consulted informed named" >> "$dir/docs/governance/RACI_MATRIX.md"; i=$((i+1)); done
+    {
+      echo '# SOW'
+      echo '## Project Overview'; echo 'Build a POS for Acme with 7 features over 12 weeks.'
+      echo '## Scope of Work'; echo 'Seven features per SCOPE_STATEMENT, nothing more.'
+      echo '## Deliverables & Milestones'; echo 'M-01 to M-06 with dated sign-off per milestone.'
+      echo '## Change Request'; echo 'Any change beyond scope needs a written CR with fee and timeline.'
+      echo '## Compensation & Payment Terms'
+      echo 'Total Rp 60.000.000. DP 30% Rp 18.000.000 within 7 days of signing. Balance per milestone.'
+      echo '- [x] DP 2026-11-01 Rp 18.000.000 Cleared'
+      echo '## Single PIC'; echo 'Ibu Sri is the sole approval authority for this engagement.'
+      echo '## Deemed Acceptance'
+      printf 'If the Client does not provide written feedback within seven calendar days of a deliverable submission, that deliverable is deemed accepted. Deemed acceptance triggers the corresponding invoice and starts the applicable warranty period, and later objections are handled as a new Change Request rather than as a defect.\n'
+      echo '## Limitation of Liability'
+      printf 'The Developer aggregate liability under this agreement is limited to the total fees actually paid by the Client at the time the claim arises. Neither party is liable for indirect, incidental or consequential loss, including lost profits or lost data, except where the law does not permit such exclusion.\n'
+      echo '## Revision Limits'
+      printf 'The fee includes two rounds of design revision and two rounds of user acceptance testing. Further rounds are treated as a Change Request priced separately. Feedback must be supplied in writing within seven calendar days of each submission and silence is treated as acceptance rather than approval of later changes.\n'
+      echo '## Third-Party Accounts'
+      printf 'All third-party accounts required to operate the system, including hosting, domain registration, email delivery and payment gateway accounts, are registered in the Client name and billed directly to the Client. The Developer receives delegated access only for the duration of the engagement and never becomes the owner of those accounts.\n'
+      echo '## Intellectual Property'
+      printf 'All intellectual property in the delivered work remains the property of the Developer until the full contract value has been received and cleared. On final payment ownership transfers to the Client. Pre-existing tools, libraries and internal frameworks used by the Developer remain the Developer property and are licensed, not assigned, to the Client.\n'
+      echo '## Signatures'
+      printf '%b\n' "$sig"
+    } > "$dir/contracts/SOW_CONTRACT.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M03 2>&1 || true)"
+    echo "$out" | grep -qE "Gate validation FAILED" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M03 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M03 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+SIG_BLANK='Client\nName: _________________________________\nTitle: _________________________________\nDate: _________________________________\nSignature: _________________________________\n'
+SIG_FILLED='Client\nName: Sri Wahyuni  Signature: /s/ Sri Wahyuni\nTitle: Operations Director  Date: 2026-11-01\nSignature: /s/ Sri Wahyuni  Date: 2026-11-01\nDeveloper\nName: Zeenn  Signature: /s/ Zeenn  Date: 2026-11-02\n'
+expect_m03_sow "unsigned SOW (blank signature lines) blocked" FAIL "$SIG_BLANK"
+expect_m03_sow "signed SOW with substantive clauses passes"  PASS "$SIG_FILLED"
+
 # expect_m02_scope <name> <PASS|FAIL> <scope-content>
 expect_m02_scope() {
     local name="$1" want="$2" scope="$3"

@@ -29,6 +29,17 @@ Record the operational PIC's name, title, email, phone, approval scope and **one
 ### Step 3a — Contract Baseline and Data Handling
 Before signature, reconcile every deliverable, exclusion, milestone, acceptance test, dependency and payment trigger against the approved `SCOPE_STATEMENT.md` version, and record that version/date in the SOW — any difference is corrected or approved through a documented CR. If personal data is processed, complete the DPA fields (categories, purpose, duration, subprocessors, processing locations, cross-border access/transfers) and get professional legal review plus signatures **before** processing starts; log `DPA signed` or `DPA N/A — no personal data processed`. Legal deadlines stay subject to counsel review for the applicable jurisdiction.
 
+### Step 3a-bis — Signature block and clause substance (gate-enforced)
+
+The gate refuses two states it used to accept silently:
+
+- **An unsigned contract.** Every `Name:`, `Title:`, `Date:` and `Signature:` line must be filled in
+  for both parties. Blank underscore lines mean nobody signed, so M03 fails. The gate cannot tell
+  whether a signature is authentic — only whether one was recorded.
+- **Name-only clauses.** Each named clause (Limitation of Liability, IP, Revision Limits, Deemed
+  Acceptance, Third-Party Accounts) needs **at least 25 words**. `Capped at fees paid.` satisfied the
+  old keyword check while limiting nothing.
+
 ### Step 3b — Counterparty Paper Review (conditional)
 Only when the client or vendor supplies its own contract, NDA or terms. Otherwise record `N/A`. Use `templates/02-legal-commercial/CONTRACT_REVIEW_TEMPLATE.md`: record document version/date, parties, your represented party, governing law and the project playbook; cite clause/page for each material clause against that playbook, and state the issue in plain language with severity, likelihood, preferred position and fallback. Missing approved position → `UNKNOWN — ask owner/counsel`; never invent a legal position. Route findings `GREEN` (routine, human confirms) / `YELLOW` (owner and/or counsel) / `RED` (hold signature, escalate) — the label routes review, it does not certify the document. A qualified lawyer must review legal interpretation; the agent's review is preparation, not legal advice.
 

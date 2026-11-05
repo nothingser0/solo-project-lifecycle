@@ -163,6 +163,45 @@ gate_M03() {
                 GATE_FAILED=1
             fi
 
+            # 9b. Signature completeness (BLOCKER). The gate checked every clause but never
+            #     whether anyone signed: a SOW whose signature block was a page of blank
+            #     "Name: ____" / "Signature: ____" lines passed. It cannot verify a signature is
+            #     authentic, but it can refuse an unsigned document.
+            sig_lines=$(grep -cE "^[[:space:]]*(Signature|Signed)[[:space:]]*:" "$target_sow" 2>/dev/null || true)
+            sig_blank=$(grep -cE "^[[:space:]]*(Signature|Signed|Name|Title|Date)[[:space:]]*:[[:space:]]*(_+|-+|\.+|\[[[:space:]]*\][[:space:]]*)?$" "$target_sow" 2>/dev/null || true)
+            if [ "${sig_lines:-0}" -eq 0 ]; then
+                echo "  ❌ No signature block in the SOW — an unsigned contract is not a contract."
+                echo "     Add 'Signature: <name>' and 'Date: <YYYY-MM-DD>' for both parties."
+                GATE_FAILED=1
+            elif [ "${sig_blank:-0}" -gt 0 ]; then
+                echo "  ❌ Signature block has ${sig_blank} blank line(s) (Name/Title/Date/Signature left empty)."
+                echo "     Record who signed and when; '${sig_blank}' empty fields means nobody did."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Signature block completed (no blank Name/Title/Date/Signature fields)"
+            fi
+
+            # 9c. Clause substance floor (BLOCKER). Named clauses were matched by keyword only, so
+            #     'Limitation of Liability: Capped at fees paid.' satisfied a clause that is meant
+            #     to limit exposure. A word floor cannot judge quality, but it rejects a stub.
+            thin=""
+            for clause in "Limitation of Liability" "Intellectual Property" "Revision Limits" "Deemed Acceptance" "Third.Party Account"; do
+                cl_words=$(awk -v pat="$clause" '
+                    $0 ~ ("^[#*]*[[:space:]]*" pat) { inside = 1; next }
+                    inside && /^#/ { inside = 0 }
+                    inside { n += split($0, a, " ") }
+                    END { print n + 0 }
+                ' "$target_sow" 2>/dev/null)
+                [ "${cl_words:-0}" -lt 25 ] && thin="$thin [${clause}:${cl_words}w]"
+            done
+            if [ -n "$thin" ]; then
+                echo "  ❌ Clause(s) present by name but too thin to protect anyone (need >= 25 words):$thin"
+                echo "     A one-line 'capped at fees paid' is not a limitation-of-liability clause."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Required clauses have substance (>= 25 words each)"
+            fi
+
             # 10. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix
             if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
                 echo "  [INFO] Enterprise scale detected: Risk Assessment Matrix & RACI Matrix MANDATORY in M03."
