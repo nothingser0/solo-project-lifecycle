@@ -32,6 +32,8 @@ without anyone asking whether it should exist. Not gate-enforced; keep it honest
 - **Triage-Problem**: [who hurts + measurable loss per week]
 - **Triage-Spreadsheet-Test**: [pass | FAIL — a spreadsheet solves 80%]
 - **Triage-One-Capability**: [the single reason to switch]
+- **Triage-Domain-Baseline**: [3-5 table-stakes features seen in 3 real products in this category]
+- **Triage-Domain-Upgrade**: [optional/differentiating features — candidates for P1/P2]
 
 `FAIL` here means stop before M04, not "proceed carefully".
 

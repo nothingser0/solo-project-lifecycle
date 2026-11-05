@@ -35,14 +35,21 @@ Answer `none` / `no` explicitly when there is nothing to declare. Leaving the li
 ## Small Triage — 10 minutes, before any design work
 
 The Small path waives M00 and M01, so an MVP can otherwise begin without anyone asking whether it
-should be built. These three questions are the cheap half of M01 Step 1 (its 3-Filter Triage); they
-are **advisory, not fields** — the Intake Gate still requires exactly the 9 answers above.
+should be built. These four questions are the cheap half of M01 Step 1 (its 3-Filter Triage) plus
+the one thing M00's competitive step gives you; they are **advisory, not fields** — the Intake Gate
+still requires exactly the 9 answers above.
 
 1. **Who hurts, and how much does it cost them per week?** Name the person and the measurable loss.
 2. **Can a spreadsheet or a WhatsApp group solve 80% of it?** If yes, **do not build it** — write the
    answer here and stop. This one question saves more weeks than any architecture decision.
 3. **Name the ONE capability that makes someone switch.** Everything else is out of scope; add it to
    `Intake-Non-Features` rather than "later".
+4. **What does this category expect as standard, and what is the upgrade?** Open **three real
+   products in the same category** (install the trial, or read their feature list) and split what you
+   see into two columns: the features **every one of them has** (table stakes — a POS without a
+   receipt print is not a POS) and the features that are **optional or differentiating**. The first
+   column is a P0 candidate; the second is P1/P2. Guessing this from memory is how a product ships
+   complete-looking and unusable.
 
 Record under §0 of the brief:
 
@@ -50,6 +57,8 @@ Record under §0 of the brief:
 - Triage-Problem: [who + measurable loss per week]
 - Triage-Spreadsheet-Test: [pass | FAIL — spreadsheet solves 80%, do not build]
 - Triage-One-Capability: [the single differentiator]
+- Triage-Domain-Baseline: [3-5 table-stakes features seen in 3 real products, with their names]
+- Triage-Domain-Upgrade: [the optional/differentiating features, candidates for P1-P2]
 ```
 
 If Triage-Spreadsheet-Test is `FAIL`, do not proceed to M04. Report it and stop.

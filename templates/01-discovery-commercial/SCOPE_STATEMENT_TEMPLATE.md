@@ -93,6 +93,12 @@ Gunakan hasil M00/M01 sebagai sumber baseline bila tersedia. Tetapkan ukuran keb
 ### 4.1 MoSCoW Feature Inventory
 *Respect scale limits: Small (1–5 Must), Medium/Solo SaaS (6–15 Must), Large (16–25 Must):*
 
+**Two passes before you fill the priority column.** First list the **category baseline**: open three
+real products in this category and write down the features all three have (for a POS: record a sale,
+print a receipt, close the drawer, track basic stock). Every one of those is a P0 candidate — a
+product missing one is incomplete, not lean. Then add the **differentiator** from `Triage-One-Capability`.
+Anything optional goes to P1/P2, and `Triage-Domain-Upgrade` is your starting list.
+
 | Feature ID | Module / Domain | Functional Description | Priority | Est. Effort (Days) | Root Cause Addressed | Target Release | Confidence |
 | :--- | :--- | :--- | :---: | :---: | :--- | :---: | :---: |
 | **F-01** | [Core / Auth] | [User authentication, session handling, RBAC] | **P0 (Must)** | 3 days | Baseline access & security | Phase 1.0 (MVP) | ✅ |
