@@ -800,7 +800,57 @@ expect_m05_chain "requirement with no feature blocks" FAIL "$M05_HDR"'| REQ-01 |
 expect_m05_chain "feature outside the M02 scope blocks" FAIL "$M05_HDR"'| REQ-01 | F-99 |\n'"$M05_SCEN" '| F-01 | auth |\n'
 expect_m05_chain "prose with Given/When/Then is not a scenario" FAIL "$M05_HDR"'| REQ-01 | F-01 |\n\nGiven the pressure When the market Then whoever\n' '| F-01 | auth |\n'
 expect_m05_chain "SITEMAP screen no requirement mentions blocks" FAIL "$M05_HDR"'| REQ-01 | F-01 |\n'"$M05_SCEN" '| F-01 | auth |\n' 'SCR-001 Login\nSCR-002 Dashboard\n'
-expect_m05_chain "fully traceable spec passes" PASS "$M05_HDR"'| REQ-01 | F-01 | SCR-001 |\n'"$M05_SCEN" '| F-01 | auth |\n' 'SCR-001 Login\n'
+expect_m05_chain "fully traceable spec passes" PASS "$M05_HDR"'| REQ-01 | F-01 | SCR-001 |\n'"$M05_SCEN"
+
+# expect_m05_signoff <name> <PASS|FAIL> <sed-ish python to break the fixture>
+# The sign-off block is where a template placeholder most easily passes as a signature, so these
+# cases break one field at a time in an otherwise complete FSD.
+expect_m05_signoff() {  # <name> <PASS|FAIL> <python body> [expected-message-regex]
+    local name="$1" want="$2" body="$3" expect_msg="${4:-}"
+    local dir="$WORK/m05sig" fix="$REPO/scripts/verify/fixtures/m05-spec/repo"
+    rm -rf "$dir"; cp -r "$fix" "$dir"        # a repo the gate already accepts
+    python3 - "$dir/docs/specs/FSD.md" "$dir/docs/specs/PRD.md" <<PY
+import io, re, sys
+p, prd = sys.argv[1], sys.argv[2]
+s = io.open(p, encoding="utf-8").read()
+p = prd
+$body
+io.open(sys.argv[1], "w", encoding="utf-8").write(s)
+PY
+    local out rc
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1)"; rc=$?
+    local got="PASS"; [ "$rc" -ne 0 ] && got="FAIL"
+    local ok=0 cause=0
+    [ "$got" = "$want" ] && ok=1
+    # a FAIL only counts when it fails for the reason under test
+    if [ "$want" = "FAIL" ] && [ -n "$expect_msg" ]; then
+        echo "$out" | grep -qE "$expect_msg" && cause=1
+    else
+        cause=1
+    fi
+    if [ "$ok" = 1 ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 sign-off -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 sign-off -> $got, expected $want${expect_msg:+, message /$expect_msg/})"
+        echo "$out" | grep -E "❌" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m05_signoff "the object-storage row is a paragraph, as the template writes it" PASS 's = s'
+expect_m05_signoff "the template's own rejected-alternative instruction is not a reason" FAIL \
+    's = re.sub(r"(?m)^Rejected: .*$", "Rejected: <the runner-up> because <why it lost>", s)' \
+    "rejected alternative is the template"
+expect_m05_signoff "an agent is never the technical approver" FAIL \
+    's = re.sub(r"(?m)^\*\*Approved by\*\*:.*$", "**Approved by**: Claude Agent", s)' \
+    "approver is not a human"
+expect_m05_signoff "the reviewer placeholder is not a signature" FAIL \
+    's = re.sub(r"(?m)^\*\*Approved by\*\*:.*$", "**Approved by**: [Human reviewer name]", s)' \
+    "technical approver is still the template placeholder"
+expect_m05_signoff "a placeholder sign-off date blocks" FAIL \
+    's = re.sub(r"(?m)^\*\*Approved on\*\*:.*$", "**Approved on**: YYYY-MM-DD", s)' \
+    "sign-off date"
 
 # expect_m04_route <name> <PASS|FAIL> <sitemap-ids> <files-to-create> <stray-colour?>
 # Isolates the SCR-xx -> screen mapping and the token-colour rule.

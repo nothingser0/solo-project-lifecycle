@@ -252,7 +252,7 @@ PYEOF
         fi
 
         # 4b. Record a chosen object-storage service or an explicit N/A rationale.
-        media_decision=$(grep -iE "^[[:space:]]*[-*][[:space:]]*\*\*Object storage decision\*\*:" "$fsd" 2>/dev/null | head -1)
+        media_decision=$(grep -iE "^[[:space:]]*[-*]?[[:space:]]*\*\*Object storage decision\*\*:" "$fsd" 2>/dev/null | head -1)
         if [ -n "$media_decision" ] && ! echo "$media_decision" | grep -qiE "\[selected|\[provider|\[service"; then
             echo "  ✅ Object storage decision recorded in FSD.md"
         else
@@ -330,10 +330,22 @@ PYEOF
             echo "  ✅ Locked tech stack decision documented in $m05_lock_target"
             # 6b. A locked stack with no rejected alternative is a preference, not a decision.
             #     A single word next to the winner is not a reason - require two.
+            # The rejected option belongs to the decision, not to one line. An ADR normally
+            # writes "Rejected: X because Y" above or below "Stack Decision LOCKED:". Read a
+            # window around the decision line instead of that single line.
             stack_line=$(grep -m1 -iE "Stack Decision LOCKED:" "$m05_lock_target")
-            rejected=$(printf '%s\n' "$stack_line" | grep -oiE "(rejected|ditolak|not chosen)[[:space:]]*:[[:space:]]*[^\n]+" | head -1)
+            m05_dec_no=$(grep -n -m1 -iE "Stack Decision LOCKED:" "$m05_lock_target" | cut -d: -f1)
+            m05_lo=$(( m05_dec_no > 4 ? m05_dec_no - 4 : 1 ))
+            m05_hi=$(( m05_dec_no + 4 ))
+            rejected=$(sed -n "${m05_lo},${m05_hi}p" "$m05_lock_target" 2>/dev/null \
+                | grep -oiE "(rejected|ditolak|not chosen)[[:space:]]*:[[:space:]]*.*" | head -1 \
+                | sed 's/[[:space:]]*$//')
             if [ -z "$rejected" ]; then
                 echo "  ❌ 'Stack Decision LOCKED' names no rejected alternative - add 'Rejected: <option> because <reason>' so the choice is reviewable."
+                GATE_FAILED=1
+            elif printf '%s' "$rejected" | grep -qE '<[a-z][^>]*>|\[the |\[(option|runner|alternative)|<why|<the '; then
+                echo "  ❌ The rejected alternative is the template's own instruction ('$rejected')."
+                echo "     Name the option and the measured reason it lost."
                 GATE_FAILED=1
             elif [ "$(printf '%s' "$rejected" | tr ' ' '\n' | grep -c . )" -lt 5 ]; then
                 echo "  ❌ The rejected alternative is stated without a reason ('$rejected') - say why it lost."

@@ -683,12 +683,39 @@ check_tech_signoff() {
         echo "  ❌ $label still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Your Name]). M05 STEP 7 is a HUMAN-ONLY step."
         bad=1
     fi
-
-    # 2. The approver must be a named human, not a role placeholder.
-    local approver
-    approver=$(grep -iE "^\s*[-*|]?\s*\**\s*(Approved by|Validated by|Approver)[^*:]{0,40}\**:?[[:space:]]*[A-Za-z]" "$doc" 2>/dev/null \
-        | head -1 | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | sed 's/[[:space:]]*(.*$//' | tr -d '\r')
-    if [ -n "$approver" ] && ! is_role_placeholder "$approver"; then
+    # 2. The approver must be a named human, not a role placeholder, not the template's own
+    #    bracketed instruction, and not an agent. The template ships
+    #    "**Approved by**: <Human reviewer name - whoever reviewed ...>", which the old bare
+    #    leading-letter test accepted, so an unsigned document passed the gate.
+    local approver approver_placeholder approver_agent m05_signline
+    # Read the plain "Approved by" line, not "Validated by Solo Developer" or
+    # "Approved by Client Single PIC". The old pattern matched the whole family and took the
+    # FIRST hit in file order, so the reviewer line was never examined at all.
+    m05_signline=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**[[:space:]]*Approved by\**[[:space:]]*:([^*]|$)" "$doc" 2>/dev/null | head -1)
+    if [ -z "$m05_signline" ]; then
+        m05_signline=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**(Approved by|Approver)\**[[:space:]]*:" "$doc" 2>/dev/null | head -1)
+    fi
+    approver=$(printf '%s\n' "$m05_signline" | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r' \
+        | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+    approver_placeholder=""
+    if printf '%s' "$approver" | grep -qE '^<.*>$|^\[.*\]$|^_+$|^\.\.\.$|^[[:space:]]*$'; then
+        approver_placeholder=1
+    elif printf '%s' "$approver" | grep -qiE '<[a-z][^>]*>|\[your |\[name\]|\[answer\]|^tbd$|^tba$'; then
+        approver_placeholder=1
+    fi
+    approver_agent=""
+    if printf '%s' "$approver" | tr 'A-Z' 'a-z' \
+        | grep -qE 'claude|chatgpt|\bgpt\b|openai|anthropic|copilot|gemini|\bllm\b|\bagent\b|assistant|chatbot'; then
+        approver_agent=1
+    fi
+    if [ -n "$approver_placeholder" ]; then
+        echo "  ❌ $label technical approver is still the template placeholder ('$approver')."
+        echo "     Replace it with the name of the person who reviewed the specification."
+        bad=1
+    elif [ -n "$approver_agent" ]; then
+        echo "  ❌ $label technical approver is not a human ('$approver') - an agent may draft, never approve."
+        bad=1
+    elif [ -n "$approver" ] && ! is_role_placeholder "$approver"; then
         echo "  ✅ $label technical sign-off records a named approver"
     else
         echo "  ❌ $label missing a named technical approver (e.g. 'Approved by: <name>')."
@@ -696,7 +723,13 @@ check_tech_signoff() {
     fi
 
     # 3. A real approval date.
-    if grep -qE "(Approved on|Approval Date|Date)\**:?[[:space:]]*[0-9]{4}-[0-9]{2}-[0-9]{2}" "$doc" 2>/dev/null; then
+    local m05_on
+    m05_on=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**Approved on\**[[:space:]]*:" "$doc" 2>/dev/null | head -1)
+    if [ -z "$m05_on" ]; then
+        m05_on=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**Approval Date\**[[:space:]]*:" "$doc" 2>/dev/null | head -1)
+    fi
+    if [ -n "$m05_on" ] && printf '%s' "$m05_on" | grep -qE "[0-9]{4}-[0-9]{2}-[0-9]{2}" \
+        && ! printf '%s' "$m05_on" | grep -qE "YYYY-MM-DD"; then
         echo "  ✅ $label technical sign-off records a real date"
     else
         echo "  ❌ $label missing a real sign-off date ('Approved on: YYYY-MM-DD')."
