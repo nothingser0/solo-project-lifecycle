@@ -1,0 +1,2 @@
+:root { --color-bg: #ffffff; --color-fg: #111827; --color-brand: #1d4ed8; }
+body { background: var(--color-bg); color: var(--color-fg); font-family: system-ui; }

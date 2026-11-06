@@ -1,0 +1,326 @@
+# Sitemap & Navigation Structure
+
+> **Purpose**: Define all pages, routes, and navigation hierarchy for the application.
+
+**Project**: <Project Name>  
+**Date**: <YYYY-MM-DD>  
+**Author**: <Your Name>
+**Scope Reference**: `docs/pm/SCOPE_STATEMENT.md` (RBAC & User Stories)  
+**Tenant Architecture**: <Single-Tenant / Multi-Tenant / Hybrid>
+
+---
+
+## 1. Sitemap Overview
+
+Total pages: <X screens/routes>  
+Estimated implementation: <X days/weeks>  
+Navigation depth: <X levels>
+- **Low-Fi Wireframe Workspace**: <Excalidraw / Whimsical / Figma link>
+- **Information Architecture (IA) Hierarchy Diagram**:
+
+```mermaid
+graph TD
+    Root<Root Application Shell> --> Public<Public Routes>
+    Root --> Auth<Auth Shell>
+    Root --> App<Protected App / Dashboard>
+    
+    Public --> Home<"/ (Landing Page - SCR-01)">
+    
+    
+```
+
+## 1.1 Page Content Anatomy & Minimum Section Standards
+
+> ⚠️ **ANTI-STUB CONTENT MANDATE (Mencegah Halaman Kosong/Pendek Tanpa Bobot)**:
+> AI Agent sering menghasilkan halaman yang "hanya 1 card pendek" atau landing page tanpa isi konkret. Setiap halaman yang didefinisikan dalam sitemap WAJIB merinci komponen konten minimal di bawah ini agar spesifikasi UI tidak menjadi stub/kopong:
+>
+> 1. **Public Landing (`/`)**: Wajib minimal 6 seksi konten nyata (The 6-Section Mandate):
+>    - *Hero Section* (Heading berbobot, sub-headline nilai produk, primary CTA, badge pembuktian, dan frame mockup visual preview UI nyata).
+>    - *Product UI Mockup / Live Preview Frame* (Tangkapan layar antarmuka aplikasi atau frame interaktif asli, bukan cuma kartu teks).
+>    - *Problem & Solution Showcase* (3 kartu titik nyeri pengguna lama vs solusi otomatis software modern).
+>    - *Feature Deep-Dives* (Minimal 3 blok demonstrasi fitur unggulan dengan ilustrasi alur kerja konkret).
+>    - *Interactive Value / Calculator / Comparison* (Kalkulator estimasi penghematan waktu/biaya atau matriks komparasi fitur).
+>    - *FAQ & Closing CTA* (Akordeon 4–6 tanya jawab umum seputar privasi & cara kerja + tombol aksi penutup).
+> 2. **Authentication Screens (`/login`, `/register`)**:
+>    - *Form Autentikasi Nyata* (Wajib memanggil API/action login asli; dilarang membungkus tombol submit dalam tag `<Link href="/dashboard">` tanpa verifikasi kredensial).
+>    - *Remember Me* (Checkbox "Ingat Saya" untuk persistensi sesi).
+>    - *Forgot Password* (Link alur pemulihan kata sandi).
+>    - *Validation Alert* (Kotak peringatan pesan error jika email/password salah atau kosong).
+> 3. **Dashboard Utuh (`/dashboard`)**: Dilarang hanya menampilkan salam *"Selamat Datang"*. Wajib memuat:
+>    - *Stat KPI Cards* (Minimal 3–4 metrik utama dengan perbandingan tren +/-%).
+>    - *Gantt / Timeline Calendar / Schedule Matrix* (Jadwal horizontal tanggal/reservasi jika domain memiliki jadwal/kalender per referensi visual).
+>    - *Primary Action Bar* (Tombol jalan pintas transaksi/pembuatan data baru).
+>    - *Recent Activity / Transaction Feed* (Tabel/daftar 5–10 transaksi mutasi terakhir dengan status badge).
+>    - *Action Drawer / Alert Feed* (Panel aksi cepat yang dapat dibuka-tutup / collapsible).
+> 4. **Halaman Daftar Entitas (`/<resource>`)**: Wajib memuat:
+>    - *Toolbar*: Input pencarian live (debounce 300ms) + filter status kustom popover + tombol tambah data.
+>    - *Data Grid / Table*: Kolom data terstruktur + status badge + menu aksi baris (Lihat, Edit, Arsipkan).
+>    - *Pagination & Summary*: Info *"Menampilkan X dari Y data"* + kontrol paginasi.
+> 5. **Halaman Detail Entitas (`/<resource>/:id`)**: Wajib memuat:
+>    - *Header Summary*: ID entitas, tanggal dibuat, status badge, action bar (Ubah, Cetak, Hapus).
+>    - *Field Grouping*: Informasi data dibagi ke 2–3 kartu bertema (Informasi Utama, Detail Finansial/Operasional).
+>    - *Audit History Timeline*: Riwayat perubahan data (siapa yang mengubah, kapan, dan status perubahan).
+>
+> ⛔ **ZERO STUB PAGES TOLERANCE**: Membuat halaman dengan hanya tag `<h1>` dan deskripsi singkat 1 paragraf (`< 15` baris / `< 400` bytes) tanpa tabel atau form adalah pelanggaran kualitas fatal yang langsung menggagalkan Gate M06!
+
+---
+
+## 2. Public Marketing Routes (Header & Footer Shell)
+
+| Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
+|:------|:----------|:----------|:--------|:---------------|:--------:|
+| `/` | Landing Page | SCR-01 | Homepage, value prop, CTA | Marketing Full OR Minimalist One-Page | P0 |
+| `/about` | About | SCR-02 | Company info | Marketing (Header + Footer) | P2 |
+
+---
+
+## 2.1 Auth Routes (Standalone Minimalist — ZERO Marketing Navbar & Footer)
+
+> 🛡️ **Distraction-Free Auth Rule**: Auth pages MUST NOT render the public marketing header, navigation links, or standard site footer. Render only a centered card with a minimal back-link and logo to maximize conversion and prevent auth drop-off.
+
+| Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
+|:------|:----------|:----------|:--------|:---------------|:--------:|
+
+---
+
+## 3. Authenticated Routes - Member / Customer / Client Role
+
+| Route | Page Name | Screen ID | Purpose | Priority |
+|:------|:----------|:----------|:--------|:--------:|
+
+---
+
+## 4. Authenticated Routes - Staff / Operator / Cashier Role
+
+| Route | Page Name | Screen ID | Purpose | Priority |
+|:------|:----------|:----------|:--------|:--------:|
+
+---
+
+## 5. Authenticated Routes - Manager / Supervisor Role
+
+| Route | Page Name | Screen ID | Purpose | Priority |
+|:------|:----------|:----------|:--------|:--------:|
+
+---
+
+## 6. Authenticated Routes - Admin / Owner / Superadmin Role
+
+| Route | Page Name | Screen ID | Purpose | Priority |
+|:------|:----------|:----------|:--------|:--------:|
+
+---
+
+## 7. Role-Based Route Access Matrix (RBAC Alignment)
+
+*Cross-checked with `SCOPE_STATEMENT.md` Section 3 (RBAC Matrix). Every route must define access level per role.*
+
+| Route Path | Screen ID | Public / Guest | Member / Customer | Staff / Operator | Manager | Admin / Owner | Denial Redirect |
+|:-----------|:---------:|:--------------:|:-----------------:|:----------------:|:-------:|:-------------:|:----------------|
+| `/` | SCR-01 | Full | Full | Full | Full | Full | - |
+
+### 7.1 Granular Role Capability & Boundary Rules (Boleh Apa vs DILARANG Apa)
+
+> ⚠️ **MANDATORY RBAC BOUNDARY SPECIFICATION**:
+> Setiap role pengguna yang didefinisikan dalam SITEMAP wajib memiliki rincian aksi yang diizinkan dan aksi yang DILARANG keras. Dilarang keras membiarkan role bawahan (seperti Staff/Operator) melihat data finansial rahasia (omzet, laba bersih, rekening bank) atau membiarkan role staff diabaikan tanpa layar view khusus.
+
+1. **Admin / Owner (ROL-01)**:
+   - **Boleh**: Akses semua modul; mutasi tarif sewa & listrik; ubah rekening bank; verifikasi transaksi; kelola akun staff & hak akses.
+   - **Dilarang**: *Tidak ada pembatasan*.
+2. **Manager / Supervisor (ROL-02)**:
+   - **Boleh**: Monitoring shift; review tiket komplain; approval override diskon; manajemen inventaris stok/kamar.
+   - **Dilarang**: Mengubah nomor rekening penampung dana, menghapus entitas inti bisnis, mengakses log audit master.
+3. **Staff / Operator / Penjaga (ROL-03)**:
+   - **Boleh**: Input harian (meteran kWh, stok fisik opname, pelaporan tiket rusak); update status kamar (misal: Selesai Bersih); lihat kontak penyewa/klien.
+   - **DILARANG & DISEMBUNYIKAN (UI MASKED)**:
+     - ❌ **Dilarang melihat kartu omzet finansial, total uang masuk, atau laba bersih kos**.
+     - ❌ **Dilarang mengakses halaman pembukuan kas & pengeluaran (`/finances`)**.
+     - ❌ **Dilarang mengubah tarif pokok sewa atau konfigurasi rekening bank**.
+4. **Member / Customer / Tenant (ROL-04)**:
+   - **Boleh**: Melihat profil sendiri, riwayat transaksi/invoice pribadi via tautan token, mengajukan komplain kamar.
+   - **Dilarang**: Mengakses data kamar/penyewa lain atau melihat dashboard internal pengelola.
+
+---
+
+## 8. Navigation Structure (Sitemap Tree)
+
+```
+├── Public
+│   ├── Landing (/)
+│   ├── About (/about)
+│   ├── Pricing (/pricing)
+│   ├── Features (/features)
+│   ├── Contact (/contact)
+│   ├── Login (/login)
+│   └── Sign Up (/register)
+│
+├── Authenticated
+│   ├── Member / Customer
+│   │   ├── Dashboard (/dashboard)
+│   │   ├── Resources (/<resource>)
+│   │   └── Billing (/billing)
+│   │
+│   ├── Staff / Operator
+│   │   ├── Workspace / POS (/ops/workspace)
+│   │   ├── Queue (/ops/queue)
+│   │   └── Stock Opname (/ops/stock-opname)
+│   │
+│   ├── Manager / Supervisor
+│   │   ├── Manager Dashboard (/manager/dashboard)
+│   │   ├── Approvals (/manager/approvals)
+│   │   └── Reports (/manager/reports)
+│   │
+│   └── Admin / Owner
+│       ├── Overview (/admin/overview)
+│       ├── Users & RBAC (/admin/users)
+│       ├── Branches & Settings (/admin/branches)
+│       └── Audit Trail (/admin/audit-logs)
+```
+
+---
+
+## 9. Navigation Components & Layout Shell Matrix
+
+### Layout Shell Taxonomy
+
+| Shell ID | Shell Name | Visible Components | Target Routes |
+| :--- | :--- | :--- | :--- |
+| **SHELL-MIN-LAND** | Minimalist One-Page | Hero Section + Floating/Compact CTA + Micro Footer (No multi-page links, single scroll) | Single-purpose utility `/`, tool waitlist, early micro-SaaS |
+| **SHELL-MKT** | Marketing Shell | Full Header + Full Footer | `/`, `/about`, `/pricing`, `/features`, `/contact` |
+| **SHELL-AUTH** | Standalone Auth | Centered Card + Minimal Logo (Zero Navbar, Zero Links, Zero Footer) | `/login`, `/register`, `/forgot-password`, `/reset-password` |
+| **SHELL-APP** | Application Dashboard | App Topbar + Collapsible Sidebar + Help Badge (Zero Public Marketing Navbar/Footer) | `/dashboard`, `/<resource>`, `/billing`, `/admin/*` |
+| **SHELL-OPS** | Fullscreen Terminal | High-density Header only (Zero Sidebar, Zero Marketing Navbar/Footer) | `/ops/workspace` (POS/Terminal) |
+| **SHELL-PRINT** | Clean Print Document | Raw Printable Canvas (Zero Header, Zero Footer, Zero Navigation, White BG) | `/invoices/:id/print`, `/receipts/:id/print` |
+| **SHELL-ERR** | Minimal Error | Centered Illustration + Primary Return Button | `/404`, `/403`, `/500`, `/maintenance` |
+
+### Header (Marketing Shell — `/`, `/pricing`, dll.)
+- Logo (links to `/`)
+- Features
+- Pricing
+- About
+- Login button
+- Sign Up button (CTA)
+
+### Header (Authenticated)
+- Logo (links to `/dashboard`)
+- Dashboard
+- <Resource> dropdown
+- Profile dropdown
+  - Profile
+  - Settings
+  - Billing
+  - Logout
+
+### Sidebar (Dashboard)
+- Dashboard
+- <Resource> (with count badge)
+- Settings
+- Help & Support
+
+### Footer (All pages)
+- Company
+  - About
+  - Contact
+  - Careers
+- Product
+  - Features
+  - Pricing
+  - Changelog
+- Legal
+  - Privacy Policy
+  - Terms of Service
+  - Cookie Policy
+- Social
+  - Twitter
+  - LinkedIn
+  - GitHub
+
+---
+
+## 10. Redirects & Access Control
+
+| Condition | From | To | Status Code |
+|:----------|:-----|:---|:-----------:|
+| Unauthenticated user visits protected route | `/dashboard` | `/login?redirect=/dashboard` | 302 |
+| Authenticated user visits login | `/login` | `/dashboard` | 302 |
+| Non-admin visits admin route | `/admin` | `/dashboard` | 403 |
+| Invalid route | `/invalid-path` | `/404` | 404 |
+
+---
+
+## 11. Dynamic Routes
+
+### Route Parameters
+
+| Pattern | Example | Description |
+|:--------|:--------|:------------|
+| `/<resource>/:id` | `/documents/123` | Single resource by ID |
+| `/<resource>/:id/edit` | `/documents/123/edit` | Edit resource form |
+| `/users/:username` | `/users/john` | User profile by username |
+| `/blog/:slug` | `/blog/getting-started` | Blog post by slug |
+
+### Query Parameters
+
+| Route | Query Params | Example |
+|:------|:-------------|:--------|
+| `/<resource>` | `?page=1&limit=20&sort=created_at&order=desc` | `/documents?page=2&limit=50` |
+| `/search` | `?q=keyword&category=docs` | `/search?q=invoice&category=legal` |
+
+---
+
+## 12. Error Pages
+
+| Route | Screen ID | Purpose |
+|:------|:----------|:--------|
+| `/404` | ERR-01 | Page not found |
+| `/403` | ERR-02 | Access forbidden |
+| `/500` | ERR-03 | Server error |
+| `/maintenance` | ERR-04 | Maintenance mode |
+
+---
+
+## 13. SEO & Meta Pages
+
+| Route | Purpose | Index |
+|:------|:--------|:-----:|
+| `/sitemap.xml` | XML sitemap for search engines | ✅ |
+| `/robots.txt` | Crawler directives | ✅ |
+| `/rss.xml` | RSS feed (blog) | ✅ |
+| `/.well-known/security.txt` | Security disclosure | ✅ |
+
+---
+
+## 14. Implementation Checklist
+
+- < > All routes defined in routing config (Next.js app/, Laravel routes/, Django urls.py)
+- < > Navigation components built (Header, Sidebar, Footer)
+- < > Route guards/middleware implemented (auth, role-based)
+- < > Redirects configured
+- < > Error pages created (404, 403, 500)
+- < > Breadcrumbs implemented for deep routes
+- < > Active link highlighting in navigation
+- < > Mobile responsive navigation (hamburger menu)
+- < > SEO meta tags per page
+- < > sitemap.xml auto-generated
+
+---
+
+## 15. Priority Legend
+
+- **P0**: Must-have for MVP (launch blocker)
+- **P1**: Important but not launch blocker
+- **P2**: Nice-to-have, can defer post-launch
+
+---
+
+## Notes
+
+- Replace `<resource>` with actual entity name (e.g., `documents`, `orders`, `projects`)
+- Adjust routes based on framework conventions (Next.js: file-based, Laravel: route files, Django: URLconf)
+- Add dynamic routes as needed for your domain
+- Keep navigation shallow (<3 levels deep) for usability
+
+---
+
+**Last Updated**: <YYYY-MM-DD>  
+**Status**: <Draft / In Review / Approved>

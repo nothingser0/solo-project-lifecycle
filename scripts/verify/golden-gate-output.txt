@@ -122,7 +122,7 @@
   ✅ DESIGN.md (1266B)
   ✅ docs/specs/DESIGN_SPEC.md (1425B)
   ✅ docs/specs/DESIGN_SPEC.md core section headings verified (1 headings present)
-  ✅ DESIGN.md accessibility & contrast ratios verified
+  ❌ DESIGN.md missing mathematically computed contrast ratios (e.g. >= 4.5:1, >= 7.0:1)!
   ✅ DESIGN.md z-index layering scale verified
   ❌ DESIGN.md has no real 'sources:' entry — record the pages/files the tokens were derived from (M04 §0).
      A palette with no provenance is a guess with hex codes, not a design system.

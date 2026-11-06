@@ -142,10 +142,63 @@ gate_M04() {
     design_file="DESIGN.md"
     [ -f "$design_file" ] || design_file="docs/harness-root/DESIGN.md"
     if [ -f "$design_file" ]; then
-        if grep -qiE "[0-9]+(\.[0-9]+)?\s*:\s*1|WCAG|Contrast Ratio" "$design_file"; then
-            echo "  ✅ DESIGN.md accessibility & contrast ratios verified"
+        # Any "N.N:1" claim must itself clear WCAG AA. The old test only required the shape of a
+        # ratio, so "2.1:1" - unreadable text - counted as verified accessibility.
+        # WCAG sets the threshold by role, so read the table row: a container may sit at 1.05:1,
+        # body text may not go under 4.5:1, and a border that must be seen needs 3:1.
+        m04_contrast_py='
+import io, re, sys
+text_bad, border_bad, seen = [], [], 0
+for path in sys.argv[1:]:
+    try:
+        body = io.open(path, encoding="utf-8", errors="ignore").read()
+    except OSError:
+        continue
+    for ln in body.split("\n"):
+        if not ln.lstrip().startswith("|"):
+            # prose claim: "Body text contrast: 2.1:1" - judge it as text unless it says otherwise
+            m = re.search(r"([0-9]+(?:\.[0-9]+)?)\s*:\s*1", ln)
+            if m and re.search(r"(?i)text|body|copy|caption|label|link|foreground", ln):
+                seen += 1
+                if float(m.group(1)) < 4.5:
+                    text_bad.append(f"prose {m.group(1)}:1 (text needs 4.5:1) - {ln.strip()[:60]}")
+            continue
+        cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+        if len(cells) < 5:
+            continue
+        m = re.search(r"([0-9]+(?:\.[0-9]+)?)\s*:\s*1", ln)
+        if not m:
+            continue
+        ratio = float(m.group(1))
+        role = " ".join(cells).lower()
+        if re.search(r"text|foreground|body|copy|caption|hint|placeholder|label|link|heading", role):
+            seen += 1
+            if ratio < 4.5 and not re.search(r"large|display|heading", role):
+                text_bad.append(f"{cells[0]} {ratio}:1 (text needs 4.5:1)")
+        elif re.search(r"border|divider|outline|ring|focus|icon|control", role):
+            seen += 1
+            if ratio < 3.0:
+                border_bad.append(f"{cells[0]} {ratio}:1 (border needs 3:1)")
+if text_bad or border_bad:
+    for bad in text_bad + border_bad:
+        print("  " + bad)
+    sys.exit(1)
+print(seen)
+'
+        m04_checked=$(python3 -c "$m04_contrast_py" "$design_file" 2>/dev/null || true)
+        if python3 -c "$m04_contrast_py" "$design_file" >/dev/null 2>&1; then
+            if [ "${m04_checked:-0}" -gt 0 ] 2>/dev/null; then
+                echo "  ✅ DESIGN.md contrast verified by role: ${m04_checked} row(s) at their WCAG threshold"
+            elif grep -qiE "WCAG|Contrast Ratio" "$design_file"; then
+                echo "  ❌ DESIGN.md talks about WCAG but states no computed ratio (e.g. 4.5:1)."
+                GATE_FAILED=1
+            else
+                echo "  ❌ DESIGN.md missing mathematically computed contrast ratios (e.g. >= 4.5:1, >= 7.0:1)!"
+                GATE_FAILED=1
+            fi
         else
-            echo "  ❌ DESIGN.md missing mathematically computed contrast ratios (e.g. >= 4.5:1, >= 7.0:1)!"
+            echo "  ❌ DESIGN.md contrast claim(s) below the WCAG threshold for their role:"
+            python3 -c "$m04_contrast_py" "$design_file" 2>/dev/null | head -5 | sed 's/^/     /'
             GATE_FAILED=1
         fi
         if grep -qiE "z-index|Z-Index Layering|--z-" "$design_file"; then
@@ -412,7 +465,69 @@ PYEOF
                     fi
                     dup=$(grep -oE 'id="[^"]+"' "$hf" 2>/dev/null | sort | uniq -d | head -1 || true)
                     [ -n "$dup" ] && a11y_problems="$a11y_problems $(basename "$hf"):dup-$dup"
+                    # A placeholder is not a label: it disappears on first keystroke and screen
+                    # readers may ignore it. Every control needs <label for>, aria-label or
+                    # aria-labelledby.
+                    bare=$(python3 - "$hf" <<'PYA11Y'
+import io, re, sys
+body = io.open(sys.argv[1], encoding="utf-8", errors="ignore").read()
+labels = set(re.findall(r'<label[^>]*for="([^"]+)"', body))
+ids = set(re.findall(r'<[^>]*\bid="([^"]+)"', body))
+labelled = set(re.findall(r'aria-labelledby="([^"]+)"', body))
+out = []
+for m in re.finditer(r"<(input|select|textarea)\b([^>]*)>", body):
+    tag, attrs = m.group(1), m.group(2)
+    if 'type="hidden"' in attrs or "type='hidden'" in attrs:
+        continue
+    if re.search(r"aria-label=|aria-labelledby=", attrs):
+        continue
+    tid = re.search(r'id="([^"]+)"', attrs)
+    if tid and (tid.group(1) in labels or tid.group(1) in labelled):
+        continue
+    out.append(tag)
+print(",".join(sorted(set(out))))
+PYA11Y
+)
+                    [ -n "$bare" ] && a11y_problems="$a11y_problems $(basename "$hf"):unlabelled-control($bare)"
                 done
+                # 6f-ter-bis. min-width: 0 with nothing to hold the box open is the classic
+                #     "column collapses to zero width" defect. It is statically visible as long as
+                #     the rule does not also set width, flex-basis or flex.
+                m04_collapse_py=$(mktemp)
+                cat > "$m04_collapse_py" <<'PYCOLLAPSE'
+import io, os, re, sys
+root = sys.argv[1]
+bad = []
+for dirpath, _, names in os.walk(root):
+    for name in names:
+        if not name.endswith((".css", ".html")):
+            continue
+        p = os.path.join(dirpath, name)
+        body = io.open(p, encoding="utf-8", errors="ignore").read()
+        for rule in re.finditer(r"([^{}]+)\{([^{}]*)\}", body):
+            sel, decl = rule.group(1).strip(), rule.group(2)
+            if not re.search(r"min-(width|height)\s*:\s*0", decl):
+                continue
+            if re.search(r"(?:^|;)\s*(width|flex-basis|flex)\s*:", decl):
+                continue
+            # overflow: auto/scroll makes the box scrollable, which is a real mitigation.
+            # overflow: hidden merely HIDES the collapsed content - still the bug.
+            if re.search(r"overflow(-x|-y)?\s*:\s*(auto|scroll)", decl):
+                continue
+            if re.search(r"@media", sel):
+                continue
+            bad.append(f"{name}: {sel.splitlines()[-1].strip()[:48]}")
+print("\n".join(sorted(set(bad))[:3]))
+PYCOLLAPSE
+                collapse=$(python3 "$m04_collapse_py" docs/design/screens 2>/dev/null || true)
+                rm -f "$m04_collapse_py"
+                if [ -n "$collapse" ]; then
+                    echo "  ❌ min-width/min-height: 0 with no width or flex-basis collapses the box:"
+                    printf '%s\n' "$collapse" | sed 's/^/     /'
+                    echo "     Give it width, flex-basis or flex, or drop the rule."
+                    GATE_FAILED=1
+                fi
+
                 # 6f-quater. <head> completeness: the prototype is ported as-is in M06, so an
                 #     empty <head> becomes an empty production <head>. Titles must also differ
                 #     per screen, otherwise every tab reads the same.

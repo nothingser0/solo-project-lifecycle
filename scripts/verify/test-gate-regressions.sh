@@ -1099,6 +1099,38 @@ else
     echo -e "  ${YELLOW}-${NC} M03 fixture regressions skipped: m03-sow missing"
 fi
 
+# M04: contrast was a shape test ("anything:1"), a bare input had no label, and min-width: 0
+# with overflow hidden collapsed a badge. All three passed a design handover.
+expect_m04_defect() {
+    local name="$1" want="$2" kind="$3"
+    local dir="$WORK/m04def"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m04-design" "$dir"
+    case "$kind" in
+        contrast)  printf '\n- Body text contrast: 2.1:1\n' >> "$dir/DESIGN.md" ;;
+        label)     python3 "$REPO/scripts/verify/fixtures/m04-design/add-input.py" "$dir/docs/design/screens/scr-01.html" ;;
+        collapse)  printf '\n.badge { min-width: 0; overflow: hidden; }\n' >> "$dir/docs/design/screens/style.css" ;;
+    esac
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M04 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M04 -> $got, expected $want)"
+        echo "$out" | grep -E "contrast|unlabelled|collapses" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m04-design" ]; then
+    expect_m04_defect "a clean design handover passes" PASS clean
+    expect_m04_defect "a 2.1:1 text contrast claim blocks" FAIL contrast
+    expect_m04_defect "an input with only a placeholder blocks" FAIL label
+    expect_m04_defect "min-width: 0 with overflow hidden blocks" FAIL collapse
+else
+    echo -e "  ${YELLOW}-${NC} M04 defect regressions skipped: fixture missing"
+fi
+
 # expect_m02_scope <name> <PASS|FAIL> <scope-content>
 expect_m02_scope() {
     local name="$1" want="$2" scope="$3"

@@ -62,7 +62,7 @@ notes:
 | `--foreground` | `#18181B` | Headings & primary body copy | `#FFFFFF` | **17.72 : 1** | PASS (WCAG AAA) |
 | `--muted-foreground` | `#71717A` | Secondary text, captions, hints | `#FFFFFF` | **4.83 : 1** | PASS (WCAG AA) |
 | `--text-placeholder`| `#71717A` | Input field placeholder text | `#FFFFFF` | **4.83 : 1** | PASS (WCAG AA) |
-| `--border` (Subtle)| `#E4E4E7` | 1px passive container divider | `#FFFFFF` | 1.30 : 1 | Passive Boundary |
+| `--border` (Subtle)| `#8A8A93` | 1px passive container divider | `#FFFFFF` | **3.42 : 1** | PASS (WCAG 1.4.11 >= 3:1) |
 | `--input` (Border) | `#71717A` | Interactive form & button border| `#FFFFFF` | **4.83 : 1** | PASS (WCAG 1.4.11 ≥ 3:1) |
 | `--primary` | `#[BRAND_HEX]`| Primary brand accent / CTA | `#FFFFFF` | ≥ 4.5 : 1 | PASS (WCAG AA) |
 
@@ -75,7 +75,7 @@ notes:
 | `--foreground` | `#F4F4F5` | Dark mode primary headings & body | `#09090B` | **18.10 : 1** | PASS (WCAG AAA) |
 | `--muted-foreground` | `#A1A1AA` | Dark mode secondary text | `#09090B` | **7.76 : 1** | PASS (WCAG AAA) |
 | `--text-placeholder`| `#A1A1AA` | Dark mode input placeholder | `#18181B` | **6.91 : 1** | PASS (WCAG AA) |
-| `--border` (Subtle)| `#27272A` | Passive container divider | `#09090B` | 1.25 : 1 | Passive Boundary |
+| `--border` (Subtle)| `#6E6E78` | Passive container divider | `#09090B` | **3.95 : 1** | PASS (WCAG 1.4.11 >= 3:1) |
 | `--input` (Border) | `#71717A` | Interactive form border | `#18181B` | **3.67 : 1** | PASS (WCAG 1.4.11 ≥ 3:1) |
 | `--primary` | `#[BRAND_DARK]`| Primary brand accent / CTA | `#09090B` | ≥ 4.5 : 1 | PASS (WCAG AA) |
 
