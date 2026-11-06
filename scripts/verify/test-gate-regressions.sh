@@ -1131,6 +1131,49 @@ else
     echo -e "  ${YELLOW}-${NC} M04 defect regressions skipped: fixture missing"
 fi
 
+# Nine defects M04 already detects, each one a browser-visible fault. They are regressions so a
+# later edit to the gate cannot lose a check without failing the suite.
+expect_m04_visual() {
+    local name="$1" want="$2" kind="$3"
+    local dir="$WORK/m04vis"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m04-design" "$dir"
+    case "$kind" in
+        svg-text)     python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" svg-text ;;
+        svg-tiny)     python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" svg-tiny ;;
+        spec-leak)    python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" spec-leak ;;
+        sitemap)      python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" sitemap ;;
+        stray-color)  python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" stray-color ;;
+        no-charset)   python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" no-charset ;;
+        no-alt)       python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" no-alt ;;
+        hollow)       python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" hollow ;;
+        page-style)   python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" page-style ;;
+    esac
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M04 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M04 -> $got, expected $want)"
+        echo "$out" | grep -E "❌" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m04-design" ]; then
+    expect_m04_visual "a logo drawn with <text> blocks (fonts differ per machine)" FAIL svg-text
+    expect_m04_visual "a 169-byte logo placeholder blocks" FAIL svg-tiny
+    expect_m04_visual "a SCR-xx code leaking into the UI blocks" FAIL spec-leak
+    expect_m04_visual "a SITEMAP promising screens with no file blocks" FAIL sitemap
+    expect_m04_visual "a colour outside the design tokens blocks" FAIL stray-color
+    expect_m04_visual "a screen with no charset blocks" FAIL no-charset
+    expect_m04_visual "an image with no alt blocks" FAIL no-alt
+    expect_m04_visual "a hollow screen blocks" FAIL hollow
+    expect_m04_visual "a per-page <style> block blocks" FAIL page-style
+else
+    echo -e "  ${YELLOW}-${NC} M04 visual regressions skipped: fixture missing"
+fi
+
 # expect_m02_scope <name> <PASS|FAIL> <scope-content>
 expect_m02_scope() {
     local name="$1" want="$2" scope="$3"
