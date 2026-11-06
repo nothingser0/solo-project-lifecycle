@@ -149,7 +149,12 @@ gate_M02() {
         # number. A measurable Then is: a quantity, a status/error token, or an explicit state
         # change (rejects / redirects / blocks / emits).
         ac_rows=$(grep -icE "^[[:space:]]*(-([[:space:]]*\[[ xX]?\])?[[:space:]]*([A-Za-z]{0,3}[[:space:]]+)?)?(AC-F-[0-9]+|Given\b)" "$scope" 2>/dev/null | tr -d ' ' || true)
-        ac_testable=$(grep -icE "^[[:space:]]*(-([[:space:]]*\[[ xX]?\])?[[:space:]]*([A-Za-z]{0,3}[[:space:]]+)?)?(AC-F-[0-9]+|Given\b).*\bthen\b.*([0-9]|zero|none|no |all |set|is |are |reject|redirect|block|emit|render|deny|fail|create|update|delete)" "$scope" 2>/dev/null | tr -d ' ' || true)
+        # A measurable Then names an observable outcome: a number, a status/HTTP code, a count,
+        # or a verb that changes state. The previous list carried grammar words ("is ", "are ",
+        # "no ", "all "), which let "then it is good" and "then no errors occur anywhere" pass as
+        # measurements while rejecting "then the order status becomes paid".
+        m02_measurable='([0-9]|zero|none|http[[:space:]]*[0-9]|[2-5][0-9][0-9]|count|exactly|becomes?|became|changes?[[:space:]]+to|transitions?|persists?|stored?|remains?|equals?|is[[:space:]]+(shown|displayed|visible|hidden|disallowed|prevented|unchanged)|are[[:space:]]+(shown|displayed|visible|hidden|disallowed|prevented)|increments?|decrements?|rejects?|denies|denied|blocks?|blocked|fails?|failed|redirects?|emits?|renders?|creates?|created|deletes?|deleted|updates?|updated|returns?|downloads?|uploads?|sends?|logs?[[:space:]]+in|redirected)'
+        ac_testable=$(grep -icE "^[[:space:]]*(-([[:space:]]*\[[ xX]?\]?)?[[:space:]]*([A-Za-z]{0,3}[[:space:]]+)?)?(AC-F-[0-9]+|Given\b).*\bthen\b.*${m02_measurable}" "$scope" 2>/dev/null | tr -d ' ' || true)
         if [ "${f_rows:-0}" -gt 0 ]; then
             if [ "${ac_rows:-0}" -lt "${f_rows:-0}" ]; then
                 echo "  ❌ Acceptance criteria: ${ac_rows:-0} AC-F-xx line(s) for ${f_rows} Must-Have F-xx row(s)"

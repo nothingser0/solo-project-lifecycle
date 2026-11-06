@@ -2462,6 +2462,65 @@ if [ -d "$REPO/scripts/verify/fixtures/m01-go" ]; then
     expect_m01_mitigation "a four-word mitigation blocks" FAIL 'Mitigation: ship it fast'
     expect_m01_mitigation "a real mitigation plan passes" PASS \
         'Mitigation: two weeks of discovery with five shop owners before build.'
+
+# M02: the "measurable Then" test was a 14-word list containing grammar words. "then it is good"
+# and "then no errors occur anywhere" passed; "then the order status becomes paid" was rejected.
+expect_m02_ac() {
+    local name="$1" want="$2" acs="$3"
+    local dir="$WORK/m02ac"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m02-scope" "$dir" 2>/dev/null || mkdir -p "$dir/docs/pm"
+    [ -f "$dir/docs/pm/SCOPE_STATEMENT.md" ] || { echo -e "  ${YELLOW}-${NC} sorry: fixture m02-scope missing"; return; }
+    python3 - "$dir/docs/pm/SCOPE_STATEMENT.md" "$acs" <<'PYAC'
+import io, re, sys
+p, acs = sys.argv[1], sys.argv[2]
+s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"(?im)^\s*-?\s*(?:\[[ xX]\]\s*)?(?:AC-F-\d+|Given\b).*$", "", s)
+s += "\n## Acceptance Criteria\n\n" + acs.replace("\\n", "\n") + "\n"
+io.open(p, "w", encoding="utf-8").write(s)
+PYAC
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M02 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (AC -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (AC -> $got, expected $want)"
+        echo "$out" | grep -E "Acceptance criteria" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m02-scope" ]; then
+    expect_m02_ac "'then it is good' is not a measurement" FAIL \
+'- AC-F-01: Given a user, when they click, then it is good
+- AC-F-02: Given a user, when they click, then it is good
+- AC-F-03: Given a user, when they click, then it is good
+- AC-F-04: Given a user, when they click, then it is good
+- AC-F-05: Given a user, when they click, then it is good
+- AC-F-06: Given a user, when they click, then it is good
+- AC-F-07: Given a user, when they click, then it is good
+- AC-F-08: Given a user, when they click, then it is good'
+    expect_m02_ac "'then no errors occur anywhere' is not a measurement" FAIL \
+'- AC-F-01: Given a user, when they click, then no errors occur anywhere
+- AC-F-02: Given a user, when they click, then no errors occur anywhere
+- AC-F-03: Given a user, when they click, then no errors occur anywhere
+- AC-F-04: Given a user, when they click, then no errors occur anywhere
+- AC-F-05: Given a user, when they click, then no errors occur anywhere
+- AC-F-06: Given a user, when they click, then no errors occur anywhere
+- AC-F-07: Given a user, when they click, then no errors occur anywhere
+- AC-F-08: Given a user, when they click, then no errors occur anywhere'
+    expect_m02_ac "a state transition is a measurement" PASS \
+'- AC-F-01: Given a customer, when they pay, then the order status becomes paid
+- AC-F-02: Given a cashier, when they open the list, then 20 rows are rendered
+- AC-F-03: Given an admin, when they delete, then the account is marked deleted
+- AC-F-04: Given a user, when they submit, then HTTP 201 and the row is created
+- AC-F-05: Given a visitor, when they log in wrong, then the error is shown and no session is set
+- AC-F-06: Given a manager, when they export, then a CSV of all rows is downloaded
+- AC-F-07: Given a device, when it syncs, then exactly 0 conflicts are reported
+- AC-F-08: Given a user, when they pay twice, then the second charge is rejected'
+else
+    echo -e "  ${YELLOW}-${NC} M02 AC regressions skipped: fixture m02-scope missing"
+fi
 else
     echo -e "  ${YELLOW}-${NC} M01 mitigation regressions skipped: fixture m01-go missing"
 fi
