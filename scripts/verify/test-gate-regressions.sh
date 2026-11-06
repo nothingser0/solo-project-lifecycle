@@ -11,6 +11,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GATE="$SCRIPT_DIR/../gates/validate-gate.sh"
+REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -1025,6 +1026,54 @@ SIG_BLANK='Client\nName: _________________________________\nTitle: _____________
 SIG_FILLED='Client\nName: Sri Wahyuni  Signature: /s/ Sri Wahyuni\nTitle: Operations Director  Date: 2026-11-01\nSignature: /s/ Sri Wahyuni  Date: 2026-11-01\nDeveloper\nName: Zeenn  Signature: /s/ Zeenn  Date: 2026-11-02\n'
 expect_m03_sow "unsigned SOW (blank signature lines) blocked" FAIL "$SIG_BLANK"
 expect_m03_sow "signed SOW with substantive clauses passes"  PASS "$SIG_FILLED"
+
+# The complete fixture is the shipped SOW. A model must not be able to sign it, and a signature
+# with no date must not count - the gate only asked whether the name was blank.
+expect_m03_fixture() {
+    local name="$1" want="$2" kind="$3"
+    local dir="$WORK/m03fix"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m03-sow" "$dir"
+    local sow="$dir/contracts/SOW_CONTRACT.md"
+    case "$kind" in
+        thin)   python3 "$REPO/scripts/verify/fixtures/m03-sow/thin.py" "$sow" >/dev/null ;;
+        model)
+            python3 - "$sow" <<'PYM'
+import io, re, sys
+p = sys.argv[1]; s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"(?m)^Name:[ \t]*Wahyu[^\n]*$", "Name: Claude Agent", s, count=1)
+s = re.sub(r"(?m)^Signature:[ \t]*Wahyu[^\n]*$", "Signature: /s/ Claude Agent", s, count=1)
+io.open(p, "w", encoding="utf-8").write(s)
+PYM
+            ;;
+        nodate)
+            python3 - "$sow" <<'PYD'
+import io, re, sys
+p = sys.argv[1]; s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"(?m)^Date:[ \t]*2026-11-06[^\n]*$", "Date:", s, count=1)
+io.open(p, "w", encoding="utf-8").write(s)
+PYD
+            ;;
+    esac
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M03 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (SOW -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (SOW -> $got, expected $want)"
+        echo "$out" | grep -E "❌" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m03-sow" ]; then
+    expect_m03_fixture "the complete shipped SOW passes" PASS clean
+    expect_m03_fixture "a one-line liability clause blocks" FAIL thin
+    expect_m03_fixture "a model signing the SOW blocks" FAIL model
+    expect_m03_fixture "a signature with no date blocks" FAIL nodate
+else
+    echo -e "  ${YELLOW}-${NC} M03 fixture regressions skipped: m03-sow missing"
+fi
 
 # expect_m02_scope <name> <PASS|FAIL> <scope-content>
 expect_m02_scope() {

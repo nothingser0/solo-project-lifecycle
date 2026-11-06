@@ -122,8 +122,16 @@ gate_M03() {
             # class of the LETTER n, so 'DP received in bank account' failed purely
             # because 'bank' contains an n. (Latent since the gate was written; the
             # status word had to precede every n-containing word to pass.)
-            if grep -qiE "\[x\].*(DP|Down Payment|30%|40%|50%|Milestone 1)" "$target_sow" && \
-               grep -qiE "\[x\].*(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)" "$target_sow"; then
+            # The template's own confirmation line reads
+            #   "- [ ] DP (Milestone 1) received in bank account - Date/Time: ... - Confirmed By: NAME"
+            # so the tick and the status sit on ONE line. The old check wanted "[x]" in a line about
+            # DP and "[x]" in a line about "Received" - two different lines - which no faithfully
+            # ticked contract can satisfy. Also require a real date, not YYYY-MM-DD.
+            m03_dp_line=$(grep -iE "^[[:space:]]*-?[[:space:]]*\[x\][^\n]*(DP|Down Payment|Milestone 1)" "$target_sow" 2>/dev/null | head -1 || true)
+            if [ -n "$m03_dp_line" ] && \
+               printf '%s' "$m03_dp_line" | grep -qiE "(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)" && \
+               printf '%s' "$m03_dp_line" | grep -qE "[0-9]{4}-[0-9]{2}-[0-9]{2}" && \
+               ! printf '%s' "$m03_dp_line" | grep -qE "YYYY-MM-DD|NAME|Rp X"; then
                 echo "  ✅ Down payment (DP) confirmation verified ([x] cleared & received in bank account)"
             else
                 echo "  ❌ Down payment (DP) not confirmed! Requires '[x] DP ... Cleared/Received/Transferred' (discussion-only or unchecked lines do NOT count)."
@@ -184,6 +192,53 @@ gate_M03() {
             #     authentic, but it can refuse an unsigned document.
             sig_lines=$(grep -cE "^[[:space:]]*(Signature|Signed)[[:space:]]*:" "$target_sow" 2>/dev/null || true)
             sig_blank=$(grep -cE "^[[:space:]]*(Signature|Signed|Name|Title|Date)[[:space:]]*:[[:space:]]*(_+|-+|\.+|\[[[:space:]]*\][[:space:]]*)?$" "$target_sow" 2>/dev/null || true)
+            # A model may draft the contract, never be a party to it. Same rule as the NDA check
+            # above and as M09/M10/M11/A00/A01/A04.
+            m03_model='(claude|chatgpt|gpt[-_.0-9]|openai|anthropic|copilot|gemini|deepseek|llama|bard|ai agent|llm)'
+            m03_model_signer=$(grep -iE "^[[:space:]]*(Signature|Signed|Signed by|Name|Party)[[:space:]]*:" "$target_sow" 2>/dev/null \
+                | grep -iE "$m03_model" | head -2 || true)
+            if [ -n "$m03_model_signer" ]; then
+                echo "  ❌ The SOW names a model as a signing party - the agent may draft the contract, never sign it."
+                printf '%s\n' "$m03_model_signer" | sed 's/^/       /' | cut -c1-110
+                GATE_FAILED=1
+            fi
+            # Both parties must sign, each with a human name and a real date. A contract signed on
+            # one side only is not a contract; a date left as YYYY-MM-DD is not a date.
+            m03_human_sigs=0
+            m03_no_date=""
+            for party in DEVELOPER CLIENT "Solo Dev" "Klien" "Client" "Developer"; do
+                block=$(awk -v who="$party" '
+                    BEGIN { IGNORECASE = 1 }
+                    $0 ~ ("^[#*[:space:]]*" who "[[:space:]]*$") { inside = 1; next }
+                    inside && (/^#{1,4} / || $0 ~ "^[#*[:space:]]*(DEVELOPER|CLIENT|Solo Dev|Client|Developer|Klien)[[:space:]]*$") { inside = 0 }
+                    inside { print }
+                ' "$target_sow" 2>/dev/null)
+                [ -n "$block" ] || continue
+                # One-line signature blocks carry several fields, so take everything after "Name:"
+                # up to the next field label.
+                name=$(printf '%s' "$block" | grep -iE "^[[:space:]]*Name[[:space:]]*:" | head -1 \
+                    | sed -E 's/.*[Nn]ame[[:space:]]*:[[:space:]]*//' \
+                    | sed -E 's/[[:space:]]{2,}.*$//' | tr -d '*')
+                date=$(printf '%s' "$block" | grep -oE "[0-9]{4}-[0-9]{2}-[0-9]{2}" | head -1 || true)
+                [ -z "$name" ] && continue
+                printf '%s' "$name" | grep -qiE "$m03_model" && continue
+                if printf '%s' "$date" | grep -qE "[0-9]{4}-[0-9]{2}-[0-9]{2}" || printf '%s' "$date" | grep -qiE "[0-9]{1,2}[[:space:]]*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)"; then
+                    m03_human_sigs=$((m03_human_sigs + 1))
+                else
+                    m03_no_date="$m03_no_date [$party:$date]"
+                fi
+            done
+            if [ -n "$m03_no_date" ]; then
+                echo "  ❌ A party signed the SOW without a date$m03_no_date"
+                echo "     Replace the date field with the day it was signed; an undated signature is contestable."
+                GATE_FAILED=1
+            fi
+            if [ "${m03_human_sigs:-0}" -lt 2 ]; then
+                echo "  ❌ The SOW is signed by ${m03_human_sigs:-0} human part(y/ies); both DEVELOPER and CLIENT must sign with a name and a date."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Signed by both parties, each with a human name and a date"
+            fi
             if [ "${sig_lines:-0}" -eq 0 ]; then
                 echo "  ❌ No signature block in the SOW — an unsigned contract is not a contract."
                 echo "     Add 'Signature: <name>' and 'Date: <YYYY-MM-DD>' for both parties."
@@ -200,11 +255,16 @@ gate_M03() {
             #     'Limitation of Liability: Capped at fees paid.' satisfied a clause that is meant
             #     to limit exposure. A word floor cannot judge quality, but it rejects a stub.
             thin=""
-            for clause in "Limitation of Liability" "Intellectual Property" "Revision Limits" "Deemed Acceptance" "Third.Party Account"; do
+            # The clause may be a numbered heading ("### II.7. Limitation of Liability"), a bullet
+            # ("- **Revision Limits**:" with sub-bullets) or a plain line. The old pattern required
+            # the clause at the start of the line after optional #/*, so none of the shipped SOW's
+            # clauses matched and every one scored 0 words - failing a complete contract.
+            for clause in "Limitation of Liability" "Intellectual Property" "Revision Limits" "Deemed Acceptance" "Third.Party (Account|Subscription)"; do
                 cl_words=$(awk -v pat="$clause" '
-                    $0 ~ ("^[#*]*[[:space:]]*" pat) { inside = 1; next }
-                    inside && /^#/ { inside = 0 }
-                    inside { n += split($0, a, " ") }
+                    BEGIN { IGNORECASE = 1 }
+                    $0 ~ pat && !started { started = 1; inside = 1 }
+                    inside { n += split($0, a, " "); body++ }
+                    inside && /^#/ && body > 1 { inside = 0 }
                     END { print n + 0 }
                 ' "$target_sow" 2>/dev/null)
                 [ "${cl_words:-0}" -lt 25 ] && thin="$thin [${clause}:${cl_words}w]"
