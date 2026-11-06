@@ -254,6 +254,37 @@ gate_M03() {
             # 9c. Clause substance floor (BLOCKER). Named clauses were matched by keyword only, so
             #     'Limitation of Liability: Capped at fees paid.' satisfied a clause that is meant
             #     to limit exposure. A word floor cannot judge quality, but it rejects a stub.
+            # An unbounded promise is the one thing a solo developer cannot sign. The clause
+            # length test above proves nobody wrote a stub; this proves nobody wrote a blank
+            # cheque. A negation on the same line ("does not have unlimited rights") is allowed.
+            # Negation only counts when it directly precedes the promise, e.g. "does not grant unlimited
+            # rights". A bare "limit" or "maximum" elsewhere on the line was swallowing real promises.
+            m03_neg='(not|never|no)[[:space:]]+[a-z]*[[:space:]]*(exceed|grant|provide|cover|include|accept|offer|apply|be liable)'
+            m03_unbounded=""
+            while IFS= read -r ln; do
+                [ -z "$ln" ] && continue
+                printf '%s' "$ln" | grep -qiE "$m03_neg" && continue
+                printf '%s' "$ln" | grep -qiE '(bug[- ]free|perfectly (secure|reliable|error[- ]free)|will never (fail|crash|break)|guaranteed (to be )?(bug|error))' \
+                    && m03_unbounded="$m03_unbounded [absolute software guarantee]"
+                printf '%s' "$ln" | grep -qiE '(unlimited|forever|lifetime|perpetual|indefinite)[^.]*(support|maintenance|warranty|revision|fix)' \
+                    && m03_unbounded="$m03_unbounded [unbounded support/warranty]"
+                printf '%s' "$ln" | grep -qiE '(unlimited liability|any and all damages|no limit on liability|unlimited indemnity|hold harmless against all)' \
+                    && m03_unbounded="$m03_unbounded [unlimited liability]"
+            done <<< "$(sed 's/\\*//g' "$target_sow" 2>/dev/null)"
+            if [ -n "$m03_unbounded" ]; then
+                echo "  ❌ The SOW promises something without a bound:$m03_unbounded"
+                echo "     Cap it: a number of days for warranty, 'limited to fees paid' for liability, 'excludes indirect loss'."
+                GATE_FAILED=1
+            fi
+            # A warranty with no duration is unbounded in time even if it never says "forever".
+            if grep -qiE "warrant" "$target_sow" 2>/dev/null; then
+                if ! grep -qiE "[0-9]+[[:space:]]*(calendar[[:space:]]+)?days?" "$target_sow" 2>/dev/null; then
+                    echo "  ❌ The SOW offers a warranty but names no duration in days."
+                    echo "     State the window explicitly, e.g. '30 calendar days from BAST'."
+                    GATE_FAILED=1
+                fi
+            fi
+
             thin=""
             # The clause may be a numbered heading ("### II.7. Limitation of Liability"), a bullet
             # ("- **Revision Limits**:" with sub-bullets) or a plain line. The old pattern required

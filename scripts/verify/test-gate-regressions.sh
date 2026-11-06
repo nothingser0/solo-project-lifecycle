@@ -1071,6 +1071,30 @@ if [ -d "$REPO/scripts/verify/fixtures/m03-sow" ]; then
     expect_m03_fixture "a one-line liability clause blocks" FAIL thin
     expect_m03_fixture "a model signing the SOW blocks" FAIL model
     expect_m03_fixture "a signature with no date blocks" FAIL nodate
+
+# M03: an unbounded promise passed. "guaranteed completely bug-free forever", "unlimited lifetime
+# support" and "unlimited liability for any and all damages" all reached M04 as signed terms.
+expect_m03_promise() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/m03prom"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m03-sow" "$dir"
+    [ "$mode" = "none" ] || python3 "$REPO/scripts/verify/fixtures/m03-sow/promise.py" "$dir/contracts/SOW_CONTRACT.md" "$mode" >/dev/null
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M03 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (promise -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (promise -> $got, expected $want)"
+        echo "$out" | grep -E "without a bound|no duration" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m03_promise "a bounded warranty and a capped liability pass" PASS none
+expect_m03_promise "'guaranteed completely bug-free forever' blocks" FAIL bugfree
+expect_m03_promise "'unlimited lifetime support' blocks" FAIL support
+expect_m03_promise "'unlimited liability for any and all damages' blocks" FAIL liability
 else
     echo -e "  ${YELLOW}-${NC} M03 fixture regressions skipped: m03-sow missing"
 fi
