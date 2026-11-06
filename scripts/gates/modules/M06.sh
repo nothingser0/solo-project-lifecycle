@@ -434,10 +434,18 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero silent empty catch blocks in source"
         fi
 
-        # 3. Hardcoded secret heuristics (assignment of a long literal to a secret-ish name)
-        hc_secret=$(grep -rinE "(api_?key|secret|password|passwd|token|private_?key)[[:space:]]*[:=][[:space:]]*[\"'][^\"']{16,}" $scan_dirs 2>/dev/null | grep -viE "process\.env|import\.meta\.env|example|placeholder|your[_-]|xxx|\*\*\*|<REPLACE" | wc -l | tr -d ' ')
+        # 3. Hardcoded secret heuristics. Two shapes, because a credential has two shapes:
+        #    (a) a long literal assigned to a secret-ish name: password: "...."
+        #    (b) a credential inside a connection URI: postgres://user:secret@host
+        #    (b) was invisible to the rule, so the most common way to pass a database
+        #    password - the connection string - passed with "zero obvious hardcoded secrets".
+        hc_secret_named=$(grep -rinE "(api_?key|secret|password|passwd|token|private_?key)[[:space:]]*[:=][[:space:]]*[\"'][^\"']{16,}" $scan_dirs 2>/dev/null | grep -viE "process\.env|import\.meta\.env|example|placeholder|your[_-]|xxx|\*\*\*|<REPLACE" | wc -l | tr -d ' ')
+        hc_secret_uri=$(grep -rinE "[a-z][a-z0-9+.-]*://[^/[:space:]\"'@]+:[^@[:space:]\"']{4,}@" $scan_dirs 2>/dev/null \
+            | grep -viE "process\.env|import\.meta\.env|example\.com|localhost|127\.0\.0\.1|placeholder|your[_-]|xxx|\*\*\*|<|\$\{|\{\{|:[a-z_]+@" | wc -l | tr -d ' ')
+        hc_secret=$(( ${hc_secret_named:-0} + ${hc_secret_uri:-0} ))
         if [ "${hc_secret:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${hc_secret} possible hardcoded secret(s) in source! Use process.env."
+            [ "${hc_secret_uri:-0}" -gt 0 ] && echo "     ${hc_secret_uri} of them sit inside a connection URI (scheme://user:secret@host)."
             GATE_FAILED=1
         else
             echo "  ✅ Anti-slop: zero obvious hardcoded secrets in source"
@@ -839,7 +847,7 @@ PYEOF
                 fi
             fi
             if grep -qiE "(popover|searchable list|dropdown|combobox|autocomplete)" docs/specs/FSD.md; then
-                if ! grep -rqiE "(combobox|listbox|Popover|Command|Dropdown|Select)" $scan_dirs 2>/dev/null; then
+                if ! grep -rqiE "(combobox|listbox|<Popover|<Command|<Dropdown|<Select|aria-haspopup)" $scan_dirs 2>/dev/null; then
                     echo "  ❌ Requirements: FSD specifies a popover/combobox but no such component exists."
                     GATE_FAILED=1
                 else

@@ -2324,6 +2324,72 @@ expect_m06_step "FSD with no Module 04 Handoff Strategy" BLOCKED "$FSD_NO_HANDOF
 expect_m06_step "FSD locked + handoff, only 3 of 9 harness files" BLOCKED "$FSD_OK_LOCK" no
 expect_m06_step "FSD locked + handoff, all 9 harness files" ALLOWED "$FSD_OK_LOCK" yes
 
+# expect_m06_source <name> <PASS|FAIL> <expected-❌-message|""> <python body>
+# Builds on the complete M06 fixture, so a PASS means the gate really is green.
+expect_m06_source() {
+    local name="$1" want="$2" msg="$3" body="$4"
+    local fix="$REPO/scripts/verify/fixtures/m06/repo" dir="$WORK/m06src"
+    if [ ! -d "$fix" ]; then
+        echo -e "  ${YELLOW}-${NC} M06 source regressions skipped: fixture missing"
+        return
+    fi
+    rm -rf "$dir"; cp -r "$fix" "$dir"
+    python3 - "$dir" <<PY
+import io, os, sys
+root = sys.argv[1]
+$body
+PY
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 source -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 source -> $got, expected $want${msg:+, message /$msg/})"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m06_source "a credential inside a connection URI blocks" FAIL "hardcoded secret" '
+os.makedirs(os.path.join(root, "src/lib"), exist_ok=True)
+io.open(os.path.join(root, "src/lib/db-uri.ts"), "w", encoding="utf-8").write(
+    "import postgres from \"postgres\";\n"
+    "export const sql = postgres(\"postgres://admin:Sup3rS3cret@db.internal:5432/kasir\");\n")
+'
+expect_m06_source "an env-driven connection URI passes" PASS "" '
+os.makedirs(os.path.join(root, "src/lib"), exist_ok=True)
+io.open(os.path.join(root, "src/lib/db-uri.ts"), "w", encoding="utf-8").write(
+    "import postgres from \"postgres\";\n"
+    "export const sql = postgres(process.env.DATABASE_URL);\n")
+'
+expect_m06_source "a popover requirement with only SQL select blocks" FAIL "popover/combobox but no such component" '
+p = os.path.join(root, "docs/specs/FSD.md")
+s = io.open(p, encoding="utf-8").read()
+io.open(p, "w", encoding="utf-8").write(
+    s + "\n\n## Filters\n\nThe orders screen uses a popover filter for the customer column.\n")
+'
+expect_m06_source "a popover requirement served by <Select> passes" PASS "" '
+p = os.path.join(root, "docs/specs/FSD.md")
+s = io.open(p, encoding="utf-8").read()
+io.open(p, "w", encoding="utf-8").write(
+    s + "\n\n## Filters\n\nThe orders screen uses a popover filter for the customer column.\n")
+io.open(os.path.join(root, "src/app/orders/picker.tsx"), "w", encoding="utf-8").write(
+    "export function Picker() { return <Select options={[]} />; }\n")
+'
+expect_m06_source "a file-upload requirement with no file input blocks" FAIL "specifies a file upload but no file input" '
+p = os.path.join(root, "docs/specs/FSD.md")
+s = io.open(p, encoding="utf-8").read()
+io.open(p, "w", encoding="utf-8").write(
+    s + "\n\n## Attachments\n\nProducts accept a photo upload: .jpg or .png, maximum 5 MB.\n")
+'
+
+
 # Producer side: M05 must require the handoff section so M06 STEP 0 can read it.
 expect_m05_handoff() {
     local name="$1" want="$2" with_handoff="$3"
