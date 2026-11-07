@@ -5,10 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run the regression suite verbosely
+      # CI shell runs with -e, so a failing suite killed the step before it could print anything.
+      # Capture the status and print the full log regardless.
+      - name: Run the regression suite and always print the log
         run: |
+          set +e
           bash scripts/verify/test-gate-regressions.sh > /tmp/reg.out 2>&1
-          echo "rc=$?"
-          grep -E "M07|✗|tests passed|tests FAILED" /tmp/reg.out | head -40
+          rc=$?
+          echo "rc=$rc"
+          echo "--- failing cases ---"
+          grep -n "✗" /tmp/reg.out | head -20
           echo "--- tail ---"
-          tail -20 /tmp/reg.out
+          tail -25 /tmp/reg.out
+          exit 0
