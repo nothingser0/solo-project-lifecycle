@@ -2210,7 +2210,29 @@ expect_m12_incident() {
     local name="$1" scale="$2" create="$3" want="$4"
     local dir="$WORK/m12inc"
     make_project "$dir" "- **Scale**: $scale\n- Delivery: client\n"
-    printf '# Warranty\n\n## Coverage\n\n## Exclusions\n\n## Service Level Agreement\n' > "$dir/docs/pm/WARRANTY_POLICY.md"
+    # M12 now requires the warranty sections to say something: an empty heading passed before, so
+    # this fixture (which exists to test the INCIDENT plan) must carry real terms plus a window.
+    cat > "$dir/docs/pm/WARRANTY_POLICY.md" <<'WPEOF'
+# Warranty Policy
+
+## 1. Warranty Period
+- **Start Date**: 2026-11-06
+- **End Date**: 2027-01-05
+
+## 2. Warranty Coverage
+1. Programming logic defects against the agreed FSD/PRD.
+2. Critical security vulnerabilities in application code.
+
+## 3. Warranty Exclusions
+1. New feature requests.
+2. Visual design changes.
+
+## 4. Service Level Agreement (SLA)
+| Severity | Initial Response | Resolution Target |
+| :--- | :--- | :--- |
+| Severity 1 | < 2 Business Hours | < 8 Business Hours |
+| Severity 2 | < 8 Business Hours | < 48 Business Hours |
+WPEOF
     # A plan must define severity, escalation, response time and comms; a document with the
     # headings and no content is exactly what the incident gate now rejects.
     [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Comms\nStatus page every 30 minutes.\n\nOwner: Sri Wahyuni\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
@@ -3218,6 +3240,47 @@ expect_m11 "a model on the developer line blocks"               FAIL "names a mo
 expect_m11 "a missing Article 2 blocks"                         FAIL "missing 100% payment settlement"     article-missing
 expect_m11 "an undeclared delivery blocks"                      FAIL "Delivery is not recorded"            delivery-undeclared
 expect_m11 "a Medium handover without a user manual blocks"     FAIL "USER_MANUAL.md (MISSING)"            manual-medium
+
+echo ""
+echo "M12 warranty and operations:"
+# Measured 2026-11-07: "Warranty Coverage: To be discussed.", an SLA table deleted and replaced with
+# "agreed per issue", a 500-byte runbook of "handled as needed", and a warranty that expired a year
+# ago all PASSED the maintenance gate.
+expect_m12() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m12/build.py" dir="$WORK/m12gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M12 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M12 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M12 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m12 "a stated warranty with figures passes"                 PASS ""                                    base
+expect_m12 "a coverage section that says nothing blocks"           FAIL "'Coverage' section is empty"          coverage-empty
+expect_m12 "an SLA that defers its terms blocks"                    FAIL "'Service Level Agreement' section defers" sla-no-numbers
+expect_m12 "an SLA with no figures blocks"                          FAIL "SLA states no response or resolution time" sla-prose-only
+expect_m12 "a warranty that already expired blocks"                 FAIL "warranty ended on"                    warranty-expired
+expect_m12 "a support email still a placeholder blocks"             FAIL "unresolved template placeholders"      email-placeholder
+expect_m12 "a solo runbook of filler blocks"                        FAIL "is missing health-level detail"        solo-runbook-empty
+expect_m12 "an incident plan that defers handling blocks"           FAIL "defers incident handling"              incident-partial
 
 echo ""
 if [ "$FAIL" -eq 0 ]; then
