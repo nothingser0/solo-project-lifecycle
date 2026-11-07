@@ -3443,6 +3443,46 @@ expect_a02 "a residency section with no region blocks"          FAIL "names no r
 expect_a02 "a quality scenario with no figure blocks"           FAIL "no measurable target"             scenario-no-numbers
 
 echo ""
+echo "A03 vendor procurement:"
+# Measured 2026-11-08: the recommendation check was DEAD in every document, including my own base.
+# `grep -iA2 "## Recommendation" ... | grep -vE "Recommendation|--"` deleted the very line it wanted,
+# so an empty recommendation and a recommendation for an uncompared vendor both passed. Separately a
+# "Procurement Scope" section with no content passed, and the cell value "no" was read as a vendor
+# name ("... another bank" contains "no").
+expect_a03() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a03/build.py" dir="$WORK/a03gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A03 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A03 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A03 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a03 "a scored comparison with a backed recommendation passes" PASS ""                          base
+expect_a03 "a recommendation section with no text blocks"            FAIL "has no recommendation"     rec-empty
+expect_a03 "a recommendation for an uncompared vendor blocks"        FAIL "no comparison column"      rec-unknown-vendor
+expect_a03 "a matrix of bare numbers blocks"                         FAIL "scored row(s)"             matrix-scores-only
+expect_a03 "an empty procurement scope section blocks"               FAIL "'Procurement Scope' section is empty" sections-empty
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0

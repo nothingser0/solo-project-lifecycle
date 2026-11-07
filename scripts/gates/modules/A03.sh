@@ -18,6 +18,23 @@ gate_A03() {
             GATE_FAILED=1
         fi
         check_sections "$sched_target" "Procurement Scope" "Timeline" "Requirements"
+
+        a03_section() { # $1 keyword, $2 file
+            awk -v pat="$1" 'BEGIN{IGNORECASE=1}
+                /^#+[[:space:]]/ {
+                    lvl = match($0, /[^#]/)
+                    if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                    if (keep == 1 && lvl <= base) { keep = 0 }
+                }
+                keep { print }' "$2" 2>/dev/null
+        }
+        for sec in "Procurement Scope" "Timeline" "Requirements"; do
+            n=$(a03_section "$sec" "$sched_target" | sed 's/^[[:space:]]*//' | grep -vE '^$|^-{3,}$|^#' | wc -l)
+            if [ "$n" -lt 1 ]; then
+                echo "  ❌ $sched_target '$sec' section is empty - a heading is not a procurement plan."
+                GATE_FAILED=1
+            fi
+        done
     fi
 
     local matrix_target="docs/governance/VENDOR_COMPARISON_MATRIX.md"
@@ -44,16 +61,34 @@ gate_A03() {
             fi
             # The recommendation must name a vendor that appears in the matrix, otherwise the
             # document recommends something it never compared.
-            rec_line=$(grep -iA2 "## Recommendation" "$matrix_target" | grep -vE "Recommendation|--" | head -1)
-            if [ -n "$rec_line" ]; then
+            # Vendor names live in the COLUMN HEADERS ("| Requirement | Midtrans | Xendit | Adyen |"),
+            # not the first column, and the old rec_line filter dropped the line it wanted because
+            # that line contains the word "Recommendation". Both halves are fixed here.
+            rec_body=$(a03_section "Recommendation" "$matrix_target" | sed 's/^[[:space:]]*//' | grep -vE '^$|^-{3,}$|^#')
+            if [ -z "$rec_body" ]; then
+                echo "  ❌ $matrix_target has no recommendation - a comparison that decides nothing is not a decision aid."
+                GATE_FAILED=1
+            else
+                # Vendors appear in the header row of EVERY comparison table, and the shipped
+                # template keeps a schematic example ("Vendor A | Vendor B") next to the real one
+                # (Stripe | PayPal | Adyen). Read every header row, not only the first.
+                vendors=$(awk '/^[[:space:]]*\|/ && !/^[[:space:]]*\|[[:space:]]*:/ { print }' "$matrix_target" \
+                          | tr '|' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr -d '*' \
+                          | grep -viE "^(|requirement|requirements|criteria|item|weight|score|stage|element|id|aspect|feature|#|total|result|winner)$" \
+                          | grep -viE "^(vendor|option)[[:space:]]+[A-Z]$" \
+                          | grep -viE "^(yes|no|true|false|pass|fail|n/a|nil|-)$" \
+                          | grep -E "^[A-Za-z][A-Za-z0-9&.' -]{2,}$" \
+                          | grep -vE "^[0-9]" | sort -u)
                 rec_named=0
-                for vendor in $(grep -E "^\|[^-|][^|]*\|" "$matrix_target" | sed -E 's/^\|[[:space:]]*([^|]*).*/\1/' | tr -d '*' | sort -u); do
+                while IFS= read -r vendor; do
                     [ -z "$vendor" ] && continue
-                    echo "$rec_line" | grep -qiF "$vendor" && rec_named=1
-                done
+                    printf '%s\n' "$rec_body" | grep -qiF -- "$vendor" && rec_named=1
+                done <<< "$vendors"
                 if [ "$rec_named" -eq 0 ]; then
-                    echo "  ❌ $matrix_target recommends a vendor that appears in no matrix row - the recommendation is not backed by the comparison."
+                    echo "  ❌ $matrix_target recommends a vendor that appears in no comparison column - the recommendation is not backed by the comparison."
                     GATE_FAILED=1
+                else
+                    echo "  ✅ Recommendation names a vendor from the comparison"
                 fi
             fi
         fi
