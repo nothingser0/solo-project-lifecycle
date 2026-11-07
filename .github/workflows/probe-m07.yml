@@ -1,0 +1,14 @@
+name: probe-m07
+on: [push, workflow_dispatch]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the regression suite verbosely
+        run: |
+          bash scripts/verify/test-gate-regressions.sh > /tmp/reg.out 2>&1
+          echo "rc=$?"
+          grep -E "M07|✗|tests passed|tests FAILED" /tmp/reg.out | head -40
+          echo "--- tail ---"
+          tail -20 /tmp/reg.out
