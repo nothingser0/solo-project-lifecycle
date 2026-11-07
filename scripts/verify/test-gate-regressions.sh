@@ -3403,6 +3403,46 @@ expect_a01 "an empty phasing strategy section blocks"          FAIL "'Phasing St
 expect_a01 "a filler word as signer blocks"                    FAIL "Sign-Off names no person"      signoff-filler-name
 
 echo ""
+echo "A02 C4 and STRIDE:"
+# Measured 2026-11-08: STRIDE categories named only in prose, an empty Mitigation section, an empty
+# C4 Context, a residency section naming no region and a quality scenario with no figure all PASSED.
+# The category test grepped the whole file and the threat-table test accepted any table at all.
+expect_a02() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a02/build.py" dir="$WORK/a02gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A02 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A02 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A02 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a02 "a C4 blueprint with a STRIDE register passes"      PASS ""                                  base
+expect_a02 "STRIDE named only in prose blocks"                  FAIL "STRIDE categories as threat-table rows" stride-prose-only
+expect_a02 "a threat table with two categories blocks"          FAIL "STRIDE categories as threat-table rows" stride-table-no-cat
+expect_a02 "an empty mitigation section blocks"                 FAIL "Mitigation section is empty"      mitigation-empty
+expect_a02 "an empty C4 context blocks"                         FAIL "'C4' section is empty"            c4-empty
+expect_a02 "a residency section with no region blocks"          FAIL "names no region"                  residency-no-region
+expect_a02 "a quality scenario with no figure blocks"           FAIL "no measurable target"             scenario-no-numbers
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0
