@@ -3096,6 +3096,47 @@ expect_m08 "a Medium migration without reconciliation blocks"       FAIL "MIGRAT
 expect_m08 "a table missing from the mapping blocks"                FAIL "never mentions these schema table(s)"  plan-ignores-table
 
 echo ""
+echo "M09 UAT sign-off:"
+# Measured 2026-11-06 on a hand-written pack: "No PENDING items remained" was rejected as a status,
+# "The cargo crate was shipped" was accepted as an approval, a blank signature cell passed, an open
+# Sev 1 row passed, a filler word passed as a signatory, and an internal signature closed the UAT.
+expect_m09() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m09/build.py" dir="$WORK/m09uat"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M09 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M09 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M09 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m09 "a signed, evidenced UAT pack passes"                  PASS ""                                   base
+expect_m09 "mentioning no PENDING items is not a rejection"       PASS ""                                   uat-pending-mentioned
+expect_m09 "an approval word inside prose is not an approval"     FAIL "missing explicit approval attestation" uat-go-in-word
+expect_m09 "a renamed client row with no name blocks"             FAIL "client sign-off row names nobody"    uat-renamed-signoff
+expect_m09 "a filler word is not a signatory"                     FAIL "placeholder word"                    uat-placeholder-name
+expect_m09 "a blank signature cell blocks"                        FAIL "blank signature lines"               uat-blank-cell
+expect_m09 "an open Severity 1 row blocks"                         FAIL "unresolved Severity 1 or 2 defects"  uat-sev-row
+expect_m09 "a UAT without a workbook blocks"                       FAIL "UAT_WORKBOOK.md (MISSING)"           uat-no-workbook
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0

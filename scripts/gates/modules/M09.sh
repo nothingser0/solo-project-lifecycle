@@ -58,19 +58,37 @@ gate_M09() {
             echo "  ❌ $target_uat still contains unresolved template placeholders ([...])! Fill in actual UAT outcomes."
             GATE_FAILED=1
         fi
-        # 2. Reject explicit failure / rejection status (BLOCKER)
-        if grep -qiE "REJECTED|DISAPPROVED|NOT APPROVED|NO-GO|PENDING|FAILED[[:space:]]*BY[[:space:]]*CLIENT|Status[[:space:]]*:[[:space:]]*REJECT" "$target_uat"; then
-            echo "  ❌ $target_uat reports REJECTED / NOT APPROVED status! Client UAT must pass before Production Go-Live."
+        # 2. The verdict is read from the status lines, never from prose. A finished report may
+        # legitimately write "no PENDING items remained", and a word-only rule rejected that; the
+        # same rule accepted "The cargo crate was shipped" as an approval because GO matched inside
+        # a word. Only lines that state a decision count, and the outcome words must stand alone.
+        verdict_lines=$(grep -iE "^[[:space:]]*([-*|].*)?(\*\*)?(UAT[ -]?)?(Status|Decision|Conclusion|Result|Release Decision|Acceptance)(\*\*)?[[:space:]]*[:|]" "$target_uat" || true)
+        [ -z "$verdict_lines" ] && verdict_lines="$target_uat"  # fall back to the file for old packs
+        if printf '%s\n' "$verdict_lines" | grep -qiE "REJECTED|DISAPPROVED|NOT[[:space:]]+APPROVED|NO-GO|\bFAILED\b|\bPENDING\b"; then
+            echo "  ❌ $target_uat reports REJECTED / NOT APPROVED / PENDING status! Client UAT must pass before Production Go-Live."
+            printf '%s\n' "$verdict_lines" | grep -iE "REJECTED|DISAPPROVED|NOT[[:space:]]+APPROVED|NO-GO|\bFAILED\b|\bPENDING\b" | head -1 | sed 's/^/       /' | cut -c1-100
             GATE_FAILED=1
-        elif grep -qiE "(^|[^A-Z])GO([^A-Z]|$)|APPROVED|PASSED|ACCEPTED|UAT PASS|Production Release Authorization" "$target_uat"; then
+        elif printf '%s\n' "$verdict_lines" | grep -qE "\bAPPROVED\b|\bPASSED\b|\bACCEPTED\b|\bGO\b|UAT PASS|Production Release Authorization"; then
             echo "  ✅ UAT approved status verified in $target_uat"
         else
-            echo "  ❌ $target_uat missing explicit approval attestation ('APPROVED' / 'PASSED' / 'UAT PASS')!"
+            echo "  ❌ $target_uat missing explicit approval attestation ('Status: APPROVED' / 'PASSED' / 'UAT PASS')!"
+            echo "     A decision line must exist; approval words inside prose do not count."
             GATE_FAILED=1
         fi
         # 2b. Reject unresolved Severity 1 & 2 defects in report
         # Catches lines where Sev 1 or 2 is explicitly open/unresolved (avoid matching '0 Open')
-        if grep -qiE "Sev(erity)?[[:space:]]*[12].*:[[:space:]]*[1-9][0-9]*[[:space:]]*(Open|Unresolved|Pending)|Sev(erity)?[[:space:]]*[12].*(Status:[[:space:]]*(Open|Unresolved))" "$target_uat"; then
+        # Two shapes carry the same fact: a labelled line ("Sev 1: 3 Open") and a table row
+        # ("| Sev 1 | 3 | still reproducing |"). Only the labelled form was matched, so an open
+        # blocker written as a row passed. Counts must be positive and not explicitly zero/resolved.
+        sev_row=$(grep -iE "^[[:space:]]*\|[[:space:]]*\*{0,2}Sev(erity)?[[:space:]]*[12]" "$target_uat" \
+                  | grep -vE "\|[[:space:]]*0[[:space:]]*\||[[:space:]]0[[:space:]]*(open|remaining)?" \
+                  | grep -E "\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|" || true)
+        if [ -n "$sev_row" ]; then
+            echo "  ❌ $target_uat reports unresolved Severity 1 or 2 defects!"
+            printf '%s\n' "$sev_row" | head -1 | sed 's/^/       /' | cut -c1-100
+            echo "     All Sev 1/2 blockers must be RESOLVED before production."
+            GATE_FAILED=1
+        elif grep -qiE "Sev(erity)?[[:space:]]*[12].*:[[:space:]]*[1-9][0-9]*[[:space:]]*(Open|Unresolved|Pending)|Sev(erity)?[[:space:]]*[12].*(Status:[[:space:]]*(Open|Unresolved))" "$target_uat"; then
             echo "  ❌ $target_uat reports unresolved Severity 1 or 2 defects! All blockers must be RESOLVED before production."
             GATE_FAILED=1
         fi
@@ -81,7 +99,15 @@ gate_M09() {
         # 2b. The client signatory must be a person. M04 and M06 already refuse a model as
         # approver; this is the signature that closes the project, so it is the last place the
         # agent could sign its own work off. A ticked box is not a sign-off.
-        if grep -qiE "Client Single PIC|Approved by Client|Signature" "$target_uat"; then
+        # The block is found structurally: keying it on the phrase "Client Single PIC" let a renamed
+        # row skip the whole check, which is how an unsigned UAT could close.
+        has_sign_block=0
+        grep -qiE "Client Single PIC|Approved by Client|Signature|Signatures of the Parties|Sign-?Off" "$target_uat" && has_sign_block=1
+        if [ "$has_sign_block" -ne 1 ]; then
+            echo "  ❌ $target_uat has no client sign-off section - an unsigned UAT cannot close the project."
+            GATE_FAILED=1
+        fi
+        if [ "$has_sign_block" -eq 1 ]; then
             sig_lines=$(grep -iE "Client Single PIC|Approved by Client|Signature" "$target_uat")
             if printf '%s\n' "$sig_lines" | grep -qiE "claude|chatgpt|gpt-|copilot|assistant|ai agent|chatbot|llm|anthropic|openai"; then
                 echo "  ❌ $target_uat names a model as the client signatory — the agent may prepare the pack, never sign it."
@@ -96,15 +122,63 @@ gate_M09() {
                 echo "  ❌ $target_uat sign-off is incomplete: missing$sig_missing (need a named human, YYYY-MM-DD, and 'Signed via: meeting|email|WhatsApp')."
                 GATE_FAILED=1
             fi
-        fi
-
-        # 3. Verify Client Single PIC Sign-off: reject blank signature lines (______ or empty signature cell)
-        if grep -qiE "Client Single PIC|Approved by Client" "$target_uat"; then
-            if grep -qiE "Name[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*\|[[:space:]]*$" "$target_uat"; then
-                echo "  ❌ $target_uat has unfulfilled blank signature lines (______ / unassigned Client Single PIC)!"
+            # A section can exist and still name nobody: `| Reviewer | | | 2026-11-06 |` satisfied
+            # every check above. The client side must carry a person, and a filler word is not one -
+            # filling the shipped template with a single placeholder produced "recorded" as the name.
+            sign_area=$(awk '/^##+[[:space:]]/ { sec = ($0 ~ /[Ss]ignatures|[Ss]ignature[[:space:]]*[|:]|Signatures of the Parties|Approved by Client|Disetujui oleh/) ? 1 : 0 }
+                             sec { print }' "$target_uat")
+            # A section titled "Sign-Off Metadata" holds the request details, not the signature, so
+            # it is deliberately not a match: the signatory must appear where a signature is asked for.
+            [ -z "$sign_area" ] && sign_area=$(grep -iE "Client Single PIC|Approved by Client|Signature" "$target_uat")
+            client_named=0
+            client_row_seen=0
+            while IFS='|' read -r _ c1 c2 c3 c4 _rest; do
+                # Only client-side rows can carry the client's acceptance. A row naming the solo
+                # engineer (or any other internal party) must not satisfy this check.
+                row_party=$(printf '%s' "$c1" | tr -d '*_`' | tr '[:upper:]' '[:lower:]')
+                case "$row_party" in
+                    *client*|*pic*|*customer*|*klien*|*pelanggan*|*reviewer*) client_row_seen=1 ;;
+                    *) continue ;;
+                esac
+                for cell in "$c1" "$c2" "$c3" "$c4"; do
+                    cell=$(printf '%s' "$cell" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr -d '*_`')
+                    [ -z "$cell" ] && continue
+                    low=$(printf '%s' "$cell" | tr '[:upper:]' '[:lower:]')
+                    case "$low" in
+                        party|name|signature|sign|date|role|title|pic|client|reviewer|recorded|done|filled|n/a|na|x|xxx|tbd|todo) continue ;;
+                    esac
+                    # a person's name is at least two words, each starting with a letter
+                    if printf '%s' "$cell" | grep -qE "^[A-Za-z][A-Za-z.'-]*([[:space:]]+[A-Za-z][A-Za-z.'-]*)+$"; then
+                        client_named=1
+                    fi
+                done
+            done < <(printf '%s\n' "$sign_area" | grep -E '^[[:space:]]*\|' || true)
+            if [ "$client_row_seen" -ne 1 ]; then
+                echo "  ❌ $target_uat sign-off sheet has no client row - only internal parties signed."
+                echo "     UAT is the client's acceptance; name the client PIC and have them sign."
+                GATE_FAILED=1
+            elif [ "$client_named" -ne 1 ]; then
+                echo "  ❌ $target_uat client sign-off row names nobody."
+                echo "     Fill the client PIC's name and signature."
                 GATE_FAILED=1
             else
-                echo "  ✅ Client Single PIC UAT signature recorded"
+                echo "  ✅ UAT sign-off records a named client signatory"
+            fi
+            if printf '%s\n' "$sign_area" | grep -qiE "[|:][[:space:]]*(recorded|done|filled|TBD|TODO|X{1,3})[[:space:]]*[|]"; then
+                echo "  ❌ $target_uat uses a placeholder word ('recorded' / 'done') where a name belongs."
+                GATE_FAILED=1
+            fi
+        fi
+
+        # 3. A signature must be present in whichever form the sheet uses: a labelled line
+        # ("Signature: ____") or a table cell ("| Name | ____ |"). Only the labelled form was
+        # checked, so a blank cell read as a signature.
+        if [ "$has_sign_block" -eq 1 ]; then
+            if grep -qiE "Name[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*_{3,}|Signature[[:space:]]*:[[:space:]]*\|[[:space:]]*$|[|][[:space:]]*(_{3,}|\[ *\]|\.\.\.)[[:space:]]*[|]" "$target_uat"; then
+                echo "  ❌ $target_uat has unfulfilled blank signature lines (______ / empty cell)!"
+                GATE_FAILED=1
+            else
+                echo "  ✅ Client UAT signature recorded"
             fi
         fi
     fi
