@@ -19,10 +19,9 @@ gate_A00() {
 
         # A heading with no terms under it closed this gate. Each named section must carry content.
         for sec in "Advisory Deliverables" "Professional Fees" "Liability"; do
-            body=$(awk -v pat="$sec" 'BEGIN{IGNORECASE=1}
-                    /^#+[[:space:]]/ {
+            body=$(awk -v pat="$sec" '                    /^#+[[:space:]]/ {
                         lvl = match($0, /[^#]/)
-                        if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                        if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
                         if (keep == 1 && lvl <= base) { keep = 0 }
                     }
                     keep { print }' "$target" 2>/dev/null | grep -vE "^#{1,6}[[:space:]]")

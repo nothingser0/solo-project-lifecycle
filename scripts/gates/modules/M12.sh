@@ -58,10 +58,9 @@ gate_M12() {
             # as a boundary threw away all content once the shipped template used ### subsections,
             # and the official WARRANTY_POLICY_SMALL.md was then reported as empty.
             m12_section() { # $1 = heading keyword, $2 = file
-                awk -v pat="$1" 'BEGIN{IGNORECASE=1}
-                    /^#+[[:space:]]/ {
+                awk -v pat="$1" '                    /^#+[[:space:]]/ {
                         lvl = match($0, /[^#]/)          # index of first non-# = level+1
-                        if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; print; next }
+                        if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; print; next }
                         if (keep == 1 && lvl <= base) { keep = 0 }
                     }
                     keep { print }' "$2" 2>/dev/null | grep -vE "^#"

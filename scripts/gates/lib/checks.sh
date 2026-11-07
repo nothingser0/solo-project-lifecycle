@@ -837,10 +837,9 @@ check_sections() {
 # keyword and requires at least one line of real content in it, so the two checks are used together:
 # check_sections for presence, check_section_content for substance.
 _section_body() { # $1 keyword, $2 file -> the block under the first heading matching the keyword
-    awk -v pat="$1" 'BEGIN{IGNORECASE=1}
-        /^#+[[:space:]]/ {
+    awk -v pat="$1" '        /^#+[[:space:]]/ {
             lvl = match($0, /[^#]/)
-            if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+            if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
             if (keep == 1 && lvl <= base) { keep = 0 }
         }
         keep { print }' "$2" 2>/dev/null

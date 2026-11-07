@@ -100,6 +100,11 @@ gate_M03() {
                 "Scope of Work" \
                 "Payment Terms|Compensation" \
                 "Change Request"
+            check_section_content "$target_sow" \
+                "Project Overview|Project Charter" \
+                "Scope of Work" \
+                "Payment Terms|Compensation" \
+                "Change Request"
             # 1. Check unresolved placeholders [...]
             if grep -q "\[\.\.\.\]\|\[Numeric Amount\]\|\[Account Number\]" "$target_sow"; then
                 echo "  ❌ Unresolved template placeholders [...] detected in SOW contract!"
@@ -208,8 +213,7 @@ gate_M03() {
             m03_no_date=""
             for party in DEVELOPER CLIENT "Solo Dev" "Klien" "Client" "Developer"; do
                 block=$(awk -v who="$party" '
-                    BEGIN { IGNORECASE = 1 }
-                    $0 ~ ("^[#*[:space:]]*" who "[[:space:]]*$") { inside = 1; next }
+                    tolower($0) ~ ("^[#*[:space:]]*" tolower(who) "[[:space:]]*$") { inside = 1; next }
                     inside && (/^#{1,4} / || $0 ~ "^[#*[:space:]]*(DEVELOPER|CLIENT|Solo Dev|Client|Developer|Klien)[[:space:]]*$") { inside = 0 }
                     inside { print }
                 ' "$target_sow" 2>/dev/null)
@@ -292,8 +296,7 @@ gate_M03() {
             # clauses matched and every one scored 0 words - failing a complete contract.
             for clause in "Limitation of Liability" "Intellectual Property" "Revision Limits" "Deemed Acceptance" "Third.Party (Account|Subscription)"; do
                 cl_words=$(awk -v pat="$clause" '
-                    BEGIN { IGNORECASE = 1 }
-                    $0 ~ pat && !started { started = 1; inside = 1 }
+                    tolower($0) ~ tolower(pat) && !started { started = 1; inside = 1 }
                     inside { n += split($0, a, " "); body++ }
                     inside && /^#/ && body > 1 { inside = 0 }
                     END { print n + 0 }

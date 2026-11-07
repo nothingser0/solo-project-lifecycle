@@ -89,6 +89,8 @@ gate_M00() {
         check_required "$validation_file" ""
         check_sections "$validation_file" \
             "Riskiest Assumption Register" "User Discovery" "Behavioral Intent" "Unit Economics" "Kill Criteria"
+        check_section_content "$validation_file" \
+            "Riskiest Assumption Register" "User Discovery" "Behavioral Intent" "Unit Economics" "Kill Criteria"
 
         # 1. Unresolved template placeholders (generic bracket scan + allowlist).
         local leftovers

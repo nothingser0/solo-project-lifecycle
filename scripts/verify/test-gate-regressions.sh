@@ -3584,6 +3584,11 @@ section_gate_content() {
         FAIL=$((FAIL + 1))
     fi
 }
+# M00, M03 and M07 were the last modules that trusted check_sections alone.
+section_gate "M00 Kill Criteria"      "Kill Criteria"      1 docs/validation/VALIDATION.md
+section_gate "M03 Scope of Work"      "Scope of Work"      1 docs/legal/SOW.md
+section_gate "M07 PART II: SIT REPORT" "PART II: SIT REPORT" 1 docs/qa/SIT_WORKBOOK.md
+
 section_gate_content
 
 echo ""

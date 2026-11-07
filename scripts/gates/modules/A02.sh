@@ -20,10 +20,9 @@ gate_A02() {
         check_sections "$arch_target" "C4" "Data Residency" "Scenario"
 
         a02_section() { # $1 keyword, $2 file  -> body without headings, same-or-higher heading ends it
-            awk -v pat="$1" 'BEGIN{IGNORECASE=1}
-                /^#+[[:space:]]/ {
+            awk -v pat="$1" '                /^#+[[:space:]]/ {
                     lvl = match($0, /[^#]/)
-                    if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                    if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
                     if (keep == 1 && lvl <= base) { keep = 0 }
                 }
                 keep { print }' "$2" 2>/dev/null
@@ -69,10 +68,10 @@ gate_A02() {
             # The categories must be ROWS of the threat table. Grepping the whole file let a
             # sentence ("Spoofing and Tampering were considered") count as coverage, and the
             # trust-boundary table satisfied the old "any table row" test.
-            stride_rows=$(awk -v pat="STRIDE" 'BEGIN{IGNORECASE=1}
+            stride_rows=$(awk -v pat="STRIDE" '
                 /^#+[[:space:]]/ {
                     lvl = match($0, /[^#]/)
-                    if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                    if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
                     if (keep == 1 && lvl <= base) { keep = 0 }
                 }
                 keep && /^[[:space:]]*\|/ { print }' "$sec_target" 2>/dev/null)
@@ -98,10 +97,10 @@ gate_A02() {
                 GATE_FAILED=1
             fi
             # A mitigation section with no rows leaves every threat unanswered.
-            mit_rows=$(awk -v pat="Mitigation" 'BEGIN{IGNORECASE=1}
+            mit_rows=$(awk -v pat="Mitigation" '
                 /^#+[[:space:]]/ {
                     lvl = match($0, /[^#]/)
-                    if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                    if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
                     if (keep == 1 && lvl <= base) { keep = 0 }
                 }
                 keep { print }' "$sec_target" 2>/dev/null | sed 's/^[[:space:]]*//' | grep -vE '^$|^-{3,}$|^#' | wc -l)

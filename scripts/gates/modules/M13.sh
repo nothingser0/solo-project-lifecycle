@@ -45,10 +45,10 @@ gate_M13() {
             # 3. A baseline needs measurements. A heading with nothing under it passed, and so did
             #    prose whose only digits came from the heading numbers ("## 2. Acquisition").
             for dim in "Acquisition" "Activation" "Retention"; do
-                body=$(awk -v pat="$dim" 'BEGIN{IGNORECASE=1}
+                body=$(awk -v pat="$dim" '
                         /^#+[[:space:]]/ {
                             lvl = match($0, /[^#]/)
-                            if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                            if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
                             if (keep == 1 && lvl <= base) { keep = 0 }
                         }
                         keep { print }' "$metrics_target" 2>/dev/null \

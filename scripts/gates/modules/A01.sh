@@ -18,10 +18,9 @@ gate_A01() {
 
         # A heading with no content under it closed this gate.
         for sec in "Phasing Strategy" "Phased Package Breakdown"; do
-            body=$(awk -v pat="$sec" 'BEGIN{IGNORECASE=1}
-                    /^#+[[:space:]]/ {
+            body=$(awk -v pat="$sec" '                    /^#+[[:space:]]/ {
                         lvl = match($0, /[^#]/)
-                        if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                        if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
                         if (keep == 1 && lvl <= base) { keep = 0 }
                     }
                     keep { print }' "$target" 2>/dev/null | grep -vE "^#{1,6}[[:space:]]")
