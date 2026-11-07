@@ -3364,6 +3364,45 @@ expect_a00 "an empty advisory deliverables section blocks"   FAIL "'Advisory Del
 expect_a00 "an unfilled amount is caught by the placeholder rule" PASS ""                               placeholder-left
 
 echo ""
+echo "A01 WBS phasing:"
+# Measured 2026-11-08: an Enterprise plan with a single "### Phase" heading, a Phasing Strategy
+# section with no content, and a sign-off reading "Lead Enterprise Architect: filled" all PASSED.
+# The phase count had been counting table rows anywhere in the file.
+expect_a01() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a01/build.py" dir="$WORK/a01gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A01 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A01 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A01 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a01 "a three-phase plan with named cuts passes"        PASS ""                              base
+expect_a01 "an Enterprise plan with one phase blocks"          FAIL "phase heading(s) at enterprise scale" one-phase-large
+expect_a01 "a razor that cuts nothing blocks"                  FAIL "says nothing is cut"           razor-nothing
+expect_a01 "a razor naming one cut blocks"                     FAIL "names 1 cut item(s)"           razor-one-cut
+expect_a01 "an empty phasing strategy section blocks"          FAIL "'Phasing Strategy' section is empty" sections-empty
+expect_a01 "a filler word as signer blocks"                    FAIL "Sign-Off names no person"      signoff-filler-name
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0

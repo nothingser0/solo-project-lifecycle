@@ -16,10 +16,36 @@ gate_A01() {
         fi
         check_sections "$target" "Phasing Strategy" "Phased Package Breakdown" "Scope Razor" "Sign-Off"
 
+        # A heading with no content under it closed this gate.
+        for sec in "Phasing Strategy" "Phased Package Breakdown"; do
+            body=$(awk -v pat="$sec" 'BEGIN{IGNORECASE=1}
+                    /^#+[[:space:]]/ {
+                        lvl = match($0, /[^#]/)
+                        if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                        if (keep == 1 && lvl <= base) { keep = 0 }
+                    }
+                    keep { print }' "$target" 2>/dev/null | grep -vE "^#{1,6}[[:space:]]")
+            n=$(printf '%s\n' "$body" | sed 's/^[[:space:]]*//' | grep -vE '^$|^-{3,}$' | wc -l)
+            if [ "$n" -lt 1 ]; then
+                echo "  ❌ $target '$sec' section is empty - a heading is not a plan."
+                GATE_FAILED=1
+            fi
+        done
+
         # Sign-off is a commitment to a phasing plan; a model cannot commit on the client's behalf.
         if grep -iE "(sign-off|signed by|signed)[[:space:]]*:" "$target" | grep -qiE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)"; then
             echo "  ❌ $target names a model in the Sign-Off - the agent may draft the phasing plan, never sign it."
             GATE_FAILED=1
+        fi
+        # "Lead Enterprise Architect: filled" was accepted as a signature: a placeholder word is
+        # not a person, and the same rule already applies to UAT and BAST.
+        a01_signer=$(grep -iE "^[^A-Za-z]*[A-Za-z ]*(architect|lead|owner|manager|consultant|signed by)[[:space:]]*:" "$target" 2>/dev/null | head -1)
+        if [ -n "$a01_signer" ]; then
+            a01_signer_name=$(printf '%s' "$a01_signer" | sed 's/.*://' | sed 's/\*\*//g' | tr -d '\r' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+            if [ -z "$a01_signer_name" ] || printf '%s' "$a01_signer_name" | grep -qiE "^(filled|tbd|todo|name|your name|xxx+|placeholder|n/a|none|-)$"; then
+                echo "  ❌ $target Sign-Off names no person ('${a01_signer_name:-empty}') - a filler word is not a signature."
+                GATE_FAILED=1
+            fi
         fi
         # The date may sit on a "Date:" line under a "## Sign-Off" heading rather than on the
         # signature line itself, so look at the sign-off block, not just the labelled line.
@@ -48,10 +74,12 @@ gate_A01() {
         # Two phases for Large/Enterprise. A solo project may legitimately ship in one phase, but
         # then the plan must say so rather than leaving a single unnamed row.
         a01_scale="$(get_field Scale docs/pm/PROJECT_STATE.md 2>/dev/null | tr '[:upper:]' '[:lower:]')"
-        a01_phases=$(grep -cE "^\|[^-|][^|]*\|" "$target" 2>/dev/null | head -1 | tr -dc '0-9')
+        # Table rows are not phases: a one-phase Enterprise plan with a rich breakdown table counted
+        # as many packages and closed the gate. Phases are "### Phase" headings.
+        a01_phases=$(grep -ciE "^#{2,4}[[:space:]]*(phase|fase)[[:space:]]*[0-9]" "$target" 2>/dev/null | tr -dc '0-9')
         a01_phases=${a01_phases:-0}
         if { [ "$a01_scale" = "large" ] || [ "$a01_scale" = "enterprise" ]; } && [ "$a01_phases" -lt 2 ]; then
-            echo "  ❌ $target has $a01_phases package row(s) at ${a01_scale} scale - phased delivery needs at least two."
+            echo "  ❌ $target defines $a01_phases phase heading(s) at ${a01_scale} scale - phased delivery needs at least two (### Phase 1, ### Phase 2)."
             GATE_FAILED=1
         fi
     fi
