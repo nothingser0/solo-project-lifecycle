@@ -15,6 +15,11 @@ gate_M11() {
         is_m11_solo=0 # Client delivery NEVER waives BAST handover regardless of scale
     else
         is_m11_solo=0 # F4: undeclared delivery fail-closed (M00_LITE fallback removed)
+        if [ -z "$m11_delivery" ]; then
+            echo "  ❌ Delivery is not recorded in docs/pm/PROJECT_STATE.md - M11 cannot tell a client handover from an internal one."
+            echo "     Record '- **Delivery**: client | solo | portfolio | internal' before closing M11."
+            GATE_FAILED=1
+        fi
     fi
 
     if [ $is_m11_solo -eq 1 ]; then
@@ -39,7 +44,12 @@ gate_M11() {
             # "SECOND PARTY: Claude Agent" is a legal handover with no human on either side.
             # Match "Signed by FIRST PARTY:" too - the signature block is where the model's
             # name actually lands, and the first version only looked at the identity lines.
-            for party in "FIRST PARTY" "SECOND PARTY"; do
+            # The names live on "CLIENT PIC NAME:" / "DEVELOPER NAME:", not on the sentence that
+            # defines FIRST/SECOND PARTY, so scanning only the PARTY line let "DEVELOPER NAME:
+            # Claude Agent" through. Every identity/signature line is inspected instead.
+            for party in "CLIENT PIC NAME" "DEVELOPER NAME" "FIRST PARTY" "SECOND PARTY"; do
+                # The label can sit anywhere on the line: "Signed by FIRST PARTY: Claude Agent" is the
+                # shipped form, so anchoring at the start of the line silently stopped catching it.
                 party_line=$(echo "$bast_content" | grep -iE "$party[^:]*:" | grep -iE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)" | head -1)
                 if [ -n "$party_line" ]; then
                     echo "  ❌ $target_bast names a model as $party - the agent may draft the BAST, never sign it."
@@ -47,8 +57,10 @@ gate_M11() {
                 fi
             done
             # The two parties must differ: a handover between one person is no handover.
-            first_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*FIRST PARTY[^:]*:" | grep -viE "signed by" | head -1 | sed -E 's/.*:[[:space:]]*//' | cut -c1-40 | tr '[:upper:]' '[:lower:]')
-            second_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*SECOND PARTY[^:]*:" | grep -viE "signed by" | head -1 | sed -E 's/.*:[[:space:]]*//' | cut -c1-40 | tr '[:upper:]' '[:lower:]')
+            first_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*(\*\*)?CLIENT PIC NAME" | head -1 | sed -E 's/.*:[[:space:]]*//' | sed 's/\*\*//g' | cut -c1-40 | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]*$//')
+            [ -z "$first_name" ] && first_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*FIRST PARTY[^:]*:" | grep -viE "signed by" | head -1 | sed -E 's/.*:[[:space:]]*//' | cut -c1-40 | tr '[:upper:]' '[:lower:]')
+            second_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*(\*\*)?DEVELOPER NAME" | head -1 | sed -E 's/.*:[[:space:]]*//' | sed 's/\*\*//g' | cut -c1-40 | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]*$//')
+            [ -z "$second_name" ] && second_name=$(echo "$bast_content" | grep -iE "^[^A-Za-z]*SECOND PARTY[^:]*:" | grep -viE "signed by" | head -1 | sed -E 's/.*:[[:space:]]*//' | cut -c1-40 | tr '[:upper:]' '[:lower:]')
             if [ -n "$first_name" ] && [ "$first_name" = "$second_name" ]; then
                 echo "  ❌ $target_bast has the same party on both sides ('$first_name') - that is not a handover."
                 GATE_FAILED=1
@@ -61,10 +73,15 @@ gate_M11() {
             fi
             # 2. Reject unpaid / arrears status (BLOCKER: Article 2 requires 100% settlement before handover)
             # Note: avoid matching legitimate negative phrase 'no outstanding arrears' / 'zero arrears'
-            if echo "$bast_content" | grep -qiE "UNPAID|BELUM LUNAS|OUTSTANDING PAYMENT|OWES[[:space:]]+[0-9]+|(has|have|with)[[:space:]]+arrears" || (echo "$bast_content" | grep -qiE "ARREARS" && ! echo "$bast_content" | grep -qiE "(no|zero|without)[[:space:]]+outstanding[[:space:]]+arrears|(no|zero)[[:space:]]+arrears"); then
+            # "outstanding arrears of Rp 0" states that nothing is owed; the old pattern read the
+            # word ARREARS and rejected a settled account.
+            arrears_zero=0
+            echo "$bast_content" | grep -qiE "arrears[[:space:]]+(of[[:space:]]+)?(Rp\.?|IDR|USD|\$)?[[:space:]]*0([.,]0+)?([[:space:]]|$|\.|,)" && arrears_zero=1
+            if echo "$bast_content" | grep -qiE "UNPAID|BELUM LUNAS|OUTSTANDING PAYMENT|OWES[[:space:]]+[1-9][0-9]*|(has|have|with)[[:space:]]+arrears" || { [ "$arrears_zero" -eq 0 ] && echo "$bast_content" | grep -qiE "ARREARS" && ! echo "$bast_content" | grep -qiE "(no|zero|without)[[:space:]]+outstanding[[:space:]]+arrears|(no|zero)[[:space:]]+arrears"; }; then
                 echo "  ❌ $target_bast indicates outstanding payment arrears! 100% financial settlement required before closing M11."
                 GATE_FAILED=1
-            elif echo "$bast_content" | grep -qiE "settled all payment|100%|lunas|no outstanding arrears|Settlement of Financial"; then
+            elif echo "$bast_content" | grep -qiE "settled all payment|100%|lunas|no outstanding arrears|Settlement of Financial" \
+                && echo "$bast_content" | grep -qiE "(100[[:space:]]*%|Rp\.?[[:space:]]*[0-9]|IDR[[:space:]]*[0-9]|USD[[:space:]]*[0-9]|settled in full|fully paid|paid in full)"; then
                 echo "  ✅ 100% payment settlement verified in $target_bast"
             else
                 echo "  ❌ $target_bast missing 100% payment settlement confirmation (Article 2)!"

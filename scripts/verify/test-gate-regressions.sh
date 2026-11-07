@@ -3178,6 +3178,48 @@ expect_m10 "a model named as verifier blocks"                    FAIL "names a m
 expect_m10 "a decision line that is only a bullet blocks"        FAIL "must record 'Human decision: GO'"  go-commented
 
 echo ""
+echo "M11 BAST handover:"
+# Measured 2026-11-07: a BAST that deferred payment ("will discuss the commercial settlement"),
+# one person on both sides, a model on the developer line, and an undeclared delivery all PASSED;
+# meanwhile "outstanding arrears of Rp 0" - a settled account - was rejected.
+expect_m11() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m11/build.py" dir="$WORK/m11gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M11 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M11 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M11 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m11 "a signed, settled BAST passes"                     PASS ""                                    base
+expect_m11 "a settlement deferred to later blocks"              FAIL "missing 100% payment settlement"     paid-no-amount
+expect_m11 "zero arrears is settlement, not debt"               PASS ""                                    arrears-negated
+expect_m11 "one person on both sides blocks"                    FAIL "same party on both sides"            same-both-sides
+expect_m11 "a blank signature line blocks"                      FAIL "blank signature lines"               blank-signature
+expect_m11 "a model on the developer line blocks"               FAIL "names a model as DEVELOPER NAME"     model-second-party
+expect_m11 "a missing Article 2 blocks"                         FAIL "missing 100% payment settlement"     article-missing
+expect_m11 "an undeclared delivery blocks"                      FAIL "Delivery is not recorded"            delivery-undeclared
+expect_m11 "a Medium handover without a user manual blocks"     FAIL "USER_MANUAL.md (MISSING)"            manual-medium
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0
