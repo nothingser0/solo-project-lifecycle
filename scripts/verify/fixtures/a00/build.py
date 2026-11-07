@@ -31,12 +31,12 @@ def find_repo(start):
 
 AGREEMENT = """# Enterprise Architecture & Technical Advisory Agreement
 
-> Commercial contract for an independent technical consultant advising Bank Sinar Jaya.
+> Commercial contract for an independent technical consultant advising Bank Nusantara Mandiri.
 
 ## 1. Parties & Engagement Premise
 
-This Agreement is entered into between Bank Sinar Jaya, represented by Budi Santoso, Director of
-Technology (the "Client"), and Wahyu Nur Sagita, an independent technical consultant (the
+This Agreement is entered into between Bank Nusantara Mandiri, represented by Ayu Lestari, Director of
+Technology (the "Client"), and Damar Wicaksono, an independent technical consultant (the
 "Consultant").
 
 ### 1.1 Nature of Engagement (Pure Advisory)
@@ -78,7 +78,7 @@ procurement this engagement prepares.
 
 | For and on behalf of CLIENT | For and on behalf of CONSULTANT |
 | :---: | :---: |
-| Budi Santoso | Wahyu Nur Sagita |
+| Ayu Lestari | Damar Wicaksono |
 | *(e-Meterai / Duty Stamp Rp 10.000)* | *(e-Meterai / Duty Stamp Rp 10.000)* |
 | Title: Director of Technology | Title: Lead Enterprise Architect |
 | Date: 2026-11-08 | Date: 2026-11-08 |
@@ -104,7 +104,7 @@ def build(dest, kind):
         ag = ag.replace("1. **Disclaimer of Implementation Liabilities**: the Consultant provides architectural\n   recommendations; implementation decisions remain with the Client.",
                         "")
     elif kind == "model-signs":
-        ag = ag.replace("| Budi Santoso | Wahyu Nur Sagita |", "| Budi Santoso | Claude Agent |")
+        ag = ag.replace("| Ayu Lestari | Damar Wicaksono |", "| Ayu Lestari | Claude Agent |")
     elif kind == "sections-empty":
         start = ag.index("## 2. Advisory Deliverables")
         end = ag.index("## 3. Professional Fees")
@@ -115,7 +115,7 @@ def build(dest, kind):
         raise SystemExit("unknown kind: %s" % kind)
 
     w("contracts/CONSULTING_AGREEMENT.md", ag)
-    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Sinar Jaya Advisory\n- **Scale**: Enterprise\n- **Delivery**: client\n")
+    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Nusantara Mandiri Advisory\n- **Scale**: Enterprise\n- **Delivery**: client\n")
 
 
 if __name__ == "__main__":

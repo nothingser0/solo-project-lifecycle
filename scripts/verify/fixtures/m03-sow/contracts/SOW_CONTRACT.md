@@ -218,7 +218,7 @@ The Parties agree to maintain the confidentiality of business information, techn
 -   Operational PIC authority and authorized contract signatory recorded; backup delegation documented
 -   Scope version and any approved differences recorded in Scope Baseline Summary
 -   Revision limits + Deemed Acceptance + Limitation of Liability clauses accepted by Client
-- [x] DP (Milestone 1) received in bank account — Date/Time: 2026-11-06 14:20 WIB — Amount: Rp 7500000 — Confirmed By: Wahyu Nur Sagita — Cleared
+- [x] DP (Milestone 1) received in bank account — Date/Time: 2026-11-06 14:20 WIB — Amount: Rp 7500000 — Confirmed By: Damar Wicaksono — Cleared
 
 `Gate-Decision: PENDING`  <!-- set to PASS after the Down Payment line above is ticked; BYPASS applies only to Solo SaaS / internal -->
 
@@ -241,13 +241,13 @@ This Agreement is executed in duplicate (2 copies), sufficiently stamped with le
 ## Signatures
 
 DEVELOPER
-Name: Wahyu Nur Sagita
+Name: Damar Wicaksono
 Title: Owner
 Date: 2026-11-06
-Signature: Wahyu
+Signature: Damar
 
 CLIENT
-Name: Wahyu Nur Sagita
+Name: Damar Wicaksono
 Title: Owner
 Date: 2026-11-06
-Signature: Wahyu
+Signature: Damar

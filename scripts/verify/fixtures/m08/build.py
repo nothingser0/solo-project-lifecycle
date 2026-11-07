@@ -44,9 +44,9 @@ plan = io.open(os.path.join(TPL, "05-data-migration/DATA_MIGRATION_PLAN_TEMPLATE
                encoding="utf-8").read()
 plan = re.sub(r"\[([^\]]*)\]", "recorded", plan)
 plan = plan.replace("Inputs-Received: recorded",
-                    "Inputs-Received: legacy XLSX export from Budi Santoso on 2026-10-20")
+                    "Inputs-Received: legacy XLSX export from Ayu Lestari on 2026-10-20")
 if "Inputs-Received" not in plan:
-    plan += "\n\nInputs-Received: legacy XLSX export from Budi Santoso on 2026-10-20\n"
+    plan += "\n\nInputs-Received: legacy XLSX export from Ayu Lestari on 2026-10-20\n"
 plan += "\n\n## Tables\n\n- customers\n- orders\n- order_items\n"
 
 # ---- reconciliation: per-table counts, not the word PASSED -----------------------------------
@@ -64,7 +64,7 @@ Status: PASSED
 
 | Role | Name | Signature | Date |
 | :--- | :--- | :--- | :--- |
-| Client Single PIC | Budi Santoso | Budi Santoso | 2026-10-25 |
+| Client Single PIC | Ayu Lestari | Ayu Lestari | 2026-10-25 |
 """
 
 # ---- one mutation each ----------------------------------------------------------------------
@@ -79,11 +79,11 @@ elif kind == "recon-counts-not-matching":
 elif kind == "recon-no-pic-wording":
     # remove the phrase the sign-off check keys on, leaving the signature blank
     recon = recon.replace("## Client Single PIC Sign-Off", "## Sign-Off")
-    recon = recon.replace("| Client Single PIC | Budi Santoso | Budi Santoso | 2026-10-25 |",
+    recon = recon.replace("| Client Single PIC | Ayu Lestari | Ayu Lestari | 2026-10-25 |",
                           "| Reviewer | | | |")
 elif kind == "recon-blank-signature":
-    recon = recon.replace("| Client Single PIC | Budi Santoso | Budi Santoso | 2026-10-25 |",
-                          "| Client Single PIC | Budi Santoso | ____________________ | 2026-10-25 |")
+    recon = recon.replace("| Client Single PIC | Ayu Lestari | Ayu Lestari | 2026-10-25 |",
+                          "| Client Single PIC | Ayu Lestari | ____________________ | 2026-10-25 |")
 elif kind == "no-reconciliation-medium":
     pass  # written below as absent
 elif kind == "plan-ignores-table":

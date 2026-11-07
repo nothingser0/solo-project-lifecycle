@@ -46,8 +46,8 @@ WARRANTY = """# Maintenance Warranty Policy
 
 ## 1. Warranty Parameters
 - **System Name**: Kasir POS
-- **Client Party**: Toko Sinar Jaya
-- **Lead Developer**: Wahyu Nur Sagita
+- **Client Party**: Toko Nusantara Mandiri
+- **Lead Developer**: Damar Wicaksono
 - **BAST Reference Number**: BAST/KASIR/XI/2026
 - **Warranty Start Date**: 2026-11-06
 - **Warranty End Date**: 2027-01-05 (60 calendar days)
@@ -77,7 +77,7 @@ The warranty is INAPPLICABLE under the following conditions:
 ## 4. Service Hours & Service Level Agreement (SLA) Matrix
 
 - **Official Service Hours**: **Monday to Friday, 09:00 - 17:00 WIB** (excluding national public holidays)
-- **Official Reporting Channel**: Email to support@wahyunursagita.dev or the designated WhatsApp group
+- **Official Reporting Channel**: Email to support@arunikastudio.example or the designated WhatsApp group
 
 | Issue Classification | Issue Definition | Initial Response Time | Resolution Target |
 | :--- | :--- | :---: | :---: |
@@ -95,7 +95,7 @@ Upon expiration of the warranty period, all bug fixes, security updates, and tec
 RUNBOOK = """# Operations Runbook
 
 - **Service**: Kasir POS
-- **Owner**: Wahyu Nur Sagita
+- **Owner**: Damar Wicaksono
 - **Hosting**: Vercel + Neon Postgres
 
 ## Health checks
@@ -122,7 +122,7 @@ INCIDENT = """# Incident Response Plan
 - SEV3: degraded or cosmetic
 
 ## Escalation
-On-call rotation: Wahyu Nur Sagita (primary), Budi Santoso (client contact for business decisions).
+On-call rotation: Damar Wicaksono (primary), Ayu Lestari (client contact for business decisions).
 
 ## Response targets
 - SEV1: acknowledge within 15 minutes, restore within 2 hours
@@ -132,7 +132,7 @@ On-call rotation: Wahyu Nur Sagita (primary), Budi Santoso (client contact for b
 Status updates to the client WhatsApp group every 30 minutes during SEV1, and a written post-mortem within 3 working days.
 
 ## Owner
-Signed by: Wahyu Nur Sagita
+Signed by: Damar Wicaksono
 """
 
 
@@ -162,7 +162,7 @@ def build(dest, kind):
         warranty = warranty.replace("**Warranty End Date**: 2027-01-05 (60 calendar days)",
                                     "**Warranty End Date**: 2025-01-05 (60 calendar days)")
     elif kind == "email-placeholder":
-        warranty = warranty.replace("support@wahyunursagita.dev", "[email-support@domain.com]")
+        warranty = warranty.replace("support@arunikastudio.example", "[email-support@domain.com]")
     elif kind == "solo-runbook-empty":
         delivery = "solo"
         runbook = "# Operations Runbook\n\n" + ("Operations are handled as needed.\n" * 20)

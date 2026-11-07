@@ -28,7 +28,7 @@ w("docs/pm/PROJECT_STATE.md",
 uat = """# User Acceptance Testing (UAT) Sign-Off Report
 
 - **System Name**: Kasir
-- **Client Company**: Toko Sinar Jaya
+- **Client Company**: Toko Nusantara Mandiri
 - **UAT Window**: 2026-11-04 to 2026-11-06
 - **Environment**: https://kasir-staging.vercel.app
 
@@ -36,8 +36,8 @@ uat = """# User Acceptance Testing (UAT) Sign-Off Report
 
 | Field | Value |
 | :--- | :--- |
-| Prepared by | Wahyu Nur Sagita |
-| Client Single PIC | Budi Santoso |
+| Prepared by | Damar Wicaksono |
+| Client Single PIC | Ayu Lestari |
 | Signing Date | 2026-11-06 |
 
 ## 2. UAT Testing Summary Results
@@ -68,8 +68,8 @@ No open punch-list items. The two Sev 3 defects were fixed and retested inside t
 
 | Party | Name | Signature | Date |
 | :--- | :--- | :--- | :--- |
-| Client Single PIC | Budi Santoso | Budi Santoso | 2026-11-06 |
-| Solo Lead Engineer | Wahyu Nur Sagita | Wahyu Nur Sagita | 2026-11-06 |
+| Client Single PIC | Ayu Lestari | Ayu Lestari | 2026-11-06 |
+| Solo Lead Engineer | Damar Wicaksono | Damar Wicaksono | 2026-11-06 |
 
 Signed via: meeting
 """
@@ -103,16 +103,16 @@ elif kind == "uat-go-in-word":
                       "**Status**: The cargo crate was shipped and the release left the depot.")
 elif kind == "uat-renamed-signoff":
     # the sign-off block survives and is dated, but it names nobody
-    uat = uat.replace("| Client Single PIC | Budi Santoso | Budi Santoso | 2026-11-06 |",
+    uat = uat.replace("| Client Single PIC | Ayu Lestari | Ayu Lestari | 2026-11-06 |",
                       "| Reviewer | | | 2026-11-06 |")
     uat = uat.replace("Client Single PIC", "Reviewer")
 elif kind == "uat-placeholder-name":
     # a filler word where a person's name belongs
-    uat = uat.replace("| Client Single PIC | Budi Santoso | Budi Santoso | 2026-11-06 |",
+    uat = uat.replace("| Client Single PIC | Ayu Lestari | Ayu Lestari | 2026-11-06 |",
                       "| Client Single PIC | recorded | recorded | 2026-11-06 |")
 elif kind == "uat-blank-cell":
-    uat = uat.replace("| Client Single PIC | Budi Santoso | Budi Santoso | 2026-11-06 |",
-                      "| Client Single PIC | Budi Santoso | ____________________ | 2026-11-06 |")
+    uat = uat.replace("| Client Single PIC | Ayu Lestari | Ayu Lestari | 2026-11-06 |",
+                      "| Client Single PIC | Ayu Lestari | ____________________ | 2026-11-06 |")
 elif kind == "uat-sev-row":
     uat = uat.replace("| Sev 1 | 0 | none raised |", "| Sev 1 | 3 | still reproducing |")
 elif kind == "uat-no-workbook":

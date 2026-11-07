@@ -49,13 +49,13 @@ BAST = """# PROJECT HANDOVER & ACCEPTANCE CERTIFICATE (BAST)
 
 On this day, Friday, 6 November 2026, located in Yogyakarta, the undersigned below:
 
-1. **CLIENT PIC NAME**: Budi Santoso
+1. **CLIENT PIC NAME**: Ayu Lestari
    **Title**: Director
-   **Company**: Toko Sinar Jaya
+   **Company**: Toko Nusantara Mandiri
    **Office Address**: Jl. Malioboro 12, Yogyakarta
-   Acting for and on behalf of **Toko Sinar Jaya**, hereinafter referred to as the **"FIRST PARTY"**.
+   Acting for and on behalf of **Toko Nusantara Mandiri**, hereinafter referred to as the **"FIRST PARTY"**.
 
-2. **DEVELOPER NAME**: Wahyu Nur Sagita
+2. **DEVELOPER NAME**: Damar Wicaksono
    **Profession**: Independent Software Engineering Consultant
    **ID / Tax Number (NIK / NPWP)**: 3401xxxxxxxxxxxx
    **Domicile Address**: Sleman, Yogyakarta
@@ -92,9 +92,9 @@ Thus this Project Handover & Acceptance Certificate (BAST) is executed in 2 (two
 
 | FIRST PARTY (Client) | SECOND PARTY (Developer) |
 | :---: | :---: |
-| Toko Sinar Jaya | Independent Software Consultant |
+| Toko Nusantara Mandiri | Independent Software Consultant |
 | *(Duty Stamp / Meterai)* | *(Duty Stamp / Meterai)* |
-| **Budi Santoso** | **Wahyu Nur Sagita** |
+| **Ayu Lestari** | **Damar Wicaksono** |
 | Director | Independent Lead Software Engineer |
 
 Signature / Tanda Tangan
@@ -124,11 +124,11 @@ def build(dest, kind):
             "The FIRST PARTY currently has outstanding arrears of Rp 0.",
         )
     elif kind == "same-both-sides":
-        bast = bast.replace("**CLIENT PIC NAME**: Budi Santoso", "**CLIENT PIC NAME**: Wahyu Nur Sagita")
+        bast = bast.replace("**CLIENT PIC NAME**: Ayu Lestari", "**CLIENT PIC NAME**: Damar Wicaksono")
     elif kind == "blank-signature":
-        bast = bast.replace("| **Budi Santoso** | **Wahyu Nur Sagita** |", "| ______________________ | ______________________ |")
+        bast = bast.replace("| **Ayu Lestari** | **Damar Wicaksono** |", "| ______________________ | ______________________ |")
     elif kind == "model-second-party":
-        bast = bast.replace("2. **DEVELOPER NAME**: Wahyu Nur Sagita", "2. **DEVELOPER NAME**: Claude Agent")
+        bast = bast.replace("2. **DEVELOPER NAME**: Damar Wicaksono", "2. **DEVELOPER NAME**: Claude Agent")
     elif kind == "article-missing":
         start = bast.index("#### Article 2")
         end = bast.index("Thus this Project Handover")

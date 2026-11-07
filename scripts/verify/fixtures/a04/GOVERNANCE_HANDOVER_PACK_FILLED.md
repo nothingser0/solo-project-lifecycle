@@ -62,7 +62,7 @@ Source: `docs/ops/DISASTER_RECOVERY_PLAN.md` (or `docs/architecture/` for the ar
 | Backup cadence | continuous WAL, nightly snapshot | ☑ |
 | Restore drill frequency | quarterly | ☑ |
 | **Date of last successful restore drill** | 2026-10-14 | ☑ |
-| Contact escalation path | on-call -> Wahyu Nur Sagita -> Budi Santoso | ☑ |
+| Contact escalation path | on-call -> Damar Wicaksono -> Ayu Lestari | ☑ |
 | Documented runbook location | docs/pm/ROLLBACK_PLAN.md | ☑ |
 
 **A DR plan that has never been restored from is a plan, not a capability.** The row that matters is *date of last successful restore drill* — if it is empty, the client is inheriting an untested assumption. Run one drill before handover.

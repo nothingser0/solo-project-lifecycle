@@ -40,11 +40,11 @@ s = re.sub(r"(?m)^Stack Decision LOCKED:.*$",
 # gate", and the sign-off block is where that matters most: the reviewer, the date, the
 # developer's self-validation and (for client delivery) the client PIC.
 s = re.sub(r"(?m)^\*\*Approved by\*\*:.*$",
-           "**Approved by**: Wahyu Nur Sagita — reviewed the RBAC matrix and the idempotency key "
+           "**Approved by**: Damar Wicaksono — reviewed the RBAC matrix and the idempotency key "
            "design against the FSD §4 endpoints", s)
 s = re.sub(r"(?m)^\*\*Approved on\*\*:.*$", "**Approved on**: 2026-11-06", s)
 s = re.sub(r"(?m)^\*\*Validated by Solo Developer\*\*:.*$",
-           "**Validated by Solo Developer**: Wahyu Nur Sagita (Date: 2026-11-06)", s)
+           "**Validated by Solo Developer**: Damar Wicaksono (Date: 2026-11-06)", s)
 s += """
 ## Module 04 Handoff Strategy
 
@@ -54,7 +54,7 @@ components against the endpoints below, keeping the same spacing scale and type 
 ## Sign-off
 
 Approved on: 2026-11-06
-Approved by: Wahyu Nur Sagita (Solo Dev)
+Approved by: Damar Wicaksono (Solo Dev)
 """
 io.open(fsd, "w", encoding="utf-8").write(s)
 

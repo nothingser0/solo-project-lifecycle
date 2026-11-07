@@ -59,7 +59,7 @@ CAB meets weekly on Tuesdays; emergency changes are reviewed at the next session
 | Backup cadence | continuous WAL, nightly snapshot | yes |
 | Restore drill frequency | quarterly | yes |
 | **Date of last successful restore drill** | 2026-10-14 | yes |
-| Contact escalation path | on-call -> Wahyu Nur Sagita -> Budi Santoso | yes |
+| Contact escalation path | on-call -> Damar Wicaksono -> Ayu Lestari | yes |
 | Documented runbook location | docs/pm/ROLLBACK_PLAN.md | yes |
 
 ## 4. Architecture Conformance Retainer
@@ -67,7 +67,7 @@ CAB meets weekly on Tuesdays; emergency changes are reviewed at the next session
 Monthly review of 4 hours: architecture conformance, dependency currency, and a written finding
 report to the client business owner. Misuse of the retainer for new features is out of scope.
 
-Signed by: Wahyu Nur Sagita
+Signed by: Damar Wicaksono
 """
 
 
@@ -122,7 +122,7 @@ def build(dest, kind):
         raise SystemExit("unknown kind: %s" % kind)
 
     w("docs/governance/GOVERNANCE_HANDOVER_PACK.md", pack)
-    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Sinar Jaya Ledger\n- **Scale**: Enterprise\n- **Delivery**: client\n")
+    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Nusantara Mandiri Ledger\n- **Scale**: Enterprise\n- **Delivery**: client\n")
 
 
 if __name__ == "__main__":

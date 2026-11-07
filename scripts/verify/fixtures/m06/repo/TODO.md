@@ -3,22 +3,22 @@
 - [x] **M06-SETUP-01: Specs Pre-Read** — read AGENTS, CONTEXT, FSD, PRD
   - Human Check: confirm the stack lock in FSD matches what was built
   - **Evidence**: `artifacts/setup.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-DB-01: schema + migration** — Postgres tables created and queried (SCR-002 orders table)
   - Human Check: open the orders screen, confirm the seeded rows appear
   - **Evidence**: `artifacts/db.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-BE-01: API contract** — GET /api/products, POST /api/orders
   - **Evidence**: `artifacts/api.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-FE-01: port SCR-001 login** — docs/design/screens/SCR-001.html
   - Human Check: open /login and confirm the form matches the prototype
   - **Evidence**: `artifacts/fe-1.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-FE-02: port SCR-002 orders** — docs/design/screens/SCR-002.html
   - Human Check: open /orders and confirm the table matches the prototype
   - **Evidence**: `artifacts/fe-2.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-QA-01: local verification** — lint, build, smoke test
   - **Evidence**: `artifacts/qa.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono

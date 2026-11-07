@@ -22,7 +22,7 @@ BLUEPRINT = """# Enterprise Architecture Blueprint
 
 ## 1. Business Context
 
-Bank Sinar Jaya runs a multi-branch ledger for 42 branches. Peak load is 900 concurrent cashiers.
+Bank Nusantara Mandiri runs a multi-branch ledger for 42 branches. Peak load is 900 concurrent cashiers.
 
 ## 2. C4 Context
 
@@ -159,7 +159,7 @@ def build(dest, kind):
 
     w("docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md", bp)
     w("docs/security/THREAT_MODEL_STRIDE.md", th)
-    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Sinar Jaya Ledger\n- **Scale**: Enterprise\n- **Delivery**: client\n")
+    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Nusantara Mandiri Ledger\n- **Scale**: Enterprise\n- **Delivery**: client\n")
 
 
 if __name__ == "__main__":

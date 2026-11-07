@@ -15,7 +15,7 @@ Probed holes (measure before fixing):
   section-level1     "## 4. Post-Deployment Verification" demoted to "# 4. ..."
   inputs-blank-pic   "Inputs-Received: access handed over from  on 2026-11-06" - no PIC name
   rollback-large     Scale: Large with no ROLLBACK_PLAN.md
-  signer-role        "Lead Engineer: Wahyu Nur Sagita (AI-assisted)" - model mention in a name
+  signer-role        "Lead Engineer: Damar Wicaksono (AI-assisted)" - model mention in a name
   status-trailing    "Release status: LIVE " with trailing spaces
 """
 import os
@@ -41,28 +41,28 @@ TPL = os.path.join(REPO, "templates", "07-release-handover")
 
 PROTOCOL = """# Production Deployment Protocol
 
-> Project-specific M10 runbook for Kasir POS (Toko Sinar Jaya).
+> Project-specific M10 runbook for Kasir POS (Toko Nusantara Mandiri).
 
 ## 1. Release
 
 - **Project / version**: Kasir POS v1.4.0
 - **Source branch, commit, artifact**: main @ 9f3c1ab, artifact kasir-1.4.0.tar.gz
 - **Target platform / environment**: Vercel (production), Neon Postgres (production)
-- **Release owner / human operator**: Wahyu Nur Sagita
+- **Release owner / human operator**: Damar Wicaksono
 - **Approved window and timezone**: 2026-11-06 21:00-22:00 WIB
 - **Release freeze rule / approved exception**: none requested
 - **M09 UAT decision**: docs/pm/UAT_SIGNOFF_REPORT.md - APPROVED 2026-11-06
 - **CI / build / security checks required by project policy**: GitHub Actions run 42351383767 (green)
 - **Release notes / changelog**: CHANGELOG.md v1.4.0
-- **Human Go/No-Go**: Wahyu Nur Sagita, GO, 2026-11-06
+- **Human Go/No-Go**: Damar Wicaksono, GO, 2026-11-06
 
 ## 2. Production Access Inputs (gate-enforced)
 
-Inputs-Received: production deploy access from Budi Santoso on 2026-11-06
-- **Credentials**: held by Wahyu Nur Sagita in the approved secret manager; reference only
-- **DNS / domain / platform access owner**: Budi Santoso (Toko Sinar Jaya)
-- **Payment / third-party production mode**: Midtrans production keys held by Budi Santoso
-- **Production action executed by**: Wahyu Nur Sagita
+Inputs-Received: production deploy access from Ayu Lestari on 2026-11-06
+- **Credentials**: held by Damar Wicaksono in the approved secret manager; reference only
+- **DNS / domain / platform access owner**: Ayu Lestari (Toko Nusantara Mandiri)
+- **Payment / third-party production mode**: Midtrans production keys held by Ayu Lestari
+- **Production action executed by**: Damar Wicaksono
 
 ## 3. Preflight
 
@@ -95,7 +95,7 @@ GOLIVE = """# Go-Live Verification Report (PVT & Production Cutover)
 | Project / release | Kasir POS v1.4.0 |
 | Source commit / artifact ID | 9f3c1ab |
 | Deployment target / environment | Vercel production |
-| Release owner / human operator | Wahyu Nur Sagita |
+| Release owner / human operator | Damar Wicaksono |
 | Deployment window / timezone | 2026-11-06 21:00-22:00 WIB |
 | CI / build result | GitHub Actions 42351383767 green |
 | Production URL | https://kasir.tokosinarjaya.id |
@@ -104,7 +104,7 @@ GOLIVE = """# Go-Live Verification Report (PVT & Production Cutover)
 ## 2. Release Decision and Change Controls
 
 Human decision: GO
-Decision maker and date: Wahyu Nur Sagita / 2026-11-06
+Decision maker and date: Damar Wicaksono / 2026-11-06
 - **M09 UAT decision**: APPROVED 2026-11-06
 - **Release freeze / exception**: none
 - **Release notes / changelog**: CHANGELOG.md v1.4.0
@@ -133,14 +133,14 @@ Decision maker and date: Wahyu Nur Sagita / 2026-11-06
 - **Alert path**: test alert sent to WhatsApp, receipt at artifacts/alert.png
 - **Observation period and service targets**: 30 minutes, p95 under 800 ms
 - **Rollback / recovery runbook**: docs/pm/ROLLBACK_PLAN.md
-- **Recovery triggers and owner**: error rate above 2 percent / Wahyu Nur Sagita
+- **Recovery triggers and owner**: error rate above 2 percent / Damar Wicaksono
 - **Recovery time**: not exercised in production, staging restore took 12 minutes on 2026-11-02
 - **Backup / restore and data migration limits**: Neon point-in-time restore, 7 day window
 
 ## 6. Verification Attestation
 
 Release status: LIVE
-Verification performed by: Wahyu Nur Sagita
+Verification performed by: Damar Wicaksono
 - **Date**: 2026-11-06
 - **Summary and evidence references**: artifacts/pvt-01.png, artifacts/pvt-02.png
 
@@ -186,15 +186,15 @@ def build(dest, kind):
         report = report.replace("## 4. Post-Deployment Verification (PVT)", "# 4. Post-Deployment Verification (PVT)")
     elif kind == "inputs-blank-pic":
         proto = proto.replace(
-            "Inputs-Received: production deploy access from Budi Santoso on 2026-11-06",
+            "Inputs-Received: production deploy access from Ayu Lestari on 2026-11-06",
             "Inputs-Received: production deploy access from  on 2026-11-06",
         )
     elif kind == "rollback-large":
         scale = "Large"
     elif kind == "signer-role":
         report = report.replace(
-            "Verification performed by: Wahyu Nur Sagita",
-            "Verification performed by: Wahyu Nur Sagita (Claude Agent)",
+            "Verification performed by: Damar Wicaksono",
+            "Verification performed by: Damar Wicaksono (Claude Agent)",
         )
     elif kind == "status-trailing":
         report = report.replace("Release status: LIVE\n", "Release status: LIVE \n")

@@ -91,5 +91,5 @@ Executed in duplicate, each holding equal legal force.
 | Date: _____________________ | Date: _____________________ |
 
 
-Disclosing Party: Wahyu Nur Sagita (solo developer)
-Receiving Party: PT Klien Jaya (client)
+Disclosing Party: Damar Wicaksono (solo developer)
+Receiving Party: PT Mitra Jaya (client)

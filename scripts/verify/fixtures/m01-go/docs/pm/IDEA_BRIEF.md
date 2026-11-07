@@ -6,7 +6,7 @@
 
 ## 1. Project Metadata
 - **Idea Name / Project Codename**: Kasir Cepat
-- **Initiator / Solo Dev**: Wahyu Nur Sagita
+- **Initiator / Solo Dev**: Damar Wicaksono
 - **Evaluation Date**: 2026-11-03
 - **Initial Target Scale**: <Small (MVP) / Medium (SaaS) / Large / Enterprise>
 - **Delivery Model**: <Bespoke Freelance / On-Premise / Academic / Proprietary Internal / Open-Source / Commercial SaaS>

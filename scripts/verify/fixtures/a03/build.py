@@ -31,9 +31,9 @@ SCHEDULE = """# Vendor Procurement Schedule
 
 | # | Stage | Start | Decision gate | Owner | Blocks |
 | :-: | :--- | :--- | :--- | :--- | :--- |
-| 1 | Requirements finalised | 2026-11-10 | written requirements signed off | Wahyu Nur Sagita | 2 |
-| 2 | Vendor shortlist | 2026-11-17 | three vendors pass must-haves | Wahyu Nur Sagita | 3 |
-| 3 | Contract signed | 2026-12-01 | legal review complete | Budi Santoso | 4 |
+| 1 | Requirements finalised | 2026-11-10 | written requirements signed off | Damar Wicaksono | 2 |
+| 2 | Vendor shortlist | 2026-11-17 | three vendors pass must-haves | Damar Wicaksono | 3 |
+| 3 | Contract signed | 2026-12-01 | legal review complete | Ayu Lestari | 4 |
 
 ## Requirements
 
@@ -118,7 +118,7 @@ def build(dest, kind):
 
     w("docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md", sched)
     w("docs/governance/VENDOR_COMPARISON_MATRIX.md", matrix)
-    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Sinar Jaya Ledger\n- **Scale**: Enterprise\n- **Delivery**: client\n")
+    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Nusantara Mandiri Ledger\n- **Scale**: Enterprise\n- **Delivery**: client\n")
 
 
 if __name__ == "__main__":

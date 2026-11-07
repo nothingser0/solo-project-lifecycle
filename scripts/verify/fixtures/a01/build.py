@@ -20,7 +20,7 @@ WBS = """# Work Breakdown Structure (WBS) & Phasing Plan
 
 ## 1. Executive Summary & Phasing Strategy
 
-Bank Sinar Jaya's core ledger ships first, integrations follow once the ledger is stable, and the
+Bank Nusantara Mandiri's core ledger ships first, integrations follow once the ledger is stable, and the
 legacy ERP bridge lands last because it has the largest blast radius of the three.
 
 ## 2. Phased Package Breakdown
@@ -60,7 +60,7 @@ Items cut from Phase 1, each with the reason it waits:
 
 ## 4. Phase Gate Sign-Off
 
-Lead Enterprise Architect: Wahyu Nur Sagita
+Lead Enterprise Architect: Damar Wicaksono
 Date: 2026-11-08
 Status: **WBS PHASING APPROVED (Ready for C4 Modeling & STRIDE in Phase A02)**
 """
@@ -92,13 +92,13 @@ def build(dest, kind):
         end = wbs.index("## 2. Phased Package Breakdown")
         wbs = wbs[:start] + "## 1. Executive Summary & Phasing Strategy\n\n" + wbs[end:]
     elif kind == "signoff-filler-name":
-        wbs = wbs.replace("Lead Enterprise Architect: Wahyu Nur Sagita",
+        wbs = wbs.replace("Lead Enterprise Architect: Damar Wicaksono",
                           "Lead Enterprise Architect: filled")
     elif kind != "base":
         raise SystemExit("unknown kind: %s" % kind)
 
     w("docs/pm/WBS_PHASING_PLAN.md", wbs)
-    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Sinar Jaya Core Ledger\n- **Scale**: %s\n- **Delivery**: client\n" % scale)
+    w("docs/pm/PROJECT_STATE.md", "# Project State\n\n- **Project**: Bank Nusantara Mandiri Core Ledger\n- **Scale**: %s\n- **Delivery**: client\n" % scale)
 
 
 if __name__ == "__main__":

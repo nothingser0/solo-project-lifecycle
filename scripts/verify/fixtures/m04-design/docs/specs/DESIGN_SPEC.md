@@ -254,5 +254,5 @@ Transitions use 150 ms ease-out; the payment confirmation fades in and the stock
 
 ## Design Freeze sign-off
 
-Approved by: Wahyu Nur Sagita (Solo Dev) on 2026-11-06
-Approved by: Sri Wahyuni (Client Owner) on 2026-11-06
+Approved by: Damar Wicaksono (Solo Dev) on 2026-11-06
+Approved by: Prita Handayani (Client Owner) on 2026-11-06

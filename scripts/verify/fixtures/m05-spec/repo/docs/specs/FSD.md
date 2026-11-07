@@ -204,10 +204,10 @@ sequenceDiagram
 Stack Decision LOCKED: Next.js 15 + Postgres 16 + Drizzle.
 
 Rejected: Kubernetes because one VM runs 200 orders/day, and an orchestrator would add three moving parts for load we will not see for two years.
-Stack-Locked-by: Wahyu Nur Sagita on 2026-11-06
+Stack-Locked-by: Damar Wicaksono on 2026-11-06
 
 > ⚠️ **M05 GATE ENFORCEMENT**: `validate-gate.sh M05` requires eight architecture inputs to be recorded before
-> the stack lock, and a named human in `Stack-Locked-by: Wahyu Nur Sagita on 2026-11-06
+> the stack lock, and a named human in `Stack-Locked-by: Damar Wicaksono on 2026-11-06
 > source; ask the human only for missing or conflicting information. The human chooses and locks the stack.
 
 - Q1 Team Expertise: one developer, strong in TypeScript and SQL, no Kubernetes experience
@@ -851,9 +851,9 @@ Map each consumed threat and security requirement to its design control and plan
 > the *Validated by Solo Developer* line; client delivery must also complete the *Client Single PIC*
 > line. Replace every bracketed placeholder with a real value before running the gate.
 
-**Approved by**: Wahyu Nur Sagita — reviewed the RBAC matrix and the idempotency key design against the FSD §4 endpoints
+**Approved by**: Damar Wicaksono — reviewed the RBAC matrix and the idempotency key design against the FSD §4 endpoints
 **Approved on**: 2026-11-06
-**Validated by Solo Developer**: Wahyu Nur Sagita (Date: 2026-11-06)
+**Validated by Solo Developer**: Damar Wicaksono (Date: 2026-11-06)
 **Approved by Client Single PIC** (client delivery only): <Client PIC name> (Date: <YYYY-MM-DD>)
 
 
@@ -865,4 +865,4 @@ components against the endpoints below, keeping the same spacing scale and type 
 ## Sign-off
 
 Approved on: 2026-11-06
-Approved by: Wahyu Nur Sagita (Solo Dev)
+Approved by: Damar Wicaksono (Solo Dev)

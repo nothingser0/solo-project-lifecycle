@@ -62,19 +62,19 @@ sit += ("\n\n| Item | Scenario | Result |\n| :--- | :--- | :---: |\n"
         "| REQ-01 | login with an invalid password is rejected | PASS |\n"
         "\nStaging-URL: https://kasir-staging.vercel.app\n")
 sit = sit.replace("| **Name**: _________________________ | **Name**: _________________________ |",
-                  "| **Name**: Wahyu Nur Sagita | **Name**: Budi Santoso |")
+                  "| **Name**: Damar Wicaksono | **Name**: Ayu Lestari |")
 sit = sit.replace("| **Title / Role**: Independent Lead Engineer | **Title / Role**: _________________ |",
                   "| **Title / Role**: Independent Lead Engineer | **Title / Role**: Operations Manager |")
 sit = sit.replace("| **Date**: _________________________ | **Date**: _________________________ |",
                   "| **Date**: 2026-11-06 | **Date**: 2026-11-07 |")
 sit = sit.replace("| **Signature**: | **Signature**: |",
-                  "| **Signature**: Wahyu Nur Sagita | **Signature**: Budi Santoso |")
+                  "| **Signature**: Damar Wicaksono | **Signature**: Ayu Lestari |")
 
 # ---- one mutation each ----------------------------------------------------------------------
 if kind == "empty-signoff":
-    sit = sit.replace("| **Name**: Wahyu Nur Sagita | **Name**: Budi Santoso |",
+    sit = sit.replace("| **Name**: Damar Wicaksono | **Name**: Ayu Lestari |",
                       "| **Name**: _________________________ | **Name**: _________________________ |")
-    sit = sit.replace("| **Signature**: Wahyu Nur Sagita | **Signature**: Budi Santoso |",
+    sit = sit.replace("| **Signature**: Damar Wicaksono | **Signature**: Ayu Lestari |",
                       "| **Signature**: | **Signature**: |")
 elif kind == "signoff-missing":
     sit = re.sub(r"### 6\. SIT Sign-Off Sheet.*\Z", "", sit, flags=re.S)

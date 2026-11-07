@@ -120,18 +120,18 @@ expect_m03m12() {
     printf -- '- **Scale**: Large\n- Delivery: client\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
     case "$mode" in
         nda*)
-            local sign="Sri Wahyuni on 2026-11-05"
+            local sign="Prita Handayani on 2026-11-05"
             [ "$mode" = "ndamodel" ] && sign="Claude Agent"
             cp "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/templates/00-pre-sales-enterprise/SOW_CONTRACT_TEMPLATE.md" "$dir/contracts/SOW_CONTRACT.md" 2>/dev/null || true
             [ -f "$dir/contracts/SOW_CONTRACT.md" ] || printf '# SOW\n' > "$dir/contracts/SOW_CONTRACT.md"
-            printf '# NDA\n\nDisclosing Party: PT Klien Sejahtera\nReceiving Party: Zeenn Studio\n\nSigned by: %s\n' "$sign" > "$dir/contracts/NDA.md"
+            printf '# NDA\n\nDisclosing Party: PT Mitra Abadi\nReceiving Party: Arunika Studio\n\nSigned by: %s\n' "$sign" > "$dir/contracts/NDA.md"
             ;;
         ir*)
             printf '# Warranty\n\n## Coverage\nx\n## Exclusion\nx\n## Service Level Agreement\nx\n' > "$dir/docs/pm/WARRANTY_POLICY.md"
             if [ "$mode" = "irmissing" ]; then
                 printf '# Incident Response\n\nWe will handle incidents when they happen.\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
             else
-                printf '# Incident Response Plan\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Communication\nStatus page every 30 minutes.\n\nOwner: Sri Wahyuni\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+                printf '# Incident Response Plan\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Communication\nStatus page every 30 minutes.\n\nOwner: Prita Handayani\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
             fi
             ;;
     esac
@@ -164,7 +164,7 @@ expect_a01a04() {
     printf -- '- **Scale**: Large\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
     case "$mode" in
         a01*)
-            local sign="Sri Wahyuni on 2026-11-05" razor='- Loyalty points deferred because no loyalty programme.
+            local sign="Prita Handayani on 2026-11-05" razor='- Loyalty points deferred because no loyalty programme.
 - Multi-warehouse moved out because one warehouse until 2027.' rows='| Phase | Package | Price |
 |---|---|---|
 | 1 | Ordering core | 300000000 |
@@ -188,7 +188,7 @@ Signed by: $sign
 EOF
             ;;
         a04*)
-            local owner="Sri Wahyuni" dr="RTO: 4 hours. RPO: 15 minutes."
+            local owner="Prita Handayani" dr="RTO: 4 hours. RPO: 15 minutes."
             [ "$mode" = "a04tdb" ] && owner="TBD"
             [ "$mode" = "a04dr" ] && dr="We have backups."
             cat > "$dir/docs/governance/GOVERNANCE_HANDOVER_PACK.md" <<EOF
@@ -199,7 +199,7 @@ EOF
 |---|---|---|
 | Release approval | $owner | A |
 | Incident triage | Budi | R |
-| Change requests | Zeenn | C |
+| Change requests | Damar | C |
 
 ## CAB
 Monthly, first Tuesday, quorum 2.
@@ -207,7 +207,7 @@ Monthly, first Tuesday, quorum 2.
 ## Disaster Recovery
 $dr
 
-Signed by: Sri Wahyuni on 2026-11-05
+Signed by: Prita Handayani on 2026-11-05
 EOF
             ;;
     esac
@@ -243,14 +243,14 @@ expect_advisory() {
     printf -- '- **Scale**: Large\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
     case "$mode" in
         a00*)
-            local who="Zeenn" fee="IDR 15.000.000 per month"
+            local who="Damar" fee="IDR 15.000.000 per month"
             [ "$mode" = "a00model" ] && who="Claude Agent"
             [ "$mode" = "a00fee" ] && fee="0"
             cat > "$dir/docs/pm/CONSULTING_AGREEMENT.md" <<EOF
 # Consulting Agreement
 
 ## Parties
-Client: PT Klien
+Client: PT Mitra
 Consultant: $who
 
 ## Advisory Deliverables
@@ -308,7 +308,7 @@ expect_signatory() {
         m10*)
             printf '# Protocol\n\n## Release and Environment\nx\n## Post-Deployment Verification\nx\n## Monitoring and Recovery\nx\n' > "$dir/docs/pm/DEPLOYMENT_PROTOCOL.md"
             local lead="Claude Agent"
-            [ "$mode" = "m10human" ] && lead="Sri Wahyuni"
+            [ "$mode" = "m10human" ] && lead="Prita Handayani"
             cat > "$dir/docs/pm/GO_LIVE_REPORT.md" <<EOF
 # Go Live Report
 
@@ -329,10 +329,10 @@ Lead Engineer: $lead
 EOF
             ;;
         m11*)
-            local p1="Sri Wahyuni, PT Klien" p2="Zeenn, Studio" s1="Sri Wahyuni" s2="Zeenn"
+            local p1="Prita Handayani, PT Mitra" p2="Damar, Studio" s1="Prita Handayani" s2="Damar"
             case "$mode" in
                 m11model) s1="Claude Agent" ;;
-                m11same)  p1="Zeenn, Studio"; p2="Zeenn, Studio"; s1="Zeenn"; s2="Zeenn" ;;
+                m11same)  p1="Damar, Studio"; p2="Damar, Studio"; s1="Damar"; s2="Damar" ;;
             esac
             cat > "$dir/docs/pm/BAST.md" <<EOF
 # BAST
@@ -564,10 +564,10 @@ expect_m08_m09 "model signing the client UAT blocks" FAIL m09model 'Client Singl
 Signature: Claude Agent
 Date: 2026-11-05
 Signed via: meeting'
-expect_m08_m09 "UAT signature without a channel blocks" FAIL m09incomplete 'Client Single PIC: Sri Wahyuni
-Signature: Sri Wahyuni'
-expect_m08_m09 "human client sign-off with channel passes" PASS m09incomplete 'Client Single PIC: Sri Wahyuni
-Signature: Sri Wahyuni
+expect_m08_m09 "UAT signature without a channel blocks" FAIL m09incomplete 'Client Single PIC: Prita Handayani
+Signature: Prita Handayani'
+expect_m08_m09 "human client sign-off with channel passes" PASS m09incomplete 'Client Single PIC: Prita Handayani
+Signature: Prita Handayani
 Date: 2026-11-05
 Signed via: meeting'
 
@@ -653,10 +653,10 @@ expect_m06_int() {
     printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
     {
       printf '# TODO\n\n'
-      printf -- '- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
-      printf -- '- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
-      printf -- '- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
-      printf -- '- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n'
+      printf -- '- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
+      printf -- '- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
+      printf -- '- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
+      printf -- '- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
       printf '%b\n' "$extra"
     } > "$dir/docs/harness-root/TODO.md"
     local out got="PASS"
@@ -672,7 +672,7 @@ expect_m06_int() {
     fi
 }
 expect_m06_int "declared integration with no M06-INT task blocks" FAIL ''
-expect_m06_int "M06-INT task satisfies a declared integration" PASS '- [x] **M06-INT-01: Midtrans webhook**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni'
+expect_m06_int "M06-INT task satisfies a declared integration" PASS '- [x] **M06-INT-01: Midtrans webhook**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani'
 expect_m06_int "integration marked N/A with a reason passes" PASS '- M06-INT: N/A - payment collected offline by bank transfer'
 expect_m06_int "no declared integration needs no INT task" PASS '' 'No external services; everything is in-house.'
 
@@ -691,7 +691,7 @@ expect_m06_cross() {
     printf '%b' "$dsnenv" > "$dir/.env"
     printf '%b' "$evidence" > "$dir/artifacts/final-evidence.md"
     printf '%b' "$src" > "$dir/src/pages.tsx"
-    printf '# TODO\n\n- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-02: dashboard**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n' > "$dir/docs/harness-root/TODO.md"
+    printf '# TODO\n\n- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-02: dashboard**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani\n' > "$dir/docs/harness-root/TODO.md"
     local out got="PASS"
     out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
     case "$mode" in
@@ -740,13 +740,13 @@ expect_m06_todo() {
         FAIL=$((FAIL + 1))
     fi
 }
-M06_T=('- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/setup.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
-M06_T+=('- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/db.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
-M06_T+=('- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/api.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
-M06_T+=('- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/ui.png`\n  - Approved: 2026-01-01 by Sri Wahyuni\n')
-expect_m06_todo "model approval of a task blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Claude Agent\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n"
-expect_m06_todo "one artefact reused across categories blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n"
-expect_m06_todo "human-approved distinct evidence passes" PASS "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Sri Wahyuni\n"
+M06_T=('- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/setup.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+M06_T+=('- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/db.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+M06_T+=('- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/api.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+M06_T+=('- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/ui.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+expect_m06_todo "model approval of a task blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Claude Agent\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n"
+expect_m06_todo "one artefact reused across categories blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n"
+expect_m06_todo "human-approved distinct evidence passes" PASS "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n"
 
 # expect_m05_schema <name> <PASS|FAIL> <fsd-tail>
 # Assert the ERD/DDL cross-check and the rejected-alternative rule on their own.
@@ -754,7 +754,7 @@ expect_m05_schema() {
     local name="$1" want="$2" tail="$3"
     local dir="$WORK/m05sc"
     rm -rf "$dir"; mkdir -p "$dir/docs/specs"
-    printf '# FSD\n\n%b\n\nApproved by: Sri Wahyuni\nApproved on: 2026-11-05\n' "$tail" > "$dir/docs/specs/FSD.md"
+    printf '# FSD\n\n%b\n\nApproved by: Prita Handayani\nApproved on: 2026-11-05\n' "$tail" > "$dir/docs/specs/FSD.md"
     local out got="PASS"
     out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
     echo "$out" | grep -qE "missing from the ERD|never created by the DDL|no rejected alternative|without a reason" && got="FAIL"
@@ -781,7 +781,7 @@ expect_m05_chain() {
     local dir="$WORK/m05ch"
     rm -rf "$dir"; mkdir -p "$dir/docs/specs" "$dir/docs/pm"
     printf '%b' "$prd" > "$dir/docs/specs/PRD.md"
-    printf '# FSD\n\n## Technical Sign-Off\n\nApproved by: Sri Wahyuni\nApproved on: 2026-11-05\n' > "$dir/docs/specs/FSD.md"
+    printf '# FSD\n\n## Technical Sign-Off\n\nApproved by: Prita Handayani\nApproved on: 2026-11-05\n' > "$dir/docs/specs/FSD.md"
     [ -n "$scope" ] && printf '%b' "$scope" > "$dir/docs/pm/SCOPE_STATEMENT.md"
     [ -n "$sitemap" ] && printf '%b' "$sitemap" > "$dir/docs/specs/SITEMAP.md"
     local out got="PASS"
@@ -933,8 +933,8 @@ expect_m04_freeze() {
     fi
 }
 expect_m04_freeze "agent cannot approve the design freeze" FAIL '- Approved by: Claude Agent\n- Approved on: 2026-11-05\n- Approved via: chat\n'
-expect_m04_freeze "sign-off without a channel is rejected" FAIL '- Approved by: Sri Wahyuni\n- Approved on: 2026-11-05\n'
-expect_m04_freeze "human with name, date and channel passes" PASS '- Approved by: Sri Wahyuni\n- Approved on: 2026-11-05\n- Approved via: WhatsApp\n'
+expect_m04_freeze "sign-off without a channel is rejected" FAIL '- Approved by: Prita Handayani\n- Approved on: 2026-11-05\n'
+expect_m04_freeze "human with name, date and channel passes" PASS '- Approved by: Prita Handayani\n- Approved on: 2026-11-05\n- Approved via: WhatsApp\n'
 
 # expect_m04_screen <name> <PASS|FAIL> <screen-html>
 # Builds the minimum M04 project and varies only the prototype screen content.
@@ -1038,7 +1038,7 @@ expect_m03_sow() {
     local dir="$WORK/m03sow"
     rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/contracts" "$dir/docs/governance"
     printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
-    printf '# NDA\n\nDisclosing Party: PT Klien\nReceiving Party: Zeenn\n\nSigned by: Sri Wahyuni on 2026-11-05\n\n%s\n' "$(printf 'Mutual confidentiality obligations apply to both parties. %.0s' $(seq 1 20))" > "$dir/contracts/NDA.md"
+    printf '# NDA\n\nDisclosing Party: PT Mitra\nReceiving Party: Damar\n\nSigned by: Prita Handayani on 2026-11-05\n\n%s\n' "$(printf 'Mutual confidentiality obligations apply to both parties. %.0s' $(seq 1 20))" > "$dir/contracts/NDA.md"
     local i=1; while [ $i -le 40 ]; do echo "risk item $i with owner and mitigation described in enough words" >> "$dir/docs/governance/RISK_ASSESSMENT_MATRIX.md"; i=$((i+1)); done
     i=1; while [ $i -le 40 ]; do echo "raci row $i with responsible accountable consulted informed named" >> "$dir/docs/governance/RACI_MATRIX.md"; i=$((i+1)); done
     {
@@ -1076,7 +1076,7 @@ expect_m03_sow() {
     fi
 }
 SIG_BLANK='Client\nName: _________________________________\nTitle: _________________________________\nDate: _________________________________\nSignature: _________________________________\n'
-SIG_FILLED='Client\nName: Sri Wahyuni  Signature: /s/ Sri Wahyuni\nTitle: Operations Director  Date: 2026-11-01\nSignature: /s/ Sri Wahyuni  Date: 2026-11-01\nDeveloper\nName: Zeenn  Signature: /s/ Zeenn  Date: 2026-11-02\n'
+SIG_FILLED='Client\nName: Prita Handayani  Signature: /s/ Prita Handayani\nTitle: Operations Director  Date: 2026-11-01\nSignature: /s/ Prita Handayani  Date: 2026-11-01\nDeveloper\nName: Damar  Signature: /s/ Damar  Date: 2026-11-02\n'
 expect_m03_sow "unsigned SOW (blank signature lines) blocked" FAIL "$SIG_BLANK"
 expect_m03_sow "signed SOW with substantive clauses passes"  PASS "$SIG_FILLED"
 
@@ -1093,8 +1093,8 @@ expect_m03_fixture() {
             python3 - "$sow" <<'PYM'
 import io, re, sys
 p = sys.argv[1]; s = io.open(p, encoding="utf-8").read()
-s = re.sub(r"(?m)^Name:[ \t]*Wahyu[^\n]*$", "Name: Claude Agent", s, count=1)
-s = re.sub(r"(?m)^Signature:[ \t]*Wahyu[^\n]*$", "Signature: /s/ Claude Agent", s, count=1)
+s = re.sub(r"(?m)^Name:[ \t]*Damar[^\n]*$", "Name: Claude Agent", s, count=1)
+s = re.sub(r"(?m)^Signature:[ \t]*Damar[^\n]*$", "Signature: /s/ Claude Agent", s, count=1)
 io.open(p, "w", encoding="utf-8").write(s)
 PYM
             ;;
@@ -2238,7 +2238,7 @@ expect_m12_incident() {
 WPEOF
     # A plan must define severity, escalation, response time and comms; a document with the
     # headings and no content is exactly what the incident gate now rejects.
-    [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Comms\nStatus page every 30 minutes.\n\nOwner: Sri Wahyuni\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+    [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Comms\nStatus page every 30 minutes.\n\nOwner: Prita Handayani\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
     local out rc got
     out="$(cd "$dir" && bash "$GATE" M12 2>&1)"; rc=$?
     got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"

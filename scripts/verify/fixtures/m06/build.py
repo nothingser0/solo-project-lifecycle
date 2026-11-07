@@ -157,22 +157,22 @@ w("TODO.md", """# TODO
 
 - [x] **M06-SETUP-01: Specs Pre-Read** — read AGENTS, CONTEXT, FSD, PRD
   - **Evidence**: `artifacts/setup.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-DB-01: schema + migration** — Postgres tables created and queried
   - **Evidence**: `artifacts/db.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-BE-01: API contract** — GET /api/products, POST /api/orders
   - **Evidence**: `artifacts/api.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-FE-01: port SCR-001 login** — docs/design/screens/SCR-001.html
   - **Evidence**: `artifacts/fe-1.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-FE-02: port SCR-002 orders** — docs/design/screens/SCR-002.html
   - **Evidence**: `artifacts/fe-2.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 - [x] **M06-QA-01: local verification** — lint, build, smoke test
   - **Evidence**: `artifacts/qa.png`
-  - Approved: 2026-11-06 by Wahyu Nur Sagita
+  - Approved: 2026-11-06 by Damar Wicaksono
 """)
 
 w(".env.example", "DATABASE_URL=postgres://localhost:5432/kasir\n")

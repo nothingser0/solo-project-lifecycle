@@ -91,7 +91,7 @@ end = s.index("```", s.index("AUDIT_LOGS {", start))
 end = s.index("\n", end) + 1
 s = s[:start] + erd + "\n" + s[end:]
 
-s = re.sub(r"Stack-Locked-by:[^\n]*", "Stack-Locked-by: Wahyu Nur Sagita on 2026-11-06", s)
+s = re.sub(r"Stack-Locked-by:[^\n]*", "Stack-Locked-by: Damar Wicaksono on 2026-11-06", s)
 io.open(fsd, "w", encoding="utf-8").write(s)
 
 tables = sorted(set(re.findall(r"^CREATE TABLE (\w+)", s, re.M)))
