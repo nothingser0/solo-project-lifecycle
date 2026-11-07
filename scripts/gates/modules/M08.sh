@@ -45,6 +45,7 @@ gate_M08() {
             # Section check for full migration plan
             if [ "$plan_file" = "docs/pm/DATA_MIGRATION_PLAN.md" ]; then
                 check_sections "$plan_file" "Data Hygiene" "Mapping Matrix" "Masking Protocol"
+                check_section_content "$plan_file" "Data Hygiene" "Mapping Matrix" "Masking Protocol"
             fi
         fi
 

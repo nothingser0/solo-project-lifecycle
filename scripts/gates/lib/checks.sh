@@ -832,6 +832,44 @@ check_sections() {
     fi
 }
 
+# A heading is not a section. check_sections() proves only that a title exists; a document can carry
+# every required title and say nothing under any of them. This reads the block that belongs to each
+# keyword and requires at least one line of real content in it, so the two checks are used together:
+# check_sections for presence, check_section_content for substance.
+_section_body() { # $1 keyword, $2 file -> the block under the first heading matching the keyword
+    awk -v pat="$1" 'BEGIN{IGNORECASE=1}
+        /^#+[[:space:]]/ {
+            lvl = match($0, /[^#]/)
+            if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+            if (keep == 1 && lvl <= base) { keep = 0 }
+        }
+        keep { print }' "$2" 2>/dev/null
+}
+
+check_section_content() { # $1 file, rest: keywords that must carry content
+    local file="$1"
+    shift
+    if [ ! -f "$file" ]; then
+        return 0 # absence is check_required's job
+    fi
+    local h body n empty=0
+    for h in "$@"; do
+        body=$(_section_body "$h" "$file")
+        # drop blanks, rules, nested headings and blockquote asides - they are frame, not content
+        n=$(printf '%s\n' "$body" | sed 's/^[[:space:]]*//' \
+              | grep -vE '^$|^-{3,}$|^#{1,6}[[:space:]]|^>' | wc -l | tr -dc '0-9')
+        if [ "${n:-0}" -lt 1 ]; then
+            echo "  ❌ $file section '$h' is a heading with no content - a title is not a section."
+            empty=1
+        fi
+    done
+    if [ "$empty" -eq 0 ]; then
+        echo "  ✅ $file core sections carry content ($# sections)"
+    else
+        GATE_FAILED=1
+    fi
+}
+
 check_required() {
     local file="$1"
     local alt="${2:-}"

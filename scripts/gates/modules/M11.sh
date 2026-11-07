@@ -105,6 +105,7 @@ gate_M11() {
             # 4. Core section headings verification for formal BAST
             if [ "$target_bast" = "docs/pm/BAST.md" ] || [ "$target_bast" = "contracts/BAST.md" ]; then
                 check_sections "$target_bast" "Article 1" "Article 2" "Article 3"
+                check_section_content "$target_bast" "Article 1" "Article 2" "Article 3"
             fi
         fi
 

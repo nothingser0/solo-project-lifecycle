@@ -40,6 +40,7 @@ gate_M13() {
             fi
             # 2. Require core metrics baseline dimensions (Acquisition, Activation, Retention)
             check_sections "$metrics_target" "Acquisition" "Activation" "Retention"
+            check_section_content "$metrics_target" "Acquisition" "Activation" "Retention"
 
             # 3. A baseline needs measurements. A heading with nothing under it passed, and so did
             #    prose whose only digits came from the heading numbers ("## 2. Acquisition").

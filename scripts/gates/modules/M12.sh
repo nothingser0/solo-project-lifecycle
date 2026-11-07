@@ -49,6 +49,7 @@ gate_M12() {
             fi
             # 2. Require core section headings: Coverage, Exclusions, and SLA
             check_sections "$target_wp" "Coverage" "Exclusion" "Service Level Agreement"
+            check_section_content "$target_wp" "Coverage" "Exclusion" "Service Level Agreement"
 
             # 3. A heading is not a policy. Each core section must carry real content, and the SLA
             #    must state figures: "To be discussed" under Coverage, or an SLA with the matrix

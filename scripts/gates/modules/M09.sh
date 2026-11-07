@@ -43,6 +43,7 @@ gate_M09() {
     [ -f "$target_workbook" ] || target_workbook="docs/qa/UAT_WORKBOOK.md"
     if [ $is_m09_solo -eq 0 ] && [ -f "$target_workbook" ]; then
         check_sections "$target_workbook" "Requirement / AC ID" "Evidence" "UAT"
+        check_section_content "$target_workbook" "Requirement / AC ID" "Evidence" "UAT"
         if grep -qiE "UAT Approved[^:]*:[[:space:]]*(yes|true)|Pass Rate.*90%" "$target_workbook"; then
             echo "  ❌ $target_workbook contains a fixed approval/pass-rate assumption; base UAT decision on applicable P0 criteria and authorized risk disposition."
             GATE_FAILED=1

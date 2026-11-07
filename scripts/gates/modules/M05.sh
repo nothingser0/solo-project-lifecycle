@@ -48,6 +48,7 @@ gate_M05() {
         prd="docs/specs/PRD.md"
         # A2: core section headings must be present (from PRD_FINAL_TEMPLATE.md)
         check_sections "$prd" "Document Metadata" "Functional Traceability Matrix"
+        check_section_content "$prd" "Document Metadata" "Functional Traceability Matrix"
         # 1. Traceability, mapped rather than spelled. The old form passed when the two
         #    strings appeared anywhere in the file, so "F-1 login" in one paragraph and
         #    "REQ-9 football" in another counted as a matrix. A chain that cannot be walked

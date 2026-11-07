@@ -3530,6 +3530,63 @@ expect_a04 "an empty CAB section blocks"                          FAIL "CAB sect
 expect_a04 "an empty retainer section blocks"                     FAIL "no Architecture Conformance Retainer content" retainer-empty
 
 echo ""
+echo "Core sections must carry content (all gates that use check_sections):"
+# Measured 2026-11-08: check_sections() proves only that a heading exists. M02 printed
+# "core section headings verified (2 headings present)" for a scope statement whose User Stories and
+# Acceptance Criteria sections were empty. Every module that used check_sections alone is pinned here
+# through the shared library, so a regression in the helper fails one place instead of eight.
+section_gate() { # section name, keyword, want, doc-with-empty-section
+    local name="$1" kw="$2" want="$3" file="$4" dir="$WORK/sect" got
+    rm -rf "$dir"; mkdir -p "$dir/$(dirname "$file")"
+    printf '# Doc\n\n## 1. %s\n\n## 2. Other\n\nSome content.\n' "$kw" > "$dir/$file"
+    # GATE_FAILED must be read outside any command substitution: $(...) forks a subshell and the
+    # flag set inside it is lost, which is exactly what made the first version of this check lie.
+    bash -c '
+        GATE_FAILED=0
+        source "$1/scripts/gates/lib/checks.sh" >/dev/null 2>&1
+        check_section_content "$2" "$3" >/dev/null 2>&1
+        printf "%s" "$GATE_FAILED"' _ "$REPO" "$dir/$file" "$kw" > "$dir/.got" 2>/dev/null
+    got=$(cat "$dir/.got")
+    cause="${got#*|}"; got="${got%%|*}"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (an empty '$kw' section blocks)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (empty '$kw' section -> GATE_FAILED=$got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+section_gate "M02 User Stories"            "User Stories"                1 docs/pm/SCOPE_STATEMENT.md
+section_gate "M04 Composites"              "Composites"                  1 docs/specs/COMPONENT_REQUIREMENTS.md
+section_gate "M05 Document Metadata"       "Document Metadata"           1 docs/specs/PRODUCT_REQUIREMENTS.md
+section_gate "M08 Data Hygiene"            "Data Hygiene"                1 docs/data/DATA_MIGRATION_PLAN.md
+section_gate "M09 Evidence"                "Evidence"                    1 docs/testing/UAT_WORKBOOK.md
+section_gate "M11 Article 2"               "Article 2"                   1 docs/legal/BAST.md
+section_gate "M12 Coverage"                "Coverage"                    1 docs/ops/WARRANTY_PACK.md
+section_gate "M13 Retention"               "Retention"                   1 docs/pm/GO_LIVE_REPORT.md
+# and the other direction: a section with one real line must not be blocked
+section_gate_content() {
+    local dir="$WORK/sectok" file="docs/pm/SCOPE_STATEMENT.md" got
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf '# Doc\n\n## 1. User Stories\n\n- As a teller I reconcile the ledger nightly.\n' > "$dir/$file"
+    bash -c '
+        GATE_FAILED=0
+        source "$1/scripts/gates/lib/checks.sh" >/dev/null 2>&1
+        check_section_content "$2" "User Stories" >/dev/null 2>&1
+        printf "%s" "$GATE_FAILED"' _ "$REPO" "$dir/$file" > "$dir/.got" 2>/dev/null
+    got=$(cat "$dir/.got")
+    if [ "$got" = 0 ]; then
+        echo -e "  ${GREEN}✓${NC} M02 a filled section still passes"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} M02 a filled section still passes  (GATE_FAILED=$got)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+section_gate_content
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0

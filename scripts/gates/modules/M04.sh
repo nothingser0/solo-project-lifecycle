@@ -132,6 +132,7 @@ gate_M04() {
     check_required "docs/specs/SITEMAP.md" "" $min_sitemap
     check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
     check_sections "docs/specs/COMPONENT_REQUIREMENTS.md" "Primitives|Atomic" "Composites" "WCAG|Accessibility"
+    check_section_content "docs/specs/COMPONENT_REQUIREMENTS.md" "Primitives|Atomic" "Composites" "WCAG|Accessibility"
     check_required "docs/design/brand/LOGO_DESIGN_BRIEF.md" "docs/specs/LOGO_DESIGN_BRIEF.md" 200
     check_required "docs/design/inspiration/notes.md" "" 200
     check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000

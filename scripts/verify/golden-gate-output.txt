@@ -74,6 +74,7 @@
        Exit code: 2 (non-delegable — route to A00-A04 Advisory).
   ✅ docs/pm/SCOPE_STATEMENT.md (1275B)
   ✅ docs/pm/SCOPE_STATEMENT.md core section headings verified (2 headings present)
+  ❌ docs/pm/SCOPE_STATEMENT.md section 'User Stories' is a heading with no content - a title is not a section.
   ✅ Zero ambiguous terms in Must-Have scope rows
   ❌ Explicit Scope-Lock-Decision (LOCKED | PENDING) not declared in SCOPE_STATEMENT.md!
   [INFO] Declared scale: medium; P0 feature rows (F-xx) counted: 0 (expected 6-15)
@@ -117,6 +118,8 @@
   ✅ docs/specs/SITEMAP.md (1117B)
   ✅ docs/specs/COMPONENT_REQUIREMENTS.md (1126B)
   ✅ docs/specs/COMPONENT_REQUIREMENTS.md core section headings verified (3 headings present)
+  ❌ docs/specs/COMPONENT_REQUIREMENTS.md section 'Primitives|Atomic' is a heading with no content - a title is not a section.
+  ❌ docs/specs/COMPONENT_REQUIREMENTS.md section 'Composites' is a heading with no content - a title is not a section.
   ✅ docs/specs/LOGO_DESIGN_BRIEF.md (348B)
   ✅ docs/design/inspiration/notes.md (77B)
   ✅ DESIGN.md (1266B)
@@ -308,6 +311,9 @@
   ❌ docs/pm/DATA_MIGRATION_PLAN.md missing core section heading matching 'Data Hygiene'!
   ❌ docs/pm/DATA_MIGRATION_PLAN.md missing core section heading matching 'Mapping Matrix'!
   ❌ docs/pm/DATA_MIGRATION_PLAN.md missing core section heading matching 'Masking Protocol'!
+  ❌ docs/pm/DATA_MIGRATION_PLAN.md section 'Data Hygiene' is a heading with no content - a title is not a section.
+  ❌ docs/pm/DATA_MIGRATION_PLAN.md section 'Mapping Matrix' is a heading with no content - a title is not a section.
+  ❌ docs/pm/DATA_MIGRATION_PLAN.md section 'Masking Protocol' is a heading with no content - a title is not a section.
   ❌ M08 Data Migration: no record that the client-supplied inputs were actually received.
      Add 'Inputs-Received: <what> from <client PIC> on <YYYY-MM-DD>' to docs/pm/DATA_MIGRATION_PLAN.md
      Source data / credentials come from the client — never invent or simulate them.
