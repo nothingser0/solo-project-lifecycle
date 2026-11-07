@@ -778,7 +778,13 @@ check_client_inputs() {
         receipt=$(grep -iE "Inputs[- ]Received|Client[- ]Provided|Received from client|Handover received" "$plan" 2>/dev/null \
             | head -1 | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r')
         # Reject: empty, bracketed placeholders, or a line still carrying template tokens.
-        if [ -n "$receipt" ] \
+        # A receipt with no PIC read as filled: "access from  on 2026-11-06" is non-empty and
+        # carries no bracketed token, so the name in "from <name> on <date>" is checked directly.
+        pic_missing=0
+        if printf '%s' "$receipt" | grep -qiE "from[[:space:]]+(on|by|via|-|$)|from[[:space:]]*$"; then
+            pic_missing=1
+        fi
+        if [ -n "$receipt" ] && [ "$pic_missing" -eq 0 ] \
             && ! printf '%s' "$receipt" | grep -qE "^\[.*\]$|\[what was received\]|\[client PIC\]|\[YYYY-MM-DD\]|\[what\]|<what>|<client PIC>|<YYYY-MM-DD>"; then
             echo "  ✅ $label: client input receipt recorded ($receipt)"
             return 0

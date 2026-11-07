@@ -3137,6 +3137,47 @@ expect_m09 "an open Severity 1 row blocks"                         FAIL "unresol
 expect_m09 "a UAT without a workbook blocks"                       FAIL "UAT_WORKBOOK.md (MISSING)"           uat-no-workbook
 
 echo ""
+echo "M10 production cutover:"
+# Measured 2026-11-07: a PVT row saying "FAIL (retested, now PASS)", a PVT row with a blank status
+# cell, a core section demoted to a top-level title, a client-input receipt with no PIC, a Large
+# delivery with no rollback plan, and a model riding along as the verifying signer - all PASSED.
+expect_m10() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m10/build.py" dir="$WORK/m10gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M10 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M10 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M10 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m10 "a verified, live cutover passes"                    PASS ""                                   base
+expect_m10 "a failure rescued in prose is still a failure"      FAIL "PVT rows reporting failure"        pvt-fail-prose
+expect_m10 "a PVT row with no status blocks"                    FAIL "blank status cell"                 pvt-no-status-row
+expect_m10 "a core section demoted to a title blocks"           FAIL "only as a top-level title"         section-level1
+expect_m10 "a client receipt with no PIC blocks"                FAIL "still a placeholder"               inputs-blank-pic
+expect_m10 "a Large release without a rollback plan blocks"      FAIL "ROLLBACK_PLAN.md (MISSING)"        rollback-large
+expect_m10 "a model named as verifier blocks"                    FAIL "names a model as Lead Engineer"    signer-role
+expect_m10 "a decision line that is only a bullet blocks"        FAIL "must record 'Human decision: GO'"  go-commented
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0
