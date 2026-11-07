@@ -3031,8 +3031,13 @@ expect_gate_tpl A02 "A02 accepts the shipped blueprint + threat model" ALLOWED \
 expect_gate_tpl A03 "A03 accepts the shipped schedule + comparison matrix" ALLOWED \
     templates/03-governance/VENDOR_PROCUREMENT_SCHEDULE_TEMPLATE.md:docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md \
     templates/03-governance/VENDOR_COMPARISON_MATRIX.md:docs/governance/VENDOR_COMPARISON_MATRIX.md
-expect_gate_tpl A04 "A04 accepts the shipped governance pack" ALLOWED \
+# The shipped handover template ships its DR table with the targets blank ("| RTO (acceptable
+# downtime) | | ☐ |"). A blank target is not a target, so the raw template is now correctly blocked
+# and only a filled one is accepted - both directions are pinned below.
+expect_gate_tpl A04 "A04 blocks the shipped governance pack while its recovery targets are blank" BLOCKED \
     templates/03-governance/GOVERNANCE_HANDOVER_PACK_TEMPLATE.md:docs/governance/GOVERNANCE_HANDOVER_PACK.md
+expect_gate_tpl A04 "A04 accepts the shipped governance pack once its recovery targets are stated" ALLOWED \
+    scripts/verify/fixtures/a04/GOVERNANCE_HANDOVER_PACK_FILLED.md:docs/governance/GOVERNANCE_HANDOVER_PACK.md
 expect_gate_tpl A00 "A00 accepts the shipped consulting agreement" ALLOWED \
     templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md:contracts/CONSULTING_AGREEMENT.md
 expect_gate_tpl A01 "A01 accepts the shipped WBS template" ALLOWED \
@@ -3481,6 +3486,48 @@ expect_a03 "a recommendation section with no text blocks"            FAIL "has n
 expect_a03 "a recommendation for an uncompared vendor blocks"        FAIL "no comparison column"      rec-unknown-vendor
 expect_a03 "a matrix of bare numbers blocks"                         FAIL "scored row(s)"             matrix-scores-only
 expect_a03 "an empty procurement scope section blocks"               FAIL "'Procurement Scope' section is empty" sections-empty
+
+echo ""
+echo "A04 governance handover:"
+# Measured 2026-11-08. Four defects passed: RTO/RPO needed only the LABEL (the shipped template's
+# rows are blank and passed), "accountable" in a footnote satisfied the owner check while every RACI
+# cell read R/C/I, and the CAB and retainer sections could be headings with nothing under them.
+expect_a04() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a04/build.py" dir="$WORK/a04gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A04 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A04 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A04 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a04 "a pack with measured targets and a real RACI passes"  PASS ""                                  base
+expect_a04 "an RTO with no value blocks"                          FAIL "gives RTO no value"               rto-empty
+expect_a04 "an RTO of TBD blocks"                                 FAIL "gives RTO no value"               rto-tbd
+expect_a04 "a RACI with no accountable cell blocks"               FAIL "no cell an A (accountable)"       raci-no-accountable
+expect_a04 "a RACI handing a role to TBD blocks"                  FAIL "TBD/placeholder"                  raci-placeholder
+expect_a04 "a missing RTO row blocks"                             FAIL "states no RTO"                    dr-no-rto
+expect_a04 "a recovery plan with no drill recorded blocks"        FAIL "no restore drill"                 dr-no-drill
+expect_a04 "an empty CAB section blocks"                          FAIL "CAB section is empty"             cab-empty
+expect_a04 "an empty retainer section blocks"                     FAIL "no Architecture Conformance Retainer content" retainer-empty
 
 echo ""
 if [ "$FAIL" -eq 0 ]; then
