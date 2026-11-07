@@ -9,7 +9,12 @@ import os
 import re
 import sys
 
-TPL = "/opt/data/cache/scratch/lifecycle-clone/templates"
+# Resolve the templates from this file's own location: an absolute path here worked on one machine
+# and failed in CI, where the repository is checked out somewhere else entirely.
+HERE = os.path.dirname(os.path.abspath(__file__))
+TPL = os.path.normpath(os.path.join(HERE, "..", "..", "..", "..", "templates"))
+if not os.path.isdir(TPL):
+    raise SystemExit(f"templates not found at {TPL}")
 root, kind = sys.argv[1], sys.argv[2]
 
 

@@ -2330,8 +2330,8 @@ expect_m06_source() {
     local name="$1" want="$2" msg="$3" body="$4"
     local fix="$REPO/scripts/verify/fixtures/m06/repo" dir="$WORK/m06src"
     if [ ! -d "$fix" ]; then
-        echo -e "  ${YELLOW}-${NC} M06 source regressions skipped: fixture missing"
-        return
+        echo -e "  ${RED}✗${NC} $name  (fixture missing: $fix)"
+        FAIL=$((FAIL + 1)); return
     fi
     rm -rf "$dir"; cp -r "$fix" "$dir"
     python3 - "$dir" <<PY
@@ -3021,8 +3021,8 @@ expect_m07() {
     local name="$1" want="$2" msg="$3" kind="$4"
     local build="$REPO/scripts/verify/fixtures/m07/build.py" dir="$WORK/m07qa"
     if [ ! -f "$build" ]; then
-        echo -e "  ${YELLOW}-${NC} M07 regressions skipped: fixture builder missing"
-        return
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
     fi
     rm -rf "$dir"; mkdir -p "$dir"
     python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
