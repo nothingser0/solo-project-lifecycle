@@ -3283,6 +3283,44 @@ expect_m12 "a solo runbook of filler blocks"                        FAIL "is mis
 expect_m12 "an incident plan that defers handling blocks"           FAIL "defers incident handling"              incident-partial
 
 echo ""
+echo "M13 product loop:"
+# Measured 2026-11-08: metrics sections with zero lines under them, the same sections filled with
+# prose whose only digits were heading numbers, a Large backlog that merely names RICE, and a blank
+# Delivery line all PASSED the product-operations gate.
+expect_m13() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m13/build.py" dir="$WORK/m13gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M13 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M13 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M13 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m13 "a measured baseline passes"                            PASS ""                                    base
+expect_m13 "a metrics section with no content blocks"              FAIL "records no measurement"               metrics-empty
+expect_m13 "a metrics section of prose with no figures blocks"     FAIL "records no measurement"               metrics-prose-only
+expect_m13 "naming RICE without a scored row blocks"               FAIL "no scored experiment row"             rice-keyword-only
+expect_m13 "a blank delivery line blocks"                          FAIL "Delivery is not recorded"              delivery-blank
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0

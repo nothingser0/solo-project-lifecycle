@@ -18,6 +18,11 @@ gate_M13() {
         echo "  [INFO] Small Scale detected: M13 Product Iteration is WAIVED (Fast-Track ends at M12)."
         is_m13_waived=1
     fi
+    if [ -z "$m13_delivery" ]; then
+        echo "  ❌ Delivery is not recorded in docs/pm/PROJECT_STATE.md - M13 cannot tell whether the product loop applies."
+        echo "     Record '- **Delivery**: client | solo | portfolio | internal' before closing M13."
+        GATE_FAILED=1
+    fi
 
     if [ $is_m13_waived -eq 1 ]; then
         check_optional "docs/analytics/METRICS_BASELINE_REPORT.md" "docs/pm/METRICS_BASELINE_REPORT.md"
@@ -35,6 +40,27 @@ gate_M13() {
             fi
             # 2. Require core metrics baseline dimensions (Acquisition, Activation, Retention)
             check_sections "$metrics_target" "Acquisition" "Activation" "Retention"
+
+            # 3. A baseline needs measurements. A heading with nothing under it passed, and so did
+            #    prose whose only digits came from the heading numbers ("## 2. Acquisition").
+            for dim in "Acquisition" "Activation" "Retention"; do
+                body=$(awk -v pat="$dim" 'BEGIN{IGNORECASE=1}
+                        /^#+[[:space:]]/ {
+                            lvl = match($0, /[^#]/)
+                            if (keep == 0 && $0 ~ pat) { keep = 1; base = lvl; next }
+                            if (keep == 1 && lvl <= base) { keep = 0 }
+                        }
+                        keep { print }' "$metrics_target" 2>/dev/null \
+                       | grep -vE "^#{1,6}[[:space:]]")
+                body_lines=$(printf '%s\n' "$body" | sed 's/^[[:space:]]*//' | grep -vE '^$|^-{3,}$' | wc -l)
+                body_numbers=$(printf '%s\n' "$body" | grep -oE "[0-9]+([.,][0-9]+)?" | wc -l)
+                # One measured sentence is a valid baseline ("141 of 279 signups, 50.5 percent");
+                # the test is whether figures exist, not how many lines carry them.
+                if [ "$body_lines" -lt 1 ] || [ "$body_numbers" -lt 2 ]; then
+                    echo "  ❌ $metrics_target '$dim' section records no measurement - a baseline without numbers is an opinion."
+                    GATE_FAILED=1
+                fi
+            done
         fi
         # For Large scale, RICE-scored growth experiment backlog is MANDATORY
         m13_scale="$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')"
@@ -47,10 +73,25 @@ gate_M13() {
                     echo "  ❌ docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md still contains unresolved template placeholders ([...])!"
                     GATE_FAILED=1
                 fi
-                if grep -qiE "RICE[[:space:]]*Score|Reach[[:space:]]*×[[:space:]]*Impact|RICE[[:space:]]*Framework" "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md"; then
-                    echo "  ✅ RICE scoring framework verified in Growth Experiments Backlog"
+                # Naming the framework is not using it: "we will prioritise using RICE" passed while
+                # not a single experiment carried a reach / impact / confidence / effort score.
+                rice_rows=$(grep -E "^[[:space:]]*\|" "docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md" 2>/dev/null \
+                    | grep -viE "^[[:space:]]*\|[[:space:]]*:?-{2,}" \
+                    | awk -F'|' '{
+                        cells = NF - 2;
+                        if (cells >= 6) {
+                            scored = 0;
+                            for (i = 2; i < NF; i++) {
+                                v = $(i); gsub(/[[:space:]*]/, "", v);
+                                if (v ~ /^[0-9]+([.][0-9]+)?%?$/) scored++;
+                            }
+                            if (scored >= 3) print
+                        }
+                    }' | head -1)
+                if [ -n "$rice_rows" ]; then
+                    echo "  ✅ RICE scoring verified in Growth Experiments Backlog (scored experiment rows present)"
                 else
-                    echo "  ❌ docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md missing RICE scoring framework!"
+                    echo "  ❌ docs/pm/GROWTH_EXPERIMENTS_BACKLOG.md names RICE but has no scored experiment row (reach / impact / confidence / effort as numbers)."
                     GATE_FAILED=1
                 fi
             fi
