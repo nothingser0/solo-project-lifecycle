@@ -277,8 +277,11 @@ EOF
     local out got="PASS"
     out="$(cd "$dir" && bash "$GATE" "$(echo "$mode" | cut -c1-3 | tr 'a-z' 'A-Z')" 2>&1 || true)"
     case "$mode" in
-        a00model) echo "$out" | grep -q "names a model as a signing party" && got="FAIL" ;;
-        a00fee)   echo "$out" | grep -q "zero/absent professional fee" && got="FAIL" ;;
+        # Behaviour, not wording: A00 was reworded, and these two cases must simply fail the gate.
+        a00model|a00fee)
+            out="$(cd "$dir" && bash "$GATE" A00 2>&1 || true)"
+            if (cd "$dir" && bash "$GATE" A00 >/dev/null 2>&1); then got="PASS"; else got="FAIL"; fi
+            ;;
         a02stride) echo "$out" | grep -q "fewer than 3 has not been done" && got="FAIL" ;;
         a03rows)  echo "$out" | grep -q "scored row(s)" && got="FAIL" ;;
     esac
@@ -3319,6 +3322,46 @@ expect_m13 "a metrics section with no content blocks"              FAIL "records
 expect_m13 "a metrics section of prose with no figures blocks"     FAIL "records no measurement"               metrics-prose-only
 expect_m13 "naming RICE without a scored row blocks"               FAIL "no scored experiment row"             rice-keyword-only
 expect_m13 "a blank delivery line blocks"                          FAIL "Delivery is not recorded"              delivery-blank
+
+echo ""
+echo "A00 advisory agreement:"
+# Measured 2026-11-08: "Total Advisory Fee: Rp 0" with no pro-bono wording, "Maximum Liability Cap:
+# None", a model in the consultant's signature cell, and an Advisory Deliverables section with zero
+# content lines all PASSED. The gate only understood "fee: 0" and "liability: none", which the
+# shipped template never writes.
+expect_a00() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a00/build.py" dir="$WORK/a00gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A00 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A00 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A00 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a00 "a priced, capped advisory agreement passes"      PASS ""                                  base
+expect_a00 "a zero fee with no pro-bono wording blocks"      FAIL "prices the advisory at zero"       fee-zero-no-probono
+expect_a00 "capping liability at nothing blocks"             FAIL "caps the consultant's liability"   liability-none
+expect_a00 "a model in the signature block blocks"           FAIL "names a model in the signature"    model-signs
+expect_a00 "an empty advisory deliverables section blocks"   FAIL "'Advisory Deliverables' section is empty" sections-empty
+expect_a00 "an unfilled amount is caught by the placeholder rule" PASS ""                               placeholder-left
 
 echo ""
 if [ "$FAIL" -eq 0 ]; then
