@@ -3056,6 +3056,46 @@ expect_m07 "a bolded Critical count still blocks"                 FAIL "reports 
 expect_m07 "a renamed native QA heading blocks"                   FAIL "matching 'Native Mobile QA'"                 native-narrow
 
 echo ""
+echo "M08 data migration:"
+# Measured 2026-11-06: counts that disagreed passed, a renamed sign-off heading disabled the
+# signatory check entirely, a blank table-cell signature passed, and Medium closed without any
+# reconciliation report. One case per hole, plus the positive base.
+expect_m08() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m08/build.py" dir="$WORK/m08mig"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M08 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M08 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M08 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m08 "a reconciled migration with agreeing counts passes"     PASS ""                                    base
+expect_m08 "PASSED without row counts blocks"                       FAIL "states no row counts"                  recon-passed-no-counts
+expect_m08 "row counts that disagree block"                         FAIL "row counts that do not agree"          recon-counts-not-matching
+expect_m08 "a renamed sign-off heading still blocks an unsigned PIC" FAIL "sign-off names nobody"               recon-no-pic-wording
+expect_m08 "a blank signature cell blocks"                          FAIL "sign-off is UNSIGNED"                  recon-blank-signature
+expect_m08 "a Medium migration without reconciliation blocks"       FAIL "MIGRATION_RECONCILIATION_REPORT.md (MISSING)" no-reconciliation-medium
+expect_m08 "a table missing from the mapping blocks"                FAIL "never mentions these schema table(s)"  plan-ignores-table
+
+echo ""
 if [ "$FAIL" -eq 0 ]; then
     echo -e "${GREEN}All $PASS gate regression tests passed.${NC}"
     exit 0

@@ -311,7 +311,7 @@
   ❌ M08 Data Migration: no record that the client-supplied inputs were actually received.
      Add 'Inputs-Received: <what> from <client PIC> on <YYYY-MM-DD>' to docs/pm/DATA_MIGRATION_PLAN.md
      Source data / credentials come from the client — never invent or simulate them.
-  ⚠️  docs/pm/MIGRATION_RECONCILIATION_REPORT.md (optional, not found)
+  ❌ docs/pm/MIGRATION_RECONCILIATION_REPORT.md (MISSING)
   [INFO] Data migration plan verified. Run reconciliation after seeding.
 
 
