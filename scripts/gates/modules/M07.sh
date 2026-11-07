@@ -33,7 +33,23 @@ gate_M07() {
             echo "  ❌ POLISH_AUDIT.md reports NOT READY (blocking tells still open)!"
             GATE_FAILED=1
         elif echo "$polish_content" | grep -qiE "READY \(0 blocking tells\)|READY FOR (CLIENT )?UAT|0 blocking"; then
-            echo "  ✅ POLISH_AUDIT.md attests 0 blocking tells (ready)"
+            # A claim of zero blocking tells is only meaningful next to what was inspected: the
+            # deployed URL and the tell inventory. Prose that says "0 blocking" in passing proves
+            # nothing, because it names neither the target nor the checklist.
+            polish_url_ok=0
+            polish_tells_ok=0
+            echo "$polish_content" | grep -qiE "https?://[a-zA-Z0-9.-]+\.[a-z]{2,}" && polish_url_ok=1
+            tell_rows=$(echo "$polish_content" | grep -cE '^[[:space:]]*\|[^|]+\|[^|]+\|' || true)
+            [ "${tell_rows:-0}" -ge 5 ] && polish_tells_ok=1
+            if [ "$polish_url_ok" -ne 1 ]; then
+                echo "  ❌ POLISH_AUDIT.md claims READY but names no deployed URL - the audit must record the URL it inspected."
+                GATE_FAILED=1
+            elif [ "$polish_tells_ok" -ne 1 ]; then
+                echo "  ❌ POLISH_AUDIT.md claims READY but has no tell-by-tell table (${tell_rows} row(s)) - state each tell's verdict."
+                GATE_FAILED=1
+            else
+                echo "  ✅ POLISH_AUDIT.md attests 0 blocking tells (ready) against a named URL"
+            fi
         else
             echo "  ❌ POLISH_AUDIT.md missing explicit READY attestation (0 blocking tells)!"
             GATE_FAILED=1
@@ -62,6 +78,40 @@ gate_M07() {
         else
             echo "  ❌ SIT_WORKBOOK.md missing explicit staging environment URL (e.g. Staging-URL: https://...)!"
             GATE_FAILED=1
+        fi
+        # The sign-off sheet is what a human is held to. A heading proves nothing: the shipped
+        # template already has the heading and ships `______` blanks under it, so a workbook that
+        # nobody signed passed. Both names AND both signature cells must carry real text.
+        sit_signoff=$(echo "$sit_content" | sed -n '/SIT Sign-Off/,$p')
+        if [ -z "$sit_signoff" ]; then
+            echo "  ❌ SIT_WORKBOOK.md has no 'SIT Sign-Off' section - the workbook cannot be accepted without one."
+            GATE_FAILED=1
+        else
+            blank_cell='(_|=|\[ *\]|\.\.\.|todo|tbd|n/a|N/A)'
+            names_ok=0
+            for who in "Solo Lead Engineer" "Client Single PIC"; do
+                echo "$sit_signoff" | grep -qE "\*\*Name\*\*:[[:space:]]*[^|]*[A-Za-z]{3,}.*\*\*Name\*\*:|\*\*Name\*\*:.*\|.*\*\*Name\*\*:[[:space:]]*[A-Za-z]{3,}" || true
+            done
+            # a signature cell is real when it holds a name-like token, not blanks or a placeholder
+            sig_line=$(echo "$sit_signoff" | grep -iE '^[[:space:]]*\|[^|]*\*\*Signature\*\*' | head -1)
+            if [ -n "$sig_line" ] && echo "$sig_line" | grep -qE "\*\*Signature\*\*:[[:space:]]*[A-Za-z][^|]{2,}.*\*\*Signature\*\*:[[:space:]]*[A-Za-z][^|]{2,}"; then
+                names_ok=1
+            fi
+            # a blank anywhere in the sign-off table (____ / [ ] / empty) is an unsigned sheet
+            if echo "$sit_signoff" | grep -qE '\|[[:space:]]*\*\*Signature\*\*:[[:space:]]*(_{3,}|\[ *\]|)[[:space:]]*\|'; then
+                echo "  ❌ SIT_WORKBOOK.md sign-off sheet is UNSIGNED: a signature cell is blank."
+                echo "     Both the Solo Lead Engineer and the Client Single PIC must sign and date it."
+                GATE_FAILED=1
+            elif echo "$sit_signoff" | grep -qE '\*\*Name\*\*:[[:space:]]*(_{3,}|\[ *\]|)[[:space:]]*\|'; then
+                echo "  ❌ SIT_WORKBOOK.md sign-off sheet names nobody: a Name cell is blank."
+                echo "     Both the Solo Lead Engineer and the Client Single PIC must be named."
+                GATE_FAILED=1
+            elif [ "$names_ok" -ne 1 ]; then
+                echo "  ❌ SIT_WORKBOOK.md sign-off sheet is not filled by two identifiable people."
+                GATE_FAILED=1
+            else
+                echo "  ✅ SIT_WORKBOOK.md sign-off sheet is signed and dated by both parties"
+            fi
         fi
         # Reject any failed scenario: an explicit FAIL cell or a non-zero Failed-column count.
         if echo "$sit_content" | grep -qE "\|[[:space:]]*\**(FAIL|BLOCKED)\**[[:space:]]*\|" || echo "$sit_content" | grep -qE "\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[0-9]+[[:space:]]*\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|"; then
@@ -92,6 +142,19 @@ gate_M07() {
             GATE_FAILED=1
         elif [ -n "$sit_reqs$sit_screens" ]; then
             echo "  ✅ SIT covers every REQ-xx and SCR-xx in the specs"
+        else
+            # No spec meant the loop above had nothing to iterate, so this branch never ran and a
+            # one-row workbook could attest SIT PASS for anything. The specs are not always present
+            # at this point (a client may keep them elsewhere), so the workbook itself must carry
+            # the requirement IDs it claims to have tested - that is the traceability, not the path.
+            wb_ids=$(echo "$sit_content" | grep -oE "REQ-[0-9]+|SCR-[A-Z]*-?[0-9]+" | sort -u | wc -l)
+            if [ "${wb_ids:-0}" -lt 1 ]; then
+                echo "  ❌ SIT coverage cannot be verified: the specs declare no REQ-xx/SCR-xx and the workbook names none either."
+                echo "     A SIT PASS must trace to requirements; list the requirement or screen IDs each row covers."
+                GATE_FAILED=1
+            else
+                echo "  ✅ SIT rows are traceable to ${wb_ids} requirement/screen ID(s) declared in the workbook"
+            fi
         fi
 
         # A suite of passing rows with no failure path proves the happy path only. Wireflow and
@@ -124,7 +187,7 @@ gate_M07() {
         if echo "$sec_content" | grep -qE "\[Your Name\]|\[Application Name\]|\[client-domain\]|\[YYYY-MM-DD\]|\[Patched / Monitored\]"; then
             echo "  ❌ $sec_target still contains unresolved template placeholders ([...])! Fill in real audit results."
             GATE_FAILED=1
-        elif echo "$sec_content" | grep -qiE "\[x\][^A-Za-z]*REJECTED" || echo "$sec_content" | grep -qiE "\|[[:space:]]*Critical[[:space:]]*\|[[:space:]]*[1-9][0-9]*[[:space:]]*\|"; then
+        elif echo "$sec_content" | grep -qiE "\[x\][^A-Za-z]*REJECTED" || echo "$sec_content" | grep -qiE "\|[[:space:]]*[*_]*[[:space:]]*Critical[[:space:]]*[*_]*[[:space:]]*\|[[:space:]]*[*_]*[[:space:]]*[1-9][0-9]*[[:space:]]*[*_]*[[:space:]]*\|"; then
             echo "  ❌ $sec_target reports unresolved Critical vulnerabilities! Zero Critical required before go-live."
             GATE_FAILED=1
         elif echo "$sec_content" | grep -qiE "\[x\][^A-Za-z]*(SECURITY PASS|MEETS SECURITY STANDARDS)|Free of Critical|Zero Critical|0 Critical"; then

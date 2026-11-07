@@ -2837,12 +2837,58 @@ expect_gate_scaffold() {
             sed -i -E 's/\[[^][]*\]/X/g' "$sa"
             sed -i 's/\[Patched \/ Monitored\]/Patched/g' "$sa" || true
             printf '\n- [x] **SECURITY PASS**: Applicable tests have evidence and findings meet the release policy.\n' >> "$sa"
-            # M07 also requires the polish audit and a passing SIT result.
-            printf '# Polish Audit\n\nAll 33 tells reviewed. READY (0 blocking tells).\n' > "$dir/docs/qa/POLISH_AUDIT.md"
             # The workbook ships a form; strip every remaining [...] so the placeholder
             # check passes. Do NOT strip the security audit after marking its checkbox —
             # the gate reads "[x] **SECURITY PASS**" as the attestation.
             sed -i -E 's/\[[^][]*\]/X/g' "$wb"
+            # A blank form is not a completed audit. This fixture is the positive case, so it has
+            # to look like the three artifacts a real delivery leaves behind: a polish audit that
+            # names the URL it inspected and states each tell, a sign-off sheet two people signed,
+            # and a workbook whose PASS traces back to requirements.
+            {
+                printf '# Polish Audit — https://staging.example.com\n\n'
+                printf '| # | Tell | Verdict | Evidence |\n| :--- | :--- | :---: | :--- |\n'
+                for i in 1 2 3 4 5 6; do
+                    printf '| %s | tell-%s | PASS | inspected on the deployed URL |\n' "$i" "$i"
+                done
+                printf '\n**Conclusion**: READY (0 blocking tells)\n'
+            } > "$dir/docs/qa/POLISH_AUDIT.md"
+            # Two identifiable signatories, as the template's own sheet requires.
+            sed -i 's/| \*\*Name\*\*: ____*[^|]*| \*\*Name\*\*: ____*[^|]*|/| **Name**: S. Rahma | **Name**: A. Kusuma |/' "$wb"
+            sed -i 's/| \*\*Title \/ Role\*\*: Independent Lead Engineer | \*\*Title \/ Role\*\*: ____*[^|]*|/| **Title \/ Role**: Independent Lead Engineer | **Title \/ Role**: Product Owner |/' "$wb"
+            sed -i 's/| \*\*Date\*\*: ____*[^|]*| \*\*Date\*\*: ____*[^|]*|/| **Date**: 2026-10-12 | **Date**: 2026-10-13 |/' "$wb"
+            sed -i 's/| \*\*Signature\*\*: | \*\*Signature\*\*: |/| **Signature**: S. Rahma | **Signature**: A. Kusuma |/' "$wb"
+            # Every REQ-xx / SCR-xx the specs declare must have a tested row. make_project writes
+            # the intake; use whatever requirement IDs it produced.
+            {
+                printf '\n| Item | Scenario | Result |\n| :--- | :--- | :---: |\n'
+                # Rows are listed from the specs when they exist and from the workbook's own scope
+                # when they do not: the gate asks for traceability, not for a particular spec path.
+                rows=""
+                if [ -f "$dir/docs/specs/FSD.md" ]; then
+                    rows=$(grep -oE 'REQ-[0-9]+' "$dir/docs/specs/FSD.md" | sort -u)
+                fi
+                if [ -z "$rows" ]; then
+                    rows=$(printf 'REQ-01\nREQ-02\nREQ-03')
+                fi
+                printf '%s\n' "$rows" | while read -r rq; do
+                    [ -n "$rq" ] || continue
+                    printf '| %s | primary path verified | PASS |\n' "$rq"
+                    printf '| %s | invalid input is rejected (negative) | PASS |\n' "$rq"
+                done
+                sc_rows=""
+                if [ -f "$dir/docs/specs/SITEMAP.md" ]; then
+                    sc_rows=$(grep -oE 'SCR-[A-Z]*-?[0-9]+' "$dir/docs/specs/SITEMAP.md" | sort -u)
+                fi
+                if [ -z "$sc_rows" ]; then
+                    sc_rows=$(printf 'SCR-001\nSCR-002')
+                fi
+                printf '%s\n' "$sc_rows" | while read -r sc; do
+                    [ -n "$sc" ] || continue
+                    printf '| %s | screen renders and is reachable | PASS |\n' "$sc"
+                done
+                printf '\nStaging-URL: https://staging.example.com\n'
+            } >> "$wb"
             ;;
         M13)
             printf -- '- **Scale**: solo-saas\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"
@@ -2966,6 +3012,48 @@ expect_gate_tpl A00 "A00 accepts the shipped consulting agreement" ALLOWED \
     templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md:contracts/CONSULTING_AGREEMENT.md
 expect_gate_tpl A01 "A01 accepts the shipped WBS template" ALLOWED \
     templates/00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md:docs/pm/WBS_PHASING_PLAN.md
+
+# ----------------------------------------------------------------- M07: QA / SIT / security
+# Measured 2026-11-06: the shipped template passed with an unsigned sign-off sheet, a prose claim of
+# "0 blocking" and a bolded Critical count. Each case below pins one of those shut, and each rule
+# also has a case proving a correct document still passes.
+expect_m07() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m07/build.py" dir="$WORK/m07qa"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${YELLOW}-${NC} M07 regressions skipped: fixture builder missing"
+        return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M07 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M07 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M07 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+echo ""
+echo "M07 QA / SIT / security:"
+expect_m07 "a fully executed SIT workbook passes"                 PASS ""                                             base
+expect_m07 "an unsigned sign-off sheet blocks"                    FAIL "sign-off sheet is UNSIGNED"                  empty-signoff
+expect_m07 "a missing sign-off section blocks"                    FAIL "has no 'SIT Sign-Off' section"               signoff-missing
+expect_m07 "a prose claim of 0 blocking without a URL blocks"     FAIL "names no deployed URL"                       polish-vague-zero
+expect_m07 "SIT rows traceable to workbook IDs still pass"       PASS ""                                            no-specs
+expect_m07 "SIT PASS with nothing to trace to blocks"             FAIL "SIT coverage cannot be verified"             no-traceability
+expect_m07 "a bolded Critical count still blocks"                 FAIL "reports unresolved Critical vulnerabilities" security-critical-row
+expect_m07 "a renamed native QA heading blocks"                   FAIL "matching 'Native Mobile QA'"                 native-narrow
 
 echo ""
 if [ "$FAIL" -eq 0 ]; then
