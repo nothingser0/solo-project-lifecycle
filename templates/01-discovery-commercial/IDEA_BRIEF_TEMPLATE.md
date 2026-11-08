@@ -103,6 +103,15 @@ An experiment is ready only when it names the assumption ID, falsifiable hypothe
 | <e.g., acquisition channel cannot reach qualified buyers> | <Signal and time window> | <PREM-xx / ASM-xx> | <Test a fallback channel> |
 | <e.g., external approval blocks launch> | <Approval milestone missed> | <PREM-xx / ASM-xx> | <Fallback or early application> |
 
+### 3.6 Pre-mortem (Before Feasibility Decision)
+*Imagine this project failed within 12 months. Name plausible causes before committing to the build; link each cause to an assumption or mitigation.*
+
+| Plausible failure cause | Earliest observable warning | Linked assumption ID | Prevention / mitigation |
+|:--|:--|:--|:--|
+| [e.g., target users keep using their workaround] | [Behavior that would appear first] | [PREM-xx / ASM-xx] | [Smallest action that reduces exposure] |
+| [e.g., acquisition channel cannot reach qualified buyers] | [Signal and time window] | [PREM-xx / ASM-xx] | [Test a fallback channel] |
+| [e.g., external approval blocks launch] | [Approval milestone missed] | [PREM-xx / ASM-xx] | [Fallback or early application] |
+
 ---
 
 ## 4. Solo Developer Feasibility Scorecard (Stricter Reality Scoring)

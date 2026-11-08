@@ -76,6 +76,16 @@ Start from one measurable user outcome, branch into opportunities supported by i
 |:--|:--|:--|:--|:--|
 | <e.g. reduce time reconciling stock; baseline to target by date> | <observed need; interview/source IDs> | <A: simplest operational option; B: software option> | <assumption; test and success signal> | <keep testing / pursue / drop> |
 
+If a participant asks for a feature, capture its source `INT-xx`, underlying job/outcome, and current workaround. Treat it as a discovery signal; test whether the need is shared and important before moving a solution into the MVP scope.
+
+### Opportunity Solution Tree (lite)
+
+Start from one measurable user outcome, branch into opportunities supported by interview evidence, then compare at least two plausible solutions for each priority opportunity. Link each solution to its riskiest assumption and smallest credible test before adding it to MVP scope. Use `patterns/product/SOLO_DISCOVERY_PLAYBOOK.md` for the full OST workflow; keep detailed test results in the shared assumption ledger when this page is too small.
+
+| Desired outcome (measure, baseline → target, timeframe) | Opportunity (user need + source `INT-xx`) | Candidate solutions (at least 2) | Riskiest assumption + test | Decision |
+|:--|:--|:--|:--|:--|
+| [e.g., reduce time spent reconciling stock; baseline → target by date] | [Observed need; interview/source IDs] | [A: simplest operational option; B: software option] | [Assumption; test and success signal] | [Keep testing / pursue / drop] |
+
 ---
 
 ## 5. Behavioral Intent Validation (Waitlist / Smoke Test)
