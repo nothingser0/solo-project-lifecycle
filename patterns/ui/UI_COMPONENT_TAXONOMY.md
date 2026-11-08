@@ -1,23 +1,24 @@
 # UI Component Taxonomy & Architecture Pattern
 
-> **Standard Reference**: Mapping modern component vocabulary (shadcn/ui, Radix, Tailwind, Aceternity) to the 3-Tier lifecycle inventory (`docs/specs/COMPONENT_REQUIREMENTS.md`).
+> **Standard Reference**: Mapping clean, accessible component vocabulary (shadcn/ui, Radix, Tailwind) to the 3-Tier lifecycle inventory (`docs/specs/COMPONENT_REQUIREMENTS.md`).
+> **Anti-Slop Law**: Solo developers build products, NOT custom component libraries. Only include components directly justified by in-scope P0/P1 features in `SCOPE_STATEMENT.md`. Zero unrequested eye-candy (no 3D globes, no custom fluid cursors, no unrequested AI panels).
 
 ---
 
-## 1. Complete Component Taxonomy
+## 1. Component Taxonomy (Product-Grounded)
 
 ### 1.1 Primitives (Atomic Foundation)
 - `Button`: Primary, secondary, outline, ghost, destructive with keyboard focus and active spring.
 - `Input`: Single-line text, email, password, and `inputmode="numeric"` currency fields.
 - `Textarea`: Multi-line text with auto-resize and character limit counter.
-- `Select`: Accessible dropdown and combobox selector (Radix Select primitive).
+- `Select`: Accessible dropdown and combobox selector (Radix Select primitive / custom popover; zero unstyled native `<select>`).
 - `Checkbox`: Accessible toggle check with indeterminate state.
 - `RadioGroup`: Single-choice list with arrow key navigation.
 - `Toggle` (Switch): Binary state switch for settings and feature toggles.
 - `Slider`: Range and numeric slider with thumb drag and step increments.
 - `Badge` / `Tag`: Status indicators (success, warning, destructive, info, neutral).
 - `Avatar`: Circular/rounded user image with initial letter fallback.
-- `Icon`: Standardized icon primitives (Lucide React / Phosphor).
+- `Icon`: Standardized semantic SVG icon primitives (Lucide React / Heroicons; zero raw emoticons).
 - `LoadingSpinner`: SVG spinner with sm, md, lg size variants and aria-live announcements.
 - `Link`: Accessible anchor tag with external indicator and underline transition.
 
@@ -30,7 +31,7 @@
 - `DropdownMenu`: Contextual menu for actions and nested submenus.
 - `Accordion`: Vertically stacked collapsible panels with smooth height transition.
 - `Tabs`: Segmented view switcher with animated active indicator pill.
-- `Table`: Tabular data with sortable columns, pagination, and mobile stacked card reflow.
+- `Table`: Tabular data with sortable columns, pagination, and mobile stacked card reflow (<640px).
 - `List`: Ordered and unordered data row layout with hover state.
 - `Pagination`: Navigational bar with page numbers, ellipsis, and prev/next actions.
 - `SearchInput`: Search bar pairing input, search icon, clear button, and debounced query trigger.
@@ -41,17 +42,15 @@
 - `Sidebar`: Collapsible application navigation drawer with active route highlights.
 - `Calendar` / `DatePicker`: Month calendar grid with date/range selection.
 
-### 1.3 High-Interaction & Rich Composites (Tier 3 Organisms)
-- `BentoGrid`: Asymmetrical modern grid layout with responsive span rules.
-- `Carousel`: Horizontal content slider with touch swipe, arrow controls, and dot indicators.
-- `DataVizChart`: Recharts/Chart.js wrapper for Bar, Line, Area, and Donut visualizations.
-- `FileTree`: Hierarchical folder and file explorer with expand/collapse and file type icons.
-- `InteractiveCursor`: Trailing fluid mouse cursor, magnetic link snap, or collaborative multiplayer cursor.
-- `Globe3D`: WebGL/Three.js interactive globe canvas for geospatial or server metrics.
-- `AIChatPanel`: Realtime streaming message bubble list, markdown parser, prompt chips, and stop button.
-- `AuthForm` (SignIn / SignUp): Complete authentication card with email validation, OAuth buttons, and error boundary.
-- `OnboardingWalkthrough`: Step-by-step guided tour modal/spotlight with progress dots and skip action.
-- `ProfileView`: User summary card with avatar upload, personal details, security settings, and audit badge.
+### 1.3 Application Organisms (Domain-Driven Only)
+*Include ONLY when explicitly specified as an in-scope P0 feature in `SCOPE_STATEMENT.md` / `FSD.md`:*
+- `BentoGrid`: High-density dashboard overview or metrics showcase.
+- `DataVizChart`: Recharts/Chart.js wrapper for business charts (Bar, Line, Area, Donut).
+- `FileTree`: Hierarchical folder and file explorer for document/vault management.
+- `AuthForm` (SignIn / SignUp): Authentication card with email validation, session handling, and error boundary.
+- `OnboardingWalkthrough`: Step-by-step guided tour spotlight with progress dots.
+- `ProfileView`: User summary card with avatar upload and account security controls.
+- *Strictly Forbidden Slop*: `InteractiveCursor`, `Globe3D`, canvas physics particles, and decorative AI gimmicks that serve no user goal.
 
 ---
 

@@ -41,6 +41,13 @@ Quote this table; never restate it with different numbers (machine-enforced on `
 | Verified interviews (`✅ Real` rows) | ≥ 3 of 5 attempts | — | < 3 |
 
 Any PASS signal closes the gate; RETEST = best signal in RETEST; KILL = all in KILL.
+
+**One exception — a survey is not the same kind of evidence as a payment.** Deposits and signed
+LOIs are somebody paying; `intent-to-buy` is somebody saying they might. A survey in its PASS
+band may lift a `RETEST` waitlist to `PASS`, but it cannot overturn a measured behavioural
+`KILL` (< 2.0% of ≥100 visits with no deposit or LOI behind it). Otherwise 1.5% of 140
+visitors is talked up by a questionnaire, which is precisely what the waitlist test exists to
+prevent. The gate enforces this and prints why when it applies.
 🔒 **Never talk a number up**: a 3.1% result is written 3.1% and declares `RETEST` (the gate
 fails on any mismatch with the §5 arithmetic). Research not yet run → `PENDING`, end turn.
 

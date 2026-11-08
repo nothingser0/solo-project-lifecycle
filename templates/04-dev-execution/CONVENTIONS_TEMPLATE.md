@@ -180,3 +180,41 @@
     - All user feedback and notifications MUST use high-fidelity, styled UI components tailored to the system design:
       - **Transient Feedback (Success / Error / Info)**: Use custom Toast notifications (e.g. Sonner, react-hot-toast, or custom design-token toast) styled with matching border radius (`rounded-xl`), soft shadows (`shadow-lg`), and contextual SVG icons.
       - **Confirmation & Destructive Actions**: Use custom Dialog / Confirmation Modals (e.g. Radix Dialog or custom backdrop modal) featuring soft backdrop blur (`backdrop-blur-sm`), smooth scale-in animation (`zoom-in-95`), clear warning messaging, and explicit Cancel / Confirm action buttons.
+
+---
+
+## 7. Senior Engineering Architecture (Frontend & Backend Quality Standards)
+
+*Enforces senior-level software engineering discipline to eliminate amateur, generic, and unmaintainable AI-generated code patterns:*
+
+1. **Backend Service Layer & Separation of Concerns (Anti-Fat Route Handler)**:
+   - Route Handlers (`app/api/**/route.ts`), Server Actions, or Controller endpoints MUST NOT contain direct database queries (`prisma.*`, `db.query`), raw business calculations, or multi-step workflow logic.
+   - Route handlers and Server Actions are strictly thin HTTP/Action adapters:
+     1. Authenticate & authorize the caller session (RBAC permission check).
+     2. Validate input schema using Zod (`parse` or `safeParse`).
+     3. Delegate to a dedicated domain service function in `src/server/services/*.service.ts` or `src/services/*.ts`.
+     4. Format and return standard `ActionResult<T>`.
+   - All domain calculations, business invariant assertions, and database transactions MUST live inside dedicated service functions that are fully unit-testable without mocking HTTP requests.
+
+2. **Frontend Component Architecture & Custom Hook Extraction**:
+   - Monolithic frontend components (> 150 lines of code) mixing JSX rendering, asynchronous network requests, complex form state, and browser event listeners are STRICTLY FORBIDDEN as Component Slop.
+   - **Custom Hook Rule**: Any component containing > 2 `useState`/`useEffect` hooks, complex reducer state, or asynchronous orchestration must extract that logic into a co-located custom hook (`use-[feature].ts` or `hooks/use-[feature].ts`). The UI component should remain a clean presentational orchestrator.
+   - **Sub-Component Decomposition**: Large cards, complex table rows, action toolbars, and modal bodies must be broken down into focused sub-components rather than nested in a single 400-line monolithic JSX tree.
+
+3. **Strict Concurrency & Atomic Database Mutations**:
+   - Naive in-memory read-modify-write patterns for financial balances, inventory counts, seats, or quota counters (e.g. `const balance = await getBalance(); await setBalance(balance - amount)`) are STRICTLY FORBIDDEN. They introduce race conditions and balance drift under concurrent requests.
+   - All state-altering mutations involving counters, money, or finite resources MUST use:
+     - Database transactions (`db.$transaction` or `BEGIN ... COMMIT`) with row-level locks (`SELECT ... FOR UPDATE`), or
+     - Atomic SQL operations (e.g. `UPDATE accounts SET balance = balance - :amount WHERE id = :id AND balance >= :amount`).
+   - Mutations must assert non-negative invariants at the database schema level (via `CHECK (balance >= 0)`) as defense-in-depth.
+
+4. **Domain-Grounded Error Mapping & Sanitization**:
+   - Never leak raw database error messages, ORM constraint failures (e.g. `Unique constraint failed on the constraint: users_email_key`), or raw stack traces to the client UI.
+   - Services must catch database errors and map them into human-friendly, domain-specific `ActionError` objects (e.g. `ActionError { code: 'EMAIL_ALREADY_REGISTERED', message: 'Alamat email ini sudah terdaftar. Silakan gunakan email lain atau masuk ke akun Anda.' }`).
+   - Frontend components must display these domain messages in context (under the affected form field or in a toast), never raw technical strings like `Error: P2002` or `Internal Server Error`.
+
+5. **Anti-Style Drift & Semantic Token Lock (Zero Arbitrary Color Spray)**:
+   - Spraying arbitrary hardcoded Tailwind color scales (e.g. jumping between `text-slate-900`, `text-black`, `text-orange-500`, `text-blue-600`, `bg-amber-500`) across components or sessions is STRICTLY FORBIDDEN as Style Slop.
+   - All text, background, and border colors MUST resolve strictly to predefined Semantic Design Tokens (e.g. `text-foreground`, `text-muted-foreground`, `text-primary`, `bg-background`, `bg-card`, `border-border`).
+   - **Sibling Inspection Mandate**: Before authoring or modifying any UI component in a new prompt or session, the agent MUST inspect `DESIGN.md` and at least one existing canonical component (`components/ui/*` or reference screen) to mirror typography, font colors, and border styles.
+   - **Centralized Variant Authority (`cva`)**: Interactive primitives (buttons, badges, alerts) must encapsulate variants via Class Variance Authority (`cva`). Components must only consume declared variants (e.g. `variant="outline"`), prohibiting ad-hoc inline color overrides.

@@ -228,6 +228,7 @@ For landing, signup, onboarding, or paywall flows with an explicit conversion go
 
 - Approved by: [name of Client PIC or the human user — never the AI agent]
 - Approved on: [YYYY-MM-DD]
+- Approved via: [WhatsApp | email | meeting — the channel the sign-off happened on]
 
 | Approved by Client PIC / Lead Stakeholder | Validated by Solo Engineer |
 | :--- | :--- |

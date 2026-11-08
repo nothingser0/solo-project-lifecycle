@@ -2,7 +2,8 @@
 
 > **Purpose**: Map `SCOPE_STATEMENT.md` features and `SITEMAP.md` routes to concrete UI interaction patterns, atomic primitives, and composite components BEFORE drafting `DESIGN.md`.
 > **Standard**: Strict WCAG 2.2 Level AA compliance, anti-slop nomenclature parity, and domain-grounded interaction states.
-> **Architecture Reference**: Aligns directly with `patterns/ui/UI_COMPONENT_TAXONOMY.md` (Primitives, Standard Composites, High-Interaction Organisms) and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`.
+> **Architecture Reference**: Aligns directly with `patterns/ui/UI_COMPONENT_TAXONOMY.md` (Primitives, Standard Composites, Domain Organisms) and `patterns/ui/MOTION_DESIGN_TAXONOMY.md`.
+> **Anti-Slop Law**: You are building an APPLICATION, NOT a standalone public component library. Inventory ONLY components that map directly to in-scope P0/P1 features. Zero speculative components, zero 3D/physics toys, zero unrequested chatbot panels. The component showcase (`docs/design/components/index.html`) MUST be 100% interactive (functional modal triggers, popover dropdowns, tabs, toast notifications via shared `app.js`); zero inert/zombie HTML showcases.
 > **Output**: `docs/specs/COMPONENT_REQUIREMENTS.md`
 
 ---

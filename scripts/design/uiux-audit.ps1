@@ -43,6 +43,8 @@ Write-Host $divider
 $emojiRegex = "[\uD83C-\uDBFF\uDC00-\uDFFF\u2600-\u26FF\u2700-\u27BF]"
 $specLeakRegex = "\b(SCR-\d+|M06-FE-\d+|REQ-\d+|FSD-\d+)\b"
 $rawNeonRegex = "(#FF5722|#FF0000|#00FF00|bg-orange-500|bg-red-500|#3B82F6)"
+$placeholderSlopRegex = "\b(Lorem\s+ipsum|John\s+Doe|Jane\s+Doe|example\.com|placeholder\.com)\b"
+$deadHrefRegex = '<a\s+[^>]*href=["'']#(?:["'']|\s)[^>]*>'
 
 $totalViolations = 0
 $totalWarnings = 0
@@ -170,6 +172,22 @@ foreach ($file in $htmlFiles) {
         $passed += "Interactive multi-role RBAC simulation supported (role switcher / role attributes present)"
     } else {
         $warnings += "Screen missing multi-role testing hooks (#role-switcher or data-roles attributes)"
+    }
+
+    # 10. Zero Placeholder Slop (Anti-Lorem Ipsum & Generic Fictional Data)
+    $cleanBodyContent = ($content -replace '(?s)<!--.*?-->', '') -replace '(?s)<script.*?</script>', ''
+    $placeholderMatches = [regex]::Matches($cleanBodyContent, $placeholderSlopRegex, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    if ($placeholderMatches.Count -gt 0) {
+        $uniquePlaceholders = ($placeholderMatches | ForEach-Object { $_.Value }) | Select-Object -Unique
+        $violations += "Placeholder slop detected: $($uniquePlaceholders -join ', ')! Replace with domain-realistic localized copy."
+    } else {
+        $passed += "Zero placeholder slop detected (domain-realistic data compliant)"
+    }
+
+    # 11. Dead Links Detection (href="#")
+    $deadLinks = [regex]::Matches($content, $deadHrefRegex, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    if ($deadLinks.Count -gt 0) {
+        $warnings += "Found $($deadLinks.Count) dead link(s) (href=`"#`"). Wire to authentic action handlers or modals."
     }
 
     # Extract Nav Items & Brand Title

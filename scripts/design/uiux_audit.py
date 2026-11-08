@@ -24,6 +24,10 @@ EMOJI_PATTERN = re.compile(
 SPEC_LEAK_PATTERN = re.compile(r"\b(SCR-\d+|M06-FE-\d+|REQ-\d+|FSD-\d+)\b", re.IGNORECASE)
 RAW_NEON_PATTERN = re.compile(r"(#FF5722|#FF0000|#00FF00|bg-orange-500|bg-red-500|#3B82F6)", re.IGNORECASE)
 UNSTYLED_SELECT_PATTERN = re.compile(r"<select(?![^>]*class=[\"'][^\"']*(form-select|custom-select)[^\"']*[\"'])", re.IGNORECASE)
+PLACEHOLDER_SLOP_PATTERN = re.compile(
+    r"\b(Lorem\s+ipsum|John\s+Doe|Jane\s+Doe|example\.com|placeholder\.com)\b", re.IGNORECASE
+)
+DEAD_HREF_PATTERN = re.compile(r'<a\s+[^>]*href=["\']#(?:["\']|\s)[^>]*>', re.IGNORECASE)
 
 class ScreenAudit:
     def __init__(self, file_path):
@@ -169,6 +173,20 @@ class ScreenAudit:
             self.passed.append("Interactive multi-role RBAC simulation supported (role switcher / role attributes present)")
         else:
             self.warnings.append("Screen missing multi-role testing hooks (#role-switcher or data-roles attributes)")
+
+        # 11. Zero Placeholder Slop (Anti-Lorem Ipsum & Generic Fictional Data)
+        placeholders_found = PLACEHOLDER_SLOP_PATTERN.findall(clean_content)
+        if placeholders_found:
+            self.violations.append(
+                f"Found {len(placeholders_found)} placeholder slop occurrences ({', '.join(set(placeholders_found))})! Replace with domain-realistic localized copy."
+            )
+        else:
+            self.passed.append("Zero placeholder slop detected (domain-realistic data compliant)")
+
+        # 12. Dead Links Detection (href="#")
+        dead_links = DEAD_HREF_PATTERN.findall(self.content)
+        if dead_links:
+            self.warnings.append(f"Found {len(dead_links)} dead link(s) (href=\"#\"). Wire to authentic action handlers or modals.")
 
 
 class DesignSystemAuditor:

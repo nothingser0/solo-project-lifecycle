@@ -34,8 +34,8 @@ DESIGN CONSTRAINTS (ANTI-SLOP):
 
 STRICT RULES:
 - Use exact color codes from DESIGN.md
-- Follow [Component Library] patterns
-- Maintain [spacing scale]
+- Follow COMPONENT_REQUIREMENTS.md patterns (reusable CSS classes: .btn, .card, .form-input)
+- Zero slop: no 3D canvases, no fluid cursors, no unrequested chatbots, no unicode emojis
 - [Accessibility requirements]
 ```
 

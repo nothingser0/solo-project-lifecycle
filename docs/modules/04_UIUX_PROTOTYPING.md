@@ -46,9 +46,13 @@ INPUT: SCOPE_STATEMENT.md + valid SOW (or M03 waived for Solo SaaS)
      mobile inputs, tabular-nums for money and counters), semantic triad tokens (success/warning/
      destructive/info), 4px spacing scale, radius scale, z-index map (base 0 ... toast 60), one icon set.
 1.5  COMPONENT SHOWCASE FIRST -- docs/design/components/index.html on the shared CSS/JS, rendering
-     every primitive and composite. STOP & ACC: the human approves it before any screen assembly.
+     every primitive and composite with 100% functional interactivity (live dialogs, working dropdown popovers,
+     toggleable checkboxes, dismissible toasts). Zombie/inert static showcases are PROHIBITED. STOP & ACC:
+     the human approves it before any screen assembly.
 2    Prototype screens in docs/design/screens/<role>/ (public, user, staff, admin) linking
      docs/design/shared/css/styles.css and shared/js/app.js. No #role-switcher. 100% of SITEMAP screens.
+     Zero "Lorem ipsum", "John Doe", "Jane Doe", "example.com", or flat placeholder slop: all screen copy,
+     tables, forms, and cards must use realistic, domain-authentic localized data.
      Visual DNA (mandatory): real CSS Grid timelines, never flat full-width rows; segmented progress
      indicators stay segmented dashes, never thick generic lines; hex sampled from the benchmark (never
      neon, never default orange); at most one primary action per card, never 3-4 buttons crowding a
@@ -58,12 +62,14 @@ INPUT: SCOPE_STATEMENT.md + valid SOW (or M03 waived for Solo SaaS)
      unstyled native <select> is forbidden; tactile micro-interactions on every interactive element
      (hover duration-150, active scale-[0.98], focus-visible ring-2, backdrop-blur modal choreography,
      fluid progress transitions) with reduced-motion respected; dialogs and in-page notices instead of
-     alert/confirm/prompt; no SCR-/REQ-/M06-/FSD- codes in copy.
+     alert/confirm/prompt; no SCR-/REQ-/M06-/FSD- codes in copy; no dead links (href="#") or inert buttons.
      Every screen links the shared stylesheet and script; no per-page inline <style> drift — shared CSS,
      never hardcoded ad-hoc styles. In M06 the approved prototypes are ported as-is: zero ad-hoc layout
      invention during coding.
 2.5  Wireflow runbooks docs/specs/wireflows/SCENARIOS_WFxx.md per wireflow screen: baseline fixture
-     with seed credentials and RBAC scopes, happy path, sad path and edge cases, UI feedback behaviour.
+     with realistic domain entities, happy path, sad path (inline validation errors), domain exceptions
+     (offline/timeout/zero search results), and RBAC privilege error runbooks. Sunny-day-only wireflows
+     are PROHIBITED.
 3    DESIGN_SPEC.md per screen: 5-state matrix (default, loading, empty with CTA, error with retry,
      success) in real copy; destructive actions require typed confirmation and an audit reason;
      scroll-padding-bottom >=96px keeps focused inputs above the mobile keyboard.
@@ -121,6 +127,8 @@ Viewport Precedence: apply [`patterns/ui/RESPONSIVE_DESIGN_PRIORITY_PATTERN.md`]
 - [ ] `focus-visible:ring-2` on every interactive element (zero unstyled `outline: none`); data tables reflow to stacked cards under 640px.
 - [ ] Every mutating form button declares a pending state (`disabled={isSubmitting}` + spinner + text transition) with UI debounce.
 - [ ] Screens link `docs/design/shared/css/styles.css` and `shared/js/app.js`; zero inline `<style>` duplicates or drifting buttons, badges, navbars, typography.
+- [ ] Zero placeholder slop (`Lorem ipsum`, `John Doe`, `Jane Doe`, `example.com`, dead `href="#"`) in screens and wireflows; 100% domain-realistic data.
+- [ ] Component showcase (`docs/design/components/index.html`) is 100% interactive via shared `app.js` (working dialogs, popovers, tabs, dismissible toasts; zero inert static elements).
 
 **Design Freeze (blocking, recorded in `DESIGN_SPEC.md`)**
 - [ ] Approver name (Client PIC, or the human user on solo work) + date `YYYY-MM-DD` + "Approved via [channel]". The AI agent is never a valid approver.

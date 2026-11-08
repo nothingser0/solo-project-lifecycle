@@ -37,6 +37,9 @@
 - **Visual Anti-Slop Directives**:
   - NEVER use emoticons or raw OS emojis in the UI; ALWAYS use cohesive SVG icons (e.g. Lucide / Heroicons).
   - NO purple/neon gradients, NO glassmorphism backdrop blur, NO drop shadows > shadow-md.
+  - NO cliché pill badges (`[✨ AI Powered]`, `[🚀 Next Gen]`) or fake testimonials ("Jane Doe, VP at TechCorp").
+  - ZERO "Lorem ipsum", "John Doe", "Jane Doe", "Product 1/2", or `example.com` placeholder slop: generate authentic, domain-realistic localized copy and entities.
+  - ZERO dead links (`href="#"`) or inert buttons: every interactive button, menu item, and trigger MUST be wired to an authentic modal, popover, or state transition.
 - **Reusable Prototype Architecture**:
   - All screens MUST link to the shared stylesheet (`<link rel="stylesheet" href="css/styles.css">`) and shared script (`<script src="js/app.js"></script>`).
   - DO NOT use inline `<style>` tags or divergent hardcoded styles. Use standardized shared classes (`.btn`, `.card`, `.badge`, `.navbar`, `.sidebar`, `.form-input`) so fonts, button sizes, card paddings, badges, and navbar layouts stay 100% consistent across every screen in the sitemap.

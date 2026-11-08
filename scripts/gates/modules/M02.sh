@@ -28,6 +28,7 @@ gate_M02() {
     else
         check_required "docs/pm/SCOPE_STATEMENT.md" "" 2000
     check_sections "docs/pm/SCOPE_STATEMENT.md" "User Stories" "Acceptance Criteria"
+    check_section_content "docs/pm/SCOPE_STATEMENT.md" "User Stories" "Acceptance Criteria"
     if [ "$(get_field Scale docs/pm/PROJECT_STATE.md | tr '[:upper:]' '[:lower:]')" = "enterprise" ]; then
         echo "  [INFO] Enterprise scale detected: RACI Matrix is MANDATORY."
         check_required "docs/governance/RACI_MATRIX.md" "docs/pm/RACI_MATRIX.md"
@@ -118,7 +119,9 @@ gate_M02() {
         if grep -qi "out-of-scope" "$scope"; then
             oos_section=$(sed -n '/[#]*.*[Oo]ut-[Oo]f-[Ss]cope/,/^[#]\{1,3\}[[:space:]]/p' "$scope" 2>/dev/null || true)
             [ -n "$oos_section" ] || oos_section=$(sed -n '/[#]*.*[Oo]ut-[Oo]f-[Ss]cope/,$p' "$scope" 2>/dev/null || true)
-            oos_count=$(echo "$oos_section" | grep -cE "^\s*([0-9]+\.|-|\*)\s+" || true)
+            # A boundary must say what is excluded: "- 1" / "- x" are placeholders, not scope.
+            oos_count=$(echo "$oos_section" | grep -E "^\s*([0-9]+\.|-|\*)\s+" \
+                | sed -E 's/^\s*([0-9]+\.|-|\*)\s+//' | awk 'length($0) >= 10' | wc -l || true)
             if [ "${oos_count:-0}" -ge 3 ]; then
                 echo "  ✅ Explicit Out-of-Scope boundaries defined ($oos_count exclusions)"
             else
@@ -128,6 +131,43 @@ gate_M02() {
         else
             echo "  ❌ Out-of-Scope boundary section missing!"
             GATE_FAILED=1
+        fi
+
+        # 6b. Acceptance-criteria binding (BLOCKER). `## Acceptance Criteria` used to be checked
+        #     as a heading only, so a statement whose entire criteria section read
+        #     "(the acceptance criteria are obvious)" locked its scope and passed. A locked scope
+        #     promises every Must-Have is testable, so require one testable criterion per F-xx:
+        #     a Then clause carrying a measurable outcome.
+        # Accept BOTH shapes the templates use: a labelled `AC-F-01: Given..Then..` line, or a
+        # `- [ ] Given .., when .., then ..` bullet under `#### Feature F-01`. The shipped
+        # template uses the bullet form, so requiring the label would fail the template's own gate.
+        f_rows=$(grep -iE "\|[[:space:]]*\*\*F-[0-9]+\*\*[[:space:]]*\|.*(must|p0)" "$scope" 2>/dev/null | wc -l || true)
+        f_rows=$(echo "$f_rows" | tr -d ' ')
+        f_headers=$(grep -oicE "^#{2,6}[[:space:]]*Feature[[:space:]]+F-[0-9]+" "$scope" 2>/dev/null | tr -d ' ' || true)
+        [ "${f_headers:-0}" -gt "${f_rows:-0}" ] && f_rows="$f_headers"
+        # Only criterion lines count - the prose that introduces the section also contains the
+        # word "Given", and an Edge Case is legitimately about a named failure mode rather than a
+        # number. A measurable Then is: a quantity, a status/error token, or an explicit state
+        # change (rejects / redirects / blocks / emits).
+        ac_rows=$(grep -icE "^[[:space:]]*(-([[:space:]]*\[[ xX]?\])?[[:space:]]*([A-Za-z]{0,3}[[:space:]]+)?)?(AC-F-[0-9]+|Given\b)" "$scope" 2>/dev/null | tr -d ' ' || true)
+        # A measurable Then names an observable outcome: a number, a status/HTTP code, a count,
+        # or a verb that changes state. The previous list carried grammar words ("is ", "are ",
+        # "no ", "all "), which let "then it is good" and "then no errors occur anywhere" pass as
+        # measurements while rejecting "then the order status becomes paid".
+        m02_measurable='([0-9]|zero|none|http[[:space:]]*[0-9]|[2-5][0-9][0-9]|count|exactly|becomes?|became|changes?[[:space:]]+to|transitions?|persists?|stored?|remains?|equals?|is[[:space:]]+(shown|displayed|visible|hidden|disallowed|prevented|unchanged)|are[[:space:]]+(shown|displayed|visible|hidden|disallowed|prevented)|increments?|decrements?|rejects?|denies|denied|blocks?|blocked|fails?|failed|redirects?|emits?|renders?|creates?|created|deletes?|deleted|updates?|updated|returns?|downloads?|uploads?|sends?|logs?[[:space:]]+in|redirected)'
+        ac_testable=$(grep -icE "^[[:space:]]*(-([[:space:]]*\[[ xX]?\]?)?[[:space:]]*([A-Za-z]{0,3}[[:space:]]+)?)?(AC-F-[0-9]+|Given\b).*\bthen\b.*${m02_measurable}" "$scope" 2>/dev/null | tr -d ' ' || true)
+        if [ "${f_rows:-0}" -gt 0 ]; then
+            if [ "${ac_rows:-0}" -lt "${f_rows:-0}" ]; then
+                echo "  ❌ Acceptance criteria: ${ac_rows:-0} AC-F-xx line(s) for ${f_rows} Must-Have F-xx row(s)"
+                echo "     Every Must-Have needs its own criterion (AC-F-01: Given .. When .. Then ..)."
+                GATE_FAILED=1
+            elif [ "${ac_testable:-0}" -lt "${f_rows:-0}" ]; then
+                echo "  ❌ Acceptance criteria: only ${ac_testable:-0} of ${f_rows} state a measurable outcome"
+                echo "     Each AC-F-xx must carry a Then clause with a number, a status or a count (Then HTTP 200)."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Acceptance criteria bound: ${ac_testable} testable criterion/criteria for ${f_rows} Must-Have(s)"
+            fi
         fi
 
         # 7. RBAC Zero Self-Approval guardrail (Hard blocker on non-small projects)

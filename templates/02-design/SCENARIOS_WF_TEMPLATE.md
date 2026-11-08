@@ -33,15 +33,22 @@ Prinsip arsitektural dan tata letak layar:
 
 ## 2. Matriks Data Baseline (Fixture Testing)
 
+> **Anti-Slop Law (Mandatory Multi-State & Localized Data)**:
+> Skenario "Sunny-Day Only" (hanya menguji alur sukses) dan data fiktif generik ("John Doe", "Lorem ipsum", "Product A", "example.com") DILARANG KERAS. Setiap dokumen wireflow WAJIB mencakup:
+> 1. **Happy Path**: Alur nominal berhasil dengan data riil lokal domain.
+> 2. **Sad Path (Validasi & Input Error)**: Form submit pada field kosong/salah format memicu pesan error inline ≥13px dan auto-focus ke field pertama yang cacat.
+> 3. **Domain Exception & Network Resilience**: Kondisi jaringan lambat (skeleton loading), koleksi kosong (empty state dengan CTA terarah), dan timeout/konflik mutasi.
+> 4. **RBAC Boundary & Masking**: Akses staf/operator dibatasi secara eksplisit; angka finansial eksekutif di-masking.
+
 *Data rujukan awal (seed/fixture) yang digunakan untuk simulasi pengujian interaktif prototipe dan verifikasi M06/M07:*
 
 | ID Akun | Peran (Role) | Nama Pengguna | Kredensial / Email Uji | Kata Sandi Uji | Entitas / Scope Data | Target Rute Pasca-Aksi | Lingkup Wewenang & Batasan Akses |
 |---|---|---|---|---|---|---|---|
-| **USR-01** | **[Peran Utama, e.g. Admin/Owner]** | [Nama Akun 1] | `admin@example.com` | `password123` | [Akses Penuh / Semua Cabang] | `/admin/dashboard` | **Akses Penuh**: Dapat mengelola semua data, mutasi finansial, dan audit log. |
-| **USR-02** | **[Peran Staf, e.g. Operator]** | [Nama Akun 2] | `staff@example.com` | `password123` | [Operasional Lapangan] | `/ops/workspace` | **Operasional Terbatas**: Menginput transaksi harian; diblokir dari laporan laba bersih. |
-| **USR-03** | **[Peran Customer/Member]** | [Nama Akun 3] | `user@example.com` | `password123` | [Data Pribadi Saja] | `/user/dashboard` | **Data Terisolasi**: Hanya melihat catatan miliknya sendiri. |
-| **USR-04** | **[Akun Nonaktif / Disabled]** | [Nama Akun 4] | `disabled@example.com` | `password123` | [Akses Dicabut] | Ditolak (`403 Forbidden`) | **Akses Dibekukan**: Sistem menolak akses dengan toast peringatan. |
-| **USR-05** | **[Akun Kedaluwarsa / Alumni]** | [Nama Akun 5] | `expired@example.com` | `password123` | [Arsip Riwayat Saja] | Mode Read-Only | **Mode Arsip**: Hanya dapat mengunduh riwayat; dilarang membuat mutasi baru. |
+| **USR-01** | **[Peran Utama, e.g. Admin/Owner]** | [Nama Akun 1, e.g. Budi Hartono] | `owner@internal.test` | `password123` | [Akses Penuh / Semua Cabang] | `/admin/dashboard` | **Akses Penuh**: Dapat mengelola semua data, mutasi finansial, dan audit log. |
+| **USR-02** | **[Peran Staf, e.g. Operator]** | [Nama Akun 2, e.g. Siti Rahma] | `staf@internal.test` | `password123` | [Operasional Lapangan] | `/ops/workspace` | **Operasional Terbatas**: Menginput transaksi harian; diblokir dari laporan laba bersih. |
+| **USR-03** | **[Peran Customer/Member]** | [Nama Akun 3, e.g. Ahmad Fauzi] | `member@internal.test` | `password123` | [Data Pribadi Saja] | `/user/dashboard` | **Data Terisolasi**: Hanya melihat catatan miliknya sendiri. |
+| **USR-04** | **[Akun Nonaktif / Disabled]** | [Nama Akun 4, e.g. Rian Pratama] | `disabled@internal.test` | `password123` | [Akses Dicabut] | Ditolak (`403 Forbidden`) | **Akses Dibekukan**: Sistem menolak akses dengan toast peringatan. |
+| **USR-05** | **[Akun Kedaluwarsa / Alumni]** | [Nama Akun 5, e.g. Dewi Lestari] | `alumni@internal.test` | `password123` | [Arsip Riwayat Saja] | Mode Read-Only | **Mode Arsip**: Hanya dapat mengunduh riwayat; dilarang membuat mutasi baru. |
 
 ---
 

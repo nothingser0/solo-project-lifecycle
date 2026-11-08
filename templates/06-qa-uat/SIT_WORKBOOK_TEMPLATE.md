@@ -29,6 +29,8 @@ List only integrations and critical user journeys in the locked FSD, threat mode
 ### 3. SIT Test Matrix
 
 | Test ID | Requirement / risk ID | Module / Service | Test Scenario | Expected Result | Applicability (Y/N + reason) | Result (PASS / FAIL / BLOCKED / N/A) | Evidence |
+
+> **Coverage rule (gate-enforced)**: every `REQ-xx` from the PRD/FSD and every `SCR-xx` from `SITEMAP.md` must appear in the Requirement column, so nothing ships untested. At least one row must exercise a sad/edge path (invalid input, unauthorised access, empty state, timeout) — a suite of happy paths signs off the happy path only.
 | :---: | :--- | :--- | :--- | :--- | :--- | :---: | :--- |
 | SIT-01 | [ID] | [API / core flow] | [Valid and invalid contract cases] | [FSD / acceptance criteria] | [Y/N + reason] | [record after execution] | [command / artifact] |
 | SIT-02 | [ID] | [Authorization boundary] | [Access as a distinct unauthorized principal, if applicable] | [No unauthorized data or side effect] | [Y/N + reason] | [record after execution] | [command / artifact] |

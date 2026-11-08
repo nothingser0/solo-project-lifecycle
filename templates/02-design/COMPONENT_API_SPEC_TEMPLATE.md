@@ -1,5 +1,9 @@
 # Component API Specification
 
+> ⚠️ **WHEN TO USE / NOT USE**:
+> - **DO NOT USE** for normal application development, SaaS apps, or MVPs. Screen requirements are already specified in `COMPONENT_REQUIREMENTS.md` and `DESIGN_SPEC.md`.
+> - **USE ONLY IF**: You are publishing a public npm component library or design system SDK for third-party developers.
+
 **Component Name**: [ComponentName]  
 **Version**: v1.0.0  
 **Status**: ✅ Stable / ⚠️ Beta / 🚧 Draft  

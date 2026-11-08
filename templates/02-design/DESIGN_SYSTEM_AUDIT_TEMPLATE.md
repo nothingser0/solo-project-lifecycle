@@ -1,5 +1,9 @@
 # Design System Audit Report
 
+> ⚠️ **WHEN TO USE / NOT USE**:
+> - **DO NOT USE** during early Greenfield MVP / Solo SaaS development.
+> - **USE ONLY IF**: Auditing an existing legacy codebase that suffers from rampant styling drift and inconsistent CSS tokens.
+
 **Project Name**: [Your Project Name]  
 **Audit Date**: [YYYY-MM-DD]  
 **Auditor**: [Your Name / Team]  

@@ -64,6 +64,21 @@ gate_M03() {
         else
             echo "  [INFO] Medium+ client delivery: NDA is MANDATORY before client data access."
             check_required "contracts/NDA.md" "docs/pm/NDA.md" 500
+
+    # An NDA is signed by both parties; a model may draft it, never be a party. Same rule as
+    # M09/M10/M11/A00/A01/A04.
+    nda_file="contracts/NDA.md"
+    [ -f "$nda_file" ] || nda_file="docs/pm/NDA.md"
+    if [ -f "$nda_file" ]; then
+        if grep -iE "(signed by|signed|party|disclosing|receiving)[[:space:]]*:" "$nda_file" | grep -qiE "(claude|chatgpt|gpt[0-9._-]*|openai|anthropic|copilot|gemini|llama|assistant|agent|bot|llm|ai assistant)"; then
+            echo "  ❌ $nda_file names a model as a signing party - the agent may draft the NDA, never sign it."
+            GATE_FAILED=1
+        fi
+        if ! grep -qiE "(signed by|signature|party)[[:space:]]*:" "$nda_file"; then
+            echo "  ❌ $nda_file has no signing party line - an unsigned NDA protects nothing."
+            GATE_FAILED=1
+        fi
+    fi
             local target_nda="contracts/NDA.md"
             [ -f "$target_nda" ] || target_nda="docs/pm/NDA.md"
             if [ -f "$target_nda" ]; then
@@ -81,6 +96,11 @@ gate_M03() {
             # Value & Payment Milestone Schedule" and "Change Request (CR) Procedure",
             # so a single-string matcher reported false MISSING headings.
             check_sections "$target_sow" \
+                "Project Overview|Project Charter" \
+                "Scope of Work" \
+                "Payment Terms|Compensation" \
+                "Change Request"
+            check_section_content "$target_sow" \
                 "Project Overview|Project Charter" \
                 "Scope of Work" \
                 "Payment Terms|Compensation" \
@@ -107,8 +127,16 @@ gate_M03() {
             # class of the LETTER n, so 'DP received in bank account' failed purely
             # because 'bank' contains an n. (Latent since the gate was written; the
             # status word had to precede every n-containing word to pass.)
-            if grep -qiE "\[x\].*(DP|Down Payment|30%|40%|50%|Milestone 1)" "$target_sow" && \
-               grep -qiE "\[x\].*(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)" "$target_sow"; then
+            # The template's own confirmation line reads
+            #   "- [ ] DP (Milestone 1) received in bank account - Date/Time: ... - Confirmed By: NAME"
+            # so the tick and the status sit on ONE line. The old check wanted "[x]" in a line about
+            # DP and "[x]" in a line about "Received" - two different lines - which no faithfully
+            # ticked contract can satisfy. Also require a real date, not YYYY-MM-DD.
+            m03_dp_line=$(grep -iE "^[[:space:]]*-?[[:space:]]*\[x\][^\n]*(DP|Down Payment|Milestone 1)" "$target_sow" 2>/dev/null | head -1 || true)
+            if [ -n "$m03_dp_line" ] && \
+               printf '%s' "$m03_dp_line" | grep -qiE "(Cleared|Received|Masuk|Lunas|Transferred|Settled|Bank Confirmed|Transfer Confirmed)" && \
+               printf '%s' "$m03_dp_line" | grep -qE "[0-9]{4}-[0-9]{2}-[0-9]{2}" && \
+               ! printf '%s' "$m03_dp_line" | grep -qE "YYYY-MM-DD|NAME|Rp X"; then
                 echo "  ✅ Down payment (DP) confirmation verified ([x] cleared & received in bank account)"
             else
                 echo "  ❌ Down payment (DP) not confirmed! Requires '[x] DP ... Cleared/Received/Transferred' (discussion-only or unchecked lines do NOT count)."
@@ -161,6 +189,126 @@ gate_M03() {
             else
                 echo "  ❌ Intellectual Property (IP) clause missing! Developer retains IP until 100% milestone paid."
                 GATE_FAILED=1
+            fi
+
+            # 9b. Signature completeness (BLOCKER). The gate checked every clause but never
+            #     whether anyone signed: a SOW whose signature block was a page of blank
+            #     "Name: ____" / "Signature: ____" lines passed. It cannot verify a signature is
+            #     authentic, but it can refuse an unsigned document.
+            sig_lines=$(grep -cE "^[[:space:]]*(Signature|Signed)[[:space:]]*:" "$target_sow" 2>/dev/null || true)
+            sig_blank=$(grep -cE "^[[:space:]]*(Signature|Signed|Name|Title|Date)[[:space:]]*:[[:space:]]*(_+|-+|\.+|\[[[:space:]]*\][[:space:]]*)?$" "$target_sow" 2>/dev/null || true)
+            # A model may draft the contract, never be a party to it. Same rule as the NDA check
+            # above and as M09/M10/M11/A00/A01/A04.
+            m03_model='(claude|chatgpt|gpt[-_.0-9]|openai|anthropic|copilot|gemini|deepseek|llama|bard|ai agent|llm)'
+            m03_model_signer=$(grep -iE "^[[:space:]]*(Signature|Signed|Signed by|Name|Party)[[:space:]]*:" "$target_sow" 2>/dev/null \
+                | grep -iE "$m03_model" | head -2 || true)
+            if [ -n "$m03_model_signer" ]; then
+                echo "  ❌ The SOW names a model as a signing party - the agent may draft the contract, never sign it."
+                printf '%s\n' "$m03_model_signer" | sed 's/^/       /' | cut -c1-110
+                GATE_FAILED=1
+            fi
+            # Both parties must sign, each with a human name and a real date. A contract signed on
+            # one side only is not a contract; a date left as YYYY-MM-DD is not a date.
+            m03_human_sigs=0
+            m03_no_date=""
+            for party in DEVELOPER CLIENT "Solo Dev" "Klien" "Client" "Developer"; do
+                block=$(awk -v who="$party" '
+                    tolower($0) ~ ("^[#*[:space:]]*" tolower(who) "[[:space:]]*$") { inside = 1; next }
+                    inside && (/^#{1,4} / || $0 ~ "^[#*[:space:]]*(DEVELOPER|CLIENT|Solo Dev|Client|Developer|Klien)[[:space:]]*$") { inside = 0 }
+                    inside { print }
+                ' "$target_sow" 2>/dev/null)
+                [ -n "$block" ] || continue
+                # One-line signature blocks carry several fields, so take everything after "Name:"
+                # up to the next field label.
+                name=$(printf '%s' "$block" | grep -iE "^[[:space:]]*Name[[:space:]]*:" | head -1 \
+                    | sed -E 's/.*[Nn]ame[[:space:]]*:[[:space:]]*//' \
+                    | sed -E 's/[[:space:]]{2,}.*$//' | tr -d '*')
+                date=$(printf '%s' "$block" | grep -oE "[0-9]{4}-[0-9]{2}-[0-9]{2}" | head -1 || true)
+                [ -z "$name" ] && continue
+                printf '%s' "$name" | grep -qiE "$m03_model" && continue
+                if printf '%s' "$date" | grep -qE "[0-9]{4}-[0-9]{2}-[0-9]{2}" || printf '%s' "$date" | grep -qiE "[0-9]{1,2}[[:space:]]*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)"; then
+                    m03_human_sigs=$((m03_human_sigs + 1))
+                else
+                    m03_no_date="$m03_no_date [$party:$date]"
+                fi
+            done
+            if [ -n "$m03_no_date" ]; then
+                echo "  ❌ A party signed the SOW without a date$m03_no_date"
+                echo "     Replace the date field with the day it was signed; an undated signature is contestable."
+                GATE_FAILED=1
+            fi
+            if [ "${m03_human_sigs:-0}" -lt 2 ]; then
+                echo "  ❌ The SOW is signed by ${m03_human_sigs:-0} human part(y/ies); both DEVELOPER and CLIENT must sign with a name and a date."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Signed by both parties, each with a human name and a date"
+            fi
+            if [ "${sig_lines:-0}" -eq 0 ]; then
+                echo "  ❌ No signature block in the SOW — an unsigned contract is not a contract."
+                echo "     Add 'Signature: <name>' and 'Date: <YYYY-MM-DD>' for both parties."
+                GATE_FAILED=1
+            elif [ "${sig_blank:-0}" -gt 0 ]; then
+                echo "  ❌ Signature block has ${sig_blank} blank line(s) (Name/Title/Date/Signature left empty)."
+                echo "     Record who signed and when; '${sig_blank}' empty fields means nobody did."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Signature block completed (no blank Name/Title/Date/Signature fields)"
+            fi
+
+            # 9c. Clause substance floor (BLOCKER). Named clauses were matched by keyword only, so
+            #     'Limitation of Liability: Capped at fees paid.' satisfied a clause that is meant
+            #     to limit exposure. A word floor cannot judge quality, but it rejects a stub.
+            # An unbounded promise is the one thing a solo developer cannot sign. The clause
+            # length test above proves nobody wrote a stub; this proves nobody wrote a blank
+            # cheque. A negation on the same line ("does not have unlimited rights") is allowed.
+            # Negation only counts when it directly precedes the promise, e.g. "does not grant unlimited
+            # rights". A bare "limit" or "maximum" elsewhere on the line was swallowing real promises.
+            m03_neg='(not|never|no)[[:space:]]+[a-z]*[[:space:]]*(exceed|grant|provide|cover|include|accept|offer|apply|be liable)'
+            m03_unbounded=""
+            while IFS= read -r ln; do
+                [ -z "$ln" ] && continue
+                printf '%s' "$ln" | grep -qiE "$m03_neg" && continue
+                printf '%s' "$ln" | grep -qiE '(bug[- ]free|perfectly (secure|reliable|error[- ]free)|will never (fail|crash|break)|guaranteed (to be )?(bug|error))' \
+                    && m03_unbounded="$m03_unbounded [absolute software guarantee]"
+                printf '%s' "$ln" | grep -qiE '(unlimited|forever|lifetime|perpetual|indefinite)[^.]*(support|maintenance|warranty|revision|fix)' \
+                    && m03_unbounded="$m03_unbounded [unbounded support/warranty]"
+                printf '%s' "$ln" | grep -qiE '(unlimited liability|any and all damages|no limit on liability|unlimited indemnity|hold harmless against all)' \
+                    && m03_unbounded="$m03_unbounded [unlimited liability]"
+            done <<< "$(sed 's/\\*//g' "$target_sow" 2>/dev/null)"
+            if [ -n "$m03_unbounded" ]; then
+                echo "  ❌ The SOW promises something without a bound:$m03_unbounded"
+                echo "     Cap it: a number of days for warranty, 'limited to fees paid' for liability, 'excludes indirect loss'."
+                GATE_FAILED=1
+            fi
+            # A warranty with no duration is unbounded in time even if it never says "forever".
+            if grep -qiE "warrant" "$target_sow" 2>/dev/null; then
+                if ! grep -qiE "[0-9]+[[:space:]]*(calendar[[:space:]]+)?days?" "$target_sow" 2>/dev/null; then
+                    echo "  ❌ The SOW offers a warranty but names no duration in days."
+                    echo "     State the window explicitly, e.g. '30 calendar days from BAST'."
+                    GATE_FAILED=1
+                fi
+            fi
+
+            thin=""
+            # The clause may be a numbered heading ("### II.7. Limitation of Liability"), a bullet
+            # ("- **Revision Limits**:" with sub-bullets) or a plain line. The old pattern required
+            # the clause at the start of the line after optional #/*, so none of the shipped SOW's
+            # clauses matched and every one scored 0 words - failing a complete contract.
+            for clause in "Limitation of Liability" "Intellectual Property" "Revision Limits" "Deemed Acceptance" "Third.Party (Account|Subscription)"; do
+                cl_words=$(awk -v pat="$clause" '
+                    tolower($0) ~ tolower(pat) && !started { started = 1; inside = 1 }
+                    inside { n += split($0, a, " "); body++ }
+                    inside && /^#/ && body > 1 { inside = 0 }
+                    END { print n + 0 }
+                ' "$target_sow" 2>/dev/null)
+                [ "${cl_words:-0}" -lt 25 ] && thin="$thin [${clause}:${cl_words}w]"
+            done
+            if [ -n "$thin" ]; then
+                echo "  ❌ Clause(s) present by name but too thin to protect anyone (need >= 25 words):$thin"
+                echo "     A one-line 'capped at fees paid' is not a limitation-of-liability clause."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Required clauses have substance (>= 25 words each)"
             fi
 
             # 10. Enterprise scale requires approved Risk Assessment Matrix & RACI Matrix

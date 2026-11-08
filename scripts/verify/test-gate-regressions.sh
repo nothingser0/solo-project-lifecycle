@@ -11,6 +11,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GATE="$SCRIPT_DIR/../gates/validate-gate.sh"
+REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -79,10 +80,1175 @@ expect_intake "Small + ANSWERED intake" ALLOWED "$INTAKE_ANSWERED" M01
 expect_intake "Small + ANSWERED intake (later module)" ALLOWED "$INTAKE_ANSWERED" M05
 
 echo ""
+echo "DB defense: a ticked M06-DB task without real-DB probes must be rejected."
+# Regression: STEP 6 required a real database probe but nothing enforced it, so a DB task
+# could cite a green vitest run against a stubbed repo and pass. Scoped to M06-DB only.
+expect_db() {
+    local name="$1" want="$2" todo="$3" evidence="$4"
+    local dir="$WORK/dbdef"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/artifacts"
+    printf '%b' "$todo" > "$dir/TODO.md"
+    printf '%b' "$evidence" > "$dir/artifacts/final-evidence.md"
+    local out got
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    got="ALLOWED"
+    echo "$out" | grep -qE "no real-DB proof" && got="BLOCKED"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+DB_TODO='- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0 | Approved: 2026-10-12 by S. Rahma\n'
+DB_PROBES='migrate up\nmigrate down\nmigrate up\nseeder COUNT(*) before 0 after 12\nEXPLAIN uses idx_inv_tenant\n'
+expect_db "stubbed DB task blocked"        "BLOCKED" "$DB_TODO" 'Evidence: vitest 12 passed\n'
+expect_db "probed DB task allowed"         "ALLOWED" "$DB_TODO" "$DB_PROBES"
+expect_db "partial probes blocked"         "BLOCKED" "$DB_TODO" 'migrate down ok\nEXPLAIN ok\n'
+expect_db "UI task unaffected by DB rule"  "ALLOWED" '- [x] **M06-FE-01: Page**\n  - **Evidence**: route 200 | Approved: 2026-10-12 by S. Rahma\n' 'route /invoices 200\n'
+
 echo "Per-task human approval gate: M06 must reject self-approved tasks."
 echo "Regression: the gate required every task to be '[x]' but never checked"
 echo "WHO ticked it, so an agent could self-approve a whole sprint."
 echo ""
+
+# expect_m03m12 <name> <PASS|FAIL> <mode:ndamodel|ndahuman|irmissing|irreal>
+expect_m03m12() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/m03m12"; rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/contracts"
+    printf -- '- **Scale**: Large\n- Delivery: client\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        nda*)
+            local sign="Prita Handayani on 2026-11-05"
+            [ "$mode" = "ndamodel" ] && sign="Claude Agent"
+            cp "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/templates/00-pre-sales-enterprise/SOW_CONTRACT_TEMPLATE.md" "$dir/contracts/SOW_CONTRACT.md" 2>/dev/null || true
+            [ -f "$dir/contracts/SOW_CONTRACT.md" ] || printf '# SOW\n' > "$dir/contracts/SOW_CONTRACT.md"
+            printf '# NDA\n\nDisclosing Party: PT Mitra Abadi\nReceiving Party: Arunika Studio\n\nSigned by: %s\n' "$sign" > "$dir/contracts/NDA.md"
+            ;;
+        ir*)
+            printf '# Warranty\n\n## Coverage\nx\n## Exclusion\nx\n## Service Level Agreement\nx\n' > "$dir/docs/pm/WARRANTY_POLICY.md"
+            if [ "$mode" = "irmissing" ]; then
+                printf '# Incident Response\n\nWe will handle incidents when they happen.\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+            else
+                printf '# Incident Response Plan\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Communication\nStatus page every 30 minutes.\n\nOwner: Prita Handayani\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+            fi
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$([ "${mode#nda}" != "$mode" ] && echo M03 || echo M12)" 2>&1 || true)"
+    case "$mode" in
+        ndamodel) echo "$out" | grep -q "names a model as a signing party" && got="FAIL" ;;
+        irmissing) echo "$out" | grep -q "missing severity-level detail" && got="FAIL" ;;
+        irreal)   echo "$out" | grep -q "missing .*-level detail" && got="FAIL" ;;
+        ndahuman) echo "$out" | grep -q "names a model\|no signing party line" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (m03m12:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (m03m12:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "model|missing .*-level|signing party" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m03m12 "an NDA signed by a model blocks" FAIL ndamodel
+expect_m03m12 "an NDA signed by a human does not raise the signature issue" PASS ndahuman
+expect_m03m12 "an incident plan with no severity scale blocks" FAIL irmissing
+expect_m03m12 "a real incident plan passes" PASS irreal
+
+# expect_a01a04 <name> <PASS|FAIL> <mode:a01model|a01razor|a01ok|a04tdb|a04dr|a04ok>
+expect_a01a04() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/a0104"; rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/governance"
+    printf -- '- **Scale**: Large\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        a01*)
+            local sign="Prita Handayani on 2026-11-05" razor='- Loyalty points deferred because no loyalty programme.
+- Multi-warehouse moved out because one warehouse until 2027.' rows='| Phase | Package | Price |
+|---|---|---|
+| 1 | Ordering core | 300000000 |
+| 2 | Reporting | 200000000 |'
+            [ "$mode" = "a01model" ] && sign="Claude Agent"
+            [ "$mode" = "a01razor" ] && razor="Nothing cut."
+            cat > "$dir/docs/pm/WBS_PHASING_PLAN.md" <<EOF
+# WBS Phasing Plan
+
+## Phasing Strategy
+Two phases.
+
+## Phased Package Breakdown
+$rows
+
+## Scope Razor
+$razor
+
+## Sign-Off
+Signed by: $sign
+EOF
+            ;;
+        a04*)
+            local owner="Prita Handayani" dr="RTO: 4 hours. RPO: 15 minutes."
+            [ "$mode" = "a04tdb" ] && owner="TBD"
+            [ "$mode" = "a04dr" ] && dr="We have backups."
+            cat > "$dir/docs/governance/GOVERNANCE_HANDOVER_PACK.md" <<EOF
+# Governance Handover Pack
+
+## RACI
+| Activity | Owner | Role |
+|---|---|---|
+| Release approval | $owner | A |
+| Incident triage | Budi | R |
+| Change requests | Damar | C |
+
+## CAB
+Monthly, first Tuesday, quorum 2.
+
+## Disaster Recovery
+$dr
+
+Signed by: Prita Handayani on 2026-11-05
+EOF
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$(echo "$mode" | cut -c1-3 | tr 'a-z' 'A-Z')" 2>&1 || true)"
+    case "$mode" in
+        a01model) echo "$out" | grep -q "names a model in the Sign-Off" && got="FAIL" ;;
+        a01razor) echo "$out" | grep -q "Scope Razor says nothing is cut" && got="FAIL" ;;
+        a04tdb)   echo "$out" | grep -q "assigns a role to TBD/placeholder" && got="FAIL" ;;
+        a04dr)    echo "$out" | grep -q "states no RTO" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (a0104:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (a0104:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "Sign-Off|Razor|RACI|RTO" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_a01a04 "a model signing the phasing plan blocks" FAIL a01model
+expect_a01a04 "a scope razor that cuts nothing blocks" FAIL a01razor
+expect_a01a04 "a complete phasing plan passes" PASS a01ok
+expect_a01a04 "a RACI owner of TBD blocks" FAIL a04tdb
+expect_a01a04 "a DR with no RTO blocks" FAIL a04dr
+expect_a01a04 "a complete governance pack passes" PASS a04ok
+
+# expect_advisory <name> <PASS|FAIL> <mode:a00model|a00fee|a02stride|a03rows>
+expect_advisory() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/adv"; rm -rf "$dir"
+    mkdir -p "$dir/docs/pm" "$dir/docs/architecture" "$dir/docs/security" "$dir/docs/procurement" "$dir/docs/governance"
+    printf -- '- **Scale**: Large\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        a00*)
+            local who="Damar" fee="IDR 15.000.000 per month"
+            [ "$mode" = "a00model" ] && who="Claude Agent"
+            [ "$mode" = "a00fee" ] && fee="0"
+            cat > "$dir/docs/pm/CONSULTING_AGREEMENT.md" <<EOF
+# Consulting Agreement
+
+## Parties
+Client: PT Mitra
+Consultant: $who
+
+## Advisory Deliverables
+Architecture review, monthly.
+
+## Professional Fees
+Fee: $fee
+
+## Liability
+Capped at 2x monthly fee.
+
+Signed by: $who on 2026-11-05
+EOF
+            ;;
+        a02stride)
+            printf '# Blueprint\n\n## C4\nx\n## Data Residency\nx\n## Scenario\nx\n' > "$dir/docs/architecture/ENTERPRISE_ARCHITECTURE_BLUEPRINT.md"
+            printf '# Threat model\n\n## STRIDE\nnone found\n## Mitigation\nnothing needed\n' > "$dir/docs/security/THREAT_MODEL_STRIDE.md"
+            ;;
+        a03rows)
+            printf '# Schedule\n\n## Procurement Scope\nx\n## Timeline\nx\n## Requirements\nx\n' > "$dir/docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md"
+            printf '# Matrix\n\n## Comparison Framework\nx\n## Decision Matrix\n| Vendor | Score |\n|---|---|\n## Recommendation\nGo with someone.\n' > "$dir/docs/governance/VENDOR_COMPARISON_MATRIX.md"
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$(echo "$mode" | cut -c1-3 | tr 'a-z' 'A-Z')" 2>&1 || true)"
+    case "$mode" in
+        # Behaviour, not wording: A00 was reworded, and these two cases must simply fail the gate.
+        a00model|a00fee)
+            out="$(cd "$dir" && bash "$GATE" A00 2>&1 || true)"
+            if (cd "$dir" && bash "$GATE" A00 >/dev/null 2>&1); then got="PASS"; else got="FAIL"; fi
+            ;;
+        a02stride) echo "$out" | grep -q "fewer than 3 has not been done" && got="FAIL" ;;
+        a03rows)  echo "$out" | grep -q "scored row(s)" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (adv:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (adv:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "model|fee|STRIDE|scored" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_advisory "a model signing the consulting agreement blocks" FAIL a00model
+expect_advisory "a zero fee without pro bono blocks" FAIL a00fee
+expect_advisory "a STRIDE model with no categories blocks" FAIL a02stride
+expect_advisory "a decision matrix with no scored rows blocks" FAIL a03rows
+
+# expect_signatory <name> <PASS|FAIL> <mode:m10model|m10human|m11model|m11same|m11ok>
+expect_signatory() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/sign"; rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    case "$mode" in
+        m10*)
+            printf '# Protocol\n\n## Release and Environment\nx\n## Post-Deployment Verification\nx\n## Monitoring and Recovery\nx\n' > "$dir/docs/pm/DEPLOYMENT_PROTOCOL.md"
+            local lead="Claude Agent"
+            [ "$mode" = "m10human" ] && lead="Prita Handayani"
+            cat > "$dir/docs/pm/GO_LIVE_REPORT.md" <<EOF
+# Go Live Report
+
+## Release and Environment
+Environment: production
+
+## Post-Deployment Verification
+| ID | Scenario | Result |
+|---|---|---|
+| PVT-01 | Login works | PASS |
+
+## Monitoring and Recovery
+Rollback: previous image tag
+
+Human decision: GO
+Release status: LIVE
+Lead Engineer: $lead
+EOF
+            ;;
+        m11*)
+            local p1="Prita Handayani, PT Mitra" p2="Damar, Studio" s1="Prita Handayani" s2="Damar"
+            case "$mode" in
+                m11model) s1="Claude Agent" ;;
+                m11same)  p1="Damar, Studio"; p2="Damar, Studio"; s1="Damar"; s2="Damar" ;;
+            esac
+            cat > "$dir/docs/pm/BAST.md" <<EOF
+# BAST
+
+## Article 1 Parties
+FIRST PARTY: $p1
+SECOND PARTY: $p2
+
+## Article 2 Payment
+The client confirmed settled all payment in full.
+
+## Article 3 Handover
+All deliverables transferred.
+
+## Signatures
+Signed by FIRST PARTY: $s1
+Date: 2026-11-05
+Signed by SECOND PARTY: $s2
+Date: 2026-11-05
+EOF
+            printf '# Manual\n\n## Getting Started\nx\n## Features\nx\n' > "$dir/docs/USER_MANUAL.md"
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$([ "${mode#m10}" != "$mode" ] && echo M10 || echo M11)" 2>&1 || true)"
+    case "$mode" in
+        m10model) echo "$out" | grep -q "names a model as Lead Engineer" && got="FAIL" ;;
+        m10human) echo "$out" | grep -q "names a model as Lead Engineer" && got="FAIL" ;;
+        m11model) echo "$out" | grep -q "names a model as" && got="FAIL" ;;
+        m11same)  echo "$out" | grep -q "same party on both sides" && got="FAIL" ;;
+        m11ok)    echo "$out" | grep -qE "names a model|same party" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (sign:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (sign:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "model|same party" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_signatory "a model as Lead Engineer blocks" FAIL m10model
+expect_signatory "a human Lead Engineer passes" PASS m10human
+expect_signatory "a model signing FIRST PARTY blocks" FAIL m11model
+expect_signatory "the same party on both sides blocks" FAIL m11same
+expect_signatory "two different humans pass" PASS m11ok
+
+# expect_m06_visual <name> <PASS|FAIL> <src-body> <mode:contrast|font|scale|bare|upload> [fsd]
+expect_m06_visual() {
+    local name="$1" want="$2" body="$3" mode="$4" fsd="${5:-}"
+    local dir="$WORK/m06vis"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/b.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/c.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/d.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCH\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    if [ "$mode" = "scale" ]; then
+        printf '# DESIGN\n| token | value |\n|---|---|\n| caption | 13px |\n| body | 17px |\n' > "$dir/DESIGN.md"
+    else
+        printf '# DESIGN\ntokens\n' > "$dir/DESIGN.md"
+    fi
+    printf '# CONV\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUN\nnpm run dev\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '# VERIFY\ntests\n' > "$dir/VERIFY_LOCAL.md"
+    [ -n "$fsd" ] && printf '# FSD\n\n%s\n' "$fsd" > "$dir/docs/specs/FSD.md"
+    printf '%b\n' "$body" > "$dir/src/page.tsx"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    case "$mode" in
+        contrast) echo "$out" | grep -q "contrast below WCAG AA" && got="FAIL" ;;
+        font)     echo "$out" | grep -q "font-family used but never loaded" && got="FAIL" ;;
+        scale)    echo "$out" | grep -q "not in the DESIGN.md type scale\|defines no px type scale" && got="FAIL" ;;
+        bare)     echo "$out" | grep -q "rendered with no className/style" && got="FAIL" ;;
+        upload)   echo "$out" | grep -q "specifies a file upload but no file input" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (visual:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (visual:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "contrast|font-family|type scale|no className|file upload" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_visual "fefefe text on white fails AA" FAIL 'export const A = () => <p style={{ color: "#fefefe", background: "#ffffff" }}>x</p>;' contrast
+expect_m06_visual "dark text on white passes AA" PASS 'export const A = () => <p style={{ color: "#111827", background: "#ffffff" }}>x</p>;' contrast
+expect_m06_visual "an Inter font-family that is never loaded blocks" FAIL 'export const A = () => <p style={{ fontFamily: "Inter" }}>x</p>;' font
+expect_m06_visual "a font size outside the DESIGN.md scale blocks" FAIL 'export const A = () => <p style={{ fontSize: "15px" }}>x</p>;' scale
+expect_m06_visual "a size inside the scale passes" PASS 'export const A = () => <p style={{ fontSize: "13px" }}>x</p>;' scale
+expect_m06_visual "a bare select blocks" FAIL 'export const A = () => <select><option>a</option></select>;' bare
+expect_m06_visual "an FSD upload with no file input blocks" FAIL 'export const A = () => <input type="text" className="x" />;' upload '| FR-01 | Customer uploads a KTP scan (.jpg, .pdf, max 2MB) | file rejected |'
+expect_m06_visual "an FSD upload with a file input passes" PASS 'export const A = () => <input type="file" accept="image/*" className="x" />;' upload '| FR-01 | Customer uploads a KTP scan (.jpg, .pdf, max 2MB) | file rejected |'
+expect_m06_visual "text-slate-400 on bg-white fails AA (2.56:1)" FAIL 'export const A = () => <p className="text-slate-400 bg-white">x</p>;' contrast
+expect_m06_visual "text-gray-300 on bg-gray-100 fails AA (1.34:1)" FAIL 'export const A = () => <p className="text-gray-300 bg-gray-100">x</p>;' contrast
+expect_m06_visual "text-slate-900 on bg-white passes AA (17:1)" PASS 'export const A = () => <p className="text-slate-900 bg-white">x</p>;' contrast
+expect_m06_visual "text-slate-400/70 on bg-white fails AA (1.86:1)" FAIL 'export const A = () => <p className="text-slate-400/70 bg-white">x</p>;' contrast
+expect_m06_visual "text-slate-900/60 on bg-white passes AA (4.69:1)" PASS 'export const A = () => <p className="text-slate-900/60 bg-white">x</p>;' contrast
+expect_m06_human() {
+    local name="$1" want="$2" body="$3" mode="$4"
+    local dir="$WORK/m06h"; rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium
+- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/b.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/c.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/d.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCH\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    printf '# DESIGN\ntokens\n' > "$dir/DESIGN.md"
+    printf '# CONV\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUN\nnpm run dev\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '%b\n' "$body" > "$dir/VERIFY_LOCAL.md"
+    printf 'export const A = () => <p className="text-slate-900 bg-white">x</p>;\n' > "$dir/src/a.tsx"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -q "lists no human-only checks\|does not cover both runtime contrast" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (human:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (human:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "human-only|runtime contrast" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_human "a VERIFY_LOCAL with no human-only checks blocks" FAIL '# Verify
+tests pass' a
+expect_m06_human "human-only checks without an interactive step block" FAIL '# Verify
+
+## Human-only checks
+DevTools computed style for runtime contrast.' b
+expect_m06_human "human-only checks covering both pass" PASS '# Verify
+
+## Human-only checks
+DevTools computed style for runtime contrast.
+Open every dropdown and popover.' c
+
+# expect_m06_slop <name> <PASS|FAIL> <src-file-body> <mode:emoji|comment|todo>
+# The anti-slop checks that were measuring the wrong thing: an emoji range that skipped
+# U+2600-U+26FF, and a comment pattern that only matched thirteen capitalised phrases.
+expect_m06_slop() {
+    local name="$1" want="$2" body="$3" mode="$4"
+    local dir="$WORK/m06sl"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/b.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/c.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/d.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCH\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    printf '# DESIGN\ntokens #3b82f6\n' > "$dir/DESIGN.md"
+    printf '# CONV\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUN\nnpm run dev\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '# VERIFY\ntests\n' > "$dir/VERIFY_LOCAL.md"
+    printf '%b\n' "$body" > "$dir/src/page.tsx"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    case "$mode" in
+        emoji)   echo "$out" | grep -q "raw emoji / emoticon" && got="FAIL" ;;
+        comment) echo "$out" | grep -q "narrating / redundant comment" && got="FAIL" ;;
+        todo)    echo "$out" | grep -q "placeholder TODO stub" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (slop:$mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (slop:$mode -> $got, expected $want)"
+        echo "$out" | grep -iE "emoji|comment|TODO stub" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_slop "lightning and gear emoji are caught" FAIL 'export const A = () => <b>\xe2\x9a\xa1 \xe2\x9a\x99</b>;' emoji
+expect_m06_slop "warning sign emoji is caught" FAIL 'export const B = () => <b>\xe2\x9a\xa0</b>;' emoji
+expect_m06_slop "banner-and-lowercase comments block" FAIL '// ============================\n// increment the counter\nexport const c = 1;' comment
+expect_m06_slop "shouted comment blocks" FAIL '// THIS IS THE LOGIN PAGE OK\nexport const d = 1;' comment
+expect_m06_slop "TODO left in source blocks" FAIL '// TODO: add validation later\nexport const e = 1;' todo
+expect_m06_slop "a why-comment is allowed" PASS '// Retry once because the payment provider times out on cold start.\nexport const f = 1;' comment
+
+# expect_m08_m09 <name> <PASS|FAIL> <mode:m08map|m08rows|m09model|m09incomplete> <body>
+expect_m08_m09() {
+    local name="$1" want="$2" mode="$3" body="$4"
+    local dir="$WORK/m0809"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/qa"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '# FSD\n\nCREATE TABLE customers (id uuid);\nCREATE TABLE invoices (id uuid);\n' > "$dir/docs/specs/FSD.md"
+    case "$mode" in
+        m08map|m08rows)
+            printf '# Plan\n\n## Data Hygiene\nx\n## Mapping Matrix\n%b\n## Masking Protocol\nx\nInputs-Received: yes\n' \
+                "$([ "$mode" = m08map ] && printf 'generic column mapping\n' || printf '| customers.name | customers.name |\n| invoices.total | invoices.total |\n')" \
+                > "$dir/docs/pm/DATA_MIGRATION_PLAN.md"
+            printf '# Recon\nStatus: RECONCILED\n%b\n' "$body" > "$dir/docs/pm/MIGRATION_RECONCILIATION_REPORT.md"
+            ;;
+        m09model|m09incomplete)
+            printf '# UAT\n\n### Requirement / AC ID\n### Evidence\n\n%b\n' "$body" > "$dir/docs/qa/UAT_WORKBOOK.md"
+            printf '# Report\n\n### Sign-Off Metadata\n### Testing Summary\n### Acceptance & Release Decision\n\n%b\nStatus: SIGNED\n' "$body" > "$dir/docs/pm/UAT_SIGNOFF_REPORT.md"
+            ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" "$([ "${mode#m08}" != "$mode" ] && echo M08 || echo M09)" 2>&1 || true)"
+    case "$mode" in
+        m08map)  echo "$out" | grep -q "never mentions these schema table" && got="FAIL" ;;
+        m08rows) echo "$out" | grep -q "states no row counts" && got="FAIL" ;;
+        m09model) echo "$out" | grep -q "names a model as the client signatory" && got="FAIL" ;;
+        m09incomplete) echo "$out" | grep -q "sign-off is incomplete" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (${mode} -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (${mode} -> $got, expected $want)"
+        echo "$out" | grep -E "never mentions|row counts|model|incomplete" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m08_m09 "migration plan that maps no schema table blocks" FAIL m08map 'All tables passed.'
+expect_m08_m09 "reconciliation without row counts blocks" FAIL m08rows 'All tables passed.'
+expect_m08_m09 "migration plan + counted reconciliation passes" PASS m08rows '| Table | Source rows | Loaded rows | Matched |
+|---|---|---|---|
+| customers | 100 | 100 | 100 |
+| invoices | 40 | 40 | 40 |'
+expect_m08_m09 "model signing the client UAT blocks" FAIL m09model 'Client Single PIC: Claude Agent
+Signature: Claude Agent
+Date: 2026-11-05
+Signed via: meeting'
+expect_m08_m09 "UAT signature without a channel blocks" FAIL m09incomplete 'Client Single PIC: Prita Handayani
+Signature: Prita Handayani'
+expect_m08_m09 "human client sign-off with channel passes" PASS m09incomplete 'Client Single PIC: Prita Handayani
+Signature: Prita Handayani
+Date: 2026-11-05
+Signed via: meeting'
+
+# expect_m06_harness <name> <PASS|FAIL> <mode:runbook|context|arch>
+# A harness file that exists only to clear a size floor is decoration; each must carry the
+# section the person opening it came for.
+expect_m06_harness() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/m06hs"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/a.png"
+    printf 'SCR-001 Login\n' > "$dir/docs/specs/SITEMAP.md"
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    printf '# TODO\n- [x] **M06-SETUP-01: s**\n  - **Human Check**: run npm run dev\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-DB-01: s**\n  - **Human Check**: open psql\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-BE-01: s**\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n- [x] **M06-FE-01: s**\n  - **Human Check**: compare SCR-001\n  - **Evidence**: `artifacts/a.png` | Approved: 2026-01-01 by Sri\n' > "$dir/TODO.md"
+    printf '# AGENTS\nThe prototype is the UI source of truth: docs/design/screens/\n' > "$dir/AGENTS.md"
+    printf '# CONTEXT\nproduct summary\nDecision Log\nKnown issues\n' > "$dir/CONTEXT.md"
+    printf '# ARCHITECTURE\ntopology\nRejected: NestJS because two deploys\n' > "$dir/ARCHITECTURE.md"
+    printf '# DESIGN\ntokens\n' > "$dir/DESIGN.md"
+    printf '# CONVENTIONS\nnaming\n' > "$dir/CONVENTIONS.md"
+    printf '# RUNBOOK\nTroubleshooting\nReset to a clean state\n' > "$dir/RUNBOOK_LOCAL.md"
+    printf '# VERIFY\ntests\n' > "$dir/VERIFY_LOCAL.md"
+    case "$mode" in
+        runbook) printf '# RUNBOOK\nnpm run dev\n' > "$dir/RUNBOOK_LOCAL.md" ;;
+        context) printf '# CONTEXT\nproduct summary\n' > "$dir/CONTEXT.md" ;;
+        arch)    printf '# ARCHITECTURE\ntopology\n' > "$dir/ARCHITECTURE.md" ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -q "missing the section they exist for" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 harness -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 harness -> $got, expected $want)"
+        echo "$out" | grep -E "missing the section" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_harness "runbook without troubleshooting blocks" FAIL runbook
+expect_m06_harness "context without a decision log blocks" FAIL context
+expect_m06_harness "architecture with no rejected alternative blocks" FAIL arch
+
+# expect_m07_sit <name> <PASS|FAIL> <workbook-rows>
+# M07 signs the system off, so a workbook that skips requirements must not pass.
+expect_m07_sit() {
+    local name="$1" want="$2" rows="$3"
+    local dir="$WORK/m07sit"
+    rm -rf "$dir"; mkdir -p "$dir/docs/qa" "$dir/docs/pm" "$dir/docs/specs"
+    printf -- '- **Scale**: Medium\n- Intake-Status: ANSWERED\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'SCR-001 Login\nSCR-002 Dashboard\n' > "$dir/docs/specs/SITEMAP.md"
+    printf '| REQ-01 | F-01 |\n| REQ-02 | F-02 |\n' > "$dir/docs/specs/PRD.md"
+    {
+      printf '# SIT Workbook\n\nPART I: SIT TEST PLAN\nPART II: SIT REPORT\nThird-Party Integration\n'
+      printf 'Load & Concurrency Test\nCore Web Vitals\nNative Mobile QA\nSign-Off\nDocument Metadata\n'
+      printf 'Scope\nEnvironment\n\nStaging-URL: https://staging.example.test\nFinal Testing Status: SIT PASS\n\n'
+      printf '| ID | Scenario | Expected | Actual | Status |\n|---|---|---|---|---|\n'
+      printf '%b\n' "$rows"
+    } > "$dir/docs/qa/SIT_WORKBOOK.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M07 2>&1 || true)"
+    echo "$out" | grep -qE "never tests|no negative/edge scenario" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M07 sit -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M07 sit -> $got, expected $want)"
+        echo "$out" | grep -E "never tests|negative/edge|SIT covers" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m07_sit "SIT attesting PASS while skipping requirements blocks" FAIL '| TC-01 | login works | dashboard | ok | PASS |'
+expect_m07_sit "SIT covering everything but only happy paths blocks" FAIL '| TC-01 | REQ-01 SCR-001 login | ok | ok | PASS |\n| TC-02 | REQ-02 SCR-002 totals | ok | ok | PASS |'
+expect_m07_sit "SIT with full coverage and a rejected-input row passes" PASS '| TC-01 | REQ-01 SCR-001 login | ok | ok | PASS |\n| TC-02 | REQ-02 SCR-002 totals | ok | ok | PASS |\n| TC-03 | REQ-01 wrong password rejected | error | ok | PASS |'
+
+# expect_m06_int <name> <PASS|FAIL> <todo-extra> <fsd-body>
+expect_m06_int() {
+    local name="$1" want="$2" extra="$3" fsd="${4:-Payment gateway: Midtrans, webhook settlement callbacks.}"
+    local dir="$WORK/m06int"
+    rm -rf "$dir"; mkdir -p "$dir/docs/harness-root" "$dir/docs/specs" "$dir/artifacts"
+    for f in a b c d; do printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/$f.png"; done
+    printf '# FSD\n\n## Integrations\n\n%b\n' "$fsd" > "$dir/docs/specs/FSD.md"
+    printf '# E\nmigrate down\nCOUNT(\nEXPLAIN\n' > "$dir/artifacts/final-evidence.md"
+    {
+      printf '# TODO\n\n'
+      printf -- '- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
+      printf -- '- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
+      printf -- '- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
+      printf -- '- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Prita Handayani\n'
+      printf '%b\n' "$extra"
+    } > "$dir/docs/harness-root/TODO.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -q "no M06-INT-xx task" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 int -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 int -> $got, expected $want)"
+        echo "$out" | grep -E "M06-INT|Integration wire" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m06_int "declared integration with no M06-INT task blocks" FAIL ''
+expect_m06_int "M06-INT task satisfies a declared integration" PASS '- [x] **M06-INT-01: Midtrans webhook**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani'
+expect_m06_int "integration marked N/A with a reason passes" PASS '- M06-INT: N/A - payment collected offline by bank transfer'
+expect_m06_int "no declared integration needs no INT task" PASS '' 'No external services; everything is in-house.'
+
+# expect_m06_cross <name> <PASS|FAIL> <mode:port|dbtarget> <fixture-shape>
+# The two cross-module rules M06 was missing: a frozen prototype nobody ported, and a DB probe
+# that ran against a different server than the app.
+expect_m06_cross() {
+    local name="$1" want="$2" mode="$3" src="$4" dsnenv="$5" evidence="$6"
+    local dir="$WORK/m06cx"
+    rm -rf "$dir"; mkdir -p "$dir/docs/harness-root" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/artifacts" "$dir/src"
+    printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/a.png"
+    cp "$dir/artifacts/a.png" "$dir/artifacts/b.png"
+    cp "$dir/artifacts/a.png" "$dir/artifacts/c.png"
+    cp "$dir/artifacts/a.png" "$dir/artifacts/d.png"
+    printf 'SCR-001 Login\nSCR-002 Dashboard\n' > "$dir/docs/specs/SITEMAP.md"
+    printf '%b' "$dsnenv" > "$dir/.env"
+    printf '%b' "$evidence" > "$dir/artifacts/final-evidence.md"
+    printf '%b' "$src" > "$dir/src/pages.tsx"
+    printf '# TODO\n\n- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/b.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/c.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/d.png`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-02: dashboard**\n  - **Evidence**: `artifacts/a.png`\n  - Approved: 2026-01-01 by Prita Handayani\n' > "$dir/docs/harness-root/TODO.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    case "$mode" in
+        port)     echo "$out" | grep -q "never references these frozen prototype" && got="FAIL" ;;
+        dbtarget) echo "$out" | grep -q "never name the configured database target" && got="FAIL" ;;
+    esac
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 $mode -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 $mode -> $got, expected $want)"
+        echo "$out" | grep -E "prototype|database target" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M06_EV_OK='migrate down\nCOUNT(\nEXPLAIN\nagainst neon.tech\n'
+M06_EV_LOCAL='migrate down\nCOUNT(\nEXPLAIN\nran on localhost\n'
+M06_ENV_NEON='DATABASE_URL=postgresql://u:p@ep-cool.neon.tech/app\n'
+M06_SRC_PORTED='/* SCR-001 SCR-002 */\n'
+expect_m06_cross "source that never ports the frozen screens blocks" FAIL port "$(printf '/* nothing */')" "$M06_ENV_NEON" "$M06_EV_OK"
+expect_m06_cross "ported source passes" PASS port "$M06_SRC_PORTED" "$M06_ENV_NEON" "$M06_EV_OK"
+expect_m06_cross "DB probe on localhost while the app uses Neon blocks" FAIL dbtarget "$M06_SRC_PORTED" "$M06_ENV_NEON" "$M06_EV_LOCAL"
+expect_m06_cross "DB probe naming the configured target passes" PASS dbtarget "$M06_SRC_PORTED" "$M06_ENV_NEON" "$M06_EV_OK"
+
+# expect_m06_todo <name> <PASS|FAIL> <todo-tail-after-header>
+# M06 trusts TODO.md, so the two ways a tick lies are worth pinning: a model approving it,
+# and one artefact standing in for several unrelated tasks.
+expect_m06_todo() {
+    local name="$1" want="$2" body="$3"
+    local dir="$WORK/m06td"
+    rm -rf "$dir"; mkdir -p "$dir/docs/harness-root" "$dir/artifacts"
+    printf '\x89PNG-%0.s' $(seq 1 200) > "$dir/artifacts/db.png"
+    cp "$dir/artifacts/db.png" "$dir/artifacts/api.png"
+    cp "$dir/artifacts/db.png" "$dir/artifacts/ui.png"
+    cp "$dir/artifacts/db.png" "$dir/artifacts/setup.png"
+    printf '# TODO\n\n%b\n' "$body" > "$dir/docs/harness-root/TODO.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1 || true)"
+    echo "$out" | grep -qE "approved by a model|one evidence path is cited" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 todo -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 todo -> $got, expected $want)"
+        echo "$out" | grep -E "approval|evidence path|model" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M06_T=('- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: `artifacts/setup.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+M06_T+=('- [x] **M06-DB-01: schema**\n  - **Evidence**: `artifacts/db.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+M06_T+=('- [x] **M06-BE-01: api**\n  - **Evidence**: `artifacts/api.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+M06_T+=('- [x] **M06-FE-01: screens**\n  - **Evidence**: `artifacts/ui.png`\n  - Approved: 2026-01-01 by Prita Handayani\n')
+expect_m06_todo "model approval of a task blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Claude Agent\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n"
+expect_m06_todo "one artefact reused across categories blocks" FAIL "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n"
+expect_m06_todo "human-approved distinct evidence passes" PASS "- [x] **M06-SETUP-01: scaffold**\n  - **Evidence**: \`artifacts/setup.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-DB-01: schema**\n  - **Evidence**: \`artifacts/db.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-BE-01: api**\n  - **Evidence**: \`artifacts/api.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n- [x] **M06-FE-01: screens**\n  - **Evidence**: \`artifacts/ui.png\`\n  - Approved: 2026-01-01 by Prita Handayani\n"
+
+# expect_m05_schema <name> <PASS|FAIL> <fsd-tail>
+# Assert the ERD/DDL cross-check and the rejected-alternative rule on their own.
+expect_m05_schema() {
+    local name="$1" want="$2" tail="$3"
+    local dir="$WORK/m05sc"
+    rm -rf "$dir"; mkdir -p "$dir/docs/specs"
+    printf '# FSD\n\n%b\n\nApproved by: Prita Handayani\nApproved on: 2026-11-05\n' "$tail" > "$dir/docs/specs/FSD.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    echo "$out" | grep -qE "missing from the ERD|never created by the DDL|no rejected alternative|without a reason" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 schema -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 schema -> $got, expected $want)"
+        echo "$out" | grep -E "ERD|Table|Rejected|rejected" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M05_ERD_AGREE='```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React'
+expect_m05_schema "ERD that omits a DDL table blocks" FAIL '```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE TABLE invoices (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React'
+expect_m05_schema "ERD describing a table no DDL creates blocks" FAIL '```mermaid\nerDiagram\n    purchase {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React'
+expect_m05_schema "locked stack with no rejected alternative blocks" FAIL '```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js'
+expect_m05_schema "rejected alternative with no reason blocks" FAIL '```mermaid\nerDiagram\n    orders {\n        uuid id\n    }\n```\nCREATE TABLE orders (id uuid);\nCREATE INDEX idx_orders ON orders(id);\nStack Decision LOCKED: Next.js  Rejected: Laravel'
+expect_m05_schema "ERD matching DDL with a justified stack passes" PASS "$M05_ERD_AGREE"
+
+# expect_m05_chain <name> <PASS|FAIL> <prd-body> [scope-body] [sitemap-body]
+# M05's job is the traceability chain, so these cases assert the chain and nothing else.
+expect_m05_chain() {
+    local name="$1" want="$2" prd="$3" scope="${4:-}" sitemap="${5:-}"
+    local dir="$WORK/m05ch"
+    rm -rf "$dir"; mkdir -p "$dir/docs/specs" "$dir/docs/pm"
+    printf '%b' "$prd" > "$dir/docs/specs/PRD.md"
+    printf '# FSD\n\n## Technical Sign-Off\n\nApproved by: Prita Handayani\nApproved on: 2026-11-05\n' > "$dir/docs/specs/FSD.md"
+    [ -n "$scope" ] && printf '%b' "$scope" > "$dir/docs/pm/SCOPE_STATEMENT.md"
+    [ -n "$sitemap" ] && printf '%b' "$sitemap" > "$dir/docs/specs/SITEMAP.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
+    echo "$out" | grep -qE "no requirement mapping|no feature behind them|no traceability matrix|never approved|no BDD scenarios|scenario\(s\) name no REQ|no requirement mentions" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 chain -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 chain -> $got, expected $want)"
+        echo "$out" | grep -E "traceability|scope|BDD|SITEMAP" | head -4 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+M05_HDR='# PRD\n\n## Document Metadata\nv1\n\n## Functional Traceability Matrix\n\n'
+M05_SCEN='\n\nScenario: sign in\nGiven a registered user\nWhen they submit valid credentials\nThen they reach the dashboard\nREQ-01\n'
+expect_m05_chain "feature with no requirement blocks" FAIL "$M05_HDR"'| F-01 | login |\n'"$M05_SCEN"
+expect_m05_chain "requirement with no feature blocks" FAIL "$M05_HDR"'| REQ-01 | login |\n'"$M05_SCEN"
+expect_m05_chain "feature outside the M02 scope blocks" FAIL "$M05_HDR"'| REQ-01 | F-99 |\n'"$M05_SCEN" '| F-01 | auth |\n'
+expect_m05_chain "prose with Given/When/Then is not a scenario" FAIL "$M05_HDR"'| REQ-01 | F-01 |\n\nGiven the pressure When the market Then whoever\n' '| F-01 | auth |\n'
+expect_m05_chain "SITEMAP screen no requirement mentions blocks" FAIL "$M05_HDR"'| REQ-01 | F-01 |\n'"$M05_SCEN" '| F-01 | auth |\n' 'SCR-001 Login\nSCR-002 Dashboard\n'
+expect_m05_chain "fully traceable spec passes" PASS "$M05_HDR"'| REQ-01 | F-01 | SCR-001 |\n'"$M05_SCEN"
+
+# expect_m05_signoff <name> <PASS|FAIL> <sed-ish python to break the fixture>
+# The sign-off block is where a template placeholder most easily passes as a signature, so these
+# cases break one field at a time in an otherwise complete FSD.
+expect_m05_signoff() {  # <name> <PASS|FAIL> <python body> [expected-message-regex]
+    local name="$1" want="$2" body="$3" expect_msg="${4:-}"
+    local dir="$WORK/m05sig" fix="$REPO/scripts/verify/fixtures/m05-spec/repo"
+    rm -rf "$dir"; cp -r "$fix" "$dir"        # a repo the gate already accepts
+    python3 - "$dir/docs/specs/FSD.md" "$dir/docs/specs/PRD.md" <<PY
+import io, re, sys
+p, prd = sys.argv[1], sys.argv[2]
+s = io.open(p, encoding="utf-8").read()
+p = prd
+$body
+io.open(sys.argv[1], "w", encoding="utf-8").write(s)
+PY
+    local out rc
+    out="$(cd "$dir" && bash "$GATE" M05 2>&1)"; rc=$?
+    local got="PASS"; [ "$rc" -ne 0 ] && got="FAIL"
+    local ok=0 cause=0
+    [ "$got" = "$want" ] && ok=1
+    # a FAIL only counts when it fails for the reason under test
+    if [ "$want" = "FAIL" ] && [ -n "$expect_msg" ]; then
+        echo "$out" | grep -qE "$expect_msg" && cause=1
+    else
+        cause=1
+    fi
+    if [ "$ok" = 1 ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M05 sign-off -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M05 sign-off -> $got, expected $want${expect_msg:+, message /$expect_msg/})"
+        echo "$out" | grep -E "❌" | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m05_signoff "the object-storage row is a paragraph, as the template writes it" PASS 's = s'
+expect_m05_signoff "the template's own rejected-alternative instruction is not a reason" FAIL \
+    's = re.sub(r"(?m)^Rejected: .*$", "Rejected: <the runner-up> because <why it lost>", s)' \
+    "rejected alternative is the template"
+expect_m05_signoff "an agent is never the technical approver" FAIL \
+    's = re.sub(r"(?m)^\*\*Approved by\*\*:.*$", "**Approved by**: Claude Agent", s)' \
+    "approver is not a human"
+expect_m05_signoff "the reviewer placeholder is not a signature" FAIL \
+    's = re.sub(r"(?m)^\*\*Approved by\*\*:.*$", "**Approved by**: [Human reviewer name]", s)' \
+    "technical approver is still the template placeholder"
+expect_m05_signoff "a placeholder sign-off date blocks" FAIL \
+    's = re.sub(r"(?m)^\*\*Approved on\*\*:.*$", "**Approved on**: YYYY-MM-DD", s)' \
+    "sign-off date"
+
+# expect_m04_route <name> <PASS|FAIL> <sitemap-ids> <files-to-create> <stray-colour?>
+# Isolates the SCR-xx -> screen mapping and the token-colour rule.
+setup_m04() {
+    local dir="$1" html="${2:-}"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/docs/specs" "$dir/docs/design/screens" "$dir/docs/design/brand" "$dir/docs/design/inspiration"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '%b' "$html" > "$dir/docs/design/screens/SCR-003.html"
+    # everything M04 needs that is not under test
+    printf 'SCR-003 admin invoices\n%s\n' "$(printf 'sitemap detail row. %.0s' $(seq 1 120))" > "$dir/docs/specs/SITEMAP.md"
+    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\n\n## Motion & Interaction\ntransition 150ms, active scale 0.98\n%s\n' \
+        "$(printf 'screen rows and state matrix detail. %.0s' $(seq 1 100))" > "$dir/docs/specs/DESIGN_SPEC.md"
+    mkdir -p "$dir/docs/design/shared/css"
+    printf 'body{margin:0;font-family:system-ui}\n' > "$dir/docs/design/shared/css/styles.css"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#3b82f6"/></svg>\n' > "$dir/docs/design/brand/favicon.svg"
+    printf '# Components\n\n## Primitives & Atomic\nbutton input\n## Composites\ncard form\n## Accessibility WCAG AA\ncontrast 4.5:1\n%s\n' \
+        "$(printf 'component inventory detail. %.0s' $(seq 1 60))" > "$dir/docs/specs/COMPONENT_REQUIREMENTS.md"
+    printf '# Logo brief\n\nmonogram mark with brand accent and clear space rules defined\n' > "$dir/docs/specs/LOGO_DESIGN_BRIEF.md"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Acme mark"><title>Acme</title><circle cx="32" cy="32" r="28" fill="#3b82f6"/><path d="M20 40 L32 20 L44 40 Z" fill="#ffffff"/><rect x="18" y="44" width="28" height="4" fill="#ffffff"/></svg>\n' > "$dir/docs/design/brand/logo.svg"
+    printf '# inspiration notes\n\nWinning benchmark: ref.png (Linear), because of its density and neutral palette.\n%s\n' \
+        "$(printf 'observation detail. %.0s' $(seq 1 60))" > "$dir/docs/design/inspiration/notes.md"
+    printf 'reference screenshot placeholder supplied by the human\n' > "$dir/docs/design/inspiration/ref.png"
+    printf 'sources:\n  - docs/design/inspiration/notes.md\n\nEvidence & Inference Log: tokens marked observed or inferred\n\n## Anti-Slop\nZero emoticons, zero glassmorphism, restrained shadows, one icon set.\n\nTypography scale and Spacing scale defined here.\nContrast 4.5:1 and 7.0:1 recorded. z-index base 0 toast 60.\n%s\n' \
+        "$(printf 'design token detail. %.0s' $(seq 1 60))" > "$dir/DESIGN.md"
+    mkdir -p "$dir/docs/design/components" "$dir/docs/specs/wireflows"
+    
+}
+
+expect_m04_route() {
+    local name="$1" want="$2" ids="$3" files="$4" stray="${5:-}"
+    local dir="$WORK/m04rt"
+    # START FROM THE PASSING M04 FIXTURE: this test targets two rules and nothing else, so
+    # rebuilding the whole prerequisite stack here would assert unrelated checks.
+    rm -rf "$dir"; mkdir -p "$dir"
+    setup_m04 "$dir"
+    # setup_m04 ships one SCR-003 screen; these cases re-cut the map, so start from an empty screen dir
+    rm -f "$dir"/docs/design/screens/*.html
+    printf 'SCR-001 Login screen with an email field and a submit button for the operator\nSCR-002 Dashboard screen with totals and a table of recent invoices for review\n' > "$dir/docs/specs/SITEMAP.md"
+    printf 'body{color:#3b82f6}\n' > "$dir/docs/design/shared/css/styles.css"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#3b82f6"/></svg>\n' > "$dir/docs/design/brand/favicon.svg"
+    for f in $files; do
+        printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../brand/favicon.svg"><title>%s</title></head><body><main><p style="color:%s">%s</p></main></body></html>\n' \
+            "$f" "${stray:-#3b82f6}" "$(printf 'Screen words that clear the hollow floor comfortably. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/$f.html"
+    done
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -qE "no file and no data-screen section|Colours used in the prototype but absent" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (route/token -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (route/token -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m04_route "SITEMAP screen with no file blocks" FAIL "x" "SCR-001"
+expect_m04_route "every SITEMAP screen mapped passes" PASS "x" "SCR-001 SCR-002"
+expect_m04_route "prototype colour outside the tokens blocks" FAIL "x" "SCR-001 SCR-002" "#ff00aa"
+
+# expect_m04_freeze <name> <PASS|FAIL> <freeze-block>
+# A Design Freeze approved by the model is not an approval: the runbook says so and the gate
+# used to accept any name, plus a sign-off with no channel at all.
+expect_m04_freeze() {
+    local name="$1" want="$2" block="$3"
+    local dir="$WORK/m04fz"
+    rm -rf "$dir"; mkdir -p "$dir/docs/specs"
+    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\n\n## Motion & Interaction\nspring\n\n%b\n' "$block" > "$dir/docs/specs/DESIGN_SPEC.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -qE "approver is not a human|missing the approval channel" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (freeze -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (freeze -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m04_freeze "agent cannot approve the design freeze" FAIL '- Approved by: Claude Agent\n- Approved on: 2026-11-05\n- Approved via: chat\n'
+expect_m04_freeze "sign-off without a channel is rejected" FAIL '- Approved by: Prita Handayani\n- Approved on: 2026-11-05\n'
+expect_m04_freeze "human with name, date and channel passes" PASS '- Approved by: Prita Handayani\n- Approved on: 2026-11-05\n- Approved via: WhatsApp\n'
+
+# expect_m04_screen <name> <PASS|FAIL> <screen-html>
+# Builds the minimum M04 project and varies only the prototype screen content.
+
+expect_m04_screen() {
+    local name="$1" want="$2" html="$3" variant="${4:-}"
+    local dir="$WORK/m04scr"
+    setup_m04 "$dir" "$html"
+    case "$variant" in
+        no-showcase)     : ;;
+        hollow-showcase) printf '<!doctype html><html><body>\n' > "$dir/docs/design/components/index.html" ;;
+        broken-asset)
+            printf '<!doctype html><html><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/missing.css"></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor comfortably. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        two-sheets)
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/a.css"></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html"
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/b.css"></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-004.html" ;;
+        inline-style)
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><style>.x{color:red}</style></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        no-alt)
+            printf '<!doctype html><html lang="id"><head><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"></head><body><main><img src="x.png"><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        no-favicon)
+            rm -f "$dir/docs/design/brand/favicon.svg" ;;
+        no-title)
+            printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../../brand/favicon.svg"></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        dup-title)
+            printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../../brand/favicon.svg"><title>Same</title></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html"
+            printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../../brand/favicon.svg"><title>Same</title></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-004.html" ;;
+        icon-404)
+            printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../../brand/nope.svg"><title>Invoices</title></head><body><main><p>%s</p></main></body></html>\n' \
+                "$(printf 'Screen words that clear the hollow floor. %.0s' $(seq 1 40))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        word-only)
+            printf '<!doctype html><html><head><meta name="viewport" content="width=device-width"><title>s</title></head><body>%s</body></html>\n' \
+                "$(printf 'Just prose with no elements at all in the body tag. %.0s' $(seq 1 50))" > "$dir/docs/design/screens/SCR-003.html" ;;
+        *)               printf '<!doctype html><html><body><main>\n%s\n</main></body></html>\n' \
+                             "$(printf 'Primitive and composite components rendered on the shared sheet. %.0s' $(seq 1 30))" > "$dir/docs/design/components/index.html" ;;
+    esac
+    case "$variant" in
+        no-wireflow) : ;;
+        *)           printf '# SCENARIOS_WF01\n\n## Baseline fixture\nseed admin account\n\n## Happy path\n%s\n' \
+                          "$(printf 'Open invoices and confirm totals update. %.0s' $(seq 1 20))" > "$dir/docs/specs/wireflows/SCENARIOS_WF01.md" ;;
+    esac
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -qE "too hollow to be a screen" && got="FAIL"
+    echo "$out" | grep -qE "Component showcase missing|Component showcase .* too hollow|Wireflow Interaction Scenarios missing" && got="FAIL"
+    echo "$out" | grep -qE "asset reference\(s\) resolve to nothing|no elements in <body>" && got="FAIL"
+    echo "$out" | grep -qE "different stylesheets|per-page <style> block|Accessibility defect|No screen links a stylesheet|screen\(s\) link the shared stylesheet" && got="FAIL"
+    echo "$out" | grep -qE "<head> incomplete|Favicon missing|Favicon (TOO SMALL|is not parseable)|is not parseable SVG" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M04 hollow -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M04 hollow -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m04_screen "missing favicon blocks" FAIL '<!doctype html><html lang="id"><head><meta charset="utf-8"><title>T</title></head><body><main>PLACEHOLDER</main></body></html>' no-favicon
+expect_m04_screen "screen without <title> blocks" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' no-title
+expect_m04_screen "duplicate <title> across screens blocks" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' dup-title
+expect_m04_screen "favicon link that 404s blocks" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' icon-404
+expect_m04_screen "two different stylesheets across screens block" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' two-sheets
+expect_m04_screen "per-page <style> block blocks" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' inline-style
+expect_m04_screen "img without alt blocks" FAIL '<!doctype html><html lang="id"><body><main>PLACEHOLDER</main></body></html>' no-alt
+expect_m04_screen "stylesheet that resolves to nothing blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' broken-asset
+expect_m04_screen "body with no elements is not a screen" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' word-only
+expect_m04_screen "component showcase missing blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-showcase
+expect_m04_screen "hollow component showcase blocks" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' hollow-showcase
+expect_m04_screen "zero wireflow runbooks block" FAIL '<!doctype html><html><body><main>PLACEHOLDER</main></body></html>' no-wireflow
+# the same fixture, but with a showcase + wireflow, must pass the new checks
+expect_m04_screen "empty 0-byte .html is not a prototype" FAIL ''
+expect_m04_screen "real markup screen passes the hollow check" PASS "<!doctype html><html lang=\"id\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"../shared/css/styles.css\"><link rel=\"icon\" href=\"../brand/favicon.svg\"><title>Invoices</title></head><body data-roles=\"admin\"><main><h1>Invoices</h1><p>$(printf 'Invoice rows for the current month with totals and status per row. %.0s' $(seq 1 40))</p></main></body></html>
+"
+# A screenshot is a reference, not a screen the developer built.
+m04_png_only() {
+    local dir="$WORK/m04png"; rm -rf "$dir"; mkdir -p "$dir/docs/design/screens" "$dir/docs/pm"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf 'x' > "$dir/docs/design/screens/shot.png"
+    local out; out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    if echo "$out" | grep -qE "Interactive screen preview outputs present"; then
+        echo -e "  ${RED}✗${NC} a PNG alone must not count as a prototype screen"
+        FAIL=$((FAIL + 1))
+    else
+        echo -e "  ${GREEN}✓${NC} a PNG alone does not count as a prototype screen"
+        PASS=$((PASS + 1))
+    fi
+}
+m04_png_only
+
+# expect_m03_sow <name> <PASS|FAIL> <signature-block-content>
+# Builds a complete client SOW and swaps only its signature block / clause substance.
+expect_m03_sow() {
+    local name="$1" want="$2" sig="$3"
+    local dir="$WORK/m03sow"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm" "$dir/contracts" "$dir/docs/governance"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '# NDA\n\nDisclosing Party: PT Mitra\nReceiving Party: Damar\n\nSigned by: Prita Handayani on 2026-11-05\n\n%s\n' "$(printf 'Mutual confidentiality obligations apply to both parties. %.0s' $(seq 1 20))" > "$dir/contracts/NDA.md"
+    local i=1; while [ $i -le 40 ]; do echo "risk item $i with owner and mitigation described in enough words" >> "$dir/docs/governance/RISK_ASSESSMENT_MATRIX.md"; i=$((i+1)); done
+    i=1; while [ $i -le 40 ]; do echo "raci row $i with responsible accountable consulted informed named" >> "$dir/docs/governance/RACI_MATRIX.md"; i=$((i+1)); done
+    {
+      echo '# SOW'
+      echo '## Project Overview'; echo 'Build a POS for Acme with 7 features over 12 weeks.'
+      echo '## Scope of Work'; echo 'Seven features per SCOPE_STATEMENT, nothing more.'
+      echo '## Deliverables & Milestones'; echo 'M-01 to M-06 with dated sign-off per milestone.'
+      echo '## Change Request'; echo 'Any change beyond scope needs a written CR with fee and timeline.'
+      echo '## Compensation & Payment Terms'
+      echo 'Total Rp 60.000.000. DP 30% Rp 18.000.000 within 7 days of signing. Balance per milestone.'
+      echo '- [x] DP 2026-11-01 Rp 18.000.000 Cleared'
+      echo '## Single PIC'; echo 'Ibu Sri is the sole approval authority for this engagement.'
+      echo '## Deemed Acceptance'
+      printf 'If the Client does not provide written feedback within seven calendar days of a deliverable submission, that deliverable is deemed accepted. Deemed acceptance triggers the corresponding invoice and starts the applicable warranty period, and later objections are handled as a new Change Request rather than as a defect.\n'
+      echo '## Limitation of Liability'
+      printf 'The Developer aggregate liability under this agreement is limited to the total fees actually paid by the Client at the time the claim arises. Neither party is liable for indirect, incidental or consequential loss, including lost profits or lost data, except where the law does not permit such exclusion.\n'
+      echo '## Revision Limits'
+      printf 'The fee includes two rounds of design revision and two rounds of user acceptance testing. Further rounds are treated as a Change Request priced separately. Feedback must be supplied in writing within seven calendar days of each submission and silence is treated as acceptance rather than approval of later changes.\n'
+      echo '## Third-Party Accounts'
+      printf 'All third-party accounts required to operate the system, including hosting, domain registration, email delivery and payment gateway accounts, are registered in the Client name and billed directly to the Client. The Developer receives delegated access only for the duration of the engagement and never becomes the owner of those accounts.\n'
+      echo '## Intellectual Property'
+      printf 'All intellectual property in the delivered work remains the property of the Developer until the full contract value has been received and cleared. On final payment ownership transfers to the Client. Pre-existing tools, libraries and internal frameworks used by the Developer remain the Developer property and are licensed, not assigned, to the Client.\n'
+      echo '## Signatures'
+      printf '%b\n' "$sig"
+    } > "$dir/contracts/SOW_CONTRACT.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M03 2>&1 || true)"
+    echo "$out" | grep -qE "Gate validation FAILED" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M03 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M03 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+SIG_BLANK='Client\nName: _________________________________\nTitle: _________________________________\nDate: _________________________________\nSignature: _________________________________\n'
+SIG_FILLED='Client\nName: Prita Handayani  Signature: /s/ Prita Handayani\nTitle: Operations Director  Date: 2026-11-01\nSignature: /s/ Prita Handayani  Date: 2026-11-01\nDeveloper\nName: Damar  Signature: /s/ Damar  Date: 2026-11-02\n'
+expect_m03_sow "unsigned SOW (blank signature lines) blocked" FAIL "$SIG_BLANK"
+expect_m03_sow "signed SOW with substantive clauses passes"  PASS "$SIG_FILLED"
+
+# The complete fixture is the shipped SOW. A model must not be able to sign it, and a signature
+# with no date must not count - the gate only asked whether the name was blank.
+expect_m03_fixture() {
+    local name="$1" want="$2" kind="$3"
+    local dir="$WORK/m03fix"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m03-sow" "$dir"
+    local sow="$dir/contracts/SOW_CONTRACT.md"
+    case "$kind" in
+        thin)   python3 "$REPO/scripts/verify/fixtures/m03-sow/thin.py" "$sow" >/dev/null ;;
+        model)
+            python3 - "$sow" <<'PYM'
+import io, re, sys
+p = sys.argv[1]; s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"(?m)^Name:[ \t]*Damar[^\n]*$", "Name: Claude Agent", s, count=1)
+s = re.sub(r"(?m)^Signature:[ \t]*Damar[^\n]*$", "Signature: /s/ Claude Agent", s, count=1)
+io.open(p, "w", encoding="utf-8").write(s)
+PYM
+            ;;
+        nodate)
+            python3 - "$sow" <<'PYD'
+import io, re, sys
+p = sys.argv[1]; s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"(?m)^Date:[ \t]*2026-11-06[^\n]*$", "Date:", s, count=1)
+io.open(p, "w", encoding="utf-8").write(s)
+PYD
+            ;;
+    esac
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M03 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (SOW -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (SOW -> $got, expected $want)"
+        echo "$out" | grep -E "❌" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m03-sow" ]; then
+    expect_m03_fixture "the complete shipped SOW passes" PASS clean
+    expect_m03_fixture "a one-line liability clause blocks" FAIL thin
+    expect_m03_fixture "a model signing the SOW blocks" FAIL model
+    expect_m03_fixture "a signature with no date blocks" FAIL nodate
+
+# M03: an unbounded promise passed. "guaranteed completely bug-free forever", "unlimited lifetime
+# support" and "unlimited liability for any and all damages" all reached M04 as signed terms.
+expect_m03_promise() {
+    local name="$1" want="$2" mode="$3"
+    local dir="$WORK/m03prom"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m03-sow" "$dir"
+    [ "$mode" = "none" ] || python3 "$REPO/scripts/verify/fixtures/m03-sow/promise.py" "$dir/contracts/SOW_CONTRACT.md" "$mode" >/dev/null
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M03 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (promise -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (promise -> $got, expected $want)"
+        echo "$out" | grep -E "without a bound|no duration" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m03_promise "a bounded warranty and a capped liability pass" PASS none
+expect_m03_promise "'guaranteed completely bug-free forever' blocks" FAIL bugfree
+expect_m03_promise "'unlimited lifetime support' blocks" FAIL support
+expect_m03_promise "'unlimited liability for any and all damages' blocks" FAIL liability
+else
+    echo -e "  ${YELLOW}-${NC} M03 fixture regressions skipped: m03-sow missing"
+fi
+
+# M04: contrast was a shape test ("anything:1"), a bare input had no label, and min-width: 0
+# with overflow hidden collapsed a badge. All three passed a design handover.
+expect_m04_defect() {
+    local name="$1" want="$2" kind="$3"
+    local dir="$WORK/m04def"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m04-design" "$dir"
+    case "$kind" in
+        contrast)  printf '\n- Body text contrast: 2.1:1\n' >> "$dir/DESIGN.md" ;;
+        label)     python3 "$REPO/scripts/verify/fixtures/m04-design/add-input.py" "$dir/docs/design/screens/scr-01.html" ;;
+        collapse)  printf '\n.badge { min-width: 0; overflow: hidden; }\n' >> "$dir/docs/design/screens/style.css" ;;
+    esac
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M04 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M04 -> $got, expected $want)"
+        echo "$out" | grep -E "contrast|unlabelled|collapses" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m04-design" ]; then
+    expect_m04_defect "a clean design handover passes" PASS clean
+    expect_m04_defect "a 2.1:1 text contrast claim blocks" FAIL contrast
+    expect_m04_defect "an input with only a placeholder blocks" FAIL label
+    expect_m04_defect "min-width: 0 with overflow hidden blocks" FAIL collapse
+else
+    echo -e "  ${YELLOW}-${NC} M04 defect regressions skipped: fixture missing"
+fi
+
+# Nine defects M04 already detects, each one a browser-visible fault. They are regressions so a
+# later edit to the gate cannot lose a check without failing the suite.
+expect_m04_visual() {
+    local name="$1" want="$2" kind="$3"
+    local dir="$WORK/m04vis"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m04-design" "$dir"
+    case "$kind" in
+        svg-text)     python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" svg-text ;;
+        svg-tiny)     python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" svg-tiny ;;
+        spec-leak)    python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" spec-leak ;;
+        sitemap)      python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" sitemap ;;
+        stray-color)  python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" stray-color ;;
+        no-charset)   python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" no-charset ;;
+        no-alt)       python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" no-alt ;;
+        hollow)       python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" hollow ;;
+        page-style)   python3 "$REPO/scripts/verify/fixtures/m04-design/mutate.py" "$dir" page-style ;;
+    esac
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M04 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M04 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M04 -> $got, expected $want)"
+        echo "$out" | grep -E "❌" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m04-design" ]; then
+    expect_m04_visual "a logo drawn with <text> blocks (fonts differ per machine)" FAIL svg-text
+    expect_m04_visual "a 169-byte logo placeholder blocks" FAIL svg-tiny
+    expect_m04_visual "a SCR-xx code leaking into the UI blocks" FAIL spec-leak
+    expect_m04_visual "a SITEMAP promising screens with no file blocks" FAIL sitemap
+    expect_m04_visual "a colour outside the design tokens blocks" FAIL stray-color
+    expect_m04_visual "a screen with no charset blocks" FAIL no-charset
+    expect_m04_visual "an image with no alt blocks" FAIL no-alt
+    expect_m04_visual "a hollow screen blocks" FAIL hollow
+    expect_m04_visual "a per-page <style> block blocks" FAIL page-style
+else
+    echo -e "  ${YELLOW}-${NC} M04 visual regressions skipped: fixture missing"
+fi
+
+# expect_m02_scope <name> <PASS|FAIL> <scope-content>
+expect_m02_scope() {
+    local name="$1" want="$2" scope="$3"
+    local dir="$WORK/m02ac"
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf '%b' "$INTAKE_MEDIUM" > "$dir/docs/pm/PROJECT_STATE.md"
+    printf '%b' "$scope" > "$dir/docs/pm/SCOPE_STATEMENT.md"
+    # Unrelated M02 prerequisites, so the assertion isolates the criteria/OOS rule.
+    # Non-stub (the gate rejects near-empty files): real prose, kept short.
+    printf '# Stakeholders\n\nThe buyer sponsors the work and signs off each milestone. The\noperations lead supplies the domain rules and reviews the workflow. No third\nparty has approval authority, so decisions resolve within one working day.\n' > "$dir/docs/pm/STAKEHOLDER_MAP.md"
+    printf '# Communication Plan\n\nA written status update goes out every Friday covering what\nshipped, what slipped and the next milestone. Blocking questions are raised the\nsame day rather than saved for the weekly call.\n' > "$dir/docs/pm/COMMUNICATION_PLAN.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M02 2>&1 || true)"
+    echo "$out" | grep -qE "Gate validation FAILED" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M02 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M02 -> $got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
 
 # expect_approval <name> <BLOCKED|ALLOWED> <todo-content>
 expect_approval() {
@@ -261,8 +1427,8 @@ expect_inspiration "M04 notes.md cites a file that does not exist" BLOCKED "note
 expect_inspiration "M04 human screenshot + notes.md citing it" ALLOWED "notes.md:reference-1-dashboard.png" "reference-1-dashboard.png:binary-data"
 
 # B. Stack questionnaire (M05) — the marker alone must not pass.
-printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$WORK/pl_noq.md"
-printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n\n- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n- Q8 Compliance Requirements: x\n' > "$WORK/pl_8q.md"
+printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\n' > "$WORK/pl_noq.md"
+printf '%b' '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n\n- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n- Q6 DevOps Complexity Tolerance: x\n- Q7 Critical Feature Priority: x\n- Q8 Compliance Requirements: x\n' > "$WORK/pl_8q.md"
 
 run_lock() {
     local name="$1" want="$2" src="$3"
@@ -300,7 +1466,7 @@ run_rls() {
     {
         printf -- '## 1. Document Metadata\n'
         printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
-        printf -- 'Stack Decision LOCKED: FastAPI\nStack-Locked-by: S. Rahma\n'
+        printf -- 'Stack Decision LOCKED: FastAPI  Rejected: Next.js because the workload is batch-heavy\nStack-Locked-by: S. Rahma\n'
         printf -- '### Framework Versions (Pinned):\n- FastAPI: 0.143.0\n'
         printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
         printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
@@ -351,7 +1517,7 @@ run_endpoints() {
     {
         printf -- '## 1. Document Metadata\n'
         printf -- '## 2. Component Architecture & Tech Stack Decisions\n'
-        printf -- 'Stack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'
+        printf -- 'Stack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'
         printf -- '### Framework Versions (Pinned):\n- Next.js: 15.0.3\n'
         printf -- '- Q1 Team Expertise: x\n- Q2 Database Experience: x\n- Q3 Deployment Topology: x\n'
         printf -- '- Q4 Expected Scale (Year 1): x\n- Q5 Data Model Characteristics: x\n'
@@ -427,26 +1593,26 @@ HANDOFF_OK='### Module 04 Handoff Strategy\n**Compatibility Level**: Level 3\n**
 SIGNOFF_OK='**Approved by**: S. Rahma\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: S. Rahma (Date: 2026-10-12)\n'
 
 build_raw_template() { # the false-green: raw template with only the lock line edited
-    sed 's|^Stack Decision LOCKED: \[Next.js / Laravel / Django / Go / SvelteKit / FastAPI\]|Stack Decision LOCKED: Next.js|' \
+    sed 's|^Stack Decision LOCKED: \[Next.js / Laravel / Django / Go / SvelteKit / FastAPI\]|Stack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React|' \
         "$REPO/templates/03-architecture-specs/PROJECT_LITE_TEMPLATE.md" > "$1/PROJECT_LITE.md"
 }
 build_no_security() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 build_no_handoff() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 build_blank_signoff() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: _________________________\n**Approved on**: [YYYY-MM-DD]\n'; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: _________________________\n**Approved on**: [YYYY-MM-DD]\n'; } > "$1/PROJECT_LITE.md"
 }
 build_all_ok() {
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: S. Rahma\n'; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK$SIGNOFF_OK"; } > "$1/PROJECT_LITE.md"
 }
 # A role word satisfies "a leading letter" but is not a named human. Both approver
 # checks (stack lock and technical sign-off) must reject it, or the rule is vacuous.
 build_role_approver() { # $1 = target dir, $2 = role string
     local dir="$1" role="$2"
-    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js\nStack-Locked-by: %s\n' "$role"; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: %s\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: %s (Date: 2026-10-12)\n' "$role" "$role"; } > "$dir/PROJECT_LITE.md"
+    { printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\nStack-Locked-by: %s\n' "$role"; printf '%b' "$ANSWERED_Q8$SECURITY_OK$HANDOFF_OK"; printf '**Approved by**: %s\n**Approved on**: 2026-10-12\n**Validated by Solo Developer**: %s (Date: 2026-10-12)\n' "$role" "$role"; } > "$dir/PROJECT_LITE.md"
 }
 build_role_approver_validation() { build_role_approver "$1" "Validation Lead"; }
 build_role_approver_founder() { build_role_approver "$1" "Founder"; }
@@ -826,7 +1992,7 @@ expect_m01() {
     fi
 }
 
-M01_OK='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\n'
+M01_OK='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo'
 # Declared Small, but the structured fields say 20 P0 features + sensitive data.
 STATE_LIES_SMALL='- **Scale**: small\n- Delivery: solo\n- Intake-Success-Metric: m\n- Intake-P0-Features: 20 (a..t)\n- Intake-Time-Capacity: 5 hrs/week x 2 weeks\n- Intake-Sensitive-Data: yes\n- Intake-Integrations: none\n- Intake-Branch-Hierarchy: no\n- Intake-Compliance: none\n- Intake-Legacy-Core: no\n- Intake-Status: ANSWERED\n'
 expect_m01 "Self-declared Small, 20 P0 + sensitive data (classifier wins)" FAIL "$STATE_LIES_SMALL" "$M01_OK"
@@ -835,21 +2001,43 @@ expect_m01 "Self-declared Small, 20 P0 + sensitive data (classifier wins)" FAIL 
 expect_m01 "Medium intent, no PROJECT_STATE.md" FAIL "EMPTY" "$M01_OK"
 
 # PROVISIONAL is a legitimate halt state, not an undeclared decision.
-M01_PROV='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: PROVISIONAL_PENDING_M00\n'
+M01_PROV='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: PROVISIONAL_PENDING_M00\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo'
 expect_m01 "PROVISIONAL_PENDING_M00 (no final GO)" PROVISIONAL "$INTAKE_MEDIUM" "$M01_PROV"
+
+# Acceptance-criteria binding: `## Acceptance Criteria` was checked as a heading only, so a
+# scope whose entire criteria section read "(the acceptance criteria are obvious)" locked and
+# passed. A locked scope promises every Must-Have is testable.
+M02_VAGUE_AC='# Scope\n\n## User Stories\n\n- x\n\n## Acceptance Criteria\n\n(the acceptance criteria are obvious)\n\n## Out-of-Scope\n\n- Offline mode is not supported in the MVP\n- Multi-currency pricing is excluded\n- Native mobile apps are out of scope\n\n## Must-Have\n\n| ID | Requirement | Priority |\n|---|---|---|\n| **F-01** | a | Must |\n| **F-02** | b | Must |\n| **F-03** | c | Must |\n| **F-04** | d | Must |\n| **F-05** | e | Must |\n| **F-06** | f | Must |\n\nNo self-approval for mutations/approvals.\n\nScope-Lock-Decision: LOCKED\nScope-P0-Count: 6\n\n✅ legend\n'
+M02_TESTED_AC='# Scope\n\n## User Stories\n\n- x\n\n## Acceptance Criteria\n\n- [ ] Given a user, when they submit F-01, then response is 200\n- [ ] Given a user, when they submit F-02, then response is 200\n- [ ] Given a user, when they submit F-03, then response is 200\n- [ ] Given a user, when they submit F-04, then response is 200\n- [ ] Given a user, when they submit F-05, then response is 200\n- [ ] Given a user, when they submit F-06, then response is 200\n\n## Out-of-Scope\n\n- Offline mode is not supported in the MVP\n- Multi-currency pricing is excluded\n- Native mobile apps are out of scope\n\n## Must-Have\n\n| ID | Requirement | Priority |\n|---|---|---|\n| **F-01** | a | Must |\n| **F-02** | b | Must |\n| **F-03** | c | Must |\n| **F-04** | d | Must |\n| **F-05** | e | Must |\n| **F-06** | f | Must |\n\nNo self-approval for mutations/approvals.\n\nScope-Lock-Decision: LOCKED\nScope-P0-Count: 6\n\n✅ legend\n'
+M02_JUNK_OOS='# Scope\n\n## User Stories\n\n- x\n\n## Acceptance Criteria\n\n- [ ] Given a user, when they submit F-01, then response is 200\n- [ ] Given a user, when they submit F-02, then response is 200\n- [ ] Given a user, when they submit F-03, then response is 200\n- [ ] Given a user, when they submit F-04, then response is 200\n- [ ] Given a user, when they submit F-05, then response is 200\n- [ ] Given a user, when they submit F-06, then response is 200\n\n## Out-of-Scope\n\n- 1\n- 2\n- 3\n\n## Must-Have\n\n| ID | Requirement | Priority |\n|---|---|---|\n| **F-01** | a | Must |\n| **F-02** | b | Must |\n| **F-03** | c | Must |\n| **F-04** | d | Must |\n| **F-05** | e | Must |\n| **F-06** | f | Must |\n\nNo self-approval for mutations/approvals.\n\nScope-Lock-Decision: LOCKED\nScope-P0-Count: 6\n\n✅ legend\n'
+expect_m02_scope "vague acceptance criteria blocked" FAIL "$M02_VAGUE_AC"
+expect_m02_scope "testable criteria for every Must-Have pass" PASS "$M02_TESTED_AC"
+expect_m02_scope "junk out-of-scope placeholders blocked" FAIL "$M02_JUNK_OOS"
+
+# Evidence binding: a 4.0 dimension is a claim of near-certainty. An all-4.0 brief was the
+# cheapest possible fabrication (190 bytes, no research) and it passed the gate; a cited data
+# point is what a Confidence marker cannot fake. Unbacked high scores are forced to 3.0, which
+# makes GO (average >= 3.5) unreachable.
+M01_NO_EVIDENCE='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: GO\n'
+expect_m01 "all-4.0 brief with zero cited evidence is rejected" FAIL "$INTAKE_MEDIUM" "$M01_NO_EVIDENCE"
+M01_ONE_BACKED='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Score-Operational: 4.0\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Score-Financial: 4.0\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo\nFeasibility-Decision: GO\n'
+expect_m01 "same 4.0 scores with cited evidence pass" PASS "$INTAKE_MEDIUM" "$M01_ONE_BACKED"
+# A modest score needs no citation: evidence is only demanded where certainty is claimed.
+M01_MODEST='# Brief\n\nFeasibility-Score-Technical: 3.5\nFeasibility-Score-Operational: 3.5\nFeasibility-Score-Regulatory: 3.5\nFeasibility-Score-Financial: 3.5\nFeasibility-Decision: GO\n'
+expect_m01 "3.5 scores need no citation" PASS "$INTAKE_MEDIUM" "$M01_MODEST"
 
 # Fail-closed: average < 3.5 may not be declared GO.
 M01_LOW='# Brief\n\nFeasibility-Score-Technical: 3.5\nFeasibility-Score-Operational: 3.5\nFeasibility-Score-Regulatory: 3.0\nFeasibility-Score-Financial: 3.0\nFeasibility-Decision: GO\n'
 expect_m01 "average 3.25 declared GO (talked up)" FAIL "$INTAKE_MEDIUM" "$M01_LOW"
 
 # CONDITIONAL_GO must carry its mitigation plan, in either spelling.
-M01_COND_NOMIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\n'
+M01_COND_NOMIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\nFeasibility-Evidence-Technical: N=10 interviews, 7/10 hit this weekly\nFeasibility-Evidence-Operational: 3 epics = 96h vs 160h capacity\nFeasibility-Evidence-Regulatory: UU PDP baseline, 0 external audits\nFeasibility-Evidence-Financial: 3/10 committed Rp 150k/mo'
 expect_m01 "CONDITIONAL_GO without a Mitigation line" FAIL "$INTAKE_MEDIUM" "$M01_COND_NOMIT"
 M01_COND_MIT='# Brief\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\nFeasibility-Decision: CONDITIONAL_GO\n\nMitigation: defer offline sync to Phase 2\n'
 expect_m01 "CONDITIONAL_GO with a Mitigation line" PASS "$INTAKE_MEDIUM" "$M01_COND_MIT"
 
 # Checkbox form: the scorecard declares the decision by ticking a row.
-M01_CHECKBOX='# Brief\n\n- [ ] **GO**\n- [x] **CONDITIONAL_GO**\n- [ ] **PIVOT**\n- [ ] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n\nMitigation: ship online-first MVP\n'
+M01_CHECKBOX='# Brief\n\n- [ ] **GO**\n- [x] **CONDITIONAL_GO**\n- [ ] **PIVOT**\n- [ ] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n\nMitigation: ship an online-first MVP to five pilot shops before the full build\n'
 expect_m01 "checkbox form: [x] **CONDITIONAL_GO**" PASS "$INTAKE_MEDIUM" "$M01_CHECKBOX"
 M01_UNTICKED='# Brief\n\n- [ ] **GO**\n- [ ] **CONDITIONAL_GO**\n- [x] **KILL**\n\nFeasibility-Score-Technical: 4.0\nFeasibility-Score-Operational: 4.0\nFeasibility-Score-Regulatory: 4.0\nFeasibility-Score-Financial: 4.0\n'
 expect_m01 "checkbox form: [x] **KILL**" FAIL "$INTAKE_MEDIUM" "$M01_UNTICKED"
@@ -1025,8 +2213,32 @@ expect_m12_incident() {
     local name="$1" scale="$2" create="$3" want="$4"
     local dir="$WORK/m12inc"
     make_project "$dir" "- **Scale**: $scale\n- Delivery: client\n"
-    printf '# Warranty\n\n## Coverage\n\n## Exclusions\n\n## Service Level Agreement\n' > "$dir/docs/pm/WARRANTY_POLICY.md"
-    [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n\n## Comms\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
+    # M12 now requires the warranty sections to say something: an empty heading passed before, so
+    # this fixture (which exists to test the INCIDENT plan) must carry real terms plus a window.
+    cat > "$dir/docs/pm/WARRANTY_POLICY.md" <<'WPEOF'
+# Warranty Policy
+
+## 1. Warranty Period
+- **Start Date**: 2026-11-06
+- **End Date**: 2027-01-05
+
+## 2. Warranty Coverage
+1. Programming logic defects against the agreed FSD/PRD.
+2. Critical security vulnerabilities in application code.
+
+## 3. Warranty Exclusions
+1. New feature requests.
+2. Visual design changes.
+
+## 4. Service Level Agreement (SLA)
+| Severity | Initial Response | Resolution Target |
+| :--- | :--- | :--- |
+| Severity 1 | < 2 Business Hours | < 8 Business Hours |
+| Severity 2 | < 8 Business Hours | < 48 Business Hours |
+WPEOF
+    # A plan must define severity, escalation, response time and comms; a document with the
+    # headings and no content is exactly what the incident gate now rejects.
+    [ "$create" = "yes" ] && printf '# Incident Response\n\n## Severity\n| Level | Definition |\n|---|---|\n| SEV1 | All users down |\n\n## Escalation\nOn-call -> tech lead within 15 minutes.\n\n## Response time\nSEV1 acknowledged within 5 minutes.\n\n## Comms\nStatus page every 30 minutes.\n\nOwner: Prita Handayani\n' > "$dir/docs/pm/INCIDENT_RESPONSE.md"
     local out rc got
     out="$(cd "$dir" && bash "$GATE" M12 2>&1)"; rc=$?
     got="ALLOWED"; [ "$rc" -ne 0 ] && got="BLOCKED"
@@ -1128,14 +2340,80 @@ expect_m06_step() {
     fi
 }
 
-FSD_OK_LOCK='Stack Decision LOCKED: Next.js 15\n\n## Module 04 Handoff Strategy\nCompatibility Level: 2\n'
+FSD_OK_LOCK='Stack Decision LOCKED: Next.js 15  Rejected: Laravel because the team already ships React\n\n## Module 04 Handoff Strategy\nCompatibility Level: 2\n'
 FSD_NO_LOCK='## 2. Component Architecture\n\nORM / Driver: Drizzle\n'
-FSD_NO_HANDOFF='Stack Decision LOCKED: Next.js 15\n\n## 3. Database Schema\n'
+FSD_NO_HANDOFF='Stack Decision LOCKED: Next.js 15  Rejected: Laravel because the team already ships React\n\n## 3. Database Schema\n'
 
 expect_m06_step "FSD with no locked stack" BLOCKED "$FSD_NO_LOCK" yes
 expect_m06_step "FSD with no Module 04 Handoff Strategy" BLOCKED "$FSD_NO_HANDOFF" yes
 expect_m06_step "FSD locked + handoff, only 3 of 9 harness files" BLOCKED "$FSD_OK_LOCK" no
 expect_m06_step "FSD locked + handoff, all 9 harness files" ALLOWED "$FSD_OK_LOCK" yes
+
+# expect_m06_source <name> <PASS|FAIL> <expected-❌-message|""> <python body>
+# Builds on the complete M06 fixture, so a PASS means the gate really is green.
+expect_m06_source() {
+    local name="$1" want="$2" msg="$3" body="$4"
+    local fix="$REPO/scripts/verify/fixtures/m06/repo" dir="$WORK/m06src"
+    if [ ! -d "$fix" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture missing: $fix)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; cp -r "$fix" "$dir"
+    python3 - "$dir" <<PY
+import io, os, sys
+root = sys.argv[1]
+$body
+PY
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M06 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M06 source -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M06 source -> $got, expected $want${msg:+, message /$msg/})"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -3 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m06_source "a credential inside a connection URI blocks" FAIL "hardcoded secret" '
+os.makedirs(os.path.join(root, "src/lib"), exist_ok=True)
+io.open(os.path.join(root, "src/lib/db-uri.ts"), "w", encoding="utf-8").write(
+    "import postgres from \"postgres\";\n"
+    "export const sql = postgres(\"postgres://admin:Sup3rS3cret@db.internal:5432/kasir\");\n")
+'
+expect_m06_source "an env-driven connection URI passes" PASS "" '
+os.makedirs(os.path.join(root, "src/lib"), exist_ok=True)
+io.open(os.path.join(root, "src/lib/db-uri.ts"), "w", encoding="utf-8").write(
+    "import postgres from \"postgres\";\n"
+    "export const sql = postgres(process.env.DATABASE_URL);\n")
+'
+expect_m06_source "a popover requirement with only SQL select blocks" FAIL "popover/combobox but no such component" '
+p = os.path.join(root, "docs/specs/FSD.md")
+s = io.open(p, encoding="utf-8").read()
+io.open(p, "w", encoding="utf-8").write(
+    s + "\n\n## Filters\n\nThe orders screen uses a popover filter for the customer column.\n")
+'
+expect_m06_source "a popover requirement served by <Select> passes" PASS "" '
+p = os.path.join(root, "docs/specs/FSD.md")
+s = io.open(p, encoding="utf-8").read()
+io.open(p, "w", encoding="utf-8").write(
+    s + "\n\n## Filters\n\nThe orders screen uses a popover filter for the customer column.\n")
+io.open(os.path.join(root, "src/app/orders/picker.tsx"), "w", encoding="utf-8").write(
+    "export function Picker() { return <Select options={[]} />; }\n")
+'
+expect_m06_source "a file-upload requirement with no file input blocks" FAIL "specifies a file upload but no file input" '
+p = os.path.join(root, "docs/specs/FSD.md")
+s = io.open(p, encoding="utf-8").read()
+io.open(p, "w", encoding="utf-8").write(
+    s + "\n\n## Attachments\n\nProducts accept a photo upload: .jpg or .png, maximum 5 MB.\n")
+'
+
 
 # Producer side: M05 must require the handoff section so M06 STEP 0 can read it.
 expect_m05_handoff() {
@@ -1143,7 +2421,7 @@ expect_m05_handoff() {
     local dir="$WORK/m05h"
     make_project "$dir" "$INTAKE_MEDIUM"
     mkdir -p "$dir/docs/specs"
-    printf '### Stack Decision\nStack Decision LOCKED: Next.js\n\n- Q1 x\n- Q2 x\n- Q3 x\n- Q4 x\n- Q5 x\n- Q6 x\n- Q7 x\n- Q8 x\n' > "$dir/docs/specs/FSD.md"
+    printf '### Stack Decision\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\n\n- Q1 x\n- Q2 x\n- Q3 x\n- Q4 x\n- Q5 x\n- Q6 x\n- Q7 x\n- Q8 x\n' > "$dir/docs/specs/FSD.md"
     [ "$with_handoff" = "yes" ] && printf '\n## Module 04 Handoff Strategy\nCompatibility Level: 3\n' >> "$dir/docs/specs/FSD.md"
     local out
     out="$(cd "$dir" && bash "$GATE" M05 2>&1 || true)"
@@ -1176,7 +2454,7 @@ expect_version() {
     local name="$1" want="$2" fsdline="$3" resolved="$4" extra="$5"
     local dir="$WORK/vt"
     rm -rf "$dir"; mkdir -p "$dir/docs/specs" "$dir/bin"
-    printf '### Stack Decision (LOCKED)\nStack Decision LOCKED: Next.js 15\n\n### Framework Versions (Pinned)\n%b\n\n## 3. Database Schema\n' "$fsdline" > "$dir/docs/specs/FSD.md"
+    printf '### Stack Decision (LOCKED)\nStack Decision LOCKED: Next.js 15  Rejected: Laravel because the team already ships React\n\n### Framework Versions (Pinned)\n%b\n\n## 3. Database Schema\n' "$fsdline" > "$dir/docs/specs/FSD.md"
     printf '{"dependencies":{"next":"^15.0.3"}}\n' > "$dir/package.json"
     printf '{"packages":{"node_modules/next":{"version":"%s"}}}\n' "$resolved" > "$dir/package-lock.json"
     [ -n "$extra" ] && printf '{}\n' > "$dir/$extra"
@@ -1348,6 +2626,13 @@ expect_m00_signal() {
 |:---|:---|:---:|:---|:---|:---|:---:|
 | **ASM-01** | users lose money | HIGH | 3/5 confirm | Deep interviews | <2 respondents | ✅ |
 
+## 3b. Real User Interviews (INT-0x)
+| ID | Name | Role | Date | Status |
+|:---|:---|:---|:---|:---|
+| INT-01 | A | owner | 2026-10-01 | ✅ Real |
+| INT-02 | B | owner | 2026-10-02 | ✅ Real |
+| INT-03 | C | owner | 2026-10-03 | ✅ Real |
+
 ## 3. Quick Competitor & Alternative Check
 | Solution Name | Type | Price | Strengths | Weaknesses | Differentiator |
 |:---|:---|:---|:---|:---|:---|
@@ -1360,12 +2645,22 @@ expect_m00_signal() {
 | INT-02 | B | owner | 2026-10-02 | ✅ Real |
 | INT-03 | C | owner | 2026-10-03 | ✅ Real |
 
-## 5. Quantitative Validation Thresholds
+## 4b. User Discovery
+Five attempts, three confirmed above; the remaining two were unreachable calls.
+
+## 5. Behavioral Intent Validation (Waitlist / Smoke Test)
 - **Total Unique Visitors**: 140
-- **Total Waitlist / Email Signups**: ${pct%.*}0
+- **Total Waitlist / Email Signups**: $(awk -v p="$pct" 'BEGIN { printf "%d", (p * 140 / 100) + 0.5 }')
 - **Waitlist-Conversion-Pct**: $pct
 - **Intent-to-Buy-Pct**: $intent
 Alternative-Proof: deposits:$dep loi:$loi
+
+## 6. Unit Economics & Solo Capacity Sanity Check
+- **Target ARPU**: Rp 99000 / month
+- **Estimated CAC**: Rp 25000 / customer
+
+## 7. Kill Criteria & Gate Validation Outcome
+Kill criteria as listed in the module contract.
 
 Validated-by: S. Rahma on 2026-10-12
 
@@ -1374,6 +2669,7 @@ M00EOF
     local out got
     out="$(cd "$dir" && bash "$GATE" M00 2>&1 || true)"
     got=$(printf '%s' "$out" | sed -n 's/.*Aggregated verdict from signals:.*-> \([A-Z]*\).*/\1/p' | head -1)
+    if [ -z "$got" ]; then got="<none: the fixture never reached aggregation>"; fi
     if [ "$got" = "$want" ]; then
         echo -e "  ${GREEN}✓${NC} $name  (aggregated -> $got)"
         PASS=$((PASS + 1))
@@ -1383,10 +2679,140 @@ M00EOF
     fi
     rm -rf "$dir"
 }
-# The combination a founder actually hits: weak waitlist, real deposit interest.
+# The module contract (00_PRODUCT_DISCOVERY_STRATEGY.md §1b): any PASS behavioural signal closes
+# the gate, RETEST is the best signal in RETEST, KILL is all in KILL. One documented exception: a
+# survey lifts RETEST, it never overturns a measured behavioural KILL - otherwise 1.5% of 140
+# visitors is talked up by a questionnaire, which is the whole point of running the waitlist.
 expect_m00_signal "M00 waitlist KILL + deposits RETEST aggregates to RETEST" 1.5 10 2 0 RETEST RETEST
-expect_m00_signal "M00 any PASS signal closes the gate" 1.5 35 0 0 PASS PASS
+expect_m00_signal "M00 a survey cannot overturn a waitlist KILL" 1.5 35 0 0 KILL KILL
+expect_m00_signal "M00 a survey lifts a RETEST to PASS" 3.5 35 0 0 PASS PASS
+expect_m00_signal "M00 a real deposit closes the gate over a waitlist KILL" 1.5 10 6 0 PASS PASS
 expect_m00_signal "M00 all signals KILL aggregates to KILL" 1.0 5 0 0 KILL KILL
+
+# The kill-criteria checks must not fire on the document that DEFINES the criterion. The CI
+# fixture m00-lite-pass.md contains "Regulatory Kill: business model requires a banking licence"
+# and my first version blocked it - a gate failing the correct document.
+expect_m00_kill() {
+    local name="$1" want="$2" appended="$3"
+    local dir="$WORK/m00kill"; rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf -- '- **Scale**: solo\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"
+    cp "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/verify/fixtures/m00-lite-pass.md" "$dir/docs/pm/M00_LITE.md"
+    [ -n "$appended" ] && printf '%b\n' "$appended" >> "$dir/docs/pm/M00_LITE.md"
+    local out got="PASS"
+    out="$(cd "$dir" && bash "$GATE" M00 2>&1 || true)"
+    echo "$out" | grep -qE "Regulatory kill|Feasibility kill" && got="FAIL"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (kill -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (kill -> $got, expected $want)"
+        echo "$out" | grep -E "Regulatory kill|Feasibility kill" | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+expect_m00_kill "a document that only DEFINES the kill criteria passes" PASS ""
+expect_m00_kill "an admission of needing a lending licence blocks" FAIL '## 8. Business Model
+Our model requires a lending licence from OJK before launch.'
+expect_m00_kill "a 12-week MVP timeline blocks" FAIL '## 9. Delivery
+MVP development timeline: 12 weeks for one developer.'
+
+# M01: the mitigation label was accepted as a plan. The template ships the label with the
+# instruction inside it and the old check only grepped for "Mitigation:", so a CONDITIONAL_GO with
+# no plan passed into M02. Four spellings must block, one real plan must pass.
+expect_m01_mitigation() {
+    local name="$1" want="$2" line="$3"
+    local dir="$WORK/m01mit"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m01-go" "$dir"
+    python3 - "$dir/docs/pm/IDEA_BRIEF.md" "$line" <<'PYFIX'
+import io, re, sys
+p, line = sys.argv[1], sys.argv[2]
+s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"^Feasibility-Decision:.*$", "Feasibility-Decision: CONDITIONAL_GO", s, flags=re.M)
+s = s.replace("Mitigation: two weeks of discovery with five shop owners before build.", line)
+io.open(p, "w", encoding="utf-8").write(s)
+PYFIX
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M01 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (mitigation -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (mitigation -> $got, expected $want)"
+        echo "$out" | grep -E "mitigation plan" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m01-go" ]; then
+    expect_m01_mitigation "the template's own mitigation label is not a plan" FAIL \
+        'Mitigation: [required when the decision is CONDITIONAL_GO]'
+    expect_m01_mitigation "an empty mitigation blocks" FAIL 'Mitigation:'
+    expect_m01_mitigation "TBD mitigation blocks" FAIL 'Mitigation: TBD'
+    expect_m01_mitigation "a four-word mitigation blocks" FAIL 'Mitigation: ship it fast'
+    expect_m01_mitigation "a real mitigation plan passes" PASS \
+        'Mitigation: two weeks of discovery with five shop owners before build.'
+
+# M02: the "measurable Then" test was a 14-word list containing grammar words. "then it is good"
+# and "then no errors occur anywhere" passed; "then the order status becomes paid" was rejected.
+expect_m02_ac() {
+    local name="$1" want="$2" acs="$3"
+    local dir="$WORK/m02ac"
+    rm -rf "$dir"; cp -r "$REPO/scripts/verify/fixtures/m02-scope" "$dir" 2>/dev/null || mkdir -p "$dir/docs/pm"
+    [ -f "$dir/docs/pm/SCOPE_STATEMENT.md" ] || { echo -e "  ${YELLOW}-${NC} sorry: fixture m02-scope missing"; return; }
+    python3 - "$dir/docs/pm/SCOPE_STATEMENT.md" "$acs" <<'PYAC'
+import io, re, sys
+p, acs = sys.argv[1], sys.argv[2]
+s = io.open(p, encoding="utf-8").read()
+s = re.sub(r"(?im)^\s*-?\s*(?:\[[ xX]\]\s*)?(?:AC-F-\d+|Given\b).*$", "", s)
+s += "\n## Acceptance Criteria\n\n" + acs.replace("\\n", "\n") + "\n"
+io.open(p, "w", encoding="utf-8").write(s)
+PYAC
+    local out got="FAIL"
+    out="$(cd "$dir" && bash "$GATE" M02 2>&1 || true)"
+    echo "$out" | grep -q "Gate validation PASSED" && got="PASS"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (AC -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (AC -> $got, expected $want)"
+        echo "$out" | grep -E "Acceptance criteria" | head -1 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+if [ -d "$REPO/scripts/verify/fixtures/m02-scope" ]; then
+    expect_m02_ac "'then it is good' is not a measurement" FAIL \
+'- AC-F-01: Given a user, when they click, then it is good
+- AC-F-02: Given a user, when they click, then it is good
+- AC-F-03: Given a user, when they click, then it is good
+- AC-F-04: Given a user, when they click, then it is good
+- AC-F-05: Given a user, when they click, then it is good
+- AC-F-06: Given a user, when they click, then it is good
+- AC-F-07: Given a user, when they click, then it is good
+- AC-F-08: Given a user, when they click, then it is good'
+    expect_m02_ac "'then no errors occur anywhere' is not a measurement" FAIL \
+'- AC-F-01: Given a user, when they click, then no errors occur anywhere
+- AC-F-02: Given a user, when they click, then no errors occur anywhere
+- AC-F-03: Given a user, when they click, then no errors occur anywhere
+- AC-F-04: Given a user, when they click, then no errors occur anywhere
+- AC-F-05: Given a user, when they click, then no errors occur anywhere
+- AC-F-06: Given a user, when they click, then no errors occur anywhere
+- AC-F-07: Given a user, when they click, then no errors occur anywhere
+- AC-F-08: Given a user, when they click, then no errors occur anywhere'
+    expect_m02_ac "a state transition is a measurement" PASS \
+'- AC-F-01: Given a customer, when they pay, then the order status becomes paid
+- AC-F-02: Given a cashier, when they open the list, then 20 rows are rendered
+- AC-F-03: Given an admin, when they delete, then the account is marked deleted
+- AC-F-04: Given a user, when they submit, then HTTP 201 and the row is created
+- AC-F-05: Given a visitor, when they log in wrong, then the error is shown and no session is set
+- AC-F-06: Given a manager, when they export, then a CSV of all rows is downloaded
+- AC-F-07: Given a device, when it syncs, then exactly 0 conflicts are reported
+- AC-F-08: Given a user, when they pay twice, then the second charge is rejected'
+else
+    echo -e "  ${YELLOW}-${NC} M02 AC regressions skipped: fixture m02-scope missing"
+fi
+else
+    echo -e "  ${YELLOW}-${NC} M01 mitigation regressions skipped: fixture m01-go missing"
+fi
 
 # Positive direction where the gate needs more than one artifact. M02 reconciles
 # Scope-P0-Count against the counted Must-Have rows, so the count is derived from
@@ -1411,6 +2837,10 @@ expect_gate_scaffold() {
             # Pad to 7 counted Must rows (the template ships fewer than the Medium floor).
             awk 'BEGIN{done=0} /^\| \*\*F-/ {n++} {print} /^$/ && !done && n>0 {print "| **F-901** | Fallback feature A | Must |"; print "| **F-902** | Fallback feature B | Must |"; done=1}' \
                 "$scope" > "$scope.tmp" && mv "$scope.tmp" "$scope"
+            # Same reasoning for criteria: the fixture pads F-901/F-902 to reach the Medium
+            # band, so it must ship a criterion for them or it asserts a scope lock on features
+            # with no acceptance test - exactly what the AC binding rule forbids.
+            sed -i 's|^# Scope|# Scope\n\nAC-F-901: Given a user, when they use fallback A, then the response is 200 with 0 errors\nAC-F-902: Given an admin, when they use fallback B, then the record is created and listed|' "$scope" 2>/dev/null || true
             mkdir -p "$dir/docs/governance"
             cp "$REPO/templates/03-governance/RACI_MATRIX.md" "$dir/docs/governance/RACI_MATRIX.md"
             cp "$REPO/templates/01-discovery-commercial/COMMUNICATION_PLAN_TEMPLATE.md" "$dir/docs/pm/COMMUNICATION_PLAN.md"
@@ -1432,12 +2862,58 @@ expect_gate_scaffold() {
             sed -i -E 's/\[[^][]*\]/X/g' "$sa"
             sed -i 's/\[Patched \/ Monitored\]/Patched/g' "$sa" || true
             printf '\n- [x] **SECURITY PASS**: Applicable tests have evidence and findings meet the release policy.\n' >> "$sa"
-            # M07 also requires the polish audit and a passing SIT result.
-            printf '# Polish Audit\n\nAll 33 tells reviewed. READY (0 blocking tells).\n' > "$dir/docs/qa/POLISH_AUDIT.md"
             # The workbook ships a form; strip every remaining [...] so the placeholder
             # check passes. Do NOT strip the security audit after marking its checkbox —
             # the gate reads "[x] **SECURITY PASS**" as the attestation.
             sed -i -E 's/\[[^][]*\]/X/g' "$wb"
+            # A blank form is not a completed audit. This fixture is the positive case, so it has
+            # to look like the three artifacts a real delivery leaves behind: a polish audit that
+            # names the URL it inspected and states each tell, a sign-off sheet two people signed,
+            # and a workbook whose PASS traces back to requirements.
+            {
+                printf '# Polish Audit — https://staging.example.com\n\n'
+                printf '| # | Tell | Verdict | Evidence |\n| :--- | :--- | :---: | :--- |\n'
+                for i in 1 2 3 4 5 6; do
+                    printf '| %s | tell-%s | PASS | inspected on the deployed URL |\n' "$i" "$i"
+                done
+                printf '\n**Conclusion**: READY (0 blocking tells)\n'
+            } > "$dir/docs/qa/POLISH_AUDIT.md"
+            # Two identifiable signatories, as the template's own sheet requires.
+            sed -i 's/| \*\*Name\*\*: ____*[^|]*| \*\*Name\*\*: ____*[^|]*|/| **Name**: S. Rahma | **Name**: A. Kusuma |/' "$wb"
+            sed -i 's/| \*\*Title \/ Role\*\*: Independent Lead Engineer | \*\*Title \/ Role\*\*: ____*[^|]*|/| **Title \/ Role**: Independent Lead Engineer | **Title \/ Role**: Product Owner |/' "$wb"
+            sed -i 's/| \*\*Date\*\*: ____*[^|]*| \*\*Date\*\*: ____*[^|]*|/| **Date**: 2026-10-12 | **Date**: 2026-10-13 |/' "$wb"
+            sed -i 's/| \*\*Signature\*\*: | \*\*Signature\*\*: |/| **Signature**: S. Rahma | **Signature**: A. Kusuma |/' "$wb"
+            # Every REQ-xx / SCR-xx the specs declare must have a tested row. make_project writes
+            # the intake; use whatever requirement IDs it produced.
+            {
+                printf '\n| Item | Scenario | Result |\n| :--- | :--- | :---: |\n'
+                # Rows are listed from the specs when they exist and from the workbook's own scope
+                # when they do not: the gate asks for traceability, not for a particular spec path.
+                rows=""
+                if [ -f "$dir/docs/specs/FSD.md" ]; then
+                    rows=$(grep -oE 'REQ-[0-9]+' "$dir/docs/specs/FSD.md" | sort -u)
+                fi
+                if [ -z "$rows" ]; then
+                    rows=$(printf 'REQ-01\nREQ-02\nREQ-03')
+                fi
+                printf '%s\n' "$rows" | while read -r rq; do
+                    [ -n "$rq" ] || continue
+                    printf '| %s | primary path verified | PASS |\n' "$rq"
+                    printf '| %s | invalid input is rejected (negative) | PASS |\n' "$rq"
+                done
+                sc_rows=""
+                if [ -f "$dir/docs/specs/SITEMAP.md" ]; then
+                    sc_rows=$(grep -oE 'SCR-[A-Z]*-?[0-9]+' "$dir/docs/specs/SITEMAP.md" | sort -u)
+                fi
+                if [ -z "$sc_rows" ]; then
+                    sc_rows=$(printf 'SCR-001\nSCR-002')
+                fi
+                printf '%s\n' "$sc_rows" | while read -r sc; do
+                    [ -n "$sc" ] || continue
+                    printf '| %s | screen renders and is reachable | PASS |\n' "$sc"
+                done
+                printf '\nStaging-URL: https://staging.example.com\n'
+            } >> "$wb"
             ;;
         M13)
             printf -- '- **Scale**: solo-saas\n- Delivery: solo\n' > "$dir/docs/pm/PROJECT_STATE.md"
@@ -1555,12 +3031,565 @@ expect_gate_tpl A02 "A02 accepts the shipped blueprint + threat model" ALLOWED \
 expect_gate_tpl A03 "A03 accepts the shipped schedule + comparison matrix" ALLOWED \
     templates/03-governance/VENDOR_PROCUREMENT_SCHEDULE_TEMPLATE.md:docs/procurement/VENDOR_PROCUREMENT_SCHEDULE.md \
     templates/03-governance/VENDOR_COMPARISON_MATRIX.md:docs/governance/VENDOR_COMPARISON_MATRIX.md
-expect_gate_tpl A04 "A04 accepts the shipped governance pack" ALLOWED \
+# The shipped handover template ships its DR table with the targets blank ("| RTO (acceptable
+# downtime) | | ☐ |"). A blank target is not a target, so the raw template is now correctly blocked
+# and only a filled one is accepted - both directions are pinned below.
+expect_gate_tpl A04 "A04 blocks the shipped governance pack while its recovery targets are blank" BLOCKED \
     templates/03-governance/GOVERNANCE_HANDOVER_PACK_TEMPLATE.md:docs/governance/GOVERNANCE_HANDOVER_PACK.md
+expect_gate_tpl A04 "A04 accepts the shipped governance pack once its recovery targets are stated" ALLOWED \
+    scripts/verify/fixtures/a04/GOVERNANCE_HANDOVER_PACK_FILLED.md:docs/governance/GOVERNANCE_HANDOVER_PACK.md
 expect_gate_tpl A00 "A00 accepts the shipped consulting agreement" ALLOWED \
     templates/00-pre-sales-enterprise/CONSULTING_AGREEMENT_TEMPLATE.md:contracts/CONSULTING_AGREEMENT.md
 expect_gate_tpl A01 "A01 accepts the shipped WBS template" ALLOWED \
     templates/00-pre-sales-enterprise/WBS_PHASING_TEMPLATE.md:docs/pm/WBS_PHASING_PLAN.md
+
+# ----------------------------------------------------------------- M07: QA / SIT / security
+# Measured 2026-11-06: the shipped template passed with an unsigned sign-off sheet, a prose claim of
+# "0 blocking" and a bolded Critical count. Each case below pins one of those shut, and each rule
+# also has a case proving a correct document still passes.
+expect_m07() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m07/build.py" dir="$WORK/m07qa"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M07 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M07 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M07 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+echo ""
+echo "M07 QA / SIT / security:"
+expect_m07 "a fully executed SIT workbook passes"                 PASS ""                                             base
+expect_m07 "an unsigned sign-off sheet blocks"                    FAIL "sign-off sheet is UNSIGNED"                  empty-signoff
+expect_m07 "a missing sign-off section blocks"                    FAIL "has no 'SIT Sign-Off' section"               signoff-missing
+expect_m07 "a prose claim of 0 blocking without a URL blocks"     FAIL "names no deployed URL"                       polish-vague-zero
+expect_m07 "SIT rows traceable to workbook IDs still pass"       PASS ""                                            no-specs
+expect_m07 "SIT PASS with nothing to trace to blocks"             FAIL "SIT coverage cannot be verified"             no-traceability
+expect_m07 "a bolded Critical count still blocks"                 FAIL "reports unresolved Critical vulnerabilities" security-critical-row
+expect_m07 "a renamed native QA heading blocks"                   FAIL "matching 'Native Mobile QA'"                 native-narrow
+
+echo ""
+echo "M08 data migration:"
+# Measured 2026-11-06: counts that disagreed passed, a renamed sign-off heading disabled the
+# signatory check entirely, a blank table-cell signature passed, and Medium closed without any
+# reconciliation report. One case per hole, plus the positive base.
+expect_m08() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m08/build.py" dir="$WORK/m08mig"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M08 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M08 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M08 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m08 "a reconciled migration with agreeing counts passes"     PASS ""                                    base
+expect_m08 "PASSED without row counts blocks"                       FAIL "states no row counts"                  recon-passed-no-counts
+expect_m08 "row counts that disagree block"                         FAIL "row counts that do not agree"          recon-counts-not-matching
+expect_m08 "a renamed sign-off heading still blocks an unsigned PIC" FAIL "sign-off names nobody"               recon-no-pic-wording
+expect_m08 "a blank signature cell blocks"                          FAIL "sign-off is UNSIGNED"                  recon-blank-signature
+expect_m08 "a Medium migration without reconciliation blocks"       FAIL "MIGRATION_RECONCILIATION_REPORT.md (MISSING)" no-reconciliation-medium
+expect_m08 "a table missing from the mapping blocks"                FAIL "never mentions these schema table(s)"  plan-ignores-table
+
+echo ""
+echo "M09 UAT sign-off:"
+# Measured 2026-11-06 on a hand-written pack: "No PENDING items remained" was rejected as a status,
+# "The cargo crate was shipped" was accepted as an approval, a blank signature cell passed, an open
+# Sev 1 row passed, a filler word passed as a signatory, and an internal signature closed the UAT.
+expect_m09() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m09/build.py" dir="$WORK/m09uat"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M09 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M09 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M09 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m09 "a signed, evidenced UAT pack passes"                  PASS ""                                   base
+expect_m09 "mentioning no PENDING items is not a rejection"       PASS ""                                   uat-pending-mentioned
+expect_m09 "an approval word inside prose is not an approval"     FAIL "missing explicit approval attestation" uat-go-in-word
+expect_m09 "a renamed client row with no name blocks"             FAIL "client sign-off row names nobody"    uat-renamed-signoff
+expect_m09 "a filler word is not a signatory"                     FAIL "placeholder word"                    uat-placeholder-name
+expect_m09 "a blank signature cell blocks"                        FAIL "blank signature lines"               uat-blank-cell
+expect_m09 "an open Severity 1 row blocks"                         FAIL "unresolved Severity 1 or 2 defects"  uat-sev-row
+expect_m09 "a UAT without a workbook blocks"                       FAIL "UAT_WORKBOOK.md (MISSING)"           uat-no-workbook
+
+echo ""
+echo "M10 production cutover:"
+# Measured 2026-11-07: a PVT row saying "FAIL (retested, now PASS)", a PVT row with a blank status
+# cell, a core section demoted to a top-level title, a client-input receipt with no PIC, a Large
+# delivery with no rollback plan, and a model riding along as the verifying signer - all PASSED.
+expect_m10() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m10/build.py" dir="$WORK/m10gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M10 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M10 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M10 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m10 "a verified, live cutover passes"                    PASS ""                                   base
+expect_m10 "a failure rescued in prose is still a failure"      FAIL "PVT rows reporting failure"        pvt-fail-prose
+expect_m10 "a PVT row with no status blocks"                    FAIL "blank status cell"                 pvt-no-status-row
+expect_m10 "a core section demoted to a title blocks"           FAIL "only as a top-level title"         section-level1
+expect_m10 "a client receipt with no PIC blocks"                FAIL "still a placeholder"               inputs-blank-pic
+expect_m10 "a Large release without a rollback plan blocks"      FAIL "ROLLBACK_PLAN.md (MISSING)"        rollback-large
+expect_m10 "a model named as verifier blocks"                    FAIL "names a model as Lead Engineer"    signer-role
+expect_m10 "a decision line that is only a bullet blocks"        FAIL "must record 'Human decision: GO'"  go-commented
+
+echo ""
+echo "M11 BAST handover:"
+# Measured 2026-11-07: a BAST that deferred payment ("will discuss the commercial settlement"),
+# one person on both sides, a model on the developer line, and an undeclared delivery all PASSED;
+# meanwhile "outstanding arrears of Rp 0" - a settled account - was rejected.
+expect_m11() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m11/build.py" dir="$WORK/m11gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M11 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M11 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M11 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m11 "a signed, settled BAST passes"                     PASS ""                                    base
+expect_m11 "a settlement deferred to later blocks"              FAIL "missing 100% payment settlement"     paid-no-amount
+expect_m11 "zero arrears is settlement, not debt"               PASS ""                                    arrears-negated
+expect_m11 "one person on both sides blocks"                    FAIL "same party on both sides"            same-both-sides
+expect_m11 "a blank signature line blocks"                      FAIL "blank signature lines"               blank-signature
+expect_m11 "a model on the developer line blocks"               FAIL "names a model as DEVELOPER NAME"     model-second-party
+expect_m11 "a missing Article 2 blocks"                         FAIL "missing 100% payment settlement"     article-missing
+expect_m11 "an undeclared delivery blocks"                      FAIL "Delivery is not recorded"            delivery-undeclared
+expect_m11 "a Medium handover without a user manual blocks"     FAIL "USER_MANUAL.md (MISSING)"            manual-medium
+
+echo ""
+echo "M12 warranty and operations:"
+# Measured 2026-11-07: "Warranty Coverage: To be discussed.", an SLA table deleted and replaced with
+# "agreed per issue", a 500-byte runbook of "handled as needed", and a warranty that expired a year
+# ago all PASSED the maintenance gate.
+expect_m12() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m12/build.py" dir="$WORK/m12gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M12 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M12 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M12 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m12 "a stated warranty with figures passes"                 PASS ""                                    base
+expect_m12 "a coverage section that says nothing blocks"           FAIL "'Coverage' section is empty"          coverage-empty
+expect_m12 "an SLA that defers its terms blocks"                    FAIL "'Service Level Agreement' section defers" sla-no-numbers
+expect_m12 "an SLA with no figures blocks"                          FAIL "SLA states no response or resolution time" sla-prose-only
+expect_m12 "a warranty that already expired blocks"                 FAIL "warranty ended on"                    warranty-expired
+expect_m12 "a support email still a placeholder blocks"             FAIL "unresolved template placeholders"      email-placeholder
+expect_m12 "a solo runbook of filler blocks"                        FAIL "is missing health-level detail"        solo-runbook-empty
+expect_m12 "an incident plan that defers handling blocks"           FAIL "defers incident handling"              incident-partial
+
+echo ""
+echo "M13 product loop:"
+# Measured 2026-11-08: metrics sections with zero lines under them, the same sections filled with
+# prose whose only digits were heading numbers, a Large backlog that merely names RICE, and a blank
+# Delivery line all PASSED the product-operations gate.
+expect_m13() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/m13/build.py" dir="$WORK/m13gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" M13 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (M13 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (M13 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_m13 "a measured baseline passes"                            PASS ""                                    base
+expect_m13 "a metrics section with no content blocks"              FAIL "records no measurement"               metrics-empty
+expect_m13 "a metrics section of prose with no figures blocks"     FAIL "records no measurement"               metrics-prose-only
+expect_m13 "naming RICE without a scored row blocks"               FAIL "no scored experiment row"             rice-keyword-only
+expect_m13 "a blank delivery line blocks"                          FAIL "Delivery is not recorded"              delivery-blank
+
+echo ""
+echo "A00 advisory agreement:"
+# Measured 2026-11-08: "Total Advisory Fee: Rp 0" with no pro-bono wording, "Maximum Liability Cap:
+# None", a model in the consultant's signature cell, and an Advisory Deliverables section with zero
+# content lines all PASSED. The gate only understood "fee: 0" and "liability: none", which the
+# shipped template never writes.
+expect_a00() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a00/build.py" dir="$WORK/a00gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A00 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A00 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A00 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a00 "a priced, capped advisory agreement passes"      PASS ""                                  base
+expect_a00 "a zero fee with no pro-bono wording blocks"      FAIL "prices the advisory at zero"       fee-zero-no-probono
+expect_a00 "capping liability at nothing blocks"             FAIL "caps the consultant's liability"   liability-none
+expect_a00 "a model in the signature block blocks"           FAIL "names a model in the signature"    model-signs
+expect_a00 "an empty advisory deliverables section blocks"   FAIL "'Advisory Deliverables' section is empty" sections-empty
+expect_a00 "an unfilled amount is caught by the placeholder rule" PASS ""                               placeholder-left
+
+echo ""
+echo "A01 WBS phasing:"
+# Measured 2026-11-08: an Enterprise plan with a single "### Phase" heading, a Phasing Strategy
+# section with no content, and a sign-off reading "Lead Enterprise Architect: filled" all PASSED.
+# The phase count had been counting table rows anywhere in the file.
+expect_a01() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a01/build.py" dir="$WORK/a01gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A01 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A01 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A01 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a01 "a three-phase plan with named cuts passes"        PASS ""                              base
+expect_a01 "an Enterprise plan with one phase blocks"          FAIL "phase heading(s) at enterprise scale" one-phase-large
+expect_a01 "a razor that cuts nothing blocks"                  FAIL "says nothing is cut"           razor-nothing
+expect_a01 "a razor naming one cut blocks"                     FAIL "names 1 cut item(s)"           razor-one-cut
+expect_a01 "an empty phasing strategy section blocks"          FAIL "'Phasing Strategy' section is empty" sections-empty
+expect_a01 "a filler word as signer blocks"                    FAIL "Sign-Off names no person"      signoff-filler-name
+
+echo ""
+echo "A02 C4 and STRIDE:"
+# Measured 2026-11-08: STRIDE categories named only in prose, an empty Mitigation section, an empty
+# C4 Context, a residency section naming no region and a quality scenario with no figure all PASSED.
+# The category test grepped the whole file and the threat-table test accepted any table at all.
+expect_a02() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a02/build.py" dir="$WORK/a02gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A02 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A02 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A02 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a02 "a C4 blueprint with a STRIDE register passes"      PASS ""                                  base
+expect_a02 "STRIDE named only in prose blocks"                  FAIL "STRIDE categories as threat-table rows" stride-prose-only
+expect_a02 "a threat table with two categories blocks"          FAIL "STRIDE categories as threat-table rows" stride-table-no-cat
+expect_a02 "an empty mitigation section blocks"                 FAIL "Mitigation section is empty"      mitigation-empty
+expect_a02 "an empty C4 context blocks"                         FAIL "'C4' section is empty"            c4-empty
+expect_a02 "a residency section with no region blocks"          FAIL "names no region"                  residency-no-region
+expect_a02 "a quality scenario with no figure blocks"           FAIL "no measurable target"             scenario-no-numbers
+
+echo ""
+echo "A03 vendor procurement:"
+# Measured 2026-11-08: the recommendation check was DEAD in every document, including my own base.
+# `grep -iA2 "## Recommendation" ... | grep -vE "Recommendation|--"` deleted the very line it wanted,
+# so an empty recommendation and a recommendation for an uncompared vendor both passed. Separately a
+# "Procurement Scope" section with no content passed, and the cell value "no" was read as a vendor
+# name ("... another bank" contains "no").
+expect_a03() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a03/build.py" dir="$WORK/a03gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A03 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A03 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A03 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a03 "a scored comparison with a backed recommendation passes" PASS ""                          base
+expect_a03 "a recommendation section with no text blocks"            FAIL "has no recommendation"     rec-empty
+expect_a03 "a recommendation for an uncompared vendor blocks"        FAIL "no comparison column"      rec-unknown-vendor
+expect_a03 "a matrix of bare numbers blocks"                         FAIL "scored row(s)"             matrix-scores-only
+expect_a03 "an empty procurement scope section blocks"               FAIL "'Procurement Scope' section is empty" sections-empty
+
+echo ""
+echo "A04 governance handover:"
+# Measured 2026-11-08. Four defects passed: RTO/RPO needed only the LABEL (the shipped template's
+# rows are blank and passed), "accountable" in a footnote satisfied the owner check while every RACI
+# cell read R/C/I, and the CAB and retainer sections could be headings with nothing under them.
+expect_a04() {
+    local name="$1" want="$2" msg="$3" kind="$4"
+    local build="$REPO/scripts/verify/fixtures/a04/build.py" dir="$WORK/a04gate"
+    if [ ! -f "$build" ]; then
+        echo -e "  ${RED}✗${NC} $name  (fixture builder missing: $build)"
+        FAIL=$((FAIL + 1)); return
+    fi
+    rm -rf "$dir"; mkdir -p "$dir"
+    python3 "$build" "$dir" "$kind" >/dev/null 2>&1 || {
+        echo -e "  ${RED}✗${NC} $name  (builder failed for '$kind')"; FAIL=$((FAIL + 1)); return; }
+    local out rc got=PASS
+    out="$(cd "$dir" && bash "$GATE" A04 2>&1)"; rc=$?
+    [ "$rc" -ne 0 ] && got="FAIL"
+    local cause=1
+    if [ "$want" = "FAIL" ] && [ -n "$msg" ]; then
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | grep -F -q -- "$msg" || cause=0
+    fi
+    if [ "$got" = "$want" ] && [ "$cause" = 1 ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (A04 -> $got)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (A04 -> $got, expected $want)"
+        printf '%s\n' "$out" | grep -E '^[[:space:]]*❌' | head -2 | sed 's/^/       /'
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+expect_a04 "a pack with measured targets and a real RACI passes"  PASS ""                                  base
+expect_a04 "an RTO with no value blocks"                          FAIL "gives RTO no value"               rto-empty
+expect_a04 "an RTO of TBD blocks"                                 FAIL "gives RTO no value"               rto-tbd
+expect_a04 "a RACI with no accountable cell blocks"               FAIL "no cell an A (accountable)"       raci-no-accountable
+expect_a04 "a RACI handing a role to TBD blocks"                  FAIL "TBD/placeholder"                  raci-placeholder
+expect_a04 "a missing RTO row blocks"                             FAIL "states no RTO"                    dr-no-rto
+expect_a04 "a recovery plan with no drill recorded blocks"        FAIL "no restore drill"                 dr-no-drill
+expect_a04 "an empty CAB section blocks"                          FAIL "CAB section is empty"             cab-empty
+expect_a04 "an empty retainer section blocks"                     FAIL "no Architecture Conformance Retainer content" retainer-empty
+
+echo ""
+echo "Core sections must carry content (all gates that use check_sections):"
+# Measured 2026-11-08: check_sections() proves only that a heading exists. M02 printed
+# "core section headings verified (2 headings present)" for a scope statement whose User Stories and
+# Acceptance Criteria sections were empty. Every module that used check_sections alone is pinned here
+# through the shared library, so a regression in the helper fails one place instead of eight.
+section_gate() { # section name, keyword, want, doc-with-empty-section
+    local name="$1" kw="$2" want="$3" file="$4" dir="$WORK/sect" got
+    rm -rf "$dir"; mkdir -p "$dir/$(dirname "$file")"
+    printf '# Doc\n\n## 1. %s\n\n## 2. Other\n\nSome content.\n' "$kw" > "$dir/$file"
+    # GATE_FAILED must be read outside any command substitution: $(...) forks a subshell and the
+    # flag set inside it is lost, which is exactly what made the first version of this check lie.
+    bash -c '
+        GATE_FAILED=0
+        source "$1/scripts/gates/lib/checks.sh" >/dev/null 2>&1
+        check_section_content "$2" "$3" >/dev/null 2>&1
+        printf "%s" "$GATE_FAILED"' _ "$REPO" "$dir/$file" "$kw" > "$dir/.got" 2>/dev/null
+    got=$(cat "$dir/.got")
+    cause="${got#*|}"; got="${got%%|*}"
+    if [ "$got" = "$want" ]; then
+        echo -e "  ${GREEN}✓${NC} $name  (an empty '$kw' section blocks)"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} $name  (empty '$kw' section -> GATE_FAILED=$got, expected $want)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+section_gate "M02 User Stories"            "User Stories"                1 docs/pm/SCOPE_STATEMENT.md
+section_gate "M04 Composites"              "Composites"                  1 docs/specs/COMPONENT_REQUIREMENTS.md
+section_gate "M05 Document Metadata"       "Document Metadata"           1 docs/specs/PRODUCT_REQUIREMENTS.md
+section_gate "M08 Data Hygiene"            "Data Hygiene"                1 docs/data/DATA_MIGRATION_PLAN.md
+section_gate "M09 Evidence"                "Evidence"                    1 docs/testing/UAT_WORKBOOK.md
+section_gate "M11 Article 2"               "Article 2"                   1 docs/legal/BAST.md
+section_gate "M12 Coverage"                "Coverage"                    1 docs/ops/WARRANTY_PACK.md
+section_gate "M13 Retention"               "Retention"                   1 docs/pm/GO_LIVE_REPORT.md
+# and the other direction: a section with one real line must not be blocked
+section_gate_content() {
+    local dir="$WORK/sectok" file="docs/pm/SCOPE_STATEMENT.md" got
+    rm -rf "$dir"; mkdir -p "$dir/docs/pm"
+    printf '# Doc\n\n## 1. User Stories\n\n- As a teller I reconcile the ledger nightly.\n' > "$dir/$file"
+    bash -c '
+        GATE_FAILED=0
+        source "$1/scripts/gates/lib/checks.sh" >/dev/null 2>&1
+        check_section_content "$2" "User Stories" >/dev/null 2>&1
+        printf "%s" "$GATE_FAILED"' _ "$REPO" "$dir/$file" > "$dir/.got" 2>/dev/null
+    got=$(cat "$dir/.got")
+    if [ "$got" = 0 ]; then
+        echo -e "  ${GREEN}✓${NC} M02 a filled section still passes"
+        PASS=$((PASS + 1))
+    else
+        echo -e "  ${RED}✗${NC} M02 a filled section still passes  (GATE_FAILED=$got)"
+        FAIL=$((FAIL + 1))
+    fi
+}
+# M00, M03 and M07 were the last modules that trusted check_sections alone.
+section_gate "M00 Kill Criteria"      "Kill Criteria"      1 docs/validation/VALIDATION.md
+section_gate "M03 Scope of Work"      "Scope of Work"      1 docs/legal/SOW.md
+section_gate "M07 PART II: SIT REPORT" "PART II: SIT REPORT" 1 docs/qa/SIT_WORKBOOK.md
+
+section_gate_content
 
 echo ""
 if [ "$FAIL" -eq 0 ]; then

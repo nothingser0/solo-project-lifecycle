@@ -43,6 +43,11 @@ The overall business scope contains **[Total P0 Features > 15]** Must-Have capab
 
 ## 3. Scope Razor & Boundary Defense
 
+> State at least two items cut from Phase 1, each with the reason it waits:
+
+- <deliverable cut from phase 1> — <why it waits; what it depends on>
+- <second deliverable cut from phase 1> — <why it waits>
+
 | Scope Item | Target Phase | Implementation Team | Justification |
 | :--- | :---: | :--- | :--- |
 | Core IAM & RBAC | Phase 1 | Implementation Vendor Team A | Prerequisite for all business workflows |
@@ -54,6 +59,6 @@ The overall business scope contains **[Total P0 Features > 15]** Must-Have capab
 
 ## 4. Phase Gate Sign-Off
 
-Lead Enterprise Architect: _________________________  
+Lead Enterprise Architect: [Your Name]  
 Date: [YYYY-MM-DD]  
 Status: **WBS PHASING APPROVED (Ready for C4 Modeling & STRIDE in Phase A02)**

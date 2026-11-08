@@ -1,5 +1,9 @@
 # Component RFC: [Component Name]
 
+> ⚠️ **WHEN TO USE / NOT USE**:
+> - **DO NOT USE** for normal solo projects, SaaS apps, MVPs, or client builds. Use `COMPONENT_REQUIREMENTS_TEMPLATE.md` instead!
+> - **USE ONLY IF**: You are explicitly authoring an open-source UI component library or a multi-team enterprise design system requiring formal RFC governance.
+
 **RFC Number:** [RFC-YYYY-NNN]  
 **Author:** [Your Name]  
 **Date:** [YYYY-MM-DD]  

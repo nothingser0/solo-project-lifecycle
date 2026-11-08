@@ -1,157 +1,178 @@
-# Solo Project Lifecycle
+# Solo Project Lifecycle 🤖⚡
 
-A comprehensive, production-tested Software Development Life Cycle (SDLC) framework engineered for solo developers, technical founders, and lean engineering teams. It standardizes end-to-end execution from product discovery and commercial scoping to architecture, development, quality assurance, deployment, and post-launch maintenance.
+> **The Autonomous SDLC Operating System & Quality Gatekeeper for AI Coding Agents.**  
+> *Turn Cursor, Claude Code, Antigravity, and Windsurf into a disciplined Senior Engineering Team.*
 
-The repository includes a taxonomy of 1,000 systems across 4 scale tiers, 250 industry software archetypes, 14 gate-controlled lifecycle modules, and 150+ operational templates and architectural patterns.
-
----
-
-## Architecture & Structure
-
-```
-solo-project-lifecycle/
-├── SKILL.md                 # Agent entry point and execution index
-├── docs/
-│   ├── modules/             # 14 lifecycle modules (M00-M13) + A00-A04 advisory + deep-dives/ + variants/
-│   ├── INDEX.json           # Machine-readable file manifest (two-way parity with the filesystem)
-│   ├── AUTHORITY.md         # AGENT / HUMAN-DECIDES / HUMAN-ONLY / FORBIDDEN per module
-│   ├── WHERE_THINGS_GO.md   # Where a file goes: 11 project folders + the project root + 3 deciding questions
-│   ├── QUICKSTART.md        # Rapid onboarding guide
-│   └── PACKAGE_VERSION_AUTO_CHECK.md
-├── templates/
-│   ├── essentials/                # Fast-track LITE templates (Small/MVP path)
-│   ├── 00-pre-sales-enterprise/   # RFP responses, POC plans, consulting agreements
-│   ├── 01-discovery-commercial/   # Market research, briefs, SOWs, and charters
-│   ├── 02-design/                 # Design prompts, sitemaps, component specs
-│   ├── 02-legal-commercial/       # NDA, change requests, financial tracking
-│   ├── 03-architecture-specs/     # PRD, FSD, and lite specification templates
-│   ├── 03-governance/             # ADRs, compliance, incident response, RACI
-│   ├── 04-dev-execution/          # Agent harnesses, conventions, stack baselines
-│   ├── 05-data-migration/         # Migration plans and data reconciliation
-│   ├── 06-qa-uat/                 # Test plans, test cases, and UAT signoff forms
-│   ├── 07-release-handover/       # Handover protocols, BAST, credentials vault
-│   ├── 08-maintenance-ops/        # SLA/SLO, backup, warranty, runbooks
-│   ├── 09-product-growth/         # Analytics, A/B tests, growth experiments
-│   ├── by-use-case/               # Per-use-case template bundles
-│   └── ui/                        # Cinematic world engine & motion tokens
-├── references/
-│   ├── architecture/        # Architecture decision references (4)
-│   ├── ba/                  # Requirements traceability / RTM guides (2)
-│   ├── checklists/          # Feasibility criteria, module evaluation checklists
-│   ├── design/              # Logo craft, design-system and reference-analysis guides
-│   ├── growth/              # Acquisition and lifecycle benchmarks
-│   ├── playbooks/           # Scale workflows, AI-assisted development, design patterns
-│   ├── pm/                  # Prioritization, analytics, communication, testing guides
-│   ├── pre-sales/           # Discovery call checklists, proposals, quotations
-│   ├── process/             # Anti-yes-man pushback protocol
-│   ├── solo/                # Solo architecture, patterns, standards, UI/UX guides
-│   ├── stacks/              # Framework matrix and stack quickstarts (Next.js, Laravel, Go, Django)
-│   ├── taxonomy/            # 1,000 system catalog and 250 software archetypes
-│   ├── team/                # Team collaboration and agency handoff
-│   └── technical/           # Deep research, design systems, APM, compliance guides
-├── patterns/                # Cited decision-rule patterns (Payments, UU PDP, i18n/IDR, Threat Modeling, Solo Guardrails) — see patterns/README.md
-├── archive/patterns/        # Superseded generic patterns (Zod, caching, N+1, auth…) kept for reference; not loaded by any phase
-├── case-studies/            # Worked examples: SaaS, e-commerce, CRM, B2B SaaS, large integration
-├── scripts/
-│   ├── scaffold/            # Project init, TODO generation, and template picker scripts (Bash/PowerShell)
-│   ├── gates/               # Lifecycle gate validation automation
-│   ├── verify/              # Link, frontmatter, template, and stack version verifiers
-│   ├── runtime/             # ETL importer, load-test harness, data migration runner
-│   ├── evals/               # Eval scenario runner (run-evals.js)
-│   ├── dist/                # Distribution packaging + size calculation scripts
-│   └── release/             # Clean release-branch builder (release-exclude.txt)
-└── evals/                   # Evaluation scenarios verifying SDLC agent compliance
-```
-
-> **Note**: `docs/pm/`, `docs/specs/`, `docs/harness-root/`, and `docs/qa/` are **not** part of
-> this skill repo — `scripts/scaffold/init-project.sh` creates them inside *your* project directory
-> and the gate scripts read the project documents from there.
+[![Release](https://img.shields.io/github/v/release/nothingser0/solo-project-lifecycle?color=7928CA&label=Release&logo=github)](https://github.com/nothingser0/solo-project-lifecycle/releases/latest)
+[![AI-Native](https://img.shields.io/badge/AI%20Harness-Native%20Skill-0070F3?logo=openai)](SKILL.md)
+[![Verification Suite](https://img.shields.io/badge/Gate%20Tests-100%25%20Passing-00DF72?logo=checkmarx)](scripts/verify/verify-all.ps1)
+[![License: MIT](https://img.shields.io/badge/License-MIT-gray.svg)](LICENSE)
 
 ---
 
-## 14 Lifecycle Modules
+```
+                       ┌────────────────────────────────────────┐
+                       │       AUTONOMOUS AGENT HARNESS         │
+                       └───────────────────┬────────────────────┘
+                                           │
+       ┌───────────────────────────────────┼───────────────────────────────────┐
+       ▼                                   ▼                                   ▼
+ 🧠 Progressive Context             🛡️ Anti-Yes-Man                   🔍 Real Evidence Probe
+ (≤2k tokens/phase, no leaks)       (Mandatory risk pushback)         (Zero fake mocks allowed)
+       │                                   │                                   │
+       └───────────────────────────────────┼───────────────────────────────────┘
+                                           ▼
+                       ┌────────────────────────────────────────┐
+                       │  DETERMINISTIC GATEKEEPER (Exit: 0..5) │
+                       │    ./scripts/gates/validate-gate.sh    │
+                       └────────────────────────────────────────┘
+```
 
-| Phase | Module | Scope & Core Artifacts |
+---
+
+## ⚡ The Agent Alignment Problem: Raw Agent vs. Harnessed Agent
+
+Coding agents are brilliant at writing code, but chaotic at shipping production software. **Solo Project Lifecycle** provides the missing structural operating system:
+
+| The Raw Agent (Without Framework) | The Harnessed Agent (With `solo-project-lifecycle`) |
+|---|---|
+| ❌ **Hallucinates Delivery**: Claims all screens are done, leaving empty `<400`-byte placeholder files. | ✅ **No-Fake Law**: Gate validator checks route size, interactivity, and rejects stub placeholders. |
+| ❌ **Cites Fake Evidence**: Passes test suites by mocking out the very logic it was supposed to verify. | ✅ **Real Evidence Probe**: Verification requires executable route probes (HTTP 200/307) or live compiler output. |
+| ❌ **Drive-By Refactoring**: Rewrites unrelated files, deletes comments, or renames variables unprompted. | ✅ **Change Fence**: Agent is locked to touching *only* the specific files declared in the active TODO task. |
+| ❌ **Yes-Man Sycophancy**: Blindly agrees to over-engineered architectures or out-of-scope feature creep. | ✅ **Anti-Yes-Man Protocol**: Mandatory pushback protocol; agent must propose the simpler option before building. |
+| ❌ **Context Amnesia**: Forgets architectural decisions after 10 turns and defaults to generic stacks. | ✅ **State-Locked Memory**: Single source of truth via `PROJECT_STATE.md` with gate-enforced handoffs. |
+| ❌ **Code Slop**: Leaves `// fetch data`, `console.log`, unstyled `<select>`, and loose `: any` everywhere. | ✅ **Zero-Slop Rule**: Strict prohibition on debug logs, narrating comments, emoji icons, and raw selects. |
+
+---
+
+## 🧠 The Autonomous Cognition Loop
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as Solo Developer / Founder
+    participant Agent as AI Coding Agent (Cursor / Claude / Antigravity)
+    participant State as docs/pm/PROJECT_STATE.md
+    participant Gate as validate-gate.sh / .ps1
+
+    Dev->>Agent: "Initialize project for an MVP SaaS"
+    Agent->>State: Scale Classifier -> Locks tier (e.g. Small / MVP)
+    Agent->>Dev: Runs 9-field Intake Gate -> Stops & Waits
+    Dev->>Agent: Answers core pain points & user segment
+    loop Development Execution (M06 Sprint)
+        Agent->>Agent: Pick 1 task from TODO.md (Bundling forbidden)
+        Agent->>Agent: Implement feature within Change Fence
+        Agent->>Agent: Run live verification probe (e.g. curl HTTP 200)
+        Agent->>Dev: Report raw Evidence -> 🛑 END TURN
+        Dev->>Agent: "Approve" / "Ok Lanjut"
+        Agent->>Agent: Mark [-] to [x] with date & evidence signature
+    end
+    Agent->>Gate: Execute validate-gate.sh M06
+    Gate-->>Agent: Exit Code 0 (Passed)
+    Agent->>Dev: Ready for UAT & Handover (BAST)
+```
+
+---
+
+## 🎯 5W + 1H Quick Overview
+
+* **WHAT**: An agent-agnostic SDLC framework consisting of **14 Lifecycle Modules (`M00`–`M13`)**, **Enterprise Series (`A00`–`A04`)**, **150+ operational templates**, and deterministic **CLI gate scripts**.
+* **WHY**: To transform autonomous AI coding assistants from raw snippet generators into disciplined, senior-grade engineering partners that adhere to locked scopes, contracts, and quality standards.
+* **WHO**: Solo developers, technical founders, indie hackers, and freelance software houses who need enterprise-level execution without hiring a 10-person agency.
+* **WHEN**: Use for real products—commercial SaaS, client deliverables, MVPs, and production systems. *(Do not use for throwaway 1-file scripts or simple syntax lookups).*
+* **WHERE**: Runs seamlessly inside **Google Antigravity**, **Cursor** (Agent mode), **Claude Code**, **Windsurf**, **Aider**, or raw terminal CLI across macOS, Linux, and Windows.
+* **HOW**: Operates via progressive disclosure (≤2k tokens per phase), template-first scaffolding, and deterministic shell gate validators.
+
+---
+
+## 🛠️ Prompting Your Agent (Quick Start)
+
+### 1. Mount the Skill
+Clone the repository into your local or project skill directory:
+```bash
+git clone https://github.com/nothingser0/solo-project-lifecycle.git ~/.agents/skills/solo-project-lifecycle
+```
+
+### 2. Prompting Examples
+
+```markdown
+<!-- Starting a fast-track experiment -->
+"Use solo-project-lifecycle in Spike/PoC mode to test feasibility of a local SQLite vector search."
+
+<!-- Starting a commercial client project -->
+"Act as my lead engineer using solo-project-lifecycle. Initialize a Client (Medium) project with SOW, DP milestones, and BAST handover."
+
+<!-- Executing coding sprint with zero slop -->
+"Load solo-project-lifecycle Module 06. Read TODO.md and execute the next task. Remember the Change Fence and one-task-per-turn rule."
+```
+
+---
+
+## 📊 Scale Router & Delivery Tiers
+
+The framework calibrates governance overhead based on project complexity:
+
+```text
+  [Spike / PoC] ──► 1-3 Days    ──► Feasibility tests / throwaway code (Zero gate scripts)
+  [Small / MVP] ──► <4 Weeks    ──► 1-5 P0s, 1 decision maker, waived M01/M02, 2 human stops
+  [Solo SaaS]   ──► 3-6 Weeks   ──► 6-15 P0s, Stripe/Midtrans billing, Solo SaaS Charter
+  [Client]      ──► 6-15 P0s    ──► Contractual SOW, DP milestones, UAT workbook, signed BAST
+  [Enterprise]  ──► 16+ P0s     ──► Capacity Risk Gate exit 5, or A00-A04 Enterprise Advisory
+```
+
+---
+
+## 🗂️ 14 Lifecycle Modules (The Agent Skill Matrix)
+
+| Phase | Module | Autonomous Subroutine Scope |
 |:---|:---|:---|
-| **Discovery** | `M00` Product Discovery | Market research, competitive analysis, value proposition |
-| | `M01` Idea Feasibility | Technical feasibility, unit economics, risk matrices |
-| | `M02` Discovery & Scoping | Requirements elicitation, scope baseline, user journeys |
-| **Commercial** | `M03` Legal, SOW & Charter | SOW (client work), Solo SaaS Charter, BAST milestones |
-| **Design** | `M04` UI/UX Prototyping | Wireframes, component requirements, token systems |
-| **Specs** | `M05` Architecture & Specs | PRD, Technical FSD, entity models, API contracts |
-| **Build** | `M06` Development Execution | Agent harnesses (`AGENTS.md`, `TODO.md`), TDD, atomic commits |
-| | `M07` QA & System Integration | Integration testing, load tests, security baselines |
-| | `M08` Data Migration & Seeding | Schema migrations, zero-downtime cutover, seed scripts |
-| **Delivery** | `M09` UAT & Client Sign-Off | Acceptance testing, defect triage, sign-off protocol |
-| | `M10` Production Deployment | CI/CD pipelines, release checklist, rollback procedures |
-| | `M11` Handover & BAST | Official acceptance (BAST), documentation, secret rotation |
-| **Operations**| `M12` Warranty & Retainer | SLA definition, incident response, retainer terms |
-| | `M13` Operations & Iteration | Observability, metric tracking, feature iteration backlog |
+| **Discovery** | `M00` Product Discovery | RAT riskiest assumption testing, competitive alternative matrix |
+| | `M01` Idea Feasibility | Unit economics sanity check, margin target validation, Go/Kill decision |
+| | `M02` Discovery & Scoping | User journeys, MoSCoW scope freeze, acceptance criteria definition |
+| **Commercial** | `M03` Legal & Charter | Client SOW/SPK contracts, down-payment gates, Solo SaaS Charter |
+| **Design** | `M04` UI/UX Prototyping | Reference intake, vector SVG logos, Reusable Component Showcase, Visual DNA |
+| **Specs** | `M05` Architecture & Specs | PRD synthesis, Technical FSD, schema locking, tech stack lock |
+| **Build** | `M06` Dev Execution | 9-file agent harness, atomic TODO decomposition, zero broken build |
+| | `M07` QA & SIT | System integration test workbook, security audits, OWASP baselines |
+| | `M08` Data Migration | Zero-downtime cutover plan, seeder idempotency, data reconciliation |
+| **Delivery** | `M09` UAT & Client Sign-Off | Client acceptance workbook, structured defect triage, human sign-off |
+| | `M10` Production Deployment | Zero-downtime cutover protocol, production smoke tests, rollback procedures |
+| | `M11` Handover & BAST | Official Berita Acara Serah Terima (BAST), credential rotation, final invoice |
+| **Operations**| `M12` Warranty & Retainer | SLA/SLO commitments, incident response runbooks, maintenance retainers |
+| | `M13` Operations & Growth | Product metrics, A/B testing analysis (`analyze_ab_test.py`), backlog iteration |
 
 ---
 
-## Project Sizing & Workflow Modes
+## 💻 CLI & Gate Validator Tooling
 
-The framework adapts governance overhead across 4 delivery scales:
+```bash
+# 1. Scaffolding a structured project directory
+./scripts/scaffold/init-project.sh ~/projects/my-saas medium
 
-1. **Small / MVP (<4 weeks)**: Fast-track via the Intake gate then M04-LITE → M05 → M06 → M09-LITE → M10 → M12-LITE, with `PROJECT_LITE_TEMPLATE.md`, a unified `TODO.md`, and 2 stop points. **M00/M01/M02 are waived** on this path (the scale classifier still runs).
-2. **Medium / Production Core (3-6 weeks)**: Standard gate controls with separated PRD, FSD, structured QA checkpoints, and milestone validations.
-3. **Large / Multi-Service (7-12 weeks)**: Rigorous data migration plans, formal UAT cycles, reconciliation protocols, and security audits.
-4. **Enterprise / Mission-Critical (12+ weeks)**: Full enterprise governance including regulatory compliance checks (e.g., UU PDP, GDPR), formal SLA agreements, and audited handover ceremonies.
+# 2. Decomposing FSD & Sitemap specs into 1-to-1 executable TODO tasks
+./scripts/scaffold/generate-todo.sh TODO.md
 
-Supported engagement models:
-- **Solo SaaS**: Self-directed commercial track (waives client SOW/BAST, enforces Solo SaaS Charter and growth metrics).
-- **Client / Bespoke Delivery**: Agency and freelance workflow with contractual milestones, change request tracking, and formal sign-offs.
-- **Internal / Enterprise**: Departmental tooling and intranet systems with audit trails and staging cutovers.
-
----
-
-## Automation Scripts
-
-The `scripts/` directory provides cross-platform Bash and PowerShell utilities:
-
-- **Project Scaffolding**:
-  ```bash
-  # Initialize a structured project workspace
-  ./scripts/scaffold/init-project.sh ~/projects/my-app medium
-  # Usage: init-project.sh <TARGET_DIR> [small|solo-saas|independent|open-source|medium|bespoke|freelance|large|enterprise] [ARCHETYPE] [DELIVERY]
-
-  # Automatically scaffold Sprint TODO.md from FSD and Sitemap specifications
-  ./scripts/scaffold/generate-todo.sh TODO.md
-  ```
-- **Gate Validation**:
-  ```bash
-  # Validate module readiness and required artifact presence
-  ./scripts/gates/validate-gate.sh M05
-  ```
-- **Verification Suite**:
-  ```bash
-  # Verify template links, stack versions, and metadata integrity
-  ./scripts/verify/verify-all.sh
-  ```
+# 3. Deterministic Gate Validation (Windows PowerShell or Bash)
+powershell -File ./scripts/gates/validate-gate.ps1 M05
+# Output:
+#   🔍 Validating Gate: M05 (Architecture & Specs)
+#   ✅ Tech Stack Decision LOCKED
+#   ✅ Entity model relationships verified
+#   ============================================================
+#   ✅ Gate validation PASSED (Exit code: 0)
+```
 
 ---
 
-## Getting Started
+## 📜 Compliance & Regional Support
 
-1. Read `docs/WHERE_THINGS_GO.md` — it decides which folder every artefact belongs in (the gates enforce those paths).
-2. Consult `docs/QUICKSTART.md` for a 10-minute setup walkthrough.
-3. Read the stack quickstart for Next.js, Laravel, Go, or Django in `references/stacks/`; for any other stack (FastAPI, Rails, SvelteKit, …) start from `templates/04-dev-execution/<stack>/AGENTS.md` and `references/stacks/STACK_SUPPORT_MATRIX.md`.
-4. Review `references/taxonomy/SYSTEM_ARCHETYPES_250.md` to map standard features for your target system category.
-5. Scaffold project governance and harness files using the `scripts/scaffold/` utilities.
-
----
-
-## AI Agent & Harness Compatibility
-
-The framework is **harness-agnostic** and operates entirely via native markdown specifications and zero-dependency shell scripts. It natively supports:
-
-- **CLI & Autonomous Agents**: Claude Code, Hermes Agent, Aider, OpenHands, Codex CLI.
-- **AI-Native IDEs**: Cursor (Composer/Agent mode with Figma MCP support), Windsurf (Cascade), VS Code + GitHub Copilot.
-- **Generative UI Workflows**: v0.dev, Bolt.new, and Lovable.dev (via `DESIGN_SPEC.md` prompt exports in Module 04).
+Native patterns tailored for regional business standards and international compliance:
+* **Indonesian Commercial Context**: SOW/SPK agreements, down-payment milestones, BAST acceptance instruments, e-Meterai validation, and PPN compliance.
+* **Payment Gateways**: Midtrans, Xendit, and QRIS webhook idempotency and signature verification.
+* **Data Privacy Regulations**: Indonesia UU PDP (Pelindungan Data Pribadi), GDPR, and SOC2/ISO27001 readiness checklists.
 
 ---
 
-## License
+## 📄 License
 
-MIT License. See [LICENSE](LICENSE) for details.
+Distributed under the [MIT License](LICENSE). Built for the next generation of solo builders and autonomous coding agents.

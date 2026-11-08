@@ -25,6 +25,23 @@ For Expo, use npm and commit `package-lock.json` for the M06 version gate. Align
 
 Git: `main` → `staging` → `feat/*`.
 **STEP 2 — Deploy harness files to root AFTER scaffold (gate-enforced).** Source `docs/harness-root/` (staged M01-M05 for all scales, including Small); overwrites boilerplate. Unstaged fallback: `templates/04-dev-execution/{AGENTS,ARCHITECTURE,CONVENTIONS,ENV_EXAMPLE}_TEMPLATE.md` + `{stack}/` + `templates/02-design/DESIGN_MD_TEMPLATE.md`, renaming `ENV_EXAMPLE`→`.env.example`.
+
+### The nine harness files — what each one is for
+
+| File | Answers the question | Source |
+|---|---|---|
+| `AGENTS.md` | "what are the rules of this codebase?" (anti-slop, forbidden APIs, the prototype path) | `templates/04-dev-execution/AGENTS_TEMPLATE.md` |
+| `CONTEXT.md` | "what is this product and what is out of scope?" (domain, glossary, closed scope) | `CONTEXT_TEMPLATE.md` |
+| `ARCHITECTURE.md` | "where does code go?" (folders, layers, boundaries) | `ARCHITECTURE_TEMPLATE.md` |
+| `DESIGN.md` | "what colour/size/spacing is this?" (tokens copied verbatim from M04) | `docs/design/DESIGN.md` |
+| `CONVENTIONS.md` | "how is code written and named here?" | `CONVENTIONS_TEMPLATE.md` |
+| `TODO.md` | "what is left, how is it verified, how does a human check it?" | `TODO_TEMPLATE.md` |
+| `.env.example` | "which keys must exist?" (no secret values) | `ENV_EXAMPLE_TEMPLATE.md` |
+| `RUNBOOK_LOCAL.md` | "how do I run it?" (`npm install`, `npm run dev`, migrate, seed) | `RUNBOOK_LOCAL_TEMPLATE.md` |
+| `VERIFY_LOCAL.md` | "how do I prove it passed locally?" (commands, output, date, commit) | `VERIFY_LOCAL_TEMPLATE.md` |
+
+`docs/harness-root/` ships all nine as a ready set — `cp docs/harness-root/* ./` is the whole
+deploy step. **Small** needs `AGENTS.md` + `TODO.md` only.
 ⛔ **STRICT ORDER (never reorder):** (1) scaffold finished; (2) `cp docs/harness-root/* ./ && cp docs/harness-root/.env.example ./ 2>/dev/null || true`; (3) verify root harness files (Medium+: 9 files; Small: `AGENTS.md`, `TODO.md`, `DESIGN.md`); (4) ONLY then `rm -rf docs/harness-root/`. Optional: `./scripts/scaffold/template-picker.sh --phase 4 --dest .`.
 
 **STEP 3 — Version gate (MANDATORY).** Run `./scripts/verify/verify-framework-version.sh` (or `.ps1`). It checks the scaffold manifest matches the FSD, then compares lockfile against `Framework Versions (Pinned)`: **major.minor exact**. Comparators exist for Next.js, Laravel, Django, FastAPI, Go, SvelteKit, Nuxt, Rails and Expo (Expo needs npm `package-lock.json`, then `npx expo install --check` and `npx expo-doctor@latest`); Tailwind v3/v4 is reported where applicable. Mismatch or a missing comparator fails — never claim STEP 3 passed while the verifier says the pin is UNVERIFIED. Stacks listed only as tracked in `references/stacks/STACK_SUPPORT_MATRIX.md` are not gate-ready. **Anti-overkill baseline** (same matrix): Small = no Docker, no microservices · Medium = monolith, no Kafka or K8s · Large = modular monolith + DB + Redis. Drift from that baseline gets pruned.
@@ -45,6 +62,7 @@ Git: `main` → `staging` → `feat/*`.
 **STEP 6 — Implement per TODO (DB → API → prototype).** **One task per turn**: implement → run `Verify` → S.U.P.E.R 10-check review card (`patterns/architecture/SUPER_ARCHITECTURE_AND_ADAPTIVE_CONTROL_PATTERN.md`) + edit-over-create hygiene (`patterns/architecture/AI_AGENT_SYSTEM_PROMPT_ENGINEERING_PATTERN.md`) → report Evidence → 🛑 **END TURN**. The human approves before `[x]` and the next task; `Approved: <date> by <name>` is gate-enforced (self-ticked tasks fail). Batch only when the user names task IDs.
 - **Change fence**: edit only the files this TODO task names; anything else needs a question first, and existing content is preserved unless removal is the request (see Core rule 6b). Report changed paths with a one-line reason each.
 - **Evidence must resolve**: when a task produces a visible surface or file artifact, run `python3 scripts/verify/check_evidence.py . --report artifacts/final-evidence.md` before claiming completion. A missing path, a 0-byte stub, or a relabelled earlier report is a fabricated claim. State what you did **not** verify.
+- **What this gate can and cannot prove**: `validate-gate.sh M06` checks that every ticked task has an `Evidence:` path that exists beside a human `Approved:` line, and that no single artefact is offered as proof of two different task categories. It runs in `--report` (lenient) mode: it proves the files exist, **not** that they are current, that the tests in them passed, or that the recorded command was ever run. Executed-and-passing is established by M07 SIT and by the human reviewer — do not cite this gate as proof a test ran.
 - **Prototype is the spec**: every `M06-FE-xx` ports layout, hierarchy, styling and micro-interactions from `docs/design/screens/<role>/<screen>.html`. Divergent cards, filters or layouts invented from memory are forbidden, and no `SCR-`/`REQ-`/`M06-`/`FSD-` code goes into user-facing copy.
 - **Route defense**: an `M06-FE-xx` `Verify` probes that specific route (`curl -fsSL -o /dev/null -w "%{http_code}"` expecting 200/307, or the production build manifest). Citing unrelated unit tests as UI evidence is a fabricated claim; a 404 or crash on a declared route blocks approval.
 - **DB & seed idempotency**: ORM migrations pooling + FK indexes + reversible; every seeder is 100% idempotent (deterministic UUIDs / UPSERT / `ON CONFLICT DO NOTHING`) so ten runs never duplicate rows.
@@ -53,6 +71,7 @@ Git: `main` → `staging` → `feat/*`.
 - **UI completeness**: all 5 states per screen (idle/loading/success/error/empty); design-calibrated Toasts and Dialog Modals instead of `alert`/`confirm`/`prompt`; nested + root Error Boundaries with a reset action instead of a white screen, and structured logging for unhandled backend rejections.
 - **Hydration discipline (SSR stacks)**: build it hydration-free when the view is correct without it. No `Date.now()`/`new Date()`/`Math.random()`/`localStorage`/bare `toLocaleString()` in the initial render; every formatter takes an explicit `locale` + `timeZone`; `'use client'` only on the smallest interactive leaf, each listed in `VERIFY_LOCAL.md` §4C (console proof there too; ladder: `references/technical/HYDRATION_FREE_RENDERING.md`).
 - **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in `RUNBOOK_LOCAL.md`; jobs → worker verified.
+- **DB defense** (the backend twin of route defense): a `M06-DB-*` `Verify` must prove the schema against a **real database instance**, never a mock. Three probes, pasted raw into `Evidence`: (1) `migrate up` → `migrate down` → `migrate up` succeeds (reversible); (2) running the seeder **twice** leaves no duplicate rows — report the before/after `COUNT(*)`; (3) one key query's `EXPLAIN` shows the intended index used. A passing unit/integration test that stubs the DB is **not** setup evidence — it is the same fabricated claim as citing unit tests for a route. If no reachable database exists, state that the DB was not verified instead of claiming it. Test-runner output (vitest, jest, pytest) is only evidence for the level it actually exercises: a mocked repo layer proves wiring, not schema.
 - **Bug vs CR**: behaviour violating locked PRD/FSD/acceptance is a bug, fixed now at zero cost. Anything else is a CR in `change-requests/CR-*.md` with fee and timeline, never implemented mid-sprint.
 
 **STEP 7 — Tests, CI Pipeline & Git.** Run the stack's configured smoke/unit tests, static checks, build and dependency/security checks where supported — use the commands locked in the project harness, never assume TypeScript, pnpm or a particular scanner.

@@ -81,6 +81,12 @@ npm run test:smoke
    - Source code must be self-documenting through clear, domain-expressive naming.
    - Writing comments that merely restate syntax or describe the obvious (e.g. `// Render navbar header`, `// Loop through items`, `// Return true if valid`, `// Set loading state`, `// Catch error and log`) is STRICTLY PROHIBITED.
    - Comments are permitted ONLY when explaining non-obvious domain logic, mathematical formulas (e.g. electricity delta tariffs), statutory regulatory citations (e.g. UU PPN/UU PDP), or known workarounds for upstream library defects.
+1g. **Senior Backend Architecture (Zero Fat Route Handlers)**:
+   - API route handlers and Server Actions are strictly thin transport adapters (session check → Zod input validation → delegate to service function → return `ActionResult<T>`). Direct database queries (`prisma.*`, `db.query`), business calculations, or multi-step operations inside route handlers are STRICTLY FORBIDDEN. All business logic must reside in `services/*.service.ts`.
+1h. **Frontend Modularization & Custom Hook Extraction**:
+   - Monolithic UI components (> 150 lines) mixing JSX with state, effects, or async calls are PROHIBITED as Component Slop. Extract stateful and asynchronous logic into custom hooks (`use-[feature].ts`). Decompose large views, complex cards, and modals into dedicated sub-components.
+1i. **Anti-Style Drift & Semantic Token Lock (Zero Arbitrary Color Spray)**:
+   - Incurring color or typography drift across sessions (e.g. using `text-black` in one session and hallucinating `text-orange-500` or `bg-amber-600` in the next) is STRICTLY PROHIBITED. All text, background, and borders MUST use semantic tokens (`text-foreground`, `text-muted-foreground`, `text-primary`, `bg-card`). Before writing any UI component, you MUST inspect `DESIGN.md` and existing sibling components (`components/ui/*`) to mirror styling conventions.
 2. **Context Integrity**:
    - BEFORE creating new API endpoints or new database tables, you MUST read `ARCHITECTURE.md` and `CONTEXT.md`.
    - BEFORE creating or editing UI component styling, you MUST read `DESIGN.md`.
@@ -101,7 +107,8 @@ npm run test:smoke
 7. **Observability & Data Durability**:
    - Bare `console.log()` calls in production API handlers are PROHIBITED. Use structured JSON logging.
    - Using `DELETE FROM` on transactional/legal documents is PROHIBITED. Use soft deletes (`deleted_at`).
-   - Multi-table mutations must be wrapped in atomic transactions (`db.$transaction` or stored procedures) with deterministic lock ordering (e.g., `ORDER BY id ASC`) to prevent deadlocks.
+   - Multi-table mutations and state changes on finite resources (balances, stock, counters) MUST be wrapped in atomic transactions (`db.$transaction` or row-level locks `FOR UPDATE`) or atomic SQL expressions (`SET count = count - 1 WHERE count > 0`). In-memory read-modify-write is strictly forbidden to prevent race conditions.
+   - Database errors must never leak raw constraint messages (e.g. `P2002`) to the UI; map to user-friendly domain error messages.
    - Error notifications must not auto-dismiss; success notifications allow auto-dismiss after ≥ 4000ms.
 8. **Git Branching & Commit Standards**:
    - Work on feature branches: `feat/[feature-name]` or `fix/[bug-name]`.

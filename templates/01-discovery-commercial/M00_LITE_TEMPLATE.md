@@ -8,12 +8,12 @@
 
 ## 1. Project Metadata & Problem Pitch
 
-- **Project Codename**: [e.g., MiniPOS / KasirKilat]
-- **Provisional Target Segment**: [e.g., Micro-retail store owners with 1–3 branches in metropolitan areas; confirm the beachhead choice in Section 6]
-- **Core Pain**: [e.g., Physical stock discrepancies vs Excel records averaging Rp 1–3M/month]
-- **Proposed Solution**: [e.g., Offline-first cashier & inventory app syncing automatically to Cloud/WhatsApp]
+- **Project Codename**: <e.g. MiniPOS / KasirKilat>
+- **Provisional Target Segment**: <e.g. micro-retail owners with 1-3 branches in metro areas; confirm the beachhead choice in Section 6]
+- **Core Pain**: <e.g. physical stock discrepancies vs Excel averaging Rp 1-3M/month>
+- **Proposed Solution**: <e.g. offline-first cashier and inventory app syncing to Cloud/WhatsApp>
 - **Proposed Price Point**: Rp [X] / month
-- **Validation Lead**: [Your Name / Solo Dev]
+- **Validation Lead**: <your name / solo dev>
 - **Date**: [YYYY-MM-DD]
 
 ---
@@ -36,9 +36,9 @@
 
 | Solution Name | Type | Price / Tier | Strengths | Critical Weaknesses | Evidence URL + checked date | Unique Differentiator We Offer |
 |:--------------|:-----|:-------------|:----------|:--------------------|:-------------------------|:-------------------------------|
-| [Competitor A] | Direct SaaS | Rp [X]/mo | Strong brand, rich feature set | Complex UI, demands 100% stable internet | [URL — YYYY-MM-DD] | Lightweight, 100% offline-first |
-| [Competitor B] | Direct SaaS | Rp [Y]/mo | Affordable | No multi-branch or blind count support | [URL — YYYY-MM-DD] | Multi-branch with blind stock audit |
-| **SIAPIK / Excel** | Free / Govt | Rp 0 | Zero cost, flexible | Manual entry, formula corruption risk | [URL — YYYY-MM-DD] | Automated receipts & instant cloud sync |
+| <competitor A> | Direct SaaS | Rp [X]/mo | Strong brand, rich feature set | Complex UI, demands 100% stable internet | <source URL and the date you checked it> | Lightweight, 100% offline-first |
+| <competitor B> | Direct SaaS | Rp [Y]/mo | Affordable | No multi-branch or blind count support | <source URL and the date you checked it> | Multi-branch with blind stock audit |
+| **SIAPIK / Excel** | Free / Govt | Rp 0 | Zero cost, flexible | Manual entry, formula corruption risk | <source URL and the date you checked it> | Automated receipts & instant cloud sync |
 
 ---
 
@@ -60,11 +60,21 @@
 
 | Respondent ID | Role / Business Type | Current Solution | Biggest Friction / Loss | Willingness to Pay | Evidence Status |
 |:--------------|:---------------------|:-----------------|:------------------------|:-------------------|:---------------:|
-| **INT-01** | [e.g., Grocery store, 2 staff] | Physical paper notebook | Monthly discrepancy ~Rp 800k | Willing to pay Rp 50k–100k/mo | ⏳ Pending |
-| **INT-02** | [e.g., Pet shop, 1 branch] | Excel on cashier laptop | Laptop freezes, corrupt spreadsheets | Willing to pay Rp 100k/mo | ⏳ Pending |
-| **INT-03** | [e.g., Boutique, 3 staff] | Commercial POS app X | Slow during offline, staff confusion | Willing to pay Rp 150k/mo if offline seamless | ⏳ Pending |
-| **INT-04** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
-| **INT-05** | [Business Type] | [Current tool] | [Friction] | [WTP] | ⏳ Pending |
+| **INT-01** | (fill: business type, staff count) | Physical paper notebook | Monthly discrepancy ~Rp 800k | Willing to pay Rp 50k–100k/mo | ⏳ Pending |
+| **INT-02** | (fill: business type, branches) | Excel on cashier laptop | Laptop freezes, corrupt spreadsheets | Willing to pay Rp 100k/mo | ⏳ Pending |
+| **INT-03** | (fill: business type, staff count) | Commercial POS app X | Slow during offline, staff confusion | Willing to pay Rp 150k/mo if offline seamless | ⏳ Pending |
+| **INT-04** | (business type) | (current tool) | (friction) | (willingness-to-pay) | ⏳ Pending |
+| **INT-05** | (business type) | (current tool) | (friction) | (willingness-to-pay) | ⏳ Pending |
+
+If a participant asks for a feature, capture its source `INT-xx`, underlying job/outcome, and current workaround. Treat it as a discovery signal; test whether the need is shared and important before moving a solution into the MVP scope.
+
+### Opportunity Solution Tree (lite)
+
+Start from one measurable user outcome, branch into opportunities supported by interview evidence, then compare at least two plausible solutions for each priority opportunity. Link each solution to its riskiest assumption and smallest credible test before adding it to MVP scope. Use `patterns/product/SOLO_DISCOVERY_PLAYBOOK.md` for the full OST workflow; keep detailed test results in the shared assumption ledger when this page is too small.
+
+| Desired outcome (measure, baseline → target, timeframe) | Opportunity (user need + source `INT-xx`) | Candidate solutions (at least 2) | Riskiest assumption + test | Decision |
+|:--|:--|:--|:--|:--|
+| <e.g. reduce time reconciling stock; baseline to target by date> | <observed need; interview/source IDs> | <A: simplest operational option; B: software option> | <assumption; test and success signal> | <keep testing / pursue / drop> |
 
 If a participant asks for a feature, capture its source `INT-xx`, underlying job/outcome, and current workaround. Treat it as a discovery signal; test whether the need is shared and important before moving a solution into the MVP scope.
 
@@ -82,14 +92,14 @@ Start from one measurable user outcome, branch into opportunities supported by i
 
 *Validate real behavior, not just polite verbal agreement:*
 
-- **Landing Page URL / Platform**: [Link Carrd / Vercel / Google Form]
-- **Traffic Source**: [Direct merchant communities / LinkedIn / Twitter / Google search ads]
+- **Landing Page URL / Platform**: <link: Carrd / Vercel / Google Form>
+- **Traffic Source**: <direct merchant communities / LinkedIn / Twitter / search ads>
 - **Total Unique Visitors**: [X]
 - **Total Waitlist / Email Signups**: [Y]
 - **Conversion Rate**: ([Y] / [X]) × 100% = [Z]%
 - **Waitlist-Conversion-Pct**: [e.g. 6.4]
 - **Intent-to-Buy-Pct**: [e.g. 34] (survey: % answering "definitely/probably buy"; 0 if no survey run)
-- **Alternative-Proof**: deposits: [0] | loi: [0] (refundable pre-order deposits / signed LOIs, if any)
+- **Alternative-Proof**: deposits: 0 | loi: 0 (refundable pre-order deposits / signed LOIs, if any)
 
 > **Sample floor**: the rate is only evidence above **≥100 targeted visits**. A
 > conversion rate computed from fewer visits is not a result — raise the traffic,
@@ -112,8 +122,8 @@ Start from one measurable user outcome, branch into opportunities supported by i
 
 ## 6. Unit Economics & Solo Capacity Sanity Check
 
-- **Beachhead Decision**: [Compare up to 3 segments using evidenced pain/urgency, willingness-to-pay signal, buyer reachability, and solo serviceability. Name the selected segment and link evidence; label unsupported judgments as assumptions.]
-- **First 100 Users Acquisition Channel**: [Name one low-cost organic/direct channel for the selected segment; state why qualified users are reachable there and the smallest first test, including its success signal.]
+- **Beachhead Decision**: <compare up to 3 segments on evidenced pain, willingness to pay, buyer reachability and solo serviceability>
+- **First 100 Users Acquisition Channel**: <one low-cost organic channel for the segment, why they are reachable there, expected CAC band>
 - **Target ARPU**: Rp [X] / month
 - **Estimated CAC**: Rp [Y] / customer (Test ads / organic outreach time)
 - **Gross Margin Target**: ≥ 70% after infrastructure hosting and Payment Gateway processing fees
@@ -136,7 +146,7 @@ Gate-Decision: PENDING
 
 ### Human Validation Attribution
 
-Validated-by: [Human Name] on [YYYY-MM-DD]
+Validated-by: [Your Name] on [YYYY-MM-DD]
 
 *(The agent may draft and fill this report, but a human runs the interviews and the
 waitlist test. Required for `Gate-Decision: PASS`.)*
@@ -147,18 +157,18 @@ waitlist test. Required for `Gate-Decision: PASS`.)*
 
 The gate (`./scripts/gates/validate-gate.sh M00`) parses the lines above and rejects
 the document unless **all** of the following hold. Keep the field names spelled
-as shown — bullets, bold and a trailing `%` are tolerated; a stale `[placeholder]`
-or `X` is not.
+as shown — bullets, bold and a trailing `%` are tolerated; an unfilled bracket field
+or a bare `X` is not.
 
 | # | Condition |
 |:--|:--|
 | 1 | Sections present: Riskiest Assumption Register, User Discovery, Behavioral Intent, Kill Criteria |
-| 2 | No unresolved `[...]` placeholders anywhere in the document |
+| 2 | No unresolved bracket placeholders left anywhere in the document |
 | 3 | `Gate-Decision:` declares exactly `PASS \| RETEST \| PENDING \| FAIL` |
 | 4 | ≥ 3 rows of `INT-0x` marked `✅ Real` (of the 5 attempts) |
 | 5 | `Total Unique Visitors` ≥ 100 |
 | 6 | Signups ≤ Visitors, and `Waitlist-Conversion-Pct` agrees with signups/visitors (±1.0 pp) |
 | 7 | Declared decision matches the computed band (PASS / RETEST / KILL) |
-| 8 | For `PASS`: `Validated-by: <name> on <YYYY-MM-DD>` recorded |
+| 8 | For `PASS`: the Validated-by line carries a human name and an ISO date |
 
 Exit codes: `0` = PASS · `1` = FAILED/blocked · `3` = RETEST (not passed — do not chain to M01 yet).

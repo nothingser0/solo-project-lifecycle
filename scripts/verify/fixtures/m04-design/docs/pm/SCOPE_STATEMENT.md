@@ -1,0 +1,307 @@
+# Scope Statement & Requirements Breakdown
+
+> Initial project scope agreement document resulting from requirements elicitation to lock functional boundaries prior to commercial contract signing and pricing estimation.
+
+---
+
+## 1. Project Metadata & Document Control
+- **Project Name**: Application / System Name
+- **Client / Stakeholder**: Client Company / Organization
+- **Solo Developer / Consultant**: Your Name
+- **Document Reference**: `docs/pm/IDEA_BRIEF.md` (v1.0)
+- **Document Status**: `DRAFT | IN_REVIEW | APPROVED | FROZEN`
+- **Defined Project Scale**: [Small (MVP, 1–5 Must) / Solo SaaS (6–15 Must) / Medium (6–15 Must) / Large (16–25 Must) / Enterprise]
+- **Elicitation Completion Date**: YYYY-MM-DD
+- **Last Modified**: YYYY-MM-DD
+
+### Data Confidence Legend
+| Icon | Level | Meaning | Rule |
+|:--:|:--|:--|:--|
+| ✅ | **VERIFIED** | Validated via client sign-off, live empirical user data, or formal statutory text | May be built without further confirmation |
+| 🔶 | **ASSUMPTION** | Working operational hypothesis; must be confirmed before scope freeze | Confirm with client before M06 |
+| ❓ | **UNKNOWN** | Open requirement or technical uncertainty; blocks sprint scheduling | Resolve or move Out-of-Scope |
+
+### Change Control & Scope Freeze Protocol
+- **Scope Freeze Rule**: Once this document is marked `APPROVED` (for SOW signing) or `FROZEN` (for M06 development), zero features may be added without a formal Change Request (CR).
+- **Change Request (CR) Process**: Any scope modification requires: (1) Description, (2) Impact on dev days, (3) Budget adjustment, and (4) Written approval.
+
+---
+
+## 2. Business Objectives, Root Cause Breakdown & Metrics
+
+### 2.1 Core Problem & 80/20 Root Cause Breakdown
+- **Stated Problem Metric**: [Quantified business pain: e.g., Retail: stock discrepancy 10-15%; CRM: lost lead response rate 25%; CMS: article review bottleneck 4 days; HRIS: manual payroll discrepancy 12%]
+- **Primary Root Causes (≈ 80%)**: [Primary operational bottlenecks: e.g., manual untracked paper entry, unassigned follow-ups, untracked editorial revisions]
+- **Secondary Root Causes (≈ 20%)**: [Secondary friction points: e.g., notification delays, multi-branch coordination]
+- **Problem-Solution Fit Rule**: Every Must-Have (P0) feature must directly address the primary 80% root causes.
+
+### 2.2 Project Success Criteria
+
+Gunakan hasil M00/M01 sebagai sumber baseline bila tersedia. Tetapkan ukuran keberhasilan yang sesuai dengan tujuan proyek ini; jangan salin target pelanggan, MRR, retensi, atau churn generik.
+
+| Outcome / metric | Definition | Baseline + source | Target + time window | Measurement source | Owner |
+|---|---|---|---|---|---|
+| Business outcome | How it is calculated or observed | Value / unknown + evidence | Target / date | System, report, or human review | Owner |
+
+### 2.3 Primary Outcome Metric & Guardrails
+- **North Star / Primary Outcome Metric**: [Name, formula or observation method, target, time window, and why it reflects delivered value. Use a project-level outcome measure if a North Star Metric does not fit.]
+- **Operational Guardrail Metrics (Must NOT degrade)**:
+  - Guardrail 1: Metric, threshold, and evidence source
+  - Guardrail 2: Metric, threshold, and evidence source
+  - Guardrail 3 (if needed): Metric, threshold, and evidence source
+
+---
+
+## 3. User Role Matrix & Approval Decision Tree (RBAC)
+
+*(Adapt roles and permissions to your project domain. Examples:
+- **Retail / POS**: Owner, Store Manager, Cashier, Accountant
+- **CRM / Sales**: Sales Director, Sales Manager, Sales Rep, Account Exec
+- **HRIS / Payroll**: Super Admin, HR Manager, Department Head, Employee
+- **CMS / Editorial**: Admin, Managing Editor, Author, Contributor
+- **Small MVP / Internal**: Administrator, Standard User)*
+
+### 3.1 Role Permission Matrix
+
+| Role Code | Role Name | Create | Read | Update | Delete / Void / Archive | Special Permissions & Domain Guardrails |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **ROL-01** | Super Admin / Owner | All resources | All scopes / tenants | All resources | Soft-delete / Void only (Immutable audit trail) | Full system administration, billing, team management, audit reports |
+| **ROL-02** | Manager / Reviewer | Operational items | Assigned scope/branch| Assigned items | State transitions / voids | Approval authority over threshold; **ZERO SELF-APPROVAL** on own submissions |
+| **ROL-03** | Staff / Operator / Rep| Primary tasks only | Assigned work items | Own active records | None (escalate to ROL-02) | Execution-only access; sensitive cost/margin/salary fields strictly hidden |
+| **ROL-04** | Auditor / Viewer / Client| None | Target reports / data | None | None | Read-only inspection; export privileges (PDF/Excel) |
+
+### 3.2 Workflow Approval Decision Tree (Domain-Conditional)
+*(Define multi-tier approval rules for sensitive actions. Mark N/A for single-user Small MVP tools)*
+```text
+Action Triggered by Operator ──► Approval Routing
+├── Standard Request (Within Threshold) ──► ROL-02 (Manager) Approval
+├── High-Value / High-Risk Request     ──► ROL-01 (Admin/Owner) Approval
+├── Self-Created Request by ROL-02      ──► Escalates to ROL-01 (NO SELF-APPROVAL)
+└── Emergency / Standard Action         ──► Auto-Approved with audit log
+```
+
+---
+
+## 4. Functional Scope Breakdown (MoSCoW)
+
+> ℹ️ **IN-SCOPE CLARIFICATION**:
+> - **P0 (Must-Have)**: Strictly IN-SCOPE for **Phase 1.0 (MVP Go-Live)**.
+> - **P1 (Should-Have)**: Strictly IN-SCOPE for **Phase 1.5 (Fast-Follow Post-Launch Release)**.
+> - **P2 (Could-Have)**: OUT-OF-SCOPE for initial release; cataloged in Phase 2 Backlog.
+> - **P3 (Won't-Have)**: Formally EXCLUDED from project deliverables.
+
+### 4.1 MoSCoW Feature Inventory
+*Respect scale limits: Small (1–5 Must), Medium/Solo SaaS (6–15 Must), Large (16–25 Must):*
+
+**Two passes before you fill the priority column.** First list the **category baseline**: open three
+real products in this category and write down the features all three have (for a POS: record a sale,
+print a receipt, close the drawer, track basic stock). Every one of those is a P0 candidate — a
+product missing one is incomplete, not lean. Then add the **differentiator** from `Triage-One-Capability`.
+Anything optional goes to P1/P2, and `Triage-Domain-Upgrade` is your starting list.
+
+| Feature ID | Module / Domain | Functional Description | Priority | Est. Effort (Days) | Root Cause Addressed | Target Release | Confidence |
+| :--- | :--- | :--- | :---: | :---: | :--- | :---: | :---: |
+| **F-01** | Core / Auth | Feature 1 for the pilot | **P0 (Must)** | 2 days |
+| **F-02** | Core / Auth | Feature 2 for the pilot | **P0 (Must)** | 2 days |
+| **F-03** | Core / Auth | Feature 3 for the pilot | **P0 (Must)** | 2 days |
+| **F-04** | Core / Auth | Feature 4 for the pilot | **P0 (Must)** | 2 days |
+| **F-05** | Core / Auth | Feature 5 for the pilot | **P0 (Must)** | 2 days |
+| **F-06** | Core / Auth | Feature 6 for the pilot | **P0 (Must)** | 2 days |
+| **F-07** | Core / Auth | Feature 7 for the pilot | **P0 (Must)** | 2 days |
+| **F-08** | Core / Auth | Feature 8 for the pilot | **P0 (Must)** | 2 days |
+
+### 4.2 User Workflow Map (Conditional)
+
+Gunakan bagian ini bila produk memiliki beberapa alur/peran inti atau irisan MVP belum jelas. Petakan perjalanan pengguna untuk menemukan langkah yang hilang dan menandai irisan MVP yang menyelesaikan pekerjaan end-to-end. Peta ini membantu MoSCoW; jangan jadikan backlog kedua. Hapus bagian ini bila tidak diperlukan.
+
+| Segment / Role | Goal | Activity | User step / task | Feature ID | Release slice | Outcome completed |
+|---|---|---|---|---|---|---|
+| Role | User outcome | Activity | Observable step | F-xx | MVP / Later | Useful result from this slice |
+
+Pastikan slice MVP menghasilkan outcome yang bisa digunakan. Hindari mendefinisikan rilis hanya sebagai kumpulan lapisan teknis seperti frontend, backend, atau database.
+
+### 4.2a Hipotesis Outcome Epic (Bila Ada Epic Strategis)
+
+Untuk setiap epic strategis atau potongan rilis yang dimaksudkan mengubah perilaku/outcome, hubungkan scope dengan hasil yang bisa diamati. Gunakan metrik di §2; tidak perlu membuat roadmap kedua atau hipotesis terpisah untuk setiap requirement atomik.
+
+| Epic / release slice | Pengguna sasaran | Hipotesis: Jika ... maka ... karena ... | Sinyal awal + target / periode | Bukti pendukung | Keputusan bila tercapai / tidak tercapai |
+|---|---|---|---|---|---|
+| Epic atau slice | Peran / segmen | Perubahan yang diuji dan alasannya | Metrik, baseline, target, jangka waktu | M00/M01/riset atau unknown | Lanjutkan / ubah / hentikan |
+
+### 4.3 User Stories & Acceptance Criteria (INVEST & Given-When-Then Standard)
+*Document user stories for all P0 (Must) and P1 (Should) features using strict Given-When-Then criteria for both happy paths and edge cases:*
+
+Satu story menyatakan satu hasil bernilai bagi pengguna. Bila story terlalu besar untuk diestimasi atau mencakup beberapa alur/aturan, pecah menurut langkah workflow, variasi aturan/data, atau batas dependensi sambil menjaga setiap slice tetap bernilai dan bisa diuji. Jangan memecah story pengguna menjadi tiket frontend/backend; rincian teknis masuk ke rencana implementasi.
+
+#### Feature F-01: [Feature Name, e.g., Role-Based Authentication & Session Management]
+- **User Story**: As a role, I want to action, so that benefit.
+- **Acceptance Criteria**:
+  -   Given valid credentials, when user logs in, then JWT cookie is set with `HttpOnly; Secure; SameSite=Lax`, and user is redirected to role dashboard.
+  -   Given invalid role permissions, when user attempts accessing unauthorized route, then system redirects to `/403` and emits structured audit log.
+  -   Edge Case: Given expired reset token >15m, when user submits new password, then system rejects request with `TOKEN_EXPIRED` and triggers re-verification.
+
+#### Feature F-02: Feature Name, e.g., POS Checkout & Transaction Recording
+- **User Story**: As a role, I want to action, so that benefit.
+- **Acceptance Criteria**:
+  -   Given scanned SKU, when product is added to cart, then system validates local stock balance and renders price formatted in IDR.
+  -   Given completed transaction, when cashier submits payment, then stock balance decrements atomically and receipt data is emitted.
+  -   Edge Case: Given offline network state, when transaction is completed, then payload is queued in local IndexedDB with unique UUIDv7 idempotency key.
+- **Rule**: every **P0 (Must)** row in the feature table needs at least one criterion here, in
+  `Given …, when …, then <measurable outcome>` form. The gate counts Must-Have rows against
+  criterion lines, so a feature with no criterion blocks the scope lock.
+
+#### Feature F-03: Feature Name, e.g., Primary Operational Workflow
+- **User Story**: As a role, I want to action, so that benefit.
+- **Acceptance Criteria**:
+  -   Given valid input, when the primary workflow is submitted, then the record is persisted and the list view reflects it on reload.
+  -   Edge Case: Given concurrent edit by another user, when both submit, then the second write is rejected with `CONFLICT` and no data is lost.
+
+#### Feature F-04: Feature Name, e.g., Billing / Subscription Engine
+- **User Story**: As a role, I want to action, so that benefit.
+- **Acceptance Criteria**:
+  -   Given an active subscription, when the renewal webhook arrives, then the period extends once and exactly one invoice row is created.
+  -   Edge Case: Given a duplicate webhook delivery, when it is processed, then no second invoice is created (idempotent).
+
+#### Feature F-05: Feature Name, e.g., Data Export / Offboarding
+- **User Story**: As a role, I want to action, so that benefit.
+- **Acceptance Criteria**:
+  -   Given an owner account, when they request an export, then a CSV is produced with the declared columns and 0 unescaped formula-injection prefixes.
+  -   Edge Case: Given an export exceeding the row limit, when requested, then the response is a queued job reference instead of a timeout.
+
+---
+
+### 4.3a Tinjauan Red-Team Scope (Sebelum Lock)
+
+Uji draf scope secara adversarial. Catat tantangan material beserta ID yang terdampak dan disposisinya. Pemilik scope manusia memutuskan trade-off dan menyetujui lock; review ini tidak mengubah prioritas atau scope secara diam-diam.
+
+**Red-team reviewer / date**: Name — YYYY-MM-DD
+Jika tidak ada tantangan material, tulis `No material challenges` dan catat siapa yang meninjau.
+
+| Tantangan / potensi kegagalan | ID terdampak | Bukti atau alasan | Disposisi (ubah / tunda / tolak) + alasan | Pemilik keputusan |
+|---|---|---|---|---|
+| [Fitur tanpa bukti, pengguna tertinggal, outcome tak terukur, konflik prioritas, dependensi, acceptance criteria, kewajiban legal/operasional] | F-xx / US-xx / NFR-xx | Sumber atau unknown | Keputusan dan alasan | Nama pemilik scope |
+
+### 4.4 Non-Functional Requirements (NFR) Baseline SLA
+*Quantitative performance and platform boundaries disallowing open-ended optimization requests:*
+
+- **Target Concurrent Users**: e.g. 50 active concurrent operational sessions for MVP
+- **API Performance**: e.g. p95 response time ≤ 500ms under benchmark load
+- **Frontend Performance**: [e.g. Time-to-Interactive (TTI) ≤ 3.0s on 4G mobile, initial bundle ≤ 200KB gzipped]
+- **Platform & Browser Target**: [e.g. Evergreen modern browsers (Chrome/Edge/Safari/Firefox latest 2 major versions); legacy IE/pre-Chromium browsers are explicitly unsupported]
+- **Data Retention & Storage Ceiling**: [e.g. 5GB relational DB storage, 20GB media assets; capacity scaling beyond tier is client responsibility]
+
+---
+
+## 5. Strict Scope Boundaries, Tax & Legal Compliance
+
+### 5.1 In-Scope (Work DELIVERED by Developer)
+1. Architectural design, database schema, RLS policies, and responsive web UI for Must-Have and Should-Have features.
+2. Integration with cloud database and encrypted asset storage.
+3. Automated staging deployment per pull request and production deployment setup.
+4. User manual documentation for administrators and operational staff.
+
+### 5.2 Out-of-Scope (Work NOT INCLUDED & Cannot Be Demanded)
+1. **Manual Data Entry**: Digitizing physical paper documents or parsing corrupted legacy spreadsheets.
+2. **Third-Party API Fees**: Payment gateway processing fees, SMS/WhatsApp gateway charges, and cloud compute tiers.
+3. **Hardware & Local Network**: Computers, routers, thermal printer driver troubleshooting, or local connectivity.
+4. **Legal & Tax Advisory**: Developer provides technological execution; formal tax filing and legal compliance remain client responsibility.
+5. **Out-of-Scope User Segments**: Segments requiring unbuilt features (e.g., Cafes requiring Bill of Materials) are formally excluded from MVP scope.
+
+### 5.3 Tax Calculation Disclaimers (PP 55/2022 jo. PP 20/2026)
+- Regulatory basis: **PP 55/2022 jo. PP 20/2026** (enacted 22 April 2026). The time limit for the 0.5% PPh Final facility is permanently eliminated, but the facility is **strictly restricted** to **Wajib Pajak Orang Pribadi (WP OP)**, **PT Perorangan**, and **Koperasi** with gross turnover ≤ Rp 4.8 billion/year.
+- Non-Eligibility: The 0.5% facility is **no longer eligible** for CV, Firma, PT Non-Perorangan, or BUMDes.
+- Threshold: The **Rp 500.000.000/year non-taxable gross turnover threshold** applies strictly to individual taxpayers (WP OP).
+- Mandatory In-App Disclaimer: *"Perhitungan pajak bersifat estimasi operasional dan tidak menggantikan pelaporan resmi pada DJP. PPN tidak diperhitungkan (non-PKP)."*
+
+### 5.4 Mandatory Data Privacy Compliance (UU PDP No. 27/2022)
+-   **Privacy Policy & Terms of Service**: Prepared in M04, accepted upon signup.
+-   **Data Retention**: Accounting transaction records retained for 3 years (UU KUP compliance).
+-   **PII Scrubbing**: Error tracking (Sentry) configured to strip customer names, emails, and financial amounts.
+-   **CSV Injection Prevention**: All spreadsheet exports prepend `'` to formula triggers (`=`, `+`, `-`, `@`, `\t`, `\r`, `\n`, `|`).
+
+> ⚠️ **LEGAL REVIEW REQUIRED**: the Privacy Policy, ToS, and the tax disclaimers in §5.3 are **operational drafts, not legal advice**. Keep the marker below until a qualified professional reviews them; publishing legal text (privacy policy live, terms accepted at signup, tax figures in marketing) while it is still `PENDING` is a **FROZEN-spec violation** and the M02 gate will reject it.
+
+```text
+LEGAL-REVIEW: PENDING — DRAFT TEKNIS, WAJIB DITINJAU OLEH LEGAL COUNSEL / PAKAR PAJAK SEBELUM DIPUBLIKASIKAN
+```
+
+*(The human flips this to `LEGAL-REVIEW: REVIEWED by <name> on <YYYY-MM-DD>` after review.)*
+
+---
+
+## 6. Technical Architecture & Database Schema Constraints
+
+### 6.1 Database Schema Guardrails
+- **Universal Tenant Isolation**: Every table includes `org_id UUID NOT NULL REFERENCES organizations(id)`.
+- **Public Schema RLS**: RLS policies query `public.user_roles`, never the read-only auth schema.
+- **Financial Precision**: Money stored as `DECIMAL(15, 2)`; `transaction_items` snapshots historical `unit_cost`.
+- **Audit Trails**: Movements and transactions are append-only / void-only (no hard `DELETE`). `audit_logs` records all critical operations.
+- **Column-Level Security**: Application layer filters out `buy_price` for Kasir queries.
+
+### 6.2 Architecture Realism
+- **Offline / Connectivity**: Online-only MVP with reconnection retry guards (offline sync deferred if locations < 3).
+- **Performance Budgets**: TTI < 5 seconds on 3G; initial JS bundle < 200 KB gzipped; API p95 < 500 ms.
+- **PDF Engine**: Client-side rendering via `@react-pdf/renderer` (avoids serverless Puppeteer timeout limits).
+- **Tech Stack Locking**: Minor versions pinned (e.g., Next.js 15.0.x, React 19.0.x, Dexie 4.0.x).
+
+---
+
+## 7. Client Dependency Register (Dependency SLA)
+
+| Dep Code | Client Requirement | Delivery Deadline | Consequence If Delayed |
+| :--- | :--- | :--- | :--- |
+| **DEP-01** | Payment gateway sandbox credentials & SMTP keys | Project Day 7 | Delay in billing & notification engine development |
+| **DEP-02** | Master product data in structured CSV/Excel template | Project Day 10 | Postponement of seed data setup and testing |
+| **DEP-03** | DNS domain access for custom domain routing | Project Day 21 | Postponement of production SSL setup |
+| **DEP-04** | Formal written feedback on milestone reviews | Max 3 business days | Launch date pushes back by delayed days |
+
+---
+
+## 8. Realistic Timeline, Process Phasing & Beta Plan
+
+- **M04 UI/UX Design**: 2–3 weeks (30–50 screens, extended state matrix, Privacy Policy & ToS).
+- **M05 Architecture**: 1 week (ERD, data model, RLS SQL scripts).
+- **M06 Development**: 8–12 weeks (includes 20% development buffer).
+- **M07 QA & Testing**: 2 weeks (automated RLS tests + manual audit).
+- **Change Request (CR) Freeze**: Strictly locked **2 weeks before QA starts**.
+- **Phase 1.5 Window**: Scheduled strictly post-launch (Week 21+), never during QA.
+- **Closed Beta Usability Testing**: 5 representative business owners recruited for 60-minute remote sessions during M07 Week 2.
+
+---
+
+## 9. Initial Scope Validation & Sign-Off
+
+This document locks the baseline requirements for preparing the **Statement of Work (SOW), Contract Value, and Payment Milestone Schedule (Module 03)**.
+
+- Validated by Solo Developer: **Your Name** (Date: YYYY-MM-DD)
+---
+
+## Machine Validation Summary (M02 Scope Lock)
+
+```text
+Scope-P0-Count: 8
+Scope-Lock-Decision: LOCKED
+```
+
+*(`Scope-P0-Count` must be a real number that equals the counted `| **F-xx** | ... (Must|P0)` rows — the validator rejects the `number` placeholder and any mismatch. `Scope-Lock-Decision`: LOCKED | PENDING. The M02 gate also rejects: P0 count outside scale limits (Small 1-5, Medium 6-15, Large 16-25), ambiguous terms in Must-Have rows, fewer than 3 numbered Out-of-Scope exclusions, a missing Data Confidence Legend, a missing RBAC zero self-approval guardrail, and legal/tax text published without a `LEGAL-REVIEW` marker).*
+
+---
+
+- Validated by Client PIC: **Client PIC Name** (Date: YYYY-MM-DD)
+
+## Out-of-Scope
+
+- Exclusion 1: not built in this phase
+- Exclusion 2: not built in this phase
+- Exclusion 3: not built in this phase
+
+## Acceptance Criteria
+
+- AC-F-01: Given a signed-in user, when they submit the form then the record is stored
+- AC-F-02: Given a signed-in user, when they submit the form then the record is stored
+- AC-F-03: Given a signed-in user, when they submit the form then the record is stored
+- AC-F-04: Given a signed-in user, when they submit the form then the record is stored
+- AC-F-05: Given a signed-in user, when they submit the form then the record is stored
+- AC-F-06: Given a signed-in user, when they submit the form then the record is stored
+- AC-F-07: Given a signed-in user, when they submit the form then the record is stored
+- AC-F-08: Given a signed-in user, when they submit the form then the record is stored

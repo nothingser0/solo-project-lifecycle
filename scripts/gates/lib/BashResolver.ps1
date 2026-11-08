@@ -25,7 +25,19 @@ function Resolve-Bash {
         $candidates += (Join-Path $r "Git\bin\bash.exe")
     }
     if ($env:LOCALAPPDATA) { $candidates += (Join-Path $env:LOCALAPPDATA "Programs\Git\bin\bash.exe") }
-    foreach ($c in $candidates) {
+
+    # Also resolve bash relative to git.exe (covers custom installs, Scoop, Chocolatey)
+    $gitCmd = Get-Command git -ErrorAction SilentlyContinue
+    if ($gitCmd -and $gitCmd.Source) {
+        $gitRoot = Split-Path -Parent (Split-Path -Parent $gitCmd.Source)
+        $candidates += (Join-Path $gitRoot "bin\bash.exe")
+        $candidates += (Join-Path $gitRoot "usr\bin\bash.exe")
+    }
+
+    $script:LastBashCandidate = $null
+    $script:LastBashProbeError = $null
+
+    foreach ($c in ($candidates | Select-Object -Unique)) {
         if ($c -and (Test-Path $c)) {
             $prevEAP = $ErrorActionPreference
             $ErrorActionPreference = "SilentlyContinue"
@@ -33,6 +45,8 @@ function Resolve-Bash {
             $code = $LASTEXITCODE
             $ErrorActionPreference = $prevEAP
             if ($code -eq 0) { return $c }
+            $script:LastBashCandidate = $c
+            $script:LastBashProbeError = "$probe"
         }
     }
 
@@ -55,6 +69,12 @@ function Write-BashMissingHelp {
 
     Write-Host "[ERROR] No usable bash found." -ForegroundColor Red
     Write-Host ""
+    if ($script:LastBashCandidate) {
+        Write-Host "Found bash at: '$($script:LastBashCandidate)', but probe failed:" -ForegroundColor Yellow
+        Write-Host "  $($script:LastBashProbeError)" -ForegroundColor DarkGray
+        Write-Host "Note: If running in a restricted sandbox/container, run with elevated permissions." -ForegroundColor Yellow
+        Write-Host ""
+    }
     Write-Host "Logic for $ScriptName lives only in its .sh implementation. Install one of:"
     Write-Host "  - Git for Windows (recommended on Windows): includes bash at"
     Write-Host "    'C:\Program Files\Git\bin\bash.exe'"

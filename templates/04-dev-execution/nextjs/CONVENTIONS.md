@@ -85,8 +85,17 @@ export async function updateResourceAction(
     };
   }
 
-  // Validate inputs, execute mutations...
-  return { success: true, data: { id } };
+  // 1. Validate inputs via Zod
+  const parsed = UpdateResourceSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: { code: 'VALIDATION_ERROR', message: 'Input tidak valid', fieldErrors: parsed.error.flatten().fieldErrors }
+    };
+  }
+
+  // 2. Delegate to Domain Service Layer (never execute raw SQL/Prisma or business math in route actions)
+  return resourceService.update(id, parsed.data);
 }
 ```
 
@@ -167,3 +176,7 @@ export function sanitizeExportCell(value: unknown): string | number {
 - [ ] **3. Zero TypeScript Bypasses**: The codebase contains zero occurrences of `any`, `// @ts-ignore`, non-null assertions `!`, or double-casts `as unknown as`.
 - [ ] **4. Standardized `ActionResult<T>`**: Server Actions return uniform `{ success: true, data }` or `{ success: false, error: { code, message } }` objects.
 - [ ] **5. Touch Ergonomics**: Tap targets on mobile/tablet interfaces meet the 44px comfort standard, with error toasts configured for manual close only.
+- [ ] **6. Thin Route Handlers & Service Separation**: Route handlers and Server Actions only parse/validate input and delegate to domain services; zero direct Prisma/SQL or business math inside routes.
+- [ ] **7. Custom Hook Extraction**: Components with complex state or side effects extract logic into `use-[feature].ts` custom hooks (< 150 LOC per UI component).
+- [ ] **8. Concurrency Safety**: Stock, balance, and counter updates run in DB transactions with row-level locks or atomic SQL expressions.
+- [ ] **9. Semantic Token Discipline (Zero Arbitrary Color Spray)**: All text, background, and border colors use semantic design tokens (`text-foreground`, `text-muted-foreground`, `text-primary`, `bg-card`); zero arbitrary Tailwind color scales (`text-orange-500`, `text-slate-900`) across sessions.

@@ -60,6 +60,30 @@ gate_M06() {
     # promises "all 9 verified in root"; ARCHITECTURE/DESIGN/CONVENTIONS/.env.example/
     # RUNBOOK_LOCAL/VERIFY_LOCAL were only ever printed as optional warnings.
     if [ "$is_m06_small" -eq 0 ]; then
+        # Harness files that only exist to satisfy a size floor are decoration. Each one earns its
+        # place by containing the section its reader opens it for.
+        if [ "$is_m06_small" -eq 0 ]; then
+            m06_section_gaps=""
+            grep -qiE "Troubleshooting|Reset to a clean state" RUNBOOK_LOCAL.md 2>/dev/null \
+                || m06_section_gaps="$m06_section_gaps RUNBOOK_LOCAL.md:no-troubleshooting"
+            grep -qiE "Decision Log|Known issues" CONTEXT.md 2>/dev/null \
+                || m06_section_gaps="$m06_section_gaps CONTEXT.md:no-decision-log"
+            grep -qiE "Rejected" ARCHITECTURE.md 2>/dev/null \
+                || m06_section_gaps="$m06_section_gaps ARCHITECTURE.md:no-rejected-alternative"
+            if [ -n "$m06_section_gaps" ]; then
+                echo "  ❌ Harness file(s) present but missing the section they exist for:$m06_section_gaps"
+                echo "     RUNBOOK_LOCAL needs the failures that stop a new machine; CONTEXT needs the decision log"
+                echo "     and known debt; ARCHITECTURE needs at least one decision naming what was rejected."
+                GATE_FAILED=1
+            fi
+        fi
+
+        # The agent must know where the frozen prototypes live before writing a screen.
+        if [ -f "AGENTS.md" ] && ! grep -qiE "docs/design/screens" AGENTS.md; then
+            echo "  ❌ AGENTS.md never names the frozen prototype path (docs/design/screens/)."
+            echo "     Without it the agent has no documented layout source and invents screens from memory."
+            GATE_FAILED=1
+        fi
         m06_harness_missing=""
         for hf in AGENTS.md CONTEXT.md ARCHITECTURE.md DESIGN.md CONVENTIONS.md TODO.md .env.example; do
             [ -f "$hf" ] || m06_harness_missing="$m06_harness_missing $hf"
@@ -73,6 +97,24 @@ gate_M06() {
             echo "  ✅ STEP 2: 9-file root harness complete (AGENTS/CONTEXT/ARCHITECTURE/DESIGN/CONVENTIONS/TODO/.env.example + RUNBOOK_LOCAL/VERIFY_LOCAL below)"
         fi
     fi
+
+        # The gate cannot see a runtime-resolved colour, a dropdown opening, or layout collision.
+        # VERIFY_LOCAL.md has to say so, or the checklist implies the gate covered the UI.
+        vf_candidates=""
+        for cand in VERIFY_LOCAL.md docs/harness-root/VERIFY_LOCAL.md; do
+            [ -f "$cand" ] && vf_candidates="$vf_candidates $cand"
+        done
+        if [ -n "$vf_candidates" ]; then
+            if ! grep -qiE "human-only|manual check" $vf_candidates 2>/dev/null; then
+                echo "  ❌ VERIFY_LOCAL.md lists no human-only checks - the gate cannot see runtime contrast, opening dropdowns or layout collision, so those need a named human step."
+                GATE_FAILED=1
+            elif ! grep -qiE "computed|devtools|runtime" $vf_candidates 2>/dev/null || ! grep -qiE "dropdown|popover|modal" $vf_candidates 2>/dev/null; then
+                echo "  ❌ VERIFY_LOCAL.md human-only section does not cover both runtime contrast (DevTools/computed) and an interactive component (dropdown/popover/modal)."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Human-only verification steps present (runtime contrast + interactive components)"
+            fi
+        fi
 
     # Evidence report (BLOCKER): STEP 6 tells the agent to write artifacts/final-evidence.md
     # and run check_evidence.py, but nothing enforced that, so "Evidence:" could be a path
@@ -90,6 +132,65 @@ gate_M06() {
     else
         echo "  ❌ artifacts/final-evidence.md missing — STEP 6 requires an evidence report before completion."
         GATE_FAILED=1
+    fi
+
+    # DB defense (BLOCKER): an M06-DB-* task asserts the schema is real. A green unit test
+    # against a stubbed repo is not that proof, so require the probe itself in the evidence
+    # report. Scoped to M06-DB only: a UI task is covered by the route probe instead.
+    db_todo="TODO.md"
+    [ -f "$db_todo" ] || db_todo="docs/harness-root/TODO.md"
+    if [ -f "$db_todo" ] && grep -qE '^\s*-\s*\[[xX]\]\s*\**M06-DB-' "$db_todo"; then
+        ev_file="artifacts/final-evidence.md"
+        missing=""
+        for probe in 'migrate[^a-z]*down|down' 'COUNT\(' 'EXPLAIN'; do
+            if ! grep -qiE "$probe" "$ev_file" 2>/dev/null; then
+                case "$probe" in
+                    'migrate[^a-z]*down|down') missing="$missing migrate-down" ;;
+                    'COUNT\(')                 missing="$missing seeder-count" ;;
+                    'EXPLAIN')                 missing="$missing explain" ;;
+                esac
+            fi
+        done
+        if [ -n "$missing" ]; then
+            echo "  ❌ M06-DB tasks were marked '[x]' but the evidence shows no real-DB proof: missing$missing"
+            echo "     Paste the raw probes into $ev_file: migrate up->down->up, seeder COUNT(*) before/after, EXPLAIN."
+            echo "     A stubbed unit test is not setup evidence (docs/modules/06_DEVELOPMENT_EXECUTION.md 'DB defense')."
+            GATE_FAILED=1
+        else
+            echo "  ✅ M06-DB evidence shows real-DB probes (reversible, idempotent, indexed)"
+
+            # The probe must run against the database the app runs against. Migrating a local
+            # Postgres while the app points at a hosted one (Neon, Supabase, RDS) tests a schema
+            # nobody ships - the failure is invisible because both are "Postgres".
+            configured_dsn=""
+            for envf in .env .env.local .env.example; do
+                [ -f "$envf" ] || continue
+                configured_dsn=$(grep -hoiE "^(DATABASE_URL|DB_HOST|POSTGRES_HOST|DB_URL)=[^[:space:]]*" "$envf" 2>/dev/null | head -1 | sed -E 's/^[^=]*=//' | tr -d '"'"'"'' | tr '[:upper:]' '[:lower:]')
+                [ -n "$configured_dsn" ] && break
+            done
+            if [ -n "$configured_dsn" ]; then
+                ev_lc=$(tr '[:upper:]' '[:lower:]' < "$ev_file" 2>/dev/null || true)
+                db_target=""
+                for hint in neon supabase rds planetscale turso cockroach atlas railway render; do
+                    case "$configured_dsn" in
+                        *"$hint"*) db_target="$hint" ;;
+                    esac
+                done
+                case "$configured_dsn" in
+                    *localhost*|*127.0.0.1*) db_target="localhost" ;;
+                esac
+                if [ -n "$db_target" ]; then
+                    if printf '%s' "$ev_lc" | grep -q "$db_target"; then
+                        echo "  ✅ DB probes ran against the configured target (${db_target})"
+                    else
+                        echo "  ❌ DB probes never name the configured database target (${db_target}, from DATABASE_URL/DB_HOST)."
+                        echo "     Probing a different server (e.g. local Postgres while the app uses ${db_target}) proves a schema you do not ship."
+                        echo "     Paste the probe output including the host/dsn it ran against."
+                        GATE_FAILED=1
+                    fi
+                fi
+            fi
+        fi
     fi
 
     # Content verification for TODO.md (BLOCKER: tasks must actually be completed)
@@ -148,7 +249,55 @@ gate_M06() {
                 echo "     Every core SCR-xx screen in SITEMAP.md must have its own dedicated M06-FE-xx task."
                 GATE_FAILED=1
             else
-                echo "  ✅ Screen fidelity verified: ${todo_fe_count} FE tasks match SITEMAP screen definitions (${sitemap_scr_count} unique screens)"
+                echo "  ✅ FE task count matches SITEMAP screen count: ${todo_fe_count} task(s) for ${sitemap_scr_count} screen(s)"
+            fi
+
+            # A task per screen is a count, not a port. M04 froze a prototype for every SCR-xx;
+            # if the shipped source never references that screen, the FE work was invented rather
+            # than ported, and "Screen fidelity verified" was claiming something unmeasured.
+            if [ -d "docs/design/screens" ] && { [ -d "src" ] || [ -d "app" ]; }; then
+                fe_src_dirs="src app"
+                unported=""
+                ported=0
+                for scr in $(grep -oE "SCR-[A-Z]*-?[0-9]+" "$sitemap_spec" | sort -u); do
+                    if grep -rqiE "(^|[^A-Za-z0-9-])${scr}([^0-9]|$)" $fe_src_dirs 2>/dev/null; then
+                        ported=$((ported + 1))
+                    else
+                        unported="$unported $scr"
+                    fi
+                done
+                if [ -n "$unported" ]; then
+                    echo "  ❌ Shipped source never references these frozen prototype screen(s):$unported"
+                    echo "     Each screen in docs/design/screens/ must be ported; name its SCR-xx in the component/page so the port is traceable."
+                    GATE_FAILED=1
+                elif [ "$ported" -gt 0 ]; then
+                    echo "  ✅ All ${ported} frozen prototype screen(s) are referenced by the shipped source"
+                fi
+            fi
+        fi
+
+        # Integration coverage. TODO_TEMPLATE.md ships a Sprint 6 of M06-INT-xx tasks (payment
+        # gateway, webhooks, hardware), but nothing required them: a project whose FSD declares an
+        # external integration could finish M06 with the wire-up simply absent.
+        if [ -f "docs/specs/FSD.md" ]; then
+            declared_integrations=""
+            for kw in webhook payment-gateway:payment "payment gateway:payment" midtrans xendit stripe hardware:hardware; do
+                label="${kw%%:*}"
+                pattern="${kw#*:}"
+                if grep -qiE "$pattern" docs/specs/FSD.md 2>/dev/null; then
+                    declared_integrations="$declared_integrations $label"
+                fi
+            done
+            if [ -n "$declared_integrations" ]; then
+                if grep -qiE "M06-INT-[0-9]+" "$target_todo"; then
+                    echo "  ✅ Integration wire-up tasks present for declared external integration(s):$declared_integrations"
+                elif grep -qiE "M06-INT.*N/A|N/A.*integration" "$target_todo"; then
+                    echo "  ✅ Declared integration(s) marked N/A with a stated rationale:$declared_integrations"
+                else
+                    echo "  ❌ FSD declares external integration(s):$declared_integrations but TODO.md has no M06-INT-xx task."
+                    echo "     Add the wire-up task (webhook handler, gateway adapter) or record 'M06-INT: N/A — <why>'."
+                    GATE_FAILED=1
+                fi
             fi
         fi
 
@@ -160,8 +309,10 @@ gate_M06() {
             needs_auth=1
         fi
         if [ $needs_auth -eq 1 ]; then
-            if grep -qiE "M06-AUTH-[0-9]+|M06-SETUP-[0-9]+.*(auth|login)|M06-BE-[0-9]+.*(auth|login)|login|authentication" "$target_todo"; then
+            auth_line=$(grep -iE "M06-AUTH-[0-9]+|M06-SETUP-[0-9]+.*(auth|login)|M06-BE-[0-9]+.*(auth|login)|login|authentication" "$target_todo" | head -1)
+            if [ -n "$auth_line" ]; then
                 echo "  ✅ Authentication & RBAC tasks verified in TODO.md"
+
             else
                 echo "  ❌ TODO.md missing required Authentication/RBAC task(s)! (SITEMAP/FSD specifies auth/login flow)"
                 GATE_FAILED=1
@@ -262,7 +413,11 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero type-suppression escape hatches in source"
         fi
         # 2. Placeholder TODO stubs left in production code
-        todo_stub=$(grep -rInE "//\s*TODO:?\s*(Implement|Add (your )?logic|Fill|Complete|Fix later)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+        # Any TODO/FIXME/HACK/XXX in shipped source is unresolved work in a file that claims to
+        # be done. The old pattern needed "TODO: Implement|Fill|Complete|Fix later" specifically,
+        # so "// TODO: add validation later" shipped clean.
+        todo_stub=$(grep -rInE "(//|/\*|#|--)[[:space:]]*(TODO|FIXME|HACK|XXX)([[:space:]]|:|\()" $scan_dirs 2>/dev/null \
+            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json|\.md)" | wc -l | tr -d ' ')
         if [ "${todo_stub:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${todo_stub} unresolved placeholder TODO stub(s) in source!"
             GATE_FAILED=1
@@ -279,10 +434,18 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero silent empty catch blocks in source"
         fi
 
-        # 3. Hardcoded secret heuristics (assignment of a long literal to a secret-ish name)
-        hc_secret=$(grep -rinE "(api_?key|secret|password|passwd|token|private_?key)[[:space:]]*[:=][[:space:]]*[\"'][^\"']{16,}" $scan_dirs 2>/dev/null | grep -viE "process\.env|import\.meta\.env|example|placeholder|your[_-]|xxx|\*\*\*|<REPLACE" | wc -l | tr -d ' ')
+        # 3. Hardcoded secret heuristics. Two shapes, because a credential has two shapes:
+        #    (a) a long literal assigned to a secret-ish name: password: "...."
+        #    (b) a credential inside a connection URI: postgres://user:secret@host
+        #    (b) was invisible to the rule, so the most common way to pass a database
+        #    password - the connection string - passed with "zero obvious hardcoded secrets".
+        hc_secret_named=$(grep -rinE "(api_?key|secret|password|passwd|token|private_?key)[[:space:]]*[:=][[:space:]]*[\"'][^\"']{16,}" $scan_dirs 2>/dev/null | grep -viE "process\.env|import\.meta\.env|example|placeholder|your[_-]|xxx|\*\*\*|<REPLACE" | wc -l | tr -d ' ')
+        hc_secret_uri=$(grep -rinE "[a-z][a-z0-9+.-]*://[^/[:space:]\"'@]+:[^@[:space:]\"']{4,}@" $scan_dirs 2>/dev/null \
+            | grep -viE "process\.env|import\.meta\.env|example\.com|localhost|127\.0\.0\.1|placeholder|your[_-]|xxx|\*\*\*|<|\$\{|\{\{|:[a-z_]+@" | wc -l | tr -d ' ')
+        hc_secret=$(( ${hc_secret_named:-0} + ${hc_secret_uri:-0} ))
         if [ "${hc_secret:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${hc_secret} possible hardcoded secret(s) in source! Use process.env."
+            [ "${hc_secret_uri:-0}" -gt 0 ] && echo "     ${hc_secret_uri} of them sit inside a connection URI (scheme://user:secret@host)."
             GATE_FAILED=1
         else
             echo "  ✅ Anti-slop: zero obvious hardcoded secrets in source"
@@ -301,7 +464,48 @@ gate_M06() {
             GATE_FAILED=1
         fi
         # 4. Narrating / stub comments (BLOCKER — row 21 of POLISH_AUDIT)
-        slop_cmt=$(grep -rInE "(//|#|{/\*)[[:space:]]*(Increment|Import|Get the|Set the|Initialize|Create a|This (function|method|class) (is|will)|Add your logic|Loop through|Return the result|Navbar Header|Hero Section|Feature Cards|Footer Section|Handle error|Server Actions for)" $scan_dirs 2>/dev/null | wc -l | tr -d ' ')
+        # What is forbidden is a comment that repeats the code or decorates it, not the comment
+        # that explains a why. The old pattern matched thirteen capitalised phrases, so
+        # "// increment the counter" and a banner of "====" both passed.
+        slop_cmt=$(python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo 0
+import os, re, sys
+SKIP = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock")
+LINE = re.compile(r"^\s*(?://+|#|/\*|\*)\s*(.*)$")
+# a comment that narrates the next line
+NARRATE = re.compile(
+    r"^(increment|decrement|import|export|get the|set the|initialize|initialise|create a|"
+    r"this (function|method|class|component) (is|will)|add your logic|loop through|"
+    r"return the result|handle error|handle the error|update the|call the|fetch the|"
+    r"define the|declare the|render the|check if|if the|now we|here we|first,|then,)\b",
+    re.I)
+# a decorative banner: ====, ----, ****, ####
+BANNER = re.compile(r"^[=\-*#_~]{4,}$")
+# every word shouting
+SHOUT = re.compile(r"^[A-Z0-9 _\-!?.,:'\"/()]{12,}$")
+hits = 0
+for root in sys.argv[1:]:
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if d not in ("node_modules", ".next", "dist", "build", ".git")]
+        for fn in filenames:
+            if any(s in fn for s in SKIP) or fn.endswith((".md", ".css")):
+                continue
+            try:
+                lines = open(os.path.join(dirpath, fn), encoding="utf-8", errors="ignore").read().split("\n")
+            except OSError:
+                continue
+            for ln in lines:
+                m = LINE.match(ln)
+                if not m:
+                    continue
+                body = m.group(1).strip()
+                if not body or body.startswith("!"):
+                    continue
+                if BANNER.match(body) or NARRATE.match(body) or SHOUT.match(body):
+                    hits += 1
+print(hits)
+PYEOF
+)
+        slop_cmt=$(printf '%s' "$slop_cmt" | tr -dc '0-9')
         if [ "${slop_cmt:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${slop_cmt} narrating / redundant comment(s) in source (e.g. '// Initialize', '// Handle error', '// Hero Section')!"
             echo "     AI agents must never use comments to narrate obvious code or scratchpad thoughts. Code must be self-documenting."
@@ -401,6 +605,257 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero dead links (href='#') detected in UI source"
         fi
 
+        # 4f-i. Visual slop that the text checks cannot see. All five are static: no browser.
+        # Each fires only on source that exists, so a project with no UI is unaffected.
+        visual_report=$(GATE_TAILWIND_PALETTE="$(dirname "${BASH_SOURCE[0]}")/../lib/tailwind_palette.json" python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo "SKIP|||"
+import os, re, sys, json
+
+# Tailwind v3 hex values, so a class pair can be scored the same way a literal hex pair is.
+# Without this, "text-slate-400 on bg-white" (2.6:1) passed as accessible.
+PALETTE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)) if "__file__" in dir() else ".", "")
+try:
+    _palette_file = os.environ.get("GATE_TAILWIND_PALETTE", "")
+    PALETTE = json.load(open(_palette_file, encoding="utf-8")) if _palette_file and os.path.exists(_palette_file) else {}
+except Exception:
+    PALETTE = {}
+TW_TEXT = re.compile(r"\btext-(?!xs\b|sm\b|base\b|lg\b|xl\b|2xl\b|3xl\b|4xl\b|5xl\b|6xl\b|7xl\b|8xl\b|9xl\b|left\b|center\b|right\b|justify\b|start\b|end\b|wrap\b|nowrap\b|balance\b|pretty\b|ellipsis\b|clip\b|transparent\b|current\b|inherit\b)([a-z]+)-(\d{2,3})\b")
+TW_BG = re.compile(r"\bbg-(?!transparent\b|current\b|inherit\b|cover\b|contain\b|center\b|no-repeat\b|repeat\b|fixed\b|local\b|scroll\b)([a-z]+)-(\d{2,3})\b")
+
+def tw_color(catalog, first, shade):
+    key = f"{first}-{shade}" if shade else first
+    val = catalog.get(key)
+    return rgb(val) if val else None
+
+# bare bg-white / bg-black / text-white carry no shade
+TW_BARE = re.compile(r"\b(bg|text)-(white|black)\b")
+# a Tailwind opacity modifier: text-slate-400/70 blends the text colour onto whatever is behind it,
+# which can be far worse than the base colour - /70 on white took 2.56:1 down to 1.95:1.
+TW_OPACITY = re.compile(r"\btext-([a-z]+)-(\d{2,3})/(\d{1,3})\b")
+
+def blend(fg, bg, alpha):
+    return tuple(round(f * alpha + b * (1 - alpha)) for f, b in zip(fg, bg))
+
+SKIP_FILES = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock", ".md")
+SKIP_DIRS = ("node_modules", ".next", "dist", "build", ".git", "coverage")
+SRC_EXT = (".tsx", ".jsx", ".ts", ".js", ".vue", ".svelte", ".astro", ".html", ".css")
+
+def files(roots):
+    for root in roots:
+        for dp, dn, fns in os.walk(root):
+            dn[:] = [d for d in dn if d not in SKIP_DIRS]
+            for fn in fns:
+                if any(x in fn for x in SKIP_FILES) or fn.endswith(".d.ts"):
+                    continue
+                if fn.endswith(SRC_EXT):
+                    p = os.path.join(dp, fn)
+                    try:
+                        yield p, open(p, encoding="utf-8", errors="ignore").read()
+                    except OSError:
+                        continue
+
+def rgb(h):
+    h = h.strip().lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    if len(h) != 6 or any(c not in "0123456789abcdefABCDEF" for c in h):
+        return None
+    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+
+def lum(c):
+    def f(v):
+        v /= 255.0
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (f(x) for x in c)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+def ratio(a, b):
+    la, lb = lum(a), lum(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+# Tailwind slate/gray/neutral pairs that are known-good are not worth re-deriving; only literal
+# hex values are compared, because a class pair cannot be resolved without the compiled theme.
+COLOR = re.compile(r"(?:^|[\s;{,'\"])(color|background(?:-color)?)\s*:\s*['\"]?(#[0-9a-fA-F]{3,6})")
+SIZE = re.compile(r"fontSize\s*:\s*['\"]?(\d+(?:\.\d+)?)px")
+
+contrast_bad, fonts_missing, scale_bad, bare_ctl = [], [], [], []
+class_contrast_bad = []
+for p, body in files(sys.argv[1:]):
+    # --- contrast: only when both colours are literal hex in the same style object
+    for style in re.findall(r"style=\{\{([^}]*)\}\}", body) + re.findall(r"style:\s*\{([^}]*)\}", body):
+        d = {}
+        for k, v in re.findall(r"(color|backgroundColor|background)\s*:\s*['\"]?(#[0-9a-fA-F]{3,6})", style):
+            d["bg" if k != "color" else "fg"] = v
+        if "fg" in d and "bg" in d:
+            a, b = rgb(d["fg"]), rgb(d["bg"])
+            if a and b and ratio(a, b) < 4.5:
+                contrast_bad.append(f"{p} ({d['fg']} on {d['bg']} = {ratio(a, b):.2f}:1)")
+
+    # --- class-based contrast: resolve Tailwind text-*/bg-* on the same element
+    # The quote characters inside this pattern cannot be escaped for both the shell heredoc and
+    # python, so the class expression is searched first and the string literal taken from it.
+    for el_raw in re.findall(r"className=\{([^}]*)\}", body) + re.findall(r'className="([^"]*)"', body):
+        el = el_raw.replace("`", "").replace("'", "").replace('"', "")
+        t = TW_TEXT.search(el)
+        b = TW_BG.search(el)
+        bare = TW_BARE.findall(el)
+        fg = bg = None
+        fg_name = bg_name = ""
+        if t:
+            fg = tw_color(PALETTE, t.group(1), t.group(2))
+            fg_name = f"text-{t.group(1)}-{t.group(2)}"
+        if b:
+            bg = tw_color(PALETTE, b.group(1), b.group(2))
+            bg_name = f"bg-{b.group(1)}-{b.group(2)}"
+        for prefix, name in bare:
+            if prefix == "text" and not t:
+                fg = tw_color(PALETTE, name, "")
+                fg_name = f"text-{name}"
+            if prefix == "bg" and not b:
+                bg = tw_color(PALETTE, name, "")
+                bg_name = f"bg-{name}"
+        # An opacity modifier on the text colour is blended onto the background before scoring.
+        # TW_TEXT matches "text-slate-400/70" too (the class boundary stops at "/"), so the base
+        # colour must be read from the opacity match - otherwise the finding is reported without
+        # its modifier and the named colour is wrong.
+        op = TW_OPACITY.search(el)
+        note = ""
+        if op:
+            base = tw_color(PALETTE, op.group(1), op.group(2))
+            fg_name = f"text-{op.group(1)}-{op.group(2)}/{op.group(3)}"
+            if base and bg:
+                fg = blend(base, bg, int(op.group(3)) / 100.0)
+                note = f" (at /{op.group(3)} opacity)"
+        if fg and bg and ratio(fg, bg) < 4.5:
+            class_contrast_bad.append(f"{p} ({fg_name} on {bg_name} = {ratio(fg, bg):.2f}:1{note})")
+
+    # --- font must be loaded somewhere in the same tree
+    for fam in set(re.findall(r"fontFamily\s*:\s*['\"]([A-Za-z0-9 ]+)['\"]", body)):
+        fonts_missing.append((p, fam.strip()))
+
+    # --- arbitrary px size that is in no token file
+    for px in SIZE.findall(body):
+        scale_bad.append((p, px))
+
+    # --- form controls with no styling at all
+    for tag, attrs in re.findall(r"<(select|input|textarea)\b([^>]*)>", body):
+        if tag == "input" and re.search(r"type\s*=\s*['\"](hidden|checkbox|radio)['\"]", attrs):
+            continue
+        has_style = re.search(r"(className|class|style)\s*=", attrs)
+        if not has_style:
+            bare_ctl.append(f"{p} <{tag}>")
+
+# a fontFamily is satisfied if ANY source or css file in the tree loads that family
+all_bodies = [b for _, b in files(sys.argv[1:])]
+loaded = set()
+for b in all_bodies:
+    for fam in re.findall(r"from\s+['\"]next/font/(?:google|local)['\"]", b):
+        loaded.add("*nextfont*")
+    for fam in re.findall(r"@font-face\s*\{[^}]*font-family\s*:\s*['\"]?([A-Za-z0-9 ]+)", b):
+        loaded.add(fam.strip().lower())
+    for fam in re.findall(r"fonts\.googleapis\.com[^\"']*family=([A-Za-z0-9+]+)", b):
+        loaded.add(fam.replace("+", " ").lower())
+    for fam in re.findall(r"@import\s+url\([^)]*family=([A-Za-z0-9+]+)", b):
+        loaded.add(fam.replace("+", " ").lower())
+    for fam in re.findall(r"import\s+\{\s*([A-Za-z0-9_]+)\s*\}\s+from\s+['\"]next/font", b):
+        loaded.add(fam.lower())
+
+missing = []
+for p, fam in fonts_missing:
+    f = fam.lower()
+    if f in loaded or "*nextfont*" in loaded or f.replace(" ", "") in {x.replace(" ", "") for x in loaded}:
+        continue
+    missing.append(f"{p} ({fam})")
+missing = sorted(set(missing))
+
+print("CONTRAST||" + "; ".join(sorted(set(contrast_bad + class_contrast_bad))))
+print("FONTS||" + "; ".join(missing))
+print("SCALE||" + "; ".join(f"{p}:{px}px" for p, px in sorted(set(scale_bad))))
+print("BARECTL||" + "; ".join(sorted(set(bare_ctl))))
+PYEOF
+)
+
+        v_contrast=$(printf '%s\n' "$visual_report" | sed -n 's/^CONTRAST||//p')
+        v_fonts=$(printf '%s\n' "$visual_report" | sed -n 's/^FONTS||//p')
+        v_scale=$(printf '%s\n' "$visual_report" | sed -n 's/^SCALE||//p')
+        v_bare=$(printf '%s\n' "$visual_report" | sed -n 's/^BARECTL||//p')
+
+        # C1. Contrast below WCAG AA. Only literal hex pairs are compared, so this is arithmetic.
+        if [ -n "$v_contrast" ]; then
+            echo "  ❌ Accessibility: text/background contrast below WCAG AA 4.5:1 -> $v_contrast"
+            echo "     Raise contrast or move the pair into DESIGN.md as a tested token."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Accessibility: no literal colour pair falls below 4.5:1"
+        fi
+
+        # C2. A font-family declared but never loaded renders as a fallback nobody chose.
+        if [ -n "$v_fonts" ]; then
+            echo "  ❌ Typography: font-family used but never loaded -> $v_fonts"
+            echo "     Load it with next/font, @font-face, a <link> or an @import - or use the stack in DESIGN.md."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Typography: every declared font-family is loaded"
+        fi
+
+        # C3. Arbitrary px sizes bypass the type scale, which is how a page ends up with seven sizes.
+        # The design tokens live in the M04 prototype folder; the harness root also carries a
+        # DESIGN.md, and a project may only have one of the two. Check both.
+        scale_src=""
+        for cand in docs/design/DESIGN.md DESIGN.md docs/harness-root/DESIGN.md; do
+            [ -f "$cand" ] && scale_src="$cand" && break
+        done
+        if [ -n "$v_scale" ]; then
+            if [ -n "$scale_src" ] && grep -qoE "[0-9]+px" "$scale_src" 2>/dev/null; then
+                unscaled=""
+                for entry in $v_scale; do
+                    px="${entry##*:}"
+                    grep -q "$px" "$scale_src" 2>/dev/null || unscaled="$unscaled $entry"
+                done
+                if [ -n "$unscaled" ]; then
+                    echo "  ❌ Typography: font size(s) not in the $scale_src type scale ->$unscaled"
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Typography: every literal font size appears in the $scale_src scale"
+                fi
+            else
+                echo "  ❌ Typography: hard-coded font size(s) but DESIGN.md defines no px type scale -> $v_scale"
+                GATE_FAILED=1
+            fi
+        else
+            echo "  ✅ Typography: no hard-coded font sizes outside the scale"
+        fi
+
+        # C4. A bare <select>/<input>/<textarea> renders the browser default - the unstyled
+        # dropdown that ships when nobody ports the prototype's control.
+        if [ -n "$v_bare" ]; then
+            echo "  ❌ Components: form control(s) rendered with no className/style -> $v_bare"
+            echo "     Port the control from the prototype; a native default control is a design defect."
+            GATE_FAILED=1
+        else
+            echo "  ✅ Components: every form control carries styling"
+        fi
+
+        # C5. An FSD that asks for an upload / popover but ships only a text input lost a requirement.
+        if [ -f docs/specs/FSD.md ]; then
+            if grep -qiE "(upload|unggah|file input|attach|lampiran).*(\.jpg|\.pdf|\.png|kb|mb|file)" docs/specs/FSD.md; then
+                if ! grep -rqiE "type=[\"']file[\"']|accept=[\"']|useDropzone|FileInput|UploadZone" $scan_dirs 2>/dev/null; then
+                    echo "  ❌ Requirements: FSD specifies a file upload but no file input exists in the shipped source."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Requirements: the FSD file-upload requirement has a file input"
+                fi
+            fi
+            if grep -qiE "(popover|searchable list|dropdown|combobox|autocomplete)" docs/specs/FSD.md; then
+                if ! grep -rqiE "(combobox|listbox|<Popover|<Command|<Dropdown|<Select|aria-haspopup)" $scan_dirs 2>/dev/null; then
+                    echo "  ❌ Requirements: FSD specifies a popover/combobox but no such component exists."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Requirements: the FSD popover/combobox requirement has a component"
+                fi
+            fi
+        fi
+
         # 4h. Multi-Role Capability & Route Protection Guard (BLOCKER)
         # If FSD or SITEMAP defines operational roles (Staff / Operator / Manager),
         # verify that the codebase implements role-aware logic, session checks, or dedicated operational routing.
@@ -454,8 +909,33 @@ gate_M06() {
             echo "  ✅ Anti-slop: zero unconstrained 'any' types in production source"
         fi
         # 4c. Raw emoji / emoticon in UI components & source (BLOCKER — row 26 of POLISH_AUDIT: zero emoticons mandate)
-        raw_emojis=$(grep -rInP "[\x{1F300}-\x{1FAD6}\x{1F600}-\x{1F64F}\x{2700}-\x{27BF}]" $scan_dirs 2>/dev/null \
-            | grep -vE "(\.test\.|\.spec\.|__tests__|node_modules|\.d\.ts|\.json)" | wc -l | tr -d ' ')
+        # Codepoint ranges are matched with python3 on purpose: grep -P rejects \x{1F300} under
+        # LC_ALL=C ("character code point value too large"), which is how CI runs, and the old
+        # range skipped U+2600-U+26FF altogether - so ⚡ ⚙ ⚠ passed as "zero emoticons".
+        raw_emojis=$(python3 - $scan_dirs <<'PYEOF' 2>/dev/null || echo 0
+import os, re, sys
+RANGES = [
+    (0x2190, 0x21FF), (0x2300, 0x23FF), (0x25A0, 0x27BF), (0x2900, 0x297F),
+    (0x2B00, 0x2BFF), (0x1F000, 0x1FAFF), (0xFE0F, 0xFE0F), (0x200D, 0x200D),
+]
+PAT = re.compile("[" + "".join(f"{chr(a)}-{chr(b)}" for a, b in RANGES) + "]")
+SKIP = (".test.", ".spec.", "__tests__", "node_modules", ".d.ts", ".json", ".lock")
+hits = 0
+for root in sys.argv[1:]:
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if d not in ("node_modules", ".next", "dist", "build", ".git")]
+        for fn in filenames:
+            if any(s in fn for s in SKIP):
+                continue
+            try:
+                body = open(os.path.join(dirpath, fn), encoding="utf-8", errors="ignore").read()
+            except OSError:
+                continue
+            hits += len(PAT.findall(body))
+print(hits)
+PYEOF
+)
+        raw_emojis=$(printf '%s' "$raw_emojis" | tr -dc '0-9')
         if [ "${raw_emojis:-0}" -gt 0 ]; then
             echo "  ❌ Anti-slop: found ${raw_emojis} raw emoji / emoticon character(s) in source (e.g. 🚀, 💡, ⚡, ⚙️, ✨)!"
             echo "     Raw unicode emojis are strictly forbidden in production code. Use cohesive SVG icons (e.g. Lucide) instead."

@@ -42,6 +42,14 @@ mkdir -p "$TARGET_DIR/docs/harness-root"
 
 # Universal: Project State tracker
 cp "$TEMPLATES/essentials/PROJECT_STATE_TEMPLATE.md" "$TARGET_DIR/docs/pm/PROJECT_STATE.md"
+# Stamp the momentum start date: the day the idea became a project. Everything else in
+# Momentum is filled by hand, but this one is only knowable now.
+mkdir -p "$TARGET_DIR/docs/pm"
+if sed --version >/dev/null 2>&1; then
+    sed -i "0,/\*\*Started\*\*: \[YYYY-MM-DD\]/s//**Started**: $(date +%Y-%m-%d)/" "$TARGET_DIR/docs/pm/PROJECT_STATE.md"
+else
+    sed -i '' "0,/\*\*Started\*\*: \[YYYY-MM-DD\]/s//**Started**: $(date +%Y-%m-%d)/" "$TARGET_DIR/docs/pm/PROJECT_STATE.md"
+fi
 cp "$TEMPLATES/02-design/SCREEN_PROMPT_TEMPLATE.md" "$TARGET_DIR/docs/design/prompts/SCREEN_PROMPT_TEMPLATE.md"
 cp "$TEMPLATES/02-design/references/prototype-output/css/styles.css" "$TARGET_DIR/docs/design/screens/css/styles.css"
 cp "$TEMPLATES/02-design/references/prototype-output/js/app.js" "$TARGET_DIR/docs/design/screens/js/app.js"

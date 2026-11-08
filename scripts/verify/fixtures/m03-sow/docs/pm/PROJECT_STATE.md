@@ -1,0 +1,11 @@
+- **Scale**: Medium
+- Delivery: client
+- Intake-Success-Metric: 200 orders/day processed
+- Intake-P0-Features: 12 (catalog, orders, payments, admin)
+- Intake-Time-Capacity: 40 hrs/week x 12 weeks = 480 hrs
+- Intake-Sensitive-Data: no
+- Intake-Integrations: none
+- Intake-Branch-Hierarchy: no
+- Intake-Compliance: none
+- Intake-Legacy-Core: no
+- Intake-Status: ANSWERED

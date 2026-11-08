@@ -1,6 +1,7 @@
 # AI Prompt Library
 
-> Reusable prompt templates for AI-assisted development. Copy, customize, and iterate.
+> **Optional Reference**: Reusable prompt snippets for AI-assisted development.
+> ⚠️ **Anti-Slop Precondition**: Do NOT preload or use this file during normal autonomous M06 sprint execution. The primary code generation driver is `TODO.md` guided by `FSD.md` and `DESIGN.md`. Use these snippets only as an interactive reference if manual prompt refinement is needed.
 
 **Project**: [Project Name]  
 **Created**: [Date]  
