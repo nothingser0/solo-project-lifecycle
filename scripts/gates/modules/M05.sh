@@ -48,19 +48,93 @@ gate_M05() {
         prd="docs/specs/PRD.md"
         # A2: core section headings must be present (from PRD_FINAL_TEMPLATE.md)
         check_sections "$prd" "Document Metadata" "Functional Traceability Matrix"
-        # 1. Traceability Matrix verification (REQ-xx / F-xx mapping)
-        if grep -qiE "REQ-[0-9]+" "$prd" && grep -qiE "F-[0-9]+" "$prd"; then
-            echo "  ✅ PRD.md functional traceability matrix verified (F-xx -> REQ-xx mapped)"
-        else
-            echo "  ❌ PRD.md missing functional traceability matrix (must map F-xx features to REQ-xx requirements)!"
+        check_section_content "$prd" "Document Metadata" "Functional Traceability Matrix"
+        # 1. Traceability, mapped rather than spelled. The old form passed when the two
+        #    strings appeared anywhere in the file, so "F-1 login" in one paragraph and
+        #    "REQ-9 football" in another counted as a matrix. A chain that cannot be walked
+        #    is not a chain.
+        prd_feats=$( { grep -oE "F-[0-9]+" "$prd"; grep -oE "F-[0-9]+" docs/specs/FSD.md 2>/dev/null; } | sort -u || true)
+        prd_reqs=$( { grep -oE "REQ-[0-9]+" "$prd"; grep -oE "REQ-[0-9]+" docs/specs/FSD.md 2>/dev/null; } | sort -u || true)
+        reqs_without_feat=""
+        for rq in $prd_reqs; do
+            # a requirement must sit on a line that names a feature, or the matrix header block
+            if ! grep -qiE "(^|[^A-Za-z-])${rq}([^0-9]|$).*F-[0-9]+|F-[0-9]+.*(^|[^A-Za-z-])${rq}([^0-9]|$)" "$prd" docs/specs/FSD.md 2>/dev/null; then
+                reqs_without_feat="$reqs_without_feat $rq"
+            fi
+        done
+        feats_without_req=""
+        for ft in $prd_feats; do
+            if ! grep -qiE "(^|[^A-Za-z-])${ft}([^0-9]|$).*REQ-[0-9]+|REQ-[0-9]+.*(^|[^A-Za-z-])${ft}([^0-9]|$)" "$prd" docs/specs/FSD.md 2>/dev/null; then
+                feats_without_req="$feats_without_req $ft"
+            fi
+        done
+        if [ -z "$prd_reqs" ] || [ -z "$prd_feats" ]; then
+            echo "  ❌ PRD.md has no traceability matrix (no REQ-xx requirement and F-xx feature pairing)."
             GATE_FAILED=1
+        elif [ -n "$reqs_without_feat$feats_without_req" ]; then
+            [ -n "$feats_without_req" ] && echo "  ❌ Feature(s) with no requirement mapping:$feats_without_req  (every Must-Have F-xx needs at least one REQ-xx)"
+            [ -n "$reqs_without_feat" ] && echo "  ❌ Requirement(s) with no feature behind them:$reqs_without_feat  (a requirement with no F-xx is invented scope)"
+            GATE_FAILED=1
+        else
+            echo "  ✅ PRD.md traceability walks both ways: $(printf '%s\n' "$prd_feats" | grep -c .) feature(s), $(printf '%s\n' "$prd_reqs" | grep -c .) requirement(s)"
         fi
-        # 2. BDD Acceptance Criteria (Given-When-Then format)
-        if grep -qiE "Given " "$prd" && grep -qiE "When " "$prd" && grep -qiE "Then " "$prd"; then
-            echo "  ✅ PRD.md BDD release acceptance scenarios verified (Given-When-Then format)"
-        else
-            echo "  ❌ PRD.md missing Given-When-Then BDD acceptance scenarios in Section 8!"
+
+        # 1b. The chain starts in M02. A feature the scope never approved is scope creep,
+        #     so F-xx in the PRD must exist in SCOPE_STATEMENT.md.
+        if [ -f "docs/pm/SCOPE_STATEMENT.md" ]; then
+            scope_feats=$(grep -oE "F-[0-9]+" docs/pm/SCOPE_STATEMENT.md | sort -u || true)
+            unapproved=""
+            for ft in $prd_feats; do
+                printf '%s\n' "$scope_feats" | grep -qx "$ft" || unapproved="$unapproved $ft"
+            done
+            if [ -n "$unapproved" ]; then
+                echo "  ❌ PRD.md builds feature(s) the M02 scope never approved:$unapproved  (add them to SCOPE_STATEMENT.md or drop them)"
+                GATE_FAILED=1
+            else
+                echo "  ✅ Every PRD feature traces back to an approved scope feature"
+            fi
+        fi
+        # 2. BDD scenarios must be scenarios. Matching the three words anywhere passed prose
+        #    like "Given the pressure When the market Then whoever".
+        prd_scenarios=$(grep -ciE "^\s*(\*\*)?Scenario(\s*[0-9]+)?\s*:" "$prd" || true)
+        if [ "${prd_scenarios:-0}" -eq 0 ]; then
+            echo "  ❌ PRD.md has no BDD scenarios ('Scenario: ...' blocks in Section 8)."
             GATE_FAILED=1
+        else
+            # a scenario block owes a REQ-xx
+            python3 - "$prd" > /tmp/scen_check.$$ 2>/dev/null <<'PYEOF'
+import re, sys
+txt = open(sys.argv[1], encoding='utf-8', errors='replace').read()
+blocks = re.split(r'(?m)^\s*(?:\*\*)?Scenario(?:\s*[0-9]+)?\s*:', txt)[1:]
+bad = [b.split('\n')[0][:40] for b in blocks if not re.search(r'REQ-[0-9]+', b)]
+print(len(blocks), len(bad), '|'.join(bad))
+PYEOF
+            read -r scen_total scen_bad scen_names < /tmp/scen_check.$$ 2>/dev/null || { scen_total=$prd_scenarios; scen_bad=0; scen_names=""; }
+            rm -f /tmp/orphan_scen.$$ /tmp/scen_check.$$
+            if [ "${scen_bad:-0}" -gt 0 ]; then
+                echo "  ❌ ${scen_bad} of ${scen_total} BDD scenario(s) name no REQ-xx, so no requirement owns them: ${scen_names}"
+                GATE_FAILED=1
+            else
+                echo "  ✅ ${scen_total} BDD scenario(s), each tied to a requirement"
+            fi
+        fi
+    fi
+
+    # 1c. The chain leaves this module too. M04 maps every SCR-xx in SITEMAP to a screen file;
+    #     if the spec never names that screen, the screen exists for no documented reason.
+    if [ -f "docs/specs/SITEMAP.md" ] && [ -f "$prd" ]; then
+        spec_text=$(cat "$prd" docs/specs/FSD.md docs/pm/PROJECT_LITE.md 2>/dev/null || true)
+        screens_named=0
+        orphan_screens=""
+        for scr in $(grep -oE "SCR-[A-Z]*-?[0-9]+" docs/specs/SITEMAP.md | sort -u); do
+            screens_named=$((screens_named + 1))
+            printf '%s\n' "$spec_text" | grep -qE "(^|[^A-Za-z-])${scr}([^0-9]|$)" || orphan_screens="$orphan_screens $scr"
+        done
+        if [ -n "$orphan_screens" ]; then
+            echo "  ❌ SITEMAP screen(s) that no requirement mentions:$orphan_screens  (name each SCR-xx in the PRD/FSD, or drop the screen)"
+            GATE_FAILED=1
+        elif [ "$screens_named" -gt 0 ]; then
+            echo "  ✅ All ${screens_named} SITEMAP screen(s) are accounted for in the spec"
         fi
     fi
 
@@ -97,6 +171,31 @@ gate_M05() {
             echo "  ❌ FSD.md missing Visual ERD! Include a mermaid erDiagram block in Section 2.2."
             GATE_FAILED=1
         fi
+        # 2b. The ERD must describe the schema that the DDL creates. Checking that both exist
+        #     let an erDiagram of "purchase" sit beside CREATE TABLE orders and pass.
+        ddl_tables=$(grep -oiE "CREATE TABLE (IF NOT EXISTS )?[\"\`]?[a-z_][a-z0-9_]*" "$fsd" \
+                     | sed -E 's/.*(TABLE (IF NOT EXISTS )?)//' | tr -d '"\`' | tr '[:upper:]' '[:lower:]' | sort -u || true)
+        if [ -n "$ddl_tables" ] && grep -qiE "erDiagram" "$fsd"; then
+            erd_tables=$(sed -n '/erDiagram/,/^[[:space:]]*```/p' "$fsd" \
+                         | grep -oE "^[[:space:]]*[A-Za-z_][A-Za-z0-9_]*[[:space:]]*\{" \
+                         | sed -E 's/^[[:space:]]+//; s/[[:space:]]*\{//' | tr '[:upper:]' '[:lower:]' | sort -u || true)
+            ddl_only=""
+            for tb in $ddl_tables; do
+                printf '%s\n' "$erd_tables" | grep -qx "$tb" || ddl_only="$ddl_only $tb"
+            done
+            erd_only=""
+            for tb in $erd_tables; do
+                printf '%s\n' "$ddl_tables" | grep -qx "$tb" || erd_only="$erd_only $tb"
+            done
+            if [ -n "$ddl_only" ] || [ -n "$erd_only" ]; then
+                [ -n "$ddl_only" ] && echo "  ❌ Table(s) in the DDL but missing from the ERD:$ddl_only"
+                [ -n "$erd_only" ] && echo "  ❌ Table(s) in the ERD but never created by the DDL:$erd_only  (the diagram and the schema disagree)"
+                GATE_FAILED=1
+            else
+                echo "  ✅ ERD and DDL describe the same $(printf '%s\n' "$ddl_tables" | grep -c .) table(s)"
+            fi
+        fi
+
         if grep -qiE "CREATE INDEX|idx_[A-Za-z0-9_]+|INDEX|uniqueIndex" "$fsd"; then
             echo "  ✅ Database performance indexing verified in FSD.md (indexes present)"
         else
@@ -154,7 +253,7 @@ gate_M05() {
         fi
 
         # 4b. Record a chosen object-storage service or an explicit N/A rationale.
-        media_decision=$(grep -iE "^[[:space:]]*[-*][[:space:]]*\*\*Object storage decision\*\*:" "$fsd" 2>/dev/null | head -1)
+        media_decision=$(grep -iE "^[[:space:]]*[-*]?[[:space:]]*\*\*Object storage decision\*\*:" "$fsd" 2>/dev/null | head -1)
         if [ -n "$media_decision" ] && ! echo "$media_decision" | grep -qiE "\[selected|\[provider|\[service"; then
             echo "  ✅ Object storage decision recorded in FSD.md"
         else
@@ -230,6 +329,31 @@ gate_M05() {
     if [ -n "$m05_lock_target" ]; then
         if grep -qiE "Stack Decision LOCKED:" "$m05_lock_target"; then
             echo "  ✅ Locked tech stack decision documented in $m05_lock_target"
+            # 6b. A locked stack with no rejected alternative is a preference, not a decision.
+            #     A single word next to the winner is not a reason - require two.
+            # The rejected option belongs to the decision, not to one line. An ADR normally
+            # writes "Rejected: X because Y" above or below "Stack Decision LOCKED:". Read a
+            # window around the decision line instead of that single line.
+            stack_line=$(grep -m1 -iE "Stack Decision LOCKED:" "$m05_lock_target")
+            m05_dec_no=$(grep -n -m1 -iE "Stack Decision LOCKED:" "$m05_lock_target" | cut -d: -f1)
+            m05_lo=$(( m05_dec_no > 4 ? m05_dec_no - 4 : 1 ))
+            m05_hi=$(( m05_dec_no + 4 ))
+            rejected=$(sed -n "${m05_lo},${m05_hi}p" "$m05_lock_target" 2>/dev/null \
+                | grep -oiE "(rejected|ditolak|not chosen)[[:space:]]*:[[:space:]]*.*" | head -1 \
+                | sed 's/[[:space:]]*$//')
+            if [ -z "$rejected" ]; then
+                echo "  ❌ 'Stack Decision LOCKED' names no rejected alternative - add 'Rejected: <option> because <reason>' so the choice is reviewable."
+                GATE_FAILED=1
+            elif printf '%s' "$rejected" | grep -qE '<[a-z][^>]*>|\[the |\[(option|runner|alternative)|<why|<the '; then
+                echo "  ❌ The rejected alternative is the template's own instruction ('$rejected')."
+                echo "     Name the option and the measured reason it lost."
+                GATE_FAILED=1
+            elif [ "$(printf '%s' "$rejected" | tr ' ' '\n' | grep -c . )" -lt 5 ]; then
+                echo "  ❌ The rejected alternative is stated without a reason ('$rejected') - say why it lost."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Stack choice records a rejected alternative and why"
+            fi
         else
             echo "  ❌ $m05_lock_target missing locked tech stack decision ('Stack Decision LOCKED:')!"
             GATE_FAILED=1

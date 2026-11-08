@@ -17,6 +17,25 @@
 - **Project Language**: [Indonesian / English]
 - **Last Active Session Date**: [YYYY-MM-DD]
 - **Session Operator**: [Solo Dev / AI Agent / Tech Lead]
+- **Momentum** (answer "am I closer to shipping?", not "is the paperwork done"):
+  - **Started**: [YYYY-MM-DD] — the day the idea was written down
+  - **First Working Screen**: [YYYY-MM-DD | not yet] — the first screen/endpoint that runs and was seen working
+  - **Ship Target**: [YYYY-MM-DD]
+  - **Shipped**: [YYYY-MM-DD | not yet]
+  - **Days Since Start** is computed, never typed: a project with `Shipped` filled has a lead time; one without is accumulating debt.
+
+### 1.0 Triage — 10 minutes (advisory, every scale)
+
+The cheap half of M01's 3-Filter Triage. Small waives M01, so without this an MVP can start
+without anyone asking whether it should exist. Not gate-enforced; keep it honest.
+
+- **Triage-Problem**: [who hurts + measurable loss per week]
+- **Triage-Spreadsheet-Test**: [pass | FAIL — a spreadsheet solves 80%]
+- **Triage-One-Capability**: [the single reason to switch]
+- **Triage-Domain-Baseline**: [3-5 table-stakes features seen in 3 real products in this category]
+- **Triage-Domain-Upgrade**: [optional/differentiating features — candidates for P1/P2]
+
+`FAIL` here means stop before M04, not "proceed carefully".
 
 ### 1.1 Intake Gate (mandatory at EVERY scale)
 

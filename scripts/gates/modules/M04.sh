@@ -85,6 +85,27 @@ gate_M04() {
                 ;;
         esac
     else
+        # 0A-bis. The runbook requires a favicon alongside the logo; nothing checked for it, so
+        #     a prototype could ship without a tab icon and the gap would follow it into M06.
+        favicon=""
+        for cand in docs/design/brand/favicon.svg docs/design/brand/logo-icon.svg assets/logo/favicon.svg; do
+            [ -f "$cand" ] && favicon="$cand" && break
+        done
+        if [ -n "$favicon" ]; then
+            fv_sz=$(wc -c < "$favicon" 2>/dev/null | tr -d ' ')
+            if [ "${fv_sz:-0}" -lt 50 ]; then
+                echo "  ❌ $favicon is ${fv_sz}B — too small to be a real icon (>= 50B)."
+                GATE_FAILED=1
+            elif ! grep -qiE "<svg" "$favicon" 2>/dev/null; then
+                echo "  ❌ $favicon is not parseable SVG — a placeholder or mislabelled file is not an icon."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Favicon present and parseable ($favicon)"
+            fi
+        else
+            echo "  ❌ Favicon missing: docs/design/brand/favicon.svg (or logo-icon.svg) required by M04 Step 0A."
+            GATE_FAILED=1
+        fi
         echo "  ❌ Logo missing: logo.svg or logo.png required in docs/design/brand/ (or assets/logo/) before DESIGN.md can be generated"
         GATE_FAILED=1
     fi
@@ -111,6 +132,7 @@ gate_M04() {
     check_required "docs/specs/SITEMAP.md" "" $min_sitemap
     check_required "docs/specs/COMPONENT_REQUIREMENTS.md" "" 1000
     check_sections "docs/specs/COMPONENT_REQUIREMENTS.md" "Primitives|Atomic" "Composites" "WCAG|Accessibility"
+    check_section_content "docs/specs/COMPONENT_REQUIREMENTS.md" "Primitives|Atomic" "Composites" "WCAG|Accessibility"
     check_required "docs/design/brand/LOGO_DESIGN_BRIEF.md" "docs/specs/LOGO_DESIGN_BRIEF.md" 200
     check_required "docs/design/inspiration/notes.md" "" 200
     check_required "DESIGN.md" "docs/harness-root/DESIGN.md" 1000
@@ -121,10 +143,63 @@ gate_M04() {
     design_file="DESIGN.md"
     [ -f "$design_file" ] || design_file="docs/harness-root/DESIGN.md"
     if [ -f "$design_file" ]; then
-        if grep -qiE "[0-9]+(\.[0-9]+)?\s*:\s*1|WCAG|Contrast Ratio" "$design_file"; then
-            echo "  ✅ DESIGN.md accessibility & contrast ratios verified"
+        # Any "N.N:1" claim must itself clear WCAG AA. The old test only required the shape of a
+        # ratio, so "2.1:1" - unreadable text - counted as verified accessibility.
+        # WCAG sets the threshold by role, so read the table row: a container may sit at 1.05:1,
+        # body text may not go under 4.5:1, and a border that must be seen needs 3:1.
+        m04_contrast_py='
+import io, re, sys
+text_bad, border_bad, seen = [], [], 0
+for path in sys.argv[1:]:
+    try:
+        body = io.open(path, encoding="utf-8", errors="ignore").read()
+    except OSError:
+        continue
+    for ln in body.split("\n"):
+        if not ln.lstrip().startswith("|"):
+            # prose claim: "Body text contrast: 2.1:1" - judge it as text unless it says otherwise
+            m = re.search(r"([0-9]+(?:\.[0-9]+)?)\s*:\s*1", ln)
+            if m and re.search(r"(?i)text|body|copy|caption|label|link|foreground", ln):
+                seen += 1
+                if float(m.group(1)) < 4.5:
+                    text_bad.append(f"prose {m.group(1)}:1 (text needs 4.5:1) - {ln.strip()[:60]}")
+            continue
+        cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+        if len(cells) < 5:
+            continue
+        m = re.search(r"([0-9]+(?:\.[0-9]+)?)\s*:\s*1", ln)
+        if not m:
+            continue
+        ratio = float(m.group(1))
+        role = " ".join(cells).lower()
+        if re.search(r"text|foreground|body|copy|caption|hint|placeholder|label|link|heading", role):
+            seen += 1
+            if ratio < 4.5 and not re.search(r"large|display|heading", role):
+                text_bad.append(f"{cells[0]} {ratio}:1 (text needs 4.5:1)")
+        elif re.search(r"border|divider|outline|ring|focus|icon|control", role):
+            seen += 1
+            if ratio < 3.0:
+                border_bad.append(f"{cells[0]} {ratio}:1 (border needs 3:1)")
+if text_bad or border_bad:
+    for bad in text_bad + border_bad:
+        print("  " + bad)
+    sys.exit(1)
+print(seen)
+'
+        m04_checked=$(python3 -c "$m04_contrast_py" "$design_file" 2>/dev/null || true)
+        if python3 -c "$m04_contrast_py" "$design_file" >/dev/null 2>&1; then
+            if [ "${m04_checked:-0}" -gt 0 ] 2>/dev/null; then
+                echo "  ✅ DESIGN.md contrast verified by role: ${m04_checked} row(s) at their WCAG threshold"
+            elif grep -qiE "WCAG|Contrast Ratio" "$design_file"; then
+                echo "  ❌ DESIGN.md talks about WCAG but states no computed ratio (e.g. 4.5:1)."
+                GATE_FAILED=1
+            else
+                echo "  ❌ DESIGN.md missing mathematically computed contrast ratios (e.g. >= 4.5:1, >= 7.0:1)!"
+                GATE_FAILED=1
+            fi
         else
-            echo "  ❌ DESIGN.md missing mathematically computed contrast ratios (e.g. >= 4.5:1, >= 7.0:1)!"
+            echo "  ❌ DESIGN.md contrast claim(s) below the WCAG threshold for their role:"
+            python3 -c "$m04_contrast_py" "$design_file" 2>/dev/null | head -5 | sed 's/^/     /'
             GATE_FAILED=1
         fi
         if grep -qiE "z-index|Z-Index Layering|--z-" "$design_file"; then
@@ -164,7 +239,7 @@ gate_M04() {
                 state_count=$((state_count + 1))
             fi
         done
-        if [ "$state_count" -ge 3 ]; then
+        if [ "$state_count" -ge 5 ]; then
             echo "  ✅ DESIGN_SPEC.md 5-state matrix markers verified ($state_count/5 states detected)"
         else
             echo "  ❌ DESIGN_SPEC.md missing 5-state matrix coverage (found only $state_count/5 states)!"
@@ -192,9 +267,87 @@ gate_M04() {
         # 6. Interactive Prototyping enforcement (Visual prototype MANDATORY)
         echo "  [INFO] Interactive Prototyping (visual preview mandatory)."
         # Allow flat files in docs/design/screens/*.html or nested subfolders docs/design/screens/scr-xx/
-        screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.svg" \) 2>/dev/null | wc -l | tr -d ' ')
+        screen_files=$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" \) 2>/dev/null | wc -l | tr -d ' ')
         if [ "${screen_files:-0}" -ge 1 ]; then
             echo "  ✅ Interactive screen preview outputs present (found $screen_files preview files)"
+            # 6a-bis. A file existing is not a screen. A 0-byte .html counted as a delivered
+            #     prototype, so require the smallest evidence that markup was actually written.
+            hollow=""
+            while IFS= read -r sf; do
+                [ -z "$sf" ] && continue
+                sz=$(wc -c < "$sf" 2>/dev/null | tr -d ' ')
+                words=$(grep -oE "[A-Za-z]{2,}" "$sf" 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${sz:-0}" -lt 2000 ] || [ "${words:-0}" -lt 20 ]; then
+                    hollow="$hollow $(basename "$sf"):${sz}B/${words}w"
+                fi
+            done <<EOF
+$(find docs/design/screens -type f \( -name "*.html" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.vue" \) 2>/dev/null)
+EOF
+            if [ -n "$hollow" ]; then
+                echo "  ❌ Prototype screen(s) too hollow to be a screen (need >=2000 bytes and >=20 words):$hollow"
+                echo "     A placeholder file is not a prototype; an empty one proves nothing was designed."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Every prototype screen has real markup (>= 2000 bytes, >= 20 words)"
+            fi
+            # 6a-ter. A screen that cannot open is not a prototype. Two failures pass every
+            #     other check and only surface when the human double-clicks the file: a stylesheet
+            #     or script that resolves to nothing (white page), and a "screen" that is markup
+            #     with no elements in the body (prose dressed as a screen).
+            if command -v python3 >/dev/null 2>&1; then
+                lnk_out=$(python3 - docs/design/screens <<'PYEOF' 2>&1
+import os, re, sys
+root = sys.argv[1]
+bad_links, empty_bodies, parse_errors = [], [], []
+for dirpath, _, files in os.walk(root):
+    for f in files:
+        if not f.endswith((".html", ".tsx", ".jsx", ".vue")):
+            continue
+        path = os.path.join(dirpath, f)
+        try:
+            text = open(path, encoding="utf-8", errors="replace").read()
+        except OSError:
+            continue
+        # local href/src only: absolute http(s) and data: are out of scope
+        for m in re.finditer(r'(?:href|src)\s*=\s*["\']([^"\']+)["\']', text):
+            ref = m.group(1).strip()
+            if not ref or ref.startswith(("http://", "https://", "//", "data:", "#", "mailto:", "javascript:")):
+                continue
+            ref = ref.split("#")[0].split("?")[0]
+            if not ref:
+                continue
+            target = ref if os.path.isabs(ref) else os.path.normpath(os.path.join(dirpath, ref))
+            if not os.path.exists(target):
+                bad_links.append(f"{os.path.relpath(path, root)} -> {ref}")
+        if f.endswith(".html"):
+            body = re.search(r"<body[^>]*>(.*?)</body>", text, re.S | re.I)
+            inner = body.group(1) if body else ""
+            # strip script/style, then look for at least one real element
+            inner = re.sub(r"<(script|style)\b.*?</\1>", "", inner, flags=re.S | re.I)
+            if not re.search(r"<(div|main|section|article|header|footer|nav|form|table|ul|ol|p|h[1-6]|button|input|select|textarea|img|svg|canvas)\b", inner, re.I):
+                empty_bodies.append(os.path.relpath(path, root))
+for label, items in (("LINK", bad_links), ("BODY", empty_bodies)):
+    for it in items:
+        print(f"{label} {it}")
+PYEOF
+)
+                link_fail=$(printf '%s\n' "$lnk_out" | grep -c '^LINK ' || true)
+                body_fail=$(printf '%s\n' "$lnk_out" | grep -c '^BODY ' || true)
+                if [ "${link_fail:-0}" -gt 0 ]; then
+                    echo "  ❌ ${link_fail} prototype asset reference(s) resolve to nothing — the page would open unstyled or broken:"
+                    printf '%s\n' "$lnk_out" | grep '^LINK ' | head -5 | sed 's/^LINK /     /'
+                    GATE_FAILED=1
+                fi
+                if [ "${body_fail:-0}" -gt 0 ]; then
+                    echo "  ❌ ${body_fail} prototype screen(s) have no elements in <body> — prose is not a screen:"
+                    printf '%s\n' "$lnk_out" | grep '^BODY ' | head -5 | sed 's/^BODY /     /'
+                    GATE_FAILED=1
+                fi
+                if [ "${link_fail:-0}" -eq 0 ] && [ "${body_fail:-0}" -eq 0 ]; then
+                    echo "  ✅ Prototype opens: every local asset resolves and every screen has real body elements"
+                fi
+            fi
+
             # 6b. Mechanical Anti-Slop Prototype Audit
             neon_colors=$(grep -rInE "(#FF5722|#FF0000|#00FF00|bg-orange-500|bg-red-500)" docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
             if [ "${neon_colors:-0}" -gt 0 ]; then
@@ -209,21 +362,54 @@ gate_M04() {
             else
                 echo "  ✅ Anti-slop: zero internal spec identifiers leaked in prototype UI"
             fi
-            # 6d. Prototype Screen Coverage Check: prevent single-screen dashboard cop-out
+            # 6d. Prototype Screen Coverage: every SCR-xx in SITEMAP must be reachable in the
+            #     prototype. The old form only noticed a single file when SITEMAP declared >=4
+            #     screens and, even then, accepted the word "tab-" anywhere in it as proof that
+            #     all screens were covered. Counting is not mapping.
             if [ -f "docs/specs/SITEMAP.md" ]; then
-                sitemap_screens=$(grep -oE "SCR-[0-9]+" "docs/specs/SITEMAP.md" | sort -u | wc -l | tr -d ' ')
-                if [ "${sitemap_screens:-0}" -ge 4 ] && [ "${screen_files:-0}" -eq 1 ]; then
-                    # If only 1 file exists, check if it contains multi-screen views/tabs
-                    single_html=$(find docs/design/screens -type f -name "*.html" | head -1)
-                    if [ -f "$single_html" ] && ! grep -qiE "(data-screen|view-|tab-|screen-container|switchView|showScreen)" "$single_html"; then
-                        echo "  ❌ Prototype coverage incomplete! SITEMAP defines ${sitemap_screens} screens, but docs/design/screens/ only has 1 screen file without multi-view switching."
-                        echo "     Every core screen in SITEMAP.md must be prototyped in HTML (either multi-page HTML or an interactive SPA switcher) before entering M06 FE coding."
-                        GATE_FAILED=1
-                    else
-                        echo "  ✅ Full prototype screen coverage verified (multi-view / multi-page prototype covers SITEMAP)"
+                sitemap_ids=$(grep -oE "SCR-[A-Z]*-?[0-9]+" "docs/specs/SITEMAP.md" 2>/dev/null | sort -u || true)
+                sitemap_screens=$(printf '%s\n' "$sitemap_ids" | grep -c . || true)
+                missing_screens=""
+                for sid in $sitemap_ids; do
+                    if ! find docs/design/screens -type f -iname "*${sid}*" 2>/dev/null | grep -q . \
+                       && ! grep -rqiE "data-screen=[\"']${sid}[\"']" docs/design/screens 2>/dev/null; then
+                        missing_screens="$missing_screens $sid"
                     fi
+                done
+                if [ -n "$missing_screens" ]; then
+                    echo "  ❌ SITEMAP declares ${sitemap_screens} screen(s); these have no file and no data-screen section:$missing_screens"
+                    echo "     Each SCR-xx needs its own <role>/SCR-xx.html (or a section marked data-screen=\"SCR-xx\")."
+                    GATE_FAILED=1
+                elif [ "${sitemap_screens:-0}" -gt 0 ]; then
+                    echo "  ✅ Prototype coverage mapped: all ${sitemap_screens} SITEMAP screen(s) resolve to a screen"
                 fi
             fi
+            # 6d-bis. Brand fidelity: a design system whose tokens the screens ignore is a
+            #     document, not a system. Every hex used in the prototype must exist in the
+            #     token sources (DESIGN.md or the shared stylesheet). Third-party brand colours
+            #     are explicitly allowed through an allowlist line in DESIGN.md.
+            if [ -f "$design_file" ]; then
+                token_hexes=$( { grep -rhoiE "#[0-9a-f]{6}\b" "$design_file" 2>/dev/null
+                                 grep -rhoiE "#[0-9a-f]{6}\b" docs/design/shared 2>/dev/null
+                                 grep -rhoiE "#[0-9a-f]{6}\b" docs/design/components 2>/dev/null; } \
+                               | tr '[:upper:]' '[:lower:]' | sort -u || true)
+                allow_hexes=$(grep -iE "brand-colours-allowed|Brand colours allowed" "$design_file" 2>/dev/null \
+                               | grep -oiE "#[0-9a-f]{6}\b" | tr '[:upper:]' '[:lower:]' | sort -u || true)
+                stray=""
+                for hx in $(grep -rhoiE "#[0-9a-f]{6}\b" docs/design/screens 2>/dev/null | tr '[:upper:]' '[:lower:]' | sort -u); do
+                    printf '%s\n' "$token_hexes" | grep -qx "$hx" && continue
+                    printf '%s\n' "$allow_hexes" | grep -qx "$hx" && continue
+                    stray="$stray $hx"
+                done
+                if [ -n "$stray" ]; then
+                    echo "  ❌ Colours used in the prototype but absent from the design tokens:$stray"
+                    echo "     Add them to DESIGN.md (or the shared stylesheet) as tokens, or list them under 'Brand colours allowed:'."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Prototype colours all trace back to design tokens"
+                fi
+            fi
+
             # 6e. Modern Landing Page Section Depth Check (SCR-01)
             if [ -f "docs/specs/SITEMAP.md" ] && grep -qiE "SCR-01.*Landing|Landing.*Page" "docs/specs/SITEMAP.md"; then
                 landing_has_sections=0
@@ -239,13 +425,152 @@ gate_M04() {
                 fi
             fi
             # 6f. Reusable Prototype Architecture Check (Shared CSS / Design System)
-            shared_css=$(find docs/design -type f \( -name "*.css" -o -name "styles.css" -o -name "design-system.css" \) 2>/dev/null | wc -l | tr -d ' ')
+            #     The old form accepted "any .css file somewhere" OR "one screen links something",
+            #     so three screens with three different stylesheets still printed 'verified'. The
+            #     claim is consistency, so one stylesheet path must be shared by every screen.
             html_count=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | wc -l | tr -d ' ')
-            if [ "${html_count:-0}" -ge 2 ]; then
-                if [ "${shared_css:-0}" -ge 1 ] || grep -qriE 'rel="stylesheet" href="[^"]*(\.css|styles|tailwind)' docs/design/screens 2>/dev/null; then
-                    echo "  ✅ Reusable prototype architecture verified (screens utilize shared CSS/design-system)"
+            if [ "${html_count:-0}" -ge 1 ]; then
+                sheet_paths=$(grep -rhoiE 'rel="stylesheet"[^>]*href="[^"]+"' docs/design/screens 2>/dev/null \
+                    | sed -E 's/.*href="([^"]+)".*/\1/' | sort -u || true)
+                sheet_count=$(printf '%s\n' "$sheet_paths" | grep -c . || true)
+                screens_with_sheet=$(grep -rliE 'rel="stylesheet"' docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${sheet_count:-0}" -eq 0 ]; then
+                    echo "  ❌ No screen links a stylesheet — every screen must use the shared CSS, not ad-hoc styling."
+                    GATE_FAILED=1
+                elif [ "${sheet_count:-0}" -gt 1 ]; then
+                    echo "  ❌ ${sheet_count} different stylesheets across screens — one shared design system, not per-screen drift:"
+                    printf '%s\n' "$sheet_paths" | grep . | head -4 | sed 's/^/     /'
+                    GATE_FAILED=1
+                elif [ "${screens_with_sheet:-0}" -lt "${html_count:-0}" ]; then
+                    echo "  ❌ Only ${screens_with_sheet}/${html_count} screen(s) link the shared stylesheet — the rest render unstyled."
+                    GATE_FAILED=1
                 else
-                    echo "  ⚠️  Prototype advisory: multiple HTML screens detected without shared CSS. Ensure screens link to shared css/styles.css to maintain navbar, button, badge, and typography consistency across the sitemap."
+                    echo "  ✅ One shared stylesheet used by all ${html_count} screen(s): $(printf '%s' "$sheet_paths" | head -1)"
+                fi
+                # 6f-bis. No inline <style> blocks: the runbook forbids per-page style drift.
+                inline_blocks=$(grep -rliE '<style' docs/design/screens 2>/dev/null | wc -l | tr -d ' ')
+                if [ "${inline_blocks:-0}" -gt 0 ]; then
+                    echo "  ❌ ${inline_blocks} screen(s) carry a per-page <style> block — styles belong in the shared stylesheet."
+                    grep -rliE '<style' docs/design/screens 2>/dev/null | head -3 | sed 's/^/     /'
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ No per-page <style> drift (all styling comes from the shared sheet)"
+                fi
+                # 6f-ter. Accessibility facts that cost nothing to check and are wrong by default in
+                #     generated markup: missing lang, unlabelled images, duplicate ids.
+                a11y_problems=""
+                for hf in $(find docs/design/screens -type f -name "*.html" 2>/dev/null); do
+                    grep -qiE '<html[^>]*lang="[a-zA-Z-]+"' "$hf" || a11y_problems="$a11y_problems $(basename "$hf"):no-lang"
+                    if grep -qiE '<img' "$hf" && grep -iE '<img' "$hf" | grep -qviE 'alt='; then
+                        a11y_problems="$a11y_problems $(basename "$hf"):img-without-alt"
+                    fi
+                    dup=$(grep -oE 'id="[^"]+"' "$hf" 2>/dev/null | sort | uniq -d | head -1 || true)
+                    [ -n "$dup" ] && a11y_problems="$a11y_problems $(basename "$hf"):dup-$dup"
+                    # A placeholder is not a label: it disappears on first keystroke and screen
+                    # readers may ignore it. Every control needs <label for>, aria-label or
+                    # aria-labelledby.
+                    bare=$(python3 - "$hf" <<'PYA11Y'
+import io, re, sys
+body = io.open(sys.argv[1], encoding="utf-8", errors="ignore").read()
+labels = set(re.findall(r'<label[^>]*for="([^"]+)"', body))
+ids = set(re.findall(r'<[^>]*\bid="([^"]+)"', body))
+labelled = set(re.findall(r'aria-labelledby="([^"]+)"', body))
+out = []
+for m in re.finditer(r"<(input|select|textarea)\b([^>]*)>", body):
+    tag, attrs = m.group(1), m.group(2)
+    if 'type="hidden"' in attrs or "type='hidden'" in attrs:
+        continue
+    if re.search(r"aria-label=|aria-labelledby=", attrs):
+        continue
+    tid = re.search(r'id="([^"]+)"', attrs)
+    if tid and (tid.group(1) in labels or tid.group(1) in labelled):
+        continue
+    out.append(tag)
+print(",".join(sorted(set(out))))
+PYA11Y
+)
+                    [ -n "$bare" ] && a11y_problems="$a11y_problems $(basename "$hf"):unlabelled-control($bare)"
+                done
+                # 6f-ter-bis. min-width: 0 with nothing to hold the box open is the classic
+                #     "column collapses to zero width" defect. It is statically visible as long as
+                #     the rule does not also set width, flex-basis or flex.
+                m04_collapse_py=$(mktemp)
+                cat > "$m04_collapse_py" <<'PYCOLLAPSE'
+import io, os, re, sys
+root = sys.argv[1]
+bad = []
+for dirpath, _, names in os.walk(root):
+    for name in names:
+        if not name.endswith((".css", ".html")):
+            continue
+        p = os.path.join(dirpath, name)
+        body = io.open(p, encoding="utf-8", errors="ignore").read()
+        for rule in re.finditer(r"([^{}]+)\{([^{}]*)\}", body):
+            sel, decl = rule.group(1).strip(), rule.group(2)
+            if not re.search(r"min-(width|height)\s*:\s*0", decl):
+                continue
+            if re.search(r"(?:^|;)\s*(width|flex-basis|flex)\s*:", decl):
+                continue
+            # overflow: auto/scroll makes the box scrollable, which is a real mitigation.
+            # overflow: hidden merely HIDES the collapsed content - still the bug.
+            if re.search(r"overflow(-x|-y)?\s*:\s*(auto|scroll)", decl):
+                continue
+            if re.search(r"@media", sel):
+                continue
+            bad.append(f"{name}: {sel.splitlines()[-1].strip()[:48]}")
+print("\n".join(sorted(set(bad))[:3]))
+PYCOLLAPSE
+                collapse=$(python3 "$m04_collapse_py" docs/design/screens 2>/dev/null || true)
+                rm -f "$m04_collapse_py"
+                if [ -n "$collapse" ]; then
+                    echo "  ❌ min-width/min-height: 0 with no width or flex-basis collapses the box:"
+                    printf '%s\n' "$collapse" | sed 's/^/     /'
+                    echo "     Give it width, flex-basis or flex, or drop the rule."
+                    GATE_FAILED=1
+                fi
+
+                # 6f-quater. <head> completeness: the prototype is ported as-is in M06, so an
+                #     empty <head> becomes an empty production <head>. Titles must also differ
+                #     per screen, otherwise every tab reads the same.
+                head_problems=""
+                seen_titles=""
+                for hf in $(find docs/design/screens -type f -name "*.html" 2>/dev/null | sort); do
+                    bn=$(basename "$hf")
+                    grep -qiE '<meta[^>]+charset' "$hf" || head_problems="$head_problems $bn:no-charset"
+                    ttl=$(grep -oiE '<title>[^<]*</title>' "$hf" 2>/dev/null | sed -E 's/<[^>]*>//g' | head -1 || true)
+                    if [ -z "${ttl// /}" ]; then
+                        head_problems="$head_problems $bn:no-title"
+                    else
+                        case " $seen_titles " in *" [$ttl] "*) head_problems="$head_problems $bn:duplicate-title" ;; esac
+                        seen_titles="$seen_titles [$ttl]"
+                    fi
+                    if grep -qriE '<link[^>]+rel="(icon|shortcut icon)"' "$hf"; then
+                        icon_ref=$(grep -oiE '<link[^>]+rel="(icon|shortcut icon)"[^>]+href="[^"]+"' "$hf" | sed -E 's/.*href="([^"]+)".*/\1/' | head -1)
+                        icon_target="$icon_ref"
+                        case "$icon_ref" in /*|http*) ;; *) icon_target="$(dirname "$hf")/$icon_ref" ;; esac
+                        [ -e "$icon_target" ] || head_problems="$head_problems $bn:icon-404"
+                    else
+                        head_problems="$head_problems $bn:no-icon"
+                    fi
+                done
+                if [ -n "$head_problems" ]; then
+                    echo "  ❌ <head> incomplete in the prototype:$head_problems"
+                    echo "     Every screen needs charset, a unique <title> and a resolving rel=icon — it ports to M06 as-is."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Every screen has a complete <head> (charset, unique title, resolving icon)"
+                fi
+                # 6f-quinquies. meta description is a SEO concern, not a prototyping one: advisory.
+                no_desc=$(find docs/design/screens -type f -name "*.html" 2>/dev/null | while read -r f; do grep -qiE '<meta[^>]+name="description"' "$f" || echo "$f"; done | wc -l | tr -d ' ')
+                if [ "${no_desc:-0}" -gt 0 ]; then
+                    echo "  ⚠️  ${no_desc} screen(s) have no <meta name=\"description\"> (advisory: needed for SEO, not for prototyping)."
+                fi
+                if [ -n "$a11y_problems" ]; then
+                    echo "  ❌ Accessibility defect(s) in the prototype:$a11y_problems"
+                    echo "     <html lang>, alt on every <img>, and unique ids are the minimum for WCAG AA markup."
+                    GATE_FAILED=1
+                else
+                    echo "  ✅ Accessibility basics present (html lang, img alt, unique ids)"
                 fi
             fi
             # 6g. Mechanical UI/UX Consistency Audit
@@ -292,10 +617,34 @@ gate_M04() {
             fi
         fi
 
+        # 9b. Component showcase (BLOCKER). STEP 1.5 has a human STOP & ACC on
+        #     docs/design/components/index.html, but no gate ever looked for it, so the approval
+        #     could be claimed for a file that was never built.
+        showcase=""
+        for cand in docs/design/components/index.html docs/design/components/showcase.html; do
+            [ -f "$cand" ] && showcase="$cand" && break
+        done
+        if [ -n "$showcase" ]; then
+            sh_sz=$(wc -c < "$showcase" 2>/dev/null | tr -d ' ')
+            sh_words=$(grep -oE "[A-Za-z]{2,}" "$showcase" 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${sh_sz:-0}" -lt 2000 ] || [ "${sh_words:-0}" -lt 20 ]; then
+                echo "  ❌ Component showcase $showcase is too hollow (${sh_sz}B/${sh_words}w) to have been reviewed."
+                GATE_FAILED=1
+            else
+                echo "  ✅ Component showcase present and substantive ($showcase)"
+            fi
+        else
+            echo "  ❌ Component showcase missing — STEP 1.5 requires docs/design/components/index.html before screen assembly."
+            GATE_FAILED=1
+        fi
+
         # 10. Wireflow Interaction Scenarios (docs/specs/wireflows/*.md)
         scenario_count=$(find docs/specs/wireflows docs/design/scenarios -type f -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
         if [ "${scenario_count:-0}" -ge 1 ]; then
             echo "  ✅ Wireflow Interaction Scenarios verified (found ${scenario_count} scenario runbook(s) in docs/specs/wireflows/)"
+        else
+            echo "  ❌ Wireflow Interaction Scenarios missing — STEP 2.5 requires a SCENARIOS_WFxx.md per wireflow screen."
+            GATE_FAILED=1
         fi
     fi
 }

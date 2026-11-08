@@ -277,10 +277,92 @@ check_task_approval() {
         END { if (cur_done && !cur_appr) print cur_id }
     ' "$todo" 2>/dev/null || true)
 
+    # An approval naming the model is not an approval. M04 has rejected AI approvers for the
+    # design freeze since the same gap was found there; this guard accepted any word.
+    local ai_approved
+    ai_approved=$(awk '
+        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*{0,2}M06-/ {
+            cur_id = $0
+            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*/, "", cur_id)
+            sub(/\*+[ \t]*$/, "", cur_id)
+            cur_done = ($0 ~ /\[x\]/)
+            next
+        }
+        cur_done && /(Approved|Disetujui)/ {
+            line = tolower($0)
+            if (line ~ /claude|chatgpt|gpt-|copilot|assistant|ai agent|chatbot|llm/) print cur_id
+        }
+    ' "$todo" 2>/dev/null || true)
+
+    if [ -n "$ai_approved" ]; then
+        echo "  ❌ TODO.md: task(s) approved by a model, not a human — the agent may report, never approve:"
+        echo "$ai_approved" | sed 's/^/       - /'
+        GATE_FAILED=1
+        return 1
+    fi
+
     if [ -n "$missing" ]; then
         echo "  ❌ TODO.md: completed task(s) missing a human approval line in their Evidence."
         echo "     Add e.g. 'Approved: <date> by <name>' to each block below, or un-tick them:"
         echo "$missing" | sed 's/^/       - /'
+        GATE_FAILED=1
+        return 1
+    fi
+
+    # The agent runs a command; a human checks the result. Only the first was ever asked for, so
+    # nobody was told where to look - and twelve frozen prototypes got rebuilt from imagination.
+    local no_human_check
+    no_human_check=$(awk '
+        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*{0,2}M06-(SETUP|DB|FE)-/ {
+            if (id != "" && !hc) print id
+            id = $0
+            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*/, "", id)
+            sub(/\*+[ \t]*$/, "", id)
+            hc = ($0 ~ /\[[^]]*x[^]]*\]/) ? 0 : 1
+            next
+        }
+        /Human Check|Manusia cek|Cek manual/ { hc = 1 }
+        END { if (id != "" && !hc) print id }
+    ' "$todo" 2>/dev/null || true)
+
+    if [ -n "$no_human_check" ]; then
+        echo "  ❌ TODO.md: SETUP/DB/FE task(s) with no 'Human Check' line — say what the human opens or runs:"
+        echo "$no_human_check" | sed 's/^/       - /'
+        echo "     'Verify' is the agent's command; 'Human Check' is what a person does with their own eyes."
+        GATE_FAILED=1
+    fi
+
+    # One screenshot cannot be the evidence for the schema, the API and the screens. Reusing a
+    # single path across distinct task categories is the cheapest way to fake completion.
+    local reused
+    reused=$(awk '
+        /^[ \t]*-[ \t]*\[[^]]*\][ \t]*\*{0,2}M06-/ {
+            id = $0
+            sub(/^[ \t]*-[ \t]*\[[^]]*\][ \t]*/, "", id)
+            sub(/\*+[ \t]*$/, "", id)
+            if (match(id, /M06-[A-Z]+-/)) cat = substr(id, RSTART, RLENGTH)
+            next
+        }
+        /[Ee]vidence/ {
+            while (match($0, /[A-Za-z0-9_.\/-]+\.(png|jpg|jpeg|webp|svg|pdf|log|txt|md|json)/)) {
+                p = substr($0, RSTART, RLENGTH)
+                if (cat != "") { n[p]++; c[p] = c[p] " " cat }
+                $0 = substr($0, RSTART + RLENGTH)
+            }
+        }
+        END {
+            for (p in n) {
+                split(c[p], arr, " ")
+                distinct = 0; prev = ""
+                for (i in arr) if (arr[i] != "" && arr[i] != prev) { distinct++; prev = arr[i] }
+                if (distinct > 1) print p " (" distinct " task categories)"
+            }
+        }
+    ' "$todo" 2>/dev/null || true)
+
+    if [ -n "$reused" ]; then
+        echo "  ❌ TODO.md: one evidence path is cited for different task categories — each needs its own proof:"
+        echo "$reused" | sed 's/^/       - /'
         GATE_FAILED=1
         return 1
     fi
@@ -315,6 +397,28 @@ check_design_freeze() {
         echo "  ✅ Design Freeze approver recorded"
     else
         echo "  ❌ DESIGN_SPEC.md missing a named Design Freeze approver ('Approved by: <name>' or 'Signed by: <name>')."
+        bad=1
+    fi
+
+    # 2b. The approver must be a human. The runbook says "the AI agent is never a valid
+    #     approver", and the check above accepts any name - including the model's own.
+    if grep -qiE "^\s*[-*]?\s*\**\s*(Approved by|Signed by|Design-Freeze: Signed by)\**:?[[:space:]]*[A-Za-z]" "$spec" 2>/dev/null; then
+        approver=$(grep -iE "^\s*[-*]?\s*\**\s*(Approved by|Signed by|Design-Freeze: Signed by)\**:?[[:space:]]*[A-Za-z]" "$spec" \
+            | head -1 | sed -E 's/^[^:]*:[[:space:]]*//' | tr -d '*' | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+        case "$approver" in
+            *aiagent*|*agent*|*claude*|*gpt*|*assistant*|*chatbot*|*copilot*|*llm*)
+                echo "  ❌ Design Freeze approver is not a human ('$approver') - the agent may present options, never approve."
+                bad=1 ;;
+            *) echo "  ✅ Design Freeze approver is a named human" ;;
+        esac
+    fi
+
+    # 2c. Approval channel: where did the sign-off happen? A name and a date with no channel
+    #     cannot be checked against anything later.
+    if grep -qiE "Approved via|Persetujuan via|Disetujui via" "$spec" 2>/dev/null; then
+        echo "  ✅ Design Freeze approval channel recorded"
+    else
+        echo "  ❌ DESIGN_SPEC.md missing the approval channel ('Approved via: WhatsApp | email | meeting')."
         bad=1
     fi
 
@@ -579,12 +683,39 @@ check_tech_signoff() {
         echo "  ❌ $label still holds blank/placeholder sign-off fields (underscores, [YYYY-MM-DD], [Your Name]). M05 STEP 7 is a HUMAN-ONLY step."
         bad=1
     fi
-
-    # 2. The approver must be a named human, not a role placeholder.
-    local approver
-    approver=$(grep -iE "^\s*[-*|]?\s*\**\s*(Approved by|Validated by|Approver)[^*:]{0,40}\**:?[[:space:]]*[A-Za-z]" "$doc" 2>/dev/null \
-        | head -1 | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | sed 's/[[:space:]]*(.*$//' | tr -d '\r')
-    if [ -n "$approver" ] && ! is_role_placeholder "$approver"; then
+    # 2. The approver must be a named human, not a role placeholder, not the template's own
+    #    bracketed instruction, and not an agent. The template ships
+    #    "**Approved by**: <Human reviewer name - whoever reviewed ...>", which the old bare
+    #    leading-letter test accepted, so an unsigned document passed the gate.
+    local approver approver_placeholder approver_agent m05_signline
+    # Read the plain "Approved by" line, not "Validated by Solo Developer" or
+    # "Approved by Client Single PIC". The old pattern matched the whole family and took the
+    # FIRST hit in file order, so the reviewer line was never examined at all.
+    m05_signline=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**[[:space:]]*Approved by\**[[:space:]]*:([^*]|$)" "$doc" 2>/dev/null | head -1)
+    if [ -z "$m05_signline" ]; then
+        m05_signline=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**(Approved by|Approver)\**[[:space:]]*:" "$doc" 2>/dev/null | head -1)
+    fi
+    approver=$(printf '%s\n' "$m05_signline" | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r' \
+        | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+    approver_placeholder=""
+    if printf '%s' "$approver" | grep -qE '^<.*>$|^\[.*\]$|^_+$|^\.\.\.$|^[[:space:]]*$'; then
+        approver_placeholder=1
+    elif printf '%s' "$approver" | grep -qiE '<[a-z][^>]*>|\[your |\[name\]|\[answer\]|^tbd$|^tba$'; then
+        approver_placeholder=1
+    fi
+    approver_agent=""
+    if printf '%s' "$approver" | tr 'A-Z' 'a-z' \
+        | grep -qE 'claude|chatgpt|\bgpt\b|openai|anthropic|copilot|gemini|\bllm\b|\bagent\b|assistant|chatbot'; then
+        approver_agent=1
+    fi
+    if [ -n "$approver_placeholder" ]; then
+        echo "  ❌ $label technical approver is still the template placeholder ('$approver')."
+        echo "     Replace it with the name of the person who reviewed the specification."
+        bad=1
+    elif [ -n "$approver_agent" ]; then
+        echo "  ❌ $label technical approver is not a human ('$approver') - an agent may draft, never approve."
+        bad=1
+    elif [ -n "$approver" ] && ! is_role_placeholder "$approver"; then
         echo "  ✅ $label technical sign-off records a named approver"
     else
         echo "  ❌ $label missing a named technical approver (e.g. 'Approved by: <name>')."
@@ -592,7 +723,13 @@ check_tech_signoff() {
     fi
 
     # 3. A real approval date.
-    if grep -qE "(Approved on|Approval Date|Date)\**:?[[:space:]]*[0-9]{4}-[0-9]{2}-[0-9]{2}" "$doc" 2>/dev/null; then
+    local m05_on
+    m05_on=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**Approved on\**[[:space:]]*:" "$doc" 2>/dev/null | head -1)
+    if [ -z "$m05_on" ]; then
+        m05_on=$(grep -iE "^[[:space:]]*[-*|]?[[:space:]]*\**Approval Date\**[[:space:]]*:" "$doc" 2>/dev/null | head -1)
+    fi
+    if [ -n "$m05_on" ] && printf '%s' "$m05_on" | grep -qE "[0-9]{4}-[0-9]{2}-[0-9]{2}" \
+        && ! printf '%s' "$m05_on" | grep -qE "YYYY-MM-DD"; then
         echo "  ✅ $label technical sign-off records a real date"
     else
         echo "  ❌ $label missing a real sign-off date ('Approved on: YYYY-MM-DD')."
@@ -641,7 +778,13 @@ check_client_inputs() {
         receipt=$(grep -iE "Inputs[- ]Received|Client[- ]Provided|Received from client|Handover received" "$plan" 2>/dev/null \
             | head -1 | sed 's/^[^:]*:[[:space:]]*//' | sed 's/\*\*//g' | tr -d '\r')
         # Reject: empty, bracketed placeholders, or a line still carrying template tokens.
-        if [ -n "$receipt" ] \
+        # A receipt with no PIC read as filled: "access from  on 2026-11-06" is non-empty and
+        # carries no bracketed token, so the name in "from <name> on <date>" is checked directly.
+        pic_missing=0
+        if printf '%s' "$receipt" | grep -qiE "from[[:space:]]+(on|by|via|-|$)|from[[:space:]]*$"; then
+            pic_missing=1
+        fi
+        if [ -n "$receipt" ] && [ "$pic_missing" -eq 0 ] \
             && ! printf '%s' "$receipt" | grep -qE "^\[.*\]$|\[what was received\]|\[client PIC\]|\[YYYY-MM-DD\]|\[what\]|<what>|<client PIC>|<YYYY-MM-DD>"; then
             echo "  ✅ $label: client input receipt recorded ($receipt)"
             return 0
@@ -684,6 +827,43 @@ check_sections() {
     done
     if [ "$missing" -eq 0 ]; then
         echo "  ✅ $file core section headings verified ($# headings present)"
+    else
+        GATE_FAILED=1
+    fi
+}
+
+# A heading is not a section. check_sections() proves only that a title exists; a document can carry
+# every required title and say nothing under any of them. This reads the block that belongs to each
+# keyword and requires at least one line of real content in it, so the two checks are used together:
+# check_sections for presence, check_section_content for substance.
+_section_body() { # $1 keyword, $2 file -> the block under the first heading matching the keyword
+    awk -v pat="$1" '        /^#+[[:space:]]/ {
+            lvl = match($0, /[^#]/)
+            if (keep == 0 && tolower($0) ~ tolower(pat)) { keep = 1; base = lvl; next }
+            if (keep == 1 && lvl <= base) { keep = 0 }
+        }
+        keep { print }' "$2" 2>/dev/null
+}
+
+check_section_content() { # $1 file, rest: keywords that must carry content
+    local file="$1"
+    shift
+    if [ ! -f "$file" ]; then
+        return 0 # absence is check_required's job
+    fi
+    local h body n empty=0
+    for h in "$@"; do
+        body=$(_section_body "$h" "$file")
+        # drop blanks, rules, nested headings and blockquote asides - they are frame, not content
+        n=$(printf '%s\n' "$body" | sed 's/^[[:space:]]*//' \
+              | grep -vE '^$|^-{3,}$|^#{1,6}[[:space:]]|^>' | wc -l | tr -dc '0-9')
+        if [ "${n:-0}" -lt 1 ]; then
+            echo "  ❌ $file section '$h' is a heading with no content - a title is not a section."
+            empty=1
+        fi
+    done
+    if [ "$empty" -eq 0 ]; then
+        echo "  ✅ $file core sections carry content ($# sections)"
     else
         GATE_FAILED=1
     fi

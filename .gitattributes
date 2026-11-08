@@ -36,3 +36,15 @@
 *.pdf binary
 *.zip binary
 *.tar.gz binary
+
+# -----------------------------------------------------------------------------
+# GitHub Linguist Overrides (Clean up repository language statistics)
+# -----------------------------------------------------------------------------
+# Ignore dummy test fixtures and superseded archives from language statistics
+scripts/verify/fixtures/** linguist-vendored
+archive/** linguist-vendored
+
+# Treat templates, UI samples, and evals as documentation (excluded from code stats)
+templates/** linguist-documentation
+evals/** linguist-documentation
+

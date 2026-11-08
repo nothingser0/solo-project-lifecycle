@@ -743,6 +743,11 @@ The runbook now carries the condensed form of these steps. Original text verbati
 - **Error Boundaries & Unhandled Exception Defense**: Frontend MUST implement nested and root Error Boundaries (`error.tsx` in Next.js / boundary component) with reset action to eliminate White Screen of Death; Backend MUST catch unhandled rejections with structured logging.
 - **Hydration-free UI (SSR stacks)**: if a view is correct without hydration, it must be built that way. No `Date.now()`/`new Date()`/`Math.random()`/`localStorage`/bare `toLocaleString()` during the initial render; every date/number formatter passes an explicit `locale` + `timeZone`; `'use client'` only on the smallest leaf that needs interaction, each one recorded in `VERIFY_LOCAL.md` §4C. Ladder: `references/technical/HYDRATION_FREE_RENDERING.md`; console proof required per `VERIFY_LOCAL.md` §4C.
 - **Consumer mapping**: user-facing → UI exists; webhook → provider config; cron → caller in RUNBOOK_LOCAL.md; jobs → worker verified.
+- **DB Defense (backend twin of Route Defense)**: A `M06-DB-*` task's `Verify` must prove the schema against a **real database instance**, never against a mock. Three probes, each pasted raw into `Evidence`:
+  - **Reversibility**: `migrate up` $\rightarrow$ `migrate down` $\rightarrow$ `migrate up` all succeed.
+  - **Idempotency**: running the seeder twice leaves no duplicate rows — report the before/after `COUNT(*)`, not a pass/fail assertion.
+  - **Index usage**: `EXPLAIN` on one key query shows the intended index is used.
+  A green unit/integration test whose repository layer is stubbed is **not** setup evidence — it is the same fabricated claim as citing unrelated unit tests as UI proof. Test-runner output (vitest, jest, pytest) is evidence only for the level it actually exercises: a mocked repo proves wiring, not schema. If no reachable database exists, state "DB not verified" explicitly rather than claiming completion.
 - **Defect Triage Protocol (Bug vs CR Boundary)**:
   - **Bug**: Functionality violates locked `PRD.md` / `FSD.md` / Acceptance Criteria $\rightarrow$ fixed immediately at zero cost.
   - **Change Request (CR)**: Any modification of behavior or additional capability outside locked specs $\rightarrow$ diverted to `change-requests/CR-*.md` with fee & timeline impact; never implemented during sprint.

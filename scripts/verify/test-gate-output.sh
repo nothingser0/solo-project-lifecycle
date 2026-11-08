@@ -56,9 +56,13 @@ mk_fixture() {
 - Intake-Legacy-Core: yes
 - Intake-Status: ANSWERED
 EOF
-    printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js\n' > "$d/PROJECT_LITE.md"
-    printf '# AGENTS\n\n## Engineering Standards\nAnti-slop rules: no @ts-ignore, no as any, no empty catch, no secrets.\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'x')" > "$d/AGENTS.md"
-    printf '# CONTEXT\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'y')" > "$d/CONTEXT.md"
+    printf '# PROJECT_LITE\n\nCREATE TABLE users (id uuid);\nGET /api/users\nPOST /api/users\n- **Feature**: login\n\nStack Decision LOCKED: Next.js  Rejected: Laravel because the team already ships React\n' > "$d/PROJECT_LITE.md"
+    printf '# AGENTS\n\n## Engineering Standards\nAnti-slop rules: no @ts-ignore, no as any, no empty catch, no secrets.\\nThe prototype is the UI source of truth: docs/design/screens/<role>/SCR-xx.html.\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'x')" > "$d/AGENTS.md"
+    printf '# CONTEXT\nDecision Log: see below. Known issues tracked here.\n%s\n' "$(head -c 600 /dev/zero | tr '\0' 'y')" > "$d/CONTEXT.md"
+    printf '# ARCHITECTURE\\ntopology and boundaries\\nRejected: a separate API service, because it doubles the deploy surface.\\n' > "$d/ARCHITECTURE.md"
+    printf '# RUNBOOK_LOCAL\\nnpm run dev\\nTroubleshooting: EADDRINUSE on 3000 -> kill the holder.\\nReset to a clean state: npm run db:reset.\\n' > "$d/RUNBOOK_LOCAL.md"
+    printf '# CONVENTIONS\\nnaming and error handling\\n' > "$d/CONVENTIONS.md"
+    printf '# VERIFY_LOCAL\\nnpm test output pasted here\\n' > "$d/VERIFY_LOCAL.md"
     printf '# TODO\n\n- [x] **M06-DB-01: Schema**\n  - **Evidence**: migrations exit 0\n- [ ] **M06-BE-01: API**\n- [ ] **M06-FE-01: Screens**\n' > "$d/TODO.md"
     printf '# SCOPE_STATEMENT\n\n## User Stories\n\n## Acceptance Criteria\n\nScale: Medium\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/docs/pm/SCOPE_STATEMENT.md"
     printf 'DESIGN\nContrast 7.0:1\nz-index scale\nTypography\nSpacing\nAnti-Slop\n%s\n' "$(head -c 1200 /dev/zero | tr '\0' 'b')" > "$d/DESIGN.md"
@@ -67,9 +71,22 @@ EOF
     printf 'placeholder for reference-1-dashboard.png\n' > "$d/docs/design/inspiration/reference-1-dashboard.png"
     printf 'Selected Benchmark: Won by reference-1-dashboard.png\npalette #111111 #ffffff\n' > "$d/docs/design/inspiration/notes.md"
     printf 'SCR-003 SCR-004\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'c')" > "$d/docs/specs/SITEMAP.md"
-    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\nSCR-003 SCR-004\n\n## Motion & Interaction\nSpring physics and smooth transitions\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
+    printf '# DESIGN_SPEC\n\nPrototyping: Interactive Code Prototype\nDefault Loading Empty Error Success\nSCR-003 SCR-004\nApproved by: S. Rahma\nApproved on: 2026-11-01\nApproved via: meeting\n\n## Motion & Interaction\nSpring physics and smooth transitions\n\n## Design Freeze\n\n| **Name**: _________________________ |\n| **Date**: [YYYY-MM-DD] |\n%s\n' "$(head -c 1100 /dev/zero | tr '\0' 'd')" > "$d/docs/specs/DESIGN_SPEC.md"
     mkdir -p "$d/docs/design/screens"
-    touch "$d/docs/design/screens/SCR-003.html"
+    # A real (if minimal) screen: the gate now rejects an empty .html as a delivered prototype.
+    mkdir -p "$d/docs/design/components" "$d/docs/specs/wireflows" "$d/docs/design/shared/css" "$d/docs/design/shared/js"
+    printf 'body{margin:0;font-family:system-ui}\n' > "$d/docs/design/shared/css/styles.css"
+    printf 'document.documentElement.dataset.ready=\"1\";\n' > "$d/docs/design/shared/js/app.js"
+    printf '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Components</title></head><body><main>\n%s\n</main></body></html>\n' \
+        "$(printf 'Primitive button, input and composite card rendered on the shared stylesheet. %.0s' $(seq 1 30))" > "$d/docs/design/components/index.html"
+    printf '# SCENARIOS_WF01\n\n## Baseline fixture\nadmin@example.com / seed\n\n## Happy path\n%s\n' \
+        "$(printf 'Open invoices, filter by month and confirm the totals row updates. %.0s' $(seq 1 20))" > "$d/docs/specs/wireflows/SCENARIOS_WF01.md"
+    mkdir -p "$d/docs/design/brand"
+    printf '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#3b82f6"/></svg>\n' > "$d/docs/design/brand/favicon.svg"
+    printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Screen 3</title><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../brand/favicon.svg"></head><body data-roles="admin"><main>\n%s\n</main><script src="../shared/js/app.js"></script></body></html>\n' \
+        "$(printf 'Prototype screen content for the reviewer to inspect. %.0s' $(seq 1 45))" > "$d/docs/design/screens/SCR-003.html"
+    printf '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../shared/css/styles.css"><link rel="icon" href="../brand/favicon.svg"><title>Invoices</title></head><body><main><p>%s</p></main></body></html>\n' \
+        "$(printf 'Prototype screen content for the reviewer to inspect. %.0s' $(seq 1 45))" > "$d/docs/design/screens/SCR-004.html"
     printf '# LOGO_DESIGN_BRIEF\nSelected benchmark: Linear\n%s\n' "$(head -c 300 /dev/zero | tr '\0' 'e')" > "$d/docs/specs/LOGO_DESIGN_BRIEF.md"
     printf '# COMPONENT_REQUIREMENTS\n\n## Primitives (Atomic Components)\n\n## Composites (Standard & Domain)\n\n## WCAG 2.2 AA Accessibility\n%s\n' "$(head -c 1000 /dev/zero | tr '\0' 'f')" > "$d/docs/specs/COMPONENT_REQUIREMENTS.md"
     head -c 120 /dev/zero | tr '\0' 'z' > "$d/assets/logo/logo.svg"
