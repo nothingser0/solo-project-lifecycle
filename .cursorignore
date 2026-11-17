@@ -1,0 +1,14 @@
+# Cursor Indexing Exclusion File (.cursorignore)
+# Keeps semantic indexing lean and avoids context exhaustion.
+
+docs/INDEX.json
+references/taxonomy/PROJECT_CATALOG_1000.md
+scripts/verify/test-gate-regressions.sh
+scripts/verify/golden-gate-output.txt
+scripts/verify/fixtures/**
+archive/**
+**/__pycache__/**
+*.pyc
+.dist/**
+node_modules/**
+.git/**
