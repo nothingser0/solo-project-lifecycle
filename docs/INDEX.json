@@ -1267,10 +1267,6 @@
       "cataloged": false
     },
     {
-      "path": "templates/04-dev-execution/DAILY_STANDUP.md",
-      "cataloged": true
-    },
-    {
       "path": "templates/04-dev-execution/DEVELOPMENT_PROGRESS_TRACKER.md",
       "cataloged": false
     },
@@ -1295,10 +1291,6 @@
       "cataloged": false
     },
     {
-      "path": "templates/04-dev-execution/PR_APPROVAL_WORKFLOW_GUIDE.md",
-      "cataloged": true
-    },
-    {
       "path": "templates/04-dev-execution/RELEASE_WORKFLOW.md",
       "cataloged": true
     },
@@ -1308,14 +1300,6 @@
     },
     {
       "path": "templates/04-dev-execution/SEED_DATA_TEMPLATE.md",
-      "cataloged": true
-    },
-    {
-      "path": "templates/04-dev-execution/SPRINT_PLANNING.md",
-      "cataloged": true
-    },
-    {
-      "path": "templates/04-dev-execution/SPRINT_RETRO.md",
       "cataloged": true
     },
     {
