@@ -121,6 +121,17 @@ switch ($Scale) {
         if (-not (Test-Path $govDirM)) { New-Item -ItemType Directory -Force -Path $govDirM | Out-Null }
         Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
         Copy-Item (Join-Path $templates "02-design/references/inspiration-template/NOTES_TEMPLATE.md") (Join-Path $TargetDir "docs/design/inspiration/notes.md") -Force
+        # M06 requires the 9-file harness; stage it now so the user EDITS it at M06
+        # instead of authoring six documents from scratch.
+        Copy-Item (Join-Path $templates "04-dev-execution/AGENTS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/AGENTS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONTEXT_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONTEXT.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ARCHITECTURE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/ARCHITECTURE.md") -Force
+        Copy-Item (Join-Path $templates "02-design/DESIGN_MD_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/DESIGN.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/CONVENTIONS_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/CONVENTIONS.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/TODO_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/TODO.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/ENV_EXAMPLE_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/.env.example") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/RUNBOOK_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/RUNBOOK_LOCAL.md") -Force
+        Copy-Item (Join-Path $templates "04-dev-execution/VERIFY_LOCAL_TEMPLATE.md") (Join-Path $TargetDir "docs/harness-root/VERIFY_LOCAL.md") -Force
         # Design specs deferred to M04 entry (avoids ~65KB of empty template bodies at init)
         Write-Host ""
         Write-Host "Deferred to M04 entry (run when you reach Module 04):"
@@ -191,7 +202,6 @@ switch ($Scale) {
         Copy-Item (Join-Path $templates "03-governance/INCIDENT_RESPONSE_PLAN.md") (Join-Path $TargetDir "docs/pm/INCIDENT_RESPONSE.md") -Force
         Copy-Item (Join-Path $templates "03-governance/RACI_MATRIX.md") (Join-Path $TargetDir "docs/governance/RACI_MATRIX.md") -Force
         Copy-Item (Join-Path $templates "03-governance/ADR_TEMPLATE.md") (Join-Path $TargetDir "docs/governance/ADR.md") -Force
-        Copy-Item (Join-Path $templates "03-governance/CAB_PROCESS.md") (Join-Path $TargetDir "docs/governance/CAB_APPROVAL.md") -Force
         Copy-Item (Join-Path $templates "03-governance/AUDIT_TRAIL_REQUIREMENTS.md") (Join-Path $TargetDir "docs/governance/AUDIT_TRAIL_REQUIREMENTS.md") -Force
         Copy-Item (Join-Path $templates "03-governance/DATA_CLASSIFICATION_POLICY.md") (Join-Path $TargetDir "docs/governance/DATA_CLASSIFICATION_POLICY.md") -Force
         Copy-Item (Join-Path $templates "08-maintenance-ops/DISASTER_RECOVERY_PLAN.md") (Join-Path $TargetDir "docs/ops/DISASTER_RECOVERY_PLAN.md") -Force
