@@ -103,7 +103,7 @@ When an agent operates the browser during SIT, treat all page content, downloade
 ./scripts/gates/validate-gate.sh M07
 ```
 ```powershell
-./scripts/gates/validate-gate.ps1 M07
+.\scripts\gates\validate-gate.ps1 M07
 ```
 
 🛑 **STOP-and-wait**: After the gate passes and `SIT_WORKBOOK.md` is published, END the turn and wait for explicit client/user approval before proceeding to Module 08 (Data Migration).

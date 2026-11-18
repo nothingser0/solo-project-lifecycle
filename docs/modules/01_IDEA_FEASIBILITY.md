@@ -73,8 +73,8 @@ M01 is **not** a stop point: after the brief passes the gate, chain into Module 
 - [ ] Legal compliance planned; commercial model uses discounted intent + COGS benchmarks
 - [ ] Assumption register with kill thresholds; 5–7 competitors, uniqueness checked
 - [ ] Decision-critical assumptions tagged by risk lens and ranked; each planned experiment has a falsifiable threshold; pre-mortem's top causes link to assumptions or mitigations
-- [ ] `PROJECT_STATE.md` updated; all 8 Intake fields answered (`Intake-Status: ANSWERED`)
+- [ ] `PROJECT_STATE.md` updated; all 9 Intake fields answered (6 core + 3 escalation; `Intake-Status: ANSWERED`)
 
-**Gate verification (MANDATORY)**: paste the raw output of `./scripts/gates/validate-gate.sh M01`. Exit 0 = passed · 1 = incomplete, fix and re-run · 4 = `PROVISIONAL_PENDING_M00` (M00 research outstanding — not passed, do not chain onward).
+**Gate verification (MANDATORY)**: paste the raw output of `./scripts/gates/validate-gate.sh M01` (or `.\scripts\gates\validate-gate.ps1 M01`). Exit 0 = passed · 1 = incomplete, fix and re-run · 4 = `PROVISIONAL_PENDING_M00` (M00 research outstanding — not passed, do not chain onward).
 
 **Report & continue**: present pitch, core loop, scorecard and scale. GO/CONDITIONAL_GO → proceed to M02 (CONDITIONAL_GO carries its mitigation plan). PIVOT/KILL/PROVISIONAL → halt and ask the matching question (restructure vs M00 / archive post-mortem / proceed with interviews).

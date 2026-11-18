@@ -144,5 +144,3 @@ Optional (client projects): ≥2 usability iterations × 5+ users, SUS ≥70; pr
 (Windows: `./scripts/gates/validate-gate.ps1 M04`)
 
 Only after `✅ Gate validation PASSED` (exit 0), present the handoff summary. M04 is not a SKILL.md stop point: for Small/Solo SaaS continue to M05 in the same flow; pause for explicit approval on Client projects ("Design approved" / "Proceed to Module 05"). If the user requests changes: regenerate affected files and re-run the gate. On approval, carry DESIGN.md + DESIGN_SPEC.md forward as references for Module 05 (Architecture & FSD).
-
-> **AUTHORITATIVE WORKFLOW OVERRIDE**

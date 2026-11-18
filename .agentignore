@@ -1,0 +1,24 @@
+# Agent Context Exclusion File (.agentignore)
+# Prevents autonomous agents, LLM indexing engines, and retrieval tools
+# from flooding context with giant catalogs, archived files, and binary fixtures.
+
+# Giant catalogs & taxonomy (human-facing only, forbidden in SKILL.md)
+docs/INDEX.json
+references/taxonomy/**
+
+# Large regression test scripts and golden baselines
+scripts/verify/test-gate-regressions.sh
+scripts/verify/golden-gate-output.txt
+scripts/verify/fixtures/**
+
+# Historical and archived material
+archive/**
+
+# Python & Build artifacts
+**/__pycache__/**
+*.pyc
+.dist/**
+node_modules/**
+
+# Git metadata
+.git/**

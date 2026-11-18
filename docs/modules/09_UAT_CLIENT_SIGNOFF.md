@@ -78,7 +78,7 @@ The workbook maps every in-scope acceptance criterion to one or more test scenar
 ### STEP 2 — Gate Verification (MANDATORY)
 
 ```
-[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M09]
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M09 (or .\scripts\gates\validate-gate.ps1 M09)]
 ```
 
 Execute `./scripts/gates/validate-gate.sh M09` (or `.ps1`). Exit 1 = incomplete; fix and re-run. **DO NOT deploy to production until UAT is signed.**

@@ -47,6 +47,6 @@ M08 is **PASS** when all of the following hold:
 ./scripts/gates/validate-gate.sh M08
 ```
 
-(PowerShell equivalent: `./scripts/gates/validate-gate.ps1 M08`.)
+(PowerShell equivalent: `.\scripts\gates\validate-gate.ps1 M08`.)
 
 **Sign-off wait**: After the gate passes, wait for the client's Data Sign-Off before starting Module 09 (UAT); the sign-off is the acceptance evidence M09's gate checks.

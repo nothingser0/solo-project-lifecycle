@@ -4,7 +4,7 @@
 >
 > Two kinds are kept: **Indonesia/regulatory** patterns (payment rails, UU PDP, PPh/PPN, IDR) and **decision-model** patterns (threat modeling, API versioning choice, CI gate enforcement, ASO indexing) that resolve a question rather than recite a library's API.
 >
-> The generic patterns that failed that test (Zod, caching, N+1, auth, testing, CI/CD, git, observability, API conventions, DB seeding, error boundaries, GraphQL, design patterns) live in `archive/patterns/`.
+> The generic patterns that failed that test (Zod, caching, N+1, auth, testing, CI/CD, git, observability, API conventions, DB seeding, error boundaries, GraphQL, design patterns) have been pruned from the active catalog and are preserved in git history to reduce context bloat.
 
 | Pattern | File |
 |:---|:---|
@@ -60,4 +60,4 @@
 | Test Suite Curation & Pruning (coverage-equality trap, mutation proof, quarantine) | [`qa/TEST_SUITE_CURATION_PATTERN.md`](./qa/TEST_SUITE_CURATION_PATTERN.md) |
 | Exact-Build Verification & Closed-Loop QA (Artifact Pinning & 4-State Lifecycle) | [`qa/EXACT_BUILD_VERIFICATION_PATTERN.md`](./qa/EXACT_BUILD_VERIFICATION_PATTERN.md) |
 
-Archived generic patterns remain available at `archive/patterns/` (git history intact) if a rare case needs them.
+Archived generic patterns remain preserved in git history if a rare case needs them.

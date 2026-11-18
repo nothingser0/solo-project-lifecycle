@@ -144,21 +144,6 @@ foreach ($pat in $activePatterns) {
 }
 Write-Host "  [OK] $foundActive active domain & engineering patterns present under patterns/" -ForegroundColor Green
 
-# Archived generic patterns (present under archive/patterns/ for recovery; not loaded by agents)
-$archivedPatterns = @(
-    "archive/patterns/validation/zod-patterns.md",
-    "archive/patterns/security/authentication.md",
-    "archive/patterns/testing/test-pyramid.md",
-    "archive/patterns/deployment/ci-cd-pipeline.md"
-)
-foreach ($pat in $archivedPatterns) {
-    if (-not (Test-Path $pat)) {
-        Write-Host "  [FAIL] Archived pattern missing: $pat" -ForegroundColor Red
-        $errors++
-    }
-}
-Write-Host "  [OK] archived generic patterns present under archive/patterns/" -ForegroundColor Green
-
 # 6. Verify Markdown Links and Frontmatter
 Write-Host ""
 Write-Host "6. Checking Markdown Links, Secrets, and Manifests..."

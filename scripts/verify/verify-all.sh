@@ -226,20 +226,6 @@ for pat in "${PATTERNS[@]}"; do
         ERRORS=$((ERRORS + 1))
     fi
 done
-# Archived generic patterns (present under archive/patterns/ for recovery; not loaded by agents)
-ARCHIVED_PATTERNS=(
-    "archive/patterns/validation/zod-patterns.md"
-    "archive/patterns/security/authentication.md"
-    "archive/patterns/testing/test-pyramid.md"
-    "archive/patterns/deployment/ci-cd-pipeline.md"
-)
-for pat in "${ARCHIVED_PATTERNS[@]}"; do
-    if [ ! -f "$pat" ]; then
-        echo -e "  ${RED}✗${NC} Archived pattern missing: $pat"
-        ERRORS=$((ERRORS + 1))
-    fi
-done
-echo -e "  ${GREEN}✓${NC} archived generic patterns present under archive/patterns/"
 
 # 6. Runbook token budget. A runbook carries steps + gate criteria, so the ceiling is
 # 4.5k: enough for every gate-checked item, tight enough to catch a module drifting into

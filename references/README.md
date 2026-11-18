@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **66 files across 14 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
+Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **65 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
 
 ---
 
@@ -22,8 +22,7 @@ references/
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
 ├── process/             (1 file)   - Anti-yes-man critical pushback rule
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
-├── technical/          (12 files)  - Deep research, design systems, APM, compliance, animation, hydration policy, tooling comparison
-└── team/                (1 file)   - Team collaboration, agency handoff, multi-agent coordination
+└── technical/          (12 files)  - Deep research, design systems, APM, compliance, animation, hydration policy, tooling comparison
 ```
 
 ---
@@ -123,10 +122,4 @@ references/
 | [`MOBILE_ARCHITECTURE_GUIDE.md`](./technical/MOBILE_ARCHITECTURE_GUIDE.md) | Mobile viewport responsiveness, touch ergonomics, PWA configuration, cross-platform layouts | Module 04 |
 | [`UI_COMPONENT_ANIMATION_LIBRARY.md`](./technical/UI_COMPONENT_ANIMATION_LIBRARY.md) | Production micro-interaction animation patterns, Framer Motion/CSS transitions | Module 04 |
 
----
 
-## 9. Team Collaboration & Agency Handoff (`references/team/`)
-
-| File | Purpose | Referenced In |
-|---|---|---|
-| [`TEAM_COLLABORATION_GUIDE.md`](./team/TEAM_COLLABORATION_GUIDE.md) | Role responsibility matrix (PM/Design/Eng/QA), multi-stage handoffs, and multi-agent coordination | Module 02, 06 |

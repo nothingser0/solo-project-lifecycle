@@ -52,6 +52,8 @@ Deterministic tools for project initialization and template extraction:
 | [`scripts/scaffold/init-project.sh`](./scaffold/init-project.sh) | [`scripts/scaffold/init-project.ps1`](./scaffold/init-project.ps1) | Bootstraps project directory tree per scale (`small`, `solo-saas`, `medium`, `large`) |
 | [`scripts/scaffold/template-picker.sh`](./scaffold/template-picker.sh) | [`scripts/scaffold/template-picker.ps1`](./scaffold/template-picker.ps1) | Interactive CLI selector to scaffold specific templates |
 | [`scripts/scaffold/generate-fsd.sh`](./scaffold/generate-fsd.sh) | [`scripts/scaffold/generate-fsd.ps1`](./scaffold/generate-fsd.ps1) | Generates initial FSD.md skeleton with pinned package registry versions |
+| [`scripts/scaffold/generate-todo.sh`](./scaffold/generate-todo.sh) | [`scripts/scaffold/generate-todo.ps1`](./scaffold/generate-todo.ps1) | Decomposes SITEMAP, FSD, and design specs into atomic 1-to-1 TODO tasks |
+| [`scripts/scaffold/verify-traceability.py`](./scaffold/verify-traceability.py) | - | Verifies 1-to-1 parity between SITEMAP.md, FSD.md, and TODO.md |
 
 ```bash
 # Initialize a new Solo SaaS project:
@@ -77,7 +79,7 @@ Sanity checks, link validators, and ecosystem compatibility tools:
 
 ### Archived Patterns Reference
 
-Historical architecture patterns and engineering guides are preserved in [`archive/patterns/README.md`](../archive/patterns/README.md).
+Historical architecture patterns and engineering guides have been retired from the active pattern library to reduce bloat; active engineering patterns are maintained under [`patterns/`](../patterns/).
 
 ---
 
@@ -133,3 +135,19 @@ Tools for calculating framework metrics and building skill installation packages
 |:---|:---|:---|
 | [`scripts/dist/build-dist.sh`](./dist/build-dist.sh) | [`scripts/dist/build-dist.ps1`](./dist/build-dist.ps1) | Packages framework into `dist/package/` and zip ready for skill upload |
 | [`scripts/dist/calculate-size.sh`](./dist/calculate-size.sh) | [`scripts/dist/calculate-size.ps1`](./dist/calculate-size.ps1) | Calculates accurate disk footprint and token counts across documentation |
+
+---
+
+## 7. AI Agent Evaluations (`scripts/evals/`)
+
+Automated evaluation runner for verifying AI coding agent compliance with the framework's anti-slop, authority, and gate requirements:
+
+| Tool | Description |
+|:---|:---|
+| [`scripts/evals/run-evals.py`](./evals/run-evals.py) | Python 3 evaluation harness runner (`--validate`, `--list`, `--grade`, `--interactive`) |
+| [`scripts/evals/run-evals.js`](./evals/run-evals.js) | Node.js evaluation harness runner |
+
+```bash
+# Validate all 18 eval scenario rubrics:
+python3 scripts/evals/run-evals.py --validate
+```

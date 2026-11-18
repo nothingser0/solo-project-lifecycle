@@ -57,12 +57,12 @@ Only when the client or vendor supplies its own contract, NDA or terms. Otherwis
 
 ## 2. Scale & Document Hierarchy
 
-| Aspect | Small (Fast-Track) | Medium (B2B/Agency) | Large (Phased) | Enterprise (Non-Solo) |
+| Aspect | Spike / PoC & Small (Fast-Track) | Medium (B2B/Agency) | Large (Phased) | Enterprise (Non-Solo) |
 |---|---|---|---|---|
-| Format | `SOW_SMB.md` | Consolidated SOW | MSA + phased SOW | Consulting Agreement (A00) |
-| Legality | e-signature | e-Meterai Rp 10k / wet ink | Legal review + e-Meterai | Procurement + Net 30 |
-| Payment | 50/50 | 30/40/30 | 30/40/30 per pkg | Retainer / Net 30 |
-| NDA | Clause suffices | **MANDATORY** | Mutual NDA + UU PDP | Mutual NDA + DPA |
+| Format | Waived / `SOW_SMB.md` | Consolidated SOW | MSA + phased SOW | Consulting Agreement (A00) |
+| Legality | None / e-signature | e-Meterai Rp 10k / wet ink | Legal review + e-Meterai | Procurement + Net 30 |
+| Payment | None / 50/50 | 30/40/30 | 30/40/30 per pkg | Retainer / Net 30 |
+| NDA | None / Clause suffices | **MANDATORY** | Mutual NDA + UU PDP | Mutual NDA + DPA |
 
 **Delivery routing (the gate reads only this field)**: `solo` / `portfolio` / `internal` in `docs/pm/PROJECT_STATE.md` → gate **WAIVED** (record `WAIVED (Self-Initiated)`; complete the Solo SaaS Charter — no SOW, no DP, never a fabricated client). `client` → **always enforced**. Undeclared → fail-closed.
 
@@ -119,7 +119,7 @@ For client delivery, one of `contracts/SOW_CONTRACT.md`, `docs/pm/SOW_CONTRACT.m
 ### STEP 2 — Gate Verification (MANDATORY)
 
 ```
-[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M03]
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M03 (or .\scripts\gates\validate-gate.ps1 M03)]
 ```
 
 **MANDATORY**: execute `./scripts/gates/validate-gate.sh M03` (or `.ps1`). Exit 1 = incomplete — fix and re-run. **Do not proceed to Module 04 until DP is confirmed** (or bypassed for Solo SaaS).

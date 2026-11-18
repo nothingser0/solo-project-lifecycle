@@ -7,10 +7,12 @@
 
 **Purpose**: earliest gate — validate market demand before committing to an idea. Mandatory before M01 when PM-grade validation is needed.
 
-**Routing (bound to `Delivery:` in `docs/pm/PROJECT_STATE.md`)**:
+**Routing (bound to `Delivery:` and `Scale:` in `docs/pm/PROJECT_STATE.md`)**:
 - `solo` (Solo SaaS): **MANDATORY** user validation (`docs/pm/MARKET_VALIDATION.md` or `M00_LITE.md`). Human interviews (>=3 verified) required.
-- `client`: **SKIPPED** — scope and terms are client-defined. Proceed to M01 or M03.
+- `Spike / PoC` or `Small / MVP`: **SKIPPED** — rapid validation via Pre-Intake Spike or direct Intake Gate. Proceed to M04-LITE or M06.
+- `client`: **SKIPPED** — scope and commercial terms are client-defined. Proceed to M01 or M03.
 - `internal` / `portfolio`: **SKIPPED**. Proceed to M01 or Fast-Track Intake.
+- `enterprise`: **ADVISORY ONLY** — routes to A00 (Bid/No-Bid & Paid Discovery). Never perform free multi-week discovery.
 
 ---
 
@@ -94,11 +96,11 @@ it, or change the framework during the review. Full procedure: `deep-dives/00_PR
 
 ## 3. Scale Adaptation
 
-| Aspect | Small (Fast-Track) | Solo SaaS (Medium) | Enterprise / Non-Solo (A-Series) |
-|---|---|---|---|
-| Path | M00 SKIPPED (Intake Gate) | M00-lite mandatory | Routed to A00 (Bid/No-Bid) & Paid Discovery |
-| Deliverable | `PROJECT_STATE.md` intake only | `docs/pm/M00_LITE.md` (1 page) | Paid Discovery Engagement Pack / Tender Pack |
-| Stopping rule | Intake Gate | `Gate-Decision: PASS` per §1b (exit 0) | Paid Discovery Invoice or Formal Bid/No-Bid |
+| Aspect | Spike / PoC & Small (MVP) | Solo SaaS (Medium) | Client (Medium) | Enterprise / Non-Solo (A-Series) |
+|---|---|---|---|---|
+| Path | M00 SKIPPED (Direct Build / Intake Gate) | M00-lite mandatory | M00 SKIPPED (Client-scoped) | Routed to A00 (Bid/No-Bid) & Paid Discovery |
+| Deliverable | None / `PROJECT_STATE.md` intake only | `docs/pm/M00_LITE.md` (1 page) | Client Brief / SOW in M03 | Paid Discovery Engagement Pack / Tender Pack |
+| Stopping rule | None / Intake Gate | `Gate-Decision: PASS` per §1b (exit 0) | None (routes to M01/M03) | Paid Discovery Invoice or Formal Bid/No-Bid |
 
 **Enterprise Discovery Rule (Anti-Unpaid Discovery Trap)**: For enterprise clients requiring extensive stakeholder discovery, architecture workshops, or compliance assessments, **never provide custom multi-week discovery for free**. Scope as an upfront **Paid Discovery Sprint** (Advisory Engagement under `A00_ENTERPRISE_ADVISORY_SERIES.md`) with a standalone invoice before committing deep architectural effort.
 
@@ -123,7 +125,7 @@ M00 is **not** a stop point: on exit 0, chain into M01 in the same flow (SKILL.m
 **Gate verification (MANDATORY)** — run the validator and paste its EXACT output; never a pre-filled checklist:
 
 ```
-[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M00]
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M00 (or .\scripts\gates\validate-gate.ps1 M00)]
 ```
 
 Exit 1 = incomplete · exit 3 = RETEST (re-run after the optimisation sprint). Never edit a number or the declared decision to turn a failing run green.

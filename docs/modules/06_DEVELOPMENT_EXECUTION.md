@@ -98,7 +98,7 @@ Source code (on `staging`) · **`RUNBOOK_LOCAL.md`** · **`VERIFY_LOCAL.md`** ·
 - [ ] Migrations reversible; indexes in place; `VERIFY_LOCAL.md` has pass proof.
 - [ ] Small: `docs/qa/SECURITY_CHECKLIST_SMALL.md` filled (≥300 bytes; absorbs M07 security).
 - [ ] **Small only** (no M07): `docs/qa/POLISH_AUDIT.md` from `templates/06-qa-uat/POLISH_AUDIT_TEMPLATE.md` — 0 blocking tells (favicon, 404, meta, OG, console errors, placeholder text, dead buttons). Medium+ covers in M07 Step 7.
-- [ ] **Verbatim**: `./scripts/gates/validate-gate.sh M06` (or `.ps1 M06`) — exit 1 = fix and re-run.
+- [ ] **Verbatim**: `./scripts/gates/validate-gate.sh M06` (or `.\scripts\gates\validate-gate.ps1 M06`) — exit 1 = fix and re-run.
 
 ## 4. Gate Exit & Routing
 After coding completes and smoke test passes 100%:
