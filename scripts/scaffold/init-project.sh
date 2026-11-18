@@ -215,7 +215,6 @@ case "$SCALE" in
         cp "$TEMPLATES/03-architecture-specs/THREAT_MODEL_STRIDE_TEMPLATE.md" "$TARGET_DIR/docs/security/THREAT_MODEL_STRIDE.md"
         cp "$TEMPLATES/03-governance/RACI_MATRIX.md" "$TARGET_DIR/docs/governance/RACI_MATRIX.md"
         cp "$TEMPLATES/03-governance/ADR_TEMPLATE.md" "$TARGET_DIR/docs/governance/ADR.md"
-        cp "$TEMPLATES/03-governance/CAB_PROCESS.md" "$TARGET_DIR/docs/governance/CAB_APPROVAL.md"
         cp "$TEMPLATES/03-governance/AUDIT_TRAIL_REQUIREMENTS.md" "$TARGET_DIR/docs/governance/AUDIT_TRAIL_REQUIREMENTS.md"
         cp "$TEMPLATES/03-governance/DATA_CLASSIFICATION_POLICY.md" "$TARGET_DIR/docs/governance/DATA_CLASSIFICATION_POLICY.md"
         cp "$TEMPLATES/08-maintenance-ops/DISASTER_RECOVERY_PLAN.md" "$TARGET_DIR/docs/ops/DISASTER_RECOVERY_PLAN.md"
