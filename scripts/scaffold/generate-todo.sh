@@ -28,21 +28,21 @@ cat <<EOF > "$DEST"
 
 ---
 
-## 📖 Panduan Pengembang & Verifikasi Cepat
+## 📖 Developer Guide & Quick Verification
 
-### 1. Setup Environment (\`.env.local\`)
-1. Salin template:
-   \`\`\`powershell
+### 1. Environment Setup (\`.env.local\`)
+1. Copy template:
+   \`\`\`bash
    cp .env.example .env.local
    \`\`\`
-2. Isi kredensial database dan API keys dari provider terkait.
-3. Jalankan pengujian koneksi database sebelum memulai sprint.
+2. Fill database credentials and API keys from respective providers.
+3. Run database connection test before starting implementation sprints.
 
-### 2. Standar Verifikasi (Verify)
-Jalankan perintah verify yang tertera pada tiap task sebelum meminta approval:
-- Schema & Validasi: \`pnpm run db:validate\` atau \`npx prisma validate\`
-- Unit Tests: \`pnpm test\` atau \`npm test\`
-- Dev Server: \`pnpm run dev\` atau \`npm run dev\`
+### 2. Verification Standards (Verify)
+Execute the verification command declared in each task before requesting approval:
+- Schema & Validation: \`pnpm run db:validate\` or \`npx prisma validate\`
+- Unit Tests: \`pnpm test\` or \`npm test\`
+- Dev Server: \`pnpm run dev\` or \`npm run dev\`
 
 ---
 

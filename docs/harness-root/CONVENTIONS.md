@@ -18,10 +18,15 @@
 
 ## 2. React & Next.js App Router Standards
 
-1. **Server Components as the Primary Default**:
+1. **3-Tier Component Hierarchy & Mandatory Reusability (DRY UI)**:
+   - **Level 1 — UI Primitives (`src/components/ui/`)**: Reusable building blocks without domain logic (e.g., `button.tsx`, `input.tsx`, `badge.tsx`, `modal.tsx`, `card.tsx`, `dropdown.tsx`). Must accept standard HTML attributes and `className` overrides.
+   - **Level 2 — Shared Composites (`src/components/shared/`)**: Domain-aware composite layouts used across multiple views (e.g., `data-table.tsx`, `page-header.tsx`, `filter-toolbar.tsx`, `metric-card.tsx`, `confirm-dialog.tsx`).
+   - **Level 3 — Page Views (`src/app/<route>/page.tsx`)**: Screen controllers responsible for data fetching and composing Level 1 & 2 components.
+   - **Duplication Prohibition**: Direct inline styling of raw buttons, unstyled inputs, custom tables, or modal overlays inside `page.tsx` is STRICTLY PROHIBITED. If a layout pattern is used on Screen A and needed on Screen B, it MUST be extracted into a Level 1 or Level 2 component before assembling Screen B.
+2. **Server Components as the Primary Default**:
    - All pages and components in `src/app/` are **React Server Components (RSC)** by default.
    - Placing the `'use client'` directive at the top level of a page is PROHIBITED.
-2. **Isolating `'use client'` to Leaf Components**:
+3. **Isolating `'use client'` to Leaf Components**:
    - Use `'use client'` only on the smallest components that genuinely require browser interaction (`useState`, `useEffect` hooks, or `onClick` events), such as interactive buttons or signature canvases.
 3. **Disciplined State Management**:
    - Use *Discriminated Unions* to manage mutation/data states:
