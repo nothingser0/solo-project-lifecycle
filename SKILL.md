@@ -117,4 +117,4 @@ Rules:
 
 ## Scripts
 
-`./scripts/gates/validate-gate.sh <MODULE>` · `./scripts/scaffold/init-project.sh <dir> <scale>` · `./scripts/scaffold/template-picker.sh` · `python scripts/runtime/analyze_ab_test.py` · see `scripts/` for more.
+`./scripts/gates/validate-gate.sh <MODULE>` (or `.ps1`) · `./scripts/scaffold/init-project.sh <dir> <scale>` (or `.ps1`) · `./scripts/scaffold/template-picker.sh` (or `.ps1`) · `python scripts/runtime/analyze_ab_test.py` · see `scripts/` for more.

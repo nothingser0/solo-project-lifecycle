@@ -1,8 +1,9 @@
 # Cursor Indexing Exclusion File (.cursorignore)
 # Keeps semantic indexing lean and avoids context exhaustion.
 
+# Giant catalogs & taxonomy (human-facing only, forbidden in SKILL.md)
 docs/INDEX.json
-references/taxonomy/PROJECT_CATALOG_1000.md
+references/taxonomy/**
 scripts/verify/test-gate-regressions.sh
 scripts/verify/golden-gate-output.txt
 scripts/verify/fixtures/**

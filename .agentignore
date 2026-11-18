@@ -2,9 +2,9 @@
 # Prevents autonomous agents, LLM indexing engines, and retrieval tools
 # from flooding context with giant catalogs, archived files, and binary fixtures.
 
-# Giant catalogs (human-facing only, forbidden in SKILL.md)
+# Giant catalogs & taxonomy (human-facing only, forbidden in SKILL.md)
 docs/INDEX.json
-references/taxonomy/PROJECT_CATALOG_1000.md
+references/taxonomy/**
 
 # Large regression test scripts and golden baselines
 scripts/verify/test-gate-regressions.sh

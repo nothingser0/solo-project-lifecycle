@@ -10,6 +10,7 @@
 **Outputs**: `docs/specs/PRD.md` + `docs/specs/FSD.md` → ready for M06. Small: pinned into `PROJECT_LITE.md` §5 + human sign-off (§6).
 
 **Scale Routing**:
+- **Spike / PoC**: **SKIPPED** — technical feasibility or throwaway prototype, direct build without formal specs.
 - **Small (Fast-Track)**: NO `PRD.md`/`FSD.md` — stack lock, DDL, API list, security blueprint, Module 04 handoff pinned into **Section 5 of `PROJECT_LITE.md`**.
 - **Enterprise**: routed to **A-Series Phase A02** + mandatory `docs/governance/ADR.md` and `docs/governance/AUDIT_TRAIL_REQUIREMENTS.md`; solo coding prohibited.
 - **Large (optional) / Enterprise path**: `M05B` in `references/playbooks/SCALE_WORKFLOWS.md` produces `SYSTEM_DESIGN_DOC.md`, `CAPACITY_PLANNING.md`, `DISASTER_RECOVERY_PLAN.md` from the templates in `templates/03-architecture-specs/`. M05B is a playbook work package, **not** a separate `validate-gate.sh` gate — the M05 gate itself verifies the stack lock, blueprint, handoff, and the High-Water-Mark/solo-capacity classifier.

@@ -69,9 +69,9 @@ Register the client inputs — sandbox keys, email credentials, master data CSV/
 
 ## 2. Scale Adaptation
 
-| Aspect | Small | Medium | Large | Enterprise |
+| Aspect | Spike / PoC & Small | Medium (Solo SaaS / Client) | Large | Enterprise |
 |---|---|---|---|---|
-| Path | SKIPPED (`PROJECT_LITE.md`) | Full M02 mandatory | Full M02, solo under a signed risk acceptance | A01 (WBS) — non-delegable |
+| Path | SKIPPED (`PROJECT_LITE.md` / direct build) | Full M02 mandatory | Full M02, solo under a signed risk acceptance | A01 (WBS) — non-delegable |
 | RBAC | 1–2 roles | 3–5 roles + matrix | Corporate catalog |
 | Stakeholder docs | Waived | MAP + PLAN (client/internal) | Corporate RACI |
 
@@ -114,7 +114,7 @@ All in **`docs/pm/`**:
 ### STEP 2 — Gate Verification (MANDATORY)
 
 ```
-[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M02]
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M02 (or .\scripts\gates\validate-gate.ps1 M02)]
 ```
 
 **MANDATORY**: execute `./scripts/gates/validate-gate.sh M02` (or `.ps1`). Exit 1 = incomplete — fix and re-run before declaring completion.

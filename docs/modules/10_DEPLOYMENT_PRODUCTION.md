@@ -74,7 +74,7 @@ Small → managed platform and documented prior-version rollback. Medium → cho
 ### STEP 2 — Gate Verification (MANDATORY)
 
 ```
-[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M10]
+[PASTE RAW OUTPUT OF: ./scripts/gates/validate-gate.sh M10 (or .\scripts\gates\validate-gate.ps1 M10)]
 ```
 
 Execute `./scripts/gates/validate-gate.sh M10` (or `.ps1`). Exit 1 = incomplete; fix and re-run.

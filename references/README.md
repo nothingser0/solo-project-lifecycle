@@ -1,6 +1,6 @@
 # References Library Catalog
 
-Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **66 files across 14 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
+Comprehensive index of the engineering guides, checklists, playbooks, stack quickstarts and pre-sales references in the `references/` directory — **65 files across 13 directories, this index included**. Recount before editing any count below; a catalog that drifts is worse than one that omits.
 
 ---
 
@@ -22,8 +22,7 @@ references/
 ├── solo/                (4 files)  - Solo developer architecture, patterns, standards, UI/UX
 ├── process/             (1 file)   - Anti-yes-man critical pushback rule
 ├── stacks/              (6 files)  - Decision metrics, 2026 support matrix & anti-overkill, quickstarts
-├── technical/          (12 files)  - Deep research, design systems, APM, compliance, animation, hydration policy, tooling comparison
-└── team/                (1 file)   - Team collaboration, agency handoff, multi-agent coordination
+└── technical/          (12 files)  - Deep research, design systems, APM, compliance, animation, hydration policy, tooling comparison
 ```
 
 ---
