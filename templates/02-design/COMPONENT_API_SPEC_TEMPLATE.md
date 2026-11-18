@@ -532,5 +532,5 @@ export const AllStates: Story = {
 
 **Questions**: Post in #design-system-help Slack channel  
 **Bug reports**: [GitHub Issues](https://github.com/company/design-system/issues)  
-**Feature requests**: Submit RFC via [RFC template](./COMPONENT_RFC_TEMPLATE.md)  
+**Feature requests**: Submit design RFC or proposal with rationale, alternatives considered, and proposed API shape.  
 **Maintainer**: @design-system-team

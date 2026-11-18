@@ -46,7 +46,11 @@ function Resolve-Bash {
             $ErrorActionPreference = $prevEAP
             if ($code -eq 0) { return $c }
             $script:LastBashCandidate = $c
-            $script:LastBashProbeError = "$probe"
+            $probeStr = "$probe"
+            if ($probeStr -match "0xC0000022" -or $code -eq -1073741502) {
+                $probeStr = "$probeStr`n  [Sandbox Restriction] Windows sandbox / container prevented Cygwin/MSYS2 from creating Named Objects (STATUS_ACCESS_DENIED 0xC0000022). Git Bash cannot spawn in this restricted environment."
+            }
+            $script:LastBashProbeError = $probeStr
         }
     }
 

@@ -79,7 +79,7 @@ Sanity checks, link validators, and ecosystem compatibility tools:
 
 ### Archived Patterns Reference
 
-Historical architecture patterns and engineering guides are preserved in [`archive/patterns/README.md`](../archive/patterns/README.md).
+Historical architecture patterns and engineering guides have been retired from the active pattern library to reduce bloat; active engineering patterns are maintained under [`patterns/`](../patterns/).
 
 ---
 
