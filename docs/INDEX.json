@@ -779,13 +779,6 @@
       ]
     },
     {
-      "path": "references/team/TEAM_COLLABORATION_GUIDE.md",
-      "cataloged": true,
-      "modules": [
-        "M02"
-      ]
-    },
-    {
       "path": "references/technical/AI_DEVELOPMENT_TOOLS_COMPARISON.md",
       "cataloged": true,
       "modules": [
@@ -951,10 +944,6 @@
       "cataloged": true
     },
     {
-      "path": "templates/01-discovery-commercial/OKR_TEMPLATE.md",
-      "cataloged": true
-    },
-    {
       "path": "templates/01-discovery-commercial/PROBLEM_FRAMING_CANVAS_TEMPLATE.md",
       "cataloged": true
     },
@@ -1020,10 +1009,6 @@
     },
     {
       "path": "templates/02-design/COMPONENT_REQUIREMENTS_TEMPLATE.md",
-      "cataloged": true
-    },
-    {
-      "path": "templates/02-design/COMPONENT_RFC_TEMPLATE.md",
       "cataloged": true
     },
     {
@@ -1167,10 +1152,6 @@
       "cataloged": false
     },
     {
-      "path": "templates/03-governance/CAB_PROCESS.md",
-      "cataloged": false
-    },
-    {
       "path": "templates/03-governance/COMMUNICATION_PLAN.md",
       "cataloged": false
     },
@@ -1191,14 +1172,6 @@
       "cataloged": true
     },
     {
-      "path": "templates/03-governance/ESCALATION_MATRIX.md",
-      "cataloged": true
-    },
-    {
-      "path": "templates/03-governance/EXECUTIVE_DECK_TEMPLATE.md",
-      "cataloged": true
-    },
-    {
       "path": "templates/03-governance/GDPR_COMPLIANCE_CHECKLIST.md",
       "cataloged": true
     },
@@ -1208,10 +1181,6 @@
     },
     {
       "path": "templates/03-governance/INCIDENT_RESPONSE_PLAN.md",
-      "cataloged": true
-    },
-    {
-      "path": "templates/03-governance/MEETING_CADENCE_GUIDE.md",
       "cataloged": true
     },
     {

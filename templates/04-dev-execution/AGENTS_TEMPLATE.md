@@ -35,6 +35,10 @@ You are a Senior Software Engineer responsible for building this system determin
     - The agent MUST inspect existing components in `src/components/ui/` (primitives) and `src/components/shared/` (composites) BEFORE writing any screen JSX.
     - If Screen B requires an element already present in Screen A (or in the approved prototype `docs/design/components/index.html`), the agent MUST import and reuse that component.
     - If a common UI element exists in Screen A but was not yet abstracted into a shared component, the agent MUST extract it into a reusable component first, update Screen A to use it, and then implement Screen B using that shared component. Re-implementing duplicate UI elements inline across screens is STRICTLY PROHIBITED.
+14. **The Change Fence (Strict File Isolation)**:
+    - The agent MUST ONLY create, edit, or delete files explicitly declared in the active TODO task's `- Files:` field.
+    - Drive-by refactorings of unrelated files, unprompted variable renaming in peripheral modules, editing package versions without instruction, or modifying configuration files outside the active task are STRICTLY PROHIBITED.
+    - If fulfilling a task genuinely requires touching an undeclared file (e.g. updating an exported interface), the agent MUST declare it explicitly or prompt the user before modifying it.
 
 ---
 

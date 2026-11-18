@@ -123,10 +123,4 @@ references/
 | [`MOBILE_ARCHITECTURE_GUIDE.md`](./technical/MOBILE_ARCHITECTURE_GUIDE.md) | Mobile viewport responsiveness, touch ergonomics, PWA configuration, cross-platform layouts | Module 04 |
 | [`UI_COMPONENT_ANIMATION_LIBRARY.md`](./technical/UI_COMPONENT_ANIMATION_LIBRARY.md) | Production micro-interaction animation patterns, Framer Motion/CSS transitions | Module 04 |
 
----
 
-## 9. Team Collaboration & Agency Handoff (`references/team/`)
-
-| File | Purpose | Referenced In |
-|---|---|---|
-| [`TEAM_COLLABORATION_GUIDE.md`](./team/TEAM_COLLABORATION_GUIDE.md) | Role responsibility matrix (PM/Design/Eng/QA), multi-stage handoffs, and multi-agent coordination | Module 02, 06 |
