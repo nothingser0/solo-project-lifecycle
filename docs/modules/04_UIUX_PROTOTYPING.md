@@ -14,11 +14,14 @@ In addition, it produces vector SVG assets in `assets/logo/`, an interactive reu
 **Scale calibration** (from `docs/pm/PROJECT_STATE.md` / `PROJECT_LITE.md`): **Small (M04-LITE)** — run the standalone LITE runbook [`variants/04_UIUX_LITE.md`](variants/04_UIUX_LITE.md) instead of this one. **Medium/Large** — full artifacts ≥2000B, logo ≥200B, 5-state matrix on all screens. **Enterprise** (non-solo capacity) — redirect to Seri A Advisory (Fase A02).
 
 
-## 1. Execution cycle (Steps 0.5–5)
+## 1. Execution cycle (Stages 1–4)
 
 ```text
 INPUT: SCOPE_STATEMENT.md + valid SOW (or M03 waived for Solo SaaS)
 
+================================================================================
+STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
+================================================================================
 0.5  INSPIRATION INTAKE -- first, blocking, every scale
      Human places >=1 reference in docs/design/inspiration/ (screenshots, brand board, clip, links.md).
      Static screenshots only -> the human must state the intended dynamic effects in this turn.
@@ -46,58 +49,53 @@ INPUT: SCOPE_STATEMENT.md + valid SOW (or M03 waived for Solo SaaS)
      mobile inputs, tabular-nums for money and counters), semantic triad tokens (success/warning/
      destructive/info), 4px spacing scale, radius scale, z-index map (base 0 ... toast 60), one icon set.
 
----
-### TWO PROTOTYPING PATHWAYS FOR M04 (CHOOSE ONE)
-Select one of the two official execution pathways below based on project requirements and available tooling:
+================================================================================
+STAGE 2: ASSET STAGING & MASTER COMPONENTS (Choose Pathway)
+================================================================================
+1A   MEDIA ASSET & ICON STAGING (Zero-Search Handoff to M06)
+     - Unified SVG Icons: Single cohesive family (Lucide Icons, stroke-1.75, 16px/20px). Zero emoji.
+     - Curated Photography: Collect and stage real high-res domain photos in assets/media/ or curated URLs
+       (e.g., room/property photos 16:10, building exterior, photo avatars, payment slip previews).
+       Raw blank boxes, text-only card slop, or placeholder initials circles are STRICTLY FORBIDDEN.
+1B   MASTER COMPONENTS SHOWCASE (Choose Option 1 or Option 2 below):
+     - OPTION 1 (Code-First): docs/design/components/index.html with interactive variant states.
+     - OPTION 2 (Design-First via MCP Figcraft): Master Components on Figma canvas from DESIGN.md tokens.
+       * FigCraft Anti-Slop: ZERO unicode emojis in text layers (never "🏠 Kamar"; create separate vector
+         nodes with SVG path for icons); 100% photo fills on media/avatar cards (never blank boxes or "DP" initials).
+     STOP & ACC: Human reviews and approves the component kit before any screen assembly.
 
-* **OPTION 1: CODE-FIRST PATHWAY (Native HTML/CSS/JS Prototype)**
-  - **Profile**: Default in-repo standard without external design tool or API dependencies. Best for solo developers iterating directly in the browser.
-  - **Step 1.5**: Build `docs/design/components/index.html` on shared CSS/JS. 100% functionally interactive (live dialogs, working dropdown popovers, dismissible toasts). Approved by human before screen assembly.
-  - **Step 2**: Assemble prototype screens in `docs/design/screens/<role>/` covering 100% of SITEMAP routes. Shared CSS and semantic markup serve as direct porting baseline for React/Next.js in M06.
+================================================================================
+STAGE 3: HIGH-FIDELITY SCREEN ASSEMBLY & WIREFLOW SCENARIOS
+================================================================================
+2    HIGH-FIDELITY PROTOTYPE SCREENS (Anti-Wireframe Slop -- 100% SITEMAP Coverage)
+     Assemble dedicated screens in docs/design/screens/<role>/ (Option 1) or Figma frames (Option 2).
+     High-fidelity ONLY: M04 never produces low-fidelity sketches or gray wireframe drafts.
+     Every screen embeds its staged real photos, circular photo avatars, Lucide SVG icons, and authentic
+     domain data (strictly zero "Lorem ipsum", "John Doe", "Jane Doe", or "example.com").
+     FigCraft Guardrails: No unicode emoji shortcuts in text layers; all card photo frames MUST have image
+     layers (no empty beige boxes); user avatars must use photo fills, never flat initials circles (DP, SR).
+     Visual DNA: real CSS Grid timelines; segmented progress dashes; hex sampled from benchmark;
+     tactile micro-interactions (hover duration-150, active scale-[0.98], focus-visible ring-2);
+     shared CSS/JS linkage; zero ad-hoc styling drift. In M06, approved screens are ported as-is.
+2.5  WIREFLOW INTERACTION RUNBOOKS -- docs/specs/wireflows/SCENARIOS_WFxx.md per wireflow screen.
+     (NOTE: Wireflows are behavioral test runbooks, NOT wireframe drawings): baseline fixture,
+     happy path, sad path (inline validation errors), domain exceptions (offline/timeout/zero results),
+     and RBAC error handling. Sunny-day-only wireflows are PROHIBITED.
 
-* **OPTION 2: DESIGN-FIRST PATHWAY (MCP Figcraft / Figma Canvas)**
-  - **Profile**: Visual-first on Figma canvas orchestrated via MCP Figcraft. Compatible with Google Antigravity, Claude Code, Claude Desktop, OpenAI Codex, Cursor, and Windsurf.
-  - **Project-Level Setup**: When entering M04, copy `templates/02-design/MCP_FIGCRAFT_TEMPLATE.json` to the project root as `.mcp.json`. Ensure FigCraft is running with `--control 7979` (Live Attached mode) or run in headless mode.
-  - **Step 1.5**: Call MCP Figcraft to generate Master Components and variants (Default, Hover, Focus, Active, Disabled, Loading) in Figma from `DESIGN.md` tokens and `COMPONENT_REQUIREMENTS.md`.
-  - **Step 2**: Use MCP Figcraft to craft Full Screen Frames per role in Figma adhering 1:1 to `SITEMAP.md` routes using realistic domain data.
-  - **Anti-Triple-Work Rule**: Do NOT hand-code complex static HTML prototypes after finalizing in Figma. Export visual previews / lightweight HTML screens to `docs/design/screens/<role>/` (or document the Figma file/frame URL in `DESIGN_SPEC.md`) to satisfy mechanical gate verification.
-  - **Handoff to M06**: Directly port and scaffold production React/Next.js components (e.g. TSX + CSS Modules / Tailwind) in M06 straight from the Figma source of truth, skipping intermediate throwaway code.
----
-
-2    Prototype screens in docs/design/screens/<role>/ (public, user, staff, admin) linking
-     docs/design/shared/css/styles.css and shared/js/app.js (or exported Figcraft previews). No #role-switcher. 100% of SITEMAP screens.
-     Zero "Lorem ipsum", "John Doe", "Jane Doe", "example.com", or flat placeholder slop: all screen copy,
-     tables, forms, and cards must use realistic, domain-authentic localized data.
-     Visual DNA (mandatory): real CSS Grid timelines, never flat full-width rows; segmented progress
-     indicators stay segmented dashes, never thick generic lines; hex sampled from the benchmark (never
-     neon, never default orange); at most one primary action per card, never 3-4 buttons crowding a
-     list card; real media with correct aspect ratio and ring border, never text-only card slop;
-     one SVG icon set with consistent stroke and size, never emoji; circular avatars with counter
-     badges and realistic placeholders; floating menus and popovers rounded-2xl + shadow-xl, a raw
-     unstyled native <select> is forbidden; tactile micro-interactions on every interactive element
-     (hover duration-150, active scale-[0.98], focus-visible ring-2, backdrop-blur modal choreography,
-     fluid progress transitions) with reduced-motion respected; dialogs and in-page notices instead of
-     alert/confirm/prompt; no SCR-/REQ-/M06-/FSD- codes in copy; no dead links (href="#") or inert buttons.
-     Every screen links the shared stylesheet and script; no per-page inline <style> drift — shared CSS,
-     never hardcoded ad-hoc styles. In M06 the approved prototypes are ported as-is: zero ad-hoc layout
-     invention during coding.
-2.5  Wireflow runbooks docs/specs/wireflows/SCENARIOS_WFxx.md per wireflow screen: baseline fixture
-     with realistic domain entities, happy path, sad path (inline validation errors), domain exceptions
-     (offline/timeout/zero search results), and RBAC privilege error runbooks. Sunny-day-only wireflows
-     are PROHIBITED.
+================================================================================
+STAGE 4: STATE COVERAGE, AUDIT & DESIGN FREEZE
+================================================================================
 3    DESIGN_SPEC.md per screen: 5-state matrix (default, loading, empty with CTA, error with retry,
      success) in real copy; destructive actions require typed confirmation and an audit reason;
      scroll-padding-bottom >=96px keeps focused inputs above the mobile keyboard.
 4    python3 scripts/design/uiux_audit.py docs/design/screens/ --fix (Windows uiux-audit.ps1 -Fix):
      component uniformity, motion discipline, zero emoji, cross-screen parity, auto-fix of shared
-     stylesheet and viewport links. Optional: one browser pass per P0 flow at mobile and desktop width
-     with a clean console; never add a browser dependency just for this.
+     stylesheet and viewport links.
 5    Walkthrough + Design Freeze: side-by-side against the reference, five Visual Review dimensions
      scored 0-2 in DESIGN_SPEC.md, human opens the prototype and signs. No M05/M06 before sign-off.
-     Conversion flows (landing, signup, paywall) also review offer clarity, friction, trust and
-     hesitation -- evidence-based, never manipulative; skip when conversion is not the outcome.
+     Conversion flows (landing, signup, paywall) also review offer clarity, friction, trust, hesitation.
 
-OUTPUT: 6 artifacts + component showcase + prototype screens + wireflow runbooks -> Module 05
+OUTPUT: 6 artifacts + staged assets + component showcase + high-fidelity screens + wireflow runbooks -> M05
 ```
 
 **Full-detail cycle** (the same steps with every original clause) lives in

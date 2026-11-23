@@ -251,9 +251,26 @@ Integrated visual workflow utilizing Figma via MCP Figcraft.
   3. **Screen Composition**: Figcraft crafts full screen frames per role (1:1 SITEMAP parity) populated with authentic domain data (strictly no placeholder personas or lorem ipsum).
   4. **Visual Review & Design Freeze**: Human reviews layout directly on the Figma board, validates interactions, and executes Design Freeze by recording the Figma File/Node URL in `docs/specs/DESIGN_SPEC.md`.
   5. **Anti-Triple-Work Principle**: Eliminate redundant development cycles. Never write complex throwaway static HTML after finalizing designs in Figma. Export screenshot previews or lightweight HTML frames into `docs/design/screens/` to satisfy automated gate checks (`M04.sh`).
+
+#### MCP Figcraft Anti-Slop & Quality Enforcement Rules (MANDATORY)
+When an autonomous agent orchestrates FigCraft via MCP tools (`create_node`, `set_properties`, `batch`), it MUST adhere to the following anti-slop rules without exception:
+1. **Zero Unicode Emojis in FigCraft Text Layers**:
+   - 🚫 **STRICTLY PROHIBITED**: Inserting unicode emojis into text characters (e.g. `text: "🏠 Kamar Terisi"`, `text: "👤 Penghuni Baru"`, `text: "💰 Total Penerimaan"`). This is lazy AI Slop.
+   - ✅ **MANDATORY**: Every icon MUST be created as a dedicated vector layer (`type: "vector"`, `path: "<svg-path>"`) from the Lucide SVG icon family, or instantiated from a shared icon master component. Group the vector icon and the label in an auto-layout frame (`layout: "horizontal"`, `gap: 8`, `crossAlign: "center"`).
+2. **100% Media Card Photo Population (Zero Blank Boxes)**:
+   - 🚫 **STRICTLY PROHIBITED**: Creating property, room, product, or banner cards with empty solid-color rectangles (e.g. pastel peach `#FBF6EF` boxes) or only populating the first card while leaving subsequent cards as empty boxes.
+   - ✅ **MANDATORY**: 100% of cards in any grid, list, or bento layout MUST contain authentic image fills or dedicated child image layers (`type: "rectangle"`, `fills: [{type: "IMAGE", ...}]` or loaded image assets).
+3. **Photo Avatars (Zero Monochromatic Initials Circles)**:
+   - 🚫 **STRICTLY PROHIBITED**: Substituting avatars with flat, raw monochrome initials circles (`DP`, `SR`, `AF`, `BS`).
+   - ✅ **MANDATORY**: Avatars MUST use circular frames with photo fills or curated avatar image assets with subtle ring borders (`stroke: "#0000000D"`, `strokeWeight: 1`).
+4. **Authentic Metric Indicators (No Fake Continuous Bars)**:
+   - If benchmark or spec specifies segmented progress dashes or circular arcs, model them with proper geometry or segmented dash frames, not thick generic progress lines.
+5. **No Internal Spec Identifier Leaks**:
+   - Internal spec labels (`SCR-STF-01`, `REQ-04`, `FSD-xx`) belong in Frame/Page names only, NEVER inside user-visible UI copy, navigation links, or card badges.
+
 - **Handoff to M06 (Direct-to-React)**:
   - Skip intermediate vanilla HTML templates.
-  - Directly translate Figma components and design tokens into production-ready framework components (e.g., Next.js App Router TSX with CSS Modules or Tailwind CSS) during M06, maintaining 1:1 visual fidelity with the Figma design.
+  - Directly translate Figma components and design tokens into production-ready framework components (e.g., Next.js App Router TSX with CSS Modules or Tailwind CSS, `<Home className="h-4 w-4" />` Lucide icons, Next/Image) during M06, maintaining 1:1 visual fidelity with the Figma design.
 
 ---
 
@@ -666,10 +683,17 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
          - Z-Index hierarchy: Base (0), Sticky Nav (10), Bottom Bar (20), Modal Backdrop (40), Modal Content (50), Popover (55), Toast (60).
        - **Visual Craft**: Use a coherent icon set, visible keyboard focus, and intentional effects grounded in the reference and usability needs; avoid generic decoration that weakens hierarchy or readability.
 
+ ▼ 1A. Media Asset & Icon Staging (Zero-Search Handoff to M06)
+       Before building full screen prototypes, the agent MUST stage and lock all visual assets:
+       - **Unified SVG Iconography (Zero Emoticons)**: Select and lock one cohesive SVG icon family (e.g. Lucide Icons or Heroicons) with uniform stroke width (`stroke-[1.75]`), standard size scales (`16px/20px/24px`), and muted neutral colors. All icon names used here will be imported directly in M06 (e.g. from `lucide-react`). Unicode emojis and low-res raster icons are STRICTLY PROHIBITED.
+       - **Curated High-Res Photography & Media**: If the application displays rooms, properties, products, facilities, or users, stage authentic media assets in `assets/media/`, `public/images/`, or curated high-resolution URLs. Enforce matching aspect ratios (`aspect-video`, `aspect-[16/10]`, `aspect-[4/3]`, `aspect-square`), object-cover fitting, and subtle inner borders (`ring-1 ring-black/5`).
+       - **Avatars & Brand Marks**: Stage circular photo avatars with soft borders and status badges; reference the brand SVGs from `docs/design/brand/` (`logo.svg`, `favicon.svg`).
+       - **Zero-Search Guarantee**: In M06 frontend development, every image URL/path and Lucide icon name is ported directly from M04 artifacts without requiring the developer or agent to hunt for assets again.
+
  ▼ 1.5. Reusable Component Showcase First (MANDATORY STOP & ACC)
-       Before assembling screen prototypes, the agent MUST author the reusable component library:
-       - Scaffold `docs/design/components/index.html` (or modular component files) linked to `docs/design/shared/css/styles.css` and `docs/design/shared/js/app.js`.
-       - Render working, tactile instances of all primitives and composites: Buttons, FormFields, Inputs, Popovers, Cards, Table Card Reflow, Badges, Modals, and Toasts.
+       Before assembling screen prototypes, the agent MUST author the reusable component library using one of two official pathways:
+       - **OPTION 1 (Code-First HTML/CSS)**: Scaffold `docs/design/components/index.html` linked to `docs/design/shared/css/styles.css` and `docs/design/shared/js/app.js`. Render working, tactile instances of all primitives and composites: Buttons, FormFields, Inputs, Popovers, Cards, Table Card Reflow, Badges, Modals, and Toasts.
+       - **OPTION 2 (Design-First via MCP Figcraft)**: Call MCP Figcraft to generate Master Components and variants (Default, Hover, Focus, Active, Disabled, Loading) directly on the Figma canvas using tokens from `DESIGN.md` and inventory from `COMPONENT_REQUIREMENTS.md`.
        - ⛔ **STOP & ACC**: Present the Component Showcase to the human. Once approved (ACC), proceed to screen assembly. This eliminates copy-paste drift and guarantees 100% component consistency across screens.
  ▼ 2. Author Interactive Prototype (Unified HTML/CSS/JS in Dedicated Role Subfolders)
         Build interactive HTML screens in `docs/design/screens/<role>/` linked to global shared CSS (`docs/design/shared/css/styles.css`) and global JS (`docs/design/shared/js/app.js`).
@@ -680,8 +704,9 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
           - `docs/design/screens/user/` (e.g. `dashboard.html`, `profile.html`, `resources.html`)
           - `docs/design/screens/staff/` (e.g. `workspace.html`, `queue.html`)
           - `docs/design/screens/admin/` (e.g. `dashboard.html`, `users.html`, `audit-logs.html`, `settings.html`)
-        - Reusable Component Assembly: Assemble screens using the pre-approved components from Step 1.5.
+        - Reusable Component Assembly: Assemble screens using the pre-approved components from Step 1.5 and staged assets from Step 1A.
         - Full Coverage: 100% of screens declared in `SITEMAP.md` (`SCR-01..SCR-NN`) must be visually prototyped.
+        - **Anti-Wireframe Slop (High-Fidelity Only)**: Wireframes, low-fidelity sketches, or gray-box drawings are STRICTLY PROHIBITED in M04. M04 produces high-fidelity interactive prototypes ONLY (Option 1 native HTML/CSS/JS or Option 2 FigCraft frames). Every screen must directly embed the staged real photography, circular photo avatars, Lucide SVG icons, and authentic localized domain data from Step 1A.
         **Visual Benchmark DNA & Anti-Slop Prototype Fidelity Rules (MANDATORY)**:
         - **Spatial & Timeline Grid Fidelity**: If the benchmark features a Gantt-style schedule or calendar timeline with date columns, the prototype MUST implement an authentic CSS Grid with column-aligned horizontal event spans. Creating flat, full-width `w-full` table rows that disregard the date columns above them is STRICTLY FORBIDDEN as Fake Timeline Slop.
         - **Micro-Indicator Fidelity**: If the benchmark utilizes segmented progress dashes (e.g. 5 segmented pill dashes), the prototype MUST implement segmented dashes instead of substituting a generic continuous progress line.
@@ -696,7 +721,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
         - **Zero Spec Identifier Leaks**: Internal spec codes (`SCR-xx`, `REQ-xx`, `M06-FE-xx`, `FSD-xx`) are project management metadata. They MUST NEVER appear in user-facing UI badges, headings, cards, or microcopy.
         - **Modular & Reusable Component Architecture (Shared CSS & JS Standard)**: Prototype screens in `docs/design/screens/<role>/` MUST NOT be authored as isolated, monolithic HTML files containing duplicate inline `<style>` tags or arbitrary hardcoded styles that drift across pages. Each screen HTML (`index.html`, `dashboard.html`, etc.) MUST link to the single centralized stylesheet (`../../shared/css/styles.css`) and centralized script (`../../shared/js/app.js`). All design tokens from `DESIGN.md` (colors, typography, spacing, radius) and reusable component classes (`.btn`, `.card`, `.badge`, `.navbar`, `.sidebar`, `.form-input`) must reside in `shared/css/styles.css` so button sizes, card paddings, font scales, badges, navbars, and colors remain 100% consistent across every screen in `SITEMAP.md`.
   ▼ 2.5 Wireflow Scenarios & Interaction Runbooks (docs/specs/wireflows/SCENARIOS_WFxx.md)
-        Authored in tandem with screen prototype assembly (using `templates/02-design/SCENARIOS_WF_TEMPLATE.md`):
+        Authored in tandem with screen prototype assembly (using `templates/02-design/SCENARIOS_WF_TEMPLATE.md`). NOTE: Wireflows are behavioral interaction test runbooks, NOT low-fidelity sketches or wireframe drawings:
         - Every distinct wireflow screen (WF-01..WF-NN / SCR-01..SCR-NN) gets a companion testing runbook in `docs/specs/wireflows/`.
         - Documents: (1) Testing Baseline Fixture (USR-01..USR-NN with seed credentials & RBAC scopes);
                      (2) Exhaustive Happy Path with exact action sequences & dynamic redirection;

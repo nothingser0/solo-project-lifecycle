@@ -36,6 +36,9 @@
   - All interactive tap targets (buttons, steppers, icon triggers) MUST meet minimum ≥ 44px × 44px (`h-11 min-w-11`).
 - **Visual Anti-Slop Directives**:
   - NEVER use emoticons or raw OS emojis in the UI; ALWAYS use cohesive SVG icons (e.g. Lucide / Heroicons).
+  - FOR FIGCRAFT / FIGMA MCP: When generating canvas layers, NEVER insert unicode emojis into `text` layers (e.g. `text: "🏠 Kamar"` is STRICTLY FORBIDDEN). Create separate `vector` layers with SVG path data for icons.
+  - FOR MEDIA CARDS: 100% of product, room, or banner cards MUST contain real image fills / photo layers. Empty solid-color rectangles or pastel placeholder boxes are STRICTLY FORBIDDEN.
+  - FOR USER AVATARS: Always use circular frames with photo image fills or curated photo assets. NEVER use flat monochrome 2-letter initials circles (`DP`, `SR`, `AF`).
   - NO purple/neon gradients, NO glassmorphism backdrop blur, NO drop shadows > shadow-md.
   - NO cliché pill badges (`[✨ AI Powered]`, `[🚀 Next Gen]`) or fake testimonials ("Jane Doe, VP at TechCorp").
   - ZERO "Lorem ipsum", "John Doe", "Jane Doe", "Product 1/2", or `example.com` placeholder slop: generate authentic, domain-realistic localized copy and entities.
