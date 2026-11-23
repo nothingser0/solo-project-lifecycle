@@ -220,57 +220,19 @@ docs/specs/COMPONENT_REQUIREMENTS.md
 
 ---
 
-## Prototyping Approach Selection (STEP 2) — Two Primary Pathways
+## Prototyping Standard (STEP 2) — Native HTML/CSS/JS Prototype (Code-First)
 
-Choose the most efficient pathway matching your workflow and tooling setup:
-
-| Need / Tooling | Chosen Pathway | When to Choose |
-|---|---|---|
-| **Low-dependency / In-Repo Code** | **OPTION 1: Native HTML/CSS/JS (Code-First)** | Fast solo projects, no third-party design tools, immediate local browser verification, and using markup directly for M06 scaffolding. |
-| **Visual Canvas / Figma Integration** | **OPTION 2: MCP Figcraft (Design-First)** | Visual exploration on Figma canvas, rigorous auto-layout, stakeholder presentation, followed by direct-to-code porting to React in M06. |
-| Rapid generated React/Tailwind screens | AI Visual Builder (v0 / Stitch) | Standard Next.js/Tailwind stacks requiring immediate drag-and-drop preview. |
-
----
-
-### OPTION 1: Native HTML/CSS/JS Prototype (Traditional Code-First Pathway)
-Default standalone in-repo standard without external credentials or design platform dependencies.
+Default standalone in-repo standard without external credentials, platform lock-in, or third-party design tool dependencies.
 - **Workflow**:
-  1. Define design tokens in `DESIGN.md` and inventory in `COMPONENT_REQUIREMENTS.md`.
-  2. Build fully interactive `docs/design/components/index.html`.
-  3. Assemble screens in `docs/design/screens/<role>/`.
-  4. Human reviews in browser and records Design Freeze signature in `DESIGN_SPEC.md`.
-- **Handoff to M06**: CSS tokens in `docs/design/shared/css/` and HTML structure are ported directly into React/Next.js components.
-
----
-
-### OPTION 2: MCP Figcraft Prototype (Modern Design-First Pathway)
-Integrated visual workflow utilizing Figma via MCP Figcraft.
-- **Workflow**:
-  1. **Token Synchronization**: Extract palette, typography scale, spacing, and radius tokens from `DESIGN.md` into Figma styles and variables using Figcraft.
-  2. **Component Crafting**: Figcraft generates atomic and composite components on the Figma canvas (Buttons, Inputs, Modals, Cards) complete with Auto-Layout and Variants (Default, Hover, Focus, Disabled, Loading).
-  3. **Screen Composition**: Figcraft crafts full screen frames per role (1:1 SITEMAP parity) populated with authentic domain data (strictly no placeholder personas or lorem ipsum).
-  4. **Visual Review & Design Freeze**: Human reviews layout directly on the Figma board, validates interactions, and executes Design Freeze by recording the Figma File/Node URL in `docs/specs/DESIGN_SPEC.md`.
-  5. **Anti-Triple-Work Principle**: Eliminate redundant development cycles. Never write complex throwaway static HTML after finalizing designs in Figma. Export screenshot previews or lightweight HTML frames into `docs/design/screens/` to satisfy automated gate checks (`M04.sh`).
-
-#### MCP Figcraft Anti-Slop & Quality Enforcement Rules (MANDATORY)
-When an autonomous agent orchestrates FigCraft via MCP tools (`create_node`, `set_properties`, `batch`), it MUST adhere to the following anti-slop rules without exception:
-1. **Zero Unicode Emojis in FigCraft Text Layers**:
-   - 🚫 **STRICTLY PROHIBITED**: Inserting unicode emojis into text characters (e.g. `text: "🏠 Kamar Terisi"`, `text: "👤 Penghuni Baru"`, `text: "💰 Total Penerimaan"`). This is lazy AI Slop.
-   - ✅ **MANDATORY**: Every icon MUST be created as a dedicated vector layer (`type: "vector"`, `path: "<svg-path>"`) from the Lucide SVG icon family, or instantiated from a shared icon master component. Group the vector icon and the label in an auto-layout frame (`layout: "horizontal"`, `gap: 8`, `crossAlign: "center"`).
-2. **100% Media Card Photo Population (Zero Blank Boxes)**:
-   - 🚫 **STRICTLY PROHIBITED**: Creating property, room, product, or banner cards with empty solid-color rectangles (e.g. pastel peach `#FBF6EF` boxes) or only populating the first card while leaving subsequent cards as empty boxes.
-   - ✅ **MANDATORY**: 100% of cards in any grid, list, or bento layout MUST contain authentic image fills or dedicated child image layers (`type: "rectangle"`, `fills: [{type: "IMAGE", ...}]` or loaded image assets).
-3. **Photo Avatars (Zero Monochromatic Initials Circles)**:
-   - 🚫 **STRICTLY PROHIBITED**: Substituting avatars with flat, raw monochrome initials circles (`DP`, `SR`, `AF`, `BS`).
-   - ✅ **MANDATORY**: Avatars MUST use circular frames with photo fills or curated avatar image assets with subtle ring borders (`stroke: "#0000000D"`, `strokeWeight: 1`).
-4. **Authentic Metric Indicators (No Fake Continuous Bars)**:
-   - If benchmark or spec specifies segmented progress dashes or circular arcs, model them with proper geometry or segmented dash frames, not thick generic progress lines.
-5. **No Internal Spec Identifier Leaks**:
-   - Internal spec labels (`SCR-STF-01`, `REQ-04`, `FSD-xx`) belong in Frame/Page names only, NEVER inside user-visible UI copy, navigation links, or card badges.
-
-- **Handoff to M06 (Direct-to-React)**:
-  - Skip intermediate vanilla HTML templates.
-  - Directly translate Figma components and design tokens into production-ready framework components (e.g., Next.js App Router TSX with CSS Modules or Tailwind CSS, `<Home className="h-4 w-4" />` Lucide icons, Next/Image) during M06, maintaining 1:1 visual fidelity with the Figma design.
+  1. **Token & Inventory Alignment**: Define design tokens in `DESIGN.md` and complete 3-tier inventory in `COMPONENT_REQUIREMENTS.md`.
+  2. **Asset & Icon Staging (Step 1A)**: Lock Lucide SVG icons and high-resolution domain photography before building components.
+  3. **Master Component Showcase (Step 1B)**: Build fully interactive `docs/design/components/index.html` linked to shared CSS/JS. Test all variants (Default, Hover, Focus, Active, Disabled, Loading). STOP & ACC: Human reviews and approves before screen assembly.
+  4. **High-Fidelity Screen Assembly (Step 2)**: Assemble dedicated screens in `docs/design/screens/<role>/` covering 100% of SITEMAP routes using pre-approved components.
+  5. **Wireflow Interaction Runbooks (Step 2.5)**: Document state logic and exception handling in `docs/specs/wireflows/SCENARIOS_WFxx.md`.
+  6. **Automated Audit Pass (Step 4)**: Audit screens using `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix` (Windows: `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix`).
+  7. **Design Freeze (Step 5)**: Human reviews in browser and records Design Freeze signature in `DESIGN_SPEC.md`.
+- **Handoff to M06 (Direct-to-React Porting)**:
+  - CSS tokens in `docs/design/shared/css/styles.css` and semantic markup structure are ported 1-to-1 directly into React/Next.js components (e.g. TSX + Tailwind / CSS Modules). Eliminates guesswork and ensures 100% visual parity.
 
 ---
 
@@ -691,9 +653,8 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
        - **Zero-Search Guarantee**: In M06 frontend development, every image URL/path and Lucide icon name is ported directly from M04 artifacts without requiring the developer or agent to hunt for assets again.
 
  ▼ 1.5. Reusable Component Showcase First (MANDATORY STOP & ACC)
-       Before assembling screen prototypes, the agent MUST author the reusable component library using one of two official pathways:
-       - **OPTION 1 (Code-First HTML/CSS)**: Scaffold `docs/design/components/index.html` linked to `docs/design/shared/css/styles.css` and `docs/design/shared/js/app.js`. Render working, tactile instances of all primitives and composites: Buttons, FormFields, Inputs, Popovers, Cards, Table Card Reflow, Badges, Modals, and Toasts.
-       - **OPTION 2 (Design-First via MCP Figcraft)**: Call MCP Figcraft to generate Master Components and variants (Default, Hover, Focus, Active, Disabled, Loading) directly on the Figma canvas using tokens from `DESIGN.md` and inventory from `COMPONENT_REQUIREMENTS.md`.
+       Before assembling screen prototypes, the agent MUST author the reusable component library:
+       - Scaffold `docs/design/components/index.html` linked to `docs/design/shared/css/styles.css` and `docs/design/shared/js/app.js`. Render working, tactile instances of all primitives, form fields, and composites from `COMPONENT_REQUIREMENTS.md`: Buttons, FormFields, Inputs, Popovers, Cards, Table Card Reflow, Badges, Modals, and Toasts.
        - ⛔ **STOP & ACC**: Present the Component Showcase to the human. Once approved (ACC), proceed to screen assembly. This eliminates copy-paste drift and guarantees 100% component consistency across screens.
  ▼ 2. Author Interactive Prototype (Unified HTML/CSS/JS in Dedicated Role Subfolders)
         Build interactive HTML screens in `docs/design/screens/<role>/` linked to global shared CSS (`docs/design/shared/css/styles.css`) and global JS (`docs/design/shared/js/app.js`).
@@ -706,7 +667,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
           - `docs/design/screens/admin/` (e.g. `dashboard.html`, `users.html`, `audit-logs.html`, `settings.html`)
         - Reusable Component Assembly: Assemble screens using the pre-approved components from Step 1.5 and staged assets from Step 1A.
         - Full Coverage: 100% of screens declared in `SITEMAP.md` (`SCR-01..SCR-NN`) must be visually prototyped.
-        - **Anti-Wireframe Slop (High-Fidelity Only)**: Wireframes, low-fidelity sketches, or gray-box drawings are STRICTLY PROHIBITED in M04. M04 produces high-fidelity interactive prototypes ONLY (Option 1 native HTML/CSS/JS or Option 2 FigCraft frames). Every screen must directly embed the staged real photography, circular photo avatars, Lucide SVG icons, and authentic localized domain data from Step 1A.
+        - **Anti-Wireframe Slop (High-Fidelity Only)**: Wireframes, low-fidelity sketches, or gray-box drawings are STRICTLY PROHIBITED in M04. M04 produces high-fidelity interactive prototypes ONLY (native HTML/CSS/JS). Every screen must directly embed the staged real photography, circular photo avatars, Lucide SVG icons, and authentic localized domain data from Step 1A.
         **Visual Benchmark DNA & Anti-Slop Prototype Fidelity Rules (MANDATORY)**:
         - **Spatial & Timeline Grid Fidelity**: If the benchmark features a Gantt-style schedule or calendar timeline with date columns, the prototype MUST implement an authentic CSS Grid with column-aligned horizontal event spans. Creating flat, full-width `w-full` table rows that disregard the date columns above them is STRICTLY FORBIDDEN as Fake Timeline Slop.
         - **Micro-Indicator Fidelity**: If the benchmark utilizes segmented progress dashes (e.g. 5 segmented pill dashes), the prototype MUST implement segmented dashes instead of substituting a generic continuous progress line.

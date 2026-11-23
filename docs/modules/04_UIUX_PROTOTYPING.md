@@ -50,33 +50,37 @@ STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
      destructive/info), 4px spacing scale, radius scale, z-index map (base 0 ... toast 60), one icon set.
 
 ================================================================================
-STAGE 2: ASSET STAGING & MASTER COMPONENTS (Choose Pathway)
+STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
 ================================================================================
 1A   MEDIA ASSET & ICON STAGING (Zero-Search Handoff to M06)
      - Unified SVG Icons: Single cohesive family (Lucide Icons, stroke-1.75, 16px/20px). Zero emoji.
      - Curated Photography: Collect and stage real high-res domain photos in assets/media/ or curated URLs
        (e.g., room/property photos 16:10, building exterior, photo avatars, payment slip previews).
        Raw blank boxes, text-only card slop, or placeholder initials circles are STRICTLY FORBIDDEN.
-1B   MASTER COMPONENTS SHOWCASE (Choose Option 1 or Option 2 below):
-     - OPTION 1 (Code-First): docs/design/components/index.html with interactive variant states.
-     - OPTION 2 (Design-First via MCP Figcraft): Master Components on Figma canvas from DESIGN.md tokens.
-       * FigCraft Anti-Slop: ZERO unicode emojis in text layers (never "🏠 Kamar"; create separate vector
-         nodes with SVG path for icons); 100% photo fills on media/avatar cards (never blank boxes or "DP" initials).
+1B   REUSABLE MASTER COMPONENT SHOWCASE
+     Scaffold docs/design/components/index.html linked to docs/design/shared/css/styles.css and
+     shared/js/app.js. Render 100% functionally interactive instances of all primitives, form fields,
+     and composite patterns from COMPONENT_REQUIREMENTS.md with active states (dialogs, popovers, toasts).
      STOP & ACC: Human reviews and approves the component kit before any screen assembly.
 
 ================================================================================
 STAGE 3: HIGH-FIDELITY SCREEN ASSEMBLY & WIREFLOW SCENARIOS
 ================================================================================
 2    HIGH-FIDELITY PROTOTYPE SCREENS (Anti-Wireframe Slop -- 100% SITEMAP Coverage)
-     Assemble dedicated screens in docs/design/screens/<role>/ (Option 1) or Figma frames (Option 2).
+     Assemble dedicated screens in docs/design/screens/<role>/ (public, user, staff, admin) linking
+     docs/design/shared/css/styles.css and shared/js/app.js. No #role-switcher. 100% of SITEMAP screens.
      High-fidelity ONLY: M04 never produces low-fidelity sketches or gray wireframe drafts.
      Every screen embeds its staged real photos, circular photo avatars, Lucide SVG icons, and authentic
      domain data (strictly zero "Lorem ipsum", "John Doe", "Jane Doe", or "example.com").
-     FigCraft Guardrails: No unicode emoji shortcuts in text layers; all card photo frames MUST have image
-     layers (no empty beige boxes); user avatars must use photo fills, never flat initials circles (DP, SR).
-     Visual DNA: real CSS Grid timelines; segmented progress dashes; hex sampled from benchmark;
-     tactile micro-interactions (hover duration-150, active scale-[0.98], focus-visible ring-2);
-     shared CSS/JS linkage; zero ad-hoc styling drift. In M06, approved screens are ported as-is.
+     Visual DNA: real CSS Grid timelines, never flat full-width rows; segmented progress indicators
+     stay segmented dashes; hex sampled from benchmark (never neon, never default orange); at most one
+     primary action per card; real media with correct aspect ratio and ring border, never text-only card slop;
+     one SVG icon set with consistent stroke and size, never emoji; circular avatars with counter badges;
+     floating menus and popovers rounded-2xl + shadow-xl; tactile micro-interactions (hover duration-150,
+     active scale-[0.98], focus-visible ring-2); dialogs and in-page notices instead of alert/confirm/prompt;
+     no SCR-/REQ-/M06-/FSD- codes in copy; no dead links (href="#") or inert buttons.
+     Shared CSS/JS linkage; zero ad-hoc styling drift. In M06, approved screens are ported as-is:
+     zero ad-hoc layout invention during coding.
 2.5  WIREFLOW INTERACTION RUNBOOKS -- docs/specs/wireflows/SCENARIOS_WFxx.md per wireflow screen.
      (NOTE: Wireflows are behavioral test runbooks, NOT wireframe drawings): baseline fixture,
      happy path, sad path (inline validation errors), domain exceptions (offline/timeout/zero results),

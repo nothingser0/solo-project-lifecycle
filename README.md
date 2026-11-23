@@ -83,10 +83,6 @@ sequenceDiagram
 * **WHERE**: Runs seamlessly inside **Google Antigravity**, **Cursor** (Agent mode), **Claude Code**, **Windsurf**, **OpenAI Codex**, or raw terminal CLI across macOS, Linux, and Windows.
 * **HOW**: Operates via progressive disclosure (≤2k tokens per phase), template-first scaffolding, deterministic shell gate validators, and modular MCP design integrations.
 
-### 🔌 Universal MCP Integration (M04 Prototyping)
-M04 supports visual-first design automation via **FigCraft MCP** (`storytold/figcraft`), enabling live-attached canvas design in real-time. It adheres to open Model Context Protocol standards and is 100% compatible with **Google Antigravity**, **Claude Code**, **Claude Desktop**, **OpenAI Codex**, **Cursor**, and **Windsurf**.
-* **Per-Project Scoping**: Tool configs stay project-isolated. When entering `M04` under Option 2, the agent simply copies `templates/02-design/MCP_FIGCRAFT_TEMPLATE.json` to the project root as `.mcp.json`.
-
 ---
 
 ## 🛠️ Prompting Your Agent (Quick Start)
@@ -134,7 +130,7 @@ The framework calibrates governance overhead based on project complexity:
 | | `M01` Idea Feasibility | Unit economics sanity check, margin target validation, Go/Kill decision |
 | | `M02` Discovery & Scoping | User journeys, MoSCoW scope freeze, acceptance criteria definition |
 | **Commercial** | `M03` Legal & Charter | Client SOW/SPK contracts, down-payment gates, Solo SaaS Charter |
-| **Design** | `M04` UI/UX Prototyping | Reference intake, vector SVG logos, 2 Prototyping Pathways (Code-First HTML or Design-First FigCraft MCP), Visual DNA |
+| **Design** | `M04` UI/UX Prototyping | Reference intake, vector SVG logos, Reusable Component Showcase, interactive role-scoped HTML screens, Visual DNA |
 | **Specs** | `M05` Architecture & Specs | PRD synthesis, Technical FSD, schema locking, tech stack lock |
 | **Build** | `M06` Dev Execution | 9-file agent harness, atomic TODO decomposition, zero broken build |
 | | `M07` QA & SIT | System integration test workbook, security audits, OWASP baselines |
