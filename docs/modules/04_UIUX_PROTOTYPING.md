@@ -45,12 +45,26 @@ INPUT: SCOPE_STATEMENT.md + valid SOW (or M03 waived for Solo SaaS)
 1    DESIGN.md at docs/harness-root/ -- provenance log, full type scale (display to caption, 16px
      mobile inputs, tabular-nums for money and counters), semantic triad tokens (success/warning/
      destructive/info), 4px spacing scale, radius scale, z-index map (base 0 ... toast 60), one icon set.
-1.5  COMPONENT SHOWCASE FIRST -- docs/design/components/index.html on the shared CSS/JS, rendering
-     every primitive and composite with 100% functional interactivity (live dialogs, working dropdown popovers,
-     toggleable checkboxes, dismissible toasts). Zombie/inert static showcases are PROHIBITED. STOP & ACC:
-     the human approves it before any screen assembly.
+
+---
+### TWO PROTOTYPING PATHWAYS FOR M04 (CHOOSE ONE)
+Select one of the two official execution pathways below based on project requirements and available tooling:
+
+* **OPTION 1: CODE-FIRST PATHWAY (Native HTML/CSS/JS Prototype)**
+  - **Profile**: Default in-repo standard without external design tool or API dependencies. Best for solo developers iterating directly in the browser.
+  - **Step 1.5**: Build `docs/design/components/index.html` on shared CSS/JS. 100% functionally interactive (live dialogs, working dropdown popovers, dismissible toasts). Approved by human before screen assembly.
+  - **Step 2**: Assemble prototype screens in `docs/design/screens/<role>/` covering 100% of SITEMAP routes. Shared CSS and semantic markup serve as direct porting baseline for React/Next.js in M06.
+
+* **OPTION 2: DESIGN-FIRST PATHWAY (MCP Figcraft / Figma Canvas)**
+  - **Profile**: Visual-first on Figma canvas orchestrated via MCP Figcraft. Best for holistic visual exploration, auto-layout precision, design system consistency, and client/stakeholder reviews.
+  - **Step 1.5**: Call MCP Figcraft to generate Master Components and variants (Default, Hover, Focus, Active, Disabled, Loading) in Figma from `DESIGN.md` tokens and `COMPONENT_REQUIREMENTS.md`.
+  - **Step 2**: Use MCP Figcraft to craft Full Screen Frames per role in Figma adhering 1:1 to `SITEMAP.md` routes using realistic domain data.
+  - **Anti-Triple-Work Rule**: Do NOT hand-code complex static HTML prototypes after finalizing in Figma. Export visual previews / lightweight HTML screens to `docs/design/screens/<role>/` (or document the Figma file/frame URL in `DESIGN_SPEC.md`) to satisfy mechanical gate verification.
+  - **Handoff to M06**: Directly port and scaffold production React/Next.js components (e.g. TSX + CSS Modules / Tailwind) in M06 straight from the Figma source of truth, skipping intermediate throwaway code.
+---
+
 2    Prototype screens in docs/design/screens/<role>/ (public, user, staff, admin) linking
-     docs/design/shared/css/styles.css and shared/js/app.js. No #role-switcher. 100% of SITEMAP screens.
+     docs/design/shared/css/styles.css and shared/js/app.js (or exported Figcraft previews). No #role-switcher. 100% of SITEMAP screens.
      Zero "Lorem ipsum", "John Doe", "Jane Doe", "example.com", or flat placeholder slop: all screen copy,
      tables, forms, and cards must use realistic, domain-authentic localized data.
      Visual DNA (mandatory): real CSS Grid timelines, never flat full-width rows; segmented progress

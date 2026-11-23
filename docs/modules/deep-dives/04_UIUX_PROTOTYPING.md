@@ -220,33 +220,44 @@ docs/specs/COMPONENT_REQUIREMENTS.md
 
 ---
 
-## Prototyping Approach Selection (STEP 2) — Full Option Details
+## Prototyping Approach Selection (STEP 2) — Two Primary Pathways
 
-**Choose the lightest approach that meets review and handoff needs. M04 artifact and human approval requirements still apply; tools are optional ways to produce or inspect those artifacts.**
+Choose the most efficient pathway matching your workflow and tooling setup:
 
-| Need | Suitable approach | Choose when |
+| Need / Tooling | Chosen Pathway | When to Choose |
 |---|---|---|
-| Low-dependency interactive prototype | Native HTML/CSS | Solo project, simple flows, or no design handoff requirement |
-| Rapid generated React/Tailwind screens | v0 or similar builder | The chosen stack fits the project and exported code will be reviewed |
-| Explore visual directions | Stitch or another visual builder | Early layout exploration matters more than reusable production code |
-| Shared design file and designer handoff | Figma or Penpot | Stakeholders need editable design artifacts or ongoing design collaboration |
-| Sync code and a Figma library | Figma MCP / Code Connect | Figma is the agreed source of truth and integration is available |
-| Verify rendered flows | Browser automation already available (for example Playwright) | A focused check helps validate P0 journeys; do not add tooling solely for M04 |
-
-Choose React, Tailwind, shadcn/ui, WordPress/WPDS, or another component system only when it matches the implementation stack and product. Do not make a tool or library a gate requirement.
-
-For conversion-focused landing, signup, onboarding, or paywall work, review offer clarity, user effort, trust, and recovery using M00/M01 audience and outcome evidence. Skip this branch when conversion is not an explicit outcome; avoid deceptive or coercive patterns.
-
-### Option A: Native HTML/CSS Prototype (Default for Solo Projects)
-Use for simple flows or when a low-dependency, reviewable prototype fits best. Markdown specs help define the prototype but do not replace the interactive prototype required by the M04 gate. Keep it small for M04-LITE.
-
-**Deliverables**: `DESIGN.md`, `DESIGN_SPEC.md`, and the required interactive prototype.
-
-**Pros**: No external design-tool dependency; source can be reviewed and reused during implementation. **Trade-off**: visual iteration is manual unless a browser tool is already available.
+| **Low-dependency / In-Repo Code** | **OPTION 1: Native HTML/CSS/JS (Code-First)** | Fast solo projects, no third-party design tools, immediate local browser verification, and using markup directly for M06 scaffolding. |
+| **Visual Canvas / Figma Integration** | **OPTION 2: MCP Figcraft (Design-First)** | Visual exploration on Figma canvas, rigorous auto-layout, stakeholder presentation, followed by direct-to-code porting to React in M06. |
+| Rapid generated React/Tailwind screens | AI Visual Builder (v0 / Stitch) | Standard Next.js/Tailwind stacks requiring immediate drag-and-drop preview. |
 
 ---
 
-### Option B: AI Visual Builder (v0.dev / Google Stitch / HTML Click-Dummy)
+### OPTION 1: Native HTML/CSS/JS Prototype (Traditional Code-First Pathway)
+Default standalone in-repo standard without external credentials or design platform dependencies.
+- **Workflow**:
+  1. Define design tokens in `DESIGN.md` and inventory in `COMPONENT_REQUIREMENTS.md`.
+  2. Build fully interactive `docs/design/components/index.html`.
+  3. Assemble screens in `docs/design/screens/<role>/`.
+  4. Human reviews in browser and records Design Freeze signature in `DESIGN_SPEC.md`.
+- **Handoff to M06**: CSS tokens in `docs/design/shared/css/` and HTML structure are ported directly into React/Next.js components.
+
+---
+
+### OPTION 2: MCP Figcraft Prototype (Modern Design-First Pathway)
+Integrated visual workflow utilizing Figma via MCP Figcraft.
+- **Workflow**:
+  1. **Token Synchronization**: Extract palette, typography scale, spacing, and radius tokens from `DESIGN.md` into Figma styles and variables using Figcraft.
+  2. **Component Crafting**: Figcraft generates atomic and composite components on the Figma canvas (Buttons, Inputs, Modals, Cards) complete with Auto-Layout and Variants (Default, Hover, Focus, Disabled, Loading).
+  3. **Screen Composition**: Figcraft crafts full screen frames per role (1:1 SITEMAP parity) populated with authentic domain data (strictly no placeholder personas or lorem ipsum).
+  4. **Visual Review & Design Freeze**: Human reviews layout directly on the Figma board, validates interactions, and executes Design Freeze by recording the Figma File/Node URL in `docs/specs/DESIGN_SPEC.md`.
+  5. **Anti-Triple-Work Principle**: Eliminate redundant development cycles. Never write complex throwaway static HTML after finalizing designs in Figma. Export screenshot previews or lightweight HTML frames into `docs/design/screens/` to satisfy automated gate checks (`M04.sh`).
+- **Handoff to M06 (Direct-to-React)**:
+  - Skip intermediate vanilla HTML templates.
+  - Directly translate Figma components and design tokens into production-ready framework components (e.g., Next.js App Router TSX with CSS Modules or Tailwind CSS) during M06, maintaining 1:1 visual fidelity with the Figma design.
+
+---
+
+### Additional Options: AI Visual Builder (v0.dev / Google Stitch)
 **Use when**:
 - Need rapid visual prototyping (drag-and-drop)
 - Client requires interactive demo
