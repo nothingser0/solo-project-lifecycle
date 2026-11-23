@@ -1032,6 +1032,10 @@
       "cataloged": true
     },
     {
+      "path": "templates/02-design/MCP_FIGCRAFT_TEMPLATE.json",
+      "cataloged": false
+    },
+    {
       "path": "templates/02-design/SCENARIOS_WF_TEMPLATE.md",
       "cataloged": false
     },
