@@ -56,7 +56,8 @@ Select one of the two official execution pathways below based on project require
   - **Step 2**: Assemble prototype screens in `docs/design/screens/<role>/` covering 100% of SITEMAP routes. Shared CSS and semantic markup serve as direct porting baseline for React/Next.js in M06.
 
 * **OPTION 2: DESIGN-FIRST PATHWAY (MCP Figcraft / Figma Canvas)**
-  - **Profile**: Visual-first on Figma canvas orchestrated via MCP Figcraft. Best for holistic visual exploration, auto-layout precision, design system consistency, and client/stakeholder reviews.
+  - **Profile**: Visual-first on Figma canvas orchestrated via MCP Figcraft. Compatible with Google Antigravity, Claude Code, Claude Desktop, OpenAI Codex, Cursor, and Windsurf.
+  - **Project-Level Setup**: When entering M04, copy `templates/02-design/MCP_FIGCRAFT_TEMPLATE.json` to the project root as `.mcp.json`. Ensure FigCraft is running with `--control 7979` (Live Attached mode) or run in headless mode.
   - **Step 1.5**: Call MCP Figcraft to generate Master Components and variants (Default, Hover, Focus, Active, Disabled, Loading) in Figma from `DESIGN.md` tokens and `COMPONENT_REQUIREMENTS.md`.
   - **Step 2**: Use MCP Figcraft to craft Full Screen Frames per role in Figma adhering 1:1 to `SITEMAP.md` routes using realistic domain data.
   - **Anti-Triple-Work Rule**: Do NOT hand-code complex static HTML prototypes after finalizing in Figma. Export visual previews / lightweight HTML screens to `docs/design/screens/<role>/` (or document the Figma file/frame URL in `DESIGN_SPEC.md`) to satisfy mechanical gate verification.
