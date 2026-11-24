@@ -49,6 +49,8 @@ STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
 1    DESIGN.md at docs/harness-root/ -- provenance log, layout shell tokens (--layout-shell: top-nav | sidebar),
      full type scale (display to caption, 16px mobile inputs, tabular-nums for money and counters), semantic triad
      tokens (success/warning/destructive/info), 4px spacing scale, radius scale, z-index map, one icon set.
+     ⛔ STOP & END TURN (Checkpoint 1): Present the winning benchmark selection, locked layout shell
+     (--layout-shell: top-nav vs sidebar), and 4-6 signature organisms table to human. Halt turn; wait for confirmation.
 
 ================================================================================
 STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
@@ -63,14 +65,17 @@ STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
      shared/js/app.js. Render 100% functionally interactive instances of all primitives, form fields,
      and all 4-6 Benchmark Signature Organisms from COMPONENT_REQUIREMENTS.md §3.3 (radial gauges,
      hero cards, nav pills, media cards; never generic form/table primitives alone) with active states.
-     STOP & ACC: Human reviews and approves the component kit before any screen assembly.
+     ⛔ STOP & END TURN (Checkpoint 2 - BLOCKING): Present docs/design/components/index.html to user.
+     Do NOT assemble any screen until the user tests the showcase in browser and gives written ACC approval.
 
 ================================================================================
 STAGE 3: HIGH-FIDELITY SCREEN ASSEMBLY & WIREFLOW SCENARIOS
 ================================================================================
 2    HIGH-FIDELITY PROTOTYPE SCREENS (Anti-Wireframe Slop -- 100% SITEMAP Coverage)
-     Assemble dedicated screens in docs/design/screens/<role>/ (public, user, staff, admin) linking
-     docs/design/shared/css/styles.css and shared/js/app.js. No #role-switcher. 100% of SITEMAP screens.
+     Assemble screens STRICTLY IN ROLE-BY-ROLE BATCHES (Public -> Tenant/User -> Staff -> Admin),
+     linking docs/design/shared/css/styles.css and shared/js/app.js. Copy markup directly from
+     the pre-approved master components in docs/design/components/index.html (zero ad-hoc layout invention).
+     Zero bulk dumping: pause and present each role batch to the human before starting the next role.
      High-fidelity ONLY: M04 never produces low-fidelity sketches or gray wireframe drafts.
      Every screen embeds its staged real photos, circular photo avatars, Lucide SVG icons, and authentic
      domain data (strictly zero "Lorem ipsum", "John Doe", "Jane Doe", or "example.com").
