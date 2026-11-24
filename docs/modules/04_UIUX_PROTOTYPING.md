@@ -62,23 +62,23 @@ STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
      - Curated Photography: Collect and stage real high-res domain photos in assets/media/ or curated URLs
        (e.g., room/property photos 16:10, building exterior, photo avatars, payment slip previews).
        Raw blank boxes, text-only card slop, or placeholder initials circles are STRICTLY FORBIDDEN.
-1B   REUSABLE MASTER COMPONENT SHOWCASE (100% Inventory Parity Mandate)
+1B   REUSABLE MASTER COMPONENT SHOWCASE (Staged Build & 100% Parity Mandate)
      Scaffold docs/design/components/index.html linked to docs/design/shared/css/styles.css and
-     shared/js/app.js. Render 100% functionally interactive instances of EVERY component listed in
-     COMPONENT_REQUIREMENTS.md (§3.1 primitives, §3.2 standard composites, and §3.3 benchmark/domain
-     organisms). Generating a hollow showcase of only 5-6 generic form fields while skipping the rest
-     of the 20-35 inventoried components is STRICTLY FORBIDDEN as incomplete AI slop.
-     ⛔ STOP & END TURN (Checkpoint 2 - BLOCKING): Present docs/design/components/index.html to user.
-     Do NOT assemble any screen until the user tests the showcase in browser and gives written ACC approval.
+     shared/js/app.js. Build iteratively across turns to avoid token truncation:
+     (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms (or component-by-component).
+     Side-by-side check: compare each organism against docs/design/inspiration/ screenshots in browser.
+     Render 100% of inventoried components. A hollow 5-6 component showcase is strictly forbidden.
+     ⛔ STOP & END TURN (Checkpoint 2 - BLOCKING): Present showcase to user. Wait for visual ACC approval.
 
 ================================================================================
 STAGE 3: HIGH-FIDELITY SCREEN ASSEMBLY & WIREFLOW SCENARIOS
 ================================================================================
-2    HIGH-FIDELITY PROTOTYPE SCREENS (Anti-Wireframe Slop -- 100% SITEMAP Coverage)
+2    HIGH-FIDELITY PROTOTYPE SCREENS (Role-by-Role Assembly & Visual Comparison)
      Assemble screens STRICTLY IN ROLE-BY-ROLE BATCHES (Public -> Tenant/User -> Staff -> Admin),
      linking docs/design/shared/css/styles.css and shared/js/app.js. Copy markup directly from
      the pre-approved master components in docs/design/components/index.html (zero ad-hoc layout invention).
-     Zero bulk dumping: pause and present each role batch to the human before starting the next role.
+     Compare each assembled screen against inspiration design. Zero bulk dumping: ⛔ STOP & END TURN
+     after each role batch; present to human and wait for written ACC before starting the next role.
      High-fidelity ONLY: M04 never produces low-fidelity sketches or gray wireframe drafts.
      Every screen embeds its staged real photos, circular photo avatars, Lucide SVG icons, and authentic
      domain data (strictly zero "Lorem ipsum", "John Doe", "Jane Doe", or "example.com").

@@ -228,8 +228,14 @@ Default standalone in-repo standard without external credentials, platform lock-
 - **Workflow**:
   1. **Token & Inventory Alignment (Stage 1)**: Define design tokens in `DESIGN.md` (locking `--layout-shell: top-nav | sidebar`), port benchmark signature organisms to `COMPONENT_REQUIREMENTS.md` §3.3. ⛔ **STOP & END TURN (Checkpoint 1)**: Present benchmark winner, shell layout, and signature organisms table to human. Wait for confirmation.
   2. **Asset & Icon Staging (Step 1A)**: Lock Lucide SVG icons and high-resolution domain photography before building components.
-  3. **Master Component Showcase (Step 1B - 100% Inventory Parity Mandate)**: Build fully interactive `docs/design/components/index.html` linked to shared CSS/JS. Render functional working instances of EVERY component listed in `COMPONENT_REQUIREMENTS.md` (§3.1 primitives, §3.2 standard composites, and §3.3 benchmark/domain organisms; never a 5-6 component subset). Test all variants (Default, Hover, Focus, Active, Disabled, Loading). ⛔ **STOP & END TURN (Checkpoint 2 - BLOCKING)**: Present showcase to human. Wait for explicit written ACC approval before assembling any screens.
-  4. **High-Fidelity Screen Assembly (Step 2)**: Assemble screens strictly in role-by-role batches (Public -> Tenant/User -> Staff -> Admin) covering 100% of SITEMAP routes by copying markup directly from the pre-approved master components in `components/index.html`. Pause and present each role batch to the human before proceeding to the next.
+  3. **Master Component Showcase (Step 1B - Staged Build & Side-by-Side Visual Comparison)**:
+     - Build iteratively across turns to avoid token truncation: (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms (or component-by-component).
+     - At each batch/component, human opens browser, compares side-by-side with reference screenshot in `docs/design/inspiration/`.
+     - Render 100% of inventoried components. A hollow 5-6 component showcase is strictly forbidden.
+     - ⛔ **STOP & END TURN (Checkpoint 2 - BLOCKING)**: Present showcase to human. Wait for explicit written ACC approval before assembling any screens.
+  4. **High-Fidelity Screen Assembly (Step 2 - Role-by-Role Visual Comparison)**:
+     - Assemble screens strictly in role-by-role batches (Public -> Tenant/User -> Staff -> Admin) covering 100% of SITEMAP routes by copying markup directly from the pre-approved master components in `components/index.html`.
+     - At each role batch, compare screens against inspiration design. ⛔ **STOP & END TURN**: Present batch to human; wait for written ACC approval before proceeding to the next role.
   5. **Wireflow Interaction Runbooks (Step 2.5)**: Document state logic and exception handling in `docs/specs/wireflows/SCENARIOS_WFxx.md`.
   6. **Automated Audit Pass (Step 4)**: Audit screens using `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix` (Windows: `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix`).
   7. **Design Freeze (Step 5)**: Human reviews in browser and records Design Freeze signature in `DESIGN_SPEC.md`.
