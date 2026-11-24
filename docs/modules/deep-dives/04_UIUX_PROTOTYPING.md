@@ -602,7 +602,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
        select exactly 1 primary benchmark, cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md
        ⛔ FORBIDDEN: inventing a reference; notes.md is agent output, never the reference
  ▼ 0A. LOGO_DESIGN_BRIEF.md & Vector SVG Brand Assets
-       Define name, philosophy, vibe, and seed colors (≤2KB) → `docs/design/brand/LOGO_DESIGN_BRIEF.md` (or `docs/specs/`).
+       Define name, design philosophy & mark symbolism, geometric construction, and inspiration palette alignment (≤2KB) → `docs/design/brand/LOGO_DESIGN_BRIEF.md` (or `docs/specs/`).
        Generate clean, production-grade vector SVG assets in `docs/design/brand/` (and/or `assets/logo/`):
        - `docs/design/brand/logo.svg` (Primary brand logo lockup: mark + logotype)
        - `docs/design/brand/favicon.svg` or `logo-icon.svg` (1:1 square icon mark for favicon and app icons)

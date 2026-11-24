@@ -6,9 +6,17 @@
 
 ---
 
-## 1. Product Name & Philosophy
+## 1. Product Name, Symbolism & Design Philosophy
 
-**[Product Name]**: [2-3 sentences explaining what the product does and why it exists.]
+- **Product Name**: [Project Name]
+- **Value Proposition**: [2-3 sentences: what the product does and why it exists]
+- **Design Philosophy & Visual Symbolism**:
+  - **The Mark Symbolism**: [What the shape/geometry conceptually represents. E.g., for a property/kost app: a fusion of architectural shelter, open doorway of hospitality, and modern monogram, avoiding generic clip-art houses]
+  - **Geometric Construction**: [e.g., Golden ratio arcs, 45-degree clean diagonal cuts, uniform 2.5px stroke weight, balanced negative space]
+  - **Inspiration Palette Harmonization**:
+    - **Core Brand Hex**: `#[HEX]` (Sampled directly via `scripts/design/extract_palette.py` from `docs/design/inspiration/`)
+    - **Neutral Pairing**: `#[HEX]` (e.g. Deep slate `#1E293B` or warm off-black `#18181B`)
+    - **Palette Rationale**: [Explain why this color aligns with the product mood and the benchmark canvas tone, e.g. vibrant energetic amber-orange `#FF9432` symbolizing warmth and community against clean soft surfaces]
 
 ---
 

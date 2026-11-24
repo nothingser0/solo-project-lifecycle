@@ -36,9 +36,9 @@ STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
        limitation, never bypassed. Output: inspiration/notes.md + exactly one primary benchmark, locked
        layout shell archetype (top-nav vs sidebar), and 4-6 benchmark signature organisms (§3-4).
      UI is code, not pictures: only photography, 3D art and brand marks may live in asset files.
-0A   LOGO_DESIGN_BRIEF.md (<=2KB) + SVG set in docs/design/brand/: logo.svg, favicon.svg (or
-     logo-icon.svg), logo-horizontal.svg, logo-dark.svg. Type as outlines, no raster <image>, no
-     <foreignObject>, explicit viewBox. Verify with scripts/design/svg_audit.py on the primary logo.
+0A   LOGO_DESIGN_BRIEF.md (<=2KB) -- philosophy, mark symbolism & inspiration palette alignment + SVG
+     set in docs/design/brand/: logo.svg, favicon.svg (or logo-icon.svg), logo-horizontal.svg, logo-dark.svg.
+     Type as outlines, no raster <image>, no <foreignObject>, explicit viewBox. Verify with svg_audit.py.
 0B   SITEMAP.md -- one dedicated section per role, never a single ambiguous table:
      Public SCR-PUB-NN / User SCR-USR-NN / Staff SCR-STF-NN / Admin SCR-ADM-NN.
      Per route: URL, screen name, purpose, layout shell, priority, breadcrumbs, RBAC guard/redirect.
