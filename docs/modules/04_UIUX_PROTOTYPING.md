@@ -29,8 +29,9 @@ STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
      Static screenshots only -> the human must state the intended dynamic effects in this turn.
      STOP 0.5: no human-supplied file in that folder -> END TURN and ask. Do not create
        LOGO_DESIGN_BRIEF, assets/logo, SITEMAP, COMPONENT_REQUIREMENTS or DESIGN.md before it exists.
-     Then extract from 2-5 references: colour temperature + hex, grid zones and density, component
-       anatomy, type pairing and hierarchy. Live URLs -> inspect computed CSS; never guess a hex.
+     Color Sampling: Run python3 scripts/design/extract_palette.py <ref_image> to sample exact canvas,
+       card, primary accent, and text hex values into notes.md. Zero LLM guessing of hex codes.
+     Extract grid zones, layout shell archetype (top-nav vs sidebar), and component anatomy.
      Provenance goes in DESIGN.md 0: OK observed or INFERRED; a CAPTCHA/paywall page is recorded as a
        limitation, never bypassed. Output: inspiration/notes.md + exactly one primary benchmark, locked
        layout shell archetype (top-nav vs sidebar), and 4-6 benchmark signature organisms (§3-4).
