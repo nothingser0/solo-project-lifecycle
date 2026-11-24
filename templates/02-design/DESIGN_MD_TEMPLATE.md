@@ -317,7 +317,62 @@ M04 requires this section by name. A single spacing scale is what keeps a layout
     - Inactive: `text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--muted)]`.
   - User Action Bar: Right-aligned notification bell with unread dot + circular photo avatar (`w-9 h-9 rounded-full ring-2 ring-white`).
 
-### 7.2 Card Archetypes (`.card`)
+### 7.2 Button & Action System (`.btn`)
+- **Primary Button (`.btn-primary`)**:
+  - `h-11 px-5 rounded-xl bg-[var(--primary)] text-white font-medium text-sm inline-flex items-center justify-center gap-2 shadow-sm hover:brightness-105 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 transition-all`.
+- **Secondary Button (`.btn-secondary`)**:
+  - `h-11 px-5 rounded-xl bg-[var(--muted)] text-[var(--foreground)] font-medium text-sm inline-flex items-center justify-center gap-2 hover:bg-slate-200 active:scale-[0.98] transition-all`.
+- **Outline Button (`.btn-outline`)**:
+  - `h-11 px-5 rounded-xl border border-[var(--input)] bg-white text-[var(--foreground)] font-medium text-sm inline-flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition-all`.
+- **Ghost Button (`.btn-ghost`)**:
+  - `h-11 px-4 rounded-xl text-[var(--muted-foreground)] font-medium text-sm inline-flex items-center justify-center gap-2 hover:bg-[var(--muted)] hover:text-[var(--foreground)] transition-all`.
+- **Destructive Button (`.btn-destructive`)**:
+  - `h-11 px-5 rounded-xl bg-[var(--destructive)] text-white font-medium text-sm inline-flex items-center justify-center gap-2 shadow-sm hover:brightness-105 active:scale-[0.98] transition-all`.
+- **Button Loading State**:
+  - `disabled opacity-80 cursor-not-allowed inline-flex items-center justify-center gap-2` pairing a spinning SVG loader with text.
+
+### 7.3 Form Input & Data Entry System (`.form-field`)
+- **Text & Search Input (`.input`)**:
+  - `h-11 px-4 rounded-xl border border-[var(--input)] bg-white text-base text-[var(--foreground)] placeholder:text-[var(--text-placeholder)] focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all`.
+- **Textarea (`.textarea`)**:
+  - `min-h-[100px] p-4 rounded-xl border border-[var(--input)] bg-white text-base text-[var(--foreground)] placeholder:text-[var(--text-placeholder)] focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all`.
+- **Currency & Numeric Input (`.currency-input`)**:
+  - `inputmode="numeric"` with live thousand-separator dot formatting, without browser spin arrows. Font: tabular numbers.
+- **Label (`.form-label`)**:
+  - `text-sm font-medium text-[var(--foreground)] mb-1.5 block`.
+- **Field Error (`.form-error`)**:
+  - `text-xs text-[var(--destructive)] mt-1.5 flex items-center gap-1 font-medium`.
+- **Checkbox & Radio**:
+  - `w-5 h-5 rounded-md border border-[var(--input)] text-[var(--primary)] focus:ring-[var(--primary)] focus:ring-2 transition-all`.
+- **Toggle Switch (`.switch`)**:
+  - Track: `w-11 h-6 bg-slate-200 rounded-full transition-colors relative cursor-pointer data-[checked=true]:bg-[var(--primary)]`.
+  - Thumb: `w-5 h-5 bg-white rounded-full shadow-md transition-transform transform translate-x-0.5 data-[checked=true]:translate-x-5.5`.
+
+### 7.4 Floating Controls, Select & Popovers
+- **Custom Popover Select (`.select-popover`)**:
+  - Trigger: `h-11 px-4 rounded-xl border border-[var(--input)] bg-white flex items-center justify-between text-base cursor-pointer`.
+  - Floating Menu: `z-55 mt-2 bg-white rounded-2xl border border-[var(--border)] shadow-xl p-2 min-w-[200px] animate-in fade-in zoom-in-95`.
+  - Options: `px-3 py-2 rounded-lg text-sm hover:bg-[var(--muted)] cursor-pointer flex items-center justify-between`.
+  - Strict Rule: Zero unstyled native `<select>`.
+- **Dropdown Menu (`.dropdown-menu`)**:
+  - Container: `z-30 bg-white rounded-2xl border border-[var(--border)] shadow-xl p-1.5 min-w-[180px]`.
+- **Tooltip (`.tooltip`)**:
+  - `z-30 px-2.5 py-1 text-xs bg-slate-900 text-white rounded-lg shadow-md`.
+
+### 7.5 Status Badges, Chips & Avatars
+- **Status Badges (`.badge`)**:
+  - Structure: `inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold`.
+  - Success: `bg-[var(--success-bg)] text-[var(--success)] border border-[var(--success-border)]`.
+  - Warning: `bg-[var(--warning-bg)] text-[var(--warning)] border border-[var(--warning-border)]`.
+  - Destructive: `bg-[var(--destructive-bg)] text-[var(--destructive)] border border-[var(--destructive-border)]`.
+  - Info: `bg-[var(--info-bg)] text-[var(--info)] border border-[var(--info-border)]`.
+  - Neutral: `bg-slate-100 text-slate-700 border border-slate-200`.
+- **Avatar System (`.avatar`)**:
+  - Photo Avatar: `w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-sm`.
+  - Online Dot: `w-2.5 h-2.5 bg-emerald-500 rounded-full absolute bottom-0 right-0 ring-2 ring-white`.
+  - Strict Rule: Zero raw monochrome initials circles.
+
+### 7.6 Card Archetypes (`.card`)
 - **Standard Content Card (`.card-standard`)**:
   - `bg-white border border-[var(--border)] rounded-2xl p-6 shadow-sm (0 1px 3px rgba(0,0,0,0.04))`.
   - Header: `flex items-center justify-between mb-4`.
@@ -331,24 +386,43 @@ M04 requires this section by name. A single spacing scale is what keeps a layout
   - Media Container: `aspect-[16/10] w-full relative overflow-hidden bg-slate-100`. Image: `w-full h-full object-cover group-hover:scale-105 transition-transform duration-300`.
   - Floating Badge: `absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-semibold text-[var(--foreground)] shadow-sm`.
   - Body (`p-4`): Property title `font-semibold text-base mb-1`, facility chips row `flex gap-2 text-xs text-[var(--muted-foreground)] mb-3`, footer row with bold price `text-base font-bold text-[var(--primary)]` and detail link.
+- **Metric KPI Tile (`.card-metric`)**:
+  - Structure: `bg-white border border-[var(--border)] rounded-2xl p-5 shadow-sm`.
+  - Label: `text-xs text-[var(--muted-foreground)] uppercase tracking-wider mb-1 font-semibold`.
+  - Value: `text-2xl font-bold text-[var(--foreground)] tabular-nums`.
 
-### 7.3 Button System (`.btn`)
-- **Primary Button (`.btn-primary`)**:
-  - `h-11 px-5 rounded-xl bg-[var(--primary)] text-white font-medium text-sm inline-flex items-center justify-center gap-2 shadow-sm hover:brightness-105 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 transition-all`.
-- **Secondary Button (`.btn-secondary`)**:
-  - `h-11 px-5 rounded-xl bg-[var(--muted)] text-[var(--foreground)] font-medium text-sm inline-flex items-center justify-center gap-2 hover:bg-slate-200 active:scale-[0.98] transition-all`.
-- **Outline Button (`.btn-outline`)**:
-  - `h-11 px-5 rounded-xl border border-[var(--input)] bg-white text-[var(--foreground)] font-medium text-sm inline-flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition-all`.
+### 7.7 Data Table & Mobile Card Reflow System (`.table`)
+- **Desktop Data Table (`.table-container`)**:
+  - Container: `w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-white shadow-sm`.
+  - Header: `bg-slate-50 border-b border-[var(--border)] text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wider px-4 py-3 text-left`.
+  - Rows: `border-b border-[var(--border)] hover:bg-slate-50/70 transition-colors px-4 py-3.5 text-sm`.
+  - Numbers: Enforce `tabular-nums` on all currencies, dates, and counters.
+- **Mobile Table Reflow (<640px) (`.table-mobile-card`)**:
+  - Strict Rule: On screens `<640px`, tables MUST unwrap into stacked key-value cards with distinct labels, never hidden horizontal scrollbars.
+- **Pagination Controls (`.pagination`)**:
+  - Centered row with Previous, active Page Pill (`rounded-lg px-3 py-1.5 text-sm bg-[var(--primary)] text-white`), and Next.
 
-### 7.4 Form Controls (`.form-field`)
-- **Text & Search Input (`.input`)**:
-  - `h-11 px-4 rounded-xl border border-[var(--input)] bg-white text-base text-[var(--foreground)] placeholder:text-[var(--text-placeholder)] focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all`.
-- **Label (`.form-label`)**:
-  - `text-sm font-medium text-[var(--foreground)] mb-1.5 block`.
-- **Field Error (`.form-error`)**:
-  - `text-xs text-[var(--destructive)] mt-1.5 flex items-center gap-1 font-medium`.
+### 7.8 Overlays, Modals & Dialogs (`.modal`)
+- **Modal Dialog (`.modal-dialog`)**:
+  - Backdrop: `fixed inset-0 bg-black/40 backdrop-blur-sm z-40 flex items-center justify-center p-4`.
+  - Container: `bg-white rounded-2xl border border-[var(--border)] shadow-2xl max-w-lg w-full p-6 z-50 animate-in fade-in zoom-in-95`.
+  - Header: `flex items-center justify-between pb-4 border-b border-[var(--border)] mb-4`.
+  - Footer: `flex items-center justify-end gap-3 pt-4 border-t border-[var(--border)] mt-6`.
+- **Confirmation Dialog (`.confirm-dialog`)**:
+  - Alert icon badge + Clear destructive confirmation button requiring explicit intent.
 
-### 7.5 Signature Domain Organisms
+### 7.9 Feedback & State Displays
+- **Toast Notifications (`.toast`)**:
+  - Container: `fixed bottom-5 right-5 z-60 flex flex-col gap-2 max-w-sm w-full`.
+  - Toast Card: `bg-white rounded-xl border border-[var(--border)] shadow-lg p-4 flex items-start gap-3 animate-in slide-in-from-bottom-5`.
+  - Rule: Error toasts do NOT auto-dismiss.
+- **Empty State (`.empty-state`)**:
+  - Container: `text-center py-12 px-4 max-w-md mx-auto`.
+  - Elements: Centered SVG illustration/icon, Title `font-semibold text-lg text-[var(--foreground)] mb-1`, Description `text-sm text-[var(--muted-foreground)] mb-4`, Action Button CTA.
+- **Skeleton Loader (`.skeleton`)**:
+  - `bg-slate-200 animate-pulse rounded-xl`.
+
+### 7.10 Signature Domain Organisms
 - **Radial Dashed Progress Gauge (`.radial-gauge`)**:
   - SVG circle container `w-28 h-28 relative flex items-center justify-center mx-auto`.
   - Background track: `stroke-[#E2E8F0] stroke-width="8" fill="transparent"`.
@@ -356,6 +430,8 @@ M04 requires this section by name. A single spacing scale is what keeps a layout
   - Center Metric: `absolute inset-0 flex flex-col items-center justify-center text-center`. Value: `text-xl font-bold text-[var(--foreground)]`, Label: `text-[10px] text-[var(--muted-foreground)] uppercase tracking-wider`.
 - **Condition / Quality Slider (`.condition-slider`)**:
   - Segmented horizontal track with colored milestone pills indicating room or property inspection quality.
+- **Split POS / Catalog Dock (`.pos-dock`)**:
+  - Split dual-panel on desktop, sticky floating bottom bar on mobile viewports.
 
 ---
 
