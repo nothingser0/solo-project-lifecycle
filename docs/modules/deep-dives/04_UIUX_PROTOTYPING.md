@@ -228,12 +228,14 @@ Default standalone in-repo standard without external credentials, platform lock-
 - **Workflow**:
   1. **Token & Inventory Alignment (Stage 1)**: Define design tokens in `DESIGN.md` (locking `--layout-shell: top-nav | sidebar`), port benchmark signature organisms to `COMPONENT_REQUIREMENTS.md` §3.3. ⛔ **STOP & END TURN (Checkpoint 1)**: Present benchmark winner, shell layout, and signature organisms table to human. Wait for confirmation.
   2. **Asset & Icon Staging (Step 1A)**: Lock Lucide SVG icons and high-resolution domain photography before building components.
-  3. **Master Component Showcase (Step 1B - Staged Build & Side-by-Side Visual Comparison)**:
+  3. **Master Component Showcase (Step 1B - Staged Build & Raw Image Re-inspection)**:
+     - Direct Image Re-inspection: When coding each component, agent MUST directly re-inspect the raw reference screenshots in `docs/design/inspiration/` (never rely on `notes.md` text alone) to sample exact shadows, border radius, padding density, and badge placements.
      - Build iteratively across turns to avoid token truncation: (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms (or component-by-component).
      - At each batch/component, human opens browser, compares side-by-side with reference screenshot in `docs/design/inspiration/`.
      - Render 100% of inventoried components. A hollow 5-6 component showcase is strictly forbidden.
      - ⛔ **STOP & END TURN (Checkpoint 2 - BLOCKING)**: Present showcase to human. Wait for explicit written ACC approval before assembling any screens.
-  4. **High-Fidelity Screen Assembly (Step 2 - Role-by-Role Visual Comparison)**:
+  4. **High-Fidelity Screen Assembly (Step 2 - Layout Parity & Role-by-Role Visual Comparison)**:
+     - Layout Shell Parity: Screens must faithfully inherit the exact layout geometry from the inspiration benchmark (top-nav bar height, container max-width, grid gaps, canvas background tone), never inventing arbitrary sidebars or structures.
      - Assemble screens strictly in role-by-role batches (Public -> Tenant/User -> Staff -> Admin) covering 100% of SITEMAP routes by copying markup directly from the pre-approved master components in `components/index.html`.
      - At each role batch, compare screens against inspiration design. ⛔ **STOP & END TURN**: Present batch to human; wait for written ACC approval before proceeding to the next role.
   5. **Wireflow Interaction Runbooks (Step 2.5)**: Document state logic and exception handling in `docs/specs/wireflows/SCENARIOS_WFxx.md`.

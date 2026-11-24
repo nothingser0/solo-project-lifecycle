@@ -66,19 +66,21 @@ STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
      Scaffold docs/design/components/index.html linked to docs/design/shared/css/styles.css and
      shared/js/app.js. Build iteratively across turns to avoid token truncation:
      (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms (or component-by-component).
-     Side-by-side check: compare each organism against docs/design/inspiration/ screenshots in browser.
+     Direct image re-inspection: do NOT rely on notes.md text alone; directly inspect the raw screenshots
+     in docs/design/inspiration/ for exact visual nuances (shadows, padding, badge offsets, borders).
      Render 100% of inventoried components. A hollow 5-6 component showcase is strictly forbidden.
      ⛔ STOP & END TURN (Checkpoint 2 - BLOCKING): Present showcase to user. Wait for visual ACC approval.
 
 ================================================================================
 STAGE 3: HIGH-FIDELITY SCREEN ASSEMBLY & WIREFLOW SCENARIOS
 ================================================================================
-2    HIGH-FIDELITY PROTOTYPE SCREENS (Role-by-Role Assembly & Visual Comparison)
+2    HIGH-FIDELITY PROTOTYPE SCREENS (Role-by-Role Assembly & Layout Parity)
      Assemble screens STRICTLY IN ROLE-BY-ROLE BATCHES (Public -> Tenant/User -> Staff -> Admin),
      linking docs/design/shared/css/styles.css and shared/js/app.js. Copy markup directly from
      the pre-approved master components in docs/design/components/index.html (zero ad-hoc layout invention).
-     Compare each assembled screen against inspiration design. Zero bulk dumping: ⛔ STOP & END TURN
-     after each role batch; present to human and wait for written ACC before starting the next role.
+     Layout Parity: faithfully reproduce the reference screenshot's exact shell layout (top-nav height,
+     max-width, grid gaps, canvas tone). Zero bulk dumping: ⛔ STOP & END TURN after each role batch;
+     present to human and wait for written ACC before starting the next role.
      High-fidelity ONLY: M04 never produces low-fidelity sketches or gray wireframe drafts.
      Every screen embeds its staged real photos, circular photo avatars, Lucide SVG icons, and authentic
      domain data (strictly zero "Lorem ipsum", "John Doe", "Jane Doe", or "example.com").
