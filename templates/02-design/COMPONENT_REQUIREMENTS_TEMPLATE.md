@@ -76,10 +76,10 @@
 
 *Consolidated, deduplicated inventory. Every component used in Section 2 must be tabulated here with a permanent sequential identifier (`CMP-01` to `CMP-NN`).*
 
-> ⛔ **Component-by-Component Build & Human ACC Mandate**:
+> **MANDATE: Component-by-Component Build & Human ACC**:
 > 1. **Zero Bulk Dumping**: Generating all components in a single monolithic write_file is strictly prohibited. The agent MUST construct components sequentially (`CMP-01` -> `CMP-02` -> ...).
 > 2. **Per-Component Showcase**: Each component must be rendered with all states (Default, Hover, Active tactile scale `0.98`, Focus-visible `ring-2`, Disabled, Loading spinner) in `docs/design/components/index.html` (or modular `cmp-xx-[name].html`) using shared classes in `docs/design/shared/css/styles.css`.
-> 3. **Blocking Stop & ACC**: After finishing each component (or tier batch), the agent MUST halt (`⛔ STOP & END TURN`) and ask for human review. The human tests hover/active interactions in the browser and provides written `ACC`.
+> 3. **Blocking Stop & ACC**: After finishing each component (or tier batch), the agent MUST halt (`STOP & END TURN`) and ask for human review. The human tests hover/active interactions in the browser and provides written `ACC`.
 > 4. **100% Showcase Parity**: ALL components inventoried below (§3.1 Primitives, §3.2 Standard Composites, and §3.3 Benchmark/Domain Organisms) MUST be rendered as functionally interactive instances before any prototype screen (`docs/design/screens/`) can be assembled. Generating a hollow showcase of only 5–6 basic form elements while omitting the rest of the requirements is STRICTLY FORBIDDEN as incomplete AI slop.
 
 ### 3.1 Primitives (Atomic Components)
@@ -114,7 +114,7 @@
 
 ### 3.3 Benchmark Signature Organisms & Domain Composites (MANDATORY PORTING)
 
-> ⛔ **Benchmark Transfer Mandate**: Every Benchmark Signature Organism identified in `docs/design/inspiration/notes.md` (§4) MUST be explicitly listed below with its composition structure and interaction states.
+> **MANDATE: Benchmark Transfer**: Every Benchmark Signature Organism identified in `docs/design/inspiration/notes.md` (§4) MUST be explicitly listed below with its composition structure and interaction states.
 > Generating a component showcase (`docs/design/components/index.html`) that only renders generic form primitives (buttons, inputs, tables) while omitting the benchmark's signature visual organisms is STRICTLY FORBIDDEN as AI slop.
 
 | CMP ID | Component Name | Source / Benchmark Organism | Composition Structure & Interaction |

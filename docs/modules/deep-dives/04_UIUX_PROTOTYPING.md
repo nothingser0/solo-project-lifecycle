@@ -127,11 +127,11 @@ Group all components into three definitive tiers. Every component named in Step 
 - `CurrencyInput` (live formatted monetary field)
 
 **Rules:**
-- ⛔ **Benchmark Transfer Mandate**: Every Benchmark Signature Organism identified in `docs/design/inspiration/notes.md` (§4) MUST be explicitly defined here and rendered in the component showcase. Omitting benchmark organisms while keeping only generic form elements is strictly forbidden.
-- ✅ 100% exact name match with Feature → UI Pattern Mapping.
-- ❌ Exclude generic "might need later" components (tabs, sliders, accordions if not in P0/P1 scope).
-- ✅ Right-sized inventory: typically 20–35 components total for MVP.
-- ✅ Document intentionally excluded components (e.g., No tabs/accordion/slider if not justified by scope).
+- **Benchmark Transfer Mandate**: Every Benchmark Signature Organism identified in `docs/design/inspiration/notes.md` (§4) MUST be explicitly defined here and rendered in the component showcase. Omitting benchmark organisms while keeping only generic form elements is strictly forbidden.
+- [Required] 100% exact name match with Feature → UI Pattern Mapping.
+- [Forbidden] Exclude generic "might need later" components (tabs, sliders, accordions if not in P0/P1 scope).
+- [Required] Right-sized inventory: typically 20–35 components total for MVP.
+- [Required] Document intentionally excluded components (e.g., No tabs/accordion/slider if not justified by scope).
 
 ---
 
@@ -150,7 +150,7 @@ Group all components into three definitive tiers. Every component named in Step 
   4. **Screen Error**: Full-screen or container alert card with retry CTA (network failure / 500 error)
   5. **Empty**: Empty state illustration + CTA
 
-> ⚠️ **ERROR SEPARATION RULE**:
+> **CRITICAL RULE: Error Separation**:
 > Field validation errors (inline red text, invalid inputs) belong strictly to component form states.
 > They MUST NEVER be conflated into screen-level error states.
 
@@ -226,7 +226,7 @@ docs/specs/COMPONENT_REQUIREMENTS.md
 
 Default standalone in-repo standard without external credentials, platform lock-in, or third-party design tool dependencies.
 - **Workflow**:
-  1. **Token & Inventory Alignment (Stage 1)**: Define design tokens in `DESIGN.md` (locking `--layout-shell: top-nav | sidebar`), port benchmark signature organisms to `COMPONENT_REQUIREMENTS.md` §3.3. ⛔ **STOP & END TURN (Checkpoint 1)**: Present benchmark winner, shell layout, and signature organisms table to human. Wait for confirmation.
+  1. **Token & Inventory Alignment (Stage 1)**: Define design tokens in `DESIGN.md` (locking `--layout-shell: top-nav | sidebar`), port benchmark signature organisms to `COMPONENT_REQUIREMENTS.md` §3.3. **STOP & END TURN (Checkpoint 1)**: Present benchmark winner, shell layout, and signature organisms table to human. Wait for confirmation.
   2. **Asset & Icon Staging (Step 1A)**: Lock Lucide SVG icons and high-resolution domain photography before building components.
   3. **Master Component Showcase (Step 1B - Component-by-Component Build & Human ACC Protocol)**:
      - **Anti-Slop Law (Zero Bulk Dumping)**: Generating all components in a single monolithic file dump or hallucinating a cut-down 5–6 component subset while abandoning the rest of the inventory is STRICTLY FORBIDDEN as AI slop.
@@ -236,13 +236,13 @@ Default standalone in-repo standard without external credentials, platform lock-
        2. Agent directly inspects the raw inspiration screenshots in `docs/design/inspiration/` for exact styling (shadows, border-radius, padding density, badge offsets, hover/active color changes).
        3. Agent implements the component's full CSS rules in `docs/design/shared/css/styles.css` and its interactive showcase instance in `docs/design/components/index.html` (or modular `cmp-xx-[name].html`).
        4. The component MUST showcase all states: Default, Hover (subtle lift/shadow), Active (`scale(0.98)` tactile tap), Focus-Visible (`ring-2`), Disabled, and Loading spinner.
-       5. ⛔ **STOP & END TURN (Per-Component / Per-Batch ACC)**: Agent presents the finished component to the human with instructions to open it in the browser. Agent asks: *"CMP-xx [Component Name] completed. Please review interactive states in browser. Do you ACC to proceed to CMP-yy?"*
+       5. **STOP & END TURN (Per-Component / Per-Batch ACC)**: Agent presents the finished component to the human with instructions to open it in the browser. Agent asks: *"CMP-xx [Component Name] completed. Please review interactive states in browser. Do you ACC to proceed to CMP-yy?"*
        6. Agent halts execution. Human tests in browser, provides feedback or types `ACC`. Only upon written ACC does the agent advance to the next CMP.
      - **Screen Assembly Blocking Rule**: Zero prototype screens (`docs/design/screens/`) may be authored until 100% of inventoried CMPs have passed written human ACC in Step 1B.
   4. **High-Fidelity Screen Assembly (Step 2 - Layout Parity & Role-by-Role Visual Comparison)**:
      - Layout Shell Parity: Screens must faithfully inherit the exact layout geometry from the inspiration benchmark (top-nav bar height, container max-width, grid gaps, canvas background tone), never inventing arbitrary sidebars or structures.
      - Assemble screens strictly in role-by-role batches (Public -> Tenant/User -> Staff -> Admin) covering 100% of SITEMAP routes by copying markup directly from the pre-approved master components in `components/index.html`.
-     - At each role batch, compare screens against inspiration design. ⛔ **STOP & END TURN**: Present batch to human; wait for written ACC approval before proceeding to the next role.
+     - At each role batch, compare screens against inspiration design. **STOP & END TURN**: Present batch to human; wait for written ACC approval before proceeding to the next role.
   5. **Wireflow Interaction Runbooks (Step 2.5)**: Document state logic and exception handling in `docs/specs/wireflows/SCENARIOS_WFxx.md`.
   6. **Automated Audit Pass (Step 4)**: Audit screens using `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix` (Windows: `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix`).
   7. **Design Freeze (Step 5)**: Human reviews in browser and records Design Freeze signature in `DESIGN_SPEC.md`.
@@ -274,7 +274,7 @@ Default standalone in-repo standard without external credentials, platform lock-
 **Pros**: Fast iteration, visual drag-and-drop, instant preview
 **Cons**: MCP tool dependency, proprietary platform
 
-> ⚠️ **PROTOTYPING TOOL TROUBLESHOOTING**:
+>  **PROTOTYPING TOOL TROUBLESHOOTING**:
 > If Prototype MCP tools fail (authentication/network):
 > - Check access token in configuration / `FIGMA_ACCESS_TOKEN`
 > - Report technical issues to user (don't skip Prototype unilaterally)
@@ -593,7 +593,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
  ▼ 0.5 Inspiration Intake & Deep Extraction (Multiple References Allowed) — FIRST, BLOCKING, EVERY SCALE
        The human places >=1 reference in docs/design/inspiration/ (multiple screenshots, dashboard/table/mobile cards, brand board, short video clip, or links.md of URLs).
        Crucial: if providing static screenshots without live URLs, the human MUST specify desired dynamic effects directly (e.g. parallax scroll, 3D Spline canvas, video background, stagger text animation, hover micro-interactions).
-       ⛔ STOP 0.5: if that folder holds no human-supplied file → END TURN and ask. Do NOT create
+       STOP 0.5: if that folder holds no human-supplied file → END TURN and ask. Do NOT create
           LOGO_DESIGN_BRIEF.md, assets/logo/, SITEMAP.md, COMPONENT_REQUIREMENTS.md, or DESIGN.md first.
        Then: scaffold docs/design/inspiration/, analyze 2–5 references, extract and record:
        (1) Color temperature & brand accents (dominant hex, card backgrounds, muted borders).
@@ -602,10 +602,10 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
        (4) Visual typography & hierarchy (font pairings, title sizing, tabular numeral usage).
        If the project archetype requires specific layout zones (e.g. Bookmark Manager, Notion-like Workspace, File Explorer), execute **`web_search`** against leading industry benchmarks (e.g. `Raindrop.io`, `Linear`, `Vercel`) to discover standard multi-zone layouts and prevent arbitrary omission.
        If references include live URLs (`links.md`), execute **Source-Aware CSS Inspection**: inspect the live DOM/computed CSS of the benchmark to extract exact CSS tokens (`background-color`, primary brand hex, `font-family`, button `border-radius`, and card shadow depth) instead of guessing values from memory.
-       **Record every token's provenance** in `DESIGN.md` §0 (Evidence & Inference Log): mark each value ✅ observed (computed CSS / SVG fill / font declaration) or 🔶 inferred (a decision no source states). Prefer official pages, press kits, and CSS over third-party galleries. If a page is blocked by CAPTCHA/login/paywall, record the limitation — never bypass the access control to extract a colour. An invented palette is a guess with hex codes, not a design system.
+       **Record every token's provenance** in `DESIGN.md` §0 (Evidence & Inference Log): mark each value [observed] (computed CSS / SVG fill / font declaration) or [inferred] (a decision no source states). Prefer official pages, press kits, and CSS over third-party galleries. If a page is blocked by CAPTCHA/login/paywall, record the limitation — never bypass the access control to extract a colour. An invented palette is a guess with hex codes, not a design system.
        Enforce **Code vs. Asset Splitting**: UI components (buttons, input fields, badges, cards, navigation shells) MUST be authored in semantic HTML/CSS code; only photographic imagery, standalone 3D illustrations, and brand vector marks may reside in asset files. Never export styled UI containers as flat background images.
        select exactly 1 primary benchmark, cross-check palette vs the logo brief (later) → docs/design/inspiration/notes.md
-       ⛔ FORBIDDEN: inventing a reference; notes.md is agent output, never the reference
+       FORBIDDEN: inventing a reference; notes.md is agent output, never the reference
  ▼ 0A. LOGO_DESIGN_BRIEF.md & Vector SVG Brand Assets
        Define name, design philosophy & mark symbolism, geometric construction, and inspiration palette alignment (≤2KB) → `docs/design/brand/LOGO_DESIGN_BRIEF.md` (or `docs/specs/`).
        Generate clean, production-grade vector SVG assets in `docs/design/brand/` (and/or `assets/logo/`):
@@ -639,7 +639,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
        3. Domain Composites: Tailored to project (e.g. `POSCartDock`, `ThermalPrintView`, `BlindOpnameInput`, `OfflineSyncBadge`).
  ▼ 1. DESIGN.md (Extracted Tokens & Full Typographic / Color Scale)
        Stored at `docs/harness-root/DESIGN.md` (staged for root in M06):
-       - **Section 0 (Provenance Log)**: Mark each token ✅ observed from benchmark or 🔶 inferred.
+       - **Section 0 (Provenance Log)**: Mark each token [observed] from benchmark or [inferred].
        - **Complete Typographic Hierarchy**:
          - Display / Hero (36–48px, leading-tight, bold)
          - H1 Page Title (28–32px, leading-snug, bold)
@@ -670,7 +670,7 @@ INPUT: SCOPE_STATEMENT.md & Valid SOW (or M03 Waived for Solo SaaS)
  ▼ 1.5. Reusable Component Showcase First (MANDATORY STOP & ACC)
        Before assembling screen prototypes, the agent MUST author the reusable component library:
        - Scaffold `docs/design/components/index.html` linked to `docs/design/shared/css/styles.css` and `docs/design/shared/js/app.js`. Render working, tactile instances of all primitives, form fields, and composites from `COMPONENT_REQUIREMENTS.md`: Buttons, FormFields, Inputs, Popovers, Cards, Table Card Reflow, Badges, Modals, and Toasts.
-       - ⛔ **STOP & ACC**: Present the Component Showcase to the human. Once approved (ACC), proceed to screen assembly. This eliminates copy-paste drift and guarantees 100% component consistency across screens.
+       - **STOP & ACC**: Present the Component Showcase to the human. Once approved (ACC), proceed to screen assembly. This eliminates copy-paste drift and guarantees 100% component consistency across screens.
  ▼ 2. Author Interactive Prototype (Unified HTML/CSS/JS in Dedicated Role Subfolders)
         Build interactive HTML screens in `docs/design/screens/<role>/` linked to global shared CSS (`docs/design/shared/css/styles.css`) and global JS (`docs/design/shared/js/app.js`).
         **ZERO RUNTIME ROLE SWITCHER**:

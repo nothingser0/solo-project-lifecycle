@@ -36,7 +36,7 @@ graph TD
 
 ## 1.1 Page Content Anatomy & Minimum Section Standards
 
-> ⚠️ **ANTI-STUB CONTENT MANDATE (Mencegah Halaman Kosong/Pendek Tanpa Bobot)**:
+> **MANDATE: Anti-Stub Content**:
 > AI Agent sering menghasilkan halaman yang "hanya 1 card pendek" atau landing page tanpa isi konkret. Setiap halaman yang didefinisikan dalam sitemap WAJIB merinci komponen konten minimal di bawah ini agar spesifikasi UI tidak menjadi stub/kopong:
 >
 > 1. **Public Landing (`/`)**: Wajib minimal 6 seksi konten nyata (The 6-Section Mandate):
@@ -66,7 +66,7 @@ graph TD
 >    - *Field Grouping*: Informasi data dibagi ke 2–3 kartu bertema (Informasi Utama, Detail Finansial/Operasional).
 >    - *Audit History Timeline*: Riwayat perubahan data (siapa yang mengubah, kapan, dan status perubahan).
 >
-> ⛔ **ZERO STUB PAGES TOLERANCE**: Membuat halaman dengan hanya tag `<h1>` dan deskripsi singkat 1 paragraf (`< 15` baris / `< 400` bytes) tanpa tabel atau form adalah pelanggaran kualitas fatal yang langsung menggagalkan Gate M06!
+> **MANDATE: Zero Stub Pages Tolerance**: Membuat halaman dengan hanya tag `<h1>` dan deskripsi singkat 1 paragraf (`< 15` baris / `< 400` bytes) tanpa tabel atau form adalah pelanggaran kualitas fatal yang langsung menggagalkan Gate M06!
 
 ---
 
@@ -84,7 +84,7 @@ graph TD
 
 ## 2.1 Auth Routes (Standalone Minimalist — ZERO Marketing Navbar & Footer)
 
-> 🛡️ **Distraction-Free Auth Rule**: Auth pages MUST NOT render the public marketing header, navigation links, or standard site footer. Render only a centered card with a minimal back-link and logo to maximize conversion and prevent auth drop-off.
+> **SECURITY RULE: Distraction-Free Auth**: Auth pages MUST NOT render the public marketing header, navigation links, or standard site footer. Render only a centered card with a minimal back-link and logo to maximize conversion and prevent auth drop-off.
 
 | Route | Page Name | Screen ID | Purpose | Shell / Layout | Priority |
 |:------|:----------|:----------|:--------|:---------------|:--------:|
@@ -152,16 +152,16 @@ graph TD
 | `/` | SCR-01 | Full | Full | Full | Full | Full | - |
 | `/pricing` | SCR-03 | Full | Full | Full | Full | Full | - |
 | `/login` | SCR-06 | Full | Redirect `/dashboard` | Redirect `/ops/workspace` | Redirect `/manager/dashboard` | Redirect `/admin/overview` | - |
-| `/dashboard` | SCR-09 | ❌ Deny | Full | ❌ Deny | ❌ Deny | ❌ Deny | `/login?redirect=/dashboard` |
-| `/ops/workspace` | SCR-17 | ❌ Deny | ❌ Deny | Full | Full | Full | `/login` or `/403` |
-| `/ops/stock-opname`| SCR-20 | ❌ Deny | ❌ Deny | Count Only | Full | Full | `/403` |
-| `/manager/approvals`| SCR-22 | ❌ Deny | ❌ Deny | ❌ Deny | Full | Full | `/403` |
-| `/admin/users` | SCR-26 | ❌ Deny | ❌ Deny | ❌ Deny | Read-Only | Full | `/403` |
-| `/admin/audit-logs`| SCR-28 | ❌ Deny | ❌ Deny | ❌ Deny | ❌ Deny | Full | `/403` |
+| `/dashboard` | SCR-09 | Deny | Full | Deny | Deny | Deny | `/login?redirect=/dashboard` |
+| `/ops/workspace` | SCR-17 | Deny | Deny | Full | Full | Full | `/login` or `/403` |
+| `/ops/stock-opname`| SCR-20 | Deny | Deny | Count Only | Full | Full | `/403` |
+| `/manager/approvals`| SCR-22 | Deny | Deny | Deny | Full | Full | `/403` |
+| `/admin/users` | SCR-26 | Deny | Deny | Deny | Read-Only | Full | `/403` |
+| `/admin/audit-logs`| SCR-28 | Deny | Deny | Deny | Deny | Full | `/403` |
 
 ### 7.1 Granular Role Capability & Boundary Rules (Boleh Apa vs DILARANG Apa)
 
-> ⚠️ **MANDATORY RBAC BOUNDARY SPECIFICATION**:
+> **MANDATORY: RBAC Boundary Specification**:
 > Setiap role pengguna yang didefinisikan dalam SITEMAP wajib memiliki rincian aksi yang diizinkan dan aksi yang DILARANG keras. Dilarang keras membiarkan role bawahan (seperti Staff/Operator) melihat data finansial rahasia (omzet, laba bersih, rekening bank) atau membiarkan role staff diabaikan tanpa layar view khusus.
 
 1. **Admin / Owner (ROL-01)**:
@@ -173,9 +173,9 @@ graph TD
 3. **Staff / Operator / Penjaga (ROL-03)**:
    - **Boleh**: Input harian (meteran kWh, stok fisik opname, pelaporan tiket rusak); update status kamar (misal: Selesai Bersih); lihat kontak penyewa/klien.
    - **DILARANG & DISEMBUNYIKAN (UI MASKED)**:
-     - ❌ **Dilarang melihat kartu omzet finansial, total uang masuk, atau laba bersih kos**.
-     - ❌ **Dilarang mengakses halaman pembukuan kas & pengeluaran (`/finances`)**.
-     - ❌ **Dilarang mengubah tarif pokok sewa atau konfigurasi rekening bank**.
+     - **Dilarang melihat kartu omzet finansial, total uang masuk, atau laba bersih kos**.
+     - **Dilarang mengakses halaman pembukuan kas & pengeluaran (`/finances`)**.
+     - **Dilarang mengubah tarif pokok sewa atau konfigurasi rekening bank**.
 4. **Member / Customer / Tenant (ROL-04)**:
    - **Boleh**: Melihat profil sendiri, riwayat transaksi/invoice pribadi via tautan token, mengajukan komplain kamar.
    - **Dilarang**: Mengakses data kamar/penyewa lain atau melihat dashboard internal pengelola.

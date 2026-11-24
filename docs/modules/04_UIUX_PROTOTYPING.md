@@ -9,7 +9,7 @@ This module translates `SCOPE_STATEMENT.md` (+ valid SOW, or M03 waived for Solo
 
 In addition, it produces vector SVG assets in `assets/logo/`, an interactive reusable component showcase in `docs/design/components/index.html` (reviewed & ACC'd by the human first), and a 100% complete interactive prototype organized cleanly into role subfolders (`docs/design/screens/<role>/`) sharing global CSS and JS.
 
-**Step 0.5 is the module's front door (all scales).** No logo, no component inventory, no `DESIGN.md` — nothing visual — may be produced until the **human** has placed at least one reference (multiple references encouraged) in `docs/design/inspiration/`. An agent-authored `notes.md` is analysis output, never the reference itself; a benchmark with no corresponding reference file is fabrication. If the folder holds no human-supplied file: **STOP AND ASK, END TURN** (`⛔ STOP 0.5` below).
+**Step 0.5 is the module's front door (all scales).** No logo, no component inventory, no `DESIGN.md` — nothing visual — may be produced until the **human** has placed at least one reference (multiple references encouraged) in `docs/design/inspiration/`. An agent-authored `notes.md` is analysis output, never the reference itself; a benchmark with no corresponding reference file is fabrication. If the folder holds no human-supplied file: **STOP AND ASK, END TURN** (`STOP 0.5` below).
 
 **Scale calibration** (from `docs/pm/PROJECT_STATE.md` / `PROJECT_LITE.md`): **Small (M04-LITE)** — run the standalone LITE runbook [`variants/04_UIUX_LITE.md`](variants/04_UIUX_LITE.md) instead of this one. **Medium/Large** — full artifacts ≥2000B, logo ≥200B, 5-state matrix on all screens. **Enterprise** (non-solo capacity) — redirect to Seri A Advisory (Fase A02).
 
@@ -52,7 +52,7 @@ STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
 1    DESIGN.md at docs/harness-root/ -- provenance log, layout shell tokens (--layout-shell: top-nav | sidebar),
      full type scale (display to caption, 16px mobile inputs, tabular-nums for money and counters), semantic triad
      tokens (success/warning/destructive/info), 4px spacing scale, radius scale, z-index map, one icon set.
-     ⛔ STOP & END TURN (Checkpoint 1): Present the winning benchmark selection, locked layout shell
+     STOP & END TURN (Checkpoint 1): Present the winning benchmark selection, locked layout shell
      (--layout-shell: top-nav vs sidebar), and 4-6 signature organisms table to human. Halt turn; wait for confirmation.
 
 ================================================================================
@@ -69,7 +69,7 @@ STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
      (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms. Never bulk dump.
      Direct image re-inspection: inspect raw screenshots in docs/design/inspiration/ per component for
      exact shadows, radius, padding, hover/active states. Render 100% of CMPs; 5-6 subset is forbidden slop.
-     ⛔ STOP & END TURN per component (or tier batch) for interactive human ACC before next CMP.
+     STOP & END TURN per component (or tier batch) for interactive human ACC before next CMP.
      Screen assembly is strictly blocked until 100% of CMPs pass written human ACC.
 
 ================================================================================
@@ -80,7 +80,7 @@ STAGE 3: HIGH-FIDELITY SCREEN ASSEMBLY & WIREFLOW SCENARIOS
      linking docs/design/shared/css/styles.css and shared/js/app.js. Copy markup directly from
      the pre-approved master components in docs/design/components/index.html (zero ad-hoc layout invention).
      Layout Parity: faithfully reproduce the reference screenshot's exact shell layout (top-nav height,
-     max-width, grid gaps, canvas tone). Zero bulk dumping: ⛔ STOP & END TURN after each role batch;
+     max-width, grid gaps, canvas tone). Zero bulk dumping: STOP & END TURN after each role batch;
      present to human and wait for written ACC before starting the next role.
      High-fidelity ONLY: M04 never produces low-fidelity sketches or gray wireframe drafts.
      Every screen embeds its staged real photos, circular photo avatars, Lucide SVG icons, and authentic

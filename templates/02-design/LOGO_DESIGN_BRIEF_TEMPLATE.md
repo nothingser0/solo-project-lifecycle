@@ -81,7 +81,7 @@ Good marks come from translating language into form. Fill this before drawing an
 
 ## 4. User Responsibility & Disciplinary Verification
 
-⛔ **Blocked until Step 0.5 is satisfied**: this brief is written *from* the human's references in
+**BLOCKED: Requires Step 0.5 completion**: this brief is written *from* the human's references in
 `docs/design/inspiration/`. If that folder holds no human-supplied file, the agent stops and asks —
 it does not draft this document, and it does not invent a reference to unblock itself.
 
