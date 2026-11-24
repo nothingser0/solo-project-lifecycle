@@ -180,6 +180,7 @@ M04 requires this section by name. A single spacing scale is what keeps a layout
 
 ## 5. Anti-Slop Rules & Design Defenses
 - **Zero Emoticons / Emojis (Icons Only)**: Jangan pernah menggunakan emoticon atau karakter emoji OS (seperti 🚀, 💡, ⚙️, ❌) pada antarmuka; selalu gunakan icon SVG standar yang kohesif (e.g. Lucide, Heroicons).
+- **Tactile Motion & Micro-Interactions**: Seluruh komponen interaktif wajib memiliki feedback fisik yang jelas: tombol menyusut saat ditekan (`active:scale-[0.98] duration-150`), foto kartu membesar halus saat kursor melintas (`group-hover:scale-105 duration-300`), modal muncul dengan fade-in lembut + zoom-in-95.
 - **Effects by evidence**: Choose blur, transparency, and shadow from the inspected reference and test them for text contrast, visual hierarchy, and performance on target devices. Remove an effect when it obscures content or adds no useful hierarchy; do not reject it by name alone.
 - **Mobile Touch Defense**: All interactive form inputs must maintain `16px` base font size on mobile viewports to prevent iOS Safari auto-zoom; all buttons must satisfy `min-h-[44px]` touch targets.
 
@@ -249,6 +250,12 @@ M04 requires this section by name. A single spacing scale is what keeps a layout
     --z-modal-dropdown: 55;
     --z-toast: 60;
     --z-payment-gateway: 999999;
+
+    /* Motion & Interaction Timing Tokens */
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 350ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .dark {
