@@ -128,9 +128,16 @@ Select exactly one pairing strategy matching project scale and context:
   - Currency / Integer inputs: Use `inputmode="numeric"` with live dot/comma thousands formatting. NEVER use `<input type="number">`.
   - Fractional quantities (Kg/Liter): Use `inputmode="decimal"`.
 
+### 3.4 Layout Shell Architecture Tokens (Inherited from notes.md §3)
+- `--layout-shell`: `[top-nav | sidebar | split]` (Strictly locked to the primary benchmark archetype)
+- `--shell-header-height`: `64px` (or benchmark height)
+- `--shell-canvas-bg`: `#[HEX]` (Benchmark neutral canvas tone, e.g. `#F4F5F7` / `#F8FAFC`)
+- `--shell-content-max-width`: `1280px` (or `1440px` / `fluid`)
+- **Shell Parity Contract**: Prototype screens and final production layouts MUST adhere strictly to `--layout-shell`. If `--layout-shell: top-nav`, inventing a left sidebar is STRICTLY FORBIDDEN as a visual hallucination.
+
 ---
 
-## 3.4 Spacing Scale
+## 3.5 Spacing Scale
 
 M04 requires this section by name. A single spacing scale is what keeps a layout from drifting into arbitrary values (`13px`, `27px`) that look almost-consistent and are not.
 

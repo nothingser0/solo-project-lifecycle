@@ -117,8 +117,9 @@ Group all components into three definitive tiers. Every component named in Step 
 - `EmptyState` (illustration + heading + description + CTA)
 - `SearchInput` (input + icon + clear action)
 
-**C. Domain-Specific Composites (Conditional Extensions)**:
-*(Include only if required by project domain)*
+**C. Benchmark Signature Organisms & Domain Composites (MANDATORY PORTING)**:
+*(Port 4-6 signature organisms from `notes.md` §4, plus any domain-specific composites)*
+- `[SignatureOrganism1..N]` (e.g., `HeroMetricBanner`, `RadialProgressGauge`, `NavPillFilterBar`, `MediaPropertyCard` extracted directly from winning benchmark)
 - `POSCartDock` (two-panel split on tablet/desktop, sticky bottom dock on mobile)
 - `ChangeCalculator` (cashier tender amount & quick cash chips)
 - `ThermalPrintView` (`@media print` 58mm/80mm receipt stylesheet)
@@ -126,6 +127,7 @@ Group all components into three definitive tiers. Every component named in Step 
 - `CurrencyInput` (live formatted monetary field)
 
 **Rules:**
+- ⛔ **Benchmark Transfer Mandate**: Every Benchmark Signature Organism identified in `docs/design/inspiration/notes.md` (§4) MUST be explicitly defined here and rendered in the component showcase. Omitting benchmark organisms while keeping only generic form elements is strictly forbidden.
 - ✅ 100% exact name match with Feature → UI Pattern Mapping.
 - ❌ Exclude generic "might need later" components (tabs, sliders, accordions if not in P0/P1 scope).
 - ✅ Right-sized inventory: typically 20–35 components total for MVP.
@@ -226,7 +228,7 @@ Default standalone in-repo standard without external credentials, platform lock-
 - **Workflow**:
   1. **Token & Inventory Alignment**: Define design tokens in `DESIGN.md` and complete 3-tier inventory in `COMPONENT_REQUIREMENTS.md`.
   2. **Asset & Icon Staging (Step 1A)**: Lock Lucide SVG icons and high-resolution domain photography before building components.
-  3. **Master Component Showcase (Step 1B)**: Build fully interactive `docs/design/components/index.html` linked to shared CSS/JS. Test all variants (Default, Hover, Focus, Active, Disabled, Loading). STOP & ACC: Human reviews and approves before screen assembly.
+  3. **Master Component Showcase (Step 1B)**: Build fully interactive `docs/design/components/index.html` linked to shared CSS/JS. Render functional working instances of all primitives, form fields, AND the 4-6 Benchmark Signature Organisms (radial gauges, hero banners, nav pills, media cards; never generic inputs/tables alone). Test all variants (Default, Hover, Focus, Active, Disabled, Loading). STOP & ACC: Human reviews and approves before screen assembly.
   4. **High-Fidelity Screen Assembly (Step 2)**: Assemble dedicated screens in `docs/design/screens/<role>/` covering 100% of SITEMAP routes using pre-approved components.
   5. **Wireflow Interaction Runbooks (Step 2.5)**: Document state logic and exception handling in `docs/specs/wireflows/SCENARIOS_WFxx.md`.
   6. **Automated Audit Pass (Step 4)**: Audit screens using `python3 scripts/design/uiux_audit.py docs/design/screens/ --fix` (Windows: `powershell -ExecutionPolicy Bypass -File scripts/design/uiux-audit.ps1 -Fix`).

@@ -100,6 +100,25 @@
   - [ ] Inherit or adjust primary accent to match logo core hue
   - [ ] Calibrate neutral undertone warmth (Warm Stone vs Cold Slate) to match logo temperature
 
+### 3. Layout Shell Architecture Contract (MANDATORY)
+- **Shell Archetype**: [Top-Navigation Bar | Left Sidebar | Split / Dual-Panel]
+- **Header Specifications**: Height [e.g., 64px], Max Container Width [e.g., 1280px / 1440px / Fluid], Background Tone [#[HEX]], Sticky [Yes/No]
+- **Canvas / Viewport Background**: #[HEX] (e.g., soft warm gray `#F4F5F7` / `#F8FAFC`, not harsh pure `#FFFFFF` everywhere)
+- **Hallucination Prevention Rule**: If the selected primary benchmark uses a **Top-Navigation Bar**, generating a left sidebar is STRICTLY FORBIDDEN as a visual hallucination. The prototype screens must reproduce the benchmark's exact shell layout.
+
+### 4. Benchmark Signature Components (MANDATORY PORTING CONTRACT)
+> Extract 4 to 6 specific, signature visual organisms observed directly in the winning benchmark (e.g., Featured Hero Card with media, Radial/Segmented Progress Gauges, Filter Nav Pill Tabs, Condition Slider, Photo Listing Card, Message Drawer).
+> **Mandatory Bridge**: Every component listed here MUST be ported verbatim to `docs/specs/COMPONENT_REQUIREMENTS.md` (§3.3) and implemented as a working instance in `docs/design/components/index.html`. Generic buttons and tables alone are STRICTLY FORBIDDEN as incomplete AI slop.
+
+| # | Signature Organism Name | Anatomy & Visual Traits Observed | Target Role / Screen |
+|:-:|:------------------------|:---------------------------------|:---------------------|
+| 1 | [e.g., HeroMetricBanner] | [e.g., Colored banner card with photo cutout, radial gauge, and primary metric value] | [e.g., Tenant / SCR-001] |
+| 2 | [e.g., RadialProgressGauge] | [e.g., Dashed circular SVG gauge with percentage center and condition status badge] | [e.g., Tenant / SCR-002] |
+| 3 | [e.g., NavPillFilterBar] | [e.g., Horizontal scrolling rounded-full pill tabs with active accent fill] | [e.g., Public / SCR-001] |
+| 4 | [e.g., MediaPropertyCard] | [e.g., 16:10 aspect photo card with status pill overlay, price/month, and specs row] | [e.g., Public & Tenant] |
+| 5 | [e.g., ConditionSlider] | [e.g., Readonly segmented step bar showing room quality / inspection score] | [e.g., Staff / SCR-003] |
+| 6 | [e.g., ChatBubbleWidget] | [e.g., Floating photo avatar message preview with online dot indicator] | [e.g., All Roles] |
+
 ---
 
 ## Extracted Common Patterns

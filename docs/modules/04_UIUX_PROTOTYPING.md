@@ -30,7 +30,8 @@ STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
      Then extract from 2-5 references: colour temperature + hex, grid zones and density, component
        anatomy, type pairing and hierarchy. Live URLs -> inspect computed CSS; never guess a hex.
      Provenance goes in DESIGN.md 0: OK observed or INFERRED; a CAPTCHA/paywall page is recorded as a
-       limitation, never bypassed. Output: inspiration/notes.md + exactly one primary benchmark.
+       limitation, never bypassed. Output: inspiration/notes.md + exactly one primary benchmark, locked
+       layout shell archetype (top-nav vs sidebar), and 4-6 benchmark signature organisms (§3-4).
      UI is code, not pictures: only photography, 3D art and brand marks may live in asset files.
 0A   LOGO_DESIGN_BRIEF.md (<=2KB) + SVG set in docs/design/brand/: logo.svg, favicon.svg (or
      logo-icon.svg), logo-horizontal.svg, logo-dark.svg. Type as outlines, no raster <image>, no
@@ -39,15 +40,15 @@ STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
      Public SCR-PUB-NN / User SCR-USR-NN / Staff SCR-STF-NN / Admin SCR-ADM-NN.
      Per route: URL, screen name, purpose, layout shell, priority, breadcrumbs, RBAC guard/redirect.
 0C   COMPONENT_REQUIREMENTS.md -- 3-tier inventory (primitives / composites / domain) at WCAG 2.2 AA:
-     custom popover menu instead of a raw native select; FormField inline error >=13px and >=4.5:1 with
-     focus on first invalid field (submit is never disabled while pristine); SubmitButton with debounce
-     + spinner so a double click cannot post twice; CurrencyInput uses inputmode="numeric"; tables
-     reflow into stacked cards under 640px; modal z-50, popover z-55 so it clears the modal, toast z-60
-     with error/offline toasts that stay until dismissed; search + filter pills toolbar; EmptyState
-     with an actionable CTA.
-1    DESIGN.md at docs/harness-root/ -- provenance log, full type scale (display to caption, 16px
-     mobile inputs, tabular-nums for money and counters), semantic triad tokens (success/warning/
-     destructive/info), 4px spacing scale, radius scale, z-index map (base 0 ... toast 60), one icon set.
+     verbatim porting of 4-6 benchmark signature organisms from notes.md §4 into §3.3; custom popover menu
+     instead of a raw native select; FormField inline error >=13px and >=4.5:1 with focus on first invalid
+     field (submit is never disabled while pristine); SubmitButton with debounce + spinner so a double click
+     cannot post twice; CurrencyInput uses inputmode="numeric"; tables reflow into stacked cards under 640px;
+     modal z-50, popover z-55 so it clears the modal, toast z-60 with error/offline toasts that stay until
+     dismissed; search + filter pills toolbar; EmptyState with an actionable CTA.
+1    DESIGN.md at docs/harness-root/ -- provenance log, layout shell tokens (--layout-shell: top-nav | sidebar),
+     full type scale (display to caption, 16px mobile inputs, tabular-nums for money and counters), semantic triad
+     tokens (success/warning/destructive/info), 4px spacing scale, radius scale, z-index map, one icon set.
 
 ================================================================================
 STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
@@ -60,7 +61,8 @@ STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
 1B   REUSABLE MASTER COMPONENT SHOWCASE
      Scaffold docs/design/components/index.html linked to docs/design/shared/css/styles.css and
      shared/js/app.js. Render 100% functionally interactive instances of all primitives, form fields,
-     and composite patterns from COMPONENT_REQUIREMENTS.md with active states (dialogs, popovers, toasts).
+     and all 4-6 Benchmark Signature Organisms from COMPONENT_REQUIREMENTS.md §3.3 (radial gauges,
+     hero cards, nav pills, media cards; never generic form/table primitives alone) with active states.
      STOP & ACC: Human reviews and approves the component kit before any screen assembly.
 
 ================================================================================

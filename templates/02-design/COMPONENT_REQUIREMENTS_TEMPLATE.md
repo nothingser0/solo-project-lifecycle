@@ -105,17 +105,19 @@
 | 10| `SupervisorOverrideModal` | Dialog + PIN/Auth + Reason Textarea | Manager overrides for privileged actions exceeding operator limits |
 | 11| `AuditActionBadge` | Badge + Tooltip (Author, Timestamp, IP) | Displays identity & role for high-liability modifications |
 
-### 3.3 Domain-Specific Composites (Conditional Extensions)
+### 3.3 Benchmark Signature Organisms & Domain Composites (MANDATORY PORTING)
 
-*Include only components required by the project's specific domain (Retail, HRIS, Fintech, etc.):*
+> ⛔ **Benchmark Transfer Mandate**: Every Benchmark Signature Organism identified in `docs/design/inspiration/notes.md` (§4) MUST be explicitly listed below with its composition structure and interaction states.
+> Generating a component showcase (`docs/design/components/index.html`) that only renders generic form primitives (buttons, inputs, tables) while omitting the benchmark's signature visual organisms is STRICTLY FORBIDDEN as AI slop.
 
-| # | Component Name | Domain / Context | Purpose & Interaction |
-|:--:|:---------------|:-----------------|:----------------------|
-| 1 | `POSCartDock` | Retail / Point of Sale | Two-panel split on tablet/desktop; sticky bottom bar on mobile (<768px) with total and pay button |
-| 2 | `ChangeCalculator`| Cashier / Retail | Large display of tender amount, quick cash chips, and change calculation |
-| 3 | `ThermalPrintView`| Hardware / Retail | `@media print` 58mm/80mm receipt format with zero margins and monospaced typography |
-| 4 | `OfflineSyncBadge`| Local-First / Field Ops | 4 connection states: Online (green pulse), Offline (amber + pending count), Syncing (spinner), Error (retry) |
-| 5 | `CurrencyInput` | Financial / Accounting | Uses `inputmode="numeric"`, live thousand-separator dot formatting, without browser float spinners |
+| # | Component Name | Source / Benchmark Organism | Composition Structure & Interaction |
+|:--:|:---------------|:----------------------------|:------------------------------------|
+| 1 | `[SignatureOrganism1]` | `notes.md` §4 Organism 1 (e.g., `HeroMetricBanner`) | CardContainer + HeaderWithBadge + MediaThumbnail + ActionCTA |
+| 2 | `[SignatureOrganism2]` | `notes.md` §4 Organism 2 (e.g., `RadialProgressGauge`) | SVG Radial Gauge / Segmented Progress + Center Metric + Status Label |
+| 3 | `[SignatureOrganism3]` | `notes.md` §4 Organism 3 (e.g., `NavPillFilterBar`) | NavPillsContainer + ActivePillButton (rounded-full) + CountBadge |
+| 4 | `[SignatureOrganism4]` | `notes.md` §4 Organism 4 (e.g., `MediaPropertyCard`) | MediaContainer (16:10) + FloatingBadge + Title + SpecGrid + PriceTag |
+| 5 | `[DomainOrganism1]` | Domain-Specific (e.g., `POSCartDock`) | Two-panel split on tablet/desktop; sticky bottom bar on mobile (<768px) with total and pay button |
+| 6 | `[DomainOrganism2]` | Domain-Specific (e.g., `CurrencyInput`) | Uses `inputmode="numeric"`, live thousand-separator dot formatting, without browser float spinners |
 
 ---
 
