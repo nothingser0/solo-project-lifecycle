@@ -76,6 +76,8 @@
 
 *Consolidated, deduplicated inventory. Every component used in Section 2 must be tabulated here.*
 
+> ⛔ **100% Showcase Parity Mandate**: ALL components inventoried below (§3.1 Primitives, §3.2 Standard Composites, and §3.3 Benchmark/Domain Organisms) MUST be rendered as functionally interactive instances in `docs/design/components/index.html`. Generating a hollow showcase of only 5–6 basic form elements while omitting the rest of the 20–35 requirements is STRICTLY FORBIDDEN as incomplete AI slop.
+
 ### 3.1 Primitives (Atomic Components)
 
 | # | Component Name | Variants | Interactive States | Usage Justification |

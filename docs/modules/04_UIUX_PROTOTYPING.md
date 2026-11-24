@@ -22,8 +22,10 @@ INPUT: SCOPE_STATEMENT.md + valid SOW (or M03 waived for Solo SaaS)
 ================================================================================
 STAGE 1: INSPIRATION, BRAND IDENTITY & DESIGN TOKENS
 ================================================================================
-0.5  INSPIRATION INTAKE -- first, blocking, every scale
+0.5  INSPIRATION INTAKE & ROOT HARNESS -- first, blocking, every scale
      Human places >=1 reference in docs/design/inspiration/ (screenshots, brand board, clip, links.md).
+     Root Harness: Ensure root ./AGENTS.md is present (from templates/04-dev-execution/AGENTS_TEMPLATE.md)
+       so the coding agent reads anti-slop rules, layout shell contracts, and showcase parity mandates on every turn.
      Static screenshots only -> the human must state the intended dynamic effects in this turn.
      STOP 0.5: no human-supplied file in that folder -> END TURN and ask. Do not create
        LOGO_DESIGN_BRIEF, assets/logo, SITEMAP, COMPONENT_REQUIREMENTS or DESIGN.md before it exists.
@@ -60,11 +62,12 @@ STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
      - Curated Photography: Collect and stage real high-res domain photos in assets/media/ or curated URLs
        (e.g., room/property photos 16:10, building exterior, photo avatars, payment slip previews).
        Raw blank boxes, text-only card slop, or placeholder initials circles are STRICTLY FORBIDDEN.
-1B   REUSABLE MASTER COMPONENT SHOWCASE
+1B   REUSABLE MASTER COMPONENT SHOWCASE (100% Inventory Parity Mandate)
      Scaffold docs/design/components/index.html linked to docs/design/shared/css/styles.css and
-     shared/js/app.js. Render 100% functionally interactive instances of all primitives, form fields,
-     and all 4-6 Benchmark Signature Organisms from COMPONENT_REQUIREMENTS.md §3.3 (radial gauges,
-     hero cards, nav pills, media cards; never generic form/table primitives alone) with active states.
+     shared/js/app.js. Render 100% functionally interactive instances of EVERY component listed in
+     COMPONENT_REQUIREMENTS.md (§3.1 primitives, §3.2 standard composites, and §3.3 benchmark/domain
+     organisms). Generating a hollow showcase of only 5-6 generic form fields while skipping the rest
+     of the 20-35 inventoried components is STRICTLY FORBIDDEN as incomplete AI slop.
      ⛔ STOP & END TURN (Checkpoint 2 - BLOCKING): Present docs/design/components/index.html to user.
      Do NOT assemble any screen until the user tests the showcase in browser and gives written ACC approval.
 
