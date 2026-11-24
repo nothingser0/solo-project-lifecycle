@@ -190,6 +190,28 @@ foreach ($file in $htmlFiles) {
         $warnings += "Found $($deadLinks.Count) dead link(s) (href=`"#`"). Wire to authentic action handlers or modals."
     }
 
+    # 12. Avatar Craft: No Raw Monochrome Text Initials
+    $initialsMatches = [regex]::Matches($cleanBodyContent, '<div[^>]+class=["''][^"'']*\bavatar\b[^"'']*["''][^>]*>\s*([A-Za-z]{1,3})\s*</div>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    if ($initialsMatches.Count -gt 0) {
+        $violations += "Found $($initialsMatches.Count) raw text-initial avatar(s)! Avatars must use authentic photo assets or SVG icons."
+    }
+
+    # 13. Semantic Authentication & Public Screen Integrity
+    $fnameLower = $file.Name.ToLower()
+    $isLogin = $fnameLower -match 'login' -or $fnameLower -match 'masuk'
+    $isPublic = $isLogin -or $fnameLower -match 'landing' -or $fnameLower -match 'register' -or $file.FullName.Replace('\','/').ToLower() -match '/public/'
+
+    if ($isLogin) {
+        if ($content -notmatch '<input[^>]+type=["'']password["'']') {
+            $violations += "Login screen '$($file.Name)' has no password field (<input type=`"password`">)! Screen appears to be an invalid/cloned dashboard."
+        }
+    }
+    if ($isPublic) {
+        if ($content -match '\b(branch[\s_-]*manager|super[\s_-]*admin|tingkat[\s_-]*okupansi|penerimaan[\s_-]*bulan[\s_-]*berjalan)\b') {
+            $violations += "Public screen '$($file.Name)' leaks internal staff/admin metrics or sidebar navigation!"
+        }
+    }
+
     # Extract Nav Items & Brand Title
     $navMatches = [regex]::Matches($content, '<(?:a|button)[^>]+class=["''][^"'']*(?:sidebar-link|nav-link)[^"'']*["''][^>]*>(.*?)</(?:a|button)>', [System.Text.RegularExpressions.RegexOptions]::Singleline)
     $navItems = @()

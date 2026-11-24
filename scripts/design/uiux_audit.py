@@ -188,6 +188,27 @@ class ScreenAudit:
         if dead_links:
             self.warnings.append(f"Found {len(dead_links)} dead link(s) (href=\"#\"). Wire to authentic action handlers or modals.")
 
+        # 13. Avatar Craft: No Raw Monochrome Text Initials Circles
+        raw_initials = re.findall(r'<div[^>]+class=["\'][^"\']*\bavatar\b[^"\']*["\'][^>]*>\s*([A-Za-z]{1,3})\s*</div>', clean_content, re.IGNORECASE)
+        if raw_initials:
+            self.violations.append(f"Found {len(raw_initials)} raw text-initial avatar(s) ({', '.join(set(raw_initials))})! Avatars must use authentic photo assets or SVG icons.")
+
+        # 14. Semantic Authentication & Public Screen Integrity
+        fname = self.file_path.name.lower()
+        fpath_str = str(self.file_path).replace("\\", "/").lower()
+        is_login = "login" in fname or "masuk" in fname
+        is_public = is_login or "landing" in fname or "register" in fname or "/public/" in fpath_str or "scr-pub" in fname
+
+        if is_login:
+            has_password = bool(re.search(r'<input[^>]+type=["\']password["\']', self.content, re.IGNORECASE))
+            if not has_password:
+                self.violations.append(f"Login screen '{self.filename}' has no password field (<input type=\"password\">)! Screen appears to be an invalid/cloned dashboard.")
+
+        if is_public:
+            leaked_staff = re.findall(r'\b(branch[\s_-]*manager|super[\s_-]*admin|tingkat[\s_-]*okupansi|penerimaan[\s_-]*bulan[\s_-]*berjalan)\b', self.content, re.IGNORECASE)
+            if leaked_staff:
+                self.violations.append(f"Public screen '{self.filename}' leaks internal staff/admin metrics ({', '.join(set(leaked_staff))})!")
+
 
 class DesignSystemAuditor:
     def __init__(self, target_dir, auto_fix=False):
@@ -233,7 +254,44 @@ class DesignSystemAuditor:
         # Cross-Screen Parity Check
         self.verify_cross_screen_parity()
 
+        # Screen Uniqueness / Anti-Cloning Check
+        self.verify_screen_uniqueness()
+
         return self.report()
+
+    def verify_screen_uniqueness(self):
+        """Detect lazy cloning where an agent copied the exact same HTML across multiple screens."""
+        if len(self.screen_audits) < 2:
+            return
+
+        screen_words = []
+        for audit in self.screen_audits:
+            body = re.search(r'<body[^>]*>(.*?)</body>', audit.content, re.DOTALL | re.IGNORECASE)
+            body_content = body.group(1) if body else audit.content
+            # Strip title, heading, and script/style to see core structural content
+            core = re.sub(r'<(h[1-6]|title)\b.*?</\1>', '', body_content, flags=re.DOTALL | re.IGNORECASE)
+            core = re.sub(r'<(script|style)\b.*?</\1>', '', core, flags=re.DOTALL | re.IGNORECASE)
+            words = set(re.findall(r'[A-Za-z0-9]{3,}', core.lower()))
+            screen_words.append((audit, words))
+
+        reported_pairs = set()
+        for i in range(len(screen_words)):
+            for j in range(i + 1, len(screen_words)):
+                audit_a, words_a = screen_words[i]
+                audit_b, words_b = screen_words[j]
+                # Only check screens with substantial content (>= 25 unique words)
+                if len(words_a) < 25 or len(words_b) < 25:
+                    continue
+                intersection = len(words_a & words_b)
+                union = len(words_a | words_b)
+                similarity = intersection / union if union > 0 else 0
+                if similarity >= 0.80:
+                    pair_key = tuple(sorted([audit_a.filename, audit_b.filename]))
+                    if pair_key not in reported_pairs:
+                        reported_pairs.add(pair_key)
+                        audit_b.violations.append(
+                            f"Screen Clone Detected: '{audit_b.filename}' is {int(similarity * 100)}% identical to '{audit_a.filename}'! Each screen must have unique, role-appropriate domain content."
+                        )
 
     def verify_cross_screen_parity(self):
         if len(self.screen_audits) < 2:
