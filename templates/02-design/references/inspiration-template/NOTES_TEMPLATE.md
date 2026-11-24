@@ -36,12 +36,17 @@
 > A citation with no matching file is a fabricated benchmark and fails `validate-gate.sh M04`.
 
 **Observations**:
-- **Colors**: Primary #[HEX], Secondary #[HEX], Neutrals [gray scale] (Extract exact hex from image; zero raw neon hues like #FF5722)
-- **Typography**: [Font name], Weights [400/600/700], Sizes [14px body, 24px heading]
-- **Spacing**: Padding [Xpx], Gaps [Ypx], Margins [Zpx]
-- **Borders**: [Width] [Color], Radius [Xpx]
-- **Shadows**: [box-shadow values] or "None"
-- **Layout**: [Max width, grid columns, alignment]
+- **Pixel-Sampled Palette** (Run `python scripts/design/extract_palette.py docs/design/inspiration/[filename.png]`):
+  - Canvas Background: `#[HEX]` (Base surface, e.g. `#F7F8FA`)
+  - Card Surface: `#[HEX]` (Elevated cards, e.g. `#FFFFFF`)
+  - Primary Accent: `#[HEX]` (Brand CTA & highlights, e.g. `#FF9432`)
+  - Secondary Accent: `#[HEX]` (Gauges / secondary badge, e.g. `#F6B470`)
+  - Primary Text: `#[HEX]` (Headings & body, e.g. `#1E293B`)
+- **Typography**: [Font name, e.g. Inter], Weights [400/500/600/700], Sizes [14px body, 28px heading]
+- **Spacing**: Padding [e.g. 16px/24px], Gaps [16px], Margins [Zpx]
+- **Borders & Corners**: [Width 1px] [Color #E2E8F0], Radius [e.g. 8px buttons, 16px cards, 24px hero banner]
+- **Shadows**: [e.g. 0 4px 20px rgba(0,0,0,0.04) or "None"]
+- **Layout**: [Top-Nav bar height 64px, container max-width 1280px, 3-column property grid]
 - **Component DNA & Micro-Patterns**:
   - Hero Card Progress: [Segmented dashes / continuous bar / circular ring]
   - Timeline/Calendar Structure: [Column-aligned Gantt grid / multi-track schedule / card reflow] (No fake full-width table rows)
