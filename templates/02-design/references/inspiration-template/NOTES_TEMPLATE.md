@@ -386,7 +386,7 @@ Based on references, document how key components should look:
 
 ---
 
-### Card
+### Card (Standard)
 
 ```css
 .card {
@@ -395,6 +395,132 @@ Based on references, document how key components should look:
   border-radius: [value]px;
   padding: [value]px;
   box-shadow: [value or none];
+}
+```
+
+---
+
+### Top-Navigation Bar & Nav Pills
+
+```css
+.navbar-top {
+  height: 64px;
+  background: #[HEX];
+  border-bottom: 1px solid #[border HEX];
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-pill {
+  border-radius: 9999px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 150ms;
+}
+
+.nav-pill.active {
+  background: #[primary HEX];
+  color: #FFFFFF;
+}
+```
+
+---
+
+### Hero Featured Card (With Media / Photo Cutout)
+
+```css
+.card-hero {
+  background: #[primary HEX];
+  border-radius: [e.g. 24px];
+  padding: 32px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.card-hero-media img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+```
+
+---
+
+### Media / Property Listing Card (16:10 Photo)
+
+```css
+.card-property {
+  background: #FFFFFF;
+  border: 1px solid #[border HEX];
+  border-radius: [e.g. 16px];
+  overflow: hidden;
+  box-shadow: [soft shadow];
+}
+
+.card-property-media {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-property-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-property-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+```
+
+---
+
+### Radial Progress Gauge (Dashed Circular SVG)
+
+```css
+.radial-gauge {
+  width: 112px;
+  height: 112px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radial-gauge svg circle.track {
+  stroke: #[border/neutral HEX];
+  stroke-width: 8;
+  fill: transparent;
+}
+
+.radial-gauge svg circle.value {
+  stroke: #[primary HEX];
+  stroke-width: 8;
+  stroke-dasharray: 6, 4; /* Segmented/dashed */
+  stroke-linecap: round;
+  fill: transparent;
+}
+
+.radial-gauge-center {
+  position: absolute;
+  text-align: center;
 }
 ```
 

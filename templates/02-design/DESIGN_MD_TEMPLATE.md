@@ -302,7 +302,64 @@ M04 requires this section by name. A single spacing scale is what keeps a layout
 
 ---
 
-## 6. Automated Quality Validation Checklist (DESIGN.md Gate)
+## 7. Master Component Visual Specifications & Anatomy (Anti-Guessing Contract)
+
+*Every component implemented in `docs/design/components/index.html` and prototype screens MUST adhere to these exact styling structures and class standards. AI agents MUST NOT invent arbitrary styles or fall back to generic unstyled boxes.*
+
+### 7.1 Layout Shell & Navigation Bar (`.navbar`)
+- **Top-Navigation Bar (`.navbar-top`)**:
+  - Structure: Sticky header `h-16` (64px), `bg-white` (or `--card`), border-b `1px solid var(--border)`, `px-6 md:px-8`, `flex items-center justify-between`.
+  - Content Constraint: Centered `max-w-7xl mx-auto w-full`.
+  - Brand Logo: Placed on left (`h-9 w-auto`).
+  - Nav Pills (`.nav-pill`): Horizontal scrollable list on mobile, inline-flex on desktop.
+    - Base: `rounded-full px-4 py-1.5 text-sm font-medium transition-all`.
+    - Active: `bg-[var(--primary)] text-white shadow-sm`.
+    - Inactive: `text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--muted)]`.
+  - User Action Bar: Right-aligned notification bell with unread dot + circular photo avatar (`w-9 h-9 rounded-full ring-2 ring-white`).
+
+### 7.2 Card Archetypes (`.card`)
+- **Standard Content Card (`.card-standard`)**:
+  - `bg-white border border-[var(--border)] rounded-2xl p-6 shadow-sm (0 1px 3px rgba(0,0,0,0.04))`.
+  - Header: `flex items-center justify-between mb-4`.
+  - Title: `text-base font-semibold text-[var(--foreground)]`.
+- **Hero Featured Card (`.card-hero`)**:
+  - Structure: `bg-[var(--primary)] rounded-3xl p-8 text-white relative overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-6 items-center`.
+  - Left Col: Badge pill (`bg-white/20 text-white backdrop-blur-sm`), Headline `text-2xl md:text-3xl font-bold`, Subtitle `text-white/80`, White CTA button (`bg-white text-[var(--primary)] font-semibold rounded-xl px-5 py-2.5 shadow-md hover:bg-white/90`).
+  - Right Col: Real photo cutout / property thumbnail seamlessly aligned without harsh container borders.
+- **Media / Property Listing Card (`.card-property`)**:
+  - Structure: `bg-white border border-[var(--border)] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group`.
+  - Media Container: `aspect-[16/10] w-full relative overflow-hidden bg-slate-100`. Image: `w-full h-full object-cover group-hover:scale-105 transition-transform duration-300`.
+  - Floating Badge: `absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-semibold text-[var(--foreground)] shadow-sm`.
+  - Body (`p-4`): Property title `font-semibold text-base mb-1`, facility chips row `flex gap-2 text-xs text-[var(--muted-foreground)] mb-3`, footer row with bold price `text-base font-bold text-[var(--primary)]` and detail link.
+
+### 7.3 Button System (`.btn`)
+- **Primary Button (`.btn-primary`)**:
+  - `h-11 px-5 rounded-xl bg-[var(--primary)] text-white font-medium text-sm inline-flex items-center justify-center gap-2 shadow-sm hover:brightness-105 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 transition-all`.
+- **Secondary Button (`.btn-secondary`)**:
+  - `h-11 px-5 rounded-xl bg-[var(--muted)] text-[var(--foreground)] font-medium text-sm inline-flex items-center justify-center gap-2 hover:bg-slate-200 active:scale-[0.98] transition-all`.
+- **Outline Button (`.btn-outline`)**:
+  - `h-11 px-5 rounded-xl border border-[var(--input)] bg-white text-[var(--foreground)] font-medium text-sm inline-flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition-all`.
+
+### 7.4 Form Controls (`.form-field`)
+- **Text & Search Input (`.input`)**:
+  - `h-11 px-4 rounded-xl border border-[var(--input)] bg-white text-base text-[var(--foreground)] placeholder:text-[var(--text-placeholder)] focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all`.
+- **Label (`.form-label`)**:
+  - `text-sm font-medium text-[var(--foreground)] mb-1.5 block`.
+- **Field Error (`.form-error`)**:
+  - `text-xs text-[var(--destructive)] mt-1.5 flex items-center gap-1 font-medium`.
+
+### 7.5 Signature Domain Organisms
+- **Radial Dashed Progress Gauge (`.radial-gauge`)**:
+  - SVG circle container `w-28 h-28 relative flex items-center justify-center mx-auto`.
+  - Background track: `stroke-[#E2E8F0] stroke-width="8" fill="transparent"`.
+  - Active track: `stroke-[var(--primary)] stroke-width="8" stroke-dasharray="6,4" stroke-linecap="round" fill="transparent"`.
+  - Center Metric: `absolute inset-0 flex flex-col items-center justify-center text-center`. Value: `text-xl font-bold text-[var(--foreground)]`, Label: `text-[10px] text-[var(--muted-foreground)] uppercase tracking-wider`.
+- **Condition / Quality Slider (`.condition-slider`)**:
+  - Segmented horizontal track with colored milestone pills indicating room or property inspection quality.
+
+---
+
+## 8. Automated Quality Validation Checklist (DESIGN.md Gate)
 
 *Before finalizing `DESIGN.md`, verify:*
 
