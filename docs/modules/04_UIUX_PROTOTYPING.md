@@ -63,14 +63,14 @@ STAGE 2: ASSET STAGING & MASTER COMPONENTS SHOWCASE
      - Curated Photography: Collect and stage real high-res domain photos in assets/media/ or curated URLs
        (e.g., room/property photos 16:10, building exterior, photo avatars, payment slip previews).
        Raw blank boxes, text-only card slop, or placeholder initials circles are STRICTLY FORBIDDEN.
-1B   REUSABLE MASTER COMPONENT SHOWCASE (Staged Build & 100% Parity Mandate)
-     Scaffold docs/design/components/index.html linked to docs/design/shared/css/styles.css and
-     shared/js/app.js. Build iteratively across turns to avoid token truncation:
-     (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms (or component-by-component).
-     Direct image re-inspection: do NOT rely on notes.md text alone; directly inspect the raw screenshots
-     in docs/design/inspiration/ for exact visual nuances (shadows, padding, badge offsets, borders).
-     Render 100% of inventoried components. A hollow 5-6 component showcase is strictly forbidden.
-     ⛔ STOP & END TURN (Checkpoint 2 - BLOCKING): Present showcase to user. Wait for visual ACC approval.
+1B   REUSABLE COMPONENT SHOWCASE (Component-by-Component Build & 100% ACC Mandate)
+     Scaffold docs/design/components/index.html (or modular cmp-xx files) linked to shared styles.css
+     and app.js. Build strictly COMPONENT-BY-COMPONENT matching CMP-01..CMP-NN in COMPONENT_REQUIREMENTS.md:
+     (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms. Never bulk dump.
+     Direct image re-inspection: inspect raw screenshots in docs/design/inspiration/ per component for
+     exact shadows, radius, padding, hover/active states. Render 100% of CMPs; 5-6 subset is forbidden slop.
+     ⛔ STOP & END TURN per component (or tier batch) for interactive human ACC before next CMP.
+     Screen assembly is strictly blocked until 100% of CMPs pass written human ACC.
 
 ================================================================================
 STAGE 3: HIGH-FIDELITY SCREEN ASSEMBLY & WIREFLOW SCENARIOS

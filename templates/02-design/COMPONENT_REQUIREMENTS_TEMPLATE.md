@@ -72,54 +72,59 @@
 
 ---
 
-## 3. Official Component Inventory (Strict Three-Tier Categorization)
+## 3. Official Component Inventory (Strict Three-Tier Categorization & Sequential CMP IDs)
 
-*Consolidated, deduplicated inventory. Every component used in Section 2 must be tabulated here.*
+*Consolidated, deduplicated inventory. Every component used in Section 2 must be tabulated here with a permanent sequential identifier (`CMP-01` to `CMP-NN`).*
 
-> ⛔ **100% Showcase Parity Mandate**: ALL components inventoried below (§3.1 Primitives, §3.2 Standard Composites, and §3.3 Benchmark/Domain Organisms) MUST be rendered as functionally interactive instances in `docs/design/components/index.html`. Generating a hollow showcase of only 5–6 basic form elements while omitting the rest of the 20–35 requirements is STRICTLY FORBIDDEN as incomplete AI slop.
+> ⛔ **Component-by-Component Build & Human ACC Mandate**:
+> 1. **Zero Bulk Dumping**: Generating all components in a single monolithic write_file is strictly prohibited. The agent MUST construct components sequentially (`CMP-01` -> `CMP-02` -> ...).
+> 2. **Per-Component Showcase**: Each component must be rendered with all states (Default, Hover, Active tactile scale `0.98`, Focus-visible `ring-2`, Disabled, Loading spinner) in `docs/design/components/index.html` (or modular `cmp-xx-[name].html`) using shared classes in `docs/design/shared/css/styles.css`.
+> 3. **Blocking Stop & ACC**: After finishing each component (or tier batch), the agent MUST halt (`⛔ STOP & END TURN`) and ask for human review. The human tests hover/active interactions in the browser and provides written `ACC`.
+> 4. **100% Showcase Parity**: ALL components inventoried below (§3.1 Primitives, §3.2 Standard Composites, and §3.3 Benchmark/Domain Organisms) MUST be rendered as functionally interactive instances before any prototype screen (`docs/design/screens/`) can be assembled. Generating a hollow showcase of only 5–6 basic form elements while omitting the rest of the requirements is STRICTLY FORBIDDEN as incomplete AI slop.
 
 ### 3.1 Primitives (Atomic Components)
 
-| # | Component Name | Variants | Interactive States | Usage Justification |
-|:--:|:---------------|:---------|:-------------------|:--------------------|
-| 1 | `Button` | primary, secondary, outline, ghost, destructive | default, hover, active, focus, disabled, loading | Form actions, dialog triggers, checkout submission |
-| 2 | `Input` | text, email, password, search | default, hover, focus, error, disabled | Data entry across all forms; uses `inputmode="numeric"` for currency |
-| 3 | `Textarea` | standard | default, hover, focus, error, disabled | Notes, adjustment reasons, address fields |
-| 4 | `Select / PopoverMenu` | custom styled floating popover (zero raw native select) | closed, open, focused, selected, disabled | Categories, units, floor filter pickers; requires rounded-2xl container & shadow-xl |
-| 5 | `Badge` | neutral, success, warning, destructive, info | default, interactive hover (optional) | Status flags, stock levels, role indicators |
-| 6 | `Checkbox` | default | unchecked, checked, indeterminate, disabled | Multi-item selection, agreement terms |
-| 7 | `LoadingSpinner`| sm (16px), md (24px), lg (32px) | animated spin | Async indicators, submit buttons |
-| 8 | `Icon` | Lucide React (standardized) | default | Visual cues paired with text (never color alone) |
+| CMP ID | Component Name | Variants | Interactive States | Usage Justification |
+|:------:|:---------------|:---------|:-------------------|:--------------------|
+| `CMP-01` | `Button` | primary, secondary, outline, ghost, destructive | default, hover, active (`scale-[0.98]`), focus, disabled, loading | Form actions, dialog triggers, checkout submission |
+| `CMP-02` | `Input` | text, email, password, search | default, hover, focus (`ring-2`), error, disabled | Data entry across all forms; uses `inputmode="numeric"` for currency |
+| `CMP-03` | `Textarea` | standard | default, hover, focus, error, disabled | Notes, adjustment reasons, address fields |
+| `CMP-04` | `Select / PopoverMenu` | custom styled floating popover (zero raw native select) | closed, open, focused, selected, disabled | Categories, units, floor filter pickers; requires rounded-2xl container & shadow-xl |
+| `CMP-05` | `Badge` | neutral, success, warning, destructive, info | default, interactive hover (optional) | Status flags, stock levels, role indicators |
+| `CMP-06` | `Checkbox / Switch` | toggle switch, checkbox | unchecked, checked, indeterminate, disabled | Multi-item selection, agreement terms, feature toggles |
+| `CMP-07` | `LoadingSpinner`| sm (16px), md (24px), lg (32px) | animated spin | Async indicators, submit buttons |
+| `CMP-08` | `Icon` | Lucide SVG (standardized family, stroke-1.75) | default | Visual cues paired with text (never color alone, zero emoji) |
+| `CMP-09` | `Avatar` | photo circular, counter badge | default, ring offset | Tenant, staff, and admin identity representation |
 
 ### 3.2 Standard Composites
 
-| # | Component Name | Composition Structure | Usage Justification |
-|:--:|:---------------|:----------------------|:--------------------|
-| 1 | `FormField` | Label + Input/Select/Textarea + Error Message (≥13px) + Hint | Standardized form wrapper with accessible aria associations |
-| 2 | `Card` | CardHeader + CardTitle + CardContent + CardFooter | Content containers, dashboard metric tiles, list cards |
-| 3 | `Table` | TableHeader + TableBody + TableRow + TableCell + TablePagination | Tabular data records; reflows to stacked cards on mobile (<640px) |
-| 4 | `Modal` | DialogBackdrop (z-40) + DialogContent (z-50) + DialogClose | Focused interactive overlays with focus-trap and Esc handler |
-| 5 | `ConfirmDialog`| Modal + Icon + Title + Description + Cancel/Confirm Action | Destruction / void confirmations |
-| 6 | `Toast` | ToastContainer (z-60) + ToastItem + CloseAction | Action feedback; error & offline toasts have NO auto-dismiss |
-| 7 | `EmptyState` | Icon / Illustration + Heading + Description + ActionButton | Rendered when collections contain 0 records |
-| 8 | `SearchInput` | Input + SearchIcon + ClearButton | Filterable headers, product lookup |
-| 9 | `PermissionGate` | Role/Permission wrapper | Client-side visual gating aligned with RBAC rules |
-| 10| `SupervisorOverrideModal` | Dialog + PIN/Auth + Reason Textarea | Manager overrides for privileged actions exceeding operator limits |
-| 11| `AuditActionBadge` | Badge + Tooltip (Author, Timestamp, IP) | Displays identity & role for high-liability modifications |
+| CMP ID | Component Name | Composition Structure | Usage Justification |
+|:------:|:---------------|:----------------------|:--------------------|
+| `CMP-10` | `FormField` | Label + Input/Select/Textarea + Error Message (≥13px) + Hint | Standardized form wrapper with accessible aria associations |
+| `CMP-11` | `Card` | CardHeader + CardTitle + CardContent + CardFooter | Content containers, dashboard metric tiles, list cards |
+| `CMP-12` | `Table` | TableHeader + TableBody + TableRow + TableCell + TablePagination | Tabular data records; reflows to stacked cards on mobile (<640px) |
+| `CMP-13` | `Modal` | DialogBackdrop (z-40) + DialogContent (z-50) + DialogClose | Focused interactive overlays with focus-trap and Esc handler |
+| `CMP-14` | `ConfirmDialog`| Modal + Icon + Title + Description + Cancel/Confirm Action | Destruction / void confirmations |
+| `CMP-15` | `Toast` | ToastContainer (z-60) + ToastItem + CloseAction | Action feedback; error & offline toasts have NO auto-dismiss |
+| `CMP-16` | `EmptyState` | Icon / Illustration + Heading + Description + ActionButton | Rendered when collections contain 0 records |
+| `CMP-17` | `SearchInput` | Input + SearchIcon + ClearButton | Filterable headers, product lookup |
+| `CMP-18` | `PermissionGate` | Role/Permission wrapper | Client-side visual gating aligned with RBAC rules |
+| `CMP-19` | `SupervisorOverrideModal` | Dialog + PIN/Auth + Reason Textarea | Manager overrides for privileged actions exceeding operator limits |
+| `CMP-20` | `AuditActionBadge` | Badge + Tooltip (Author, Timestamp, IP) | Displays identity & role for high-liability modifications |
 
 ### 3.3 Benchmark Signature Organisms & Domain Composites (MANDATORY PORTING)
 
 > ⛔ **Benchmark Transfer Mandate**: Every Benchmark Signature Organism identified in `docs/design/inspiration/notes.md` (§4) MUST be explicitly listed below with its composition structure and interaction states.
 > Generating a component showcase (`docs/design/components/index.html`) that only renders generic form primitives (buttons, inputs, tables) while omitting the benchmark's signature visual organisms is STRICTLY FORBIDDEN as AI slop.
 
-| # | Component Name | Source / Benchmark Organism | Composition Structure & Interaction |
-|:--:|:---------------|:----------------------------|:------------------------------------|
-| 1 | `[SignatureOrganism1]` | `notes.md` §4 Organism 1 (e.g., `HeroMetricBanner`) | CardContainer + HeaderWithBadge + MediaThumbnail + ActionCTA |
-| 2 | `[SignatureOrganism2]` | `notes.md` §4 Organism 2 (e.g., `RadialProgressGauge`) | SVG Radial Gauge / Segmented Progress + Center Metric + Status Label |
-| 3 | `[SignatureOrganism3]` | `notes.md` §4 Organism 3 (e.g., `NavPillFilterBar`) | NavPillsContainer + ActivePillButton (rounded-full) + CountBadge |
-| 4 | `[SignatureOrganism4]` | `notes.md` §4 Organism 4 (e.g., `MediaPropertyCard`) | MediaContainer (16:10) + FloatingBadge + Title + SpecGrid + PriceTag |
-| 5 | `[DomainOrganism1]` | Domain-Specific (e.g., `POSCartDock`) | Two-panel split on tablet/desktop; sticky bottom bar on mobile (<768px) with total and pay button |
-| 6 | `[DomainOrganism2]` | Domain-Specific (e.g., `CurrencyInput`) | Uses `inputmode="numeric"`, live thousand-separator dot formatting, without browser float spinners |
+| CMP ID | Component Name | Source / Benchmark Organism | Composition Structure & Interaction |
+|:------:|:---------------|:----------------------------|:------------------------------------|
+| `CMP-21` | `[SignatureOrganism1]` | `notes.md` §4 Organism 1 (e.g., `HeroMetricBanner`) | CardContainer + HeaderWithBadge + MediaThumbnail + ActionCTA |
+| `CMP-22` | `[SignatureOrganism2]` | `notes.md` §4 Organism 2 (e.g., `RadialProgressGauge`) | SVG Radial Gauge / Segmented Progress + Center Metric + Status Label |
+| `CMP-23` | `[SignatureOrganism3]` | `notes.md` §4 Organism 3 (e.g., `NavPillFilterBar`) | NavPillsContainer + ActivePillButton (rounded-full) + CountBadge |
+| `CMP-24` | `[SignatureOrganism4]` | `notes.md` §4 Organism 4 (e.g., `MediaPropertyCard`) | MediaContainer (16:10) + FloatingBadge + Title + SpecGrid + PriceTag |
+| `CMP-25` | `[DomainOrganism1]` | Domain-Specific (e.g., `POSCartDock`) | Two-panel split on tablet/desktop; sticky bottom bar on mobile (<768px) with total and pay button |
+| `CMP-26` | `[DomainOrganism2]` | Domain-Specific (e.g., `CurrencyInput`) | Uses `inputmode="numeric"`, live thousand-separator dot formatting, without browser float spinners |
 
 ---
 

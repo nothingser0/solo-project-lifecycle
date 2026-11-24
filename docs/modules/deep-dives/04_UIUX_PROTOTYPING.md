@@ -228,12 +228,17 @@ Default standalone in-repo standard without external credentials, platform lock-
 - **Workflow**:
   1. **Token & Inventory Alignment (Stage 1)**: Define design tokens in `DESIGN.md` (locking `--layout-shell: top-nav | sidebar`), port benchmark signature organisms to `COMPONENT_REQUIREMENTS.md` §3.3. ⛔ **STOP & END TURN (Checkpoint 1)**: Present benchmark winner, shell layout, and signature organisms table to human. Wait for confirmation.
   2. **Asset & Icon Staging (Step 1A)**: Lock Lucide SVG icons and high-resolution domain photography before building components.
-  3. **Master Component Showcase (Step 1B - Staged Build & Raw Image Re-inspection)**:
-     - Direct Image Re-inspection: When coding each component, agent MUST directly re-inspect the raw reference screenshots in `docs/design/inspiration/` (never rely on `notes.md` text alone) to sample exact shadows, border radius, padding density, and badge placements.
-     - Build iteratively across turns to avoid token truncation: (1) §3.1 Primitives -> (2) §3.2 Composites -> (3) §3.3 Benchmark Organisms (or component-by-component).
-     - At each batch/component, human opens browser, compares side-by-side with reference screenshot in `docs/design/inspiration/`.
-     - Render 100% of inventoried components. A hollow 5-6 component showcase is strictly forbidden.
-     - ⛔ **STOP & END TURN (Checkpoint 2 - BLOCKING)**: Present showcase to human. Wait for explicit written ACC approval before assembling any screens.
+  3. **Master Component Showcase (Step 1B - Component-by-Component Build & Human ACC Protocol)**:
+     - **Anti-Slop Law (Zero Bulk Dumping)**: Generating all components in a single monolithic file dump or hallucinating a cut-down 5–6 component subset while abandoning the rest of the inventory is STRICTLY FORBIDDEN as AI slop.
+     - **Sequential CMP Identifiers**: Every component declared in `COMPONENT_REQUIREMENTS.md` receives an official sequential identifier (`CMP-01`, `CMP-02`, ... `CMP-NN`).
+     - **Turn-by-Turn Granularity (One CMP at a Time)**:
+       1. Agent selects the next sequential CMP from `COMPONENT_REQUIREMENTS.md`.
+       2. Agent directly inspects the raw inspiration screenshots in `docs/design/inspiration/` for exact styling (shadows, border-radius, padding density, badge offsets, hover/active color changes).
+       3. Agent implements the component's full CSS rules in `docs/design/shared/css/styles.css` and its interactive showcase instance in `docs/design/components/index.html` (or modular `cmp-xx-[name].html`).
+       4. The component MUST showcase all states: Default, Hover (subtle lift/shadow), Active (`scale(0.98)` tactile tap), Focus-Visible (`ring-2`), Disabled, and Loading spinner.
+       5. ⛔ **STOP & END TURN (Per-Component / Per-Batch ACC)**: Agent presents the finished component to the human with instructions to open it in the browser. Agent asks: *"CMP-xx [Component Name] completed. Please review interactive states in browser. Do you ACC to proceed to CMP-yy?"*
+       6. Agent halts execution. Human tests in browser, provides feedback or types `ACC`. Only upon written ACC does the agent advance to the next CMP.
+     - **Screen Assembly Blocking Rule**: Zero prototype screens (`docs/design/screens/`) may be authored until 100% of inventoried CMPs have passed written human ACC in Step 1B.
   4. **High-Fidelity Screen Assembly (Step 2 - Layout Parity & Role-by-Role Visual Comparison)**:
      - Layout Shell Parity: Screens must faithfully inherit the exact layout geometry from the inspiration benchmark (top-nav bar height, container max-width, grid gaps, canvas background tone), never inventing arbitrary sidebars or structures.
      - Assemble screens strictly in role-by-role batches (Public -> Tenant/User -> Staff -> Admin) covering 100% of SITEMAP routes by copying markup directly from the pre-approved master components in `components/index.html`.
